@@ -1,0 +1,57 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel>
+                <Button
+                    Width="80"
+                    Height="40"
+                    Content="123" />
+                <Button
+                    Width="80"
+                    Height="40"
+                    Content="123"
+                    IsEnabled="False" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="Button">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderBrush" Value="White" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    x:Name="Border"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="3">
+                    <TextBlock
+                        x:Name="Data"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="{TemplateBinding Foreground}"
+                        Text="{TemplateBinding Content}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button:pointerover /template/ Border#Border">
+        <Setter Property="Background" Value="#FF71e4ff" />
+    </Style>
+
+    <Style Selector="Button /template/ Border#Border">
+        <Setter Property="Background" Value="#FF5EBDD3" />
+    </Style>
+
+    <Style Selector="Button:pressed  /template/ Border#Border">
+        <Setter Property="Background" Value="#FFAAAAAA" />
+    </Style>
+
+    <Style Selector="Button:disabled /template/ Border#Border">
+        <Setter Property="Background" Value="#FF3b7886" />
+    </Style>
+    <Style Selector="Button:disabled /template/ TextBlock#Data">
+        <Setter Property="Foreground" Value="#FFCDCDCD" />
+    </Style>
+</Styles>

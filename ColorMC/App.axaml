@@ -1,7 +1,10 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="ColorMC.App">
+<Application
+    x:Class="ColorMC.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Styles>
-        <FluentTheme Mode="Light"/>
+        <FluentTheme Mode="Light" />
+        <StyleInclude Source="/Style/Button.axaml" />
+        <StyleInclude Source="/Style/Tab.axaml" />
     </Application.Styles>
 </Application>
