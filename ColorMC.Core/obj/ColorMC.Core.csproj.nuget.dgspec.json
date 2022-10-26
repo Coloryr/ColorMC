@@ -1,0 +1,74 @@
+{
+  "format": 1,
+  "restore": {
+    "E:\\code\\ColorMC\\ColorMC.Core\\ColorMC.Core.csproj": {}
+  },
+  "projects": {
+    "E:\\code\\ColorMC\\ColorMC.Core\\ColorMC.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\code\\ColorMC\\ColorMC.Core\\ColorMC.Core.csproj",
+        "projectName": "ColorMC.Core",
+        "projectPath": "E:\\code\\ColorMC\\ColorMC.Core\\ColorMC.Core.csproj",
+        "packagesPath": "C:\\Users\\40206\\.nuget\\packages\\",
+        "outputPath": "E:\\code\\ColorMC\\ColorMC.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Microsoft Visual Studio Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\40206\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.2-beta2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100-rc.2.22477.23\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

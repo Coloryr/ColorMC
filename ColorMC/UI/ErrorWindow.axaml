@@ -1,0 +1,36 @@
+<Window
+    x:Class="ColorMC.UI.ErrorWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:ColorMC.UI.Views"
+    Width="800"
+    Height="450"
+    MinWidth="800"
+    MinHeight="450"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    ExtendClientAreaToDecorationsHint="True"
+    mc:Ignorable="d">
+    <Grid>
+        <views:HeadControl
+            Title="错误"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top" />
+        <Grid Margin="0,30,0,0">
+            <Rectangle
+                Fill="#FFF4F4F5"
+                Stroke="#FF5ABED6"
+                StrokeThickness="3" />
+            <TextBox
+                Name="Data"
+                Margin="5"
+                IsReadOnly="True"
+                Text="测试"
+                TextWrapping="Wrap" />
+        </Grid>
+    </Grid>
+</Window>

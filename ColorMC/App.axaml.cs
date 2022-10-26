@@ -1,24 +1,47 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
+using ColorMC.Core;
+using ColorMC.UI;
+using System;
 
-namespace ColorMC
+namespace ColorMC;
+
+public partial class App : Application
 {
-    public partial class App : Application
+    private static IClassicDesktopStyleApplicationLifetime Life;
+    public override void Initialize()
     {
-        public override void Initialize()
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            AvaloniaXamlLoader.Load(this);
+            Life = desktop;
+            desktop.MainWindow = new MainWindow();
         }
 
-        public override void OnFrameworkInitializationCompleted()
-        {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                desktop.MainWindow = new MainWindow();
-            }
+        base.OnFrameworkInitializationCompleted();
 
-            base.OnFrameworkInitializationCompleted();
-        }
+        CoreMain.OnError = ShowError;
+        CoreMain.NewStart = ShowNew;
+    }
+
+    public static void ShowNew() 
+    {
+        new HelloWindow().Set();
+    }
+
+    private static void ShowError(string data, Exception e, bool close)
+    {
+        new ErrorWindow().Show(data, e, close);
+    }
+
+    public static void Close() 
+    {
+        Life?.Shutdown();
     }
 }

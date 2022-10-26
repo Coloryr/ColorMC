@@ -1,23 +1,31 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using ColorMC.Core;
 using System;
+using System.Text;
 
-namespace ColorMC
+namespace ColorMC;
+
+internal class Program
 {
-    internal class Program
-    {
-        // Initialization code. Don't use any Avalonia, third-party APIs or any
-        // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
-        // yet and stuff might break.
-        [STAThread]
-        public static void Main(string[] args) => BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+    public const string FontFamily = "Microsoft YaHei,Simsun,苹方-简,宋体-简";  // 使用英文逗号分隔
 
-        // Avalonia configuration, don't remove; also used by visual designer.
-        public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .LogToTrace();
+    // Initialization code. Don't use any Avalonia, third-party APIs or any
+    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
+    // yet and stuff might break.
+    [STAThread]
+    public static void Main(string[] args)
+    {
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+        BuildAvaloniaApp()
+            .StartWithClassicDesktopLifetime(args);
     }
+
+    // Avalonia configuration, don't remove; also used by visual designer.
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .LogToTrace();
 }
