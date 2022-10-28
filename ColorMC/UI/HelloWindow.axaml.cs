@@ -36,7 +36,7 @@ public partial class HelloWindow : Window
         Tab1.Children.Add(content2);
 
         content1.Content = tab1;
-        slide.Start(content2, content1, false, CancellationToken.None);
+        //slide.Start(content2, content1, false, CancellationToken.None);
     }
 
     private async void Go(UserControl to) 

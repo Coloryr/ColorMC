@@ -54,7 +54,7 @@ public class PageSlide : IPageTransition
 
         var tasks = new List<Task>();
         var parent = GetVisualParent(from, to);
-        var distance = parent.Bounds.Width ;
+        var distance = parent.Bounds.Width;
         var translateProperty = TranslateTransform.XProperty;
 
         if (from != null)
@@ -78,10 +78,10 @@ public class PageSlide : IPageTransition
                                 new Setter
                                 {
                                     Property = translateProperty,
-                                    Value = end * 0.9
+                                    Value = end * 0.95
                                 }
                             },
-                            Cue = new Cue(0.5)
+                            Cue = new Cue(0.6)
                         },
                         new KeyFrame
                         {
@@ -130,10 +130,10 @@ public class PageSlide : IPageTransition
                                 new Setter
                                 {
                                     Property = translateProperty,
-                                    Value = end * 0.1
+                                    Value = end * 0.05
                                 }
                             },
-                            Cue = new Cue(0.5)
+                            Cue = new Cue(0.4)
                         },
                         new KeyFrame
                         {
