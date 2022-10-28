@@ -3,7 +3,6 @@ using DynamicData;
 using System.Collections.ObjectModel;
 using Avalonia.Interactivity;
 using ColorMC.UIBinding;
-using ColorMC.Core.Objs;
 using ColorMC.Core;
 
 namespace ColorMC.UI.Views.Hello;
@@ -64,19 +63,19 @@ public partial class Tab2Control : UserControl
     {
         OpenFileDialog openFile = new()
         {
-            Title = "选择配置文件",
+            Title = "选择Java",
             AllowMultiple = false,
-            Filters = new()
+            Filters = SystemInfo.Os == OsType.Windows ?  new()
             {
                 new FileDialogFilter()
                 {
-                    Name = "javaw",
-                    Extensions = SystemInfo.Os == OsType.Windows ? new()
+                    Name =  "javaw" ,
+                    Extensions =new()
                     {
                         "exe"
-                    } : new() { }
+                    }
                 }
-            }
+            }: new()
         };
 
         var file = await openFile.ShowAsync(Window);

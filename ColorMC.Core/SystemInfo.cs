@@ -54,5 +54,8 @@ public static class SystemInfo
 
         SystemName = RuntimeInformation.OSDescription;
         ProcessorCount = Environment.ProcessorCount;
+
+        Console.WriteLine($"Os:{Os} Arch:{SystemArch}");
+        Console.WriteLine(SystemName);
     }
 }
