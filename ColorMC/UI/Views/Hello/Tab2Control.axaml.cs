@@ -71,7 +71,7 @@ public partial class Tab2Control : UserControl
                 new FileDialogFilter()
                 {
                     Name = "javaw",
-                    Extensions = SystemInfo.Os == OsType.Windows new()
+                    Extensions = SystemInfo.Os == OsType.Windows ? new()
                     {
                         "exe"
                     } : new() { }
