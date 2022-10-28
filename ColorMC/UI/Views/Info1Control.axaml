@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.UI.Views.InfoControl"
+    x:Class="ColorMC.UI.Views.Info1Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,27 +11,26 @@
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock
             Name="Text"
-            HorizontalAlignment="Center"
             FontSize="20"
             Foreground="White"
             Text="测试"
             TextAlignment="Center"
             TextWrapping="Wrap" />
-        <StackPanel
-            Margin="0,100,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
-            <Button
-                Name="Confirm"
-                Width="100"
-                Height="30"
-                Content="确定" />
+        <StackPanel Margin="0,100,0,0">
+            <ProgressBar
+                Name="ProgressBar1"
+                Height="20"
+                Margin="20,0,20,50"
+                BorderBrush="White"
+                BorderThickness="1"
+                Foreground="#FF5EBDD3"
+                IsIndeterminate="True"
+                Value="20" />
             <Button
                 Name="Cancel"
                 Width="100"
                 Height="30"
-                Margin="50,0,0,0"
+                HorizontalAlignment="Center"
                 Content="取消" />
         </StackPanel>
     </StackPanel>

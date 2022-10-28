@@ -4,8 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="350"
+    d:DesignWidth="600"
     mc:Ignorable="d">
     <Grid>
         <Rectangle
@@ -15,7 +15,33 @@
 
         <StackPanel Margin="5">
             <Label Margin="5" Content="导入配置文件" />
-            <TextBox Watermark="配置文件路径" />
+            <TextBox
+                Name="TextBox_Local"
+                Margin="5"
+                Classes="input1"
+                Watermark="配置文件路径" />
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button
+                    Name="Button_SelectFile"
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,10,0"
+                    Content="选择文件" />
+                <Button
+                    Name="Button_Input"
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Content="导入" />
+            </StackPanel>
         </StackPanel>
+        <Button
+            Name="Button_Next"
+            Width="80"
+            Height="25"
+            Margin="0,0,10,10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Content="下一步" />
     </Grid>
 </UserControl>
