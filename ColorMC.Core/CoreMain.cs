@@ -14,7 +14,10 @@ public static class CoreMain
 
     public static void Init(string dir) 
     {
+        SystemInfo.Init();
+
         HttpClient = new();
+
 
         Logs.Init(dir);
 

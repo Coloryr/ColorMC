@@ -67,7 +67,6 @@ public static class JvmPath
                 Jvms.Add(a.Name, info);
         });
 
-
         if (objs.Count != Jvms.Count)
         {
             objs.Clear();
@@ -79,7 +78,6 @@ public static class JvmPath
                     Local = item.Value.Path
                 });
             }
-            ConfigUtils.Save();
         }
 
     }
