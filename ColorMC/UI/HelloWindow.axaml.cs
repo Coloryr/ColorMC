@@ -35,6 +35,12 @@ public partial class HelloWindow : Window
         Tab1.Children.Add(content1);
         Tab1.Children.Add(content2);
 
+        tab1.SetWindow(this);
+        tab2.SetWindow(this);
+        tab3.SetWindow(this);
+        tab4.SetWindow(this);
+        tab5.SetWindow(this);
+
         content1.Content = tab1;
         //slide.Start(content2, content1, false, CancellationToken.None);
     }
@@ -91,6 +97,17 @@ public partial class HelloWindow : Window
                 Close();
         });
     }
+
+    public void Update() 
+    {
+        tab2.Load();
+    }
+
+    public void Next() 
+    {
+        Tabs.SelectedIndex++;
+    }
+
     public void Set() 
     {
         ShowDialog(MainWindow.Window);

@@ -41,6 +41,7 @@
             </TabControl>
 
             <views:InfoControl Name="Info" IsVisible="False" />
+            <views:Info1Control Name="Info1" IsVisible="False" />
         </Grid>
     </Grid>
 </Window>

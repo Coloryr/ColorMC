@@ -8,12 +8,11 @@ namespace ColorMC.Core.Path;
 
 public class PathUtils
 {
-    public JvmPath Jvm;
+
 
     public PathUtils()
     {
-        Jvm = new();
-
+        
 
     }
 }

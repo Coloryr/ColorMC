@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 
 namespace ColorMC.UI.Views;
 
-public partial class InfoControl : UserControl
+public partial class Info1Control : UserControl
 {
-    private Action<bool>? call;
+    private Action? call;
 
     private CrossFade transition = new(TimeSpan.FromMilliseconds(300));
 
-    public InfoControl()
+    public Info1Control()
     {
         InitializeComponent();
 
-        Confirm.Click += Confirm_Click;
         Cancel.Click += Cancel_Click;
     }
 
@@ -28,34 +27,44 @@ public partial class InfoControl : UserControl
         Cancel.IsEnabled = false;
         transition.Start(this, null, CancellationToken.None);
 
-        call?.Invoke(false);
+        call?.Invoke();
     }
 
-    private void Confirm_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    public void Close() 
     {
-        Confirm.IsEnabled = false;
         Cancel.IsEnabled = false;
         transition.Start(this, null, CancellationToken.None);
-
-        call?.Invoke(true);
-    }
-
-    public void Show(string title, Action<bool> res)
-    {
-        Confirm.IsEnabled = true;
-        Cancel.IsEnabled = true;
-        Text.Text = title;
-        call = res;
-
-        transition.Start(null, this, cancellationToken: CancellationToken.None);
     }
 
     public void Show(string title)
     {
-        Confirm.IsEnabled = true;
-        Cancel.IsVisible = false;
+        Cancel.IsEnabled = true;
         Text.Text = title;
+        call = null;
+
+        Cancel.IsVisible = false;
 
         transition.Start(null, this, cancellationToken: CancellationToken.None);
+    }
+
+    public void Show(string title, Action cancel)
+    {
+        Cancel.IsEnabled = true;
+        Text.Text = title;
+        call = cancel;
+
+        transition.Start(null, this, cancellationToken: CancellationToken.None);
+    }
+
+    public void Progress(double value) 
+    {
+        ProgressBar1.IsIndeterminate = false;
+        ProgressBar1.Value = value;
+        ProgressBar1.ShowProgressText = true;
+    }
+
+    public void NextText(string title) 
+    {
+        Text.Text = title;
     }
 }

@@ -6,5 +6,6 @@
         <FluentTheme Mode="Light" />
         <StyleInclude Source="/Style/Button.axaml" />
         <StyleInclude Source="/Style/Tab.axaml" />
+        <StyleInclude Source="/Style/TextBox.axaml" />
     </Application.Styles>
 </Application>

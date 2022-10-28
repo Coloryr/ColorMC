@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ColorMC.Core.Path;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ public static class ConfigUtils
 
     private static string Name;
 
-    public static void Init(string dir) 
+    public static void Init(string dir)
     {
         Dir = dir;
         Name = dir + "config.json";
@@ -37,24 +38,40 @@ public static class ConfigUtils
         }
     }
 
-    public static void Load(string name) 
+    public static void Load(string name)
     {
         if (File.Exists(name))
         {
             Config = JsonConvert.DeserializeObject<ConfigObj>(File.ReadAllText(name));
+
+            if (Config == null)
+            {
+                throw new Exception("配置为空");
+            }
+
+            if (Config.JavaList == null)
+            {
+                Config.JavaList = new();
+            }
+            JvmPath.AddList(Config.JavaList);
+
+            Save();
         }
     }
 
-    public static void Save() 
+    public static void Save()
     {
         File.WriteAllText(Name, JsonConvert.SerializeObject(Config));
     }
 
-    private static ConfigObj MakeDefaultConfig() 
+    private static ConfigObj MakeDefaultConfig()
     {
         return new()
         {
-
+            Version = CoreMain.Version,
+            MCPath = "./.minectaft",
+            JavaList = new(),
+            GameList = new(),
         };
     }
 }

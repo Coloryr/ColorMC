@@ -1,12 +1,18 @@
 using Avalonia.Controls;
 
-namespace ColorMC.UI.Views.Hello
+namespace ColorMC.UI.Views.Hello;
+
+public partial class Tab4Control : UserControl
 {
-    public partial class Tab4Control : UserControl
+    private HelloWindow Window;
+    public Tab4Control()
     {
-        public Tab4Control()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+
+    }
+
+    public void SetWindow(HelloWindow window)
+    {
+        Window = window;
     }
 }
