@@ -17,7 +17,7 @@ public static class DownloadManager
     {
         threads.ForEach(a => a.Close());
         threads.Clear();
-        for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread)
+        for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
         {
             DownloadThread thread = new();
             thread.Init(a);
@@ -25,12 +25,12 @@ public static class DownloadManager
         }
     }
 
-    public static void AddItem(DownloadItem item) 
+    public static void AddItem(DownloadItem item)
     {
         Items.Enqueue(item);
     }
 
-    public static DownloadItem GetItem() 
+    public static DownloadItem GetItem()
     {
         if (Items.TryDequeue(out var item))
         {
@@ -40,8 +40,8 @@ public static class DownloadManager
         return null;
     }
 
-    public static void Error(DownloadItem item, Exception e) 
+    public static void Error(DownloadItem item, Exception e)
     {
-        
+
     }
 }
