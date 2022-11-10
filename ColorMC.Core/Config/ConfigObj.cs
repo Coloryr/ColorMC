@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ColorMC.Core.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,12 @@ public record GameConfigObj
     public int MinMem { get; set; }
 }
 
+public record HttpObj
+{
+    public SourceLocal Source { get; set; }
+    public int DownloadThread { get; set; }
+}
+
 public record ConfigObj
 {
     public string Version { get; set; }
@@ -29,5 +36,7 @@ public record ConfigObj
     
     public List<JvmConfigObj> JavaList { get; set; }
     public List<GameConfigObj> GameList { get; set; }
+
+    public HttpObj Http { get; set; }
 
 }

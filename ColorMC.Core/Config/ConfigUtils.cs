@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Path;
+﻿using ColorMC.Core.Http;
+using ColorMC.Core.Path;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,17 @@ public static class ConfigUtils
             {
                 Config.JavaList = new();
             }
+            if (Config.GameList == null)
+            {
+                Config.GameList = new();
+            }
+            if (Config.Http == null)
+            {
+                Config.Http = MakeHttpConfig();
+            }
+
             JvmPath.AddList(Config.JavaList);
+            BaseClient.Source = Config.Http.Source;
 
             Save();
         }
@@ -72,6 +83,16 @@ public static class ConfigUtils
             MCPath = "./.minectaft",
             JavaList = new(),
             GameList = new(),
+            Http = MakeHttpConfig()
+        };
+    }
+
+    private static HttpObj MakeHttpConfig() 
+    {
+        return new()
+        {
+            Source = SourceLocal.Offical,
+            DownloadThread = 5
         };
     }
 }
