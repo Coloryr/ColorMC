@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Core.Path;
 
-public static class MCPath
+public static class LibrariesPath
 {
-    private const string Name = "minecraft";
+    private const string Name = "libraries";
+
     public static string BaseDir { get; set; }
 
     public static void InitPath(string dir)
@@ -17,9 +17,5 @@ public static class MCPath
         BaseDir = dir + "/" + Name;
 
         Directory.CreateDirectory(BaseDir);
-
-        AssetsPath.InitPath(BaseDir);
-        LibrariesPath.InitPath(BaseDir);
-        InstancesPath.InitPath(BaseDir);
     }
 }
