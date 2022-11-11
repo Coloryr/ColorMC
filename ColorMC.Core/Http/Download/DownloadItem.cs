@@ -17,7 +17,7 @@ public record DownloadItem
     public string Name { get; set; }
     public string Url { get; set; }
     public string Local { get; set; }
-    public string SHA1 { get; set; }
+    public string? SHA1 { get; set; }
     public long AllSize { get; set; }
     public long NowSize { get; set; }
     public DownloadItemState State { get; set; } = DownloadItemState.Init;

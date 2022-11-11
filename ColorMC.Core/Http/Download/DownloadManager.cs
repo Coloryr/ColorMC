@@ -20,13 +20,14 @@ public static class DownloadManager
     {
         threads.ForEach(a => a.Close());
         threads.Clear();
-        ConfigUtils.Config.Http.DownloadThread = 1;
+        //ConfigUtils.Config.Http.DownloadThread = 1;
         for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
         {
             DownloadThread thread = new();
             thread.Init(a);
             threads.Add(thread);
         }
+        Clear();
     }
 
     public static void Clear() 
@@ -39,7 +40,7 @@ public static class DownloadManager
     public static void Start() 
     {
         CoreMain.DownloadUpdate?.Invoke();
-        CoreMain.DownloadState?.Invoke(DownloadState.Start);
+        CoreMain.DownloadState?.Invoke(CoreRunState.Start);
         foreach (var item in threads)
         {
             item.Start();

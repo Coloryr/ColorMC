@@ -12,7 +12,7 @@ public static class MCPath
     private const string Name = "minecraft";
     public static string BaseDir { get; private set; }
 
-    public static void InitPath(string dir)
+    public static void Init(string dir)
     {
         BaseDir = dir + "/" + Name;
 
@@ -21,5 +21,6 @@ public static class MCPath
         AssetsPath.Init(BaseDir);
         LibrariesPath.Init(BaseDir);
         InstancesPath.Init(BaseDir);
+        VersionPath.Init(BaseDir);
     }
 }
