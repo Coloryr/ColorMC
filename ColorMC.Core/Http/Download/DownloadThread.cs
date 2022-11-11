@@ -45,7 +45,7 @@ public class DownloadThread
         semaphore.Release();
     }
 
-    private int GetCopyBufferSize(Stream stream)
+    private static int GetCopyBufferSize(Stream stream)
     {
         const int DefaultCopyBufferSize = 81920;
 
@@ -78,12 +78,12 @@ public class DownloadThread
             semaphore.WaitOne();
             if (!run)
                 return;
-            DownloadItem item;
+            DownloadItem? item;
             while ((item = DownloadManager.GetItem()) != null)
             {
                 try
                 {
-                    item.State = DownloadState.Init;
+                    item.State = DownloadItemState.Init;
                     item.Update?.Invoke();
                     if (File.Exists(item.Local))
                     {
@@ -94,10 +94,10 @@ public class DownloadThread
                     {
                         Directory.CreateDirectory(info.DirectoryName!);
                     }
-                    using FileStream stream = new FileStream(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-                    var data = await BaseClient.Client.GetAsync(item.Url);
+                    using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    var data = await BaseClient.Client.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead);
                     item.AllSize = (long)data.Content.Headers.ContentLength!;
-                    item.State = DownloadState.Download;
+                    item.State = DownloadItemState.Download;
                     item.Update?.Invoke();
                     using Stream stream1 = data.Content.ReadAsStream();
                     byte[] buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
@@ -121,22 +121,22 @@ public class DownloadThread
                         string sha1 = Sha1.GenSha1(stream);
                         if (sha1 != item.SHA1)
                         {
-                            item.State = DownloadState.Error;
+                            item.State = DownloadItemState.Error;
                             item.Update?.Invoke();
                             DownloadManager.Error(item, new Exception("hash error"));
                         }
                     }
-                    item.State = DownloadState.Action;
+                    item.State = DownloadItemState.Action;
                     item.Update?.Invoke();
 
                     item.Later?.Invoke();
 
-                    item.State = DownloadState.Done;
+                    item.State = DownloadItemState.Done;
                     item.Update?.Invoke();
                 }
                 catch (Exception e)
                 {
-                    item.State = DownloadState.Error;
+                    item.State = DownloadItemState.Error;
                     item.Update?.Invoke();
                     DownloadManager.Error(item, e);
                 }

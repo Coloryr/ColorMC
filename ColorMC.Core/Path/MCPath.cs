@@ -10,7 +10,7 @@ namespace ColorMC.Core.Path;
 public static class MCPath
 {
     private const string Name = "minecraft";
-    public static string BaseDir { get; set; }
+    public static string BaseDir { get; private set; }
 
     public static void InitPath(string dir)
     {
@@ -18,8 +18,8 @@ public static class MCPath
 
         Directory.CreateDirectory(BaseDir);
 
-        AssetsPath.InitPath(BaseDir);
-        LibrariesPath.InitPath(BaseDir);
-        InstancesPath.InitPath(BaseDir);
+        AssetsPath.Init(BaseDir);
+        LibrariesPath.Init(BaseDir);
+        InstancesPath.Init(BaseDir);
     }
 }

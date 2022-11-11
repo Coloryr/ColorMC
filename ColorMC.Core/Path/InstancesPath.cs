@@ -11,9 +11,9 @@ public static class InstancesPath
 
     private static Dictionary<string, GameSetting> Games = new();
 
-    public static string BaseDir { get; set; }
+    public static string BaseDir { get; private set; }
 
-    public static void InitPath(string dir)
+    public static void Init(string dir)
     {
         BaseDir = dir + "/" + Name;
 
