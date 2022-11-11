@@ -1,13 +1,11 @@
-﻿using Avalonia.Animation.Easings;
+﻿using Avalonia;
 using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.VisualTree;
-using Avalonia;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

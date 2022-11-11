@@ -1,15 +1,10 @@
 ﻿using ColorMC.Core.Config;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Path;
 
 public record JavaInfo
-{ 
+{
     public string Path { get; set; }
     public string Version { get; set; }
     public int MajorVersion
@@ -35,7 +30,7 @@ public static class JvmPath
 {
     public static Dictionary<string, JavaInfo> Jvms { get; } = new();
 
-    public static (bool, string) AddItem(string name, string local) 
+    public static (bool, string) AddItem(string name, string local)
     {
         if (Jvms.ContainsKey(name))
         {

@@ -12,7 +12,7 @@ public partial class ErrorWindow : Window
         FontFamily = Program.FontFamily;
     }
 
-    public void Show(string data, Exception e, bool close) 
+    public void Show(string data, Exception e, bool close)
     {
         Data.Text = $"{data}{Environment.NewLine}{e}";
         ShowDialog(MainWindow.Window);

@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Config;
 using System;
-using System.IO;
 
 namespace ColorMC.UI.Views.Hello;
 
@@ -18,7 +17,7 @@ public partial class Tab1Control : UserControl
         Button_Next.Click += Button_Next_Click;
     }
 
-    public void SetWindow(HelloWindow window) 
+    public void SetWindow(HelloWindow window)
     {
         Window = window;
     }
@@ -43,7 +42,7 @@ public partial class Tab1Control : UserControl
             ConfigUtils.Load(local);
             Window.Update();
             Window.Next();
-            
+
         }
         catch (Exception)
         {

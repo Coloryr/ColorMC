@@ -1,11 +1,6 @@
 ﻿using ColorMC.Core.Http;
 using ColorMC.Core.Objs.Game;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Path;
 
@@ -96,7 +91,7 @@ public static class VersionPath
         return Versions.versions.Where(a => a.id == version).Any();
     }
 
-    public static VersionObj? ReadVersions() 
+    public static VersionObj? ReadVersions()
     {
         string file = BaseDir + "/version.json";
         if (File.Exists(file))
@@ -107,13 +102,13 @@ public static class VersionPath
         return null;
     }
 
-    public static void SaveVersions(VersionObj obj) 
+    public static void SaveVersions(VersionObj obj)
     {
         string file = BaseDir + "/version.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
     }
 
-    public static void AddGame(GameArgObj obj) 
+    public static void AddGame(GameArgObj obj)
     {
         string file = BaseDir + "/" + obj.id + ".json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
@@ -127,7 +122,7 @@ public static class VersionPath
         }
     }
 
-    public static GameArgObj? GetGame(string version) 
+    public static GameArgObj? GetGame(string version)
     {
         if (Version.TryGetValue(version, out var item))
         {

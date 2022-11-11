@@ -1,16 +1,10 @@
-﻿using ColorMC.Core.Config;
-using ColorMC.Core.Path;
-using DynamicData;
-using System;
+﻿using ColorMC.Core.Path;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.UIBinding;
 
 public record JavaInfoObj
-{ 
+{
     public string Name { get; set; }
     public string Path { get; set; }
     public string Info { get; set; }
@@ -18,7 +12,7 @@ public record JavaInfoObj
 
 public static class JavaBinding
 {
-    private static JavaInfoObj MakeInfo(string name, JavaInfo item) 
+    private static JavaInfoObj MakeInfo(string name, JavaInfo item)
     {
         return new JavaInfoObj()
         {
@@ -28,7 +22,7 @@ public static class JavaBinding
         };
     }
 
-    public static List<JavaInfoObj> GetJavaInfo() 
+    public static List<JavaInfoObj> GetJavaInfo()
     {
         List<JavaInfoObj> res = new();
         foreach (var item in JvmPath.Jvms)
@@ -39,7 +33,7 @@ public static class JavaBinding
         return res;
     }
 
-    public static (JavaInfoObj, string) AddJava(string name, string local) 
+    public static (JavaInfoObj, string) AddJava(string name, string local)
     {
         var res = JvmPath.AddItem(name, local);
         if (res.Item1 == false)

@@ -1,23 +1,15 @@
-﻿using ColorMC.Core.Http;
-using ColorMC.Core.Http.Download;
+﻿using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs.Game;
-using ColorMC.Core.Objs.Pack;
 using ColorMC.Core.Path;
-using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Core.Http.Download;
 
 public static class GameDownload
 {
-    public static async Task Download(VersionObj.Versions obj) 
+    public static async Task Download(VersionObj.Versions obj)
     {
         CoreMain.DownloadState?.Invoke(CoreRunState.Init);
         CoreMain.DownloadState?.Invoke(CoreRunState.GetInfo);
@@ -73,7 +65,7 @@ public static class GameDownload
                             download = false;
                         }
                     }
-                    else if(action == "disallow")
+                    else if (action == "disallow")
                     {
                         if (item2.os == null)
                         {
@@ -129,7 +121,7 @@ public static class GameDownload
         }
     }
 
-    public static async Task DownloadForge(string mc, string version) 
+    public static async Task DownloadForge(string mc, string version)
     {
         CoreMain.DownloadState?.Invoke(CoreRunState.Init);
         string url = UrlHelp.DownloadForge(mc, version, BaseClient.Source);
@@ -179,7 +171,7 @@ public static class GameDownload
         if (info == null)
             return;
 
-        using FileStream stream3 = new($"{VersionPath.ForgeDir}/{name}.json", 
+        using FileStream stream3 = new($"{VersionPath.ForgeDir}/{name}.json",
             FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         stream1.Seek(0, SeekOrigin.Begin);
         await stream1.CopyToAsync(stream3);

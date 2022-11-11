@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Pack;
+﻿namespace ColorMC.Core.Objs.Pack;
 
 public enum SortField
 {
@@ -69,12 +63,12 @@ public record CurseForgeObj
         public record LatestFiles
         {
             public record Hashes
-            { 
+            {
                 public string value { get; set; }
                 public int algo { get; set; }
             }
             public record SortableGameVersions
-            { 
+            {
                 public string gameVersionName { get; set; }
                 public string gameVersionPadded { get; set; }
                 public string gameVersion { get; set; }
@@ -82,11 +76,11 @@ public record CurseForgeObj
                 public long? gameVersionTypeId { get; set; }
             }
             public record Dependencies
-            { 
-                
+            {
+
             }
             public record Modules
-            { 
+            {
                 public string name { get; set; }
                 public long fingerprint { get; set; }
             }
@@ -112,7 +106,7 @@ public record CurseForgeObj
             public List<Modules> modules { get; set; }
         }
         public record LatestFilesIndexes
-        { 
+        {
             public string gameVersion { get; set; }
             public long fileId { get; set; }
             public string filename { get; set; }

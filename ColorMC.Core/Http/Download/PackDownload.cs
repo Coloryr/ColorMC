@@ -1,27 +1,33 @@
-﻿using ColorMC.Core.Http;
-using ColorMC.Core.Http.Download;
+﻿using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Pack;
 using ColorMC.Core.Path;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Core.Http.Download;
 
 public static class PackDownload
 {
     public static string PackName { get; private set; }
     public static int Size { get; private set; }
     public static int Now { get; private set; }
-    public static void DownloadCurseForge(CurseForgeObj.Data obj)
-    {
 
+    public static async Task DownloadCurseForge(CurseForgeObj.Data obj)
+    {
+        var obj1 = obj.latestFiles.First();
+        DownloadItem item = new()
+        {
+            Url = obj1.downloadUrl,
+            Name = obj1.fileName,
+            Local = InstancesPath.BaseDir + "/" + obj1.fileName,
+        };
+
+        await DownloadThread.Download(item, CancellationToken.None);
+
+        await DownloadCurseForge(item.Local);
     }
 
     public static async Task DownloadCurseForge(string zip)
@@ -45,7 +51,7 @@ public static class PackDownload
         {
             return;
         }
-        CurseForgePackObj info;
+        CurseForgePackObj? info;
         var data = Encoding.UTF8.GetString(stream1.ToArray());
         try
         {
@@ -163,7 +169,7 @@ public static class PackDownload
             {
                 await GameDownload.DownloadForge(game.Version, game.LoaderInfo.Version);
             }
-            else if(loaders == Loaders.Fabric)
+            else if (loaders == Loaders.Fabric)
             {
                 await GameDownload.DownloadFabric(game.Version, game.LoaderInfo.Version);
             }

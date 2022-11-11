@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Http.Download;
+﻿namespace ColorMC.Core.Http.Downloader;
 
 public enum DownloadItemState
-{ 
+{
     Wait, Download, Init, Action, Done,
     Error,
 }

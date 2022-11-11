@@ -20,7 +20,7 @@ public static class InstancesPath
         Directory.CreateDirectory(BaseDir);
 
         var list = Directory.GetDirectories(BaseDir);
-        foreach(var item in list)
+        foreach (var item in list)
         {
             var data = new DirectoryInfo(item);
             var list1 = data.GetFiles();
@@ -38,9 +38,9 @@ public static class InstancesPath
         }
     }
 
-    public static GameSetting? GetGame(string name) 
+    public static GameSetting? GetGame(string name)
     {
-        if(Games.TryGetValue(name, out var item))
+        if (Games.TryGetValue(name, out var item))
         {
             return item;
         }
@@ -48,7 +48,7 @@ public static class InstancesPath
         return null;
     }
 
-    public static GameSetting? CreateVersion(string name, string version, Loaders loader, LoaderInfo info) 
+    public static GameSetting? CreateVersion(string name, string version, Loaders loader, LoaderInfo info)
     {
         if (Games.ContainsKey(name))
         {
@@ -81,7 +81,7 @@ public static class InstancesPath
         return game;
     }
 
-    public static string GetDir(GameSetting obj) 
+    public static string GetDir(GameSetting obj)
     {
         return obj.Dir + "/" + Name2;
     }

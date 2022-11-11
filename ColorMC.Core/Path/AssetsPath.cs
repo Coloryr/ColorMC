@@ -1,6 +1,5 @@
 using ColorMC.Core.Objs.Game;
 using Newtonsoft.Json;
-using System;
 
 namespace ColorMC.Core.Path;
 
@@ -18,7 +17,7 @@ public static class AssetsPath
 
     public static string ObjectsDir { get; private set; }
 
-    public static void Init(string dir) 
+    public static void Init(string dir)
     {
         BaseDir = dir + "/" + Name;
         ObjectsDir = BaseDir + "/" + Name2;
@@ -39,7 +38,7 @@ public static class AssetsPath
         }
     }
 
-    public static void AddIndex(AssetsObj obj, string version) 
+    public static void AddIndex(AssetsObj obj, string version)
     {
         string file = $"{BaseDir}/{Name1}/{version}.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
@@ -53,7 +52,7 @@ public static class AssetsPath
         }
     }
 
-    public static AssetsObj? GetIndex(string version) 
+    public static AssetsObj? GetIndex(string version)
     {
         if (Assets.TryGetValue(version, out var item))
         {

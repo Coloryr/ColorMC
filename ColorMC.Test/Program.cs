@@ -1,9 +1,9 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
+using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Path;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Test;
 
@@ -27,14 +27,19 @@ internal class Program
 
         //PackDownload.DownloadCurseForge("H:\\stoneBlock-1.0.37.zip").Wait();
 
-        var res = Get.GetFabricMeta().Result;
-        var item = res.loader.First();
-        GameDownload.DownloadFabric("1.19.2", item.version ).Wait();
-        DownloadManager.Start();
+        //var res = Get.GetFabricMeta().Result;
+        //var item = res.loader.First();
+        //GameDownload.DownloadFabric("1.19.2", item.version ).Wait();
+        //DownloadManager.Start();
 
         //using FileStream stream2 = new("E:\\code\\ColorMC\\ColorMC.Test\\bin\\Debug\\net7.0\\minecraft\\assets\\objects\\0c\\0cd209ea16b052a2f445a275380046615d20775e", FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
         //stream2.Seek(0, SeekOrigin.Begin);
         //string sha1 = Sha1.GenSha1(stream2);
+
+        var list = Get.GetCurseForge().Result;
+        var data = list.data.First();
+        PackDownload.DownloadCurseForge(data).Wait();
+        DownloadManager.Start();
 
         Console.ReadLine();
     }

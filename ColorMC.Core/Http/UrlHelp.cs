@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ColorMC.Core.Objs.Game.VersionObj;
-
-namespace ColorMC.Core.Http;
+﻿namespace ColorMC.Core.Http;
 
 public static class UrlHelp
 {
@@ -88,7 +81,7 @@ public static class UrlHelp
         return url;
     }
 
-    public static string DownloadForge(string mc, string version, SourceLocal? local) 
+    public static string DownloadForge(string mc, string version, SourceLocal? local)
     {
         string? url = local switch
         {
@@ -139,7 +132,7 @@ public static class UrlHelp
         return url;
     }
 
-    public static string FabricMeta(SourceLocal? local) 
+    public static string FabricMeta(SourceLocal? local)
     {
         string? url = local switch
         {

@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs;
+﻿namespace ColorMC.Core.Objs;
 
 public enum Loaders
-{ 
+{
     Normal, Forge, Fabric
 }
 
 public record LoaderInfo
-{ 
+{
     public string Name { get; set; }
     public string Version { get; set; }
 }

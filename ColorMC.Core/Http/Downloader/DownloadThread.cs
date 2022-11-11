@@ -1,23 +1,15 @@
 ﻿using ColorMC.Core.Utils;
-using System;
 using System.Buffers;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
-namespace ColorMC.Core.Http.Download;
+namespace ColorMC.Core.Http.Downloader;
 
 public class DownloadThread
 {
     private Thread thread;
     private bool run = false;
-    private Semaphore semaphore = new(0,2);
+    private Semaphore semaphore = new(0, 2);
     private CancellationTokenSource cancel;
-    public void Init(int index) 
+    public void Init(int index)
     {
         thread = new(Run)
         {
@@ -34,12 +26,12 @@ public class DownloadThread
         thread.Join();
     }
 
-    public void Cancel() 
+    public void Cancel()
     {
         cancel.Cancel();
     }
 
-    public void Start() 
+    public void Start()
     {
         cancel = new();
         semaphore.Release();
@@ -72,7 +64,7 @@ public class DownloadThread
         return bufferSize;
     }
 
-    public static async Task Download(DownloadItem item, CancellationToken cancel) 
+    public static async Task Download(DownloadItem item, CancellationToken cancel)
     {
         try
         {
@@ -150,7 +142,7 @@ public class DownloadThread
         }
     }
 
-    private async void Run() 
+    private async void Run()
     {
         while (run)
         {
