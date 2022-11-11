@@ -1,7 +1,4 @@
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using ColorMC.Core;
 using System;
 using System.Text;
 

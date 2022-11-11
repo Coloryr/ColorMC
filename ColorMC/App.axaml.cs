@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
 using ColorMC.Core;
 using ColorMC.UI;
@@ -30,7 +29,7 @@ public partial class App : Application
         CoreMain.NewStart = ShowNew;
     }
 
-    public static void ShowNew() 
+    public static void ShowNew()
     {
         new HelloWindow().Set();
     }
@@ -40,7 +39,7 @@ public partial class App : Application
         new ErrorWindow().Show(data, e, close);
     }
 
-    public static void Close() 
+    public static void Close()
     {
         Life?.Shutdown();
     }

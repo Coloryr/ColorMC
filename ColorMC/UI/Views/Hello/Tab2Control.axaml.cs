@@ -1,9 +1,9 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using ColorMC.Core;
+using ColorMC.UIBinding;
 using DynamicData;
 using System.Collections.ObjectModel;
-using Avalonia.Interactivity;
-using ColorMC.UIBinding;
-using ColorMC.Core;
 
 namespace ColorMC.UI.Views.Hello;
 
@@ -55,7 +55,7 @@ public partial class Tab2Control : UserControl
         }
         finally
         {
-            
+
         }
     }
 
@@ -65,7 +65,7 @@ public partial class Tab2Control : UserControl
         {
             Title = "—°‘ÒJava",
             AllowMultiple = false,
-            Filters = SystemInfo.Os == OsType.Windows ?  new()
+            Filters = SystemInfo.Os == OsType.Windows ? new()
             {
                 new FileDialogFilter()
                 {
@@ -75,7 +75,7 @@ public partial class Tab2Control : UserControl
                         "exe"
                     }
                 }
-            }: new()
+            } : new()
         };
 
         var file = await openFile.ShowAsync(Window);
@@ -96,7 +96,7 @@ public partial class Tab2Control : UserControl
         Load();
     }
 
-    public void Load() 
+    public void Load()
     {
         List.Clear();
         List.AddRange(JavaBinding.GetJavaInfo());

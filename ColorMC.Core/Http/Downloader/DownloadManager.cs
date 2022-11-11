@@ -1,12 +1,7 @@
 ﻿using ColorMC.Core.Config;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ColorMC.Core.Http.Download;
+namespace ColorMC.Core.Http.Downloader;
 
 public static class DownloadManager
 {
@@ -30,14 +25,14 @@ public static class DownloadManager
         Clear();
     }
 
-    public static void Clear() 
+    public static void Clear()
     {
         Items.Clear();
         AllSize = 0;
         DoneSize = 0;
     }
 
-    public static void Start() 
+    public static void Start()
     {
         CoreMain.DownloadUpdate?.Invoke();
         CoreMain.DownloadState?.Invoke(CoreRunState.Start);
@@ -67,7 +62,7 @@ public static class DownloadManager
         return null;
     }
 
-    public static void Done(DownloadItem item) 
+    public static void Done(DownloadItem item)
     {
         DoneSize++;
         CoreMain.DownloadUpdate?.Invoke();

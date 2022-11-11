@@ -1,25 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Pack;
+﻿namespace ColorMC.Core.Objs.Pack;
 
 public record CurseForgePackObj
 {
     public record Minecraft
     {
         public record ModLoaders
-        { 
+        {
             public string id { get; set; }
             public bool primary { get; set; }
         }
         public string version { get; set; }
-        public List<ModLoaders> modLoaders  { get;set;}
+        public List<ModLoaders> modLoaders { get; set; }
     }
     public record Files
-    { 
+    {
         public int projectID { get; set; }
         public int fileID { get; set; }
         public bool required { get; set; }

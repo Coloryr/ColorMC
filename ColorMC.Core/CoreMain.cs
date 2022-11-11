@@ -1,15 +1,13 @@
 ﻿using ColorMC.Core.Config;
-using ColorMC.Core.Http;
-using ColorMC.Core.Http.Download;
+using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Path;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Core;
 
 public enum CoreRunState
-{ 
-    Init, GetInfo, Start, End, 
+{
+    Init, GetInfo, Start, End,
     Error,
 }
 
@@ -29,7 +27,7 @@ public static class CoreMain
     public static Action<CoreRunState> PackState;
     public static Action<int, int> PackUpdate;
 
-    public static async void Init(string dir) 
+    public static void Init(string dir)
     {
         SystemInfo.Init();
         Logs.Init(dir);

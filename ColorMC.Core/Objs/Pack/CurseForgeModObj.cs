@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Pack;
+﻿namespace ColorMC.Core.Objs.Pack;
 
 public record CurseForgeModObj
 {
     public record Data
     {
         public record Hashes
-        { 
+        {
             public string value { get; set; }
             public int algo { get; set; }
         }
         public record SortableGameVersions
-        { 
+        {
             public string gameVersionName { get; set; }
             public string gameVersionPadded { get; set; }
             public string gameVersion { get; set; }
@@ -24,12 +18,12 @@ public record CurseForgeModObj
             public long? gameVersionTypeId { get; set; }
         }
         public record Dependencies
-        { 
+        {
             public long modId { get; set; }
             public int relationType { get; set; }
         }
         public record Modules
-        { 
+        {
             public string name { get; set; }
             public long fingerprint { get; set; }
         }

@@ -2,9 +2,7 @@ using Avalonia.Controls;
 using ColorMC.UI.Animations;
 using ColorMC.UI.Views.Hello;
 using System;
-using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.UI;
 
@@ -45,10 +43,10 @@ public partial class HelloWindow : Window
         //slide.Start(content2, content1, false, CancellationToken.None);
     }
 
-    private async void Go(UserControl to) 
+    private async void Go(UserControl to)
     {
         Tabs.IsEnabled = false;
-        
+
         if (!switch1)
         {
             content2.Content = to;
@@ -91,24 +89,24 @@ public partial class HelloWindow : Window
 
     private void HelloWindow_Opened(object? sender, System.EventArgs e)
     {
-        Info.Show($"检测你是第一次启动{Environment.NewLine}是否需要进行初始化设置", (res) => 
+        Info.Show($"检测你是第一次启动{Environment.NewLine}是否需要进行初始化设置", (res) =>
         {
             if (!res)
                 Close();
         });
     }
 
-    public void Update() 
+    public void Update()
     {
         tab2.Load();
     }
 
-    public void Next() 
+    public void Next()
     {
         Tabs.SelectedIndex++;
     }
 
-    public void Set() 
+    public void Set()
     {
         ShowDialog(MainWindow.Window);
     }

@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Game;
+﻿namespace ColorMC.Core.Objs.Game;
 
 public record FabricLoaderObj
 {
     public record Arguments
-    { 
+    {
         public List<string> game { get; set; }
         public List<string> jvm { get; set; }
     }
     public record Libraries
-    { 
+    {
         public string name { get; set; }
         public string url { get; set; }
     }

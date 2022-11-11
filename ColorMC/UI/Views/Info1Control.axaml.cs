@@ -1,11 +1,7 @@
-using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
-using Avalonia.Media;
-using Avalonia.Styling;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.UI.Views;
 
@@ -30,7 +26,7 @@ public partial class Info1Control : UserControl
         call?.Invoke();
     }
 
-    public void Close() 
+    public void Close()
     {
         Cancel.IsEnabled = false;
         transition.Start(this, null, CancellationToken.None);
@@ -56,14 +52,14 @@ public partial class Info1Control : UserControl
         transition.Start(null, this, cancellationToken: CancellationToken.None);
     }
 
-    public void Progress(double value) 
+    public void Progress(double value)
     {
         ProgressBar1.IsIndeterminate = false;
         ProgressBar1.Value = value;
         ProgressBar1.ShowProgressText = true;
     }
 
-    public void NextText(string title) 
+    public void NextText(string title)
     {
         Text.Text = title;
     }

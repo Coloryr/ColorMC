@@ -1,11 +1,6 @@
 ﻿using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Objs.Pack;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Http;
 
@@ -110,7 +105,7 @@ public static class Get
         }
     }
 
-    public static async Task<FabircMetaObj?> GetFabricMeta(SourceLocal? local = null) 
+    public static async Task<FabircMetaObj?> GetFabricMeta(SourceLocal? local = null)
     {
         try
         {
@@ -126,7 +121,7 @@ public static class Get
         }
     }
 
-    public static async Task<FabricLoaderObj?> GetFabricLoader(string mc, string version, SourceLocal? local = null) 
+    public static async Task<FabricLoaderObj?> GetFabricLoader(string mc, string version, SourceLocal? local = null)
     {
         try
         {

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core;
+﻿namespace ColorMC.Core;
 
 public static class Logs
 {
     private static string Local;
     private static StreamWriter Writer;
 
-    public static void Init(string dir) 
+    public static void Init(string dir)
     {
         Local = dir + "logs.log";
 
@@ -26,17 +20,17 @@ public static class Logs
         }
     }
 
-    public static void Info(string data) 
+    public static void Info(string data)
     {
         Writer.WriteLine($"[{DateTime.Now}][Info]{data}");
     }
 
-    public static void Warn(string data) 
+    public static void Warn(string data)
     {
         Writer.WriteLine($"[{DateTime.Now}][Warn]{data}");
     }
 
-    public static void Error(string data) 
+    public static void Error(string data)
     {
         Writer.WriteLine($"[{DateTime.Now}][Error]{data}");
     }
