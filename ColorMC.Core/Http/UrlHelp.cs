@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
+using static ColorMC.Core.Objs.Game.VersionObj;
 
 namespace ColorMC.Core.Http;
 
@@ -17,6 +17,12 @@ public static class UrlHelp
 
     private static readonly string[] originServers1 =
       { "https://libraries.minecraft.net/"};
+
+    private static readonly string[] originServers2 =
+      { "https://maven.minecraftforge.net/"};
+
+    private static readonly string[] originServers3 =
+      { "https://maven.fabricmc.net/"};
 
     public static string Version(SourceLocal? local)
     {
@@ -74,11 +80,84 @@ public static class UrlHelp
     {
         string? url = local switch
         {
-            SourceLocal.BMCLAPI => BMCLAPI + "assets/" + uuid,
-            SourceLocal.MCBBS => MCBBS + "assets/" + uuid,
-            _ => "https://resources.download.minecraft.net/" + uuid[0..1] + uuid
+            SourceLocal.BMCLAPI => $"{BMCLAPI}assets/{uuid}",
+            SourceLocal.MCBBS => $"{MCBBS}assets/{uuid}",
+            _ => $"https://resources.download.minecraft.net/{uuid[..2]}/{uuid}"
         };
 
         return url;
+    }
+
+    public static string DownloadForge(string mc, string version, SourceLocal? local) 
+    {
+        string? url = local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/{mc}-{version}/" +
+            $"forge-{mc}-{version}-installer.jar",
+            SourceLocal.MCBBS => $"{MCBBS}maven/net/minecraftforge/forge/{mc}-{version}/" +
+            $"forge-{mc}-{version}-installer.jar",
+            _ => $"https://maven.minecraftforge.net/net/minecraftforge/forge/{mc}-{version}/" +
+            $"forge-{mc}-{version}-installer.jar"
+        };
+
+        return url;
+    }
+
+    public static string DownloadForgeJar(string mc, string version, SourceLocal? local)
+    {
+        string? url = local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/{mc}-{version}/" +
+            $"forge-{mc}-{version}-universal.jar",
+            SourceLocal.MCBBS => $"{MCBBS}maven/net/minecraftforge/forge/{mc}-{version}/" +
+            $"forge-{mc}-{version}-universal.jar",
+            _ => $"https://maven.minecraftforge.net/net/minecraftforge/forge/{mc}-{version}/" +
+            $"forge-{mc}-{version}-universal.jar"
+        };
+
+        return url;
+    }
+
+    public static string DownloadForgeLib(string url, SourceLocal? local)
+    {
+        string? to = local switch
+        {
+            SourceLocal.BMCLAPI => BMCLAPI + "maven/",
+            SourceLocal.MCBBS => MCBBS + "maven/",
+            _ => null
+        };
+        if (to == null)
+        {
+            return url;
+        }
+
+        foreach (var item in originServers2)
+        {
+            url = url.Replace(item, to);
+        }
+
+        return url;
+    }
+
+    public static string FabricMeta(SourceLocal? local) 
+    {
+        string? url = local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}fabric-meta/v2/versions",
+            SourceLocal.MCBBS => $"{MCBBS}fabric-meta/v2/versions",
+            _ => $"https://meta.fabricmc.net/v2/versions"
+        };
+
+        return url;
+    }
+
+    public static string DownloadFabric(SourceLocal? local)
+    {
+        return local switch
+        {
+            SourceLocal.BMCLAPI => BMCLAPI + "maven/",
+            SourceLocal.MCBBS => MCBBS + "maven/",
+            _ => "https://maven.fabricmc.net/"
+        };
     }
 }

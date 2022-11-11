@@ -14,7 +14,15 @@ public static class VersionPath
     private readonly static Dictionary<string, GameArgObj> Version = new();
     public static VersionObj Versions { get; private set; }
 
+    public static string ForgeDir => BaseDir + "/" + Name1;
+    public static string FabricDir => BaseDir + "/" + Name2;
+
+
     private const string Name = "versions";
+
+    private const string Name1 = "forge";
+    private const string Name2 = "fabric";
+
     public static string BaseDir { get; private set; }
 
     public static void Init(string dir)
@@ -23,12 +31,18 @@ public static class VersionPath
 
         Directory.CreateDirectory(BaseDir);
 
+        Directory.CreateDirectory($"{BaseDir}/{Name1}");
+        Directory.CreateDirectory($"{BaseDir}/{Name2}");
+
         DirectoryInfo info = new(BaseDir);
 
         try
         {
             foreach (var item in info.GetFiles())
             {
+                if (!item.Name.EndsWith(".json"))
+                    continue;
+
                 if (item.Name == "version.json")
                     continue;
 
@@ -63,10 +77,10 @@ public static class VersionPath
 
     public static async Task<VersionObj?> GetFromWeb()
     {
-        var res = await GetVersion.Get();
+        var res = await Get.GetVersion();
         if (res == null)
         {
-            res = await GetVersion.Get(SourceLocal.Offical);
+            res = await Get.GetVersion(SourceLocal.Offical);
             if (res == null)
             {
                 Logs.Warn("获取版本信息错误");

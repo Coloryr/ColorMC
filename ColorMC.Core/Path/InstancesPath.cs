@@ -48,17 +48,17 @@ public static class InstancesPath
         return null;
     }
 
-    public static bool CreateVersion(string name, string version) 
+    public static GameSetting? CreateVersion(string name, string version, Loaders loader, LoaderInfo info) 
     {
         if (Games.ContainsKey(name))
         {
-            return false;
+            return null;
         }
 
         var dir = BaseDir + "/" + name;
         if (Directory.Exists(dir))
         {
-            return false;
+            return null;
         }
 
         Directory.CreateDirectory(dir);
@@ -69,13 +69,20 @@ public static class InstancesPath
             Dir = dir,
             Name = name,
             Version = version,
-            JvmArgs = ""
+            JvmArgs = "",
+            Loader = loader,
+            LoaderInfo = info
         };
 
         var file = dir + "/" + Name1;
         File.WriteAllText(file, JsonConvert.SerializeObject(game));
         Games.Add(name, game);
 
-        return true;
+        return game;
+    }
+
+    public static string GetDir(GameSetting obj) 
+    {
+        return obj.Dir + "/" + Name2;
     }
 }

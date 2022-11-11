@@ -1,14 +1,16 @@
 ﻿using ColorMC.Core.Config;
 using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Path;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Core;
 
-public enum DownloadState
+public enum CoreRunState
 { 
-    Init, GetInfo, Start, End
+    Init, GetInfo, Start, End, 
+    Error,
 }
 
 public static class CoreMain
@@ -17,19 +19,22 @@ public static class CoreMain
 
     public static Action<string, Exception, bool> OnError;
     public static Action NewStart;
+
     public static Action DownloadUpdate;
-    public static Action<DownloadState> DownloadState;
+    public static Action<CoreRunState> DownloadState;
     public static Action<DownloadItem> DownloadStateUpdate;
+
+    public static Func<GameSetting, bool> GameOverwirte;
+
+    public static Action<CoreRunState> PackState;
+    public static Action<int, int> PackUpdate;
 
     public static async void Init(string dir) 
     {
         SystemInfo.Init();
         Logs.Init(dir);
         ConfigUtils.Init(dir);
-        VersionPath.Init(dir);
-        AssetsPath.Init(dir);
-        InstancesPath.Init(dir);
-        LibrariesPath.Init(dir);
+        MCPath.Init(dir);
         DownloadManager.Init();
     }
 }
