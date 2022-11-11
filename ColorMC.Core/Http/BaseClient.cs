@@ -17,7 +17,7 @@ public static class BaseClient
 
     public static HttpClient Client = new()
     {
-        Timeout = TimeSpan.FromSeconds(5)
+        Timeout = TimeSpan.FromSeconds(10)
     };
 
     public static async Task<string> GetString(string url, Dictionary<string, string> arg = null)

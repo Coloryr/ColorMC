@@ -11,8 +11,8 @@ public record GameArgObj
 {
     public record Arguments
     {
-        public List<JObject> game { get; set; }
-        public List<JObject> jvm { get; set; }
+        public List<dynamic> game { get; set; }
+        public List<dynamic> jvm { get; set; }
     }
 
     public record AssetIndex

@@ -10,9 +10,9 @@ public static class LibrariesPath
 {
     private const string Name = "libraries";
 
-    public static string BaseDir { get; set; }
+    public static string BaseDir { get; private set; }
 
-    public static void InitPath(string dir)
+    public static void Init(string dir)
     {
         BaseDir = dir + "/" + Name;
 
