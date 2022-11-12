@@ -29,6 +29,8 @@ public static class CoreMain
 
     public static Func<LoaderInfo, bool> LostModLoader;
 
+    public static Action<> AuthState;
+
     public static void Init(string dir)
     {
         SystemInfo.Init();
