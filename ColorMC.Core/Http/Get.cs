@@ -89,7 +89,7 @@ public static class Get
         }
     }
 
-    public static async Task<VersionObj?> GetVersion(SourceLocal? local = null)
+    public static async Task<VersionObj?> GetVersions(SourceLocal? local = null)
     {
         try
         {

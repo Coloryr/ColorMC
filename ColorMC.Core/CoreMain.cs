@@ -27,6 +27,8 @@ public static class CoreMain
     public static Action<CoreRunState> PackState;
     public static Action<int, int> PackUpdate;
 
+    public static Func<LoaderInfo, bool> LostModLoader;
+
     public static void Init(string dir)
     {
         SystemInfo.Init();

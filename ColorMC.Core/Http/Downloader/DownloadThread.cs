@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core.Utils;
 using System.Buffers;
+using static ICSharpCode.SharpZipLib.Zip.FastZip;
 
 namespace ColorMC.Core.Http.Downloader;
 
@@ -72,7 +73,7 @@ public class DownloadThread
             item.Update?.Invoke();
             if (File.Exists(item.Local))
             {
-                if (!string.IsNullOrWhiteSpace(item.SHA1))
+                if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Overwrite)
                 {
                     using FileStream stream2 = new(item.Local, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
                     stream2.Seek(0, SeekOrigin.Begin);

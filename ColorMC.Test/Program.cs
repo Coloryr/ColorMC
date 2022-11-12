@@ -21,6 +21,9 @@ internal class Program
         CoreMain.PackState = Update;
         CoreMain.PackUpdate = PackUpdate;
 
+        //VersionPath.CheckUpdate("1.12.2").Wait();
+        //AssetsPath.CheckUpdate("1.12.2").Wait();
+
         //var version = VersionPath.Versions;
         //GameDownload.Download(version.versions.First()).Wait();
         //DownloadManager.Start();
@@ -36,10 +39,24 @@ internal class Program
         //stream2.Seek(0, SeekOrigin.Begin);
         //string sha1 = Sha1.GenSha1(stream2);
 
-        var list = Get.GetCurseForge().Result;
-        var data = list.data.First();
-        PackDownload.DownloadCurseForge(data).Wait();
-        DownloadManager.Start();
+        //var list = Get.GetCurseForge("1.16.5").Result;
+        //var data = list.data[6];
+        //PackDownload.DownloadCurseForge(data).Wait();
+        //DownloadManager.Start();
+
+        var data = InstancesPath.GetGames().First();
+        var list = InstancesPath.CheckGameFile(data).Result;
+        if (list == null)
+        {
+            Console.WriteLine("文件检查失败");
+        }
+        else
+        {
+            foreach (var item in list)
+            {
+                Console.WriteLine($"文件丢失:{item.Name}");
+            }
+        }
 
         Console.ReadLine();
     }
