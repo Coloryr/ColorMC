@@ -1,5 +1,8 @@
 using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using ColorMC.Core.Http;
 
 namespace ColorMC.Core.Path;
 
@@ -38,8 +41,10 @@ public static class AssetsPath
         }
     }
 
-    public static void AddIndex(AssetsObj obj, string version)
+    public static void AddIndex(AssetsObj? obj, string version)
     {
+        if (obj == null)
+            return;
         string file = $"{BaseDir}/{Name1}/{version}.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
         if (Assets.ContainsKey(version))
@@ -60,5 +65,47 @@ public static class AssetsPath
         }
 
         return null;
+    }
+
+    public static List<string> Check(AssetsObj obj) 
+    {
+        var list = new List<string>();
+        foreach (var item in obj.objects)
+        {
+            string file = $"{ObjectsDir}/{item.Value.hash[..2]}/{item.Value.hash}";
+            if (!File.Exists(file))
+            {
+                list.Add(item.Value.hash);
+                continue;
+            }
+            using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+            var sha1 = Sha1.GenSha1(stream);
+            if (item.Value.hash != sha1)
+            {
+                list.Add(item.Value.hash);
+            }
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// ¸üÐÂjson
+    /// </summary>
+    /// <param name="version"></param>
+    /// <returns></returns>
+    public static async Task CheckUpdate(string version) 
+    {
+        var item = VersionPath.GetGame(version);
+        if (item == null)
+        {
+            return;
+        }
+
+        var obj = await Get.GetAssets(item.assetIndex.url);
+        if (obj == null)
+            return;
+        AddIndex(obj, version);
+        Check(obj);
     }
 }

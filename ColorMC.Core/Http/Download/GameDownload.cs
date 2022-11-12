@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Path;
+using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Text;
@@ -30,69 +31,10 @@ public static class GameDownload
         };
         DownloadManager.AddItem(item);
         CoreMain.DownloadStateUpdate?.Invoke(item);
-        var nowOS = SystemInfo.Os;
         foreach (var item1 in obj1.libraries)
         {
-            bool download = true;
-            if (item1.rules != null)
-            {
-                foreach (var item2 in item1.rules)
-                {
-                    var action = item2.action;
-                    if (action == "allow")
-                    {
-                        if (item2.os == null)
-                        {
-                            download = true;
-                            continue;
-                        }
-                        var os = item2.os.name;
+            bool download = CheckRule.CheckAllow(item1.rules);
 
-                        if (os == "osx" && nowOS == OsType.MacOS)
-                        {
-                            download = true;
-                        }
-                        else if (os == "windows" && nowOS == OsType.Windows)
-                        {
-                            download = true;
-                        }
-                        else if (os == "linux" && nowOS == OsType.Linux)
-                        {
-                            download = true;
-                        }
-                        else
-                        {
-                            download = false;
-                        }
-                    }
-                    else if (action == "disallow")
-                    {
-                        if (item2.os == null)
-                        {
-                            download = false;
-                            continue;
-                        }
-                        var os = item2.os.name;
-
-                        if (os == "osx" && nowOS == OsType.MacOS)
-                        {
-                            download = false;
-                        }
-                        else if (os == "windows" && nowOS == OsType.Windows)
-                        {
-                            download = false;
-                        }
-                        else if (os == "linux" && nowOS == OsType.Linux)
-                        {
-                            download = false;
-                        }
-                        else
-                        {
-                            download = true;
-                        }
-                    }
-                }
-            }
             if (!download || item1.downloads.artifact == null)
                 continue;
 
@@ -130,7 +72,7 @@ public static class GameDownload
         {
             Url = url,
             Name = name + "-install",
-            Local = VersionPath.ForgeDir + "/" + $"{name}-install.jar",
+            Local =  $"{VersionPath.ForgeDir}/{name}-install.jar",
         };
 
         await DownloadThread.Download(item, CancellationToken.None);
@@ -184,7 +126,8 @@ public static class GameDownload
                 {
                     Url = UrlHelp.DownloadForgeJar(mc, version, BaseClient.Source),
                     Name = item1.name,
-                    Local = $"{LibrariesPath.BaseDir}/net/minecraftforge/forge/{mc}-{version}/forge-{mc}-{version}-universal.jar",
+                    Local = $"{LibrariesPath.BaseDir}/net/minecraftforge/forge/" + 
+                            PathC.MakeForgeName(mc, version),
                     SHA1 = item1.downloads.artifact.sha1
                 };
             }
@@ -206,20 +149,7 @@ public static class GameDownload
         CoreMain.DownloadState?.Invoke(CoreRunState.End);
     }
 
-    public static (string, string) ToName(string input)
-    {
-        var arg = input.Split(':');
-        var arg1 = arg[0].Split('.');
-        string path = "";
-        for (int a = 0; a < arg1.Length; a++)
-        {
-            path += arg1[a] + '/';
-        }
-        path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}.jar";
-        string name = $"{arg[1]}-{arg[2]}.jar";
-
-        return (path, name);
-    }
+    
 
     public static async Task DownloadFabric(string mc, string? version = null)
     {
@@ -251,7 +181,7 @@ public static class GameDownload
 
         CoreMain.DownloadState?.Invoke(CoreRunState.GetInfo);
 
-        var meta1 = await Get.GetFabricLoader(mc, version, BaseClient.Source);
+        FabricLoaderObj? meta1 = await Get.GetFabricLoader(mc, version, BaseClient.Source);
         if (meta1 == null)
         {
             CoreMain.DownloadState?.Invoke(CoreRunState.Error);
@@ -263,7 +193,7 @@ public static class GameDownload
 
         foreach (var item in meta1.libraries)
         {
-            var name = ToName(item.name);
+            var name = PathC.ToName(item.name);
             DownloadItem item1 = new()
             {
                 Url = UrlHelp.DownloadFabric(BaseClient.Source) + name.Item1,

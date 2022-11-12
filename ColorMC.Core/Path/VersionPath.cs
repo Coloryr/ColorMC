@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core.Http;
 using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Path;
@@ -7,7 +8,7 @@ namespace ColorMC.Core.Path;
 public static class VersionPath
 {
     private readonly static Dictionary<string, GameArgObj> Version = new();
-    public static VersionObj Versions { get; private set; }
+    public static VersionObj? Versions { get; private set; }
 
     public static string ForgeDir => BaseDir + "/" + Name1;
     public static string FabricDir => BaseDir + "/" + Name2;
@@ -49,33 +50,35 @@ public static class VersionPath
                     Version.Add(obj.id, obj);
                 }
             }
-
-            var res = ReadVersions();
-            if (res == null)
-            {
-                res = GetFromWeb().Result;
-                if (res == null)
-                {
-                    Logs.Error("版本信息为空");
-                    return;
-                }
-                SaveVersions(res);
-            }
-
-            Versions = res;
         }
         catch (Exception e)
         {
             Logs.Error("读取版本信息错误", e);
         }
+        try
+        {
+            Versions = GetFromWeb().Result;
+            if (Version == null)
+            {
+                Versions = ReadVersions();
+            }
+            else
+            {
+                SaveVersions(Versions);
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error("获取版本信息错误", e);
+        }
     }
 
     public static async Task<VersionObj?> GetFromWeb()
     {
-        var res = await Get.GetVersion();
+        var res = await Get.GetVersions();
         if (res == null)
         {
-            res = await Get.GetVersion(SourceLocal.Offical);
+            res = await Get.GetVersions(SourceLocal.Offical);
             if (res == null)
             {
                 Logs.Warn("获取版本信息错误");
@@ -88,7 +91,7 @@ public static class VersionPath
 
     public static bool Have(string version)
     {
-        return Versions.versions.Where(a => a.id == version).Any();
+        return Versions?.versions.Where(a => a.id == version).Any() == true;
     }
 
     public static VersionObj? ReadVersions()
@@ -102,14 +105,18 @@ public static class VersionPath
         return null;
     }
 
-    public static void SaveVersions(VersionObj obj)
+    public static void SaveVersions(VersionObj? obj)
     {
+        if (obj == null)
+            return;
         string file = BaseDir + "/version.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
     }
 
-    public static void AddGame(GameArgObj obj)
+    public static void AddGame(GameArgObj? obj)
     {
+        if (obj == null)
+            return;
         string file = BaseDir + "/" + obj.id + ".json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
         if (Version.ContainsKey(obj.id))
@@ -130,5 +137,54 @@ public static class VersionPath
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// 更新json
+    /// </summary>
+    /// <param name="version"></param>
+    /// <returns></returns>
+    public static async Task CheckUpdate(string version)
+    {
+        if (Versions == null)
+            return;
+
+        var data = Versions.versions.Where(a => a.id == version).FirstOrDefault();
+        if (data != null)
+        {
+            AddGame(await Get.GetGame(data.url));
+        }
+    }
+
+    public static ForgeInstallObj? GetForgeObj(string mc, string version)
+    {
+        string file =  $"{BaseDir}/{Name1}/forge-{mc}-{version}.json";
+        var data = File.ReadAllText(file);
+
+        try
+        {
+            return JsonConvert.DeserializeObject<ForgeInstallObj>(data);
+        }
+        catch (Exception e)
+        {
+            Logs.Error("读取forge信息错误", e);
+            return null;
+        }
+    }
+
+    public static FabricLoaderObj? GetFabricObj(string mc, string version)
+    {
+        string file = $"{BaseDir}/{Name2}/fabric-loader-{version}-{mc}.json";
+        var data = File.ReadAllText(file);
+
+        try
+        {
+            return JsonConvert.DeserializeObject<FabricLoaderObj>(data);
+        }
+        catch (Exception e)
+        {
+            Logs.Error("读取fabric信息错误", e);
+            return null;
+        }
     }
 }

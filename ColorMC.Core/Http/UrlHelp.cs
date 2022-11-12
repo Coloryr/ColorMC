@@ -1,4 +1,6 @@
-﻿namespace ColorMC.Core.Http;
+﻿using ColorMC.Core.Utils;
+
+namespace ColorMC.Core.Http;
 
 public static class UrlHelp
 {
@@ -100,12 +102,12 @@ public static class UrlHelp
     {
         string? url = local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/{mc}-{version}/" +
-            $"forge-{mc}-{version}-universal.jar",
-            SourceLocal.MCBBS => $"{MCBBS}maven/net/minecraftforge/forge/{mc}-{version}/" +
-            $"forge-{mc}-{version}-universal.jar",
-            _ => $"https://maven.minecraftforge.net/net/minecraftforge/forge/{mc}-{version}/" +
-            $"forge-{mc}-{version}-universal.jar"
+            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/" + 
+                    PathC.MakeForgeName(mc, version),
+            SourceLocal.MCBBS => $"{MCBBS}maven/net/minecraftforge/forge/" +
+                    PathC.MakeForgeName(mc, version),
+            _ => $"https://maven.minecraftforge.net/net/minecraftforge/forge/" +
+                    PathC.MakeForgeName(mc, version)
         };
 
         return url;
