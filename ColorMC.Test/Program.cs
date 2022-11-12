@@ -3,8 +3,10 @@ using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Http.Login;
+using ColorMC.Core.Http.MoJang;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Path;
+using Newtonsoft.Json;
 
 namespace ColorMC.Test;
 
@@ -59,7 +61,10 @@ internal class Program
         //    }
         //}
 
-        new OAuth().StartLogin().Wait();
+        var data = new OAuth().StartLogin().Result;
+        var data1 = APIs.GetMinecraftProfileAsync(data).Result;
+        Console.WriteLine(data);
+        Console.WriteLine(JsonConvert.SerializeObject(data1));
 
         Console.ReadLine();
     }
