@@ -2,6 +2,7 @@
 using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Http.Login;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Path;
 
@@ -44,19 +45,21 @@ internal class Program
         //PackDownload.DownloadCurseForge(data).Wait();
         //DownloadManager.Start();
 
-        var data = InstancesPath.GetGames().First();
-        var list = InstancesPath.CheckGameFile(data).Result;
-        if (list == null)
-        {
-            Console.WriteLine("文件检查失败");
-        }
-        else
-        {
-            foreach (var item in list)
-            {
-                Console.WriteLine($"文件丢失:{item.Name}");
-            }
-        }
+        //var data = InstancesPath.GetGames().First();
+        //var list = InstancesPath.CheckGameFile(data).Result;
+        //if (list == null)
+        //{
+        //    Console.WriteLine("文件检查失败");
+        //}
+        //else
+        //{
+        //    foreach (var item in list)
+        //    {
+        //        Console.WriteLine($"文件丢失:{item.Name}");
+        //    }
+        //}
+
+        new OAuth().StartLogin().Wait();
 
         Console.ReadLine();
     }

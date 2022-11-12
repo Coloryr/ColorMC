@@ -1,4 +1,9 @@
-﻿namespace ColorMC.Core.Http;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+
+namespace ColorMC.Core.Http;
 
 public enum SourceLocal
 {
@@ -48,5 +53,22 @@ public static class BaseClient
             temp = temp[..^1];
             return await Client.GetByteArrayAsync(temp);
         }
+    }
+
+    public static async Task<string> PostString(string url, Dictionary<string, string> arg)
+    {
+        FormUrlEncodedContent content = new(arg);
+        var message = await Client.PostAsync(url, content);
+
+        return await message.Content.ReadAsStringAsync();
+    }
+
+    public static async Task<JObject> PostObj(string url, object arg)
+    {
+        var data1 = JsonConvert.SerializeObject(arg);
+        StringContent content = new(data1, MediaTypeHeaderValue.Parse("application/json"));
+        var message = await Client.PostAsync(url, content);
+        var data = await message.Content.ReadAsStringAsync();
+        return JObject.Parse(data);
     }
 }
