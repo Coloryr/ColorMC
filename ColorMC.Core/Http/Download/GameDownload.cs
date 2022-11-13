@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Path;
 using ColorMC.Core.Utils;
@@ -61,6 +62,11 @@ public static class GameDownload
             DownloadManager.AddItem(item);
             CoreMain.DownloadStateUpdate?.Invoke(item);
         }
+    }
+
+    public static Task DownloadForge(GameSettingObj obj)
+    {
+        return DownloadForge(obj.Version, obj.LoaderInfo.Version);
     }
 
     public static async Task DownloadForge(string mc, string version)
@@ -149,7 +155,10 @@ public static class GameDownload
         CoreMain.DownloadState?.Invoke(CoreRunState.End);
     }
 
-    
+    public static Task DownloadFabric(GameSettingObj obj)
+    {
+        return DownloadFabric(obj.Version, obj.LoaderInfo.Version);
+    }
 
     public static async Task DownloadFabric(string mc, string? version = null)
     {

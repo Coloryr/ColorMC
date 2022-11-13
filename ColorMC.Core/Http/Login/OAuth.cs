@@ -1,4 +1,4 @@
-﻿using Microsoft.Identity.Client;
+﻿using ColorMC.Core.Login;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -38,21 +38,20 @@ public static class OAuth
     private const string XSTS = "https://xsts.auth.xboxlive.com/xsts/authorize";
     private const string XBoxProfile = "https://api.minecraftservices.com/authentication/login_with_xbox";
 
-
-    private static Dictionary<string, string> Arg1 = new()
+    private readonly static Dictionary<string, string> Arg1 = new()
     {
         { "client_id", "aa0dd576-d717-4950-b257-a478d2c20968"},
         { "scope", "XboxLive.signin offline_access"}
     };
 
-    private static Dictionary<string, string> Arg2 = new()
+    private readonly static Dictionary<string, string> Arg2 = new()
     {
         { "client_id", "aa0dd576-d717-4950-b257-a478d2c20968"},
         { "grant_type", "urn:ietf:params:oauth:grant-type:device_code"},
         { "code", "" }
     };
 
-    private static Dictionary<string, string> Arg3 = new()
+    private readonly static Dictionary<string, string> Arg3 = new()
     {
         { "client_id", "aa0dd576-d717-4950-b257-a478d2c20968"},
         { "grant_type", "refresh_token"},
@@ -63,17 +62,19 @@ public static class OAuth
     public static string code { get; private set; }
     public static string url { get; private set; }
 
-    public static async Task<OAuth1Obj?> AddAuth()
+    public static async Task<(LoginState Done, OAuth1Obj? Auth)> AddAuth()
     {
         var data = await BaseClient.PostString(OAuthCode, Arg1);
         var obj1 = JObject.Parse(data);
         if (obj1.ContainsKey("error"))
         {
-            return null;
+            return (LoginState.Error, null);
         }
         var obj2 = obj1.ToObject<OAuthObj>();
         if (obj2 == null)
-            return null;
+        {
+            return (LoginState.JsonError, null);
+        }
         code = obj2.user_code;
         url = obj2.verification_uri;
         Console.WriteLine(code);
@@ -81,7 +82,6 @@ public static class OAuth
         Arg2["code"] = obj2.device_code;
         long startTime = DateTime.Now.Ticks;
         int delay = 5;
-        OAuth1Obj obj4;
         do
         {
             Thread.Sleep(delay * 1000);
@@ -89,13 +89,13 @@ public static class OAuth
             long sec = estimatedTime / 10000000;
             if (sec > obj2.expires_in)
             {
-                return null;
+                return (LoginState.TimeOut, null);
             }
             data = await BaseClient.PostString(OAuthToken, Arg2);
             var obj3 = JObject.Parse(data);
             if (obj3.ContainsKey("error"))
             {
-                string error = obj3["error"].ToString();
+                string? error = obj3["error"]?.ToString();
                 if (error == "authorization_pending")
                 {
                     continue;
@@ -106,18 +106,23 @@ public static class OAuth
                 }
                 else if (error == "expired_token")
                 {
-                    return null;
+                    return (LoginState.Error, null);
                 }
             }
             else
             {
-                obj4 = obj3.ToObject<OAuth1Obj>();
-                return obj4;
+                var obj4 = obj3.ToObject<OAuth1Obj>();
+                if (obj4 == null)
+                {
+                    return (LoginState.JsonError, null);
+                }
+
+                return (LoginState.Done, obj4);
             }
         } while (true);
     }
 
-    public static async Task<OAuth1Obj?> RefreshTokenAsync(string token)
+    public static async Task<(LoginState Done, OAuth1Obj? Auth)> RefreshTokenAsync(string token)
     {
         var dir = new Dictionary<string, string>(Arg3);
         dir["refresh_token"] = token;
@@ -125,47 +130,39 @@ public static class OAuth
         var obj1 = await BaseClient.PostObj(OAuthToken, dir);
         if (obj1.ContainsKey("error"))
         {
-            return null;
+            return (LoginState.Error, null);
         }
-        return obj1.ToObject<OAuth1Obj>();
+        return (LoginState.Done, obj1.ToObject<OAuth1Obj>());
     }
 
     /// <summary>
     /// Get Xbox live token & userhash
     /// </summary>
     /// <returns></returns>
-    public static async Task<(bool Done, string? XNLToken, string? XBLUhs)> GetXBLAsync(string token)
+    public static async Task<(LoginState Done, string? XNLToken, string? XBLUhs)> GetXBLAsync(string token)
     {
-        try
+        var json = await BaseClient.PostObj(XboxLive, new
         {
-            var json = await BaseClient.PostObj(XboxLive, new
+            Properties = new
             {
-                Properties = new
-                {
-                    AuthMethod = "RPS",
-                    SiteName = "user.auth.xboxlive.com",
-                    RpsTicket = $"d={token}"
-                },
-                RelyingParty = "http://auth.xboxlive.com",
-                TokenType = "JWT"
-            });
-            var xblToken = json.GetValue("Token")?.ToString();
-            var list = json["DisplayClaims"]?["xui"] as JArray;
-            var xblUhs = (list?.First() as JObject)?.GetValue("uhs")?.ToString();
+                AuthMethod = "RPS",
+                SiteName = "user.auth.xboxlive.com",
+                RpsTicket = $"d={token}"
+            },
+            RelyingParty = "http://auth.xboxlive.com",
+            TokenType = "JWT"
+        });
+        var xblToken = json.GetValue("Token")?.ToString();
+        var list = json["DisplayClaims"]?["xui"] as JArray;
+        var xblUhs = (list?.First() as JObject)?.GetValue("uhs")?.ToString();
 
-            if (string.IsNullOrWhiteSpace(xblToken) ||
-                string.IsNullOrWhiteSpace(xblUhs))
-            {
-                return (false, null, null);
-            }
-
-            return (true, xblToken, xblUhs);
-        }
-        catch (Exception e)
+        if (string.IsNullOrWhiteSpace(xblToken) ||
+            string.IsNullOrWhiteSpace(xblUhs))
         {
-            Logs.Error("OAuth登录错误", e);
-            return (false, null, null);
+            return (LoginState.JsonError, null, null);
         }
+
+        return (LoginState.Done, xblToken, xblUhs);
     }
 
     /// <summary>
@@ -173,65 +170,49 @@ public static class OAuth
     /// </summary>
     /// <returns></returns>
     /// <exception cref="FailedAuthenticationException"></exception>
-    public static async Task<(bool Done, string? XSTSToken, string? XSTSUhs)> GetXSTSAsync(string token)
+    public static async Task<(LoginState Done, string? XSTSToken, string? XSTSUhs)> GetXSTSAsync(string token)
     {
-        try
+        var json = await BaseClient.PostObj(XSTS, new
         {
-            var json = await BaseClient.PostObj(XSTS, new
+            Properties = new
             {
-                Properties = new
-                {
-                    SandboxId = "RETAIL",
-                    UserTokens = new[]
+                SandboxId = "RETAIL",
+                UserTokens = new[]
                     {
                         token
                     }
-                },
-                RelyingParty = "rp://api.minecraftservices.com/",
-                TokenType = "JWT"
-            });
-            var xstsToken = json.GetValue("Token")?.ToString();
-            var list = json["DisplayClaims"]?["xui"] as JArray; 
-            var xstsUhs = (list?.First() as JObject)?.GetValue("uhs")?.ToString();
+            },
+            RelyingParty = "rp://api.minecraftservices.com/",
+            TokenType = "JWT"
+        });
+        var xstsToken = json.GetValue("Token")?.ToString();
+        var list = json["DisplayClaims"]?["xui"] as JArray;
+        var xstsUhs = (list?.First() as JObject)?.GetValue("uhs")?.ToString();
 
-            if (string.IsNullOrWhiteSpace(xstsToken) ||
-                string.IsNullOrWhiteSpace(xstsUhs))
-            {
-                return (false, null, null);
-            }
-
-            return (true, xstsToken, xstsUhs);
-        }
-        catch (Exception e)
+        if (string.IsNullOrWhiteSpace(xstsToken) ||
+            string.IsNullOrWhiteSpace(xstsUhs))
         {
-            Logs.Error("OAuth登录错误", e);
-            return (false, null, null);
+            return (LoginState.JsonError, null, null);
         }
+
+        return (LoginState.Done, xstsToken, xstsUhs);
     }
 
-    public static async Task<(bool Done, string? AccessToken)> GetMinecraftAsync(string token, string token1)
+    public static async Task<(LoginState Done, string? AccessToken)> GetMinecraftAsync(string token, string token1)
     {
-        try
+        var json = await BaseClient.PostObj(XBoxProfile, new
         {
-            var json = await BaseClient.PostObj(XBoxProfile, new
-            {
-                identityToken = $"XBL3.0 x={token};{token1}"
-            });
-            var accessToken = json.GetValue("access_token")?.ToString();
-            var expireTime = json.GetValue("expires_in")?.ToString();
+            identityToken = $"XBL3.0 x={token};{token1}"
+        });
+        var accessToken = json.GetValue("access_token")?.ToString();
+        var expireTime = json.GetValue("expires_in")?.ToString();
 
-            if (string.IsNullOrWhiteSpace(accessToken) ||
-                string.IsNullOrWhiteSpace(expireTime))
-            {
-                return (false, null);
-            }
-
-            return (true, accessToken);
-        }
-        catch (Exception e)
+        if (string.IsNullOrWhiteSpace(accessToken) ||
+            string.IsNullOrWhiteSpace(expireTime))
         {
-            Logs.Error("OAuth登录错误", e);
-            return (false, null);
+            return (LoginState.JsonError, null);
         }
+
+        return (LoginState.Done, accessToken);
     }
 }

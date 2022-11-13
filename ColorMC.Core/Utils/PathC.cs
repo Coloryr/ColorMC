@@ -27,6 +27,6 @@ public static class PathC
     public static string MakeForgeName(string mc, string version)
     {
         return $"{mc}-{version}/forge-{mc}-{version}-" +
-            $"{(CheckRule.ForgeVersionCheck(mc) ? "launcher" : "universal")}.jar";
+            $"{(CheckRule.GameLaunchVersion(mc) ? "launcher" : "universal")}.jar";
     }
 }

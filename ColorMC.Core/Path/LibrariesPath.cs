@@ -47,7 +47,7 @@ public static class LibrariesPath
         return list;
     }
 
-    public static List<ForgeInstallObj.Libraries>? CheckForge(GameSetting obj)
+    public static List<ForgeInstallObj.Libraries>? CheckForge(GameSettingObj obj)
     {
         var forge = VersionPath.GetForgeObj(obj.Version, obj.LoaderInfo.Version);
         if (forge == null)
@@ -95,7 +95,7 @@ public static class LibrariesPath
         return list;
     }
 
-    public static List<FabricLoaderObj.Libraries>? CheckFabric(GameSetting obj)
+    public static List<FabricLoaderObj.Libraries>? CheckFabric(GameSettingObj obj)
     {
         var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderInfo.Version);
         if (fabric == null)

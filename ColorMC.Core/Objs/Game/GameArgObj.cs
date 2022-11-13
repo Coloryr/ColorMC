@@ -4,6 +4,11 @@ public record GameArgObj
 {
     public record Arguments
     {
+        public record Jvm
+        {
+            public List<Libraries.Rules> rules { get; set; }
+            public dynamic value { get; set; }
+        }
         public List<dynamic> game { get; set; }
         public List<dynamic> jvm { get; set; }
     }
@@ -78,7 +83,6 @@ public record GameArgObj
         public Client client { get; set; }
     }
 
-    public Arguments arguments { get; set; }
     public AssetIndex assetIndex { get; set; }
     public string assets { get; set; }
     public int complianceLevel { get; set; }
@@ -88,8 +92,10 @@ public record GameArgObj
     public List<Libraries> libraries { get; set; }
     public Logging logging { get; set; }
     public string mainClass { get; set; }
+    public string minecraftArguments { get; set; }
     public int minimumLauncherVersion { get; set; }
     public string releaseTime { get; set; }
     public string time { get; set; }
     public string type { get; set; }
+    public Arguments arguments { get; set; }
 }

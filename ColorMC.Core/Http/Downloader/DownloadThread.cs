@@ -84,6 +84,7 @@ public class DownloadThread
 
                         item.State = DownloadItemState.Done;
                         item.Update?.Invoke();
+                        DownloadManager.Done();
                         return;
                     }
                 }
@@ -100,7 +101,7 @@ public class DownloadThread
             item.AllSize = (long)data.Content.Headers.ContentLength!;
             item.State = DownloadItemState.Download;
             item.Update?.Invoke();
-            using Stream stream1 = data.Content.ReadAsStream();
+            using Stream stream1 = data.Content.ReadAsStream(cancel);
             byte[] buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
             try
             {
@@ -134,6 +135,7 @@ public class DownloadThread
 
             item.State = DownloadItemState.Done;
             item.Update?.Invoke();
+            DownloadManager.Done();
         }
         catch (Exception e)
         {

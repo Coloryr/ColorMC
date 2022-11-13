@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Http;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
@@ -154,6 +155,11 @@ public static class VersionPath
         {
             AddGame(await Get.GetGame(data.url));
         }
+    }
+
+    public static ForgeInstallObj? GetForgeObj(GameSettingObj obj)
+    {
+        return GetForgeObj(obj.Version, obj.LoaderInfo.Version);
     }
 
     public static ForgeInstallObj? GetForgeObj(string mc, string version)

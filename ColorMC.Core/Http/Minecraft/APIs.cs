@@ -17,7 +17,7 @@ public static class APIs
     /// <param name="accessToken">Minecraft access token</param>
     /// <returns></returns>
     /// <exception cref="FailedAuthenticationException">If authenticated user don't have minecraft, the exception will be thrown</exception>
-    public static async Task<MinecraftProfile> GetMinecraftProfileAsync(string accessToken)
+    public static async Task<MinecraftProfileObj> GetMinecraftProfileAsync(string accessToken)
     {
         var endpoint = "https://api.minecraftservices.com/minecraft/profile";
         HttpRequestMessage message = new(HttpMethod.Get, endpoint);
@@ -26,7 +26,7 @@ public static class APIs
 
         var data1 = await data.Content.ReadAsStringAsync();
 
-        var re = JsonConvert.DeserializeObject<MinecraftProfile>(data1);
+        var re = JsonConvert.DeserializeObject<MinecraftProfileObj>(data1);
         if (re == null)
         {
             throw new Exception("Failed to retrieve Minecraft profile");
@@ -35,7 +35,7 @@ public static class APIs
         return re;
     }
 
-    public static async Task<PlayerAttributes> GetPlayerAttributes(string accessToken)
+    public static async Task<PlayerAttributesObj> GetPlayerAttributes(string accessToken)
     {
         var endpoint = "https://api.minecraftservices.com/minecraft/profile";
         HttpRequestMessage message = new(HttpMethod.Get, endpoint);
@@ -44,7 +44,7 @@ public static class APIs
 
         var data1 = await data.Content.ReadAsStringAsync();
 
-        var re = JsonConvert.DeserializeObject<PlayerAttributes>(data1);
+        var re = JsonConvert.DeserializeObject<PlayerAttributesObj>(data1);
         if (re == null)
         {
             throw new Exception("Failed to retrieve Player Attributes");

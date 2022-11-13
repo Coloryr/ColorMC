@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Core.Objs.Minecraft;
 
-public record PlayerAttributes
+public record PlayerAttributesObj
 {
     public record Privileges
     {

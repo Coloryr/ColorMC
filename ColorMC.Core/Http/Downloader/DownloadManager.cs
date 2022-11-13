@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Config;
+﻿using ColorMC.Core.Utils;
 using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Http.Downloader;
@@ -7,6 +7,7 @@ public static class DownloadManager
 {
     public readonly static ConcurrentQueue<DownloadItem> Items = new();
     private static List<DownloadThread> threads = new();
+    private static Semaphore semaphore = new(0, 2);
 
     public static int AllSize { get; set; }
     public static int DoneSize { get; set; }
@@ -15,7 +16,6 @@ public static class DownloadManager
     {
         threads.ForEach(a => a.Close());
         threads.Clear();
-        //ConfigUtils.Config.Http.DownloadThread = 1;
         for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
         {
             DownloadThread thread = new();
@@ -32,14 +32,19 @@ public static class DownloadManager
         DoneSize = 0;
     }
 
-    public static void Start()
+    public static Task Start()
     {
         CoreMain.DownloadUpdate?.Invoke();
         CoreMain.DownloadState?.Invoke(CoreRunState.Start);
+        AllSize = Items.Count;
         foreach (var item in threads)
         {
             item.Start();
         }
+        return Task.Run(() =>
+        {
+            semaphore.WaitOne();
+        });
     }
 
     public static void AddItem(DownloadItem item)
@@ -49,7 +54,6 @@ public static class DownloadManager
             CoreMain.DownloadStateUpdate?.Invoke(item);
         };
         Items.Enqueue(item);
-        AllSize++;
     }
 
     public static DownloadItem? GetItem()
@@ -62,14 +66,20 @@ public static class DownloadManager
         return null;
     }
 
-    public static void Done(DownloadItem item)
+    public static void Done()
     {
         DoneSize++;
         CoreMain.DownloadUpdate?.Invoke();
+
+        if (DoneSize == AllSize)
+        {
+            semaphore.Release();
+        }
     }
 
     public static void Error(DownloadItem item, Exception e)
     {
-
+        Logs.Error($"下载{item.Name}错误", e);
+        CoreMain.DownloadError?.Invoke(item, e);
     }
 }

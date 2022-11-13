@@ -23,7 +23,7 @@ public record Capes
     public string alias { get; set; }
 }
 
-public record MinecraftProfile
+public record MinecraftProfileObj
 {
     public string id { get; set; }
     public string name { get; set; }
