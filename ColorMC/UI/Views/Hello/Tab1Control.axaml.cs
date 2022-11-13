@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Core.Config;
+using ColorMC.Core.Utils;
 using System;
 
 namespace ColorMC.UI.Views.Hello;

@@ -122,29 +122,20 @@ public static class PackDownload
         CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
         Size = info.files.Count;
         Now = 0;
-        ParallelOptions options = new()
+        var res = await Get.GetCurseForgeMods(info.files);
+        if (res != null)
         {
-            MaxDegreeOfParallelism = 5
-        };
-        Parallel.ForEach(info.files, options, item =>
-        {
-            int a = 5;
-            do
+            foreach (var item in res)
             {
-                var res = Get.GetCurseForgeMod(item).Result;
-                if (res == null)
-                {
-                    a--;
-                    continue;
-                }
+                item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
 
                 var info2 = new DownloadItem()
                 {
-                    Url = res.data.downloadUrl,
-                    Name = res.data.displayName,
-                    Local = InstancesPath.GetDir(game) + "/mods/" + res.data.fileName,
-                    SHA1 = res.data.hashes.Where(a => a.algo == 1)
-                        .Select(a => a.value).FirstOrDefault()
+                    Url = item.downloadUrl,
+                    Name = item.fileName,
+                    Local = InstancesPath.GetDir(game) + "/mods/" + item.fileName,
+                    SHA1 = item.hashes.Where(a => a.algo == 1)
+                            .Select(a => a.value).FirstOrDefault()
                 };
 
                 DownloadManager.AddItem(info2);
@@ -152,11 +143,45 @@ public static class PackDownload
 
                 CoreMain.DownloadStateUpdate?.Invoke(info2);
                 CoreMain.PackUpdate?.Invoke(Size, Now);
+            }
+        }
+        else
+        {
+            ParallelOptions options = new()
+            {
+                MaxDegreeOfParallelism = 5
+            };
+            Parallel.ForEach(info.files, options, item =>
+            {
+                int a = 5;
+                do
+                {
+                    var res = Get.GetCurseForgeMod(item).Result;
+                    if (res == null)
+                    {
+                        a--;
+                        continue;
+                    }
 
-                break;
-            } while (a > 0);
-        });
+                    var info2 = new DownloadItem()
+                    {
+                        Url = res.data.downloadUrl,
+                        Name = res.data.displayName,
+                        Local = InstancesPath.GetDir(game) + "/mods/" + res.data.fileName,
+                        SHA1 = res.data.hashes.Where(a => a.algo == 1)
+                            .Select(a => a.value).FirstOrDefault()
+                    };
 
+                    DownloadManager.AddItem(info2);
+                    Now++;
+
+                    CoreMain.DownloadStateUpdate?.Invoke(info2);
+                    CoreMain.PackUpdate?.Invoke(Size, Now);
+
+                    break;
+                } while (a > 0);
+            });
+        }
         var version = VersionPath.Versions.versions
             .Where(a => a.id == info.minecraft.version).FirstOrDefault();
 

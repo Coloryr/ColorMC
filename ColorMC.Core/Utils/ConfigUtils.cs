@@ -1,8 +1,10 @@
 ﻿using ColorMC.Core.Http;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Path;
 using Newtonsoft.Json;
+using static ColorMC.Core.Objs.JvmArgObj;
 
-namespace ColorMC.Core.Config;
+namespace ColorMC.Core.Utils;
 
 public static class ConfigUtils
 {
@@ -56,6 +58,14 @@ public static class ConfigUtils
             {
                 Config.Http = MakeHttpConfig();
             }
+            if (Config.DefaultJvmArg == null)
+            {
+                Config.DefaultJvmArg = MakeJvmArgConfig();
+            }
+            if (Config.WindowSize == null)
+            {
+                Config.WindowSize = MakeWindowSettingConfig();
+            }
 
             JvmPath.AddList(Config.JavaList);
             BaseClient.Source = Config.Http.Source;
@@ -77,7 +87,9 @@ public static class ConfigUtils
             MCPath = "./.minectaft",
             JavaList = new(),
             GameList = new(),
-            Http = MakeHttpConfig()
+            Http = MakeHttpConfig(),
+            DefaultJvmArg = MakeJvmArgConfig(),
+            WindowSize = MakeWindowSettingConfig()
         };
     }
 
@@ -86,7 +98,45 @@ public static class ConfigUtils
         return new()
         {
             Source = SourceLocal.Offical,
-            DownloadThread = 5
+            DownloadThread = 5,
+            Proxy = false,
+            ProxyIP = "127.0.0.1",
+            ProxyPort = 1080
         };
+    }
+
+    public static JvmArgObj MakeJvmArgConfig()
+    {
+        return new()
+        {
+            AdvencedGameArguments = null,
+            AdvencedJvmArguments = null,
+            GC = GCType.G1GC,
+            GCArgument = null,
+            JavaAgent = null,
+            MaxMemory = 4096,
+            MinMemory = 512,
+        };
+    }
+
+    public static WindowSettingObj MakeWindowSettingConfig()
+    {
+        return new()
+        {
+            Height = 720,
+            Width = 1280,
+            FullScreen = false
+        };
+    }
+
+    public static void CopyTo(this JvmArgObj obj1, JvmArgObj obj2)
+    {
+        obj2.AdvencedGameArguments = obj1.AdvencedGameArguments;
+        obj2.AdvencedJvmArguments = obj1.AdvencedJvmArguments;
+        obj2.GCArgument = obj1.GCArgument;
+        obj2.GC = obj1.GC;
+        obj2.JavaAgent = obj1.JavaAgent;
+        obj2.MaxMemory = obj1.MaxMemory;
+        obj2.MinMemory = obj1.MinMemory;
     }
 }

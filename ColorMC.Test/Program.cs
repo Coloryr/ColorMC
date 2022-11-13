@@ -4,6 +4,7 @@ using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Http.Login;
 using ColorMC.Core.Http.MoJang;
+using ColorMC.Core.Login;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Path;
 using Newtonsoft.Json;
@@ -19,60 +20,25 @@ internal class Program
         CoreMain.Init(AppContext.BaseDirectory);
 
         CoreMain.DownloadUpdate = Update;
+        CoreMain.DownloadState = Update1;
         CoreMain.DownloadStateUpdate = Update;
         CoreMain.GameOverwirte = Overwirte;
         CoreMain.PackState = Update;
         CoreMain.PackUpdate = PackUpdate;
 
-        //VersionPath.CheckUpdate("1.12.2").Wait();
-        //AssetsPath.CheckUpdate("1.12.2").Wait();
-
-        //var version = VersionPath.Versions;
-        //GameDownload.Download(version.versions.First()).Wait();
-        //DownloadManager.Start();
-
-        //PackDownload.DownloadCurseForge("H:\\stoneBlock-1.0.37.zip").Wait();
-
-        //var res = Get.GetFabricMeta().Result;
-        //var item = res.loader.First();
-        //GameDownload.DownloadFabric("1.19.2", item.version ).Wait();
-        //DownloadManager.Start();
-
-        //using FileStream stream2 = new("E:\\code\\ColorMC\\ColorMC.Test\\bin\\Debug\\net7.0\\minecraft\\assets\\objects\\0c\\0cd209ea16b052a2f445a275380046615d20775e", FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-        //stream2.Seek(0, SeekOrigin.Begin);
-        //string sha1 = Sha1.GenSha1(stream2);
-
-        //var list = Get.GetCurseForge("1.16.5").Result;
-        //var data = list.data[6];
-        //PackDownload.DownloadCurseForge(data).Wait();
-        //DownloadManager.Start();
-
-        //var data = InstancesPath.GetGames().First();
-        //var list = InstancesPath.CheckGameFile(data).Result;
-        //if (list == null)
-        //{
-        //    Console.WriteLine("文件检查失败");
-        //}
-        //else
-        //{
-        //    foreach (var item in list)
-        //    {
-        //        Console.WriteLine($"文件丢失:{item.Name}");
-        //    }
-        //}
-
-        var data = new OAuth().StartLogin().Result;
-        var data1 = APIs.GetMinecraftProfileAsync(data).Result;
-        Console.WriteLine(data);
-        Console.WriteLine(JsonConvert.SerializeObject(data1));
+        TestItem.Item3();
 
         Console.ReadLine();
     }
 
+    public static void Update1(CoreRunState item)
+    { 
+        
+    }
 
     public static void Update() 
     {
-        Console.WriteLine($"下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
+        //Console.WriteLine($"下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
     }
 
     public static void Update(DownloadItem item)
@@ -90,7 +56,7 @@ internal class Program
         Console.WriteLine($"整合包信息获取:{a}/{b}");
     }
 
-    public static bool Overwirte(GameSetting setting)
+    public static bool Overwirte(GameSettingObj setting)
     {
         return true;
     }

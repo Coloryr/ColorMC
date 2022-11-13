@@ -78,7 +78,7 @@ public static class CheckRule
         return download;
     }
 
-    public static bool ForgeVersionCheck(string version)
+    public static bool GameLaunchVersion(string version)
     {
         Version version1 = new(version);
         return version1.Minor > 12;
