@@ -25,7 +25,7 @@ public static class PackDownload
             Local = InstancesPath.BaseDir + "/" + obj1.fileName,
         };
 
-        await DownloadThread.Download(item, CancellationToken.None);
+        await DownloadThread.Download(item);
 
         await DownloadCurseForge(item.Local);
     }
@@ -65,13 +65,13 @@ public static class PackDownload
         if (info == null)
             return;
         Loaders loaders = Loaders.Normal;
-        LoaderInfo info1 = null;
+        LoaderInfoObj info1 = null;
         foreach (var item in info.minecraft.modLoaders)
         {
             if (item.id.StartsWith("forge"))
             {
                 loaders = Loaders.Forge;
-                info1 = new LoaderInfo()
+                info1 = new LoaderInfoObj()
                 {
                     Name = "forge",
                     Version = item.id.Replace("forge-", "")
@@ -80,7 +80,7 @@ public static class PackDownload
             else if (item.id.StartsWith("fabric"))
             {
                 loaders = Loaders.Fabric;
-                info1 = new LoaderInfo()
+                info1 = new LoaderInfoObj()
                 {
                     Name = "fabric",
                     Version = item.id.Replace("fabric-", "")

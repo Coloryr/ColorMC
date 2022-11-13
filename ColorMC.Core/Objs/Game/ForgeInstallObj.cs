@@ -22,6 +22,11 @@ public record ForgeInstallObj
         public string name { get; set; }
         public Downloads downloads { get; set; }
     }
+    public record Arguments
+    { 
+        public List<string> game { get; set; }
+        public List<string> jvm { get; set; }
+    }
     public List<string> _comment_ { get; set; }
     public string id { get; set; }
     public string time { get; set; }
@@ -31,5 +36,6 @@ public record ForgeInstallObj
     public string inheritsFrom { get; set; }
     public Logging logging { get; set; }
     public string minecraftArguments { get; set; }
+    public Arguments arguments { get; set; }
     public List<Libraries> libraries { get; set; }
 }

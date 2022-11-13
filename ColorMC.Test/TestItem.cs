@@ -4,12 +4,14 @@ using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Http.MoJang;
 using ColorMC.Core.Login;
+using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Objs.Pack;
 using ColorMC.Core.Path;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -118,23 +120,52 @@ public static class TestItem
     public static void Item9() 
     {
         var game = InstancesPath.GetGames();
-        foreach (var item in game)
+        var login = new LoginObj()
         {
-            string temp = Launch.MakeV2JvmArg(item);
-            Console.WriteLine(temp);
+            UUID = "UUID",
+            Token = "Token",
+            AccessToken = "AccessToken",
+            UserName = "Test"
+        };
+
+        List<string> temp = Launch.MakeArg(game[0], login).Result;
+        foreach (var item in temp)
+        {
+            Console.WriteLine(item);
         }
+
+        Process process = new();
+        process.StartInfo.FileName = @"C:\Program Files\java\jdk17\bin\javaw.exe";
+        foreach (var item in temp)
+        {
+            process.StartInfo.ArgumentList.Add(item);
+        }
+
+        process.StartInfo.RedirectStandardInput = true; //重定向标准输入
+        process.StartInfo.RedirectStandardOutput = true; //重定向标准输出
+        process.StartInfo.RedirectStandardError = true;//重定向错误输出
+
+        process.OutputDataReceived += Process_OutputDataReceived;
+        process.ErrorDataReceived += Process_ErrorDataReceived;
+        process.Start();
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
+        
+        process.WaitForExit();
+    }
+
+    private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        Console.WriteLine(e.Data);
+    }
+
+    private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        Console.WriteLine(e.Data);
     }
 
     public static void Item10() 
     {
-        //{Files { projectID = 556490, fileID = 3959686, required = True }}
-        var item = new CurseForgePackObj.Files()
-        { 
-            projectID = 556490,
-            fileID = 3959686
-        };
-        var res = Get.GetCurseForgeMod(item).Result;
-
-        Console.WriteLine();
+        
     }
 }

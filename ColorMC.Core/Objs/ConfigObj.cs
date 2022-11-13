@@ -8,16 +8,6 @@ public record JvmConfigObj
     public string Local { get; set; }
 }
 
-public record GameConfigObj
-{
-    public string UUID { get; set; }
-    public string Name { get; set; }
-    public string Jvm { get; set; }
-    public string Args { get; set; }
-    public int MaxMem { get; set; }
-    public int MinMem { get; set; }
-}
-
 public record HttpObj
 {
     public SourceLocal Source { get; set; }
@@ -25,6 +15,8 @@ public record HttpObj
     public bool Proxy { get; set; }
     public string ProxyIP { get; set; }
     public ushort ProxyPort { get; set; }
+    public string ProxyUser { get; set; }
+    public string ProxyPassword { get; set; }
 }
 
 public record WindowSettingObj
@@ -75,10 +67,8 @@ public record JvmArgObj
         /// <summary>
         /// 设置为空（手动设置）
         /// </summary>
-        NULL = 4
+        User = 4
     }
-
-    public string? AdvencedGameArguments { get; set; }
     public string? AdvencedJvmArguments { get; set; }
     public string? GCArgument { get; set; }
     public GCType? GC { get; set; }
@@ -93,10 +83,8 @@ public record ConfigObj
     public string MCPath { get; set; }
 
     public List<JvmConfigObj> JavaList { get; set; }
-    public List<GameConfigObj> GameList { get; set; }
 
     public HttpObj Http { get; set; }
     public JvmArgObj DefaultJvmArg { get; set; }
-    public WindowSettingObj WindowSize { get; set; }
-
+    public WindowSettingObj Window { get; set; }
 }

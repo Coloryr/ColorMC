@@ -5,6 +5,7 @@ using ColorMC.Core.Path;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System;
 using System.Text;
 
 namespace ColorMC.Core.Http.Download;
@@ -72,20 +73,12 @@ public static class GameDownload
     public static async Task DownloadForge(string mc, string version)
     {
         CoreMain.DownloadState?.Invoke(CoreRunState.Init);
-        string url = UrlHelp.DownloadForge(mc, version, BaseClient.Source);
-        string name = $"forge-{mc}-{version}";
-        DownloadItem item = new()
-        {
-            Url = url,
-            Name = name + "-install",
-            Local =  $"{VersionPath.ForgeDir}/{name}-install.jar",
-        };
-
-        await DownloadThread.Download(item, CancellationToken.None);
+        await VersionPath.DownloadForgeInster(mc, version);
 
         CoreMain.DownloadState?.Invoke(CoreRunState.GetInfo);
 
-        using ZipFile zFile = new(item.Local);
+        string name = $"forge-{mc}-{version}";
+        using ZipFile zFile = new($"{VersionPath.ForgeDir}/{name}-installer.jar");
         using MemoryStream stream1 = new();
         bool find = false;
         foreach (ZipEntry e in zFile)
@@ -123,7 +116,7 @@ public static class GameDownload
             FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         stream1.Seek(0, SeekOrigin.Begin);
         await stream1.CopyToAsync(stream3);
-
+        DownloadItem item;
         foreach (var item1 in info.libraries)
         {
             if (item1.name.StartsWith("net.minecraftforge:forge:"))

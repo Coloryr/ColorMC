@@ -50,10 +50,6 @@ public static class ConfigUtils
             {
                 Config.JavaList = new();
             }
-            if (Config.GameList == null)
-            {
-                Config.GameList = new();
-            }
             if (Config.Http == null)
             {
                 Config.Http = MakeHttpConfig();
@@ -62,9 +58,9 @@ public static class ConfigUtils
             {
                 Config.DefaultJvmArg = MakeJvmArgConfig();
             }
-            if (Config.WindowSize == null)
+            if (Config.Window == null)
             {
-                Config.WindowSize = MakeWindowSettingConfig();
+                Config.Window = MakeWindowSettingConfig();
             }
 
             JvmPath.AddList(Config.JavaList);
@@ -86,10 +82,9 @@ public static class ConfigUtils
             Version = CoreMain.Version,
             MCPath = "./.minectaft",
             JavaList = new(),
-            GameList = new(),
             Http = MakeHttpConfig(),
             DefaultJvmArg = MakeJvmArgConfig(),
-            WindowSize = MakeWindowSettingConfig()
+            Window = MakeWindowSettingConfig()
         };
     }
 
@@ -109,7 +104,6 @@ public static class ConfigUtils
     {
         return new()
         {
-            AdvencedGameArguments = null,
             AdvencedJvmArguments = null,
             GC = GCType.G1GC,
             GCArgument = null,
@@ -131,7 +125,6 @@ public static class ConfigUtils
 
     public static void CopyTo(this JvmArgObj obj1, JvmArgObj obj2)
     {
-        obj2.AdvencedGameArguments = obj1.AdvencedGameArguments;
         obj2.AdvencedJvmArguments = obj1.AdvencedJvmArguments;
         obj2.GCArgument = obj1.GCArgument;
         obj2.GC = obj1.GC;
