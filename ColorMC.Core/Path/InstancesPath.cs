@@ -59,7 +59,7 @@ public static class InstancesPath
     }
 
     public static GameSettingObj? CreateVersion(string name, string version,
-        Loaders loader, LoaderInfo info)
+        Loaders loader, LoaderInfoObj info)
     {
         if (Games.ContainsKey(name))
         {

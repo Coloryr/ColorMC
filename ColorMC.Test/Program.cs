@@ -26,7 +26,7 @@ internal class Program
         CoreMain.PackState = Update;
         CoreMain.PackUpdate = PackUpdate;
 
-        TestItem.Item3();
+        TestItem.Item9();
 
         Console.ReadLine();
     }

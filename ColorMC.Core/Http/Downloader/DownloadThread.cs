@@ -65,7 +65,7 @@ public class DownloadThread
         return bufferSize;
     }
 
-    public static async Task Download(DownloadItem item, CancellationToken cancel)
+    private static async Task Download(DownloadItem item, CancellationToken cancel)
     {
         try
         {
@@ -142,6 +142,35 @@ public class DownloadThread
             item.State = DownloadItemState.Error;
             item.Update?.Invoke();
             DownloadManager.Error(item, e);
+        }
+    }
+
+    public static async Task Download(DownloadItem item)
+    {
+        FileInfo info = new(item.Local);
+        if (!Directory.Exists(info.DirectoryName))
+        {
+            Directory.CreateDirectory(info.DirectoryName!);
+        }
+        if (info.Exists && info.Length > 0)
+        {
+            return;
+        }
+        using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        var data = await BaseClient.Client.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead);
+        using Stream stream1 = data.Content.ReadAsStream();
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
+        try
+        {
+            int bytesRead;
+            while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer)).ConfigureAwait(false)) != 0)
+            {
+                await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead)).ConfigureAwait(false);
+            }
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(buffer);
         }
     }
 

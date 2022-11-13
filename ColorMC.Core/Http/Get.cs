@@ -1,5 +1,7 @@
-﻿using ColorMC.Core.Objs.Game;
+﻿using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Objs.Pack;
+using ColorMC.Core.Path;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;

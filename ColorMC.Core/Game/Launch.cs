@@ -1,18 +1,24 @@
 ﻿using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Http.MoJang;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.MoJang;
 using ColorMC.Core.Path;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using static ColorMC.Core.Objs.Game.FabircMetaObj;
+using static ColorMC.Core.Objs.Game.VersionObj;
+using static ColorMC.Core.Objs.JvmArgObj;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ColorMC.Core.Game;
@@ -206,23 +212,26 @@ public static class Launch
         return list.Where(x => x.MajorVersion == max).FirstOrDefault();
     }
 
-    public static string? MakeV1JvmArg()
+    public static List<string> MakeV1JvmArg()
     {
-        return "-Djava.library.path=${natives_directory} -cp ${classpath}";
+        return new() 
+        { 
+            "-Djava.library.path=${natives_directory}", "-cp ${classpath}" 
+        };
     }
 
-    public static string? MakeV2JvmArg(GameSettingObj obj) 
+    public static List<string> MakeV2JvmArg(GameSettingObj obj) 
     {
         var game = VersionPath.GetGame(obj.Version)!;
         if (game.arguments == null)
             return MakeV1JvmArg();
 
-        StringBuilder arg = new StringBuilder();
+        List<string> arg = new();
         foreach (var item in game.arguments.jvm)
         {
             if (item is string)
             {
-                arg.Append(item).Append(" ");
+                arg.Add(item);
             }
             else if (item is JObject)
             {
@@ -234,39 +243,109 @@ public static class Launch
 
                 if (obj2.value is string)
                 {
-                    arg.Append(obj2.value.ToString()).Append(" ");
+                    string? item2 = obj2.value as string;
+                    arg.Add(item2);
                 }
                 else if (obj2.value is JArray)
                 {
                     foreach (string item1 in obj2.value)
                     {
-                        arg.Append(item1).Append(" ");
+                        arg.Add(item1);
                     }
                 }
             }
         }
 
-        return arg.ToString();
+        if (obj.Loader == Loaders.Forge)
+        {
+            var forge = VersionPath.GetForgeObj(obj)!;
+            foreach (var item in forge.arguments.jvm)
+            {
+                arg.Add(item);
+            }
+        }
+        else if(obj.Loader == Loaders.Fabric)
+        {
+            var fabric = VersionPath.GetFabricObj(obj)!;
+            foreach (var item in fabric.arguments.jvm)
+            {
+                arg.Add(item);
+            }
+        }
+
+        return arg;
     }
 
-    public static string? JvmArg(GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null) 
+    public static List<string> MakeV1GameArg(GameSettingObj obj)
     {
-        JavaInfo? jvm = null;
-        if (jvmCfg == null)
+        if (obj.Loader == Loaders.Forge)
         {
-            jvm = FindJvm(obj);
-        }
-        else
-        {
-            jvm = JvmPath.GetInfo(jvmCfg.Name);
+            var forge = VersionPath.GetForgeObj(obj)!;
+            return new() { forge.minecraftArguments };
         }
 
-        if (jvm == null)
+        var version = VersionPath.GetGame(obj.Version)!;
+        return new() { version.minecraftArguments };
+    }
+
+    public static List<string> MakeV2GameArg(GameSettingObj obj)
+    {
+        var game = VersionPath.GetGame(obj.Version)!;
+        if (game.arguments == null)
+            return MakeV1GameArg(obj);
+
+        List<string> arg = new();
+        foreach (var item in game.arguments.game)
         {
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
-            return null;
+            if (item is string)
+            {
+                arg.Add(item);
+            }
+            //else if (item is JObject)
+            //{
+            //    JObject obj1 = item as JObject;
+            //    var obj2 = obj1.ToObject<GameArgObj.Arguments.Jvm>();
+            //    bool use = CheckRule.CheckAllow(obj2.rules);
+            //    if (!use)
+            //        continue;
+
+            //    if (obj2.value is string)
+            //    {
+            //        string? item2 = obj2.value as string;
+            //        arg.Append(item2).Append(' ');
+            //    }
+            //    else if (obj2.value is JArray)
+            //    {
+            //        foreach (string item1 in obj2.value)
+            //        {
+            //            arg.Append(item1).Append(' ');
+            //        }
+            //    }
+            //}
         }
 
+        if (obj.Loader == Loaders.Forge)
+        {
+            var forge = VersionPath.GetForgeObj(obj)!;
+            foreach (var item in forge.arguments.game)
+            {
+                arg.Add(item);
+            }
+        }
+        else if (obj.Loader == Loaders.Fabric)
+        {
+            var fabric = VersionPath.GetFabricObj(obj)!;
+            foreach (var item in fabric.arguments.game)
+            {
+                arg.Add(item);
+            }
+        }
+
+        return arg;
+    }
+
+    public static List<string> JvmArg(GameSettingObj obj, bool v2)
+    {
         JvmArgObj args = new();
 
         if (obj.JvmArg == null)
@@ -275,8 +354,6 @@ public static class Launch
         }
         else
         {
-            args.AdvencedGameArguments = obj.JvmArg.AdvencedGameArguments ?? 
-                ConfigUtils.Config.DefaultJvmArg.AdvencedGameArguments;
             args.AdvencedJvmArguments = obj.JvmArg.AdvencedJvmArguments ??
                 ConfigUtils.Config.DefaultJvmArg.AdvencedJvmArguments;
             args.GCArgument = obj.JvmArg.GCArgument ??
@@ -291,22 +368,296 @@ public static class Launch
                 ConfigUtils.Config.DefaultJvmArg.MinMemory;
         }
 
-        StringBuilder jvmHead = new StringBuilder();
+        List<string> jvmHead = new();
 
         if (!string.IsNullOrWhiteSpace(args.JavaAgent))
         {
-            jvmHead.Append("-javaagent:");
-            jvmHead.Append(args.JavaAgent.Trim());
-            jvmHead.Append(' ');
+            jvmHead.Add($"-javaagent:{args.JavaAgent.Trim()}");
         }
 
-        var v2 = CheckRule.GameLaunchVersion(obj.Version);
+        jvmHead.AddRange(v2 ? MakeV2JvmArg(obj) : MakeV1JvmArg());
 
+        switch (args.GC)
+        {
+            case GCType.G1GC:
+                jvmHead.Add("-XX:+UseG1GC");
+                break;
+            case GCType.SerialGC:
+                jvmHead.Add("-XX:+UseSerialGC");
+                break;
+            case GCType.ParallelGC:
+                jvmHead.Add("-XX:+UseParallelGC");
+                break;
+            case GCType.CMSGC:
+                jvmHead.Add("-XX:+UseConcMarkSweepGC");
+                break;
+            case GCType.User:
+                if (!string.IsNullOrWhiteSpace(args.GCArgument))
+                    jvmHead.Add(args.GCArgument.Trim());
+                break;
+            default:
+                break;
+        }
 
-        return null;
+        if (args.MinMemory != 0)
+        {
+            jvmHead.Add($"-Xms{args.MinMemory}m");
+        }
+        if (args.MaxMemory != 0)
+        {
+            jvmHead.Add($"-Xmx{args.MaxMemory}m");
+        }
+        if (!string.IsNullOrWhiteSpace(args.AdvencedJvmArguments))
+        {
+            jvmHead.Add(args.AdvencedJvmArguments);
+        }
+
+        if (v2 && obj.Loader == Loaders.Forge)
+        {
+            jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
+            jvmHead.Add($"-Dforgewrapper.installer={VersionPath.ForgeDir}/" +
+                $"forge-{obj.Version}-{obj.LoaderInfo.Version}-installer.jar");
+            jvmHead.Add($"-Dforgewrapper.minecraft={VersionPath.BaseDir}/{obj.Version}.jar");
+        }
+
+        //jvmHead.Append("-Dfml.ignoreInvalidMinecraftCertificates=true -Dfml.ignorePatchDiscrepancies=true ");
+
+        return jvmHead;
     }
 
-    public static async Task StartGame(GameSettingObj obj, LoginObj login, JvmConfigObj? jvm = null) 
+    public static async Task<List<string>> GameArg(GameSettingObj obj, bool v2) 
+    {
+        List<string> gameArg = new();
+        gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
+
+        WindowSettingObj window = obj.Window ?? ConfigUtils.Config.Window;
+        if (window.FullScreen)
+        {
+            gameArg.Add("--fullscreen");
+        }
+        else
+        {
+            if (window.Width > 0)
+            {
+                gameArg.Add($"--width {window.Width}");
+            }
+            if (window.Height > 0)
+            {
+                gameArg.Add($"--height {window.Height}");
+            }
+        }
+
+        if (obj.StartServer != null && !string.IsNullOrWhiteSpace(obj.StartServer.IP))
+        {
+            ServerInfo server = new(obj.StartServer.IP, obj.StartServer.Port);
+            await server.StartGetServerInfo();
+
+            if (server.State == ServerInfo.StateType.GOOD)
+            {
+                gameArg.Add($"--server {server.ServerAddress}");
+                   gameArg.Add($"--port {server.ServerPort}");
+            }
+            else
+            {
+                gameArg.Add($"--server {server.ServerAddress}");
+                if (obj.StartServer.Port > 0)
+                {
+                    gameArg.Add($"--port {obj.StartServer.Port}");
+                }
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(obj.AdvencedGameArguments))
+        {
+            gameArg.Add(obj.AdvencedGameArguments.Trim());
+        }
+
+        if (obj.ProxyHost != null)
+        {
+            if (!string.IsNullOrWhiteSpace(obj.ProxyHost.IP))
+            {
+                gameArg.Add($"--proxyHost {obj.ProxyHost.IP}");
+            }
+            if (obj.ProxyHost.Port != 0)
+            {
+                gameArg.Add($"--proxyPort {obj.ProxyHost.Port}");
+            }
+            if (!string.IsNullOrWhiteSpace(obj.ProxyHost.User))
+            {
+                gameArg.Add($"--proxyUser {obj.ProxyHost.User}");
+            }
+            if (!string.IsNullOrWhiteSpace(obj.ProxyHost.Password))
+            {
+                gameArg.Add($"--proxyPass {obj.ProxyHost.Password}");
+            }
+        }
+
+        return gameArg;
+    }
+
+    public static async Task<List<string>> GetLibs(GameSettingObj obj, bool v2)
+    {
+        List<string> list = new();
+        var version = VersionPath.GetGame(obj.Version)!;
+        var list1 = version.libraries;
+        foreach (var item in list1)
+        {
+            if (CheckRule.CheckAllow(item.rules) && item.downloads.artifact != null)
+            {
+                list.Add($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}");
+            }
+        }
+
+        if (obj.Loader == Loaders.Forge)
+        {
+            var forge = VersionPath.GetForgeObj(obj)!;
+            foreach (var item1 in forge.libraries)
+            {
+                if (item1.name.StartsWith("net.minecraftforge:forge:"))
+                {
+                    list.Add($"{LibrariesPath.BaseDir}/net/minecraftforge/forge/" +
+                                PathC.MakeForgeName(obj.Version, obj.LoaderInfo.Version));
+                }
+                else
+                {
+                    list.Add($"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}");
+                }
+            }
+
+            if (v2)
+            {
+                await VersionPath.DownloadForgeInster(obj.Version, obj.LoaderInfo.Version);
+                await LibrariesPath.ReadyForgeWrapper();
+                list.Add(LibrariesPath.ForgeWrapper);
+                list.Add($"{VersionPath.BaseDir}/{obj.Version}.jar");
+            }
+        }
+        else if (obj.Loader == Loaders.Fabric) 
+        {
+            var fabric = VersionPath.GetFabricObj(obj)!;
+            foreach (var item in fabric.libraries)
+            {
+                var name = PathC.ToName(item.name);
+                list.Add($"{LibrariesPath.BaseDir}/{name.Item1}");
+            }
+        }
+
+        return list;
+    }
+
+    private static string GetClassPaths(List<string> libs)
+    {
+        StringBuilder arg = new();
+
+        foreach (var item in libs)
+        {
+            arg.Append($"{item};");
+        }
+
+        arg.Append(VersionPath.BaseDir);
+
+        return arg.ToString().Trim();
+    }
+
+    public static string ToList(List<UserPropertyObj> properties)
+    {
+        if (properties == null)
+        {
+            return "{}";
+        }
+        var sb = new StringBuilder();
+        foreach (var item in properties)
+        {
+            sb.Append($"{item.name}:[{item.value}],");
+        }
+        var totalSb = new StringBuilder();
+        totalSb.Append('{').Append(sb.ToString().TrimEnd(',').Trim()).Append('}');
+        return totalSb.ToString();
+    }
+
+    public static async Task ReplaceAll(GameSettingObj obj, LoginObj login, List<string> all_arg, bool v2)
+    {
+        var version = VersionPath.GetGame(obj.Version)!;
+        string assetsPath = AssetsPath.BaseDir;
+        string gameDir = obj.Dir;
+        string assetsIndexName;
+        if (version.assets != null)
+        {
+            assetsIndexName = version.assets;
+        }
+        else
+        {
+            assetsIndexName = "legacy";
+        }
+        string version_name = obj.Loader switch
+        {
+            Loaders.Forge => $"forge-{obj.Version}-{obj.LoaderInfo.Version}",
+            Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderInfo.Version}",
+            _ => obj.Version
+        };
+        var libraries = await GetLibs(obj, v2);
+        Dictionary<string, string> argDic = new()
+            {
+                {"${auth_player_name}", login.UserName },
+                {"${version_name}",version_name },
+                {"${game_directory}",gameDir },
+                {"${assets_root}",assetsPath },
+                {"${assets_index_name}",assetsIndexName },
+                {"${auth_uuid}",login.UUID },
+                {"${auth_access_token}",login.AccessToken },
+                //{"${auth_session}",login.Token },
+                //{"${game_assets}",assetsPath },
+                {"${user_properties}",ToList(login.Properties) },
+                {"${user_type}", $"{login.AuthType}" },
+                {"${version_type}", "ColorMC" },
+                {"${natives_directory}", $"{obj.Dir}/$natives" },
+                {"${library_directory}",LibrariesPath.BaseDir },
+                {"${classpath_separator}", ";" },
+                {"${launcher_name}","ColorMC" },
+                {"${launcher_version}", Assembly.GetExecutingAssembly().GetName().Version.ToString() },
+                {"${classpath}", GetClassPaths(libraries) },
+            };
+
+        for (int a = 0; a < all_arg.Count; a++)
+        {
+            all_arg[a] = argDic.Aggregate(all_arg[a], (a, b) => a.Replace(b.Key, b.Value));
+        }
+    }
+
+    public static async Task<List<string>> MakeArg(GameSettingObj obj, LoginObj login) 
+    {
+        var list = new List<string>();
+        var version = VersionPath.GetGame(obj.Version)!;
+        var v2 = CheckRule.GameLaunchVersion(obj.Version);
+
+        list.AddRange(JvmArg(obj, v2));
+        if (obj.Loader == Loaders.Normal)
+            list.Add(version.mainClass);
+        else if (obj.Loader == Loaders.Forge)
+        {
+            if (v2)
+            {
+                list.Add("io.github.zekerzhayard.forgewrapper.installer.Main");
+            }
+            else
+            {
+                var forge = VersionPath.GetForgeObj(obj)!;
+                list.Add(forge.mainClass);
+            }
+        }
+        else if (obj.Loader == Loaders.Fabric)
+        {
+            var fabric = VersionPath.GetFabricObj(obj)!;
+            list.Add(fabric.mainClass);
+        }
+        list.AddRange(await GameArg(obj, v2));
+
+        await ReplaceAll(obj, login, list, v2);
+
+        return list;
+    }
+
+    public static async Task StartGame(GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null) 
     {
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Check);
         var res = await CheckGameFile(obj);
@@ -320,8 +671,23 @@ public static class Launch
         }
 
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
-        string? arg = JvmArg(obj, login, jvm);
-        if (arg == null)
+
+        var arg = await MakeArg(obj, login);
+
+        JavaInfo? jvm = null;
+        if (jvmCfg == null)
+        {
+            jvm = FindJvm(obj);
+        }
+        else
+        {
+            jvm = JvmPath.GetInfo(jvmCfg.Name);
+        }
+
+        if (jvm == null)
+        {
+            CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
             return;
+        }
     }
 }

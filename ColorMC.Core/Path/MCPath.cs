@@ -7,7 +7,7 @@ public static class MCPath
 
     public static void Init(string dir)
     {
-        BaseDir = dir + "/" + Name;
+        BaseDir = dir + Name;
 
         Directory.CreateDirectory(BaseDir);
 

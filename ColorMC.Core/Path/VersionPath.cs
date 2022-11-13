@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Http;
+using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
@@ -9,6 +10,8 @@ namespace ColorMC.Core.Path;
 public static class VersionPath
 {
     private readonly static Dictionary<string, GameArgObj> Version = new();
+    private readonly static Dictionary<string, ForgeInstallObj> Forges = new();
+    private readonly static Dictionary<string, FabricLoaderObj> Fabrics = new();
     public static VersionObj? Versions { get; private set; }
 
     public static string ForgeDir => BaseDir + "/" + Name1;
@@ -164,12 +167,20 @@ public static class VersionPath
 
     public static ForgeInstallObj? GetForgeObj(string mc, string version)
     {
+        string key = $"{mc}-{version}";
+        if (Forges.TryGetValue(key, out var value) && value != null)
+        {
+            return value;
+        }
+
         string file =  $"{BaseDir}/{Name1}/forge-{mc}-{version}.json";
         var data = File.ReadAllText(file);
 
         try
         {
-            return JsonConvert.DeserializeObject<ForgeInstallObj>(data);
+            var data1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data);
+            Forges.Add(key, data1);
+            return data1;
         }
         catch (Exception e)
         {
@@ -178,19 +189,47 @@ public static class VersionPath
         }
     }
 
+    public static FabricLoaderObj? GetFabricObj(GameSettingObj obj)
+    {
+        return GetFabricObj(obj.Version, obj.LoaderInfo.Version);
+    }
+
     public static FabricLoaderObj? GetFabricObj(string mc, string version)
     {
+        string key = $"{mc}-{version}";
+        if (Fabrics.TryGetValue(key, out var value) && value != null)
+        {
+            return value;
+        }
+
         string file = $"{BaseDir}/{Name2}/fabric-loader-{version}-{mc}.json";
         var data = File.ReadAllText(file);
 
         try
         {
-            return JsonConvert.DeserializeObject<FabricLoaderObj>(data);
+            var data1 = JsonConvert.DeserializeObject<FabricLoaderObj>(data);
+            Fabrics.Add(key, data1);
+            return data1;
         }
         catch (Exception e)
         {
             Logs.Error("读取fabric信息错误", e);
             return null;
         }
+    }
+
+    public static async Task DownloadForgeInster(string mc, string version)
+    {
+        string name = $"forge-{mc}-{version}";
+        string url = UrlHelp.DownloadForge(mc, version, BaseClient.Source);
+
+        DownloadItem item = new()
+        {
+            Url = url,
+            Name = name + "-installer",
+            Local = $"{ForgeDir}/{name}-installer.jar",
+        };
+
+        await DownloadThread.Download(item);
     }
 }
