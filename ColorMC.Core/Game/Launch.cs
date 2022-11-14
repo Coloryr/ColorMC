@@ -105,18 +105,7 @@ public static class Launch
             });
         }
 
-        var list2 = LibrariesPath.Check(game);
-        foreach (var item in list2)
-        {
-            list.Add(new()
-            {
-                Overwrite = true,
-                Url = UrlHelp.DownloadLibraries(item.downloads.artifact.url, BaseClient.Source),
-                SHA1 = item.downloads.artifact.sha1,
-                Local = $"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}",
-                Name = item.name
-            });
-        }
+        list.AddRange(LibrariesPath.Check(game));
 
         if (obj.Loader == Loaders.Forge)
         {
@@ -137,32 +126,7 @@ public static class Launch
             }
             else
             {
-                foreach (var item in list3)
-                {
-                    if (item.name.StartsWith("net.minecraftforge:forge:") 
-                        && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
-                    {
-                        list.Add(new()
-                        {
-                            Url = UrlHelp.DownloadForgeJar(obj.Version, obj.LoaderInfo.Version, BaseClient.Source),
-                            Name = item.name,
-                            Local = $"{LibrariesPath.BaseDir}/net/minecraftforge/forge/" +
-                                PathC.MakeForgeName(obj.Version, obj.LoaderInfo.Version),
-                            SHA1 = item.downloads.artifact.sha1
-                        });
-                    }
-                    else
-                    {
-                        list.Add(new()
-                        {
-                            Url = UrlHelp.DownloadForgeLib(item.downloads.artifact.url,
-                                BaseClient.Source),
-                            Name = item.name,
-                            Local = $"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}",
-                            SHA1 = item.downloads.artifact.sha1
-                        });
-                    }
-                }
+                list.AddRange(list3);
             }
         }
         else if (obj.Loader == Loaders.Fabric)
@@ -180,16 +144,7 @@ public static class Launch
             }
             else
             {
-                foreach (var item in list3)
-                {
-                    var name = PathC.ToName(item.name);
-                    list.Add(new()
-                    {
-                        Url = UrlHelp.DownloadFabric(BaseClient.Source) + name.Item1,
-                        Name = name.Item2,
-                        Local = $"{LibrariesPath.BaseDir}/{name.Item1}"
-                    });
-                }
+                list.AddRange(list3);
             }
         }
 
@@ -223,7 +178,7 @@ public static class Launch
     {
         return new() 
         { 
-            "-Djava.library.path=${natives_directory}", "-cp ${classpath}" 
+            "-Djava.library.path=${natives_directory}", "-cp", "${classpath}" 
         };
     }
 
@@ -288,11 +243,11 @@ public static class Launch
         if (obj.Loader == Loaders.Forge)
         {
             var forge = VersionPath.GetForgeObj(obj)!;
-            return new() { forge.minecraftArguments };
+            return new(forge.minecraftArguments.Split(" "));
         }
 
         var version = VersionPath.GetGame(obj.Version)!;
-        return new() { version.minecraftArguments };
+        return new(version.minecraftArguments.Split(" "));
     }
 
     public static List<string> MakeV2GameArg(GameSettingObj obj)
@@ -508,36 +463,20 @@ public static class Launch
     {
         List<string> list = new();
         var version = VersionPath.GetGame(obj.Version)!;
-        var list1 = version.libraries;
-        foreach (var item in list1)
-        {
-            if (CheckRule.CheckAllow(item.rules) && item.downloads.artifact != null)
-            {
-                list.Add($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}");
-            }
-        }
+        var list1 = GameDownload.MakeGameLibs(version);
+        list1.ForEach(a => list.Add(a.Local));
 
         if (obj.Loader == Loaders.Forge)
         {
             var forge = VersionPath.GetForgeObj(obj)!;
-            foreach (var item1 in forge.libraries)
-            {
-                if (item1.name.StartsWith("net.minecraftforge:forge:")
-                    && string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
-                {
-                    list.Add($"{LibrariesPath.BaseDir}/net/minecraftforge/forge/" +
-                                PathC.MakeForgeName(obj.Version, obj.LoaderInfo.Version));
-                }
-                else
-                {
-                    list.Add($"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}");
-                }
-            }
+
+            var list2 = GameDownload.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
+
+            list2.ForEach(a => list.Add(a.Local));
 
             if (v2)
             {
                 list.Add(LibrariesPath.ForgeWrapper);
-                list.Add($"{VersionPath.BaseDir}/{obj.Version}.jar");
             }
         }
         else if (obj.Loader == Loaders.Fabric) 
@@ -549,6 +488,8 @@ public static class Launch
                 list.Add($"{LibrariesPath.BaseDir}/{name.Item1}");
             }
         }
+
+        list.Add($"{VersionPath.BaseDir}/{obj.Version}.jar");
 
         return list;
     }
@@ -618,7 +559,7 @@ public static class Launch
                 {"${user_properties}",ToList(login.Properties) },
                 {"${user_type}", $"{login.AuthType}" },
                 {"${version_type}", "ColorMC" },
-                {"${natives_directory}", $"{obj.Dir}/$natives" },
+                {"${natives_directory}", LibrariesPath.NativeDir },
                 {"${library_directory}",LibrariesPath.BaseDir },
                 {"${classpath_separator}", ";" },
                 {"${launcher_name}","ColorMC" },
@@ -704,7 +645,7 @@ public static class Launch
         //}
 
         Process process = new();
-        process.StartInfo.FileName = @"C:\Program Files\java\jdk17\bin\javaw.exe";
+        process.StartInfo.FileName = @"C:\Program Files\java\jdk8\bin\javaw.exe";
         process.StartInfo.WorkingDirectory = InstancesPath.GetDir(obj);
         foreach (var item in arg)
         {

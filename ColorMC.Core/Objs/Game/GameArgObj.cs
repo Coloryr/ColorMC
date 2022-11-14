@@ -1,4 +1,6 @@
-﻿namespace ColorMC.Core.Objs.Game;
+﻿using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs.Game;
 
 public record GameArgObj
 {
@@ -59,8 +61,25 @@ public record GameArgObj
                 public long size { get; set; }
                 public string url { get; set; }
             }
+            public record Classifiers
+            {
+                [JsonProperty("natives-linux")]
+                public Artifact natives_linux { get; set; }
+                [JsonProperty("natives-osx")]
+                public Artifact natives_osx { get; set; }
+                [JsonProperty("natives-windows")]
+                public Artifact natives_windows { get; set; }
+            }
+            public Classifiers classifiers { get; set; }
             public Artifact artifact { get; set; }
         }
+        public record Natives
+        {
+            public string linux { get; set; }
+            public string osx { get; set; }
+            public string windows { get; set; }
+        }
+        public Natives natives { get; set; }
         public Downloads downloads { get; set; }
         public string name { get; set; }
         public List<Rules> rules { get; set; }

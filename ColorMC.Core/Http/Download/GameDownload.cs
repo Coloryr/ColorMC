@@ -7,6 +7,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace ColorMC.Core.Http.Download;
@@ -40,21 +41,7 @@ public static class GameDownload
             SHA1 = obj1.downloads.client.sha1
         });
 
-        foreach (var item1 in obj1.libraries)
-        {
-            bool download = CheckRule.CheckAllow(item1.rules);
-
-            if (!download || item1.downloads.artifact == null)
-                continue;
-
-            list.Add(new()
-            {
-                Name = item1.name,
-                Url = UrlHelp.DownloadLibraries(item1.downloads.artifact.url, BaseClient.Source),
-                Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
-                SHA1 = item1.downloads.artifact.sha1
-            });
-        }
+        list.AddRange(MakeGameLibs(obj1));
 
         foreach (var item1 in obj2.objects)
         {
@@ -68,6 +55,69 @@ public static class GameDownload
         }
 
         return (DownloadState.End, list);
+    }
+
+    public static List<DownloadItem> MakeGameLibs(GameArgObj obj)
+    {
+        var list = new List<DownloadItem>();
+        foreach (var item1 in obj.libraries)
+        {
+            bool download = CheckRule.CheckAllow(item1.rules);
+            if (!download)
+                continue;
+
+            if (item1.downloads.artifact != null)
+            {
+                list.Add(new()
+                {
+                    Name = item1.name,
+                    Url = UrlHelp.DownloadLibraries(item1.downloads.artifact.url, BaseClient.Source),
+                    Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
+                    SHA1 = item1.downloads.artifact.sha1
+                });
+            }
+
+            if (item1.downloads.classifiers != null)
+            {
+                var lib = SystemInfo.Os switch
+                {
+                    OsType.Windows => item1.downloads.classifiers.natives_windows,
+                    OsType.Linux => item1.downloads.classifiers.natives_linux,
+                    OsType.MacOS => item1.downloads.classifiers.natives_osx,
+                    _ => null
+                };
+
+                if (lib != null)
+                {
+                    list.Add(new()
+                    {
+                        Name = item1.name,
+                        Url = UrlHelp.DownloadLibraries(lib.url, BaseClient.Source),
+                        Local = $"{LibrariesPath.BaseDir}/{lib.path}",
+                        SHA1 = lib.sha1,
+                        Later = ()=> UnpackNative($"{LibrariesPath.BaseDir}/{lib.path}")
+                    });
+                }
+            }
+        }
+
+        return list;
+    }
+
+    public static void UnpackNative(string local) 
+    {
+        using ZipFile zFile = new(local);
+        foreach (ZipEntry e in zFile)
+        {
+            if (e.Name.StartsWith("META-INF"))
+                continue;
+            if (e.IsFile)
+            {
+                using var stream1 = new FileStream(LibrariesPath.NativeDir + "/" + e.Name, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                using var stream = zFile.GetInputStream(e);
+                stream.CopyTo(stream1);
+            }
+        }
     }
 
     public static Task<(DownloadState State, List<DownloadItem>? List)> DownloadForge(GameSettingObj obj)
@@ -160,15 +210,24 @@ public static class GameDownload
             return (DownloadState.GetInfo, null);
         }
 
+        list.AddRange(MakeForgeLibs(info, mc, version));
+
+        return (DownloadState.End, list);
+    }
+
+    public static List<DownloadItem> MakeForgeLibs(ForgeLaunchObj info, string mc, string version) 
+    {
+        var list = new List<DownloadItem>();
         foreach (var item1 in info.libraries)
         {
-            if (item1.name.StartsWith("net.minecraftforge:forge:"))
+            if (item1.name.StartsWith("net.minecraftforge:forge:")
+                && string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
             {
                 list.Add(new()
                 {
                     Url = UrlHelp.DownloadForgeJar(mc, version, BaseClient.Source),
                     Name = item1.name,
-                    Local = $"{LibrariesPath.BaseDir}/net/minecraftforge/forge/" + 
+                    Local = $"{LibrariesPath.BaseDir}/net/minecraftforge/forge/" +
                             PathC.MakeForgeName(mc, version),
                     SHA1 = item1.downloads.artifact.sha1
                 });
@@ -184,10 +243,9 @@ public static class GameDownload
                     SHA1 = item1.downloads.artifact.sha1
                 });
             }
-
         }
 
-        return (DownloadState.End, list);
+        return list;
     }
 
     public static Task<(DownloadState State, List<DownloadItem>? List)> DownloadFabric(GameSettingObj obj)

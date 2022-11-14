@@ -1,4 +1,7 @@
-﻿namespace ColorMC.Core.Objs.Game;
+﻿using Newtonsoft.Json;
+using static ColorMC.Core.Objs.Game.GameArgObj.Libraries.Downloads;
+
+namespace ColorMC.Core.Objs.Game;
 
 public record ForgeLaunchObj
 {
@@ -10,13 +13,6 @@ public record ForgeLaunchObj
     {
         public record Downloads
         {
-            public record Artifact
-            {
-                public string path { get; set; }
-                public string url { get; set; }
-                public string sha1 { get; set; }
-                public long size { get; set; }
-            }
             public Artifact artifact { get; set; }
         }
         public string name { get; set; }
