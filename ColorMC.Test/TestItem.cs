@@ -152,7 +152,7 @@ public static class TestItem
             UserName = "Test"
         };
 
-        var process = Launch.StartGame(game[0], login, null).Result;
+        var process = Launch.StartGame(game[2], login, null).Result;
         
         process.WaitForExit();
     }
