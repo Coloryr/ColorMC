@@ -15,7 +15,7 @@ public static class PackDownload
     public static int Size { get; private set; }
     public static int Now { get; private set; }
 
-    public static async Task DownloadCurseForge(CurseForgeObj.Data obj)
+    public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadCurseForge(CurseForgeObj.Data obj)
     {
         var obj1 = obj.latestFiles.First();
         DownloadItem item = new()
@@ -27,11 +27,13 @@ public static class PackDownload
 
         await DownloadThread.Download(item);
 
-        await DownloadCurseForge(item.Local);
+        return await DownloadCurseForge(item.Local);
     }
 
-    public static async Task DownloadCurseForge(string zip)
+    public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadCurseForge(string zip)
     {
+        var list = new List<DownloadItem>();
+
         CoreMain.PackState?.Invoke(CoreRunState.Init);
         using ZipFile zFile = new(zip);
         using MemoryStream stream1 = new();
@@ -49,23 +51,25 @@ public static class PackDownload
 
         if (!find)
         {
-            return;
+            return (DownloadState.Init, null);
         }
-        CurseForgePackObj? info;
-        var data = Encoding.UTF8.GetString(stream1.ToArray());
+        CurseForgePackObj info;
+        byte[] array1 = stream1.ToArray();
         try
         {
-            info = JsonConvert.DeserializeObject<CurseForgePackObj>(data);
+            var data = Encoding.UTF8.GetString(array1);
+            info = JsonConvert.DeserializeObject<CurseForgePackObj>(data)!;
         }
         catch (Exception e)
         {
             Logs.Error("读取压缩包错误", e);
-            return;
+            return (DownloadState.GetInfo, null);
         }
         if (info == null)
-            return;
+            return (DownloadState.GetInfo, null);
+
         Loaders loaders = Loaders.Normal;
-        LoaderInfoObj info1 = null;
+        LoaderInfoObj? info1 = null;
         foreach (var item in info.minecraft.modLoaders)
         {
             if (item.id.StartsWith("forge"))
@@ -94,7 +98,7 @@ public static class PackDownload
             game = InstancesPath.GetGame(name);
             if (game == null || !CoreMain.GameOverwirte(game))
             {
-                return;
+                return (DownloadState.GetInfo, null);
             }
         }
         foreach (ZipEntry e in zFile)
@@ -112,10 +116,7 @@ public static class PackDownload
             }
         }
 
-        using FileStream stream3 = new(game.Dir + "/manifest.json", FileMode.Create,
-                    FileAccess.ReadWrite, FileShare.ReadWrite);
-        stream1.Seek(0, SeekOrigin.Begin);
-        await stream1.CopyToAsync(stream3);
+        File.WriteAllBytes(game.Dir + "/manifest.json", array1);
 
         PackName = name;
 
@@ -129,19 +130,17 @@ public static class PackDownload
             {
                 item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
 
-                var info2 = new DownloadItem()
+                list.Add(new()
                 {
                     Url = item.downloadUrl,
                     Name = item.fileName,
                     Local = InstancesPath.GetDir(game) + "/mods/" + item.fileName,
                     SHA1 = item.hashes.Where(a => a.algo == 1)
                             .Select(a => a.value).FirstOrDefault()
-                };
+                });
 
-                DownloadManager.AddItem(info2);
                 Now++;
 
-                CoreMain.DownloadStateUpdate?.Invoke(info2);
                 CoreMain.PackUpdate?.Invoke(Size, Now);
             }
         }
@@ -163,43 +162,60 @@ public static class PackDownload
                         continue;
                     }
 
-                    var info2 = new DownloadItem()
+                    list.Add(new()
                     {
                         Url = res.data.downloadUrl,
                         Name = res.data.displayName,
                         Local = InstancesPath.GetDir(game) + "/mods/" + res.data.fileName,
                         SHA1 = res.data.hashes.Where(a => a.algo == 1)
                             .Select(a => a.value).FirstOrDefault()
-                    };
+                    });
 
-                    DownloadManager.AddItem(info2);
                     Now++;
 
-                    CoreMain.DownloadStateUpdate?.Invoke(info2);
                     CoreMain.PackUpdate?.Invoke(Size, Now);
 
                     break;
                 } while (a > 0);
             });
         }
-        var version = VersionPath.Versions.versions
+        var version = VersionPath.Versions?.versions
             .Where(a => a.id == info.minecraft.version).FirstOrDefault();
 
-        if (version != null)
-            await GameDownload.Download(version);
+        (DownloadState State, List<DownloadItem>? List) list1;
 
-        if (loaders != Loaders.Normal)
+        if (version != null)
         {
-            if (loaders == Loaders.Forge)
+            list1 = await GameDownload.Download(version);
+            if (list1.State != DownloadState.End)
             {
-                await GameDownload.DownloadForge(game.Version, game.LoaderInfo.Version);
+                return (DownloadState.GetInfo, null);
             }
-            else if (loaders == Loaders.Fabric)
-            {
-                await GameDownload.DownloadFabric(game.Version, game.LoaderInfo.Version);
-            }
+
+            list.AddRange(list1.List!);
         }
 
-        CoreMain.PackState?.Invoke(CoreRunState.End);
+        if (loaders == Loaders.Forge)
+        {
+            list1 = await GameDownload.DownloadForge(game.Version, game.LoaderInfo.Version);
+            if (list1.State != DownloadState.End)
+            {
+                return (DownloadState.GetInfo, null);
+            }
+
+            list.AddRange(list1.List!);
+        }
+        else if (loaders == Loaders.Fabric)
+        {
+            list1 = await GameDownload.DownloadFabric(game.Version, game.LoaderInfo.Version);
+            if (list1.State != DownloadState.End)
+            {
+                return (DownloadState.GetInfo, null);
+            }
+
+            list.AddRange(list1.List!);
+        }
+
+        return (DownloadState.End, list);
     }
 }

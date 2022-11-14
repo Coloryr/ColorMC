@@ -41,25 +41,25 @@ public static class AssetsPath
         }
     }
 
-    public static void AddIndex(AssetsObj? obj, string version)
+    public static void AddIndex(AssetsObj? obj, GameArgObj game)
     {
         if (obj == null)
             return;
-        string file = $"{BaseDir}/{Name1}/{version}.json";
+        string file = $"{BaseDir}/{Name1}/{game.assets}.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
-        if (Assets.ContainsKey(version))
+        if (Assets.ContainsKey(game.assets))
         {
-            Assets[version] = obj;
+            Assets[game.assets] = obj;
         }
         else
         {
-            Assets.Add(version, obj);
+            Assets.Add(game.assets, obj);
         }
     }
 
-    public static AssetsObj? GetIndex(string version)
+    public static AssetsObj? GetIndex(GameArgObj game)
     {
-        if (Assets.TryGetValue(version, out var item))
+        if (Assets.TryGetValue(game.assets, out var item))
         {
             return item;
         }
@@ -105,7 +105,7 @@ public static class AssetsPath
         var obj = await Get.GetAssets(item.assetIndex.url);
         if (obj == null)
             return;
-        AddIndex(obj, version);
+        AddIndex(obj, item);
         Check(obj);
     }
 }

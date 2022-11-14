@@ -10,7 +10,8 @@ namespace ColorMC.Core.Path;
 public static class VersionPath
 {
     private readonly static Dictionary<string, GameArgObj> Version = new();
-    private readonly static Dictionary<string, ForgeInstallObj> Forges = new();
+    private readonly static Dictionary<string, ForgeLaunchObj> Forges = new();
+    private readonly static Dictionary<string, ForgeInstallObj> ForgeInstalls = new();
     private readonly static Dictionary<string, FabricLoaderObj> Fabrics = new();
     public static VersionObj? Versions { get; private set; }
 
@@ -160,12 +161,41 @@ public static class VersionPath
         }
     }
 
-    public static ForgeInstallObj? GetForgeObj(GameSettingObj obj)
+    public static ForgeInstallObj? GetForgeInstallObj(GameSettingObj obj)
+    {
+        return GetForgeInstallObj(obj.Version, obj.LoaderInfo.Version);
+    }
+
+    public static ForgeInstallObj? GetForgeInstallObj(string mc, string version)
+    {
+        string key = $"{mc}-{version}";
+        if (ForgeInstalls.TryGetValue(key, out var value) && value != null)
+        {
+            return value;
+        }
+
+        string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}-install.json";
+
+        try
+        {
+            var data = File.ReadAllText(file);
+            var data1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data);
+            ForgeInstalls.Add(key, data1);
+            return data1;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("读取forge安装信息错误", e);
+            return null;
+        }
+    }
+
+    public static ForgeLaunchObj? GetForgeObj(GameSettingObj obj)
     {
         return GetForgeObj(obj.Version, obj.LoaderInfo.Version);
     }
 
-    public static ForgeInstallObj? GetForgeObj(string mc, string version)
+    public static ForgeLaunchObj? GetForgeObj(string mc, string version)
     {
         string key = $"{mc}-{version}";
         if (Forges.TryGetValue(key, out var value) && value != null)
@@ -174,11 +204,11 @@ public static class VersionPath
         }
 
         string file =  $"{BaseDir}/{Name1}/forge-{mc}-{version}.json";
-        var data = File.ReadAllText(file);
 
         try
         {
-            var data1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data);
+            var data = File.ReadAllText(file);
+            var data1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data);
             Forges.Add(key, data1);
             return data1;
         }
@@ -203,10 +233,10 @@ public static class VersionPath
         }
 
         string file = $"{BaseDir}/{Name2}/fabric-loader-{version}-{mc}.json";
-        var data = File.ReadAllText(file);
 
         try
         {
+            var data = File.ReadAllText(file);
             var data1 = JsonConvert.DeserializeObject<FabricLoaderObj>(data);
             Fabrics.Add(key, data1);
             return data1;
@@ -216,20 +246,5 @@ public static class VersionPath
             Logs.Error("读取fabric信息错误", e);
             return null;
         }
-    }
-
-    public static async Task DownloadForgeInster(string mc, string version)
-    {
-        string name = $"forge-{mc}-{version}";
-        string url = UrlHelp.DownloadForge(mc, version, BaseClient.Source);
-
-        DownloadItem item = new()
-        {
-            Url = url,
-            Name = name + "-installer",
-            Local = $"{ForgeDir}/{name}-installer.jar",
-        };
-
-        await DownloadThread.Download(item);
     }
 }

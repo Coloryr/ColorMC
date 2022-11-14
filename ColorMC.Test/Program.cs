@@ -22,6 +22,7 @@ internal class Program
         CoreMain.DownloadUpdate = Update;
         CoreMain.DownloadState = Update1;
         CoreMain.DownloadStateUpdate = Update;
+        CoreMain.GameDownload = Download;
         CoreMain.GameOverwirte = Overwirte;
         CoreMain.PackState = Update;
         CoreMain.PackUpdate = PackUpdate;
@@ -29,6 +30,11 @@ internal class Program
         TestItem.Item9();
 
         Console.ReadLine();
+    }
+
+    public static bool Download(GameSettingObj obj)
+    {
+        return true;
     }
 
     public static void Update1(CoreRunState item)

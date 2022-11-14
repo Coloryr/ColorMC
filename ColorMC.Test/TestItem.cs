@@ -37,14 +37,26 @@ public static class TestItem
         else
         {
             //GameDownload.Download(version.versions.First()).Wait();
-            GameDownload.Download(version.versions.Where(a=>a.id == "1.12.2").First()).Wait();
+            var list = GameDownload.Download(version.versions.Where(a => a.id == "1.12.2").First()).Result;
+            if (list.State != DownloadState.End)
+            {
+                Console.WriteLine("下载列表获取失败");
+                return;
+            }
+            DownloadManager.FillAll(list.List!);
             DownloadManager.Start();
         }
     }
 
     public static void Item3()
     {
-        PackDownload.DownloadCurseForge("H:\\ColonyVenture-1.13.zip").Wait();
+        var list = PackDownload.DownloadCurseForge("H:\\ColonyVenture-1.13.zip").Result;
+        if (list.State != DownloadState.End)
+        {
+            Console.WriteLine("下载列表获取失败");
+            return;
+        }
+        DownloadManager.FillAll(list.List!);
         DownloadManager.Start().Wait();
     }
 
@@ -58,7 +70,13 @@ public static class TestItem
         else
         {
             var item = res.loader.First();
-            GameDownload.DownloadFabric("1.19.2", item.version).Wait();
+            var list = GameDownload.DownloadFabric("1.19.2", item.version).Result;
+            if (list.State != DownloadState.End)
+            {
+                Console.WriteLine("下载列表获取失败");
+                return;
+            }
+            DownloadManager.FillAll(list.List!);
             DownloadManager.Start();
         }
     }
@@ -80,7 +98,13 @@ public static class TestItem
         else
         {
             var data = list.data[6];
-            PackDownload.DownloadCurseForge(data).Wait();
+            var list1 = PackDownload.DownloadCurseForge(data).Result;
+            if (list1.State != DownloadState.End)
+            {
+                Console.WriteLine("下载列表获取失败");
+                return;
+            }
+            DownloadManager.FillAll(list1.List!);
             DownloadManager.Start();
         }
     }
@@ -128,40 +152,9 @@ public static class TestItem
             UserName = "Test"
         };
 
-        List<string> temp = Launch.MakeArg(game[0], login).Result;
-        foreach (var item in temp)
-        {
-            Console.WriteLine(item);
-        }
-
-        Process process = new();
-        process.StartInfo.FileName = @"C:\Program Files\java\jdk17\bin\javaw.exe";
-        foreach (var item in temp)
-        {
-            process.StartInfo.ArgumentList.Add(item);
-        }
-
-        process.StartInfo.RedirectStandardInput = true; //重定向标准输入
-        process.StartInfo.RedirectStandardOutput = true; //重定向标准输出
-        process.StartInfo.RedirectStandardError = true;//重定向错误输出
-
-        process.OutputDataReceived += Process_OutputDataReceived;
-        process.ErrorDataReceived += Process_ErrorDataReceived;
-        process.Start();
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
+        var process = Launch.StartGame(game[0], login, null).Result;
         
         process.WaitForExit();
-    }
-
-    private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        Console.WriteLine(e.Data);
-    }
-
-    private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        Console.WriteLine(e.Data);
     }
 
     public static void Item10() 

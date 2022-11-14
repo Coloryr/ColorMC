@@ -47,13 +47,17 @@ public static class DownloadManager
         });
     }
 
-    public static void AddItem(DownloadItem item)
+    public static void FillAll(List<DownloadItem> list)
     {
-        item.Update = () =>
+        list.ForEach(item =>
         {
             CoreMain.DownloadStateUpdate?.Invoke(item);
-        };
-        Items.Enqueue(item);
+            item.Update = () =>
+            {
+                CoreMain.DownloadStateUpdate?.Invoke(item);
+            };
+            Items.Enqueue(item);
+        });
     }
 
     public static DownloadItem? GetItem()

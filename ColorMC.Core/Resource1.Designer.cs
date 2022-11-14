@@ -69,15 +69,5 @@ namespace ColorMC.Core {
                 return ((byte[])(obj));
             }
         }
-        
-        /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-        internal static byte[] installertools_1_3_0 {
-            get {
-                object obj = ResourceManager.GetObject("installertools_1_3_0", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

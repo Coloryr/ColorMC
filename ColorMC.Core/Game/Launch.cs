@@ -12,14 +12,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using static ColorMC.Core.Objs.Game.VersionObj;
-using static ColorMC.Core.Objs.JvmArgObj;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ColorMC.Core.Game;
 
@@ -83,7 +80,7 @@ public static class Launch
             }
         }
 
-        var assets = AssetsPath.GetIndex(obj.Version);
+        var assets = AssetsPath.GetIndex(game);
         if (assets == null)
         {
             assets = await Get.GetAssets(game.assetIndex.url);
@@ -92,7 +89,7 @@ public static class Launch
                 CoreMain.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
                 return null;
             }
-            AssetsPath.AddIndex(assets, game.id);
+            AssetsPath.AddIndex(assets, game);
         }
 
         var list1 = AssetsPath.Check(assets);
@@ -132,13 +129,18 @@ public static class Launch
                 if (res != true)
                     return null;
 
-                await GameDownload.DownloadForge(obj.Version, obj.LoaderInfo.Version);
+                var list4 = await GameDownload.DownloadForge(obj.Version, obj.LoaderInfo.Version);
+                if (list4.State != DownloadState.End)
+                    return null;
+
+                list.AddRange(list4.List!);
             }
             else
             {
                 foreach (var item in list3)
                 {
-                    if (item.name.StartsWith("net.minecraftforge:forge:"))
+                    if (item.name.StartsWith("net.minecraftforge:forge:") 
+                        && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
                     {
                         list.Add(new()
                         {
@@ -200,6 +202,11 @@ public static class Launch
         var jv = game.javaVersion.majorVersion;
         var list = JvmPath.Jvms.Where(a => a.Value.MajorVersion >= jv)
             .Select(a => a.Value);
+
+        if (!list.Any())
+        {
+            return null;
+        }
         var find = list.Where(a => a.Arch == SystemInfo.SystemArch);
         int max;
         if (find.Any())
@@ -379,19 +386,19 @@ public static class Launch
 
         switch (args.GC)
         {
-            case GCType.G1GC:
+            case JvmArgObj.GCType.G1GC:
                 jvmHead.Add("-XX:+UseG1GC");
                 break;
-            case GCType.SerialGC:
+            case JvmArgObj.GCType.SerialGC:
                 jvmHead.Add("-XX:+UseSerialGC");
                 break;
-            case GCType.ParallelGC:
+            case JvmArgObj.GCType.ParallelGC:
                 jvmHead.Add("-XX:+UseParallelGC");
                 break;
-            case GCType.CMSGC:
+            case JvmArgObj.GCType.CMSGC:
                 jvmHead.Add("-XX:+UseConcMarkSweepGC");
                 break;
-            case GCType.User:
+            case JvmArgObj.GCType.User:
                 if (!string.IsNullOrWhiteSpace(args.GCArgument))
                     jvmHead.Add(args.GCArgument.Trim());
                 break;
@@ -439,11 +446,13 @@ public static class Launch
         {
             if (window.Width > 0)
             {
-                gameArg.Add($"--width {window.Width}");
+                gameArg.Add($"--width");
+                gameArg.Add($"{window.Width}");
             }
             if (window.Height > 0)
             {
-                gameArg.Add($"--height {window.Height}");
+                gameArg.Add($"--height");
+                gameArg.Add($"{window.Height}");
             }
         }
 
@@ -495,7 +504,7 @@ public static class Launch
         return gameArg;
     }
 
-    public static async Task<List<string>> GetLibs(GameSettingObj obj, bool v2)
+    public static List<string> GetLibs(GameSettingObj obj, bool v2)
     {
         List<string> list = new();
         var version = VersionPath.GetGame(obj.Version)!;
@@ -513,7 +522,8 @@ public static class Launch
             var forge = VersionPath.GetForgeObj(obj)!;
             foreach (var item1 in forge.libraries)
             {
-                if (item1.name.StartsWith("net.minecraftforge:forge:"))
+                if (item1.name.StartsWith("net.minecraftforge:forge:")
+                    && string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
                 {
                     list.Add($"{LibrariesPath.BaseDir}/net/minecraftforge/forge/" +
                                 PathC.MakeForgeName(obj.Version, obj.LoaderInfo.Version));
@@ -526,8 +536,6 @@ public static class Launch
 
             if (v2)
             {
-                await VersionPath.DownloadForgeInster(obj.Version, obj.LoaderInfo.Version);
-                await LibrariesPath.ReadyForgeWrapper();
                 list.Add(LibrariesPath.ForgeWrapper);
                 list.Add($"{VersionPath.BaseDir}/{obj.Version}.jar");
             }
@@ -554,7 +562,7 @@ public static class Launch
             arg.Append($"{item};");
         }
 
-        arg.Append(VersionPath.BaseDir);
+        arg.Remove(arg.Length - 1, 1);
 
         return arg.ToString().Trim();
     }
@@ -575,11 +583,11 @@ public static class Launch
         return totalSb.ToString();
     }
 
-    public static async Task ReplaceAll(GameSettingObj obj, LoginObj login, List<string> all_arg, bool v2)
+    public static void ReplaceAll(GameSettingObj obj, LoginObj login, List<string> all_arg, bool v2)
     {
         var version = VersionPath.GetGame(obj.Version)!;
         string assetsPath = AssetsPath.BaseDir;
-        string gameDir = obj.Dir;
+        string gameDir = InstancesPath.GetDir(obj);
         string assetsIndexName;
         if (version.assets != null)
         {
@@ -595,7 +603,7 @@ public static class Launch
             Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderInfo.Version}",
             _ => obj.Version
         };
-        var libraries = await GetLibs(obj, v2);
+        var libraries = GetLibs(obj, v2);
         Dictionary<string, string> argDic = new()
             {
                 {"${auth_player_name}", login.UserName },
@@ -606,7 +614,7 @@ public static class Launch
                 {"${auth_uuid}",login.UUID },
                 {"${auth_access_token}",login.AccessToken },
                 //{"${auth_session}",login.Token },
-                //{"${game_assets}",assetsPath },
+                {"${game_assets}",assetsPath },
                 {"${user_properties}",ToList(login.Properties) },
                 {"${user_type}", $"{login.AuthType}" },
                 {"${version_type}", "ColorMC" },
@@ -652,42 +660,77 @@ public static class Launch
         }
         list.AddRange(await GameArg(obj, v2));
 
-        await ReplaceAll(obj, login, list, v2);
+        ReplaceAll(obj, login, list, v2);
 
         return list;
     }
 
-    public static async Task StartGame(GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null) 
+    public static async Task<Process?> StartGame(GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null) 
     {
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Check);
         var res = await CheckGameFile(obj);
         if (res == null)
-            return;
+            return null;
 
         if (res.Count != 0)
         {
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
+            DownloadManager.FillAll(res);
             await DownloadManager.Start();
         }
 
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
 
         var arg = await MakeArg(obj, login);
-
-        JavaInfo? jvm = null;
-        if (jvmCfg == null)
+        foreach (var item in arg)
         {
-            jvm = FindJvm(obj);
-        }
-        else
-        {
-            jvm = JvmPath.GetInfo(jvmCfg.Name);
+            Console.WriteLine(item);
         }
 
-        if (jvm == null)
+        //JavaInfo? jvm = null;
+        //if (jvmCfg == null)
+        //{
+        //    jvm = FindJvm(obj);
+        //}
+        //else
+        //{
+        //    jvm = JvmPath.GetInfo(jvmCfg.Name);
+        //}
+
+        //if (jvm == null)
+        //{
+        //    CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
+        //    return null;
+        //}
+
+        Process process = new();
+        process.StartInfo.FileName = @"C:\Program Files\java\jdk17\bin\javaw.exe";
+        process.StartInfo.WorkingDirectory = InstancesPath.GetDir(obj);
+        foreach (var item in arg)
         {
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
-            return;
+            process.StartInfo.ArgumentList.Add(item);
         }
+
+        process.StartInfo.RedirectStandardInput = true; //重定向标准输入
+        process.StartInfo.RedirectStandardOutput = true; //重定向标准输出
+        process.StartInfo.RedirectStandardError = true;//重定向错误输出
+
+        process.OutputDataReceived += Process_OutputDataReceived;
+        process.ErrorDataReceived += Process_ErrorDataReceived;
+        process.Start();
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
+
+        return process;
+    }
+
+    private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        Console.WriteLine(e.Data);
+    }
+
+    private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        Console.WriteLine(e.Data);
     }
 }
