@@ -11,7 +11,6 @@ namespace ColorMC.Core.Path;
 public static class LibrariesPath
 {
     private const string Name = "libraries";
-
     public static string BaseDir { get; private set; }
 
     public static void Init(string dir)
@@ -46,13 +45,19 @@ public static class LibrariesPath
         return list;
     }
 
-    public static List<ForgeInstallObj.Libraries>? CheckForge(GameSettingObj obj)
+    public static List<ForgeLaunchObj.Libraries>? CheckForge(GameSettingObj obj)
     {
+        var v2 = CheckRule.GameLaunchVersion(obj.Version);
+        if (v2)
+        {
+            ReadyForgeWrapper();
+        }
+
         var forge = VersionPath.GetForgeObj(obj.Version, obj.LoaderInfo.Version);
         if (forge == null)
             return null;
 
-        var list = new List<ForgeInstallObj.Libraries>();
+        var list = new List<ForgeLaunchObj.Libraries>();
 
         foreach (var item in forge.libraries)
         {
@@ -74,6 +79,30 @@ public static class LibrariesPath
                 }
             }
             else
+            {
+                string file = $"{BaseDir}/{item.downloads.artifact.path}";
+                if (!File.Exists(file))
+                {
+                    list.Add(item);
+                    continue;
+                }
+                using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
+                    FileShare.ReadWrite);
+                var sha1 = Sha1.GenSha1(stream);
+                if (item.downloads.artifact.sha1 != sha1)
+                {
+                    list.Add(item);
+                }
+            }
+        }
+
+        var forgeinstall = VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderInfo.Version);
+        if (forgeinstall == null && v2)
+            return null;
+
+        if (forgeinstall != null)
+        {
+            foreach (var item in forgeinstall.libraries)
             {
                 string file = $"{BaseDir}/{item.downloads.artifact.path}";
                 if (!File.Exists(file))
@@ -117,8 +146,7 @@ public static class LibrariesPath
     }
 
     public static string ForgeWrapper => BaseDir + "/io/github/zekerzhayard/ForgeWrapper/mmc3/ForgeWrapper-mmc3.jar";
-    public static string ForgeWrapper1 => BaseDir + "net/minecraftforge/installertools/1.3.0/installertools-1.3.0.jar";
-    public static async Task ReadyForgeWrapper()
+    public static void ReadyForgeWrapper()
     {
         var file = new FileInfo(ForgeWrapper);
         if (!file.Exists)
@@ -127,17 +155,7 @@ public static class LibrariesPath
             {
                 Directory.CreateDirectory(file.DirectoryName!);
             }
-            await File.WriteAllBytesAsync(file.FullName, Resource1.ForgeWrapper_mmc3);
-        }
-
-        file = new FileInfo(ForgeWrapper1);
-        if (!file.Exists)
-        {
-            if (!Directory.Exists(file.DirectoryName))
-            {
-                Directory.CreateDirectory(file.DirectoryName!);
-            }
-            await File.WriteAllBytesAsync(file.FullName, Resource1.installertools_1_3_0);
+            File.WriteAllBytes(file.FullName, Resource1.ForgeWrapper_mmc3);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Utils;
+﻿using ColorMC.Core.Http.Download;
+using ColorMC.Core.Utils;
 using System.Buffers;
 using static ICSharpCode.SharpZipLib.Zip.FastZip;
 
