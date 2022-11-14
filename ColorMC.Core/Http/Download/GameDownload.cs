@@ -5,15 +5,12 @@ using ColorMC.Core.Path;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace ColorMC.Core.Http.Download;
 
 public enum DownloadState
-{ 
+{
     Init, GetInfo, End
 }
 
@@ -95,7 +92,7 @@ public static class GameDownload
                         Url = UrlHelp.DownloadLibraries(lib.url, BaseClient.Source),
                         Local = $"{LibrariesPath.BaseDir}/{lib.path}",
                         SHA1 = lib.sha1,
-                        Later = ()=> UnpackNative($"{LibrariesPath.BaseDir}/{lib.path}")
+                        Later = () => UnpackNative($"{LibrariesPath.BaseDir}/{lib.path}")
                     });
                 }
             }
@@ -104,7 +101,7 @@ public static class GameDownload
         return list;
     }
 
-    public static void UnpackNative(string local) 
+    public static void UnpackNative(string local)
     {
         using ZipFile zFile = new(local);
         foreach (ZipEntry e in zFile)
@@ -168,7 +165,7 @@ public static class GameDownload
         byte[] array1 = stream1.ToArray();
         byte[] array2 = stream2.ToArray();
 
-        
+
         if (find1)
         {
             ForgeInstallObj info1;
@@ -215,7 +212,7 @@ public static class GameDownload
         return (DownloadState.End, list);
     }
 
-    public static List<DownloadItem> MakeForgeLibs(ForgeLaunchObj info, string mc, string version) 
+    public static List<DownloadItem> MakeForgeLibs(ForgeLaunchObj info, string mc, string version)
     {
         var list = new List<DownloadItem>();
         foreach (var item1 in info.libraries)
@@ -262,7 +259,7 @@ public static class GameDownload
             return (DownloadState.Init, null);
         }
 
-        FabircMetaObj.Loader? fabric;
+        FabricMetaObj.Loader? fabric;
 
         if (version != null)
         {
@@ -295,7 +292,64 @@ public static class GameDownload
             var name = PathC.ToName(item.name);
             list.Add(new()
             {
-                Url = UrlHelp.DownloadFabric(BaseClient.Source) + name.Item1,
+                Url = UrlHelp.DownloadQuilt(item.url + name.Item1, BaseClient.Source),
+                Name = name.Item2,
+                Local = $"{LibrariesPath.BaseDir}/{name.Item1}"
+            });
+
+        }
+
+        return (DownloadState.End, list);
+    }
+
+    public static Task<(DownloadState State, List<DownloadItem>? List)> DownloadQuilt(GameSettingObj obj)
+    {
+        return DownloadQuilt(obj.Version, obj.LoaderInfo.Version);
+    }
+
+    public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadQuilt(string mc, string? version = null)
+    {
+        var list = new List<DownloadItem>();
+        var meta = await Get.GetQuiltMeta(BaseClient.Source);
+        if (meta == null)
+        {
+            return (DownloadState.Init, null);
+        }
+
+        QuiltMetaObj.Loader? quilt;
+
+        if (version != null)
+        {
+            quilt = meta.loader.Where(a => a.version == version).FirstOrDefault();
+        }
+        else
+        {
+            quilt = meta.loader.FirstOrDefault();
+        }
+        if (quilt == null)
+        {
+            return (DownloadState.GetInfo, null);
+        }
+
+        version = quilt.version;
+
+        CoreMain.DownloadState?.Invoke(CoreRunState.GetInfo);
+
+        QuiltLoaderObj? meta1 = await Get.GetQuiltLoader(mc, version, BaseClient.Source);
+        if (meta1 == null)
+        {
+            return (DownloadState.GetInfo, null);
+        }
+
+        File.WriteAllText($"{VersionPath.QuiltDir}/{meta1.id}.json",
+            JsonConvert.SerializeObject(meta1));
+
+        foreach (var item in meta1.libraries)
+        {
+            var name = PathC.ToName(item.name);
+            list.Add(new()
+            {
+                Url = UrlHelp.DownloadQuilt(item.url + name.Item1, BaseClient.Source),
                 Name = name.Item2,
                 Local = $"{LibrariesPath.BaseDir}/{name.Item1}"
             });

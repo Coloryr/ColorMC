@@ -1,8 +1,6 @@
 ﻿using ColorMC.Core.Http;
-using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Path;
@@ -13,16 +11,19 @@ public static class VersionPath
     private readonly static Dictionary<string, ForgeLaunchObj> Forges = new();
     private readonly static Dictionary<string, ForgeInstallObj> ForgeInstalls = new();
     private readonly static Dictionary<string, FabricLoaderObj> Fabrics = new();
+    private readonly static Dictionary<string, QuiltLoaderObj> Quilts = new();
     public static VersionObj? Versions { get; private set; }
 
     public static string ForgeDir => BaseDir + "/" + Name1;
     public static string FabricDir => BaseDir + "/" + Name2;
+    public static string QuiltDir => BaseDir + "/" + Name3;
 
 
     private const string Name = "versions";
 
     private const string Name1 = "forge";
     private const string Name2 = "fabric";
+    private const string Name3 = "quilt";
 
     public static string BaseDir { get; private set; }
 
@@ -32,8 +33,9 @@ public static class VersionPath
 
         Directory.CreateDirectory(BaseDir);
 
-        Directory.CreateDirectory($"{BaseDir}/{Name1}");
-        Directory.CreateDirectory($"{BaseDir}/{Name2}");
+        Directory.CreateDirectory(ForgeDir);
+        Directory.CreateDirectory(FabricDir);
+        Directory.CreateDirectory(QuiltDir);
 
         DirectoryInfo info = new(BaseDir);
 
@@ -203,7 +205,7 @@ public static class VersionPath
             return value;
         }
 
-        string file =  $"{BaseDir}/{Name1}/forge-{mc}-{version}.json";
+        string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}.json";
 
         try
         {
@@ -239,6 +241,35 @@ public static class VersionPath
             var data = File.ReadAllText(file);
             var data1 = JsonConvert.DeserializeObject<FabricLoaderObj>(data);
             Fabrics.Add(key, data1);
+            return data1;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("读取fabric信息错误", e);
+            return null;
+        }
+    }
+
+    public static QuiltLoaderObj? GetQuiltObj(GameSettingObj obj)
+    {
+        return GetQuiltObj(obj.Version, obj.LoaderInfo.Version);
+    }
+
+    public static QuiltLoaderObj? GetQuiltObj(string mc, string version)
+    {
+        string key = $"{mc}-{version}";
+        if (Quilts.TryGetValue(key, out var value) && value != null)
+        {
+            return value;
+        }
+
+        string file = $"{BaseDir}/{Name3}/quilt-loader-{version}-{mc}.json";
+
+        try
+        {
+            var data = File.ReadAllText(file);
+            var data1 = JsonConvert.DeserializeObject<QuiltLoaderObj>(data);
+            Quilts.Add(key, data1);
             return data1;
         }
         catch (Exception e)

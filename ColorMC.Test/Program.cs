@@ -3,11 +3,12 @@ using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Http.Login;
-using ColorMC.Core.Http.MoJang;
+using ColorMC.Core.Http.Apis;
 using ColorMC.Core.Login;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Path;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace ColorMC.Test;
 
@@ -26,6 +27,7 @@ internal class Program
         CoreMain.GameOverwirte = Overwirte;
         CoreMain.PackState = Update;
         CoreMain.PackUpdate = PackUpdate;
+        CoreMain.ProcessLog = Log;
 
         TestItem.Item9();
 
@@ -35,6 +37,11 @@ internal class Program
     public static bool Download(GameSettingObj obj)
     {
         return true;
+    }
+
+    public static void Log(Process? progress, string? log) 
+    {
+        Console.WriteLine(log);
     }
 
     public static void Update1(CoreRunState item)

@@ -1,11 +1,4 @@
-﻿using ColorMC.Core.Path;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Utils;
+﻿namespace ColorMC.Core.Utils;
 
 public static class PathC
 {

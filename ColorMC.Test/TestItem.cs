@@ -2,7 +2,7 @@
 using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Http.MoJang;
+using ColorMC.Core.Http.Apis;
 using ColorMC.Core.Login;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Objs.Pack;
@@ -135,7 +135,7 @@ public static class TestItem
         }
         else
         {
-            var data1 = APIs.GetMinecraftProfileAsync(data.Token).Result;
+            var data1 = Minecraft.GetMinecraftProfileAsync(data.Token).Result;
             Console.WriteLine(data);
             Console.WriteLine(JsonConvert.SerializeObject(data1));
         }
@@ -152,9 +152,9 @@ public static class TestItem
             UserName = "Test"
         };
 
-        var process = Launch.StartGame(game[2], login, null).Result;
+        var process = game[3].StartGame(login, null).Result;
         
-        process.WaitForExit();
+        process?.WaitForExit();
     }
 
     public static void Item10() 

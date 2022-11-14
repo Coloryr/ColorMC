@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Minecraft;
+﻿namespace ColorMC.Core.Objs.Minecraft;
 
 public record PlayerAttributesObj
 {
     public record Privileges
     {
         public record Enable
-        { 
+        {
             public bool enabled { get; set; }
         }
 
@@ -22,7 +16,7 @@ public record PlayerAttributesObj
     }
 
     public record ProfanityFilterPreferences
-    { 
+    {
         public bool profanityFilterOn { get; set; }
     }
     public record BanStatus
@@ -30,7 +24,7 @@ public record PlayerAttributesObj
         public record BannedScopes
         {
             public record MultiPlayer
-            { 
+            {
                 public string banId { get; set; }
                 public long expires { get; set; }
                 public string reason { get; set; }

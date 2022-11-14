@@ -1,16 +1,10 @@
 ﻿using ColorMC.Core.Login;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Http.Login;
 
 public record OAuthObj
-{ 
+{
     public string user_code { get; set; }
     public string device_code { get; set; }
     public string verification_uri { get; set; }

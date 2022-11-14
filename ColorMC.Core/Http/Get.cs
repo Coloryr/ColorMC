@@ -1,7 +1,5 @@
-﻿using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Objs.Game;
+﻿using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Objs.Pack;
-using ColorMC.Core.Path;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
@@ -170,14 +168,14 @@ public static class Get
         }
     }
 
-    public static async Task<FabircMetaObj?> GetFabricMeta(SourceLocal? local = null)
+    public static async Task<FabricMetaObj?> GetFabricMeta(SourceLocal? local = null)
     {
         try
         {
             var data = await BaseClient.GetString(UrlHelp.FabricMeta(local));
             if (string.IsNullOrWhiteSpace(data))
                 return null;
-            return JsonConvert.DeserializeObject<FabircMetaObj>(data);
+            return JsonConvert.DeserializeObject<FabricMetaObj>(data);
         }
         catch (Exception e)
         {
@@ -195,6 +193,39 @@ public static class Get
             if (string.IsNullOrWhiteSpace(data))
                 return null;
             return JsonConvert.DeserializeObject<FabricLoaderObj>(data);
+        }
+        catch (Exception e)
+        {
+            Logs.Error("获取版本信息发生错误", e);
+            return null;
+        }
+    }
+
+    public static async Task<QuiltMetaObj?> GetQuiltMeta(SourceLocal? local = null)
+    {
+        try
+        {
+            var data = await BaseClient.GetString(UrlHelp.QuiltMeta(local));
+            if (string.IsNullOrWhiteSpace(data))
+                return null;
+            return JsonConvert.DeserializeObject<QuiltMetaObj>(data);
+        }
+        catch (Exception e)
+        {
+            Logs.Error("获取版本信息发生错误", e);
+            return null;
+        }
+    }
+
+    public static async Task<QuiltLoaderObj?> GetQuiltLoader(string mc, string version, SourceLocal? local = null)
+    {
+        try
+        {
+            string url = $"{UrlHelp.QuiltMeta(local)}/loader/{mc}/{version}/profile/json";
+            var data = await BaseClient.GetString(url);
+            if (string.IsNullOrWhiteSpace(data))
+                return null;
+            return JsonConvert.DeserializeObject<QuiltLoaderObj>(data);
         }
         catch (Exception e)
         {

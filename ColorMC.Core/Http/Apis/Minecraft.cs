@@ -1,15 +1,10 @@
 ﻿using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.MoJang;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ColorMC.Core.Http.MoJang;
+namespace ColorMC.Core.Http.Apis;
 
-public static class APIs
+public static class Minecraft
 {
     /// <summary>
     /// Get player's minecraft profile

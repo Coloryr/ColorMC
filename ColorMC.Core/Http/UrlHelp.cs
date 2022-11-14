@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Utils;
+using System;
 
 namespace ColorMC.Core.Http;
 
@@ -102,7 +103,7 @@ public static class UrlHelp
     {
         string? url = local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/" + 
+            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/" +
                     PathC.MakeForgeName(mc, version),
             SourceLocal.MCBBS => $"{MCBBS}maven/net/minecraftforge/forge/" +
                     PathC.MakeForgeName(mc, version),
@@ -146,13 +147,45 @@ public static class UrlHelp
         return url;
     }
 
-    public static string DownloadFabric(SourceLocal? local)
+    public static string QuiltMeta(SourceLocal? local)
     {
-        return local switch
+        string? url = local switch
+        {
+            //SourceLocal.BMCLAPI => $"{BMCLAPI}quilt-meta/v3/versions",
+            //SourceLocal.MCBBS => $"{MCBBS}quilt-meta/v3/versions",
+            _ => $"https://meta.quiltmc.org/v3/versions"
+        };
+
+        return url;
+    }
+
+    public static string DownloadFabric(string url, SourceLocal? local)
+    {
+        string? replace = local switch
         {
             SourceLocal.BMCLAPI => BMCLAPI + "maven/",
             SourceLocal.MCBBS => MCBBS + "maven/",
-            _ => "https://maven.fabricmc.net/"
+            _ => null
         };
+
+        if (replace == null)
+            return url;
+
+        return url.Replace("https://maven.fabricmc.net/", replace);
+    }
+
+    public static string DownloadQuilt(string url,  SourceLocal? local)
+    {
+        string? replace = local switch
+        {
+            //SourceLocal.BMCLAPI => BMCLAPI + "maven/",
+            //SourceLocal.MCBBS => MCBBS + "maven/",
+            _ => null
+        };
+
+        if (replace == null)
+            return url;
+
+        return url.Replace("https://maven.quiltmc.org/repository/release/", replace);
     }
 }

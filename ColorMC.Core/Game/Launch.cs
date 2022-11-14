@@ -1,27 +1,20 @@
 ﻿using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Http.MoJang;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Objs.MoJang;
 using ColorMC.Core.Path;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
 namespace ColorMC.Core.Game;
 
 public enum LaunchState
-{ 
+{
     Check, LostVersion, LostLib, LostAssets, LostLoader, Download,
     JvmPrepare,
     VersionError, AssetsError, LoaderError, JvmError
@@ -49,7 +42,7 @@ public static class Launch
 
             await GameDownload.Download(version);
 
-            game = VersionPath.GetGame(obj.Version);
+            game = VersionPath.GetGame(obj.Version)!;
         }
 
         string file = $"{VersionPath.BaseDir}/{obj.Version}.jar";
@@ -140,7 +133,33 @@ public static class Launch
                 if (res != true)
                     return null;
 
-                await GameDownload.DownloadFabric(obj.Version, obj.LoaderInfo.Version);
+                var list4 = await GameDownload.DownloadFabric(obj.Version, obj.LoaderInfo.Version);
+                if (list4.State != DownloadState.End)
+                    return null;
+
+                list.AddRange(list4.List!);
+            }
+            else
+            {
+                list.AddRange(list3);
+            }
+        }
+        else if (obj.Loader == Loaders.Quilt)
+        {
+            var list3 = LibrariesPath.CheckQuilt(obj);
+            if (list3 == null)
+            {
+                CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
+                var res = CoreMain.GameDownload?.Invoke(obj);
+
+                if (res != true)
+                    return null;
+
+                var list4 = await GameDownload.DownloadQuilt(obj.Version, obj.LoaderInfo.Version);
+                if (list4.State != DownloadState.End)
+                    return null;
+
+                list.AddRange(list4.List!);
             }
             else
             {
@@ -174,15 +193,14 @@ public static class Launch
         return list.Where(x => x.MajorVersion == max).FirstOrDefault();
     }
 
-    public static List<string> MakeV1JvmArg()
+    public readonly static List<string> V1JvmArg = new()
     {
-        return new() 
-        { 
-            "-Djava.library.path=${natives_directory}", "-cp", "${classpath}" 
-        };
-    }
+        "-Djava.library.path=${natives_directory}", "-cp", "${classpath}"
+    };
 
-    public static List<string> MakeV2JvmArg(GameSettingObj obj) 
+    public static List<string> MakeV1JvmArg() => V1JvmArg;
+
+    public static List<string> MakeV2JvmArg(GameSettingObj obj)
     {
         var game = VersionPath.GetGame(obj.Version)!;
         if (game.arguments == null)
@@ -226,7 +244,7 @@ public static class Launch
                 arg.Add(item);
             }
         }
-        else if(obj.Loader == Loaders.Fabric)
+        else if (obj.Loader == Loaders.Fabric)
         {
             var fabric = VersionPath.GetFabricObj(obj)!;
             foreach (var item in fabric.arguments.jvm)
@@ -298,6 +316,14 @@ public static class Launch
         {
             var fabric = VersionPath.GetFabricObj(obj)!;
             foreach (var item in fabric.arguments.game)
+            {
+                arg.Add(item);
+            }
+        }
+        else if (obj.Loader == Loaders.Quilt)
+        {
+            var quilt = VersionPath.GetQuiltObj(obj)!;
+            foreach (var item in quilt.arguments.game)
             {
                 arg.Add(item);
             }
@@ -387,7 +413,7 @@ public static class Launch
         return jvmHead;
     }
 
-    public static async Task<List<string>> GameArg(GameSettingObj obj, bool v2) 
+    public static async Task<List<string>> GameArg(GameSettingObj obj, bool v2)
     {
         List<string> gameArg = new();
         gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
@@ -418,15 +444,19 @@ public static class Launch
 
             if (server.State == ServerInfo.StateType.GOOD)
             {
-                gameArg.Add($"--server {server.ServerAddress}");
-                   gameArg.Add($"--port {server.ServerPort}");
+                gameArg.Add($"--server");
+                gameArg.Add(server.ServerAddress);
+                gameArg.Add($"--port");
+                gameArg.Add(server.ServerPort.ToString());
             }
             else
             {
-                gameArg.Add($"--server {server.ServerAddress}");
+                gameArg.Add($"--server");
+                gameArg.Add(server.ServerAddress);
                 if (obj.StartServer.Port > 0)
                 {
-                    gameArg.Add($"--port {obj.StartServer.Port}");
+                    gameArg.Add($"--port");
+                    gameArg.Add(obj.StartServer.Port.ToString());
                 }
             }
         }
@@ -440,19 +470,23 @@ public static class Launch
         {
             if (!string.IsNullOrWhiteSpace(obj.ProxyHost.IP))
             {
-                gameArg.Add($"--proxyHost {obj.ProxyHost.IP}");
+                gameArg.Add($"--proxyHost");
+                gameArg.Add(obj.ProxyHost.IP);
             }
             if (obj.ProxyHost.Port != 0)
             {
-                gameArg.Add($"--proxyPort {obj.ProxyHost.Port}");
+                gameArg.Add($"--proxyPort");
+                gameArg.Add(obj.ProxyHost.Port.ToString());
             }
             if (!string.IsNullOrWhiteSpace(obj.ProxyHost.User))
             {
-                gameArg.Add($"--proxyUser {obj.ProxyHost.User}");
+                gameArg.Add($"--proxyUser");
+                gameArg.Add(obj.ProxyHost.User);
             }
             if (!string.IsNullOrWhiteSpace(obj.ProxyHost.Password))
             {
-                gameArg.Add($"--proxyPass {obj.ProxyHost.Password}");
+                gameArg.Add($"--proxyPass");
+                gameArg.Add(obj.ProxyHost.Password);
             }
         }
 
@@ -479,10 +513,19 @@ public static class Launch
                 list.Add(LibrariesPath.ForgeWrapper);
             }
         }
-        else if (obj.Loader == Loaders.Fabric) 
+        else if (obj.Loader == Loaders.Fabric)
         {
             var fabric = VersionPath.GetFabricObj(obj)!;
             foreach (var item in fabric.libraries)
+            {
+                var name = PathC.ToName(item.name);
+                list.Add($"{LibrariesPath.BaseDir}/{name.Item1}");
+            }
+        }
+        else if (obj.Loader == Loaders.Quilt)
+        {
+            var quilt = VersionPath.GetQuiltObj(obj)!;
+            foreach (var item in quilt.libraries)
             {
                 var name = PathC.ToName(item.name);
                 list.Add($"{LibrariesPath.BaseDir}/{name.Item1}");
@@ -494,21 +537,7 @@ public static class Launch
         return list;
     }
 
-    private static string GetClassPaths(List<string> libs)
-    {
-        StringBuilder arg = new();
-
-        foreach (var item in libs)
-        {
-            arg.Append($"{item};");
-        }
-
-        arg.Remove(arg.Length - 1, 1);
-
-        return arg.ToString().Trim();
-    }
-
-    public static string ToList(List<UserPropertyObj> properties)
+    public static string UserPropertyToList(List<UserPropertyObj> properties)
     {
         if (properties == null)
         {
@@ -542,9 +571,18 @@ public static class Launch
         {
             Loaders.Forge => $"forge-{obj.Version}-{obj.LoaderInfo.Version}",
             Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderInfo.Version}",
+            Loaders.Quilt => $"quilt-{obj.Version}-{obj.LoaderInfo.Version}",
             _ => obj.Version
         };
         var libraries = GetLibs(obj, v2);
+        StringBuilder arg = new();
+        foreach (var item in libraries)
+        {
+            arg.Append($"{item};");
+        }
+        arg.Remove(arg.Length - 1, 1);
+        string classpath = arg.ToString().Trim();
+
         Dictionary<string, string> argDic = new()
             {
                 {"${auth_player_name}", login.UserName },
@@ -556,7 +594,7 @@ public static class Launch
                 {"${auth_access_token}",login.AccessToken },
                 //{"${auth_session}",login.Token },
                 {"${game_assets}",assetsPath },
-                {"${user_properties}",ToList(login.Properties) },
+                {"${user_properties}",UserPropertyToList(login.Properties) },
                 {"${user_type}", $"{login.AuthType}" },
                 {"${version_type}", "ColorMC" },
                 {"${natives_directory}", LibrariesPath.NativeDir },
@@ -564,7 +602,7 @@ public static class Launch
                 {"${classpath_separator}", ";" },
                 {"${launcher_name}","ColorMC" },
                 {"${launcher_version}", Assembly.GetExecutingAssembly().GetName().Version.ToString() },
-                {"${classpath}", GetClassPaths(libraries) },
+                {"${classpath}", classpath },
             };
 
         for (int a = 0; a < all_arg.Count; a++)
@@ -573,7 +611,7 @@ public static class Launch
         }
     }
 
-    public static async Task<List<string>> MakeArg(GameSettingObj obj, LoginObj login) 
+    public static async Task<List<string>> MakeArg(GameSettingObj obj, LoginObj login)
     {
         var list = new List<string>();
         var version = VersionPath.GetGame(obj.Version)!;
@@ -599,6 +637,12 @@ public static class Launch
             var fabric = VersionPath.GetFabricObj(obj)!;
             list.Add(fabric.mainClass);
         }
+        else if (obj.Loader == Loaders.Quilt)
+        {
+            var quilt = VersionPath.GetQuiltObj(obj)!;
+            list.Add(quilt.mainClass);
+        }
+
         list.AddRange(await GameArg(obj, v2));
 
         ReplaceAll(obj, login, list, v2);
@@ -606,7 +650,7 @@ public static class Launch
         return list;
     }
 
-    public static async Task<Process?> StartGame(GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null) 
+    public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null)
     {
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Check);
         var res = await CheckGameFile(obj);
@@ -645,16 +689,17 @@ public static class Launch
         //}
 
         Process process = new();
-        process.StartInfo.FileName = @"C:\Program Files\java\jdk8\bin\javaw.exe";
+        process.StartInfo.FileName = @"C:\Program Files\java\jdk17\bin\javaw.exe";
         process.StartInfo.WorkingDirectory = InstancesPath.GetDir(obj);
+        Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
         foreach (var item in arg)
         {
             process.StartInfo.ArgumentList.Add(item);
         }
 
-        process.StartInfo.RedirectStandardInput = true; //重定向标准输入
-        process.StartInfo.RedirectStandardOutput = true; //重定向标准输出
-        process.StartInfo.RedirectStandardError = true;//重定向错误输出
+        process.StartInfo.RedirectStandardInput = true;
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.RedirectStandardError = true;
 
         process.OutputDataReceived += Process_OutputDataReceived;
         process.ErrorDataReceived += Process_ErrorDataReceived;
@@ -667,11 +712,11 @@ public static class Launch
 
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
-        Console.WriteLine(e.Data);
+        CoreMain.ProcessLog(sender as Process, e.Data);
     }
 
     private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
-        Console.WriteLine(e.Data);
+        CoreMain.ProcessLog(sender as Process, e.Data);
     }
 }

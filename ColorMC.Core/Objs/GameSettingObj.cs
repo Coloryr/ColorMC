@@ -2,7 +2,7 @@
 
 public enum Loaders
 {
-    Normal, Forge, Fabric
+    Normal, Forge, Fabric, Quilt
 }
 
 public record LoaderInfoObj
@@ -12,7 +12,7 @@ public record LoaderInfoObj
 }
 
 public record ServerObj
-{ 
+{
     public string IP { get; set; }
     public ushort Port { get; set; }
 }

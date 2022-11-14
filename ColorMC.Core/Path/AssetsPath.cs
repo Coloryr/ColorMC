@@ -1,8 +1,7 @@
+using ColorMC.Core.Http;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using ColorMC.Core.Http;
 
 namespace ColorMC.Core.Path;
 
@@ -67,7 +66,7 @@ public static class AssetsPath
         return null;
     }
 
-    public static List<string> Check(AssetsObj obj) 
+    public static List<string> Check(AssetsObj obj)
     {
         var list = new List<string>();
         foreach (var item in obj.objects)
@@ -94,7 +93,7 @@ public static class AssetsPath
     /// </summary>
     /// <param name="version"></param>
     /// <returns></returns>
-    public static async Task CheckUpdate(string version) 
+    public static async Task CheckUpdate(string version)
     {
         var item = VersionPath.GetGame(version);
         if (item == null)

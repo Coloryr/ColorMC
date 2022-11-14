@@ -1,6 +1,6 @@
 ﻿namespace ColorMC.Core.Objs.Game;
 
-public record FabircMetaObj
+public record FabricMetaObj
 {
     public record Game
     {
