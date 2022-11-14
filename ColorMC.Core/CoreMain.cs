@@ -4,6 +4,7 @@ using ColorMC.Core.Login;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Path;
 using ColorMC.Core.Utils;
+using System.Diagnostics;
 
 namespace ColorMC.Core;
 
@@ -37,6 +38,8 @@ public static class CoreMain
     public static Action<int, int> PackUpdate;
 
     public static Action<AuthState> AuthState;
+
+    public static Action<Process?, string?> ProcessLog;
 
     public static void Init(string dir)
     {

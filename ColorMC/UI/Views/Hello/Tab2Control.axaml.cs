@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Core;
+using ColorMC.Core.Utils;
 using ColorMC.UIBinding;
 using DynamicData;
 using System.Collections.ObjectModel;

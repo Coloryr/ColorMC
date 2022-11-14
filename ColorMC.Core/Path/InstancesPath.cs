@@ -1,10 +1,6 @@
-using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
-using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System;
 
 namespace ColorMC.Core.Path;
 
@@ -43,7 +39,7 @@ public static class InstancesPath
         }
     }
 
-    public static List<GameSettingObj> GetGames() 
+    public static List<GameSettingObj> GetGames()
     {
         return new(Games.Values);
     }
@@ -96,7 +92,7 @@ public static class InstancesPath
         return obj.Dir + "/" + Name2;
     }
 
-    public static Task InstallForge(GameSettingObj obj, string version) 
+    public static Task InstallForge(GameSettingObj obj, string version)
     {
         obj.LoaderInfo = new()
         {
@@ -124,6 +120,21 @@ public static class InstancesPath
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
 
         return GameDownload.DownloadFabric(obj.Version, version);
+    }
+
+    public static Task InstallQuilt(GameSettingObj obj, string version)
+    {
+        obj.LoaderInfo = new()
+        {
+            Version = version,
+            Name = "quilt"
+        };
+        obj.Loader = Loaders.Quilt;
+
+        var file = obj.Dir + "/" + Name1;
+        File.WriteAllText(file, JsonConvert.SerializeObject(obj));
+
+        return GameDownload.DownloadQuilt(obj.Version, version);
     }
 
     public static void Uninstall(GameSettingObj obj)

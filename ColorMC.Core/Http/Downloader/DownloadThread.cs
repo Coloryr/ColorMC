@@ -1,7 +1,5 @@
-﻿using ColorMC.Core.Http.Download;
-using ColorMC.Core.Utils;
+﻿using ColorMC.Core.Utils;
 using System.Buffers;
-using static ICSharpCode.SharpZipLib.Zip.FastZip;
 
 namespace ColorMC.Core.Http.Downloader;
 
@@ -108,7 +106,7 @@ public class DownloadThread
             try
             {
                 using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-               
+
                 int bytesRead;
                 while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer), cancel).ConfigureAwait(false)) != 0)
                 {
@@ -133,7 +131,7 @@ public class DownloadThread
             {
                 ArrayPool<byte>.Shared.Return(buffer);
             }
-            
+
             item.State = DownloadItemState.Action;
             item.Update?.Invoke();
 

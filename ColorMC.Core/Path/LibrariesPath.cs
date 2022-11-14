@@ -1,11 +1,9 @@
-﻿using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Http;
+﻿using ColorMC.Core.Http;
+using ColorMC.Core.Http.Download;
+using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
-using System.Collections.Generic;
-using System;
-using ColorMC.Core.Http.Download;
 
 namespace ColorMC.Core.Path;
 
@@ -45,7 +43,7 @@ public static class LibrariesPath
             }
         }
 
-        foreach(var item in list1)
+        foreach (var item in list1)
         {
             if (item.Later != null)
             {
@@ -97,7 +95,7 @@ public static class LibrariesPath
                 string file = $"{BaseDir}/{item.downloads.artifact.path}";
                 if (!File.Exists(file))
                 {
-                    list.Add(new() 
+                    list.Add(new()
                     {
                         Local = file,
                         Name = item.name,
@@ -141,9 +139,36 @@ public static class LibrariesPath
             {
                 list.Add(new()
                 {
-                    Url = UrlHelp.DownloadFabric(BaseClient.Source) + name.Item1,
+                    Url = UrlHelp.DownloadFabric(item.url + name.Item1, BaseClient.Source),
                     Name = name.Item2,
-                    Local = $"{LibrariesPath.BaseDir}/{name.Item1}"
+                    Local = $"{BaseDir}/{name.Item1}"
+                });
+                continue;
+            }
+        }
+
+        return list;
+    }
+
+    public static List<DownloadItem>? CheckQuilt(GameSettingObj obj)
+    {
+        var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderInfo.Version);
+        if (quilt == null)
+            return null;
+
+        var list = new List<DownloadItem>();
+
+        foreach (var item in quilt.libraries)
+        {
+            var name = PathC.ToName(item.name);
+            string file = $"{BaseDir}/{name.Item1}";
+            if (!File.Exists(file))
+            {
+                list.Add(new()
+                {
+                    Url = UrlHelp.DownloadQuilt(item.url + name.Item1, BaseClient.Source),
+                    Name = name.Item2,
+                    Local = $"{BaseDir}/{name.Item1}"
                 });
                 continue;
             }

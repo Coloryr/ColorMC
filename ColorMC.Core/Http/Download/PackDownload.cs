@@ -4,7 +4,6 @@ using ColorMC.Core.Objs.Pack;
 using ColorMC.Core.Path;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System;
 using System.Text;
 
 namespace ColorMC.Core.Http.Download;

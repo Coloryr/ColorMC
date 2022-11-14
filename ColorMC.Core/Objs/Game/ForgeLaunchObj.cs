@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using static ColorMC.Core.Objs.Game.GameArgObj.Libraries.Downloads;
+﻿using static ColorMC.Core.Objs.Game.GameArgObj.Libraries.Downloads;
 
 namespace ColorMC.Core.Objs.Game;
 
@@ -19,7 +18,7 @@ public record ForgeLaunchObj
         public Downloads downloads { get; set; }
     }
     public record Arguments
-    { 
+    {
         public List<string> game { get; set; }
         public List<string> jvm { get; set; }
     }

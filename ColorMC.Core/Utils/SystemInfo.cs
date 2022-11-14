@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace ColorMC.Core;
+namespace ColorMC.Core.Utils;
 
 public enum ArchEnum
 {

@@ -1,10 +1,5 @@
 ﻿using ColorMC.Core.Http.Login;
 using ColorMC.Core.Objs.Game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Login;
 
@@ -20,7 +15,7 @@ public enum AuthState
 }
 
 public enum LoginState
-{ 
+{
     Done, TimeOut, JsonError, Error
 }
 
@@ -50,7 +45,7 @@ public static class Auth
             return new()
             {
                 RefreshToken = oauth.Auth!.refresh_token,
-                AuthType = AuthType.OAuth, 
+                AuthType = AuthType.OAuth,
                 Token = Auth.AccessToken!
             };
         }
