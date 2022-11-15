@@ -31,25 +31,6 @@ public static class ForgeHelp
         }
     }
 
-    public static void UnpackNative(string version, string local)
-    {
-        if (!File.Exists(local))
-            return;
-        using ZipFile zFile = new(local);
-        foreach (ZipEntry e in zFile)
-        {
-            if (e.Name.StartsWith("META-INF"))
-                continue;
-            if (e.IsFile)
-            {
-                using var stream1 = new FileStream(LibrariesPath.GetNativeDir(version) + "/" + e.Name,
-                    FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-                using var stream = zFile.GetInputStream(e);
-                stream.CopyTo(stream1);
-            }
-        }
-    }
-
     public static List<DownloadItem> MakeForgeLibs(ForgeLaunchObj info, string mc, string version)
     {
         var v2 = CheckRule.GameLaunchVersion(mc);

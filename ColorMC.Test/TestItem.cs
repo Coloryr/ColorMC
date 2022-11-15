@@ -227,15 +227,15 @@ public static class TestItem
         //process = game.StartGame(login, null).Result;
         //process?.WaitForExit();
 
-        game.Version = "1.11.2";
-        game.LoaderInfo.Version = "13.20.1.2588";
-        process = game.StartGame(login, null).Result;
-        process?.WaitForExit();
+        //game.Version = "1.11.2";
+        //game.LoaderInfo.Version = "13.20.1.2588";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
 
-        game.Version = "1.12.2";
-        game.LoaderInfo.Version = "14.23.5.2860";
-        process = game.StartGame(login, null).Result;
-        process?.WaitForExit();
+        //game.Version = "1.12.2";
+        //game.LoaderInfo.Version = "14.23.5.2860";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
 
         game.Version = "1.13.2";
         game.LoaderInfo.Version = "25.0.223";
