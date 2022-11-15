@@ -1,4 +1,6 @@
-﻿namespace ColorMC.Core.Utils;
+﻿using ColorMC.Core.Objs;
+
+namespace ColorMC.Core.Utils;
 
 public static class PathC
 {
@@ -15,5 +17,27 @@ public static class PathC
         string name = $"{arg[1]}-{arg[2]}.jar";
 
         return (path, name);
+    }
+
+    public static LibVersionObj MakeVersionObj(string name) 
+    {
+        var arg = name.Split(":");
+        if (arg.Length > 3)
+        {
+            return new() 
+            {
+                Pack = arg[0],
+                Name = arg[1],
+                Verison = arg[2],
+                Extr = arg[3]
+            };
+        }
+
+        return new()
+        {
+            Pack = arg[0],
+            Name = arg[1],
+            Verison = arg[2]
+        };
     }
 }
