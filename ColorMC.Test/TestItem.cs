@@ -171,7 +171,7 @@ public static class TestItem
             Dir = "E:\\code\\ColorMC\\ColorMC.Test\\bin\\Debug\\net7.0\\/minecraft/instances/test1",
             Name = "test1",
             Version = "1.7.2",
-            Loader = Loaders.Forge,
+            Loader = Loaders.Normal,
             LoaderInfo = new()
             {
                 Name = "forge",
@@ -182,10 +182,10 @@ public static class TestItem
         //process = game.StartGame(login, null).Result;
         //process?.WaitForExit();
 
-        game.Version = "1.7.10";
-        game.LoaderInfo.Version = "10.13.4.1614";
-        process = game.StartGame(login, null).Result;
-        process?.WaitForExit();
+        //game.Version = "1.7.10";
+        //game.LoaderInfo.Version = "10.13.4.1614";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
 
         //game.Version = "1.8";
         //game.LoaderInfo.Version = "11.14.4.1577";
@@ -237,10 +237,10 @@ public static class TestItem
         //process = game.StartGame(login, null).Result;
         //process?.WaitForExit();
 
-        game.Version = "1.13.2";
-        game.LoaderInfo.Version = "25.0.223";
-        process = game.StartGame(login, null).Result;
-        process?.WaitForExit();
+        //game.Version = "1.13.2";
+        //game.LoaderInfo.Version = "25.0.223";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
 
         //game.Version = "1.14.4";
         //game.LoaderInfo.Version = "28.2.26";

@@ -373,8 +373,6 @@ public static class Launch
             jvmHead.Add($"-javaagent:{args.JavaAgent.Trim()}");
         }
 
-        jvmHead.AddRange(v2 ? MakeV2JvmArg(obj) : MakeV1JvmArg());
-
         switch (args.GC)
         {
             case JvmArgObj.GCType.G1GC:
@@ -417,7 +415,15 @@ public static class Launch
             jvmHead.Add($"-Dforgewrapper.minecraft={VersionPath.BaseDir}/{obj.Version}.jar");
         }
 
-        //jvmHead.Append("-Dfml.ignoreInvalidMinecraftCertificates=true -Dfml.ignorePatchDiscrepancies=true ");
+        //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");
+        //jvmHead.Add("-XX:+UnlockExperimentalVMOptions");
+        //jvmHead.Add("-Dfml.ignoreInvalidMinecraftCertificates=true");
+        //jvmHead.Add("-Dfml.ignorePatchDiscrepancies=true");
+        //jvmHead.Add("-Dcom.sun.jndi.rmi.object.trustURLCodebase=false");
+        //jvmHead.Add("-Dcom.sun.jndi.cosnaming.object.trustURLCodebase=false");
+        //jvmHead.Add($"-Dminecraft.client.jar={VersionPath.BaseDir}/{obj.Version}.jar");
+
+        jvmHead.AddRange(v2 ? MakeV2JvmArg(obj) : MakeV1JvmArg());
 
         return jvmHead;
     }
@@ -502,13 +508,8 @@ public static class Launch
         return gameArg;
     }
 
-    public static string RemoveVersion(string name)
-    {
-        var arg = name.Split(":");
-        return $"{arg[0]}:{arg[1]}";
-    }
-
-    public static void AddOrUpdate(this Dictionary<string, string> dic, string key, string value)
+    public static void AddOrUpdate(this Dictionary<LibVersionObj, string> dic, 
+        LibVersionObj key, string value)
     {
         if (dic.ContainsKey(key))
         {
@@ -522,14 +523,14 @@ public static class Launch
 
     public static List<string> GetLibs(GameSettingObj obj, bool v2)
     {
-        Dictionary<string, string> list = new();
+        Dictionary<LibVersionObj, string> list = new();
         var version = VersionPath.GetGame(obj.Version)!;
         var list1 = GameHelp.MakeGameLibs(version);
-        list1.ForEach(a => 
+        foreach (var item in list1)
         {
-            if (a.Later == null)
-                list.AddOrUpdate(RemoveVersion(a.Name), a.Local);
-        });
+            if (item.Later == null)
+                list.AddOrUpdate(PathC.MakeVersionObj(item.Name), item.Local);
+        }
 
         if (obj.Loader == Loaders.Forge)
         {
@@ -537,11 +538,11 @@ public static class Launch
 
             var list2 = ForgeHelp.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
 
-            list2.ForEach(a => list.AddOrUpdate(RemoveVersion(a.Name), a.Local));
+            list2.ForEach(a => list.AddOrUpdate(PathC.MakeVersionObj(a.Name), a.Local));
 
             if (v2)
             {
-                list.AddOrUpdate("ForgeWrapper", ForgeHelp.ForgeWrapper);
+                list.AddOrUpdate(new(), ForgeHelp.ForgeWrapper);
             }
         }
         else if (obj.Loader == Loaders.Fabric)
@@ -550,7 +551,7 @@ public static class Launch
             foreach (var item in fabric.libraries)
             {
                 var name = PathC.ToName(item.name);
-                list.AddOrUpdate(RemoveVersion(name.Name), $"{LibrariesPath.BaseDir}/{name.Path}");
+                list.AddOrUpdate(PathC.MakeVersionObj(name.Name), $"{LibrariesPath.BaseDir}/{name.Path}");
             }
         }
         else if (obj.Loader == Loaders.Quilt)
@@ -559,13 +560,11 @@ public static class Launch
             foreach (var item in quilt.libraries)
             {
                 var name = PathC.ToName(item.name);
-                list.AddOrUpdate(RemoveVersion(name.Name), $"{LibrariesPath.BaseDir}/{name.Path}");
+                list.AddOrUpdate(PathC.MakeVersionObj(name.Name), $"{LibrariesPath.BaseDir}/{name.Path}");
             }
         }
 
-        list.AddOrUpdate("minecraft", $"{VersionPath.BaseDir}/{obj.Version}.jar");
-
-        return new(list.Values);
+        return new(list.Values) { $"{VersionPath.BaseDir}/{obj.Version}.jar" };
     }
 
     public static string UserPropertyToList(List<UserPropertyObj> properties)
@@ -626,7 +625,7 @@ public static class Launch
                 //{"${auth_session}",login.Token },
                 {"${game_assets}",assetsPath },
                 {"${user_properties}",UserPropertyToList(login.Properties) },
-                {"${user_type}", $"{login.AuthType}" },
+                {"${user_type}", "legacy" },
                 {"${version_type}", "ColorMC" },
                 {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
                 {"${library_directory}",LibrariesPath.BaseDir },
@@ -708,24 +707,24 @@ public static class Launch
             Console.WriteLine(item);
         }
 
-        //JavaInfo? jvm = null;
-        //if (jvmCfg == null)
-        //{
-        //    jvm = FindJvm(obj);
-        //}
-        //else
-        //{
-        //    jvm = JvmPath.GetInfo(jvmCfg.Name);
-        //}
+        JavaInfo? jvm = null;
+        if (jvmCfg == null)
+        {
+            jvm = FindJvm(obj);
+        }
+        else
+        {
+            jvm = JvmPath.GetInfo(jvmCfg.Name);
+        }
 
-        //if (jvm == null)
-        //{
-        //    CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
-        //    return null;
-        //}
+        if (jvm == null)
+        {
+            CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
+            return null;
+        }
 
         Process process = new();
-        process.StartInfo.FileName = @"C:\Program Files\java\jdk8\bin\javaw.exe";
+        process.StartInfo.FileName = jvm.Path;
         process.StartInfo.WorkingDirectory = InstancesPath.GetDir(obj);
         Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
         foreach (var item in arg)

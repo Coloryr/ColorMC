@@ -50,10 +50,7 @@ public static class LibrariesPath
             {
                 list.Add(item);
             }
-            if (item.Later != null)
-            {
-                item.Later(stream);
-            }
+            item.Later?.Invoke(stream);
         }
 
         return list;
