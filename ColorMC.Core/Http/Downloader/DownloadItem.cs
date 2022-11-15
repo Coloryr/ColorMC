@@ -16,7 +16,9 @@ public record DownloadItem
     public long AllSize { get; set; }
     public long NowSize { get; set; }
     public DownloadItemState State { get; set; } = DownloadItemState.Init;
-    public Action Later { get; set; }
+    public Action<FileStream> Later { get; set; }
+    public int ErrorTime { get; set; }
+
 
     public Action Update { get; set; }
 }

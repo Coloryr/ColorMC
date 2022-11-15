@@ -40,9 +40,18 @@ public static class Launch
                 return null;
             }
 
-            await GameDownload.Download(version);
+            var res1 = await GameDownload.Download(version);
+            if (res1.State != DownloadState.End)
+                return null;
+
+            list.AddRange(res1.List!);
 
             game = VersionPath.GetGame(obj.Version)!;
+        }
+
+        if (game == null)
+        {
+            return null;
         }
 
         string file = $"{VersionPath.BaseDir}/{obj.Version}.jar";
@@ -98,7 +107,7 @@ public static class Launch
             });
         }
 
-        list.AddRange(LibrariesPath.Check(game));
+        list.AddRange(LibrariesPath.CheckGame(game));
 
         if (obj.Loader == Loaders.Forge)
         {
@@ -239,10 +248,11 @@ public static class Launch
         if (obj.Loader == Loaders.Forge)
         {
             var forge = VersionPath.GetForgeObj(obj)!;
-            foreach (var item in forge.arguments.jvm)
-            {
-                arg.Add(item);
-            }
+            if (forge.arguments.jvm != null)
+                foreach (var item in forge.arguments.jvm)
+                {
+                    arg.Add(item);
+                }
         }
         else if (obj.Loader == Loaders.Fabric)
         {
@@ -403,8 +413,7 @@ public static class Launch
         if (v2 && obj.Loader == Loaders.Forge)
         {
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
-            jvmHead.Add($"-Dforgewrapper.installer={VersionPath.ForgeDir}/" +
-                $"forge-{obj.Version}-{obj.LoaderInfo.Version}-installer.jar");
+            jvmHead.Add($"-Dforgewrapper.installer={ForgeHelp.BuildForgeInster(obj.Version, obj.LoaderInfo.Version).Local}");
             jvmHead.Add($"-Dforgewrapper.minecraft={VersionPath.BaseDir}/{obj.Version}.jar");
         }
 
@@ -493,24 +502,46 @@ public static class Launch
         return gameArg;
     }
 
+    public static string RemoveVersion(string name)
+    {
+        var arg = name.Split(":");
+        return $"{arg[0]}:{arg[1]}";
+    }
+
+    public static void AddOrUpdate(this Dictionary<string, string> dic, string key, string value)
+    {
+        if (dic.ContainsKey(key))
+        {
+            dic[key] = value;
+        }
+        else
+        {
+            dic.Add(key, value);
+        }
+    }
+
     public static List<string> GetLibs(GameSettingObj obj, bool v2)
     {
-        List<string> list = new();
+        Dictionary<string, string> list = new();
         var version = VersionPath.GetGame(obj.Version)!;
-        var list1 = GameDownload.MakeGameLibs(version);
-        list1.ForEach(a => list.Add(a.Local));
+        var list1 = GameHelp.MakeGameLibs(version);
+        list1.ForEach(a => 
+        {
+            if (a.Later == null)
+                list.AddOrUpdate(RemoveVersion(a.Name), a.Local);
+        });
 
         if (obj.Loader == Loaders.Forge)
         {
             var forge = VersionPath.GetForgeObj(obj)!;
 
-            var list2 = GameDownload.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
+            var list2 = ForgeHelp.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
 
-            list2.ForEach(a => list.Add(a.Local));
+            list2.ForEach(a => list.AddOrUpdate(RemoveVersion(a.Name), a.Local));
 
             if (v2)
             {
-                list.Add(LibrariesPath.ForgeWrapper);
+                list.AddOrUpdate("ForgeWrapper", ForgeHelp.ForgeWrapper);
             }
         }
         else if (obj.Loader == Loaders.Fabric)
@@ -519,7 +550,7 @@ public static class Launch
             foreach (var item in fabric.libraries)
             {
                 var name = PathC.ToName(item.name);
-                list.Add($"{LibrariesPath.BaseDir}/{name.Item1}");
+                list.AddOrUpdate(RemoveVersion(name.Name), $"{LibrariesPath.BaseDir}/{name.Path}");
             }
         }
         else if (obj.Loader == Loaders.Quilt)
@@ -528,13 +559,13 @@ public static class Launch
             foreach (var item in quilt.libraries)
             {
                 var name = PathC.ToName(item.name);
-                list.Add($"{LibrariesPath.BaseDir}/{name.Item1}");
+                list.AddOrUpdate(RemoveVersion(name.Name), $"{LibrariesPath.BaseDir}/{name.Path}");
             }
         }
 
-        list.Add($"{VersionPath.BaseDir}/{obj.Version}.jar");
+        list.AddOrUpdate("minecraft", $"{VersionPath.BaseDir}/{obj.Version}.jar");
 
-        return list;
+        return new(list.Values);
     }
 
     public static string UserPropertyToList(List<UserPropertyObj> properties)
@@ -597,7 +628,7 @@ public static class Launch
                 {"${user_properties}",UserPropertyToList(login.Properties) },
                 {"${user_type}", $"{login.AuthType}" },
                 {"${version_type}", "ColorMC" },
-                {"${natives_directory}", LibrariesPath.NativeDir },
+                {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
                 {"${library_directory}",LibrariesPath.BaseDir },
                 {"${classpath_separator}", ";" },
                 {"${launcher_name}","ColorMC" },
@@ -659,9 +690,14 @@ public static class Launch
 
         if (res.Count != 0)
         {
+            DownloadManager.Clear();
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
             DownloadManager.FillAll(res);
-            await DownloadManager.Start();
+            var ok = await DownloadManager.Start();
+            if(!ok)
+            {
+                return null;    
+            }
         }
 
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
@@ -689,7 +725,7 @@ public static class Launch
         //}
 
         Process process = new();
-        process.StartInfo.FileName = @"C:\Program Files\java\jdk17\bin\javaw.exe";
+        process.StartInfo.FileName = @"C:\Program Files\java\jdk8\bin\javaw.exe";
         process.StartInfo.WorkingDirectory = InstancesPath.GetDir(obj);
         Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
         foreach (var item in arg)

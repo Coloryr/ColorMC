@@ -69,6 +69,10 @@ public record GameArgObj
                 public Artifact natives_osx { get; set; }
                 [JsonProperty("natives-windows")]
                 public Artifact natives_windows { get; set; }
+                [JsonProperty("natives-windows-32")]
+                public Artifact natives_windows_32 {get;set;}
+                [JsonProperty("natives-windows-64")]
+                public Artifact natives_windows_64 { get; set; }
             }
             public Classifiers classifiers { get; set; }
             public Artifact artifact { get; set; }

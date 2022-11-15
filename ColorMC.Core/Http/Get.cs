@@ -233,4 +233,10 @@ public static class Get
             return null;
         }
     }
+
+    public static async Task<List<string>?> GetForgeVersions(string mc, SourceLocal? local = null) 
+    {
+
+        return null;
+    }
 }

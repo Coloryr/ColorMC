@@ -1,5 +1,7 @@
-﻿using ColorMC.Core.Utils;
+﻿using ColorMC.Core.Http.Download;
+using ColorMC.Core.Utils;
 using System;
+using static ColorMC.Core.Objs.Game.VersionObj;
 
 namespace ColorMC.Core.Http;
 
@@ -84,31 +86,44 @@ public static class UrlHelp
         return url;
     }
 
-    public static string DownloadForge(string mc, string version, SourceLocal? local)
+    public static string FixForgeUrl(string mc) 
     {
-        string? url = local switch
+        if (mc == "1.7.2")
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/{mc}-{version}/" +
-            $"forge-{mc}-{version}-installer.jar",
-            SourceLocal.MCBBS => $"{MCBBS}maven/net/minecraftforge/forge/{mc}-{version}/" +
-            $"forge-{mc}-{version}-installer.jar",
-            _ => $"https://maven.minecraftforge.net/net/minecraftforge/forge/{mc}-{version}/" +
-            $"forge-{mc}-{version}-installer.jar"
-        };
+            return "-mc172";
+        }
+        else if (mc == "1.7.10")
+        {
+            return "-1.7.10";
+        }
+        else if (mc == "1.8.9")
+        {
+            return "-1.8.9";
+        }
+        else if (mc == "1.9")
+        {
+            return "-1.9.0";
+        }
+        else if (mc == "1.9.4")
+        {
+            return "-1.9.4";
+        }
+        else if (mc == "1.10")
+        {
+            return "-1.10.0";
+        }
 
-        return url;
+        return string.Empty;
     }
 
     public static string DownloadForgeJar(string mc, string version, SourceLocal? local)
     {
+        version += FixForgeUrl(mc);
         string? url = local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/" +
-                    PathC.MakeForgeName(mc, version),
-            SourceLocal.MCBBS => $"{MCBBS}maven/net/minecraftforge/forge/" +
-                    PathC.MakeForgeName(mc, version),
-            _ => $"https://maven.minecraftforge.net/net/minecraftforge/forge/" +
-                    PathC.MakeForgeName(mc, version)
+            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/{mc}-{version}/",
+            SourceLocal.MCBBS => $"{MCBBS}maven/net/minecraftforge/forge/{mc}-{version}/",
+            _ => $"https://maven.minecraftforge.net/net/minecraftforge/forge/{mc}-{version}/"
         };
 
         return url;
