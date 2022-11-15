@@ -19,12 +19,12 @@ public static class PathC
         return (path, name);
     }
 
-    public static LibVersionObj MakeVersionObj(string name) 
+    public static LibVersionObj MakeVersionObj(string name)
     {
         var arg = name.Split(":");
         if (arg.Length > 3)
         {
-            return new() 
+            return new()
             {
                 Pack = arg[0],
                 Name = arg[1],
@@ -39,5 +39,42 @@ public static class PathC
             Name = arg[1],
             Verison = arg[2]
         };
+    }
+
+    public static void Copys(string dir, string dir1)
+    {
+        var floderName = Path.GetFileName(dir);
+        var di = Directory.CreateDirectory(Path.Combine(dir1, floderName));
+        var files = Directory.GetFileSystemEntries(dir);
+
+        foreach (string file in files)
+        {
+            if (Directory.Exists(file))
+            {
+                CopyFiles(file, di.FullName);
+            }
+            else
+            {
+                File.Copy(file, Path.Combine(di.FullName,
+                    Path.GetFileName(file)), true);
+            }
+        }
+    }
+
+    public static Task CopyFiles(string dir, string dir1)
+    {
+        return Task.Run(() =>
+        {
+            Copys(dir, dir1);
+        });
+    }
+
+    public static Task DeleteFiles(string dir)
+    {
+        return Task.Run(() =>
+        {
+            if (Directory.Exists(dir))
+                Directory.Delete(dir, true);
+        });
     }
 }

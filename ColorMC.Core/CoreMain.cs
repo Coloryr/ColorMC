@@ -2,7 +2,7 @@
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Login;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Path;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Utils;
 using System.Diagnostics;
 

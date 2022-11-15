@@ -1,8 +1,9 @@
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Path;
+namespace ColorMC.Core.LaunchPath;
 
 public static class InstancesPath
 {
@@ -144,5 +145,22 @@ public static class InstancesPath
 
         var file = obj.Dir + "/" + Name1;
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
+    }
+
+    public static async Task<GameSettingObj?> Copy(GameSettingObj obj, string name)
+    {
+        var obj1 = CreateVersion(name, obj.Version, obj.Loader, obj.LoaderInfo);
+        if (obj1 != null)
+        {
+            await PathC.CopyFiles(GetDir(obj), GetDir(obj1));
+            return obj1;
+        }
+
+        return null;
+    }
+
+    public static void Remove(GameSettingObj obj) 
+    {
+        PathC.DeleteFiles(obj.Dir);
     }
 }

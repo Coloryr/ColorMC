@@ -3,7 +3,7 @@ using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Path;
+namespace ColorMC.Core.LaunchPath;
 
 public static class AssetsPath
 {
@@ -105,6 +105,5 @@ public static class AssetsPath
         if (obj == null)
             return;
         AddIndex(obj, item);
-        Check(obj);
     }
 }

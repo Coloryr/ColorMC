@@ -4,7 +4,7 @@ using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Path;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
@@ -54,7 +54,7 @@ public static class Launch
             return null;
         }
 
-        string file = $"{VersionPath.BaseDir}/{obj.Version}.jar";
+        string file = LibrariesPath.MakeGameDir(game.id);
         if (!File.Exists(file))
         {
             list.Add(new()
@@ -183,12 +183,15 @@ public static class Launch
     {
         var game = VersionPath.GetGame(obj.Version)!;
         var jv = game.javaVersion.majorVersion;
-        var list = JvmPath.Jvms.Where(a => a.Value.MajorVersion >= jv)
+        var list = JvmPath.Jvms.Where(a => a.Value.MajorVersion == jv)
             .Select(a => a.Value);
 
-        if (!list.Any())
+        if (!list.Any() && jv > 8)
         {
-            return null;
+            list = JvmPath.Jvms.Where(a => a.Value.MajorVersion >= jv)
+            .Select(a => a.Value);
+            if (!list.Any())
+                return null;
         }
         var find = list.Where(a => a.Arch == SystemInfo.SystemArch);
         int max;
@@ -412,7 +415,7 @@ public static class Launch
         {
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
             jvmHead.Add($"-Dforgewrapper.installer={ForgeHelp.BuildForgeInster(obj.Version, obj.LoaderInfo.Version).Local}");
-            jvmHead.Add($"-Dforgewrapper.minecraft={VersionPath.BaseDir}/{obj.Version}.jar");
+            jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.MakeGameDir(obj.Version)}");
         }
 
         //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");
@@ -511,14 +514,16 @@ public static class Launch
     public static void AddOrUpdate(this Dictionary<LibVersionObj, string> dic, 
         LibVersionObj key, string value)
     {
-        if (dic.ContainsKey(key))
+        foreach (var item in dic)
         {
-            dic[key] = value;
+            if (item.Key.Equals(key))
+            {
+                dic.Remove(item.Key);
+                break;
+            }
         }
-        else
-        {
-            dic.Add(key, value);
-        }
+
+        dic.Add(key, value);
     }
 
     public static List<string> GetLibs(GameSettingObj obj, bool v2)
@@ -564,7 +569,7 @@ public static class Launch
             }
         }
 
-        return new(list.Values) { $"{VersionPath.BaseDir}/{obj.Version}.jar" };
+        return new(list.Values) { LibrariesPath.MakeGameDir(obj.Version) };
     }
 
     public static string UserPropertyToList(List<UserPropertyObj> properties)
