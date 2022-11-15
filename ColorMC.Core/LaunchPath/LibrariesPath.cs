@@ -7,7 +7,7 @@ using ColorMC.Core.Utils;
 using System;
 using System.Net.Mime;
 
-namespace ColorMC.Core.Path;
+namespace ColorMC.Core.LaunchPath;
 
 public static class LibrariesPath
 {
@@ -186,5 +186,10 @@ public static class LibrariesPath
         }
 
         return list;
+    }
+
+    public static string MakeGameDir(string mc) 
+    {
+        return $"{BaseDir}/net/minecraft/client/{mc}/client-{mc}.jar";
     }
 }

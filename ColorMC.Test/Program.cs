@@ -6,7 +6,7 @@ using ColorMC.Core.Http.Login;
 using ColorMC.Core.Http.Apis;
 using ColorMC.Core.Login;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Path;
+using ColorMC.Core.LaunchPath;
 using Newtonsoft.Json;
 using System.Diagnostics;
 

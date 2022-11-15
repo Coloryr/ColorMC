@@ -2,7 +2,7 @@
 using ColorMC.Core.Utils;
 using System.Diagnostics;
 
-namespace ColorMC.Core.Path;
+namespace ColorMC.Core.LaunchPath;
 
 public record JavaInfo
 {

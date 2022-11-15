@@ -3,7 +3,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Path;
+namespace ColorMC.Core.LaunchPath;
 
 public static class VersionPath
 {

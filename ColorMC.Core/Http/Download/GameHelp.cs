@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs.Game;
-using ColorMC.Core.Path;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Utils;
 using System;
 using System.Collections.Generic;

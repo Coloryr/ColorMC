@@ -1,8 +1,7 @@
 ﻿using ColorMC.Core.Http;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Path;
+using ColorMC.Core.LaunchPath;
 using Newtonsoft.Json;
-using static ColorMC.Core.Objs.JvmArgObj;
 
 namespace ColorMC.Core.Utils;
 
@@ -39,7 +38,7 @@ public static class ConfigUtils
     {
         if (File.Exists(name))
         {
-            Config = JsonConvert.DeserializeObject<ConfigObj>(File.ReadAllText(name));
+            Config = JsonConvert.DeserializeObject<ConfigObj>(File.ReadAllText(name))!;
 
             if (Config == null)
             {
@@ -105,7 +104,7 @@ public static class ConfigUtils
         return new()
         {
             AdvencedJvmArguments = null,
-            GC = GCType.G1GC,
+            GC = JvmArgObj.GCType.G1GC,
             GCArgument = null,
             JavaAgent = null,
             MaxMemory = 4096,

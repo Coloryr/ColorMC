@@ -1,5 +1,5 @@
 ﻿using ColorMC.Core.Objs;
-using ColorMC.Core.Path;
+using ColorMC.Core.LaunchPath;
 
 namespace ColorMC.Core.Game;
 

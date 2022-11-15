@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Path;
+﻿using ColorMC.Core.LaunchPath;
 using System.Collections.Generic;
 
 namespace ColorMC.UIBinding;

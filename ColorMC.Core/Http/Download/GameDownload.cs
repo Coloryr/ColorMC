@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
-using ColorMC.Core.Path;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
@@ -36,7 +36,7 @@ public static class GameDownload
         {
             Name = $"{obj.id}.jar",
             Url = UrlHelp.Download(obj1.downloads.client.url, BaseClient.Source),
-            Local = $"{VersionPath.BaseDir}/{obj.id}.jar",
+            Local = LibrariesPath.MakeGameDir(obj.id),
             SHA1 = obj1.downloads.client.sha1
         });
 
@@ -245,9 +245,9 @@ public static class GameDownload
             var name = PathC.ToName(item.name);
             list.Add(new()
             {
-                Url = UrlHelp.DownloadQuilt(item.url + name.Item1, BaseClient.Source),
-                Name = name.Item2,
-                Local = $"{LibrariesPath.BaseDir}/{name.Item1}"
+                Url = UrlHelp.DownloadQuilt(item.url + name.Path, BaseClient.Source),
+                Name = name.Name,
+                Local = $"{LibrariesPath.BaseDir}/{name.Path}"
             });
 
         }
@@ -302,9 +302,9 @@ public static class GameDownload
             var name = PathC.ToName(item.name);
             list.Add(new()
             {
-                Url = UrlHelp.DownloadQuilt(item.url + name.Item1, BaseClient.Source),
-                Name = name.Item2,
-                Local = $"{LibrariesPath.BaseDir}/{name.Item1}"
+                Url = UrlHelp.DownloadQuilt(item.url + name.Path, BaseClient.Source),
+                Name = name.Name,
+                Local = $"{LibrariesPath.BaseDir}/{name.Path}"
             });
 
         }

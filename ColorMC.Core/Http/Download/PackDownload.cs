@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Pack;
-using ColorMC.Core.Path;
+using ColorMC.Core.LaunchPath;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Text;

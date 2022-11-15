@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Path;
+﻿namespace ColorMC.Core.LaunchPath;
 
 public static class MCPath
 {
