@@ -60,8 +60,39 @@ public static class ForgeHelp
         return list;
     }
 
+    public static string FixForgeUrl(string mc)
+    {
+        if (mc == "1.7.2")
+        {
+            return "-mc172";
+        }
+        else if (mc == "1.7.10")
+        {
+            return "-1.7.10";
+        }
+        else if (mc == "1.8.9")
+        {
+            return "-1.8.9";
+        }
+        else if (mc == "1.9")
+        {
+            return "-1.9.0";
+        }
+        else if (mc == "1.9.4")
+        {
+            return "-1.9.4";
+        }
+        else if (mc == "1.10")
+        {
+            return "-1.10.0";
+        }
+
+        return string.Empty;
+    }
+
     public static DownloadItem BuildForgeItem(string mc, string version, string type)
     {
+        version += FixForgeUrl(mc);
         string name = $"forge-{mc}-{version}-{type}";
         string url = UrlHelp.DownloadForgeJar(mc, version, BaseClient.Source);
 
