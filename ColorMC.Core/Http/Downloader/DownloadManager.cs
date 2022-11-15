@@ -15,7 +15,7 @@ public static class DownloadManager
 
     public static void Init()
     {
-        ConfigUtils.Config.Http.DownloadThread = 1;
+        //ConfigUtils.Config.Http.DownloadThread = 1;
         semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
         threads.ForEach(a => a.Close());
         threads.Clear();

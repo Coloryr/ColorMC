@@ -178,14 +178,14 @@ public static class TestItem
                 Version = "10.12.2.1161"
             }
         };
-        Process process;
+        Process? process;
         //process = game.StartGame(login, null).Result;
         //process?.WaitForExit();
 
-        //game.Version = "1.7.10";
-        //game.LoaderInfo.Version = "10.13.4.1614";
-        //process = game.StartGame(login, null).Result;
-        //process?.WaitForExit();
+        game.Version = "1.7.10";
+        game.LoaderInfo.Version = "10.13.4.1614";
+        process = game.StartGame(login, null).Result;
+        process?.WaitForExit();
 
         //game.Version = "1.8";
         //game.LoaderInfo.Version = "11.14.4.1577";
@@ -267,9 +267,9 @@ public static class TestItem
         //process = game.StartGame(login, null).Result;
         //process?.WaitForExit();
 
-        //game.Version = "1.19.2";
-        //game.LoaderInfo.Version = "43.1.52";
-        //process = game.StartGame(login, null).Result;
-        //process?.WaitForExit();
+        game.Version = "1.19.2";
+        game.LoaderInfo.Version = "43.1.52";
+        process = game.StartGame(login, null).Result;
+        process?.WaitForExit();
     }
 }
