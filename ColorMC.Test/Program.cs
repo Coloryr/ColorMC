@@ -29,7 +29,7 @@ internal class Program
         CoreMain.PackUpdate = PackUpdate;
         CoreMain.ProcessLog = Log;
 
-        TestItem.Item9();
+        TestItem.Item10();
 
         Console.ReadLine();
     }
@@ -51,12 +51,12 @@ internal class Program
 
     public static void Update() 
     {
-        //Console.WriteLine($"下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
+        Console.WriteLine($"下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
     }
 
     public static void Update(DownloadItem item)
     {
-        Console.WriteLine($"下载项目:{item.Name} {item.AllSize}/{item.NowSize}");
+        //Console.WriteLine($"下载项目:{item.Name} {item.AllSize}/{item.NowSize}");
     }
 
     public static void Update(CoreRunState item)

@@ -22,21 +22,29 @@ public static class Logs
 
     public static void Info(string data)
     {
-        Writer.WriteLine($"[{DateTime.Now}][Info]{data}");
+        string text = $"[{DateTime.Now}][Info]{data}";
+        Writer.WriteLine(text);
+        Console.WriteLine(text);
     }
 
     public static void Warn(string data)
     {
-        Writer.WriteLine($"[{DateTime.Now}][Warn]{data}");
+        string text = $"[{DateTime.Now}][Warn]{data}";
+        Writer.WriteLine(text);
+        Console.WriteLine(text);
     }
 
     public static void Error(string data)
     {
-        Writer.WriteLine($"[{DateTime.Now}][Error]{data}");
+        string text = $"[{DateTime.Now}][Error]{data}";
+        Writer.WriteLine(text);
+        Console.WriteLine(text);
     }
 
     public static void Error(string data, Exception e)
     {
-        Writer.WriteLine($"[{DateTime.Now}][Error]{data}{Environment.NewLine}{e}");
+        string text = $"[{DateTime.Now}][Error]{data}{Environment.NewLine}{e}";
+        Writer.WriteLine(text);
+        Console.WriteLine(text);
     }
 }

@@ -4,6 +4,8 @@ using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
+using System;
+using System.Net.Mime;
 
 namespace ColorMC.Core.Path;
 
@@ -11,22 +13,29 @@ public static class LibrariesPath
 {
     private const string Name = "libraries";
     public static string BaseDir { get; private set; }
-    public static string NativeDir { get; private set; }
+    private static string NativeDir;
 
     public static void Init(string dir)
     {
         BaseDir = dir + "/" + Name;
-        NativeDir = $"{BaseDir}/native-{SystemInfo.Os}";
+        NativeDir = $"{BaseDir}/native-{SystemInfo.Os.ToString().ToLower()}";
 
         Directory.CreateDirectory(BaseDir);
         Directory.CreateDirectory(NativeDir);
     }
 
-    public static List<DownloadItem> Check(GameArgObj obj)
+    public static string GetNativeDir(string version) 
+    {
+        string dir = $"{NativeDir}/{version}";
+        Directory.CreateDirectory(dir);
+        return dir;
+    }
+
+    public static List<DownloadItem> CheckGame(GameArgObj obj)
     {
         var list = new List<DownloadItem>();
 
-        var list1 = GameDownload.MakeGameLibs(obj);
+        var list1 = GameHelp.MakeGameLibs(obj);
         foreach (var item in list1)
         {
             if (!File.Exists(item.Local))
@@ -34,20 +43,16 @@ public static class LibrariesPath
                 list.Add(item);
                 continue;
             }
-            using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
-                FileShare.ReadWrite);
+            using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
+                FileShare.Read);
             var sha1 = Sha1.GenSha1(stream);
             if (item.SHA1 != sha1)
             {
                 list.Add(item);
             }
-        }
-
-        foreach (var item in list1)
-        {
             if (item.Later != null)
             {
-                item.Later();
+                item.Later(stream);
             }
         }
 
@@ -59,7 +64,7 @@ public static class LibrariesPath
         var v2 = CheckRule.GameLaunchVersion(obj.Version);
         if (v2)
         {
-            ReadyForgeWrapper();
+            ForgeHelp.ReadyForgeWrapper();
         }
 
         var forge = VersionPath.GetForgeObj(obj.Version, obj.LoaderInfo.Version);
@@ -67,7 +72,7 @@ public static class LibrariesPath
             return null;
 
         var list = new List<DownloadItem>();
-        var list1 = GameDownload.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
+        var list1 = ForgeHelp.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
         foreach (var item in list1)
         {
             if (!File.Exists(item.Local))
@@ -75,6 +80,9 @@ public static class LibrariesPath
                 list.Add(item);
                 continue;
             }
+            if (item.SHA1 == null)
+                continue;
+
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
             var sha1 = Sha1.GenSha1(stream);
@@ -92,6 +100,12 @@ public static class LibrariesPath
         {
             foreach (var item in forgeinstall.libraries)
             {
+                if (item.name.StartsWith("net.minecraftforge:forge:")
+                && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
+                {
+                    continue;
+                }
+
                 string file = $"{BaseDir}/{item.downloads.artifact.path}";
                 if (!File.Exists(file))
                 {
@@ -175,19 +189,5 @@ public static class LibrariesPath
         }
 
         return list;
-    }
-
-    public static string ForgeWrapper => BaseDir + "/io/github/zekerzhayard/ForgeWrapper/mmc3/ForgeWrapper-mmc3.jar";
-    public static void ReadyForgeWrapper()
-    {
-        var file = new FileInfo(ForgeWrapper);
-        if (!file.Exists)
-        {
-            if (!Directory.Exists(file.DirectoryName))
-            {
-                Directory.CreateDirectory(file.DirectoryName!);
-            }
-            File.WriteAllBytes(file.FullName, Resource1.ForgeWrapper_mmc3);
-        }
     }
 }

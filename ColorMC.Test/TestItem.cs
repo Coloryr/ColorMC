@@ -16,6 +16,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Test;
 
@@ -152,13 +153,123 @@ public static class TestItem
             UserName = "Test"
         };
 
-        var process = game[3].StartGame(login, null).Result;
-        
+        var process = game[0].StartGame(login, null).Result;
         process?.WaitForExit();
     }
 
     public static void Item10() 
     {
-        
+        var login = new LoginObj()
+        {
+            UUID = "UUID",
+            Token = "Token",
+            AccessToken = "AccessToken",
+            UserName = "Test"
+        };
+        var game = new GameSettingObj()
+        {
+            Dir = "E:\\code\\ColorMC\\ColorMC.Test\\bin\\Debug\\net7.0\\/minecraft/instances/test1",
+            Name = "test1",
+            Version = "1.7.2",
+            Loader = Loaders.Forge,
+            LoaderInfo = new()
+            {
+                Name = "forge",
+                Version = "10.12.2.1161"
+            }
+        };
+        Process process;
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.7.10";
+        //game.LoaderInfo.Version = "10.13.4.1614";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.8";
+        //game.LoaderInfo.Version = "11.14.4.1577";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.8.8";
+        //game.LoaderInfo.Version = "11.15.0.1655";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.8.9";
+        //game.LoaderInfo.Version = "11.15.1.2318";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.9";
+        //game.LoaderInfo.Version = "12.16.1.1938";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.9.4";
+        //game.LoaderInfo.Version = "12.17.0.2317";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.10";
+        //game.LoaderInfo.Version = "12.18.0.2000";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.10.2";
+        //game.LoaderInfo.Version = "12.18.3.2511";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.11";
+        //game.LoaderInfo.Version = "13.19.1.2199";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        game.Version = "1.11.2";
+        game.LoaderInfo.Version = "13.20.1.2588";
+        process = game.StartGame(login, null).Result;
+        process?.WaitForExit();
+
+        game.Version = "1.12.2";
+        game.LoaderInfo.Version = "14.23.5.2860";
+        process = game.StartGame(login, null).Result;
+        process?.WaitForExit();
+
+        game.Version = "1.13.2";
+        game.LoaderInfo.Version = "25.0.223";
+        process = game.StartGame(login, null).Result;
+        process?.WaitForExit();
+
+        //game.Version = "1.14.4";
+        //game.LoaderInfo.Version = "28.2.26";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.15.2";
+        //game.LoaderInfo.Version = "31.2.57";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.16.5";
+        //game.LoaderInfo.Version = "36.2.39";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.17.1";
+        //game.LoaderInfo.Version = "37.1.1";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.18.2";
+        //game.LoaderInfo.Version = "40.1.85";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.19.2";
+        //game.LoaderInfo.Version = "43.1.52";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
     }
 }

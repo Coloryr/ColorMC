@@ -178,10 +178,13 @@ public static class VersionPath
 
         string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}-install.json";
 
+        if (!File.Exists(file))
+            return null;
+
         try
         {
             var data = File.ReadAllText(file);
-            var data1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data);
+            var data1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
             ForgeInstalls.Add(key, data1);
             return data1;
         }
@@ -207,10 +210,13 @@ public static class VersionPath
 
         string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}.json";
 
+        if (!File.Exists(file))
+            return null;
+
         try
         {
             var data = File.ReadAllText(file);
-            var data1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data);
+            var data1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
             Forges.Add(key, data1);
             return data1;
         }
@@ -236,10 +242,13 @@ public static class VersionPath
 
         string file = $"{BaseDir}/{Name2}/fabric-loader-{version}-{mc}.json";
 
+        if (!File.Exists(file))
+            return null;
+
         try
         {
             var data = File.ReadAllText(file);
-            var data1 = JsonConvert.DeserializeObject<FabricLoaderObj>(data);
+            var data1 = JsonConvert.DeserializeObject<FabricLoaderObj>(data)!;
             Fabrics.Add(key, data1);
             return data1;
         }
@@ -265,10 +274,13 @@ public static class VersionPath
 
         string file = $"{BaseDir}/{Name3}/quilt-loader-{version}-{mc}.json";
 
+        if (!File.Exists(file))
+            return null;
+
         try
         {
             var data = File.ReadAllText(file);
-            var data1 = JsonConvert.DeserializeObject<QuiltLoaderObj>(data);
+            var data1 = JsonConvert.DeserializeObject<QuiltLoaderObj>(data)!;
             Quilts.Add(key, data1);
             return data1;
         }
