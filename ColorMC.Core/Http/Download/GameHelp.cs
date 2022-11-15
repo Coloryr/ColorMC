@@ -61,7 +61,7 @@ public static class GameHelp
                 {
                     list.Add(new()
                     {
-                        Name = item1.name,
+                        Name = item1.name + "-native" + SystemInfo.Os,
                         Url = UrlHelp.DownloadLibraries(lib.url, BaseClient.Source),
                         Local = $"{LibrariesPath.BaseDir}/{lib.path}",
                         SHA1 = lib.sha1,
