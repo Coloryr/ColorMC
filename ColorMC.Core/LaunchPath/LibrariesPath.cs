@@ -18,7 +18,7 @@ public static class LibrariesPath
     public static void Init(string dir)
     {
         BaseDir = dir + "/" + Name;
-        NativeDir = $"{BaseDir}/native-{SystemInfo.Os.ToString().ToLower()}";
+        NativeDir = $"{BaseDir}/native-{SystemInfo.Os}-{SystemInfo.SystemArch}".ToLower();
 
         Directory.CreateDirectory(BaseDir);
         Directory.CreateDirectory(NativeDir);
