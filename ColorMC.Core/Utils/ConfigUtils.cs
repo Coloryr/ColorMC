@@ -71,7 +71,7 @@ public static class ConfigUtils
 
     public static void Save()
     {
-        File.WriteAllText(Name, JsonConvert.SerializeObject(Config));
+        File.WriteAllText(Name, JsonConvert.SerializeObject(Config, Formatting.Indented));
     }
 
     private static ConfigObj MakeDefaultConfig()
