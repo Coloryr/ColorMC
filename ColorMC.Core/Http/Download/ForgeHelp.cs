@@ -35,14 +35,21 @@ public static class ForgeHelp
     {
         var v2 = CheckRule.GameLaunchVersion(mc);
         var list = new List<DownloadItem>();
+
+        if (v2)
+        {
+            //list.Add(BuildForgeLauncher(mc, version));
+            list.Add(BuildForgeInster(mc, version));
+            list.Add(BuildForgeClient(mc, version));
+            list.Add(BuildForgeUniversal(mc, version));
+        }
+
         foreach (var item1 in info.libraries)
         {
             if (item1.name.StartsWith("net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
             {
-                list.Add(BuildForgeUniversal(mc, version));
-
-                if(v2) list.Add(BuildForgeLauncher(mc, version));
+                continue;
             }
             else
             {
@@ -114,9 +121,14 @@ public static class ForgeHelp
         return BuildForgeItem(mc, version, "universal");
     }
 
-    public static DownloadItem BuildForgeLauncher(string mc, string version)
+    //public static DownloadItem BuildForgeLauncher(string mc, string version)
+    //{
+    //    return BuildForgeItem(mc, version, "launcher");
+    //}
+
+    public static DownloadItem BuildForgeClient(string mc, string version)
     {
-        return BuildForgeItem(mc, version, "launcher");
+        return BuildForgeItem(mc, version, "client");
     }
 
     public static ForgeLaunchObj.Libraries MakeLibObj(ForgeInstallObj1.VersionInfo.Libraries item)
