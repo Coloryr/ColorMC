@@ -533,8 +533,12 @@ public static class Launch
         var list1 = GameHelp.MakeGameLibs(version);
         foreach (var item in list1)
         {
+            var key = PathC.MakeVersionObj(item.Name);
+            //if (key.Name == "lwjgl-platform")
+            //    continue;
+
             if (item.Later == null)
-                list.AddOrUpdate(PathC.MakeVersionObj(item.Name), item.Local);
+                list.AddOrUpdate(key, item.Local);
         }
 
         if (obj.Loader == Loaders.Forge)
@@ -613,7 +617,7 @@ public static class Launch
         StringBuilder arg = new();
         foreach (var item in libraries)
         {
-            arg.Append($"{item};");
+            arg.Append($"{item}:");
         }
         arg.Remove(arg.Length - 1, 1);
         string classpath = arg.ToString().Trim();
@@ -634,7 +638,7 @@ public static class Launch
                 {"${version_type}", "ColorMC" },
                 {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
                 {"${library_directory}",LibrariesPath.BaseDir },
-                {"${classpath_separator}", ";" },
+                {"${classpath_separator}", ":" },
                 {"${launcher_name}","ColorMC" },
                 {"${launcher_version}", Assembly.GetExecutingAssembly().GetName().Version.ToString() },
                 {"${classpath}", classpath },
@@ -727,6 +731,8 @@ public static class Launch
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
             return null;
         }
+
+        Console.WriteLine(jvm.Path);
 
         Process process = new();
         process.StartInfo.FileName = jvm.Path;

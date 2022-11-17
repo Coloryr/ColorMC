@@ -18,33 +18,33 @@ public static class ConfigUtils
         Dir = dir;
         Name = dir + "config.json";
 
-        try
-        {
             Load(Name);
-
-            if (Config == null)
-            {
-                Config = MakeDefaultConfig();
-            }
-            Save();
-        }
-        catch (Exception e)
-        {
-            CoreMain.OnError?.Invoke("配置文件读取错误", e, true);
-        }
+        
     }
 
     public static void Load(string name)
     {
         if (File.Exists(name))
         {
-            Config = JsonConvert.DeserializeObject<ConfigObj>(File.ReadAllText(name))!;
-
-            if (Config == null)
+            try
             {
-                throw new Exception("配置为空");
+                Config = JsonConvert.DeserializeObject<ConfigObj>(File.ReadAllText(name))!;
             }
+            catch (Exception e)
+            {
+                CoreMain.OnError?.Invoke("配置文件读取错误", e, true);
+            }
+        }
 
+        if (Config == null)
+        {
+            Logs.Error("配置为空，旧版配置文件会被覆盖");
+
+            Config = MakeDefaultConfig();
+            Save();
+        }
+        else
+        {
             if (Config.JavaList == null)
             {
                 Config.JavaList = new();
@@ -61,12 +61,12 @@ public static class ConfigUtils
             {
                 Config.Window = MakeWindowSettingConfig();
             }
-
-            JvmPath.AddList(Config.JavaList);
-            BaseClient.Source = Config.Http.Source;
-
-            Save();
         }
+
+        JvmPath.AddList(Config.JavaList);
+        BaseClient.Source = Config.Http.Source;
+
+        Save();
     }
 
     public static void Save()

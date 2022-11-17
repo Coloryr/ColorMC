@@ -90,7 +90,7 @@ public static class InstancesPath
 
     public static string GetDir(GameSettingObj obj)
     {
-        return obj.Dir + "/" + Name2;
+        return Path.GetFullPath(obj.Dir + "/" + Name2);
     }
 
     public static Task InstallForge(GameSettingObj obj, string version)
