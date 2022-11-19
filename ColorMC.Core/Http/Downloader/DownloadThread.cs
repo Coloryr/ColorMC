@@ -7,12 +7,14 @@ namespace ColorMC.Core.Http.Downloader;
 
 public class DownloadThread
 {
+    private int index;
     private Thread thread;
     private bool run = false;
     private Semaphore semaphore = new(0, 2);
     private CancellationTokenSource cancel;
     public void Init(int index)
     {
+        this.index = index;
         thread = new(Run)
         {
             Name = $"DownloadThread[{index}]"
@@ -108,7 +110,7 @@ public class DownloadThread
                     try
                     {
                         item.State = DownloadItemState.Init;
-                        item.Update?.Invoke();
+                        item.Update?.Invoke(index);
                         if (File.Exists(item.Local))
                         {
                             if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Overwrite)
@@ -119,12 +121,12 @@ public class DownloadThread
                                 if (sha1 == item.SHA1)
                                 {
                                     item.State = DownloadItemState.Action;
-                                    item.Update?.Invoke();
+                                    item.Update?.Invoke(index);
                                     item.Later?.Invoke(stream2);
 
                                     item.State = DownloadItemState.Done;
-                                    item.Update?.Invoke();
-                                    DownloadManager.Done();
+                                    item.Update?.Invoke(index);
+                                    DownloadManager.Done(index);
                                     break;
                                 }
                             }
@@ -140,7 +142,7 @@ public class DownloadThread
                         var data = await BaseClient.Client.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead, cancel.Token);
                         item.AllSize = (long)data.Content.Headers.ContentLength!;
                         item.State = DownloadItemState.Download;
-                        item.Update?.Invoke();
+                        item.Update?.Invoke(index);
                         using Stream stream1 = data.Content.ReadAsStream(cancel.Token);
                         buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
 
@@ -151,38 +153,38 @@ public class DownloadThread
                         {
                             await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead), cancel.Token).ConfigureAwait(false);
                             item.NowSize += bytesRead;
-                            item.Update?.Invoke();
+                            item.Update?.Invoke(index);
                         }
 
-                        if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Local.EndsWith(".json"))
+                        if (!string.IsNullOrWhiteSpace(item.SHA1))
                         {
                             stream.Seek(0, SeekOrigin.Begin);
                             string sha1 = Funtcions.GenSha1(stream);
                             if (sha1 != item.SHA1)
                             {
                                 item.State = DownloadItemState.Error;
-                                item.Update?.Invoke();
-                                DownloadManager.Error(item, new Exception("hash error"));
+                                item.Update?.Invoke(index);
+                                DownloadManager.Error(index, item, new Exception("hash error"));
                             }
                         }
 
                         item.State = DownloadItemState.Action;
-                        item.Update?.Invoke();
+                        item.Update?.Invoke(index);
 
                         item.Later?.Invoke(stream);
 
                         item.State = DownloadItemState.Done;
-                        item.Update?.Invoke();
-                        DownloadManager.Done();
+                        item.Update?.Invoke(index);
+                        DownloadManager.Done(index);
                         break;
                     }
                     catch (Exception e)
                     {
                         item.State = DownloadItemState.Error;
                         item.ErrorTime++;
-                        item.Update?.Invoke();
+                        item.Update?.Invoke(index);
                         time++;
-                        DownloadManager.Error(item, e);
+                        DownloadManager.Error(index, item, e);
                     }
                     finally
                     {

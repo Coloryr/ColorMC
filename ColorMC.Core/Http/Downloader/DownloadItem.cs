@@ -20,5 +20,5 @@ public record DownloadItem
     public int ErrorTime { get; set; }
 
 
-    public Action Update { get; set; }
+    public Action<int> Update { get; set; }
 }

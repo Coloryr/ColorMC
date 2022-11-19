@@ -63,12 +63,12 @@ internal class Program
         
     }
 
-    public static void Update() 
+    public static void Update(int a) 
     {
-        Console.WriteLine($"下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
+        Console.WriteLine($"下载器{a} 下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
     }
 
-    public static void Update(DownloadItem item)
+    public static void Update(int index, DownloadItem item)
     {
         //Console.WriteLine($"下载项目:{item.Name} {item.AllSize}/{item.NowSize}");
     }

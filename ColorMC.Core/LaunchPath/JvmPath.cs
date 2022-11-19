@@ -55,12 +55,17 @@ public static class JvmPath
 
     public static void AddList(List<JvmConfigObj> objs)
     {
+        Logs.Info("正在读取JAVA信息");
         Jvms.Clear();
         objs.ForEach(a =>
         {
             var info = GetJavaInfo(a.Local);
             if (info != null)
+            {
+                Logs.Info($"JAVA:{info.Path} {info.Version}");
                 Jvms.Add(a.Name, info);
+            }
+                
         });
 
         if (objs.Count != Jvms.Count)

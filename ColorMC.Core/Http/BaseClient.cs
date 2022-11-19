@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using ColorMC.Core.Utils;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Http;
@@ -13,10 +15,26 @@ public static class BaseClient
 {
     public static SourceLocal Source { get; set; }
 
-    public static HttpClient Client = new()
+    public static HttpClient Client;
+
+    public static void Init() 
     {
-        Timeout = TimeSpan.FromSeconds(10)
-    };
+        Logs.Info($"Http客户端初始化");
+        if (ConfigUtils.Config.Http.Proxy)
+        {
+            Logs.Info($"使用代理{ConfigUtils.Config.Http.ProxyIP}:{ConfigUtils.Config.Http.ProxyPort}");
+            Client = new(new HttpClientHandler()
+            {
+                Proxy = new WebProxy(ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort)
+            });
+        }
+        else
+        {
+            Client = new();
+        }
+
+        Client.Timeout = TimeSpan.FromSeconds(10);
+    }
 
     public static async Task<string> GetString(string url, Dictionary<string, string> arg = null)
     {

@@ -77,8 +77,6 @@ public static class AssetsPath
                 list.Add((item.Key, item.Value.hash));
                 continue;
             }
-            if (item.Key.EndsWith(".json"))
-                continue;
             using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
             var sha1 = Funtcions.GenSha1(stream);
             if (item.Value.hash != sha1)
