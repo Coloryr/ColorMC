@@ -103,7 +103,7 @@ public static class Launch
                 Overwrite = true,
                 Url = UrlHelp.DownloadAssets(item.Hash, BaseClient.Source),
                 SHA1 = item.Hash,
-                Local = $"{AssetsPath.ObjectsDir}/{item.Hash[..2]}/{item.Hash}",
+                Local = $"{AssetsPath.ObjectsDir}/{item.Hash[..2]}/{item}",
                 Name = item.Name
             });
         }

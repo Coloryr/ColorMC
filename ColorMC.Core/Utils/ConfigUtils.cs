@@ -19,12 +19,12 @@ public static class ConfigUtils
         Dir = dir;
         Name = dir + "config.json";
 
-            Load(Name);
-        
+        Load(Name);
     }
 
     public static void Load(string name)
     {
+        Logs.Info($"正在读取配置文件");
         if (File.Exists(name))
         {
             try
@@ -34,6 +34,7 @@ public static class ConfigUtils
             catch (Exception e)
             {
                 CoreMain.OnError?.Invoke("配置文件读取错误", e, true);
+                Logs.Error("配置文件读取错误", e);
             }
         }
 

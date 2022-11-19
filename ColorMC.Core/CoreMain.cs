@@ -5,6 +5,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Utils;
 using System.Diagnostics;
 using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Http;
 
 namespace ColorMC.Core;
 
@@ -25,10 +26,10 @@ public static class CoreMain
     public static Action<string, Exception, bool> OnError;
     public static Action NewStart;
 
-    public static Action DownloadUpdate;
+    public static Action<int> DownloadUpdate;
     public static Action<CoreRunState> DownloadState;
-    public static Action<DownloadItem> DownloadStateUpdate;
-    public static Action<DownloadItem, Exception> DownloadError;
+    public static Action<int, DownloadItem> DownloadStateUpdate;
+    public static Action<int, DownloadItem, Exception> DownloadError;
 
     public static Func<GameSettingObj, bool> GameOverwirte;
     public static Func<GameSettingObj, bool> GameDownload;
@@ -45,11 +46,12 @@ public static class CoreMain
 
     public static void Init(string dir)
     {
-        SystemInfo.Init();
         Logs.Init(dir);
         ConfigUtils.Init(dir);
-        MCPath.Init(dir);
+        SystemInfo.Init();
+        BaseClient.Init();
         DownloadManager.Init();
         AuthDatabase.Init();
+        MCPath.Init();
     }
 }

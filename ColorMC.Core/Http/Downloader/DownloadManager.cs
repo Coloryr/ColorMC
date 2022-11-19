@@ -15,6 +15,7 @@ public static class DownloadManager
 
     public static void Init()
     {
+        Logs.Info($"下载器初始化，线程数{ConfigUtils.Config.Http.DownloadThread}");
         //ConfigUtils.Config.Http.DownloadThread = 1;
         semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
         threads.ForEach(a => a.Close());
@@ -30,6 +31,7 @@ public static class DownloadManager
 
     public static void Clear()
     {
+        Logs.Info($"下载器清空");
         Name.Clear();
         Items.Clear();
         AllSize = 0;
@@ -38,7 +40,8 @@ public static class DownloadManager
 
     public static async Task<bool> Start()
     {
-        CoreMain.DownloadUpdate?.Invoke();
+        Logs.Info($"下载器启动");
+        CoreMain.DownloadUpdate?.Invoke(-1);
         CoreMain.DownloadState?.Invoke(CoreRunState.Start);
         AllSize = Items.Count;
         foreach (var item in threads)
@@ -58,14 +61,15 @@ public static class DownloadManager
 
     public static void FillAll(List<DownloadItem> list)
     {
+        Logs.Info($"下载器装填内容");
         foreach (var item in list)
         {
             if (Name.Contains(item.Name))
                 continue;
-            CoreMain.DownloadStateUpdate?.Invoke(item);
-            item.Update = () =>
+            CoreMain.DownloadStateUpdate?.Invoke(-1,item);
+            item.Update = (index) =>
             {
-                CoreMain.DownloadStateUpdate?.Invoke(item);
+                CoreMain.DownloadStateUpdate?.Invoke(index, item);
             };
             Items.Enqueue(item);
             Name.Add(item.Name);
@@ -82,10 +86,10 @@ public static class DownloadManager
         return null;
     }
 
-    public static void Done()
+    public static void Done(int index)
     {
         DoneSize++;
-        CoreMain.DownloadUpdate?.Invoke();
+        CoreMain.DownloadUpdate?.Invoke(index);
     }
 
     public static void ThreadDone()
@@ -93,9 +97,9 @@ public static class DownloadManager
         semaphore.Release();
     }
 
-    public static void Error(DownloadItem item, Exception e)
+    public static void Error(int index, DownloadItem item, Exception e)
     {
         Logs.Error($"下载{item.Name}错误", e);
-        CoreMain.DownloadError?.Invoke(item, e);
+        CoreMain.DownloadError?.Invoke(index, item, e);
     }
 }
