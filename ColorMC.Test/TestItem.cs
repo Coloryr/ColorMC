@@ -3,7 +3,6 @@ using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Http.Apis;
-using ColorMC.Core.Login;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Objs.Pack;
 using ColorMC.Core.LaunchPath;
@@ -17,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Game.Auth;
 
 namespace ColorMC.Test;
 
@@ -86,7 +86,7 @@ public static class TestItem
     {
         using FileStream stream2 = new("E:\\code\\ColorMC\\ColorMC.Test\\bin\\Debug\\net7.0\\minecraft\\assets\\objects\\0c\\0cd209ea16b052a2f445a275380046615d20775e", FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
         stream2.Seek(0, SeekOrigin.Begin);
-        string sha1 = Sha1.GenSha1(stream2);
+        string sha1 = Funtcions.GenSha1(stream2);
     }
 
     public static void Item6()
@@ -106,14 +106,14 @@ public static class TestItem
                 return;
             }
             DownloadManager.FillAll(list1.List!);
-            DownloadManager.Start();
+            DownloadManager.Start().Wait();
         }
     }
 
     public static void Item7()
     {
         var data = InstancesPath.GetGames().First();
-        var list = Launch.CheckGameFile(data).Result;
+        var list = Launch.CheckGameFile(data, new LoginObj()).Result;
         if (list == null)
         {
             Console.WriteLine("文件检查失败");
@@ -129,16 +129,27 @@ public static class TestItem
 
     public static void Item8()
     {
-        var data = Auth.LoginWithOAuth().Result;
-        if (data == null)
+        var login = BaseAuth.LoginWithOAuth().Result;
+        if (login == null)
         {
             Console.WriteLine("登录错误");
         }
         else
         {
-            var data1 = Minecraft.GetMinecraftProfileAsync(data.Token).Result;
-            Console.WriteLine(data);
-            Console.WriteLine(JsonConvert.SerializeObject(data1));
+            var game = new GameSettingObj()
+            {
+                Dir = "./minecraft/instances/test1",
+                Name = "test1",
+                Version = "1.12.2",
+                Loader = Loaders.Forge,
+                LoaderInfo = new()
+                {
+                    Name = "forge",
+                    Version = "14.23.5.2860"
+                }
+            };
+            var process = game.StartGame(login, null).Result;
+            process?.WaitForExit();
         }
     }
 
@@ -148,7 +159,6 @@ public static class TestItem
         var login = new LoginObj()
         {
             UUID = "UUID",
-            Token = "Token",
             AccessToken = "AccessToken",
             UserName = "Test"
         };
@@ -159,16 +169,20 @@ public static class TestItem
 
     public static void Item10() 
     {
+        Console.WriteLine("key");
+        Console.ReadLine();
+
         var login = new LoginObj()
         {
             UUID = "UUID",
-            Token = "Token",
             AccessToken = "AccessToken",
             UserName = "Test"
         };
+
+
         var game = new GameSettingObj()
         {
-            Dir = "E:\\code\\ColorMC\\ColorMC.Test\\bin\\Debug\\net7.0\\/minecraft/instances/test1",
+            Dir = "./minecraft/instances/test1",
             Name = "test1",
             Version = "1.7.2",
             Loader = Loaders.Forge,
@@ -182,10 +196,12 @@ public static class TestItem
         //process = game.StartGame(login, null).Result;
         //process?.WaitForExit();
 
-        game.Version = "1.7.10";
-        game.LoaderInfo.Version = "10.13.4.1614";
-        process = game.StartGame(login, null).Result;
-        process?.WaitForExit();
+        //game.Version = "1.7.10";
+        //game.LoaderInfo.Version = "10.13.4.1614";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+        //Console.WriteLine("exit");
+        //Console.ReadLine();
 
         //game.Version = "1.8";
         //game.LoaderInfo.Version = "11.14.4.1577";
@@ -227,20 +243,26 @@ public static class TestItem
         //process = game.StartGame(login, null).Result;
         //process?.WaitForExit();
 
-        game.Version = "1.11.2";
-        game.LoaderInfo.Version = "13.20.1.2588";
-        process = game.StartGame(login, null).Result;
-        process?.WaitForExit();
+        //game.Version = "1.11.2";
+        //game.LoaderInfo.Version = "13.20.1.2588";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+        //Console.WriteLine("exit");
+        //Console.ReadLine();
 
-        game.Version = "1.12.2";
-        game.LoaderInfo.Version = "14.23.5.2860";
-        process = game.StartGame(login, null).Result;
-        process?.WaitForExit();
+        //game.Version = "1.12.2";
+        //game.LoaderInfo.Version = "14.23.5.2860";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+        //Console.WriteLine("exit");
+        //Console.ReadLine();
 
-        game.Version = "1.13.2";
-        game.LoaderInfo.Version = "25.0.223";
-        process = game.StartGame(login, null).Result;
-        process?.WaitForExit();
+        //game.Version = "1.13.2";
+        //game.LoaderInfo.Version = "25.0.223";
+        //process = game.StartGame(login, null).Result;
+        //process?.WaitForExit();
+        //Console.WriteLine("exit");
+        //Console.ReadLine();
 
         //game.Version = "1.14.4";
         //game.LoaderInfo.Version = "28.2.26";
@@ -271,5 +293,33 @@ public static class TestItem
         game.LoaderInfo.Version = "43.1.52";
         process = game.StartGame(login, null).Result;
         process?.WaitForExit();
+        Console.WriteLine("exit");
+        Console.ReadLine();
+    }
+
+    public static void Item11()
+    {
+        var login = BaseAuth.LoginWithNide8("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "xxxx").Result;
+        if (login == null)
+        {
+            Console.WriteLine("登录错误");
+        }
+        else
+        {
+            var game = new GameSettingObj()
+            {
+                Dir = "./minecraft/instances/test1",
+                Name = "test1",
+                Version = "1.18.2",
+                Loader = Loaders.Forge,
+                LoaderInfo = new()
+                {
+                    Name = "forge",
+                    Version = "40.1.85"
+                }
+            };
+            var process = game.StartGame(login, null).Result;
+            process?.WaitForExit();
+        }
     }
 }

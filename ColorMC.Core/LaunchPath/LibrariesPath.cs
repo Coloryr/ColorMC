@@ -45,7 +45,7 @@ public static class LibrariesPath
             }
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
                 FileShare.Read);
-            var sha1 = Sha1.GenSha1(stream);
+            var sha1 = Funtcions.GenSha1(stream);
             if (item.SHA1 != sha1)
             {
                 list.Add(item);
@@ -61,7 +61,7 @@ public static class LibrariesPath
         var v2 = CheckRule.GameLaunchVersion(obj.Version);
         if (v2)
         {
-            ForgeHelp.ReadyForgeWrapper();
+            ForgeHelper.ReadyForgeWrapper();
         }
 
         var forge = VersionPath.GetForgeObj(obj.Version, obj.LoaderInfo.Version);
@@ -69,7 +69,7 @@ public static class LibrariesPath
             return null;
 
         var list = new List<DownloadItem>();
-        var list1 = ForgeHelp.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
+        var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
         foreach (var item in list1)
         {
             if (!File.Exists(item.Local))
@@ -82,7 +82,7 @@ public static class LibrariesPath
 
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
-            var sha1 = Sha1.GenSha1(stream);
+            var sha1 = Funtcions.GenSha1(stream);
             if (item.SHA1 != sha1)
             {
                 list.Add(item);
@@ -117,7 +117,7 @@ public static class LibrariesPath
                 }
                 using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
                     FileShare.ReadWrite);
-                var sha1 = Sha1.GenSha1(stream);
+                var sha1 = Funtcions.GenSha1(stream);
                 if (item.downloads.artifact.sha1 != sha1)
                 {
                     list.Add(new()

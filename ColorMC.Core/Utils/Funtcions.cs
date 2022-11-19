@@ -3,7 +3,7 @@ using System.Text;
 
 namespace ColorMC.Core.Utils;
 
-public static class Sha1
+public static class Funtcions
 {
     public static string GenSha1(Stream stream)
     {
@@ -14,5 +14,10 @@ public static class Sha1
             EnText.AppendFormat("{0:x2}", iByte);
         }
         return EnText.ToString().ToLower();
+    }
+
+    public static string NewUUID() 
+    {
+        return Guid.NewGuid().ToString().ToLower();
     }
 }

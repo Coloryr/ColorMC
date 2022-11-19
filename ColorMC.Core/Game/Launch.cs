@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using ColorMC.Core.Game.Auth;
 
 namespace ColorMC.Core.Game;
 
@@ -22,7 +23,7 @@ public enum LaunchState
 
 public static class Launch
 {
-    public static async Task<List<DownloadItem>?> CheckGameFile(GameSettingObj obj)
+    public static async Task<List<DownloadItem>?> CheckGameFile(GameSettingObj obj, LoginObj login)
     {
         var list = new List<DownloadItem>();
         var game = VersionPath.GetGame(obj.Version);
@@ -69,7 +70,7 @@ public static class Launch
         {
             using FileStream stream2 = new(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
             stream2.Seek(0, SeekOrigin.Begin);
-            string sha1 = Sha1.GenSha1(stream2);
+            string sha1 = Funtcions.GenSha1(stream2);
             if (sha1 != game.downloads.client.sha1)
             {
                 list.Add(new()
@@ -174,6 +175,11 @@ public static class Launch
             {
                 list.AddRange(list3);
             }
+        }
+
+        if (login.AuthType == AuthType.Nide8)
+        {
+            await AuthHelper.ReadyNide8();
         }
 
         return list;
@@ -345,7 +351,7 @@ public static class Launch
         return arg;
     }
 
-    public static List<string> JvmArg(GameSettingObj obj, bool v2)
+    public static List<string> JvmArg(GameSettingObj obj, bool v2, LoginObj login)
     {
         JvmArgObj args = new();
 
@@ -414,7 +420,7 @@ public static class Launch
         if (v2 && obj.Loader == Loaders.Forge)
         {
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
-            jvmHead.Add($"-Dforgewrapper.installer={ForgeHelp.BuildForgeInster(obj.Version, obj.LoaderInfo.Version).Local}");
+            jvmHead.Add($"-Dforgewrapper.installer={ForgeHelper.BuildForgeInster(obj.Version, obj.LoaderInfo.Version).Local}");
             jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.MakeGameDir(obj.Version)}");
         }
 
@@ -427,6 +433,12 @@ public static class Launch
         //jvmHead.Add($"-Dminecraft.client.jar={VersionPath.BaseDir}/{obj.Version}.jar");
 
         jvmHead.AddRange(v2 ? MakeV2JvmArg(obj) : MakeV1JvmArg());
+
+        if (login.AuthType == AuthType.Nide8)
+        {
+            jvmHead.Add($"-javaagent:{AuthHelper.BuildNide8Item().Local}={login.Text1}");
+            jvmHead.Add("-Dnide8auth.client=true");
+        }
 
         return jvmHead;
     }
@@ -545,13 +557,13 @@ public static class Launch
         {
             var forge = VersionPath.GetForgeObj(obj)!;
 
-            var list2 = ForgeHelp.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
+            var list2 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
 
             list2.ForEach(a => list.AddOrUpdate(PathC.MakeVersionObj(a.Name), a.Local));
 
             if (v2)
             {
-                list.AddOrUpdate(new(), ForgeHelp.ForgeWrapper);
+                list.AddOrUpdate(new(), ForgeHelper.ForgeWrapper);
             }
         }
         else if (obj.Loader == Loaders.Fabric)
@@ -615,9 +627,10 @@ public static class Launch
         };
         var libraries = GetLibs(obj, v2);
         StringBuilder arg = new();
+        string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
         foreach (var item in libraries)
         {
-            arg.Append($"{item}:");
+            arg.Append($"{item}{sep}");
         }
         arg.Remove(arg.Length - 1, 1);
         string classpath = arg.ToString().Trim();
@@ -631,16 +644,15 @@ public static class Launch
                 {"${assets_index_name}",assetsIndexName },
                 {"${auth_uuid}",login.UUID },
                 {"${auth_access_token}",login.AccessToken },
-                //{"${auth_session}",login.Token },
                 {"${game_assets}",assetsPath },
                 {"${user_properties}",UserPropertyToList(login.Properties) },
                 {"${user_type}", "legacy" },
                 {"${version_type}", "ColorMC" },
                 {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
                 {"${library_directory}",LibrariesPath.BaseDir },
-                {"${classpath_separator}", ":" },
+                {"${classpath_separator}", sep },
                 {"${launcher_name}","ColorMC" },
-                {"${launcher_version}", Assembly.GetExecutingAssembly().GetName().Version.ToString() },
+                {"${launcher_version}", CoreMain.Version },
                 {"${classpath}", classpath },
             };
 
@@ -656,7 +668,7 @@ public static class Launch
         var version = VersionPath.GetGame(obj.Version)!;
         var v2 = CheckRule.GameLaunchVersion(obj.Version);
 
-        list.AddRange(JvmArg(obj, v2));
+        list.AddRange(JvmArg(obj, v2, login));
         if (obj.Loader == Loaders.Normal)
             list.Add(version.mainClass);
         else if (obj.Loader == Loaders.Forge)
@@ -692,7 +704,7 @@ public static class Launch
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null)
     {
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Check);
-        var res = await CheckGameFile(obj);
+        var res = await CheckGameFile(obj, login);
         if (res == null)
             return null;
 

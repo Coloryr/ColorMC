@@ -73,10 +73,6 @@ public class DownloadThread
         {
             Directory.CreateDirectory(info.DirectoryName!);
         }
-        if (info.Exists && info.Length > 0)
-        {
-            return;
-        }
         using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         var data = await BaseClient.Client.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead);
         using Stream stream1 = data.Content.ReadAsStream();
@@ -119,7 +115,7 @@ public class DownloadThread
                             {
                                 using FileStream stream2 = new(item.Local, FileMode.Open, FileAccess.Read, FileShare.Read);
                                 stream2.Seek(0, SeekOrigin.Begin);
-                                string sha1 = Sha1.GenSha1(stream2);
+                                string sha1 = Funtcions.GenSha1(stream2);
                                 if (sha1 == item.SHA1)
                                 {
                                     item.State = DownloadItemState.Action;
@@ -161,7 +157,7 @@ public class DownloadThread
                         if (!string.IsNullOrWhiteSpace(item.SHA1))
                         {
                             stream.Seek(0, SeekOrigin.Begin);
-                            string sha1 = Sha1.GenSha1(stream);
+                            string sha1 = Funtcions.GenSha1(stream);
                             if (sha1 != item.SHA1)
                             {
                                 item.State = DownloadItemState.Error;

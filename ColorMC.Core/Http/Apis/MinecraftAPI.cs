@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.Http.Apis;
 
-public static class Minecraft
+public static class MinecraftAPI
 {
     /// <summary>
     /// Get player's minecraft profile

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Core.Http.Download;
 
-public static class ForgeHelp
+public static class ForgeHelper
 {
     public static void UnpackNative(string version, FileStream stream)
     {
