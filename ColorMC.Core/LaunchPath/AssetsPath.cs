@@ -66,22 +66,24 @@ public static class AssetsPath
         return null;
     }
 
-    public static List<string> Check(AssetsObj obj)
+    public static List<(string Name, string Hash)> Check(AssetsObj obj)
     {
-        var list = new List<string>();
+        var list = new List<(string, string)>();
         foreach (var item in obj.objects)
         {
             string file = $"{ObjectsDir}/{item.Value.hash[..2]}/{item.Value.hash}";
             if (!File.Exists(file))
             {
-                list.Add(item.Value.hash);
+                list.Add((item.Key, item.Value.hash));
                 continue;
             }
+            if (item.Key.EndsWith(".json"))
+                continue;
             using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
             var sha1 = Funtcions.GenSha1(stream);
             if (item.Value.hash != sha1)
             {
-                list.Add(item.Value.hash);
+                list.Add((item.Key, item.Value.hash));
             }
         }
 

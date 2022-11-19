@@ -154,7 +154,7 @@ public class DownloadThread
                             item.Update?.Invoke();
                         }
 
-                        if (!string.IsNullOrWhiteSpace(item.SHA1))
+                        if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Local.EndsWith(".json"))
                         {
                             stream.Seek(0, SeekOrigin.Begin);
                             string sha1 = Funtcions.GenSha1(stream);
