@@ -65,7 +65,7 @@ public static class GameDownload
     {
         bool v2 = CheckRule.GameLaunchVersion(mc);
 
-        var down = ForgeHelp.BuildForgeInster(mc, version);
+        var down = ForgeHelper.BuildForgeInster(mc, version);
         try
         {
             await DownloadThread.Download(down);
@@ -110,7 +110,7 @@ public static class GameDownload
                 return (DownloadState.GetInfo, null);
             }
 
-            list.AddRange(ForgeHelp.MakeForgeLibs(info, mc, version));
+            list.AddRange(ForgeHelper.MakeForgeLibs(info, mc, version));
 
             byte[] array2 = stream2.ToArray();
             ForgeInstallObj info1;
@@ -161,7 +161,7 @@ public static class GameDownload
                 };
                 foreach (var item in obj.versionInfo.libraries)
                 {
-                    var item1 = ForgeHelp.MakeLibObj(item);
+                    var item1 = ForgeHelper.MakeLibObj(item);
                     if (item1 != null)
                     {
                         info.libraries.Add(item1);
@@ -186,7 +186,7 @@ public static class GameDownload
 
                 File.WriteAllText($"{VersionPath.ForgeDir}/{name}.json", JsonConvert.SerializeObject(info));
 
-                list.AddRange(ForgeHelp.MakeForgeLibs(info, mc, version));
+                list.AddRange(ForgeHelper.MakeForgeLibs(info, mc, version));
             }
             catch (Exception e)
             {

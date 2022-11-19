@@ -78,7 +78,7 @@ public static class AssetsPath
                 continue;
             }
             using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-            var sha1 = Sha1.GenSha1(stream);
+            var sha1 = Funtcions.GenSha1(stream);
             if (item.Value.hash != sha1)
             {
                 list.Add(item.Value.hash);

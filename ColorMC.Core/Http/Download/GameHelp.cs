@@ -65,7 +65,7 @@ public static class GameHelp
                         Url = UrlHelp.DownloadLibraries(lib.url, BaseClient.Source),
                         Local = $"{LibrariesPath.BaseDir}/{lib.path}",
                         SHA1 = lib.sha1,
-                        Later = (test) => ForgeHelp.UnpackNative(obj.id, test)
+                        Later = (test) => ForgeHelper.UnpackNative(obj.id, test)
                     });
                 }
             }

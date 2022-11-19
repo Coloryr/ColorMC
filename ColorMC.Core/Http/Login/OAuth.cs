@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Login;
+﻿using ColorMC.Core.Game.Auth;
 using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Http.Login;
@@ -24,7 +24,7 @@ public record OAuth1Obj
     public string refresh_token { get; set; }
 }
 
-public static class OAuth
+public static class OAuthAPI
 {
     private const string OAuthCode = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
     private const string OAuthToken = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
@@ -53,27 +53,36 @@ public static class OAuth
         { "refresh_token", "" }
     };
 
-    public static string code { get; private set; }
-    public static string url { get; private set; }
+    private static string code;
+    private static string url;
+    private static string device_code;
+    private static int expires_in;
 
-    public static async Task<(LoginState Done, OAuth1Obj? Auth)> AddAuth()
+    public static async Task<(LoginState Done, string? Code, string? Url)> GetCode()
     {
         var data = await BaseClient.PostString(OAuthCode, Arg1);
-        var obj1 = JObject.Parse(data);
-        if (obj1.ContainsKey("error"))
+        if (data.Contains("error"))
         {
-            return (LoginState.Error, null);
+            Logs.Error(data);
+            return (LoginState.Error, "登录码获取失败", null);
         }
+        var obj1 = JObject.Parse(data);
         var obj2 = obj1.ToObject<OAuthObj>();
         if (obj2 == null)
         {
-            return (LoginState.JsonError, null);
+            return (LoginState.JsonError, "Json解析错误", null);
         }
         code = obj2.user_code;
         url = obj2.verification_uri;
-        Console.WriteLine(code);
-        Console.WriteLine(url);
-        Arg2["code"] = obj2.device_code;
+        device_code = obj2.device_code;
+        expires_in = obj2.expires_in;
+
+        return (LoginState.Done, code, url);
+    }
+
+    public static async Task<(LoginState Done, OAuth1Obj? Obj)> RunGetCode()
+    {
+        Arg2["code"] = device_code;
         long startTime = DateTime.Now.Ticks;
         int delay = 5;
         do
@@ -81,11 +90,11 @@ public static class OAuth
             Thread.Sleep(delay * 1000);
             long estimatedTime = DateTime.Now.Ticks - startTime;
             long sec = estimatedTime / 10000000;
-            if (sec > obj2.expires_in)
+            if (sec > expires_in)
             {
                 return (LoginState.TimeOut, null);
             }
-            data = await BaseClient.PostString(OAuthToken, Arg2);
+            var data = await BaseClient.PostString(OAuthToken, Arg2);
             var obj3 = JObject.Parse(data);
             if (obj3.ContainsKey("error"))
             {
@@ -171,10 +180,7 @@ public static class OAuth
             Properties = new
             {
                 SandboxId = "RETAIL",
-                UserTokens = new[]
-                    {
-                        token
-                    }
+                UserTokens = new[] { token }
             },
             RelyingParty = "rp://api.minecraftservices.com/",
             TokenType = "JWT"

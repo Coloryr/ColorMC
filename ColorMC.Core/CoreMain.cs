@@ -1,10 +1,10 @@
 ﻿using ColorMC.Core.Game;
 using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Login;
 using ColorMC.Core.Objs;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Utils;
 using System.Diagnostics;
+using ColorMC.Core.Game.Auth;
 
 namespace ColorMC.Core;
 
@@ -37,9 +37,11 @@ public static class CoreMain
     public static Action<CoreRunState> PackState;
     public static Action<int, int> PackUpdate;
 
-    public static Action<AuthState> AuthState;
-
     public static Action<Process?, string?> ProcessLog;
+
+    public static Action<AuthState> AuthStateUpdate;
+    public static Action<string, string> LoginOAuthCode;
+    public static Action<LoginState, string> LoginFail;
 
     public static void Init(string dir)
     {
@@ -48,5 +50,6 @@ public static class CoreMain
         ConfigUtils.Init(dir);
         MCPath.Init(dir);
         DownloadManager.Init();
+        AuthDatabase.Init();
     }
 }

@@ -1,13 +1,7 @@
 ﻿using ColorMC.Core;
-using ColorMC.Core.Http;
-using ColorMC.Core.Http.Download;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Http.Login;
-using ColorMC.Core.Http.Apis;
-using ColorMC.Core.Login;
 using ColorMC.Core.Objs;
-using ColorMC.Core.LaunchPath;
-using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace ColorMC.Test;
@@ -28,14 +22,34 @@ internal class Program
         CoreMain.PackState = Update;
         CoreMain.PackUpdate = PackUpdate;
         CoreMain.ProcessLog = Log;
+        CoreMain.LoginOAuthCode = Login;
+        CoreMain.AuthStateUpdate = AuthStateUpdate;
+        CoreMain.LoginFail = LoginFail;
 
-        TestItem.Item10();
+        TestItem.Item11();
 
         Console.ReadLine();
     }
 
+    public static void LoginFail(LoginState state, string msg)
+    {
+        Console.WriteLine($"登录失败{state} {msg}");
+    }
+
+    public static void AuthStateUpdate(AuthState state)
+    {
+        Console.WriteLine($"登录状态{state}");
+    }
+
+    public static void Login(string url, string code)
+    {
+        Console.WriteLine(url);
+        Console.WriteLine(code);
+    }
+
     public static bool Download(GameSettingObj obj)
     {
+        Console.WriteLine("补全游戏文件");
         return true;
     }
 
