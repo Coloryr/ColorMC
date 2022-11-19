@@ -101,10 +101,10 @@ public static class Launch
             list.Add(new()
             {
                 Overwrite = true,
-                Url = UrlHelp.DownloadAssets(item, BaseClient.Source),
-                SHA1 = item,
-                Local = $"{AssetsPath.ObjectsDir}/{item[..2]}/{item}",
-                Name = item
+                Url = UrlHelp.DownloadAssets(item.Hash, BaseClient.Source),
+                SHA1 = item.Hash,
+                Local = $"{AssetsPath.ObjectsDir}/{item.Hash[..2]}/{item.Hash}",
+                Name = item.Name
             });
         }
 
