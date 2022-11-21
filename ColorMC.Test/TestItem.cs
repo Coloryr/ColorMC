@@ -45,7 +45,7 @@ public static class TestItem
                 return;
             }
             DownloadManager.FillAll(list.List!);
-            DownloadManager.Start();
+            DownloadManager.Start().Wait();
         }
     }
 
@@ -362,5 +362,10 @@ public static class TestItem
         {
             Console.WriteLine($"{item}");
         }
+    }
+
+    public static void Item14()
+    { 
+        
     }
 }

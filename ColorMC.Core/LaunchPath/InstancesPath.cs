@@ -21,6 +21,7 @@ public static class InstancesPath
     private const string Name11 = "usernamecache.json";
     private const string Name12 = "icon.png";
     private const string Name13 = "mods";
+    private const string Name14 = "saves";
 
     private static Dictionary<string, GameSettingObj> Games = new();
 
@@ -141,6 +142,11 @@ public static class InstancesPath
     public static string GetModsPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name13}");
+    }
+
+    public static string GetSavesPath(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}");
     }
 
     public static GameSettingObj? CreateVersion(string name, string version,
