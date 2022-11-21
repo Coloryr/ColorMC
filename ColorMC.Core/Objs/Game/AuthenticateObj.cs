@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Game;
+﻿namespace ColorMC.Core.Objs.Game;
 
 public record AuthenticateObj
 {
     public record Agent
-    { 
+    {
         public string name { get; set; }
         public string version { get; set; }
     }
@@ -28,7 +22,7 @@ public record AuthenticateResObj
         public string id { get; set; }
     }
     public record User
-    { 
+    {
         public string id { get; set; }
     }
     public string accessToken { get; set; }

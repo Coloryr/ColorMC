@@ -66,7 +66,7 @@ public static class DownloadManager
         {
             if (Name.Contains(item.Name))
                 continue;
-            CoreMain.DownloadStateUpdate?.Invoke(-1,item);
+            CoreMain.DownloadStateUpdate?.Invoke(-1, item);
             item.Update = (index) =>
             {
                 CoreMain.DownloadStateUpdate?.Invoke(index, item);

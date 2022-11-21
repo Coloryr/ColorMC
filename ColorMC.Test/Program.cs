@@ -2,6 +2,7 @@
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
+using System;
 using System.Diagnostics;
 
 namespace ColorMC.Test;
@@ -26,7 +27,7 @@ internal class Program
         CoreMain.AuthStateUpdate = AuthStateUpdate;
         CoreMain.LoginFail = LoginFail;
 
-        TestItem.Item11();
+        TestItem.Item12();
 
         Console.ReadLine();
     }
@@ -59,18 +60,18 @@ internal class Program
     }
 
     public static void Update1(CoreRunState item)
-    { 
+    {
         
     }
 
-    public static void Update(int a) 
+    public static void Update(int index) 
     {
-        Console.WriteLine($"下载器{a} 下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
+        Console.WriteLine($"下载器{index} 下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
     }
 
     public static void Update(int index, DownloadItem item)
     {
-        //Console.WriteLine($"下载项目:{item.Name} {item.AllSize}/{item.NowSize}");
+        Console.WriteLine($"下载器{index} 下载项目:{item.Name} {item.AllSize}/{item.NowSize}");
     }
 
     public static void Update(CoreRunState item)

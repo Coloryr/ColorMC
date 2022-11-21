@@ -16,7 +16,7 @@ public static class Funtcions
         return EnText.ToString().ToLower();
     }
 
-    public static string NewUUID() 
+    public static string NewUUID()
     {
         return Guid.NewGuid().ToString().ToLower();
     }

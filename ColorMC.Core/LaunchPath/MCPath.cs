@@ -1,16 +1,15 @@
-﻿using ColorMC.Core.Utils;
-
-namespace ColorMC.Core.LaunchPath;
+﻿namespace ColorMC.Core.LaunchPath;
 
 public static class MCPath
 {
+    private const string Name = "minecraft";
     public static string BaseDir { get; private set; }
 
-    public static void Init()
+    public static void Init(string dir)
     {
-        Logs.Info($"MC文件夹在{ConfigUtils.Config.MCPath}");
+        BaseDir = dir + Name;
 
-        BaseDir = ConfigUtils.Config.MCPath;
+        Logs.Info($"MC文件夹在{BaseDir}");
 
         Directory.CreateDirectory(BaseDir);
 

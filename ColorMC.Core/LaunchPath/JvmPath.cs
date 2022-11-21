@@ -65,7 +65,7 @@ public static class JvmPath
                 Logs.Info($"JAVA:{info.Path} {info.Version}");
                 Jvms.Add(a.Name, info);
             }
-                
+
         });
 
         if (objs.Count != Jvms.Count)

@@ -4,8 +4,6 @@ using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
-using System;
-using System.Net.Mime;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -24,7 +22,7 @@ public static class LibrariesPath
         Directory.CreateDirectory(NativeDir);
     }
 
-    public static string GetNativeDir(string version) 
+    public static string GetNativeDir(string version)
     {
         string dir = $"{NativeDir}/{version}";
         Directory.CreateDirectory(dir);
@@ -188,7 +186,7 @@ public static class LibrariesPath
         return list;
     }
 
-    public static string MakeGameDir(string mc) 
+    public static string MakeGameDir(string mc)
     {
         return $"{BaseDir}/net/minecraft/client/{mc}/client-{mc}.jar";
     }

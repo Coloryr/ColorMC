@@ -215,6 +215,9 @@ public class ServerInfo
     /// </summary>
     [JsonIgnore]
     public string Message { get; set; }
+
+    [JsonIgnore]
+    public bool AcceptTextures { get; set; }
     #endregion
 
     /// <summary>
@@ -248,6 +251,9 @@ public class ServerInfo
         BAD_CONNECT,
         EXCEPTION
     }
+
+    public ServerInfo()
+    { }
 
     public ServerInfo(string ip, ushort port)
     {

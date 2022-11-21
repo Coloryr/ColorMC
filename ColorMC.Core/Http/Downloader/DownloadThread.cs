@@ -1,7 +1,5 @@
 ﻿using ColorMC.Core.Utils;
-using System;
 using System.Buffers;
-using System.Transactions;
 
 namespace ColorMC.Core.Http.Downloader;
 
@@ -10,7 +8,7 @@ public class DownloadThread
     private int index;
     private Thread thread;
     private bool run = false;
-    private Semaphore semaphore = new(0, 2);
+    private readonly Semaphore semaphore = new(0, 2);
     private CancellationTokenSource cancel;
     public void Init(int index)
     {
@@ -82,9 +80,11 @@ public class DownloadThread
         try
         {
             int bytesRead;
-            while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer)).ConfigureAwait(false)) != 0)
+            while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer))
+                .ConfigureAwait(false)) != 0)
             {
-                await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead)).ConfigureAwait(false);
+                await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead))
+                    .ConfigureAwait(false);
             }
         }
         finally
@@ -139,7 +139,8 @@ public class DownloadThread
                             Directory.CreateDirectory(info.DirectoryName!);
                         }
 
-                        var data = await BaseClient.Client.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead, cancel.Token);
+                        var data = await BaseClient.Client.GetAsync(item.Url,
+                            HttpCompletionOption.ResponseHeadersRead, cancel.Token);
                         item.AllSize = (long)data.Content.Headers.ContentLength!;
                         item.State = DownloadItemState.Download;
                         item.Update?.Invoke(index);
@@ -149,9 +150,11 @@ public class DownloadThread
                         using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
 
                         int bytesRead;
-                        while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer), cancel.Token).ConfigureAwait(false)) != 0)
+                        while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer),
+                            cancel.Token).ConfigureAwait(false)) != 0)
                         {
-                            await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead), cancel.Token).ConfigureAwait(false);
+                            await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0,
+                                bytesRead), cancel.Token).ConfigureAwait(false);
                             item.NowSize += bytesRead;
                             item.Update?.Invoke(index);
                         }

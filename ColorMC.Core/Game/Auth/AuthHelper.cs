@@ -1,11 +1,5 @@
 ﻿using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Http;
 using ColorMC.Core.LaunchPath;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Game.Auth;
 

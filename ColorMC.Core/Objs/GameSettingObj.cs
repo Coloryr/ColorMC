@@ -27,7 +27,7 @@ public record ProxyHostObj
 
 public record GameSettingObj
 {
-    public string Dir { get; set; }
+    public string DirName { get; set; }
     public string Name { get; set; }
     public string Version { get; set; }
     public Loaders Loader { get; set; }
@@ -37,4 +37,5 @@ public record GameSettingObj
     public ServerObj StartServer { get; set; }
     public ProxyHostObj ProxyHost { get; set; }
     public string AdvencedGameArguments { get; set; }
+    public bool ModPack { get; set; }
 }

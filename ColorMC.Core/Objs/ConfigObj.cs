@@ -80,8 +80,6 @@ public record JvmArgObj
 public record ConfigObj
 {
     public string Version { get; set; }
-    public string MCPath { get; set; }
-
     public List<JvmConfigObj> JavaList { get; set; }
 
     public HttpObj Http { get; set; }

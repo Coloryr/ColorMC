@@ -2,12 +2,6 @@
 using ColorMC.Core.Http.Login;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Game.Auth;
 

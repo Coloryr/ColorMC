@@ -1,16 +1,15 @@
-﻿using ColorMC.Core.Http;
+﻿using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
-using System.Reflection;
 using System.Text;
-using ColorMC.Core.Game.Auth;
 
 namespace ColorMC.Core.Game;
 
@@ -96,15 +95,15 @@ public static class Launch
         }
 
         var list1 = AssetsPath.Check(assets);
-        foreach (var item in list1)
+        foreach (var (Name, Hash) in list1)
         {
             list.Add(new()
             {
                 Overwrite = true,
-                Url = UrlHelp.DownloadAssets(item.Hash, BaseClient.Source),
-                SHA1 = item.Hash,
-                Local = $"{AssetsPath.ObjectsDir}/{item.Hash[..2]}/{item}",
-                Name = item.Name
+                Url = UrlHelp.DownloadAssets(Hash, BaseClient.Source),
+                SHA1 = Hash,
+                Local = $"{AssetsPath.ObjectsDir}/{Hash[..2]}/{Hash}",
+                Name = Name
             });
         }
 
@@ -523,7 +522,7 @@ public static class Launch
         return gameArg;
     }
 
-    public static void AddOrUpdate(this Dictionary<LibVersionObj, string> dic, 
+    public static void AddOrUpdate(this Dictionary<LibVersionObj, string> dic,
         LibVersionObj key, string value)
     {
         foreach (var item in dic)
@@ -608,7 +607,7 @@ public static class Launch
     {
         var version = VersionPath.GetGame(obj.Version)!;
         string assetsPath = AssetsPath.BaseDir;
-        string gameDir = InstancesPath.GetDir(obj);
+        string gameDir = InstancesPath.GetGameDir(obj);
         string assetsIndexName;
         if (version.assets != null)
         {
@@ -714,9 +713,9 @@ public static class Launch
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
             DownloadManager.FillAll(res);
             var ok = await DownloadManager.Start();
-            if(!ok)
+            if (!ok)
             {
-                return null;    
+                return null;
             }
         }
 
@@ -748,7 +747,7 @@ public static class Launch
 
         Process process = new();
         process.StartInfo.FileName = jvm.Path;
-        process.StartInfo.WorkingDirectory = InstancesPath.GetDir(obj);
+        process.StartInfo.WorkingDirectory = InstancesPath.GetGameDir(obj);
         Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
         foreach (var item in arg)
         {

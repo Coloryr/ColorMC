@@ -54,7 +54,7 @@ public record ForgeInstallObj
 public record ForgeInstallObj1
 {
     public record Install
-    { 
+    {
         public string profileName { get; set; }
         public string target { get; set; }
         public string path { get; set; }
@@ -68,7 +68,7 @@ public record ForgeInstallObj1
     public record VersionInfo
     {
         public record Libraries
-        { 
+        {
             public string name { get; set; }
             public string url { get; set; }
             public bool serverreq { get; set; }

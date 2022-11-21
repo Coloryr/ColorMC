@@ -13,8 +13,17 @@ public static class PathC
         {
             path += arg1[a] + '/';
         }
-        path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}.jar";
-        string name = $"{arg[1]}-{arg[2]}.jar";
+        string name;
+        if (arg.Length > 3)
+        {
+            path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}-{arg[3]}.jar";
+            name = $"{arg[1]}-{arg[2]}-{arg[3]}.jar";
+        }
+        else
+        {
+            path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}.jar";
+            name = $"{arg[1]}-{arg[2]}.jar";
+        }
 
         return (path, name);
     }

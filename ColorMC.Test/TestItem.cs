@@ -138,7 +138,7 @@ public static class TestItem
         {
             var game = new GameSettingObj()
             {
-                Dir = "./minecraft/instances/test1",
+                DirName = "test1",
                 Name = "test1",
                 Version = "1.12.2",
                 Loader = Loaders.Forge,
@@ -182,7 +182,7 @@ public static class TestItem
 
         var game = new GameSettingObj()
         {
-            Dir = "./minecraft/instances/test1",
+            DirName = "test1",
             Name = "test1",
             Version = "1.7.2",
             Loader = Loaders.Forge,
@@ -299,7 +299,7 @@ public static class TestItem
 
     public static void Item11()
     {
-        var login = BaseAuth.LoginWithNide8("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "xxxx").Result;
+        var login = BaseAuth.LoginWithNide8("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "123456").Result;
         if (login == null)
         {
             Console.WriteLine("登录错误");
@@ -308,7 +308,7 @@ public static class TestItem
         {
             var game = new GameSettingObj()
             {
-                Dir = "./minecraft/instances/test1",
+                DirName = "test1",
                 Name = "test1",
                 Version = "1.18.2",
                 Loader = Loaders.Forge,
@@ -320,6 +320,47 @@ public static class TestItem
             };
             var process = game.StartGame(login, null).Result;
             process?.WaitForExit();
+        }
+    }
+
+    public static void Item12()
+    {
+        var games = InstancesPath.GetGames();
+        var list = games[0].GetMods().Result;
+
+        list[0].Disable();
+        Console.ReadLine();
+        list[0].Enable();
+        Console.ReadLine();
+
+        foreach (var item in list)
+        {
+            Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
+        }
+
+        list = Mods.GetMods(games[1]).Result;
+
+        foreach (var item in list)
+        {
+            Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
+        }
+
+        list = Mods.GetMods(games[2]).Result;
+
+        foreach (var item in list)
+        {
+            Console.WriteLine($"{item.V2} {item.modid} {item.name} {item.description}");
+        }
+    }
+
+    public static void Item13()
+    {
+        var games = InstancesPath.GetGames();
+        var list = Servers.GetServerInfo(games[0]).Result;
+
+        foreach (var item in list)
+        {
+            Console.WriteLine($"{item}");
         }
     }
 }
