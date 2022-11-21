@@ -31,6 +31,8 @@ public static class VersionPath
     {
         BaseDir = dir + "/" + Name;
 
+        Logs.Info($"正在读取版本信息");
+
         Directory.CreateDirectory(BaseDir);
 
         Directory.CreateDirectory(ForgeDir);

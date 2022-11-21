@@ -1,9 +1,4 @@
-﻿using ColorMC.Core.Http.Download;
-using ColorMC.Core.Utils;
-using System;
-using static ColorMC.Core.Objs.Game.VersionObj;
-
-namespace ColorMC.Core.Http;
+﻿namespace ColorMC.Core.Http;
 
 public static class UrlHelp
 {
@@ -22,7 +17,7 @@ public static class UrlHelp
     private static readonly string[] originServers3 =
       { "https://maven.fabricmc.net/"};
 
-    public static string Version(SourceLocal? local)
+    public static string GameVersion(SourceLocal? local)
     {
         return local switch
         {
@@ -158,7 +153,7 @@ public static class UrlHelp
         return url.Replace("https://maven.fabricmc.net/", replace);
     }
 
-    public static string DownloadQuilt(string url,  SourceLocal? local)
+    public static string DownloadQuilt(string url, SourceLocal? local)
     {
         string? replace = local switch
         {

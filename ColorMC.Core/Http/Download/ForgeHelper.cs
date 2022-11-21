@@ -1,13 +1,8 @@
 ﻿using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Objs.Game;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Http.Download;
 
@@ -193,7 +188,7 @@ public static class ForgeHelper
                 }
             };
         }
-        else if (args[0] == "net.sf.jopt-simple" && args[1] == "jopt-simple") 
+        else if (args[0] == "net.sf.jopt-simple" && args[1] == "jopt-simple")
         {
             return new()
             {
@@ -223,7 +218,7 @@ public static class ForgeHelper
                 }
             };
         }
-        else if (args[0] == "org.apache.commons" && args[1] == "commons-lang3") 
+        else if (args[0] == "org.apache.commons" && args[1] == "commons-lang3")
         {
             return new()
             {

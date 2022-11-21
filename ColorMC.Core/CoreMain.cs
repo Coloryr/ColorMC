@@ -1,11 +1,11 @@
 ﻿using ColorMC.Core.Game;
-using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Objs;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Utils;
-using System.Diagnostics;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http;
+using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using System.Diagnostics;
 
 namespace ColorMC.Core;
 
@@ -52,6 +52,8 @@ public static class CoreMain
         BaseClient.Init();
         DownloadManager.Init();
         AuthDatabase.Init();
-        MCPath.Init();
+        MCPath.Init(dir);
+
+        Logs.Info("ColorMC核心已初始化");
     }
 }

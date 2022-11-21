@@ -1,8 +1,7 @@
 ﻿using ColorMC.Core.Http;
-using ColorMC.Core.Objs;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
 using Newtonsoft.Json;
-using ColorMC.Core.Objs.Game;
 
 namespace ColorMC.Core.Utils;
 
@@ -40,7 +39,7 @@ public static class ConfigUtils
 
         if (Config == null)
         {
-            Logs.Error("配置为空，旧版配置文件会被覆盖");
+            Logs.Warn("配置为空，旧版配置文件会被覆盖");
 
             Config = MakeDefaultConfig();
             Save();
@@ -73,6 +72,7 @@ public static class ConfigUtils
 
     public static void Save()
     {
+        Logs.Info($"正在保存配置文件");
         File.WriteAllText(Name, JsonConvert.SerializeObject(Config, Formatting.Indented));
     }
 
@@ -81,7 +81,6 @@ public static class ConfigUtils
         return new()
         {
             Version = CoreMain.Version,
-            MCPath = "./.minectaft",
             JavaList = new(),
             Http = MakeHttpConfig(),
             DefaultJvmArg = MakeJvmArgConfig(),

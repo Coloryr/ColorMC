@@ -156,7 +156,7 @@ public static class Get
     {
         try
         {
-            var data = await BaseClient.GetString(UrlHelp.Version(local));
+            var data = await BaseClient.GetString(UrlHelp.GameVersion(local));
             if (string.IsNullOrWhiteSpace(data))
                 return null;
             return JsonConvert.DeserializeObject<VersionObj>(data);
@@ -234,7 +234,7 @@ public static class Get
         }
     }
 
-    public static async Task<List<string>?> GetForgeVersions(string mc, SourceLocal? local = null) 
+    public static async Task<List<string>?> GetForgeVersions(string mc, SourceLocal? local = null)
     {
 
         return null;

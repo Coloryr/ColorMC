@@ -1,12 +1,7 @@
 ﻿using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Objs.Game;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Http.Download;
 

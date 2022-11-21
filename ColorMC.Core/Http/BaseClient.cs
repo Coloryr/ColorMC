@@ -17,7 +17,7 @@ public static class BaseClient
 
     public static HttpClient Client;
 
-    public static void Init() 
+    public static void Init()
     {
         Logs.Info($"Http客户端初始化");
         if (ConfigUtils.Config.Http.Proxy)

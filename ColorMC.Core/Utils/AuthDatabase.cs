@@ -22,7 +22,7 @@ public record QLogin
 
 public static class AuthDatabase
 {
-    private static readonly string DB ="Auth.db";
+    private static readonly string DB = "Auth.db";
     private static readonly Dictionary<string, LoginObj> Auths = new();
 
     private static string connStr;
@@ -30,7 +30,7 @@ public static class AuthDatabase
     {
         return new SqliteConnection(connStr);
     }
-    public static void Init() 
+    public static void Init()
     {
         Logs.Info($"登录数据库初始化");
         connStr = new SqliteConnectionStringBuilder("Data Source=" + DB)
@@ -75,7 +75,7 @@ public static class AuthDatabase
         }
     }
 
-    public static LoginObj? Get(string uuid) 
+    public static LoginObj? Get(string uuid)
     {
         if (Auths.TryGetValue(uuid, out var item))
         {

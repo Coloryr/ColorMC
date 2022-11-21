@@ -1,12 +1,10 @@
 ﻿using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System;
-using System.IO;
 using System.Text;
 
 namespace ColorMC.Core.Http.Download;

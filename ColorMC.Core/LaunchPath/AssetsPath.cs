@@ -24,6 +24,8 @@ public static class AssetsPath
         BaseDir = dir + "/" + Name;
         ObjectsDir = BaseDir + "/" + Name2;
 
+        Logs.Info($"正在读取资源信息");
+
         Directory.CreateDirectory(BaseDir);
 
         Directory.CreateDirectory($"{BaseDir}/{Name1}");

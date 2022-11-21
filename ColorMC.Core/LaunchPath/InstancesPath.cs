@@ -10,6 +10,17 @@ public static class InstancesPath
     private const string Name = "instances";
     private const string Name1 = "game.json";
     private const string Name2 = ".minecraft";
+    private const string Name3 = "modinfo.json";
+    private const string Name4 = "manifest.json";
+    private const string Name5 = "options.txt";
+    private const string Name6 = "servers.dat";
+    private const string Name7 = "screenshots";
+    private const string Name8 = "resourcepacks";
+    private const string Name9 = "shaderpacks";
+    private const string Name10 = "usercache.json";
+    private const string Name11 = "usernamecache.json";
+    private const string Name12 = "icon.png";
+    private const string Name13 = "mods";
 
     private static Dictionary<string, GameSettingObj> Games = new();
 
@@ -17,7 +28,9 @@ public static class InstancesPath
 
     public static void Init(string dir)
     {
-        BaseDir = dir + "/" + Name;
+        BaseDir = Path.GetFullPath(dir + "/" + Name);
+
+        Logs.Info($"正在读取游戏对象信息");
 
         Directory.CreateDirectory(BaseDir);
 
@@ -55,45 +68,115 @@ public static class InstancesPath
         return null;
     }
 
+    public static void Save(this GameSettingObj obj)
+    {
+        File.WriteAllText(obj.GetGameJsonPath(), JsonConvert.SerializeObject(obj));
+    }
+
+    public static string GetBaseDir(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}");
+    }
+
+    public static string GetGameDir(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}");
+    }
+
+    public static string GetGameJsonPath(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name1}");
+    }
+
+    public static string GetModJsonFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name3}");
+    }
+
+    public static string GetModInfoJsonFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name4}");
+    }
+
+    public static string GetOptionsFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name5}");
+    }
+
+    public static string GetServersFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name6}");
+    }
+
+    public static string GetScreenshotsPath(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name7}");
+    }
+
+    public static string GetResourcepacksPath(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name8}");
+    }
+
+    public static string GetShaderpacksPath(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name9}");
+    }
+
+    public static string GetUserCacheFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name10}");
+    }
+
+    public static string GetUserNameCacheFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name11}");
+    }
+
+    public static string GetIconFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name12}");
+    }
+
+    public static string GetModsPath(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name13}");
+    }
+
     public static GameSettingObj? CreateVersion(string name, string version,
-        Loaders loader, LoaderInfoObj info)
+        bool pack, Loaders loader, LoaderInfoObj info)
     {
         if (Games.ContainsKey(name))
         {
             return null;
         }
 
-        var dir = BaseDir + "/" + name;
+        var game = new GameSettingObj()
+        {
+            DirName = name,
+            Name = name,
+            Version = version,
+            Loader = loader,
+            LoaderInfo = info,
+            ModPack = pack
+        };
+
+        var dir = game.GetBaseDir();
         if (Directory.Exists(dir))
         {
             return null;
         }
 
         Directory.CreateDirectory(dir);
-        Directory.CreateDirectory(dir + "/" + Name2);
+        Directory.CreateDirectory(game.GetGameDir());
 
-        var game = new GameSettingObj()
-        {
-            Dir = dir,
-            Name = name,
-            Version = version,
-            Loader = loader,
-            LoaderInfo = info
-        };
-
-        var file = dir + "/" + Name1;
-        File.WriteAllText(file, JsonConvert.SerializeObject(game));
+        game.Save();
         Games.Add(name, game);
 
         return game;
     }
 
-    public static string GetDir(GameSettingObj obj)
-    {
-        return Path.GetFullPath(obj.Dir + "/" + Name2);
-    }
-
-    public static Task InstallForge(GameSettingObj obj, string version)
+    public static Task InstallForge(this GameSettingObj obj, string version)
     {
         obj.LoaderInfo = new()
         {
@@ -101,14 +184,12 @@ public static class InstancesPath
             Name = "forge"
         };
         obj.Loader = Loaders.Forge;
-
-        var file = obj.Dir + "/" + Name1;
-        File.WriteAllText(file, JsonConvert.SerializeObject(obj));
+        obj.Save();
 
         return GameDownload.DownloadForge(obj.Version, version);
     }
 
-    public static Task InstallFabric(GameSettingObj obj, string version)
+    public static Task InstallFabric(this GameSettingObj obj, string version)
     {
         obj.LoaderInfo = new()
         {
@@ -116,14 +197,12 @@ public static class InstancesPath
             Name = "fabric"
         };
         obj.Loader = Loaders.Fabric;
-
-        var file = obj.Dir + "/" + Name1;
-        File.WriteAllText(file, JsonConvert.SerializeObject(obj));
+        obj.Save();
 
         return GameDownload.DownloadFabric(obj.Version, version);
     }
 
-    public static Task InstallQuilt(GameSettingObj obj, string version)
+    public static Task InstallQuilt(this GameSettingObj obj, string version)
     {
         obj.LoaderInfo = new()
         {
@@ -131,36 +210,38 @@ public static class InstancesPath
             Name = "quilt"
         };
         obj.Loader = Loaders.Quilt;
-
-        var file = obj.Dir + "/" + Name1;
-        File.WriteAllText(file, JsonConvert.SerializeObject(obj));
+        obj.Save();
 
         return GameDownload.DownloadQuilt(obj.Version, version);
     }
 
-    public static void Uninstall(GameSettingObj obj)
+    public static void Uninstall(this GameSettingObj obj)
     {
         obj.LoaderInfo = null;
         obj.Loader = Loaders.Normal;
-
-        var file = obj.Dir + "/" + Name1;
-        File.WriteAllText(file, JsonConvert.SerializeObject(obj));
+        obj.Save();
     }
 
-    public static async Task<GameSettingObj?> Copy(GameSettingObj obj, string name)
+    public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
     {
-        var obj1 = CreateVersion(name, obj.Version, obj.Loader, obj.LoaderInfo);
+        var obj1 = CreateVersion(name, obj.Version, obj.ModPack, obj.Loader, obj.LoaderInfo);
         if (obj1 != null)
         {
-            await PathC.CopyFiles(GetDir(obj), GetDir(obj1));
+            await PathC.CopyFiles(GetGameDir(obj), GetGameDir(obj1));
+            if (obj.ModPack)
+            {
+                File.Copy(obj.GetModJsonFile(), obj1.GetModJsonFile(), true);
+                File.Copy(obj.GetModInfoJsonFile(), obj1.GetModInfoJsonFile(), true);
+            }
+
             return obj1;
         }
 
         return null;
     }
 
-    public static void Remove(GameSettingObj obj) 
+    public static void Remove(this GameSettingObj obj)
     {
-        PathC.DeleteFiles(obj.Dir);
+        PathC.DeleteFiles(obj.GetBaseDir());
     }
 }
