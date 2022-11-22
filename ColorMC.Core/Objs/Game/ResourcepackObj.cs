@@ -17,7 +17,9 @@ public record ResourcepackObj
     public Pack pack { get; set; }
 
     [JsonIgnore]
-    public string Name { get; set; }
+    public string Local { get; set; }
     [JsonIgnore]
     public byte[] Icon { get; set; }
+    [JsonIgnore]
+    public bool Disable { get; set; }
 }

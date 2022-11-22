@@ -13,9 +13,9 @@ public record WorldObj
     public int SpawnX { get; set; }
     public int SpawnY { get; set; }
     public int SpawnZ { get; set; }
-    public byte MapFeatures { get; set; }
     public long LastPlayed { get; set; }
     public int GameType { get; set; }
+    public byte MapFeatures { get; set; }
     public int ThunderTime { get; set; }
     public int Version { get; set; }
     public int RainTime { get; set; }
@@ -26,4 +26,6 @@ public record WorldObj
     public string LevelName { get; set; }
 
     public string Local { get; set; }
+    public byte[] Icon { get; set; }
+    public GameSettingObj Game { get; set; }
 }

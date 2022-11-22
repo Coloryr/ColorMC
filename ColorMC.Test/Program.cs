@@ -27,7 +27,7 @@ internal class Program
         CoreMain.AuthStateUpdate = AuthStateUpdate;
         CoreMain.LoginFail = LoginFail;
 
-        TestItem.Item12();
+        TestItem.Item15();
 
         Console.ReadLine();
     }

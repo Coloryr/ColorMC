@@ -24,7 +24,7 @@ public static class Mods
 
         ParallelOptions options = new()
         {
-            MaxDegreeOfParallelism = 1
+            MaxDegreeOfParallelism = 10
         };
         await Parallel.ForEachAsync(info.GetFiles(), options, async (item, cancel) =>
         {
