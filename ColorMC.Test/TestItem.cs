@@ -365,7 +365,29 @@ public static class TestItem
     }
 
     public static void Item14()
-    { 
-        
+    {
+        var games = InstancesPath.GetGames();
+        var packs = games[0].GetResourcepacks().Result;
+
+        foreach (var item in packs)
+        {
+            Console.WriteLine($"{item}");
+        }
+
+        packs[0].Disable();
+        Console.ReadLine();
+        packs[0].Enable();
+    }
+
+    public static void Item15()
+    {
+        var games = InstancesPath.GetGames();
+        var packs = games[0].GetWorlds().Result;
+
+        foreach (var item in packs)
+        {
+            Console.WriteLine($"{item}");
+        }
+
     }
 }
