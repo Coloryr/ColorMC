@@ -23,9 +23,17 @@ public static class InstancesPath
     private const string Name13 = "mods";
     private const string Name14 = "saves";
 
-    private static Dictionary<string, GameSettingObj> Games = new();
+    private static Dictionary<string, GameSettingObj> InstallGames = new();
 
     public static string BaseDir { get; private set; }
+
+    public static List<GameSettingObj> Games
+    {
+        get
+        {
+            return new(InstallGames.Values);
+        }
+    }
 
     public static void Init(string dir)
     {
@@ -48,20 +56,15 @@ public static class InstancesPath
                 var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
                 if (game != null)
                 {
-                    Games.Add(game.Name, game);
+                    InstallGames.Add(game.Name, game);
                 }
             }
         }
     }
 
-    public static List<GameSettingObj> GetGames()
-    {
-        return new(Games.Values);
-    }
-
     public static GameSettingObj? GetGame(string name)
     {
-        if (Games.TryGetValue(name, out var item))
+        if (InstallGames.TryGetValue(name, out var item))
         {
             return item;
         }
@@ -152,7 +155,7 @@ public static class InstancesPath
     public static GameSettingObj? CreateVersion(string name, string version,
         bool pack, Loaders loader, LoaderInfoObj info)
     {
-        if (Games.ContainsKey(name))
+        if (InstallGames.ContainsKey(name))
         {
             return null;
         }
@@ -177,7 +180,7 @@ public static class InstancesPath
         Directory.CreateDirectory(game.GetGameDir());
 
         game.Save();
-        Games.Add(name, game);
+        InstallGames.Add(name, game);
 
         return game;
     }

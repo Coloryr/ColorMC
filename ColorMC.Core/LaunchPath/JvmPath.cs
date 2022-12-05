@@ -31,11 +31,11 @@ public static class JvmPath
 {
     public static Dictionary<string, JavaInfo> Jvms { get; } = new();
 
-    public static (bool, string) AddItem(string name, string local)
+    public static (bool Res, string Msg) AddItem(string name, string local)
     {
         if (Jvms.ContainsKey(name))
         {
-            return (false, "Java名字已存在");
+            return (false, "Jvm名字已存在");
         }
         var info = GetJavaInfo(local);
         if (info != null)
@@ -50,7 +50,34 @@ public static class JvmPath
             return (true, name);
         }
 
-        return (false, "Java检查失败");
+        return (false, "Jvm检查失败");
+    }
+
+    public static (bool Res, string Msg) EditItem(string old, string name, string local)
+    {
+        if (old != name)
+        {
+            if (!Jvms.ContainsKey(old))
+            {
+                return (false, "Jvm旧名字不存在");
+            }
+            if (Jvms.ContainsKey(name))
+            {
+                return (false, "Jvm新名字已存在");
+            }
+        }
+        var info = GetJavaInfo(local);
+        if (info != null)
+        {
+            Jvms[name] = info;
+            var item = ConfigUtils.Config.JavaList.Where(a=>a.Name == old).First();
+            item.Name = name;
+            item.Local = local;
+            ConfigUtils.Save();
+            return (true, name);
+        }
+
+        return (false, "Jvm检查失败");
     }
 
     public static void AddList(List<JvmConfigObj> objs)

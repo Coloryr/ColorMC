@@ -1,0 +1,26 @@
+{
+  "Version": "1.0.0",
+  "JavaList": [],
+  "Http": {
+    "Source": 0,
+    "DownloadThread": 5,
+    "Proxy": false,
+    "ProxyIP": "127.0.0.1",
+    "ProxyPort": 1080,
+    "ProxyUser": null,
+    "ProxyPassword": null
+  },
+  "DefaultJvmArg": {
+    "AdvencedJvmArguments": null,
+    "GCArgument": null,
+    "GC": 0,
+    "JavaAgent": null,
+    "MaxMemory": 4096,
+    "MinMemory": 512
+  },
+  "Window": {
+    "FullScreen": false,
+    "Height": 720,
+    "Width": 1280
+  }
+}
