@@ -1,0 +1,80 @@
+﻿using ColorMC.Core.LaunchPath;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ColorMC.Cmd.Menus;
+
+public static class JvmMenu
+{
+    private static string Title = "Jvm设置";
+    private static List<string> Items;
+
+    public static void Show()
+    {
+        var list = JvmPath.Jvms;
+        Items = new List<string>();
+        ConsoleUtils.Reset();
+        ConsoleUtils.ShowTitle(Title);
+        Items.Add("返回");
+        Items.Add("添加");
+        if (list.Count == 0)
+        {
+            ConsoleUtils.ShowTitle1("没有Jvm");
+        }
+
+        foreach (var item in list)
+        {
+            Items.Add("[" + item.Key + "|" + item.Value.Version + "]");
+        }
+
+        ConsoleUtils.ShowItems(Items, Select);
+    }
+
+    private static void Select(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                MainMenu.Show();
+                break;
+            case 1:
+                ConsoleUtils.Input("添加Jvm");
+                var name = ConsoleUtils.ReadLine("Jvm名字");
+                var path = ConsoleUtils.ReadLine("Jvm路径");
+                ConsoleUtils.Info("正在检测...");
+                var (Res, Msg) = JvmPath.AddItem(name, path);
+                if (!Res)
+                {
+                    ConsoleUtils.Error(Msg);
+                }
+                else
+                {
+                    ConsoleUtils.Ok("已添加");
+                }
+                ConsoleUtils.Keep();
+                Show();
+                break;
+            default:
+                var item = JvmPath.Jvms.ToArray()[index - 2];
+                ConsoleUtils.Input("编辑Jvm");
+                name = ConsoleUtils.Edit("Jvm名字", item.Key);
+                path = ConsoleUtils.Edit("Jvm路径", item.Value.Path);
+                ConsoleUtils.Info("正在检测...");
+                (Res, Msg) = JvmPath.EditItem(item.Key, name, path);
+                if (!Res)
+                {
+                    ConsoleUtils.Error(Msg);
+                }
+                else
+                {
+                    ConsoleUtils.Ok("已修改");
+                }
+                ConsoleUtils.Keep();
+                Show();
+                break;
+        }
+    }
+}

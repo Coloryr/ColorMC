@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33015.44
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorMC", "ColorMC\ColorMC.csproj", "{90603F2B-466D-46F9-A7B4-DC02352A4951}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorMC.Gui", "ColorMC.Gui\ColorMC.Gui.csproj", "{90603F2B-466D-46F9-A7B4-DC02352A4951}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorMC.Core", "ColorMC.Core\ColorMC.Core.csproj", "{4BC47B1A-581B-4D81-8D49-3428F1E12579}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorMC.Test", "ColorMC.Test\ColorMC.Test.csproj", "{58DB0030-E952-49B9-BFEE-DF292EBF57C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorMC.Test", "ColorMC.Test\ColorMC.Test.csproj", "{58DB0030-E952-49B9-BFEE-DF292EBF57C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorMC.Cmd", "ColorMC.Cmd\ColorMC.Cmd.csproj", "{5499238D-AE80-437B-A417-D7B14D5C1D01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{58DB0030-E952-49B9-BFEE-DF292EBF57C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58DB0030-E952-49B9-BFEE-DF292EBF57C1}.Release|x64.ActiveCfg = Release|Any CPU
 		{58DB0030-E952-49B9-BFEE-DF292EBF57C1}.Release|x64.Build.0 = Release|Any CPU
+		{5499238D-AE80-437B-A417-D7B14D5C1D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5499238D-AE80-437B-A417-D7B14D5C1D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5499238D-AE80-437B-A417-D7B14D5C1D01}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5499238D-AE80-437B-A417-D7B14D5C1D01}.Debug|x64.Build.0 = Debug|Any CPU
+		{5499238D-AE80-437B-A417-D7B14D5C1D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5499238D-AE80-437B-A417-D7B14D5C1D01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5499238D-AE80-437B-A417-D7B14D5C1D01}.Release|x64.ActiveCfg = Release|Any CPU
+		{5499238D-AE80-437B-A417-D7B14D5C1D01}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

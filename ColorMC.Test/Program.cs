@@ -13,7 +13,7 @@ internal class Program
     {
         Console.WriteLine("Hello, World!");
 
-        CoreMain.Init(AppContext.BaseDirectory);
+        CoreMain.Init("E:\\code\\ColorMC\\buildout");
 
         CoreMain.DownloadUpdate = Update;
         CoreMain.DownloadState = Update1;
