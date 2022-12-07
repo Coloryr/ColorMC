@@ -17,32 +17,33 @@ public enum CoreRunState
 
 public static class CoreMain
 {
-    public const string Version = "1.0.0";
+    public const string? Version = "1.0.0";
 
     /// <summary>
     /// 错误显示回调
     /// 标题 错误 关闭程序
     /// </summary>
-    public static Action<string, Exception, bool> OnError;
-    public static Action NewStart;
+    public static Action<string, Exception, bool>? OnError;
+    public static Action? NewStart;
 
-    public static Action<int> DownloadUpdate;
-    public static Action<CoreRunState> DownloadState;
-    public static Action<int, DownloadItem> DownloadStateUpdate;
-    public static Action<int, DownloadItem, Exception> DownloadError;
+    /// <summary>
+    /// 下载线程相应回调
+    /// </summary>
+    public static Action<CoreRunState>? DownloaderUpdate;
+    public static Action<int, DownloadItem>? DownloadItemStateUpdate;
+    public static Action<int, DownloadItem, Exception>? DownloadItemError;
 
-    public static Func<GameSettingObj, bool> GameOverwirte;
-    public static Func<GameSettingObj, bool> GameDownload;
-    public static Action<GameSettingObj, LaunchState> GameLaunch;
+    public static Func<GameSettingObj, bool>? GameOverwirte;
+    public static Func<GameSettingObj, bool>? GameDownload;
+    public static Action<GameSettingObj, LaunchState>? GameLaunch;
 
-    public static Action<CoreRunState> PackState;
-    public static Action<int, int> PackUpdate;
+    public static Action<CoreRunState>? PackState;
+    public static Action<int, int>? PackUpdate;
 
-    public static Action<Process?, string?> ProcessLog;
+    public static Action<Process?, string?>? ProcessLog;
 
-    public static Action<AuthState> AuthStateUpdate;
-    public static Action<string, string> LoginOAuthCode;
-    public static Action<LoginState, string> LoginFail;
+    public static Action<AuthState>? AuthStateUpdate;
+    public static Action<string, string>? LoginOAuthCode;
 
     public static void Init(string dir)
     {

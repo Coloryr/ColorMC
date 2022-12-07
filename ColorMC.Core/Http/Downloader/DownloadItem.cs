@@ -12,6 +12,7 @@ public record DownloadItem
     public string Url { get; set; }
     public string Local { get; set; }
     public string? SHA1 { get; set; }
+    public string? SHA256 { get; set; }
     public bool Overwrite { get; set; } = false;
     public long AllSize { get; set; }
     public long NowSize { get; set; }

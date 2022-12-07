@@ -41,8 +41,7 @@ public static class DownloadManager
     public static async Task<bool> Start()
     {
         Logs.Info($"下载器启动");
-        CoreMain.DownloadUpdate?.Invoke(-1);
-        CoreMain.DownloadState?.Invoke(CoreRunState.Start);
+        CoreMain.DownloaderUpdate?.Invoke(CoreRunState.Start);
         AllSize = Items.Count;
         foreach (var item in threads)
         {
@@ -56,6 +55,8 @@ public static class DownloadManager
             }
         });
 
+        CoreMain.DownloaderUpdate?.Invoke(CoreRunState.End);
+
         return AllSize == DoneSize;
     }
 
@@ -66,10 +67,10 @@ public static class DownloadManager
         {
             if (Name.Contains(item.Name))
                 continue;
-            CoreMain.DownloadStateUpdate?.Invoke(-1, item);
+            CoreMain.DownloadItemStateUpdate?.Invoke(-1, item);
             item.Update = (index) =>
             {
-                CoreMain.DownloadStateUpdate?.Invoke(index, item);
+                CoreMain.DownloadItemStateUpdate?.Invoke(index, item);
             };
             Items.Enqueue(item);
             Name.Add(item.Name);
@@ -89,7 +90,6 @@ public static class DownloadManager
     public static void Done(int index)
     {
         DoneSize++;
-        CoreMain.DownloadUpdate?.Invoke(index);
     }
 
     public static void ThreadDone()
@@ -100,6 +100,6 @@ public static class DownloadManager
     public static void Error(int index, DownloadItem item, Exception e)
     {
         Logs.Error($"下载{item.Name}错误", e);
-        CoreMain.DownloadError?.Invoke(index, item, e);
+        CoreMain.DownloadItemError?.Invoke(index, item, e);
     }
 }

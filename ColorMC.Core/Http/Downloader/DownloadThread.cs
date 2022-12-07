@@ -131,6 +131,24 @@ public class DownloadThread
                                 }
                             }
 
+                            if (!string.IsNullOrWhiteSpace(item.SHA256) && !item.Overwrite)
+                            {
+                                using FileStream stream2 = new(item.Local, FileMode.Open, FileAccess.Read, FileShare.Read);
+                                stream2.Seek(0, SeekOrigin.Begin);
+                                string sha1 = Funtcions.GenSha256(stream2);
+                                if (sha1 == item.SHA256)
+                                {
+                                    item.State = DownloadItemState.Action;
+                                    item.Update?.Invoke(index);
+                                    item.Later?.Invoke(stream2);
+
+                                    item.State = DownloadItemState.Done;
+                                    item.Update?.Invoke(index);
+                                    DownloadManager.Done(index);
+                                    break;
+                                }
+                            }
+
                             File.Delete(item.Local);
                         }
                         FileInfo info = new(item.Local);

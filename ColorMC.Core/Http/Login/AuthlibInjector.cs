@@ -3,19 +3,16 @@ using ColorMC.Core.Objs.Game;
 
 namespace ColorMC.Core.Http.Login;
 
-public static class Nide8
+public static class AuthlibInjector
 {
-    private const string BaseUrl = "https://auth.mc-user.com:233/";
-    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Authenticate(string server, string clientToken,
-        string user, string pass)
+    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Authenticate(
+         string clientToken, string user, string pass, string? server = null)
     {
-        server = BaseUrl + server;
-
         var obj = await LoginOld.Authenticate(server, clientToken, user, pass);
         if (obj.State != LoginState.Done)
             return obj;
 
-        obj.Obj.AuthType = AuthType.Nide8;
+        obj.Obj.AuthType = AuthType.AuthlibInjector;
         obj.Obj.Text1 = server;
 
         return obj;
@@ -23,6 +20,6 @@ public static class Nide8
 
     public static Task<(LoginState State, LoginObj? Obj)> Refresh(LoginObj obj)
     {
-        return LoginOld.Refresh(BaseUrl + obj.Text1, obj);
+        return LoginOld.Refresh(obj.Text1, obj);
     }
 }

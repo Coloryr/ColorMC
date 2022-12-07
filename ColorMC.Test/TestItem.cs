@@ -112,7 +112,7 @@ public static class TestItem
 
     public static void Item7()
     {
-        var data = InstancesPath.GetGames().First();
+        var data = InstancesPath.Games.First();
         var list = Launch.CheckGameFile(data, new LoginObj()).Result;
         if (list == null)
         {
@@ -130,7 +130,7 @@ public static class TestItem
     public static void Item8()
     {
         var login = BaseAuth.LoginWithOAuth().Result;
-        if (login == null)
+        if (login.State1 != LoginState.Done)
         {
             Console.WriteLine("登录错误");
         }
@@ -148,14 +148,14 @@ public static class TestItem
                     Version = "14.23.5.2860"
                 }
             };
-            var process = game.StartGame(login, null).Result;
+            var process = game.StartGame(login.Obj!, null).Result;
             process?.WaitForExit();
         }
     }
 
     public static void Item9() 
     {
-        var game = InstancesPath.GetGames();
+        var game = InstancesPath.Games;
         var login = new LoginObj()
         {
             UUID = "UUID",
@@ -300,7 +300,7 @@ public static class TestItem
     public static void Item11()
     {
         var login = BaseAuth.LoginWithNide8("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "123456").Result;
-        if (login == null)
+        if (login.Obj == null)
         {
             Console.WriteLine("登录错误");
         }
@@ -318,14 +318,14 @@ public static class TestItem
                     Version = "40.1.85"
                 }
             };
-            var process = game.StartGame(login, null).Result;
+            var process = game.StartGame(login.Obj, null).Result;
             process?.WaitForExit();
         }
     }
 
     public static void Item12()
     {
-        var games = InstancesPath.GetGames();
+        var games = InstancesPath.Games;
         var list = games[0].GetMods().Result;
 
         list[0].Disable();
@@ -355,7 +355,7 @@ public static class TestItem
 
     public static void Item13()
     {
-        var games = InstancesPath.GetGames();
+        var games = InstancesPath.Games;
         var list = Servers.GetServerInfo(games[0]).Result;
 
         foreach (var item in list)
@@ -366,7 +366,7 @@ public static class TestItem
 
     public static void Item14()
     {
-        var games = InstancesPath.GetGames();
+        var games = InstancesPath.Games;
         var packs = games[0].GetResourcepacks().Result;
 
         foreach (var item in packs)
@@ -381,7 +381,7 @@ public static class TestItem
 
     public static void Item15()
     {
-        var games = InstancesPath.GetGames();
+        var games = InstancesPath.Games;
         var packs = games[0].GetWorlds().Result;
 
         foreach (var item in packs)

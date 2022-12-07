@@ -70,7 +70,7 @@ public static class JvmPath
         if (info != null)
         {
             Jvms[name] = info;
-            var item = ConfigUtils.Config.JavaList.Where(a=>a.Name == old).First();
+            var item = ConfigUtils.Config.JavaList.Where(a => a.Name == old).First();
             item.Name = name;
             item.Local = local;
             ConfigUtils.Save();
