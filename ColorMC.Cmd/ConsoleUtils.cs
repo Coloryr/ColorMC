@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -28,6 +29,7 @@ public static class ConsoleUtils
     {
         Console.Clear();
         Console.CursorVisible = false;
+        Items = null;
         Index = 0;
         Max = 0;
     }
@@ -91,7 +93,7 @@ public static class ConsoleUtils
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine(">>任意键继续<<");
-        Console.Read();
+        Console.ReadKey(true);
     }
 
     public static string Edit(string name, string input)
@@ -105,7 +107,7 @@ public static class ConsoleUtils
         Console.Write(input);
         while (true)
         {
-            var key = Console.ReadKey();
+            var key = Console.ReadKey(true);
             switch (key.Key)
             {
                 case ConsoleKey.Backspace:
@@ -133,6 +135,20 @@ public static class ConsoleUtils
         }
     }
 
+    public static void ToEnd()
+    {
+        if (Items == null)
+            Console.WriteLine();
+        else
+            Console.SetCursorPosition(0, Items.Count + 2);
+    }
+
+    public static void Info1(string info)
+    {
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine(info);
+    }
+
     public static void Info(string info)
     {
         Console.ForegroundColor = ConsoleColor.Blue;
@@ -150,11 +166,42 @@ public static class ConsoleUtils
         Console.WriteLine(info);
     }
 
+    public static bool YesNo(string info)
+    {
+        ToEnd();
+        int state = 0;
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine(info);
+        int line = Console.CursorTop;
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.WriteLine(" >取消<    确定  ");
+        Console.SetCursorPosition(0, line);
+        while (true)
+        {
+            var key = Console.ReadKey(true);
+            switch (key.Key)
+            {
+                case ConsoleKey.LeftArrow:
+                    state = 0;
+                    Console.SetCursorPosition(0, line);
+                    Console.WriteLine(" >取消<    确定  ");
+                    break;
+                case ConsoleKey.RightArrow:
+                    state = 1;
+                    Console.SetCursorPosition(0, line);
+                    Console.WriteLine("  取消    >确定< ");
+                    break;
+                case ConsoleKey.Enter:
+                    return state == 1;
+            }
+        }
+    }
+
     private static void Run()
     {
         while (true)
         {
-            var key = Console.ReadKey();
+            var key = Console.ReadKey(true);
             switch (key.Key)
             {
                 case ConsoleKey.UpArrow:

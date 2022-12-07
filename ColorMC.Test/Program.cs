@@ -15,9 +15,8 @@ internal class Program
 
         CoreMain.Init("E:\\code\\ColorMC\\buildout");
 
-        CoreMain.DownloadUpdate = Update;
-        CoreMain.DownloadState = Update1;
-        CoreMain.DownloadStateUpdate = Update;
+        CoreMain.DownloaderUpdate = Update;
+        CoreMain.DownloadItemStateUpdate = Update;
         CoreMain.GameDownload = Download;
         CoreMain.GameOverwirte = Overwirte;
         CoreMain.PackState = Update;
@@ -25,16 +24,10 @@ internal class Program
         CoreMain.ProcessLog = Log;
         CoreMain.LoginOAuthCode = Login;
         CoreMain.AuthStateUpdate = AuthStateUpdate;
-        CoreMain.LoginFail = LoginFail;
 
         TestItem.Item15();
 
         Console.ReadLine();
-    }
-
-    public static void LoginFail(LoginState state, string msg)
-    {
-        Console.WriteLine($"登录失败{state} {msg}");
     }
 
     public static void AuthStateUpdate(AuthState state)
@@ -57,11 +50,6 @@ internal class Program
     public static void Log(Process? progress, string? log) 
     {
         Console.WriteLine(log);
-    }
-
-    public static void Update1(CoreRunState item)
-    {
-        
     }
 
     public static void Update(int index) 

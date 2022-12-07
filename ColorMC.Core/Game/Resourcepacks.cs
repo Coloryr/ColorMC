@@ -1,16 +1,9 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tomlyn.Model;
-using Tomlyn;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace ColorMC.Core.Game;
 
@@ -20,7 +13,7 @@ public static class Resourcepacks
     {
         var list = new List<ResourcepackObj>();
         var dir = game.GetResourcepacksPath();
-        
+
         DirectoryInfo info = new(dir);
         if (!info.Exists)
             return list;

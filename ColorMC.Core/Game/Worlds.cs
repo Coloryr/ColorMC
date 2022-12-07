@@ -57,8 +57,8 @@ public static class Worlds
                 //    obj.Hardcore = (byte)((tag1["hardcore"] as ByteTag)?.Value);
                 //    obj.SizeOnDisk = (long)((tag1["SizeOnDisk"] as LongTag)?.Value);
                 //    obj.LevelName = (tag1["LevelName"] as StringTag)?.Value;
-                    obj.Local = Path.GetFullPath(item.FullName);
-                    obj.Game = game;
+                obj.Local = Path.GetFullPath(item.FullName);
+                obj.Game = game;
 
                 var icon = item.GetFiles().Where(a => a.Name == "icon.png").FirstOrDefault();
                 if (icon != null)

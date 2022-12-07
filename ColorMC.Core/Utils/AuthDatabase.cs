@@ -22,10 +22,11 @@ public record QLogin
 
 public static class AuthDatabase
 {
-    private static readonly string DB = "Auth.db";
-    private static readonly Dictionary<string, LoginObj> Auths = new();
+    public static readonly Dictionary<string, LoginObj> Auths = new();
 
+    private static readonly string DB = "Auth.db";
     private static string connStr;
+
     public static SqliteConnection GetSqliteConnection()
     {
         return new SqliteConnection(connStr);
@@ -87,6 +88,7 @@ public static class AuthDatabase
 
     private static void GetAll()
     {
+        Logs.Info($"读取所有账户");
         using var sql = GetSqliteConnection();
         var list = sql.Query<QLogin>("SELECT UserName,UUID,AccessToken," +
             "RefreshToken,ClientToken," +
@@ -96,6 +98,13 @@ public static class AuthDatabase
         {
             Auths.Add(item.UUID, item.ToLogin());
         }
+    }
+
+    public static void Delete(LoginObj obj)
+    {
+        Auths.Remove(obj.UUID);
+        using var sql = GetSqliteConnection();
+        sql.Execute("DELETE FROM auth WHERE UUID=@UUID", new { obj.UUID });
     }
 
     private static void Add(LoginObj obj)

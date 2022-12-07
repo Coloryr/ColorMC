@@ -15,7 +15,9 @@ namespace ColorMC.Core.Game;
 
 public enum LaunchState
 {
-    Check, LostVersion, LostLib, LostAssets, LostLoader, Download,
+    Check, CheckVersion, CheckLib, CheckAssets, CheckLoader, CheckLoginCore,
+    LostVersion, LostLib, LostLoader, LostLoginCore,
+    Download,
     JvmPrepare,
     VersionError, AssetsError, LoaderError, JvmError
 }
@@ -25,6 +27,7 @@ public static class Launch
     public static async Task<List<DownloadItem>?> CheckGameFile(GameSettingObj obj, LoginObj login)
     {
         var list = new List<DownloadItem>();
+        CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckVersion);
         var game = VersionPath.GetGame(obj.Version);
         if (game == null)
         {
@@ -40,6 +43,7 @@ public static class Launch
                 return null;
             }
 
+            CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
             var res1 = await GameDownload.Download(version);
             if (res1.State != DownloadState.End)
                 return null;
@@ -82,6 +86,7 @@ public static class Launch
             }
         }
 
+        CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckAssets);
         var assets = AssetsPath.GetIndex(game);
         if (assets == null)
         {
@@ -107,8 +112,15 @@ public static class Launch
             });
         }
 
-        list.AddRange(LibrariesPath.CheckGame(game));
+        CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
+        var list2 = LibrariesPath.CheckGame(game);
+        if (list2.Count != 0)
+        {
+            CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLib);
+            list.AddRange(list2);
+        }
 
+        CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
         if (obj.Loader == Loaders.Forge)
         {
             var list3 = LibrariesPath.CheckForge(obj);
@@ -120,6 +132,7 @@ public static class Launch
                 if (res != true)
                     return null;
 
+                CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
                 var list4 = await GameDownload.DownloadForge(obj.Version, obj.LoaderInfo.Version);
                 if (list4.State != DownloadState.End)
                     return null;
@@ -142,6 +155,7 @@ public static class Launch
                 if (res != true)
                     return null;
 
+                CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
                 var list4 = await GameDownload.DownloadFabric(obj.Version, obj.LoaderInfo.Version);
                 if (list4.State != DownloadState.End)
                     return null;
@@ -164,6 +178,7 @@ public static class Launch
                 if (res != true)
                     return null;
 
+                CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
                 var list4 = await GameDownload.DownloadQuilt(obj.Version, obj.LoaderInfo.Version);
                 if (list4.State != DownloadState.End)
                     return null;
@@ -176,9 +191,20 @@ public static class Launch
             }
         }
 
+        CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckLoginCore);
+
         if (login.AuthType == AuthType.Nide8)
         {
-            await AuthHelper.ReadyNide8();
+            var item = AuthHelper.ReadyNide8();
+            if (item != null)
+            {
+                list.Add(item);
+            }
+        }
+        else if (login.AuthType is AuthType.AuthlibInjector 
+            or AuthType.LittleSkin or AuthType.SelfLittleSkin)
+        {
+            await AuthHelper.ReadyAuthlibInjector();
         }
 
         return list;
@@ -350,7 +376,7 @@ public static class Launch
         return arg;
     }
 
-    public static List<string> JvmArg(GameSettingObj obj, bool v2, LoginObj login)
+    public static async Task<List<string>> JvmArg(GameSettingObj obj, bool v2, LoginObj login)
     {
         JvmArgObj args = new();
 
@@ -437,6 +463,24 @@ public static class Launch
         {
             jvmHead.Add($"-javaagent:{AuthHelper.BuildNide8Item().Local}={login.Text1}");
             jvmHead.Add("-Dnide8auth.client=true");
+        }
+        else if (login.AuthType == AuthType.AuthlibInjector)
+        {
+            var res = await BaseClient.GetString(login.Text1);
+            jvmHead.Add($"-javaagent:{AuthHelper.NowAuthlibInjector}={login.Text1}");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res)}");
+        }
+        else if (login.AuthType == AuthType.LittleSkin)
+        {
+            var res = await BaseClient.GetString("https://littleskin.cn/api/yggdrasil");
+            jvmHead.Add($"-javaagent:{AuthHelper.NowAuthlibInjector}=https://littleskin.cn/api/yggdrasil");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res)}");
+        }
+        else if (login.AuthType == AuthType.SelfLittleSkin)
+        {
+            var res = await BaseClient.GetString($"{login.Text1}/api/yggdrasil");
+            jvmHead.Add($"-javaagent:{AuthHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res)}");
         }
 
         return jvmHead;
@@ -667,7 +711,7 @@ public static class Launch
         var version = VersionPath.GetGame(obj.Version)!;
         var v2 = CheckRule.GameLaunchVersion(obj.Version);
 
-        list.AddRange(JvmArg(obj, v2, login));
+        list.AddRange(await JvmArg(obj, v2, login));
         if (obj.Loader == Loaders.Normal)
             list.Add(version.mainClass);
         else if (obj.Loader == Loaders.Forge)
@@ -699,7 +743,7 @@ public static class Launch
 
         return list;
     }
-
+     
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null)
     {
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Check);
@@ -709,6 +753,10 @@ public static class Launch
 
         if (res.Count != 0)
         {
+            var res1 = CoreMain.GameDownload?.Invoke(obj);
+            if (res1 != true)
+                return null;
+
             DownloadManager.Clear();
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
             DownloadManager.FillAll(res);
@@ -769,11 +817,11 @@ public static class Launch
 
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
-        CoreMain.ProcessLog(sender as Process, e.Data);
+        CoreMain.ProcessLog?.Invoke(sender as Process, e.Data);
     }
 
     private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
-        CoreMain.ProcessLog(sender as Process, e.Data);
+        CoreMain.ProcessLog?.Invoke(sender as Process, e.Data);
     }
 }

@@ -227,8 +227,6 @@ public static class GameDownload
 
         version = fabric.version;
 
-        CoreMain.DownloadState?.Invoke(CoreRunState.GetInfo);
-
         FabricLoaderObj? meta1 = await Get.GetFabricLoader(mc, version, BaseClient.Source);
         if (meta1 == null)
         {
@@ -283,8 +281,6 @@ public static class GameDownload
         }
 
         version = quilt.version;
-
-        CoreMain.DownloadState?.Invoke(CoreRunState.GetInfo);
 
         QuiltLoaderObj? meta1 = await Get.GetQuiltLoader(mc, version, BaseClient.Source);
         if (meta1 == null)

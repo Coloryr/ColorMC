@@ -1,4 +1,6 @@
-﻿namespace ColorMC.Core.Http;
+﻿using ColorMC.Core.Objs.Game;
+
+namespace ColorMC.Core.Http;
 
 public static class UrlHelp
 {
@@ -166,5 +168,35 @@ public static class UrlHelp
             return url;
 
         return url.Replace("https://maven.quiltmc.org/repository/release/", replace);
+    }
+
+    public static string AuthlibInjectorMeta(SourceLocal? local)
+    {
+        return local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}/mirrors/authlib-injector/artifacts.json",
+            SourceLocal.MCBBS => $"{MCBBS}/mirrors/authlib-injector/artifacts.json",
+            _ => $"https://authlib-injector.yushi.moe/artifacts.json"
+        };
+    }
+
+    public static string AuthlibInjector(AuthlibInjectorMetaObj.Artifacts obj, SourceLocal? local)
+    {
+        return local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}/mirrors/authlib-injector/artifact/{obj.build_number}.json",
+            SourceLocal.MCBBS => $"{MCBBS}/mirrors/authlib-injector/artifact/{obj.build_number}.json",
+            _ => $"https://authlib-injector.yushi.moe/artifact/{obj.build_number}.json"
+        };
+    }
+
+    public static string DownloadAuthlibInjector(AuthlibInjectorObj obj, SourceLocal? local)
+    {
+        return local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}/mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
+            SourceLocal.MCBBS => $"{MCBBS}/mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
+            _ => $"https://authlib-injector.yushi.moe/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar"
+        };
     }
 }

@@ -1,5 +1,4 @@
-﻿using ColorMC.Core.LaunchPath;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Cmd.Menus;
 
-public static class MainMenu
+public static class AddGameMenu
 {
-    private static string Title = "主菜单";
-    private static string[] Items = new string[] 
-    { 
-        "启动游戏", 
-        "账户管理", 
+    private static string Title = "创建实例";
+    private static string[] Items = new string[]
+    {
+        "启动游戏",
+        "账户管理",
         "创建实例",
-        "实例管理",  
+        "实例管理",
         "Jvm设置",
         "启动器设置"
     };
