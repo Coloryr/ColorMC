@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -12,9 +13,11 @@ public static class ConsoleUtils
 {
     private static Action<int> OnSelect;
     private static Thread thread;
-    private static ICollection<string> Items;
+    private static List<string> Items;
     private static int Index;
     private static int Max;
+    private static int Page;
+    private static int MaxPage;
 
     public static void Init()
     {
@@ -32,6 +35,7 @@ public static class ConsoleUtils
         Items = null;
         Index = 0;
         Max = 0;
+        Page = 0;
     }
 
     public static void ShowTitle(string title)
@@ -50,27 +54,15 @@ public static class ConsoleUtils
         Console.WriteLine($"    {title}");
     }
 
-    public static void ShowItems(ICollection<string> items, Action<int> select)
+    public static void SetItems(List<string> items, Action<int> select)
     {
         OnSelect = select;
         Items = items;
-
-        Console.SetCursorPosition(0, 2);
-
-        foreach (var item in items)
-        {
-            Max = item.Length > Max ? item.Length : Max;
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write("> ");
-            Console.WriteLine(item);
-        }
-
-        Max += 10;
         Index = 0;
+        Page = 0;
+        MaxPage = Items.Count / 10;
 
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.SetCursorPosition(Max, 2);
-        Console.Write("<");
+        ShowItems();
     }
 
     public static void Input(string title)
@@ -89,6 +81,45 @@ public static class ConsoleUtils
         return Console.ReadLine();
     }
 
+    public static string ReadPassword(string input)
+    {
+        string a = "";
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write("- ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.Write(input + ": ");
+        int start = Console.CursorLeft;
+        int line = Console.CursorTop;
+        while (true)
+        {
+            var key = Console.ReadKey();
+            switch (key.Key)
+            {
+                case ConsoleKey.Backspace:
+                    if (a.Length == 0)
+                    {
+                        Console.SetCursorPosition(start, line);
+                    }
+                    if (a.Length != 0)
+                    {
+                        a = a[..^1];
+                        Console.SetCursorPosition(start + a.Length, line);
+                        Console.Write(" ");
+                        Console.SetCursorPosition(start + a.Length, line);
+                    }
+                    break;
+                case ConsoleKey.Enter:
+                    Console.WriteLine();
+                    return a;
+                default:
+                    a += key.KeyChar;
+                    Console.SetCursorPosition(start, line);
+                    Console.Write(new string('*', a.Length));
+                    break;
+            }
+        }
+    }
+
     public static void Keep()
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
@@ -98,6 +129,7 @@ public static class ConsoleUtils
 
     public static string Edit(string name, string input)
     {
+        Console.CursorVisible = true;
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write("- ");
         Console.ForegroundColor = ConsoleColor.White;
@@ -124,6 +156,7 @@ public static class ConsoleUtils
                     }
                     break;
                 case ConsoleKey.Enter:
+                    Console.CursorVisible = false;
                     Console.WriteLine();
                     return input;
                 default:
@@ -197,6 +230,48 @@ public static class ConsoleUtils
         }
     }
 
+    private static void ShowItems()
+    {
+        Console.SetCursorPosition(0, 2);
+
+        string temp = new(' ', Console.WindowWidth);
+        for (int a = 0; a < 12; a++)
+        {
+            Console.WriteLine(temp);
+        }
+
+        Console.SetCursorPosition(0, 2);
+
+        Max = 0;
+
+        if (Page != 0)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("..." + new string(' ', Console.WindowWidth - 3));
+        }
+
+        for (int a = 0; a < Math.Min(10, Items.Count - Page * 10); a++)
+        {
+            var item = Items[(Page * 10) + a];
+            Max = item.Length > Max ? item.Length : Max;
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("> ");
+            Console.WriteLine(item);
+        }
+
+        if (MaxPage != Page)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("..." + new string(' ', Console.WindowWidth - 3));
+        }
+
+        Max += 10;
+
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.SetCursorPosition(Max, Index + (Page != 0 ? 3 : 2));
+        Console.Write("<");
+    }
+
     private static void Run()
     {
         while (true)
@@ -209,25 +284,53 @@ public static class ConsoleUtils
                     {
                         Index--;
                         Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.SetCursorPosition(Max, Index + 3);
+                        Console.SetCursorPosition(Max, Index + (Page != 0 ? 4 : 3));
                         Console.Write(" ");
-                        Console.SetCursorPosition(Max, Index + 2);
+                        Console.SetCursorPosition(Max, Index + (Page != 0 ? 3 : 2));
                         Console.Write("<");
+                    }
+                    else if (Page > 0)
+                    {
+                        Page--;
+                        Index = 0;
+                        ShowItems();
                     }
                     break;
                 case ConsoleKey.DownArrow:
-                    if (Index < Items.Count - 1)
+                    if (Index < Math.Min(9, (Items.Count - Page * 10) - 1))
                     {
                         Index++;
                         Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.SetCursorPosition(Max, Index + 1);
+                        Console.SetCursorPosition(Max, Index + (Page != 0 ? 2 : 1));
                         Console.Write(" ");
-                        Console.SetCursorPosition(Max, Index + 2);
+                        Console.SetCursorPosition(Max, Index + (Page != 0 ? 3 : 2));
                         Console.Write("<");
+                    }
+                    else if (Page < MaxPage)
+                    {
+                        Page++;
+                        Index = 0;
+                        ShowItems();
+                    }
+                    break;
+                case ConsoleKey.LeftArrow:
+                    if (Page > 0)
+                    {
+                        Page--;
+                        Index = 0;
+                        ShowItems();
+                    }
+                    break;
+                case ConsoleKey.RightArrow:
+                    if (Page < MaxPage)
+                    {
+                        Page++;
+                        Index = 0;
+                        ShowItems();
                     }
                     break;
                 case ConsoleKey.Enter:
-                    OnSelect(Index);
+                    OnSelect(Index + Page * 10);
                     break;
             }
 

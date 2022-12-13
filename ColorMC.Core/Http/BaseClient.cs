@@ -88,4 +88,12 @@ public static class BaseClient
         var data = await message.Content.ReadAsStringAsync();
         return JObject.Parse(data);
     }
+
+    public static async Task<JObject> PostObj(string url, Dictionary<string, string> arg)
+    {
+        FormUrlEncodedContent content = new(arg);
+        var message = await Client.PostAsync(url, content);
+        var data = await message.Content.ReadAsStringAsync();
+        return JObject.Parse(data);
+    }
 }

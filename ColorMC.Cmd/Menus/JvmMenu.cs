@@ -9,7 +9,7 @@ namespace ColorMC.Cmd.Menus;
 
 public static class JvmMenu
 {
-    private static string Title = "Jvm设置";
+    private const string Title = "Jvm设置";
     private static List<string> Items;
 
     public static void Show()
@@ -30,7 +30,7 @@ public static class JvmMenu
             Items.Add("[" + item.Key + "|" + item.Value.Version + "]");
         }
 
-        ConsoleUtils.ShowItems(Items, Select);
+        ConsoleUtils.SetItems(Items, Select);
     }
 
     private static void Select(int index)

@@ -9,8 +9,8 @@ namespace ColorMC.Cmd.Menus;
 
 public static class MainMenu
 {
-    private static string Title = "主菜单";
-    private static string[] Items = new string[] 
+    private const string Title = "主菜单";
+    private static List<string> Items = new()
     { 
         "启动游戏", 
         "账户管理", 
@@ -24,7 +24,7 @@ public static class MainMenu
     {
         ConsoleUtils.Reset();
         ConsoleUtils.ShowTitle(Title);
-        ConsoleUtils.ShowItems(Items, Select);
+        ConsoleUtils.SetItems(Items, Select);
     }
 
     private static void Select(int index)
@@ -38,6 +38,7 @@ public static class MainMenu
                 UserMenu.Show();
                 break;
             case 2:
+                AddGameMenu.Show();
                 break;
             case 3:
 

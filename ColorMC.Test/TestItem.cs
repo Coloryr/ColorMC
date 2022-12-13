@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Objs.Login;
 
 namespace ColorMC.Test;
 
@@ -389,5 +390,24 @@ public static class TestItem
             Console.WriteLine($"{item}");
         }
 
+    }
+
+    public static void Item16()
+    {
+        var list = ForgeHelper.GetForgeList("1.12.2").Result;
+        foreach (var item in list)
+        {
+            Console.Write(item + " ");
+        }
+
+        Console.WriteLine();
+
+        var list1 = ForgeHelper.GetSupportVersion().Result;
+        foreach (var item in list1)
+        {
+            Console.Write(item + " ");
+        }
+
+        Console.WriteLine();
     }
 }

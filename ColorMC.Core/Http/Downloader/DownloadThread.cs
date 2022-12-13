@@ -104,63 +104,78 @@ public class DownloadThread
             while ((item = DownloadManager.GetItem()) != null)
             {
                 byte[]? buffer = null;
+                
+                item.State = DownloadItemState.Init;
+                item.Update?.Invoke(index);
+
+                try
+                {
+                    if (File.Exists(item.Local))
+                    {
+                        if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Overwrite)
+                        {
+                            using FileStream stream2 = new(item.Local, FileMode.Open, FileAccess.Read, FileShare.Read);
+                            stream2.Seek(0, SeekOrigin.Begin);
+                            string sha1 = Funtcions.GenSha1(stream2);
+                            if (sha1 == item.SHA1)
+                            {
+                                item.State = DownloadItemState.Action;
+                                item.Update?.Invoke(index);
+                                item.Later?.Invoke(stream2);
+
+                                item.State = DownloadItemState.Done;
+                                item.Update?.Invoke(index);
+                                DownloadManager.Done(index);
+                                continue;
+                            }
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(item.SHA256) && !item.Overwrite)
+                        {
+                            using FileStream stream2 = new(item.Local, FileMode.Open, FileAccess.Read, FileShare.Read);
+                            stream2.Seek(0, SeekOrigin.Begin);
+                            string sha1 = Funtcions.GenSha256(stream2);
+                            if (sha1 == item.SHA256)
+                            {
+                                item.State = DownloadItemState.Action;
+                                item.Update?.Invoke(index);
+                                item.Later?.Invoke(stream2);
+
+                                item.State = DownloadItemState.Done;
+                                item.Update?.Invoke(index);
+                                DownloadManager.Done(index);
+                                continue;
+                            }
+                        }
+
+                        File.Delete(item.Local);
+                    }
+                    FileInfo info = new(item.Local);
+                    if (!Directory.Exists(info.DirectoryName))
+                    {
+                        Directory.CreateDirectory(info.DirectoryName!);
+                    }
+                }
+                catch (Exception e)
+                {
+                    item.State = DownloadItemState.Error;
+                    item.ErrorTime++;
+                    item.Update?.Invoke(index);
+                    DownloadManager.Error(index, item, e);
+                    continue;
+                }
+
                 int time = 0;
+
                 do
                 {
                     try
                     {
-                        item.State = DownloadItemState.Init;
-                        item.Update?.Invoke(index);
-                        if (File.Exists(item.Local))
-                        {
-                            if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Overwrite)
-                            {
-                                using FileStream stream2 = new(item.Local, FileMode.Open, FileAccess.Read, FileShare.Read);
-                                stream2.Seek(0, SeekOrigin.Begin);
-                                string sha1 = Funtcions.GenSha1(stream2);
-                                if (sha1 == item.SHA1)
-                                {
-                                    item.State = DownloadItemState.Action;
-                                    item.Update?.Invoke(index);
-                                    item.Later?.Invoke(stream2);
-
-                                    item.State = DownloadItemState.Done;
-                                    item.Update?.Invoke(index);
-                                    DownloadManager.Done(index);
-                                    break;
-                                }
-                            }
-
-                            if (!string.IsNullOrWhiteSpace(item.SHA256) && !item.Overwrite)
-                            {
-                                using FileStream stream2 = new(item.Local, FileMode.Open, FileAccess.Read, FileShare.Read);
-                                stream2.Seek(0, SeekOrigin.Begin);
-                                string sha1 = Funtcions.GenSha256(stream2);
-                                if (sha1 == item.SHA256)
-                                {
-                                    item.State = DownloadItemState.Action;
-                                    item.Update?.Invoke(index);
-                                    item.Later?.Invoke(stream2);
-
-                                    item.State = DownloadItemState.Done;
-                                    item.Update?.Invoke(index);
-                                    DownloadManager.Done(index);
-                                    break;
-                                }
-                            }
-
-                            File.Delete(item.Local);
-                        }
-                        FileInfo info = new(item.Local);
-                        if (!Directory.Exists(info.DirectoryName))
-                        {
-                            Directory.CreateDirectory(info.DirectoryName!);
-                        }
-
                         var data = await BaseClient.Client.GetAsync(item.Url,
                             HttpCompletionOption.ResponseHeadersRead, cancel.Token);
                         item.AllSize = (long)data.Content.Headers.ContentLength!;
                         item.State = DownloadItemState.Download;
+                        item.NowSize = 0;
                         item.Update?.Invoke(index);
                         using Stream stream1 = data.Content.ReadAsStream(cancel.Token);
                         buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));

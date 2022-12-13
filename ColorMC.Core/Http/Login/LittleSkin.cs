@@ -1,5 +1,5 @@
 ﻿using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Login;
 
 namespace ColorMC.Core.Http.Login;
 
@@ -10,6 +10,10 @@ public static class LittleSkin
         string user, string pass, string? server = null)
     {
         server ??= ServerUrl;
+        if (!server.EndsWith("/api/yggdrasil"))
+        {
+            server += "/api/yggdrasil";
+        }
         var obj = await LoginOld.Authenticate(server, clientToken, user, pass);
         if (obj.State != LoginState.Done)
             return obj;

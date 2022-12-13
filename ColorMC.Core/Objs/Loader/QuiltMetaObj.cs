@@ -1,6 +1,6 @@
-﻿namespace ColorMC.Core.Objs.Game;
+﻿namespace ColorMC.Core.Objs.Loader;
 
-public record FabricMetaObj
+public record QuiltMetaObj
 {
     public record Game
     {
@@ -14,13 +14,12 @@ public record FabricMetaObj
         public int build { get; set; }
         public string maven { get; set; }
         public string version { get; set; }
-        public bool stable { get; set; }
+        public string hashed { get; set; }
     }
-    public record Intermediary
+    public record Hashed
     {
         public string maven { get; set; }
         public string version { get; set; }
-        public bool stable { get; set; }
     }
     public record Loader
     {
@@ -28,18 +27,16 @@ public record FabricMetaObj
         public int build { get; set; }
         public string maven { get; set; }
         public string version { get; set; }
-        public bool stable { get; set; }
     }
     public record Installer
     {
         public string url { get; set; }
         public string maven { get; set; }
         public string version { get; set; }
-        public bool stable { get; set; }
     }
     public List<Game> game { get; set; }
     public List<Mappings> mappings { get; set; }
-    public List<Intermediary> intermediary { get; set; }
+    public List<Hashed> hashed { get; set; }
     public List<Loader> loader { get; set; }
     public List<Installer> installer { get; set; }
 }

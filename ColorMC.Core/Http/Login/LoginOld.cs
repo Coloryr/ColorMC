@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Login;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;

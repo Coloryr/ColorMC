@@ -9,7 +9,7 @@ namespace ColorMC.Cmd.Menus;
 
 public static class SelectUserMenu
 {
-    private static string Title = "选择启动账户";
+    private const string Title = "选择启动账户";
     private static List<string> Items;
 
     public static void Show()
@@ -24,7 +24,7 @@ public static class SelectUserMenu
             Items.Add("[" + item.Key + "|" + item.Value.UserName + "|" + item.Value.AuthType.GetName() + "]");
         }
 
-        ConsoleUtils.ShowItems(Items, Select);
+        ConsoleUtils.SetItems(Items, Select);
     }
 
     private static void Select(int index)

@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Objs.Game;
+﻿namespace ColorMC.Core.Objs.Loader;
 
 public record QuiltLoaderObj
 {
