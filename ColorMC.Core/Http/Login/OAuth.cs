@@ -49,7 +49,6 @@ public static class OAuthAPI
     {
         { "client_id", "aa0dd576-d717-4950-b257-a478d2c20968"},
         { "grant_type", "refresh_token"},
-        { "scope", "XboxLive.signin offline_access"},
         { "refresh_token", "" }
     };
 

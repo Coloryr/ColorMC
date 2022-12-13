@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.Http;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Login;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Game.Auth;
@@ -24,7 +24,7 @@ public static class AuthHelper
         return new()
         {
             SHA256 = obj.checksums.sha256,
-            Url = obj.download_url,
+            Url = UrlHelp.DownloadAuthlibInjector(obj, BaseClient.Source),
             Name = $"moe.yushi:authlibinjector:{obj.version}",
             Local = $"{LibrariesPath.BaseDir}/moe/yushi/authlibinjector/{obj.version}/authlib-injector-{obj.version}.jar",
         };
@@ -55,5 +55,23 @@ public static class AuthHelper
             return item1;
         else
             return null;
+    }
+
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> RefreshToken(LoginObj obj)
+    {
+        switch (obj.AuthType)
+        {
+            case AuthType.OAuth:
+                return await BaseAuth.RefreshWithOAuth(obj);
+            case AuthType.Nide8:
+                return await BaseAuth.RefreshWithNide8(obj);
+            case AuthType.AuthlibInjector:
+                return await BaseAuth.RefreshWithAuthlibInjector(obj);
+            case AuthType.LittleSkin:
+            case AuthType.SelfLittleSkin:
+                return await BaseAuth.RefreshWithLittleSkin(obj);
+            default:
+                return (AuthState.Token, LoginState.Done, obj, "无需登录");
+        }
     }
 }

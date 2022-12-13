@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Objs.Game;
+﻿namespace ColorMC.Core.Objs.Login;
 
 public record RefreshObj
 {

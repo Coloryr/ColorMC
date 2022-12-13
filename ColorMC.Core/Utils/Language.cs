@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Http.Download;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,17 @@ public static class Language
             LaunchState.LoaderError => "Mod加载器错误",
             LaunchState.JvmError => "没有合适的Java",
             _ => "启动状态未知"
+        };
+    }
+
+    public static string GetName(this DownloadState state)
+    {
+        return state switch
+        {
+            DownloadState.Init => "初始化",
+            DownloadState.GetInfo => "获取信息",
+            DownloadState.End => "结束",
+            _ => "未知的状态"
         };
     }
 }

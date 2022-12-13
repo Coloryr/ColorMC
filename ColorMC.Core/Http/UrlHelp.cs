@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs.Game;
+﻿using ColorMC.Core.Objs.Login;
 
 namespace ColorMC.Core.Http;
 
@@ -197,6 +197,26 @@ public static class UrlHelp
             SourceLocal.BMCLAPI => $"{BMCLAPI}/mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
             SourceLocal.MCBBS => $"{MCBBS}/mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
             _ => $"https://authlib-injector.yushi.moe/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar"
+        };
+    }
+
+    public static string ForgeVersion(SourceLocal? local)
+    {
+        return local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}/forge/minecraft",
+            SourceLocal.MCBBS => $"{MCBBS}/forge/minecraft",
+            _ => "https://files.minecraftforge.net/net/minecraftforge/forge/"
+        };
+    }
+
+    public static string ForgeVersions(string version, SourceLocal? local)
+    {
+        return local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}/forge/minecraft/",
+            SourceLocal.MCBBS => $"{MCBBS}/forge/minecraft/",
+            _ => "https://files.minecraftforge.net/net/minecraftforge/forge/index_"
         };
     }
 }

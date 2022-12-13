@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.Http.Apis;
 using ColorMC.Core.Http.Login;
-using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using System.Data.Common;
 
@@ -221,7 +221,7 @@ public static class BaseAuth
         try
         {
             CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
-            var (State, Obj, Msg) = await AuthlibInjector.Authenticate(Funtcions.NewUUID(), user, pass, server);
+            var (State, Obj, Msg) = await LittleSkin.Authenticate(Funtcions.NewUUID(), user, pass, server);
             if (State != LoginState.Done)
             {
                 return (AuthState.Token, State, null, "LittleSkin验证错误:" + Msg);
@@ -241,12 +241,13 @@ public static class BaseAuth
         try
         {
             CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
-            if (obj.AuthType != AuthType.AuthlibInjector)
+            if (obj.AuthType != AuthType.LittleSkin
+                || obj.AuthType != AuthType.SelfLittleSkin)
             {
                 return (AuthState.Token, LoginState.ErrorType, null, "错误的用户类型");
             }
 
-            var (State, Obj) = await AuthlibInjector.Refresh(obj);
+            var (State, Obj) = await LittleSkin.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null, "LittleSkin刷新登录失败");
 

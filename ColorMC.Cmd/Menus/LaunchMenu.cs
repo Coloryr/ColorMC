@@ -1,11 +1,11 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Game;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using ShellProgressBar;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,12 +18,11 @@ namespace ColorMC.Cmd.Menus;
 
 public static class LaunchMenu
 {
-    private static string Title = "启动游戏";
-    private static string Select1 = "选择实例";
+    private const string Title = "启动游戏";
+    private const string Select1 = "选择实例";
 
     private static GameSettingObj game;
     private static DownloadItem[] Items;
-    private static ChildProgressBar[] Bars;
     private static ProgressBar Bar;
 
     public static void Show()
@@ -46,7 +45,7 @@ public static class LaunchMenu
             list.ForEach(item => items.Add("[" + item.Name + "|" + item.Version + "]"));
         }
 
-        ConsoleUtils.ShowItems(items, Select);
+        ConsoleUtils.SetItems(items, Select);
     }
 
     private static void Select(int index)
@@ -80,6 +79,24 @@ public static class LaunchMenu
         CoreMain.DownloadItemStateUpdate = DownloadUpdate;
         CoreMain.DownloaderUpdate = DownloaderUpdate;
         CoreMain.ProcessLog = ProcessLog;
+
+        if (obj.AuthType != AuthType.Offline)
+        {
+            ConsoleUtils.Info1("正在刷新登录");
+
+            var (State, State1, Obj, Message) = AuthHelper.RefreshToken(obj).Result;
+
+            if (State1 != LoginState.Done)
+            {
+                ConsoleUtils.Error($"{State.GetName()}刷新登录错误");
+                ConsoleUtils.Error(Message);
+                ConsoleUtils.Keep();
+                return;
+            }
+
+            AuthDatabase.SaveAuth(Obj);
+            obj = Obj;
+        }
         var res = game?.StartGame(obj).Result;
         if (res == null)
         {
@@ -91,6 +108,7 @@ public static class LaunchMenu
         else
         {
             ConsoleUtils.Ok($"游戏于进程:{res.ProcessName} {res.Id}");
+            res.Exited += Res_Exited;
             Console.CursorVisible = true;
             while (true)
             {
@@ -105,6 +123,11 @@ public static class LaunchMenu
         }
     }
 
+    private static void Res_Exited(object? sender, EventArgs e)
+    {
+        ConsoleUtils.Info1("游戏退出，按回车返回");
+    }
+
     public static void DownloaderUpdate(CoreRunState state)
     {
         if (state == CoreRunState.Start)
@@ -112,26 +135,7 @@ public static class LaunchMenu
             ConsoleUtils.Info("开始下载文件");
             Console.ForegroundColor = ConsoleColor.White;
             Items = new DownloadItem[ConfigUtils.Config.Http.DownloadThread];
-            Bars = new ChildProgressBar[ConfigUtils.Config.Http.DownloadThread];
-            const int totalTicks = 5;
-            var options = new ProgressBarOptions
-            {
-                ForegroundColor = ConsoleColor.Yellow,
-                BackgroundColor = ConsoleColor.DarkYellow,
-                ProgressCharacter = '─',
-                DisplayTimeInRealTime = true
-            };
-            var childOptions = new ProgressBarOptions
-            {
-                ForegroundColor = ConsoleColor.Green,
-                BackgroundColor = ConsoleColor.Gray,
-                ProgressCharacter = '─'
-            };
-            Bar = new ProgressBar(10, "下载游戏文件", options);
-            for (var a = 0; a < Bars.Length; a++)
-            {
-                Bars[a] = Bar.Spawn(totalTicks, "download", childOptions);
-            }
+            Bar = new ProgressBar(ConfigUtils.Config.Http.DownloadThread);
         }
         else
         {
@@ -139,25 +143,19 @@ public static class LaunchMenu
         }
     }
 
-    private static object obj = new object();
-
     public static void DownloadUpdate(int index, DownloadItem item)
     {
         if (item.State == DownloadItemState.Done)
         {
             Items[index] = null;
-            Bars[index].MaxTicks = 0;
-            Bars[index].Tick();
+            Bar.Done(index, $"{item.Name} 下载完成");
         }
         else if (item.State != DownloadItemState.Init)
         {
-            lock (obj)
-            {
-                Items[index] = item;
-                Bars[index].Message = item.Name;
-                Bars[index].MaxTicks = (int)(item.AllSize / 1000);
-                Bars[index].Tick((int)(item.NowSize / 1000));
-            }
+            Items[index] = item;
+            Bar.SetName(index, item.Name);
+            Bar.SetAllSize(index, item.AllSize);
+            Bar.SetValue(index, item.NowSize);
         }
     }
 

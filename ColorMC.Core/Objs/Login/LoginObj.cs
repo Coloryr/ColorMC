@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Objs.Minecraft;
 
-namespace ColorMC.Core.Objs.Game;
+namespace ColorMC.Core.Objs.Login;
 
 public record LoginObj
 {

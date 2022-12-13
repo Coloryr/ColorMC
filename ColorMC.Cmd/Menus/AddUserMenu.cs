@@ -11,14 +11,15 @@ namespace ColorMC.Cmd.Menus;
 
 public static class AddUserMenu
 {
-    private static string Title = "添加账户";
-    private static string[] Items = new string[] 
+    private const string Title = "添加账户";
+    private static List<string> Items = new()
     { 
-        "离线登录", 
-        "微软登录", 
-        "统一通行证登录", 
-        "皮肤站(LittleSkin)", 
-        "自建皮肤站(blessing-skin-server)", 
+        "离线登录(offline)", 
+        "微软登录(oauth)", 
+        "统一通行证登录(nide8)", 
+        "皮肤站(little-skin)", 
+        "自建皮肤站(blessing-skin-server)",
+        "外置登录(authlib-injector)",
         "取消" 
     };
 
@@ -26,7 +27,7 @@ public static class AddUserMenu
     {
         ConsoleUtils.Reset();
         ConsoleUtils.ShowTitle(Title);
-        ConsoleUtils.ShowItems(Items, Select);
+        ConsoleUtils.SetItems(Items, Select);
     }
 
     private static void Select(int index)
@@ -35,7 +36,7 @@ public static class AddUserMenu
         {
             case 0:
                 ConsoleUtils.Input("添加离线账户");
-                var name = ConsoleUtils.ReadLine("游戏名");
+                var name = ConsoleUtils.ReadLine("用户名");
                 if (string.IsNullOrWhiteSpace(name))
                 {
                     ConsoleUtils.Error("游戏名不能为空");
@@ -44,7 +45,7 @@ public static class AddUserMenu
                 {
                     ConsoleUtils.Info($"正在添加离线账户:{name}");
                     AuthDatabase.SaveAuth(new()
-                    { 
+                    {
                         UserName = name,
                         ClientToken = Funtcions.NewUUID(),
                         UUID = Funtcions.NewUUID(),
@@ -54,7 +55,7 @@ public static class AddUserMenu
                 }
                 ConsoleUtils.Keep();
                 UserMenu.Show();
-                break;
+                return;
             case 1:
                 ConsoleUtils.ToEnd();
                 ConsoleUtils.Info("添加微软账户");
@@ -72,20 +73,169 @@ public static class AddUserMenu
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
-                break;
+                UserMenu.Show();
+                return;
             case 2:
-                break;
+                ConsoleUtils.ToEnd();
+                ConsoleUtils.Info("添加统一通行证账户");
+                CoreMain.AuthStateUpdate = StateUp;
+                var server = ConsoleUtils.ReadLine("服务器UUID");
+                if (string.IsNullOrWhiteSpace(server))
+                {
+                    ConsoleUtils.Error("服务器UUID不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                else if (server.Length != 32)
+                {
+                    ConsoleUtils.Error("服务器UUID错误");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                name = ConsoleUtils.ReadLine("邮箱或用户名");
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    ConsoleUtils.Error("用户名不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                var pass = ConsoleUtils.ReadPassword("密码");
+                if (string.IsNullOrWhiteSpace(pass))
+                {
+                    ConsoleUtils.Error("密码不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                (State, State1, Obj, Message) = BaseAuth.LoginWithNide8(server, name, pass).Result;
+                if (State1 != LoginState.Done)
+                {
+                    ConsoleUtils.Error($"{State.GetName()}登录错误");
+                    ConsoleUtils.Error(Message);
+                }
+                else
+                {
+                    AuthDatabase.SaveAuth(Obj!);
+                    ConsoleUtils.Ok(Message);
+                }
+                ConsoleUtils.Keep();
+                UserMenu.Show();
+                return;
             case 3:
-
-                break;
+                ConsoleUtils.ToEnd();
+                ConsoleUtils.Info("添加皮肤站账户");
+                CoreMain.AuthStateUpdate = StateUp;
+                name = ConsoleUtils.ReadLine("邮箱或用户名");
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    ConsoleUtils.Error("用户名不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                pass = ConsoleUtils.ReadPassword("密码");
+                if (string.IsNullOrWhiteSpace(pass))
+                {
+                    ConsoleUtils.Error("密码不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                (State, State1, Obj, Message) = BaseAuth.LoginWithLittleSkin(name, pass).Result;
+                if (State1 != LoginState.Done)
+                {
+                    ConsoleUtils.Error($"{State.GetName()}登录错误");
+                    ConsoleUtils.Error(Message);
+                }
+                else
+                {
+                    AuthDatabase.SaveAuth(Obj!);
+                    ConsoleUtils.Ok(Message);
+                }
+                ConsoleUtils.Keep();
+                UserMenu.Show();
+                return;
             case 4:
-                break;
+                ConsoleUtils.ToEnd();
+                ConsoleUtils.Info("添加自定义皮肤站账户");
+                CoreMain.AuthStateUpdate = StateUp;
+                server = ConsoleUtils.ReadLine("皮肤站网址");
+                if (string.IsNullOrWhiteSpace(server))
+                {
+                    ConsoleUtils.Error("皮肤站网址不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                name = ConsoleUtils.ReadLine("邮箱或用户名");
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    ConsoleUtils.Error("用户名不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                pass = ConsoleUtils.ReadPassword("密码");
+                if (string.IsNullOrWhiteSpace(pass))
+                {
+                    ConsoleUtils.Error("密码不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                (State, State1, Obj, Message) = BaseAuth.LoginWithLittleSkin(name, pass, server).Result;
+                if (State1 != LoginState.Done)
+                {
+                    ConsoleUtils.Error($"{State.GetName()}登录错误");
+                    ConsoleUtils.Error(Message);
+                }
+                else
+                {
+                    AuthDatabase.SaveAuth(Obj!);
+                    ConsoleUtils.Ok(Message);
+                }
+                ConsoleUtils.Keep();
+                UserMenu.Show();
+                return;
             case 5:
-                
-                break;
+                ConsoleUtils.ToEnd();
+                ConsoleUtils.Info("添加外置登录账户");
+                CoreMain.AuthStateUpdate = StateUp;
+                server = ConsoleUtils.ReadLine("验证网址");
+                if (string.IsNullOrWhiteSpace(server))
+                {
+                    ConsoleUtils.Error("验证网址不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                name = ConsoleUtils.ReadLine("邮箱或用户名");
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    ConsoleUtils.Error("用户名不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                pass = ConsoleUtils.ReadPassword("密码");
+                if (string.IsNullOrWhiteSpace(pass))
+                {
+                    ConsoleUtils.Error("密码不能为空");
+                    ConsoleUtils.Keep();
+                    break;
+                }
+                (State, State1, Obj, Message) = BaseAuth.LoginWithAuthlibInjector(name, pass, server).Result;
+                if (State1 != LoginState.Done)
+                {
+                    ConsoleUtils.Error($"{State.GetName()}登录错误");
+                    ConsoleUtils.Error(Message);
+                }
+                else
+                {
+                    AuthDatabase.SaveAuth(Obj!);
+                    ConsoleUtils.Ok(Message);
+                }
+                ConsoleUtils.Keep();
+                UserMenu.Show();
+                return;
+            case 6:
+                MainMenu.Show();
+                return;
         }
 
-        UserMenu.Show();
+        Show();
     }
 
     private static void StateUp(AuthState state)
@@ -95,6 +245,6 @@ public static class AddUserMenu
 
     private static void Code(string url, string code)
     {
-        ConsoleUtils.Info1($"请用浏览器打开{url} 并输入代码{code} 以继续登录账户");
+        ConsoleUtils.Info1($"请用浏览器打开 {url} 并输入代码 {code} 以继续登录账户");
     }
 }

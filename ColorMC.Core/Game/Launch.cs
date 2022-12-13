@@ -5,6 +5,7 @@ using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
@@ -743,7 +744,7 @@ public static class Launch
 
         return list;
     }
-     
+
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null)
     {
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Check);

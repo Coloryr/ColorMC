@@ -10,7 +10,7 @@ namespace ColorMC.Cmd.Menus;
 
 public static class UserMenu
 {
-    private static string Title = "账户管理";
+    private const string Title = "账户管理";
     private static List<string> Items;
 
     public static void Show()
@@ -31,7 +31,7 @@ public static class UserMenu
             Items.Add("[" + item.Key + "|" + item.Value.UserName + "|" + item.Value.AuthType.GetName() + "]");
         }
 
-        ConsoleUtils.ShowItems(Items, Select);
+        ConsoleUtils.SetItems(Items, Select);
     }
 
     private static void Select(int index)

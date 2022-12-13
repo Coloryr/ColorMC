@@ -1,6 +1,6 @@
 ﻿using static ColorMC.Core.Objs.Game.GameArgObj.Libraries.Downloads;
 
-namespace ColorMC.Core.Objs.Game;
+namespace ColorMC.Core.Objs.Loader;
 
 public record ForgeLaunchObj
 {

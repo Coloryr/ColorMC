@@ -1,13 +1,57 @@
 ﻿using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
+using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.Http.Download;
 
 public static class ForgeHelper
 {
+    public static async Task<List<string>?> GetSupportVersion()
+    {
+        if (BaseClient.Source == SourceLocal.BMCLAPI
+            || BaseClient.Source == SourceLocal.MCBBS)
+        {
+            string url = UrlHelp.ForgeVersion(BaseClient.Source);
+            var data = await BaseClient.GetString(url);
+            var obj = JsonConvert.DeserializeObject<List<string>>(data);
+            if (obj == null)
+                return null;
+
+            return obj;
+        }
+        else
+        {
+            string url = UrlHelp.ForgeVersion(SourceLocal.Offical);
+            var html = await BaseClient.GetString(url);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            var nodes = doc.DocumentNode.Descendants("li")
+                .Where(x => x.Attributes["class"]?.Value == "li-version-list");
+            if (nodes == null)
+                return null;
+            List<string> list = new();
+
+            foreach (var item in nodes)
+            {
+                var nodes1 = item.SelectNodes("ul/li/a");
+                if (nodes1 == null)
+                    return null;
+
+                foreach (var item1 in nodes1)
+                {
+                    list.Add(item1.InnerText.Trim());
+                }
+                
+            }
+
+            return list;
+        }
+    }
+
     public static void UnpackNative(string version, FileStream stream)
     {
         stream.Seek(0, SeekOrigin.Begin);
@@ -34,9 +78,9 @@ public static class ForgeHelper
         if (v2)
         {
             //list.Add(BuildForgeLauncher(mc, version));
-            list.Add(BuildForgeInster(mc, version));
-            list.Add(BuildForgeClient(mc, version));
-            list.Add(BuildForgeUniversal(mc, version));
+            //list.Add(BuildForgeInster(mc, version));
+            //list.Add(BuildForgeClient(mc, version));
+            //list.Add(BuildForgeUniversal(mc, version));
         }
 
         foreach (var item1 in info.libraries)
@@ -101,7 +145,7 @@ public static class ForgeHelper
         return new()
         {
             Url = url + name + ".jar",
-            Name = "net.minecraftforge:forge:" + name,
+            Name = $"net.minecraftforge:forge:{mc}-{version}-{type}",
             Local = $"{LibrariesPath.BaseDir}/net/minecraftforge/forge/{mc}-{version}/{name}.jar",
         };
     }
@@ -323,6 +367,66 @@ public static class ForgeHelper
                 Directory.CreateDirectory(file.DirectoryName!);
             }
             File.WriteAllBytes(file.FullName, Resource1.ForgeWrapper_mmc3);
+        }
+    }
+
+    public static async Task<List<string>?> GetForgeList(string version)
+    {
+        List<string> list = new();
+        if (BaseClient.Source == SourceLocal.BMCLAPI
+            || BaseClient.Source == SourceLocal.MCBBS)
+        {
+            string url = UrlHelp.ForgeVersions(version, BaseClient.Source) + version;
+            var data = await BaseClient.GetString(url);
+            var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data);
+            if (obj == null)
+                return null;
+
+            foreach (var item in obj)
+            {
+                list.Add(item.version);
+            }
+            return list;
+        }
+        else
+        {
+            string url = UrlHelp.ForgeVersions(version, SourceLocal.Offical) + version + ".html";
+            var data = await BaseClient.Client.GetAsync(url);
+
+            string html = null;
+            if (data.IsSuccessStatusCode)
+            {
+                html = await data.Content.ReadAsStringAsync();
+            }
+            if (string.IsNullOrWhiteSpace(html))
+            {
+                return null;
+            }
+            var doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            var nodes = doc.DocumentNode.Descendants("table")
+                .Where(x => x.Attributes["class"]?.Value == "download-list").FirstOrDefault();
+            if (nodes == null)
+                return null;
+            var nodes1 = nodes.Descendants("tbody").FirstOrDefault();
+            if (nodes1 == null)
+                return null;
+            
+            foreach (var item in nodes1.Descendants("tr"))
+            {
+                var item1 = item.Descendants("td").Where(x => x.Attributes["class"]?.Value == "download-version").FirstOrDefault();
+                if (item1 != null)
+                {
+                    string item2 = item1.InnerText.Trim();
+                    if (item2.Contains("Branch:"))
+                    {
+                        int a = item2.IndexOf(' ');
+                        item2 = item2[..a].Trim();
+                    }
+                    list.Add(item2);
+                }
+            }
+            return list;
         }
     }
 }

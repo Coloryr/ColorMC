@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Heijden.Dns.Portable" Version="2.0.19" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta3" />
     <PackageReference Include="SharpNBT" Version="1.2.0" />
