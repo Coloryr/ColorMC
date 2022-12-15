@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Loader;
+﻿namespace ColorMC.Core.Objs.Loader;
 
 public record ForgeVersionObj
 {
@@ -15,7 +9,7 @@ public record ForgeVersionObj
 public record ForgeVersionObj1
 {
     public record Files
-    { 
+    {
         public string format { get; set; }
         public string category { get; set; }
         public string hash { get; set; }

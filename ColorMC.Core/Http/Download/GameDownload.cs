@@ -205,7 +205,7 @@ public static class GameDownload
     public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadFabric(string mc, string? version = null)
     {
         var list = new List<DownloadItem>();
-        var meta = await Get.GetFabricMeta(BaseClient.Source);
+        var meta = await FabricHelper.GetMeta(BaseClient.Source);
         if (meta == null)
         {
             return (DownloadState.Init, null);
@@ -228,7 +228,7 @@ public static class GameDownload
 
         version = fabric.version;
 
-        FabricLoaderObj? meta1 = await Get.GetFabricLoader(mc, version, BaseClient.Source);
+        FabricLoaderObj? meta1 = await FabricHelper.GetLoader(mc, version, BaseClient.Source);
         if (meta1 == null)
         {
             return (DownloadState.GetInfo, null);
@@ -260,7 +260,7 @@ public static class GameDownload
     public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadQuilt(string mc, string? version = null)
     {
         var list = new List<DownloadItem>();
-        var meta = await Get.GetQuiltMeta(BaseClient.Source);
+        var meta = await QuiltHelper.GetMeta(BaseClient.Source);
         if (meta == null)
         {
             return (DownloadState.Init, null);
@@ -283,7 +283,7 @@ public static class GameDownload
 
         version = quilt.version;
 
-        QuiltLoaderObj? meta1 = await Get.GetQuiltLoader(mc, version, BaseClient.Source);
+        QuiltLoaderObj? meta1 = await QuiltHelper.GetLoader(mc, version, BaseClient.Source);
         if (meta1 == null)
         {
             return (DownloadState.GetInfo, null);

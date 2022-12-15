@@ -2,7 +2,6 @@
 using ColorMC.Core.Http.Login;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using System.Data.Common;
 
 namespace ColorMC.Core.Game.Auth;
 
@@ -22,7 +21,7 @@ public enum LoginState
 }
 
 public static class BaseAuth
-{ 
+{
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> LoginWithOAuth()
     {
         AuthState now = AuthState.OAuth;

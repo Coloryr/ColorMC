@@ -33,7 +33,7 @@ public static class AuthHelper
     public static DownloadItem ReadyNide8()
     {
         var item = BuildNide8Item();
-        if(!File.Exists(item.Local))
+        if (!File.Exists(item.Local))
             return item;
 
         return null;
@@ -49,7 +49,7 @@ public static class AuthHelper
         var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(meta);
 
         var item1 = BuildAuthlibInjectorItem(obj1);
-        
+
         NowAuthlibInjector = item1.Local;
         if (!File.Exists(NowAuthlibInjector))
             return item1;

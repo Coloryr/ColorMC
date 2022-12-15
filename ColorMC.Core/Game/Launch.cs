@@ -202,7 +202,7 @@ public static class Launch
                 list.Add(item);
             }
         }
-        else if (login.AuthType is AuthType.AuthlibInjector 
+        else if (login.AuthType is AuthType.AuthlibInjector
             or AuthType.LittleSkin or AuthType.SelfLittleSkin)
         {
             await AuthHelper.ReadyAuthlibInjector();

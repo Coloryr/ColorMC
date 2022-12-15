@@ -1,24 +1,17 @@
-﻿using ColorMC.Core.Http.Download;
+﻿using ColorMC.Core.Http;
+using ColorMC.Core.Http.Download;
+using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ColorMC.Core.Utils;
-using ColorMC.Core.Http.Downloader;
-using ColorMC.Core;
 
 namespace ColorMC.Cmd.Menus;
 
 public static class AddGameMenu
 {
     private const string Title = "创建实例";
-    private static List<string> Items = new();
+    private static List<string>? Items = new();
     private static GameSettingObj? Game;
-    private static DownloadItem[] Items1;
-    private static ProgressBar Bar;
 
     public static void Show()
     {
@@ -26,7 +19,16 @@ public static class AddGameMenu
         ConsoleUtils.ShowTitle(Title);
         ConsoleUtils.ShowTitle1("选择游戏版本");
 
+        if (VersionPath.Versions == null)
+        {
+            ConsoleUtils.Error("没有版本信息，重启尝试");
+            ConsoleUtils.Keep();
+            Show();
+            return;
+        }
+
         Items.Clear();
+        Items.Add("返回");
         foreach (var item in VersionPath.Versions.versions)
         {
             Items.Add(item.id);
@@ -37,6 +39,11 @@ public static class AddGameMenu
 
     private static void Select(int index)
     {
+        if (index == 0)
+        {
+            MainMenu.Show();
+            return;
+        }
         var item = Items[index];
         ConsoleUtils.Reset();
         ConsoleUtils.ShowTitle(Title);
@@ -78,6 +85,28 @@ public static class AddGameMenu
                 return;
             }
         }
+        Items = FabricHelper.GetSupportVersion().Result;
+        if (Items?.Contains(item) == true)
+        {
+            var loader = ConsoleUtils.YesNo("启用fabric");
+            if (loader)
+            {
+                ConsoleUtils.Info1("正在获取fabric版本");
+                Items = FabricHelper.GetLoaders(item).Result;
+                if (Items == null)
+                {
+                    ConsoleUtils.Error("Fabric列表获取失败");
+                    ConsoleUtils.Keep();
+                    Show();
+                    return;
+                }
+                ConsoleUtils.Reset();
+                ConsoleUtils.ShowTitle("创建实例");
+                ConsoleUtils.ShowTitle1($"选择fabric版本");
+                ConsoleUtils.SetItems(Items, FabricInstall);
+                return;
+            }
+        }
 
         Install();
     }
@@ -90,7 +119,11 @@ public static class AddGameMenu
 
         ConsoleUtils.Info("正在创建实例");
 
-        Game = InstancesPath.CreateVersion(Game!.Name, Game.Version, false, Loaders.Normal, null);
+        Game.Loader = Loaders.Normal;
+        Game.LoaderInfo = null;
+        Game.ModPack = false;
+
+        Game = InstancesPath.CreateVersion(Game);
 
         if (Game == null)
         {
@@ -106,7 +139,8 @@ public static class AddGameMenu
 
         var items = new List<DownloadItem>();
 
-        var list = GameDownload.Download(VersionPath.Versions.versions.Where(a => a.id == Game.Version).First()).Result;
+        var list = GameDownload.Download(VersionPath.Versions!
+            .versions.Where(a => a.id == Game.Version).First()).Result;
 
         if (list.State != DownloadState.End)
         {
@@ -117,10 +151,7 @@ public static class AddGameMenu
             return;
         }
 
-        items.AddRange(list.List);
-
-        CoreMain.DownloadItemStateUpdate = DownloadUpdate;
-        CoreMain.DownloaderUpdate = DownloaderUpdate;
+        items.AddRange(list.List!);
 
         DownloadManager.FillAll(items);
         var download = DownloadManager.Start().Result;
@@ -140,7 +171,7 @@ public static class AddGameMenu
 
     private static void ForgeInstall(int index)
     {
-        var forge = Items[index];
+        var fabric = Items[index];
 
         ConsoleUtils.Reset();
         ConsoleUtils.ShowTitle("创建实例");
@@ -148,11 +179,13 @@ public static class AddGameMenu
 
         ConsoleUtils.Info("正在创建实例");
 
-        Game = InstancesPath.CreateVersion(Game!.Name, Game.Version, false, Loaders.Forge, new LoaderInfoObj()
+        Game.Loader = Loaders.Fabric;
+        Game.LoaderInfo = new LoaderInfoObj()
         {
-            Name = "forge",
-            Version = forge
-        });
+            Name = "fabric",
+            Version = fabric
+        };
+        Game.ModPack = false;
 
         if (Game == null)
         {
@@ -168,20 +201,21 @@ public static class AddGameMenu
 
         var items = new List<DownloadItem>();
 
-        //var list = GameDownload.Download(VersionPath.Versions.versions.Where(a => a.id == Game.Version).First()).Result;
+        var list = GameDownload.Download(VersionPath.Versions!
+            .versions.Where(a => a.id == Game.Version).First()).Result;
 
-        //if (list.State != DownloadState.End)
-        //{
-        //    ConsoleUtils.Error("获取游戏安装信息失败");
-        //    ConsoleUtils.Error(list.State.GetName());
-        //    ConsoleUtils.Keep();
-        //    MainMenu.Show();
-        //    return;
-        //}
+        if (list.State != DownloadState.End)
+        {
+            ConsoleUtils.Error("获取游戏安装信息失败");
+            ConsoleUtils.Error(list.State.GetName());
+            ConsoleUtils.Keep();
+            MainMenu.Show();
+            return;
+        }
 
-        //items.AddRange(list.List);
+        items.AddRange(list.List!);
 
-        var list = GameDownload.DownloadForge(Game).Result;
+        list = GameDownload.DownloadFabric(Game).Result;
         if (list.State != DownloadState.End)
         {
             ConsoleUtils.Error("获取mod加载器信息失败");
@@ -191,10 +225,7 @@ public static class AddGameMenu
             return;
         }
 
-        items.AddRange(list.List);
-
-        CoreMain.DownloadItemStateUpdate = DownloadUpdate;
-        CoreMain.DownloaderUpdate = DownloaderUpdate;
+        items.AddRange(list.List!);
 
         DownloadManager.FillAll(items);
         var download = DownloadManager.Start().Result;
@@ -212,34 +243,77 @@ public static class AddGameMenu
         MainMenu.Show();
     }
 
-    public static void DownloaderUpdate(CoreRunState state)
+    private static void FabricInstall(int index)
     {
-        if (state == CoreRunState.Start)
+        var forge = Items[index];
+
+        ConsoleUtils.Reset();
+        ConsoleUtils.ShowTitle("创建实例");
+        ConsoleUtils.ShowTitle1($"安装游戏:{Game.Name}");
+
+        ConsoleUtils.Info("正在创建实例");
+
+        Game.Loader = Loaders.Forge;
+        Game.LoaderInfo = new LoaderInfoObj()
         {
-            ConsoleUtils.Info("开始下载文件");
-            Console.ForegroundColor = ConsoleColor.White;
-            Items1 = new DownloadItem[ConfigUtils.Config.Http.DownloadThread];
-            Bar = new ProgressBar(ConfigUtils.Config.Http.DownloadThread);
+            Name = "forge",
+            Version = forge
+        };
+        Game.ModPack = false;
+
+        if (Game == null)
+        {
+            ConsoleUtils.Error("创建实例错误");
+            ConsoleUtils.Keep();
+            Show();
+            return;
+        }
+
+        ConsoleUtils.Ok("创建实例完成");
+
+        ConsoleUtils.Info("正在安装游戏");
+
+        var items = new List<DownloadItem>();
+
+        var list = GameDownload.Download(VersionPath.Versions!
+            .versions.Where(a => a.id == Game.Version).First()).Result;
+
+        if (list.State != DownloadState.End)
+        {
+            ConsoleUtils.Error("获取游戏安装信息失败");
+            ConsoleUtils.Error(list.State.GetName());
+            ConsoleUtils.Keep();
+            MainMenu.Show();
+            return;
+        }
+
+        items.AddRange(list.List!);
+
+        list = GameDownload.DownloadForge(Game).Result;
+        if (list.State != DownloadState.End)
+        {
+            ConsoleUtils.Error("获取mod加载器信息失败");
+            ConsoleUtils.Error(list.State.GetName());
+            ConsoleUtils.Keep();
+            MainMenu.Show();
+            return;
+        }
+
+        items.AddRange(list.List!);
+
+        DownloadManager.FillAll(items);
+        var download = DownloadManager.Start().Result;
+        if (!download)
+        {
+            ConsoleUtils.Error("游戏下载失败");
+            ConsoleUtils.Error(list.State.GetName());
         }
         else
         {
-            Bar.Dispose();
+            ConsoleUtils.Ok("游戏下载完成");
         }
-    }
 
-    public static void DownloadUpdate(int index, DownloadItem item)
-    {
-        if (item.State == DownloadItemState.Done)
-        {
-            Items1[index] = null;
-            Bar.Done(index, $"{item.Name} 下载完成");
-        }
-        else if (item.State != DownloadItemState.Init)
-        {
-            Items1[index] = item;
-            Bar.SetName(index, item.Name);
-            Bar.SetAllSize(index, item.AllSize);
-            Bar.SetValue(index, item.NowSize);
-        }
+        ConsoleUtils.Keep();
+        MainMenu.Show();
     }
 }

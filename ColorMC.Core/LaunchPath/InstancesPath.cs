@@ -152,23 +152,14 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}");
     }
 
-    public static GameSettingObj? CreateVersion(string name, string version,
-        bool pack, Loaders loader, LoaderInfoObj info)
+    public static GameSettingObj? CreateVersion(GameSettingObj game)
     {
-        if (InstallGames.ContainsKey(name))
+        if (InstallGames.ContainsKey(game.Name))
         {
             return null;
         }
 
-        var game = new GameSettingObj()
-        {
-            DirName = name,
-            Name = name,
-            Version = version,
-            Loader = loader,
-            LoaderInfo = info,
-            ModPack = pack
-        };
+        game.DirName = game.Name;
 
         var dir = game.GetBaseDir();
         if (Directory.Exists(dir))
@@ -180,7 +171,7 @@ public static class InstancesPath
         Directory.CreateDirectory(game.GetGameDir());
 
         game.Save();
-        InstallGames.Add(name, game);
+        InstallGames.Add(game.Name, game);
 
         return game;
     }
@@ -233,7 +224,14 @@ public static class InstancesPath
 
     public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
     {
-        var obj1 = CreateVersion(name, obj.Version, obj.ModPack, obj.Loader, obj.LoaderInfo);
+        var obj1 = CreateVersion(new()
+        { 
+            Name = name,
+            Version = obj.Version,
+            ModPack = obj.ModPack,
+            Loader = obj.Loader,
+            LoaderInfo = obj.LoaderInfo
+        });
         if (obj1 != null)
         {
             await PathC.CopyFiles(GetGameDir(obj), GetGameDir(obj1));

@@ -1,18 +1,11 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 
 namespace ColorMC.Cmd.Menus;
 
@@ -22,8 +15,6 @@ public static class LaunchMenu
     private const string Select1 = "选择实例";
 
     private static GameSettingObj game;
-    private static DownloadItem[] Items;
-    private static ProgressBar Bar;
 
     public static void Show()
     {
@@ -76,8 +67,6 @@ public static class LaunchMenu
         ConsoleUtils.ShowTitle1(game.Name);
         CoreMain.GameLaunch = GameLaunch;
         CoreMain.GameDownload = GameDownload;
-        CoreMain.DownloadItemStateUpdate = DownloadUpdate;
-        CoreMain.DownloaderUpdate = DownloaderUpdate;
         CoreMain.ProcessLog = ProcessLog;
 
         if (obj.AuthType != AuthType.Offline)
@@ -126,37 +115,6 @@ public static class LaunchMenu
     private static void Res_Exited(object? sender, EventArgs e)
     {
         ConsoleUtils.Info1("游戏退出，按回车返回");
-    }
-
-    public static void DownloaderUpdate(CoreRunState state)
-    {
-        if (state == CoreRunState.Start)
-        {
-            ConsoleUtils.Info("开始下载文件");
-            Console.ForegroundColor = ConsoleColor.White;
-            Items = new DownloadItem[ConfigUtils.Config.Http.DownloadThread];
-            Bar = new ProgressBar(ConfigUtils.Config.Http.DownloadThread);
-        }
-        else
-        {
-            Bar.Dispose();
-        }
-    }
-
-    public static void DownloadUpdate(int index, DownloadItem item)
-    {
-        if (item.State == DownloadItemState.Done)
-        {
-            Items[index] = null;
-            Bar.Done(index, $"{item.Name} 下载完成");
-        }
-        else if (item.State != DownloadItemState.Init)
-        {
-            Items[index] = item;
-            Bar.SetName(index, item.Name);
-            Bar.SetAllSize(index, item.AllSize);
-            Bar.SetValue(index, item.NowSize);
-        }
     }
 
     public static void GameLaunch(GameSettingObj obj, LaunchState state)

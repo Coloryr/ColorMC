@@ -6,7 +6,7 @@ using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Http.Download;
+namespace ColorMC.Core.Http;
 
 public static class ForgeHelper
 {
@@ -45,7 +45,7 @@ public static class ForgeHelper
                 {
                     list.Add(item1.InnerText.Trim());
                 }
-                
+
             }
 
             return list;
@@ -411,7 +411,7 @@ public static class ForgeHelper
             var nodes1 = nodes.Descendants("tbody").FirstOrDefault();
             if (nodes1 == null)
                 return null;
-            
+
             foreach (var item in nodes1.Descendants("tr"))
             {
                 var item1 = item.Descendants("td").Where(x => x.Attributes["class"]?.Value == "download-version").FirstOrDefault();

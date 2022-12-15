@@ -92,7 +92,15 @@ public static class PackDownload
             }
         }
         string name = $"{info.name}-{info.version}";
-        var game = InstancesPath.CreateVersion(name, info.minecraft.version, true, loaders, info1);
+
+        var game = InstancesPath.CreateVersion(new()
+        { 
+            Name = name,
+            Version = info.minecraft.version,
+            ModPack = true,
+            Loader = loaders, 
+            LoaderInfo = info1
+        });
         if (game == null)
         {
             game = InstancesPath.GetGame(name);
@@ -123,7 +131,7 @@ public static class PackDownload
         CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
         Size = info.files.Count;
         Now = 0;
-        var res = await Get.GetCurseForgeMods(info.files);
+        var res = await CurseForgeHelper.GetMods(info.files);
         if (res != null)
         {
             foreach (var item in res)
@@ -154,7 +162,7 @@ public static class PackDownload
             };
             Parallel.ForEach(info.files, options, item =>
             {
-                var res = Get.GetCurseForgeMod(item).Result;
+                var res = CurseForgeHelper.GetMod(item).Result;
                 if (res == null)
                 {
                     done = false;

@@ -1,9 +1,4 @@
 ﻿using ColorMC.Core.LaunchPath;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Cmd.Menus;
 
