@@ -1,11 +1,6 @@
 ﻿using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http.Download;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Utils;
 
@@ -21,7 +16,7 @@ public static class Language
             AuthType.AuthlibInjector => "外置登录",
             AuthType.LittleSkin => "皮肤站",
             AuthType.SelfLittleSkin => "自建皮肤站",
-            _ =>"账户"
+            _ => "账户"
         };
     }
 

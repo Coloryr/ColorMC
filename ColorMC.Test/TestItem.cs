@@ -1,29 +1,19 @@
 ﻿using ColorMC.Core.Game;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.Http.Apis;
-using ColorMC.Core.Objs.Game;
-using ColorMC.Core.Objs.Pack;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Utils;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Utils;
+using System.Diagnostics;
 
 namespace ColorMC.Test;
 
 public static class TestItem
 {
-    public static void Item1() 
+    public static void Item1()
     {
         VersionPath.CheckUpdate("1.12.2").Wait();
         AssetsPath.CheckUpdate("1.12.2").Wait();
@@ -64,7 +54,7 @@ public static class TestItem
 
     public static void Item4()
     {
-        var res = Get.GetFabricMeta().Result;
+        var res = FabricHelper.GetMeta().Result;
         if (res == null)
         {
             Console.WriteLine("Fabric信息为空");
@@ -83,7 +73,7 @@ public static class TestItem
         }
     }
 
-    public static void Item5() 
+    public static void Item5()
     {
         using FileStream stream2 = new("E:\\code\\ColorMC\\ColorMC.Test\\bin\\Debug\\net7.0\\minecraft\\assets\\objects\\0c\\0cd209ea16b052a2f445a275380046615d20775e", FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
         stream2.Seek(0, SeekOrigin.Begin);
@@ -92,7 +82,7 @@ public static class TestItem
 
     public static void Item6()
     {
-        var list = Get.GetCurseForge("1.16.5").Result;
+        var list = CurseForgeHelper.GetPackList("1.16.5").Result;
         if (list == null)
         {
             Console.WriteLine("整合包信息为空");
@@ -154,7 +144,7 @@ public static class TestItem
         }
     }
 
-    public static void Item9() 
+    public static void Item9()
     {
         var game = InstancesPath.Games;
         var login = new LoginObj()
@@ -168,7 +158,7 @@ public static class TestItem
         process?.WaitForExit();
     }
 
-    public static void Item10() 
+    public static void Item10()
     {
         Console.WriteLine("key");
         Console.ReadLine();

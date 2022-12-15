@@ -67,10 +67,9 @@ public static class VersionPath
         }
         try
         {
-            Versions = GetFromWeb().Result;
-            if (Version == null)
+            if (!GetFromWeb().Result || !ReadVersions())
             {
-                Versions = ReadVersions();
+                Logs.Error("获取版本信息失败");
             }
             else
             {
@@ -83,20 +82,20 @@ public static class VersionPath
         }
     }
 
-    public static async Task<VersionObj?> GetFromWeb()
+    public static async Task<bool> GetFromWeb()
     {
-        var res = await Get.GetVersions();
-        if (res == null)
+        Versions = await Get.GetVersions();
+        if (Versions == null)
         {
-            res = await Get.GetVersions(SourceLocal.Offical);
-            if (res == null)
+            Versions = await Get.GetVersions(SourceLocal.Offical);
+            if (Versions == null)
             {
                 Logs.Warn("获取版本信息错误");
-                return null;
+                return false;
             }
         }
 
-        return res;
+        return Versions != null;
     }
 
     public static bool Have(string version)
@@ -104,15 +103,16 @@ public static class VersionPath
         return Versions?.versions.Where(a => a.id == version).Any() == true;
     }
 
-    public static VersionObj? ReadVersions()
+    public static bool ReadVersions()
     {
         string file = BaseDir + "/version.json";
         if (File.Exists(file))
         {
             string data = File.ReadAllText(file);
-            return JsonConvert.DeserializeObject<VersionObj>(data);
+            Versions = JsonConvert.DeserializeObject<VersionObj>(data);
+            return Versions != null;
         }
-        return null;
+        return false;
     }
 
     public static void SaveVersions(VersionObj? obj)

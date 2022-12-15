@@ -8,8 +8,12 @@ internal class Program
     static void Main(string[] args)
     {
         ConsoleUtils.Init();
+        //CoreMain.Init(AppContext.BaseDirectory);
         CoreMain.Init("E:\\code\\ColorMC\\buildout\\");
         Thread.Sleep(1000);
+
+        DownloadBar.Init();
+
         MainMenu.Show();
     }
 }

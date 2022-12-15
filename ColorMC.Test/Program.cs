@@ -2,7 +2,6 @@
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
-using System;
 using System.Diagnostics;
 
 namespace ColorMC.Test;
@@ -47,12 +46,12 @@ internal class Program
         return true;
     }
 
-    public static void Log(Process? progress, string? log) 
+    public static void Log(Process? progress, string? log)
     {
         Console.WriteLine(log);
     }
 
-    public static void Update(int index) 
+    public static void Update(int index)
     {
         Console.WriteLine($"下载器{index} 下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
     }
@@ -67,7 +66,7 @@ internal class Program
         Console.WriteLine($"整合包状态:{item}");
     }
 
-    public static void PackUpdate(int a, int b) 
+    public static void PackUpdate(int a, int b)
     {
         Console.WriteLine($"整合包信息获取:{a}/{b}");
     }

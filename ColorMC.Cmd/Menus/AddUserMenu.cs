@@ -1,11 +1,6 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Cmd.Menus;
 
@@ -13,14 +8,14 @@ public static class AddUserMenu
 {
     private const string Title = "添加账户";
     private static List<string> Items = new()
-    { 
-        "离线登录(offline)", 
-        "微软登录(oauth)", 
-        "统一通行证登录(nide8)", 
-        "皮肤站(little-skin)", 
+    {
+        "离线登录(offline)",
+        "微软登录(oauth)",
+        "统一通行证登录(nide8)",
+        "皮肤站(little-skin)",
         "自建皮肤站(blessing-skin-server)",
         "外置登录(authlib-injector)",
-        "取消" 
+        "取消"
     };
 
     public static void Show()

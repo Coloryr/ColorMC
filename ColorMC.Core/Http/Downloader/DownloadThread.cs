@@ -104,7 +104,7 @@ public class DownloadThread
             while ((item = DownloadManager.GetItem()) != null)
             {
                 byte[]? buffer = null;
-                
+
                 item.State = DownloadItemState.Init;
                 item.Update?.Invoke(index);
 

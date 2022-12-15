@@ -1,4 +1,6 @@
-﻿namespace ColorMC.Core.Objs.Loader;
+﻿using static ColorMC.Core.Objs.Loader.FabricMetaObj;
+
+namespace ColorMC.Core.Objs.Loader;
 
 public record FabricLoaderObj
 {
@@ -21,3 +23,24 @@ public record FabricLoaderObj
     public Arguments arguments { get; set; }
     public List<Libraries> libraries { get; set; }
 }
+
+public record FabricLoaderObj1
+{
+    public record Loader
+    { 
+        public string separator { get; set; }
+        public int build { get; set; }
+        public string maven { get; set; }
+        public string version { get; set; }
+        public bool stable { get; set; }
+    }
+    public record Intermediary
+    {
+        public string maven { get; set; }
+        public string version { get; set; }
+        public bool stable { get; set; }
+    }
+    public Loader loader { get; set; }
+    public Intermediary intermediary { get; set; }
+}
+
