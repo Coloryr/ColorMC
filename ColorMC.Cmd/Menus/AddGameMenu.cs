@@ -57,7 +57,7 @@ public static class AddGameMenu
             Show();
         }
 
-        ConsoleUtils.Info1("正在检查mod加载器支持");
+        ConsoleUtils.Info1("正在检查Mod加载器支持");
         Game = new()
         {
             Name = name,
@@ -66,10 +66,10 @@ public static class AddGameMenu
         Items = ForgeHelper.GetSupportVersion().Result;
         if (Items?.Contains(item) == true)
         {
-            var loader = ConsoleUtils.YesNo("启用forge");
+            var loader = ConsoleUtils.YesNo("启用Forge");
             if (loader)
             {
-                ConsoleUtils.Info1("正在获取forge版本");
+                ConsoleUtils.Info1("正在获取Forge版本");
                 Items = ForgeHelper.GetForgeList(item).Result;
                 if (Items == null)
                 {
@@ -80,18 +80,19 @@ public static class AddGameMenu
                 }
                 ConsoleUtils.Reset();
                 ConsoleUtils.ShowTitle("创建实例");
-                ConsoleUtils.ShowTitle1($"选择forge版本");
+                ConsoleUtils.ShowTitle1($"选择Forge版本");
                 ConsoleUtils.SetItems(Items, ForgeInstall);
                 return;
             }
         }
+
         Items = FabricHelper.GetSupportVersion().Result;
         if (Items?.Contains(item) == true)
         {
-            var loader = ConsoleUtils.YesNo("启用fabric");
+            var loader = ConsoleUtils.YesNo("启用Fabric");
             if (loader)
             {
-                ConsoleUtils.Info1("正在获取fabric版本");
+                ConsoleUtils.Info1("正在获取Fabric版本");
                 Items = FabricHelper.GetLoaders(item).Result;
                 if (Items == null)
                 {
@@ -102,7 +103,7 @@ public static class AddGameMenu
                 }
                 ConsoleUtils.Reset();
                 ConsoleUtils.ShowTitle("创建实例");
-                ConsoleUtils.ShowTitle1($"选择fabric版本");
+                ConsoleUtils.ShowTitle1($"选择Fabric版本");
                 ConsoleUtils.SetItems(Items, FabricInstall);
                 return;
             }
@@ -289,7 +290,7 @@ public static class AddGameMenu
 
         items.AddRange(list.List!);
 
-        list = GameDownload.DownloadForge(Game).Result;
+        list = GameDownload.DownloadFabric(Game).Result;
         if (list.State != DownloadState.End)
         {
             ConsoleUtils.Error("获取mod加载器信息失败");

@@ -9,10 +9,8 @@ public class LibVersionObj
 
     public override bool Equals(object? obj)
     {
-        if (obj is not LibVersionObj)
+        if (obj is not LibVersionObj obj1)
             return false;
-
-        var obj1 = obj as LibVersionObj;
 
         return Pack == obj1.Pack && Name == obj1.Name && Extr == obj1.Extr;
     }

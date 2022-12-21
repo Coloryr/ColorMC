@@ -13,6 +13,8 @@ public static class DownloadBar
     {
         CoreMain.DownloadItemStateUpdate = DownloadUpdate;
         CoreMain.DownloaderUpdate = DownloaderUpdate;
+
+        Items1 = new DownloadItem[ConfigUtils.Config.Http.DownloadThread];
     }
 
     public static void DownloaderUpdate(CoreRunState state)
@@ -21,6 +23,7 @@ public static class DownloadBar
         {
             ConsoleUtils.Info("开始下载文件");
             Console.ForegroundColor = ConsoleColor.White;
+            Bar = new ProgressBar(ConfigUtils.Config.Http.DownloadThread);
         }
         else
         {
@@ -33,9 +36,11 @@ public static class DownloadBar
         if (item.State == DownloadItemState.Done)
         {
             Items1[index] = null;
-            Items1 = new DownloadItem[ConfigUtils.Config.Http.DownloadThread];
-            Bar = new ProgressBar(ConfigUtils.Config.Http.DownloadThread);
             Bar.Done(index, $"{item.Name} 下载完成");
+        }
+        else if (item.State == DownloadItemState.Error)
+        {
+            Console.WriteLine(item.Name);
         }
         else if (item.State != DownloadItemState.Init)
         {
@@ -44,5 +49,6 @@ public static class DownloadBar
             Bar.SetAllSize(index, item.AllSize);
             Bar.SetValue(index, item.NowSize);
         }
+        
     }
 }

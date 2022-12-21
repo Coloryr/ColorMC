@@ -1,5 +1,4 @@
 ﻿using ColorMC.Core.Objs.Loader;
-using HtmlAgilityPack;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Http;
