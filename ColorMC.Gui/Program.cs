@@ -1,6 +1,8 @@
 using Avalonia;
 using System;
+using System.Diagnostics;
 using System.Text;
+using System.Threading;
 
 namespace ColorMC;
 
@@ -15,6 +17,12 @@ internal class Program
     public static void Main(string[] args)
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+        Console.WriteLine("wait");
+        while (!Debugger.IsAttached)
+        {
+            Thread.Sleep(100);
+        }
 
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
