@@ -140,6 +140,7 @@ public static class BaseAuth
                 return (AuthState.Token, State, null, "Nide8验证错误:" + Msg);
             }
 
+            Obj!.Text2 = user;
             return (AuthState.Profile, LoginState.Done, Obj, "Nide8登陆完成");
         }
         catch (Exception e)
@@ -183,6 +184,7 @@ public static class BaseAuth
                 return (AuthState.Token, State, null, "AuthlibInjector验证错误:" + Msg);
             }
 
+            Obj!.Text2 = user;
             return (AuthState.Profile, LoginState.Done, Obj, "AuthlibInjector登陆完成");
         }
         catch (Exception e)
@@ -226,6 +228,7 @@ public static class BaseAuth
                 return (AuthState.Token, State, null, "LittleSkin验证错误:" + Msg);
             }
 
+            Obj!.Text2 = user;
             return (AuthState.Profile, LoginState.Done, Obj, "LittleSkin登陆完成");
         }
         catch (Exception e)

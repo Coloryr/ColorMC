@@ -82,6 +82,15 @@
         </Grid>
 
         <Button
+            Name="Button_Delete"
+            Width="80"
+            Height="25"
+            Margin="100,0,0,10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Content="删除" />
+
+        <Button
             Name="Button_Refash"
             Width="80"
             Height="25"

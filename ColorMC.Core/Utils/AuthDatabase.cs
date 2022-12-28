@@ -22,7 +22,7 @@ public record QLogin
 
 public static class AuthDatabase
 {
-    public static readonly Dictionary<string, LoginObj> Auths = new();
+    public static readonly Dictionary<(string, AuthType), LoginObj> Auths = new();
 
     private static readonly string DB = "Auth.db";
     private static string connStr;
@@ -74,7 +74,7 @@ public static class AuthDatabase
 
             foreach (var item in list)
             {
-                Auths.Add(item.UUID, item.ToLogin());
+                Auths.Add((item.UUID, item.AuthType), item.ToLogin());
             }
 
             using var sql = GetSqliteConnection();
@@ -103,21 +103,21 @@ public static class AuthDatabase
             return;
         }
 
-        if (Auths.ContainsKey(obj.UUID))
+        if (Auths.ContainsKey((obj.UUID, obj.AuthType)))
         {
-            Auths[obj.UUID] = obj;
+            Auths[(obj.UUID, obj.AuthType)] = obj;
             Update(obj);
         }
         else
         {
-            Auths.Add(obj.UUID, obj);
+            Auths.Add((obj.UUID, obj.AuthType), obj);
             Add(obj);
         }
     }
 
-    public static LoginObj? Get(string uuid)
+    public static LoginObj? Get(string uuid, AuthType type)
     {
-        if (Auths.TryGetValue(uuid, out var item))
+        if (Auths.TryGetValue((uuid, type), out var item))
         {
             return item;
         }
@@ -135,15 +135,15 @@ public static class AuthDatabase
 
         foreach (var item in list)
         {
-            Auths.Add(item.UUID, item.ToLogin());
+            Auths.Add((item.UUID, item.AuthType), item.ToLogin());
         }
     }
 
     public static void Delete(LoginObj obj)
     {
-        Auths.Remove(obj.UUID);
+        Auths.Remove((obj.UUID, obj.AuthType));
         using var sql = GetSqliteConnection();
-        sql.Execute("DELETE FROM auth WHERE UUID=@UUID", new { obj.UUID });
+        sql.Execute("DELETE FROM auth WHERE UUID=@UUID AND AuthType=@AuthType", new { obj.UUID, obj.AuthType });
     }
 
     private static void Add(LoginObj obj)
@@ -160,8 +160,8 @@ public static class AuthDatabase
         using var sql = GetSqliteConnection();
         sql.Execute("UPDATE auth SET UserName=@UserName," +
             "AccessToken=@AccessToken,RefreshToken=@RefreshToken," +
-            "ClientToken=@ClientToken,AuthType=@AuthType,Properties=@Properties," +
-            "Text1=@Text1,Text2=@Text2 WHERE UUID=@UUID",
+            "ClientToken=@ClientToken,Properties=@Properties," +
+            "Text1=@Text1,Text2=@Text2 WHERE UUID=@UUID AND AuthType=@AuthType",
             obj.ToQLogin());
     }
 

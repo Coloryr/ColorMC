@@ -9,19 +9,19 @@ namespace ColorMC.Gui.UI;
 
 public partial class HelloWindow : Window
 {
-    private TabHelloControl tab1 = new();
-    private Tab1Control tab2 = new();
-    private Tab2Control tab3 = new();
-    private Tab3Control tab4 = new();
-    private Tab4Control tab5 = new();
-    private Tab5Control tab6 = new();
+    private readonly TabHelloControl tab1 = new();
+    private readonly Tab1Control tab2 = new();
+    private readonly Tab2Control tab3 = new();
+    private readonly Tab3Control tab4 = new();
+    private readonly Tab4Control tab5 = new();
+    private readonly Tab5Control tab6 = new();
 
     private bool switch1 = false;
 
-    private ContentControl content1 = new();
-    private ContentControl content2 = new();
+    private readonly ContentControl content1 = new();
+    private readonly ContentControl content2 = new();
 
-    private PageSlide slide = new(TimeSpan.FromMilliseconds(100));
+    private PageSlide slide = new(TimeSpan.FromMilliseconds(500));
 
     private int now;
     public HelloWindow()

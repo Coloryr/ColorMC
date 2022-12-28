@@ -21,7 +21,18 @@ public partial class Tab2Control : UserControl
         Button_Add.Click += Button_Add_Click;
         Button_Refash.Click += Button_Refash_Click;
         Button_Next.Click += Button_Next_Click;
+        Button_Delete.Click += Button_Delete_Click;
 
+        Load();
+    }
+
+    private void Button_Delete_Click(object? sender, RoutedEventArgs e)
+    {
+        var item = List_Java.SelectedItem as JavaInfoObj;
+        if (item == null)
+            return;
+
+        JavaBinding.RemoveJava(item.Name);
         Load();
     }
 

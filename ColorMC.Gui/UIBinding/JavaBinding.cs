@@ -46,4 +46,9 @@ public static class JavaBinding
             return (MakeInfo(res.Msg, info), null);
         }
     }
+
+    public static void RemoveJava(string name)
+    {
+        JvmPath.Remove(name);
+    }
 }

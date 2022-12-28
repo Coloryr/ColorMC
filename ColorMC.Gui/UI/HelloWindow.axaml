@@ -36,13 +36,15 @@
                 <TabItem Header="开始" />
                 <TabItem Header="导入配置" />
                 <TabItem Header="添加Java" />
-                <TabItem Header="添加MC" />
                 <TabItem Header="添加账户" />
+                <TabItem Header="添加游戏" />
                 <TabItem Header="完成" />
             </TabControl>
 
             <views:InfoControl Name="Info" IsVisible="False" />
             <views:Info1Control Name="Info1" IsVisible="False" />
+            <views:Info2Control Name="Info2" />
+            <views:Info3Control Name="Info3" IsVisible="False" />
         </Grid>
     </Grid>
 </Window>

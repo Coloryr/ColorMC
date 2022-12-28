@@ -35,12 +35,12 @@ public class PageSlide : IPageTransition
     /// <summary>
     /// Gets or sets element entrance easing.
     /// </summary>
-    public Easing SlideInEasing { get; set; } = new LinearEasing();
+    public Easing SlideInEasing { get; set; } = new CircularEaseInOut();
 
     /// <summary>
     /// Gets or sets element exit easing.
     /// </summary>
-    public Easing SlideOutEasing { get; set; } = new LinearEasing();
+    public Easing SlideOutEasing { get; set; } = new CircularEaseInOut();
 
     /// <inheritdoc />
     public virtual async Task Start(Visual? from, Visual? to, bool forward, CancellationToken cancellationToken)

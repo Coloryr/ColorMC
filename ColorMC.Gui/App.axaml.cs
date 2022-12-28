@@ -30,7 +30,10 @@ public partial class App : Application
 
         base.OnFrameworkInitializationCompleted();
 
-        Life.Exit += Life_Exit;
+        if (Life != null)
+        {
+            Life.Exit += Life_Exit;
+        }
     }
 
     private void Life_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -78,6 +79,19 @@ public static class JvmPath
         }
 
         return (false, "Jvm检查失败");
+    }
+
+    public static void Remove(string name)
+    {
+        if (!Jvms.ContainsKey(name))
+        {
+            return;
+        }
+
+        Jvms.Remove(name);
+        var item = ConfigUtils.Config.JavaList.Where(a => a.Name == name).First();
+        ConfigUtils.Config.JavaList.Remove(item);
+        ConfigUtils.Save();
     }
 
     public static void AddList(List<JvmConfigObj> objs)
