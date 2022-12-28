@@ -1,10 +1,10 @@
 <Window
-    x:Class="ColorMC.UI.HelloWindow"
+    x:Class="ColorMC.Gui.UI.HelloWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:views="clr-namespace:ColorMC.UI.Views"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
     Title="HelloWindow"
     Width="800"
     Height="450"
@@ -21,7 +21,7 @@
             Title="初始设置"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
-        <Grid Margin="0,30,0,0">
+        <Grid Margin="0,35,0,0">
             <Rectangle
                 Fill="#FFF4F4F5"
                 Stroke="#FF5ABED6"
@@ -34,6 +34,7 @@
 
             <TabControl Name="Tabs" VerticalAlignment="Top">
                 <TabItem Header="开始" />
+                <TabItem Header="导入配置" />
                 <TabItem Header="添加Java" />
                 <TabItem Header="添加MC" />
                 <TabItem Header="添加账户" />

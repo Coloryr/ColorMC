@@ -21,7 +21,7 @@ public static class ConfigUtils
         Load(Name);
     }
 
-    public static void Load(string name)
+    public static bool Load(string name, bool quit = false)
     {
         Logs.Info($"正在读取配置文件");
         if (File.Exists(name))
@@ -39,6 +39,10 @@ public static class ConfigUtils
 
         if (Config == null)
         {
+            if (quit)
+            {
+                return false;
+            }
             Logs.Warn("配置为空，旧版配置文件会被覆盖");
 
             Config = MakeDefaultConfig();
@@ -48,18 +52,34 @@ public static class ConfigUtils
         {
             if (Config.JavaList == null)
             {
+                if (quit)
+                {
+                    return false;
+                }
                 Config.JavaList = new();
             }
             if (Config.Http == null)
             {
+                if (quit)
+                {
+                    return false;
+                }
                 Config.Http = MakeHttpConfig();
             }
             if (Config.DefaultJvmArg == null)
             {
+                if (quit)
+                {
+                    return false;
+                }
                 Config.DefaultJvmArg = MakeJvmArgConfig();
             }
             if (Config.Window == null)
             {
+                if (quit)
+                {
+                    return false;
+                }
                 Config.Window = MakeWindowSettingConfig();
             }
         }
@@ -68,6 +88,8 @@ public static class ConfigUtils
         BaseClient.Source = Config.Http.Source;
 
         Save();
+
+        return true;
     }
 
     public static void Save()

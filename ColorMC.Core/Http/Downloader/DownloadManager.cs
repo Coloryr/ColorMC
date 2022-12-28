@@ -29,6 +29,12 @@ public static class DownloadManager
         Clear();
     }
 
+    public static void Stop()
+    {
+        threads.ForEach(a => a.Close());
+        threads.Clear();
+    }
+
     public static void Clear()
     {
         Logs.Info($"下载器清空");

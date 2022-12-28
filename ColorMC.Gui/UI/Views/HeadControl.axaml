@@ -1,11 +1,11 @@
 <UserControl
-    x:Class="ColorMC.UI.Views.HeadControl"
+    x:Class="ColorMC.Gui.UI.Views.HeadControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Height="30"
-    d:DesignHeight="30"
+    Height="35"
+    d:DesignHeight="35"
     d:DesignWidth="800"
     Background="#5ebdd3"
     mc:Ignorable="d">
@@ -14,8 +14,10 @@
             Name="TitleShow"
             Margin="10,0,0,0"
             Foreground="White" />
-
-        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
             <Button
                 Name="ButtonMin"
                 Width="24"

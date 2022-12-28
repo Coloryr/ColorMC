@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace ColorMC.UI;
+namespace ColorMC.Gui.UI;
 
 public partial class MainWindow : Window
 {
@@ -20,16 +20,9 @@ public partial class MainWindow : Window
         Window = this;
 
         InitializeComponent();
-        FontFamily = Program.FontFamily;
-        Opened += MainWindow_Opened;
+
         this.MakeItNoChrome();
-    }
-
-    private void MainWindow_Opened(object? sender, System.EventArgs e)
-    {
-        //CoreMain.Init(AppContext.BaseDirectory);
-        //App.ShowNew();
-
+        FontFamily = Program.FontFamily;
         
     }
 }

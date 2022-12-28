@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
-namespace ColorMC;
+namespace ColorMC.Gui;
 
 internal class Program
 {

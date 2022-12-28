@@ -3,7 +3,7 @@ using Avalonia.Interactivity;
 using ColorMC.Core.Utils;
 using System;
 
-namespace ColorMC.UI.Views.Hello;
+namespace ColorMC.Gui.UI.Views.Hello;
 
 public partial class Tab1Control : UserControl
 {
@@ -78,5 +78,7 @@ public partial class Tab1Control : UserControl
             var item = file[0];
             TextBox_Local.Text = item;
         }
+
+        
     }
 }

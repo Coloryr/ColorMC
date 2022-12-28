@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using System;
 using System.Threading;
 
-namespace ColorMC.UI.Views;
+namespace ColorMC.Gui.UI.Views;
 
 public partial class Info1Control : UserControl
 {

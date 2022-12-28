@@ -1,10 +1,11 @@
 <Window
-    x:Class="ColorMC.Gui.UI.MainWindow"
+    x:Class="ColorMC.Gui.UI.InitWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
+    Title="InitWindow"
     Width="800"
     Height="450"
     MinWidth="800"
@@ -17,16 +18,33 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="ColorMC 主界面"
+            Title="加载"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Max="False"
+            Min="False" />
         <Grid Margin="0,35,0,0">
             <Rectangle
                 Fill="#FFF4F4F5"
                 Stroke="#FF5ABED6"
                 StrokeThickness="3" />
-
-            <views:InfoControl Name="Info" IsVisible="False" />
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock
+                    Name="Text"
+                    FontSize="20"
+                    Foreground="Black"
+                    Text="ColorMC正在初始化"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+                <ProgressBar
+                    Name="ProgressBar1"
+                    Height="20"
+                    Margin="20,20,20,0"
+                    BorderBrush="White"
+                    BorderThickness="1"
+                    Foreground="#FF5EBDD3"
+                    IsIndeterminate="True" />
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

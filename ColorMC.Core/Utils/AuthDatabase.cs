@@ -57,6 +57,45 @@ public static class AuthDatabase
         GetAll();
     }
 
+    public static bool LoadData(string dir)
+    {
+        using var conn = new SqliteConnection(new SqliteConnectionStringBuilder("Data Source=" + dir)
+        {
+            Mode = SqliteOpenMode.ReadOnly
+        }.ToString());
+
+        try
+        {
+            var list = conn.Query<QLogin>("SELECT UserName,UUID,AccessToken," +
+               "RefreshToken,ClientToken," +
+               "AuthType,Properties,Text1,Text2 FROM auth");
+
+            Auths.Clear();
+
+            foreach (var item in list)
+            {
+                Auths.Add(item.UUID, item.ToLogin());
+            }
+
+            using var sql = GetSqliteConnection();
+
+            foreach (var item in Auths)
+            {
+                sql.Execute("INSERT INTO auth(`UserName`,`UUID`,`AccessToken`,`RefreshToken`,`ClientToken`," +
+                    "`AuthType`,`Properties`,`Text1`,`Text2`) " +
+                    "VALUES (@UserName,@UUID,@AccessToken,@RefreshToken,@ClientToken," +
+                    "@AuthType,@Properties,@Text1,@Text2)", item.Value.ToQLogin());
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("数据库读取错误", e);
+            return false;
+        }
+    }
+
     public static void SaveAuth(LoginObj obj)
     {
         if (string.IsNullOrWhiteSpace(obj.UUID))

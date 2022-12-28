@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.UI.Views.Hello.Tab1Control"
+    x:Class="ColorMC.Gui.UI.Views.Hello.Tab1Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,28 +13,54 @@
             Stroke="#FF5ABED6"
             StrokeThickness="3" />
 
-        <StackPanel Margin="5">
-            <Label Margin="5" Content="导入配置文件" />
-            <TextBox
-                Name="TextBox_Local"
-                Margin="5"
-                Classes="input1"
-                Watermark="配置文件路径" />
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button
-                    Name="Button_SelectFile"
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,10,0"
-                    Content="选择文件" />
-                <Button
-                    Name="Button_Input"
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Content="导入" />
+        <StackPanel>
+            <StackPanel Margin="5">
+                <Label Margin="5" Content="导入配置文件" />
+                <TextBox
+                    Name="TextBox_Local"
+                    Margin="5"
+                    Classes="input1"
+                    Watermark="配置文件路径" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button
+                        Name="Button_SelectFile"
+                        Width="80"
+                        Height="25"
+                        Margin="0,0,10,0"
+                        Content="选择文件" />
+                    <Button
+                        Name="Button_Input"
+                        Width="80"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Content="导入" />
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Margin="5">
+                <Label Margin="5" Content="导入账户储存数据库" />
+                <TextBox
+                    Name="TextBox_Local1"
+                    Margin="5"
+                    Classes="input1"
+                    Watermark="账户储存数据库路径" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button
+                        Name="Button_SelectFile1"
+                        Width="80"
+                        Height="25"
+                        Margin="0,0,10,0"
+                        Content="选择文件" />
+                    <Button
+                        Name="Button_Input1"
+                        Width="80"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Content="导入" />
+                </StackPanel>
             </StackPanel>
         </StackPanel>
+
         <Button
             Name="Button_Next"
             Width="80"

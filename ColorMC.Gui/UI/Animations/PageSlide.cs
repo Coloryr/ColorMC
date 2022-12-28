@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ColorMC.UI.Animations;
+namespace ColorMC.Gui.UI.Animations;
 
 /// <summary>
 /// Transitions between two pages by sliding them horizontally or vertically.
@@ -69,18 +69,18 @@ public class PageSlide : IPageTransition
                             Setters = { new Setter { Property = translateProperty, Value = 0d } },
                             Cue = new Cue(0d)
                         },
-                        new KeyFrame
-                        {
-                            Setters =
-                            {
-                                new Setter
-                                {
-                                    Property = translateProperty,
-                                    Value = end * 0.95
-                                }
-                            },
-                            Cue = new Cue(0.6)
-                        },
+                        //new KeyFrame
+                        //{
+                        //    Setters =
+                        //    {
+                        //        new Setter
+                        //        {
+                        //            Property = translateProperty,
+                        //            Value = end * 0.9
+                        //        }
+                        //    },
+                        //    Cue = new Cue(0.8d)
+                        //},
                         new KeyFrame
                         {
                             Setters =
@@ -121,18 +121,18 @@ public class PageSlide : IPageTransition
                             },
                             Cue = new Cue(0d)
                         },
-                        new KeyFrame
-                        {
-                            Setters =
-                            {
-                                new Setter
-                                {
-                                    Property = translateProperty,
-                                    Value = end * 0.05
-                                }
-                            },
-                            Cue = new Cue(0.4)
-                        },
+                        //new KeyFrame
+                        //{
+                        //    Setters =
+                        //    {
+                        //        new Setter
+                        //        {
+                        //            Property = translateProperty,
+                        //            Value = end * 0.1
+                        //        }
+                        //    },
+                        //    Cue = new Cue(0.2d)
+                        //},
                         new KeyFrame
                         {
                             Setters = { new Setter { Property = translateProperty, Value = 0d } },

@@ -2,10 +2,12 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using ColorMC.Core;
-using ColorMC.UI;
+using ColorMC.Core.Http.Downloader;
+using ColorMC.Gui.UI;
+using ColorMC.Gui.UI.Views;
 using System;
 
-namespace ColorMC;
+namespace ColorMC.Gui;
 
 public partial class App : Application
 {
@@ -17,16 +19,24 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        CoreMain.OnError = ShowError;
+        CoreMain.NewStart = ShowNew;
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;
-            desktop.MainWindow = new MainWindow();
+            desktop.MainWindow = new InitWindow();
         }
 
         base.OnFrameworkInitializationCompleted();
 
-        CoreMain.OnError = ShowError;
-        CoreMain.NewStart = ShowNew;
+        Life.Exit += Life_Exit;
+    }
+
+    private void Life_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        Logs.Stop();
+        DownloadManager.Stop();
     }
 
     public static void ShowNew()
