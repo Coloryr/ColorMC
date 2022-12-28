@@ -1,11 +1,11 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Utils;
-using ColorMC.UIBinding;
+using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.ObjectModel;
 
-namespace ColorMC.UI.Views.Hello;
+namespace ColorMC.Gui.UI.Views.Hello;
 
 public partial class Tab2Control : UserControl
 {

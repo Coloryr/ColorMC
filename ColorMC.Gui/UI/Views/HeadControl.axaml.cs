@@ -1,10 +1,12 @@
 using Avalonia.Controls;
 
-namespace ColorMC.UI.Views;
+namespace ColorMC.Gui.UI.Views;
 
 public partial class HeadControl : UserControl
 {
     private string title;
+    private bool min;
+    private bool max;
     public string Title
     {
         get { return title; }
@@ -12,6 +14,26 @@ public partial class HeadControl : UserControl
         {
             title = value;
             TitleShow.Content = value;
+        }
+    }
+
+    public bool Max
+    {
+        get { return max; }
+        set 
+        {
+            max = value;
+            ButtonMax.IsVisible = max;
+        }
+    }
+
+    public bool Min
+    {
+        get { return min; }
+        set 
+        {
+            min = value;
+            ButtonMin.IsVisible = min;
         }
     }
 

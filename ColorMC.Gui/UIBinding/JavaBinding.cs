@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.LaunchPath;
 using System.Collections.Generic;
 
-namespace ColorMC.UIBinding;
+namespace ColorMC.Gui.UIBinding;
 
 public record JavaInfoObj
 {
@@ -33,7 +33,7 @@ public static class JavaBinding
         return res;
     }
 
-    public static (JavaInfoObj, string) AddJava(string name, string local)
+    public static (JavaInfoObj?, string?) AddJava(string name, string local)
     {
         var res = JvmPath.AddItem(name, local);
         if (res.Item1 == false)
@@ -42,8 +42,8 @@ public static class JavaBinding
         }
         else
         {
-            var info = JvmPath.GetInfo(res.Item2);
-            return (MakeInfo(res.Item2, info), null);
+            var info = JvmPath.GetInfo(res.Msg);
+            return (MakeInfo(res.Msg, info), null);
         }
     }
 }

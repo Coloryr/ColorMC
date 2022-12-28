@@ -1,34 +1,36 @@
 using Avalonia.Controls;
-using ColorMC.UI.Animations;
-using ColorMC.UI.Views.Hello;
+using ColorMC.Gui;
+using ColorMC.Gui.UI.Animations;
+using ColorMC.Gui.UI.Views.Hello;
 using System;
 using System.Threading;
 
-namespace ColorMC.UI;
+namespace ColorMC.Gui.UI;
 
 public partial class HelloWindow : Window
 {
-    private Tab1Control tab1 = new();
-    private Tab2Control tab2 = new();
-    private Tab3Control tab3 = new();
-    private Tab4Control tab4 = new();
-    private Tab5Control tab5 = new();
+    private TabHelloControl tab1 = new();
+    private Tab1Control tab2 = new();
+    private Tab2Control tab3 = new();
+    private Tab3Control tab4 = new();
+    private Tab4Control tab5 = new();
+    private Tab5Control tab6 = new();
 
     private bool switch1 = false;
 
     private ContentControl content1 = new();
     private ContentControl content2 = new();
 
-    private PageSlide slide = new(TimeSpan.FromMilliseconds(500));
+    private PageSlide slide = new(TimeSpan.FromMilliseconds(100));
 
     private int now;
     public HelloWindow()
     {
         InitializeComponent();
 
+        this.MakeItNoChrome();
         FontFamily = Program.FontFamily;
 
-        //Opened += HelloWindow_Opened;
         Tabs.SelectionChanged += Tabs_SelectionChanged;
         Tab1.Children.Add(content1);
         Tab1.Children.Add(content2);
@@ -38,9 +40,9 @@ public partial class HelloWindow : Window
         tab3.SetWindow(this);
         tab4.SetWindow(this);
         tab5.SetWindow(this);
+        tab6.SetWindow(this);
 
         content1.Content = tab1;
-        //slide.Start(content2, content1, false, CancellationToken.None);
     }
 
     private async void Go(UserControl to)
@@ -60,7 +62,6 @@ public partial class HelloWindow : Window
 
         switch1 = !switch1;
         Tabs.IsEnabled = true;
-
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -82,23 +83,17 @@ public partial class HelloWindow : Window
             case 4:
                 Go(tab5);
                 break;
+            case 5:
+                Go(tab6);
+                break;
         }
 
         now = Tabs.SelectedIndex;
     }
 
-    private void HelloWindow_Opened(object? sender, System.EventArgs e)
-    {
-        Info.Show($"检测你是第一次启动{Environment.NewLine}是否需要进行初始化设置", (res) =>
-        {
-            if (!res)
-                Close();
-        });
-    }
-
     public void Update()
     {
-        tab2.Load();
+        tab3.Load();
     }
 
     public void Next()
@@ -108,6 +103,6 @@ public partial class HelloWindow : Window
 
     public void Set()
     {
-        ShowDialog(MainWindow.Window);
+        Show();
     }
 }

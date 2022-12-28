@@ -1,5 +1,5 @@
 ﻿using Avalonia.Controls;
-using ColorMC.UI;
+using ColorMC.Gui.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;

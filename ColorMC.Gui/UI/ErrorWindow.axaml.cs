@@ -1,7 +1,8 @@
 using Avalonia.Controls;
+using ColorMC.Gui;
 using System;
 
-namespace ColorMC.UI;
+namespace ColorMC.Gui.UI;
 
 public partial class ErrorWindow : Window
 {
@@ -9,6 +10,7 @@ public partial class ErrorWindow : Window
     {
         InitializeComponent();
 
+        this.MakeItNoChrome();
         FontFamily = Program.FontFamily;
     }
 

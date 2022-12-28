@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace ColorMC.UI.Views.Hello;
+namespace ColorMC.Gui.UI.Views.Hello;
 
 public partial class Tab3Control : UserControl
 {

@@ -14,6 +14,7 @@ public static class Logs
     };
     private static ConcurrentBag<string> bags = new();
     private static Semaphore semaphore = new(0, 10);
+    private static bool Close = false;
 
     public static void Init(string dir)
     {
@@ -36,11 +37,19 @@ public static class Logs
         while (true)
         {
             semaphore.WaitOne();
+            if (Close)
+                return;
             while (bags.TryTake(out var item))
             {
                 Writer.WriteLine(item);
             }
         }
+    }
+
+    public static void Stop()
+    {
+        Close = true;
+        semaphore.Release();
     }
 
     public static void Info(string data)
