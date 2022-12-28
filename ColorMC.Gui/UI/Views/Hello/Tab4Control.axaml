@@ -14,8 +14,88 @@
             StrokeThickness="3" />
 
         <StackPanel Margin="5">
-            <Label Margin="5" Content="导入配置文件3333" />
-            <TextBox Watermark="配置文件路径" />
+            <Label Margin="5" Content="添加实例" />
+            <TextBox
+                Name="Input1"
+                Margin="5"
+                Classes="input1"
+                Watermark="实例名字" />
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <Label VerticalAlignment="Center" Content="游戏版本" />
+                <ComboBox
+                    Name="GameVersion"
+                    Width="200"
+                    Margin="5,0,0,0" />
+                <CheckBox
+                    Name="Release"
+                    Margin="20,0,0,0"
+                    Content="正式版"
+                    IsChecked="True" />
+                <CheckBox
+                    Name="Snapshot"
+                    Margin="20,0,0,0"
+                    Content="快照版" />
+                <CheckBox
+                    Name="Other"
+                    Margin="20,0,0,0"
+                    Content="其他版" />
+            </StackPanel>
+
         </StackPanel>
+
+        <Button
+            Name="Button_Add"
+            Width="80"
+            Height="25"
+            Margin="0,90,10,10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Content="添加" />
+
+        <Button
+            Name="Button_Add1"
+            Width="180"
+            Height="25"
+            Margin="10,130,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="从ColorMC压缩包导入" />
+
+        <Button
+            Name="Button_Add2"
+            Width="180"
+            Height="25"
+            Margin="195,130,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="添加CurseForge整合包" />
+
+        <Button
+            Name="Button_Add3"
+            Width="180"
+            Height="25"
+            Margin="380,130,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="从MMC压缩包导入" />
+
+        <Button
+            Name="Button_Add4"
+            Width="180"
+            Height="25"
+            Margin="565,130,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="从HMCL压缩包导入" />
+
+        <Button
+            Name="Button_Next"
+            Width="80"
+            Height="25"
+            Margin="0,0,10,10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Content="下一步" />
+
     </Grid>
 </UserControl>

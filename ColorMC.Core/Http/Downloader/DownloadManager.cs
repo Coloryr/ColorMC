@@ -69,6 +69,7 @@ public static class DownloadManager
     public static void FillAll(List<DownloadItem> list)
     {
         Logs.Info($"下载器装填内容");
+        CoreMain.DownloaderUpdate?.Invoke(CoreRunState.Init);
         foreach (var item in list)
         {
             if (Name.Contains(item.Name))

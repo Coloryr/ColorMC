@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Gui.UI;
@@ -21,6 +22,7 @@ public partial class App : Application
     {
         CoreMain.OnError = ShowError;
         CoreMain.NewStart = ShowNew;
+        CoreMain.DownloaderUpdate = DownloaderUpdate;
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -33,6 +35,21 @@ public partial class App : Application
         if (Life != null)
         {
             Life.Exit += Life_Exit;
+        }
+    }
+
+    public void DownloaderUpdate(CoreRunState state)
+    {
+        if (state == CoreRunState.Init)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                new DownloadWindow().Show();
+            });
+        }
+        else
+        {
+            Close();
         }
     }
 

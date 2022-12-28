@@ -1,9 +1,20 @@
 using ColorMC.Core.Http.Download;
+using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
+
+public enum PackType
+{ 
+    ColorMC, CurseForge, MMC, HMCL
+}
 
 public static class InstancesPath
 {
@@ -250,5 +261,75 @@ public static class InstancesPath
     public static void Remove(this GameSettingObj obj)
     {
         PathC.DeleteFiles(obj.GetBaseDir());
+    }
+
+    public static async Task<bool> LoadFromZip(string dir, PackType type)
+    {
+        try
+        {
+            using ZipFile zFile = new(dir);
+
+            switch (type)
+            {
+                case PackType.ColorMC:
+                    {
+                        using var stream1 = new MemoryStream();
+                        bool find = false;
+                        foreach (ZipEntry e in zFile)
+                        {
+                            if (e.IsFile && e.Name == "game.json")
+                            {
+                                using var stream = zFile.GetInputStream(e);
+                                await stream.CopyToAsync(stream1);
+                                find = true;
+                                break;
+                            }
+                        }
+
+                        if (!find)
+                            return false;
+
+                        var game = JsonConvert.DeserializeObject<GameSettingObj>
+                            (Encoding.UTF8.GetString(stream1.ToArray()));
+
+                        if (game == null)
+                            return false;
+
+                        foreach (ZipEntry e in zFile)
+                        {
+                            if (e.IsFile)
+                            {
+                                using var stream = zFile.GetInputStream(e);
+                                string file = Path.GetFullPath(game.GetGameDir());
+                                FileInfo info2 = new(file);
+                                info2.Directory.Create();
+                                using FileStream stream2 = new(file, FileMode.Create,
+                                    FileAccess.ReadWrite, FileShare.ReadWrite);
+                                await stream.CopyToAsync(stream2);
+                            }
+                        }
+
+                        return true;
+                    }
+                case PackType.CurseForge:
+                    var res = await PackDownload.DownloadCurseForge(dir);
+                    if (res.State != DownloadState.End)
+                    {
+                        return false;
+                    }
+
+                    DownloadManager.Clear();
+                    DownloadManager.FillAll(res.List!);
+                    var res1 = await DownloadManager.Start();
+
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error("µ¼ÈëÑ¹Ëõ°ü´íÎó", e);
+        }
+
+        return false;
     }
 }
