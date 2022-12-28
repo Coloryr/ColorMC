@@ -1,0 +1,20 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel Height="400">
+                <ComboBox Width="500">
+                    <ComboBoxItem>Inline Items</ComboBoxItem>
+                    <ComboBoxItem>Inline Item 2</ComboBoxItem>
+                    <ComboBoxItem>Inline Item 3</ComboBoxItem>
+                    <ComboBoxItem>Inline Item 4</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="ComboBox">
+        <Setter Property="Background" Value="#FFF4F4F5" />
+        <Setter Property="BorderBrush" Value="#FF5ABED6" />
+        <Setter Property="BorderThickness" Value="2" />
+    </Style>
+</Styles>

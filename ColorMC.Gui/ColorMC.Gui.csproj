@@ -37,6 +37,12 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UI\Views\Info3Control.axaml.cs">
+      <DependentUpon>Info3Control.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Views\Info2Control.axaml.cs">
+      <DependentUpon>Info2Control.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Views\Info1Control.axaml.cs">
       <DependentUpon>Info1Control.axaml</DependentUpon>
     </Compile>

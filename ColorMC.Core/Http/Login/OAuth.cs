@@ -86,7 +86,7 @@ public static class OAuthAPI
         int delay = 5;
         do
         {
-            Thread.Sleep(delay * 1000);
+            await Task.Delay(delay * 1000);
             long estimatedTime = DateTime.Now.Ticks - startTime;
             long sec = estimatedTime / 10000000;
             if (sec > expires_in)
