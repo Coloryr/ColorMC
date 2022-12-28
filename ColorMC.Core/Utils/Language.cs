@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http.Download;
+using ColorMC.Core.Http.Downloader;
 
 namespace ColorMC.Core.Utils;
 
@@ -78,6 +79,20 @@ public static class Language
             DownloadState.Init => "初始化",
             DownloadState.GetInfo => "获取信息",
             DownloadState.End => "结束",
+            _ => "未知的状态"
+        };
+    }
+
+    public static string GetName(this DownloadItemState state)
+    {
+        return state switch
+        {
+            DownloadItemState.Wait => "等待中",
+            DownloadItemState.Download => "下载中",
+            DownloadItemState.Init => "初始化中",
+            DownloadItemState.Action => "执行后续操作中",
+            DownloadItemState.Done => "完成",
+            DownloadItemState.Error => "发生错误",
             _ => "未知的状态"
         };
     }

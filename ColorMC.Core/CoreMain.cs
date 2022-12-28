@@ -29,21 +29,21 @@ public static class CoreMain
     /// <summary>
     /// 下载线程相应回调
     /// </summary>
-    public static Action<CoreRunState>? DownloaderUpdate;
-    public static Action<int, DownloadItem>? DownloadItemStateUpdate;
-    public static Action<int, DownloadItem, Exception>? DownloadItemError;
+    public static Action<CoreRunState>? DownloaderUpdate { get; set; }
+    public static Action<int, DownloadItem>? DownloadItemStateUpdate { get; set; }
+    public static Action<int, DownloadItem, Exception>? DownloadItemError { get; set; }
 
-    public static Func<GameSettingObj, bool>? GameOverwirte;
-    public static Func<GameSettingObj, bool>? GameDownload;
-    public static Action<GameSettingObj, LaunchState>? GameLaunch;
+    public static Func<GameSettingObj, bool>? GameOverwirte { get; set; }
+    public static Func<GameSettingObj, bool>? GameDownload { get; set; }
+    public static Action<GameSettingObj, LaunchState>? GameLaunch { get; set; }
 
-    public static Action<CoreRunState>? PackState;
-    public static Action<int, int>? PackUpdate;
+    public static Action<CoreRunState>? PackState { get; set; }
+    public static Action<int, int>? PackUpdate { get; set; }
 
-    public static Action<Process?, string?>? ProcessLog;
+    public static Action<Process?, string?>? ProcessLog { get; set; }
 
-    public static Action<AuthState>? AuthStateUpdate;
-    public static Action<string, string>? LoginOAuthCode;
+    public static Action<AuthState>? AuthStateUpdate { get; set; }
+    public static Action<string, string>? LoginOAuthCode { get; set; }
 
     public static void Init(string dir)
     {

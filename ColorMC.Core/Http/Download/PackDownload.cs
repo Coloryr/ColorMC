@@ -104,7 +104,7 @@ public static class PackDownload
         if (game == null)
         {
             game = InstancesPath.GetGame(name);
-            if (game == null || !CoreMain.GameOverwirte(game))
+            if (game == null || CoreMain.GameOverwirte?.Invoke(game) == false)
             {
                 return (DownloadState.GetInfo, null, null);
             }
