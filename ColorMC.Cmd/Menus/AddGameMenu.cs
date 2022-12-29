@@ -121,7 +121,7 @@ public static class AddGameMenu
         ConsoleUtils.Info("正在创建实例");
 
         Game.Loader = Loaders.Normal;
-        Game.LoaderInfo = null;
+        Game.LoaderVersion = null;
         Game.ModPack = false;
 
         Game = InstancesPath.CreateVersion(Game);
@@ -181,11 +181,7 @@ public static class AddGameMenu
         ConsoleUtils.Info("正在创建实例");
 
         Game.Loader = Loaders.Fabric;
-        Game.LoaderInfo = new LoaderInfoObj()
-        {
-            Name = "fabric",
-            Version = fabric
-        };
+        Game.LoaderVersion = fabric;
         Game.ModPack = false;
 
         if (Game == null)
@@ -255,11 +251,7 @@ public static class AddGameMenu
         ConsoleUtils.Info("正在创建实例");
 
         Game.Loader = Loaders.Forge;
-        Game.LoaderInfo = new LoaderInfoObj()
-        {
-            Name = "forge",
-            Version = forge
-        };
+        Game.LoaderVersion = forge;
         Game.ModPack = false;
 
         if (Game == null)

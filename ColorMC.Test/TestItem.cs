@@ -133,11 +133,7 @@ public static class TestItem
                 Name = "test1",
                 Version = "1.12.2",
                 Loader = Loaders.Forge,
-                LoaderInfo = new()
-                {
-                    Name = "forge",
-                    Version = "14.23.5.2860"
-                }
+                LoaderVersion = "14.23.5.2860"
             };
             var process = game.StartGame(login.Obj!, null).Result;
             process?.WaitForExit();
@@ -177,11 +173,7 @@ public static class TestItem
             Name = "test1",
             Version = "1.7.2",
             Loader = Loaders.Forge,
-            LoaderInfo = new()
-            {
-                Name = "forge",
-                Version = "10.12.2.1161"
-            }
+            LoaderVersion = "10.12.2.1161"
         };
         Process? process;
         //process = game.StartGame(login, null).Result;
@@ -281,7 +273,7 @@ public static class TestItem
         //process?.WaitForExit();
 
         game.Version = "1.19.2";
-        game.LoaderInfo.Version = "43.1.52";
+        game.LoaderVersion = "43.1.52";
         process = game.StartGame(login, null).Result;
         process?.WaitForExit();
         Console.WriteLine("exit");
@@ -303,11 +295,7 @@ public static class TestItem
                 Name = "test1",
                 Version = "1.18.2",
                 Loader = Loaders.Forge,
-                LoaderInfo = new()
-                {
-                    Name = "forge",
-                    Version = "40.1.85"
-                }
+                LoaderVersion = "40.1.85"
             };
             var process = game.StartGame(login.Obj, null).Result;
             process?.WaitForExit();

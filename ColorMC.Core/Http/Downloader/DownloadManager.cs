@@ -16,7 +16,6 @@ public static class DownloadManager
     public static void Init()
     {
         Logs.Info($"下载器初始化，线程数{ConfigUtils.Config.Http.DownloadThread}");
-        //ConfigUtils.Config.Http.DownloadThread = 1;
         semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
         threads.ForEach(a => a.Close());
         threads.Clear();

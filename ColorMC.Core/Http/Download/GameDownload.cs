@@ -57,7 +57,7 @@ public static class GameDownload
 
     public static Task<(DownloadState State, List<DownloadItem>? List)> DownloadForge(GameSettingObj obj)
     {
-        return DownloadForge(obj.Version, obj.LoaderInfo.Version);
+        return DownloadForge(obj.Version, obj.LoaderVersion);
     }
 
     public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadForge(string mc, string version)
@@ -199,7 +199,7 @@ public static class GameDownload
 
     public static Task<(DownloadState State, List<DownloadItem>? List)> DownloadFabric(GameSettingObj obj)
     {
-        return DownloadFabric(obj.Version, obj.LoaderInfo.Version);
+        return DownloadFabric(obj.Version, obj.LoaderVersion);
     }
 
     public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadFabric(string mc, string? version = null)
@@ -254,7 +254,7 @@ public static class GameDownload
 
     public static Task<(DownloadState State, List<DownloadItem>? List)> DownloadQuilt(GameSettingObj obj)
     {
-        return DownloadQuilt(obj.Version, obj.LoaderInfo.Version);
+        return DownloadQuilt(obj.Version, obj.LoaderVersion);
     }
 
     public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadQuilt(string mc, string? version = null)

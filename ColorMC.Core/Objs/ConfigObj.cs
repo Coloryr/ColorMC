@@ -29,12 +29,12 @@ public record WindowSettingObj
     /// <summary>
     /// 高px
     /// </summary>
-    public ushort Height { get; set; }
+    public uint Height { get; set; }
 
     /// <summary>
     /// 宽px
     /// </summary>
-    public ushort Width { get; set; }
+    public uint Width { get; set; }
 }
 
 public record JvmArgObj
@@ -69,7 +69,7 @@ public record JvmArgObj
         /// </summary>
         User = 4
     }
-    public string? AdvencedJvmArguments { get; set; }
+    public string? JvmArgs { get; set; }
     public string? GCArgument { get; set; }
     public GCType? GC { get; set; }
     public string? JavaAgent { get; set; }

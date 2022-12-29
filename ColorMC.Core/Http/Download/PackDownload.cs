@@ -69,53 +69,41 @@ public static class PackDownload
             return (DownloadState.GetInfo, null, null);
 
         Loaders loaders = Loaders.Normal;
-        LoaderInfoObj? info1 = null;
+        string loaderversion = null;
         foreach (var item in info.minecraft.modLoaders)
         {
             if (item.id.StartsWith("forge"))
             {
                 loaders = Loaders.Forge;
-                info1 = new LoaderInfoObj()
-                {
-                    Name = "forge",
-                    Version = item.id.Replace("forge-", "")
-                };
+                loaderversion = item.id.Replace("forge-", "");
             }
             else if (item.id.StartsWith("fabric"))
             {
                 loaders = Loaders.Fabric;
-                info1 = new LoaderInfoObj()
-                {
-                    Name = "fabric",
-                    Version = item.id.Replace("fabric-", "")
-                };
+                loaderversion = item.id.Replace("fabric-", "");
             }
         }
         string name = $"{info.name}-{info.version}";
 
-        var game = InstancesPath.CreateVersion(new()
+        var game = await InstancesPath.CreateVersion(new()
         { 
             Name = name,
             Version = info.minecraft.version,
             ModPack = true,
             Loader = loaders, 
-            LoaderInfo = info1
+            LoaderVersion = loaderversion
         });
         if (game == null)
         {
-            game = InstancesPath.GetGame(name);
-            if (game == null || CoreMain.GameOverwirte?.Invoke(game) == false)
-            {
-                return (DownloadState.GetInfo, null, null);
-            }
+            return (DownloadState.GetInfo, null, null);
         }
         foreach (ZipEntry e in zFile)
         {
             if (e.IsFile && e.Name.StartsWith(info.overrides + "/"))
             {
                 using var stream = zFile.GetInputStream(e);
-                string file = Path.GetFullPath(game.GetGameDir() +
-                    e.Name.Replace(info.overrides, ""));
+                string file = Path.GetFullPath(game.GetGameDir() + 
+                    e.Name.Substring(info.overrides.Length));
                 FileInfo info2 = new(file);
                 info2.Directory.Create();
                 using FileStream stream2 = new(file, FileMode.Create,
@@ -209,7 +197,7 @@ public static class PackDownload
 
         if (loaders == Loaders.Forge)
         {
-            list1 = await GameDownload.DownloadForge(game.Version, game.LoaderInfo.Version);
+            list1 = await GameDownload.DownloadForge(game.Version, game.LoaderVersion);
             if (list1.State != DownloadState.End)
             {
                 return (DownloadState.GetInfo, null, null);
@@ -219,7 +207,7 @@ public static class PackDownload
         }
         else if (loaders == Loaders.Fabric)
         {
-            list1 = await GameDownload.DownloadFabric(game.Version, game.LoaderInfo.Version);
+            list1 = await GameDownload.DownloadFabric(game.Version, game.LoaderVersion);
             if (list1.State != DownloadState.End)
             {
                 return (DownloadState.GetInfo, null, null);

@@ -32,6 +32,11 @@ public partial class Info1Control : UserControl
         transition.Start(this, null, CancellationToken.None);
     }
 
+    public void Show()
+    {
+        transition.Start(null, this, cancellationToken: CancellationToken.None);
+    }
+
     public void Show(string title)
     {
         Cancel.IsEnabled = true;
@@ -54,9 +59,17 @@ public partial class Info1Control : UserControl
 
     public void Progress(double value)
     {
-        ProgressBar1.IsIndeterminate = false;
-        ProgressBar1.Value = value;
-        ProgressBar1.ShowProgressText = true;
+        if (value == -1)
+        {
+            ProgressBar1.IsIndeterminate = true;
+            ProgressBar1.ShowProgressText = false;
+        }
+        else
+        {
+            ProgressBar1.IsIndeterminate = false;
+            ProgressBar1.Value = value;
+            ProgressBar1.ShowProgressText = true;
+        }
     }
 
     public void NextText(string title)

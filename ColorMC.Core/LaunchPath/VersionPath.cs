@@ -168,7 +168,7 @@ public static class VersionPath
 
     public static ForgeInstallObj? GetForgeInstallObj(GameSettingObj obj)
     {
-        return GetForgeInstallObj(obj.Version, obj.LoaderInfo.Version);
+        return GetForgeInstallObj(obj.Version, obj.LoaderVersion);
     }
 
     public static ForgeInstallObj? GetForgeInstallObj(string mc, string version)
@@ -200,7 +200,7 @@ public static class VersionPath
 
     public static ForgeLaunchObj? GetForgeObj(GameSettingObj obj)
     {
-        return GetForgeObj(obj.Version, obj.LoaderInfo.Version);
+        return GetForgeObj(obj.Version, obj.LoaderVersion);
     }
 
     public static ForgeLaunchObj? GetForgeObj(string mc, string version)
@@ -232,7 +232,7 @@ public static class VersionPath
 
     public static FabricLoaderObj? GetFabricObj(GameSettingObj obj)
     {
-        return GetFabricObj(obj.Version, obj.LoaderInfo.Version);
+        return GetFabricObj(obj.Version, obj.LoaderVersion);
     }
 
     public static FabricLoaderObj? GetFabricObj(string mc, string version)
@@ -264,7 +264,7 @@ public static class VersionPath
 
     public static QuiltLoaderObj? GetQuiltObj(GameSettingObj obj)
     {
-        return GetQuiltObj(obj.Version, obj.LoaderInfo.Version);
+        return GetQuiltObj(obj.Version, obj.LoaderVersion);
     }
 
     public static QuiltLoaderObj? GetQuiltObj(string mc, string version)

@@ -11,7 +11,8 @@ namespace ColorMC.Core;
 
 public enum CoreRunState
 {
-    Init, GetInfo, Start, End,
+    Read, Init, GetInfo, Start, End,
+    Download,
     Error,
 }
 
@@ -33,8 +34,8 @@ public static class CoreMain
     public static Action<int, DownloadItem>? DownloadItemStateUpdate { get; set; }
     public static Action<int, DownloadItem, Exception>? DownloadItemError { get; set; }
 
-    public static Func<GameSettingObj, bool>? GameOverwirte { get; set; }
-    public static Func<GameSettingObj, bool>? GameDownload { get; set; }
+    public static Func<GameSettingObj, Task<bool>>? GameOverwirte { get; set; }
+    public static Func<LaunchState, GameSettingObj, Task<bool>>? GameDownload { get; set; }
     public static Action<GameSettingObj, LaunchState>? GameLaunch { get; set; }
 
     public static Action<CoreRunState>? PackState { get; set; }

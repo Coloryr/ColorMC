@@ -26,7 +26,21 @@
                 Fill="#FFF4F4F5"
                 Stroke="#FF5ABED6"
                 StrokeThickness="3" />
-            <ListBox Name="ListView" Margin="5" />
+            <DataGrid
+                Name="ListView"
+                Margin="5"
+                AutoGenerateColumns="False"
+                CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="名字" />
+                    <DataGridTextColumn Binding="{Binding State}" Header="状态" />
+                    <DataGridTextColumn Binding="{Binding NowSize}" Header="已下载" />
+                    <DataGridTextColumn Binding="{Binding AllSize}" Header="总大小Mb" />
+                    <DataGridTextColumn Binding="{Binding ErrorTime}" Header="错误次数" />
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
+
+        <views:InfoControl Name="Info" IsVisible="False" />
     </Grid>
 </Window>

@@ -62,12 +62,12 @@ public static class LibrariesPath
             ForgeHelper.ReadyForgeWrapper();
         }
 
-        var forge = VersionPath.GetForgeObj(obj.Version, obj.LoaderInfo.Version);
+        var forge = VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion);
         if (forge == null)
             return null;
 
         var list = new List<DownloadItem>();
-        var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
+        var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
         foreach (var item in list1)
         {
             if (!File.Exists(item.Local))
@@ -87,7 +87,7 @@ public static class LibrariesPath
             }
         }
 
-        var forgeinstall = VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderInfo.Version);
+        var forgeinstall = VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion);
         if (forgeinstall == null && v2)
             return null;
 
@@ -134,7 +134,7 @@ public static class LibrariesPath
 
     public static List<DownloadItem>? CheckFabric(GameSettingObj obj)
     {
-        var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderInfo.Version);
+        var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion);
         if (fabric == null)
             return null;
 
@@ -161,7 +161,7 @@ public static class LibrariesPath
 
     public static List<DownloadItem>? CheckQuilt(GameSettingObj obj)
     {
-        var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderInfo.Version);
+        var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion);
         if (quilt == null)
             return null;
 

@@ -17,7 +17,7 @@ namespace ColorMC.Core.Game;
 public enum LaunchState
 {
     Check, CheckVersion, CheckLib, CheckAssets, CheckLoader, CheckLoginCore,
-    LostVersion, LostLib, LostLoader, LostLoginCore,
+    LostVersion, LostLib, LostLoader, LostLoginCore, LostGame,
     Download,
     JvmPrepare,
     VersionError, AssetsError, LoaderError, JvmError
@@ -33,7 +33,9 @@ public static class Launch
         if (game == null)
         {
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostVersion);
-            var res = CoreMain.GameDownload?.Invoke(obj);
+            if (CoreMain.GameDownload == null)
+                return null;
+            var res = await CoreMain.GameDownload.Invoke(LaunchState.LostVersion, obj);
             if (res != true)
                 return null;
 
@@ -128,13 +130,14 @@ public static class Launch
             if (list3 == null)
             {
                 CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
-                var res = CoreMain.GameDownload?.Invoke(obj);
-
+                if (CoreMain.GameDownload == null)
+                    return null;
+                var res = await CoreMain.GameDownload.Invoke(LaunchState.LostLoader, obj);
                 if (res != true)
                     return null;
 
                 CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
-                var list4 = await GameDownload.DownloadForge(obj.Version, obj.LoaderInfo.Version);
+                var list4 = await GameDownload.DownloadForge(obj.Version, obj.LoaderVersion);
                 if (list4.State != DownloadState.End)
                     return null;
 
@@ -151,13 +154,14 @@ public static class Launch
             if (list3 == null)
             {
                 CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
-                var res = CoreMain.GameDownload?.Invoke(obj);
-
+                if (CoreMain.GameDownload == null)
+                    return null;
+                var res = await CoreMain.GameDownload.Invoke(LaunchState.LostLoader, obj);
                 if (res != true)
                     return null;
 
                 CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
-                var list4 = await GameDownload.DownloadFabric(obj.Version, obj.LoaderInfo.Version);
+                var list4 = await GameDownload.DownloadFabric(obj.Version, obj.LoaderVersion);
                 if (list4.State != DownloadState.End)
                     return null;
 
@@ -174,13 +178,14 @@ public static class Launch
             if (list3 == null)
             {
                 CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
-                var res = CoreMain.GameDownload?.Invoke(obj);
-
+                if (CoreMain.GameDownload == null)
+                    return null;
+                var res = await CoreMain.GameDownload.Invoke(LaunchState.LostLoader, obj);
                 if (res != true)
                     return null;
 
                 CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
-                var list4 = await GameDownload.DownloadQuilt(obj.Version, obj.LoaderInfo.Version);
+                var list4 = await GameDownload.DownloadQuilt(obj.Version, obj.LoaderVersion);
                 if (list4.State != DownloadState.End)
                     return null;
 
@@ -387,8 +392,8 @@ public static class Launch
         }
         else
         {
-            args.AdvencedJvmArguments = obj.JvmArg.AdvencedJvmArguments ??
-                ConfigUtils.Config.DefaultJvmArg.AdvencedJvmArguments;
+            args.JvmArgs = obj.JvmArg.JvmArgs ??
+                ConfigUtils.Config.DefaultJvmArg.JvmArgs;
             args.GCArgument = obj.JvmArg.GCArgument ??
                 ConfigUtils.Config.DefaultJvmArg.GCArgument;
             args.GC = obj.JvmArg.GC ??
@@ -438,15 +443,15 @@ public static class Launch
         {
             jvmHead.Add($"-Xmx{args.MaxMemory}m");
         }
-        if (!string.IsNullOrWhiteSpace(args.AdvencedJvmArguments))
+        if (!string.IsNullOrWhiteSpace(args.JvmArgs))
         {
-            jvmHead.Add(args.AdvencedJvmArguments);
+            jvmHead.Add(args.JvmArgs);
         }
 
         if (v2 && obj.Loader == Loaders.Forge)
         {
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
-            jvmHead.Add($"-Dforgewrapper.installer={ForgeHelper.BuildForgeInster(obj.Version, obj.LoaderInfo.Version).Local}");
+            jvmHead.Add($"-Dforgewrapper.installer={ForgeHelper.BuildForgeInster(obj.Version, obj.LoaderVersion).Local}");
             jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.MakeGameDir(obj.Version)}");
         }
 
@@ -601,7 +606,7 @@ public static class Launch
         {
             var forge = VersionPath.GetForgeObj(obj)!;
 
-            var list2 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderInfo.Version);
+            var list2 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
 
             list2.ForEach(a => list.AddOrUpdate(PathC.MakeVersionObj(a.Name), a.Local));
 
@@ -664,9 +669,9 @@ public static class Launch
         }
         string version_name = obj.Loader switch
         {
-            Loaders.Forge => $"forge-{obj.Version}-{obj.LoaderInfo.Version}",
-            Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderInfo.Version}",
-            Loaders.Quilt => $"quilt-{obj.Version}-{obj.LoaderInfo.Version}",
+            Loaders.Forge => $"forge-{obj.Version}-{obj.LoaderVersion}",
+            Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderVersion}",
+            Loaders.Quilt => $"quilt-{obj.Version}-{obj.LoaderVersion}",
             _ => obj.Version
         };
         var libraries = GetLibs(obj, v2);
@@ -754,7 +759,9 @@ public static class Launch
 
         if (res.Count != 0)
         {
-            var res1 = CoreMain.GameDownload?.Invoke(obj);
+            if (CoreMain.GameDownload == null)
+                return null;
+            var res1 = await CoreMain.GameDownload.Invoke(LaunchState.LostGame, obj);
             if (res1 != true)
                 return null;
 

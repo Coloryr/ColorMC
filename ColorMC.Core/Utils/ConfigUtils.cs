@@ -126,7 +126,7 @@ public static class ConfigUtils
     {
         return new()
         {
-            AdvencedJvmArguments = null,
+            JvmArgs = null,
             GC = JvmArgObj.GCType.G1GC,
             GCArgument = null,
             JavaAgent = null,
@@ -147,7 +147,7 @@ public static class ConfigUtils
 
     public static void CopyTo(this JvmArgObj obj1, JvmArgObj obj2)
     {
-        obj2.AdvencedJvmArguments = obj1.AdvencedJvmArguments;
+        obj2.JvmArgs = obj1.JvmArgs;
         obj2.GCArgument = obj1.GCArgument;
         obj2.GC = obj1.GC;
         obj2.JavaAgent = obj1.JavaAgent;
