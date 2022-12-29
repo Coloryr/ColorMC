@@ -105,8 +105,8 @@ public class DownloadThread
             {
                 byte[]? buffer = null;
 
-                item.State = DownloadItemState.Init;
-                item.Update?.Invoke(index);
+                //item.State = DownloadItemState.Init;
+                //item.Update?.Invoke(index);
 
                 try
                 {
@@ -174,7 +174,7 @@ public class DownloadThread
                         var data = await BaseClient.Client.GetAsync(item.Url,
                             HttpCompletionOption.ResponseHeadersRead, cancel.Token);
                         item.AllSize = (long)data.Content.Headers.ContentLength!;
-                        item.State = DownloadItemState.Download;
+                        item.State = DownloadItemState.GetInfo;
                         item.NowSize = 0;
                         item.Update?.Invoke(index);
                         using Stream stream1 = data.Content.ReadAsStream(cancel.Token);
@@ -188,6 +188,7 @@ public class DownloadThread
                         {
                             await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0,
                                 bytesRead), cancel.Token).ConfigureAwait(false);
+                            item.State = DownloadItemState.Download;
                             item.NowSize += bytesRead;
                             item.Update?.Invoke(index);
                         }

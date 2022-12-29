@@ -5,17 +5,14 @@ namespace ColorMC.Core.Game;
 
 public static class Options
 {
-    public static Dictionary<string, string> ReadOptions(this GameSettingObj game)
+    public static Dictionary<string, string> ReadOptions(string file, string sp = ":")
     {
         var options = new Dictionary<string, string>();
-        string file = game.GetOptionsFile();
-        if (File.Exists(file))
-            return options;
 
-        var lines = File.ReadAllLines(file);
+        var lines = file.Split("\n");
         foreach (var item in lines)
         {
-            var temp = item.Split(":");
+            var temp = item.Trim().Split(sp);
             if (temp.Length == 1)
             {
                 options.Add(temp[0], "");
@@ -27,6 +24,13 @@ public static class Options
         }
 
         return options;
+    }
+    public static Dictionary<string, string> ReadOptions(this GameSettingObj game)
+    {
+        var file = game.GetOptionsFile();
+        if (File.Exists(file))
+            return new();
+        return ReadOptions(File.ReadAllText(file));
     }
 
     public static void SaveOptions(this GameSettingObj game, Dictionary<string, string> dir)

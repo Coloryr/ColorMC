@@ -5,12 +5,6 @@ public enum Loaders
     Normal, Forge, Fabric, Quilt
 }
 
-public record LoaderInfoObj
-{
-    public string Name { get; set; }
-    public string Version { get; set; }
-}
-
 public record ServerObj
 {
     public string IP { get; set; }
@@ -31,7 +25,7 @@ public record GameSettingObj
     public string Name { get; set; }
     public string Version { get; set; }
     public Loaders Loader { get; set; }
-    public LoaderInfoObj LoaderInfo { get; set; }
+    public string LoaderVersion { get; set; }
     public JvmArgObj JvmArg { get; set; }
     public WindowSettingObj Window { get; set; }
     public ServerObj StartServer { get; set; }

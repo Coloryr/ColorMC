@@ -2,6 +2,8 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
+using Avalonia.Interactivity;
 
 namespace ColorMC.Gui.UI.Views;
 
@@ -19,39 +21,67 @@ public partial class InfoControl : UserControl
         Cancel.Click += Cancel_Click;
     }
 
-    private void Cancel_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private async void Cancel_Click(object? sender, RoutedEventArgs e)
     {
         Cancel.IsEnabled = false;
-        transition.Start(this, null, CancellationToken.None);
+        await transition.Start(this, null, CancellationToken.None);
 
         call?.Invoke(false);
     }
 
-    private void Confirm_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private async void Confirm_Click(object? sender, RoutedEventArgs e)
     {
         Confirm.IsEnabled = false;
         Cancel.IsEnabled = false;
-        transition.Start(this, null, CancellationToken.None);
+        await transition.Start(this, null, CancellationToken.None);
 
         call?.Invoke(true);
     }
 
-    public void Show(string title, Action<bool> res)
+    public async void Show(string title, Action<bool> res)
     {
         Confirm.IsEnabled = true;
         Cancel.IsEnabled = true;
+        Confirm.IsVisible = true;
+        Cancel.IsVisible = true;
         Text.Text = title;
         call = res;
 
-        transition.Start(null, this, cancellationToken: CancellationToken.None);
+        await transition.Start(null, this, cancellationToken: CancellationToken.None);
     }
 
-    public void Show(string title)
+    public async Task<bool> ShowWait(string title)
+    {
+        bool reut = false;
+        Semaphore semaphore = new(0, 2);
+        Confirm.IsEnabled = true;
+        Cancel.IsEnabled = true;
+        Confirm.IsVisible = true;
+        Cancel.IsVisible = true;
+        Text.Text = title;
+
+        call = (res) =>
+        {
+            reut = res;
+            semaphore.Release();
+        };
+
+        await transition.Start(null, this, cancellationToken: CancellationToken.None);
+
+        await Task.Run(() => 
+        {
+            semaphore.WaitOne();
+        });
+
+        return reut;
+    }
+
+    public async void Show(string title)
     {
         Confirm.IsEnabled = true;
         Cancel.IsVisible = false;
         Text.Text = title;
 
-        transition.Start(null, this, cancellationToken: CancellationToken.None);
+        await transition.Start(null, this, cancellationToken: CancellationToken.None);
     }
 }

@@ -13,6 +13,7 @@ namespace ColorMC.Gui;
 public partial class App : Application
 {
     private static IClassicDesktopStyleApplicationLifetime Life;
+    public static DownloadWindow? DownloadWindow;
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -42,14 +43,19 @@ public partial class App : Application
     {
         if (state == CoreRunState.Init)
         {
-            Dispatcher.UIThread.Post(() =>
+            if (DownloadWindow != null)
             {
-                new DownloadWindow().Show();
-            });
+                DownloadWindow.Activate();
+            }
+            else
+            {
+                DownloadWindow = new DownloadWindow();
+                DownloadWindow.Show();
+            }
         }
-        else
+        else if (state == CoreRunState.End)
         {
-            Close();
+            DownloadWindow?.Close();
         }
     }
 

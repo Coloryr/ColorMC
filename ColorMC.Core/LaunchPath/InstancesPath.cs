@@ -1,3 +1,4 @@
+using ColorMC.Core.Game;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
@@ -163,11 +164,20 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}");
     }
 
-    public static GameSettingObj? CreateVersion(GameSettingObj game)
+    public static async Task<GameSettingObj?> CreateVersion(GameSettingObj game)
     {
         if (InstallGames.ContainsKey(game.Name))
         {
-            return null;
+            if (CoreMain.GameOverwirte == null)
+                return null;
+
+            if (await CoreMain.GameOverwirte.Invoke(game) == false)
+                return null;
+
+            if (InstallGames.Remove(game.Name, out var temp))
+            {
+                await Remove(temp);
+            }
         }
 
         game.DirName = game.Name;
@@ -189,11 +199,7 @@ public static class InstancesPath
 
     public static Task InstallForge(this GameSettingObj obj, string version)
     {
-        obj.LoaderInfo = new()
-        {
-            Version = version,
-            Name = "forge"
-        };
+        obj.LoaderVersion = version;
         obj.Loader = Loaders.Forge;
         obj.Save();
 
@@ -202,11 +208,7 @@ public static class InstancesPath
 
     public static Task InstallFabric(this GameSettingObj obj, string version)
     {
-        obj.LoaderInfo = new()
-        {
-            Version = version,
-            Name = "fabric"
-        };
+        obj.LoaderVersion = version;
         obj.Loader = Loaders.Fabric;
         obj.Save();
 
@@ -215,11 +217,7 @@ public static class InstancesPath
 
     public static Task InstallQuilt(this GameSettingObj obj, string version)
     {
-        obj.LoaderInfo = new()
-        {
-            Version = version,
-            Name = "quilt"
-        };
+        obj.LoaderVersion = version;
         obj.Loader = Loaders.Quilt;
         obj.Save();
 
@@ -228,20 +226,20 @@ public static class InstancesPath
 
     public static void Uninstall(this GameSettingObj obj)
     {
-        obj.LoaderInfo = null;
+        obj.LoaderVersion = null;
         obj.Loader = Loaders.Normal;
         obj.Save();
     }
 
     public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
     {
-        var obj1 = CreateVersion(new()
+        var obj1 = await CreateVersion(new()
         { 
             Name = name,
             Version = obj.Version,
             ModPack = obj.ModPack,
             Loader = obj.Loader,
-            LoaderInfo = obj.LoaderInfo
+            LoaderVersion = obj.LoaderVersion
         });
         if (obj1 != null)
         {
@@ -258,21 +256,21 @@ public static class InstancesPath
         return null;
     }
 
-    public static void Remove(this GameSettingObj obj)
+    public static Task Remove(this GameSettingObj obj)
     {
-        PathC.DeleteFiles(obj.GetBaseDir());
+        return PathC.DeleteFiles(obj.GetBaseDir());
     }
 
     public static async Task<bool> LoadFromZip(string dir, PackType type)
     {
         try
         {
-            using ZipFile zFile = new(dir);
-
             switch (type)
             {
                 case PackType.ColorMC:
                     {
+                        CoreMain.PackState?.Invoke(CoreRunState.Read);
+                        using ZipFile zFile = new(dir);
                         using var stream1 = new MemoryStream();
                         bool find = false;
                         foreach (ZipEntry e in zFile)
@@ -287,20 +285,21 @@ public static class InstancesPath
                         }
 
                         if (!find)
-                            return false;
+                            break;
 
                         var game = JsonConvert.DeserializeObject<GameSettingObj>
                             (Encoding.UTF8.GetString(stream1.ToArray()));
 
                         if (game == null)
-                            return false;
+                            break;
 
                         foreach (ZipEntry e in zFile)
                         {
                             if (e.IsFile)
                             {
                                 using var stream = zFile.GetInputStream(e);
-                                string file = Path.GetFullPath(game.GetGameDir());
+                                string file = Path.GetFullPath(game.GetGameDir() +
+                     e.Name.Substring(game.Name.Length));
                                 FileInfo info2 = new(file);
                                 info2.Directory.Create();
                                 using FileStream stream2 = new(file, FileMode.Create,
@@ -309,20 +308,195 @@ public static class InstancesPath
                             }
                         }
 
+                        CoreMain.PackState?.Invoke(CoreRunState.End);
                         return true;
                     }
                 case PackType.CurseForge:
+                    CoreMain.PackState?.Invoke(CoreRunState.Read);
                     var res = await PackDownload.DownloadCurseForge(dir);
                     if (res.State != DownloadState.End)
-                    {
-                        return false;
-                    }
+                        break;
 
+                    CoreMain.PackState?.Invoke(CoreRunState.Download);
                     DownloadManager.Clear();
                     DownloadManager.FillAll(res.List!);
                     var res1 = await DownloadManager.Start();
 
-                    break;
+                    CoreMain.PackState?.Invoke(CoreRunState.End);
+                    return true;
+                case PackType.MMC:
+                    {
+                        CoreMain.PackState?.Invoke(CoreRunState.Read);
+                        using ZipFile zFile = new(dir);
+                        using var stream1 = new MemoryStream();
+                        using var stream2 = new MemoryStream();
+                        bool find = false;
+                        bool find1 = false;
+                        foreach (ZipEntry e in zFile)
+                        {
+                            if (e.IsFile && !find && e.Name.EndsWith("mmc-pack.json"))
+                            {
+                                using var stream = zFile.GetInputStream(e);
+                                await stream.CopyToAsync(stream1);
+                                find = true;
+                            }
+
+                            if (e.IsFile && !find1 && e.Name.EndsWith("instance.cfg"))
+                            {
+                                using var stream = zFile.GetInputStream(e);
+                                await stream.CopyToAsync(stream2);
+                                find1 = true;
+                            }
+
+                            if (find && find1)
+                                break;
+                        }
+
+                        if (!find || !find1)
+                            break;
+
+                        var mmc = JsonConvert.DeserializeObject<MMCObj>
+                            (Encoding.UTF8.GetString(stream1.ToArray()));
+                        if (mmc == null)
+                            break;
+
+                        var mmc1 = Encoding.UTF8.GetString(stream2.ToArray());
+                        var list = Options.ReadOptions(mmc1, "=");
+                        var game = new GameSettingObj
+                        {
+                            Name = list["name"],
+                            Loader = Loaders.Normal
+                        };
+                        foreach (var item in mmc.components)
+                        {
+                            if (item.uid == "net.minecraft")
+                            {
+                                game.Version = item.version;
+                            }
+                            else if (item.uid == "net.minecraftforge")
+                            {
+                                game.Loader = Loaders.Forge;
+                                game.LoaderVersion = item.version;
+                            }
+                            else if (item.uid == "net.fabricmc.fabric-loader")
+                            {
+                                game.Loader = Loaders.Fabric;
+                                game.LoaderVersion = item.version;
+                            }
+                            else if (item.uid == "org.quiltmc.quilt-loader")
+                            {
+                                game.Loader = Loaders.Quilt;
+                                game.LoaderVersion = item.version;
+                            }
+                        }
+                        game.JvmArg = new();
+                        game.Window = new();
+                        if (list.TryGetValue("JvmArgs", out var item1))
+                        {
+                            game.JvmArg.JvmArgs = item1;
+                        }
+                        if (list.TryGetValue("MaxMemAlloc", out item1)
+                            && uint.TryParse(item1, out var item2))
+                        {
+                            game.JvmArg.MaxMemory = item2;
+                        }
+                        if (list.TryGetValue("MinMemAlloc", out item1)
+                             && uint.TryParse(item1, out item2))
+                        {
+                            game.JvmArg.MaxMemory = item2;
+                        }
+                        if (list.TryGetValue("MinecraftWinHeight", out item1)
+                            && uint.TryParse(item1, out item2))
+                        {
+                            game.Window.Height = item2;
+                        }
+                        if (list.TryGetValue("MinecraftWinWidth", out item1)
+                            && uint.TryParse(item1, out item2))
+                        {
+                            game.Window.Width = item2;
+                        }
+                        if (list.TryGetValue("LaunchMaximized", out item1))
+                        {
+                            game.Window.FullScreen = item1 == "true";
+                        }
+                        if (list.TryGetValue("JoinServerOnLaunch", out item1)
+                            && item1 == "true")
+                        {
+                            game.StartServer = new();
+                            if(list.TryGetValue("JoinServerOnLaunchAddress", out item1))
+                            {
+                                game.StartServer.IP = item1;
+                                game.StartServer.Port = 0;
+                            }
+                        }
+
+                        game = await CreateVersion(game);
+
+                        if (game == null)
+                            break;
+
+                        foreach (ZipEntry e in zFile)
+                        {
+                            if (e.IsFile)
+                            {
+                                using var stream = zFile.GetInputStream(e);
+                                string file = Path.GetFullPath(game.GetBaseDir() +
+                    e.Name.Substring(game.Name.Length));
+                                FileInfo info2 = new(file);
+                                info2.Directory.Create();
+                                using FileStream stream3 = new(file, FileMode.Create,
+                                    FileAccess.ReadWrite, FileShare.ReadWrite);
+                                await stream.CopyToAsync(stream3);
+                            }
+                        }
+
+                        CoreMain.PackState?.Invoke(CoreRunState.End);
+                        return true;
+                    }
+                case PackType.HMCL:
+                    {
+                        CoreMain.PackState?.Invoke(CoreRunState.Read);
+                        using ZipFile zFile = new(dir);
+                        using var stream1 = new MemoryStream();
+                        bool find = false;
+                        foreach (ZipEntry e in zFile)
+                        {
+                            if (e.IsFile && e.Name == "mcbbs.packmeta")
+                            {
+                                using var stream = zFile.GetInputStream(e);
+                                await stream.CopyToAsync(stream1);
+                                find = true;
+                                break;
+                            }
+                        }
+
+                        if (!find)
+                            break;
+
+                        var game = JsonConvert.DeserializeObject<GameSettingObj>
+                            (Encoding.UTF8.GetString(stream1.ToArray()));
+
+                        if (game == null)
+                            break;
+
+                        foreach (ZipEntry e in zFile)
+                        {
+                            if (e.IsFile)
+                            {
+                                using var stream = zFile.GetInputStream(e);
+                                string file = Path.GetFullPath(game.GetGameDir() +
+                     e.Name.Substring(game.Name.Length));
+                                FileInfo info2 = new(file);
+                                info2.Directory.Create();
+                                using FileStream stream2 = new(file, FileMode.Create,
+                                    FileAccess.ReadWrite, FileShare.ReadWrite);
+                                await stream.CopyToAsync(stream2);
+                            }
+                        }
+
+                        CoreMain.PackState?.Invoke(CoreRunState.End);
+                        return true;
+                    }
             }
         }
         catch (Exception e)
@@ -330,6 +504,7 @@ public static class InstancesPath
             Logs.Error("µ¼ÈëÑ¹Ëõ°ü´íÎó", e);
         }
 
+        CoreMain.PackState?.Invoke(CoreRunState.End);
         return false;
     }
 }

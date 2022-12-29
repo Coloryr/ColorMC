@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
@@ -31,7 +33,50 @@ public partial class Tab4Control : UserControl
         Button_Add3.Click += Button_Add3_Click;
         Button_Add4.Click += Button_Add4_Click;
 
+        CoreMain.PackState = PackState;
+        CoreMain.PackUpdate = PackUpdate;
+
+        CoreMain.GameOverwirte = GameOverwirte;
+
         Load();
+    }
+
+    private async Task<bool> GameOverwirte(GameSettingObj obj)
+    {
+        Window.Info1.Close();
+        var test = await Window.Info.ShowWait($"游戏实例:{obj.Name}冲突，是否覆盖");
+        Window.Info1.Show();
+        return test;
+    }
+
+    private void PackUpdate(int size, int now)
+    {
+        Window.Info1.Progress((double)now / size);
+    }
+
+    private void PackState(CoreRunState state)
+    {
+        if (state == CoreRunState.Read)
+        {
+            Window.Info1.Show("正在导入压缩包");
+        }
+        else if (state == CoreRunState.Init)
+        {
+            Window.Info1.NextText("正在读取压缩包");
+        }
+        else if (state == CoreRunState.GetInfo)
+        {
+            Window.Info1.NextText("正在解析压缩包");
+        }
+        else if (state == CoreRunState.Download)
+        {
+            Window.Info1.NextText("正在下载文件");
+            Window.Info1.Progress(-1);
+        }
+        else if (state == CoreRunState.End)
+        {
+            Window.Info1.Close();
+        }
     }
 
     private async void Button_Add4_Click(object? sender, RoutedEventArgs e)
@@ -40,8 +85,16 @@ public partial class Tab4Control : UserControl
         if (name == null)
             return;
 
-        CloseButton();
-        await OtherBinding.AddPack(name, PackType.HMCL);
+        DisableButton();
+        if (await OtherBinding.AddPack(name, PackType.HMCL))
+        {
+            Window.Info2.Show("导入完成");
+        }
+        else
+        {
+            Window.Info.Show("导入错误");
+        }
+        EnableButton();
     }
 
     private async void Button_Add3_Click(object? sender, RoutedEventArgs e)
@@ -50,8 +103,16 @@ public partial class Tab4Control : UserControl
         if (name == null)
             return;
 
-        CloseButton();
-        await OtherBinding.AddPack(name, PackType.MMC);
+        DisableButton();
+        if (await OtherBinding.AddPack(name, PackType.MMC))
+        {
+            Window.Info2.Show("导入完成");
+        }
+        else
+        {
+            Window.Info.Show("导入错误");
+        }
+        EnableButton();
     }
 
     private async void Button_Add2_Click(object? sender, RoutedEventArgs e)
@@ -60,8 +121,16 @@ public partial class Tab4Control : UserControl
         if (name == null)
             return;
 
-        CloseButton();
-        await OtherBinding.AddPack(name, PackType.CurseForge);
+        DisableButton();
+        if (await OtherBinding.AddPack(name, PackType.CurseForge))
+        {
+            Window.Info2.Show("导入完成");
+        }
+        else
+        {
+            Window.Info.Show("导入错误");
+        }
+        EnableButton();
     }
 
     private async void Button_Add1_Click(object? sender, RoutedEventArgs e)
@@ -70,8 +139,16 @@ public partial class Tab4Control : UserControl
         if (name == null)
             return;
 
-        CloseButton();
-        await OtherBinding.AddPack(name, PackType.ColorMC);
+        DisableButton();
+        if (await OtherBinding.AddPack(name, PackType.ColorMC))
+        {
+            Window.Info2.Show("导入完成");
+        }
+        else
+        {
+            Window.Info.Show("导入错误");
+        }
+        EnableButton();
     }
 
     private async Task<string?> SelectPack()
@@ -102,7 +179,15 @@ public partial class Tab4Control : UserControl
         return null;
     }
 
-    private void CloseButton()
+    private void EnableButton()
+    {
+        Button_Add1.IsEnabled = true;
+        Button_Add2.IsEnabled = true;
+        Button_Add3.IsEnabled = true;
+        Button_Add4.IsEnabled = true;
+    }
+
+    private void DisableButton()
     {
         Button_Add1.IsEnabled = false;
         Button_Add2.IsEnabled = false;
