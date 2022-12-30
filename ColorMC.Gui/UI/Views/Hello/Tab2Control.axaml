@@ -16,12 +16,12 @@
         <StackPanel Margin="5">
             <Label Margin="5" Content="添加Java路径" />
             <TextBox
-                Name="Input_Name"
+                Name="TextBox_Name"
                 Margin="5"
                 Classes="input1"
                 Watermark="Java名字" />
             <TextBox
-                Name="Input_Local"
+                Name="TextBox_Local"
                 Margin="5"
                 Classes="input1"
                 Watermark="Java路径" />

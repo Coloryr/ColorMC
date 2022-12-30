@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core;
+using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
@@ -40,10 +41,13 @@ internal class Program
         Console.WriteLine(code);
     }
 
-    public static bool Download(GameSettingObj obj)
+    public static Task<bool> Download(LaunchState state, GameSettingObj obj)
     {
-        Console.WriteLine("补全游戏文件");
-        return true;
+        return Task.Run(() =>
+        {
+            Console.WriteLine("补全游戏文件");
+            return true;
+        });
     }
 
     public static void Log(Process? progress, string? log)
@@ -71,8 +75,11 @@ internal class Program
         Console.WriteLine($"整合包信息获取:{a}/{b}");
     }
 
-    public static bool Overwirte(GameSettingObj setting)
+    public static Task<bool> Overwirte(GameSettingObj setting)
     {
-        return true;
+        return Task.Run(() =>
+        {
+            return true;
+        });
     }
 }

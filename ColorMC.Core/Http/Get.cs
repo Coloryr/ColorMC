@@ -1,9 +1,5 @@
 ﻿using ColorMC.Core.Objs.Game;
-using ColorMC.Core.Objs.Loader;
-using ColorMC.Core.Objs.Pack;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Http;
 
@@ -40,7 +36,7 @@ public static class Get
             return null;
         }
     }
-    
+
 
     public static async Task<VersionObj?> GetVersions(SourceLocal? local = null)
     {

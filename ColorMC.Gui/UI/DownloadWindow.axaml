@@ -27,7 +27,7 @@
                 Stroke="#FF5ABED6"
                 StrokeThickness="3" />
             <DataGrid
-                Name="ListView"
+                Name="DataGrid_Download"
                 Margin="5"
                 AutoGenerateColumns="False"
                 CanUserSortColumns="False">
@@ -41,6 +41,6 @@
             </DataGrid>
         </Grid>
 
-        <views:InfoControl Name="Info" IsVisible="False" />
+        <views:Info4Control Name="Info" IsVisible="False" />
     </Grid>
 </Window>

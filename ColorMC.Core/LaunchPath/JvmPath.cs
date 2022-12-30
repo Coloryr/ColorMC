@@ -1,7 +1,6 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System.Diagnostics;
-using System.Security.Cryptography;
 
 namespace ColorMC.Core.LaunchPath;
 

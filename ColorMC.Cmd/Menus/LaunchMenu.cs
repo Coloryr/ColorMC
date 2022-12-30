@@ -122,9 +122,12 @@ public static class LaunchMenu
         ConsoleUtils.Info1($"{state.GetName()}");
     }
 
-    public static bool GameDownload(GameSettingObj obj)
+    public static Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
     {
-        return ConsoleUtils.YesNo("游戏启动缺少必要文件，是否下载");
+        return Task.Run(() => 
+        {
+            return ConsoleUtils.YesNo("游戏启动缺少必要文件，是否下载");
+        });
     }
 
     public static void ProcessLog(Process? p, string? m)

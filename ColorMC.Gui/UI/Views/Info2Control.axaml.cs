@@ -41,10 +41,10 @@ public partial class Info2Control : UserControl
         };
         grid.Children.Add(text);
 
-        List.Children.Add(grid);
+        Grid_List.Children.Add(grid);
         await transition.Start(null, grid, CancellationToken.None);
         await Task.Delay(TimeSpan.FromSeconds(2));
         await transition.Start(grid, null, CancellationToken.None);
-        List.Children.Remove(grid);
+        Grid_List.Children.Remove(grid);
     }
 }

@@ -7,23 +7,23 @@ using Avalonia.Interactivity;
 
 namespace ColorMC.Gui.UI.Views;
 
-public partial class InfoControl : UserControl
+public partial class Info4Control : UserControl
 {
     private Action<bool>? call;
 
-    private CrossFade transition = new(TimeSpan.FromMilliseconds(300));
+    private static readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
 
-    public InfoControl()
+    public Info4Control()
     {
         InitializeComponent();
 
-        Confirm.Click += Confirm_Click;
-        Cancel.Click += Cancel_Click;
+        Button_Confirm.Click += Confirm_Click;
+        Button_Cancel.Click += Cancel_Click;
     }
 
     private async void Cancel_Click(object? sender, RoutedEventArgs e)
     {
-        Cancel.IsEnabled = false;
+        Button_Cancel.IsEnabled = false;
         await transition.Start(this, null, CancellationToken.None);
 
         call?.Invoke(false);
@@ -31,8 +31,8 @@ public partial class InfoControl : UserControl
 
     private async void Confirm_Click(object? sender, RoutedEventArgs e)
     {
-        Confirm.IsEnabled = false;
-        Cancel.IsEnabled = false;
+        Button_Confirm.IsEnabled = false;
+        Button_Cancel.IsEnabled = false;
         await transition.Start(this, null, CancellationToken.None);
 
         call?.Invoke(true);
@@ -40,11 +40,11 @@ public partial class InfoControl : UserControl
 
     public async void Show(string title, Action<bool> res)
     {
-        Confirm.IsEnabled = true;
-        Cancel.IsEnabled = true;
-        Confirm.IsVisible = true;
-        Cancel.IsVisible = true;
-        Text.Text = title;
+        Button_Confirm.IsEnabled = true;
+        Button_Cancel.IsEnabled = true;
+        Button_Confirm.IsVisible = true;
+        Button_Cancel.IsVisible = true;
+        TextBlock_Text.Text = title;
         call = res;
 
         await transition.Start(null, this, cancellationToken: CancellationToken.None);
@@ -54,11 +54,11 @@ public partial class InfoControl : UserControl
     {
         bool reut = false;
         Semaphore semaphore = new(0, 2);
-        Confirm.IsEnabled = true;
-        Cancel.IsEnabled = true;
-        Confirm.IsVisible = true;
-        Cancel.IsVisible = true;
-        Text.Text = title;
+        Button_Confirm.IsEnabled = true;
+        Button_Cancel.IsEnabled = true;
+        Button_Confirm.IsVisible = true;
+        Button_Cancel.IsVisible = true;
+        TextBlock_Text.Text = title;
 
         call = (res) =>
         {
@@ -78,9 +78,9 @@ public partial class InfoControl : UserControl
 
     public async void Show(string title)
     {
-        Confirm.IsEnabled = true;
-        Cancel.IsVisible = false;
-        Text.Text = title;
+        Button_Confirm.IsEnabled = true;
+        Button_Cancel.IsVisible = false;
+        TextBlock_Text.Text = title;
 
         await transition.Start(null, this, cancellationToken: CancellationToken.None);
     }

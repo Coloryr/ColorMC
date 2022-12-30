@@ -47,5 +47,8 @@
     <Compile Update="UI\Views\Info1Control.axaml.cs">
       <DependentUpon>Info1Control.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Views\Info4Control.axaml.cs">
+      <DependentUpon>Info4Control.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

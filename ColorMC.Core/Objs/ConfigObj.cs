@@ -70,6 +70,7 @@ public record JvmArgObj
         User = 4
     }
     public string? JvmArgs { get; set; }
+    public string? GameArgs { get; set; }
     public string? GCArgument { get; set; }
     public GCType? GC { get; set; }
     public string? JavaAgent { get; set; }

@@ -1,6 +1,4 @@
-﻿using static ColorMC.Core.Objs.Loader.FabricMetaObj;
-
-namespace ColorMC.Core.Objs.Loader;
+﻿namespace ColorMC.Core.Objs.Loader;
 
 public record FabricLoaderObj
 {
@@ -27,7 +25,7 @@ public record FabricLoaderObj
 public record FabricLoaderObj1
 {
     public record Loader
-    { 
+    {
         public string separator { get; set; }
         public int build { get; set; }
         public string maven { get; set; }

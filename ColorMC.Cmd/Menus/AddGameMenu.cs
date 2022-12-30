@@ -70,7 +70,7 @@ public static class AddGameMenu
             if (loader)
             {
                 ConsoleUtils.Info1("正在获取Forge版本");
-                Items = ForgeHelper.GetForgeList(item).Result;
+                Items = ForgeHelper.GetVersionList(item, BaseClient.Source).Result;
                 if (Items == null)
                 {
                     ConsoleUtils.Error("Forge列表获取失败");
@@ -112,7 +112,7 @@ public static class AddGameMenu
         Install();
     }
 
-    private static void Install()
+    private static async void Install()
     {
         ConsoleUtils.Reset();
         ConsoleUtils.ShowTitle("创建实例");
@@ -124,7 +124,7 @@ public static class AddGameMenu
         Game.LoaderVersion = null;
         Game.ModPack = false;
 
-        Game = InstancesPath.CreateVersion(Game);
+        Game = await InstancesPath.CreateVersion(Game);
 
         if (Game == null)
         {

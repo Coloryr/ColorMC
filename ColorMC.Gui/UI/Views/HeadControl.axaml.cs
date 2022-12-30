@@ -23,7 +23,7 @@ public partial class HeadControl : UserControl
         set 
         {
             max = value;
-            ButtonMax.IsVisible = max;
+            Button_Max.IsVisible = max;
         }
     }
 
@@ -33,7 +33,7 @@ public partial class HeadControl : UserControl
         set 
         {
             min = value;
-            ButtonMin.IsVisible = min;
+            Button_Min.IsVisible = min;
         }
     }
 
@@ -47,9 +47,9 @@ public partial class HeadControl : UserControl
 
         Initialized += HeadControl_Initialized;
 
-        ButtonMin.Click += ButtonMin_Click;
-        ButtonMax.Click += ButtonMax_Click;
-        ButtonClose.Click += ButtonClose_Click;
+        Button_Min.Click += ButtonMin_Click;
+        Button_Max.Click += ButtonMax_Click;
+        Button_Close.Click += ButtonClose_Click;
     }
 
     private void ButtonClose_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
