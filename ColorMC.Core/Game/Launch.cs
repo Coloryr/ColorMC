@@ -569,6 +569,11 @@ public static class Launch
             }
         }
 
+        if (obj.JvmArg.GameArgs != null)
+        {
+            gameArg.Add(obj.JvmArg.GameArgs);
+        }
+
         return gameArg;
     }
 

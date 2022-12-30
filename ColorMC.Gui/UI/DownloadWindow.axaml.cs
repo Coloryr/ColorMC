@@ -52,7 +52,7 @@ public partial class DownloadWindow : Window
 
         CoreMain.DownloadItemStateUpdate = DownloadItemStateUpdate;
 
-        ListView.Items = List;
+        DataGrid_Download.Items = List;
 
         Closing += DownloadWindow_Closing;
         Closed += DownloadWindow_Closed;
@@ -99,11 +99,11 @@ public partial class DownloadWindow : Window
             }
             else if(item.State == DownloadItemState.GetInfo)
             {
-                List1[item.Name].AllSize = $"{(double)item.AllSize / 1000 / 1000:.##}";
+                List1[item.Name].AllSize = $"{(double)item.AllSize / 1000 / 1000:#.##}";
             }
             else if (item.State == DownloadItemState.Download)
             {
-                List1[item.Name].NowSize = $"{(double)item.NowSize / item.AllSize * 100:.##} %";
+                List1[item.Name].NowSize = $"{(double)item.NowSize / item.AllSize * 100:#.##} %";
             }
             else if (item.State == DownloadItemState.Error)
             {

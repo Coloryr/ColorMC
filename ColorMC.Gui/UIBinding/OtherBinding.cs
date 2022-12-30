@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI;
 using System;
@@ -22,7 +23,12 @@ public static class OtherBinding
         return ConfigUtils.Load(dir, true);
     }
 
-    public static List<string> GetGames(bool? type1, bool? type2, bool? type3)
+    public static List<GameSettingObj> GetGames()
+    {
+        return InstancesPath.Games;
+    }
+
+    public static List<string> GetGameVersion(bool? type1, bool? type2, bool? type3)
     {
         var list = new List<string>();
         if (VersionPath.Versions == null)
@@ -56,10 +62,20 @@ public static class OtherBinding
         return list;
     }
 
-    public static bool AddGame(string name, string version)
+    public static async Task<bool> AddGame(string name, string version, 
+        Loaders loaders, string? loaderversion = null)
     {
+        var game = new GameSettingObj()
+        {
+            Name = name,
+            Version = version,
+            Loader = loaders,
+            LoaderVersion = loaderversion
+        };
 
-        return false;
+        game = await InstancesPath.CreateVersion(game);
+
+        return game != null;
     }
 
     public static Task<bool> AddPack(string dir, PackType type)

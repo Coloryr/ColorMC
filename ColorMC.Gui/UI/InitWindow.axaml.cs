@@ -26,7 +26,7 @@ public partial class InitWindow : Window
 
             Dispatcher.UIThread.Post(() =>
             {
-                App.ShowNew();
+                App.ShowMain();
                 Close();
             });
         });

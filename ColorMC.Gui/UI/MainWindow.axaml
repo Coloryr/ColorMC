@@ -26,7 +26,7 @@
                 Stroke="#FF5ABED6"
                 StrokeThickness="3" />
 
-            <views:InfoControl Name="Info" IsVisible="False" />
+            <views:Info4Control Name="Info" IsVisible="False" />
         </Grid>
     </Grid>
 </Window>

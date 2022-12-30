@@ -38,8 +38,8 @@ public partial class Tab2Control : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        string name = Input_Name.Text;
-        string local = Input_Local.Text;
+        string name = TextBox_Name.Text;
+        string local = TextBox_Local.Text;
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
@@ -55,13 +55,13 @@ public partial class Tab2Control : UserControl
             if (res.Item1 == null)
             {
                 Window.Info1.Close();
-                Window.Info.Show(res.Item2);
+                Window.Info.Show(res.Item2!);
                 return;
             }
 
             List.Add(res.Item1);
-            Input_Name.Text = "";
-            Input_Local.Text = "";
+            TextBox_Name.Text = "";
+            TextBox_Local.Text = "";
             Window.Info1.Close();
         }
         finally
@@ -93,7 +93,7 @@ public partial class Tab2Control : UserControl
         if (file?.Length > 0)
         {
             var item = file[0];
-            Input_Local.Text = item;
+            TextBox_Local.Text = item;
         }
     }
 

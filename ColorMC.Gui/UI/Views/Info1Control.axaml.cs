@@ -2,6 +2,7 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using System;
 using System.Threading;
+using Avalonia.Interactivity;
 
 namespace ColorMC.Gui.UI.Views;
 
@@ -9,18 +10,18 @@ public partial class Info1Control : UserControl
 {
     private Action? call;
 
-    private CrossFade transition = new(TimeSpan.FromMilliseconds(300));
+    private readonly static CrossFade transition = new(TimeSpan.FromMilliseconds(300));
 
     public Info1Control()
     {
         InitializeComponent();
 
-        Cancel.Click += Cancel_Click;
+        Button_Cancel.Click += Cancel_Click;
     }
 
-    private void Cancel_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void Cancel_Click(object? sender, RoutedEventArgs e)
     {
-        Cancel.IsEnabled = false;
+        Button_Cancel.IsEnabled = false;
         transition.Start(this, null, CancellationToken.None);
 
         call?.Invoke();
@@ -28,52 +29,52 @@ public partial class Info1Control : UserControl
 
     public void Close()
     {
-        Cancel.IsEnabled = false;
+        Button_Cancel.IsEnabled = false;
         transition.Start(this, null, CancellationToken.None);
     }
 
     public void Show()
     {
-        transition.Start(null, this, cancellationToken: CancellationToken.None);
+        transition.Start(null, this, CancellationToken.None);
     }
 
     public void Show(string title)
     {
-        Cancel.IsEnabled = true;
-        Text.Text = title;
+        Button_Cancel.IsEnabled = true;
+        TextBlock_Text.Text = title;
         call = null;
 
-        Cancel.IsVisible = false;
+        Button_Cancel.IsVisible = false;
 
-        transition.Start(null, this, cancellationToken: CancellationToken.None);
+        transition.Start(null, this, CancellationToken.None);
     }
 
     public void Show(string title, Action cancel)
     {
-        Cancel.IsEnabled = true;
-        Text.Text = title;
+        Button_Cancel.IsEnabled = true;
+        TextBlock_Text.Text = title;
         call = cancel;
 
-        transition.Start(null, this, cancellationToken: CancellationToken.None);
+        transition.Start(null, this, CancellationToken.None);
     }
 
     public void Progress(double value)
     {
         if (value == -1)
         {
-            ProgressBar1.IsIndeterminate = true;
-            ProgressBar1.ShowProgressText = false;
+            ProgressBar_Value.IsIndeterminate = true;
+            ProgressBar_Value.ShowProgressText = false;
         }
         else
         {
-            ProgressBar1.IsIndeterminate = false;
-            ProgressBar1.Value = value;
-            ProgressBar1.ShowProgressText = true;
+            ProgressBar_Value.IsIndeterminate = false;
+            ProgressBar_Value.Value = value;
+            ProgressBar_Value.ShowProgressText = true;
         }
     }
 
     public void NextText(string title)
     {
-        Text.Text = title;
+        TextBlock_Text.Text = title;
     }
 }

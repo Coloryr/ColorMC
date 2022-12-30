@@ -9,8 +9,9 @@ namespace ColorMC.Gui.UI.Views;
 
 public partial class Info3Control : UserControl
 {
-    private CrossFade transition = new(TimeSpan.FromMilliseconds(300));
-    private Semaphore semaphore = new(0,2);
+    private static readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
+
+    private readonly Semaphore semaphore = new(0,2);
 
     public Info3Control()
     {
@@ -31,33 +32,33 @@ public partial class Info3Control : UserControl
 
     public Task Show(string title, string title1, bool lock1 = true)
     {
-        Text1.IsReadOnly = Text.IsReadOnly = lock1;
+        TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = lock1;
         if (lock1)
         {
-            Text.Text = title;
-            Text1.Text = title1;
+            TextBox_Text.Text = title;
+            TextBox_Text1.Text = title1;
 
-            Text.Watermark = "";
-            Text1.Watermark = "";
+            TextBox_Text.Watermark = "";
+            TextBox_Text1.Watermark = "";
 
-            ProgressBar1.IsVisible = true;
+            ProgressBar_Value.IsVisible = true;
 
             Button_Add.IsEnabled = false;
             Button_Add.IsVisible = false;
 
-            Text1.PasswordChar = (char)0;
+            TextBox_Text1.PasswordChar = (char)0;
         }
         else
         {
-            ProgressBar1.IsVisible = false;
+            ProgressBar_Value.IsVisible = false;
 
-            Text.Watermark = title;
-            Text1.Watermark = title1;
+            TextBox_Text.Watermark = title;
+            TextBox_Text1.Watermark = title1;
 
             Button_Add.IsEnabled = true;
             Button_Add.IsVisible = true;
 
-            Text1.PasswordChar = '*';
+            TextBox_Text1.PasswordChar = '*';
         }
         transition.Start(null, this, cancellationToken: CancellationToken.None);
 
@@ -74,6 +75,6 @@ public partial class Info3Control : UserControl
 
     public (string, string) Read()
     {
-        return (Text.Text, Text1.Text);
+        return (TextBox_Text.Text, TextBox_Text1.Text);
     }
 }

@@ -370,13 +370,13 @@ public static class ForgeHelper
         }
     }
 
-    public static async Task<List<string>?> GetForgeList(string version)
+    public static async Task<List<string>?> GetVersionList(string version, SourceLocal? local = null)
     {
         List<string> list = new();
-        if (BaseClient.Source == SourceLocal.BMCLAPI
-            || BaseClient.Source == SourceLocal.MCBBS)
+        if (local == SourceLocal.BMCLAPI
+            || local == SourceLocal.MCBBS)
         {
-            string url = UrlHelp.ForgeVersions(version, BaseClient.Source) + version;
+            string url = UrlHelp.ForgeVersions(version, local) + version;
             var data = await BaseClient.GetString(url);
             var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data);
             if (obj == null)

@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock
-            Name="Text"
+            Name="TextBlock_Text"
             FontSize="20"
             Foreground="White"
             Text="测试"
@@ -18,7 +18,7 @@
             TextWrapping="Wrap" />
         <StackPanel Margin="0,100,0,0">
             <ProgressBar
-                Name="ProgressBar1"
+                Name="ProgressBar_Value"
                 Height="20"
                 Margin="20,0,20,50"
                 BorderBrush="White"
@@ -27,7 +27,7 @@
                 IsIndeterminate="True"
                 Value="20" />
             <Button
-                Name="Cancel"
+                Name="Button_Cancel"
                 Width="100"
                 Height="30"
                 HorizontalAlignment="Center"

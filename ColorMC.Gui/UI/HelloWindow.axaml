@@ -42,7 +42,7 @@
                 <TabItem Header="完成" />
             </TabControl>
 
-            <views:InfoControl Name="Info" IsVisible="False" />
+            <views:Info4Control Name="Info" IsVisible="False" />
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info2Control Name="Info2" />
             <views:Info3Control Name="Info3" IsVisible="False" />

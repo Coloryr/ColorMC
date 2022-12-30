@@ -23,11 +23,11 @@ public partial class Tab3Control : UserControl
 
         Button_Add.Click += Button_Add_Click;
         Button_Next.Click += Button_Next_Click;
-        UserType.SelectionChanged += UserType_SelectionChanged;
         Button_Delete.Click += Button_Delete_Click;
         Button_Refash.Click += Button_Refash_Click;
 
-        UserType.Items = UserBinding.GetUserTypes();
+        ComboBox_UserType.SelectionChanged += UserType_SelectionChanged;
+        ComboBox_UserType.Items = UserBinding.GetUserTypes();
 
         Load();
     }
@@ -50,10 +50,10 @@ public partial class Tab3Control : UserControl
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
         Button_Add.IsEnabled = false;
-        switch (UserType.SelectedIndex)
+        switch (ComboBox_UserType.SelectedIndex)
         {
             case 0:
-                string name = Input1.Text;
+                string name = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(name))
                 {
                     Window.Info.Show("请输入必要信息");
@@ -65,7 +65,7 @@ public partial class Tab3Control : UserControl
                     Window.Info.Show(res.Item2!);
                 }
                 Window.Info2.Show("添加成功");
-                Input1.Text = "";
+                TextBox_Input1.Text = "";
                 break;
             case 1:
                 CoreMain.LoginOAuthCode = LoginOAuthCode;
@@ -77,10 +77,10 @@ public partial class Tab3Control : UserControl
                     Window.Info.Show(res.Item2!);
                 }
                 Window.Info2.Show("添加成功");
-                Input1.Text = "";
+                TextBox_Input1.Text = "";
                 break;
             case 2:
-                var server = Input1.Text;
+                var server = TextBox_Input1.Text;
                 if (server.Length != 32)
                 {
                     Window.Info.Show("服务器UUID错误");
@@ -103,10 +103,10 @@ public partial class Tab3Control : UserControl
                     break;
                 }
                 Window.Info2.Show("添加成功");
-                Input1.Text = "";
+                TextBox_Input1.Text = "";
                 break;
             case 3:
-                server = Input1.Text;
+                server = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(server))
                 {
                     Window.Info.Show("服务器UUID错误");
@@ -129,7 +129,7 @@ public partial class Tab3Control : UserControl
                     break;
                 }
                 Window.Info2.Show("添加成功");
-                Input1.Text = "";
+                TextBox_Input1.Text = "";
                 break;
             case 4:
                 await Window.Info3.Show("账户", "密码", false);
@@ -151,7 +151,7 @@ public partial class Tab3Control : UserControl
                 Window.Info2.Show("添加成功");
                 break;
             case 5:
-                server = Input1.Text;
+                server = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(server))
                 {
                     Window.Info.Show("服务器UUID错误");
@@ -174,7 +174,7 @@ public partial class Tab3Control : UserControl
                     break;
                 }
                 Window.Info2.Show("添加成功");
-                Input1.Text = "";
+                TextBox_Input1.Text = "";
                 break;
             default:
                 Window.Info.Show("请选择类型");
@@ -192,41 +192,38 @@ public partial class Tab3Control : UserControl
 
     private void UserType_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (UserType.SelectedIndex != -1)
+        switch (ComboBox_UserType.SelectedIndex)
         {
-            switch (UserType.SelectedIndex)
-            {
-                case 0:
-                    Input1.IsEnabled = true;
-                    Input1.Watermark = "用户名";
-                    Input1.Text = "";
-                    break;
-                case 1:
-                    Input1.IsEnabled = false;
-                    Input1.Watermark = "";
-                    Input1.Text = "";
-                    break;
-                case 2:
-                    Input1.IsEnabled = true;
-                    Input1.Watermark = "服务器UUID";
-                    Input1.Text = "";
-                    break;
-                case 3:
-                    Input1.IsEnabled = true;
-                    Input1.Watermark = "服务器地址";
-                    Input1.Text = "";
-                    break;
-                case 4:
-                    Input1.IsEnabled = false;
-                    Input1.Watermark = "";
-                    Input1.Text = "";
-                    break;
-                case 5:
-                    Input1.IsEnabled = true;
-                    Input1.Watermark = "皮肤站地址";
-                    Input1.Text = "";
-                    break;
-            }
+            case 0:
+                TextBox_Input1.IsEnabled = true;
+                TextBox_Input1.Watermark = "用户名";
+                TextBox_Input1.Text = "";
+                break;
+            case 1:
+                TextBox_Input1.IsEnabled = false;
+                TextBox_Input1.Watermark = "";
+                TextBox_Input1.Text = "";
+                break;
+            case 2:
+                TextBox_Input1.IsEnabled = true;
+                TextBox_Input1.Watermark = "服务器UUID";
+                TextBox_Input1.Text = "";
+                break;
+            case 3:
+                TextBox_Input1.IsEnabled = true;
+                TextBox_Input1.Watermark = "服务器地址";
+                TextBox_Input1.Text = "";
+                break;
+            case 4:
+                TextBox_Input1.IsEnabled = false;
+                TextBox_Input1.Watermark = "";
+                TextBox_Input1.Text = "";
+                break;
+            case 5:
+                TextBox_Input1.IsEnabled = true;
+                TextBox_Input1.Watermark = "皮肤站地址";
+                TextBox_Input1.Text = "";
+                break;
         }
     }
 

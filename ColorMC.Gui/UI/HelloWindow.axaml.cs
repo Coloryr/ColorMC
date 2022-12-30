@@ -64,6 +64,11 @@ public partial class HelloWindow : Window
         Tabs.IsEnabled = true;
     }
 
+    public void SwitchTab(int index)
+    {
+        Tabs.SelectedIndex = index;
+    }
+
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         switch (Tabs.SelectedIndex)
@@ -84,6 +89,7 @@ public partial class HelloWindow : Window
                 Go(tab5);
                 break;
             case 5:
+                tab5.Load();
                 Go(tab6);
                 break;
         }
@@ -94,6 +100,7 @@ public partial class HelloWindow : Window
     public void Update()
     {
         tab3.Load();
+        tab4.Load();
     }
 
     public void Next()
@@ -101,8 +108,9 @@ public partial class HelloWindow : Window
         Tabs.SelectedIndex++;
     }
 
-    public void Set()
+    public void Done()
     {
-        Show();
+        App.ShowMain();
+        Close();
     }
 }

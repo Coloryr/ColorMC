@@ -86,11 +86,11 @@ public static class PackDownload
         string name = $"{info.name}-{info.version}";
 
         var game = await InstancesPath.CreateVersion(new()
-        { 
+        {
             Name = name,
             Version = info.minecraft.version,
             ModPack = true,
-            Loader = loaders, 
+            Loader = loaders,
             LoaderVersion = loaderversion
         });
         if (game == null)
@@ -102,7 +102,7 @@ public static class PackDownload
             if (e.IsFile && e.Name.StartsWith(info.overrides + "/"))
             {
                 using var stream = zFile.GetInputStream(e);
-                string file = Path.GetFullPath(game.GetGameDir() + 
+                string file = Path.GetFullPath(game.GetGameDir() +
                     e.Name.Substring(info.overrides.Length));
                 FileInfo info2 = new(file);
                 info2.Directory.Create();

@@ -19,21 +19,21 @@
             VerticalAlignment="Top"
             Orientation="Horizontal">
             <Button
-                Name="ButtonMin"
+                Name="Button_Min"
                 Width="24"
                 Height="24"
                 Margin="0,0,5,0"
                 BorderBrush="White"
                 Content="-" />
             <Button
-                Name="ButtonMax"
+                Name="Button_Max"
                 Width="24"
                 Height="24"
                 Margin="0,0,5,0"
                 BorderBrush="White"
                 Content="▢" />
             <Button
-                Name="ButtonClose"
+                Name="Button_Close"
                 Width="24"
                 Height="24"
                 Margin="0,0,2,0"

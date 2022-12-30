@@ -2,18 +2,16 @@ using ColorMC.Core.Game;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Pack;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
 
 public enum PackType
-{ 
+{
     ColorMC, CurseForge, MMC, HMCL
 }
 
@@ -234,7 +232,7 @@ public static class InstancesPath
     public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
     {
         var obj1 = await CreateVersion(new()
-        { 
+        {
             Name = name,
             Version = obj.Version,
             ModPack = obj.ModPack,
@@ -423,7 +421,7 @@ public static class InstancesPath
                             && item1 == "true")
                         {
                             game.StartServer = new();
-                            if(list.TryGetValue("JoinServerOnLaunchAddress", out item1))
+                            if (list.TryGetValue("JoinServerOnLaunchAddress", out item1))
                             {
                                 game.StartServer.IP = item1;
                                 game.StartServer.Port = 0;
@@ -458,7 +456,9 @@ public static class InstancesPath
                         CoreMain.PackState?.Invoke(CoreRunState.Read);
                         using ZipFile zFile = new(dir);
                         using var stream1 = new MemoryStream();
+                        using var stream2 = new MemoryStream();
                         bool find = false;
+                        bool find1 = false;
                         foreach (ZipEntry e in zFile)
                         {
                             if (e.IsFile && e.Name == "mcbbs.packmeta")
@@ -466,18 +466,104 @@ public static class InstancesPath
                                 using var stream = zFile.GetInputStream(e);
                                 await stream.CopyToAsync(stream1);
                                 find = true;
-                                break;
                             }
+
+                            if (e.IsFile && e.Name == "manifest.json")
+                            {
+                                using var stream = zFile.GetInputStream(e);
+                                await stream.CopyToAsync(stream2);
+                                find1 = true;
+                            }
+
+                            if (find && find1)
+                                break;
                         }
 
                         if (!find)
                             break;
 
-                        var game = JsonConvert.DeserializeObject<GameSettingObj>
+                        var obj = JsonConvert.DeserializeObject<HMCLObj>
                             (Encoding.UTF8.GetString(stream1.ToArray()));
+
+                        if (obj == null)
+                            break;
+
+                        var game = new GameSettingObj()
+                        {
+                            Name = obj.name,
+                            Loader = Loaders.Normal
+                        };
+
+                        foreach (var item in obj.addons)
+                        {
+                            if (item.id == "game")
+                            {
+                                game.Version = item.version;
+                            }
+                            else if (item.id == "forge")
+                            {
+                                game.Loader = Loaders.Forge;
+                                game.LoaderVersion = item.version;
+                            }
+                            else if (item.id == "fabric")
+                            {
+                                game.Loader = Loaders.Fabric;
+                                game.LoaderVersion = item.version;
+                            }
+                            else if (item.id == "quilt")
+                            {
+                                game.Loader = Loaders.Quilt;
+                                game.LoaderVersion = item.version;
+                            }
+                        }
+
+                        if (obj.launchInfo != null)
+                        {
+                            game.JvmArg = new()
+                            {
+                                MinMemory = obj.launchInfo.minMemory
+                            };
+                            string data = "";
+                            foreach (var item in obj.launchInfo.launchArgument)
+                            {
+                                data += item + " ";
+                            }
+                            if (!string.IsNullOrWhiteSpace(data))
+                            {
+                                game.JvmArg.GameArgs = data.Trim();
+                            }
+                            else
+                            {
+                                game.JvmArg.GameArgs = null;
+                            }
+
+                            data = "";
+                            foreach (var item in obj.launchInfo.javaArgument)
+                            {
+                                data += item + " ";
+                            }
+                            if (!string.IsNullOrWhiteSpace(data))
+                            {
+                                game.JvmArg.JvmArgs = data.Trim();
+                            }
+                            else
+                            {
+                                game.JvmArg.JvmArgs = null;
+                            }
+                        }
+
+                        game = await CreateVersion(game);
 
                         if (game == null)
                             break;
+
+                        var obj1 = JsonConvert.DeserializeObject<CurseForgePackObj>
+                            (Encoding.UTF8.GetString(stream2.ToArray()));
+                        string overrides = "overrides";
+                        if (obj1 != null)
+                        {
+                            overrides = obj1.overrides;
+                        }
 
                         foreach (ZipEntry e in zFile)
                         {
@@ -485,12 +571,12 @@ public static class InstancesPath
                             {
                                 using var stream = zFile.GetInputStream(e);
                                 string file = Path.GetFullPath(game.GetGameDir() +
-                     e.Name.Substring(game.Name.Length));
+                     overrides.Substring(game.Name.Length));
                                 FileInfo info2 = new(file);
                                 info2.Directory.Create();
-                                using FileStream stream2 = new(file, FileMode.Create,
+                                using FileStream stream3 = new(file, FileMode.Create,
                                     FileAccess.ReadWrite, FileShare.ReadWrite);
-                                await stream.CopyToAsync(stream2);
+                                await stream.CopyToAsync(stream3);
                             }
                         }
 

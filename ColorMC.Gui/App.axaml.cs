@@ -65,9 +65,14 @@ public partial class App : Application
         DownloadManager.Stop();
     }
 
+    public static void ShowMain()
+    {
+        new MainWindow().Show();
+    }
+
     public static void ShowNew()
     {
-        new HelloWindow().Set();
+        new HelloWindow().Show();
     }
 
     private static void ShowError(string data, Exception e, bool close)

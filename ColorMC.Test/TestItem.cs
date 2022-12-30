@@ -372,7 +372,7 @@ public static class TestItem
 
     public static void Item16()
     {
-        var list = ForgeHelper.GetForgeList("1.12.2").Result;
+        var list = ForgeHelper.GetVersionList("1.12.2").Result;
         foreach (var item in list)
         {
             Console.Write(item + " ");

@@ -42,7 +42,7 @@ public static class FabricHelper
     {
         try
         {
-            string url = $"{UrlHelp.FabricMeta(local)}/loader/{mc}";
+            string url = $"{UrlHelp.QuiltMeta(local)}/loader/{mc}";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))
                 return null;
@@ -79,9 +79,9 @@ public static class FabricHelper
                 return null;
 
             var list1 = new List<string>();
-            foreach(var item in list)
+            foreach (var item in list)
             {
-                list1.Add(item.version);    
+                list1.Add(item.version);
             }
 
             return list1;

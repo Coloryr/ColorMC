@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBox
-            Name="Text"
+            Name="TextBox_Text"
             MinWidth="400"
             Classes="input1"
             FontSize="20"
@@ -20,7 +20,7 @@
             TextAlignment="Center"
             TextWrapping="Wrap" />
         <TextBox
-            Name="Text1"
+            Name="TextBox_Text1"
             MinWidth="400"
             Margin="0,20,0,0"
             Classes="input1"
@@ -32,7 +32,7 @@
             TextWrapping="Wrap" />
         <StackPanel Margin="0,100,0,0">
             <ProgressBar
-                Name="ProgressBar1"
+                Name="ProgressBar_Value"
                 Height="20"
                 Margin="20,0,20,50"
                 BorderBrush="White"

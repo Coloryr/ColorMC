@@ -23,12 +23,12 @@
                     <StackPanel Orientation="Horizontal">
                         <Label VerticalAlignment="Center" Content="账户类型" />
                         <ComboBox
-                            Name="UserType"
+                            Name="ComboBox_UserType"
                             Width="200"
                             Margin="5,0,0,0" />
                     </StackPanel>
                     <TextBox
-                        Name="Input1"
+                        Name="TextBox_Input1"
                         Margin="5"
                         Classes="input1"
                         IsEnabled="False"
