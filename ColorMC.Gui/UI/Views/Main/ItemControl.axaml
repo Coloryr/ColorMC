@@ -1,0 +1,62 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Views.Main.ItemControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Expander
+        Name="Expander1"
+        ExpandDirection="Left"
+        IsExpanded="True">
+        <StackPanel VerticalAlignment="Top">
+            <Image
+                Name="Image1"
+                Width="80"
+                Height="80"
+                Source="resm:ColorMC.Gui.Resource.Icon.user.png" />
+            <TextBlock
+                Name="TextBlock_Name"
+                Width="100"
+                Margin="0,5,0,5"
+                VerticalAlignment="Center"
+                Text="Name"
+                TextAlignment="Center"
+                TextWrapping="Wrap" />
+            <Button
+                Name="Button_Switch"
+                Width="100"
+                Height="25"
+                Content="切换用户" />
+            <Button
+                Name="Button_Add"
+                Width="100"
+                Height="25"
+                Content="添加用户" />
+            <Button
+                Name="Button_Delete"
+                Width="100"
+                Height="25"
+                Content="删除用户" />
+
+            <Button
+                Name="Button_Launch"
+                Width="100"
+                Height="25"
+                Margin="0,20,0,0"
+                Content="启动实例" />
+            <Button
+                Name="Button_Edit"
+                Width="100"
+                Height="25"
+                Content="修改实例" />
+            <Button
+                Name="Button_Out"
+                Width="100"
+                Height="25"
+                Content="导出实例" />
+        </StackPanel>
+    </Expander>
+</UserControl>

@@ -82,4 +82,9 @@ public static class OtherBinding
     {
         return InstancesPath.LoadFromZip(dir, type);
     }
+
+    public static Dictionary<string, List<GameSettingObj>> GetGameGroups()
+    {
+        return InstancesPath.Groups;
+    }
 }

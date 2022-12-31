@@ -21,6 +21,8 @@ public record ProxyHostObj
 
 public record GameSettingObj
 {
+    public string GroupName { get; set; }
+    public string Image { get; set; }
     public string DirName { get; set; }
     public string Name { get; set; }
     public string Version { get; set; }

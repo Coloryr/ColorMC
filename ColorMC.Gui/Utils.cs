@@ -1,8 +1,12 @@
-﻿using Avalonia.Controls;
-using ColorMC.Gui.UI;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media.Imaging;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -126,5 +130,55 @@ public static class UIUtils
 
             _ = XLib.XChangeProperty(temp, window.PlatformImpl.Handle.Handle, temp1, temp1, 32, XLib.PropertyMode.Replace, ref hints, 5);
         }
+    }
+}
+
+public static class HeadImageUtils
+{
+    public static async Task<string> MakeHeadImage(string file)
+    {
+        using var image = await SixLabors.ImageSharp.Image.LoadAsync<Rgba32>(file);
+        using var image1 = new Image<Rgba32>(8, 8);
+        using var image2 = new Image<Rgba32>(64, 64);
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                image1[i, j] = image[i + 8, j + 8];
+            }
+        }
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                image1[i, j] = Mix(image1[i, j], image[i + 40, j + 8]);
+            }
+        }
+
+        for (int i = 0; i < 64; i++)
+        {
+            for (int j = 0; j < 64; j++)
+            {
+                image2[i, j] = image1[i / 8, j / 8];
+            }
+        }
+
+        var file1 = Path.GetFileName(AppContext.BaseDirectory + "test.png");
+        await image2.SaveAsPngAsync(file1);
+        return file1;
+    }
+
+    public static Rgba32 Mix(Rgba32 rgba, Rgba32 mix)
+    {
+        double ap = (double)(mix.A / 255);
+        double dp = 1 - ap;
+
+        rgba.R = (byte)(mix.R * ap + rgba.R * dp);
+        rgba.G = (byte)(mix.G * ap + rgba.G * dp);
+        rgba.B = (byte)(mix.B * ap + rgba.B * dp);
+
+        return rgba;
     }
 }
