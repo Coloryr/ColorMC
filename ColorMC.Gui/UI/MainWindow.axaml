@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Views.Main"
     Width="800"
     Height="450"
     MinWidth="800"
@@ -25,6 +26,13 @@
                 Fill="#FFF4F4F5"
                 Stroke="#FF5ABED6"
                 StrokeThickness="3" />
+
+            <DockPanel Margin="5" LastChildFill="True">
+                <views1:ItemControl Name="ItemInfo" DockPanel.Dock="Right" />
+                <ScrollViewer>
+                    <StackPanel Name="GameGroups" />
+                </ScrollViewer>
+            </DockPanel>
 
             <views:Info4Control Name="Info" IsVisible="False" />
         </Grid>

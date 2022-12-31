@@ -32,4 +32,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Objs\Skin\" />
+  </ItemGroup>
+
 </Project>

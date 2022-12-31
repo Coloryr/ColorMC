@@ -12,6 +12,12 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="Resource\Icon\game.png" />
+    <None Remove="Resource\Icon\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resource\Icon\game.png" />
+    <EmbeddedResource Include="Resource\Icon\user.png" />
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.
@@ -50,5 +56,8 @@
     <Compile Update="UI\Views\Info4Control.axaml.cs">
       <DependentUpon>Info4Control.axaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UIBinding\Objs\" />
   </ItemGroup>
 </Project>

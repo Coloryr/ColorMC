@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.MoJang;
 using Newtonsoft.Json;
 
@@ -40,6 +41,20 @@ public static class MinecraftAPI
         var data1 = await data.Content.ReadAsStringAsync();
 
         var re = JsonConvert.DeserializeObject<PlayerAttributesObj>(data1);
+        if (re == null)
+        {
+            throw new Exception("Failed to retrieve Player Attributes");
+        }
+
+        return re;
+    }
+
+    public static async Task<UserProfileObj> GetUserProfile(string? uuid, string? url = null)
+    {
+        url ??= $"https://sessionserver.mojang.com/session/minecraft/profile/{uuid}";
+        var data = await BaseClient.GetString(url);
+
+        var re = JsonConvert.DeserializeObject<UserProfileObj>(data);
         if (re == null)
         {
             throw new Exception("Failed to retrieve Player Attributes");

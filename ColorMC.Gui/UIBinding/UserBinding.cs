@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ColorMC.Core.Http.Login;
 using ColorMC.Core.Objs.Login;
 using System.Security.AccessControl;
+using ColorMC.Core;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -111,5 +112,17 @@ public static class UserBinding
         var item = AuthDatabase.Get(name.Name, name.Type);
         if (item != null)
             AuthDatabase.Delete(item);
+    }
+
+    public static LoginObj? GetLastUser()
+    {
+        //var obj = ConfigUtils.Config.LastUser;
+        //if (obj == null)
+        //    return null;
+        //return AuthDatabase.Get(obj.UUID, obj.Type);
+
+        var item = GetAllUser().Where(a => a.Type == AuthType.OAuth).First();
+
+        return AuthDatabase.Get(item.Name, item.Type);
     }
 }

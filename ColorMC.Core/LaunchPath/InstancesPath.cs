@@ -34,6 +34,7 @@ public static class InstancesPath
     private const string Name14 = "saves";
 
     private static Dictionary<string, GameSettingObj> InstallGames = new();
+    private static Dictionary<string, List<GameSettingObj>> GameGroups = new();
 
     public static string BaseDir { get; private set; }
 
@@ -45,6 +46,53 @@ public static class InstancesPath
         }
     }
 
+    public static Dictionary<string, List<GameSettingObj>> Groups
+    { 
+        get 
+        {
+            return new(GameGroups);
+        } 
+    }
+
+    private static void AddToGroup(GameSettingObj obj)
+    {
+        InstallGames.Add(obj.Name, obj);
+
+        if (string.IsNullOrEmpty(obj.GroupName))
+        {
+            GameGroups[" "].Add(obj);
+        }
+        else
+        {
+            if (GameGroups.TryGetValue(obj.GroupName, out var group))
+            {
+                group.Add(obj);
+            }
+            else
+            {
+                var list = new List<GameSettingObj>
+                {
+                    obj
+                };
+                GameGroups.Add(obj.GroupName, list);
+            }
+        }
+    }
+
+    private static void RemoveFromGroup(GameSettingObj obj)
+    {
+        InstallGames.Remove(obj.Name);
+
+        if (string.IsNullOrEmpty(obj.GroupName))
+        {
+            GameGroups[" "].Remove(obj);
+        }
+        else if (GameGroups.TryGetValue(obj.GroupName, out var group))
+        {
+            group.Remove(obj);
+        }
+    }
+
     public static void Init(string dir)
     {
         BaseDir = Path.GetFullPath(dir + "/" + Name);
@@ -52,6 +100,8 @@ public static class InstancesPath
         Logs.Info($"正在读取游戏对象信息");
 
         Directory.CreateDirectory(BaseDir);
+
+        GameGroups.Add(" ", new List<GameSettingObj>());
 
         var list = Directory.GetDirectories(BaseDir);
         foreach (var item in list)
@@ -66,7 +116,7 @@ public static class InstancesPath
                 var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
                 if (game != null)
                 {
-                    InstallGames.Add(game.Name, game);
+                    AddToGroup(game);
                 }
             }
         }
@@ -162,7 +212,7 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}");
     }
 
-    public static async Task<GameSettingObj?> CreateVersion(GameSettingObj game)
+    public static async Task<GameSettingObj?> CreateVersion(this GameSettingObj game)
     {
         if (InstallGames.ContainsKey(game.Name))
         {
@@ -190,7 +240,7 @@ public static class InstancesPath
         Directory.CreateDirectory(game.GetGameDir());
 
         game.Save();
-        InstallGames.Add(game.Name, game);
+        AddToGroup(game);
 
         return game;
     }
@@ -222,7 +272,7 @@ public static class InstancesPath
         return GameDownload.DownloadQuilt(obj.Version, version);
     }
 
-    public static void Uninstall(this GameSettingObj obj)
+    public static void UninstallLoader(this GameSettingObj obj)
     {
         obj.LoaderVersion = null;
         obj.Loader = Loaders.Normal;
@@ -256,6 +306,7 @@ public static class InstancesPath
 
     public static Task Remove(this GameSettingObj obj)
     {
+        RemoveFromGroup(obj);
         return PathC.DeleteFiles(obj.GetBaseDir());
     }
 

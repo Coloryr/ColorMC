@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
-    <ProjectReference Include="..\ColorMC.Gui\ColorMC.Gui.csproj" />
   </ItemGroup>
 
 </Project>

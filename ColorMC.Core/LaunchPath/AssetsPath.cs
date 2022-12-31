@@ -9,11 +9,11 @@ public static class AssetsPath
 {
     private readonly static Dictionary<string, AssetsObj> Assets = new();
 
-    private const string Name = "assets";
+    public const string Name = "assets";
 
-    private const string Name1 = "indexes";
-    private const string Name2 = "objects";
-    private const string Name3 = "skins";
+    public const string Name1 = "indexes";
+    public const string Name2 = "objects";
+    public const string Name3 = "skins";
 
     public static string BaseDir { get; private set; }
 
