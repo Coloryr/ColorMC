@@ -3,6 +3,9 @@ using ColorMC.Core.Objs;
 using System.Collections.Generic;
 using Avalonia.Input;
 using SixLabors.Fonts;
+using Avalonia;
+using Avalonia.Animation;
+using System;
 
 namespace ColorMC.Gui.UI.Views.Main;
 
@@ -12,10 +15,22 @@ public partial class GamesControl : UserControl
     private List<GameSettingObj> List;
     private GameControl? Last;
     private Dictionary<string, GameControl> Items = new();
+    private bool Init;
 
     public GamesControl()
     {
         InitializeComponent();
+
+        LayoutUpdated += GamesControl_LayoutUpdated;
+        Expander_Head.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(300));
+    }
+
+    private void GamesControl_LayoutUpdated(object? sender, EventArgs e)
+    {
+        if (Init)
+            return;
+        Expander_Head.MakeExpanderTran();
+        Init = true;
     }
 
     public void SetWindow(MainWindow window)

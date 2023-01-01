@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Avalonia.X11;
 using ColorMC.Core;
@@ -12,6 +13,7 @@ using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -41,6 +43,21 @@ public partial class MainWindow : Window
 
         Task.Run(Load);
         Task.Run(Load1);
+
+        string file = GuiConfigUtils.Config?.BackImage;
+        if (!string.IsNullOrWhiteSpace(file) && File.Exists(file))
+        {
+            Image_Back.Source = new Bitmap(file);
+        }
+
+        Image_Back.Source = new Bitmap("F:\\illust_94899568_20220104_002837.png");
+
+        Opened += MainWindow_Opened;
+    }
+
+    private void MainWindow_Opened(object? sender, EventArgs e)
+    {
+        ItemInfo.Expander1.MakeExpanderTran();
     }
 
     public void ItemSelect(GameSettingObj? obj)

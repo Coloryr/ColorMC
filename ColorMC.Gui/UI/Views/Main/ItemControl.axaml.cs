@@ -13,6 +13,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using ColorMC.Core.Http.Skin;
 using System.Runtime.CompilerServices;
+using Avalonia.Animation;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.UI.Views.Main;
 
@@ -34,12 +36,28 @@ public partial class ItemControl : UserControl
         Button_Add.Click += Button_Add_Click;
         Button_Delete.Click += Button_Delete_Click;
         Button_Out.Click += Button_Out_Click;
+        Button1.Click += Button1_Click;
 
         var uri = new Uri($"resm:ColorMC.Gui.Resource.Icon.user.png");
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
         var asset = assets.Open(uri);
 
         Image1.Source = bitmap = new Bitmap(asset);
+        Expander1.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(300));
+        Button1.Content = ">";
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        if (Expander1.IsExpanded)
+        {
+            Button1.Content = "<";
+        }
+        else
+        {
+            Button1.Content = ">";
+        }
+        Expander1.IsExpanded = !Expander1.IsExpanded;
     }
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
@@ -97,6 +115,7 @@ public partial class ItemControl : UserControl
         else
         {
             TextBlock_Name.Text = Obj1.UserName;
+            TextBlock_Type.Text = Obj1.AuthType.GetName();
             LoadHead();
         }
     }

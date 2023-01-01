@@ -34,7 +34,7 @@ public static class AuthDatabase
     public static void Init()
     {
         Logs.Info($"登录数据库初始化");
-        connStr = new SqliteConnectionStringBuilder("Data Source=" + DB)
+        connStr = new SqliteConnectionStringBuilder("Data Source=" + AppContext.BaseDirectory + DB)
         {
             Mode = SqliteOpenMode.ReadWriteCreate
         }.ToString();

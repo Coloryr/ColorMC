@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using Avalonia.VisualTree;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -129,6 +130,31 @@ public static class UIUtils
             };
 
             _ = XLib.XChangeProperty(temp, window.PlatformImpl.Handle.Handle, temp1, temp1, 32, XLib.PropertyMode.Replace, ref hints, 5);
+        }
+    }
+
+    public static void MakeExpanderTran(this Expander expander)
+    {
+        try
+        {
+            var border = expander.GetVisualChildren();
+            foreach (var item in border)
+            {
+                if (item is DockPanel)
+                {
+                    foreach (var item1 in item.VisualChildren)
+                    {
+                        if (item1 is Border)
+                        {
+                            (item1 as Border).Background = Avalonia.Media.Brush.Parse("#88f2f2f2");
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        { 
+            
         }
     }
 }
