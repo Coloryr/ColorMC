@@ -27,9 +27,17 @@
                 Stroke="#FF5ABED6"
                 StrokeThickness="3" />
 
-            <DockPanel Margin="5" LastChildFill="True">
-                <views1:ItemControl Name="ItemInfo" DockPanel.Dock="Right" />
-                <ScrollViewer>
+            <Image
+                Name="Image_Back"
+                Margin="3"
+                Stretch="UniformToFill" />
+
+            <DockPanel LastChildFill="True">
+                <views1:ItemControl
+                    Name="ItemInfo"
+                    Margin="0,0,3,0"
+                    DockPanel.Dock="Right" />
+                <ScrollViewer Margin="3,3,0,0">
                     <StackPanel Name="GameGroups" />
                 </ScrollViewer>
             </DockPanel>

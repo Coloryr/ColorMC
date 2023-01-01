@@ -23,6 +23,7 @@ public partial class InitWindow : Window
         Task.Run(() =>
         {
             CoreMain.Init(AppContext.BaseDirectory);
+            GuiConfigUtils.Init(AppContext.BaseDirectory);
 
             Dispatcher.UIThread.Post(() =>
             {

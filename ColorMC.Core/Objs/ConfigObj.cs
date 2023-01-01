@@ -79,11 +79,6 @@ public record JvmArgObj
     public uint? MinMemory { get; set; }
 }
 
-public record LastUser
-{ 
-    public string UUID { get; set; }
-    public AuthType Type { get; set; }
-}
 
 public record ConfigObj
 {
@@ -93,6 +88,4 @@ public record ConfigObj
     public HttpObj Http { get; set; }
     public JvmArgObj DefaultJvmArg { get; set; }
     public WindowSettingObj Window { get; set; }
-
-    public LastUser LastUser { get; set; }
 }
