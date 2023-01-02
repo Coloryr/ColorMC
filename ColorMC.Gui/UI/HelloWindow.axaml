@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
-    Title="HelloWindow"
     Width="800"
     Height="450"
     MinWidth="800"
@@ -19,7 +18,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="初始设置"
+            Title="ColorMC 初始设置"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Margin="0,35,0,0">

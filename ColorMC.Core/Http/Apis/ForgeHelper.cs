@@ -6,7 +6,7 @@ using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Http;
+namespace ColorMC.Core.Http.Apis;
 
 public static class ForgeHelper
 {

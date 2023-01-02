@@ -57,7 +57,4 @@
       <DependentUpon>Info4Control.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UIBinding\Objs\" />
-  </ItemGroup>
 </Project>

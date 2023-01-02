@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Http.Downloader;
+﻿using ColorMC.Core.Http.Apis;
+using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs.Game;
 using ColorMC.Core.Utils;

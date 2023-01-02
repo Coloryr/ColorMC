@@ -2,6 +2,7 @@
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Objs.CurseForge;
 
 namespace ColorMC.Core.Utils;
 
@@ -94,6 +95,22 @@ public static class Language
             DownloadItemState.Done => "完成",
             DownloadItemState.Error => "发生错误",
             _ => "未知的状态"
+        };
+    }
+
+    public static string GetName(this SortField state)
+    {
+        return state switch
+        {
+            SortField.Featured => "特色",
+            SortField.Popularity => "热度",
+            SortField.LastUpdated => "最后更新",
+            SortField.Name => "名字",
+            SortField.Author => "作者",
+            SortField.TotalDownloads => "下载数",
+            SortField.Category => "类别",
+            SortField.GameVersion => "游戏版本",
+            _ => "未知的分类"
         };
     }
 }

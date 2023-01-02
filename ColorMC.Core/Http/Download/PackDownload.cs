@@ -1,7 +1,8 @@
-﻿using ColorMC.Core.Http.Downloader;
+﻿using ColorMC.Core.Http.Apis;
+using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Pack;
+using ColorMC.Core.Objs.CurseForge;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Text;
@@ -24,7 +25,7 @@ public static class PackDownload
             Local = InstancesPath.BaseDir + "/" + obj1.fileName,
         };
 
-        await DownloadThread.Download(item);
+        await DownloadManager.Download(item);
 
         return await DownloadCurseForge(item.Local);
     }
@@ -119,7 +120,7 @@ public static class PackDownload
         CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
         Size = info.files.Count;
         Now = 0;
-        var res = await CurseForgeHelper.GetMods(info.files);
+        var res = await CurseForge.GetMods(info.files);
         if (res != null)
         {
             foreach (var item in res)
@@ -150,7 +151,7 @@ public static class PackDownload
             };
             Parallel.ForEach(info.files, options, item =>
             {
-                var res = CurseForgeHelper.GetMod(item).Result;
+                var res = CurseForge.GetMod(item).Result;
                 if (res == null)
                 {
                     done = false;

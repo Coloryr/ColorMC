@@ -55,6 +55,6 @@ public partial class Tab5Control : UserControl
     {
         Label_Count1.Content = JavaBinding.GetJavaInfo().Count;
         Label_Count2.Content = UserBinding.GetAllUser().Count;
-        Label_Count3.Content = OtherBinding.GetGames().Count;
+        Label_Count3.Content = GameBinding.GetGames().Count;
     }
 }

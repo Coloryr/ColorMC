@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Objs.Pack;
+﻿namespace ColorMC.Core.Objs.CurseForge;
 
 public record CurseForgeModObj
 {

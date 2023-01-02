@@ -7,9 +7,15 @@ using Avalonia.Interactivity;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Core;
 using System.Collections.ObjectModel;
-using DynamicData;
 
 namespace ColorMC.Gui.UI.Views.Hello;
+
+public record UserObj
+{
+    public string Name { get; set; }
+    public string Info { get; set; }
+    public AuthType Type { get; set; }
+}
 
 public partial class Tab3Control : UserControl
 {
@@ -38,7 +44,7 @@ public partial class Tab3Control : UserControl
         if (item == null)
             return;
 
-        UserBinding.Remove(item);
+        UserBinding.Remove(item.Name, item.Type);
         Load();
     }
 
@@ -240,6 +246,14 @@ public partial class Tab3Control : UserControl
     public void Load()
     {
         List.Clear();
-        List.AddRange(UserBinding.GetAllUser());
+        foreach (var item in UserBinding.GetAllUser())
+        {
+            List.Add(new()
+            {
+                Name = item.Key.Item1,
+                Info = item.Value.UserName + " " + item.Key.Item2.GetName(),
+                Type = item.Key.Item2
+            });
+        }   
     }
 }

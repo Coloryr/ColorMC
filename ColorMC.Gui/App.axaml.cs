@@ -1,11 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
+using Avalonia.Media.Imaging;
 using ColorMC.Core;
-using ColorMC.Core.Http.Downloader;
 using ColorMC.Gui.UI;
-using ColorMC.Gui.UI.Views;
+using ColorMC.Gui.UIBinding;
 using System;
 
 namespace ColorMC.Gui;
@@ -14,6 +13,14 @@ public partial class App : Application
 {
     private static IClassicDesktopStyleApplicationLifetime Life;
     public static DownloadWindow? DownloadWindow;
+    public static UserWindow? UserWindow;
+    public static MainWindow? MainWindow;
+    public static HelloWindow? HelloWindow;
+    public static AddGameWindow? AddGameWindow;
+    public static AddCurseForgeWindow? AddCurseForgeWindow;
+
+    public static Bitmap? BackBitmap;
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -21,10 +28,6 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        CoreMain.OnError = ShowError;
-        CoreMain.NewStart = ShowNew;
-        CoreMain.DownloaderUpdate = DownloaderUpdate;
-
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;
@@ -39,19 +42,11 @@ public partial class App : Application
         }
     }
 
-    public void DownloaderUpdate(CoreRunState state)
+    public static void DownloaderUpdate(CoreRunState state)
     {
         if (state == CoreRunState.Init)
         {
-            if (DownloadWindow != null)
-            {
-                DownloadWindow.Activate();
-            }
-            else
-            {
-                DownloadWindow = new DownloadWindow();
-                DownloadWindow.Show();
-            }
+            ShowDownload();
         }
         else if (state == CoreRunState.End)
         {
@@ -61,21 +56,90 @@ public partial class App : Application
 
     private void Life_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
     {
-        Logs.Stop();
-        DownloadManager.Stop();
+        BaseBinding.Exit();
+    }
+
+    public static void ShowAddGame()
+    {
+        if (AddGameWindow != null)
+        {
+            AddGameWindow.Activate();
+        }
+        else
+        {
+            AddGameWindow = new();
+            AddGameWindow.Show();
+        }
+    }
+
+    public static void ShowDownload()
+    {
+        if (DownloadWindow != null)
+        {
+            DownloadWindow.Activate();
+        }
+        else
+        {
+            DownloadWindow = new();
+            DownloadWindow.Show();
+        }
+    }
+
+    public static void ShowUser(int type)
+    {
+        if (UserWindow != null)
+        {
+            UserWindow.Activate();
+        }
+        else
+        {
+            UserWindow = new();
+            UserWindow.Show();
+        }
+
+        UserWindow.SetType(type);
     }
 
     public static void ShowMain()
     {
-        new MainWindow().Show();
+        if (MainWindow != null)
+        {
+            MainWindow.Activate();
+        }
+        else
+        {
+            MainWindow = new();
+            MainWindow.Show();
+        }
     }
 
     public static void ShowNew()
     {
-        new HelloWindow().Show();
+        if (HelloWindow != null)
+        {
+            HelloWindow.Activate();
+        }
+        else
+        {
+            HelloWindow = new();
+            HelloWindow.Show();
+        }
     }
 
-    private static void ShowError(string data, Exception e, bool close)
+    public static void ShowCurseForge()
+    {
+        if (AddCurseForgeWindow != null)
+        {
+            AddCurseForgeWindow.Activate();
+        }
+        else
+        {
+            AddCurseForgeWindow = new();
+            AddCurseForgeWindow.Show();
+        }
+    }
+
+    public static void ShowError(string data, Exception e, bool close)
     {
         new ErrorWindow().Show(data, e, close);
     }

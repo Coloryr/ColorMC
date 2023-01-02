@@ -9,7 +9,9 @@ public class DownloadThread
     private Thread thread;
     private bool run = false;
     private readonly Semaphore semaphore = new(0, 2);
+    private readonly Semaphore semaphore1 = new(0, 2);
     private CancellationTokenSource cancel;
+    private bool pause = false;
     public void Init(int index)
     {
         this.index = index;
@@ -23,14 +25,13 @@ public class DownloadThread
 
     public void Close()
     {
-        run = false;
-        semaphore.Release();
-        thread.Join();
-    }
+        if (!run)
+            return;
 
-    public void Cancel()
-    {
+        DownloadManager.ThreadDone();
+        run = false;
         cancel.Cancel();
+        semaphore.Release();
     }
 
     public void Start()
@@ -39,58 +40,15 @@ public class DownloadThread
         semaphore.Release();
     }
 
-    private static int GetCopyBufferSize(Stream stream)
+    public void Pause()
     {
-        const int DefaultCopyBufferSize = 81920;
-
-        int bufferSize = DefaultCopyBufferSize;
-
-        if (stream.CanSeek)
-        {
-            long length = stream.Length;
-            long position = stream.Position;
-            if (length <= position)
-            {
-                bufferSize = 1;
-            }
-            else
-            {
-                long remaining = length - position;
-                if (remaining > 0)
-                {
-                    bufferSize = (int)Math.Min(bufferSize, remaining);
-                }
-            }
-        }
-
-        return bufferSize;
+        pause = true;
     }
 
-    public static async Task Download(DownloadItem item)
+    public void Resume()
     {
-        FileInfo info = new(item.Local);
-        if (!Directory.Exists(info.DirectoryName))
-        {
-            Directory.CreateDirectory(info.DirectoryName!);
-        }
-        using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-        var data = await BaseClient.Client.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead);
-        using Stream stream1 = data.Content.ReadAsStream();
-        byte[] buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
-        try
-        {
-            int bytesRead;
-            while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer))
-                .ConfigureAwait(false)) != 0)
-            {
-                await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead))
-                    .ConfigureAwait(false);
-            }
-        }
-        finally
-        {
-            ArrayPool<byte>.Shared.Return(buffer);
-        }
+        pause = false;
+        semaphore1.Release();
     }
 
     private async void Run()
@@ -103,10 +61,10 @@ public class DownloadThread
             DownloadItem? item;
             while ((item = DownloadManager.GetItem()) != null)
             {
-                byte[]? buffer = null;
+                if (pause)
+                    semaphore1.WaitOne();
 
-                //item.State = DownloadItemState.Init;
-                //item.Update?.Invoke(index);
+                byte[]? buffer = null;
 
                 try
                 {
@@ -125,7 +83,7 @@ public class DownloadThread
 
                                 item.State = DownloadItemState.Done;
                                 item.Update?.Invoke(index);
-                                DownloadManager.Done(index);
+                                DownloadManager.Done();
                                 continue;
                             }
                         }
@@ -143,7 +101,7 @@ public class DownloadThread
 
                                 item.State = DownloadItemState.Done;
                                 item.Update?.Invoke(index);
-                                DownloadManager.Done(index);
+                                DownloadManager.Done();
                                 continue;
                             }
                         }
@@ -178,7 +136,7 @@ public class DownloadThread
                         item.NowSize = 0;
                         item.Update?.Invoke(index);
                         using Stream stream1 = data.Content.ReadAsStream(cancel.Token);
-                        buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
+                        buffer = ArrayPool<byte>.Shared.Rent(DownloadManager.GetCopyBufferSize(stream1));
 
                         using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
 
@@ -188,6 +146,10 @@ public class DownloadThread
                         {
                             await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0,
                                 bytesRead), cancel.Token).ConfigureAwait(false);
+
+                            if (pause)
+                                semaphore1.WaitOne();
+
                             item.State = DownloadItemState.Download;
                             item.NowSize += bytesRead;
                             item.Update?.Invoke(index);
@@ -212,11 +174,14 @@ public class DownloadThread
 
                         item.State = DownloadItemState.Done;
                         item.Update?.Invoke(index);
-                        DownloadManager.Done(index);
+                        DownloadManager.Done();
                         break;
                     }
                     catch (Exception e)
                     {
+                        if (cancel.IsCancellationRequested)
+                            return;
+
                         item.State = DownloadItemState.Error;
                         item.ErrorTime++;
                         item.Update?.Invoke(index);
@@ -231,7 +196,7 @@ public class DownloadThread
                 } while (time < 5);
             }
 
-            DownloadManager.ThreadDone();
+            Close();
         }
     }
 }

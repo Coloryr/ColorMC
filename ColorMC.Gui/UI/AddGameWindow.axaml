@@ -1,0 +1,150 @@
+<Window
+    x:Class="ColorMC.Gui.UI.AddGameWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
+    Width="800"
+    Height="450"
+    MinWidth="800"
+    MinHeight="450"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    ExtendClientAreaToDecorationsHint="True"
+    mc:Ignorable="d">
+    <Grid>
+        <views:HeadControl
+            Title="ColorMC 添加游戏"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top" />
+        <Grid Margin="0,35,0,0">
+            <Rectangle
+                Fill="#FFF4F4F5"
+                Stroke="#FF5ABED6"
+                StrokeThickness="3" />
+
+            <Image
+                Name="Image_Back"
+                Margin="3"
+                Stretch="UniformToFill" />
+
+            <StackPanel
+                Margin="3"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="#88ffffff">
+                <Label Margin="5" Content="添加实例" />
+                <TextBox
+                    Name="TextBox_Input1"
+                    Margin="5"
+                    Classes="input1"
+                    Watermark="实例名字" />
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="游戏版本" />
+                    <ComboBox
+                        Name="ComboBox_GameVersion"
+                        Width="200"
+                        Margin="5,0,0,0" />
+                    <CheckBox
+                        Name="CheckBox_Release"
+                        Margin="20,0,0,0"
+                        Content="正式版"
+                        IsChecked="True" />
+                    <CheckBox
+                        Name="CheckBox_Snapshot"
+                        Margin="20,0,0,0"
+                        Content="快照版" />
+                    <CheckBox
+                        Name="CheckBox_Other"
+                        Margin="20,0,0,0"
+                        Content="其他版" />
+                </StackPanel>
+
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="Mod加载器" />
+                    <ComboBox
+                        Name="ComboBox_LoaderVersion"
+                        Width="200"
+                        Margin="5,0,0,0"
+                        IsEnabled="False" />
+                    <CheckBox
+                        Name="CheckBox_Forge"
+                        Margin="20,0,0,0"
+                        Content="Forge"
+                        IsEnabled="False" />
+                    <CheckBox
+                        Name="CheckBox_Fabric"
+                        Margin="20,0,0,0"
+                        Content="Fabric"
+                        IsEnabled="False" />
+                    <CheckBox
+                        Name="CheckBox_Quilt"
+                        Margin="20,0,0,0"
+                        Content="Quilt"
+                        IsEnabled="False" />
+                </StackPanel>
+            </StackPanel>
+
+            <Button
+                Name="Button_Add1"
+                Width="190"
+                Height="25"
+                Margin="10,170,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="从ColorMC压缩包导入" />
+
+            <Button
+                Name="Button_Add2"
+                Width="190"
+                Height="25"
+                Margin="205,170,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="添加CurseForge整合包" />
+
+            <Button
+                Name="Button_Add3"
+                Width="190"
+                Height="25"
+                Margin="400,170,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="从MMC压缩包导入" />
+
+            <Button
+                Name="Button_Add4"
+                Width="190"
+                Height="25"
+                Margin="595,170,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="从HMCL压缩包导入" />
+
+            <Button
+                Name="Button_Add5"
+                Width="190"
+                Height="25"
+                Margin="10,200,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="从CurseForge搜索整合包" />
+
+            <Button
+                Name="Button_Add"
+                Width="80"
+                Height="25"
+                Margin="10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Content="添加" />
+
+            <views:Info1Control Name="Info1" IsVisible="False" />
+            <views:Info4Control Name="Info" IsVisible="False" />
+            <views:Info2Control Name="Info2" />
+        </Grid>
+    </Grid>
+</Window>

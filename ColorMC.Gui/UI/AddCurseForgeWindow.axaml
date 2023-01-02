@@ -1,0 +1,118 @@
+<Window
+    x:Class="ColorMC.Gui.UI.AddCurseForgeWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
+    Width="800"
+    Height="450"
+    MinWidth="800"
+    MinHeight="450"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    ExtendClientAreaToDecorationsHint="True"
+    mc:Ignorable="d">
+    <Grid>
+        <views:HeadControl
+            Title="ColorMC 添加CurseForge整合包"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top" />
+        <Grid Margin="0,35,0,0">
+            <Rectangle
+                Fill="#FFF4F4F5"
+                Stroke="#FF5ABED6"
+                StrokeThickness="3" />
+
+            <Image
+                Name="Image_Back"
+                Margin="3"
+                Stretch="UniformToFill" />
+
+            <Grid VerticalAlignment="Top">
+                <Rectangle
+                    Fill="#88ffffff"
+                    Stroke="#FF5ABED6"
+                    StrokeThickness="3" />
+                <StackPanel Margin="3">
+                    <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                        <Label
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="分类" />
+                        <ComboBox
+                            Name="ComboBox1"
+                            Width="100"
+                            Height="30"
+                            Margin="2,2,0,0" />
+
+                        <Label
+                            Margin="10,5,5,5"
+                            VerticalAlignment="Center"
+                            Content="游戏版本" />
+                        <ComboBox
+                            Name="ComboBox2"
+                            Width="200"
+                            Height="30"
+                            Margin="2,2,0,0" />
+
+                        <TextBox
+                            Name="Input1"
+                            Width="200"
+                            Height="30"
+                            Margin="10,0,0,0"
+                            Classes="input1"
+                            Foreground="Black"
+                            Watermark="名字" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="排序" />
+                        <ComboBox
+                            Name="ComboBox3"
+                            Width="100"
+                            Height="30"
+                            Margin="2,2,0,0" />
+                        <Label
+                            Margin="10,5,5,5"
+                            VerticalAlignment="Center"
+                            Content="页数" />
+                        <NumericUpDown
+                            Name="Input2"
+                            Width="150"
+                            Height="30"
+                            Background="#FFF4F4F4"
+                            BorderBrush="#FF5ABED6"
+                            BorderThickness="2"
+                            Minimum="0" />
+                    </StackPanel>
+                </StackPanel>
+                <Button
+                    Name="Button1"
+                    Width="60"
+                    Height="30"
+                    Margin="5"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Content="搜索" />
+            </Grid>
+
+            <ScrollViewer Margin="3,76,3,3" VerticalScrollBarVisibility="Visible">
+                <StackPanel
+                    Name="ListBox_Items"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" />
+            </ScrollViewer>
+
+
+
+            <views:Info1Control Name="Info1" IsVisible="False" />
+            <views:Info4Control Name="Info" IsVisible="False" />
+
+        </Grid>
+    </Grid>
+</Window>

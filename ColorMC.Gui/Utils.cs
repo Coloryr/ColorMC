@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
 using SixLabors.ImageSharp;
@@ -133,28 +134,79 @@ public static class UIUtils
         }
     }
 
-    public static void MakeExpanderTran(this Expander expander)
+    public static T? FindToEnd<T>(this IVisual visual)
+    {
+        foreach (var item in visual.VisualChildren)
+        {
+            if (item is T)
+            {
+                return (T)item;
+            }
+        }
+
+        foreach (var item in visual.VisualChildren) 
+        {
+            return FindToEnd<T>(item);
+        }
+
+        return default;
+    }
+
+    public static void MakeTran(this Expander expander)
     {
         try
         {
-            var border = expander.GetVisualChildren();
-            foreach (var item in border)
+            var item1 = expander.FindToEnd<Border>();
+            if (item1 != null)
             {
-                if (item is DockPanel)
+                item1.Background = Avalonia.Media.Brush.Parse("#88f2f2f2");
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+    }
+
+    public static void MakeTran(this DataGrid grid)
+    {
+        try
+        {
+            var item1 = grid.FindToEnd<DataGridColumnHeadersPresenter>();
+            if (item1 != null)
+            {
+                item1.Background = Avalonia.Media.Brush.Parse("#ccffffff");
+                foreach (var item in item1.GetVisualChildren())
                 {
-                    foreach (var item1 in item.VisualChildren)
+                    var item2 = item.FindToEnd<TextBlock>();
+                    if (item2 != null)
                     {
-                        if (item1 is Border)
-                        {
-                            (item1 as Border).Background = Avalonia.Media.Brush.Parse("#88f2f2f2");
-                        }
+                        item2.Foreground = Avalonia.Media.Brushes.Black;
                     }
                 }
             }
         }
         catch (Exception e)
-        { 
-            
+        {
+
+        }
+    }
+
+    public static void MakePadingNull(this Expander expander)
+    {
+        try
+        {
+            var item = expander.FindToEnd<Border>();
+            if (item != null)
+            {
+                item.Background = Avalonia.Media.Brushes.Transparent;
+                item.Padding = new Thickness(0);
+                item.BorderBrush = Avalonia.Media.Brushes.Transparent;
+            }
+        }
+        catch (Exception e)
+        {
+
         }
     }
 }

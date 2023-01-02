@@ -57,7 +57,7 @@ public static class AuthHelper
             return null;
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> RefreshToken(LoginObj obj)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> RefreshToken(this LoginObj obj)
     {
         switch (obj.AuthType)
         {

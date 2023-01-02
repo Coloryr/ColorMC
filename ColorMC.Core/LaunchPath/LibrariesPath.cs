@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Http;
+using ColorMC.Core.Http.Apis;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;

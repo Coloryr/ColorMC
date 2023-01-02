@@ -17,7 +17,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="错误"
+            Title="ColorMc 错误"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Margin="0,35,0,0">

@@ -9,9 +9,9 @@ public static class Nide8
     public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Authenticate(string server, string clientToken,
         string user, string pass)
     {
-        server = BaseUrl + server;
+        string url = BaseUrl + server;
 
-        var obj = await LoginOld.Authenticate(server, clientToken, user, pass);
+        var obj = await LoginOld.Authenticate(url, clientToken, user, pass);
         if (obj.State != LoginState.Done)
             return obj;
 

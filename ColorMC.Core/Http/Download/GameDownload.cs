@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Http.Downloader;
+﻿using ColorMC.Core.Http.Apis;
+using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Game;
@@ -67,7 +68,7 @@ public static class GameDownload
         var down = ForgeHelper.BuildForgeInster(mc, version);
         try
         {
-            await DownloadThread.Download(down);
+            await DownloadManager.Download(down);
         }
         catch
         {

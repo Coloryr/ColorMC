@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
 using ColorMC.Core.Http;
+using ColorMC.Core.Http.Apis;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -10,31 +11,36 @@ using DynamicData;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Avalonia.Input;
-using ColorMC.Core.Http.Apis;
+using System;
 
-namespace ColorMC.Gui.UI.Views.Hello;
+namespace ColorMC.Gui.UI;
 
-public partial class Tab4Control : UserControl
+public partial class AddGameWindow : Window
 {
-    private HelloWindow Window;
-
     private ObservableCollection<string> List = new();
-
     private bool add;
-    public Tab4Control()
+
+    public AddGameWindow()
     {
         InitializeComponent();
+
+        this.MakeItNoChrome();
+        FontFamily = Program.FontFamily;
+
+        if (App.BackBitmap != null)
+        {
+            Image_Back.Source = App.BackBitmap;
+        }
 
         ComboBox_GameVersion.Items = List;
         ComboBox_GameVersion.SelectionChanged += GameVersion_SelectionChanged;
 
-        Button_Next.Click += Button_Next_Click;
         Button_Add.Click += Button_Add_Click;
         Button_Add1.Click += Button_Add1_Click;
         Button_Add2.Click += Button_Add2_Click;
         Button_Add3.Click += Button_Add3_Click;
         Button_Add4.Click += Button_Add4_Click;
+        Button_Add5.Click += Button_Add5_Click;
 
         CheckBox_Forge.Click += Forge_Click;
         CheckBox_Fabric.Click += Fabric_Click;
@@ -48,7 +54,22 @@ public partial class Tab4Control : UserControl
 
         CoreMain.GameOverwirte = GameOverwirte;
 
+        Closed += AddGameWindow_Closed;
+
         Load();
+    }
+
+    private void AddGameWindow_Closed(object? sender, EventArgs e)
+    {
+        CoreMain.PackState = null;
+        CoreMain.PackUpdate = null;
+        CoreMain.GameOverwirte = null;
+        App.AddGameWindow = null;
+    }
+
+    private void Button_Add5_Click(object? sender, RoutedEventArgs e)
+    {
+        App.ShowCurseForge();
     }
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
@@ -56,14 +77,14 @@ public partial class Tab4Control : UserControl
         string name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
-            Window.Info.Show("没有实例名字");
+            Info.Show("没有实例名字");
             return;
         }
 
         string? version = ComboBox_GameVersion.SelectedItem as string;
         if (string.IsNullOrWhiteSpace(version))
         {
-            Window.Info.Show("没有选择版本");
+            Info.Show("没有选择版本");
             return;
         }
 
@@ -89,11 +110,11 @@ public partial class Tab4Control : UserControl
         var res = await GameBinding.AddGame(name, version, loader, loaderversion);
         if (!res)
         {
-            Window.Info.Show("添加实例失败");
+            Info.Show("添加实例失败");
         }
         else
         {
-            Window.Info2.Show("添加成功");
+            Info2.Show("添加成功");
         }
     }
 
@@ -106,7 +127,7 @@ public partial class Tab4Control : UserControl
         string? item = ComboBox_GameVersion.SelectedItem as string;
         if (!string.IsNullOrWhiteSpace(item))
         {
-            Window.Info1.Show("正在获取Mod加载器信息");
+            Info1.Show("正在获取Mod加载器信息");
             var list = await ForgeHelper.GetSupportVersion();
             if (list != null && list.Contains(item))
             {
@@ -124,7 +145,7 @@ public partial class Tab4Control : UserControl
             {
                 CheckBox_Quilt.IsEnabled = true;
             }
-            Window.Info1.Close();
+            Info1.Close();
         }
     }
 
@@ -136,12 +157,12 @@ public partial class Tab4Control : UserControl
             if (item == null)
                 return;
 
-            Window.Info1.Show("正在获取Quilt版本信息");
+            Info1.Show("正在获取Quilt版本信息");
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = false;
 
             var list = await QuiltHelper.GetLoaders(item, BaseClient.Source);
-            Window.Info1.Close();
+            Info1.Close();
             if (list == null)
             {
                 return;
@@ -167,12 +188,12 @@ public partial class Tab4Control : UserControl
             if (item == null)
                 return;
 
-            Window.Info1.Show("正在获取Fabric版本信息");
+            Info1.Show("正在获取Fabric版本信息");
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
-            
+
             var list = await FabricHelper.GetLoaders(item, BaseClient.Source);
-            Window.Info1.Close();
+            Info1.Close();
             if (list == null)
             {
                 return;
@@ -198,12 +219,12 @@ public partial class Tab4Control : UserControl
             if (item == null)
                 return;
 
-            Window.Info1.Show("正在获取Forge版本信息");
+            Info1.Show("正在获取Forge版本信息");
             CheckBox_Fabric.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
             var list = await ForgeHelper.GetVersionList(item, BaseClient.Source);
-            Window.Info1.Close();
+            Info1.Close();
             if (list == null)
             {
                 return;
@@ -223,42 +244,42 @@ public partial class Tab4Control : UserControl
 
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
-        Window.Info1.Close();
-        var test = await Window.Info.ShowWait($"游戏实例:{obj.Name}冲突，是否覆盖");
+        Info1.Close();
+        var test = await Info.ShowWait($"游戏实例:{obj.Name}冲突，是否覆盖");
         if (!add)
         {
-            Window.Info1.Show();
+            Info1.Show();
         }
         return test;
     }
 
     private void PackUpdate(int size, int now)
     {
-        Window.Info1.Progress((double)now / size);
+        Info1.Progress((double)now / size);
     }
 
     private void PackState(CoreRunState state)
     {
         if (state == CoreRunState.Read)
         {
-            Window.Info1.Show("正在导入压缩包");
+            Info1.Show("正在导入压缩包");
         }
         else if (state == CoreRunState.Init)
         {
-            Window.Info1.NextText("正在读取压缩包");
+            Info1.NextText("正在读取压缩包");
         }
         else if (state == CoreRunState.GetInfo)
         {
-            Window.Info1.NextText("正在解析压缩包");
+            Info1.NextText("正在解析压缩包");
         }
         else if (state == CoreRunState.Download)
         {
-            Window.Info1.NextText("正在下载文件");
-            Window.Info1.Progress(-1);
+            Info1.NextText("正在下载文件");
+            Info1.Progress(-1);
         }
         else if (state == CoreRunState.End)
         {
-            Window.Info1.Close();
+            Info1.Close();
         }
     }
 
@@ -272,11 +293,11 @@ public partial class Tab4Control : UserControl
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.HMCL))
         {
-            Window.Info2.Show("导入完成");
+            Info2.Show("导入完成");
         }
         else
         {
-            Window.Info.Show("导入错误");
+            Info.Show("导入错误");
         }
         EnableButton();
     }
@@ -291,11 +312,11 @@ public partial class Tab4Control : UserControl
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.MMC))
         {
-            Window.Info2.Show("导入完成");
+            Info2.Show("导入完成");
         }
         else
         {
-            Window.Info.Show("导入错误");
+            Info.Show("导入错误");
         }
         EnableButton();
     }
@@ -310,11 +331,11 @@ public partial class Tab4Control : UserControl
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.CurseForge))
         {
-            Window.Info2.Show("导入完成");
+            Info2.Show("导入完成");
         }
         else
         {
-            Window.Info.Show("导入错误");
+            Info.Show("导入错误");
         }
         EnableButton();
     }
@@ -329,11 +350,11 @@ public partial class Tab4Control : UserControl
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.ColorMC))
         {
-            Window.Info2.Show("导入完成");
+            Info2.Show("导入完成");
         }
         else
         {
-            Window.Info.Show("导入错误");
+            Info.Show("导入错误");
         }
         EnableButton();
     }
@@ -356,7 +377,7 @@ public partial class Tab4Control : UserControl
             } : new()
         };
 
-        var file = await openFile.ShowAsync(Window);
+        var file = await openFile.ShowAsync(this);
         if (file?.Length > 0)
         {
             var item = file[0];
@@ -400,17 +421,7 @@ public partial class Tab4Control : UserControl
     public void Load()
     {
         List.Clear();
-        List.AddRange(GameBinding.GetGameVersion(CheckBox_Release.IsChecked, 
+        List.AddRange(GameBinding.GetGameVersion(CheckBox_Release.IsChecked,
             CheckBox_Snapshot.IsChecked, CheckBox_Other.IsChecked));
-    }
-
-    private void Button_Next_Click(object? sender, RoutedEventArgs e)
-    {
-        Window.Next();
-    }
-
-    public void SetWindow(HelloWindow window)
-    {
-        Window = window;
     }
 }

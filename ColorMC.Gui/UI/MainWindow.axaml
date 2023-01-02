@@ -42,6 +42,7 @@
                 </ScrollViewer>
             </DockPanel>
 
+            <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info4Control Name="Info" IsVisible="False" />
         </Grid>
     </Grid>

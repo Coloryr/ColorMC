@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.Objs.Loader;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Http;
+namespace ColorMC.Core.Http.Apis;
 
 public static class FabricHelper
 {

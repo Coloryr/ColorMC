@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Utils;
+using System.Buffers;
 using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Http.Downloader;
@@ -10,8 +11,8 @@ public static class DownloadManager
     private static List<DownloadThread> threads = new();
     private static Semaphore semaphore = new(0, 6);
 
-    public static int AllSize { get; set; }
-    public static int DoneSize { get; set; }
+    public static int AllSize { get; private set; }
+    public static int DoneSize { get; private set; }
 
     public static void Init()
     {
@@ -32,6 +33,22 @@ public static class DownloadManager
     {
         threads.ForEach(a => a.Close());
         threads.Clear();
+    }
+
+    public static void Pause()
+    {
+        foreach (var item in threads)
+        {
+            item.Pause();
+        }
+    }
+
+    public static void Resume()
+    {
+        foreach (var item in threads)
+        {
+            item.Resume();
+        }
     }
 
     public static void Clear()
@@ -93,7 +110,7 @@ public static class DownloadManager
         return null;
     }
 
-    public static void Done(int index)
+    public static void Done()
     {
         DoneSize++;
     }
@@ -107,5 +124,59 @@ public static class DownloadManager
     {
         Logs.Error($"下载{item.Name}错误", e);
         CoreMain.DownloadItemError?.Invoke(index, item, e);
+    }
+
+    public static int GetCopyBufferSize(Stream stream)
+    {
+        const int DefaultCopyBufferSize = 81920;
+        int bufferSize = DefaultCopyBufferSize;
+
+        if (stream.CanSeek)
+        {
+            long length = stream.Length;
+            long position = stream.Position;
+            if (length <= position)
+            {
+                bufferSize = 1;
+            }
+            else
+            {
+                long remaining = length - position;
+                if (remaining > 0)
+                {
+                    bufferSize = (int)Math.Min(bufferSize, remaining);
+                }
+            }
+        }
+
+        return bufferSize;
+    }
+
+
+    public static async Task Download(DownloadItem item)
+    {
+        FileInfo info = new(item.Local);
+        if (!Directory.Exists(info.DirectoryName))
+        {
+            Directory.CreateDirectory(info.DirectoryName!);
+        }
+        using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        var data = await BaseClient.Client.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead);
+        using Stream stream1 = data.Content.ReadAsStream();
+        byte[] buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
+        try
+        {
+            int bytesRead;
+            while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer))
+                .ConfigureAwait(false)) != 0)
+            {
+                await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead))
+                    .ConfigureAwait(false);
+            }
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(buffer);
+        }
     }
 }
