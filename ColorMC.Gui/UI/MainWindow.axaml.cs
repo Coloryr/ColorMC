@@ -4,6 +4,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Avalonia.X11;
 using ColorMC.Core;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
@@ -28,7 +29,8 @@ public partial class MainWindow : Window
     private List<GamesControl> Groups = new();
     private GamesControl DefaultGroup;
     private GameSettingObj? Obj;
-    private LoginObj? SelectUser;
+    public delegate void UserEditHandler();
+    public static event UserEditHandler UserEdit;
 
     public MainWindow()
     {
@@ -44,36 +46,111 @@ public partial class MainWindow : Window
         Task.Run(Load);
         Task.Run(Load1);
 
-        string file = GuiConfigUtils.Config?.BackImage;
-        if (!string.IsNullOrWhiteSpace(file) && File.Exists(file))
+        if (App.BackBitmap != null)
         {
-            Image_Back.Source = new Bitmap(file);
+            Image_Back.Source = App.BackBitmap;
         }
 
-        Image_Back.Source = new Bitmap("F:\\illust_94899568_20220104_002837.png");
+        CoreMain.GameLaunch = GameLunch;
+        CoreMain.GameDownload = GameDownload;
 
+        UserEdit += MainWindow_OnUserEdit;
         Opened += MainWindow_Opened;
+        Closed += MainWindow_Closed;
+    }
+
+    public async void Launch(bool debug)
+    {
+        Info1.Show("正在启动游戏");
+        var res = await OtherBinding.Launch(Obj, debug);
+        if (res.Item1 == false)
+        {
+            Info1.Close();
+            Info.Show(res.Item2!);
+        }
+    }
+
+    public static void OnUserEdit()
+    {
+        if (UserEdit != null)
+        {
+            UserEdit();
+        }
+    }
+
+    private void MainWindow_OnUserEdit()
+    {
+        Task.Run(Load1);
+    }
+
+    private void MainWindow_Closed(object? sender, EventArgs e)
+    {
+        App.MainWindow = null;
     }
 
     private void MainWindow_Opened(object? sender, EventArgs e)
     {
-        ItemInfo.Expander1.MakeExpanderTran();
+        ItemInfo.Expander1.MakeTran();
     }
 
-    public void ItemSelect(GameSettingObj? obj)
+    public void GameItemSelect(GameSettingObj? obj)
     {
         Obj = obj;
+        ItemInfo.SetGame(obj);
+    }
+
+    private async Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
+    {
+        return await Info.ShowWait("是否下载缺失的文件");
+    }
+
+    private void GameLunch(GameSettingObj obj, LaunchState state)
+    {
+        switch (state)
+        {
+            case LaunchState.Login:
+                Info1.NextText("正在登录账户");
+                break;
+            case LaunchState.Check:
+                Info1.NextText("正在检测游戏文件");
+                break;
+            case LaunchState.CheckVersion:
+                Info1.NextText("正在检测游戏核心文件");
+                break;
+            case LaunchState.CheckLib:
+                Info1.NextText("正在检测游戏运行库");
+                break;
+            case LaunchState.CheckAssets:
+                Info1.NextText("正在检测游戏资源文件");
+                break;
+            case LaunchState.CheckLoader:
+                Info1.NextText("正在检测游戏Mod加载器");
+                break;
+            case LaunchState.CheckLoginCore:
+                Info1.NextText("正在检测游戏外置登陆器");
+                break;
+            case LaunchState.Download:
+                Info1.NextText("正在下载所需文件");
+                break;
+            case LaunchState.JvmPrepare:
+                Info1.NextText("正在准备Jvm参数");
+                break;
+                
+            case LaunchState.LoginFail:
+                Info1.Close();
+                Info.Show("账户登录失败");
+                break;
+        }
     }
 
     private void Load1()
     {
-        SelectUser = UserBinding.GetLastUser();
-        Dispatcher.UIThread.Post(() => { ItemInfo.SetUser(SelectUser); });
+        Dispatcher.UIThread.Post(() => { ItemInfo.SetUser(UserBinding.GetLastUser()); });
     }
 
     private async void Load()
     {
-        var list = OtherBinding.GetGameGroups();
+        var list = GameBinding.GetGameGroups();
 
         Groups.Clear(); 
         await Dispatcher.UIThread.InvokeAsync(() =>

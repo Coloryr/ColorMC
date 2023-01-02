@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Http;
+using ColorMC.Core.Http.Apis;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
@@ -16,14 +17,14 @@ namespace ColorMC.Core.Game;
 
 public enum LaunchState
 {
-    Check, CheckVersion, CheckLib, CheckAssets, CheckLoader, CheckLoginCore,
-    LostVersion, LostLib, LostLoader, LostLoginCore, LostGame,
+    Login, Check, CheckVersion, CheckLib, CheckAssets, CheckLoader, CheckLoginCore,
+    LostVersion, LostLib, LostLoader, LostLoginCore, LostGame, LoginFail,
     Download,
     JvmPrepare,
     VersionError, AssetsError, LoaderError, JvmError
 }
 
-public static class Launch
+public static class GameLaunch
 {
     public static async Task<List<DownloadItem>?> CheckGameFile(GameSettingObj obj, LoginObj login)
     {
@@ -757,6 +758,16 @@ public static class Launch
 
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null)
     {
+        CoreMain.GameLaunch?.Invoke(obj, LaunchState.Login);
+        var login1 = await login.RefreshToken();
+        if (login1.State1 != LoginState.Done)
+        {
+            CoreMain.GameLaunch?.Invoke(obj, LaunchState.LoginFail);
+            return null;   
+        }
+
+        login = login1.Obj!;
+
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Check);
         var res = await CheckGameFile(obj, login);
         if (res == null)

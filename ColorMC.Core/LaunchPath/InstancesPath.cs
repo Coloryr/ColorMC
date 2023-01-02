@@ -2,7 +2,7 @@ using ColorMC.Core.Game;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Pack;
+using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;

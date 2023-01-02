@@ -1,21 +1,22 @@
-﻿using ColorMC.Core.Objs.Pack;
+﻿using ColorMC.Core.Objs.CurseForge;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 
-namespace ColorMC.Core.Http;
+namespace ColorMC.Core.Http.Apis;
 
-public static class CurseForgeHelper
+public static class CurseForge
 {
     private const string CurseForgeKEY = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m";
     private const string CurseForgeUrl = "https://api.curseforge.com/";
 
-    public static async Task<CurseForgeObj?> GetPackList(string version = "", int index = 0, SortField sort = SortField.Popularity, string filter = "")
+    public static async Task<CurseForgeObj?> GetPackList(string version = "", int page = 0,
+        int sort = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
     {
         try
         {
             string temp = CurseForgeUrl + "v1/mods/search?gameId=432&classId=4471&"
-                + $"gameVersion={version}&index={index}&sortOrder={(int)sort}&searchFilter={filter}";
+                + $"gameVersion={version}&index={page * pagesize}&sortField={sort}&searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -87,7 +88,7 @@ public static class CurseForgeHelper
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
-            return JsonConvert.DeserializeObject<Arg2>(data1).data;
+            return JsonConvert.DeserializeObject<Arg2>(data1)?.data;
         }
         catch (Exception e)
         {
@@ -116,6 +117,54 @@ public static class CurseForgeHelper
         catch (Exception e)
         {
             Logs.Error("获取CurseForge_Mod信息发生错误", e);
+            return null;
+        }
+    }
+
+    public static async Task<CurseForgeVersion?> GetCurseForgeVersion()
+    {
+        try
+        {
+            string temp = CurseForgeUrl + $"v1/games/432/versions";
+            HttpRequestMessage httpRequest = new()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(temp)
+            };
+            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
+            var data = await BaseClient.Client.SendAsync(httpRequest);
+            var data1 = await data.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(data1))
+                return null;
+            return JsonConvert.DeserializeObject<CurseForgeVersion>(data1);
+        }
+        catch (Exception e)
+        {
+            Logs.Error("获取CurseForge_Version信息发生错误", e);
+            return null;
+        }
+    }
+
+    public static async Task<CurseForgeVersionType?> GetCurseForgeVersionType()
+    {
+        try
+        {
+            string temp = CurseForgeUrl + $"v1/games/432/version-types";
+            HttpRequestMessage httpRequest = new()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(temp)
+            };
+            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
+            var data = await BaseClient.Client.SendAsync(httpRequest);
+            var data1 = await data.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(data1))
+                return null;
+            return JsonConvert.DeserializeObject<CurseForgeVersionType>(data1);
+        }
+        catch (Exception e)
+        {
+            Logs.Error("获取CurseForge_VersionType信息发生错误", e);
             return null;
         }
     }

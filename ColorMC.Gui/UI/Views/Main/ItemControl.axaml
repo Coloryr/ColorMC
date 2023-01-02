@@ -25,6 +25,17 @@
                     Width="80"
                     Height="80"
                     Source="resm:ColorMC.Gui.Resource.Icon.user.png" />
+                <ProgressBar
+                    Name="ProgressBar1"
+                    Width="100"
+                    Height="20"
+                    MinWidth="100"
+                    Margin="0,5,0,0"
+                    BorderBrush="White"
+                    BorderThickness="1"
+                    Foreground="#FF5EBDD3"
+                    IsIndeterminate="True"
+                    IsVisible="False" />
                 <TextBlock
                     Name="TextBlock_Name"
                     Width="100"
@@ -45,34 +56,43 @@
                     Name="Button_Switch"
                     Width="100"
                     Height="25"
-                    Content="切换用户" />
+                    Content="用户列表" />
                 <Button
                     Name="Button_Add"
                     Width="100"
                     Height="25"
                     Content="添加用户" />
+
                 <Button
-                    Name="Button_Delete"
+                    Name="Button_Add1"
                     Width="100"
                     Height="25"
-                    Content="删除用户" />
-
+                    Margin="0,20,0,0"
+                    Content="添加实例" />
                 <Button
                     Name="Button_Launch"
                     Width="100"
                     Height="25"
-                    Margin="0,20,0,0"
-                    Content="启动实例" />
+                    Content="启动实例"
+                    IsEnabled="False" />
+                <Button
+                    Name="Button_Launch1"
+                    Width="100"
+                    Height="25"
+                    Content="测试启动"
+                    IsEnabled="False" />
                 <Button
                     Name="Button_Edit"
                     Width="100"
                     Height="25"
-                    Content="修改实例" />
+                    Content="修改实例"
+                    IsEnabled="False" />
                 <Button
                     Name="Button_Out"
                     Width="100"
                     Height="25"
-                    Content="导出实例" />
+                    Content="导出实例"
+                    IsEnabled="False" />
             </StackPanel>
         </Expander>
         <Button

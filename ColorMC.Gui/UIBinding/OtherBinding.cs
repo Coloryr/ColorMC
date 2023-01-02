@@ -1,4 +1,6 @@
-﻿using ColorMC.Core.Http.Downloader;
+﻿using ColorMC.Core;
+using ColorMC.Core.Game;
+using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -8,6 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Http.Apis;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -23,68 +28,24 @@ public static class OtherBinding
         return ConfigUtils.Load(dir, true);
     }
 
-    public static List<GameSettingObj> GetGames()
+    public static (int, int) GetDownloadState()
     {
-        return InstancesPath.Games;
+        return (DownloadManager.AllSize, DownloadManager.DoneSize);
     }
 
-    public static List<string> GetGameVersion(bool? type1, bool? type2, bool? type3)
+    public static async Task<(bool, string?)> Launch(GameSettingObj? obj, bool debug)
     {
-        var list = new List<string>();
-        if (VersionPath.Versions == null)
-            return list;
-
-        foreach (var item in VersionPath.Versions.versions)
+        if (obj == null)
         {
-            if (item.type == "release")
-            {
-                if (type1 == true)
-                {
-                    list.Add(item.id);
-                }
-            }
-            else if (item.type == "snapshot")
-            {
-                if (type2 == true)
-                {
-                    list.Add(item.id);
-                }
-            }
-            else
-            {
-                if (type3 == true)
-                {
-                    list.Add(item.id);
-                }
-            }
+            return (false, "没有选择游戏实例");
         }
 
-        return list;
-    }
-
-    public static async Task<bool> AddGame(string name, string version, 
-        Loaders loaders, string? loaderversion = null)
-    {
-        var game = new GameSettingObj()
+        var login = UserBinding.GetLastUser();
+        if (login == null)
         {
-            Name = name,
-            Version = version,
-            Loader = loaders,
-            LoaderVersion = loaderversion
-        };
+            return (false, "没有选择账户");
+        }
 
-        game = await InstancesPath.CreateVersion(game);
-
-        return game != null;
-    }
-
-    public static Task<bool> AddPack(string dir, PackType type)
-    {
-        return InstancesPath.LoadFromZip(dir, type);
-    }
-
-    public static Dictionary<string, List<GameSettingObj>> GetGameGroups()
-    {
-        return InstancesPath.Groups;
+        return (await BaseBinding.Launch(obj, login, debug), null);
     }
 }

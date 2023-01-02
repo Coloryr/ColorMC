@@ -43,6 +43,13 @@ public partial class HelloWindow : Window
         tab6.SetWindow(this);
 
         content1.Content = tab1;
+
+        Closed += HelloWindow_Closed;
+    }
+
+    private void HelloWindow_Closed(object? sender, EventArgs e)
+    {
+        App.HelloWindow = null;
     }
 
     private async void Go(UserControl to)

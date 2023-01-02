@@ -12,13 +12,6 @@ using ColorMC.Core;
 
 namespace ColorMC.Gui.UIBinding;
 
-public record UserObj
-{
-    public string Name { get; set; }
-    public string Info { get; set; }
-    public AuthType Type { get; set; }
-}
-
 public static class UserBinding
 {
     public static List<string> GetUserTypes()
@@ -91,38 +84,23 @@ public static class UserBinding
         return (false, "登录类型错误");
     }
 
-    public static List<UserObj> GetAllUser()
+    public static Dictionary<(string, AuthType), LoginObj> GetAllUser()
     {
-        var list = new List<UserObj>();
-        foreach (var item in AuthDatabase.Auths)
-        {
-            list.Add(new()
-            {
-                Name = item.Key.Item1,
-                Info = item.Value.UserName + " " + item.Key.Item2.GetName(),
-                Type = item.Key.Item2
-            });
-        }
-
-        return list;
+        return AuthDatabase.Auths;
     }
 
-    public static void Remove(UserObj name)
+    public static void Remove(string uuid, AuthType type)
     {
-        var item = AuthDatabase.Get(name.Name, name.Type);
+        var item = AuthDatabase.Get(uuid, type);
         if (item != null)
             AuthDatabase.Delete(item);
     }
 
     public static LoginObj? GetLastUser()
     {
-        //var obj = ConfigUtils.Config.LastUser;
-        //if (obj == null)
-        //    return null;
-        //return AuthDatabase.Get(obj.UUID, obj.Type);
-
-        var item = GetAllUser().Where(a => a.Type == AuthType.OAuth).First();
-
-        return AuthDatabase.Get(item.Name, item.Type);
+        var obj = GuiConfigUtils.Config?.LastUser;
+        if (obj == null)
+            return null;
+        return AuthDatabase.Get(obj.UUID, obj.Type);
     }
 }

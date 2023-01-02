@@ -28,7 +28,7 @@ public static class PathC
         return (path, name);
     }
 
-    public static LibVersionObj MakeVersionObj(string name)
+    public static LibVersionObj? MakeVersionObj(string name)
     {
         var arg = name.Split(":");
         if (arg.Length > 3)

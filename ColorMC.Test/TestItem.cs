@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Http;
+using ColorMC.Core.Http.Apis;
 using ColorMC.Core.Http.Download;
 using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
@@ -82,7 +82,7 @@ public static class TestItem
 
     public static void Item6()
     {
-        var list = CurseForgeHelper.GetPackList("1.16.5").Result;
+        var list = CurseForge.GetPackList("1.16.5").Result;
         if (list == null)
         {
             Console.WriteLine("整合包信息为空");
@@ -104,7 +104,7 @@ public static class TestItem
     public static void Item7()
     {
         var data = InstancesPath.Games.First();
-        var list = Launch.CheckGameFile(data, new LoginObj()).Result;
+        var list = GameLaunch.CheckGameFile(data, new LoginObj()).Result;
         if (list == null)
         {
             Console.WriteLine("文件检查失败");

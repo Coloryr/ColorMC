@@ -5,7 +5,9 @@ using Avalonia.Input;
 using SixLabors.Fonts;
 using Avalonia;
 using Avalonia.Animation;
+using Avalonia.Interactivity;
 using System;
+using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Views.Main;
 
@@ -16,20 +18,43 @@ public partial class GamesControl : UserControl
     private GameControl? Last;
     private Dictionary<string, GameControl> Items = new();
     private bool Init;
+    private bool Check;
 
     public GamesControl()
     {
         InitializeComponent();
 
         LayoutUpdated += GamesControl_LayoutUpdated;
+        Expander_Head.PointerPressed += WrapPanel_Items_PointerPressed;
+        WrapPanel_Items.DoubleTapped += WrapPanel_Items_DoubleTapped;
         Expander_Head.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(300));
+    }
+
+    private void WrapPanel_Items_DoubleTapped(object? sender, RoutedEventArgs e)
+    {
+        if (Last != null)
+        {
+            Window.Launch(false);
+        }
+    }
+
+    private void WrapPanel_Items_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (Check == false)
+        {
+            Last?.SetSelect(false);
+            Last = null;
+            Window.GameItemSelect(null);
+        }
+
+        Check = false;
     }
 
     private void GamesControl_LayoutUpdated(object? sender, EventArgs e)
     {
         if (Init)
             return;
-        Expander_Head.MakeExpanderTran();
+        Expander_Head.MakeTran();
         Init = true;
     }
 
@@ -65,11 +90,12 @@ public partial class GamesControl : UserControl
 
     private void Game_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
+        Check = true;
         var game = sender as GameControl;
         Last?.SetSelect(false);
         Last = game;
         Last?.SetSelect(true);
-        Window.ItemSelect(Last?.Obj); 
+        Window.GameItemSelect(Last?.Obj); 
         
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
