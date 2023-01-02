@@ -4,6 +4,7 @@ using System;
 using Avalonia.Interactivity;
 using ColorMC.Gui.UI.Views.CurseForge;
 using System.Collections.Generic;
+using ColorMC.Core.Objs.CurseForge;
 
 namespace ColorMC.Gui.UI;
 
@@ -30,9 +31,22 @@ public partial class AddCurseForgeWindow : Window
         ComboBox3.SelectedIndex = 1;
 
         Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
 
         Opened += AddCurseForgeWindow_Opened;
         Closed += AddCurseForgeWindow_Closed;
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        if (Last == null)
+        {
+            Info.Show("你还没有选择整合包");
+            return;
+        }
+
+        Install(Last.Data);
+        Close();
     }
 
     private void AddCurseForgeWindow_Closed(object? sender, EventArgs e)
@@ -40,8 +54,20 @@ public partial class AddCurseForgeWindow : Window
         App.AddCurseForgeWindow = null;
     }
 
+    public async void Install(CurseForgeObj.Data data)
+    {
+        var res = await Info.ShowWait("是否安装整合包：" + data.name);
+        if (res)
+        {
+            App.ShowAddGame();
+            App.AddGameWindow.Install(data);
+            Close();
+        }
+    }
+
     public void SetSelect(CurseForgeControl last)
     {
+        Button2.IsEnabled = true;
         Last?.SetSelect(false);
         Last = last;
         Last.SetSelect(true);

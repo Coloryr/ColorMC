@@ -97,8 +97,18 @@
                     Height="30"
                     Margin="5"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
+                    VerticalAlignment="Top"
                     Content="搜索" />
+
+                <Button
+                    Name="Button2"
+                    Width="100"
+                    Height="30"
+                    Margin="5"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Content="安装所选"
+                    IsEnabled="False" />
             </Grid>
 
             <ScrollViewer Margin="3,76,3,3" VerticalScrollBarVisibility="Visible">

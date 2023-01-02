@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using ColorMC.Core.Utils;
 using System.Collections;
 using DynamicData;
+using ColorMC.Core.Http.Download;
+using ColorMC.Core.Http.Downloader;
+using ColorMC.Core;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -152,5 +155,22 @@ public static class GameBinding
         }
 
         return list3;
+    }
+
+    public static async Task<bool> InstallCurseForge(CurseForgeObj.Data data)
+    {
+        CoreMain.PackState?.Invoke(CoreRunState.Read);
+        var res = await PackDownload.DownloadCurseForge(data);
+        if (res.State != DownloadState.End)
+            return false;
+
+        CoreMain.PackState?.Invoke(CoreRunState.Download);
+        DownloadManager.Clear();
+        DownloadManager.FillAll(res.List!);
+        var res1 = await DownloadManager.Start();
+
+        CoreMain.PackState?.Invoke(CoreRunState.End);
+
+        return true;
     }
 }
