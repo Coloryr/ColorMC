@@ -30,7 +30,7 @@ public class DownloadThread
 
         DownloadManager.ThreadDone();
         run = false;
-        cancel.Cancel();
+        cancel?.Cancel();
         semaphore.Release();
     }
 

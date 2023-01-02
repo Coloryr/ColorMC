@@ -5,6 +5,7 @@ using ColorMC.Core.Http;
 using ColorMC.Core.Objs.CurseForge;
 using System;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace ColorMC.Gui.UI.Views.CurseForge;
 
@@ -17,6 +18,12 @@ public partial class CurseForgeControl : UserControl
         InitializeComponent();
 
         PointerPressed += CurseForgeControl_PointerPressed;
+        DoubleTapped += CurseForgeControl_DoubleTapped;
+    }
+
+    private void CurseForgeControl_DoubleTapped(object? sender, RoutedEventArgs e)
+    {
+        Window.Install(Data);
     }
 
     private void CurseForgeControl_PointerPressed(object? sender, PointerPressedEventArgs e)

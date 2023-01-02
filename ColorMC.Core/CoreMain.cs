@@ -51,7 +51,6 @@ public static class CoreMain
         Logs.Init(dir);
         ConfigUtils.Init(dir);
         SystemInfo.Init();
-        BaseClient.Init();
         DownloadManager.Init();
         AuthDatabase.Init();
         MCPath.Init(dir);

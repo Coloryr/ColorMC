@@ -84,6 +84,7 @@ public static class ConfigUtils
             }
         }
 
+        BaseClient.Init();
         JvmPath.AddList(Config.JavaList);
         BaseClient.Source = Config.Http.Source;
 

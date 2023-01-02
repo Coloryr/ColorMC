@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System;
+using ColorMC.Core.Objs.CurseForge;
 
 namespace ColorMC.Gui.UI;
 
@@ -416,6 +417,11 @@ public partial class AddGameWindow : Window
     private void Release_Click(object? sender, RoutedEventArgs e)
     {
         Load();
+    }
+
+    public void Install(CurseForgeObj.Data data)
+    { 
+        
     }
 
     public void Load()
