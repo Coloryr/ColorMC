@@ -1,19 +1,18 @@
+using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Gui.UI.Views.CurseForge;
 using ColorMC.Gui.UIBinding;
 using System;
-using Avalonia.Interactivity;
-using ColorMC.Gui.UI.Views.CurseForge;
 using System.Collections.Generic;
-using ColorMC.Core.Objs.CurseForge;
 using System.Collections.ObjectModel;
-using Avalonia.Animation;
 using System.Threading;
-using System.Timers;
 
 namespace ColorMC.Gui.UI;
 
 public record FileObj
-{ 
+{
     public string Name { get; set; }
     public long Download { get; set; }
     public string Size { get; set; }

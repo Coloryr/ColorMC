@@ -1,23 +1,12 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Media.Imaging;
 using Avalonia.Threading;
-using Avalonia.X11;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Login;
-using ColorMC.Core.Utils;
-using ColorMC.Gui;
 using ColorMC.Gui.UI.Views.Main;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI;
@@ -135,7 +124,7 @@ public partial class MainWindow : Window
             case LaunchState.JvmPrepare:
                 Info1.NextText("正在准备Jvm参数");
                 break;
-                
+
             case LaunchState.LoginFail:
                 Info1.Close();
                 Info.Show("账户登录失败");
@@ -152,7 +141,7 @@ public partial class MainWindow : Window
     {
         var list = GameBinding.GetGameGroups();
 
-        Groups.Clear(); 
+        Groups.Clear();
         await Dispatcher.UIThread.InvokeAsync(() =>
         {
             DefaultGroup = new();

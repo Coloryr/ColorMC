@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.CurseForge;
+﻿namespace ColorMC.Core.Objs.CurseForge;
 public record CurseForgeVersion
 {
     public record Item

@@ -1,11 +1,10 @@
 ﻿using ColorMC.Core.Game.Auth;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -763,7 +762,7 @@ public static class GameLaunch
         if (login1.State1 != LoginState.Done)
         {
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.LoginFail);
-            return null;   
+            return null;
         }
 
         login = login1.Obj!;

@@ -1,14 +1,12 @@
 ﻿using ColorMC.Core;
+using ColorMC.Core.Game;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using ColorMC.Core.Game;
-using ColorMC.Core.Net.Downloader;
 
 namespace ColorMC.Gui.UIBinding;
 

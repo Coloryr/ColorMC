@@ -1,19 +1,12 @@
-﻿using ColorMC.Core.Game.Auth;
+﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using ColorMC.Core.Utils;
-using System.Collections;
-using DynamicData;
-using ColorMC.Core.Net.Download;
-using ColorMC.Core.Net.Downloader;
-using ColorMC.Core;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -122,13 +115,13 @@ public static class GameBinding
 
         var list1 = from item in list.data
                     where item.id > 17
-                    orderby item.id descending 
+                    orderby item.id descending
                     select item;
 
         var list11 = from item in list.data
-                    where item.id < 18
-                    orderby item.id ascending
-                    select item;
+                     where item.id < 18
+                     orderby item.id ascending
+                     select item;
 
         var list111 = new List<CurseForgeVersionType.Item>();
         list111.AddRange(list1);

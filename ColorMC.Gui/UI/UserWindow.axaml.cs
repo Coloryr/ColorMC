@@ -1,21 +1,19 @@
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
-using System;
 using Avalonia.Interactivity;
-using Avalonia.Animation;
-using System.Threading;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Core;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UIBinding;
+using System;
+using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace ColorMC.Gui.UI;
 
 public record UserObj
-{ 
+{
     public bool Use { get; set; }
     public string Name { get; set; }
     public string UUID { get; set; }

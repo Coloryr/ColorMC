@@ -1,18 +1,7 @@
-﻿using ColorMC.Core;
-using ColorMC.Core.Game;
-using ColorMC.Core.Net.Downloader;
-using ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Net.Apis;
 
 namespace ColorMC.Gui.UIBinding;
 

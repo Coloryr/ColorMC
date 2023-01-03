@@ -1,9 +1,9 @@
-﻿using ColorMC.Core.Net.Apis;
+﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Loader;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;

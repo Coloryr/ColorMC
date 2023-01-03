@@ -1,22 +1,15 @@
-using Avalonia.Controls;
-using ColorMC.Core.Objs;
-using System;
-using Avalonia.Interactivity;
-using System.IO;
-using Avalonia.Media.Imaging;
-using ColorMC.Gui.UIBinding;
-using ColorMC.Core.Objs.Login;
-using Avalonia.Platform;
 using Avalonia;
-using Newtonsoft.Json.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 using Avalonia.Animation;
-using ColorMC.Core.Utils;
-using Avalonia.Input;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using ColorMC.Core.Net;
-using System.Collections.Generic;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Utils;
+using System;
+using System.IO;
 
 namespace ColorMC.Gui.UI.Views.Main;
 
@@ -86,7 +79,7 @@ public partial class ItemControl : UserControl
 
     private void Button_Edit_Click(object? sender, RoutedEventArgs e)
     {
-        
+
     }
 
     private void Button_Launch_Click(object? sender, RoutedEventArgs e)
