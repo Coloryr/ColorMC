@@ -20,6 +20,9 @@ public static class BaseBinding
         CoreMain.NewStart = ShowNew;
         CoreMain.DownloaderUpdate = DownloaderUpdate;
         CoreMain.ProcessLog = PLog;
+
+        CoreMain.Init(AppContext.BaseDirectory);
+        GuiConfigUtils.Init(AppContext.BaseDirectory);
     }
 
     public static void Exit()

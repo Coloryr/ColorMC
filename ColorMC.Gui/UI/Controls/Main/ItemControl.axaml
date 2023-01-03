@@ -1,0 +1,107 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Main.ItemControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <Rectangle
+            Margin="0,0,-3,0"
+            Stroke="#FF5ABED6"
+            StrokeThickness="3" />
+        <Expander
+            Name="Expander1"
+            Margin="3,3,-80,3"
+            BorderThickness="0"
+            CornerRadius="0"
+            ExpandDirection="Left"
+            IsExpanded="True">
+            <StackPanel VerticalAlignment="Top">
+                <Image
+                    Name="Image1"
+                    Width="80"
+                    Height="80"
+                    Source="resm:ColorMC.Gui.Resource.Icon.user.png" />
+                <ProgressBar
+                    Name="ProgressBar1"
+                    Width="100"
+                    Height="20"
+                    MinWidth="100"
+                    Margin="0,5,0,0"
+                    BorderBrush="White"
+                    BorderThickness="1"
+                    Foreground="#FF5EBDD3"
+                    IsIndeterminate="True"
+                    IsVisible="False" />
+                <TextBlock
+                    Name="TextBlock_Name"
+                    Width="100"
+                    Margin="0,5,0,0"
+                    VerticalAlignment="Center"
+                    Text="Name"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+                <TextBlock
+                    Name="TextBlock_Type"
+                    Width="100"
+                    Margin="0,0,0,5"
+                    VerticalAlignment="Center"
+                    Text="Type"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+                <Button
+                    Name="Button_Switch"
+                    Width="100"
+                    Height="25"
+                    Content="用户列表" />
+                <Button
+                    Name="Button_Add"
+                    Width="100"
+                    Height="25"
+                    Content="添加用户" />
+
+                <Button
+                    Name="Button_Add1"
+                    Width="100"
+                    Height="25"
+                    Margin="0,20,0,0"
+                    Content="添加实例" />
+                <Button
+                    Name="Button_Launch"
+                    Width="100"
+                    Height="25"
+                    Content="启动实例"
+                    IsEnabled="False" />
+                <Button
+                    Name="Button_Launch1"
+                    Width="100"
+                    Height="25"
+                    Content="测试启动"
+                    IsEnabled="False" />
+                <Button
+                    Name="Button_Edit"
+                    Width="100"
+                    Height="25"
+                    Content="修改实例"
+                    IsEnabled="False" />
+                <Button
+                    Name="Button_Out"
+                    Width="100"
+                    Height="25"
+                    Content="导出实例"
+                    IsEnabled="False" />
+            </StackPanel>
+        </Expander>
+        <Button
+            Name="Button1"
+            Width="20"
+            Height="20"
+            Margin="12,10,8,10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Content="" />
+    </Grid>
+</UserControl>

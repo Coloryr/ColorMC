@@ -1,0 +1,124 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Hello.Tab4Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <Rectangle
+            Fill="#FFF4F4F5"
+            Stroke="#FF5ABED6"
+            StrokeThickness="3" />
+
+        <StackPanel Margin="5">
+            <Label Margin="5" Content="添加实例" />
+            <TextBox
+                Name="TextBox_Input1"
+                Margin="5"
+                Classes="input1"
+                Watermark="实例名字" />
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <Label VerticalAlignment="Center" Content="游戏版本" />
+                <ComboBox
+                    Name="ComboBox_GameVersion"
+                    Width="200"
+                    Margin="5,0,0,0" />
+                <CheckBox
+                    Name="CheckBox_Release"
+                    Margin="20,0,0,0"
+                    Content="正式版"
+                    IsChecked="True" />
+                <CheckBox
+                    Name="CheckBox_Snapshot"
+                    Margin="20,0,0,0"
+                    Content="快照版" />
+                <CheckBox
+                    Name="CheckBox_Other"
+                    Margin="20,0,0,0"
+                    Content="其他版" />
+            </StackPanel>
+
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <Label VerticalAlignment="Center" Content="Mod加载器" />
+                <ComboBox
+                    Name="ComboBox_LoaderVersion"
+                    Width="200"
+                    Margin="5,0,0,0"
+                    IsEnabled="False" />
+                <CheckBox
+                    Name="CheckBox_Forge"
+                    Margin="20,0,0,0"
+                    Content="Forge"
+                    IsEnabled="False" />
+                <CheckBox
+                    Name="CheckBox_Fabric"
+                    Margin="20,0,0,0"
+                    Content="Fabric"
+                    IsEnabled="False" />
+                <CheckBox
+                    Name="CheckBox_Quilt"
+                    Margin="20,0,0,0"
+                    Content="Quilt"
+                    IsEnabled="False" />
+            </StackPanel>
+        </StackPanel>
+
+        <Button
+            Name="Button_Add"
+            Width="80"
+            Height="25"
+            Margin="0,130,10,10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Content="添加" />
+
+        <Button
+            Name="Button_Add1"
+            Width="180"
+            Height="25"
+            Margin="10,170,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="从ColorMC压缩包导入" />
+
+        <Button
+            Name="Button_Add2"
+            Width="180"
+            Height="25"
+            Margin="195,170,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="添加CurseForge整合包" />
+
+        <Button
+            Name="Button_Add3"
+            Width="180"
+            Height="25"
+            Margin="380,170,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="从MMC压缩包导入" />
+
+        <Button
+            Name="Button_Add4"
+            Width="180"
+            Height="25"
+            Margin="565,170,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="从HMCL压缩包导入" />
+
+        <Button
+            Name="Button_Next"
+            Width="80"
+            Height="25"
+            Margin="0,0,10,10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Content="下一步" />
+
+    </Grid>
+</UserControl>

@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using ColorMC.Core;
 using ColorMC.Gui.UI;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
 
@@ -40,8 +41,6 @@ public partial class App : Application
         {
             Life.Exit += Life_Exit;
         }
-
-        BaseBinding.Init();
     }
 
     public static void DownloaderUpdate(CoreRunState state)
@@ -52,7 +51,7 @@ public partial class App : Application
         }
         else if (state == CoreRunState.Start)
         {
-            DownloadWindow?.Start();
+            DownloadWindow?.Load();
         }
         else if (state == CoreRunState.End)
         {
