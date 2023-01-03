@@ -1,22 +1,17 @@
+using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ColorMC.Core;
-using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UI.Views;
 using ColorMC.Gui.UIBinding;
-using DynamicData;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.ComponentModel;
-using Avalonia.Threading;
-using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
-using System.Reflection.Emit;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Animation;
 
 namespace ColorMC.Gui.UI;
 
@@ -47,7 +42,7 @@ public partial class DownloadWindow : Window
     private ObservableCollection<DownloadObj> List = new();
     private Dictionary<string, DownloadObj> List1 = new();
 
-    private bool pause;
+    private bool pause = false;
 
     public DownloadWindow()
     {
@@ -80,6 +75,8 @@ public partial class DownloadWindow : Window
         Closing += DownloadWindow_Closing;
         Closed += DownloadWindow_Closed;
         Opened += DownloadWindow_Opened;
+
+        ProgressBar1.Value = 0;
     }
 
     private async void Button_S_Click(object? sender, RoutedEventArgs e)
@@ -87,13 +84,15 @@ public partial class DownloadWindow : Window
         var res = await Info.ShowWait("是否要停止下载");
         if (res)
         {
+            List.Clear();
+            List1.Clear();
             DownloadManager.Stop();
         }
     }
 
     private void Button_P_Click(object? sender, RoutedEventArgs e)
     {
-        if (pause)
+        if (!pause)
         {
             DownloadManager.Pause();
             pause = true;
@@ -104,10 +103,10 @@ public partial class DownloadWindow : Window
         else
         {
             DownloadManager.Resume();
-            Button_P.Content = "R";
-            Button_P1.Content = "继续下载";
+            Button_P.Content = "P";
+            Button_P1.Content = "暂停下载";
             pause = false;
-            Info2.Show("下载已暂停");
+            Info2.Show("下载已继续");
         }
     }
 
@@ -165,22 +164,21 @@ public partial class DownloadWindow : Window
             List.Add(item1);
             List1.Add(item.Name, item1);
 
-            var data = OtherBinding.GetDownloadState();
-
-            ProgressBar1.Maximum = data.Item1;
-
             return;
         }
 
         Dispatcher.UIThread.Post(() =>
         {
+            if (!List1.ContainsKey(item.Name))
+                return;
+
             List1[item.Name].State = item.State.GetName();
 
             if (item.State == DownloadItemState.Done
                 && List1.TryGetValue(item.Name, out var item1))
             {
                 var data = OtherBinding.GetDownloadState();
-                ProgressBar1.Value = data.Item2;
+                Start();
                 Label1.Content = $"{(double)data.Item2 / data.Item1 * 100:0.##}";
                 List.Remove(item1);
             }
@@ -197,5 +195,12 @@ public partial class DownloadWindow : Window
                 List1[item.Name].ErrorTime = item.ErrorTime;
             }
         });
+    }
+
+    public void Start()
+    {
+        var data = OtherBinding.GetDownloadState();
+        ProgressBar1.Maximum = data.Item1;
+        ProgressBar1.Value = data.Item2;
     }
 }

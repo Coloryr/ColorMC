@@ -5,13 +5,31 @@ using Avalonia.Interactivity;
 using ColorMC.Gui.UI.Views.CurseForge;
 using System.Collections.Generic;
 using ColorMC.Core.Objs.CurseForge;
+using System.Collections.ObjectModel;
+using Avalonia.Animation;
+using System.Threading;
+using System.Timers;
 
 namespace ColorMC.Gui.UI;
+
+public record FileObj
+{ 
+    public string Name { get; set; }
+    public long Download { get; set; }
+    public string Size { get; set; }
+    public string Time { get; set; }
+
+    public CurseForgeObj.Data.LatestFiles File;
+}
 
 public partial class AddCurseForgeWindow : Window
 {
     private List<CurseForgeControl> List = new();
+    private ObservableCollection<FileObj> List1 = new();
     private CurseForgeControl? Last;
+
+    private readonly static CrossFade transition = new(TimeSpan.FromMilliseconds(300));
+
     public AddCurseForgeWindow()
     {
         InitializeComponent();
@@ -30,11 +48,45 @@ public partial class AddCurseForgeWindow : Window
         ComboBox1.SelectedIndex = 1;
         ComboBox3.SelectedIndex = 1;
 
+        DataGridFiles.Items = List1;
+        DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
+
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
+        ButtonSearch.Click += ButtonSearch_Click;
+        ButtonCancel.Click += ButtonCancel_Click;
+        ButtonDownload.Click += ButtonDownload_Click;
 
         Opened += AddCurseForgeWindow_Opened;
         Closed += AddCurseForgeWindow_Closed;
+    }
+
+    private void ButtonDownload_Click(object? sender, RoutedEventArgs e)
+    {
+        DataGridFiles_DoubleTapped(sender, e);
+    }
+
+    private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
+    {
+        var item = DataGridFiles.SelectedItem as FileObj;
+        if (item == null)
+            return;
+
+        var res = await Info.ShowWait("是否安装整合包：" + item.File.displayName);
+        if (res)
+        {
+            Install1(item.File);
+        }
+    }
+
+    private void ButtonCancel_Click(object? sender, RoutedEventArgs e)
+    {
+        transition.Start(GridVersion, null, CancellationToken.None);
+    }
+
+    private void ButtonSearch_Click(object? sender, RoutedEventArgs e)
+    {
+        Load1();
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
@@ -46,7 +98,6 @@ public partial class AddCurseForgeWindow : Window
         }
 
         Install(Last.Data);
-        Close();
     }
 
     private void AddCurseForgeWindow_Closed(object? sender, EventArgs e)
@@ -54,15 +105,17 @@ public partial class AddCurseForgeWindow : Window
         App.AddCurseForgeWindow = null;
     }
 
-    public async void Install(CurseForgeObj.Data data)
+    public void Install(CurseForgeObj.Data data)
     {
-        var res = await Info.ShowWait("是否安装整合包：" + data.name);
-        if (res)
-        {
-            App.ShowAddGame();
-            App.AddGameWindow.Install(data);
-            Close();
-        }
+        transition.Start(null, GridVersion, CancellationToken.None);
+        Load1();
+    }
+
+    public void Install1(CurseForgeObj.Data.LatestFiles data)
+    {
+        App.ShowAddGame();
+        App.AddGameWindow?.Install(data);
+        Close();
     }
 
     public void SetSelect(CurseForgeControl last)
@@ -96,6 +149,32 @@ public partial class AddCurseForgeWindow : Window
         }
     }
 
+    private async void Load1()
+    {
+        List1.Clear();
+        Info1.Show("正在搜索中");
+        var data = await GameBinding.GetPackFile(Last!.Data.id, int.Parse(Input3.Text));
+        Info1.Close();
+
+        if (data == null)
+        {
+            Info.Show("整合包数据加载失败");
+            return;
+        }
+
+        foreach (var item in data.data)
+        {
+            List1.Add(new()
+            {
+                Name = item.displayName,
+                Size = $"{item.fileLength / 1000 / 1000:0.00}",
+                Download = item.downloadCount,
+                Time = DateTime.Parse(item.fileDate).ToString(),
+                File = item
+            });
+        }
+    }
+
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
         Load();
@@ -103,6 +182,8 @@ public partial class AddCurseForgeWindow : Window
 
     private async void AddCurseForgeWindow_Opened(object? sender, EventArgs e)
     {
+        DataGridFiles.MakeTran();
+        //return;
         Info1.Show("正在加载中");
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();

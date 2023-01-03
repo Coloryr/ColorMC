@@ -40,6 +40,8 @@ public partial class App : Application
         {
             Life.Exit += Life_Exit;
         }
+
+        BaseBinding.Init();
     }
 
     public static void DownloaderUpdate(CoreRunState state)
@@ -47,6 +49,10 @@ public partial class App : Application
         if (state == CoreRunState.Init)
         {
             ShowDownload();
+        }
+        else if (state == CoreRunState.Start)
+        {
+            DownloadWindow?.Start();
         }
         else if (state == CoreRunState.End)
         {
@@ -85,7 +91,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowUser(int type)
+    public static void ShowUser(bool add)
     {
         if (UserWindow != null)
         {
@@ -97,7 +103,8 @@ public partial class App : Application
             UserWindow.Show();
         }
 
-        UserWindow.SetType(type);
+        if (add)
+            UserWindow.SetAdd();
     }
 
     public static void ShowMain()

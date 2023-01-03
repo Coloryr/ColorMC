@@ -3,6 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
+using ColorMC.Core;
+using ColorMC.Gui.Objs;
+using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
@@ -138,9 +141,9 @@ public static class UIUtils
     {
         foreach (var item in visual.VisualChildren)
         {
-            if (item is T)
+            if (item is T t)
             {
-                return (T)item;
+                return t;
             }
         }
 
@@ -162,7 +165,7 @@ public static class UIUtils
                 item1.Background = Avalonia.Media.Brush.Parse("#88f2f2f2");
             }
         }
-        catch (Exception e)
+        catch
         {
 
         }
@@ -186,7 +189,7 @@ public static class UIUtils
                 }
             }
         }
-        catch (Exception e)
+        catch
         {
 
         }
@@ -204,7 +207,7 @@ public static class UIUtils
                 item.BorderBrush = Avalonia.Media.Brushes.Transparent;
             }
         }
-        catch (Exception e)
+        catch
         {
 
         }
@@ -213,7 +216,7 @@ public static class UIUtils
 
 public static class HeadImageUtils
 {
-    public static async Task<string> MakeHeadImage(string file)
+    public static async Task<MemoryStream> MakeHeadImage(string file)
     {
         using var image = await SixLabors.ImageSharp.Image.LoadAsync<Rgba32>(file);
         using var image1 = new Image<Rgba32>(8, 8);
@@ -243,9 +246,9 @@ public static class HeadImageUtils
             }
         }
 
-        var file1 = Path.GetFileName(AppContext.BaseDirectory + "test.png");
-        await image2.SaveAsPngAsync(file1);
-        return file1;
+        MemoryStream stream = new();
+        await image2.SaveAsPngAsync(stream);
+        return stream;
     }
 
     public static Rgba32 Mix(Rgba32 rgba, Rgba32 mix)
@@ -258,5 +261,73 @@ public static class HeadImageUtils
         rgba.B = (byte)(mix.B * ap + rgba.B * dp);
 
         return rgba;
+    }
+}
+
+public static class GuiConfigUtils
+{
+    public static GuiConfigObj Config { get; set; }
+
+    public static string Dir;
+
+    private static string Name;
+
+    public static void Init(string dir)
+    {
+        Dir = dir;
+        Name = dir + "gui.json";
+
+        Load(Name);
+    }
+
+    public static bool Load(string name, bool quit = false)
+    {
+        Logs.Info($"正在读取配置文件");
+        if (File.Exists(name))
+        {
+            try
+            {
+                Config = JsonConvert.DeserializeObject<GuiConfigObj>(File.ReadAllText(name))!;
+            }
+            catch (Exception e)
+            {
+                CoreMain.OnError?.Invoke("配置文件读取错误", e, true);
+                Logs.Error("配置文件读取错误", e);
+            }
+        }
+
+        if (Config == null)
+        {
+            if (quit)
+            {
+                return false;
+            }
+            Logs.Warn("配置为空，旧版配置文件会被覆盖");
+
+            Config = MakeDefaultConfig();
+            Save();
+        }
+        else
+        {
+
+        }
+
+        Save();
+
+        return true;
+    }
+
+    public static void Save()
+    {
+        Logs.Info($"正在保存配置文件");
+        File.WriteAllText(Name, JsonConvert.SerializeObject(Config, Formatting.Indented));
+    }
+
+    private static GuiConfigObj MakeDefaultConfig()
+    {
+        return new()
+        {
+            Version = CoreMain.Version,
+        };
     }
 }

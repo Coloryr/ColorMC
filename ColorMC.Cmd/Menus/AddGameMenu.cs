@@ -1,7 +1,7 @@
-﻿using ColorMC.Core.Http;
-using ColorMC.Core.Http.Apis;
-using ColorMC.Core.Http.Download;
-using ColorMC.Core.Http.Downloader;
+﻿using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
+using ColorMC.Core.Net.Download;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;

@@ -8,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ColorMC.Core.Game;
-using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Net.Downloader;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class BaseBinding
 {
-    public static Dictionary<GameSettingObj, Process> Games = new();
+    public readonly static Dictionary<GameSettingObj, Process> Games = new();
 
     public static void Init()
     {

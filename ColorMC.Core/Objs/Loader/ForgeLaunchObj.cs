@@ -1,4 +1,4 @@
-﻿using static ColorMC.Core.Objs.Game.GameArgObj.Libraries.Downloads;
+﻿using static ColorMC.Core.Objs.Minecraft.GameArgObj.Libraries.Downloads;
 
 namespace ColorMC.Core.Objs.Loader;
 

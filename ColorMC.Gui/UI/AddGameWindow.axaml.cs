@@ -1,18 +1,17 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
-using ColorMC.Core.Http;
-using ColorMC.Core.Http.Apis;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System;
-using ColorMC.Core.Objs.CurseForge;
 
 namespace ColorMC.Gui.UI;
 
@@ -419,9 +418,15 @@ public partial class AddGameWindow : Window
         Load();
     }
 
-    public void Install(CurseForgeObj.Data data)
-    { 
-        
+    public async void Install(CurseForgeObj.Data.LatestFiles data)
+    {
+        Info1.Show("正在安装整合包");
+        var res = await GameBinding.InstallCurseForge(data);
+        Info1.Close();
+        if (!res)
+        {
+            Info.Show("整合包安装失败");
+        }
     }
 
     public void Load()

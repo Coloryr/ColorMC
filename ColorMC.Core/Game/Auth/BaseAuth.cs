@@ -1,5 +1,5 @@
-﻿using ColorMC.Core.Http.Apis;
-using ColorMC.Core.Http.Login;
+﻿using ColorMC.Core.Net.Apis;
+using ColorMC.Core.Net.Login;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 

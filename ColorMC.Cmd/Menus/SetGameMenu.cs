@@ -1,5 +1,5 @@
-﻿using ColorMC.Core.Http.Downloader;
-using ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 
 namespace ColorMC.Cmd.Menus;

@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Minecraft;
 using SharpNBT;
 
 namespace ColorMC.Core.Game;

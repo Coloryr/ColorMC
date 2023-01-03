@@ -79,16 +79,11 @@ public partial class UserWindow : Window
         var item = DataGrid_User.SelectedItem as UserObj;
         if (item == null)
         {
+            Info.Show("请先选择账户");
             return;
         }
 
-        GuiConfigUtils.Config.LastUser = new()
-        {
-            Type = item.AuthType,
-            UUID = item.UUID
-        };
-
-        GuiConfigUtils.Save();
+        UserBinding.SetLastUser(item.UUID, item.AuthType);
         MainWindow.OnUserEdit();
 
         Info2.Show("切换成功");
@@ -314,12 +309,6 @@ public partial class UserWindow : Window
             return;
         }
 
-        if (item.Use)
-        {
-            GuiConfigUtils.Config.LastUser = null;
-            GuiConfigUtils.Save();
-        }
-
         UserBinding.Remove(item.UUID, item.AuthType);
         MainWindow.OnUserEdit();
         Load();
@@ -327,29 +316,12 @@ public partial class UserWindow : Window
 
     private void Button_S1_Click(object? sender, RoutedEventArgs e)
     {
-        var item = DataGrid_User.SelectedItem as UserObj;
-        if (item == null)
-        {
-            Info.Show("请先选择账户");
-            return;
-        }
-
-        GuiConfigUtils.Config.LastUser = new()
-        {
-            Type = item.AuthType,
-            UUID = item.UUID
-        };
-
-        GuiConfigUtils.Save();
-        MainWindow.OnUserEdit();
-
-        Info2.Show("切换成功");
-        Load();
+        DataGrid_User_DoubleTapped(sender, e);
     }
 
     private void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        SetType(1);
+        SetAdd();
     }
 
     private void Button_S1_PointerLeave(object? sender, PointerEventArgs e)
@@ -396,14 +368,9 @@ public partial class UserWindow : Window
         CoreMain.LoginOAuthCode = null;
     }
 
-    public void SetType(int type)
+    public void SetAdd()
     {
-        switch (type)
-        {
-            case 1:
-                CrossFade.Start(null, Grid_Add, CancellationToken.None);
-                break;
-        }
+        CrossFade.Start(null, Grid_Add, CancellationToken.None);
     }
 
     private void Load()

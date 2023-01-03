@@ -1,11 +1,11 @@
 ﻿using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Http;
-using ColorMC.Core.Http.Apis;
-using ColorMC.Core.Http.Download;
-using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
+using ColorMC.Core.Net.Download;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -522,7 +522,7 @@ public static class GameLaunch
             ServerInfo server = new(obj.StartServer.IP, obj.StartServer.Port);
             await server.StartGetServerInfo();
 
-            if (server.State == ServerInfo.StateType.GOOD)
+            if (server.State == StateType.GOOD)
             {
                 gameArg.Add($"--server");
                 gameArg.Add(server.ServerAddress);

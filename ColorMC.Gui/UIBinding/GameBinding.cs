@@ -1,5 +1,5 @@
 ﻿using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Http.Apis;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 using ColorMC.Core.Utils;
 using System.Collections;
 using DynamicData;
-using ColorMC.Core.Http.Download;
-using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Net.Download;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core;
 
 namespace ColorMC.Gui.UIBinding;
@@ -77,7 +77,7 @@ public static class GameBinding
 
     public static Task<bool> AddPack(string dir, PackType type)
     {
-        return InstancesPath.LoadFromZip(dir, type);
+        return InstancesPath.InstallFromZip(dir, type);
     }
 
     public static Dictionary<string, List<GameSettingObj>> GetGameGroups()
@@ -140,8 +140,10 @@ public static class GameBinding
             return null;
         }
 
-        var list3 = new List<string>();
-        list3.Add("");
+        var list3 = new List<string>
+        {
+            ""
+        };
         foreach (var item in list111)
         {
             var list4 = from item1 in list2.data
@@ -157,20 +159,13 @@ public static class GameBinding
         return list3;
     }
 
-    public static async Task<bool> InstallCurseForge(CurseForgeObj.Data data)
+    public static Task<bool> InstallCurseForge(CurseForgeObj.Data.LatestFiles data)
     {
-        CoreMain.PackState?.Invoke(CoreRunState.Read);
-        var res = await PackDownload.DownloadCurseForge(data);
-        if (res.State != DownloadState.End)
-            return false;
+        return InstancesPath.InstallFromCurseForge(data);
+    }
 
-        CoreMain.PackState?.Invoke(CoreRunState.Download);
-        DownloadManager.Clear();
-        DownloadManager.FillAll(res.List!);
-        var res1 = await DownloadManager.Start();
-
-        CoreMain.PackState?.Invoke(CoreRunState.End);
-
-        return true;
+    public static Task<CurseForgeFileObj?> GetPackFile(long id, int page)
+    {
+        return CurseForge.GetCurseForgeFiles(id, page);
     }
 }

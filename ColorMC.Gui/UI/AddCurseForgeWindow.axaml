@@ -118,7 +118,80 @@
                     VerticalAlignment="Stretch" />
             </ScrollViewer>
 
+            <Grid
+                Name="GridVersion"
+                Background="#EEEEEEEE"
+                IsVisible="False">
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="选择版本文件" />
+                    <Label
+                        Margin="20,5,5,5"
+                        VerticalAlignment="Center"
+                        Content="页数：" />
+                    <NumericUpDown
+                        Name="Input3"
+                        Width="150"
+                        Height="30"
+                        Background="#FFF4F4F4"
+                        BorderBrush="#FF5ABED6"
+                        BorderThickness="2"
+                        Minimum="0" />
+                </StackPanel>
 
+                <Button
+                    Name="ButtonCancel"
+                    Width="100"
+                    Height="30"
+                    Margin="2,2,5,2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Content="取消" />
+
+                <Button
+                    Name="ButtonSearch"
+                    Width="100"
+                    Height="30"
+                    Margin="2,2,110,2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Content="搜索" />
+
+                <Button
+                    Name="ButtonDownload"
+                    Width="100"
+                    Height="30"
+                    Margin="2,2,215,2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Content="下载所选" />
+
+                <DataGrid
+                    Name="DataGridFiles"
+                    Margin="3,35,3,3"
+                    Background="#88ffffff">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="名字"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Size}"
+                            Header="大小(Mb)"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Download}"
+                            Header="下载次数"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Time}"
+                            Header="发布时间"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
 
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info4Control Name="Info" IsVisible="False" />

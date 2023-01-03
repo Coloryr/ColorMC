@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Http.Download;
-using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Net.Download;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs.CurseForge;
 
 namespace ColorMC.Core.Utils;
@@ -111,6 +111,17 @@ public static class Language
             SortField.Category => "类别",
             SortField.GameVersion => "游戏版本",
             _ => "未知的分类"
+        };
+    }
+
+    public static string GetNameWithRelease(int type)
+    {
+        return type switch
+        {
+            1 => "发布",
+            2 => "Beta测试版",
+            3 => "Alpha测试版",
+            _ => "未知的发布类型"
         };
     }
 }
