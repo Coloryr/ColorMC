@@ -1,16 +1,10 @@
 ﻿using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Net.Apis;
-using ColorMC.Core.Net.Login;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.MinecraftAPI;
-using Heijden.DNS;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Net;
 

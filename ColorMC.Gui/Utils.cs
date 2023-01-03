@@ -1,20 +1,16 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
@@ -147,7 +143,7 @@ public static class UIUtils
             }
         }
 
-        foreach (var item in visual.VisualChildren) 
+        foreach (var item in visual.VisualChildren)
         {
             return FindToEnd<T>(item);
         }

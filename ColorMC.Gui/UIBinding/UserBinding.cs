@@ -1,14 +1,9 @@
 ﻿using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Utils;
 using System;
 using System.Collections.Generic;
-using ColorMC.Core.Utils;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using ColorMC.Core.Net.Login;
-using ColorMC.Core.Objs.Login;
-using System.Security.AccessControl;
-using ColorMC.Core;
 
 namespace ColorMC.Gui.UIBinding;
 

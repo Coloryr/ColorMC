@@ -1,5 +1,5 @@
-﻿using ColorMC.Core.Net.Downloader;
-using ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
 using HtmlAgilityPack;

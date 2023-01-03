@@ -49,6 +49,6 @@ public static class DownloadBar
             Bar.SetAllSize(index, item.AllSize);
             Bar.SetValue(index, item.NowSize);
         }
-        
+
     }
 }

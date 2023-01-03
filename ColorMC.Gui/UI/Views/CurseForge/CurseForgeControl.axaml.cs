@@ -1,11 +1,11 @@
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.CurseForge;
 using System;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 
 namespace ColorMC.Gui.UI.Views.CurseForge;
 
@@ -55,7 +55,7 @@ public partial class CurseForgeControl : UserControl
             var data1 = await BaseClient.Client.GetAsync(data.logo.url);
             Dispatcher.UIThread.Post(() =>
             {
-                var bitmap  = new Bitmap(data1.Content.ReadAsStream());
+                var bitmap = new Bitmap(data1.Content.ReadAsStream());
                 Image_Logo.Source = bitmap;
             });
         }
