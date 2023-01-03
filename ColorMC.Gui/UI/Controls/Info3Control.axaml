@@ -1,0 +1,51 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Info3Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="#EEEEEEEE"
+    mc:Ignorable="d">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBox
+            Name="TextBox_Text"
+            MinWidth="400"
+            Classes="input1"
+            FontSize="20"
+            Foreground="Black"
+            IsReadOnly="True"
+            Text="1234"
+            TextAlignment="Center"
+            TextWrapping="Wrap" />
+        <TextBox
+            Name="TextBox_Text1"
+            MinWidth="400"
+            Margin="0,20,0,0"
+            Classes="input1"
+            FontSize="20"
+            Foreground="Black"
+            IsReadOnly="True"
+            Text="1234"
+            TextAlignment="Center"
+            TextWrapping="Wrap" />
+        <StackPanel Margin="0,100,0,0">
+            <ProgressBar
+                Name="ProgressBar_Value"
+                Height="20"
+                Margin="20,0,20,50"
+                BorderBrush="White"
+                BorderThickness="1"
+                Foreground="#FF5EBDD3"
+                IsIndeterminate="True"
+                Value="20" />
+            <Button
+                Name="Button_Add"
+                Width="80"
+                Height="25"
+                HorizontalAlignment="Center"
+                Content="确定" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

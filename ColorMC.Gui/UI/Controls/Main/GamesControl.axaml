@@ -1,0 +1,21 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Main.GamesControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Views.Main"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Expander
+        Name="Expander_Head"
+        VerticalAlignment="Top"
+        CornerRadius="0"
+        IsExpanded="True">
+        <WrapPanel
+            Name="WrapPanel_Items"
+            VerticalAlignment="Top"
+            Background="Transparent" />
+    </Expander>
+</UserControl>

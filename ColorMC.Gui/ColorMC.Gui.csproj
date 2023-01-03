@@ -44,16 +44,16 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="UI\Views\Info3Control.axaml.cs">
+    <Compile Update="UI\Controls\Info3Control.axaml.cs">
       <DependentUpon>Info3Control.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Views\Info2Control.axaml.cs">
+    <Compile Update="UI\Controls\Info2Control.axaml.cs">
       <DependentUpon>Info2Control.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Views\Info1Control.axaml.cs">
+    <Compile Update="UI\Controls\Info1Control.axaml.cs">
       <DependentUpon>Info1Control.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Views\Info4Control.axaml.cs">
+    <Compile Update="UI\Controls\Info4Control.axaml.cs">
       <DependentUpon>Info4Control.axaml</DependentUpon>
     </Compile>
   </ItemGroup>

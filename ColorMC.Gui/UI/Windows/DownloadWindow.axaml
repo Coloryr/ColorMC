@@ -1,0 +1,145 @@
+<Window
+    x:Class="ColorMC.Gui.UI.Windows.DownloadWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
+    Title="ColorMC"
+    Width="800"
+    Height="450"
+    MinWidth="800"
+    MinHeight="450"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    ExtendClientAreaToDecorationsHint="True"
+    mc:Ignorable="d">
+    <Grid>
+        <views:HeadControl
+            Title="ColorMC 下载列表"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top" />
+        <Grid Margin="0,35,0,0">
+            <Rectangle
+                Fill="#FFF4F4F5"
+                Stroke="#FF5ABED6"
+                StrokeThickness="3" />
+
+            <Image
+                Name="Image_Back"
+                Margin="3"
+                Stretch="UniformToFill" />
+
+            <Grid VerticalAlignment="Top">
+                <Rectangle
+                    Margin="0,0,0,0"
+                    Fill="#88ffffff"
+                    Stroke="#FF5ABED6"
+                    StrokeThickness="3" />
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                    <Label Margin="5" Content="下载进度" />
+                    <ProgressBar
+                        Name="ProgressBar1"
+                        Width="500"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        BorderBrush="White"
+                        BorderThickness="1"
+                        Foreground="#FF5EBDD3" />
+                    <Label
+                        Name="Label1"
+                        Margin="10,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="0" />
+                    <Label VerticalAlignment="Center" Content="%" />
+                </StackPanel>
+            </Grid>
+
+            <DataGrid
+                Name="DataGrid_Download"
+                Margin="3,34,3,3"
+                AutoGenerateColumns="False"
+                Background="#88ffffff"
+                CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="名字"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding State}"
+                        Header="状态"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding NowSize}"
+                        Header="已下载"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding AllSize}"
+                        Header="总大小Mb"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding ErrorTime}"
+                        Header="错误次数"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
+                <Grid>
+                    <Button
+                        Name="Button_P"
+                        Width="20"
+                        Height="30"
+                        Content="P" />
+                    <Expander
+                        Name="Expander_P"
+                        Height="30"
+                        Margin="-84,0,0,0"
+                        HorizontalAlignment="Left"
+                        Background="Transparent"
+                        CornerRadius="0"
+                        ExpandDirection="Right"
+                        IsExpanded="False">
+                        <Button
+                            Name="Button_P1"
+                            Width="100"
+                            Height="30"
+                            Margin="4,0,0,0"
+                            Content="暂停下载" />
+                    </Expander>
+                </Grid>
+                <Grid Margin="0,5,0,0">
+                    <Button
+                        Name="Button_S"
+                        Width="20"
+                        Height="30"
+                        Content="S" />
+                    <Expander
+                        Name="Expander_S"
+                        Height="30"
+                        Margin="-84,0,0,0"
+                        HorizontalAlignment="Left"
+                        Background="Transparent"
+                        CornerRadius="0"
+                        ExpandDirection="Right"
+                        IsExpanded="False">
+                        <Button
+                            Name="Button_S1"
+                            Width="100"
+                            Height="30"
+                            Margin="4,0,0,0"
+                            Content="停止下载" />
+                    </Expander>
+                </Grid>
+            </StackPanel>
+
+        </Grid>
+
+        <views:Info4Control Name="Info" IsVisible="False" />
+        <views:Info2Control Name="Info2" IsVisible="False" />
+    </Grid>
+</Window>
