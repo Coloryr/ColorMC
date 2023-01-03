@@ -1,9 +1,9 @@
 using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Interactivity;
 
 namespace ColorMC.Gui.UI.Views;
 
@@ -68,7 +68,7 @@ public partial class Info4Control : UserControl
 
         await transition.Start(null, this, cancellationToken: CancellationToken.None);
 
-        await Task.Run(() => 
+        await Task.Run(() =>
         {
             semaphore.WaitOne();
         });

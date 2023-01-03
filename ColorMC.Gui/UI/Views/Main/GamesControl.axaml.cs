@@ -1,13 +1,10 @@
-using Avalonia.Controls;
-using ColorMC.Core.Objs;
-using System.Collections.Generic;
-using Avalonia.Input;
-using SixLabors.Fonts;
-using Avalonia;
 using Avalonia.Animation;
+using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using ColorMC.Core.Objs;
 using System;
-using ColorMC.Gui.UIBinding;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Views.Main;
 
@@ -95,8 +92,8 @@ public partial class GamesControl : UserControl
         Last?.SetSelect(false);
         Last = game;
         Last?.SetSelect(true);
-        Window.GameItemSelect(Last?.Obj); 
-        
+        Window.GameItemSelect(Last?.Obj);
+
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
             if (Last?.Obj != null)

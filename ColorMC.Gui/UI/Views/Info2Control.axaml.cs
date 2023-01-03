@@ -1,11 +1,11 @@
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.Media;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Layout;
-using Avalonia.Media;
 
 namespace ColorMC.Gui.UI.Views;
 

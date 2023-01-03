@@ -1,11 +1,9 @@
 using Avalonia.Controls;
-using ColorMC.Core.Game.Auth;
-using System.Collections.Generic;
-using System;
-using ColorMC.Core.Utils;
 using Avalonia.Interactivity;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Core;
+using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.UIBinding;
 using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Views.Hello;
@@ -254,6 +252,6 @@ public partial class Tab3Control : UserControl
                 Info = item.Value.UserName + " " + item.Key.Item2.GetName(),
                 Type = item.Key.Item2
             });
-        }   
+        }
     }
 }

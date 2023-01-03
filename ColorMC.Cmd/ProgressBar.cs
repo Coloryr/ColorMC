@@ -49,7 +49,7 @@ public class ProgressBar : IDisposable
                 }
                 else
                 {
-                    int p = (int)(AllSize[a] != 0 ? (double) Now[a] / AllSize[a] * 10 : 0);
+                    int p = (int)(AllSize[a] != 0 ? (double)Now[a] / AllSize[a] * 10 : 0);
                     Console.Write($"> {Names[a]} [{new string('*', p)}{new string('-', 10 - p)}] {Now[a]}/{AllSize[a]}");
                 }
             }
