@@ -1,8 +1,8 @@
 using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using System;
 using System.Threading;
-using Avalonia.Interactivity;
 
 namespace ColorMC.Gui.UI.Views;
 

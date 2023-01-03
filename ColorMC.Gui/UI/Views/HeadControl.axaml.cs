@@ -20,7 +20,7 @@ public partial class HeadControl : UserControl
     public bool Max
     {
         get { return max; }
-        set 
+        set
         {
             max = value;
             Button_Max.IsVisible = max;
@@ -30,7 +30,7 @@ public partial class HeadControl : UserControl
     public bool Min
     {
         get { return min; }
-        set 
+        set
         {
             min = value;
             Button_Min.IsVisible = min;

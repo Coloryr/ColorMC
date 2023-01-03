@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using System;
 

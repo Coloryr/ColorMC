@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.MinecraftAPI;
+﻿namespace ColorMC.Core.Objs.MinecraftAPI;
 
 public record TexturesObj
 {
@@ -13,14 +7,14 @@ public record TexturesObj
         public record Skin
         {
             public record Metadata
-            { 
+            {
                 public string model { get; set; }
             }
             public string url { get; set; }
             public Metadata metadata { get; set; }
         }
         public record Cape
-        { 
+        {
             public string url { get; set; }
         }
         public Skin SKIN { get; set; }

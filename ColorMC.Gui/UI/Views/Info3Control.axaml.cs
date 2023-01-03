@@ -1,8 +1,8 @@
 using Avalonia.Animation;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using System;
 using System.Threading;
-using Avalonia.Interactivity;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Views;
@@ -11,7 +11,7 @@ public partial class Info3Control : UserControl
 {
     private static readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
 
-    private readonly Semaphore semaphore = new(0,2);
+    private readonly Semaphore semaphore = new(0, 2);
 
     public Info3Control()
     {

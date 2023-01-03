@@ -124,7 +124,7 @@ public static class LaunchMenu
 
     public static Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
     {
-        return Task.Run(() => 
+        return Task.Run(() =>
         {
             return ConsoleUtils.YesNo("游戏启动缺少必要文件，是否下载");
         });

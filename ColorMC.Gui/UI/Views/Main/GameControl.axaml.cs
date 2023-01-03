@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
-using System;
 using System.IO;
 
 namespace ColorMC.Gui.UI.Views.Main;
