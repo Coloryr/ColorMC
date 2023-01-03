@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Game;
-using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Http.Apis;
+using ColorMC.Core.Net.Apis;
 
 namespace ColorMC.Gui.UIBinding;
 

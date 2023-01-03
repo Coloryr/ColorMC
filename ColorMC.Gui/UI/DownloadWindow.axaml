@@ -64,11 +64,26 @@
                 Background="#88ffffff"
                 CanUserSortColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Name}" Header="名字" />
-                    <DataGridTextColumn Binding="{Binding State}" Header="状态" />
-                    <DataGridTextColumn Binding="{Binding NowSize}" Header="已下载" />
-                    <DataGridTextColumn Binding="{Binding AllSize}" Header="总大小Mb" />
-                    <DataGridTextColumn Binding="{Binding ErrorTime}" Header="错误次数" />
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="名字"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding State}"
+                        Header="状态"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding NowSize}"
+                        Header="已下载"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding AllSize}"
+                        Header="总大小Mb"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding ErrorTime}"
+                        Header="错误次数"
+                        IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -123,7 +138,7 @@
 
         </Grid>
 
-        <views:Info2Control Name="Info2" IsVisible="False" />
         <views:Info4Control Name="Info" IsVisible="False" />
+        <views:Info2Control Name="Info2" IsVisible="False" />
     </Grid>
 </Window>

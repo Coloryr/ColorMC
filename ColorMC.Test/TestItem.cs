@@ -1,9 +1,9 @@
 ﻿using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Http.Apis;
-using ColorMC.Core.Http.Download;
-using ColorMC.Core.Http.Downloader;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Apis;
+using ColorMC.Core.Net.Download;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
@@ -90,7 +90,12 @@ public static class TestItem
         else
         {
             var data = list.data[6];
-            var list1 = PackDownload.DownloadCurseForge(data).Result;
+
+            var item2 = PackDownload.MakeCurseForge(data.latestFiles[0]);
+            DownloadManager.FillAll(new() { item2 });
+            DownloadManager.Start().Wait();
+
+            var list1 = PackDownload.DownloadCurseForge(item2.Local).Result;
             if (list1.State != DownloadState.End)
             {
                 Console.WriteLine("下载列表获取失败");

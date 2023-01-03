@@ -1,5 +1,5 @@
-using ColorMC.Core.Http;
-using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Net;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 

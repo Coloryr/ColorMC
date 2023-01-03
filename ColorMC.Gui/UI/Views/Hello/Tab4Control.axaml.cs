@@ -1,17 +1,15 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
-using ColorMC.Core.Http;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Avalonia.Input;
-using ColorMC.Core.Http.Apis;
 
 namespace ColorMC.Gui.UI.Views.Hello;
 
@@ -170,7 +168,7 @@ public partial class Tab4Control : UserControl
             Window.Info1.Show("正在获取Fabric版本信息");
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
-            
+
             var list = await FabricHelper.GetLoaders(item, BaseClient.Source);
             Window.Info1.Close();
             if (list == null)
@@ -400,7 +398,7 @@ public partial class Tab4Control : UserControl
     public void Load()
     {
         List.Clear();
-        List.AddRange(GameBinding.GetGameVersion(CheckBox_Release.IsChecked, 
+        List.AddRange(GameBinding.GetGameVersion(CheckBox_Release.IsChecked,
             CheckBox_Snapshot.IsChecked, CheckBox_Other.IsChecked));
     }
 

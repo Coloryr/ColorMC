@@ -1,5 +1,5 @@
 ﻿using ColorMC.Core;
-using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Cmd;

@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Game;
+using ColorMC.Core.Objs.Minecraft;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using System.Text;

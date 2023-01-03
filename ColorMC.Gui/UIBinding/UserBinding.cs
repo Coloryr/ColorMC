@@ -5,7 +5,7 @@ using ColorMC.Core.Utils;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ColorMC.Core.Http.Login;
+using ColorMC.Core.Net.Login;
 using ColorMC.Core.Objs.Login;
 using System.Security.AccessControl;
 using ColorMC.Core;
@@ -91,6 +91,12 @@ public static class UserBinding
 
     public static void Remove(string uuid, AuthType type)
     {
+        if (GuiConfigUtils.Config.LastUser != null
+            && type == GuiConfigUtils.Config.LastUser.Type
+            && uuid == GuiConfigUtils.Config.LastUser.UUID)
+        {
+            ClearLastUser();
+        }
         var item = AuthDatabase.Get(uuid, type);
         if (item != null)
             AuthDatabase.Delete(item);
@@ -102,5 +108,22 @@ public static class UserBinding
         if (obj == null)
             return null;
         return AuthDatabase.Get(obj.UUID, obj.Type);
+    }
+
+    public static void SetLastUser(string uuid, AuthType type)
+    {
+        GuiConfigUtils.Config.LastUser = new()
+        {
+            Type = type,
+            UUID = uuid
+        };
+
+        GuiConfigUtils.Save();
+    }
+
+    public static void ClearLastUser()
+    {
+        GuiConfigUtils.Config.LastUser = null;
+        GuiConfigUtils.Save();
     }
 }

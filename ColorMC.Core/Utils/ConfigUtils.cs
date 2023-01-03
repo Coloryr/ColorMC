@@ -1,5 +1,5 @@
-﻿using ColorMC.Core.Http;
-using ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using Newtonsoft.Json;
 

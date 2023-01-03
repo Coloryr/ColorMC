@@ -1,8 +1,9 @@
 using ColorMC.Core.Game;
-using ColorMC.Core.Http.Download;
-using ColorMC.Core.Http.Downloader;
+using ColorMC.Core.Net.Download;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
@@ -47,11 +48,11 @@ public static class InstancesPath
     }
 
     public static Dictionary<string, List<GameSettingObj>> Groups
-    { 
-        get 
+    {
+        get
         {
             return new(GameGroups);
-        } 
+        }
     }
 
     private static void AddToGroup(GameSettingObj obj)
@@ -310,8 +311,23 @@ public static class InstancesPath
         return PathC.DeleteFiles(obj.GetBaseDir());
     }
 
-    public static async Task<bool> LoadFromZip(string dir, PackType type)
+    public static async Task<bool> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data)
     {
+        var item = PackDownload.MakeCurseForge(data);
+
+        DownloadManager.Clear();
+        DownloadManager.FillAll(new() { item });
+        var res1 = await DownloadManager.Start();
+        if (!res1)
+            return false;
+
+        return await InstallFromZip(item.Local, PackType.CurseForge);
+    }
+
+    public static async Task<bool> InstallFromZip(string dir, PackType type)
+    {
+        GameSettingObj? game = null;
+        bool res1111 = false;
         try
         {
             switch (type)
@@ -336,7 +352,7 @@ public static class InstancesPath
                         if (!find)
                             break;
 
-                        var game = JsonConvert.DeserializeObject<GameSettingObj>
+                        game = JsonConvert.DeserializeObject<GameSettingObj>
                             (Encoding.UTF8.GetString(stream1.ToArray()));
 
                         if (game == null)
@@ -358,21 +374,25 @@ public static class InstancesPath
                         }
 
                         CoreMain.PackState?.Invoke(CoreRunState.End);
-                        return true;
+                        res1111 = true;
+                        break;
                     }
                 case PackType.CurseForge:
                     CoreMain.PackState?.Invoke(CoreRunState.Read);
                     var res = await PackDownload.DownloadCurseForge(dir);
+                    game = res.Game;
                     if (res.State != DownloadState.End)
+                    {
                         break;
+                    }
 
                     CoreMain.PackState?.Invoke(CoreRunState.Download);
                     DownloadManager.Clear();
                     DownloadManager.FillAll(res.List!);
-                    var res1 = await DownloadManager.Start();
+                    res1111 = await DownloadManager.Start();
 
                     CoreMain.PackState?.Invoke(CoreRunState.End);
-                    return true;
+                    break;
                 case PackType.MMC:
                     {
                         CoreMain.PackState?.Invoke(CoreRunState.Read);
@@ -411,7 +431,7 @@ public static class InstancesPath
 
                         var mmc1 = Encoding.UTF8.GetString(stream2.ToArray());
                         var list = Options.ReadOptions(mmc1, "=");
-                        var game = new GameSettingObj
+                        game = new GameSettingObj
                         {
                             Name = list["name"],
                             Loader = Loaders.Normal
@@ -500,7 +520,8 @@ public static class InstancesPath
                         }
 
                         CoreMain.PackState?.Invoke(CoreRunState.End);
-                        return true;
+                        res1111 = true;
+                        break;
                     }
                 case PackType.HMCL:
                     {
@@ -539,7 +560,7 @@ public static class InstancesPath
                         if (obj == null)
                             break;
 
-                        var game = new GameSettingObj()
+                        game = new GameSettingObj()
                         {
                             Name = obj.name,
                             Loader = Loaders.Normal
@@ -632,7 +653,8 @@ public static class InstancesPath
                         }
 
                         CoreMain.PackState?.Invoke(CoreRunState.End);
-                        return true;
+                        res1111 = true;
+                        break;
                     }
             }
         }
@@ -640,8 +662,11 @@ public static class InstancesPath
         {
             Logs.Error("µ¼ÈëÑ¹Ëõ°ü´íÎó", e);
         }
-
+        if (!res1111)
+        {
+            game?.Remove();
+        }
         CoreMain.PackState?.Invoke(CoreRunState.End);
-        return false;
+        return res1111;
     }
 }

@@ -15,7 +15,7 @@ using System.Runtime.CompilerServices;
 using Avalonia.Animation;
 using ColorMC.Core.Utils;
 using Avalonia.Input;
-using ColorMC.Core.Http;
+using ColorMC.Core.Net;
 using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Views.Main;
@@ -71,12 +71,12 @@ public partial class ItemControl : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        App.ShowUser(1);
+        App.ShowUser(true);
     }
 
     private void Button_Switch_Click(object? sender, RoutedEventArgs e)
     {
-        App.ShowUser(0);
+        App.ShowUser(false);
     }
 
     private void Button_Launch1_Click(object? sender, RoutedEventArgs e)
@@ -156,14 +156,16 @@ public partial class ItemControl : UserControl
             return;
         }
 
-        file = await HeadImageUtils.MakeHeadImage(file);
+        var data = await HeadImageUtils.MakeHeadImage(file);
         if (file == null)
         {
             Image1.Source = bitmap;
             return;
         }
 
-        Image1.Source = new Bitmap(file);
+        data.Seek(0, SeekOrigin.Begin);
+        Image1.Source = new Bitmap(data);
+        data.Close();
         ProgressBar1.IsVisible = false;
     }
 }

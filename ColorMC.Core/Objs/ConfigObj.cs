@@ -1,5 +1,4 @@
-﻿using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Http;
+﻿using ColorMC.Core.Net;
 
 namespace ColorMC.Core.Objs;
 
