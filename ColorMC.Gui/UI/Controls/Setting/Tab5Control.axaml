@@ -1,0 +1,63 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Setting.Tab5Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
+
+        <StackPanel Margin="5">
+            <Label Margin="5" Content="修改背景图片" />
+            <TextBox
+                Name="TextBox1"
+                Margin="5"
+                Classes="input1"
+                Watermark="背景图片位置" />
+            <Grid>
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="模糊效果" />
+                <Slider
+                    Name="Slider1"
+                    Width="200"
+                    Margin="100,0,0,0"
+                    HorizontalAlignment="Left"
+                    Foreground="#FF5ABED6"
+                    IsSnapToTickEnabled="True"
+                    LargeChange="1"
+                    Maximum="100"
+                    Minimum="0"
+                    SmallChange="1"
+                    TickFrequency="1"
+                    Value="20" />
+
+                <Button
+                    Name="Button_Delete"
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,180,0"
+                    HorizontalAlignment="Right"
+                    Content="删除" />
+                <Button
+                    Name="Button_SelectFile"
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,95,0"
+                    HorizontalAlignment="Right"
+                    Content="选择文件" />
+                <Button
+                    Name="Button_Set"
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    Content="设置" />
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -391,7 +391,7 @@ public static class ForgeHelper
         else
         {
             string url = UrlHelp.ForgeVersions(version, SourceLocal.Offical) + version + ".html";
-            var data = await BaseClient.Client.GetAsync(url);
+            var data = await BaseClient.DownloadClient.GetAsync(url);
 
             string html = null;
             if (data.IsSuccessStatusCode)

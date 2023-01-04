@@ -161,4 +161,20 @@ public static class GameBinding
     {
         return CurseForge.GetCurseForgeFiles(id, page);
     }
+
+    public static async Task<(bool, string?)> Launch(GameSettingObj? obj, bool debug)
+    {
+        if (obj == null)
+        {
+            return (false, "没有选择游戏实例");
+        }
+
+        var login = UserBinding.GetLastUser();
+        if (login == null)
+        {
+            return (false, "没有选择账户");
+        }
+
+        return (await BaseBinding.Launch(obj, login, debug), null);
+    }
 }

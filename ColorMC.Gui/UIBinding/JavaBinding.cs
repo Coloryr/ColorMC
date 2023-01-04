@@ -1,4 +1,8 @@
 ﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace ColorMC.Gui.UIBinding;
@@ -36,9 +40,9 @@ public static class JavaBinding
     public static (JavaInfoObj?, string?) AddJava(string name, string local)
     {
         var res = JvmPath.AddItem(name, local);
-        if (res.Item1 == false)
+        if (res.Res == false)
         {
-            return (null, res.Item2);
+            return (null, res.Msg);
         }
         else
         {
@@ -50,5 +54,17 @@ public static class JavaBinding
     public static void RemoveJava(string name)
     {
         JvmPath.Remove(name);
+    }
+
+    public static List<string> GetGCTypes()
+    {
+        var list = new List<string>();
+        Array values = Enum.GetValues(typeof(GCType));
+        foreach (GCType value in values)
+        {
+            list.Add(value.GetName());
+        }
+
+        return list;
     }
 }

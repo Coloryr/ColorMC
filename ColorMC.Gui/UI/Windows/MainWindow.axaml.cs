@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
@@ -32,23 +33,20 @@ public partial class MainWindow : Window
         Task.Run(Load);
         Task.Run(Load1);
 
-        if (App.BackBitmap != null)
-        {
-            Image_Back.Source = App.BackBitmap;
-        }
-
         CoreMain.GameLaunch = GameLunch;
         CoreMain.GameDownload = GameDownload;
 
         UserEdit += MainWindow_OnUserEdit;
         Opened += MainWindow_Opened;
         Closed += MainWindow_Closed;
+
+        Update();
     }
 
     public async void Launch(bool debug)
     {
         Info1.Show("正在启动游戏");
-        var res = await OtherBinding.Launch(Obj, debug);
+        var res = await GameBinding.Launch(Obj, debug);
         if (res.Item1 == false)
         {
             Info1.Close();
@@ -190,5 +188,10 @@ public partial class MainWindow : Window
             }
             GameGroups.Children.Add(DefaultGroup);
         });
+    }
+
+    public void Update()
+    {
+        App.Update(this, Image_Back, Rectangle1);
     }
 }

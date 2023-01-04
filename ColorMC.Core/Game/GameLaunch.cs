@@ -23,7 +23,7 @@ public enum LaunchState
     VersionError, AssetsError, LoaderError, JvmError, LoginFail
 }
 
-public static class GameLaunch
+public static class Launch
 {
     public static async Task<List<DownloadItem>?> CheckGameFile(GameSettingObj obj, LoginObj login)
     {
@@ -415,19 +415,19 @@ public static class GameLaunch
 
         switch (args.GC)
         {
-            case JvmArgObj.GCType.G1GC:
+            case GCType.G1GC:
                 jvmHead.Add("-XX:+UseG1GC");
                 break;
-            case JvmArgObj.GCType.SerialGC:
+            case GCType.SerialGC:
                 jvmHead.Add("-XX:+UseSerialGC");
                 break;
-            case JvmArgObj.GCType.ParallelGC:
+            case GCType.ParallelGC:
                 jvmHead.Add("-XX:+UseParallelGC");
                 break;
-            case JvmArgObj.GCType.CMSGC:
+            case GCType.CMSGC:
                 jvmHead.Add("-XX:+UseConcMarkSweepGC");
                 break;
-            case JvmArgObj.GCType.User:
+            case GCType.User:
                 if (!string.IsNullOrWhiteSpace(args.GCArgument))
                     jvmHead.Add(args.GCArgument.Trim());
                 break;
@@ -566,6 +566,29 @@ public static class GameLaunch
             {
                 gameArg.Add($"--proxyPass");
                 gameArg.Add(obj.ProxyHost.Password);
+            }
+        }
+        else if (ConfigUtils.Config.Http.GameProxy)
+        {
+            if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
+            {
+                gameArg.Add($"--proxyHost");
+                gameArg.Add(ConfigUtils.Config.Http.ProxyIP);
+            }
+            if (ConfigUtils.Config.Http.ProxyPort != 0)
+            {
+                gameArg.Add($"--proxyPort");
+                gameArg.Add(ConfigUtils.Config.Http.ProxyPort.ToString());
+            }
+            if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyUser))
+            {
+                gameArg.Add($"--proxyUser");
+                gameArg.Add(ConfigUtils.Config.Http.ProxyUser);
+            }
+            if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyPassword))
+            {
+                gameArg.Add($"--proxyPass");
+                gameArg.Add(ConfigUtils.Config.Http.ProxyPassword);
             }
         }
 

@@ -136,7 +136,7 @@ public class DownloadThread
                         if (pause)
                             semaphore1.WaitOne();
 
-                        var data = await BaseClient.Client.GetAsync(item.Url,
+                        var data = await BaseClient.DownloadClient.GetAsync(item.Url,
                             HttpCompletionOption.ResponseHeadersRead, cancel.Token);
                         item.AllSize = (long)data.Content.Headers.ContentLength!;
                         item.State = DownloadItemState.GetInfo;

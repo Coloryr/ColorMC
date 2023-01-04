@@ -1,11 +1,10 @@
 <Window
-    x:Class="ColorMC.Gui.UI.Windows.MainWindow"
+    x:Class="ColorMC.Gui.UI.Windows.SettingWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
-    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Main"
     Title="ColorMC"
     Width="800"
     Height="450"
@@ -13,16 +12,18 @@
     MinHeight="450"
     d:DesignHeight="450"
     d:DesignWidth="800"
-	Background="Transparent"
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaTitleBarHeightHint="-1"
     ExtendClientAreaToDecorationsHint="True"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="ColorMC 主界面"
+            Title="ColorMC 设置"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Max="False"
+            Min="False" />
         <Grid Margin="0,35,0,0">
             <Rectangle
                 Name="Rectangle1"
@@ -35,18 +36,25 @@
                 Margin="3"
                 Stretch="UniformToFill" />
 
-            <DockPanel LastChildFill="True">
-                <views1:ItemControl
-                    Name="ItemInfo"
-                    Margin="0,0,3,0"
-                    DockPanel.Dock="Right" />
-                <ScrollViewer Margin="3,3,0,0">
-                    <StackPanel Name="GameGroups" />
-                </ScrollViewer>
-            </DockPanel>
+            <Grid Margin="3" Background="#88FFFFFF">
+                <Grid
+                    Name="Tab1"
+                    Margin="10,50,10,10"
+                    ClipToBounds="True" />
 
-            <views:Info1Control Name="Info1" IsVisible="False" />
+                <TabControl Name="Tabs" VerticalAlignment="Top">
+                    <TabItem Header="导入配置" />
+                    <TabItem Header="界面设置" />
+                    <TabItem Header="网络设置" />
+                    <TabItem Header="参数设置" />
+                    <TabItem Header="Java路径" />
+                </TabControl>
+            </Grid>
+
             <views:Info4Control Name="Info" IsVisible="False" />
+            <views:Info1Control Name="Info1" IsVisible="False" />
+            <views:Info3Control Name="Info3" IsVisible="False" />
+            <views:Info2Control Name="Info2" />
         </Grid>
     </Grid>
 </Window>

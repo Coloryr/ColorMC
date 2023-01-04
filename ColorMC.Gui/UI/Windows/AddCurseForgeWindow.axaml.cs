@@ -27,11 +27,6 @@ public partial class AddCurseForgeWindow : Window
         this.MakeItNoChrome();
         FontFamily = Program.FontFamily;
 
-        if (App.BackBitmap != null)
-        {
-            Image_Back.Source = App.BackBitmap;
-        }
-
         ComboBox1.Items = GameBinding.GetCurseForgeTypes();
         ComboBox3.Items = GameBinding.GetSortOrder();
 
@@ -49,6 +44,8 @@ public partial class AddCurseForgeWindow : Window
 
         Opened += AddCurseForgeWindow_Opened;
         Closed += AddCurseForgeWindow_Closed;
+
+        Update();
     }
 
     private void ButtonDownload_Click(object? sender, RoutedEventArgs e)
@@ -185,5 +182,10 @@ public partial class AddCurseForgeWindow : Window
 
         ComboBox2.Items = list;
         Load();
+    }
+
+    public void Update()
+    {
+        App.Update(this, Image_Back, Rectangle1);
     }
 }

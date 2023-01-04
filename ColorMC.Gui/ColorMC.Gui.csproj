@@ -56,5 +56,8 @@
     <Compile Update="UI\Controls\Info4Control.axaml.cs">
       <DependentUpon>Info4Control.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Controls\Setting\Tab2Control.axaml.cs">
+      <DependentUpon>Tab2Control.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

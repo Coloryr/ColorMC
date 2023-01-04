@@ -109,7 +109,7 @@ public static class TestItem
     public static void Item7()
     {
         var data = InstancesPath.Games.First();
-        var list = GameLaunch.CheckGameFile(data, new LoginObj()).Result;
+        var list = Launch.CheckGameFile(data, new LoginObj()).Result;
         if (list == null)
         {
             Console.WriteLine("文件检查失败");

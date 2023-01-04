@@ -1,40 +1,47 @@
-﻿using ColorMC.Core.Net.Downloader;
+﻿using Avalonia.Controls;
+using ColorMC.Core;
+using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Net;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class OtherBinding
 {
-    public static bool LoadAuthDatabase(string dir)
-    {
-        return AuthDatabase.LoadData(dir);
-    }
-
-    public static bool LoadConfig(string dir)
-    {
-        return ConfigUtils.Load(dir, true);
-    }
-
-    public static (int, int) GetDownloadState()
+    private static List<string> WindowTranTypes = new()
+    { 
+        "普通透明", "模糊", "亚克力模糊", "强制亚克力模糊", "云母"
+    };
+    public static (int, int) GetDownloadSize()
     {
         return (DownloadManager.AllSize, DownloadManager.DoneSize);
     }
 
-    public static async Task<(bool, string?)> Launch(GameSettingObj? obj, bool debug)
+    public static CoreRunState GetDownloadState()
     {
-        if (obj == null)
+        return DownloadManager.State;
+    }
+
+    public static List<string> GetDownloadSources()
+    {
+        var list = new List<string>();
+        Array values = Enum.GetValues(typeof(SourceLocal));
+        foreach (SourceLocal value in values)
         {
-            return (false, "没有选择游戏实例");
+            list.Add(value.GetName());
         }
 
-        var login = UserBinding.GetLastUser();
-        if (login == null)
-        {
-            return (false, "没有选择账户");
-        }
+        return list;
+    }
 
-        return (await BaseBinding.Launch(obj, login, debug), null);
+    public static List<string> GetWindowTranTypes()
+    {
+        return WindowTranTypes;
     }
 }

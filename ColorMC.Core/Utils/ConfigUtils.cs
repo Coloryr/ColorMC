@@ -117,9 +117,9 @@ public static class ConfigUtils
         {
             Source = SourceLocal.Offical,
             DownloadThread = 5,
-            Proxy = false,
             ProxyIP = "127.0.0.1",
-            ProxyPort = 1080
+            ProxyPort = 1080,
+            DownloadProxy = true
         };
     }
 
@@ -128,7 +128,7 @@ public static class ConfigUtils
         return new()
         {
             JvmArgs = null,
-            GC = JvmArgObj.GCType.G1GC,
+            GC = GCType.G1GC,
             GCArgument = null,
             JavaAgent = null,
             MaxMemory = 4096,

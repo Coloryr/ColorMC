@@ -23,17 +23,15 @@ public partial class InitWindow : Window
 
     private void MainWindow_Opened(object? sender, EventArgs e)
     {
-        Task.Run(() =>
+        Task.Run(async () =>
         {
             BaseBinding.Init();
 
-            var file = GuiConfigUtils.Config?.BackImage;
-            if (!string.IsNullOrWhiteSpace(file) && File.Exists(file))
+            if (GuiConfigUtils.Config != null)
             {
-                App.BackBitmap = new Bitmap(file);
+                await App.LoadImage(GuiConfigUtils.Config.BackImage,
+                    GuiConfigUtils.Config.BackEffect);
             }
-
-            App.BackBitmap = new Bitmap("F:\\illust_94899568_20220104_002837.png");
 
             Dispatcher.UIThread.Post(() =>
             {

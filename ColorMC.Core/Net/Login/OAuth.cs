@@ -1,5 +1,7 @@
 ﻿using ColorMC.Core.Game.Auth;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net.Login;
 
@@ -57,9 +59,34 @@ public static class OAuthAPI
     private static string device_code;
     private static int expires_in;
 
+    public static async Task<string> PostString(string url, Dictionary<string, string> arg)
+    {
+        FormUrlEncodedContent content = new(arg);
+        var message = await BaseClient.LoginClient.PostAsync(url, content);
+
+        return await message.Content.ReadAsStringAsync();
+    }
+
+    public static async Task<JObject> PostObj(string url, object arg)
+    {
+        var data1 = JsonConvert.SerializeObject(arg);
+        StringContent content = new(data1, MediaTypeHeaderValue.Parse("application/json"));
+        var message = await BaseClient.LoginClient.PostAsync(url, content);
+        var data = await message.Content.ReadAsStringAsync();
+        return JObject.Parse(data);
+    }
+
+    public static async Task<JObject> PostObj(string url, Dictionary<string, string> arg)
+    {
+        FormUrlEncodedContent content = new(arg);
+        var message = await BaseClient.LoginClient.PostAsync(url, content);
+        var data = await message.Content.ReadAsStringAsync();
+        return JObject.Parse(data);
+    }
+
     public static async Task<(LoginState Done, string? Code, string? Url)> GetCode()
     {
-        var data = await BaseClient.PostString(OAuthCode, Arg1);
+        var data = await PostString(OAuthCode, Arg1);
         if (data.Contains("error"))
         {
             Logs.Error(data);
@@ -93,7 +120,7 @@ public static class OAuthAPI
             {
                 return (LoginState.TimeOut, null);
             }
-            var data = await BaseClient.PostString(OAuthToken, Arg2);
+            var data = await PostString(OAuthToken, Arg2);
             var obj3 = JObject.Parse(data);
             if (obj3.ContainsKey("error"))
             {
@@ -129,7 +156,7 @@ public static class OAuthAPI
         var dir = new Dictionary<string, string>(Arg3);
         dir["refresh_token"] = token;
 
-        var obj1 = await BaseClient.PostObj(OAuthToken, dir);
+        var obj1 = await PostObj(OAuthToken, dir);
         if (obj1.ContainsKey("error"))
         {
             return (LoginState.Error, null);
@@ -143,7 +170,7 @@ public static class OAuthAPI
     /// <returns></returns>
     public static async Task<(LoginState Done, string? XNLToken, string? XBLUhs)> GetXBLAsync(string token)
     {
-        var json = await BaseClient.PostObj(XboxLive, new
+        var json = await PostObj(XboxLive, new
         {
             Properties = new
             {
@@ -174,7 +201,7 @@ public static class OAuthAPI
     /// <exception cref="FailedAuthenticationException"></exception>
     public static async Task<(LoginState Done, string? XSTSToken, string? XSTSUhs)> GetXSTSAsync(string token)
     {
-        var json = await BaseClient.PostObj(XSTS, new
+        var json = await PostObj(XSTS, new
         {
             Properties = new
             {
@@ -199,7 +226,7 @@ public static class OAuthAPI
 
     public static async Task<(LoginState Done, string? AccessToken)> GetMinecraftAsync(string token, string token1)
     {
-        var json = await BaseClient.PostObj(XBoxProfile, new
+        var json = await PostObj(XBoxProfile, new
         {
             identityToken = $"XBL3.0 x={token};{token1}"
         });

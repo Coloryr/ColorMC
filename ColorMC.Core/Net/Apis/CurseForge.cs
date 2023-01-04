@@ -23,7 +23,7 @@ public static class CurseForge
                 RequestUri = new Uri(temp)
             };
             httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.Client.SendAsync(httpRequest);
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
@@ -47,7 +47,7 @@ public static class CurseForge
                 RequestUri = new Uri(temp)
             };
             httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.Client.SendAsync(httpRequest);
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
@@ -84,7 +84,7 @@ public static class CurseForge
                 Content = new StringContent(JsonConvert.SerializeObject(arg1), MediaTypeHeaderValue.Parse("application/json"))
             };
             httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.Client.SendAsync(httpRequest);
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
@@ -108,7 +108,7 @@ public static class CurseForge
                 RequestUri = new Uri(temp)
             };
             httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.Client.SendAsync(httpRequest);
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
@@ -132,7 +132,7 @@ public static class CurseForge
                 RequestUri = new Uri(temp)
             };
             httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.Client.SendAsync(httpRequest);
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
@@ -156,7 +156,7 @@ public static class CurseForge
                 RequestUri = new Uri(temp)
             };
             httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.Client.SendAsync(httpRequest);
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
@@ -180,7 +180,7 @@ public static class CurseForge
                 RequestUri = new Uri(temp)
             };
             httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.Client.SendAsync(httpRequest);
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
