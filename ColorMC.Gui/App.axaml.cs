@@ -18,7 +18,7 @@ namespace ColorMC.Gui;
 public partial class App : Application
 {
     public static readonly IBrush BackColor = Brush.Parse("#FFF4F4F5");
-    public static readonly IBrush BackColor1 = Brushes.Transparent; //Brush.Parse("#22F4F4F5");
+    public static readonly IBrush BackColor1 = Brush.Parse("#11F4F4F5"); //Brushes.Transparent;
 
     private static IClassicDesktopStyleApplicationLifetime Life;
     public static DownloadWindow? DownloadWindow;
