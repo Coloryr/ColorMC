@@ -10,6 +10,7 @@ public static class DownloadManager
     private readonly static List<string> Name = new();
     private static List<DownloadThread> threads = new();
     private static Semaphore semaphore = new(0, 10);
+    public static CoreRunState State { get;private set; }
 
     public static int AllSize { get; private set; }
     public static int DoneSize { get; private set; }
@@ -73,7 +74,7 @@ public static class DownloadManager
         Logs.Info($"下载器启动");
         DoneSize = 0;
         AllSize = Items.Count;
-        CoreMain.DownloaderUpdate?.Invoke(CoreRunState.Start);
+        CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.Start);
         foreach (var item in threads)
         {
             item.Start();
@@ -86,7 +87,7 @@ public static class DownloadManager
             }
         });
 
-        CoreMain.DownloaderUpdate?.Invoke(CoreRunState.End);
+        CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.End);
 
         return AllSize == DoneSize;
     }
@@ -94,7 +95,7 @@ public static class DownloadManager
     public static void FillAll(List<DownloadItem> list)
     {
         Logs.Info($"下载器装填内容");
-        CoreMain.DownloaderUpdate?.Invoke(CoreRunState.Init);
+        CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
         foreach (var item in list)
         {
             if (Name.Contains(item.Name))
@@ -170,7 +171,7 @@ public static class DownloadManager
             Directory.CreateDirectory(info.DirectoryName!);
         }
         using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-        var data = await BaseClient.Client.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead);
+        var data = await BaseClient.DownloadClient.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead);
         using Stream stream1 = data.Content.ReadAsStream();
         byte[] buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
         try

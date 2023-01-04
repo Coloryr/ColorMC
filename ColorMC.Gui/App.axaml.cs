@@ -1,17 +1,25 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
 
 public partial class App : Application
 {
+    public static readonly IBrush BackColor = Brush.Parse("#FFF4F4F5");
+    public static readonly IBrush BackColor1 = Brushes.Transparent; //Brush.Parse("#22F4F4F5");
+
     private static IClassicDesktopStyleApplicationLifetime Life;
     public static DownloadWindow? DownloadWindow;
     public static UserWindow? UserWindow;
@@ -19,8 +27,9 @@ public partial class App : Application
     public static HelloWindow? HelloWindow;
     public static AddGameWindow? AddGameWindow;
     public static AddCurseForgeWindow? AddCurseForgeWindow;
+    public static SettingWindow? SettingWindow;
 
-    public static Bitmap? BackBitmap;
+    public static Bitmap? BackBitmap { get; private set; }
 
     public override void Initialize()
     {
@@ -41,6 +50,29 @@ public partial class App : Application
         {
             Life.Exit += Life_Exit;
         }
+    }
+
+    public static void RemoveImage()
+    {
+        if (BackBitmap != null)
+        {
+            BackBitmap.Dispose();
+        }
+
+        BackBitmap = null;
+    }
+
+    public static async Task<bool> LoadImage(string file, int eff) 
+    {
+        RemoveImage();
+
+        if (!string.IsNullOrWhiteSpace(file) && File.Exists(file))
+        {
+            BackBitmap = await ImageUtils.MakeImageSharp(file, eff);
+            return BackBitmap != null;
+        }
+
+        return false;
     }
 
     public static void DownloaderUpdate(CoreRunState state)
@@ -145,6 +177,19 @@ public partial class App : Application
         }
     }
 
+    public static void ShowSetting()
+    {
+        if (SettingWindow != null)
+        {
+            SettingWindow.Activate();
+        }
+        else
+        {
+            SettingWindow = new();
+            SettingWindow.Show();
+        }
+    }
+
     public static void ShowError(string data, Exception e, bool close)
     {
         new ErrorWindow().Show(data, e, close);
@@ -153,5 +198,40 @@ public partial class App : Application
     public static void Close()
     {
         Life?.Shutdown();
+    }
+
+    public static void Update(Window window, Image iamge, Rectangle rec)
+    {
+        if (BackBitmap != null)
+        {
+            iamge.Source = BackBitmap;
+            if (GuiConfigUtils.Config.BackTran != 0)
+            {
+                iamge.Opacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
+            }
+            else
+            {
+                iamge.Opacity = 100;
+            }
+            iamge.IsVisible = true;
+        }
+        else
+        {
+            iamge.IsVisible = false;
+            iamge.Source = null;
+        }
+
+        if (GuiConfigUtils.Config.WindowTran)
+        {
+            rec.Fill = BackColor1;
+            window.TransparencyLevelHint = (WindowTransparencyLevel)
+                (GuiConfigUtils.Config.WindowTranType + 1);
+        }
+        else
+        {
+            window.TransparencyLevelHint = WindowTransparencyLevel.None;
+            rec.Fill = BackColor;
+        }
+
     }
 }

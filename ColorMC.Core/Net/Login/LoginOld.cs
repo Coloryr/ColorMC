@@ -31,7 +31,7 @@ public static class LoginOld
         message.Content = new StringContent(JsonConvert.SerializeObject(obj),
             MediaTypeHeaderValue.Parse("application/json"));
 
-        var res = await BaseClient.Client.SendAsync(message);
+        var res = await BaseClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
             return (LoginState.Error, null, null);
@@ -71,7 +71,7 @@ public static class LoginOld
         message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
             MediaTypeHeaderValue.Parse("application/json"));
 
-        var res = await BaseClient.Client.SendAsync(message);
+        var res = await BaseClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
             return (LoginState.Error, null);

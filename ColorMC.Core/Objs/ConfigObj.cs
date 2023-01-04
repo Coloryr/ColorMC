@@ -12,63 +12,64 @@ public record HttpObj
 {
     public SourceLocal Source { get; set; }
     public int DownloadThread { get; set; }
-    public bool Proxy { get; set; }
     public string ProxyIP { get; set; }
     public ushort ProxyPort { get; set; }
     public string ProxyUser { get; set; }
     public string ProxyPassword { get; set; }
+
+    public bool LoginProxy { get; set; }
+    public bool DownloadProxy { get; set; }
+    public bool GameProxy { get; set; }
 }
 
 public record WindowSettingObj
 {
     /// <summary>
-    /// 是否全屏
+    /// 全屏
     /// </summary>
     public bool FullScreen { get; set; }
 
     /// <summary>
-    /// 高px
+    /// 高
     /// </summary>
     public uint Height { get; set; }
 
     /// <summary>
-    /// 宽px
+    /// 宽
     /// </summary>
     public uint Width { get; set; }
 }
 
-public record JvmArgObj
+
+public enum GCType
 {
     /// <summary>
-    /// GC类型
+    /// 默认G1垃圾回收器 兼容JAVA9
     /// </summary>
-    public enum GCType
-    {
-        /// <summary>
-        /// 默认G1垃圾回收器 兼容JAVA9
-        /// </summary>
-        G1GC = 0,
+    G1GC = 0,
 
-        /// <summary>
-        /// 串行垃圾回收器
-        /// </summary>
-        SerialGC = 1,
+    /// <summary>
+    /// 串行垃圾回收器
+    /// </summary>
+    SerialGC = 1,
 
-        /// <summary>
-        /// 并行垃圾回收器
-        /// </summary>
-        ParallelGC = 2,
+    /// <summary>
+    /// 并行垃圾回收器
+    /// </summary>
+    ParallelGC = 2,
 
-        /// <summary>
-        /// 并发标记扫描垃圾回收器
-        /// </summary>
-        CMSGC = 3,
+    /// <summary>
+    /// 并发标记扫描垃圾回收器
+    /// </summary>
+    CMSGC = 3,
 
-        /// <summary>
-        /// 设置为空（手动设置）
-        /// </summary>
-        User = 4
-    }
+    /// <summary>
+    /// 设置为空（手动设置）
+    /// </summary>
+    User = 4
+}
+public record JvmArgObj
+{
     public string? JvmArgs { get; set; }
     public string? GameArgs { get; set; }
     public string? GCArgument { get; set; }

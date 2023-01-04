@@ -1,15 +1,18 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -208,9 +211,30 @@ public static class UIUtils
 
         }
     }
+
+    public static void MakeThumb(this Slider slider)
+    {
+        try
+        {
+            var item = slider.FindToEnd<Thumb>();
+            if (item != null)
+            {
+                var item1 = item.FindToEnd<Border>();
+                if (item1 == null)
+                    return;
+                item1.Background = Avalonia.Media.Brush.Parse("#FF5ABED6");
+                item1.BorderThickness = new Thickness(2);
+                item1.BorderBrush = Avalonia.Media.Brush.Parse("#88FFFFFF");
+            }
+        }
+        catch
+        {
+
+        }
+    }
 }
 
-public static class HeadImageUtils
+public static class ImageUtils
 {
     public static async Task<MemoryStream> MakeHeadImage(string file)
     {
@@ -257,6 +281,35 @@ public static class HeadImageUtils
         rgba.B = (byte)(mix.B * ap + rgba.B * dp);
 
         return rgba;
+    }
+
+    public static Task<Bitmap?> MakeImageSharp(string file, int value)
+    {
+        return Task.Run(async () =>
+        {
+            try
+            {
+                using var image = await SixLabors.ImageSharp.Image.LoadAsync(file);
+                if (value > 0)
+                {
+                    image.Mutate(p =>
+                    {
+                        p.GaussianBlur(value);
+                    });
+                }
+
+                using var stream = new MemoryStream();
+                await image.SaveAsPngAsync(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                return new Bitmap(stream);
+            }
+            catch (Exception e)
+            {
+                Logs.Error("背景图片加载失败", e);
+                return null;
+            }
+        });
     }
 }
 

@@ -33,6 +33,7 @@ public partial class ItemControl : UserControl
         Button_Add.Click += Button_Add_Click;
 
         Button1.Click += Button1_Click;
+        Button_Setting.Click += Button_Setting_Click;
 
         var uri = new Uri($"resm:ColorMC.Gui.Resource.Icon.user.png");
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
@@ -41,6 +42,11 @@ public partial class ItemControl : UserControl
         Image1.Source = bitmap = new Bitmap(asset);
         Expander1.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(300));
         Button1.Content = ">";
+    }
+
+    private void Button_Setting_Click(object? sender, RoutedEventArgs e)
+    {
+        App.ShowSetting();
     }
 
     private void Button_Add1_Click(object? sender, RoutedEventArgs e)
@@ -147,7 +153,7 @@ public partial class ItemControl : UserControl
             return;
         }
 
-        var data = await HeadImageUtils.MakeHeadImage(file);
+        var data = await ImageUtils.MakeHeadImage(file);
         if (file == null)
         {
             Image1.Source = bitmap;

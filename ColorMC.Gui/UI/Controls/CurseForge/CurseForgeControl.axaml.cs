@@ -53,7 +53,7 @@ public partial class CurseForgeControl : UserControl
         Label4.Content = DateTime.Parse(data.dateModified);
         if (data.logo != null)
         {
-            var data1 = await BaseClient.Client.GetAsync(data.logo.url);
+            var data1 = await BaseClient.DownloadClient.GetAsync(data.logo.url);
             Dispatcher.UIThread.Post(() =>
             {
                 var bitmap = new Bitmap(data1.Content.ReadAsStream());

@@ -12,4 +12,8 @@ public record GuiConfigObj
     public string Version { get; set; }
     public LastUser LastUser { get; set; }
     public string BackImage { get; set; }
+    public int BackEffect { get; set; }
+    public int BackTran { get; set; }
+    public bool WindowTran { get; set; }
+    public int WindowTranType { get; set; }
 }

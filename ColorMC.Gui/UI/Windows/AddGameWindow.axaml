@@ -23,6 +23,7 @@
             VerticalAlignment="Top" />
         <Grid Margin="0,35,0,0">
             <Rectangle
+                Name="Rectangle1"
                 Fill="#FFF4F4F5"
                 Stroke="#FF5ABED6"
                 StrokeThickness="3" />

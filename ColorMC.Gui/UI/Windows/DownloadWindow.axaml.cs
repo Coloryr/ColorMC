@@ -34,11 +34,6 @@ public partial class DownloadWindow : Window
 
         DataGrid_Download.Items = List;
 
-        if (App.BackBitmap != null)
-        {
-            Image_Back.Source = App.BackBitmap;
-        }
-
         Expander_P.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(100));
         Expander_S.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(100));
 
@@ -56,6 +51,7 @@ public partial class DownloadWindow : Window
         Opened += DownloadWindow_Opened;
 
         ProgressBar1.Value = 0;
+        Update();
     }
 
     private async void Button_S_Click(object? sender, RoutedEventArgs e)
@@ -122,12 +118,20 @@ public partial class DownloadWindow : Window
         App.DownloadWindow = null;
     }
 
-    private void DownloadWindow_Closing(object? sender, CancelEventArgs e)
+    private async void DownloadWindow_Closing(object? sender, CancelEventArgs e)
     {
-        if (List.Count != 0)
+        if (OtherBinding.GetDownloadState() != CoreRunState.End)
         {
-            Info.Show("下载还未完成");
-            e.Cancel = true;
+            var res =await Info.ShowWait("下载还未完成，是否要取消");
+            if (res)
+            {
+                DownloadManager.Stop();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+            return;
         }
     }
 
@@ -156,7 +160,7 @@ public partial class DownloadWindow : Window
             if (item.State == DownloadItemState.Done
                 && List1.TryGetValue(item.Name, out var item1))
             {
-                var data = OtherBinding.GetDownloadState();
+                var data = OtherBinding.GetDownloadSize();
                 Load();
                 Label1.Content = $"{(double)data.Item2 / data.Item1 * 100:0.##}";
                 List.Remove(item1);
@@ -178,8 +182,13 @@ public partial class DownloadWindow : Window
 
     public void Load()
     {
-        var data = OtherBinding.GetDownloadState();
+        var data = OtherBinding.GetDownloadSize();
         ProgressBar1.Maximum = data.Item1;
         ProgressBar1.Value = data.Item2;
+    }
+
+    public void Update()
+    {
+        App.Update(this, Image_Back, Rectangle1);
     }
 }

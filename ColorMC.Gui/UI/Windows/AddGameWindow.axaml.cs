@@ -27,11 +27,6 @@ public partial class AddGameWindow : Window
         this.MakeItNoChrome();
         FontFamily = Program.FontFamily;
 
-        if (App.BackBitmap != null)
-        {
-            Image_Back.Source = App.BackBitmap;
-        }
-
         ComboBox_GameVersion.Items = List;
         ComboBox_GameVersion.SelectionChanged += GameVersion_SelectionChanged;
 
@@ -433,5 +428,10 @@ public partial class AddGameWindow : Window
         List.Clear();
         List.AddRange(GameBinding.GetGameVersion(CheckBox_Release.IsChecked,
             CheckBox_Snapshot.IsChecked, CheckBox_Other.IsChecked));
+    }
+
+    public void Update()
+    {
+        App.Update(this, Image_Back, Rectangle1);
     }
 }

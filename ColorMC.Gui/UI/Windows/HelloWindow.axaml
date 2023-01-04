@@ -28,19 +28,21 @@
                 Stroke="#FF5ABED6"
                 StrokeThickness="3" />
 
-            <Grid
-                Name="Tab1"
-                Margin="10,50,10,10"
-                ClipToBounds="True" />
+            <Grid Margin="3">
+                <Grid
+                    Name="Tab1"
+                    Margin="10,50,10,10"
+                    ClipToBounds="True" />
 
-            <TabControl Name="Tabs" VerticalAlignment="Top">
-                <TabItem Header="开始" />
-                <TabItem Header="导入配置" />
-                <TabItem Header="添加Java" />
-                <TabItem Header="添加账户" />
-                <TabItem Header="添加游戏" />
-                <TabItem Header="完成" />
-            </TabControl>
+                <TabControl Name="Tabs" VerticalAlignment="Top">
+                    <TabItem Header="开始" />
+                    <TabItem Header="导入配置" />
+                    <TabItem Header="添加Java" />
+                    <TabItem Header="添加账户" />
+                    <TabItem Header="添加游戏" />
+                    <TabItem Header="完成" />
+                </TabControl>
+            </Grid>
 
             <views:Info4Control Name="Info" IsVisible="False" />
             <views:Info1Control Name="Info1" IsVisible="False" />

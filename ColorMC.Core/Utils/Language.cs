@@ -1,7 +1,9 @@
 ﻿using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 
 namespace ColorMC.Core.Utils;
@@ -122,6 +124,30 @@ public static class Language
             2 => "Beta测试版",
             3 => "Alpha测试版",
             _ => "未知的发布类型"
+        };
+    }
+
+    public static string GetName(this SourceLocal state)
+    {
+        return state switch
+        {
+            SourceLocal.Offical => "官方",
+            SourceLocal.BMCLAPI => "BmclApi",
+            SourceLocal.MCBBS => "Mcbbs",
+            _ =>"未知的下载源"
+        };
+    }
+
+    public static string GetName(this GCType state)
+    {
+        return state switch
+        {
+            GCType.G1GC => "G1垃圾回收器",
+            GCType.SerialGC => "串行垃圾回收器",
+            GCType.ParallelGC => "并行垃圾回收器",
+            GCType.CMSGC => "并发标记扫描垃圾回收器",
+            GCType.User => "用户设置",
+            _ => "未知的GC类型"
         };
     }
 }

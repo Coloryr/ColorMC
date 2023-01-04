@@ -60,7 +60,14 @@ public partial class UserWindow : Window
         ComboBox_UserType.SelectionChanged += UserType_SelectionChanged;
         ComboBox_UserType.Items = UserBinding.GetUserTypes();
 
+        Update();
+
         Load();
+    }
+
+    public void Update()
+    {
+        App.Update(this, Image_Back, Rectangle1);
     }
 
     private void DataGrid_User_DoubleTapped(object? sender, RoutedEventArgs e)

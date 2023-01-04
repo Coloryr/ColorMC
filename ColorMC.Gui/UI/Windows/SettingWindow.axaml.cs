@@ -1,21 +1,19 @@
 using Avalonia.Controls;
-using ColorMC.Core;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Controls;
-using ColorMC.Gui.UI.Controls.Hello;
+using ColorMC.Gui.UI.Controls.Setting;
+using ColorMC.Gui.UIBinding;
 using System;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class HelloWindow : Window, IBaseWindow
+public partial class SettingWindow : Window, IBaseWindow
 {
-    private readonly TabHelloControl tab1 = new();
-    private readonly Tab1Control tab2 = new();
-    private readonly Tab2Control tab3 = new();
-    private readonly Tab3Control tab4 = new();
-    private readonly Tab4Control tab5 = new();
-    private readonly Tab5Control tab6 = new();
+    private readonly Controls.Hello.Tab1Control tab1 = new();
+    private readonly Tab2Control tab2 = new();
+    private readonly Tab3Control tab3 = new();
+    private readonly Tab4Control tab4 = new();
 
     private bool switch1 = false;
 
@@ -32,7 +30,7 @@ public partial class HelloWindow : Window, IBaseWindow
     Info3Control IBaseWindow.Info3 => Info3;
     public Window Window => this;
 
-    public HelloWindow()
+    public SettingWindow()
     {
         InitializeComponent();
 
@@ -47,20 +45,43 @@ public partial class HelloWindow : Window, IBaseWindow
         tab2.SetWindow(this);
         tab3.SetWindow(this);
         tab4.SetWindow(this);
-        tab5.SetWindow(this);
-        tab6.SetWindow(this);
 
         content1.Content = tab1;
 
-        Closed += HelloWindow_Closed;
+        Closed += SettingWindow_Closed;
+
+        Update();
     }
 
-    private void HelloWindow_Closed(object? sender, EventArgs e)
+    private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        App.HelloWindow = null;
-        CoreMain.PackState = null;
-        CoreMain.PackUpdate = null;
-        CoreMain.GameOverwirte = null;
+        switch (Tabs.SelectedIndex)
+        {
+            case 0:
+                Go(tab1);
+                break;
+            case 1:
+                tab2.Load();
+                Go(tab2);
+                break;
+            case 2:
+                tab3.Load();
+                Go(tab3);
+                break;
+            case 3:
+                tab4.Load();
+                Go(tab4);
+                break;
+            case 4:
+                //Go(tab5);
+                break;
+            case 5:
+                //tab5.Load();
+                //Go(tab6);
+                break;
+        }
+
+        now = Tabs.SelectedIndex;
     }
 
     private async void Go(UserControl to)
@@ -82,53 +103,18 @@ public partial class HelloWindow : Window, IBaseWindow
         Tabs.IsEnabled = true;
     }
 
-    public void SwitchTab(int index)
+    private void SettingWindow_Closed(object? sender, EventArgs e)
     {
-        Tabs.SelectedIndex = index;
-    }
-
-    private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        switch (Tabs.SelectedIndex)
-        {
-            case 0:
-                Go(tab1);
-                break;
-            case 1:
-                Go(tab2);
-                break;
-            case 2:
-                Go(tab3);
-                break;
-            case 3:
-                Go(tab4);
-                break;
-            case 4:
-                Go(tab5);
-                break;
-            case 5:
-                tab5.Load();
-                Go(tab6);
-                break;
-        }
-
-        now = Tabs.SelectedIndex;
+        App.SettingWindow = null;
     }
 
     public void Update()
     {
-        tab3.Load();
-        tab4.Load();
+        App.Update(this, Image_Back, Rectangle1);
     }
 
     public void Next()
     {
-        Tabs.SelectedIndex++;
-    }
-
-    public void Done()
-    {
-        App.ShowMain();
-        Close();
+        
     }
 }

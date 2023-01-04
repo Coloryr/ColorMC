@@ -18,7 +18,7 @@ public static class MinecraftAPI
         var endpoint = "https://api.minecraftservices.com/minecraft/profile";
         HttpRequestMessage message = new(HttpMethod.Get, endpoint);
         message.Headers.Add("Authorization", $"Bearer {accessToken}");
-        var data = await BaseClient.Client.SendAsync(message);
+        var data = await BaseClient.DownloadClient.SendAsync(message);
 
         var data1 = await data.Content.ReadAsStringAsync();
 
@@ -36,7 +36,7 @@ public static class MinecraftAPI
         var endpoint = "https://api.minecraftservices.com/minecraft/profile";
         HttpRequestMessage message = new(HttpMethod.Get, endpoint);
         message.Headers.Add("Authorization", $"Bearer {accessToken}");
-        var data = await BaseClient.Client.SendAsync(message);
+        var data = await BaseClient.DownloadClient.SendAsync(message);
 
         var data1 = await data.Content.ReadAsStringAsync();
 
