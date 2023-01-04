@@ -37,7 +37,6 @@ public static class ConfigBinding
     {
         App.RemoveImage();
         GuiConfigUtils.Config.BackImage = null;
-        GuiConfigUtils.Config.BackEffect = 0;
         GuiConfigUtils.Save();
         App.AddCurseForgeWindow?.Update();
         App.AddGameWindow?.Update();

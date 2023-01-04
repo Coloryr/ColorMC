@@ -100,6 +100,8 @@ public partial class Tab2Control : UserControl
 
     private void Button_Delete_Click(object? sender, RoutedEventArgs e)
     {
+        TextBox1.Text = "";
+
         ConfigBinding.DeleteGuiImageConfig();
     }
 }
