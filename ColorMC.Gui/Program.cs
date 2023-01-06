@@ -18,11 +18,11 @@ internal class Program
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-        Console.WriteLine("wait");
-        while (!Debugger.IsAttached)
-        {
-            Thread.Sleep(100);
-        }
+        //Console.WriteLine("wait");
+        //while (!Debugger.IsAttached)
+        //{
+        //    Thread.Sleep(100);
+        //}
 
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
