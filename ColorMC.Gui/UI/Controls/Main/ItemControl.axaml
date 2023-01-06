@@ -24,7 +24,7 @@
                     Name="Image1"
                     Width="80"
                     Height="80"
-                    Source="resm:ColorMC.Gui.Resource.Icon.user.png" />
+                    Source="resm:ColorMC.Gui.Resource.Pic.user.png" />
                 <ProgressBar
                     Name="ProgressBar1"
                     Width="100"

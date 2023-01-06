@@ -12,12 +12,16 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
-    <None Remove="Resource\Icon\game.png" />
-    <None Remove="Resource\Icon\user.png" />
+    <None Remove="Resource\Language\zh-cn" />
+    <None Remove="Resource\Pic\game.png" />
+    <None Remove="Resource\Pic\user.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resource\Icon\game.png" />
-    <EmbeddedResource Include="Resource\Icon\user.png" />
+    <EmbeddedResource Include="Resource\Language\zh-cn">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\Pic\game.png" />
+    <EmbeddedResource Include="Resource\Pic\user.png" />
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.

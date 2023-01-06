@@ -1,23 +1,25 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 using System;
 
 namespace ColorMC.Gui.UI.Controls;
 
 public partial class HeadControl : UserControl
 {
-    private string title;
+    public static readonly StyledProperty<object> TitleProperty =
+            AvaloniaProperty.Register<ContentControl, object>(nameof(Title), defaultBindingMode: BindingMode.TwoWay);
+
+    private object title;
     private bool min;
     private bool max;
-    public string Title
+    public object Title
     {
-        get { return title; }
-        set
-        {
-            title = value;
-            TitleShow.Content = value;
-        }
+        get { return GetValue(TitleProperty); }
+        set { SetValue(TitleProperty, value); }
     }
 
     public bool Max

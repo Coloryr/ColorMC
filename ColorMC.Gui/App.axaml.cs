@@ -5,12 +5,15 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using ColorMC.Core;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.IO;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
@@ -29,6 +32,8 @@ public partial class App : Application
     public static AddCurseForgeWindow? AddCurseForgeWindow;
     public static SettingWindow? SettingWindow;
 
+    public static ResourceDictionary? Language;
+
     public static Bitmap? BackBitmap { get; private set; }
 
     public override void Initialize()
@@ -38,6 +43,14 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        Assembly assm = Assembly.GetExecutingAssembly();
+        var names = assm.GetManifestResourceNames();
+        Stream istr = assm?.GetManifestResourceStream("ColorMC.Gui.Resource.Language.zh-cn");
+        MemoryStream stream = new();
+        istr?.CopyTo(stream);
+        var temp = Encoding.UTF8.GetString(stream.ToArray());
+        Language = AvaloniaRuntimeXamlLoader.Load(temp) as ResourceDictionary;
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;

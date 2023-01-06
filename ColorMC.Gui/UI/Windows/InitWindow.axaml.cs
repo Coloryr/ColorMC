@@ -1,10 +1,16 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.IO;
+using System.Reflection;
+using System.Resources;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
