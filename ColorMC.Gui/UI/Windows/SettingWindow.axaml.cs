@@ -14,6 +14,7 @@ public partial class SettingWindow : Window, IBaseWindow
     private readonly Tab2Control tab2 = new();
     private readonly Tab3Control tab3 = new();
     private readonly Tab4Control tab4 = new();
+    private readonly Tab5Control tab5 = new();
 
     private bool switch1 = false;
 
@@ -45,6 +46,7 @@ public partial class SettingWindow : Window, IBaseWindow
         tab2.SetWindow(this);
         tab3.SetWindow(this);
         tab4.SetWindow(this);
+        tab5.SetWindow(this);
 
         content1.Content = tab1;
 
@@ -73,7 +75,8 @@ public partial class SettingWindow : Window, IBaseWindow
                 Go(tab4);
                 break;
             case 4:
-                //Go(tab5);
+                tab5.Load();
+                Go(tab5);
                 break;
             case 5:
                 //tab5.Load();

@@ -150,4 +150,14 @@ public static class Language
             _ => "未知的GC类型"
         };
     }
+
+    public static string GetName(this ArchEnum arch)
+    {
+        return arch switch
+        {
+            ArchEnum.x64 => "64位",
+            ArchEnum.x32 => "32位",
+            _ => "未知的类型"
+        };
+    }
 }

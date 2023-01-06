@@ -10,9 +10,9 @@
     <Grid>
         <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
 
-        <ScrollViewer>
+        <ScrollViewer Margin="5">
 
-            <StackPanel Margin="5">
+            <StackPanel>
                 <Label Margin="5" Content="Jvm参数设置" />
                 <StackPanel Orientation="Horizontal">
                     <Label

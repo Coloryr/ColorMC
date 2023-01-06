@@ -2,6 +2,7 @@
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using System;
 using System.Collections.Generic;
 
@@ -66,5 +67,24 @@ public static class JavaBinding
         }
 
         return list;
+    }
+
+    public static List<JavaDisplayObj> GetJavas()
+    {
+        List<JavaDisplayObj> res = new();
+        foreach (var item in JvmPath.Jvms)
+        {
+            res.Add(new()
+            {
+                Name = item.Key,
+                Path = item.Value.Path,
+                MajorVersion = item.Value.MajorVersion.ToString(),
+                Version = item.Value.Version,
+                Type = item.Value.Type,
+                Arch = item.Value.Arch.GetName()
+            });
+        }
+
+        return res;
     }
 }

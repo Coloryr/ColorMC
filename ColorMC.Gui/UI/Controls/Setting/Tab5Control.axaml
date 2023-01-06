@@ -10,53 +10,117 @@
     <Grid>
         <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
 
-        <StackPanel Margin="5">
-            <Label Margin="5" Content="修改背景图片" />
+        <StackPanel Margin="5" HorizontalAlignment="Stretch">
+            <Label Margin="5" Content="添加Java路径" />
             <TextBox
                 Name="TextBox1"
                 Margin="5"
                 Classes="input1"
-                Watermark="背景图片位置" />
-            <Grid>
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="模糊效果" />
-                <Slider
-                    Name="Slider1"
-                    Width="200"
-                    Margin="100,0,0,0"
-                    HorizontalAlignment="Left"
-                    Foreground="#FF5ABED6"
-                    IsSnapToTickEnabled="True"
-                    LargeChange="1"
-                    Maximum="100"
-                    Minimum="0"
-                    SmallChange="1"
-                    TickFrequency="1"
-                    Value="20" />
-
-                <Button
-                    Name="Button_Delete"
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,180,0"
-                    HorizontalAlignment="Right"
-                    Content="删除" />
+                Watermark="Java名字" />
+            <TextBox
+                Name="TextBox2"
+                Margin="5"
+                Classes="input1"
+                Watermark="Java路径" />
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button
                     Name="Button_SelectFile"
                     Width="80"
                     Height="25"
-                    Margin="0,0,95,0"
-                    HorizontalAlignment="Right"
+                    Margin="0,0,10,0"
                     Content="选择文件" />
                 <Button
-                    Name="Button_Set"
+                    Name="Button_Add"
                     Width="80"
                     Height="25"
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Right"
-                    Content="设置" />
+                    Margin="0,0,5,0"
+                    Content="添加" />
+            </StackPanel>
+            <Label Margin="5" Content="现有的Java" />
+        </StackPanel>
+
+
+
+        <DataGrid
+            Name="DataGrid1"
+            Margin="3,180,3,3"
+            AutoGenerateColumns="False"
+            Background="#88ffffff"
+            CanUserSortColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Binding="{Binding Name}"
+                    Header="名字"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Path}"
+                    Header="路径"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding MajorVersion}"
+                    Header="主版本"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Version}"
+                    Header="版本"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Type}"
+                    Header="类型"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Arch}"
+                    Header="发行版"
+                    IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Margin="4,160,0,0" VerticalAlignment="Center">
+            <Grid>
+                <Button
+                    Name="Button_R"
+                    Width="20"
+                    Height="30"
+                    Content="S" />
+                <Expander
+                    Name="Expander_R"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_R1"
+                        Width="100"
+                        Height="30"
+                        Margin="4,0,0,0"
+                        Content="刷新" />
+                </Expander>
+            </Grid>
+            <Grid Margin="0,5,0,0">
+                <Button
+                    Name="Button_D"
+                    Width="20"
+                    Height="30"
+                    Content="A" />
+                <Expander
+                    Name="Expander_D"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_D1"
+                        Width="100"
+                        Height="30"
+                        Margin="4,0,0,0"
+                        Content="删除" />
+                </Expander>
             </Grid>
         </StackPanel>
     </Grid>

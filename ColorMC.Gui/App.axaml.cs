@@ -202,36 +202,38 @@ public partial class App : Application
 
     public static void Update(Window window, Image iamge, Rectangle rec)
     {
-        if (BackBitmap != null)
+        if (GuiConfigUtils.Config != null)
         {
-            iamge.Source = BackBitmap;
-            if (GuiConfigUtils.Config.BackTran != 0)
+            if (BackBitmap != null)
             {
-                iamge.Opacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
+                iamge.Source = BackBitmap;
+                if (GuiConfigUtils.Config.BackTran != 0)
+                {
+                    iamge.Opacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
+                }
+                else
+                {
+                    iamge.Opacity = 100;
+                }
+                iamge.IsVisible = true;
             }
             else
             {
-                iamge.Opacity = 100;
+                iamge.IsVisible = false;
+                iamge.Source = null;
             }
-            iamge.IsVisible = true;
-        }
-        else
-        {
-            iamge.IsVisible = false;
-            iamge.Source = null;
-        }
 
-        if (GuiConfigUtils.Config.WindowTran)
-        {
-            rec.Fill = BackColor1;
-            window.TransparencyLevelHint = (WindowTransparencyLevel)
-                (GuiConfigUtils.Config.WindowTranType + 1);
+            if (GuiConfigUtils.Config.WindowTran)
+            {
+                rec.Fill = BackColor1;
+                window.TransparencyLevelHint = (WindowTransparencyLevel)
+                    (GuiConfigUtils.Config.WindowTranType + 1);
+            }
+            else
+            {
+                window.TransparencyLevelHint = WindowTransparencyLevel.None;
+                rec.Fill = BackColor;
+            }
         }
-        else
-        {
-            window.TransparencyLevelHint = WindowTransparencyLevel.None;
-            rec.Fill = BackColor;
-        }
-
     }
 }
