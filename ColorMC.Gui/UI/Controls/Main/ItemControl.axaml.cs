@@ -35,7 +35,7 @@ public partial class ItemControl : UserControl
         Button1.Click += Button1_Click;
         Button_Setting.Click += Button_Setting_Click;
 
-        var uri = new Uri($"resm:ColorMC.Gui.Resource.Icon.user.png");
+        var uri = new Uri($"resm:ColorMC.Gui.Resource.Pic.user.png");
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
         var asset = assets.Open(uri);
 

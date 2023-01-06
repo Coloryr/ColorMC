@@ -76,11 +76,6 @@ public static class XLib
         internal IntPtr decorations;
         internal IntPtr input_mode;
         internal IntPtr status;
-
-        public override string ToString()
-        {
-            return string.Format("MotifWmHints <flags={0}, functions={1}, decorations={2}, input_mode={3}, status={4}", (MotifFlags)flags.ToInt32(), (MotifFunctions)functions.ToInt32(), (MotifDecorations)decorations.ToInt32(), (MotifInputMode)input_mode.ToInt32(), status.ToInt32());
-        }
     }
 
     const string libX11 = "libX11.so.6";
