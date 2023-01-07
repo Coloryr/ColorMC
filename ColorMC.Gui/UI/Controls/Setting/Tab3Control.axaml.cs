@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using ColorMC.Core.Net;
 using Avalonia.Input;
 using System.Text.RegularExpressions;
+using ColorMC.Gui.Language;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -24,7 +25,7 @@ public partial class Tab3Control : UserControl
     {
         if (re.IsMatch(TextBox2.Text) || re.IsMatch(Input1.Text))
         {
-            Window.Info.Show("输入信息有误");
+            Window.Info.Show(Localizer.Instance["Tab3Control1.Error1"]);
             return;   
         }
         ConfigBinding.SetHttpConfig(new()
@@ -39,7 +40,7 @@ public partial class Tab3Control : UserControl
             DownloadProxy = CheckBox2.IsChecked == true,
             GameProxy = CheckBox3.IsChecked == true
         });
-        Window.Info2.Show("设置完成");
+        Window.Info2.Show(Localizer.Instance["Tab3Control1.Info1"]);
     }
 
     public void SetWindow(SettingWindow window)

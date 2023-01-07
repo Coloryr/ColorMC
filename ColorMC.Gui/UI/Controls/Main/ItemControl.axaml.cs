@@ -8,6 +8,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Language;
 using ColorMC.Gui.UI.Windows;
 using System;
 using System.IO;
@@ -126,8 +127,8 @@ public partial class ItemControl : UserControl
         if (Obj1 == null)
         {
             Image1.Source = bitmap;
-            TextBlock_Type.Text = "空账户";
-            TextBlock_Name.Text = "没有用户";
+            TextBlock_Type.Text = Localizer.Instance["ItemControl.Info1"];
+            TextBlock_Name.Text = Localizer.Instance["ItemControl.Info2"];
         }
         else
         {

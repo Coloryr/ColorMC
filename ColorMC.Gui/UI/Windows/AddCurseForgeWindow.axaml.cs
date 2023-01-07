@@ -2,6 +2,7 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Gui.Language;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UIBinding;
@@ -59,7 +60,8 @@ public partial class AddCurseForgeWindow : Window
         if (item == null)
             return;
 
-        var res = await Info.ShowWait("是否安装整合包：" + item.File.displayName);
+        var res = await Info.ShowWait(
+            string.Format(Localizer.Instance["AddCurseForgeWindow.Info1"], item.File.displayName));
         if (res)
         {
             Install1(item.File);
@@ -80,7 +82,7 @@ public partial class AddCurseForgeWindow : Window
     {
         if (Last == null)
         {
-            Info.Show("你还没有选择整合包");
+            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error1"]);
             return;
         }
 
@@ -115,12 +117,12 @@ public partial class AddCurseForgeWindow : Window
 
     private async void Load()
     {
-        Info1.Show("正在搜索中");
+        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info2"]);
         var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string, ComboBox1.SelectedIndex + 1, Input1.Text, int.Parse(Input2.Text), ComboBox3.SelectedIndex);
         Info1.Close();
         if (data == null)
         {
-            Info.Show("整合包数据加载失败");
+            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error2"]);
             return;
         }
 
@@ -139,13 +141,13 @@ public partial class AddCurseForgeWindow : Window
     private async void Load1()
     {
         List1.Clear();
-        Info1.Show("正在获取版本中");
+        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info3"]);
         var data = await GameBinding.GetPackFile(Last!.Data.id, int.Parse(Input3.Text));
         Info1.Close();
 
         if (data == null)
         {
-            Info.Show("整合包版本数据加载失败");
+            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error3"]);
             return;
         }
 
@@ -171,12 +173,12 @@ public partial class AddCurseForgeWindow : Window
     {
         DataGridFiles.MakeTran();
         //return;
-        Info1.Show("正在加载中");
+        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info4"]);
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();
         if (list == null)
         {
-            Info.Show("游戏版本加载失败");
+            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error4"]);
             return;
         }
 

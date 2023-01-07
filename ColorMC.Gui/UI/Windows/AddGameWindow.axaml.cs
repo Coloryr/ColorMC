@@ -7,6 +7,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Language;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
@@ -71,14 +72,14 @@ public partial class AddGameWindow : Window
         string name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
-            Info.Show("没有实例名字");
+            Info.Show(Localizer.Instance["DownloadWindow.Error1"]);
             return;
         }
 
         string? version = ComboBox_GameVersion.SelectedItem as string;
         if (string.IsNullOrWhiteSpace(version))
         {
-            Info.Show("没有选择版本");
+            Info.Show(Localizer.Instance["DownloadWindow.Error2"]);
             return;
         }
 
@@ -104,11 +105,11 @@ public partial class AddGameWindow : Window
         var res = await GameBinding.AddGame(name, version, loader, loaderversion);
         if (!res)
         {
-            Info.Show("添加实例失败");
+            Info.Show(Localizer.Instance["DownloadWindow.Info1"]);
         }
         else
         {
-            Info2.Show("添加成功");
+            Info2.Show(Localizer.Instance["DownloadWindow.Info2"]);
         }
     }
 
@@ -121,7 +122,7 @@ public partial class AddGameWindow : Window
         string? item = ComboBox_GameVersion.SelectedItem as string;
         if (!string.IsNullOrWhiteSpace(item))
         {
-            Info1.Show("正在获取Mod加载器信息");
+            Info1.Show(Localizer.Instance["DownloadWindow.Info3"]);
             var list = await ForgeHelper.GetSupportVersion();
             if (list != null && list.Contains(item))
             {
@@ -151,7 +152,7 @@ public partial class AddGameWindow : Window
             if (item == null)
                 return;
 
-            Info1.Show("正在获取Quilt版本信息");
+            Info1.Show(Localizer.Instance["DownloadWindow.Info4"]);
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = false;
 
@@ -182,7 +183,7 @@ public partial class AddGameWindow : Window
             if (item == null)
                 return;
 
-            Info1.Show("正在获取Fabric版本信息");
+            Info1.Show(Localizer.Instance["DownloadWindow.Info5"]);
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
@@ -213,7 +214,7 @@ public partial class AddGameWindow : Window
             if (item == null)
                 return;
 
-            Info1.Show("正在获取Forge版本信息");
+            Info1.Show(Localizer.Instance["DownloadWindow.Info6"]);
             CheckBox_Fabric.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
@@ -239,7 +240,8 @@ public partial class AddGameWindow : Window
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
         Info1.Close();
-        var test = await Info.ShowWait($"游戏实例:{obj.Name}冲突，是否覆盖");
+        var test = await Info.ShowWait(
+            string.Format(Localizer.Instance["AddGameWindow.Info7"], obj.Name));
         if (!add)
         {
             Info1.Show();
@@ -256,19 +258,19 @@ public partial class AddGameWindow : Window
     {
         if (state == CoreRunState.Read)
         {
-            Info1.Show("正在导入压缩包");
+            Info1.Show(Localizer.Instance["AddGameWindow.Info8"]);
         }
         else if (state == CoreRunState.Init)
         {
-            Info1.NextText("正在读取压缩包");
+            Info1.NextText(Localizer.Instance["AddGameWindow.Info9"]);
         }
         else if (state == CoreRunState.GetInfo)
         {
-            Info1.NextText("正在解析压缩包");
+            Info1.NextText(Localizer.Instance["AddGameWindow.Info10"]);
         }
         else if (state == CoreRunState.Download)
         {
-            Info1.NextText("正在下载文件");
+            Info1.NextText(Localizer.Instance["AddGameWindow.Info11"]);
             Info1.Progress(-1);
         }
         else if (state == CoreRunState.End)
@@ -287,11 +289,11 @@ public partial class AddGameWindow : Window
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.HMCL))
         {
-            Info2.Show("导入完成");
+            Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
         }
         else
         {
-            Info.Show("导入错误");
+            Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
         }
         EnableButton();
     }
@@ -306,11 +308,11 @@ public partial class AddGameWindow : Window
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.MMC))
         {
-            Info2.Show("导入完成");
+            Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
         }
         else
         {
-            Info.Show("导入错误");
+            Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
         }
         EnableButton();
     }
@@ -325,11 +327,11 @@ public partial class AddGameWindow : Window
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.CurseForge))
         {
-            Info2.Show("导入完成");
+            Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
         }
         else
         {
-            Info.Show("导入错误");
+            Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
         }
         EnableButton();
     }
@@ -344,11 +346,11 @@ public partial class AddGameWindow : Window
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.ColorMC))
         {
-            Info2.Show("导入完成");
+            Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
         }
         else
         {
-            Info.Show("导入错误");
+            Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
         }
         EnableButton();
     }
@@ -357,7 +359,7 @@ public partial class AddGameWindow : Window
     {
         OpenFileDialog openFile = new()
         {
-            Title = "选择压缩包",
+            Title = Localizer.Instance["AddGameWindow.Info13"],
             AllowMultiple = false,
             Filters = SystemInfo.Os == OsType.Windows ? new()
             {
@@ -414,12 +416,12 @@ public partial class AddGameWindow : Window
 
     public async void Install(CurseForgeObj.Data.LatestFiles data)
     {
-        Info1.Show("正在安装整合包");
+        Info1.Show(Localizer.Instance["AddGameWindow.Info14"]);
         var res = await GameBinding.InstallCurseForge(data);
         Info1.Close();
         if (!res)
         {
-            Info.Show("整合包安装失败");
+            Info.Show(Localizer.Instance["AddGameWindow.Error4"]);
         }
     }
 

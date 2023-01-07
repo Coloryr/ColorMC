@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Language;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -29,7 +30,7 @@ public partial class Tab4Control : UserControl
             Height = (uint)Input4.Value,
             FullScreen = CheckBox1.IsChecked == true
         });
-        Window.Info2.Show("设置完成");
+        Window.Info2.Show(Localizer.Instance["Tab4Control1.Info1"]);
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -49,7 +50,7 @@ public partial class Tab4Control : UserControl
             MaxMemory = (uint)Input2.Value,
             MinMemory = (uint)Input1.Value
         });
-        Window.Info2.Show("设置完成");
+        Window.Info2.Show(Localizer.Instance["Tab4Control1.Info1"]);
     }
 
     public void SetWindow(SettingWindow window)
