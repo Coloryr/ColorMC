@@ -34,7 +34,7 @@ public static class LibrariesPath
     {
         var list = new List<DownloadItem>();
 
-        var list1 = GameHelp.MakeGameLibs(obj);
+        var list1 = GameHelper.MakeGameLibs(obj);
         foreach (var item in list1)
         {
             if (!File.Exists(item.Local))
@@ -149,7 +149,7 @@ public static class LibrariesPath
             {
                 list.Add(new()
                 {
-                    Url = UrlHelp.DownloadFabric(item.url + name.Item1, BaseClient.Source),
+                    Url = UrlHelper.DownloadFabric(item.url + name.Path, BaseClient.Source),
                     Name = name.Item2,
                     Local = $"{BaseDir}/{name.Item1}"
                 });
@@ -176,7 +176,7 @@ public static class LibrariesPath
             {
                 list.Add(new()
                 {
-                    Url = UrlHelp.DownloadQuilt(item.url + name.Item1, BaseClient.Source),
+                    Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),
                     Name = name.Item2,
                     Local = $"{BaseDir}/{name.Item1}"
                 });

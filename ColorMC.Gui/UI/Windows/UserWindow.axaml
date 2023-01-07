@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
@@ -19,7 +20,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="ColorMC 用户列表"
+            Title="{i18n:Localize UserWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Margin="0,35,0,0">
@@ -45,27 +46,27 @@
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn
                         Binding="{Binding Use}"
-                        Header="使用中"
+                        Header="{i18n:Localize UserWindow.Data.Title1}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="用户名"
+                        Header="{i18n:Localize UserWindow.Data.Title2}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Type}"
-                        Header="登录方式"
+                        Header="{i18n:Localize UserWindow.Data.Title3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding UUID}"
-                        Header="UUID"
+                        Header="{i18n:Localize UserWindow.Data.Title4}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Text1}"
-                        Header="附加数据1"
+                        Header="{i18n:Localize UserWindow.Data.Title5}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Text2}"
-                        Header="附加数据2"
+                        Header="{i18n:Localize UserWindow.Data.Title6}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
@@ -91,7 +92,7 @@
                             Width="100"
                             Height="30"
                             Margin="4,0,0,0"
-                            Content="切换用户" />
+                            Content="{i18n:Localize UserWindow.Button1}" />
                     </Expander>
                 </Grid>
                 <Grid Margin="0,5,0,0">
@@ -114,7 +115,7 @@
                             Width="100"
                             Height="30"
                             Margin="4,0,0,0"
-                            Content="添加用户" />
+                            Content="{i18n:Localize UserWindow.Button2}" />
                     </Expander>
                 </Grid>
                 <Grid Margin="0,5,0,0">
@@ -137,7 +138,7 @@
                             Width="100"
                             Height="30"
                             Margin="4,0,0,0"
-                            Content="删除用户" />
+                            Content="{i18n:Localize UserWindow.Button3}" />
                     </Expander>
                 </Grid>
             </StackPanel>
@@ -148,7 +149,7 @@
                 Background="#EEEEEEEE"
                 IsVisible="False">
                 <StackPanel Margin="5">
-                    <Label Content="添加账户" />
+                    <Label Content="{i18n:Localize UserWindow.Grid}" />
                     <StackPanel Orientation="Horizontal">
                         <Label VerticalAlignment="Center" Content="账户类型" />
                         <ComboBox
@@ -167,14 +168,14 @@
                         Margin="5"
                         Classes="input1"
                         IsEnabled="False"
-                        Watermark="账户" />
+                        Watermark="{i18n:Localize UserWindow.Text1}" />
                     <TextBox
                         Name="TextBox_Input3"
                         Margin="5"
                         Classes="input1"
                         IsEnabled="False"
                         PasswordChar="*"
-                        Watermark="密码" />
+                        Watermark="{i18n:Localize UserWindow.Text2}" />
                 </StackPanel>
 
                 <Button
@@ -184,7 +185,7 @@
                     Margin="10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    Content="取消" />
+                    Content="{i18n:Localize Button.Cancel}" />
 
                 <Button
                     Name="Button_Add"
@@ -193,7 +194,7 @@
                     Margin="10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Content="添加" />
+                    Content="{i18n:Localize Button.Add}" />
             </Grid>
 
             <views:Info1Control Name="Info1" IsVisible="False" />

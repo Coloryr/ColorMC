@@ -17,7 +17,7 @@ public class DownloadThread
         this.index = index;
         thread = new(Run)
         {
-            Name = $"DownloadThread[{index}]"
+            Name = $"DownloadThread_{index}"
         };
         run = true;
         thread.Start();

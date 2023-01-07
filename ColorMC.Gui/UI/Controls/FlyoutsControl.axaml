@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -16,23 +17,23 @@
             <Button
                 Width="80"
                 Height="25"
-                Content="启动实例" />
+                Content="{i18n:Localize FlyoutsControl.Button1}" />
             <Button
                 Width="80"
                 Height="25"
-                Content="查看Mod" />
+                Content="{i18n:Localize FlyoutsControl.Button2}" />
             <Button
                 Width="80"
                 Height="25"
-                Content="查看配置" />
+                Content="{i18n:Localize FlyoutsControl.Button3}" />
             <Button
                 Width="80"
                 Height="25"
-                Content="查看地图" />
+                Content="{i18n:Localize FlyoutsControl.Button4}" />
             <Button
                 Width="80"
                 Height="25"
-                Content="修改分组" />
+                Content="{i18n:Localize FlyoutsControl.Button5}" />
         </StackPanel>
     </Grid>
 </UserControl>

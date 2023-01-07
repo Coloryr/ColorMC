@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Objs.Loader;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
@@ -9,14 +10,14 @@ public static class FabricHelper
     {
         try
         {
-            var data = await BaseClient.GetString(UrlHelp.FabricMeta(local));
+            var data = await BaseClient.GetString(UrlHelper.FabricMeta(local));
             if (string.IsNullOrWhiteSpace(data))
                 return null;
             return JsonConvert.DeserializeObject<FabricMetaObj>(data);
         }
         catch (Exception e)
         {
-            Logs.Error("获取版本信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Download.Fabric.Error1"), e);
             return null;
         }
     }
@@ -25,7 +26,7 @@ public static class FabricHelper
     {
         try
         {
-            string url = $"{UrlHelp.FabricMeta(local)}/loader/{mc}/{version}/profile/json";
+            string url = $"{UrlHelper.FabricMeta(local)}/loader/{mc}/{version}/profile/json";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))
                 return null;
@@ -33,7 +34,7 @@ public static class FabricHelper
         }
         catch (Exception e)
         {
-            Logs.Error("获取版本信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Fabric.Error2"), e);
             return null;
         }
     }
@@ -42,7 +43,7 @@ public static class FabricHelper
     {
         try
         {
-            string url = $"{UrlHelp.QuiltMeta(local)}/loader/{mc}";
+            string url = $"{UrlHelper.QuiltMeta(local)}/loader/{mc}";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))
                 return null;
@@ -60,7 +61,7 @@ public static class FabricHelper
         }
         catch (Exception e)
         {
-            Logs.Error("获取版本信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Fabric.Error3"), e);
             return null;
         }
     }
@@ -69,7 +70,7 @@ public static class FabricHelper
     {
         try
         {
-            string url = $"{UrlHelp.FabricMeta(local)}/game";
+            string url = $"{UrlHelper.FabricMeta(local)}/game";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))
                 return null;
@@ -88,7 +89,7 @@ public static class FabricHelper
         }
         catch (Exception e)
         {
-            Logs.Error("获取版本信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Fabric.Error4"), e);
             return null;
         }
     }

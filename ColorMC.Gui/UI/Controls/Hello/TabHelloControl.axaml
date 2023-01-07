@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -12,18 +13,31 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock
                 FontSize="30"
-                Text="看起来你是第一次启动ColorMC"
+                Text="{i18n:Localize TabHelloControl.Text1}"
                 TextAlignment="Center" />
             <TextBlock
                 Margin="0,10,0,0"
                 FontSize="30"
-                Text="进行一些初始设定"
+                Text="{i18n:Localize TabHelloControl.Text2}"
                 TextAlignment="Center" />
             <TextBlock
                 Margin="0,10,0,0"
                 FontSize="30"
-                Text="开始使用吧！"
+                Text="{i18n:Localize TabHelloControl.Text3}"
                 TextAlignment="Center" />
+            <StackPanel
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Label
+                    HorizontalAlignment="Center"
+                    Content="{i18n:Localize TabHelloControl.Text4}"
+                    FontSize="22" />
+                <ComboBox
+                    Name="Lang"
+                    Width="200"
+                    HorizontalAlignment="Center" />
+            </StackPanel>
         </StackPanel>
 
         <Button
@@ -33,6 +47,6 @@
             Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="下一步" />
+            Content="{i18n:Localize Button.Next}" />
     </Grid>
 </UserControl>

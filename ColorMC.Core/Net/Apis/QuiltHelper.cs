@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Objs.Loader;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
@@ -9,7 +10,7 @@ public static class QuiltHelper
     {
         try
         {
-            string url = $"{UrlHelp.QuiltMeta(local)}/game";
+            string url = $"{UrlHelper.QuiltMeta(local)}/game";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))
                 return null;
@@ -28,7 +29,7 @@ public static class QuiltHelper
         }
         catch (Exception e)
         {
-            Logs.Error("获取版本信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Quilt.Error1"), e);
             return null;
         }
     }
@@ -36,14 +37,14 @@ public static class QuiltHelper
     {
         try
         {
-            var data = await BaseClient.GetString(UrlHelp.QuiltMeta(local));
+            var data = await BaseClient.GetString(UrlHelper.QuiltMeta(local));
             if (string.IsNullOrWhiteSpace(data))
                 return null;
             return JsonConvert.DeserializeObject<QuiltMetaObj>(data);
         }
         catch (Exception e)
         {
-            Logs.Error("获取版本信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Quilt.Error2"), e);
             return null;
         }
     }
@@ -52,7 +53,7 @@ public static class QuiltHelper
     {
         try
         {
-            string url = $"{UrlHelp.FabricMeta(local)}/loader/{mc}";
+            string url = $"{UrlHelper.FabricMeta(local)}/loader/{mc}";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))
                 return null;
@@ -70,7 +71,7 @@ public static class QuiltHelper
         }
         catch (Exception e)
         {
-            Logs.Error("获取版本信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Quilt.Error3"), e);
             return null;
         }
     }
@@ -79,7 +80,7 @@ public static class QuiltHelper
     {
         try
         {
-            string url = $"{UrlHelp.QuiltMeta(local)}/loader/{mc}/{version}/profile/json";
+            string url = $"{UrlHelper.QuiltMeta(local)}/loader/{mc}/{version}/profile/json";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))
                 return null;
@@ -87,7 +88,7 @@ public static class QuiltHelper
         }
         catch (Exception e)
         {
-            Logs.Error("获取版本信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Quilt.Error4"), e);
             return null;
         }
     }

@@ -7,7 +7,7 @@ namespace ColorMC.Core.LaunchPath;
 
 public static class AssetsPath
 {
-    private readonly static Dictionary<string, AssetsObj> Assets = new();
+    private readonly static Dictionary<string, AssetsObj?> Assets = new();
 
     public const string Name = "assets";
 
@@ -24,7 +24,7 @@ public static class AssetsPath
         BaseDir = dir + "/" + Name;
         ObjectsDir = BaseDir + "/" + Name2;
 
-        Logs.Info($"正在读取资源信息");
+        Logs.Info(LanguageHelper.GetName("Core.Path.Assets.Load"));
 
         Directory.CreateDirectory(BaseDir);
 

@@ -3,5 +3,142 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
     <sys:String x:Key="Name">ColorMC</sys:String>
-	<sys:String x:Key="MainWindowTitle">ColorMC 主界面</sys:String>
+	
+	<sys:String x:Key="MainWindow.Title">ColorMC 主界面</sys:String>
+	
+	<sys:String x:Key="InitWindow.Title">ColorMC 加载</sys:String>
+	<sys:String x:Key="InitWindow.Text">ColorMC正在初始化</sys:String>
+
+	<sys:String x:Key="UserWindow.Title">ColorMC 用户列表</sys:String>
+	<sys:String x:Key="UserWindow.Data.Title1">使用</sys:String>
+	<sys:String x:Key="UserWindow.Data.Title2">用户名</sys:String>
+	<sys:String x:Key="UserWindow.Data.Title3">登录方式</sys:String>
+	<sys:String x:Key="UserWindow.Data.Title4">UUID</sys:String>
+	<sys:String x:Key="UserWindow.Data.Title5">附加数据1</sys:String>
+	<sys:String x:Key="UserWindow.Data.Title6">附加数据2</sys:String>
+	<sys:String x:Key="UserWindow.Button1">切换用户</sys:String>
+	<sys:String x:Key="UserWindow.Button2">添加用户</sys:String>
+	<sys:String x:Key="UserWindow.Button3">删除用户</sys:String>
+	<sys:String x:Key="UserWindow.Grid">添加账户</sys:String>
+	<sys:String x:Key="UserWindow.Text1">账户</sys:String>
+	<sys:String x:Key="UserWindow.Text2">密码</sys:String>
+
+	<sys:String x:Key="SettingWindow.Title">ColorMC 设置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab1">导入配置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2">界面设置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab3">网络设置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab4">参数设置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab5">Java路径</sys:String>
+
+	<sys:String x:Key="HelloWindow.Title">ColorMC 初始设置</sys:String>
+	<sys:String x:Key="HelloWindow.Tab1">开始</sys:String>
+	<sys:String x:Key="HelloWindow.Tab2">导入配置</sys:String>
+	<sys:String x:Key="HelloWindow.Tab3">添加Java</sys:String>
+	<sys:String x:Key="HelloWindow.Tab4">添加账户</sys:String>
+	<sys:String x:Key="HelloWindow.Tab5">添加游戏</sys:String>
+	<sys:String x:Key="HelloWindow.Tab6">完成</sys:String>
+
+	<sys:String x:Key="GameEditWindow.Title">ColorMC 游戏实例设置</sys:String>
+
+	<sys:String x:Key="ErrorWindow.Title">ColorMC 错误</sys:String>
+
+	<sys:String x:Key="DownloadWindow.Title">ColorMC 下载列表</sys:String>
+	<sys:String x:Key="DownloadWindow.Label1">下载进度</sys:String>
+	<sys:String x:Key="DownloadWindow.Data.Title1">名字</sys:String>
+	<sys:String x:Key="DownloadWindow.Data.Title2">状态</sys:String>
+	<sys:String x:Key="DownloadWindow.Data.Title3">已下载</sys:String>
+	<sys:String x:Key="DownloadWindow.Data.Title4">总大小(Mb)</sys:String>
+	<sys:String x:Key="DownloadWindow.Data.Title5">错误次数</sys:String>
+	<sys:String x:Key="DownloadWindow.Button1">暂停下载</sys:String>
+	<sys:String x:Key="DownloadWindow.Button2">停止下载</sys:String>
+
+	<sys:String x:Key="AddGameWindow.Title">ColorMC 添加游戏</sys:String>
+	<sys:String x:Key="AddGameWindow.Text1">添加实例</sys:String>
+	<sys:String x:Key="AddGameWindow.Text2">实例名字</sys:String>
+	<sys:String x:Key="AddGameWindow.Text3">游戏版本</sys:String>
+	<sys:String x:Key="AddGameWindow.Text4">Mod加载器</sys:String>
+	<sys:String x:Key="AddGameWindow.CheckBox1">正式版</sys:String>
+	<sys:String x:Key="AddGameWindow.CheckBox2">快照版</sys:String>
+	<sys:String x:Key="AddGameWindow.CheckBox3">其他版</sys:String>
+	<sys:String x:Key="AddGameWindow.Button1">从ColorMC压缩包导入</sys:String>
+	<sys:String x:Key="AddGameWindow.Button2">添加CurseForge整合包</sys:String>
+	<sys:String x:Key="AddGameWindow.Button3">从MMC压缩包导入</sys:String>
+	<sys:String x:Key="AddGameWindow.Button4">从HMCL压缩包导入</sys:String>
+	<sys:String x:Key="AddGameWindow.Button5">从CurseForge搜索整合包</sys:String>
+
+	<sys:String x:Key="AddCurseForgeWindow.Title">ColorMC 添加CurseForge整合包</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Text1">分类</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Text2">游戏版本</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Text3">名字</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Text4">排序</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Text5">页数</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Text6">选择版本文件</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Text7">页数：</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Button1">搜索</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Button2">安装所选</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Button3">获取版本</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Button4">下载所选</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Data.Title1">名字</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Data.Title2">大小(Mb)</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Data.Title3">下载次数</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Data.Title4">发布时间</sys:String>
+
+	<sys:String x:Key="FlyoutsControl.Button1">启动实例</sys:String>
+	<sys:String x:Key="FlyoutsControl.Button2">查看Mod</sys:String>
+	<sys:String x:Key="FlyoutsControl.Button3">查看配置</sys:String>
+	<sys:String x:Key="FlyoutsControl.Button4">查看地图</sys:String>
+	<sys:String x:Key="FlyoutsControl.Button5">修改分组</sys:String>
+
+	<sys:String x:Key="CurseForgeControl.Text1">作者：</sys:String>
+	<sys:String x:Key="CurseForgeControl.Text2">下载次数：</sys:String>
+	<sys:String x:Key="CurseForgeControl.Text3">上次更新：</sys:String>
+
+	<sys:String x:Key="TabHelloControl.Text1">看起来你是第一次启动ColorMC</sys:String>
+	<sys:String x:Key="TabHelloControl.Text2">进行一些初始设定C</sys:String>
+	<sys:String x:Key="TabHelloControl.Text3">开始使用吧！</sys:String>
+	<sys:String x:Key="TabHelloControl.Text4">语言选择：</sys:String>
+
+	<sys:String x:Key="Tab1Control.Text1">导入配置文件</sys:String>
+	<sys:String x:Key="Tab1Control.Text2">配置文件路径</sys:String>
+	<sys:String x:Key="Tab1Control.Text3">导入账户储存数据库</sys:String>
+	<sys:String x:Key="Tab1Control.Text4">账户储存数据库路径</sys:String>
+	<sys:String x:Key="Tab1Control.Text5">导入图形配置文件</sys:String>
+	<sys:String x:Key="Tab1Control.Text6">图形配置文件路径</sys:String>
+
+	<sys:String x:Key="Tab2Control.Text1">添加Java路径</sys:String>
+	<sys:String x:Key="Tab2Control.Text2">Java名字</sys:String>
+	<sys:String x:Key="Tab2Control.Text3">Java路径</sys:String>
+	<sys:String x:Key="Tab2Control.Text4">现有Java路径</sys:String>
+
+	<sys:String x:Key="Tab3Control.Text1">添加账户</sys:String>
+	<sys:String x:Key="Tab3Control.Text2">账户类型</sys:String>
+	<sys:String x:Key="Tab3Control.Text3">现有账户</sys:String>
+
+	<sys:String x:Key="Tab5Control.Text1">最后确认</sys:String>
+	<sys:String x:Key="Tab5Control.Text2">目前导入Java数目：</sys:String>
+	<sys:String x:Key="Tab5Control.Text3">目前登录账户数目：</sys:String>
+	<sys:String x:Key="Tab5Control.Text4">目前游戏实例数目：</sys:String>
+	<sys:String x:Key="Tab5Control.Button1">导入配置</sys:String>
+	<sys:String x:Key="Tab5Control.Button2">添加Java</sys:String>
+	<sys:String x:Key="Tab5Control.Button3">添加账户</sys:String>
+	<sys:String x:Key="Tab5Control.Button4">添加游戏</sys:String>
+
+	<sys:String x:Key="ItemControl.Button1">用户列表</sys:String>
+	<sys:String x:Key="ItemControl.Button2">添加用户</sys:String>
+	<sys:String x:Key="ItemControl.Button3">添加实例</sys:String>
+	<sys:String x:Key="ItemControl.Button4">启动实例</sys:String>
+	<sys:String x:Key="ItemControl.Button5">测试启动</sys:String>
+	<sys:String x:Key="ItemControl.Button6">修改实例</sys:String>
+	<sys:String x:Key="ItemControl.Button7">导出实例</sys:String>
+	<sys:String x:Key="ItemControl.Button8">启动器设置</sys:String>
+
+	<sys:String x:Key="Button.Select">选择文件</sys:String>
+	<sys:String x:Key="Button.Input">导入</sys:String>
+	<sys:String x:Key="Button.Next">下一步</sys:String>
+	<sys:String x:Key="Button.Cancel">取消</sys:String>
+	<sys:String x:Key="Button.Confirm">确定</sys:String>
+	<sys:String x:Key="Button.Delete">删除</sys:String>
+	<sys:String x:Key="Button.Refash">刷新</sys:String>
+	<sys:String x:Key="Button.Add">添加</sys:String>
+	
 </ResourceDictionary>

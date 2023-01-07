@@ -136,45 +136,45 @@ public static class ServerMotd
 
                 // Handshake:
                 // Packet ID: 0x00
-                byte[] packet_id = ProtocolHandler.getVarInt(0);
+                byte[] packet_id = ProtocolHandler.GetVarInt(0);
 
-                byte[] protocol_version = ProtocolHandler.getVarInt(-1);
+                byte[] protocol_version = ProtocolHandler.GetVarInt(-1);
                 byte[] server_adress_val = Encoding.UTF8.GetBytes(info.ServerAddress);
-                byte[] server_adress_len = ProtocolHandler.getVarInt(server_adress_val.Length);
+                byte[] server_adress_len = ProtocolHandler.GetVarInt(server_adress_val.Length);
                 byte[] server_port = BitConverter.GetBytes(info.ServerPort);
                 Array.Reverse(server_port);
-                byte[] next_state = ProtocolHandler.getVarInt(1);
+                byte[] next_state = ProtocolHandler.GetVarInt(1);
 
-                byte[] concat_pack = ProtocolHandler.concatBytes(packet_id, protocol_version, server_adress_len, server_adress_val, server_port, next_state);
-                byte[] tosend = ProtocolHandler.concatBytes(ProtocolHandler.getVarInt(concat_pack.Length), concat_pack);
+                byte[] concat_pack = ProtocolHandler.ConcatBytes(packet_id, protocol_version, server_adress_len, server_adress_val, server_port, next_state);
+                byte[] tosend = ProtocolHandler.ConcatBytes(ProtocolHandler.GetVarInt(concat_pack.Length), concat_pack);
 
                 tcp.Client.Send(tosend, SocketFlags.None);
                 #endregion
 
                 // Request
-                byte[] status_request = ProtocolHandler.getVarInt(0);
-                byte[] request_packet = ProtocolHandler.concatBytes(ProtocolHandler.getVarInt(status_request.Length), status_request);
+                byte[] status_request = ProtocolHandler.GetVarInt(0);
+                byte[] request_packet = ProtocolHandler.ConcatBytes(ProtocolHandler.GetVarInt(status_request.Length), status_request);
 
                 tcp.Client.Send(request_packet, SocketFlags.None);
 
                 // Response
                 ProtocolHandler handler = new ProtocolHandler(tcp);
-                int packetLength = handler.readNextVarIntRAW();
+                int packetLength = handler.ReadNextVarIntRAW();
                 if (packetLength > 0)
                 {
                     List<byte> packetData = new List<byte>(handler.readDataRAW(packetLength));
-                    if (ProtocolHandler.readNextVarInt(packetData) == 0x00) //Read Packet ID
+                    if (ProtocolHandler.ReadNextVarInt(packetData) == 0x00) //Read Packet ID
                     {
-                        string result = ProtocolHandler.readNextString(packetData); //Get the Json data
+                        string result = ProtocolHandler.ReadNextString(packetData); //Get the Json data
                         JsonConvert.PopulateObject(result, info);
                     }
                 }
 
                 #region Ping
-                byte[] ping_id = ProtocolHandler.getVarInt(1);
+                byte[] ping_id = ProtocolHandler.GetVarInt(1);
                 byte[] ping_content = BitConverter.GetBytes((long)233);
-                byte[] ping_packet = ProtocolHandler.concatBytes(ping_id, ping_content);
-                byte[] ping_tosend = ProtocolHandler.concatBytes(ProtocolHandler.getVarInt(ping_packet.Length), ping_packet);
+                byte[] ping_packet = ProtocolHandler.ConcatBytes(ping_id, ping_content);
+                byte[] ping_tosend = ProtocolHandler.ConcatBytes(ProtocolHandler.GetVarInt(ping_packet.Length), ping_packet);
 
                 try
                 {
@@ -185,14 +185,14 @@ public static class ServerMotd
                     pingWatcher.Start();
                     tcp.Client.Send(ping_tosend, SocketFlags.None);
 
-                    int pingLenghth = handler.readNextVarIntRAW();
+                    int pingLenghth = handler.ReadNextVarIntRAW();
                     pingWatcher.Stop();
                     if (pingLenghth > 0)
                     {
                         List<byte> packetData = new List<byte>(handler.readDataRAW(pingLenghth));
-                        if (ProtocolHandler.readNextVarInt(packetData) == 0x01) //Read Packet ID
+                        if (ProtocolHandler.ReadNextVarInt(packetData) == 0x01) //Read Packet ID
                         {
-                            long content = ProtocolHandler.readNextByte(packetData); //Get the Json data
+                            long content = ProtocolHandler.ReadNextByte(packetData); //Get the Json data
                             if (content == 233)
                             {
                                 info.Ping = pingWatcher.ElapsedMilliseconds;

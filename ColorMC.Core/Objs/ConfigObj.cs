@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Net;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Objs;
 
@@ -82,6 +83,7 @@ public record JvmArgObj
 
 public record ConfigObj
 {
+    public LanguageType Language { get; set; }
     public string Version { get; set; }
     public List<JvmConfigObj> JavaList { get; set; }
 

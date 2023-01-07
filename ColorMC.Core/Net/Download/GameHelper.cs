@@ -6,7 +6,7 @@ using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Download;
 
-public static class GameHelp
+public static class GameHelper
 {
     public static List<DownloadItem> MakeGameLibs(GameArgObj obj)
     {
@@ -22,7 +22,7 @@ public static class GameHelp
                 list.Add(new()
                 {
                     Name = item1.name,
-                    Url = UrlHelp.DownloadLibraries(item1.downloads.artifact.url, BaseClient.Source),
+                    Url = UrlHelper.DownloadLibraries(item1.downloads.artifact.url, BaseClient.Source),
                     Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
                     SHA1 = item1.downloads.artifact.sha1
                 });
@@ -58,7 +58,7 @@ public static class GameHelp
                     list.Add(new()
                     {
                         Name = item1.name + "-native" + SystemInfo.Os,
-                        Url = UrlHelp.DownloadLibraries(lib.url, BaseClient.Source),
+                        Url = UrlHelper.DownloadLibraries(lib.url, BaseClient.Source),
                         Local = $"{LibrariesPath.BaseDir}/{lib.path}",
                         SHA1 = lib.sha1,
                         Later = (test) => ForgeHelper.UnpackNative(obj.id, test)

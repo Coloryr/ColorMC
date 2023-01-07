@@ -22,10 +22,18 @@ public static class BaseClient
 
     public static void Init()
     {
-        Logs.Info($"Http客户端初始化");
+        Logs.Info(LanguageHelper.GetName("Core.Http.Init"));
+        if (ConfigUtils.Config.Http.DownloadProxy ||
+            ConfigUtils.Config.Http.GameProxy ||
+            ConfigUtils.Config.Http.LoginProxy)
+        {
+            Logs.Info(string.Format(LanguageHelper.GetName("Core.Http.Proxy"),
+               ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort));
+        }
+
         if (ConfigUtils.Config.Http.DownloadProxy)
         {
-            Logs.Info($"使用代理{ConfigUtils.Config.Http.ProxyIP}:{ConfigUtils.Config.Http.ProxyPort}");
+            
             DownloadClient = new(new HttpClientHandler()
             {
                 Proxy = new WebProxy(ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort)
@@ -38,7 +46,6 @@ public static class BaseClient
 
         if (ConfigUtils.Config.Http.LoginProxy)
         {
-            Logs.Info($"使用代理{ConfigUtils.Config.Http.ProxyIP}:{ConfigUtils.Config.Http.ProxyPort}");
             LoginClient = new(new HttpClientHandler()
             {
                 Proxy = new WebProxy(ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort)
@@ -53,7 +60,7 @@ public static class BaseClient
         LoginClient.Timeout = TimeSpan.FromSeconds(10);
     }
 
-    public static async Task<string> GetString(string url, Dictionary<string, string> arg = null)
+    public static async Task<string> GetString(string url, Dictionary<string, string>? arg = null)
     {
         if (arg == null)
         {
@@ -71,7 +78,7 @@ public static class BaseClient
         }
     }
 
-    public static async Task<byte[]> GetBytes(string url, Dictionary<string, string> arg = null)
+    public static async Task<byte[]> GetBytes(string url, Dictionary<string, string>? arg = null)
     {
         if (arg == null)
         {

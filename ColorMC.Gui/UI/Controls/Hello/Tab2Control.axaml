@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -11,32 +12,32 @@
         <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
 
         <StackPanel Margin="5">
-            <Label Margin="5" Content="添加Java路径" />
+            <Label Margin="5" Content="{i18n:Localize Tab2Control.Text1}" />
             <TextBox
                 Name="TextBox_Name"
                 Margin="5"
                 Classes="input1"
-                Watermark="Java名字" />
+                Watermark="{i18n:Localize Tab2Control.Text2}" />
             <TextBox
                 Name="TextBox_Local"
                 Margin="5"
                 Classes="input1"
-                Watermark="Java路径" />
+                Watermark="{i18n:Localize Tab2Control.Text3}" />
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button
                     Name="Button_SelectFile"
                     Width="80"
                     Height="25"
                     Margin="0,0,10,0"
-                    Content="选择文件" />
+                    Content="{i18n:Localize Button.Select}" />
                 <Button
                     Name="Button_Add"
                     Width="80"
                     Height="25"
                     Margin="0,0,5,0"
-                    Content="添加" />
+                    Content="{i18n:Localize Button.Add}" />
             </StackPanel>
-            <Label Margin="5" Content="现有Java路径" />
+            <Label Margin="5" Content="{i18n:Localize Tab2Control.Text4}" />
         </StackPanel>
 
         <Grid Margin="10,180,10,40">
@@ -85,7 +86,7 @@
             Margin="100,0,0,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Content="删除" />
+            Content="{i18n:Localize Button.Delete}" />
 
         <Button
             Name="Button_Refash"
@@ -94,7 +95,7 @@
             Margin="10,0,0,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Content="刷新" />
+            Content="{i18n:Localize Button.Refash}" />
 
         <Button
             Name="Button_Next"
@@ -103,6 +104,6 @@
             Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="下一步" />
+            Content="{i18n:Localize Button.Next}" />
     </Grid>
 </UserControl>

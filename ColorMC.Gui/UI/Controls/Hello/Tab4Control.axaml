@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -11,14 +12,14 @@
         <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
 
         <StackPanel Margin="5">
-            <Label Margin="5" Content="添加实例" />
+            <Label Margin="5" Content="{i18n:Localize AddGameWindow.Text1}" />
             <TextBox
                 Name="TextBox_Input1"
                 Margin="5"
                 Classes="input1"
-                Watermark="实例名字" />
+                Watermark="{i18n:Localize AddGameWindow.Text2}" />
             <StackPanel Margin="5" Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="游戏版本" />
+                <Label VerticalAlignment="Center" Content="{i18n:Localize AddGameWindow.Text3}" />
                 <ComboBox
                     Name="ComboBox_GameVersion"
                     Width="200"
@@ -26,20 +27,20 @@
                 <CheckBox
                     Name="CheckBox_Release"
                     Margin="20,0,0,0"
-                    Content="正式版"
+                    Content="{i18n:Localize AddGameWindow.CheckBox1}"
                     IsChecked="True" />
                 <CheckBox
                     Name="CheckBox_Snapshot"
                     Margin="20,0,0,0"
-                    Content="快照版" />
+                    Content="{i18n:Localize AddGameWindow.CheckBox2}" />
                 <CheckBox
                     Name="CheckBox_Other"
                     Margin="20,0,0,0"
-                    Content="其他版" />
+                    Content="{i18n:Localize AddGameWindow.CheckBox3}" />
             </StackPanel>
 
             <StackPanel Margin="5" Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="Mod加载器" />
+                <Label VerticalAlignment="Center" Content="{i18n:Localize AddGameWindow.Text4}" />
                 <ComboBox
                     Name="ComboBox_LoaderVersion"
                     Width="200"
@@ -70,7 +71,7 @@
             Margin="0,130,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Content="添加" />
+            Content="{i18n:Localize Button.Add}" />
 
         <Button
             Name="Button_Add1"
@@ -79,7 +80,7 @@
             Margin="10,170,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="从ColorMC压缩包导入" />
+            Content="{i18n:Localize AddGameWindow.Button1}" />
 
         <Button
             Name="Button_Add2"
@@ -88,7 +89,7 @@
             Margin="195,170,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="添加CurseForge整合包" />
+            Content="{i18n:Localize AddGameWindow.Button2}" />
 
         <Button
             Name="Button_Add3"
@@ -97,7 +98,7 @@
             Margin="380,170,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="从MMC压缩包导入" />
+            Content="{i18n:Localize AddGameWindow.Button3}" />
 
         <Button
             Name="Button_Add4"
@@ -106,7 +107,7 @@
             Margin="565,170,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="从HMCL压缩包导入" />
+            Content="{i18n:Localize AddGameWindow.Button4}" />
 
         <Button
             Name="Button_Next"
@@ -115,7 +116,7 @@
             Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="下一步" />
+            Content="{i18n:Localize Button.Next}" />
 
     </Grid>
 </UserControl>

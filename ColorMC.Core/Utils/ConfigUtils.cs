@@ -23,7 +23,7 @@ public static class ConfigUtils
 
     public static bool Load(string name, bool quit = false)
     {
-        Logs.Info($"正在读取配置文件");
+        Logs.Info(LanguageHelper.GetName("Core.Config.Load"));
         if (File.Exists(name))
         {
             try
@@ -32,8 +32,9 @@ public static class ConfigUtils
             }
             catch (Exception e)
             {
-                CoreMain.OnError?.Invoke("配置文件读取错误", e, true);
-                Logs.Error("配置文件读取错误", e);
+                string text = LanguageHelper.GetName("Core.Config.Load.Error");
+                CoreMain.OnError?.Invoke(text, e, true);
+                Logs.Error(text, e);
             }
         }
 
@@ -43,7 +44,7 @@ public static class ConfigUtils
             {
                 return false;
             }
-            Logs.Warn("配置为空，旧版配置文件会被覆盖");
+            Logs.Warn(LanguageHelper.GetName("Core.Config.Empty"));
 
             Config = MakeDefaultConfig();
             Save();
@@ -86,6 +87,7 @@ public static class ConfigUtils
 
         BaseClient.Init();
         JvmPath.AddList(Config.JavaList);
+        LanguageHelper.Change(ConfigUtils.Config.Language);
         BaseClient.Source = Config.Http.Source;
 
         Save();
@@ -95,7 +97,7 @@ public static class ConfigUtils
 
     public static void Save()
     {
-        Logs.Info($"正在保存配置文件");
+        Logs.Info(LanguageHelper.GetName("Core.Config.Save"));
         File.WriteAllText(Name, JsonConvert.SerializeObject(Config, Formatting.Indented));
     }
 

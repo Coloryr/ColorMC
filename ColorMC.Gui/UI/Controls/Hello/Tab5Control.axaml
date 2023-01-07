@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -14,12 +15,12 @@
             <Label
                 Margin="5"
                 HorizontalAlignment="Center"
-                Content="最后确认"
+                Content="{i18n:Localize Tab5Control.Text1}"
                 FontSize="40" />
             <StackPanel Margin="5" Orientation="Horizontal">
                 <Label
                     VerticalAlignment="Center"
-                    Content="目前导入Java数目："
+                    Content="{i18n:Localize Tab5Control.Text2}"
                     FontSize="20" />
                 <Label
                     Name="Label_Count1"
@@ -30,7 +31,7 @@
             <StackPanel Margin="5" Orientation="Horizontal">
                 <Label
                     VerticalAlignment="Center"
-                    Content="目前登录账户数目："
+                    Content="{i18n:Localize Tab5Control.Text3}"
                     FontSize="20" />
                 <Label
                     Name="Label_Count2"
@@ -41,7 +42,7 @@
             <StackPanel Margin="5" Orientation="Horizontal">
                 <Label
                     VerticalAlignment="Center"
-                    Content="目前游戏实例数目："
+                    Content="{i18n:Localize Tab5Control.Text4}"
                     FontSize="20" />
                 <Label
                     Name="Label_Count3"
@@ -50,31 +51,34 @@
                     FontSize="20" />
             </StackPanel>
 
-            <StackPanel Margin="5" Orientation="Horizontal">
+            <StackPanel
+                Margin="5"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
                 <Button
                     Name="Button_LoadConfig"
                     Width="100"
                     Height="25"
                     Margin="5"
-                    Content="导入配置" />
+                    Content="{i18n:Localize Tab5Control.Button1}" />
                 <Button
                     Name="Button_AddJava"
                     Width="100"
                     Height="25"
                     Margin="5"
-                    Content="添加Java" />
+                    Content="{i18n:Localize Tab5Control.Button2}" />
                 <Button
                     Name="Button_AddUser"
                     Width="100"
                     Height="25"
                     Margin="5"
-                    Content="添加账户" />
+                    Content="{i18n:Localize Tab5Control.Button3}" />
                 <Button
                     Name="Button_AddGame"
                     Width="100"
                     Height="25"
                     Margin="5"
-                    Content="添加游戏" />
+                    Content="{i18n:Localize Tab5Control.Button4}" />
             </StackPanel>
         </StackPanel>
 

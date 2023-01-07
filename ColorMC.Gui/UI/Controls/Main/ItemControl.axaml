@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -56,42 +57,42 @@
                     Name="Button_Switch"
                     Width="100"
                     Height="25"
-                    Content="用户列表" />
+                    Content="{i18n:Localize ItemControl.Button1}" />
                 <Button
                     Name="Button_Add"
                     Width="100"
                     Height="25"
-                    Content="添加用户" />
+                    Content="{i18n:Localize ItemControl.Button2}" />
 
                 <Button
                     Name="Button_Add1"
                     Width="100"
                     Height="25"
                     Margin="0,20,0,0"
-                    Content="添加实例" />
+                    Content="{i18n:Localize ItemControl.Button3}" />
                 <Button
                     Name="Button_Launch"
                     Width="100"
                     Height="25"
-                    Content="启动实例"
+                    Content="{i18n:Localize ItemControl.Button4}"
                     IsEnabled="False" />
                 <Button
                     Name="Button_Launch1"
                     Width="100"
                     Height="25"
-                    Content="测试启动"
+                    Content="{i18n:Localize ItemControl.Button5}"
                     IsEnabled="False" />
                 <Button
                     Name="Button_Edit"
                     Width="100"
                     Height="25"
-                    Content="修改实例"
+                    Content="{i18n:Localize ItemControl.Button6}"
                     IsEnabled="False" />
                 <Button
                     Name="Button_Out"
                     Width="100"
                     Height="25"
-                    Content="导出实例"
+                    Content="{i18n:Localize ItemControl.Button7}"
                     IsEnabled="False" />
 
                 <Button
@@ -99,7 +100,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,20,0,0"
-                    Content="启动器设置" />
+                    Content="{i18n:Localize ItemControl.Button8}" />
             </StackPanel>
         </Expander>
         <Button

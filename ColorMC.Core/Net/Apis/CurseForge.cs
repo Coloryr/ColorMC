@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
@@ -31,7 +32,7 @@ public static class CurseForge
         }
         catch (Exception e)
         {
-            Logs.Error("获取CurseForge_Pack信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.CurseForge.Error1"), e);
             return null;
         }
     }
@@ -55,7 +56,7 @@ public static class CurseForge
         }
         catch (Exception e)
         {
-            Logs.Error("获取CurseForge_Mod信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.CurseForge.Error2"), e);
             return null;
         }
     }
@@ -92,34 +93,34 @@ public static class CurseForge
         }
         catch (Exception e)
         {
-            Logs.Error("获取CurseForge_Mod信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.CurseForge.Error3"), e);
             return null;
         }
     }
 
-    public static async Task<JObject?> GetCurseForgeModPage(CurseForgePackObj.Files obj)
-    {
-        try
-        {
-            string temp = CurseForgeUrl + $"v1/mods/{obj.projectID}";
-            HttpRequestMessage httpRequest = new()
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(temp)
-            };
-            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
-                return null;
-            return JsonConvert.DeserializeObject<JObject>(data1);
-        }
-        catch (Exception e)
-        {
-            Logs.Error("获取CurseForge_Mod信息发生错误", e);
-            return null;
-        }
-    }
+    //public static async Task<JObject?> GetCurseForgeModPage(CurseForgePackObj.Files obj)
+    //{
+    //    try
+    //    {
+    //        string temp = CurseForgeUrl + $"v1/mods/{obj.projectID}";
+    //        HttpRequestMessage httpRequest = new()
+    //        {
+    //            Method = HttpMethod.Get,
+    //            RequestUri = new Uri(temp)
+    //        };
+    //        httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
+    //        var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
+    //        var data1 = await data.Content.ReadAsStringAsync();
+    //        if (string.IsNullOrWhiteSpace(data1))
+    //            return null;
+    //        return JsonConvert.DeserializeObject<JObject>(data1);
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Logs.Error("获取CurseForge_Mod信息发生错误", e);
+    //        return null;
+    //    }
+    //}
 
     public static async Task<CurseForgeVersion?> GetCurseForgeVersion()
     {
@@ -140,7 +141,7 @@ public static class CurseForge
         }
         catch (Exception e)
         {
-            Logs.Error("获取CurseForge_Version信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.CurseForge.Error4"), e);
             return null;
         }
     }
@@ -164,7 +165,7 @@ public static class CurseForge
         }
         catch (Exception e)
         {
-            Logs.Error("获取CurseForge_VersionType信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.CurseForge.Error5"), e);
             return null;
         }
     }
@@ -188,7 +189,7 @@ public static class CurseForge
         }
         catch (Exception e)
         {
-            Logs.Error("获取CurseForge_File信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.CurseForge.Error6"), e);
             return null;
         }
     }

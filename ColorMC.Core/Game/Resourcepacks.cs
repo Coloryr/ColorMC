@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Text;
@@ -55,7 +56,7 @@ public static class Resourcepacks
             }
             catch (Exception e)
             {
-                Logs.Error("Mod解析失败", e);
+                Logs.Error(LanguageHelper.GetName("Core.Game.Error2"), e);
             }
         });
 

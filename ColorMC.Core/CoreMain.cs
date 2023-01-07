@@ -45,8 +45,11 @@ public static class CoreMain
     public static Action<AuthState>? AuthStateUpdate { get; set; }
     public static Action<string, string>? LoginOAuthCode { get; set; }
 
+    public static Action<LanguageType>? LanguageReload { get; set; }
+
     public static void Init(string dir)
     {
+        LanguageHelper.Load(LanguageType.zh_cn);
         Logs.Init(dir);
         ConfigUtils.Init(dir);
         SystemInfo.Init();
@@ -54,6 +57,6 @@ public static class CoreMain
         AuthDatabase.Init();
         MCPath.Init(dir);
 
-        Logs.Info("ColorMC核心已初始化");
+        Logs.Info(LanguageHelper.GetName("Core.Init"));
     }
 }

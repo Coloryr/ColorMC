@@ -5,22 +5,73 @@ using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using Newtonsoft.Json;
+using System.Reflection;
+using System.Text;
 
 namespace ColorMC.Core.Utils;
 
-public static class Language
+public enum LanguageType
 {
+    zh_cn
+}
+
+public static class LanguageHelper
+{
+    private static LanguageObj Languages;
+    public static LanguageType Type;
+
+    public static void Load(LanguageType type)
+    {
+        string name = type switch
+        {
+            _ => "ColorMC.Core.Resources.Language.zh-cn.json"
+        };
+        Assembly assm = Assembly.GetExecutingAssembly();
+        Stream istr = assm.GetManifestResourceStream(name);
+        MemoryStream stream = new();
+        istr?.CopyTo(stream);
+        stream.Seek(0, SeekOrigin.Begin);
+        var array = stream.ToArray();
+        var temp = Encoding.UTF8.GetString(array);
+        try
+        {
+            Languages = JsonConvert.DeserializeObject<LanguageObj>(temp);
+            Logs.Info(GetName("Language"));
+        }
+        catch (Exception e)
+        {
+            Logs.Error("语言文件读取错误", e);
+        }
+    }
+
+    public static void Change(LanguageType type)
+    {
+        Type = type;
+        Load(type);
+        CoreMain.LanguageReload?.Invoke(type);
+    }
+
+    public static string GetName(string input)
+    {
+        if (Languages.Language.TryGetValue(input, out var temp))
+        {
+            return temp;
+        }
+        return input;
+    }
+
     public static string GetName(this AuthType type)
     {
         return type switch
         {
-            AuthType.Offline => "离线",
-            AuthType.OAuth => "微软登录",
-            AuthType.Nide8 => "统一通行证",
-            AuthType.AuthlibInjector => "外置登录",
-            AuthType.LittleSkin => "皮肤站",
-            AuthType.SelfLittleSkin => "自建皮肤站",
-            _ => "账户"
+            AuthType.Offline => GetName("AuthType.Offline"),
+            AuthType.OAuth => GetName("AuthType.OAuth"),
+            AuthType.Nide8 => GetName("AuthType.Nide8"),
+            AuthType.AuthlibInjector => GetName("AuthType.AuthlibInjector"),
+            AuthType.LittleSkin => GetName("AuthType.LittleSkin"),
+            AuthType.SelfLittleSkin => GetName("AuthType.SelfLittleSkin"),
+            _ => GetName("AuthType.Other")
         };
     }
 
@@ -28,12 +79,12 @@ public static class Language
     {
         return state switch
         {
-            AuthState.OAuth => "OAuth",
-            AuthState.XBox => "XBoxLive",
-            AuthState.XSTS => "XSTS",
-            AuthState.Token => "Token",
-            AuthState.Profile => "Profile",
-            _ => "登录状态未知"
+            AuthState.OAuth => GetName("AuthType.Other"),
+            AuthState.XBox => GetName("AuthType.XBox"),
+            AuthState.XSTS => GetName("AuthType.XSTS"),
+            AuthState.Token => GetName("AuthType.Token"),
+            AuthState.Profile => GetName("AuthType.Profile"),
+            _ => GetName("AuthType.Other")
         };
     }
 
@@ -41,13 +92,13 @@ public static class Language
     {
         return state switch
         {
-            LoginState.Done => "完成",
-            LoginState.TimeOut => "超时",
-            LoginState.JsonError => "数据错误",
-            LoginState.Error => "未知错误",
-            LoginState.ErrorType => "错误的账户类型",
-            LoginState.Crash => "崩溃",
-            _ => "登录结果未知"
+            LoginState.Done => GetName("LoginState.Done"),
+            LoginState.TimeOut => GetName("LoginState.TimeOut"),
+            LoginState.JsonError => GetName("LoginState.JsonError"),
+            LoginState.Error => GetName("LoginState.Error"),
+            LoginState.ErrorType => GetName("LoginState.ErrorType"),
+            LoginState.Crash => GetName("LoginState.Crash"),
+            _ => GetName("LoginState.Other")
         };
     }
 
@@ -55,23 +106,23 @@ public static class Language
     {
         return state switch
         {
-            LaunchState.Check => "验证游戏完整性",
-            LaunchState.CheckVersion => "验证游戏核心",
-            LaunchState.CheckLib => "验证游戏运行库",
-            LaunchState.CheckAssets => "验证游戏资源文件",
-            LaunchState.CheckLoader => "验证游戏Mod加载器",
-            LaunchState.CheckLoginCore => "验证外置登录核心",
-            LaunchState.LostVersion => "缺少游戏核心",
-            LaunchState.LostLib => "缺少运行库",
-            LaunchState.LostLoader => "缺少Mod加载器",
-            LaunchState.LostLoginCore => "缺少外置登录核心",
-            LaunchState.Download => "下载文件",
-            LaunchState.JvmPrepare => "准备Jvm参数",
-            LaunchState.VersionError => "游戏核心错误",
-            LaunchState.AssetsError => "游戏资源文件错误",
-            LaunchState.LoaderError => "Mod加载器错误",
-            LaunchState.JvmError => "没有合适的Java",
-            _ => "启动状态未知"
+            LaunchState.Check => GetName("LaunchState.Check"),
+            LaunchState.CheckVersion => GetName("LaunchState.CheckVersion"),
+            LaunchState.CheckLib => GetName("LaunchState.CheckLib"),
+            LaunchState.CheckAssets => GetName("LaunchState.CheckAssets"),
+            LaunchState.CheckLoader => GetName("LaunchState.CheckLoader"),
+            LaunchState.CheckLoginCore => GetName("LaunchState.CheckLoginCore"),
+            LaunchState.LostVersion => GetName("LaunchState.LostVersion"),
+            LaunchState.LostLib => GetName("LaunchState.LostLib"),
+            LaunchState.LostLoader => GetName("LaunchState.LostLoader"),
+            LaunchState.LostLoginCore => GetName("LaunchState.LostLoginCore"),
+            LaunchState.Download => GetName("LaunchState.Download"),
+            LaunchState.JvmPrepare => GetName("LaunchState.JvmPrepare"),
+            LaunchState.VersionError => GetName("LaunchState.VersionError"),
+            LaunchState.AssetsError => GetName("LaunchState.AssetsError"),
+            LaunchState.LoaderError => GetName("LaunchState.LoaderError"),
+            LaunchState.JvmError => GetName("LaunchState.JvmError"),
+            _ => GetName("LaunchState.Other")
         };
     }
 
@@ -79,10 +130,10 @@ public static class Language
     {
         return state switch
         {
-            DownloadState.Init => "初始化",
-            DownloadState.GetInfo => "获取信息",
-            DownloadState.End => "结束",
-            _ => "未知的状态"
+            DownloadState.Init => GetName("DownloadState.Init"),
+            DownloadState.GetInfo => GetName("DownloadState.GetInfo"),
+            DownloadState.End => GetName("DownloadState.End"),
+            _ => GetName("DownloadState.Other")
         };
     }
 
@@ -90,13 +141,13 @@ public static class Language
     {
         return state switch
         {
-            DownloadItemState.Wait => "等待中",
-            DownloadItemState.Download => "下载中",
-            DownloadItemState.Init => "初始化中",
-            DownloadItemState.Action => "执行后续操作中",
-            DownloadItemState.Done => "完成",
-            DownloadItemState.Error => "发生错误",
-            _ => "未知的状态"
+            DownloadItemState.Wait => GetName("DownloadItemState.Wait"),
+            DownloadItemState.Download => GetName("DownloadItemState.Download"),
+            DownloadItemState.Init => GetName("DownloadItemState.Init"),
+            DownloadItemState.Action => GetName("DownloadItemState.Action"),
+            DownloadItemState.Done => GetName("DownloadItemState.Done"),
+            DownloadItemState.Error => GetName("DownloadItemState.Error"),
+            _ => GetName("DownloadItemState.Other")
         };
     }
 
@@ -104,15 +155,15 @@ public static class Language
     {
         return state switch
         {
-            SortField.Featured => "特色",
-            SortField.Popularity => "热度",
-            SortField.LastUpdated => "最后更新",
-            SortField.Name => "名字",
-            SortField.Author => "作者",
-            SortField.TotalDownloads => "下载数",
-            SortField.Category => "类别",
-            SortField.GameVersion => "游戏版本",
-            _ => "未知的分类"
+            SortField.Featured => GetName("SortField.Featured"),
+            SortField.Popularity => GetName("SortField.Popularity"),
+            SortField.LastUpdated => GetName("SortField.LastUpdated"),
+            SortField.Name => GetName("SortField.Name"),
+            SortField.Author => GetName("SortField.Author"),
+            SortField.TotalDownloads => GetName("SortField.TotalDownloads"),
+            SortField.Category => GetName("SortField.Category"),
+            SortField.GameVersion => GetName("SortField.GameVersion"),
+            _ => GetName("SortField.Other")
         };
     }
 
@@ -120,10 +171,10 @@ public static class Language
     {
         return type switch
         {
-            1 => "发布",
-            2 => "Beta测试版",
-            3 => "Alpha测试版",
-            _ => "未知的发布类型"
+            1 => GetName("Release.Release"),
+            2 => GetName("Release.Beta"),
+            3 => GetName("Release.Alpha"),
+            _ => GetName("Release.Other")
         };
     }
 
@@ -131,10 +182,10 @@ public static class Language
     {
         return state switch
         {
-            SourceLocal.Offical => "官方",
-            SourceLocal.BMCLAPI => "BmclApi",
-            SourceLocal.MCBBS => "Mcbbs",
-            _ =>"未知的下载源"
+            SourceLocal.Offical => GetName("SourceLocal.Offical"),
+            SourceLocal.BMCLAPI => GetName("SourceLocal.BMCLAPI"),
+            SourceLocal.MCBBS => GetName("SourceLocal.MCBBS"),
+            _ => GetName("SourceLocal.Other")
         };
     }
 
@@ -142,12 +193,12 @@ public static class Language
     {
         return state switch
         {
-            GCType.G1GC => "G1垃圾回收器",
-            GCType.SerialGC => "串行垃圾回收器",
-            GCType.ParallelGC => "并行垃圾回收器",
-            GCType.CMSGC => "并发标记扫描垃圾回收器",
-            GCType.User => "用户设置",
-            _ => "未知的GC类型"
+            GCType.G1GC => GetName("GCType.G1GC"),
+            GCType.SerialGC => GetName("GCType.SerialGC"),
+            GCType.ParallelGC => GetName("GCType.ParallelGC"),
+            GCType.CMSGC => GetName("GCType.CMSGC"),
+            GCType.User => GetName("GCType.User"),
+            _ => GetName("GCType.Other")
         };
     }
 
@@ -155,9 +206,29 @@ public static class Language
     {
         return arch switch
         {
-            ArchEnum.x64 => "64位",
-            ArchEnum.x32 => "32位",
-            _ => "未知的类型"
+            ArchEnum.x64 => GetName("ArchEnum.x64"),
+            ArchEnum.x32 => GetName("ArchEnum.x32"),
+            _ => GetName("ArchEnum.Other")
+        };
+    }
+
+    public static string GetName(this OsType arch)
+    {
+        return arch switch
+        {
+            OsType.Windows => GetName("OsType.Windows"),
+            OsType.Linux => GetName("OsType.Linux"),
+            OsType.MacOS => GetName("OsType.MacOS"),
+            _ => GetName("OsType.Other")
+        };
+    }
+
+    public static string GetName(this LanguageType type)
+    {
+        return type switch
+        {
+            LanguageType.zh_cn => "简体中文",
+            _ => "未知的语言"
         };
     }
 }

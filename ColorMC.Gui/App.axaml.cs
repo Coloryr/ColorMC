@@ -7,6 +7,8 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using ColorMC.Core;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -43,14 +45,7 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        Assembly assm = Assembly.GetExecutingAssembly();
-        var names = assm.GetManifestResourceNames();
-        Stream istr = assm?.GetManifestResourceStream("ColorMC.Gui.Resource.Language.zh-cn");
-        MemoryStream stream = new();
-        istr?.CopyTo(stream);
-        var temp = Encoding.UTF8.GetString(stream.ToArray());
-        Language = AvaloniaRuntimeXamlLoader.Load(temp) as ResourceDictionary;
-
+        LoadLanguage(LanguageType.zh_cn);
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;
@@ -63,6 +58,20 @@ public partial class App : Application
         {
             Life.Exit += Life_Exit;
         }
+    }
+
+    public static void LoadLanguage(LanguageType type)
+    {
+        Assembly assm = Assembly.GetExecutingAssembly();
+        string name = type switch
+        {
+            _ => "ColorMC.Gui.Resource.Language.zh-cn"
+        };
+        Stream istr = assm?.GetManifestResourceStream(name);
+        MemoryStream stream = new();
+        istr?.CopyTo(stream);
+        var temp = Encoding.UTF8.GetString(stream.ToArray());
+        Language = AvaloniaRuntimeXamlLoader.Load(temp) as ResourceDictionary;
     }
 
     public static void RemoveImage()
@@ -164,7 +173,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowNew()
+    public static void ShowHello()
     {
         if (HelloWindow != null)
         {
