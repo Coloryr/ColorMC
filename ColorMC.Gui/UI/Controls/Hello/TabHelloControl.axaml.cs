@@ -23,7 +23,7 @@ public partial class TabHelloControl : UserControl
     private void Lang_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         var type = (LanguageType)Lang.SelectedIndex;
-        LanguageHelper.Load(type);
+        LanguageHelper.Change(type);
     }
 
     public void SetWindow(HelloWindow window)

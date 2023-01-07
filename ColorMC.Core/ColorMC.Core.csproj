@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Language\en-us.json" />
     <None Remove="Resources\Language\zh-cn.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Language\en-us.json" />
     <EmbeddedResource Include="Resources\Language\zh-cn.json" />
   </ItemGroup>
 

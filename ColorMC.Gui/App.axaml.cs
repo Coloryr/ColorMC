@@ -65,6 +65,7 @@ public partial class App : Application
         Assembly assm = Assembly.GetExecutingAssembly();
         string name = type switch
         {
+            LanguageType.en_us => "ColorMC.Gui.Resource.Language.en-us",
             _ => "ColorMC.Gui.Resource.Language.zh-cn"
         };
         Stream istr = assm?.GetManifestResourceStream(name);

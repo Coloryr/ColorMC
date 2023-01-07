@@ -1,0 +1,10 @@
+﻿<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="Name">ColorMC</sys:String>
+	
+	<sys:String x:Key="MainWindow.Title">ColorMC Main</sys:String>
+	
+	
+</ResourceDictionary>

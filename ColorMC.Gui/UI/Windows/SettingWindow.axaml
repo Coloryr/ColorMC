@@ -38,20 +38,28 @@
                 Margin="3"
                 Stretch="UniformToFill" />
 
-            <Grid Margin="3" Background="#88FFFFFF">
-                <Grid
-                    Name="Tab1"
-                    Margin="10,50,10,10"
-                    ClipToBounds="True" />
+            <DockPanel
+                Margin="3"
+                Background="#88FFFFFF"
+                LastChildFill="True">
 
-                <TabControl Name="Tabs" VerticalAlignment="Top">
+                <TabControl
+                    Name="Tabs"
+                    VerticalAlignment="Top"
+                    DockPanel.Dock="Top">
                     <TabItem Header="{i18n:Localize SettingWindow.Tab1}" />
                     <TabItem Header="{i18n:Localize SettingWindow.Tab2}" />
                     <TabItem Header="{i18n:Localize SettingWindow.Tab3}" />
                     <TabItem Header="{i18n:Localize SettingWindow.Tab4}" />
                     <TabItem Header="{i18n:Localize SettingWindow.Tab5}" />
                 </TabControl>
-            </Grid>
+
+                <Grid
+                    Name="Tab1"
+                    Margin="10"
+                    ClipToBounds="True"
+                    DockPanel.Dock="Bottom" />
+            </DockPanel>
 
             <views:Info4Control Name="Info" IsVisible="False" />
             <views:Info1Control Name="Info1" IsVisible="False" />

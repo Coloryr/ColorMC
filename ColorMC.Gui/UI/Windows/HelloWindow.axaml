@@ -29,13 +29,8 @@
                 Stroke="#FF5ABED6"
                 StrokeThickness="3" />
 
-            <Grid Margin="3">
-                <Grid
-                    Name="Tab1"
-                    Margin="10,50,10,10"
-                    ClipToBounds="True" />
-
-                <TabControl Name="Tabs" VerticalAlignment="Top">
+            <DockPanel Margin="3" LastChildFill="True">
+                <TabControl Name="Tabs" DockPanel.Dock="Top">
                     <TabItem Header="{i18n:Localize HelloWindow.Tab1}" />
                     <TabItem Header="{i18n:Localize HelloWindow.Tab2}" />
                     <TabItem Header="{i18n:Localize HelloWindow.Tab3}" />
@@ -43,7 +38,12 @@
                     <TabItem Header="{i18n:Localize HelloWindow.Tab5}" />
                     <TabItem Header="{i18n:Localize HelloWindow.Tab6}" />
                 </TabControl>
-            </Grid>
+
+                <Grid
+                    Name="Tab1"
+                    Margin="10"
+                    ClipToBounds="True" />
+            </DockPanel>
 
             <views:Info4Control Name="Info" IsVisible="False" />
             <views:Info1Control Name="Info1" IsVisible="False" />

@@ -6,6 +6,7 @@ using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using Newtonsoft.Json;
+using System;
 using System.Reflection;
 using System.Text;
 
@@ -13,7 +14,7 @@ namespace ColorMC.Core.Utils;
 
 public enum LanguageType
 {
-    zh_cn
+    zh_cn, en_us
 }
 
 public static class LanguageHelper
@@ -25,6 +26,7 @@ public static class LanguageHelper
     {
         string name = type switch
         {
+            LanguageType.en_us => "ColorMC.Core.Resources.Language.en-us.json",
             _ => "ColorMC.Core.Resources.Language.zh-cn.json"
         };
         Assembly assm = Assembly.GetExecutingAssembly();
@@ -54,7 +56,7 @@ public static class LanguageHelper
 
     public static string GetName(string input)
     {
-        if (Languages.Language.TryGetValue(input, out var temp))
+        if (Languages?.Language?.TryGetValue(input, out var temp) == true)
         {
             return temp;
         }
@@ -227,6 +229,7 @@ public static class LanguageHelper
     {
         return type switch
         {
+            LanguageType.en_us => "English",
             LanguageType.zh_cn => "简体中文",
             _ => "未知的语言"
         };

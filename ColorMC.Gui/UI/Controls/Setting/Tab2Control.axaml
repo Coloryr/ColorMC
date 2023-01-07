@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -11,18 +12,30 @@
         <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
 
         <StackPanel Margin="5">
-            <Label Margin="5" Content="修改背景图片" />
+            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                <Label Margin="5" Content="{i18n:Localize Tab2Control1.Text1}" />
+                <ComboBox Name="ComboBox2" Width="200" />
+                <Button
+                    Name="Button_Change"
+                    Width="80"
+                    Height="25"
+                    Margin="20,0,0,0"
+                    HorizontalAlignment="Right"
+                    Content="切换" />
+            </StackPanel>
+
+            <Label Margin="5" Content="{i18n:Localize Tab2Control1.Text2}" />
             <TextBox
                 Name="TextBox1"
                 Margin="5"
                 Classes="input1"
-                Watermark="背景图片位置" />
+                Watermark="{i18n:Localize Tab2Control1.Text3}" />
             <Grid>
                 <StackPanel Orientation="Horizontal">
                     <Label
                         Margin="5"
                         VerticalAlignment="Center"
-                        Content="模糊效果" />
+                        Content="{i18n:Localize Tab2Control1.Text4}" />
                     <Slider
                         Name="Slider1"
                         Width="200"
@@ -39,7 +52,7 @@
                     <Label
                         Margin="20,5,5,5"
                         VerticalAlignment="Center"
-                        Content="透明度" />
+                        Content="{i18n:Localize Tab2Control1.Text5}" />
                     <Slider
                         Name="Slider2"
                         Width="200"
@@ -61,32 +74,32 @@
                     Height="25"
                     Margin="0,0,90,0"
                     HorizontalAlignment="Right"
-                    Content="删除" />
+                    Content="{i18n:Localize Button.Delete}" />
                 <Button
                     Name="Button_SelectFile"
                     Width="80"
                     Height="25"
                     Margin="0,0,5,0"
                     HorizontalAlignment="Right"
-                    Content="选择文件" />
+                    Content="{i18n:Localize Button.Select}" />
             </Grid>
             <StackPanel>
                 <StackPanel Margin="5" Orientation="Horizontal">
                     <CheckBox
                         Name="CheckBox1"
                         VerticalAlignment="Center"
-                        Content="半透明效果" />
+                        Content="{i18n:Localize Tab2Control1.Text6}" />
                     <Label
                         Margin="20,0,5,0"
                         VerticalAlignment="Center"
-                        Content="效果器" />
+                        Content="{i18n:Localize Tab2Control1.Text7}" />
                     <ComboBox
                         Name="ComboBox1"
                         Width="200"
                         IsEnabled="False" />
                 </StackPanel>
             </StackPanel>
-            <Label Content="不是所有系统都支持半透明效果" />
+            <Label Content="{i18n:Localize Tab2Control1.Text8}" />
         </StackPanel>
         <Button
             Name="Button_Set"
@@ -95,6 +108,6 @@
             Margin="10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="设置" />
+            Content="{i18n:Localize Button.Set}" />
     </Grid>
 </UserControl>
