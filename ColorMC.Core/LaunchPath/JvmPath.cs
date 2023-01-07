@@ -12,7 +12,7 @@ public static class JvmPath
     {
         if (Jvms.ContainsKey(name))
         {
-            return (false, "Jvm名字已存在");
+            return (false, LanguageHelper.GetName("Core.Path.Jvm.Error1"));
         }
         var info = GetJavaInfo(local);
         if (info != null)
@@ -27,7 +27,7 @@ public static class JvmPath
             return (true, name);
         }
 
-        return (false, "Jvm检查失败");
+        return (false, LanguageHelper.GetName("Core.Path.Jvm.Error2"));
     }
 
     public static (bool Res, string Msg) EditItem(string old, string name, string local)
@@ -36,11 +36,11 @@ public static class JvmPath
         {
             if (!Jvms.ContainsKey(old))
             {
-                return (false, "Jvm旧名字不存在");
+                return (false, LanguageHelper.GetName("Core.Path.Jvm.Error3"));
             }
             if (Jvms.ContainsKey(name))
             {
-                return (false, "Jvm新名字已存在");
+                return (false, LanguageHelper.GetName("Core.Path.Jvm.Error4"));
             }
         }
         var info = GetJavaInfo(local);
@@ -54,7 +54,7 @@ public static class JvmPath
             return (true, name);
         }
 
-        return (false, "Jvm检查失败");
+        return (false, LanguageHelper.GetName("Core.Path.Jvm.Error5"));
     }
 
     public static void Remove(string name)
@@ -72,14 +72,15 @@ public static class JvmPath
 
     public static void AddList(List<JvmConfigObj> objs)
     {
-        Logs.Info("正在读取JAVA信息");
+        Logs.Info(LanguageHelper.GetName("Core.Path.Jvm.Load"));
         Jvms.Clear();
         objs.ForEach(a =>
         {
             var info = GetJavaInfo(a.Local);
             if (info != null)
             {
-                Logs.Info($"JAVA:{info.Path} {info.Version}");
+                Logs.Info(string.Format(LanguageHelper.GetName("Core.Path.Jvm.Info"),
+                    info.Path, info.Version));
                 Jvms.Add(a.Name, info);
             }
 

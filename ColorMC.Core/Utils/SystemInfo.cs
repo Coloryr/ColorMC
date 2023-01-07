@@ -20,11 +20,12 @@ public static class SystemInfo
     public static OsType Os { get; private set; }
     public static ArchEnum SystemArch { get; private set; }
     public static string SystemName { get; private set; }
+    public static string System { get; private set; }
     public static int ProcessorCount { get; private set; }
 
     public static void Init()
     {
-        Logs.Info($"正在获取系统信息");
+        Logs.Info(LanguageHelper.GetName("Core.GetSystem"));
         if (Environment.Is64BitOperatingSystem)
         {
             SystemArch = ArchEnum.x64;
@@ -49,8 +50,9 @@ public static class SystemInfo
 
         SystemName = RuntimeInformation.OSDescription;
         ProcessorCount = Environment.ProcessorCount;
+        System = $"Os:{Os} Arch:{SystemArch}";
 
-        Logs.Info($"Os:{Os} Arch:{SystemArch}");
+        Logs.Info(System);
         Logs.Info(SystemName);
     }
 }

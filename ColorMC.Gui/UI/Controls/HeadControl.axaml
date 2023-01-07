@@ -14,6 +14,7 @@
         <Label
             Name="TitleShow"
             Margin="10,0,0,0"
+            Content="{Binding Title}"
             Foreground="White" />
         <StackPanel
             HorizontalAlignment="Right"

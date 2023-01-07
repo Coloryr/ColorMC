@@ -33,7 +33,7 @@ public static class AuthDatabase
     }
     public static void Init()
     {
-        Logs.Info($"登录数据库初始化");
+        Logs.Info(LanguageHelper.GetName("Core.Auth"));
         connStr = new SqliteConnectionStringBuilder("Data Source=" + AppContext.BaseDirectory + DB)
         {
             Mode = SqliteOpenMode.ReadWriteCreate
@@ -91,7 +91,7 @@ public static class AuthDatabase
         }
         catch (Exception e)
         {
-            Logs.Error("数据库读取错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Auth.Error"), e);
             return false;
         }
     }
@@ -127,7 +127,7 @@ public static class AuthDatabase
 
     private static void GetAll()
     {
-        Logs.Info($"读取所有账户");
+        Logs.Info(LanguageHelper.GetName("Core.Auth.Read"));
         using var sql = GetSqliteConnection();
         var list = sql.Query<QLogin>("SELECT UserName,UUID,AccessToken," +
             "RefreshToken,ClientToken," +

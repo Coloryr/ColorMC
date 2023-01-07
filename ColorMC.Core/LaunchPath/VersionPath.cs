@@ -2,6 +2,7 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.LaunchPath;
@@ -32,7 +33,7 @@ public static class VersionPath
     {
         BaseDir = dir + "/" + Name;
 
-        Logs.Info($"正在读取版本信息");
+        Logs.Info(LanguageHelper.GetName("Core.Path.Version.Load"));
 
         Directory.CreateDirectory(BaseDir);
 
@@ -63,13 +64,13 @@ public static class VersionPath
         }
         catch (Exception e)
         {
-            Logs.Error("读取版本信息错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error1"), e);
         }
         try
         {
             if (!GetFromWeb().Result || !ReadVersions())
             {
-                Logs.Error("获取版本信息失败");
+                Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error2"));
             }
             else
             {
@@ -78,7 +79,7 @@ public static class VersionPath
         }
         catch (Exception e)
         {
-            Logs.Error("获取版本信息错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error3"), e);
         }
     }
 
@@ -90,7 +91,7 @@ public static class VersionPath
             Versions = await Get.GetVersions(SourceLocal.Offical);
             if (Versions == null)
             {
-                Logs.Warn("获取版本信息错误");
+                Logs.Warn(LanguageHelper.GetName("Core.Path.Version.Load.Error4"));
                 return false;
             }
         }
@@ -127,7 +128,7 @@ public static class VersionPath
     {
         if (obj == null)
             return;
-        string file = BaseDir + "/" + obj.id + ".json";
+        string file = $"{BaseDir}/{obj.id}.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
         if (Version.ContainsKey(obj.id))
         {
@@ -193,7 +194,7 @@ public static class VersionPath
         }
         catch (Exception e)
         {
-            Logs.Error("读取forge安装信息错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error5"), e);
             return null;
         }
     }
@@ -225,7 +226,7 @@ public static class VersionPath
         }
         catch (Exception e)
         {
-            Logs.Error("读取forge信息错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error6"), e);
             return null;
         }
     }
@@ -257,7 +258,7 @@ public static class VersionPath
         }
         catch (Exception e)
         {
-            Logs.Error("读取fabric信息错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error7"), e);
             return null;
         }
     }
@@ -289,7 +290,7 @@ public static class VersionPath
         }
         catch (Exception e)
         {
-            Logs.Error("读取fabric信息错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error8"), e);
             return null;
         }
     }

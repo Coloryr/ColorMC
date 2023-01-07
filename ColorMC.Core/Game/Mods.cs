@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using System.Text;
@@ -89,8 +90,7 @@ public static class Mods
                         Local = Path.GetFullPath(item.FullName),
                         Disable = item.Extension is ".disable"
                     };
-                    object item2;
-                    model2.TryGetValue("modId", out item2);
+                    model2.TryGetValue("modId", out object item2);
                     obj3.modid = item2 as string;
                     model2.TryGetValue("displayName", out item2);
                     obj3.name = item2 as string;
@@ -136,7 +136,7 @@ public static class Mods
             }
             catch (Exception e)
             {
-                Logs.Error("Mod解析失败", e);
+                Logs.Error(LanguageHelper.GetName("Core.Game.Error1"), e);
             }
         });
 

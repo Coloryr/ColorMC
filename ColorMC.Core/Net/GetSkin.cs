@@ -3,6 +3,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.MinecraftAPI;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -40,7 +41,7 @@ public static class GetSkin
         }
         catch (Exception e)
         {
-            Logs.Error("获取头像错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Skin.Get.Error"), e);
         }
 
         return null;
@@ -64,7 +65,7 @@ public static class GetSkin
         }
         catch (Exception e)
         {
-            Logs.Error("皮肤读取失败", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Skin.Read.Error"), e);
             return null;
         }
     }

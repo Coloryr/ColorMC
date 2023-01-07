@@ -44,4 +44,16 @@ public static class OtherBinding
     {
         return WindowTranTypes;
     }
+
+    public static List<string> GetLanguages()
+    {
+        var list = new List<string>();
+        Array values = Enum.GetValues(typeof(LanguageType));
+        foreach (LanguageType value in values)
+        {
+            list.Add(value.GetName());
+        }
+
+        return list;
+    }
 }

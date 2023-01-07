@@ -11,9 +11,8 @@ namespace ColorMC.Gui.UI.Controls;
 public partial class HeadControl : UserControl
 {
     public static readonly StyledProperty<object> TitleProperty =
-            AvaloniaProperty.Register<ContentControl, object>(nameof(Title), defaultBindingMode: BindingMode.TwoWay);
+            AvaloniaProperty.Register<Label, object>(nameof(Title), defaultBindingMode: BindingMode.TwoWay);
 
-    private object title;
     private bool min;
     private bool max;
     public object Title
@@ -47,6 +46,8 @@ public partial class HeadControl : UserControl
     public HeadControl()
     {
         InitializeComponent();
+
+        DataContext = this;
 
         PointerPressed += HeadControl_PointerPressed;
 

@@ -1,5 +1,6 @@
 ﻿
 
+using ColorMC.Core.Utils;
 using System.Collections.Concurrent;
 
 namespace ColorMC.Core;
@@ -8,9 +9,9 @@ public static class Logs
 {
     private static string Local;
     private static StreamWriter Writer;
-    private static Thread thread = new(Run)
+    private static Thread ThreadLog = new(Run)
     {
-        Name = "ColorMC-Log"
+        Name = "ColorMC_Log"
     };
     private static ConcurrentBag<string> bags = new();
     private static Semaphore semaphore = new(0, 10);
@@ -24,11 +25,11 @@ public static class Logs
         {
             Writer = File.AppendText(Local);
             Writer.AutoFlush = true;
-            thread.Start();
+            ThreadLog.Start();
         }
         catch (Exception e)
         {
-            CoreMain.OnError?.Invoke("日志文件初始化错误", e, true);
+            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Log.Init.Error"), e, true);
         }
     }
 

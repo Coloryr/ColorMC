@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
@@ -19,7 +20,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="ColorMC 添加CurseForge整合包"
+            Title="{i18n:Localize AddCurseForgeWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Margin="0,35,0,0">
@@ -44,7 +45,7 @@
                         <Label
                             Margin="5"
                             VerticalAlignment="Center"
-                            Content="分类" />
+                            Content="{i18n:Localize AddCurseForgeWindow.Text1}" />
                         <ComboBox
                             Name="ComboBox1"
                             Width="100"
@@ -54,7 +55,7 @@
                         <Label
                             Margin="10,5,5,5"
                             VerticalAlignment="Center"
-                            Content="游戏版本" />
+                            Content="{i18n:Localize AddCurseForgeWindow.Text2}" />
                         <ComboBox
                             Name="ComboBox2"
                             Width="200"
@@ -68,13 +69,13 @@
                             Margin="10,0,0,0"
                             Classes="input1"
                             Foreground="Black"
-                            Watermark="名字" />
+                            Watermark="{i18n:Localize AddCurseForgeWindow.Text3}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label
                             Margin="5"
                             VerticalAlignment="Center"
-                            Content="排序" />
+                            Content="{i18n:Localize AddCurseForgeWindow.Text4}" />
                         <ComboBox
                             Name="ComboBox3"
                             Width="100"
@@ -83,7 +84,7 @@
                         <Label
                             Margin="10,5,5,5"
                             VerticalAlignment="Center"
-                            Content="页数" />
+                            Content="{i18n:Localize AddCurseForgeWindow.Text5}" />
                         <NumericUpDown
                             Name="Input2"
                             Width="150"
@@ -101,7 +102,7 @@
                     Margin="5"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="搜索" />
+                    Content="{i18n:Localize AddCurseForgeWindow.Button1}" />
 
                 <Button
                     Name="Button2"
@@ -110,7 +111,7 @@
                     Margin="5"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Content="安装所选"
+                    Content="{i18n:Localize AddCurseForgeWindow.Button2}"
                     IsEnabled="False" />
             </Grid>
 
@@ -129,11 +130,11 @@
                     <Label
                         Margin="5"
                         VerticalAlignment="Center"
-                        Content="选择版本文件" />
+                        Content="{i18n:Localize AddCurseForgeWindow.Text6}" />
                     <Label
                         Margin="20,5,5,5"
                         VerticalAlignment="Center"
-                        Content="页数：" />
+                        Content="{i18n:Localize AddCurseForgeWindow.Text7}" />
                     <NumericUpDown
                         Name="Input3"
                         Width="150"
@@ -151,7 +152,7 @@
                     Margin="2,2,5,2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="取消" />
+                    Content="{i18n:Localize Button.Cancel}" />
 
                 <Button
                     Name="ButtonSearch"
@@ -160,7 +161,7 @@
                     Margin="2,2,110,2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="获取版本" />
+                    Content="{i18n:Localize AddCurseForgeWindow.Button3}" />
 
                 <Button
                     Name="ButtonDownload"
@@ -169,7 +170,7 @@
                     Margin="2,2,215,2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="下载所选" />
+                    Content="{i18n:Localize AddCurseForgeWindow.Button4}" />
 
                 <DataGrid
                     Name="DataGridFiles"
@@ -178,19 +179,19 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Binding="{Binding Name}"
-                            Header="名字"
+                            Header="{i18n:Localize AddCurseForgeWindow.Data.Title1}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Size}"
-                            Header="大小(Mb)"
+                            Header="{i18n:Localize AddCurseForgeWindow.Data.Title2}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Download}"
-                            Header="下载次数"
+                            Header="{i18n:Localize AddCurseForgeWindow.Data.Title3}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Time}"
-                            Header="发布时间"
+                            Header="{i18n:Localize AddCurseForgeWindow.Data.Title4}"
                             IsReadOnly="True" />
                     </DataGrid.Columns>
                 </DataGrid>

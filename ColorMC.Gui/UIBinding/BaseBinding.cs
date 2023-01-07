@@ -3,6 +3,8 @@ using ColorMC.Core.Game;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.Language;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,6 +22,7 @@ public static class BaseBinding
         CoreMain.NewStart = ShowNew;
         CoreMain.DownloaderUpdate = DownloaderUpdate;
         CoreMain.ProcessLog = PLog;
+        CoreMain.LanguageReload = Change;
 
         CoreMain.Init(AppContext.BaseDirectory);
         GuiConfigUtils.Init(AppContext.BaseDirectory);
@@ -62,8 +65,12 @@ public static class BaseBinding
 
     private static void ShowNew()
     {
-        App.ShowNew();
+        App.ShowHello();
     }
 
-
+    private static void Change(LanguageType type)
+    {
+        App.LoadLanguage(type);
+        Localizer.Instance.Reload();
+    }
 }

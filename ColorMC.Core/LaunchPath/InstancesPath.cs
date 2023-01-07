@@ -98,7 +98,7 @@ public static class InstancesPath
     {
         BaseDir = Path.GetFullPath(dir + "/" + Name);
 
-        Logs.Info($"正在读取游戏对象信息");
+        Logs.Info(LanguageHelper.GetName("Core.Path.Instances.Load"));
 
         Directory.CreateDirectory(BaseDir);
 
@@ -660,7 +660,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error("导入压缩包错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Path.Instances.Load.Error"), e);
         }
         if (!res1111)
         {

@@ -1,4 +1,6 @@
-﻿namespace ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.Utils;
+
+namespace ColorMC.Core.LaunchPath;
 
 public static class MCPath
 {
@@ -9,7 +11,7 @@ public static class MCPath
     {
         BaseDir = dir + Name;
 
-        Logs.Info($"MC文件夹在{BaseDir}");
+        Logs.Info(string.Format(LanguageHelper.GetName("Core.Path.Init"), BaseDir));
 
         Directory.CreateDirectory(BaseDir);
 

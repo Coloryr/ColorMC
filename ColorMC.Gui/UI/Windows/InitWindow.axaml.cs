@@ -41,7 +41,8 @@ public partial class InitWindow : Window
 
             Dispatcher.UIThread.Post(() =>
             {
-                App.ShowMain();
+                App.ShowHello();
+                //App.ShowMain();
                 Close();
             });
         });

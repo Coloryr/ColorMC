@@ -3,6 +3,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Text;
@@ -11,7 +12,6 @@ namespace ColorMC.Core.Net.Download;
 
 public static class PackDownload
 {
-    public static string PackName { get; private set; }
     public static int Size { get; private set; }
     public static int Now { get; private set; }
 
@@ -58,7 +58,7 @@ public static class PackDownload
         }
         catch (Exception e)
         {
-            Logs.Error("读取压缩包错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
             return (DownloadState.GetInfo, null, null, null);
         }
         if (info == null)
@@ -109,8 +109,6 @@ public static class PackDownload
         }
 
         File.WriteAllBytes(game.GetModJsonFile(), array1);
-
-        PackName = name;
 
         CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
         Size = info.files.Count;

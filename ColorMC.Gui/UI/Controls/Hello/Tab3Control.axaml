@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -16,9 +17,9 @@
                     BorderThickness="2"
                     CornerRadius="5" />
                 <StackPanel Margin="5">
-                    <Label Content="添加账户" />
+                    <Label Content="{i18n:Localize Tab3Control.Text1}" />
                     <StackPanel Orientation="Horizontal">
-                        <Label VerticalAlignment="Center" Content="账户类型" />
+                        <Label VerticalAlignment="Center" Content="{i18n:Localize Tab3Control.Text2}" />
                         <ComboBox
                             Name="ComboBox_UserType"
                             Width="200"
@@ -38,9 +39,9 @@
                     Margin="0,10,10,10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="添加" />
+                    Content="{i18n:Localize Button.Add}" />
             </Grid>
-            <Label Margin="5" Content="现有账户" />
+            <Label Margin="5" Content="{i18n:Localize Tab3Control.Text3}" />
         </StackPanel>
 
         <Grid Margin="10,150,10,40">
@@ -89,7 +90,7 @@
             Margin="100,0,0,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Content="删除" />
+            Content="{i18n:Localize Button.Delete}" />
 
         <Button
             Name="Button_Refash"
@@ -98,7 +99,7 @@
             Margin="10,0,0,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Content="刷新" />
+            Content="{i18n:Localize Button.Refash}" />
 
         <Button
             Name="Button_Next"
@@ -107,6 +108,6 @@
             Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="下一步" />
+            Content="{i18n:Localize Button.Next}" />
     </Grid>
 </UserControl>

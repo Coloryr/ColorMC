@@ -2,6 +2,7 @@
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Game.Auth;
@@ -24,13 +25,13 @@ public static class AuthHelper
         return new()
         {
             SHA256 = obj.checksums.sha256,
-            Url = UrlHelp.DownloadAuthlibInjector(obj, BaseClient.Source),
+            Url = UrlHelper.DownloadAuthlibInjector(obj, BaseClient.Source),
             Name = $"moe.yushi:authlibinjector:{obj.version}",
             Local = $"{LibrariesPath.BaseDir}/moe/yushi/authlibinjector/{obj.version}/authlib-injector-{obj.version}.jar",
         };
     }
 
-    public static DownloadItem ReadyNide8()
+    public static DownloadItem? ReadyNide8()
     {
         var item = BuildNide8Item();
         if (!File.Exists(item.Local))
@@ -41,11 +42,11 @@ public static class AuthHelper
 
     public static async Task<DownloadItem?> ReadyAuthlibInjector()
     {
-        var meta = await BaseClient.GetString(UrlHelp.AuthlibInjectorMeta(BaseClient.Source));
+        var meta = await BaseClient.GetString(UrlHelper.AuthlibInjectorMeta(BaseClient.Source));
         var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta);
         var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
 
-        var info = await BaseClient.GetString(UrlHelp.AuthlibInjector(item, BaseClient.Source));
+        var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
         var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(meta);
 
         var item1 = BuildAuthlibInjectorItem(obj1);
@@ -71,7 +72,8 @@ public static class AuthHelper
             case AuthType.SelfLittleSkin:
                 return await BaseAuth.RefreshWithLittleSkin(obj);
             default:
-                return (AuthState.Token, LoginState.Done, obj, "无需登录");
+                return (AuthState.Token, LoginState.Done, obj, 
+                    LanguageHelper.GetName("Core.Http.Login.None"));
         }
     }
 }

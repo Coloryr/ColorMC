@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="350"
     d:DesignWidth="600"
@@ -12,71 +13,71 @@
 
         <StackPanel>
             <StackPanel Margin="5,5,5,0">
-                <Label Margin="5,0,0,0" Content="导入配置文件" />
+                <Label Margin="5,0,0,0" Content="{i18n:Localize Tab1Control.Text1}" />
                 <TextBox
                     Name="TextBox_Local"
                     Margin="5,0,5,5"
                     Classes="input1"
-                    Watermark="配置文件路径" />
+                    Watermark="{i18n:Localize Tab1Control.Text2}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         Name="Button_SelectFile"
                         Width="80"
                         Height="25"
                         Margin="0,0,5,0"
-                        Content="选择文件" />
+                        Content="{i18n:Localize Button.Select}" />
                     <Button
                         Name="Button_Input"
                         Width="80"
                         Height="25"
                         Margin="0,0,5,0"
-                        Content="导入" />
+                        Content="{i18n:Localize Button.Add}" />
                 </StackPanel>
             </StackPanel>
 
             <StackPanel Margin="5,0,5,0">
-                <Label Margin="5,0,0,0" Content="导入账户储存数据库" />
+                <Label Margin="5,0,0,0" Content="{i18n:Localize Tab1Control.Text3}" />
                 <TextBox
                     Name="TextBox_Local1"
                     Margin="5,0,5,5"
                     Classes="input1"
-                    Watermark="账户储存数据库路径" />
+                    Watermark="{i18n:Localize Tab1Control.Text4}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         Name="Button_SelectFile1"
                         Width="80"
                         Height="25"
                         Margin="0,0,5,0"
-                        Content="选择文件" />
+                        Content="{i18n:Localize Button.Select}" />
                     <Button
                         Name="Button_Input1"
                         Width="80"
                         Height="25"
                         Margin="0,0,5,0"
-                        Content="导入" />
+                        Content="{i18n:Localize Button.Add}" />
                 </StackPanel>
             </StackPanel>
 
             <StackPanel Margin="5,0,5,0">
-                <Label Margin="5,0,0,0" Content="导入图形配置文件" />
+                <Label Margin="5,0,0,0" Content="{i18n:Localize Tab1Control.Text5}" />
                 <TextBox
                     Name="TextBox_Local2"
                     Margin="5,0,5,5"
                     Classes="input1"
-                    Watermark="导入图形配置文件路径" />
+                    Watermark="{i18n:Localize Tab1Control.Text6}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         Name="Button_SelectFile2"
                         Width="80"
                         Height="25"
                         Margin="0,0,5,0"
-                        Content="选择文件" />
+                        Content="{i18n:Localize Button.Select}" />
                     <Button
                         Name="Button_Input2"
                         Width="80"
                         Height="25"
                         Margin="0,0,5,0"
-                        Content="导入" />
+                        Content="{i18n:Localize Button.Add}" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>
@@ -88,6 +89,6 @@
             Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="下一步" />
+            Content="{i18n:Localize Button.Next}" />
     </Grid>
 </UserControl>

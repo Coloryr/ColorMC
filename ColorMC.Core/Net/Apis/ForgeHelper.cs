@@ -15,7 +15,7 @@ public static class ForgeHelper
         if (BaseClient.Source == SourceLocal.BMCLAPI
             || BaseClient.Source == SourceLocal.MCBBS)
         {
-            string url = UrlHelp.ForgeVersion(BaseClient.Source);
+            string url = UrlHelper.ForgeVersion(BaseClient.Source);
             var data = await BaseClient.GetString(url);
             var obj = JsonConvert.DeserializeObject<List<string>>(data);
             if (obj == null)
@@ -25,7 +25,7 @@ public static class ForgeHelper
         }
         else
         {
-            string url = UrlHelp.ForgeVersion(SourceLocal.Offical);
+            string url = UrlHelper.ForgeVersion(SourceLocal.Offical);
             var html = await BaseClient.GetString(url);
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
@@ -94,7 +94,7 @@ public static class ForgeHelper
             {
                 list.Add(new()
                 {
-                    Url = UrlHelp.DownloadForgeLib(item1.downloads.artifact.url,
+                    Url = UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
                         BaseClient.Source),
                     Name = item1.name,
                     Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
@@ -140,7 +140,7 @@ public static class ForgeHelper
     {
         version += FixForgeUrl(mc);
         string name = $"forge-{mc}-{version}-{type}";
-        string url = UrlHelp.DownloadForgeJar(mc, version, BaseClient.Source);
+        string url = UrlHelper.DownloadForgeJar(mc, version, BaseClient.Source);
 
         return new()
         {
@@ -376,7 +376,7 @@ public static class ForgeHelper
         if (local == SourceLocal.BMCLAPI
             || local == SourceLocal.MCBBS)
         {
-            string url = UrlHelp.ForgeVersions(version, local) + version;
+            string url = UrlHelper.ForgeVersions(version, local) + version;
             var data = await BaseClient.GetString(url);
             var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data);
             if (obj == null)
@@ -390,7 +390,7 @@ public static class ForgeHelper
         }
         else
         {
-            string url = UrlHelp.ForgeVersions(version, SourceLocal.Offical) + version + ".html";
+            string url = UrlHelper.ForgeVersions(version, SourceLocal.Offical) + version + ".html";
             var data = await BaseClient.DownloadClient.GetAsync(url);
 
             string html = null;

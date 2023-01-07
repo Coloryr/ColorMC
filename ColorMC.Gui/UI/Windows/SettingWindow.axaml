@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
@@ -20,7 +21,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="ColorMC 设置"
+            Title="{i18n:Localize SettingWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
             Max="False"
@@ -44,11 +45,11 @@
                     ClipToBounds="True" />
 
                 <TabControl Name="Tabs" VerticalAlignment="Top">
-                    <TabItem Header="导入配置" />
-                    <TabItem Header="界面设置" />
-                    <TabItem Header="网络设置" />
-                    <TabItem Header="参数设置" />
-                    <TabItem Header="Java路径" />
+                    <TabItem Header="{i18n:Localize SettingWindow.Tab1}" />
+                    <TabItem Header="{i18n:Localize SettingWindow.Tab2}" />
+                    <TabItem Header="{i18n:Localize SettingWindow.Tab3}" />
+                    <TabItem Header="{i18n:Localize SettingWindow.Tab4}" />
+                    <TabItem Header="{i18n:Localize SettingWindow.Tab5}" />
                 </TabControl>
             </Grid>
 

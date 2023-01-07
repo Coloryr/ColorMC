@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net;
@@ -16,7 +17,7 @@ public static class Get
         }
         catch (Exception e)
         {
-            Logs.Error("获取游戏资源信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Assets.Error"), e);
             return null;
         }
     }
@@ -32,7 +33,7 @@ public static class Get
         }
         catch (Exception e)
         {
-            Logs.Error("获取游戏信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Game.Error"), e);
             return null;
         }
     }
@@ -42,14 +43,14 @@ public static class Get
     {
         try
         {
-            var data = await BaseClient.GetString(UrlHelp.GameVersion(local));
+            var data = await BaseClient.GetString(UrlHelper.GameVersion(local));
             if (string.IsNullOrWhiteSpace(data))
                 return null;
             return JsonConvert.DeserializeObject<VersionObj>(data);
         }
         catch (Exception e)
         {
-            Logs.Error("获取版本信息发生错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Version.Error"), e);
             return null;
         }
     }

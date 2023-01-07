@@ -108,7 +108,7 @@ public static class Launch
             list.Add(new()
             {
                 Overwrite = true,
-                Url = UrlHelp.DownloadAssets(Hash, BaseClient.Source),
+                Url = UrlHelper.DownloadAssets(Hash, BaseClient.Source),
                 SHA1 = Hash,
                 Local = $"{AssetsPath.ObjectsDir}/{Hash[..2]}/{Hash}",
                 Name = Name
@@ -619,7 +619,7 @@ public static class Launch
     {
         Dictionary<LibVersionObj, string> list = new();
         var version = VersionPath.GetGame(obj.Version)!;
-        var list1 = GameHelp.MakeGameLibs(version);
+        var list1 = GameHelper.MakeGameLibs(version);
         foreach (var item in list1)
         {
             var key = PathC.MakeVersionObj(item.Name);

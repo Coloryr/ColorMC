@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
@@ -19,7 +20,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="ColorMC 初始设置"
+            Title="{i18n:Localize HelloWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Margin="0,35,0,0">
@@ -35,12 +36,12 @@
                     ClipToBounds="True" />
 
                 <TabControl Name="Tabs" VerticalAlignment="Top">
-                    <TabItem Header="开始" />
-                    <TabItem Header="导入配置" />
-                    <TabItem Header="添加Java" />
-                    <TabItem Header="添加账户" />
-                    <TabItem Header="添加游戏" />
-                    <TabItem Header="完成" />
+                    <TabItem Header="{i18n:Localize HelloWindow.Tab1}" />
+                    <TabItem Header="{i18n:Localize HelloWindow.Tab2}" />
+                    <TabItem Header="{i18n:Localize HelloWindow.Tab3}" />
+                    <TabItem Header="{i18n:Localize HelloWindow.Tab4}" />
+                    <TabItem Header="{i18n:Localize HelloWindow.Tab5}" />
+                    <TabItem Header="{i18n:Localize HelloWindow.Tab6}" />
                 </TabControl>
             </Grid>
 

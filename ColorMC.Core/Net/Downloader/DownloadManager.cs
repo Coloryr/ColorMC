@@ -17,7 +17,8 @@ public static class DownloadManager
 
     public static void Init()
     {
-        Logs.Info($"下载器初始化，线程数{ConfigUtils.Config.Http.DownloadThread}");
+        Logs.Info(string.Format(LanguageHelper.GetName("Core.Http.Downloader.Init"),
+            ConfigUtils.Config.Http.DownloadThread));
         semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
         threads.ForEach(a => a.Close());
         threads.Clear();
@@ -62,7 +63,7 @@ public static class DownloadManager
 
     public static void Clear()
     {
-        Logs.Info($"下载器清空");
+        Logs.Info(LanguageHelper.GetName("Core.Http.Downloader.Clear"));
         Name.Clear();
         Items.Clear();
         AllSize = 0;
@@ -71,7 +72,7 @@ public static class DownloadManager
 
     public static async Task<bool> Start()
     {
-        Logs.Info($"下载器启动");
+        Logs.Info(LanguageHelper.GetName("Core.Http.Downloader.Start"));
         DoneSize = 0;
         AllSize = Items.Count;
         CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.Start);
@@ -94,7 +95,7 @@ public static class DownloadManager
 
     public static void FillAll(List<DownloadItem> list)
     {
-        Logs.Info($"下载器装填内容");
+        Logs.Info(LanguageHelper.GetName("Core.Http.Downloader.Fill"));
         CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
         foreach (var item in list)
         {
@@ -132,7 +133,8 @@ public static class DownloadManager
 
     public static void Error(int index, DownloadItem item, Exception e)
     {
-        Logs.Error($"下载{item.Name}错误", e);
+        Logs.Error(string.Format(LanguageHelper.GetName("Core.Http.Downloader.Item.Error"),
+            item.Name), e);
         CoreMain.DownloadItemError?.Invoke(index, item, e);
     }
 

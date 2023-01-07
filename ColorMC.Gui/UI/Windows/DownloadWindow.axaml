@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
@@ -19,7 +20,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="ColorMC 下载列表"
+            Title="{i18n:Localize DownloadWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Margin="0,35,0,0">
@@ -41,7 +42,7 @@
                     Stroke="#FF5ABED6"
                     StrokeThickness="3" />
                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                    <Label Margin="5" Content="下载进度" />
+                    <Label Margin="5" Content="{i18n:Localize DownloadWindow.Label1}" />
                     <ProgressBar
                         Name="ProgressBar1"
                         Width="500"
@@ -69,23 +70,23 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="名字"
+                        Header="{i18n:Localize DownloadWindow.Data.Title1}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding State}"
-                        Header="状态"
+                        Header="{i18n:Localize DownloadWindow.Data.Title2}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding NowSize}"
-                        Header="已下载"
+                        Header="{i18n:Localize DownloadWindow.Data.Title3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding AllSize}"
-                        Header="总大小Mb"
+                        Header="{i18n:Localize DownloadWindow.Data.Title4}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding ErrorTime}"
-                        Header="错误次数"
+                        Header="{i18n:Localize DownloadWindow.Data.Title5}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
@@ -111,7 +112,7 @@
                             Width="100"
                             Height="30"
                             Margin="4,0,0,0"
-                            Content="暂停下载" />
+                            Content="{i18n:Localize DownloadWindow.Button1}" />
                     </Expander>
                 </Grid>
                 <Grid Margin="0,5,0,0">
@@ -134,7 +135,7 @@
                             Width="100"
                             Height="30"
                             Margin="4,0,0,0"
-                            Content="停止下载" />
+                            Content="{i18n:Localize DownloadWindow.Button2}" />
                     </Expander>
                 </Grid>
             </StackPanel>

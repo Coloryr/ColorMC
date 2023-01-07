@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
@@ -20,7 +21,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="ColorMC 加载"
+            Title="{i18n:Localize InitWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
             Max="False"
@@ -35,7 +36,7 @@
                     Name="Text"
                     FontSize="20"
                     Foreground="Black"
-                    Text="ColorMC正在初始化"
+                    Text="{i18n:Localize InitWindow.Text}"
                     TextAlignment="Center"
                     TextWrapping="Wrap" />
                 <ProgressBar

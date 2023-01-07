@@ -35,19 +35,19 @@ public static class GameDownload
         list.Add(new()
         {
             Name = $"{obj.id}.jar",
-            Url = UrlHelp.Download(obj1.downloads.client.url, BaseClient.Source),
+            Url = UrlHelper.Download(obj1.downloads.client.url, BaseClient.Source),
             Local = LibrariesPath.MakeGameDir(obj.id),
             SHA1 = obj1.downloads.client.sha1
         });
 
-        list.AddRange(GameHelp.MakeGameLibs(obj1));
+        list.AddRange(GameHelper.MakeGameLibs(obj1));
 
         foreach (var item1 in obj2.objects)
         {
             list.Add(new()
             {
                 Name = item1.Key,
-                Url = UrlHelp.DownloadAssets(item1.Value.hash, BaseClient.Source),
+                Url = UrlHelper.DownloadAssets(item1.Value.hash, BaseClient.Source),
                 Local = $"{AssetsPath.ObjectsDir}/{item1.Value.hash[..2]}/{item1.Value.hash}",
                 SHA1 = item1.Value.hash
             });
@@ -96,7 +96,7 @@ public static class GameDownload
         }
 
         var list = new List<DownloadItem>();
-        if (v2 || mc == "1.12.2")
+        if (v2 || (mc == "1.12.2" && find1))
         {
             byte[] array1 = stream1.ToArray();
             ForgeLaunchObj info;
@@ -108,7 +108,7 @@ public static class GameDownload
             }
             catch (Exception e)
             {
-                Logs.Error("读取forge信息错误", e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Download.Forge.Error1"), e);
                 return (DownloadState.GetInfo, null);
             }
 
@@ -124,7 +124,7 @@ public static class GameDownload
             }
             catch (Exception e)
             {
-                Logs.Error("读取forge安装信息错误", e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Download.Forge.Error2"), e);
                 return (DownloadState.GetInfo, null);
             }
 
@@ -132,7 +132,7 @@ public static class GameDownload
             {
                 list.Add(new()
                 {
-                    Url = UrlHelp.DownloadForgeLib(item1.downloads.artifact.url,
+                    Url = UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
                              BaseClient.Source),
                     Name = item1.name,
                     Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
@@ -192,7 +192,7 @@ public static class GameDownload
             }
             catch (Exception e)
             {
-                Logs.Error("读取forge信息错误", e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Download.Forge.Error3"), e);
                 return (DownloadState.GetInfo, null);
             }
         }
@@ -245,7 +245,7 @@ public static class GameDownload
             var name = PathC.ToName(item.name);
             list.Add(new()
             {
-                Url = UrlHelp.DownloadQuilt(item.url + name.Path, BaseClient.Source),
+                Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),
                 Name = name.Name,
                 Local = $"{LibrariesPath.BaseDir}/{name.Path}"
             });
@@ -300,7 +300,7 @@ public static class GameDownload
             var name = PathC.ToName(item.name);
             list.Add(new()
             {
-                Url = UrlHelp.DownloadQuilt(item.url + name.Path, BaseClient.Source),
+                Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),
                 Name = name.Name,
                 Local = $"{LibrariesPath.BaseDir}/{name.Path}"
             });

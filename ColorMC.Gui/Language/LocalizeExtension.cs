@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui;
+namespace ColorMC.Gui.Language;
 
 public class LocalizeExtension : MarkupExtension
 {
     public LocalizeExtension(string key)
     {
-        this.Key = key;
+        Key = key;
     }
 
     public string Key { get; set; }

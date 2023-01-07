@@ -2,7 +2,7 @@
 
 namespace ColorMC.Core.Net;
 
-public static class UrlHelp
+public static class UrlHelper
 {
     private const string BMCLAPI = "https://bmclapi2.bangbang93.com/";
     private const string MCBBS = "https://download.mcbbs.net";
