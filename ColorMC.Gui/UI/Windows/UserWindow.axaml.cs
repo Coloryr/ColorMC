@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using ColorMC.Core;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Language;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -75,14 +76,14 @@ public partial class UserWindow : Window
         var item = DataGrid_User.SelectedItem as UserDisplayObj;
         if (item == null)
         {
-            Info.Show("请先选择账户");
+            Info.Show(Localizer.Instance["UserWindow.Error1"]);
             return;
         }
 
         UserBinding.SetLastUser(item.UUID, item.AuthType);
         MainWindow.OnUserEdit();
 
-        Info2.Show("切换成功");
+        Info2.Show(Localizer.Instance["UserWindow.Ok1"]);
         Load();
     }
 
@@ -95,7 +96,7 @@ public partial class UserWindow : Window
                 string name = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    Info.Show("请输入必要信息");
+                    Info.Show(Localizer.Instance["UserWindow.Error2"]);
                     break;
                 }
                 var res = await UserBinding.AddUser(0, name, null);
@@ -103,37 +104,38 @@ public partial class UserWindow : Window
                 {
                     Info.Show(res.Item2!);
                 }
-                Info2.Show("添加成功");
+                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
                 break;
             case 1:
                 CoreMain.LoginOAuthCode = LoginOAuthCode;
-                Info1.Show("正在加载");
+                Info1.Show(Localizer.Instance["UserWindow.Info1"]);
                 res = await UserBinding.AddUser(1, null);
                 Info3.Close();
                 if (!res.Item1)
                 {
                     Info.Show(res.Item2!);
                 }
-                Info2.Show("添加成功");
+                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
                 break;
             case 2:
                 var server = TextBox_Input1.Text;
                 if (server.Length != 32)
                 {
-                    Info.Show("服务器UUID错误");
+                    Info.Show(Localizer.Instance["UserWindow.Error3"]);
                     break;
                 }
-                await Info3.Show("账户", "密码", false);
+                await Info3.Show(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], false);
                 Info3.Close();
                 var user = Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
-                    Info.Show("请输入必要信息");
+                    Info.Show(Localizer.Instance["UserWindow.Error2"]);
                     break;
                 }
-                Info1.Show("正在登录");
+                Info1.Show(Localizer.Instance["UserWindow.Info2"]);
                 res = await UserBinding.AddUser(2, server, user.Item1, user.Item2);
                 Info1.Close();
                 if (!res.Item1)
@@ -141,25 +143,26 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show("添加成功");
+                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
                 break;
             case 3:
                 server = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Info.Show("服务器UUID错误");
+                    Info.Show(Localizer.Instance["UserWindow.Error4"]);
                     break;
                 }
-                await Info3.Show("账户", "密码", false);
+                await Info3.Show(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], false);
                 Info3.Close();
                 user = Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
-                    Info.Show("请输入必要信息");
+                    Info.Show(Localizer.Instance["UserWindow.Error2"]);
                     break;
                 }
-                Info1.Show("正在登录");
+                Info1.Show(Localizer.Instance["UserWindow.Info2"]);
                 res = await UserBinding.AddUser(3, server, user.Item1, user.Item2);
                 Info1.Close();
                 if (!res.Item1)
@@ -167,19 +170,20 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show("添加成功");
+                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
                 break;
             case 4:
-                await Info3.Show("账户", "密码", false);
+                await Info3.Show(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], false);
                 Info3.Close();
                 user = Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
-                    Info.Show("请输入必要信息");
+                    Info.Show(Localizer.Instance["UserWindow.Error2"]);
                     break;
                 }
-                Info1.Show("正在登录");
+                Info1.Show(Localizer.Instance["UserWindow.Info2"]);
                 res = await UserBinding.AddUser(4, user.Item1, user.Item2);
                 Info1.Close();
                 if (!res.Item1)
@@ -187,24 +191,25 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show("添加成功");
+                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 break;
             case 5:
                 server = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Info.Show("服务器UUID错误");
+                    Info.Show(Localizer.Instance["UserWindow.Error4"]);
                     break;
                 }
-                await Info3.Show("账户", "密码", false);
+                await Info3.Show(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], false);
                 Info3.Close();
                 user = Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
-                    Info.Show("请输入必要信息");
+                    Info.Show(Localizer.Instance["UserWindow.Error2"]);
                     break;
                 }
-                Info1.Show("正在登录");
+                Info1.Show(Localizer.Instance["UserWindow.Info2"]);
                 res = await UserBinding.AddUser(5, server, user.Item1, user.Item2);
                 Info1.Close();
                 if (!res.Item1)
@@ -212,11 +217,11 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show("添加成功");
+                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
                 break;
             default:
-                Info.Show("请选择类型");
+                Info.Show(Localizer.Instance["UserWindow.Error5"]);
                 break;
         }
         Load();
@@ -227,7 +232,8 @@ public partial class UserWindow : Window
     private void LoginOAuthCode(string url, string code)
     {
         Info1.Close();
-        Info3.Show("打开网址" + url, "输入代码:" + code);
+        Info3.Show(string.Format(Localizer.Instance["UserWindow.Text3"], url),
+            string.Format(Localizer.Instance["UserWindow.Text4"], code));
     }
 
     private void UserType_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -236,7 +242,7 @@ public partial class UserWindow : Window
         {
             case 0:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = "用户名";
+                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text5"];
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = false;
                 TextBox_Input2.Text = "";
@@ -254,7 +260,7 @@ public partial class UserWindow : Window
                 break;
             case 2:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = "服务器UUID";
+                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text6"];
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = true;
                 TextBox_Input2.Text = "";
@@ -263,7 +269,7 @@ public partial class UserWindow : Window
                 break;
             case 3:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = "服务器地址";
+                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text7"];
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = true;
                 TextBox_Input2.Text = "";
@@ -281,7 +287,7 @@ public partial class UserWindow : Window
                 break;
             case 5:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = "皮肤站地址";
+                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text8"];
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = true;
                 TextBox_Input2.Text = "";
@@ -301,7 +307,7 @@ public partial class UserWindow : Window
         var item = DataGrid_User.SelectedItem as UserDisplayObj;
         if (item == null)
         {
-            Info.Show("请先选择账户");
+            Info.Show(Localizer.Instance["UserWindow.Error1"]);
             return;
         }
 

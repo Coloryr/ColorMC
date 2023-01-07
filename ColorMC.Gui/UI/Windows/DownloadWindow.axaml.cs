@@ -7,6 +7,7 @@ using ColorMC.Core;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Language;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ public partial class DownloadWindow : Window
 
     private async void Button_S_Click(object? sender, RoutedEventArgs e)
     {
-        var res = await Info.ShowWait("是否要停止下载");
+        var res = await Info.ShowWait(Localizer.Instance["DownloadWindow.Info1"]);
         if (res)
         {
             List.Clear();
@@ -72,16 +73,16 @@ public partial class DownloadWindow : Window
             DownloadManager.Pause();
             pause = true;
             Button_P.Content = "R";
-            Button_P1.Content = "继续下载";
-            Info2.Show("下载已暂停");
+            Button_P1.Content = Localizer.Instance["DownloadWindow.Button3"];
+            Info2.Show(Localizer.Instance["DownloadWindow.Info2"]);
         }
         else
         {
             DownloadManager.Resume();
             Button_P.Content = "P";
-            Button_P1.Content = "暂停下载";
+            Button_P1.Content = Localizer.Instance["DownloadWindow.Button1"];
             pause = false;
-            Info2.Show("下载已继续");
+            Info2.Show(Localizer.Instance["DownloadWindow.Info3"]);
         }
     }
 
@@ -122,7 +123,7 @@ public partial class DownloadWindow : Window
     {
         if (OtherBinding.GetDownloadState() != CoreRunState.End)
         {
-            var res =await Info.ShowWait("下载还未完成，是否要取消");
+            var res = await Info.ShowWait(Localizer.Instance["DownloadWindow.Info4"]);
             if (res)
             {
                 DownloadManager.Stop();

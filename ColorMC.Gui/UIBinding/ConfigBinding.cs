@@ -45,7 +45,7 @@ public static class ConfigBinding
         App.SettingWindow?.Update();
     }
 
-    public static async Task<bool> SetGuiConfig(GuiConfigObj obj)
+    public static async Task SetGuiConfig(GuiConfigObj obj)
     {
         if (!await App.LoadImage(obj.BackImage, obj.BackEffect))
         {
@@ -59,8 +59,6 @@ public static class ConfigBinding
         App.DownloadWindow?.Update();
         App.MainWindow?.Update();
         App.SettingWindow?.Update();
-
-        return true;
     }
 
     public static void SetHttpConfig(HttpObj obj)

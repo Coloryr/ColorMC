@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace ColorMC.Gui.UI.Windows
+namespace ColorMC.Gui.UI.Windows;
+
+public partial class GameEditWindow : Window
 {
-    public partial class GameEditWindow : Window
+    public GameEditWindow()
     {
-        public GameEditWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

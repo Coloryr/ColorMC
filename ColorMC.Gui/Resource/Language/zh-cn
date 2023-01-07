@@ -5,6 +5,22 @@
     <sys:String x:Key="Name">ColorMC</sys:String>
 	
 	<sys:String x:Key="MainWindow.Title">ColorMC 主界面</sys:String>
+	<sys:String x:Key="MainWindow.Launch">正在启动游戏</sys:String>
+	<sys:String x:Key="MainWindow.Lost1">是否下载缺失的游戏文件</sys:String>
+	<sys:String x:Key="MainWindow.Lost2">是否下载缺失的运行库文件</sys:String>
+	<sys:String x:Key="MainWindow.Lost3">是否下载缺失的Mod加载器</sys:String>
+	<sys:String x:Key="MainWindow.Lost4">是否下载缺失的外置登陆器</sys:String>
+	<sys:String x:Key="MainWindow.Check1">正在登录账户</sys:String>
+	<sys:String x:Key="MainWindow.Check2">正在检测游戏文件</sys:String>
+	<sys:String x:Key="MainWindow.Check3">正在检测游戏核心文件</sys:String>
+	<sys:String x:Key="MainWindow.Check4">正在检测游戏运行库</sys:String>
+	<sys:String x:Key="MainWindow.Check5">正在检测游戏资源文件</sys:String>
+	<sys:String x:Key="MainWindow.Check6">正在检测游戏Mod加载器</sys:String>
+	<sys:String x:Key="MainWindow.Check7">正在检测游戏外置登陆器</sys:String>
+	<sys:String x:Key="MainWindow.Check8">正在下载所需文件</sys:String>
+	<sys:String x:Key="MainWindow.Check9">正在准备Jvm参数</sys:String>
+	<sys:String x:Key="MainWindow.Error1">账户登录失败</sys:String>
+	<sys:String x:Key="MainWindow.DefaultGroup">默认分组</sys:String>
 	
 	<sys:String x:Key="InitWindow.Title">ColorMC 加载</sys:String>
 	<sys:String x:Key="InitWindow.Text">ColorMC正在初始化</sys:String>
@@ -22,6 +38,21 @@
 	<sys:String x:Key="UserWindow.Grid">添加账户</sys:String>
 	<sys:String x:Key="UserWindow.Text1">账户</sys:String>
 	<sys:String x:Key="UserWindow.Text2">密码</sys:String>
+	<sys:String x:Key="UserWindow.Text3">打开网址{0}</sys:String>
+	<sys:String x:Key="UserWindow.Text4">输入代码：{0}</sys:String>
+	<sys:String x:Key="UserWindow.Text5">用户名</sys:String>
+	<sys:String x:Key="UserWindow.Text6">服务器UUID</sys:String>
+	<sys:String x:Key="UserWindow.Text7">服务器地址</sys:String>
+	<sys:String x:Key="UserWindow.Text8">皮肤站地址</sys:String>
+	<sys:String x:Key="UserWindow.Error1">请先选择账户</sys:String>
+	<sys:String x:Key="UserWindow.Error2">请输入必要信息</sys:String>
+	<sys:String x:Key="UserWindow.Error3">服务器UUID错误</sys:String>
+	<sys:String x:Key="UserWindow.Error4">服务器Url错误</sys:String>
+	<sys:String x:Key="UserWindow.Error5">请选择类型</sys:String>
+	<sys:String x:Key="UserWindow.Ok1">切换成功</sys:String>
+	<sys:String x:Key="UserWindow.Ok2">添加成功</sys:String>
+	<sys:String x:Key="UserWindow.Info1">正在加载</sys:String>
+	<sys:String x:Key="UserWindow.Info2">正在登录</sys:String>
 
 	<sys:String x:Key="SettingWindow.Title">ColorMC 设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab1">导入配置</sys:String>
@@ -51,6 +82,11 @@
 	<sys:String x:Key="DownloadWindow.Data.Title5">错误次数</sys:String>
 	<sys:String x:Key="DownloadWindow.Button1">暂停下载</sys:String>
 	<sys:String x:Key="DownloadWindow.Button2">停止下载</sys:String>
+	<sys:String x:Key="DownloadWindow.Button3">继续下载</sys:String>
+	<sys:String x:Key="DownloadWindow.Info1">是否要停止下载</sys:String>
+	<sys:String x:Key="DownloadWindow.Info2">下载已暂停</sys:String>
+	<sys:String x:Key="DownloadWindow.Info3">下载已继续</sys:String>
+	<sys:String x:Key="DownloadWindow.Info4">下载还未完成，是否要取消</sys:String>
 
 	<sys:String x:Key="AddGameWindow.Title">ColorMC 添加游戏</sys:String>
 	<sys:String x:Key="AddGameWindow.Text1">添加实例</sys:String>
@@ -65,6 +101,24 @@
 	<sys:String x:Key="AddGameWindow.Button3">从MMC压缩包导入</sys:String>
 	<sys:String x:Key="AddGameWindow.Button4">从HMCL压缩包导入</sys:String>
 	<sys:String x:Key="AddGameWindow.Button5">从CurseForge搜索整合包</sys:String>
+	<sys:String x:Key="AddGameWindow.Error1">没有实例名字</sys:String>
+	<sys:String x:Key="AddGameWindow.Error2">没有选择版本</sys:String>
+	<sys:String x:Key="AddGameWindow.Error3">导入错误</sys:String>
+	<sys:String x:Key="AddGameWindow.Error4">整合包安装失败</sys:String>
+	<sys:String x:Key="AddGameWindow.Info1">添加实例失败</sys:String>
+	<sys:String x:Key="AddGameWindow.Info2">添加成功</sys:String>
+	<sys:String x:Key="AddGameWindow.Info3">正在获取Mod加载器信息</sys:String>
+	<sys:String x:Key="AddGameWindow.Info4">正在获取Quilt版本信息</sys:String>
+	<sys:String x:Key="AddGameWindow.Info5">正在获取Fabric版本信息</sys:String>
+	<sys:String x:Key="AddGameWindow.Info6">正在获取Forge版本信息</sys:String>
+	<sys:String x:Key="AddGameWindow.Info7">游戏实例:{0}冲突，是否覆盖</sys:String>
+	<sys:String x:Key="AddGameWindow.Info8">正在导入压缩包</sys:String>
+	<sys:String x:Key="AddGameWindow.Info9">正在读取压缩包</sys:String>
+	<sys:String x:Key="AddGameWindow.Info10">正在解析压缩包</sys:String>
+	<sys:String x:Key="AddGameWindow.Info11">正在下载文件</sys:String>
+	<sys:String x:Key="AddGameWindow.Info12">导入完成</sys:String>
+	<sys:String x:Key="AddGameWindow.Info13">选择压缩包</sys:String>
+	<sys:String x:Key="AddGameWindow.Info14">正在安装整合包</sys:String>
 
 	<sys:String x:Key="AddCurseForgeWindow.Title">ColorMC 添加CurseForge整合包</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Text1">分类</sys:String>
@@ -82,6 +136,14 @@
 	<sys:String x:Key="AddCurseForgeWindow.Data.Title2">大小(Mb)</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Data.Title3">下载次数</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Data.Title4">发布时间</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Info1">是否安装整合包：{0}</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Info2">正在搜索中</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Info3">正在获取版本中</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Info4">正在加载中</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Error1">你还没有选择整合包</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Error2">整合包数据加载失败</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Error3">整合包版本数据加载失败</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Error4">游戏版本加载失败</sys:String>
 
 	<sys:String x:Key="FlyoutsControl.Button1">启动实例</sys:String>
 	<sys:String x:Key="FlyoutsControl.Button2">查看Mod</sys:String>
@@ -131,6 +193,8 @@
 	<sys:String x:Key="ItemControl.Button6">修改实例</sys:String>
 	<sys:String x:Key="ItemControl.Button7">导出实例</sys:String>
 	<sys:String x:Key="ItemControl.Button8">启动器设置</sys:String>
+	<sys:String x:Key="ItemControl.Info1">空账户</sys:String>
+	<sys:String x:Key="ItemControl.Info2">空账户</sys:String>
 
 	<sys:String x:Key="Tab2Control1.Text1">语言选择</sys:String>
 	<sys:String x:Key="Tab2Control1.Text2">修改背景图片</sys:String>
@@ -140,6 +204,11 @@
 	<sys:String x:Key="Tab2Control1.Text6">半透明效果</sys:String>
 	<sys:String x:Key="Tab2Control1.Text7">效果器</sys:String>
 	<sys:String x:Key="Tab2Control1.Text8">不是所有系统都支持半透明效果</sys:String>
+	<sys:String x:Key="Tab2Control1.Info1">正在切换语言</sys:String>
+	<sys:String x:Key="Tab2Control1.Info2">正在设置</sys:String>
+	<sys:String x:Key="Tab2Control1.Info3">正在切换语言</sys:String>
+	<sys:String x:Key="Tab2Control1.Info4">配置背景已设置</sys:String>
+	<sys:String x:Key="Tab2Control1.Info5">选择配置文件</sys:String>
 
 	<sys:String x:Key="Tab3Control1.Text1">下载源选择</sys:String>
 	<sys:String x:Key="Tab3Control1.Text2">下载线程数</sys:String>
@@ -151,6 +220,8 @@
 	<sys:String x:Key="Tab3Control1.Text8">代理登录过程</sys:String>
 	<sys:String x:Key="Tab3Control1.Text9">代理下载过程</sys:String>
 	<sys:String x:Key="Tab3Control1.Text10">代理游戏过程</sys:String>
+	<sys:String x:Key="Tab3Control1.Error1">输入信息有误</sys:String>
+	<sys:String x:Key="Tab3Control1.Info1">设置完成</sys:String>
 
 	<sys:String x:Key="Tab4Control1.Text1">Jvm参数设置</sys:String>
 	<sys:String x:Key="Tab4Control1.Text2">垃圾回收器设置</sys:String>
@@ -164,6 +235,7 @@
 	<sys:String x:Key="Tab4Control1.Text10">水平大小</sys:String>
 	<sys:String x:Key="Tab4Control1.Text11">垂直大小</sys:String>
 	<sys:String x:Key="Tab4Control1.Text12">全屏化</sys:String>
+	<sys:String x:Key="Tab4Control1.Info1">设置完成</sys:String>
 
 	<sys:String x:Key="Tab5Control1.Text1">添加Java路径</sys:String>
 	<sys:String x:Key="Tab5Control1.Text2">Java名字</sys:String>
@@ -175,7 +247,11 @@
 	<sys:String x:Key="Tab5Control1.Data.Title4">版本</sys:String>
 	<sys:String x:Key="Tab5Control1.Data.Title5">类型</sys:String>
 	<sys:String x:Key="Tab5Control1.Data.Title6">发行版</sys:String>
-
+	<sys:String x:Key="Tab5Control1.Error1">请先选择需要删除的Java</sys:String>
+	<sys:String x:Key="Tab5Control1.Error2">请输入必要信息</sys:String>
+	<sys:String x:Key="Tab5Control1.Info1">正在检查Java</sys:String>
+	<sys:String x:Key="Tab5Control1.Info2">选择Java</sys:String>
+	
 	<sys:String x:Key="Button.Set">设置</sys:String>
 	<sys:String x:Key="Button.Select">选择文件</sys:String>
 	<sys:String x:Key="Button.Input">导入</sys:String>

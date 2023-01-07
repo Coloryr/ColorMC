@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Language;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -28,7 +29,7 @@ public partial class Tab2Control : UserControl
     private void Button_Change_Click(object? sender, RoutedEventArgs e)
     {
         var type = (LanguageType)ComboBox2.SelectedIndex;
-        Window.Info1.Show("正在切换语言");
+        Window.Info1.Show(Localizer.Instance["Tab2Control1.Info1"]);
         LanguageHelper.Change(type);
         Window.Info1.Close();
     }
@@ -69,8 +70,8 @@ public partial class Tab2Control : UserControl
     {
         string file = TextBox1.Text;
 
-        Window.Info1.Show("正在设置");
-        var res = await ConfigBinding.SetGuiConfig(new()
+        Window.Info1.Show(Localizer.Instance["Tab2Control1.Info2"]);
+        await ConfigBinding.SetGuiConfig(new()
         {
             BackImage = file,
             BackEffect = (int)Slider1.Value,
@@ -80,14 +81,14 @@ public partial class Tab2Control : UserControl
         });
         Window.Info1.Close();
 
-        Window.Info2.Show("配置背景已设置");
+        Window.Info2.Show(Localizer.Instance["Tab2Control1.Info4"]);
     }
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
         OpenFileDialog openFile = new()
         {
-            Title = "选择配置文件",
+            Title = Localizer.Instance["Tab2Control1.Info5"],
             AllowMultiple = false,
             Filters = new()
             {
