@@ -194,7 +194,7 @@
 	<sys:String x:Key="ItemControl.Button7">导出实例</sys:String>
 	<sys:String x:Key="ItemControl.Button8">启动器设置</sys:String>
 	<sys:String x:Key="ItemControl.Info1">空账户</sys:String>
-	<sys:String x:Key="ItemControl.Info2">空账户</sys:String>
+	<sys:String x:Key="ItemControl.Info2">没有用户</sys:String>
 
 	<sys:String x:Key="Tab2Control1.Text1">语言选择</sys:String>
 	<sys:String x:Key="Tab2Control1.Text2">修改背景图片</sys:String>
