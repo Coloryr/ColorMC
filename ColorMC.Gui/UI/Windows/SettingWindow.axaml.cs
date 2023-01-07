@@ -114,7 +114,7 @@ public partial class SettingWindow : Window, IBaseWindow
     public void Update()
     {
         App.Update(this, Image_Back, Rectangle1);
-    }
+    } 
 
     public void Next()
     {

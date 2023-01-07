@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -16,7 +17,7 @@
                     Margin="5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="下载源选择" />
+                    Content="{i18n:Localize Tab3Control1.Text1}" />
                 <ComboBox
                     Name="ComboBox1"
                     Width="200"
@@ -26,7 +27,7 @@
                     Margin="5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="下载线程数" />
+                    Content="{i18n:Localize Tab3Control1.Text2}" />
                 <NumericUpDown
                     Name="Input1"
                     Width="150"
@@ -39,48 +40,48 @@
             </StackPanel>
 
             <StackPanel>
-                <Label Margin="5" Content="端口代理设置" />
+                <Label Margin="5" Content="{i18n:Localize Tab3Control1.Text3}" />
                 <StackPanel Orientation="Horizontal">
                     <TextBox
                         Name="TextBox1"
                         Width="200"
                         Margin="5"
                         Classes="input1"
-                        Watermark="代理IP地址" />
+                        Watermark="{i18n:Localize Tab3Control1.Text4}" />
                     <TextBox
                         Name="TextBox2"
                         Width="80"
                         Margin="5"
                         Classes="input1"
                         MaxLength="5"
-                        Watermark="代理端口" />
+                        Watermark="{i18n:Localize Tab3Control1.Text5}" />
                     <TextBox
                         Name="TextBox3"
                         Width="200"
                         Margin="5"
                         Classes="input1"
-                        Watermark="代理用户名" />
+                        Watermark="{i18n:Localize Tab3Control1.Text6}" />
                     <TextBox
                         Name="TextBox4"
                         Width="200"
                         Margin="5"
                         Classes="input1"
                         PasswordChar="*"
-                        Watermark="代理密码" />
+                        Watermark="{i18n:Localize Tab3Control1.Text7}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <CheckBox
                         Name="CheckBox1"
                         Margin="5"
-                        Content="代理登录过程" />
+                        Content="{i18n:Localize Tab3Control1.Text8}" />
                     <CheckBox
                         Name="CheckBox2"
                         Margin="5"
-                        Content="代理下载过程" />
+                        Content="{i18n:Localize Tab3Control1.Text9}" />
                     <CheckBox
                         Name="CheckBox3"
                         Margin="5"
-                        Content="代理游戏过程" />
+                        Content="{i18n:Localize Tab3Control1.Text10}" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>
@@ -92,6 +93,6 @@
             Margin="10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="设置" />
+            Content="{i18n:Localize Button.Set}" />
     </Grid>
 </UserControl>

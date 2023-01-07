@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -16,9 +17,20 @@ public partial class Tab2Control : UserControl
         Button_Delete.Click += Button_Delete_Click;
         Button_SelectFile.Click += Button_SelectFile_Click;
         Button_Set.Click += Button_Set_Click;
+        Button_Change.Click += Button_Change_Click;
 
         CheckBox1.Click += CheckBox1_Click;
+
         ComboBox1.Items = OtherBinding.GetWindowTranTypes();
+        ComboBox2.Items = OtherBinding.GetLanguages();
+    }
+
+    private void Button_Change_Click(object? sender, RoutedEventArgs e)
+    {
+        var type = (LanguageType)ComboBox2.SelectedIndex;
+        Window.Info1.Show("ÕýÔÚÇÐ»»ÓïÑÔ");
+        LanguageHelper.Change(type);
+        Window.Info1.Close();
     }
 
     private void CheckBox1_Click(object? sender, RoutedEventArgs e)
@@ -41,6 +53,7 @@ public partial class Tab2Control : UserControl
             Slider2.Value = config.Item2.BackTran;
             CheckBox1.IsChecked = config.Item2.WindowTran;
             ComboBox1.SelectedIndex = config.Item2.WindowTranType;
+            ComboBox2.SelectedIndex = (int)config.Item1.Language;
             if (config.Item2.WindowTran)
             {
                 ComboBox1.IsEnabled = true;
