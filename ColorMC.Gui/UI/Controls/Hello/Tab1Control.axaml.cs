@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Gui.Language;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -30,25 +31,26 @@ public partial class Tab1Control : UserControl
         string local = TextBox_Local2.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show("输入文件为空");
+            Window.Info.Show(Localizer.Instance["Tab1Control.Error1"]);
             return;
         }
-        Window.Info1.Show("正在加载配置");
+        Window.Info1.Show(Localizer.Instance["Tab1Control.Info1"]);
 
         try
         {
             var res = ConfigBinding.LoadGuiConfig(local);
             if (!res)
             {
-                Window.Info.Show("配置文件读取错误");
+                Window.Info.Show(Localizer.Instance["Tab1Control.Error2"]);
                 return;
             }
             Window.Update();
-            Window.Info2.Show("配置文件已加载");
+            Window.Info2.Show(Localizer.Instance["Tab1Control.Info2"]);
         }
-        catch (Exception)
+        catch (Exception e1)
         {
-            Window.Info.Show("配置文件读取失败");
+            Window.Info.Show(Localizer.Instance["Tab1Control.Error3"]);
+            App.ShowError(Localizer.Instance["Tab1Control.Error3"], e1);
         }
         finally
         {
@@ -60,7 +62,7 @@ public partial class Tab1Control : UserControl
     {
         OpenFileDialog openFile = new()
         {
-            Title = "选择配置文件",
+            Title = Localizer.Instance["Tab1Control.Info3"],
             AllowMultiple = false,
             Filters = new()
             {
@@ -104,25 +106,26 @@ public partial class Tab1Control : UserControl
         string local = TextBox_Local.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show("输入文件为空");
+            Window.Info.Show(Localizer.Instance["Tab1Control.Error1"]);
             return;
         }
-        Window.Info1.Show("正在加载配置");
+        Window.Info1.Show(Localizer.Instance["Tab1Control.Info1"]);
 
         try
         {
             var res = ConfigBinding.LoadConfig(local);
             if (!res)
             {
-                Window.Info.Show("配置文件读取错误");
+                Window.Info.Show(Localizer.Instance["Tab1Control.Error2"]);
                 return;
             }
             Window.Update();
-            Window.Info2.Show("配置文件已加载");
+            Window.Info2.Show(Localizer.Instance["Tab1Control.Info2"]);
         }
-        catch (Exception)
+        catch (Exception e1)
         {
-            Window.Info.Show("配置文件读取失败");
+            Window.Info.Show(Localizer.Instance["Tab1Control.Error3"]);
+            App.ShowError(Localizer.Instance["Tab1Control.Error3"], e1);
         }
         finally
         {
@@ -134,7 +137,7 @@ public partial class Tab1Control : UserControl
     {
         OpenFileDialog openFile = new()
         {
-            Title = "选择配置文件",
+            Title = Localizer.Instance["Tab1Control.Info3"],
             AllowMultiple = false,
             Filters = new()
             {
@@ -161,25 +164,25 @@ public partial class Tab1Control : UserControl
         string local = TextBox_Local1.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show("输入文件为空");
+            Window.Info.Show(Localizer.Instance["Tab1Control.Error1"]);
             return;
         }
-        Window.Info1.Show("正在加载账户数据库");
+        Window.Info1.Show(Localizer.Instance["Tab1Control.Info4"]);
 
         try
         {
             var res = ConfigBinding.LoadAuthDatabase(local);
             if (!res)
             {
-                Window.Info.Show("账户数据库读取错误");
+                Window.Info.Show(Localizer.Instance["Tab1Control.Error4"]);
                 return;
             }
             Window.Update();
-            Window.Info2.Show("账户数据库已加载");
+            Window.Info2.Show(Localizer.Instance["Tab1Control.Info5"]);
         }
         catch (Exception)
         {
-            Window.Info.Show("账户数据库读取失败");
+            Window.Info.Show(Localizer.Instance["Tab1Control.Error5"]);
         }
         finally
         {
@@ -191,7 +194,7 @@ public partial class Tab1Control : UserControl
     {
         OpenFileDialog openFile = new()
         {
-            Title = "选择账户数据库",
+            Title = Localizer.Instance["Tab1Control.Info6"],
             AllowMultiple = false,
             Filters = new()
             {

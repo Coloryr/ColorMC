@@ -129,6 +129,10 @@ public partial class UserWindow : Window
                 await Info3.Show(Localizer.Instance["UserWindow.Text1"],
                     Localizer.Instance["UserWindow.Text2"], false);
                 Info3.Close();
+                if (Info3.Cancel)
+                {
+                    break;
+                }
                 var user = Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
@@ -156,6 +160,10 @@ public partial class UserWindow : Window
                 await Info3.Show(Localizer.Instance["UserWindow.Text1"],
                     Localizer.Instance["UserWindow.Text2"], false);
                 Info3.Close();
+                if (Info3.Cancel)
+                {
+                    break;
+                }
                 user = Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
@@ -177,6 +185,10 @@ public partial class UserWindow : Window
                 await Info3.Show(Localizer.Instance["UserWindow.Text1"],
                     Localizer.Instance["UserWindow.Text2"], false);
                 Info3.Close();
+                if (Info3.Cancel)
+                {
+                    break;
+                }
                 user = Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
@@ -203,6 +215,10 @@ public partial class UserWindow : Window
                 await Info3.Show(Localizer.Instance["UserWindow.Text1"],
                     Localizer.Instance["UserWindow.Text2"], false);
                 Info3.Close();
+                if (Info3.Cancel)
+                {
+                    break;
+                }
                 user = Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {

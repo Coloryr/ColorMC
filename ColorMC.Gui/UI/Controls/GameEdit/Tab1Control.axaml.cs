@@ -1,0 +1,234 @@
+using Avalonia.Controls;
+using ColorMC.Gui.UI.Windows;
+using Avalonia.Interactivity;
+using System.Collections.ObjectModel;
+using ColorMC.Gui.UIBinding;
+using ColorMC.Core.Objs;
+using DynamicData;
+using ColorMC.Core.Net.Apis;
+using ColorMC.Gui.Language;
+using ColorMC.Core.Net;
+
+namespace ColorMC.Gui.UI.Controls.GameEdit;
+
+public partial class Tab1Control : UserControl
+{
+    private readonly ObservableCollection<string> List = new();
+    private readonly ObservableCollection<string> List1 = new();
+    private GameEditWindow Window;
+    private GameSettingObj Obj;
+    public Tab1Control()
+    {
+        InitializeComponent();
+
+        Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
+        Button3.Click += Button3_Click;
+
+        CheckBox_Forge.Click += Forge_Click;
+        CheckBox_Fabric.Click += Fabric_Click;
+        CheckBox_Quilt.Click += Quilt_Click;
+        CheckBox_Release.Click += Other_Click;
+        CheckBox_Snapshot.Click += Other_Click;
+        CheckBox_Other.Click += Other_Click;
+
+        ComboBox1.Items = List;
+        ComboBox_LoaderVersion.Items = List1;
+    }
+
+    private void Other_Click(object? sender, RoutedEventArgs e)
+    {
+        Load1();
+    }
+
+    private async void Button3_Click(object? sender, RoutedEventArgs e)
+    {
+        ComboBox_LoaderVersion.IsEnabled = false;
+
+        if (CheckBox_Forge.IsChecked == true)
+        {
+            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info6"]);
+            CheckBox_Fabric.IsEnabled = false;
+            CheckBox_Quilt.IsEnabled = false;
+
+            var list = await ForgeHelper.GetVersionList(Obj.Version, BaseClient.Source);
+            Window.Info1.Close();
+            if (list == null)
+            {
+                return;
+            }
+
+            ComboBox_LoaderVersion.IsEnabled = true;
+            List1.Clear();
+            List1.AddRange(list);
+        }
+        else if (CheckBox_Fabric.IsChecked == true)
+        {
+            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info5"]);
+            CheckBox_Forge.IsEnabled = false;
+            CheckBox_Quilt.IsEnabled = false;
+
+            var list = await FabricHelper.GetLoaders(Obj.Version, BaseClient.Source);
+            Window.Info1.Close();
+            if (list == null)
+            {
+                return;
+            }
+
+            ComboBox_LoaderVersion.IsEnabled = true;
+            List1.Clear();
+            List1.AddRange(list);
+        }
+        else if (CheckBox_Quilt.IsChecked == true) 
+        {
+            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info4"]);
+            CheckBox_Forge.IsEnabled = false;
+            CheckBox_Fabric.IsEnabled = false;
+
+            var list = await QuiltHelper.GetLoaders(Obj.Version, BaseClient.Source);
+            Window.Info1.Close();
+            if (list == null)
+            {
+                return;
+            }
+
+            ComboBox_LoaderVersion.IsEnabled = true;
+            List1.Clear();
+            List1.AddRange(list);
+        }
+    }
+
+    private void Quilt_Click(object? sender, RoutedEventArgs e)
+    {
+        if (CheckBox_Quilt.IsChecked == true)
+        {
+            CheckBox_Forge.IsEnabled = false;
+            CheckBox_Fabric.IsEnabled = false;
+            Button3_Click(sender, e);
+        }
+        else
+        {
+            ComboBox_LoaderVersion.IsEnabled = false;
+            CheckBox_Forge.IsEnabled = true;
+            CheckBox_Fabric.IsEnabled = true;
+            List1.Clear();
+        }
+    }
+    private void Fabric_Click(object? sender, RoutedEventArgs e)
+    {
+        if (CheckBox_Fabric.IsChecked == true)
+        {
+            CheckBox_Forge.IsEnabled = false;
+            CheckBox_Quilt.IsEnabled = false;
+            Button3_Click(sender, e);
+        }
+        else
+        {
+            ComboBox_LoaderVersion.IsEnabled = false;
+            CheckBox_Forge.IsEnabled = true;
+            CheckBox_Quilt.IsEnabled = true;
+            List1.Clear();
+        }
+    }
+
+    private void Forge_Click(object? sender, RoutedEventArgs e)
+    {
+        if (CheckBox_Forge.IsChecked == true)
+        {
+            CheckBox_Fabric.IsEnabled = false;
+            CheckBox_Quilt.IsEnabled = false;
+            Button3_Click(sender, e);
+        }
+        else
+        {
+            ComboBox_LoaderVersion.IsEnabled = false;
+            CheckBox_Fabric.IsEnabled = true;
+            CheckBox_Quilt.IsEnabled = true;
+            List1.Clear();
+        }
+    }
+
+
+    private async void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        Window.Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
+        var list = await ForgeHelper.GetSupportVersion();
+        if (list != null && list.Contains(Obj.Version))
+        {
+            CheckBox_Forge.IsEnabled = true;
+        }
+
+        list = await FabricHelper.GetSupportVersion();
+        if (list != null && list.Contains(Obj.Version))
+        {
+            CheckBox_Fabric.IsEnabled = true;
+        }
+
+        list = await QuiltHelper.GetSupportVersion();
+        if (list != null && list.Contains(Obj.Version))
+        {
+            CheckBox_Quilt.IsEnabled = true;
+        }
+        Window.Info1.Close();
+    }
+
+    private async void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        Window.Info1.Show("正在读取游戏版本");
+        var res= await GameBinding.ReloadVersion();
+        Window.Info1.Close();
+        if (!res)
+        {
+            Window.Info.Show("版本读取失败");
+            return;
+        }
+
+        Update();
+    }
+
+    private void Load1() 
+    {
+        List.Clear();
+        List.AddRange(GameBinding.GetGameVersion(CheckBox_Release.IsChecked,
+            CheckBox_Snapshot.IsChecked, CheckBox_Other.IsChecked));
+
+        ComboBox1.SelectedItem = Obj.Version;
+    }
+
+    public void SetWindow(GameEditWindow window)
+    {
+        Window = window;
+    }
+
+    public void SetGame(GameSettingObj obj) 
+    {
+        Obj = obj;
+    }
+
+    public void Update() 
+    {
+        Load1();
+        if (Obj.Loader != Loaders.Normal)
+        {
+            switch (Obj.Loader)
+            {
+                case Loaders.Forge:
+                    CheckBox_Forge.IsEnabled = true;
+                    CheckBox_Forge.IsChecked = true;
+                    break;
+                case Loaders.Fabric:
+                    CheckBox_Fabric.IsEnabled = true;
+                    CheckBox_Fabric.IsChecked = true;
+                    break;
+                case Loaders.Quilt:
+                    CheckBox_Quilt.IsEnabled = true;
+                    CheckBox_Quilt.IsChecked = true;
+                    break;
+            }
+
+            List1.Clear();
+            List1.Add(Obj.LoaderVersion);
+            ComboBox1.SelectedItem = Obj.LoaderVersion;
+        }
+    }
+}

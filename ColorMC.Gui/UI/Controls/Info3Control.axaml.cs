@@ -13,15 +13,25 @@ public partial class Info3Control : UserControl
 
     private readonly Semaphore semaphore = new(0, 2);
 
+    public bool Cancel { get; private set; }
+
     public Info3Control()
     {
         InitializeComponent();
 
-        Button_Add.Click += Button_Add_Click;
+        Button_Confirm.Click += Button_Add_Click;
+        Button_Cancel.Click += Button_Cancel_Click;
+    }
+
+    private void Button_Cancel_Click(object? sender, RoutedEventArgs e)
+    {
+        Cancel = true;
+        semaphore.Release();
     }
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
+        Cancel = false;
         semaphore.Release();
     }
 
@@ -43,8 +53,11 @@ public partial class Info3Control : UserControl
 
             ProgressBar_Value.IsVisible = true;
 
-            Button_Add.IsEnabled = false;
-            Button_Add.IsVisible = false;
+            Button_Confirm.IsEnabled = false;
+            Button_Confirm.IsVisible = false;
+
+            Button_Cancel.IsEnabled = false;
+            Button_Cancel.IsVisible = false;
 
             TextBox_Text1.PasswordChar = (char)0;
         }
@@ -55,10 +68,59 @@ public partial class Info3Control : UserControl
             TextBox_Text.Watermark = title;
             TextBox_Text1.Watermark = title1;
 
-            Button_Add.IsEnabled = true;
-            Button_Add.IsVisible = true;
+            Button_Confirm.IsEnabled = true;
+            Button_Confirm.IsVisible = true;
+
+            Button_Cancel.IsEnabled = true;
+            Button_Cancel.IsVisible = true;
 
             TextBox_Text1.PasswordChar = '*';
+        }
+        transition.Start(null, this, cancellationToken: CancellationToken.None);
+
+        if (!lock1)
+        {
+            return Task.Run(() =>
+            {
+                semaphore.WaitOne();
+            });
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task ShowOne(string title, bool lock1 = true)
+    {
+        TextBox_Text1.IsVisible = false;
+        TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = lock1;
+        if (lock1)
+        {
+            TextBox_Text.Text = title;
+            
+            TextBox_Text.Watermark = "";
+
+            ProgressBar_Value.IsVisible = true;
+
+            Button_Confirm.IsEnabled = false;
+            Button_Confirm.IsVisible = false;
+
+            Button_Cancel.IsEnabled = false;
+            Button_Cancel.IsVisible = false;
+
+            TextBox_Text1.PasswordChar = (char)0;
+        }
+        else
+        {
+            TextBox_Text.Text = "";
+            ProgressBar_Value.IsVisible = false;
+
+            TextBox_Text.Watermark = title;
+
+            Button_Confirm.IsEnabled = true;
+            Button_Confirm.IsVisible = true;
+
+            Button_Cancel.IsEnabled = true;
+            Button_Cancel.IsVisible = true;
         }
         transition.Start(null, this, cancellationToken: CancellationToken.None);
 

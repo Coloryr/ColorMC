@@ -59,7 +59,7 @@ public static class InstancesPath
     {
         InstallGames.Add(obj.Name, obj);
 
-        if (string.IsNullOrEmpty(obj.GroupName))
+        if (string.IsNullOrWhiteSpace(obj.GroupName))
         {
             GameGroups[" "].Add(obj);
         }
@@ -273,6 +273,53 @@ public static class InstancesPath
         return GameDownload.DownloadQuilt(obj.Version, version);
     }
 
+    public static bool AddGroup(string name) 
+    {
+        if (GameGroups.ContainsKey(name))
+        {
+            return false;
+        }
+
+        GameGroups.Add(name, new());
+
+        return true;
+    }
+
+    public static void MoveGameGroup(this GameSettingObj obj, string? now) 
+    {
+        string group = obj.GroupName;
+        if (string.IsNullOrWhiteSpace(group))
+        {
+            GameGroups[" "].Remove(obj);
+        }
+        else
+        {
+            var list = GameGroups[group];
+            if (list.Contains(obj))
+            {
+                list.Remove(obj);
+            }
+
+            if (list.Count == 0)
+            {
+                GameGroups.Remove(group);
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(now))
+        {
+            GameGroups[" "].Add(obj);
+        }
+        else
+        {
+            AddGroup(now);
+            GameGroups[now].Add(obj);
+        }
+
+        obj.GroupName = now!;
+        obj.Save();
+    }
+
     public static void UninstallLoader(this GameSettingObj obj)
     {
         obj.LoaderVersion = null;
@@ -358,6 +405,11 @@ public static class InstancesPath
                         if (game == null)
                             break;
 
+                        if (InstallGames.ContainsKey(game.Name))
+                        {
+                            break;
+                        }
+
                         foreach (ZipEntry e in zFile)
                         {
                             if (e.IsFile)
@@ -372,6 +424,8 @@ public static class InstancesPath
                                 await stream.CopyToAsync(stream2);
                             }
                         }
+
+                        AddToGroup(game);
 
                         CoreMain.PackState?.Invoke(CoreRunState.End);
                         res1111 = true;

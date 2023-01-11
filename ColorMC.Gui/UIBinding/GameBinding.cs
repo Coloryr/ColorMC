@@ -53,14 +53,15 @@ public static class GameBinding
     }
 
     public static async Task<bool> AddGame(string name, string version,
-        Loaders loaders, string? loaderversion = null)
+        Loaders loaders, string? loaderversion = null, string? group = null)
     {
         var game = new GameSettingObj()
         {
             Name = name,
             Version = version,
             Loader = loaders,
-            LoaderVersion = loaderversion
+            LoaderVersion = loaderversion,
+            GroupName = group
         };
 
         game = await InstancesPath.CreateVersion(game);
@@ -174,7 +175,27 @@ public static class GameBinding
         {
             return (false, "没有选择账户");
         }
+        if (debug)
+        {
+            App.ShowGameEdit(obj, 6);
+        }
 
-        return (await BaseBinding.Launch(obj, login, debug), null);
+        return (await BaseBinding.Launch(obj, login), null);
+    }
+
+    public static bool AddGameGroup(string name)
+    {
+        return InstancesPath.AddGroup(name);
+    }
+
+    public static void MoveGameGroup(GameSettingObj obj, string? now)
+    {
+        obj.MoveGameGroup(now);
+        App.MainWindow?.Load();
+    }
+
+    public static Task<bool> ReloadVersion()
+    {
+        return VersionPath.GetFromWeb();
     }
 }

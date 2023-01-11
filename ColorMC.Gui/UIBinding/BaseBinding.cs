@@ -14,7 +14,7 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class BaseBinding
 {
-    public readonly static Dictionary<GameSettingObj, Process> Games = new();
+    public readonly static Dictionary<Process, GameSettingObj> Games = new();
 
     public static void Init()
     {
@@ -34,16 +34,16 @@ public static class BaseBinding
         DownloadManager.Stop();
     }
 
-    public static async Task<bool> Launch(GameSettingObj obj, LoginObj obj1, bool debug)
+    public static async Task<bool> Launch(GameSettingObj obj, LoginObj obj1)
     {
         var res = await obj.StartGame(obj1, null);
         if (res != null)
         {
             res.Exited += (a, b) =>
             {
-                Games.Remove(obj);
+                Games.Remove(res);
             };
-            Games.Add(obj, res);
+            Games.Add(res, obj);
         }
         return res == null;
     }
@@ -55,7 +55,11 @@ public static class BaseBinding
 
     public static void PLog(Process? p, string? d)
     {
-
+        if (Games.TryGetValue(p, out var obj)
+            && App.GameEditWindows.TryGetValue(obj, out var win))
+        {
+            win.Log(d);
+        }
     }
 
     private static void ShowError(string data, Exception e, bool close)

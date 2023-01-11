@@ -5,6 +5,7 @@ using ColorMC.Gui.UIBinding;
 using DynamicData;
 using ColorMC.Gui.UI.Windows;
 using System.Collections.ObjectModel;
+using ColorMC.Gui.Language;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 
@@ -44,13 +45,13 @@ public partial class Tab2Control : UserControl
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show("请输入必要信息");
+            Window.Info.Show(Localizer.Instance["Tab2Control.Error1"]);
             return;
         }
 
         try
         {
-            Window.Info1.Show("正在检查Java");
+            Window.Info1.Show(Localizer.Instance["Tab2Control.Info1"]);
 
             var res = JavaBinding.AddJava(name, local);
             if (res.Item1 == null)
@@ -75,7 +76,7 @@ public partial class Tab2Control : UserControl
     {
         OpenFileDialog openFile = new()
         {
-            Title = "选择Java",
+            Title = Localizer.Instance["Tab2Control.Info2"],
             AllowMultiple = false,
             Filters = SystemInfo.Os == OsType.Windows ? new()
             {

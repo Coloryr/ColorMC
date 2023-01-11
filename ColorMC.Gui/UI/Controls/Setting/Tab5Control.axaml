@@ -40,8 +40,6 @@
             <Label Margin="5" Content="{i18n:Localize Tab5Control1.Text4}" />
         </StackPanel>
 
-
-
         <DataGrid
             Name="DataGrid1"
             Margin="3,180,3,3"
@@ -49,6 +47,7 @@
             Background="#88ffffff"
             CanUserSortColumns="False">
             <DataGrid.Columns>
+                <DataGridTextColumn Width="30" IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Name}"
                     Header="{i18n:Localize Tab5Control1.Data.Title1}"

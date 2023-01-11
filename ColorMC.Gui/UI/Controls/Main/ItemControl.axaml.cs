@@ -20,6 +20,7 @@ public partial class ItemControl : UserControl
     private MainWindow Window;
     private LoginObj? Obj1;
     private Bitmap bitmap;
+    private GameSettingObj? Obj;
     public ItemControl()
     {
         InitializeComponent();
@@ -85,7 +86,10 @@ public partial class ItemControl : UserControl
 
     private void Button_Edit_Click(object? sender, RoutedEventArgs e)
     {
-
+        if (Obj != null)
+        {
+            App.ShowGameEdit(Obj);
+        }
     }
 
     private void Button_Launch_Click(object? sender, RoutedEventArgs e)
@@ -95,11 +99,15 @@ public partial class ItemControl : UserControl
 
     private void Button_Out_Click(object? sender, RoutedEventArgs e)
     {
-
+        if (Obj != null)
+        {
+            App.ShowGameEdit(Obj, 5);
+        }
     }
 
     public void SetGame(GameSettingObj? obj)
     {
+        Obj = obj;
         if (obj == null)
         {
             Button_Launch.IsEnabled = false;

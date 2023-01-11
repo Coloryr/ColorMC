@@ -19,6 +19,7 @@ namespace ColorMC.Gui.UI.Windows;
 public partial class AddGameWindow : Window
 {
     private ObservableCollection<string> List = new();
+    private ObservableCollection<string> List1 = new();
     private bool add;
 
     public AddGameWindow()
@@ -31,12 +32,15 @@ public partial class AddGameWindow : Window
         ComboBox_GameVersion.Items = List;
         ComboBox_GameVersion.SelectionChanged += GameVersion_SelectionChanged;
 
+        ComboBox_Group.Items = List1;
+
         Button_Add.Click += Button_Add_Click;
         Button_Add1.Click += Button_Add1_Click;
         Button_Add2.Click += Button_Add2_Click;
         Button_Add3.Click += Button_Add3_Click;
         Button_Add4.Click += Button_Add4_Click;
         Button_Add5.Click += Button_Add5_Click;
+        Button_AddGroup.Click += Button_AddGroup_Click;
 
         CheckBox_Forge.Click += Forge_Click;
         CheckBox_Fabric.Click += Fabric_Click;
@@ -52,6 +56,34 @@ public partial class AddGameWindow : Window
         Closed += AddGameWindow_Closed;
 
         Load();
+    }
+
+    private async void Button_AddGroup_Click(object? sender, RoutedEventArgs e)
+    {
+        await Info3.ShowOne("组名", false);
+        Info3.Close();
+        if (Info3.Cancel)
+        {
+            return;
+        }
+
+        var res = Info3.Read().Item1;
+        if (string.IsNullOrWhiteSpace(res))
+        {
+            Info1.Show("请输入名字");
+            return;
+        }
+
+        if (!GameBinding.AddGameGroup(res))
+        {
+            Info1.Show("游戏分组添加失败");
+            return;
+        }
+
+        Info2.Show("添加成功");
+
+        List1.Clear();
+        List1.AddRange(GameBinding.GetGameGroups().Keys);
     }
 
     private void AddGameWindow_Closed(object? sender, EventArgs e)
@@ -72,14 +104,14 @@ public partial class AddGameWindow : Window
         string name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
-            Info.Show(Localizer.Instance["DownloadWindow.Error1"]);
+            Info.Show(Localizer.Instance["AddGameWindow.Error1"]);
             return;
         }
 
         string? version = ComboBox_GameVersion.SelectedItem as string;
         if (string.IsNullOrWhiteSpace(version))
         {
-            Info.Show(Localizer.Instance["DownloadWindow.Error2"]);
+            Info.Show(Localizer.Instance["AddGameWindow.Error2"]);
             return;
         }
 
@@ -102,14 +134,18 @@ public partial class AddGameWindow : Window
         }
 
         add = true;
-        var res = await GameBinding.AddGame(name, version, loader, loaderversion);
+        var res = await GameBinding.AddGame(name, version, loader, 
+            loaderversion, ComboBox_Group.SelectedItem as string);
         if (!res)
         {
-            Info.Show(Localizer.Instance["DownloadWindow.Info1"]);
+            Info.Show(Localizer.Instance["AddGameWindow.Info5"]);
         }
         else
         {
-            Info2.Show(Localizer.Instance["DownloadWindow.Info2"]);
+            TextBox_Input1.Text = "";
+            ComboBox_GameVersion.SelectedItem = null;
+            Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
+            App.MainWindow?.Load();
         }
     }
 
@@ -122,7 +158,7 @@ public partial class AddGameWindow : Window
         string? item = ComboBox_GameVersion.SelectedItem as string;
         if (!string.IsNullOrWhiteSpace(item))
         {
-            Info1.Show(Localizer.Instance["DownloadWindow.Info3"]);
+            Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
             var list = await ForgeHelper.GetSupportVersion();
             if (list != null && list.Contains(item))
             {
@@ -152,7 +188,7 @@ public partial class AddGameWindow : Window
             if (item == null)
                 return;
 
-            Info1.Show(Localizer.Instance["DownloadWindow.Info4"]);
+            Info1.Show(Localizer.Instance["AddGameWindow.Info4"]);
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = false;
 
@@ -183,7 +219,7 @@ public partial class AddGameWindow : Window
             if (item == null)
                 return;
 
-            Info1.Show(Localizer.Instance["DownloadWindow.Info5"]);
+            Info1.Show(Localizer.Instance["AddGameWindow.Info5"]);
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
@@ -214,7 +250,7 @@ public partial class AddGameWindow : Window
             if (item == null)
                 return;
 
-            Info1.Show(Localizer.Instance["DownloadWindow.Info6"]);
+            Info1.Show(Localizer.Instance["AddGameWindow.Info6"]);
             CheckBox_Fabric.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
@@ -430,6 +466,9 @@ public partial class AddGameWindow : Window
         List.Clear();
         List.AddRange(GameBinding.GetGameVersion(CheckBox_Release.IsChecked,
             CheckBox_Snapshot.IsChecked, CheckBox_Other.IsChecked));
+
+        List1.Clear();
+        List1.AddRange(GameBinding.GetGameGroups().Keys);
     }
 
     public void Update()
