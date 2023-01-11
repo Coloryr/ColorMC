@@ -41,12 +41,21 @@
                 Foreground="#FF5EBDD3"
                 IsIndeterminate="True"
                 Value="20" />
-            <Button
-                Name="Button_Add"
-                Width="80"
-                Height="25"
-                HorizontalAlignment="Center"
-                Content="{i18n:Localize Button.Confirm}" />
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button
+                    Name="Button_Confirm"
+                    Width="100"
+                    Height="30"
+                    Margin="0,0,30,0"
+                    HorizontalAlignment="Center"
+                    Content="{i18n:Localize Button.Confirm}" />
+                <Button
+                    Name="Button_Cancel"
+                    Width="100"
+                    Height="30"
+                    HorizontalAlignment="Center"
+                    Content="{i18n:Localize Button.Cancel}" />
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </UserControl>

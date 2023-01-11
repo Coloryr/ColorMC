@@ -13,6 +13,7 @@ using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -33,6 +34,7 @@ public partial class App : Application
     public static AddGameWindow? AddGameWindow;
     public static AddCurseForgeWindow? AddCurseForgeWindow;
     public static SettingWindow? SettingWindow;
+    public static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
 
     public static ResourceDictionary? Language;
 
@@ -213,7 +215,23 @@ public partial class App : Application
         }
     }
 
-    public static void ShowError(string data, Exception e, bool close)
+    public static void ShowGameEdit(GameSettingObj obj, int type = 0) 
+    {
+        if (GameEditWindows.TryGetValue(obj, out var win))
+        {
+            win.Activate();
+        }
+        else
+        {
+            GameEditWindow window = new();
+            window.SetGame(obj);
+            window.SetType(type);
+            window.Show();
+            GameEditWindows.Add(obj, window);
+        }
+    }
+
+    public static void ShowError(string data, Exception e, bool close = false)
     {
         new ErrorWindow().Show(data, e, close);
     }

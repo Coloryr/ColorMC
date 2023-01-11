@@ -21,6 +21,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
+            Name="Head"
             Title="{i18n:Localize GameEditWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
@@ -28,6 +29,7 @@
             Min="False" />
         <Grid Margin="0,35,0,0">
             <Rectangle
+                Name="Rectangle1"
                 Fill="#FFF4F4F5"
                 Stroke="#FF5ABED6"
                 StrokeThickness="3" />
@@ -37,6 +39,29 @@
                 Margin="3"
                 Stretch="UniformToFill" />
 
+            <DockPanel
+                Margin="3"
+                Background="#88FFFFFF"
+                LastChildFill="True">
+
+                <TabControl
+                    Name="Tabs"
+                    VerticalAlignment="Top"
+                    DockPanel.Dock="Top">
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab1}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab2}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab3}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab4}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab5}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab6}" />
+                </TabControl>
+
+                <Grid
+                    Name="Tab1"
+                    Margin="10"
+                    ClipToBounds="True"
+                    DockPanel.Dock="Bottom" />
+            </DockPanel>
 
             <views:Info4Control Name="Info" IsVisible="False" />
             <views:Info1Control Name="Info1" IsVisible="False" />

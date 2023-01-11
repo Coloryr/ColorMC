@@ -70,10 +70,12 @@
                     Height="25"
                     Margin="0,20,0,0"
                     Content="{i18n:Localize ItemControl.Button3}" />
+
                 <Button
                     Name="Button_Launch"
                     Width="100"
                     Height="25"
+                    Margin="0,20,0,0"
                     Content="{i18n:Localize ItemControl.Button4}"
                     IsEnabled="False" />
                 <Button

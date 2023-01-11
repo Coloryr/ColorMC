@@ -31,8 +31,8 @@ public partial class MainWindow : Window
 
         ItemInfo.SetWindow(this);
 
-        Task.Run(Load);
-        Task.Run(Load1);
+        Load();
+        Load1();
 
         CoreMain.GameLaunch = GameLunch;
         CoreMain.GameDownload = GameDownload;
@@ -65,7 +65,7 @@ public partial class MainWindow : Window
 
     private void MainWindow_OnUserEdit()
     {
-        Task.Run(Load1);
+        Dispatcher.UIThread.Post(Load1);
     }
 
     private void MainWindow_Closed(object? sender, EventArgs e)
@@ -144,55 +144,94 @@ public partial class MainWindow : Window
 
     private void Load1()
     {
-        Dispatcher.UIThread.Post(() => { ItemInfo.SetUser(UserBinding.GetLastUser()); });
+        ItemInfo.SetUser(UserBinding.GetLastUser());
     }
 
-    private async void Load()
+    public void Load()
     {
-        var list = GameBinding.GetGameGroups();
+        Task.Run(async () =>
+        {
+            var list = GameBinding.GetGameGroups();
 
-        Groups.Clear();
-        await Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            DefaultGroup = new();
-        });
-        DefaultGroup.SetWindow(this);
-        foreach (var item in list)
-        {
-            if (item.Key == " ")
+            Groups.Clear();
+            await Dispatcher.UIThread.InvokeAsync(() =>
             {
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    DefaultGroup.SetItems(item.Value);
-                    DefaultGroup.SetName(Localizer.Instance["MainWindow.DefaultGroup"]);
-                });
-            }
-            else
+                DefaultGroup = new();
+            });
+            DefaultGroup.SetWindow(this);
+            foreach (var item in list)
             {
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                if (item.Key == " ")
                 {
-                    var group = new GamesControl();
-                    group.SetItems(item.Value);
-                    group.SetName(item.Key);
-                    group.SetWindow(this);
-                    Groups.Add(group);
-                });
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        DefaultGroup.SetItems(item.Value);
+                        DefaultGroup.SetName(Localizer.Instance["MainWindow.DefaultGroup"]);
+                    });
+                }
+                else
+                {
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        var group = new GamesControl();
+                        group.SetItems(item.Value);
+                        group.SetName(item.Key);
+                        group.SetWindow(this);
+                        Groups.Add(group);
+                    });
+                }
             }
-        }
 
-        Dispatcher.UIThread.Post(() =>
-        {
-            GameGroups.Children.Clear();
-            foreach (var item in Groups)
+            Dispatcher.UIThread.Post(() =>
             {
-                GameGroups.Children.Add(item);
-            }
-            GameGroups.Children.Add(DefaultGroup);
+                GameGroups.Children.Clear();
+                foreach (var item in Groups)
+                {
+                    GameGroups.Children.Add(item);
+                }
+                GameGroups.Children.Add(DefaultGroup);
+            });
         });
     }
 
     public void Update()
     {
         App.Update(this, Image_Back, Rectangle1);
+    }
+
+    public async void EditGroup(GameSettingObj obj) 
+    {
+        await Group.Set(obj);
+        Group.Close();
+        if (Group.Cancel)
+        {
+            return;
+        }
+
+        var res = Group.Read();
+        GameBinding.MoveGameGroup(obj, res);
+    }
+
+    public async Task AddGroup() 
+    {
+        await Info3.ShowOne("组名", false);
+        Info3.Close();
+        if (Info3.Cancel)
+        {
+            return;
+        }
+
+        var res = Info3.Read().Item1;
+        if (string.IsNullOrWhiteSpace(res))
+        {
+            Info1.Show("请输入名字");
+            return;
+        }
+
+        if (!GameBinding.AddGameGroup(res))
+        {
+            Info1.Show("游戏分组添加失败");
+            return;
+        }
     }
 }

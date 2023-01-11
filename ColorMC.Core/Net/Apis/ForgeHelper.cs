@@ -46,6 +46,13 @@ public static class ForgeHelper
                     list.Add(item1.InnerText.Trim());
                 }
 
+                var nodes2 = item.SelectNodes("ul/li")
+                    .Where(a => a.HasClass("elem-active"));
+
+                foreach (var item1 in nodes2)
+                {
+                    list.Add(item1.InnerText.Trim());
+                }
             }
 
             return list;

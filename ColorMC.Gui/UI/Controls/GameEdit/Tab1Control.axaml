@@ -1,0 +1,91 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Tab1Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
+
+        <StackPanel Margin="5,10,5,5">
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Margin="5"
+                    HorizontalAlignment="Center"
+                    Content="游戏版本" />
+                <ComboBox
+                    Name="ComboBox1"
+                    Width="200"
+                    HorizontalAlignment="Center" />
+                <CheckBox
+                    Name="CheckBox_Release"
+                    Margin="20,0,0,0"
+                    Content="{i18n:Localize AddGameWindow.CheckBox1}"
+                    IsChecked="True" />
+                <CheckBox
+                    Name="CheckBox_Snapshot"
+                    Margin="20,0,0,0"
+                    Content="{i18n:Localize AddGameWindow.CheckBox2}" />
+                <CheckBox
+                    Name="CheckBox_Other"
+                    Margin="20,0,0,0"
+                    Content="{i18n:Localize AddGameWindow.CheckBox3}" />
+                <Button
+                    Name="Button1"
+                    Width="80"
+                    Height="25"
+                    Margin="20,0,0,0"
+                    Content="刷新版本" />
+            </StackPanel>
+
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <Label VerticalAlignment="Center" Content="{i18n:Localize AddGameWindow.Text4}" />
+                <ComboBox
+                    Name="ComboBox_LoaderVersion"
+                    Width="200"
+                    Margin="5,0,0,0"
+                    IsEnabled="False" />
+                <CheckBox
+                    Name="CheckBox_Forge"
+                    Margin="20,0,0,0"
+                    Content="Forge"
+                    IsEnabled="False" />
+                <CheckBox
+                    Name="CheckBox_Fabric"
+                    Margin="20,0,0,0"
+                    Content="Fabric"
+                    IsEnabled="False" />
+                <CheckBox
+                    Name="CheckBox_Quilt"
+                    Margin="20,0,0,0"
+                    Content="Quilt"
+                    IsEnabled="False" />
+                <Button
+                    Name="Button2"
+                    Width="100"
+                    Height="25"
+                    Margin="20,0,0,0"
+                    Content="刷新加载器" />
+                <Button
+                    Name="Button3"
+                    Width="80"
+                    Height="25"
+                    Margin="20,0,0,0"
+                    Content="刷新版本" />
+            </StackPanel>
+
+        </StackPanel>
+        <Button
+            Name="Button_Set"
+            Width="80"
+            Height="25"
+            Margin="10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Content="{i18n:Localize Button.Set}" />
+    </Grid>
+</UserControl>
