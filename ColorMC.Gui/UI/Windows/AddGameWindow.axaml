@@ -104,7 +104,7 @@
                         Height="25"
                         Margin="10,0,0,0"
                         VerticalAlignment="Center"
-                        Content="{i18n:Localize Button.Add}" />
+                        Content="{i18n:Localize AddGameWindow.Button6}" />
                 </StackPanel>
 
                 <Grid Margin="0,5,0,0">

@@ -2,13 +2,17 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Language;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UIBinding;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 
@@ -34,6 +38,7 @@ public partial class UserWindow : Window
 
         DataGrid_User.Items = List;
         DataGrid_User.DoubleTapped += DataGrid_User_DoubleTapped;
+        DataGrid_User.CellPointerPressed += DataGrid_User_PointerPressed;
 
         Button_A1.PointerLeave += Button_A1_PointerLeave;
         Button_A.PointerEnter += Button_A_PointerEnter;
@@ -64,6 +69,22 @@ public partial class UserWindow : Window
         Update();
 
         Load();
+    }
+
+    private void DataGrid_User_PointerPressed(object? sender,
+        DataGridCellPointerPressedEventArgs e)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var user = DataGrid_User.SelectedItem as UserDisplayObj;
+            if (user == null)
+                return;
+
+            if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+            {
+                new UserFlyout(user).ShowAt(this, true);
+            }
+        });
     }
 
     public void Update()
@@ -126,21 +147,15 @@ public partial class UserWindow : Window
                     Info.Show(Localizer.Instance["UserWindow.Error3"]);
                     break;
                 }
-                await Info3.Show(Localizer.Instance["UserWindow.Text1"],
-                    Localizer.Instance["UserWindow.Text2"], false);
-                Info3.Close();
-                if (Info3.Cancel)
-                {
-                    break;
-                }
-                var user = Info3.Read();
-                if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
+                if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) || 
+                    string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
                     Info.Show(Localizer.Instance["UserWindow.Error2"]);
                     break;
                 }
                 Info1.Show(Localizer.Instance["UserWindow.Info2"]);
-                res = await UserBinding.AddUser(2, server, user.Item1, user.Item2);
+                res = await UserBinding.AddUser(2, server, 
+                    TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
                 if (!res.Item1)
                 {
@@ -157,21 +172,15 @@ public partial class UserWindow : Window
                     Info.Show(Localizer.Instance["UserWindow.Error4"]);
                     break;
                 }
-                await Info3.Show(Localizer.Instance["UserWindow.Text1"],
-                    Localizer.Instance["UserWindow.Text2"], false);
-                Info3.Close();
-                if (Info3.Cancel)
-                {
-                    break;
-                }
-                user = Info3.Read();
-                if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
+                if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
+                   string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
                     Info.Show(Localizer.Instance["UserWindow.Error2"]);
                     break;
                 }
                 Info1.Show(Localizer.Instance["UserWindow.Info2"]);
-                res = await UserBinding.AddUser(3, server, user.Item1, user.Item2);
+                res = await UserBinding.AddUser(3, server, 
+                    TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
                 if (!res.Item1)
                 {
@@ -182,21 +191,15 @@ public partial class UserWindow : Window
                 TextBox_Input1.Text = "";
                 break;
             case 4:
-                await Info3.Show(Localizer.Instance["UserWindow.Text1"],
-                    Localizer.Instance["UserWindow.Text2"], false);
-                Info3.Close();
-                if (Info3.Cancel)
-                {
-                    break;
-                }
-                user = Info3.Read();
-                if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
+                if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
+                   string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
                     Info.Show(Localizer.Instance["UserWindow.Error2"]);
                     break;
                 }
                 Info1.Show(Localizer.Instance["UserWindow.Info2"]);
-                res = await UserBinding.AddUser(4, user.Item1, user.Item2);
+                res = await UserBinding.AddUser(4, 
+                    TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
                 if (!res.Item1)
                 {
@@ -212,21 +215,15 @@ public partial class UserWindow : Window
                     Info.Show(Localizer.Instance["UserWindow.Error4"]);
                     break;
                 }
-                await Info3.Show(Localizer.Instance["UserWindow.Text1"],
-                    Localizer.Instance["UserWindow.Text2"], false);
-                Info3.Close();
-                if (Info3.Cancel)
-                {
-                    break;
-                }
-                user = Info3.Read();
-                if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
+                if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
+                   string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
                     Info.Show(Localizer.Instance["UserWindow.Error2"]);
                     break;
                 }
                 Info1.Show(Localizer.Instance["UserWindow.Info2"]);
-                res = await UserBinding.AddUser(5, server, user.Item1, user.Item2);
+                res = await UserBinding.AddUser(5, server, 
+                    TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
                 if (!res.Item1)
                 {
@@ -391,7 +388,7 @@ public partial class UserWindow : Window
         CrossFade.Start(null, Grid_Add, CancellationToken.None);
     }
 
-    private void Load()
+    public void Load()
     {
         var item1 = UserBinding.GetLastUser();
         List.Clear();

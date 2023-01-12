@@ -102,7 +102,7 @@ public partial class GamesControl : UserControl
         {
             if (Last?.Obj != null)
             {
-                new MyFlyout(Last?.Obj!).ShowAt(this, true);
+                new MainFlyout(Last?.Obj!).ShowAt(this, true);
             }
         }
     }

@@ -15,6 +15,7 @@ public partial class Tab1Control : UserControl
 {
     private readonly ObservableCollection<string> List = new();
     private readonly ObservableCollection<string> List1 = new();
+    private readonly ObservableCollection<string> List2 = new();
     private GameEditWindow Window;
     private GameSettingObj Obj;
     public Tab1Control()
@@ -24,6 +25,7 @@ public partial class Tab1Control : UserControl
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
+        Button4.Click += Button4_Click;
 
         CheckBox_Forge.Click += Forge_Click;
         CheckBox_Fabric.Click += Fabric_Click;
@@ -32,8 +34,60 @@ public partial class Tab1Control : UserControl
         CheckBox_Snapshot.Click += Other_Click;
         CheckBox_Other.Click += Other_Click;
 
+        Button_Set.Click += Button_Set_Click;
+
         ComboBox1.Items = List;
-        ComboBox_LoaderVersion.Items = List1;
+        ComboBox2.Items = List1;
+        ComboBox3.Items = List2;
+    }
+
+    private void Button_Set_Click(object? sender, RoutedEventArgs e)
+    {
+        GameBinding.MoveGameGroup(Obj, ComboBox2.SelectedItem as string);
+
+        Loaders loaders = Loaders.Normal;
+        if (CheckBox_Forge.IsChecked == true)
+        {
+            loaders = Loaders.Forge;
+        }
+        else if (CheckBox_Fabric.IsChecked == true)
+        {
+            loaders = Loaders.Fabric;
+        }
+        else if (CheckBox_Quilt.IsChecked == true) 
+        {
+            loaders = Loaders.Quilt;
+        }
+
+        GameBinding.SaveGame(Obj, ComboBox1.SelectedItem as string,
+            loaders, ComboBox2.SelectedItem as string);
+    }
+
+    private async void Button4_Click(object? sender, RoutedEventArgs e)
+    {
+        await Window.Info3.ShowOne(Localizer.Instance["AddGameWindow.Info15"], false);
+        Window.Info3.Close();
+        if (Window.Info3.Cancel)
+        {
+            return;
+        }
+
+        var res = Window.Info3.Read().Item1;
+        if (string.IsNullOrWhiteSpace(res))
+        {
+            Window.Info1.Show(Localizer.Instance["AddGameWindow.Error6"]);
+            return;
+        }
+
+        if (!GameBinding.AddGameGroup(res))
+        {
+            Window.Info1.Show(Localizer.Instance["AddGameWindow.Error7"]);
+            return;
+        }
+
+        Window.Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
+
+        Load2();
     }
 
     private void Other_Click(object? sender, RoutedEventArgs e)
@@ -43,7 +97,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        ComboBox_LoaderVersion.IsEnabled = false;
+        ComboBox2.IsEnabled = false;
 
         if (CheckBox_Forge.IsChecked == true)
         {
@@ -58,7 +112,7 @@ public partial class Tab1Control : UserControl
                 return;
             }
 
-            ComboBox_LoaderVersion.IsEnabled = true;
+            ComboBox2.IsEnabled = true;
             List1.Clear();
             List1.AddRange(list);
         }
@@ -75,7 +129,7 @@ public partial class Tab1Control : UserControl
                 return;
             }
 
-            ComboBox_LoaderVersion.IsEnabled = true;
+            ComboBox2.IsEnabled = true;
             List1.Clear();
             List1.AddRange(list);
         }
@@ -92,7 +146,7 @@ public partial class Tab1Control : UserControl
                 return;
             }
 
-            ComboBox_LoaderVersion.IsEnabled = true;
+            ComboBox2.IsEnabled = true;
             List1.Clear();
             List1.AddRange(list);
         }
@@ -108,7 +162,7 @@ public partial class Tab1Control : UserControl
         }
         else
         {
-            ComboBox_LoaderVersion.IsEnabled = false;
+            ComboBox2.IsEnabled = false;
             CheckBox_Forge.IsEnabled = true;
             CheckBox_Fabric.IsEnabled = true;
             List1.Clear();
@@ -124,7 +178,7 @@ public partial class Tab1Control : UserControl
         }
         else
         {
-            ComboBox_LoaderVersion.IsEnabled = false;
+            ComboBox2.IsEnabled = false;
             CheckBox_Forge.IsEnabled = true;
             CheckBox_Quilt.IsEnabled = true;
             List1.Clear();
@@ -141,7 +195,7 @@ public partial class Tab1Control : UserControl
         }
         else
         {
-            ComboBox_LoaderVersion.IsEnabled = false;
+            ComboBox2.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = true;
             CheckBox_Quilt.IsEnabled = true;
             List1.Clear();
@@ -195,6 +249,17 @@ public partial class Tab1Control : UserControl
         ComboBox1.SelectedItem = Obj.Version;
     }
 
+    private void Load2()
+    {
+        List2.Clear();
+        List2.AddRange(GameBinding.GetGameGroups().Keys);
+
+        if (!string.IsNullOrWhiteSpace(Obj.GroupName))
+        {
+            ComboBox2.SelectedItem = Obj.GroupName;
+        }
+    }
+
     public void SetWindow(GameEditWindow window)
     {
         Window = window;
@@ -207,7 +272,11 @@ public partial class Tab1Control : UserControl
 
     public void Update() 
     {
+        if (Obj == null)
+            return;
+
         Load1();
+        Load2();
         if (Obj.Loader != Loaders.Normal)
         {
             switch (Obj.Loader)
@@ -228,7 +297,7 @@ public partial class Tab1Control : UserControl
 
             List1.Clear();
             List1.Add(Obj.LoaderVersion);
-            ComboBox1.SelectedItem = Obj.LoaderVersion;
+            ComboBox2.SelectedItem = Obj.LoaderVersion;
         }
     }
 }

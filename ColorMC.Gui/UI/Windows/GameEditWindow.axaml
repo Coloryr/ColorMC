@@ -54,6 +54,7 @@
                     <TabItem Header="{i18n:Localize GameEditWindow.Tab4}" />
                     <TabItem Header="{i18n:Localize GameEditWindow.Tab5}" />
                     <TabItem Header="{i18n:Localize GameEditWindow.Tab6}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab7}" />
                 </TabControl>
 
                 <Grid

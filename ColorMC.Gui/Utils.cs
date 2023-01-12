@@ -5,15 +5,18 @@ using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
@@ -91,7 +94,7 @@ public static class XLib
             int format, PropertyMode mode, ref MotifWmHints data, int nelements);
 }
 
-public static class UIUtils
+public static partial class UIUtils
 {
     public static void MakeItNoChrome(this Window window)
     {
@@ -226,6 +229,31 @@ public static class UIUtils
         {
 
         }
+    }
+    private readonly static Regex re = Regex1();
+
+    public static bool CheckNumb(string input)
+    {
+        return re.IsMatch(input);
+    }
+
+    [GeneratedRegex("[^0-9]+")]
+    private static partial Regex Regex1();
+
+    public static string Make(this List<string> strings)
+    {
+        string temp = "";
+        foreach (var item in strings)
+        {
+            temp += item + ",";
+        }
+
+        if (temp.Length > 0)
+        {
+            return temp[..^1];
+        }
+
+        return temp;
     }
 }
 

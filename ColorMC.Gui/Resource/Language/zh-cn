@@ -21,6 +21,11 @@
 	<sys:String x:Key="MainWindow.Check9">正在准备Jvm参数</sys:String>
 	<sys:String x:Key="MainWindow.Error1">账户登录失败</sys:String>
 	<sys:String x:Key="MainWindow.DefaultGroup">默认分组</sys:String>
+	<sys:String x:Key="MainWindow.Flyouts.Button1">启动实例</sys:String>
+	<sys:String x:Key="MainWindow.Flyouts.Button2">查看Mod</sys:String>
+	<sys:String x:Key="MainWindow.Flyouts.Button3">查看配置</sys:String>
+	<sys:String x:Key="MainWindow.Flyouts.Button4">查看地图</sys:String>
+	<sys:String x:Key="MainWindow.Flyouts.Button5">修改分组</sys:String>
 	
 	<sys:String x:Key="InitWindow.Title">ColorMC 加载</sys:String>
 	<sys:String x:Key="InitWindow.Text">ColorMC正在初始化</sys:String>
@@ -71,11 +76,12 @@
 
 	<sys:String x:Key="GameEditWindow.Title">ColorMC 游戏实例{0}设置</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab1">版本设置</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab2">配置文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2">启动参数</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3">Mod列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4">地图列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5">导出</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab6">运行日志</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab7">配置文件</sys:String>
 
 	<sys:String x:Key="ErrorWindow.Title">ColorMC 错误</sys:String>
 
@@ -108,11 +114,14 @@
 	<sys:String x:Key="AddGameWindow.Button3">从MMC压缩包导入</sys:String>
 	<sys:String x:Key="AddGameWindow.Button4">从HMCL压缩包导入</sys:String>
 	<sys:String x:Key="AddGameWindow.Button5">从CurseForge搜索整合包</sys:String>
+	<sys:String x:Key="AddGameWindow.Button6">添加分组</sys:String>
 	<sys:String x:Key="AddGameWindow.Error1">没有实例名字</sys:String>
 	<sys:String x:Key="AddGameWindow.Error2">没有选择版本</sys:String>
 	<sys:String x:Key="AddGameWindow.Error3">导入错误</sys:String>
 	<sys:String x:Key="AddGameWindow.Error4">整合包安装失败</sys:String>
 	<sys:String x:Key="AddGameWindow.Error5">添加实例失败</sys:String>
+	<sys:String x:Key="AddGameWindow.Error6">请输入名字</sys:String>
+	<sys:String x:Key="AddGameWindow.Error7">游戏分组添加失败</sys:String>
 	<sys:String x:Key="AddGameWindow.Info2">添加成功</sys:String>
 	<sys:String x:Key="AddGameWindow.Info3">正在获取Mod加载器信息</sys:String>
 	<sys:String x:Key="AddGameWindow.Info4">正在获取Quilt版本信息</sys:String>
@@ -126,6 +135,7 @@
 	<sys:String x:Key="AddGameWindow.Info12">导入完成</sys:String>
 	<sys:String x:Key="AddGameWindow.Info13">选择压缩包</sys:String>
 	<sys:String x:Key="AddGameWindow.Info14">正在安装整合包</sys:String>
+	<sys:String x:Key="AddGameWindow.Info15">组名</sys:String>
 
 	<sys:String x:Key="AddCurseForgeWindow.Title">ColorMC 添加CurseForge整合包</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Text1">分类</sys:String>
@@ -138,7 +148,6 @@
 	<sys:String x:Key="AddCurseForgeWindow.Button1">搜索</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Button2">安装所选</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Button3">获取版本</sys:String>
-	<sys:String x:Key="AddCurseForgeWindow.Button4">下载所选</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Data.Title1">名字</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Data.Title2">大小(Mb)</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Data.Title3">下载次数</sys:String>
@@ -154,13 +163,7 @@
 
 	<sys:String x:Key="GameGroupControl.Text1">切换游戏分组</sys:String>
 	<sys:String x:Key="GameGroupControl.Button1">添加分组</sys:String>
-
-	<sys:String x:Key="FlyoutsControl.Button1">启动实例</sys:String>
-	<sys:String x:Key="FlyoutsControl.Button2">查看Mod</sys:String>
-	<sys:String x:Key="FlyoutsControl.Button3">查看配置</sys:String>
-	<sys:String x:Key="FlyoutsControl.Button4">查看地图</sys:String>
-	<sys:String x:Key="FlyoutsControl.Button5">修改分组</sys:String>
-
+	
 	<sys:String x:Key="CurseForgeControl.Text1">作者：</sys:String>
 	<sys:String x:Key="CurseForgeControl.Text2">下载次数：</sys:String>
 	<sys:String x:Key="CurseForgeControl.Text3">上次更新：</sys:String>
@@ -275,6 +278,27 @@
 	<sys:String x:Key="Tab5Control1.Error2">请输入必要信息</sys:String>
 	<sys:String x:Key="Tab5Control1.Info1">正在检查Java</sys:String>
 	<sys:String x:Key="Tab5Control1.Info2">选择Java</sys:String>
+	
+	<sys:String x:Key="Tab1Control2.Button1">刷新加载器</sys:String>
+	<sys:String x:Key="Tab1Control2.Button2">刷新版本</sys:String>
+	<sys:String x:Key="Tab1Control2.Data.Title1">启用</sys:String>
+	<sys:String x:Key="Tab1Control2.Data.Title2">名字</sys:String>
+	
+	<sys:String x:Key="Tab2Control2.Text1">该设定只应用于游戏实例{0}</sys:String>
+	<sys:String x:Key="Tab2Control2.Text2">自动加入服务器</sys:String>
+	<sys:String x:Key="Tab2Control2.Text3">服务器地址</sys:String>
+	<sys:String x:Key="Tab2Control2.Text4">服务器端口</sys:String>
+	
+	<sys:String x:Key="Tab3Control2.Button1">启用/禁用</sys:String>
+	<sys:String x:Key="Tab3Control2.Button2">添加</sys:String>
+	<sys:String x:Key="Tab3Control2.Button3">删除</sys:String>
+	<sys:String x:Key="Tab3Control2.Button4">刷新</sys:String>
+	<sys:String x:Key="Tab3Control2.Data.Title1">启用</sys:String>
+	<sys:String x:Key="Tab3Control2.Data.Title2">名字</sys:String>
+	<sys:String x:Key="Tab3Control2.Data.Title3">版本</sys:String>
+	<sys:String x:Key="Tab3Control2.Data.Title4">路径</sys:String>
+	<sys:String x:Key="Tab3Control2.Data.Title5">作者</sys:String>
+	<sys:String x:Key="Tab3Control2.Data.Title6">链接</sys:String>
 	
 	<sys:String x:Key="Button.Set">设置</sys:String>
 	<sys:String x:Key="Button.Select">选择文件</sys:String>

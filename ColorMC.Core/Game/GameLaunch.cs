@@ -540,11 +540,6 @@ public static class Launch
             }
         }
 
-        if (!string.IsNullOrWhiteSpace(obj.AdvencedGameArguments))
-        {
-            gameArg.Add(obj.AdvencedGameArguments.Trim());
-        }
-
         if (obj.ProxyHost != null)
         {
             if (!string.IsNullOrWhiteSpace(obj.ProxyHost.IP))

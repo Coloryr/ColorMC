@@ -32,6 +32,5 @@ public record GameSettingObj
     public WindowSettingObj Window { get; set; }
     public ServerObj StartServer { get; set; }
     public ProxyHostObj ProxyHost { get; set; }
-    public string AdvencedGameArguments { get; set; }
     public bool ModPack { get; set; }
 }
