@@ -170,7 +170,7 @@
                     Margin="2,2,215,2"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="{i18n:Localize AddCurseForgeWindow.Button4}" />
+                    Content="{i18n:Localize AddCurseForgeWindow.Button2}" />
 
                 <DataGrid
                     Name="DataGridFiles"

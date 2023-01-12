@@ -13,6 +13,9 @@ public partial class GameEditWindow : Window
     private bool switch1 = false;
 
     private readonly Tab1Control tab1 = new();
+    private readonly Tab2Control tab2 = new();
+    private readonly Tab3Control tab3 = new();
+    private readonly Tab4Control tab4 = new();
 
     private readonly ContentControl content1 = new();
     private readonly ContentControl content2 = new();
@@ -35,6 +38,9 @@ public partial class GameEditWindow : Window
         Tab1.Children.Add(content2);
 
         tab1.SetWindow(this);
+        tab2.SetWindow(this);
+        tab3.SetWindow(this);
+        tab4.SetWindow(this);
 
         content1.Content = tab1;
 
@@ -55,12 +61,14 @@ public partial class GameEditWindow : Window
         {
             //查看Mod
             case 1:
+                Tabs.SelectedIndex = 2;
                 break;
             //查看配置文件
             case 2:
                 break;
             //查看地图
             case 3:
+                Tabs.SelectedIndex = 3;
                 break;
             //导出
             case 5:
@@ -85,6 +93,8 @@ public partial class GameEditWindow : Window
         Head.Title = string.Format(Localizer.Instance["GameEditWindow.Title"], obj.Name);
 
         tab1.SetGame(Obj);
+        tab2.SetGame(Obj);
+        tab3.SetGame(Obj);
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -95,16 +105,16 @@ public partial class GameEditWindow : Window
                 Go(tab1);
                 break;
             case 1:
-                //tab2.Load();
-                //Go(tab2);
+                tab2.Update();
+                Go(tab2);
                 break;
             case 2:
-                //tab3.Load();
-                //Go(tab3);
+                tab3.Update();
+                Go(tab3);
                 break;
             case 3:
-                //tab4.Load();
-                //Go(tab4);
+                tab4.Update();
+                Go(tab4);
                 break;
             case 4:
                 //tab5.Load();

@@ -9,6 +9,7 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class UserBinding
 {
+    private readonly static List<LoginObj> LockUser = new();
     public static List<string> GetUserTypes()
     {
         var list = new List<string>();
@@ -120,5 +121,23 @@ public static class UserBinding
     {
         GuiConfigUtils.Config.LastUser = null;
         GuiConfigUtils.Save();
+    }
+
+    public static void AddLockUser(LoginObj obj)
+    {
+        if (!LockUser.Contains(obj))
+        {
+            LockUser.Add(obj);
+        }
+    }
+
+    public static void RemoveLockUser(LoginObj obj) 
+    {
+        LockUser.Remove(obj);
+    }
+
+    public static bool IsLock(LoginObj obj) 
+    {
+        return LockUser.Contains(obj);
     }
 }

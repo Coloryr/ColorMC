@@ -1,7 +1,9 @@
-﻿using ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.Game;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using System;
 using System.Collections.Generic;
@@ -175,6 +177,14 @@ public static class GameBinding
         {
             return (false, "没有选择账户");
         }
+
+        if (UserBinding.IsLock(login))
+        {
+            var res = await App.MainWindow!.Info.ShowWait("用户已被占用，是否继续使用这个账户");
+            if (!res)
+                return (false, "账户冲突");
+        }
+
         if (debug)
         {
             App.ShowGameEdit(obj, 6);
@@ -197,5 +207,60 @@ public static class GameBinding
     public static Task<bool> ReloadVersion()
     {
         return VersionPath.GetFromWeb();
+    }
+
+    public static void SaveGame(GameSettingObj obj, string? versi, Loaders loader, string? loadv)
+    {
+        if (!string.IsNullOrWhiteSpace(versi))
+        {
+            obj.Version = versi;
+        }
+        obj.Loader = loader;
+        if (!string.IsNullOrWhiteSpace(loadv))
+        {
+            obj.LoaderVersion = loadv;
+        }
+        obj.Save();
+    }
+
+    public static void SetGameJvmArg(GameSettingObj obj, JvmArgObj obj1) 
+    {
+        obj.JvmArg = obj1;
+        obj.Save();
+    }
+
+    public static void SetGameWindow(GameSettingObj obj, WindowSettingObj obj1) 
+    {
+        obj.Window = obj1;
+        obj.Save();
+    }
+
+    public static void SetGameServer(GameSettingObj obj, ServerObj obj1) 
+    {
+        obj.StartServer = obj1;
+        obj.Save();
+    }
+
+    public static void SetGameProxy(GameSettingObj obj, ProxyHostObj obj1) 
+    {
+        obj.ProxyHost = obj1;
+        obj.Save();
+    }
+
+    public static Task<List<ModObj>> GetGameMods(GameSettingObj obj) 
+    {
+        return obj.GetMods();
+    }
+
+    public static void ModEnDi(ModObj obj)
+    {
+        if (obj.Disable)
+        {
+            obj.Enable();
+        }
+        else
+        {
+            obj.Disable();
+        }
     }
 }

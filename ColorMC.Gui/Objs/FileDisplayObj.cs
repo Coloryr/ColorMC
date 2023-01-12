@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Objs;
 
-public record FileDisplayObj
+public record FileDisplayObj 
 {
     public string Name { get; set; }
     public long Download { get; set; }

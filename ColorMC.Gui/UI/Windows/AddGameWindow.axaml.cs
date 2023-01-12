@@ -60,7 +60,7 @@ public partial class AddGameWindow : Window
 
     private async void Button_AddGroup_Click(object? sender, RoutedEventArgs e)
     {
-        await Info3.ShowOne("组名", false);
+        await Info3.ShowOne(Localizer.Instance["AddGameWindow.Info15"], false);
         Info3.Close();
         if (Info3.Cancel)
         {
@@ -70,17 +70,17 @@ public partial class AddGameWindow : Window
         var res = Info3.Read().Item1;
         if (string.IsNullOrWhiteSpace(res))
         {
-            Info1.Show("请输入名字");
+            Info1.Show(Localizer.Instance["AddGameWindow.Error6"]);
             return;
         }
 
         if (!GameBinding.AddGameGroup(res))
         {
-            Info1.Show("游戏分组添加失败");
+            Info1.Show(Localizer.Instance["AddGameWindow.Error7"]);
             return;
         }
 
-        Info2.Show("添加成功");
+        Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
 
         List1.Clear();
         List1.AddRange(GameBinding.GetGameGroups().Keys);
@@ -311,6 +311,10 @@ public partial class AddGameWindow : Window
         }
         else if (state == CoreRunState.End)
         {
+            TextBox_Input1.Text = "";
+            ComboBox_GameVersion.SelectedItem = null;
+            Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
+            App.MainWindow?.Load();
             Info1.Close();
         }
     }

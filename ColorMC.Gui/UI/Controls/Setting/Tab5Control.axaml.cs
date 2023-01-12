@@ -40,7 +40,7 @@ public partial class Tab5Control : UserControl
 
         DataGrid1.Items = List;
 
-        this.LayoutUpdated += Tab5Control_LayoutUpdated;
+        LayoutUpdated += Tab5Control_LayoutUpdated;
     }
 
     private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)

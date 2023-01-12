@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Controls.Setting;
 
 public partial class Tab3Control : UserControl
 {
-    private static Regex re = new("[^0-9]+");
+
     private SettingWindow Window;
     public Tab3Control()
     {
@@ -23,7 +23,7 @@ public partial class Tab3Control : UserControl
 
     private void Button_Set_Click(object? sender, RoutedEventArgs e)
     {
-        if (re.IsMatch(TextBox2.Text) || re.IsMatch(Input1.Text))
+        if (UIUtils.CheckNumb(TextBox2.Text) || UIUtils.CheckNumb(Input1.Text))
         {
             Window.Info.Show(Localizer.Instance["Tab3Control1.Error1"]);
             return;   
@@ -31,7 +31,7 @@ public partial class Tab3Control : UserControl
         ConfigBinding.SetHttpConfig(new()
         {
             Source = (SourceLocal)ComboBox1.SelectedIndex,
-            DownloadThread = int.Parse(Input1.Text),
+            DownloadThread = (int)Input1.Value,
             ProxyIP = TextBox1.Text,
             ProxyPort = ushort.Parse(TextBox2.Text),
             ProxyUser = TextBox3.Text,

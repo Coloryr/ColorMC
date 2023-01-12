@@ -225,8 +225,8 @@ public partial class App : Application
         {
             GameEditWindow window = new();
             window.SetGame(obj);
-            window.SetType(type);
             window.Show();
+            window.SetType(type);
             GameEditWindows.Add(obj, window);
         }
     }
