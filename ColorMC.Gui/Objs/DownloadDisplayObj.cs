@@ -28,4 +28,6 @@ public class DownloadDisplayObj : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    public long Last;
 }

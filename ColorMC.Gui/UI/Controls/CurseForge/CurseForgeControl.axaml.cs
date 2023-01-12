@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.UI.Windows;
@@ -53,12 +54,19 @@ public partial class CurseForgeControl : UserControl
         Label4.Content = DateTime.Parse(data.dateModified);
         if (data.logo != null)
         {
-            var data1 = await BaseClient.DownloadClient.GetAsync(data.logo.url);
-            Dispatcher.UIThread.Post(() =>
+            try
             {
-                var bitmap = new Bitmap(data1.Content.ReadAsStream());
-                Image_Logo.Source = bitmap;
-            });
+                var data1 = await BaseClient.DownloadClient.GetAsync(data.logo.url);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    var bitmap = new Bitmap(data1.Content.ReadAsStream());
+                    Image_Logo.Source = bitmap;
+                });
+            }
+            catch (Exception e)
+            {
+                Logs.Error("ªÒ»°Õº∆¨ ß∞‹", e);
+            }
         }
     }
 

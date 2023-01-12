@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Timers;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -23,6 +23,8 @@ public partial class DownloadWindow : Window
     private readonly Dictionary<string, DownloadDisplayObj> List1 = new();
 
     private bool pause = false;
+    private long Count;
+    private Timer Timer;
 
     public DownloadWindow()
     {
@@ -52,7 +54,34 @@ public partial class DownloadWindow : Window
         Opened += DownloadWindow_Opened;
 
         ProgressBar1.Value = 0;
+        Timer = new(TimeSpan.FromSeconds(1))
+        {
+            AutoReset = true
+        };
+        Timer.Elapsed += Timer_Elapsed;
+
         Update();
+    }
+
+    private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
+    {
+        long now = Count;
+        Count = 0;
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (now > 1000000)
+            {
+                Label3.Content = $"{(double)now / 1000000:#.00}Mb/s";
+            }
+            else if (now > 1000)
+            {
+                Label3.Content = $"{(double)now / 1000:#.00}Kb/s";
+            }
+            else
+            {
+                Label3.Content = $"{now}b/s";
+            }
+        });
     }
 
     private async void Button_S_Click(object? sender, RoutedEventArgs e)
@@ -126,6 +155,7 @@ public partial class DownloadWindow : Window
             var res = await Info.ShowWait(Localizer.Instance["DownloadWindow.Info4"]);
             if (res)
             {
+                Timer.Dispose();
                 DownloadManager.Stop();
             }
             else
@@ -147,6 +177,7 @@ public partial class DownloadWindow : Window
             };
             List.Add(item1);
             List1.Add(item.Name, item1);
+            Timer.Start();
 
             return;
         }
@@ -163,7 +194,6 @@ public partial class DownloadWindow : Window
             {
                 var data = OtherBinding.GetDownloadSize();
                 Load();
-                Label1.Content = $"{(double)data.Item2 / data.Item1 * 100:0.##}";
                 List.Remove(item1);
             }
             else if (item.State == DownloadItemState.GetInfo)
@@ -172,7 +202,10 @@ public partial class DownloadWindow : Window
             }
             else if (item.State == DownloadItemState.Download)
             {
+                long temp = List1[item.Name].Last;
                 List1[item.Name].NowSize = $"{(double)item.NowSize / item.AllSize * 100:0.##} %";
+                List1[item.Name].Last = item.NowSize;
+                Count += item.NowSize - temp;
             }
             else if (item.State == DownloadItemState.Error)
             {
@@ -184,8 +217,10 @@ public partial class DownloadWindow : Window
     public void Load()
     {
         var data = OtherBinding.GetDownloadSize();
-        ProgressBar1.Maximum = data.Item1;
-        ProgressBar1.Value = data.Item2;
+        ProgressBar1.Maximum = 100;
+        ProgressBar1.Value = (double)data.Item2 / data.Item1 * 100;
+        Label2.Content = data.Item1;
+        Label1.Content = data.Item2;
     }
 
     public void Update()
