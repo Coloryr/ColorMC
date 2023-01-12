@@ -51,13 +51,23 @@
                         VerticalAlignment="Center"
                         BorderBrush="White"
                         BorderThickness="1"
-                        Foreground="#FF5EBDD3" />
+                        Foreground="#FF5EBDD3"
+                        ShowProgressText="True" />
                     <Label
                         Name="Label1"
                         Margin="10,0,0,0"
                         VerticalAlignment="Center"
                         Content="0" />
-                    <Label VerticalAlignment="Center" Content="%" />
+                    <Label VerticalAlignment="Center" Content="/" />
+                    <Label
+                        Name="Label2"
+                        VerticalAlignment="Center"
+                        Content="0" />
+                    <Label
+                        Name="Label3"
+                        Margin="20,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="0Mb/s" />
                 </StackPanel>
             </Grid>
 
