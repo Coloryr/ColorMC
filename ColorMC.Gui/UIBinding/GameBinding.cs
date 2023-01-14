@@ -5,8 +5,10 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -262,5 +264,81 @@ public static class GameBinding
         {
             obj.Disable();
         }
+    }
+
+    public static void DeleteMod(ModObj obj)
+    {
+        obj.Delete();
+    }
+
+    public static void AddMods(GameSettingObj obj, string[] file)
+    {
+        foreach (var item in file)
+        {
+            var info = new FileInfo(item);
+            var info1 = new FileInfo(Path.GetFullPath(obj.GetModsPath() + info.Name));
+            if (info1.Exists)
+            {
+                info1.Delete();
+            }
+
+            File.Copy(info.FullName, info1.FullName);
+        }
+    }
+
+    public static void OpFile(string item) 
+    {
+        switch (SystemInfo.Os)
+        {
+            case OsType.Windows:
+                System.Diagnostics.Process.Start("explorer", 
+                    $@"/select,{item}");
+                break;
+            case OsType.Linux:
+                System.Diagnostics.Process.Start("nautilus",
+                    '"' + item + '"');
+                break;
+            case OsType.MacOS:
+                System.Diagnostics.Process.Start("open",
+                    '"' + item + '"');
+                break;
+        }
+    }
+
+    public static List<string> GetAllConfig(GameSettingObj obj) 
+    {
+        var list = new List<string>();
+        var dir = obj.GetGameDir().Length + 1;
+
+        var file = obj.GetOptionsFile();
+        if (!File.Exists(file))
+        {
+            File.Create(file).Dispose();
+        }
+
+        list.Add(obj.GetOptionsFile()[dir..]);
+        string con = obj.GetConfigPath();
+
+        var list1 = PathC.GetAllFile(con);
+        foreach (var item in list1)
+        {
+            list.Add(item.FullName[dir..]);
+        }
+
+        return list;
+    }
+
+    public static string ReadConfigFile(GameSettingObj obj, string name) 
+    {
+        var dir = obj.GetGameDir();
+
+        return File.ReadAllText(Path.GetFullPath(dir + "/" + name));
+    }
+
+    public static void SaveConfigFile(GameSettingObj obj, string name, string text) 
+    {
+        var dir = obj.GetGameDir();
+
+        File.WriteAllText(Path.GetFullPath(dir + "/" + name), text);
     }
 }

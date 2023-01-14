@@ -36,6 +36,7 @@ public partial class SettingWindow : Window, IBaseWindow
         InitializeComponent();
 
         this.MakeItNoChrome();
+        Rectangle1.MakeResizeDrag(this);
         FontFamily = Program.FontFamily;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
@@ -113,11 +114,16 @@ public partial class SettingWindow : Window, IBaseWindow
 
     public void Update()
     {
-        App.Update(this, Image_Back, Rectangle1);
+        App.Update(this, Image_Back, Grid1);
     } 
 
     public void Next()
     {
         
+    }
+
+    public void Tab5Load() 
+    {
+        tab5.Load();
     }
 }

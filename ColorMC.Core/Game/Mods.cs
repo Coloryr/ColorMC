@@ -140,6 +140,9 @@ public static class Mods
             }
         });
 
+
+        list.Sort(new ModComparer());
+
         return list;
     }
 
@@ -165,6 +168,11 @@ public static class Mods
         File.Move(file.FullName, mod.Local);
     }
 
+    public static void Delete(this ModObj mod)
+    {
+        File.Delete(mod.Local);
+    }
+
     private static List<string> ToStringList(this string obj)
     {
         List<string> list = new();
@@ -186,5 +194,30 @@ public static class Mods
         }
 
         return list;
+    }
+
+
+    class ModComparer : IComparer<ModObj>
+    {
+        public int Compare(ModObj? x, ModObj? y)
+        {
+            if (x == null && y == null)
+            {
+                return 0;
+            }
+            else if (x == null)
+            {
+                return -1;
+            }
+            else if (y == null) 
+            {
+                return 1;
+            }
+            if (x.name != y.name)
+            {
+                return x.name.CompareTo(y.name);
+            }
+            else return 0;
+        }
     }
 }

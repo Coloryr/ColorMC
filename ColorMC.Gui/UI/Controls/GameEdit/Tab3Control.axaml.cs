@@ -11,136 +11,124 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Avalonia.Interactivity;
 using System.Linq;
+using ColorMC.Core.LaunchPath;
+using System.IO;
+using Avalonia.Threading;
+using AvaloniaEdit.Indentation.CSharp;
+using AvaloniaEdit;
+using TextMateSharp.Grammars;
+using AvaloniaEdit.TextMate;
+using DynamicData;
+using Avalonia.Media;
+using AvaloniaEdit.Document;
+using System.Resources;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class Tab3Control : UserControl
 {
-    private readonly ObservableCollection<ModDisplayObj> List = new();
-    private readonly Dictionary<string, ModObj> Dir1 = new();
+    private readonly ObservableCollection<string> List = new();
+    private readonly List<string> Items = new();
     private GameEditWindow Window;
     private GameSettingObj Obj;
-
+    private TextMate.Installation textMateInstallation;
+    private RegistryOptions registryOptions;
     public Tab3Control()
     {
         InitializeComponent();
 
-        DataGrid1.Items = List;
+        ComboBox1.Items = List;
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
-        Button_E1.PointerLeave += Button_E1_PointerLeave;
-        Button_E.PointerEnter += Button_E_PointerEnter;
+        Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
+        Button3.Click += Button3_Click;
 
-        Button_A1.PointerLeave += Button_A1_PointerLeave;
-        Button_A.PointerEnter += Button_A_PointerEnter;
+        TextEditor1.Options.ShowBoxForControlCharacters = true;
+        TextEditor1.TextArea.IndentationStrategy = new CSharpIndentationStrategy(TextEditor1.Options);
+        TextEditor1.Background = Brushes.Transparent;
+        TextEditor1.Options.ShowBoxForControlCharacters = true;
+        TextEditor1.TextArea.Background = this.Background;
 
-        Button_D1.PointerLeave += Button_D1_PointerLeave;
-        Button_D.PointerEnter += Button_D_PointerEnter;
-
-        Button_R1.PointerLeave += Button_R1_PointerLeave;
-        Button_R.PointerEnter += Button_R_PointerEnter;
-
-        DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
-
-        Button_E1.Click += Button_E1_Click;
-
-        LayoutUpdated += Tab5Control_LayoutUpdated;
+        registryOptions = new RegistryOptions(ThemeName.LightPlus);
+        textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
     }
 
-    private void Button_E1_Click(object? sender, RoutedEventArgs e)
+    private void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        DataGrid1_DoubleTapped(sender, e);
-    }
-
-    private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
-    {
-        var item = DataGrid1.SelectedItem as ModDisplayObj;
+        var item = ComboBox1.SelectedItem as string;
         if (item == null)
             return;
 
-        if (Dir1.TryGetValue(item.Local, out var obj))
+        GameBinding.SaveConfigFile(Obj, item, TextEditor1.Document.Text);
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        var item = ComboBox1.SelectedItem as string;
+        if (item == null)
+            return;
+
+        var dir = Obj.GetGameDir();
+        GameBinding.OpFile(Path.GetFullPath(dir + "/" + item));
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        Load();
+    }
+
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        var item = ComboBox1.SelectedItem as string;
+        if (item == null)
+            return;
+
+        var text = GameBinding.ReadConfigFile(Obj, item);
+        var ex = item[item.LastIndexOf('.')..];
+
+        EditGa(ex);
+        TextEditor1.Document = new AvaloniaEdit.Document.TextDocument(text); 
+    }
+
+    public void EditGa(string name) 
+    {
+        var item = registryOptions.GetLanguageByExtension(name);
+        if (item == null)
         {
-            GameBinding.ModEnDi(obj);
-            item.Enable = obj.Disable;
-        }
-    }
-
-    private void Button_E1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        Expander_E.IsExpanded = false;
-    }
-
-    private void Button_E_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Expander_E.IsExpanded = true;
-    }
-
-    private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        Expander_A.IsExpanded = false;
-    }
-
-    private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Expander_A.IsExpanded = true;
-    }
-
-    private void Button_D1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        Expander_D.IsExpanded = false;
-    }
-
-    private void Button_D_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Expander_D.IsExpanded = true;
-    }
-
-
-    private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        Expander_R.IsExpanded = false;
-    }
-
-    private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Expander_R.IsExpanded = true;
-    }
-
-    private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)
-    {
-        DataGrid1.MakeTran();
-        Expander_E.MakePadingNull();
-        Expander_A.MakePadingNull();
-        Expander_R.MakePadingNull();
-        Expander_D.MakePadingNull();
-    }
-
-    private async void Load() 
-    {
-        Window.Info1.Show("正在加载Mod列表");
-        Dir1.Clear();
-        List.Clear();
-        var res= await GameBinding.GetGameMods(Obj);
-        Window.Info1.Close();
-        if (res == null)
-        {
-            Window.Info.Show("Mod列表加载失败");
+            textMateInstallation.SetGrammar(null);
             return;
         }
+        var item1 = registryOptions.GetScopeByLanguageId(item.Id);
+        if (item == null)
+            return;
+        textMateInstallation.SetGrammar(item1);
+    }
 
-        foreach (var item in res)
+    public void Load() 
+    {
+        string fil = TextBox1.Text;
+        List.Clear();
+        if (string.IsNullOrWhiteSpace(fil))
         {
-            var obj = new ModDisplayObj()
-            {
-                Name = item.name,
-                Version = item.version,
-                Local = item.Local,
-                Author = item.authorList.Make(),
-                Url = item.url,
-                Enable = item.Disable
-            };
+            List.AddRange(Items);
+        }
+        else
+        {
+            var list = from item in Items
+                       where item.Contains(fil)
+                       select item;
+            List.AddRange(list);
+        }
 
-            List.Add(obj);
-            Dir1.Add(obj.Local, item);
+        if (List.Count != 0)
+        {
+            ComboBox1.SelectedIndex = 0;
+        }
+        else
+        {
+            TextEditor1.Document = null;
         }
     }
 
@@ -158,6 +146,10 @@ public partial class Tab3Control : UserControl
     {
         if (Obj == null)
             return;
+
+        Items.Clear();
+        var list = GameBinding.GetAllConfig(Obj);
+        Items.AddRange(list);
 
         Load();
     }

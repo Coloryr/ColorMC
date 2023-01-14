@@ -26,6 +26,7 @@ public partial class AddCurseForgeWindow : Window
         InitializeComponent();
 
         this.MakeItNoChrome();
+        Rectangle1.MakeResizeDrag(this);
         FontFamily = Program.FontFamily;
 
         ComboBox1.Items = GameBinding.GetCurseForgeTypes();
@@ -172,13 +173,12 @@ public partial class AddCurseForgeWindow : Window
     private async void AddCurseForgeWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
-        //return;
         Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info4"]);
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();
         if (list == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error4"]);
+            //Info.Show(Localizer.Instance["AddCurseForgeWindow.Error4"]);
             return;
         }
 
@@ -188,6 +188,6 @@ public partial class AddCurseForgeWindow : Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Rectangle1);
+        App.Update(this, Image_Back, Grid1);
     }
 }

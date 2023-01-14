@@ -26,11 +26,8 @@
             VerticalAlignment="Top"
             Max="False"
             Min="False" />
-        <Grid Margin="0,35,0,0">
-            <Rectangle
-                Fill="#FFF4F4F5"
-                Stroke="#FF5ABED6"
-                StrokeThickness="3" />
+        <Grid Margin="0,35,0,0" Background="#88FFFFFF">
+
             <StackPanel VerticalAlignment="Center">
                 <TextBlock
                     Name="Text"
@@ -48,6 +45,11 @@
                     Foreground="#FF5EBDD3"
                     IsIndeterminate="True" />
             </StackPanel>
+
+            <Rectangle
+                Name="Rectangle1"
+                Stroke="#FF5ABED6"
+                StrokeThickness="3" />
         </Grid>
     </Grid>
 </Window>

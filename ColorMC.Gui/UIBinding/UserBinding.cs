@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Windows;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -96,6 +97,8 @@ public static class UserBinding
         var item = AuthDatabase.Get(uuid, type);
         if (item != null)
             AuthDatabase.Delete(item);
+
+        MainWindow.OnUserEdit();
     }
 
     public static LoginObj? GetLastUser()
@@ -115,6 +118,8 @@ public static class UserBinding
         };
 
         GuiConfigUtils.Save();
+
+        MainWindow.OnUserEdit();
     }
 
     public static void ClearLastUser()

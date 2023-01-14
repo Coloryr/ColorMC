@@ -2,6 +2,7 @@
     x:Class="ColorMC.Gui.UI.Controls.GameEdit.Tab3Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,137 +11,64 @@
     mc:Ignorable="d">
     <Grid>
         <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
+        <DockPanel Margin="5">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="配置文件" />
+                <ComboBox
+                    Name="ComboBox1"
+                    Width="200"
+                    Margin="5" />
+                <TextBox
+                    Name="TextBox1"
+                    Width="200"
+                    VerticalAlignment="Center"
+                    Classes="input1"
+                    Watermark="过滤器" />
 
-        <DataGrid
-            Name="DataGrid1"
-            Margin="3"
-            AutoGenerateColumns="False"
-            Background="#88ffffff"
-            CanUserSortColumns="False"
-            HorizontalScrollBarVisibility="Visible"
-            VerticalScrollBarVisibility="Visible">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn
-                    Binding="{Binding Enable}"
-                    Header="{i18n:Localize Tab3Control2.Data.Title1}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Name}"
-                    Header="{i18n:Localize Tab3Control2.Data.Title2}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Version}"
-                    Header="{i18n:Localize Tab3Control2.Data.Title3}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Local}"
-                    Header="{i18n:Localize Tab3Control2.Data.Title4}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Author}"
-                    Header="{i18n:Localize Tab3Control2.Data.Title5}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Url}"
-                    Header="{i18n:Localize Tab3Control2.Data.Title6}"
-                    IsReadOnly="True" />
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
+                <Button
+                    Name="Button1"
+                    Width="85"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="筛选文件" />
+                <Button
+                    Name="Button2"
+                    Width="85"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="打开文件夹" />
+                <Button
+                    Name="Button3"
+                    Width="85"
+                    Height="25"
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="保存修改" />
+            </StackPanel>
             <Grid>
-                <Button
-                    Name="Button_E"
-                    Width="20"
-                    Height="30"
-                    Content="S" />
-                <Expander
-                    Name="Expander_E"
-                    Height="30"
-                    Margin="-84,0,0,0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    CornerRadius="0"
-                    ExpandDirection="Right"
-                    IsExpanded="False">
-                    <Button
-                        Name="Button_E1"
-                        Width="100"
-                        Height="30"
-                        Margin="4,0,0,0"
-                        Content="{i18n:Localize Tab3Control2.Button1}" />
-                </Expander>
+                <Label
+                    Name="Label1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="无法编辑此文件"
+                    IsVisible="False" />
+                <ae:TextEditor
+                    Name="TextEditor1"
+                    Background="White"
+                    FontSize="14"
+                    FontWeight="Normal"
+                    Foreground="Black"
+                    HorizontalScrollBarVisibility="Auto"
+                    ShowLineNumbers="True"
+                    VerticalScrollBarVisibility="Auto"
+                    WordWrap="True" />
             </Grid>
-            <Grid Margin="0,5,0,0">
-                <Button
-                    Name="Button_A"
-                    Width="20"
-                    Height="30"
-                    Content="A" />
-                <Expander
-                    Name="Expander_A"
-                    Height="30"
-                    Margin="-84,0,0,0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    CornerRadius="0"
-                    ExpandDirection="Right"
-                    IsExpanded="False">
-                    <Button
-                        Name="Button_A1"
-                        Width="100"
-                        Height="30"
-                        Margin="4,0,0,0"
-                        Content="{i18n:Localize Tab3Control2.Button2}" />
-                </Expander>
-            </Grid>
-            <Grid Margin="0,5,0,0">
-                <Button
-                    Name="Button_D"
-                    Width="20"
-                    Height="30"
-                    Content="D" />
-                <Expander
-                    Name="Expander_D"
-                    Height="30"
-                    Margin="-84,0,0,0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    CornerRadius="0"
-                    ExpandDirection="Right"
-                    IsExpanded="False">
-                    <Button
-                        Name="Button_D1"
-                        Width="100"
-                        Height="30"
-                        Margin="4,0,0,0"
-                        Content="{i18n:Localize Tab3Control2.Button3}" />
-                </Expander>
-            </Grid>
-            <Grid Margin="0,5,0,0">
-                <Button
-                    Name="Button_R"
-                    Width="20"
-                    Height="30"
-                    Content="R" />
-                <Expander
-                    Name="Expander_R"
-                    Height="30"
-                    Margin="-84,0,0,0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    CornerRadius="0"
-                    ExpandDirection="Right"
-                    IsExpanded="False">
-                    <Button
-                        Name="Button_R1"
-                        Width="100"
-                        Height="30"
-                        Margin="4,0,0,0"
-                        Content="{i18n:Localize Tab3Control2.Button4}" />
-                </Expander>
-            </Grid>
+        </DockPanel>
 
-        </StackPanel>
     </Grid>
 </UserControl>

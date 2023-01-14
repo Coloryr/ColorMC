@@ -23,8 +23,8 @@ namespace ColorMC.Gui;
 
 public partial class App : Application
 {
-    public static readonly IBrush BackColor = Brush.Parse("#FFF4F4F5");
-    public static readonly IBrush BackColor1 = Brush.Parse("#11F4F4F5"); //Brushes.Transparent;
+    public static readonly IBrush BackColor = Brush.Parse("#FFFFFFFF");
+    public static readonly IBrush BackColor1 = Brush.Parse("#11FFFFFF"); //Brushes.Transparent;
 
     private static IClassicDesktopStyleApplicationLifetime Life;
     public static DownloadWindow? DownloadWindow;
@@ -241,7 +241,7 @@ public partial class App : Application
         Life?.Shutdown();
     }
 
-    public static void Update(Window window, Image iamge, Rectangle rec)
+    public static void Update(Window window, Image iamge, Grid rec)
     {
         if (GuiConfigUtils.Config != null)
         {
@@ -266,14 +266,14 @@ public partial class App : Application
 
             if (GuiConfigUtils.Config.WindowTran)
             {
-                rec.Fill = BackColor1;
+                rec.Background = BackColor1;
                 window.TransparencyLevelHint = (WindowTransparencyLevel)
                     (GuiConfigUtils.Config.WindowTranType + 1);
             }
             else
             {
                 window.TransparencyLevelHint = WindowTransparencyLevel.None;
-                rec.Fill = BackColor;
+                rec.Background = BackColor;
             }
         }
     }

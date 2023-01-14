@@ -31,6 +31,7 @@ public partial class GameEditWindow : Window
         InitializeComponent();
 
         this.MakeItNoChrome();
+        Rectangle1.MakeResizeDrag(this);
         FontFamily = Program.FontFamily;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
@@ -61,14 +62,15 @@ public partial class GameEditWindow : Window
         {
             //查看Mod
             case 1:
-                Tabs.SelectedIndex = 2;
+                Tabs.SelectedIndex = 3;
                 break;
             //查看配置文件
             case 2:
+                Tabs.SelectedIndex = 2;
                 break;
             //查看地图
             case 3:
-                Tabs.SelectedIndex = 3;
+                Tabs.SelectedIndex = 4;
                 break;
             //导出
             case 5:
@@ -95,6 +97,7 @@ public partial class GameEditWindow : Window
         tab1.SetGame(Obj);
         tab2.SetGame(Obj);
         tab3.SetGame(Obj);
+        tab4.SetGame(Obj);
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -155,6 +158,6 @@ public partial class GameEditWindow : Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Rectangle1);
+        App.Update(this, Image_Back, Grid1);
     }
 }

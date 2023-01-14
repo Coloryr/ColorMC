@@ -7,12 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
-    Width="800"
-    Height="450"
-    MinWidth="800"
-    MinHeight="450"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    Width="900"
+    Height="500"
+    MinWidth="900"
+    MinHeight="500"
+    d:DesignHeight="500"
+    d:DesignWidth="900"
     Background="Transparent"
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaTitleBarHeightHint="-1"
@@ -27,13 +27,7 @@
             VerticalAlignment="Top"
             Max="False"
             Min="False" />
-        <Grid Margin="0,35,0,0">
-            <Rectangle
-                Name="Rectangle1"
-                Fill="#FFF4F4F5"
-                Stroke="#FF5ABED6"
-                StrokeThickness="3" />
-
+        <Grid Name="Grid1" Margin="0,35,0,0">
             <Image
                 Name="Image_Back"
                 Margin="3"
@@ -59,7 +53,7 @@
 
                 <Grid
                     Name="Tab1"
-                    Margin="10"
+                    Margin="5"
                     ClipToBounds="True"
                     DockPanel.Dock="Bottom" />
             </DockPanel>
@@ -68,6 +62,11 @@
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info3Control Name="Info3" IsVisible="False" />
             <views:Info2Control Name="Info2" />
+
+            <Rectangle
+                Name="Rectangle1"
+                Stroke="#FF5ABED6"
+                StrokeThickness="3" />
         </Grid>
     </Grid>
 </Window>

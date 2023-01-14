@@ -31,6 +31,7 @@ public partial class DownloadWindow : Window
         InitializeComponent();
 
         this.MakeItNoChrome();
+        Rectangle1.MakeResizeDrag(this);
         FontFamily = Program.FontFamily;
 
         CoreMain.DownloadItemStateUpdate = DownloadItemStateUpdate;
@@ -225,6 +226,6 @@ public partial class DownloadWindow : Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Rectangle1);
+        App.Update(this, Image_Back, Grid1);
     }
 }

@@ -167,12 +167,13 @@ public static class DownloadManager
 
     public static async Task Download(DownloadItem item)
     {
-        FileInfo info = new(item.Local);
+        string file = item.Local + ".temp";
+        FileInfo info = new(file);
         if (!Directory.Exists(info.DirectoryName))
         {
             Directory.CreateDirectory(info.DirectoryName!);
         }
-        using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        using FileStream stream = new(file, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         var data = await BaseClient.DownloadClient.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead);
         using Stream stream1 = data.Content.ReadAsStream();
         byte[] buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
@@ -185,6 +186,8 @@ public static class DownloadManager
                 await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead))
                     .ConfigureAwait(false);
             }
+
+            File.Move(file, item.Local);
         }
         finally
         {

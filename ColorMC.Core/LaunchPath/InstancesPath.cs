@@ -33,6 +33,7 @@ public static class InstancesPath
     private const string Name12 = "icon.png";
     private const string Name13 = "mods";
     private const string Name14 = "saves";
+    private const string Name15 = "config";
 
     private static Dictionary<string, GameSettingObj> InstallGames = new();
     private static Dictionary<string, List<GameSettingObj>> GameGroups = new();
@@ -211,6 +212,11 @@ public static class InstancesPath
     public static string GetSavesPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}");
+    }
+
+    public static string GetConfigPath(this GameSettingObj obj) 
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name15}");
     }
 
     public static async Task<GameSettingObj?> CreateVersion(this GameSettingObj game)

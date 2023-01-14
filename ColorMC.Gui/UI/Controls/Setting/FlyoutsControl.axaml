@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.User.FlyoutsControl"
+    x:Class="ColorMC.Gui.UI.Controls.Setting.FlyoutsControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -18,12 +18,7 @@
                 Name="Button1"
                 Width="80"
                 Height="25"
-                Content="{i18n:Localize UserWindow.Button1}" />
-            <Button
-                Name="Button3"
-                Width="80"
-                Height="25"
-                Content="{i18n:Localize UserWindow.Button3}" />
+                Content="{i18n:Localize SettingWindow.Flyouts.Button1}" />
         </StackPanel>
     </Grid>
 </UserControl>

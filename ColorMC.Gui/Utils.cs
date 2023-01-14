@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
 using ColorMC.Core;
@@ -131,6 +132,51 @@ public static partial class UIUtils
             };
 
             _ = XLib.XChangeProperty(temp, window.PlatformImpl.Handle.Handle, temp1, temp1, 32, XLib.PropertyMode.Replace, ref hints, 5);
+
+            window.CanResize = true;
+        }
+    }
+
+    public static void MakeResizeDrag(this Avalonia.Controls.Shapes.Rectangle rectangle, 
+        Window window) 
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            rectangle.PointerPressed += (a, e) =>
+            {
+                if (e.GetCurrentPoint(rectangle).Properties.IsLeftButtonPressed)
+                {
+                    var point = e.GetPosition(rectangle);
+                    var arg1 = point.X / rectangle.Bounds.Width;
+                    var arg2 = point.Y / rectangle.Bounds.Height;
+                    if (arg1 > 0.95)
+                    {
+                        if (arg2 > 0.95)
+                        {
+                            window.BeginResizeDrag(WindowEdge.SouthEast, e);
+                        }
+                        else if (arg2 <= 0.95)
+                        {
+                            window.BeginResizeDrag(WindowEdge.East, e);
+                        }
+                    }
+                    else if (arg1 < 0.05)
+                    {
+                        if (arg2 <= 0.95)
+                        {
+                            window.BeginResizeDrag(WindowEdge.West, e);
+                        }
+                        else if (arg2 > 0.95)
+                        {
+                            window.BeginResizeDrag(WindowEdge.SouthWest, e);
+                        }
+                    }
+                    else if (arg2 > 0.95)
+                    {
+                        window.BeginResizeDrag(WindowEdge.South, e);
+                    }
+                }
+            };
         }
     }
 
@@ -230,11 +276,10 @@ public static partial class UIUtils
 
         }
     }
-    private readonly static Regex re = Regex1();
 
     public static bool CheckNumb(string input)
     {
-        return re.IsMatch(input);
+        return Regex1().IsMatch(input);
     }
 
     [GeneratedRegex("[^0-9]+")]

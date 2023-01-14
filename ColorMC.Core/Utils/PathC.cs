@@ -28,6 +28,24 @@ public static class PathC
         return (path, name);
     }
 
+    public static List<FileInfo> GetAllFile(string dir) 
+    {
+        var list = new List<FileInfo>();
+        var info = new DirectoryInfo(dir);
+        if (!info.Exists)
+        {
+            return list;
+        }
+
+        list.AddRange(info.GetFiles());
+        foreach (var item in info.GetDirectories())
+        {
+            list.AddRange(GetAllFile(item.FullName));
+        }
+
+        return list;
+    }
+
     public static LibVersionObj? MakeVersionObj(string name)
     {
         var arg = name.Split(":");
