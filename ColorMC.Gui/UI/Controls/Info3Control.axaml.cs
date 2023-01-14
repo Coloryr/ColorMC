@@ -96,7 +96,6 @@ public partial class Info3Control : UserControl
         if (lock1)
         {
             TextBox_Text.Text = title;
-            
             TextBox_Text.Watermark = "";
 
             ProgressBar_Value.IsVisible = true;

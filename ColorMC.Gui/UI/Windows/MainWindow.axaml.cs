@@ -10,6 +10,7 @@ using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -27,6 +28,7 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         this.MakeItNoChrome();
+        Rectangle1.MakeResizeDrag(this);
         FontFamily = Program.FontFamily;
 
         ItemInfo.SetWindow(this);
@@ -196,7 +198,7 @@ public partial class MainWindow : Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Rectangle1);
+        App.Update(this, Image_Back, Grid1);
     }
 
     public async void EditGroup(GameSettingObj obj) 

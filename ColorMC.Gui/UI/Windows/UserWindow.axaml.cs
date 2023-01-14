@@ -29,6 +29,7 @@ public partial class UserWindow : Window
         InitializeComponent();
 
         this.MakeItNoChrome();
+        Rectangle1.MakeResizeDrag(this);
         FontFamily = Program.FontFamily;
 
         if (App.BackBitmap != null)
@@ -82,14 +83,14 @@ public partial class UserWindow : Window
 
             if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
             {
-                new UserFlyout(user).ShowAt(this, true);
+                new UserFlyout(this, user).ShowAt(this, true);
             }
         });
     }
 
     public void Update()
     {
-        App.Update(this, Image_Back, Rectangle1);
+        App.Update(this, Image_Back, Grid1);
     }
 
     private void DataGrid_User_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -102,7 +103,6 @@ public partial class UserWindow : Window
         }
 
         UserBinding.SetLastUser(item.UUID, item.AuthType);
-        MainWindow.OnUserEdit();
 
         Info2.Show(Localizer.Instance["UserWindow.Ok1"]);
         Load();

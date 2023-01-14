@@ -23,13 +23,7 @@
             Title="{i18n:Localize AddCurseForgeWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
-        <Grid Margin="0,35,0,0">
-            <Rectangle
-                Name="Rectangle1"
-                Fill="#FFF4F4F5"
-                Stroke="#FF5ABED6"
-                StrokeThickness="3" />
-
+        <Grid Name="Grid1" Margin="0,35,0,0">
             <Image
                 Name="Image_Back"
                 Margin="3"
@@ -126,80 +120,86 @@
                 Name="GridVersion"
                 Background="#EEEEEEEE"
                 IsVisible="False">
-                <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                    <Label
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{i18n:Localize AddCurseForgeWindow.Text6}" />
-                    <Label
-                        Margin="20,5,5,5"
-                        VerticalAlignment="Center"
-                        Content="{i18n:Localize AddCurseForgeWindow.Text7}" />
-                    <NumericUpDown
-                        Name="Input3"
-                        Width="150"
+                <Grid Margin="0,5,0,0">
+                    <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                        <Label
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{i18n:Localize AddCurseForgeWindow.Text6}" />
+                        <Label
+                            Margin="20,5,5,5"
+                            VerticalAlignment="Center"
+                            Content="{i18n:Localize AddCurseForgeWindow.Text7}" />
+                        <NumericUpDown
+                            Name="Input3"
+                            Width="150"
+                            Height="30"
+                            Background="#FFF4F4F4"
+                            BorderBrush="#FF5ABED6"
+                            BorderThickness="2"
+                            Minimum="0" />
+                    </StackPanel>
+
+                    <Button
+                        Name="ButtonCancel"
+                        Width="100"
                         Height="30"
-                        Background="#FFF4F4F4"
-                        BorderBrush="#FF5ABED6"
-                        BorderThickness="2"
-                        Minimum="0" />
-                </StackPanel>
+                        Margin="2,2,5,2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Content="{i18n:Localize Button.Cancel}" />
 
-                <Button
-                    Name="ButtonCancel"
-                    Width="100"
-                    Height="30"
-                    Margin="2,2,5,2"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Content="{i18n:Localize Button.Cancel}" />
+                    <Button
+                        Name="ButtonSearch"
+                        Width="100"
+                        Height="30"
+                        Margin="2,2,110,2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Content="{i18n:Localize AddCurseForgeWindow.Button3}" />
 
-                <Button
-                    Name="ButtonSearch"
-                    Width="100"
-                    Height="30"
-                    Margin="2,2,110,2"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Content="{i18n:Localize AddCurseForgeWindow.Button3}" />
+                    <Button
+                        Name="ButtonDownload"
+                        Width="100"
+                        Height="30"
+                        Margin="2,2,215,2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Content="{i18n:Localize AddCurseForgeWindow.Button2}" />
 
-                <Button
-                    Name="ButtonDownload"
-                    Width="100"
-                    Height="30"
-                    Margin="2,2,215,2"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Content="{i18n:Localize AddCurseForgeWindow.Button2}" />
-
-                <DataGrid
-                    Name="DataGridFiles"
-                    Margin="3,35,3,3"
-                    Background="#88ffffff">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{i18n:Localize AddCurseForgeWindow.Data.Title1}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Size}"
-                            Header="{i18n:Localize AddCurseForgeWindow.Data.Title2}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Download}"
-                            Header="{i18n:Localize AddCurseForgeWindow.Data.Title3}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Time}"
-                            Header="{i18n:Localize AddCurseForgeWindow.Data.Title4}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                    <DataGrid
+                        Name="DataGridFiles"
+                        Margin="3,35,3,3"
+                        Background="#88ffffff">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Binding="{Binding Name}"
+                                Header="{i18n:Localize AddCurseForgeWindow.Data.Title1}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Size}"
+                                Header="{i18n:Localize AddCurseForgeWindow.Data.Title2}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Download}"
+                                Header="{i18n:Localize AddCurseForgeWindow.Data.Title3}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Time}"
+                                Header="{i18n:Localize AddCurseForgeWindow.Data.Title4}"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </Grid>
 
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info4Control Name="Info" IsVisible="False" />
 
+            <Rectangle
+                Name="Rectangle1"
+                Stroke="#FF5ABED6"
+                StrokeThickness="3" />
         </Grid>
     </Grid>
 </Window>

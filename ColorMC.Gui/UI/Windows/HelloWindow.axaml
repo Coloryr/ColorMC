@@ -23,11 +23,7 @@
             Title="{i18n:Localize HelloWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
-        <Grid Margin="0,35,0,0">
-            <Rectangle
-                Fill="#FFF4F4F5"
-                Stroke="#FF5ABED6"
-                StrokeThickness="3" />
+        <Grid Margin="0,35,0,0" Background="#88FFFFFF">
 
             <DockPanel Margin="3" LastChildFill="True">
                 <TabControl Name="Tabs" DockPanel.Dock="Top">
@@ -41,7 +37,7 @@
 
                 <Grid
                     Name="Tab1"
-                    Margin="10"
+                    Margin="5"
                     ClipToBounds="True" />
             </DockPanel>
 
@@ -49,6 +45,11 @@
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info2Control Name="Info2" />
             <views:Info3Control Name="Info3" IsVisible="False" />
+
+            <Rectangle
+                Name="Rectangle1"
+                Stroke="#FF5ABED6"
+                StrokeThickness="3" />
         </Grid>
     </Grid>
 </Window>

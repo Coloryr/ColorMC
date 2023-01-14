@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.User.FlyoutsControl"
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Flyouts1Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -18,12 +18,17 @@
                 Name="Button1"
                 Width="80"
                 Height="25"
-                Content="{i18n:Localize UserWindow.Button1}" />
+                Content="{i18n:Localize GameEditWindow.Flyouts1.Button1}" />
+            <Button
+                Name="Button2"
+                Width="80"
+                Height="25"
+                Content="{i18n:Localize GameEditWindow.Flyouts1.Button2}" />
             <Button
                 Name="Button3"
                 Width="80"
                 Height="25"
-                Content="{i18n:Localize UserWindow.Button3}" />
+                Content="{i18n:Localize GameEditWindow.Flyouts1.Button3}" />
         </StackPanel>
     </Grid>
 </UserControl>

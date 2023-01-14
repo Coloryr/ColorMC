@@ -145,7 +145,9 @@ public class DownloadThread
                         using Stream stream1 = data.Content.ReadAsStream(cancel.Token);
                         buffer = ArrayPool<byte>.Shared.Rent(DownloadManager.GetCopyBufferSize(stream1));
 
-                        using FileStream stream = new(item.Local, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
+                        string file = item.Local + ".temp";
+
+                        using FileStream stream = new(file, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
 
                         int bytesRead;
                         while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer),
@@ -174,8 +176,12 @@ public class DownloadThread
                                 item.State = DownloadItemState.Error;
                                 item.Update?.Invoke(index);
                                 DownloadManager.Error(index, item, new Exception("hash error"));
+
+                                break;
                             }
                         }
+
+                        File.Move(file, item.Local);
 
                         item.State = DownloadItemState.Action;
                         item.Update?.Invoke(index);

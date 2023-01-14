@@ -65,6 +65,7 @@
 	<sys:String x:Key="SettingWindow.Tab3">网络设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab4">参数设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5">Java路径</sys:String>
+	<sys:String x:Key="SettingWindow.Flyouts.Button1">删除Java</sys:String>
 
 	<sys:String x:Key="HelloWindow.Title">ColorMC 初始设置</sys:String>
 	<sys:String x:Key="HelloWindow.Tab1">开始</sys:String>
@@ -77,11 +78,14 @@
 	<sys:String x:Key="GameEditWindow.Title">ColorMC 游戏实例{0}设置</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab1">版本设置</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab2">启动参数</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab3">Mod列表</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab4">地图列表</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab5">导出</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab6">运行日志</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab7">配置文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab3">配置文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4">Mod列表</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5">地图列表</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6">导出</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab7">运行日志</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts1.Button1">启用/禁用</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts1.Button2">删除Mod</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts1.Button3">打开文件夹</sys:String>
 
 	<sys:String x:Key="ErrorWindow.Title">ColorMC 错误</sys:String>
 
@@ -288,17 +292,21 @@
 	<sys:String x:Key="Tab2Control2.Text2">自动加入服务器</sys:String>
 	<sys:String x:Key="Tab2Control2.Text3">服务器地址</sys:String>
 	<sys:String x:Key="Tab2Control2.Text4">服务器端口</sys:String>
-	
-	<sys:String x:Key="Tab3Control2.Button1">启用/禁用</sys:String>
-	<sys:String x:Key="Tab3Control2.Button2">添加</sys:String>
-	<sys:String x:Key="Tab3Control2.Button3">删除</sys:String>
-	<sys:String x:Key="Tab3Control2.Button4">刷新</sys:String>
-	<sys:String x:Key="Tab3Control2.Data.Title1">启用</sys:String>
-	<sys:String x:Key="Tab3Control2.Data.Title2">名字</sys:String>
-	<sys:String x:Key="Tab3Control2.Data.Title3">版本</sys:String>
-	<sys:String x:Key="Tab3Control2.Data.Title4">路径</sys:String>
-	<sys:String x:Key="Tab3Control2.Data.Title5">作者</sys:String>
-	<sys:String x:Key="Tab3Control2.Data.Title6">链接</sys:String>
+
+	<sys:String x:Key="Tab4Control2.Button1">添加</sys:String>
+	<sys:String x:Key="Tab4Control2.Button2">刷新</sys:String>
+	<sys:String x:Key="Tab4Control2.Button3">过滤</sys:String>
+	<sys:String x:Key="Tab4Control2.Text1">过滤内容</sys:String>
+	<sys:String x:Key="Tab4Control2.Text2">过滤选项</sys:String>
+	<sys:String x:Key="Tab4Control2.Filter.Item1">名字</sys:String>
+	<sys:String x:Key="Tab4Control2.Filter.Item2">文件名</sys:String>
+	<sys:String x:Key="Tab4Control2.Filter.Item3">作者</sys:String>
+	<sys:String x:Key="Tab4Control2.Data.Title1">启用</sys:String>
+	<sys:String x:Key="Tab4Control2.Data.Title2">名字</sys:String>
+	<sys:String x:Key="Tab4Control2.Data.Title3">版本</sys:String>
+	<sys:String x:Key="Tab4Control2.Data.Title4">路径</sys:String>
+	<sys:String x:Key="Tab4Control2.Data.Title5">作者</sys:String>
+	<sys:String x:Key="Tab4Control2.Data.Title6">链接</sys:String>
 	
 	<sys:String x:Key="Button.Set">设置</sys:String>
 	<sys:String x:Key="Button.Select">选择文件</sys:String>

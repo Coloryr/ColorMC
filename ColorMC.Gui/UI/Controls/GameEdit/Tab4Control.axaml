@@ -10,5 +10,119 @@
     mc:Ignorable="d">
     <Grid>
         <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
+
+        <Grid VerticalAlignment="Top">
+            <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="{i18n:Localize Tab4Control2.Text2}" />
+                <ComboBox
+                    Name="ComboBox1"
+                    Width="200"
+                    VerticalAlignment="Center" />
+
+                <TextBox
+                    Name="TextBox1"
+                    Width="300"
+                    Margin="10"
+                    HorizontalAlignment="Left"
+                    Classes="input1"
+                    Watermark="{i18n:Localize Tab4Control2.Text1}" />
+
+                <Button
+                    Name="Button1"
+                    Width="80"
+                    Height="25"
+                    Content="{i18n:Localize Tab4Control2.Button3}" />
+            </StackPanel>
+        </Grid>
+
+        <DataGrid
+            Name="DataGrid1"
+            Margin="3,45,3,3"
+            AutoGenerateColumns="False"
+            Background="#88ffffff"
+            CanUserSortColumns="False"
+            HorizontalScrollBarVisibility="Visible"
+            VerticalScrollBarVisibility="Visible">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn
+                    Binding="{Binding Enable}"
+                    Header="{i18n:Localize Tab4Control2.Data.Title1}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Name}"
+                    Header="{i18n:Localize Tab4Control2.Data.Title2}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Version}"
+                    Header="{i18n:Localize Tab4Control2.Data.Title3}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Local}"
+                    Header="{i18n:Localize Tab4Control2.Data.Title4}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Author}"
+                    Header="{i18n:Localize Tab4Control2.Data.Title5}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Url}"
+                    Header="{i18n:Localize Tab4Control2.Data.Title6}"
+                    IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
+            <Grid Margin="0,5,0,0">
+                <Button
+                    Name="Button_A"
+                    Width="20"
+                    Height="30"
+                    Content="A" />
+                <Expander
+                    Name="Expander_A"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_A1"
+                        Width="100"
+                        Height="30"
+                        Margin="4,0,0,0"
+                        Content="{i18n:Localize Tab4Control2.Button1}" />
+                </Expander>
+            </Grid>
+            <Grid Margin="0,5,0,0">
+                <Button
+                    Name="Button_R"
+                    Width="20"
+                    Height="30"
+                    Content="R" />
+                <Expander
+                    Name="Expander_R"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_R1"
+                        Width="100"
+                        Height="30"
+                        Margin="4,0,0,0"
+                        Content="{i18n:Localize Tab4Control2.Button2}" />
+                </Expander>
+            </Grid>
+
+        </StackPanel>
     </Grid>
 </UserControl>

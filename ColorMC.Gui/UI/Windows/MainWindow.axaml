@@ -24,13 +24,7 @@
             Title="{i18n:Localize MainWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
-        <Grid Margin="0,35,0,0">
-            <Rectangle
-                Name="Rectangle1"
-                Fill="#FFF4F4F5"
-                Stroke="#FF5ABED6"
-                StrokeThickness="3" />
-
+        <Grid Name="Grid1" Margin="0,35,0,0">
             <Image
                 Name="Image_Back"
                 Margin="3"
@@ -41,7 +35,7 @@
                     Name="ItemInfo"
                     Margin="0,0,3,0"
                     DockPanel.Dock="Right" />
-                <ScrollViewer Margin="3,3,0,0">
+                <ScrollViewer Margin="3,3,0,3">
                     <StackPanel Name="GameGroups" />
                 </ScrollViewer>
             </DockPanel>
@@ -50,6 +44,11 @@
             <views:Info3Control Name="Info3" IsVisible="False" />
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info4Control Name="Info" IsVisible="False" />
+
+            <Rectangle
+                Name="Rectangle1"
+                Stroke="#FF5ABED6"
+                StrokeThickness="3" />
         </Grid>
     </Grid>
 </Window>

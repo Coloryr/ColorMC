@@ -7,36 +7,29 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 
-namespace ColorMC.Gui.UI.Controls.User;
+namespace ColorMC.Gui.UI.Controls.Setting;
 
 public partial class FlyoutsControl : UserControl
 {
-    private UserDisplayObj Obj;
+    private JavaDisplayObj Obj;
     private FlyoutBase FlyoutBase;
-    private UserWindow Win;
+    private SettingWindow Win;
     public FlyoutsControl()
     {
         InitializeComponent();
 
         Button1.Click += Button1_Click;
-        Button3.Click += Button3_Click;
-    }
-
-    private void Button3_Click(object? sender, RoutedEventArgs e)
-    {
-        FlyoutBase.Hide();
-        UserBinding.Remove(Obj.UUID, Obj.AuthType);
-        Win.Load();
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        UserBinding.SetLastUser(Obj.UUID, Obj.AuthType);
-        Win.Load();
+
+        JavaBinding.RemoveJava(Obj.Name);
+        Win.Tab5Load();
     }
 
-    public void Set(FlyoutBase fb, UserDisplayObj obj, UserWindow win)
+    public void Set(FlyoutBase fb, JavaDisplayObj obj, SettingWindow win)
     {
         Win = win;
         Obj = obj;
@@ -44,11 +37,11 @@ public partial class FlyoutsControl : UserControl
     }
 }
 
-public class UserFlyout : FlyoutBase
+public class SettingFlyout : FlyoutBase
 {
-    private UserDisplayObj Obj;
-    private UserWindow Win;
-    public UserFlyout(UserWindow win, UserDisplayObj obj)
+    private JavaDisplayObj Obj;
+    private SettingWindow Win;
+    public SettingFlyout(SettingWindow win, JavaDisplayObj obj)
     {
         Win = win;
         Obj = obj;

@@ -23,12 +23,7 @@
             Title="{i18n:Localize DownloadWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
-        <Grid Margin="0,35,0,0">
-            <Rectangle
-                Name="Rectangle1"
-                Fill="#FFF4F4F5"
-                Stroke="#FF5ABED6"
-                StrokeThickness="3" />
+        <Grid Name="Grid1" Margin="0,35,0,0">
 
             <Image
                 Name="Image_Back"
@@ -152,6 +147,11 @@
 
             <views:Info4Control Name="Info" IsVisible="False" />
             <views:Info2Control Name="Info2" IsVisible="False" />
+
+            <Rectangle
+                Name="Rectangle1"
+                Stroke="#FF5ABED6"
+                StrokeThickness="3" />
         </Grid>
     </Grid>
 </Window>

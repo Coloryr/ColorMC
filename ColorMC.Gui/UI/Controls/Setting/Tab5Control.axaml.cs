@@ -2,7 +2,7 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using ColorMC.Core.LaunchPath;
+using Avalonia.Threading;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Language;
 using ColorMC.Gui.Objs;
@@ -39,8 +39,25 @@ public partial class Tab5Control : UserControl
         Expander_D.ContentTransition = CrossFade1;
 
         DataGrid1.Items = List;
+        DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private void DataGrid1_CellPointerPressed(object? sender, 
+        DataGridCellPointerPressedEventArgs e)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var java = DataGrid1.SelectedItem as JavaDisplayObj;
+            if (java == null)
+                return;
+
+            if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+            {
+                new SettingFlyout(Window, java).ShowAt(this, true);
+            }
+        });
     }
 
     private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)

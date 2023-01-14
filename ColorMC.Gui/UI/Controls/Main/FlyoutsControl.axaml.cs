@@ -3,6 +3,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Language;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -11,6 +12,7 @@ public partial class FlyoutsControl : UserControl
 {
     private GameSettingObj Obj;
     private FlyoutBase FlyoutBase;
+    private MainWindow Win;
     public FlyoutsControl()
     {
         InitializeComponent();
@@ -25,7 +27,7 @@ public partial class FlyoutsControl : UserControl
     private void Button5_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        App.MainWindow?.EditGroup(Obj);
+        Win.EditGroup(Obj);
     }
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
@@ -49,27 +51,30 @@ public partial class FlyoutsControl : UserControl
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        App.MainWindow?.Launch(false);
+        Win.Launch(false);
     }
 
-    public void Set(FlyoutBase fb, GameSettingObj obj)
+    public void Set(FlyoutBase fb, GameSettingObj obj, MainWindow win)
     {
         Obj = obj;
         FlyoutBase = fb;
+        Win = win;
     }
 }
 
 public class MainFlyout : FlyoutBase
 {
     private GameSettingObj Obj;
-    public MainFlyout(GameSettingObj obj)
+    private MainWindow Win;
+    public MainFlyout(MainWindow win,  GameSettingObj obj)
     {
+        Win = win;
         Obj = obj;
     }
     protected override Control CreatePresenter()
     {
         var control = new FlyoutsControl();
-        control.Set(this, Obj);
+        control.Set(this, Obj, Win);
         return control;
     }
 }
