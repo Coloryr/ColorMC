@@ -47,9 +47,16 @@
                     Name="Button3"
                     Width="85"
                     Height="25"
-                    Margin="5"
+                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Content="{setting:Localize GameEditWindow.Tab3.Button3}" />
+                <Button
+                    Name="Button4"
+                    Width="85"
+                    Height="25"
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize GameEditWindow.Tab3.Button4}" />
             </StackPanel>
             <Grid>
                 <Label
