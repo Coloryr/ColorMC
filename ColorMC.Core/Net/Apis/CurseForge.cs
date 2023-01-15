@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
+using Heijden.DNS;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
@@ -11,13 +12,14 @@ public static class CurseForge
     private const string CurseForgeKEY = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m";
     private const string CurseForgeUrl = "https://api.curseforge.com/";
 
-    public static async Task<CurseForgeObj?> GetPackList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
+    private static async Task<CurseForgeObj?> GetList(int classid, string version, int page,
+        int sort, string filter, int pagesize, int sortOrder)
     {
         try
         {
-            string temp = CurseForgeUrl + "v1/mods/search?gameId=432&classId=4471&"
-                + $"gameVersion={version}&index={page * pagesize}&sortField={sort}&searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}";
+            string temp = CurseForgeUrl + $"v1/mods/search?gameId=432&classId={classid}&"
+                + $"gameVersion={version}&index={page * pagesize}&sortField={sort}&" 
+                + $"searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -35,6 +37,18 @@ public static class CurseForge
             Logs.Error(LanguageHelper.GetName("Core.Http.Get.CurseForge.Error1"), e);
             return null;
         }
+    }
+
+    public static Task<CurseForgeObj?> GetPackList(string version = "", int page = 0,
+        int sort = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
+    {
+        return GetList(4471, version, page, sort, filter, pagesize, sortOrder);
+    }
+
+    public static Task<CurseForgeObj?> GetModList(string version = "", int page = 0,
+        int sort = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
+    {
+        return GetList(6, version, page, sort, filter, pagesize, sortOrder);
     }
 
     public static async Task<CurseForgeModObj?> GetMod(CurseForgePackObj.Files obj)

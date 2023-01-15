@@ -7,6 +7,7 @@ using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 
 namespace ColorMC.Gui.UI.Controls.CurseForge;
@@ -65,7 +66,7 @@ public partial class CurseForgeControl : UserControl
             }
             catch (Exception e)
             {
-                Logs.Error("ªÒ»°Õº∆¨ ß∞‹", e);
+                Logs.Error(Localizer.Instance["AddCurseForgeWindow.Error5"], e);
             }
         }
     }

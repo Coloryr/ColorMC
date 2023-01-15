@@ -1,11 +1,13 @@
 ﻿using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +18,11 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class GameBinding
 {
-    private readonly static List<string> SortOrder = new() { "顺序", "倒序" };
+    private readonly static List<string> SortOrder = new() 
+    {
+        Localizer.Instance["GameBinding.SortOrder.Item1"],
+        Localizer.Instance["GameBinding.SortOrder.Item2"]
+    };
     public static List<GameSettingObj> GetGames()
     {
         return InstancesPath.Games;
@@ -340,5 +346,35 @@ public static class GameBinding
         var dir = obj.GetGameDir();
 
         File.WriteAllText(Path.GetFullPath(dir + "/" + name), text);
+    }
+
+    public static Task<List<string>?> GetForgeVersion(string version)
+    {
+        return ForgeHelper.GetVersionList(version, BaseClient.Source);
+    }
+
+    public static Task<List<string>?> GetFabricVersion(string version)
+    {
+        return FabricHelper.GetLoaders(version, BaseClient.Source);
+    }
+
+    public static Task<List<string>?> GetQuiltVersion(string version)
+    {
+        return QuiltHelper.GetLoaders(version, BaseClient.Source);
+    }
+
+    public static Task<List<string>?> GetForgeSupportVersion() 
+    {
+        return ForgeHelper.GetSupportVersion();
+    }
+
+    public static Task<List<string>?> GetFabricSupportVersion()
+    {
+        return FabricHelper.GetSupportVersion();
+    }
+
+    public static Task<List<string>?> GetQuiltSupportVersion()
+    {
+        return QuiltHelper.GetSupportVersion();
     }
 }

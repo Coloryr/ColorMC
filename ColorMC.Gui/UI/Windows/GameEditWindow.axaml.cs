@@ -1,8 +1,8 @@
 using Avalonia.Animation;
 using Avalonia.Controls;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Language;
 using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Threading;
 

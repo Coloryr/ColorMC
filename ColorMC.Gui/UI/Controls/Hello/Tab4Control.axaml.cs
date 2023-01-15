@@ -11,7 +11,7 @@ using DynamicData;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.Language;
+using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 

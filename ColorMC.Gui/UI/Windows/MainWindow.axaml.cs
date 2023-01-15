@@ -4,13 +4,13 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Language;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Input;
+using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Windows;
 

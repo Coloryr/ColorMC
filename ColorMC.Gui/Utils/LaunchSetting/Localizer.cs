@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.Language;
+namespace ColorMC.Gui.Utils.LaunchSetting;
 
 public class Localizer : INotifyPropertyChanged
 {

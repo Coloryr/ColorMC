@@ -5,7 +5,7 @@ using ColorMC.Gui.UIBinding;
 using DynamicData;
 using ColorMC.Gui.UI.Windows;
 using System.Collections.ObjectModel;
-using ColorMC.Gui.Language;
+using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 

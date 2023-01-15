@@ -1,4 +1,7 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
         <Border Padding="40">
             <TabControl>
@@ -32,7 +35,7 @@
                             FontWeight="{TemplateBinding FontWeight}" />
                         <Border
                             Name="select_pipe"
-                            Background="#FF5EBDD3"
+                            Background="{setting:Colors Main}"
                             CornerRadius="{DynamicResource ControlCornerRadius}" />
                     </Panel>
                 </Border>

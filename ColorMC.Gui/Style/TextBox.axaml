@@ -1,4 +1,7 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel>
@@ -23,13 +26,13 @@
     </Style>
 
     <Style Selector="TextBox:focus.input1 /template/ Border#PART_BorderElement">
-        <Setter Property="Background" Value="#33bdf2ff" />
-        <Setter Property="BorderBrush" Value="#FF5ABED6" />
+        <Setter Property="Background" Value="{setting:Colors Back}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
         <Setter Property="BorderThickness" Value="0,0,0,2" />
     </Style>
 
     <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
-        <Setter Property="BorderBrush" Value="#FF5ABED6" />
+        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
     </Style>
 
 </Styles>

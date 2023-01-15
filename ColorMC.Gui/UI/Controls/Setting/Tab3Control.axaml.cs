@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 using ColorMC.Core.Net;
 using Avalonia.Input;
 using System.Text.RegularExpressions;
-using ColorMC.Gui.Language;
+using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
