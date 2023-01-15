@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -296,6 +297,38 @@ public static partial class UIUtils
         }
 
         return temp;
+    }
+
+    public static string MakeFileSize(long size)
+    {
+        if (size > 1000000)
+        {
+            return $"{(double)size / 1000000:#.000}Mb/s";
+        }
+        else if (size > 1000)
+        {
+            return $"{(double)size / 1000:#.000}Kb/s";
+        }
+        else
+        {
+            return $"{size}b/s";
+        }
+    }
+
+    public static string MakeFileSize1(long size)
+    {
+        if (size > 1000000)
+        {
+            return $"{(double)size / 1000000:#.000}MB";
+        }
+        else if (size > 1000)
+        {
+            return $"{(double)size / 1000:#.000}KB";
+        }
+        else
+        {
+            return $"{size}N";
+        }
     }
 }
 

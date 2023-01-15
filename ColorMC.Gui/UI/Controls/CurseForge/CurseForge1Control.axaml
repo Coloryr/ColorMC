@@ -1,0 +1,104 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.CurseForge.CurseForge1Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    Height="100"
+    d:DesignHeight="100"
+    d:DesignWidth="500"
+    mc:Ignorable="d">
+    <Grid Margin="1" Background="{setting:Colors TranBack}">
+        <Rectangle
+            Name="Rectangle1"
+            Fill="{setting:Colors TranBack}"
+            IsVisible="False"
+            Stroke="{setting:Colors Main}"
+            StrokeThickness="3" />
+        <Grid Margin="5">
+            <Image
+                Name="Image_Logo"
+                Width="90"
+                Height="90"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
+            <StackPanel
+                Margin="100,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                Orientation="Horizontal">
+                <Label
+                    Name="Label1"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="Name" />
+                <Label
+                    Margin="20,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddCurseForgeWindow.Control.Text1}" />
+                <Label
+                    Name="Label2"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="Auth" />
+            </StackPanel>
+            <TextBlock
+                Name="TextBlock1"
+                Margin="100,26,5,20"
+                Text="summary"
+                TextWrapping="Wrap" />
+            <StackPanel
+                Margin="100,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom"
+                Orientation="Horizontal">
+                <Label
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddCurseForgeWindow.Control.Text2}" />
+                <Label
+                    Name="Label3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="Count" />
+                <Label
+                    Margin="50,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddCurseForgeWindow.Control.Text3}" />
+                <Label
+                    Name="Label4"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="Update" />
+            </StackPanel>
+        </Grid>
+        <Grid
+            Name="Grid1"
+            Background="#EEEEEE"
+            IsVisible="False">
+            <StackPanel VerticalAlignment="Center">
+                <Label HorizontalAlignment="Center" Content="{setting:Localize AddModWindow.Control.Info1}" />
+                <ProgressBar
+                    Height="20"
+                    Margin="10"
+                    IsIndeterminate="True" />
+            </StackPanel>
+        </Grid>
+        <Grid
+            Name="Grid2"
+            HorizontalAlignment="Right"
+            IsVisible="False">
+            <Label
+                Margin="0,3,5,0"
+                VerticalAlignment="Top"
+                Background="#EEEEEE"
+                Content="{setting:Localize AddModWindow.Control.Info2}" />
+        </Grid>
+    </Grid>
+</UserControl>

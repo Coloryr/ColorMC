@@ -180,7 +180,21 @@ public class DownloadThread
                                 break;
                             }
                         }
+                        else if (!string.IsNullOrWhiteSpace(item.SHA256))
+                        {
+                            stream.Seek(0, SeekOrigin.Begin);
+                            string sha1 = Funtcions.GenSha256(stream);
+                            if (sha1 != item.SHA256)
+                            {
+                                item.State = DownloadItemState.Error;
+                                item.Update?.Invoke(index);
+                                DownloadManager.Error(index, item, new Exception("hash error"));
 
+                                break;
+                            }
+                        }
+
+                        stream.Dispose();
                         File.Move(file, item.Local);
 
                         item.State = DownloadItemState.Action;

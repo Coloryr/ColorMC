@@ -20,7 +20,8 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="{setting:Localize AddCurseForgeWindow.Title}"
+            Name="Head"
+            Title="{setting:Localize AddModWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Name="Grid1" Margin="0,35,0,0">

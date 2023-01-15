@@ -111,6 +111,7 @@ public static class PackDownload
         File.WriteAllBytes(game.GetModJsonFile(), array1);
 
         CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
+        game.Datas = new();
         Size = info.files.Count;
         Now = 0;
         var res = await CurseForge.GetMods(info.files);
@@ -128,6 +129,16 @@ public static class PackDownload
                     SHA1 = item.hashes.Where(a => a.algo == 1)
                             .Select(a => a.value).FirstOrDefault()
                 });
+
+                game.Datas.Add(item.modId, new()
+                {
+                    Name = item.displayName,
+                    File = item.fileName,
+                    SHA1 = item.hashes[0].value,
+                    Id = item.id,
+                    ModId = item.modId,
+                    Url = item.downloadUrl
+                }); 
 
                 Now++;
 
@@ -162,6 +173,16 @@ public static class PackDownload
                         .Select(a => a.value).FirstOrDefault()
                 });
 
+                game.Datas.Add(res.data.modId, new()
+                {
+                    Name = res.data.displayName,
+                    File = res.data.fileName,
+                    SHA1 = res.data.hashes[0].value,
+                    Id = res.data.id,
+                    ModId = res.data.modId,
+                    Url = res.data.downloadUrl
+                });
+
                 list2.Add(res.data);
 
                 Now++;
@@ -173,6 +194,9 @@ public static class PackDownload
                 return (DownloadState.GetInfo, list, list2, game);
             }
         }
+
+        game.SaveCurseForgeMod();
+
         var version = VersionPath.Versions?.versions
             .Where(a => a.id == info.minecraft.version).FirstOrDefault();
 

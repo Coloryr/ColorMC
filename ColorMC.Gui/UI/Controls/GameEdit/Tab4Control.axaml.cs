@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -13,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -42,8 +44,8 @@ public partial class Tab4Control : UserControl
         Button_A1.PointerLeave += Button_A1_PointerLeave;
         Button_A.PointerEnter += Button_A_PointerEnter;
 
-        Button_I1.PointerLeave += Button_A1_PointerLeave;
-        Button_I.PointerEnter += Button_A_PointerEnter;
+        Button_I1.PointerLeave += Button_I1_PointerLeave;
+        Button_I.PointerEnter += Button_I_PointerEnter;
 
         Button_R1.PointerLeave += Button_R1_PointerLeave;
         Button_R.PointerEnter += Button_R_PointerEnter;
@@ -125,7 +127,7 @@ public partial class Tab4Control : UserControl
         if (AddModWindow == null)
         {
             AddModWindow = new();
-            AddModWindow.SetTab4Control(this);
+            AddModWindow.SetTab4Control(Obj, this);
             AddModWindow.Show();
         }
         else
@@ -159,7 +161,7 @@ public partial class Tab4Control : UserControl
 
         if (Dir1.Remove(item.Local, out var obj))
         {
-            GameBinding.DeleteMod(obj);
+            GameBinding.DeleteMod(Obj, obj);
             List.Remove(item);
 
             Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
@@ -207,6 +209,7 @@ public partial class Tab4Control : UserControl
     private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)
     {
         DataGrid1.MakeTran();
+        Expander_I.MakePadingNull();
         Expander_A.MakePadingNull();
         Expander_R.MakePadingNull();
     }

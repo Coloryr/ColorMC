@@ -158,7 +158,7 @@ public partial class AddCurseForgeWindow : Window
             List1.Add(new()
             {
                 Name = item.displayName,
-                Size = $"{item.fileLength / 1000 / 1000:0.00}",
+                Size = UIUtils.MakeFileSize1(item.fileLength),
                 Download = item.downloadCount,
                 Time = DateTime.Parse(item.fileDate).ToString(),
                 File = item

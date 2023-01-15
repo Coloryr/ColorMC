@@ -12,11 +12,13 @@ using System;
 
 namespace ColorMC.Gui.UI.Controls.CurseForge;
 
-public partial class CurseForgeControl : UserControl
+public partial class CurseForge1Control : UserControl
 {
-    private AddCurseForgeWindow Window;
+    private AddModWindow Window;
+    private bool IsDownload;
+    private bool NowDownload;
     public CurseForgeObj.Data Data { get; private set; }
-    public CurseForgeControl()
+    public CurseForge1Control()
     {
         InitializeComponent();
 
@@ -26,6 +28,8 @@ public partial class CurseForgeControl : UserControl
 
     private void CurseForgeControl_DoubleTapped(object? sender, RoutedEventArgs e)
     {
+        if (IsDownload || NowDownload)
+            return;
         Window.Install();
     }
 
@@ -71,7 +75,20 @@ public partial class CurseForgeControl : UserControl
         }
     }
 
-    public void SetWindow(AddCurseForgeWindow window)
+    public void Download()
+    {
+        NowDownload = true;
+        Grid1.IsVisible = true;
+    }
+
+    public void DownloadDone() 
+    {
+        IsDownload = true;
+        Grid1.IsVisible = false;
+        Grid2.IsVisible = true;
+    }
+
+    public void SetWindow(AddModWindow window)
     {
         Window = window;
     }

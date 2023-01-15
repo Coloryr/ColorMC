@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Utils;
+using System;
 using System.Buffers;
 using System.Collections.Concurrent;
 
@@ -165,7 +166,7 @@ public static class DownloadManager
     }
 
 
-    public static async Task Download(DownloadItem item)
+    public static async Task<bool> Download(DownloadItem item)
     {
         string file = item.Local + ".temp";
         FileInfo info = new(file);
@@ -187,7 +188,29 @@ public static class DownloadManager
                     .ConfigureAwait(false);
             }
 
+            if (!string.IsNullOrWhiteSpace(item.SHA1))
+            {
+                stream.Seek(0, SeekOrigin.Begin);
+                string sha1 = Funtcions.GenSha1(stream);
+                if (sha1 != item.SHA1)
+                {
+                    return false;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(item.SHA256))
+            {
+                stream.Seek(0, SeekOrigin.Begin);
+                string sha1 = Funtcions.GenSha256(stream);
+                if (sha1 != item.SHA256)
+                {
+                    return false;
+                }
+            }
+
+            stream.Dispose();
             File.Move(file, item.Local);
+
+            return true;
         }
         finally
         {

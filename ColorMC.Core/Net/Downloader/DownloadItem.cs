@@ -14,6 +14,8 @@ public record DownloadItem
     public string? SHA1 { get; set; }
     public string? SHA256 { get; set; }
     public bool Overwrite { get; set; } = false;
+
+
     public long AllSize { get; set; }
     public long NowSize { get; set; }
     public DownloadItemState State { get; set; } = DownloadItemState.Init;

@@ -70,18 +70,7 @@ public partial class DownloadWindow : Window
         Count = 0;
         Dispatcher.UIThread.Post(() =>
         {
-            if (now > 1000000)
-            {
-                Label3.Content = $"{(double)now / 1000000:#.00}Mb/s";
-            }
-            else if (now > 1000)
-            {
-                Label3.Content = $"{(double)now / 1000:#.00}Kb/s";
-            }
-            else
-            {
-                Label3.Content = $"{now}b/s";
-            }
+            Label3.Content = UIUtils.MakeFileSize(now);
         });
     }
 
