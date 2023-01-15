@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -15,6 +16,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -57,11 +59,29 @@ public partial class Tab4Control : UserControl
         Button_R1.Click += Button_R1_Click;
         Button_I1.Click += Button_I1_Click;
 
+        Button1.Click += Button1_Click;
+
         ComboBox1.Items = FName;
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox1.SelectedIndex = 0;
 
+        TextBox1.PropertyChanged += TextBox1_TextInput;
+
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        Load1();
+    }
+
+    private void TextBox1_TextInput(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        var property = e.Property.Name;
+        if (property == "Text")
+        {
+            Load1();
+        }
     }
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
@@ -89,11 +109,6 @@ public partial class Tab4Control : UserControl
             Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
             Load();
         }
-    }
-
-    private void TextBox1_TextInput(object? sender, TextInputEventArgs e)
-    {
-        Load1();
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -248,33 +263,34 @@ public partial class Tab4Control : UserControl
 
     private void Load1()
     {
-        string fil = TextBox1.Text;
-        if (string.IsNullOrWhiteSpace(fil))
+
+        if (string.IsNullOrWhiteSpace(TextBox1.Text))
         {
             List.Clear();
             List.AddRange(Items);
         }
         else
         {
+            string fil = TextBox1.Text.ToLower();
             switch (ComboBox1.SelectedIndex)
             {
                 case 0:
                     var list = from item in Items
-                               where item.Name.Contains(fil)
+                               where item.Name.ToLower().Contains(fil)
                                select item;
                     List.Clear();
                     List.AddRange(list);
                     break;
                 case 1:
                     list = from item in Items
-                           where item.Local.Contains(fil)
+                           where item.Local.ToLower().Contains(fil)
                            select item;
                     List.Clear();
                     List.AddRange(list);
                     break;
                 case 2:
                     list = from item in Items
-                           where item.Author.Contains(fil)
+                           where item.Author.ToLower().Contains(fil)
                            select item;
                     List.Clear();
                     List.AddRange(list);

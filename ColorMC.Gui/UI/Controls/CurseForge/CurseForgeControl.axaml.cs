@@ -15,6 +15,7 @@ namespace ColorMC.Gui.UI.Controls.CurseForge;
 public partial class CurseForgeControl : UserControl
 {
     private AddCurseForgeWindow Window;
+    private bool haveimg;
     public CurseForgeObj.Data Data { get; private set; }
     public CurseForgeControl()
     {
@@ -53,21 +54,24 @@ public partial class CurseForgeControl : UserControl
         Label2.Content = temp;
         Label3.Content = data.downloadCount;
         Label4.Content = DateTime.Parse(data.dateModified);
+        haveimg = false;
         if (data.logo != null)
         {
             try
             {
-                var data1 = await BaseClient.DownloadClient.GetAsync(data.logo.url);
-                Dispatcher.UIThread.Post(() =>
-                {
-                    var bitmap = new Bitmap(data1.Content.ReadAsStream());
-                    Image_Logo.Source = bitmap;
-                });
+                using var data1 = await BaseClient.DownloadClient.GetAsync(data.logo.url);
+                var bitmap = new Bitmap(data1.Content.ReadAsStream());
+                Image_Logo.Source = bitmap;
+                haveimg = true;
             }
             catch (Exception e)
             {
                 Logs.Error(Localizer.Instance["AddCurseForgeWindow.Error5"], e);
             }
+        }
+        if (!haveimg)
+        {
+            Image_Logo.Source = App.GameIcon;
         }
     }
 

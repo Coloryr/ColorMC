@@ -29,7 +29,7 @@ public partial class Tab4Control : UserControl
             Height = (uint)Input4.Value,
             FullScreen = CheckBox1.IsChecked == true
         });
-        Window.Info2.Show(Localizer.Instance["Tab4Control1.Info1"]);
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -49,7 +49,7 @@ public partial class Tab4Control : UserControl
             MaxMemory = (uint)Input2.Value,
             MinMemory = (uint)Input1.Value
         });
-        Window.Info2.Show(Localizer.Instance["Tab4Control1.Info1"]);
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
     }
 
     public void SetWindow(SettingWindow window)

@@ -3,7 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -27,13 +27,13 @@
                 Name="Button_Confirm"
                 Width="100"
                 Height="30"
-                Content="{i18n:Localize Button.Confirm}" />
+                Content="{setting:Localize Button.Confirm}" />
             <Button
                 Name="Button_Cancel"
                 Width="100"
                 Height="30"
                 Margin="50,0,0,0"
-                Content="{i18n:Localize Button.Cancel}" />
+                Content="{setting:Localize Button.Cancel}" />
         </StackPanel>
     </StackPanel>
 </UserControl>

@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -36,6 +37,7 @@ public partial class App : Application
     public static ResourceDictionary? Language;
 
     public static Bitmap? BackBitmap { get; private set; }
+    public static Bitmap GameIcon { get; private set; }
 
     public override void Initialize()
     {
@@ -57,6 +59,13 @@ public partial class App : Application
         {
             Life.Exit += Life_Exit;
         }
+
+        var uri = new Uri("resm:ColorMC.Gui.Resource.Pic.game.png");
+
+        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+        var asset = assets.Open(uri);
+
+        GameIcon = new Bitmap(asset);
     }
 
     public static void LoadLanguage(LanguageType type)

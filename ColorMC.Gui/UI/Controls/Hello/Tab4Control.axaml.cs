@@ -1,17 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
-using ColorMC.Core.Net.Apis;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
-using DynamicData;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 
@@ -19,389 +14,31 @@ public partial class Tab4Control : UserControl
 {
     private HelloWindow Window;
 
-    private ObservableCollection<string> List = new();
-
-    private bool add;
+    private readonly ObservableCollection<UserDisplayObj1> List = new();
     public Tab4Control()
     {
         InitializeComponent();
+        List_User.Items = List;
 
-        ComboBox_GameVersion.Items = List;
-        ComboBox_GameVersion.SelectionChanged += GameVersion_SelectionChanged;
-
-        Button_Next.Click += Button_Next_Click;
         Button_Add.Click += Button_Add_Click;
-        Button_Add1.Click += Button_Add1_Click;
-        Button_Add2.Click += Button_Add2_Click;
-        Button_Add3.Click += Button_Add3_Click;
-        Button_Add4.Click += Button_Add4_Click;
+        Button_Next.Click += Button_Next_Click;
+        Button_Delete.Click += Button_Delete_Click;
+        Button_Refash.Click += Button_Refash_Click;
 
-        CheckBox_Forge.Click += Forge_Click;
-        CheckBox_Fabric.Click += Fabric_Click;
-        CheckBox_Quilt.Click += Quilt_Click;
-        CheckBox_Release.Click += Release_Click;
-        CheckBox_Snapshot.Click += Snapshot_Click;
-        CheckBox_Other.Click += Other_Click;
-
-        CoreMain.PackState = PackState;
-        CoreMain.PackUpdate = PackUpdate;
-        CoreMain.GameOverwirte = GameOverwirte;
+        ComboBox_UserType.SelectionChanged += UserType_SelectionChanged;
+        ComboBox_UserType.Items = UserBinding.GetUserTypes();
 
         Load();
     }
 
-    private async void Button_Add_Click(object? sender, RoutedEventArgs e)
+    private void Button_Delete_Click(object? sender, RoutedEventArgs e)
     {
-        string name = TextBox_Input1.Text;
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error1"]);
-            return;
-        }
-
-        string? version = ComboBox_GameVersion.SelectedItem as string;
-        if (string.IsNullOrWhiteSpace(version))
-        {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error2"]);
-            return;
-        }
-
-        var loaderversion = ComboBox_LoaderVersion.SelectedItem as string;
-        Loaders loader = Loaders.Normal;
-        if (!string.IsNullOrWhiteSpace(loaderversion))
-        {
-            if (CheckBox_Forge.IsChecked == true)
-            {
-                loader = Loaders.Forge;
-            }
-            else if (CheckBox_Fabric.IsChecked == true)
-            {
-                loader = Loaders.Fabric;
-            }
-            else if (CheckBox_Quilt.IsChecked == true)
-            {
-                loader = Loaders.Quilt;
-            }
-        }
-
-        add = true;
-        var res = await GameBinding.AddGame(name, version, loader, loaderversion);
-        if (!res)
-        {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error5"]);
-        }
-        else
-        {
-            Window.Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
-        }
-    }
-
-    private async void GameVersion_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        CheckBox_Forge.IsEnabled = false;
-        CheckBox_Fabric.IsEnabled = false;
-        CheckBox_Quilt.IsEnabled = false;
-
-        string? item = ComboBox_GameVersion.SelectedItem as string;
-        if (!string.IsNullOrWhiteSpace(item))
-        {
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
-            var list = await ForgeHelper.GetSupportVersion();
-            if (list != null && list.Contains(item))
-            {
-                CheckBox_Forge.IsEnabled = true;
-            }
-
-            list = await FabricHelper.GetSupportVersion();
-            if (list != null && list.Contains(item))
-            {
-                CheckBox_Fabric.IsEnabled = true;
-            }
-
-            list = await QuiltHelper.GetSupportVersion();
-            if (list != null && list.Contains(item))
-            {
-                CheckBox_Quilt.IsEnabled = true;
-            }
-            Window.Info1.Close();
-        }
-    }
-
-    private async void Quilt_Click(object? sender, RoutedEventArgs e)
-    {
-        if (CheckBox_Quilt.IsChecked == true)
-        {
-            string? item = ComboBox_GameVersion.SelectedItem as string;
-            if (item == null)
-                return;
-
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info4"]);
-            CheckBox_Forge.IsEnabled = false;
-            CheckBox_Fabric.IsEnabled = false;
-
-            var list = await QuiltHelper.GetLoaders(item, BaseClient.Source);
-            Window.Info1.Close();
-            if (list == null)
-            {
-                return;
-            }
-
-            ComboBox_LoaderVersion.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = list;
-        }
-        else
-        {
-            ComboBox_LoaderVersion.IsEnabled = false;
-            CheckBox_Forge.IsEnabled = true;
-            CheckBox_Fabric.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = null;
-        }
-    }
-
-    private async void Fabric_Click(object? sender, RoutedEventArgs e)
-    {
-        if (CheckBox_Fabric.IsChecked == true)
-        {
-            string? item = ComboBox_GameVersion.SelectedItem as string;
-            if (item == null)
-                return;
-
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info5"]);
-            CheckBox_Forge.IsEnabled = false;
-            CheckBox_Quilt.IsEnabled = false;
-
-            var list = await FabricHelper.GetLoaders(item, BaseClient.Source);
-            Window.Info1.Close();
-            if (list == null)
-            {
-                return;
-            }
-
-            ComboBox_LoaderVersion.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = list;
-        }
-        else
-        {
-            ComboBox_LoaderVersion.IsEnabled = false;
-            CheckBox_Forge.IsEnabled = true;
-            CheckBox_Quilt.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = null;
-        }
-    }
-
-    private async void Forge_Click(object? sender, RoutedEventArgs e)
-    {
-        if (CheckBox_Forge.IsChecked == true)
-        {
-            string? item = ComboBox_GameVersion.SelectedItem as string;
-            if (item == null)
-                return;
-
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info6"]);
-            CheckBox_Fabric.IsEnabled = false;
-            CheckBox_Quilt.IsEnabled = false;
-
-            var list = await ForgeHelper.GetVersionList(item, BaseClient.Source);
-            Window.Info1.Close();
-            if (list == null)
-            {
-                return;
-            }
-
-            ComboBox_LoaderVersion.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = list;
-        }
-        else
-        {
-            ComboBox_LoaderVersion.IsEnabled = false;
-            CheckBox_Fabric.IsEnabled = true;
-            CheckBox_Quilt.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = null;
-        }
-    }
-
-    private async Task<bool> GameOverwirte(GameSettingObj obj)
-    {
-        Window.Info1.Close();
-        var test = await Window.Info.ShowWait(
-            string.Format(Localizer.Instance["AddGameWindow.Info7"], obj.Name));
-        if (!add)
-        {
-            Window.Info1.Show();
-        }
-        return test;
-    }
-
-    private void PackUpdate(int size, int now)
-    {
-        Window.Info1.Progress((double)now / size);
-    }
-
-    private void PackState(CoreRunState state)
-    {
-        if (state == CoreRunState.Read)
-        {
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info8"]);
-        }
-        else if (state == CoreRunState.Init)
-        {
-            Window.Info1.NextText(Localizer.Instance["AddGameWindow.Info9"]);
-        }
-        else if (state == CoreRunState.GetInfo)
-        {
-            Window.Info1.NextText(Localizer.Instance["AddGameWindow.Info10"]);
-        }
-        else if (state == CoreRunState.Download)
-        {
-            Window.Info1.NextText(Localizer.Instance["AddGameWindow.Info11"]);
-            Window.Info1.Progress(-1);
-        }
-        else if (state == CoreRunState.End)
-        {
-            Window.Info1.Close();
-        }
-    }
-
-    private async void Button_Add4_Click(object? sender, RoutedEventArgs e)
-    {
-        add = false;
-        var name = await SelectPack();
-        if (name == null)
+        var item = List_User.SelectedItem as UserDisplayObj1;
+        if (item == null)
             return;
 
-        DisableButton();
-        if (await GameBinding.AddPack(name, PackType.HMCL))
-        {
-            Window.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
-        }
-        else
-        {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
-        }
-        EnableButton();
-    }
-
-    private async void Button_Add3_Click(object? sender, RoutedEventArgs e)
-    {
-        add = false;
-        var name = await SelectPack();
-        if (name == null)
-            return;
-
-        DisableButton();
-        if (await GameBinding.AddPack(name, PackType.MMC))
-        {
-            Window.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
-        }
-        else
-        {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
-        }
-        EnableButton();
-    }
-
-    private async void Button_Add2_Click(object? sender, RoutedEventArgs e)
-    {
-        add = false;
-        var name = await SelectPack();
-        if (name == null)
-            return;
-
-        DisableButton();
-        if (await GameBinding.AddPack(name, PackType.CurseForge))
-        {
-            Window.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
-        }
-        else
-        {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
-        }
-        EnableButton();
-    }
-
-    private async void Button_Add1_Click(object? sender, RoutedEventArgs e)
-    {
-        add = false;
-        var name = await SelectPack();
-        if (name == null)
-            return;
-
-        DisableButton();
-        if (await GameBinding.AddPack(name, PackType.ColorMC))
-        {
-            Window.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
-        }
-        else
-        {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
-        }
-        EnableButton();
-    }
-
-    private async Task<string?> SelectPack()
-    {
-        OpenFileDialog openFile = new()
-        {
-            Title = Localizer.Instance["AddGameWindow.Info13"],
-            AllowMultiple = false,
-            Filters = SystemInfo.Os == OsType.Windows ? new()
-            {
-                new FileDialogFilter()
-                {
-                    Extensions =new()
-                    {
-                        "zip"
-                    }
-                }
-            } : new()
-        };
-
-        var file = await openFile.ShowAsync(Window);
-        if (file?.Length > 0)
-        {
-            var item = file[0];
-            return item;
-        }
-
-        return null;
-    }
-
-    private void EnableButton()
-    {
-        Button_Add1.IsEnabled = true;
-        Button_Add2.IsEnabled = true;
-        Button_Add3.IsEnabled = true;
-        Button_Add4.IsEnabled = true;
-    }
-
-    private void DisableButton()
-    {
-        Button_Add1.IsEnabled = false;
-        Button_Add2.IsEnabled = false;
-        Button_Add3.IsEnabled = false;
-        Button_Add4.IsEnabled = false;
-    }
-
-    private void Other_Click(object? sender, RoutedEventArgs e)
-    {
+        UserBinding.Remove(item.Name, item.Type);
         Load();
-    }
-
-    private void Snapshot_Click(object? sender, RoutedEventArgs e)
-    {
-        Load();
-    }
-
-    private void Release_Click(object? sender, RoutedEventArgs e)
-    {
-        Load();
-    }
-
-    public void Load()
-    {
-        List.Clear();
-        List.AddRange(GameBinding.GetGameVersion(CheckBox_Release.IsChecked,
-            CheckBox_Snapshot.IsChecked, CheckBox_Other.IsChecked));
     }
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
@@ -409,8 +46,228 @@ public partial class Tab4Control : UserControl
         Window.Next();
     }
 
+    private async void Button_Add_Click(object? sender, RoutedEventArgs e)
+    {
+        Button_Add.IsEnabled = false;
+        switch (ComboBox_UserType.SelectedIndex)
+        {
+            case 0:
+                string name = TextBox_Input1.Text;
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    Window.Info.Show(Localizer.Instance["UserWindow.Error2"]);
+                    break;
+                }
+                var res = await UserBinding.AddUser(0, name, null);
+                if (!res.Item1)
+                {
+                    Window.Info.Show(res.Item2!);
+                }
+                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                TextBox_Input1.Text = "";
+                break;
+            case 1:
+                CoreMain.LoginOAuthCode = LoginOAuthCode;
+                Window.Info1.Show(Localizer.Instance["UserWindow.Info1"]);
+                res = await UserBinding.AddUser(1, null);
+                Window.Info3.Close();
+                if (!res.Item1)
+                {
+                    Window.Info.Show(res.Item2!);
+                }
+                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                TextBox_Input1.Text = "";
+                break;
+            case 2:
+                var server = TextBox_Input1.Text;
+                if (server.Length != 32)
+                {
+                    Window.Info.Show(Localizer.Instance["UserWindow.Error3"]);
+                    break;
+                }
+                await Window.Info3.Show(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], false);
+                Window.Info3.Close();
+                if (Window.Info3.Cancel)
+                {
+                    break;
+                }
+                var user = Window.Info3.Read();
+                if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
+                {
+                    Window.Info.Show(Localizer.Instance["UserWindow.Error2"]);
+                    break;
+                }
+                Window.Info1.Show(Localizer.Instance["UserWindow.Info2"]);
+                res = await UserBinding.AddUser(2, server, user.Item1, user.Item2);
+                Window.Info1.Close();
+                if (!res.Item1)
+                {
+                    Window.Info.Show(res.Item2!);
+                    break;
+                }
+                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                TextBox_Input1.Text = "";
+                break;
+            case 3:
+                server = TextBox_Input1.Text;
+                if (string.IsNullOrWhiteSpace(server))
+                {
+                    Window.Info.Show(Localizer.Instance["UserWindow.Error4"]);
+                    break;
+                }
+                await Window.Info3.Show(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], false);
+                Window.Info3.Close();
+                if (Window.Info3.Cancel)
+                {
+                    break;
+                }
+                user = Window.Info3.Read();
+                if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
+                {
+                    Window.Info.Show(Localizer.Instance["UserWindow.Error2"]);
+                    break;
+                }
+                Window.Info1.Show(Localizer.Instance["UserWindow.Info2"]);
+                res = await UserBinding.AddUser(3, server, user.Item1, user.Item2);
+                Window.Info1.Close();
+                if (!res.Item1)
+                {
+                    Window.Info.Show(res.Item2!);
+                    break;
+                }
+                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                TextBox_Input1.Text = "";
+                break;
+            case 4:
+                await Window.Info3.Show(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], false);
+                Window.Info3.Close();
+                if (Window.Info3.Cancel)
+                {
+                    break;
+                }
+                user = Window.Info3.Read();
+                if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
+                {
+                    Window.Info.Show(Localizer.Instance["UserWindow.Error2"]);
+                    break;
+                }
+                Window.Info1.Show(Localizer.Instance["UserWindow.Info2"]);
+                res = await UserBinding.AddUser(4, user.Item1, user.Item2);
+                Window.Info1.Close();
+                if (!res.Item1)
+                {
+                    Window.Info.Show(res.Item2!);
+                    break;
+                }
+                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                break;
+            case 5:
+                server = TextBox_Input1.Text;
+                if (string.IsNullOrWhiteSpace(server))
+                {
+                    Window.Info.Show(Localizer.Instance["UserWindow.Error4"]);
+                    break;
+                }
+                await Window.Info3.Show(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], false);
+                Window.Info3.Close();
+                if (Window.Info3.Cancel)
+                {
+                    break;
+                }
+                user = Window.Info3.Read();
+                if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
+                {
+                    Window.Info.Show(Localizer.Instance["UserWindow.Error2"]);
+                    break;
+                }
+                Window.Info1.Show(Localizer.Instance["UserWindow.Info2"]);
+                res = await UserBinding.AddUser(3, server, user.Item1, user.Item2);
+                Window.Info1.Close();
+                if (!res.Item1)
+                {
+                    Window.Info.Show(res.Item2!);
+                    break;
+                }
+                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                TextBox_Input1.Text = "";
+                break;
+            default:
+                Window.Info.Show(Localizer.Instance["UserWindow.Error5"]);
+                break;
+        }
+        Load();
+        Button_Add.IsEnabled = true;
+    }
+
+    private void LoginOAuthCode(string url, string code)
+    {
+        Window.Info1.Close();
+        Window.Info3.Show(string.Format(Localizer.Instance["UserWindow.Text3"], url),
+            string.Format(Localizer.Instance["UserWindow.Text4"], code));
+    }
+
+    private void UserType_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        switch (ComboBox_UserType.SelectedIndex)
+        {
+            case 0:
+                TextBox_Input1.IsEnabled = true;
+                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text5"];
+                TextBox_Input1.Text = "";
+                break;
+            case 1:
+                TextBox_Input1.IsEnabled = false;
+                TextBox_Input1.Watermark = "";
+                TextBox_Input1.Text = "";
+                break;
+            case 2:
+                TextBox_Input1.IsEnabled = true;
+                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text6"];
+                TextBox_Input1.Text = "";
+                break;
+            case 3:
+                TextBox_Input1.IsEnabled = true;
+                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text7"];
+                TextBox_Input1.Text = "";
+                break;
+            case 4:
+                TextBox_Input1.IsEnabled = false;
+                TextBox_Input1.Watermark = "";
+                TextBox_Input1.Text = "";
+                break;
+            case 5:
+                TextBox_Input1.IsEnabled = true;
+                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text8"];
+                TextBox_Input1.Text = "";
+                break;
+        }
+    }
+
     public void SetWindow(HelloWindow window)
     {
         Window = window;
+    }
+
+    private void Button_Refash_Click(object? sender, RoutedEventArgs e)
+    {
+        Load();
+    }
+
+    public void Load()
+    {
+        List.Clear();
+        foreach (var item in UserBinding.GetAllUser())
+        {
+            List.Add(new()
+            {
+                Name = item.Key.Item1,
+                Info = item.Value.UserName + " " + item.Key.Item2.GetName(),
+                Type = item.Key.Item2
+            });
+        }
     }
 }

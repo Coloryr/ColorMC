@@ -3,111 +3,103 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
         <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
-
-        <StackPanel Margin="5">
-            <Label Margin="5" Content="{i18n:Localize AddGameWindow.Text1}" />
-            <TextBox
-                Name="TextBox_Input1"
-                Margin="5"
-                Classes="input1"
-                Watermark="{i18n:Localize AddGameWindow.Text2}" />
-            <StackPanel Margin="5" Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="{i18n:Localize AddGameWindow.Text3}" />
-                <ComboBox
-                    Name="ComboBox_GameVersion"
-                    Width="200"
-                    Margin="5,0,0,0" />
-                <CheckBox
-                    Name="CheckBox_Release"
-                    Margin="20,0,0,0"
-                    Content="{i18n:Localize AddGameWindow.CheckBox1}"
-                    IsChecked="True" />
-                <CheckBox
-                    Name="CheckBox_Snapshot"
-                    Margin="20,0,0,0"
-                    Content="{i18n:Localize AddGameWindow.CheckBox2}" />
-                <CheckBox
-                    Name="CheckBox_Other"
-                    Margin="20,0,0,0"
-                    Content="{i18n:Localize AddGameWindow.CheckBox3}" />
-            </StackPanel>
-
-            <StackPanel Margin="5" Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="{i18n:Localize AddGameWindow.Text4}" />
-                <ComboBox
-                    Name="ComboBox_LoaderVersion"
-                    Width="200"
-                    Margin="5,0,0,0"
-                    IsEnabled="False" />
-                <CheckBox
-                    Name="CheckBox_Forge"
-                    Margin="20,0,0,0"
-                    Content="Forge"
-                    IsEnabled="False" />
-                <CheckBox
-                    Name="CheckBox_Fabric"
-                    Margin="20,0,0,0"
-                    Content="Fabric"
-                    IsEnabled="False" />
-                <CheckBox
-                    Name="CheckBox_Quilt"
-                    Margin="20,0,0,0"
-                    Content="Quilt"
-                    IsEnabled="False" />
-            </StackPanel>
+        <StackPanel Margin="10,10,10,0" VerticalAlignment="Top">
+            <Grid Margin="0,0,0,0">
+                <Border
+                    BorderBrush="#FF5ABED6"
+                    BorderThickness="2"
+                    CornerRadius="5" />
+                <StackPanel Margin="5">
+                    <Label Content="{setting:Localize HelloWindow.Tab4.Text1}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label VerticalAlignment="Center" Content="{setting:Localize HelloWindow.Tab4.Text2}" />
+                        <ComboBox
+                            Name="ComboBox_UserType"
+                            Width="200"
+                            Margin="5,0,0,0" />
+                    </StackPanel>
+                    <TextBox
+                        Name="TextBox_Input1"
+                        Margin="5"
+                        Classes="input1"
+                        IsEnabled="False"
+                        Watermark="" />
+                </StackPanel>
+                <Button
+                    Name="Button_Add"
+                    Width="80"
+                    Height="25"
+                    Margin="0,10,10,10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Content="{setting:Localize Button.Add}" />
+            </Grid>
+            <Label Margin="5" Content="{setting:Localize HelloWindow.Tab4.Text3}" />
         </StackPanel>
 
+        <Grid Margin="10,150,10,40">
+            <Border
+                BorderBrush="#FF5ABED6"
+                BorderThickness="2"
+                CornerRadius="5">
+                <ListBox
+                    Name="List_User"
+                    Margin="2"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                    SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                BorderBrush="#FF5ABED6"
+                                BorderThickness="2"
+                                CornerRadius="5">
+                                <StackPanel Margin="2">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,0,5"
+                                            FontSize="20"
+                                            Text="{Binding Info}" />
+                                        <TextBlock
+                                            Margin="10,0,0,5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding Name}" />
+                                    </StackPanel>
+                                    <TextBlock Name="Text_Local" Text="{Binding Path}" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </Grid>
+
         <Button
-            Name="Button_Add"
+            Name="Button_Delete"
             Width="80"
             Height="25"
-            Margin="0,130,10,10"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Content="{i18n:Localize Button.Add}" />
+            Margin="100,0,0,10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Content="{setting:Localize Button.Delete}" />
 
         <Button
-            Name="Button_Add1"
-            Width="180"
+            Name="Button_Refash"
+            Width="80"
             Height="25"
-            Margin="10,170,0,0"
+            Margin="10,0,0,10"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="{i18n:Localize AddGameWindow.Button1}" />
-
-        <Button
-            Name="Button_Add2"
-            Width="180"
-            Height="25"
-            Margin="195,170,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="{i18n:Localize AddGameWindow.Button2}" />
-
-        <Button
-            Name="Button_Add3"
-            Width="180"
-            Height="25"
-            Margin="380,170,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="{i18n:Localize AddGameWindow.Button3}" />
-
-        <Button
-            Name="Button_Add4"
-            Width="180"
-            Height="25"
-            Margin="565,170,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Content="{i18n:Localize AddGameWindow.Button4}" />
+            VerticalAlignment="Bottom"
+            Content="{setting:Localize Button.Refash}" />
 
         <Button
             Name="Button_Next"
@@ -116,7 +108,6 @@
             Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="{i18n:Localize Button.Next}" />
-
+            Content="{setting:Localize Button.Next}" />
     </Grid>
 </UserControl>

@@ -72,7 +72,7 @@ public partial class Tab5Control : UserControl
         var item = DataGrid1.SelectedItem as JavaDisplayObj;
         if (item == null)
         {
-            Window.Info.Show(Localizer.Instance["Tab5Control1.Error1"]);
+            Window.Info.Show(Localizer.Instance["SettingWindow.Tab5.Error1"]);
             return;
         }
 
@@ -112,13 +112,13 @@ public partial class Tab5Control : UserControl
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show(Localizer.Instance["Tab5Control1.Error2"]);
+            Window.Info.Show(Localizer.Instance["SettingWindow.Tab5.Error2"]);
             return;
         }
 
         try
         {
-            Window.Info1.Show(Localizer.Instance["Tab5Control1.Info1"]);
+            Window.Info1.Show(Localizer.Instance["SettingWindow.Tab5.Info1"]);
 
             var res = JavaBinding.AddJava(name, local);
             if (res.Item1 == null)
@@ -144,7 +144,7 @@ public partial class Tab5Control : UserControl
     {
         OpenFileDialog openFile = new()
         {
-            Title = Localizer.Instance["Tab5Control1.Info2"],
+            Title = Localizer.Instance["SettingWindow.Tab5.Info2"],
             AllowMultiple = false,
             Filters = SystemInfo.Os == OsType.Windows ? new()
             {

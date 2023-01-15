@@ -3,8 +3,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
     Width="800"
@@ -21,19 +21,19 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="{i18n:Localize InitWindow.Title}"
+            Title="{setting:Localize InitWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
             Max="False"
             Min="False" />
-        <Grid Margin="0,35,0,0" Background="#88FFFFFF">
+        <Grid Margin="0,35,0,0" Background="{setting:Colors TranBack}">
 
             <StackPanel VerticalAlignment="Center">
                 <TextBlock
                     Name="Text"
                     FontSize="20"
                     Foreground="Black"
-                    Text="{i18n:Localize InitWindow.Text}"
+                    Text="{setting:Localize InitWindow.Text}"
                     TextAlignment="Center"
                     TextWrapping="Wrap" />
                 <ProgressBar
@@ -48,7 +48,7 @@
 
             <Rectangle
                 Name="Rectangle1"
-                Stroke="#FF5ABED6"
+                Stroke="{setting:Colors Main}"
                 StrokeThickness="3" />
         </Grid>
     </Grid>

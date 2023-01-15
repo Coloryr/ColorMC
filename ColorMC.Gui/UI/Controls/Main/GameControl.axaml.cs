@@ -31,5 +31,9 @@ public partial class GameControl : UserControl
         {
             Image1.Source = new Bitmap(Obj.Image);
         }
+        else
+        {
+            Image1.Source = App.GameIcon;
+        }
     }
 }

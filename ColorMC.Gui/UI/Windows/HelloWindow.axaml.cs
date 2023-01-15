@@ -10,12 +10,12 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class HelloWindow : Window, IBaseWindow
 {
-    private readonly TabHelloControl tab1 = new();
-    private readonly Tab1Control tab2 = new();
-    private readonly Tab2Control tab3 = new();
-    private readonly Tab3Control tab4 = new();
-    private readonly Tab4Control tab5 = new();
-    private readonly Tab5Control tab6 = new();
+    private readonly Tab1Control tab1 = new();
+    private readonly Tab2Control tab2 = new();
+    private readonly Tab3Control tab3 = new();
+    private readonly Tab4Control tab4 = new();
+    private readonly Tab5Control tab5 = new();
+    private readonly Tab6Control tab6 = new();
 
     private bool switch1 = false;
 

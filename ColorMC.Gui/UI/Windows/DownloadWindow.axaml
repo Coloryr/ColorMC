@@ -3,7 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
@@ -20,7 +20,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="{i18n:Localize DownloadWindow.Title}"
+            Title="{setting:Localize DownloadWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Name="Grid1" Margin="0,35,0,0">
@@ -37,7 +37,7 @@
                     Stroke="#FF5ABED6"
                     StrokeThickness="3" />
                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                    <Label Margin="5" Content="{i18n:Localize DownloadWindow.Label1}" />
+                    <Label Margin="5" Content="{setting:Localize DownloadWindow.Label1}" />
                     <ProgressBar
                         Name="ProgressBar1"
                         Width="500"
@@ -75,23 +75,23 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{i18n:Localize DownloadWindow.Data.Title1}"
+                        Header="{setting:Localize DownloadWindow.Data.Title1}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding State}"
-                        Header="{i18n:Localize DownloadWindow.Data.Title2}"
+                        Header="{setting:Localize DownloadWindow.Data.Title2}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding NowSize}"
-                        Header="{i18n:Localize DownloadWindow.Data.Title3}"
+                        Header="{setting:Localize DownloadWindow.Data.Title3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding AllSize}"
-                        Header="{i18n:Localize DownloadWindow.Data.Title4}"
+                        Header="{setting:Localize DownloadWindow.Data.Title4}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding ErrorTime}"
-                        Header="{i18n:Localize DownloadWindow.Data.Title5}"
+                        Header="{setting:Localize DownloadWindow.Data.Title5}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
@@ -117,7 +117,7 @@
                             Width="100"
                             Height="30"
                             Margin="4,0,0,0"
-                            Content="{i18n:Localize DownloadWindow.Button1}" />
+                            Content="{setting:Localize DownloadWindow.Button1}" />
                     </Expander>
                 </Grid>
                 <Grid Margin="0,5,0,0">
@@ -140,7 +140,7 @@
                             Width="100"
                             Height="30"
                             Margin="4,0,0,0"
-                            Content="{i18n:Localize DownloadWindow.Button2}" />
+                            Content="{setting:Localize DownloadWindow.Button2}" />
                     </Expander>
                 </Grid>
             </StackPanel>

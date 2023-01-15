@@ -29,7 +29,7 @@ public partial class Tab2Control : UserControl
     {
         if (UIUtils.CheckNumb(TextBox8.Text))
         {
-            Window.Info.Show(Localizer.Instance["Tab3Control1.Error1"]);
+            Window.Info.Show(Localizer.Instance["SettingWindow.Tab3.Error1"]);
             return;
         }
 
@@ -40,14 +40,14 @@ public partial class Tab2Control : UserControl
             User = TextBox9.Text,
             Password = TextBox10.Text
         });
-        Window.Info2.Show(Localizer.Instance["Tab4Control1.Info1"]);
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
     }
 
     private void Button_Set2_Click(object? sender, RoutedEventArgs e)
     {
         if (UIUtils.CheckNumb(TextBox6.Text))
         {
-            Window.Info.Show(Localizer.Instance["Tab3Control1.Error1"]);
+            Window.Info.Show(Localizer.Instance["SettingWindow.Tab3.Error1"]);
             return;
         }
 
@@ -56,7 +56,7 @@ public partial class Tab2Control : UserControl
             IP = TextBox5.Text,
             Port = ushort.Parse(TextBox6.Text)
         });
-        Window.Info2.Show(Localizer.Instance["Tab4Control1.Info1"]);
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
     }
 
     private void Button_Set1_Click(object? sender, RoutedEventArgs e)
@@ -67,7 +67,7 @@ public partial class Tab2Control : UserControl
             Height = (uint)Input4.Value,
             FullScreen = CheckBox1.IsChecked == true
         });
-        Window.Info2.Show(Localizer.Instance["Tab4Control1.Info1"]);
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -87,7 +87,7 @@ public partial class Tab2Control : UserControl
             MaxMemory = (uint)Input2.Value,
             MinMemory = (uint)Input1.Value
         });
-        Window.Info2.Show(Localizer.Instance["Tab4Control1.Info1"]);
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
     }
 
     private void Load()
@@ -140,7 +140,7 @@ public partial class Tab2Control : UserControl
     {
         Obj = obj;
 
-        Title.Content = string.Format(Localizer.Instance["Tab2Control2.Text1"], obj.Name);
+        Title.Content = string.Format(Localizer.Instance["GameEditWindow.Tab2.Text13"], obj.Name);
     }
 
     public void Update()

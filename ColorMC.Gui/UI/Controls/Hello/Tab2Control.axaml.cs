@@ -1,102 +1,99 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
-using DynamicData;
-using System.Collections.ObjectModel;
+using System;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 
 public partial class Tab2Control : UserControl
 {
-    private HelloWindow Window;
-
-    private ObservableCollection<JavaInfoObj> List = new();
+    private IBaseWindow Window;
     public Tab2Control()
     {
         InitializeComponent();
-        List_Java.Items = List;
 
         Button_SelectFile.Click += Button_SelectFile_Click;
-        Button_Add.Click += Button_Add_Click;
-        Button_Refash.Click += Button_Refash_Click;
+        Button_Input.Click += Button_Input_Click;
+
+        Button_SelectFile1.Click += Button_SelectFile1_Click;
+        Button_Input1.Click += Button_Input1_Click;
+
+        Button_SelectFile2.Click += Button_SelectFile2_Click;
+        Button_Input2.Click += Button_Input2_Click;
+
         Button_Next.Click += Button_Next_Click;
-        Button_Delete.Click += Button_Delete_Click;
-
-        Load();
     }
 
-    private void Button_Delete_Click(object? sender, RoutedEventArgs e)
+    private void Button_Input2_Click(object? sender, RoutedEventArgs e)
     {
-        var item = List_Java.SelectedItem as JavaInfoObj;
-        if (item == null)
-            return;
-
-        JavaBinding.RemoveJava(item.Name);
-        Load();
-    }
-
-    private void Button_Add_Click(object? sender, RoutedEventArgs e)
-    {
-        string name = TextBox_Name.Text;
-        string local = TextBox_Local.Text;
-
-        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
+        string local = TextBox_Local2.Text;
+        if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show(Localizer.Instance["Tab2Control.Error1"]);
+            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error1"]);
             return;
         }
+        Window.Info1.Show(Localizer.Instance["HelloWindow.Tab2.Info1"]);
 
         try
         {
-            Window.Info1.Show(Localizer.Instance["Tab2Control.Info1"]);
-
-            var res = JavaBinding.AddJava(name, local);
-            if (res.Item1 == null)
+            var res = ConfigBinding.LoadGuiConfig(local);
+            if (!res)
             {
-                Window.Info1.Close();
-                Window.Info.Show(res.Item2!);
+                Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error2"]);
                 return;
             }
-
-            List.Add(res.Item1);
-            TextBox_Name.Text = "";
-            TextBox_Local.Text = "";
-            Window.Info1.Close();
+            Window.Update();
+            Window.Info2.Show(Localizer.Instance["HelloWindow.Tab2.Info2"]);
+        }
+        catch (Exception e1)
+        {
+            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error3"]);
+            App.ShowError(Localizer.Instance["HelloWindow.Tab2.Error3"], e1);
         }
         finally
         {
-
+            Window?.Info1.Close();
         }
     }
 
-    private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
+    private async void Button_SelectFile2_Click(object? sender, RoutedEventArgs e)
     {
         OpenFileDialog openFile = new()
         {
-            Title = Localizer.Instance["Tab2Control.Info2"],
+            Title = Localizer.Instance["HelloWindow.Tab2.Info3"],
             AllowMultiple = false,
-            Filters = SystemInfo.Os == OsType.Windows ? new()
+            Filters = new()
             {
                 new FileDialogFilter()
                 {
-                    Name =  "javaw" ,
-                    Extensions =new()
+                    Extensions = new()
                     {
-                        "exe"
+                        "json"
                     }
                 }
-            } : new()
+            }
         };
 
-        var file = await openFile.ShowAsync(Window);
+        var file = await openFile.ShowAsync(Window.Window);
         if (file?.Length > 0)
         {
             var item = file[0];
-            TextBox_Local.Text = item;
+            TextBox_Local2.Text = item;
         }
+    }
+
+    public void SetWindow(HelloWindow window)
+    {
+        Window = window;
+    }
+
+    public void SetWindow(SettingWindow window)
+    {
+        Window = window;
+        Button_Next.IsVisible = false;
+        Button_Next.IsEnabled = false;
     }
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
@@ -104,19 +101,118 @@ public partial class Tab2Control : UserControl
         Window.Next();
     }
 
-    private void Button_Refash_Click(object? sender, RoutedEventArgs e)
+    private void Button_Input_Click(object? sender, RoutedEventArgs e)
     {
-        Load();
+        string local = TextBox_Local.Text;
+        if (string.IsNullOrWhiteSpace(local))
+        {
+            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error1"]);
+            return;
+        }
+        Window.Info1.Show(Localizer.Instance["HelloWindow.Tab2.Info1"]);
+
+        try
+        {
+            var res = ConfigBinding.LoadConfig(local);
+            if (!res)
+            {
+                Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error2"]);
+                return;
+            }
+            Window.Update();
+            Window.Info2.Show(Localizer.Instance["HelloWindow.Tab2.Info2"]);
+        }
+        catch (Exception e1)
+        {
+            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error3"]);
+            App.ShowError(Localizer.Instance["HelloWindow.Tab2.Error3"], e1);
+        }
+        finally
+        {
+            Window.Info1.Close();
+        }
     }
 
-    public void Load()
+    private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        List.Clear();
-        List.AddRange(JavaBinding.GetJavaInfo());
+        OpenFileDialog openFile = new()
+        {
+            Title = Localizer.Instance["HelloWindow.Tab2.Info3"],
+            AllowMultiple = false,
+            Filters = new()
+            {
+                new FileDialogFilter()
+                {
+                    Extensions = new()
+                    {
+                        "json"
+                    }
+                }
+            }
+        };
+
+        var file = await openFile.ShowAsync(Window.Window);
+        if (file?.Length > 0)
+        {
+            var item = file[0];
+            TextBox_Local.Text = item;
+        }
     }
 
-    public void SetWindow(HelloWindow window)
+    private void Button_Input1_Click(object? sender, RoutedEventArgs e)
     {
-        Window = window;
+        string local = TextBox_Local1.Text;
+        if (string.IsNullOrWhiteSpace(local))
+        {
+            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error1"]);
+            return;
+        }
+        Window.Info1.Show(Localizer.Instance["HelloWindow.Tab2.Info4"]);
+
+        try
+        {
+            var res = ConfigBinding.LoadAuthDatabase(local);
+            if (!res)
+            {
+                Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error4"]);
+                return;
+            }
+            Window.Update();
+            Window.Info2.Show(Localizer.Instance["HelloWindow.Tab2.Info5"]);
+        }
+        catch (Exception)
+        {
+            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error5"]);
+        }
+        finally
+        {
+            Window.Info1.Close();
+        }
+    }
+
+    private async void Button_SelectFile1_Click(object? sender, RoutedEventArgs e)
+    {
+        OpenFileDialog openFile = new()
+        {
+            Title = Localizer.Instance["HelloWindow.Tab2.Info6"],
+            AllowMultiple = false,
+            Filters = new()
+            {
+                new FileDialogFilter()
+                {
+                    Extensions = new()
+                    {
+                        "db"
+                    }
+                }
+            }
+        };
+
+        var file = await openFile.ShowAsync(Window.Window);
+        if (file?.Length > 0)
+        {
+            var item = file[0];
+            TextBox_Local1.Text = item;
+        }
     }
 }

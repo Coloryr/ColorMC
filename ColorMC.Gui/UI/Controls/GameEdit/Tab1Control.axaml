@@ -39,7 +39,7 @@
                     Width="80"
                     Height="25"
                     Margin="20,0,0,0"
-                    Content="刷新版本" />
+                    Content="{setting:Localize GameEditWindow.Tab1.Button1}" />
             </StackPanel>
 
             <StackPanel Margin="5" Orientation="Horizontal">
