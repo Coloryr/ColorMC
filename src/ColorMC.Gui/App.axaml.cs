@@ -232,7 +232,7 @@ public partial class App : Application
             }
             catch (Exception e)
             {
-                Logs.Error("´°¿Ú´ò¿ªÊ§°Ü", e);
+                Logs.Error("çª—å£æ‰“å¼€å¤±è´¥", e);
             }
         }
     }
