@@ -9,34 +9,28 @@
     "Core.Auth.Read": "读取所有账户",
     "Core.Auth.Error": "数据库读取错误",
     "Core.Init": "ColorMC核心已初始化",
-
     "Core.Http.Downloader.Init": "下载器初始化，线程数{0}",
     "Core.Http.Downloader.Clear": "下载器清空",
     "Core.Http.Downloader.Start": "下载器启动",
     "Core.Http.Downloader.Fill": "下载器装填内容",
     "Core.Http.Downloader.Item.Error": "下载{0}错误",
-
     "Core.Http.Download.Forge.Error1": "读取Forge信息错误",
     "Core.Http.Download.Forge.Error2": "读取Forge安装信息错误",
     "Core.Http.Download.Forge.Error3": "读取Forge信息错误",
-
     "Core.Http.Get.CurseForge.Error1": "获取CurseForge_Pack信息发生错误",
     "Core.Http.Get.CurseForge.Error2": "获取CurseForge_Mod信息发生错误",
     "Core.Http.Get.CurseForge.Error3": "获取CurseForge整合包Mod文件发生错误",
     "Core.Http.Get.CurseForge.Error4": "获取CurseForge_Version信息发生错误",
     "Core.Http.Get.CurseForge.Error5": "获取CurseForge_VersionType信息发生错误",
     "Core.Http.Get.CurseForge.Error6": "获取CurseForge_File信息发生错误",
-
     "Core.Http.Get.Fabric.Error1": "获取Fabric版本信息发生错误",
     "Core.Http.Get.Fabric.Error2": "获取Fabric_Loader信息发生错误",
     "Core.Http.Get.Fabric.Error3": "获取Fabric_Loader版本信息发生错误",
     "Core.Http.Get.Fabric.Error4": "获取Fabric支持版本信息发生错误",
-
     "Core.Http.Get.Quilt.Error1": "获取Quilt支持版本信息发生错误",
     "Core.Http.Get.Quilt.Error2": "获取Quilt版本信息发生错误",
     "Core.Http.Get.Quilt.Error3": "获取Quilt_Loader版本信息发生错误",
     "Core.Http.Get.Quilt.Error4": "获取Loader信息发生错误",
-
     "Core.Http.Skin.Get.Error": "获取头像错误",
     "Core.Http.Skin.Read.Error": "皮肤读取失败",
     "Core.Http.Get.Assets.Error": "获取游戏资源信息发生错误",
@@ -44,12 +38,9 @@
     "Core.Http.Get.Version.Error": "获取版本信息发生错误",
     "Core.Http.Init": "Http客户端初始化",
     "Core.Http.Proxy": "使用代理服务器{0}:{1}",
-
     "Core.Http.Login.OAuth.Error1": "登录码获取失败",
     "Core.Http.Login.OAuth.Error2": "Json解析错误",
-
     "Core.Pack.Error1": "读取压缩包错误",
-
     "Core.Path.Assets.Load": "正在读取资源信息",
     "Core.Path.Instances.Load": "正在读取游戏对象信息",
     "Core.Path.Instances.Load.Error": "导入压缩包错误",
@@ -70,7 +61,6 @@
     "Core.Path.Version.Load.Error6": "读取Forge信息错误",
     "Core.Path.Version.Load.Error7": "读取Fabric信息错误",
     "Core.Path.Version.Load.Error8": "读取Fabric信息错误",
-
     "Core.Http.Login.None": "无需登录",
     "Core.Http.Login.Error1": "OAuth验证错误",
     "Core.Http.Login.Error2": "XboxLive验证错误",
@@ -100,10 +90,8 @@
     "Core.Http.Login.Refresh1": "Nide8刷新登录完成",
     "Core.Http.Login.Refresh2": "AuthlibInjector刷新登录完成",
     "Core.Http.Login.Refresh3": "LittleSkin刷新登录完成",
-
     "Core.Game.Error1": "Mod解析失败",
     "Core.Game.Error2": "Resourcepack解析失败",
-
     "AuthType.Offline": "离线",
     "AuthType.OAuth": "微软登录",
     "AuthType.Nide8": "统一通行证",
@@ -111,14 +99,12 @@
     "AuthType.LittleSkin": "皮肤站",
     "AuthType.SelfLittleSkin": "自建皮肤站",
     "AuthType.Other": "账户",
-
     "AuthState.OAuth": "OAuth",
     "AuthState.XBox": "XBoxLive",
     "AuthState.XSTS": "XSTS",
     "AuthState.Token": "Token",
     "AuthState.Profile": "Profile",
     "AuthState.Other": "登录状态未知",
-
     "LoginState.Done": "完成",
     "LoginState.TimeOut": "超时",
     "LoginState.JsonError": "数据错误",
@@ -126,7 +112,6 @@
     "LoginState.ErrorType": "错误的账户类型",
     "LoginState.Crash": "崩溃",
     "LoginState.Other": "登录结果未知",
-
     "LaunchState.Check": "验证游戏完整性",
     "LaunchState.CheckVersion": "验证游戏核心",
     "LaunchState.CheckLib": "验证游戏运行库",
@@ -144,12 +129,10 @@
     "LaunchState.LoaderError": "Mod加载器错误",
     "LaunchState.JvmError": "没有合适的Java",
     "LaunchState.Other": "启动状态未知",
-
     "DownloadState.Init": "初始化",
     "DownloadState.GetInfo": "获取信息",
     "DownloadState.End": "结束",
     "DownloadState.Other": "未知的下载状态",
-
     "DownloadItemState.Wait": "等待中",
     "DownloadItemState.Download": "下载中",
     "DownloadItemState.Init": "初始化中",
@@ -157,7 +140,6 @@
     "DownloadItemState.Done": "完成",
     "DownloadItemState.Error": "发生错误",
     "DownloadItemState.Other": "未知的下载状态",
-
     "SortField.Featured": "特色",
     "SortField.Popularity": "热度",
     "SortField.LastUpdated": "最后更新",
@@ -167,33 +149,37 @@
     "SortField.Category": "类别",
     "SortField.GameVersion": "游戏版本",
     "SortField.Other": "未知的分类",
-
     "Release.Release": "发布版",
     "Release.Beta": "Beta测试版",
     "Release.Alpha": "Alpha测试版",
     "Release.Other": "未知的发布类型",
-
     "SourceLocal.Offical": "官方",
     "SourceLocal.BMCLAPI": "BmclApi",
     "SourceLocal.MCBBS": "Mcbbs",
     "SourceLocal.Other": "未知的下载源",
-
     "GCType.G1GC": "G1垃圾回收器",
     "GCType.SerialGC": "串行垃圾回收器",
     "GCType.ParallelGC": "并行垃圾回收器",
     "GCType.CMSGC": "并发标记扫描垃圾回收器",
     "GCType.User": "用户设置",
     "GCType.Other": "未知的GC类型",
-
     "ArchEnum.x64": "64位",
     "ArchEnum.x32": "32位",
     "ArchEnum.Other": "未知的位数",
-
     "OsType.Windows": "Windows系统",
     "OsType.Linux": "Linux系统",
     "OsType.MacOS": "Mac系统",
     "OsType.Other": "未知的系统类型",
-
+    "GameType.Survival": "生存模式",
+    "GameType.Creative": "创造模式",
+    "GameType.Adventure": "冒险模式",
+    "GameType.Spectator": "旁观模式",
+    "GameType.Other": "其他模式",
+    "Difficulty.Peaceful": "和平难度",
+    "Difficulty.Normal": "普通难度",
+    "Difficulty.Hard": "困难难度",
+    "Difficulty.Easy": "简单难度",
+    "Difficulty.Other": "其他难度",
     "Log.Init.Error": "日志文件初始化错误",
     "Language": "加载语言zh-cn"
   }

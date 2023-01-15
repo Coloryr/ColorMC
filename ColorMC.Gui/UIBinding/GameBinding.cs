@@ -7,7 +7,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
+using DynamicData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -426,5 +428,39 @@ public static class GameBinding
             obj.Datas.Add(obj1.ModId, obj1);
         }
         obj.SaveCurseForgeMod();
+    }
+
+    public static async Task<List<WorldDisplayObj>> GetWorlds(GameSettingObj obj) 
+    {
+        var list = new List<WorldDisplayObj>();
+        var res = await obj.GetWorlds();
+        foreach (var item in res)
+        {
+            var obj1 = new WorldDisplayObj()
+            {
+                Name = item.LevelName,
+                Mode = LanguageHelper.GetNameWithGameType(item.GameType),
+                Time = OtherUtils.TimestampToDataTime(item.LastPlayed).ToString(),
+                Local = item.Local,
+                Difficulty = LanguageHelper.GetNameWithDifficulty(item.Difficulty),
+                Hardcore = item.Hardcore == 1,
+                World = item
+            };
+            if (item.Icon != null)
+            {
+                using MemoryStream stream = new();
+                await stream.WriteAsync(item.Icon);
+                stream.Seek(0, SeekOrigin.Begin);
+                obj1.Pic = new Avalonia.Media.Imaging.Bitmap(stream);
+            }
+            list.Add(obj1);
+        }
+
+        return list;
+    }
+
+    public static Task<bool> AddWorld(GameSettingObj obj, string file) 
+    {
+        return obj.ImportWorldZip(file);
     }
 }

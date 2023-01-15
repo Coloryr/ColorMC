@@ -233,4 +233,28 @@ public static class LanguageHelper
             _ => "未知的语言"
         };
     }
+
+    public static string GetNameWithGameType(int type)
+    {
+        return type switch
+        {
+            0 => GetName("GameType.Survival"),
+            1 => GetName("GameType.Creative"),
+            2 => GetName("GameType.Adventure"),
+            3 => GetName("GameType.Spectator"),
+            _ => GetName("GameType.Other")
+        };
+    }
+
+    public static string GetNameWithDifficulty(int type)
+    {
+        return type switch
+        {
+            0 => GetName("Difficulty.Peaceful"),
+            1 => GetName("Difficulty.Easy"),
+            2 => GetName("Difficulty.Normal"),
+            3 => GetName("Difficulty.Hard"),
+            _ => GetName("Difficulty.Other")
+        };
+    }
 }

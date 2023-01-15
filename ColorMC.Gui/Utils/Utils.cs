@@ -93,6 +93,17 @@ public static class XLib
             int format, PropertyMode mode, ref MotifWmHints data, int nelements);
 }
 
+public static class OtherUtils
+{
+    public static DateTime TimestampToDataTime(long unixTimeStamp)
+    {
+        DateTime start = new DateTime(1970, 1, 1) + 
+            TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
+        DateTime dt = start.AddMilliseconds(unixTimeStamp);
+        return dt;
+    }
+}
+
 public static partial class UIUtils
 {
     public static void MakeItNoChrome(this Window window)

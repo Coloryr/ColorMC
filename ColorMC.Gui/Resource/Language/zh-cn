@@ -235,6 +235,10 @@
 	<sys:String x:Key="GameEditWindow.Tab4.Info3">删除完成</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Info4">是否要删除Mod {0}</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Error1">Mod列表加载失败</sys:String>
+	<sys:String x:Key="GameEditWindow.Control.Text1">游戏模式</sys:String>
+	<sys:String x:Key="GameEditWindow.Control.Text2">最后游戏与</sys:String>
+	<sys:String x:Key="GameEditWindow.Control.Text3">游戏难度</sys:String>
+	<sys:String x:Key="GameEditWindow.Control.Text4">极限模式</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button1">启用/禁用</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button2">删除Mod</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button3">打开文件夹</sys:String>

@@ -195,6 +195,8 @@ public partial class AddModWindow : Window
             }
             a++;
         }
+
+        ScrollViewer1.ScrollToHome();
     }
 
     private async void Load1()

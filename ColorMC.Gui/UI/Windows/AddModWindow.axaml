@@ -103,7 +103,10 @@
                     IsEnabled="False" />
             </Grid>
 
-            <ScrollViewer Margin="3,75,3,3" VerticalScrollBarVisibility="Visible">
+            <ScrollViewer
+                Name="ScrollViewer1"
+                Margin="3,75,3,3"
+                VerticalScrollBarVisibility="Visible">
                 <StackPanel
                     Name="ListBox_Items"
                     HorizontalAlignment="Stretch"
