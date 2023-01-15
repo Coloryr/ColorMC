@@ -215,6 +215,7 @@
 	<sys:String x:Key="GameEditWindow.Tab3.Button1">筛选文件</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Button2">打开文件夹</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Button3">保存修改</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab3.Button4">刷新列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Button1">添加</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Button2">刷新</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Button3">过滤</sys:String>

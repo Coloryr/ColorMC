@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using AvaloniaEdit.Indentation.CSharp;
@@ -33,13 +34,31 @@ public partial class Tab3Control : UserControl
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
+        Button4.Click += Button4_Click;
 
         TextEditor1.Options.ShowBoxForControlCharacters = true;
         TextEditor1.TextArea.IndentationStrategy = new CSharpIndentationStrategy(TextEditor1.Options);
 
         registryOptions = new RegistryOptions(ThemeName.LightPlus);
         textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
+
+        TextBox1.PropertyChanged += TextBox1_TextInput;
     }
+
+    private void Button4_Click(object? sender, RoutedEventArgs e)
+    {
+        Load();
+    }
+
+    private void TextBox1_TextInput(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        var property = e.Property.Name;
+        if (property == "Text")
+        {
+            Load1();
+        }
+    }
+
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
@@ -62,7 +81,7 @@ public partial class Tab3Control : UserControl
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        Load();
+        Load1();
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -74,12 +93,16 @@ public partial class Tab3Control : UserControl
         var text = GameBinding.ReadConfigFile(Obj, item);
         var ex = item[item.LastIndexOf('.')..];
 
-        EditGa(ex);
         TextEditor1.Document = new AvaloniaEdit.Document.TextDocument(text);
+        EditGa(ex);
     }
 
     public void EditGa(string name)
     {
+        if (name == ".json5")
+        {
+            name = ".json";
+        }
         var item = registryOptions.GetLanguageByExtension(name);
         if (item == null)
         {
@@ -87,12 +110,20 @@ public partial class Tab3Control : UserControl
             return;
         }
         var item1 = registryOptions.GetScopeByLanguageId(item.Id);
-        if (item == null)
+        if (item1 == null)
             return;
         textMateInstallation.SetGrammar(item1);
     }
 
-    public void Load()
+    private void Load() 
+    {
+        Items.Clear();
+        var list = GameBinding.GetAllConfig(Obj);
+        Items.AddRange(list);
+        Load1();
+    }
+
+    private void Load1()
     {
         string fil = TextBox1.Text;
         List.Clear();
@@ -133,10 +164,7 @@ public partial class Tab3Control : UserControl
         if (Obj == null)
             return;
 
-        Items.Clear();
-        var list = GameBinding.GetAllConfig(Obj);
-        Items.AddRange(list);
-
+        TextBox1.Text = "";
         Load();
     }
 }
