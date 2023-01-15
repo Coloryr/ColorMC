@@ -76,16 +76,66 @@
 	<sys:String x:Key="HelloWindow.Tab6">完成</sys:String>
 
 	<sys:String x:Key="GameEditWindow.Title">ColorMC 游戏实例{0}设置</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab1">版本设置</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab2">启动参数</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab3">配置文件</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab4">Mod列表</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab5">地图列表</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab6">导出</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab7">运行日志</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab1.Title">版本设置</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Title">启动参数</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab3.Title">配置文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Title">Mod列表</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Title">地图列表</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Title">导出</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab7.Title">运行日志</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab1.Text1">游戏版本</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text1">Jvm参数设置</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text2">垃圾回收器设置</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text3">手动GC参数</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text4">最小内存(MB)</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text5">最大内存(MB)</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text6">附加JavaAgent</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text7">附加Jvm参数</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text8">附加游戏参数</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text9">游戏窗口设置</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text10">水平大小</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text11">垂直大小</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text12">全屏化</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text13">该设定只应用于游戏实例{0}</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text14">自动加入服务器</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text15">服务器地址</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text16">服务器端口</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text17">端口代理设置</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text18">代理IP地址</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text19">代理端口</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text20">代理用户名</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text21">代理密码</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab3.Text1">配置文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab3.Text2">过滤器</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab3.Text3">无法编辑此文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab3.Button1">筛选文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab3.Button2">打开文件夹</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab3.Button3">保存修改</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Button1">添加</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Button2">刷新</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Button3">过滤</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Button4">导入</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Text1">过滤内容</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Text2">过滤选项</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Filter.Item1">名字</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Filter.Item2">文件名</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Filter.Item3">作者</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Data.Title1">启用</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Data.Title2">名字</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Data.Title3">版本</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Data.Title4">路径</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Data.Title5">作者</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Data.Title6">链接</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Info1">正在加载Mod列表</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Info2">添加完成</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Info3">删除完成</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Info4">是否要删除Mod {0}</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Error1">Mod列表加载失败</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button1">启用/禁用</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button2">删除Mod</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button3">打开文件夹</sys:String>
+	<sys:String x:Key="GameEditWindow.Info1">正在读取游戏版本</sys:String>
+	<sys:String x:Key="GameEditWindow.Error1">版本读取失败</sys:String>
 
 	<sys:String x:Key="ErrorWindow.Title">ColorMC 错误</sys:String>
 
@@ -140,6 +190,8 @@
 	<sys:String x:Key="AddGameWindow.Info13">选择压缩包</sys:String>
 	<sys:String x:Key="AddGameWindow.Info14">正在安装整合包</sys:String>
 	<sys:String x:Key="AddGameWindow.Info15">组名</sys:String>
+	<sys:String x:Key="AddGameWindow.Tab1.Button1">刷新加载器</sys:String>
+	<sys:String x:Key="AddGameWindow.Tab1.Button2">刷新版本</sys:String>
 
 	<sys:String x:Key="AddCurseForgeWindow.Title">ColorMC 添加CurseForge整合包</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Text1">分类</sys:String>
@@ -164,14 +216,14 @@
 	<sys:String x:Key="AddCurseForgeWindow.Error2">整合包数据加载失败</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Error3">整合包版本数据加载失败</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Error4">游戏版本加载失败</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Error5">获取图片失败</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Control.Text1">作者：</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Control.Text2">下载次数：</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Control.Text3">上次更新：</sys:String>
 
 	<sys:String x:Key="GameGroupControl.Text1">切换游戏分组</sys:String>
 	<sys:String x:Key="GameGroupControl.Button1">添加分组</sys:String>
 	
-	<sys:String x:Key="CurseForgeControl.Text1">作者：</sys:String>
-	<sys:String x:Key="CurseForgeControl.Text2">下载次数：</sys:String>
-	<sys:String x:Key="CurseForgeControl.Text3">上次更新：</sys:String>
-
 	<sys:String x:Key="TabHelloControl.Text1">看起来你是第一次启动ColorMC</sys:String>
 	<sys:String x:Key="TabHelloControl.Text2">进行一些初始设定</sys:String>
 	<sys:String x:Key="TabHelloControl.Text3">开始使用吧！</sys:String>
@@ -287,27 +339,10 @@
 	<sys:String x:Key="Tab1Control2.Button2">刷新版本</sys:String>
 	<sys:String x:Key="Tab1Control2.Data.Title1">启用</sys:String>
 	<sys:String x:Key="Tab1Control2.Data.Title2">名字</sys:String>
-	
-	<sys:String x:Key="Tab2Control2.Text1">该设定只应用于游戏实例{0}</sys:String>
-	<sys:String x:Key="Tab2Control2.Text2">自动加入服务器</sys:String>
-	<sys:String x:Key="Tab2Control2.Text3">服务器地址</sys:String>
-	<sys:String x:Key="Tab2Control2.Text4">服务器端口</sys:String>
 
-	<sys:String x:Key="Tab4Control2.Button1">添加</sys:String>
-	<sys:String x:Key="Tab4Control2.Button2">刷新</sys:String>
-	<sys:String x:Key="Tab4Control2.Button3">过滤</sys:String>
-	<sys:String x:Key="Tab4Control2.Text1">过滤内容</sys:String>
-	<sys:String x:Key="Tab4Control2.Text2">过滤选项</sys:String>
-	<sys:String x:Key="Tab4Control2.Filter.Item1">名字</sys:String>
-	<sys:String x:Key="Tab4Control2.Filter.Item2">文件名</sys:String>
-	<sys:String x:Key="Tab4Control2.Filter.Item3">作者</sys:String>
-	<sys:String x:Key="Tab4Control2.Data.Title1">启用</sys:String>
-	<sys:String x:Key="Tab4Control2.Data.Title2">名字</sys:String>
-	<sys:String x:Key="Tab4Control2.Data.Title3">版本</sys:String>
-	<sys:String x:Key="Tab4Control2.Data.Title4">路径</sys:String>
-	<sys:String x:Key="Tab4Control2.Data.Title5">作者</sys:String>
-	<sys:String x:Key="Tab4Control2.Data.Title6">链接</sys:String>
-	
+	<sys:String x:Key="GameBinding.SortOrder.Item1">顺序</sys:String>
+	<sys:String x:Key="GameBinding.SortOrder.Item2">倒序</sys:String>
+
 	<sys:String x:Key="Button.Set">设置</sys:String>
 	<sys:String x:Key="Button.Select">选择文件</sys:String>
 	<sys:String x:Key="Button.Input">导入</sys:String>

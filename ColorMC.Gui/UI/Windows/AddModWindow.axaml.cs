@@ -1,27 +1,29 @@
-using Avalonia.Animation;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.CurseForge;
-using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System;
+using ColorMC.Gui.UIBinding;
+using Avalonia.Interactivity;
+using ColorMC.Gui.Utils.LaunchSetting;
+using Avalonia.Animation;
 using System.Threading;
+using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Gui.UI.Controls.GameEdit;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class AddCurseForgeWindow : Window
+public partial class AddModWindow : Window
 {
     private readonly List<CurseForgeControl> List = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private CurseForgeControl? Last;
+    private Tab4Control Tab;
 
     private readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
 
-    public AddCurseForgeWindow()
+    public AddModWindow()
     {
         InitializeComponent();
 
@@ -44,10 +46,15 @@ public partial class AddCurseForgeWindow : Window
         ButtonCancel.Click += ButtonCancel_Click;
         ButtonDownload.Click += ButtonDownload_Click;
 
-        Opened += AddCurseForgeWindow_Opened;
-        Closed += AddCurseForgeWindow_Closed;
+        Opened += AddModWindow_Opened;
+        Closed += AddModWindow_Closed;
 
         Update();
+    }
+
+    public void SetTab4Control(Tab4Control tab) 
+    {
+        Tab = tab;
     }
 
     private void ButtonDownload_Click(object? sender, RoutedEventArgs e)
@@ -90,9 +97,9 @@ public partial class AddCurseForgeWindow : Window
         Install();
     }
 
-    private void AddCurseForgeWindow_Closed(object? sender, EventArgs e)
+    private void AddModWindow_Closed(object? sender, EventArgs e)
     {
-        App.AddCurseForgeWindow = null;
+        Tab.CloseAddMod();
     }
 
     public void Install()
@@ -119,7 +126,7 @@ public partial class AddCurseForgeWindow : Window
     private async void Load()
     {
         Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info2"]);
-        var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string, 
+        var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, int.Parse(Input2.Text), ComboBox3.SelectedIndex);
         Info1.Close();
         if (data == null)
@@ -133,7 +140,7 @@ public partial class AddCurseForgeWindow : Window
         foreach (var item in data.data)
         {
             CurseForgeControl control = new();
-            control.SetWindow(this);
+            //control.SetWindow(this);
             control.Load(item);
             List.Add(control);
             ListBox_Items.Children.Add(control);
@@ -171,7 +178,7 @@ public partial class AddCurseForgeWindow : Window
         Load();
     }
 
-    private async void AddCurseForgeWindow_Opened(object? sender, EventArgs e)
+    private async void AddModWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
         Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info4"]);

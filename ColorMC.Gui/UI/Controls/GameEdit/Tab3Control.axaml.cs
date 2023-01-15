@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Gui.Language;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -19,10 +18,10 @@ using AvaloniaEdit;
 using TextMateSharp.Grammars;
 using AvaloniaEdit.TextMate;
 using DynamicData;
-using Avalonia.Media;
 using AvaloniaEdit.Document;
 using System.Resources;
 using System.Security.Cryptography.X509Certificates;
+using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -47,9 +46,6 @@ public partial class Tab3Control : UserControl
 
         TextEditor1.Options.ShowBoxForControlCharacters = true;
         TextEditor1.TextArea.IndentationStrategy = new CSharpIndentationStrategy(TextEditor1.Options);
-        TextEditor1.Background = Brushes.Transparent;
-        TextEditor1.Options.ShowBoxForControlCharacters = true;
-        TextEditor1.TextArea.Background = this.Background;
 
         registryOptions = new RegistryOptions(ThemeName.LightPlus);
         textMateInstallation = TextEditor1.InstallTextMate(registryOptions);

@@ -3,7 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
+    xmlns:i18n="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
@@ -42,13 +42,13 @@
                     Name="Tabs"
                     VerticalAlignment="Top"
                     DockPanel.Dock="Top">
-                    <TabItem Header="{i18n:Localize GameEditWindow.Tab1}" />
-                    <TabItem Header="{i18n:Localize GameEditWindow.Tab2}" />
-                    <TabItem Header="{i18n:Localize GameEditWindow.Tab3}" />
-                    <TabItem Header="{i18n:Localize GameEditWindow.Tab4}" />
-                    <TabItem Header="{i18n:Localize GameEditWindow.Tab5}" />
-                    <TabItem Header="{i18n:Localize GameEditWindow.Tab6}" />
-                    <TabItem Header="{i18n:Localize GameEditWindow.Tab7}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab1.Title}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab2.Title}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab3.Title}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab4.Title}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab5.Title}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab6.Title}" />
+                    <TabItem Header="{i18n:Localize GameEditWindow.Tab7.Title}" />
                 </TabControl>
 
                 <Grid

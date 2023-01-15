@@ -12,7 +12,7 @@ using System;
 using System.Collections.ObjectModel;
 using DynamicData;
 using System.Linq;
-using ColorMC.Gui.Language;
+using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -21,12 +21,13 @@ public partial class Tab4Control : UserControl
     private readonly ObservableCollection<ModDisplayObj> List = new();
     private readonly List<ModDisplayObj> Items = new();
     private readonly Dictionary<string, ModObj> Dir1 = new();
+    private AddModWindow? AddModWindow;
 
     private readonly List<string> FName = new() 
     { 
-        Localizer.Instance["Tab4Control2.Filter.Item1"],
-        Localizer.Instance["Tab4Control2.Filter.Item2"],
-        Localizer.Instance["Tab4Control2.Filter.Item3"]
+        Localizer.Instance["GameEditWindow.Tab4.Filter.Item1"],
+        Localizer.Instance["GameEditWindow.Tab4.Filter.Item2"],
+        Localizer.Instance["GameEditWindow.Tab4.Filter.Item3"]
     };
 
     private GameEditWindow Window;
@@ -41,6 +42,9 @@ public partial class Tab4Control : UserControl
         Button_A1.PointerLeave += Button_A1_PointerLeave;
         Button_A.PointerEnter += Button_A_PointerEnter;
 
+        Button_I1.PointerLeave += Button_A1_PointerLeave;
+        Button_I.PointerEnter += Button_A_PointerEnter;
+
         Button_R1.PointerLeave += Button_R1_PointerLeave;
         Button_R.PointerEnter += Button_R_PointerEnter;
 
@@ -49,12 +53,40 @@ public partial class Tab4Control : UserControl
 
         Button_A1.Click += Button_A1_Click;
         Button_R1.Click += Button_R1_Click;
+        Button_I1.Click += Button_I1_Click;
 
         ComboBox1.Items = FName;
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox1.SelectedIndex = 0;
 
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private async void Button_I1_Click(object? sender, RoutedEventArgs e)
+    {
+        OpenFileDialog openFile = new()
+        {
+            Title = "Mod",
+            AllowMultiple = false,
+            Filters = new()
+            {
+                new FileDialogFilter()
+                {
+                    Extensions = new()
+                    {
+                        "jar"
+                    }
+                }
+            }
+        };
+
+        var file = await openFile.ShowAsync(Window);
+        if (file?.Length > 0)
+        {
+            GameBinding.AddMods(Obj, file);
+            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+            Load();
+        }
     }
 
     private void TextBox1_TextInput(object? sender, TextInputEventArgs e)
@@ -88,31 +120,23 @@ public partial class Tab4Control : UserControl
         Load();
     }
 
-    private async void Button_A1_Click(object? sender, RoutedEventArgs e)
+    private void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        if (AddModWindow == null)
         {
-            Title = "Mod",
-            AllowMultiple = false,
-            Filters = new()
-            {
-                new FileDialogFilter()
-                {
-                    Extensions = new()
-                    {
-                        "jar"
-                    }
-                }
-            }
-        };
-
-        var file = await openFile.ShowAsync(Window);
-        if (file?.Length > 0)
-        {
-            GameBinding.AddMods(Obj, file);
-            Window.Info2.Show("添加完成");
-            Load();
+            AddModWindow = new();
+            AddModWindow.SetTab4Control(this);
+            AddModWindow.Show();
         }
+        else
+        {
+            AddModWindow.Activate();
+        }
+    }
+
+    public void CloseAddMod() 
+    {
+        AddModWindow = null;
     }
 
     private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -124,14 +148,21 @@ public partial class Tab4Control : UserControl
         DisE(item);
     }
 
-    public void Delete(ModDisplayObj item)
+    public async void Delete(ModDisplayObj item)
     {
+        var res = await Window.Info.ShowWait(
+            string.Format(Localizer.Instance["GameEditWindow.Tab4.Info4"], item.Name));
+        if (!res)
+        {
+            return;
+        }
+
         if (Dir1.Remove(item.Local, out var obj))
         {
             GameBinding.DeleteMod(obj);
             List.Remove(item);
 
-            Window.Info2.Show("删除完成");
+            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
         }
     }
 
@@ -142,6 +173,16 @@ public partial class Tab4Control : UserControl
             GameBinding.ModEnDi(obj);
             item.Enable = obj.Disable;
         }
+    }
+
+    private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
+    {
+        Expander_I.IsExpanded = false;
+    }
+
+    private void Button_I_PointerEnter(object? sender, PointerEventArgs e)
+    {
+        Expander_I.IsExpanded = true;
     }
 
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
@@ -172,14 +213,14 @@ public partial class Tab4Control : UserControl
 
     private async void Load()
     {
-        Window.Info1.Show("正在加载Mod列表");
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab4.Info1"]);
         Dir1.Clear();
         Items.Clear();
         var res = await GameBinding.GetGameMods(Obj);
         Window.Info1.Close();
         if (res == null)
         {
-            Window.Info.Show("Mod列表加载失败");
+            Window.Info.Show(Localizer.Instance["GameEditWindow.Tab4.Error1"]);
             return;
         }
 

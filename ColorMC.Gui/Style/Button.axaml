@@ -1,4 +1,7 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
         <Border Padding="20">
             <StackPanel>
@@ -41,7 +44,7 @@
     </Style>
 
     <Style Selector="Button /template/ Border#Border">
-        <Setter Property="Background" Value="#FF5EBDD3" />
+        <Setter Property="Background" Value="{setting:Colors Button}" />
     </Style>
 
     <Style Selector="Button:pressed  /template/ Border#Border">

@@ -7,7 +7,7 @@ using ColorMC.Gui.UIBinding;
 using System.Collections.ObjectModel;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Language;
+using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 

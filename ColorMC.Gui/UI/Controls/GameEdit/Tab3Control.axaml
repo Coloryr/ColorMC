@@ -4,19 +4,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
+        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
         <DockPanel Margin="5">
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <Label
                     Margin="5"
                     VerticalAlignment="Center"
-                    Content="配置文件" />
+                    Content="{setting:Localize GameEditWindow.Tab3.Text1}" />
                 <ComboBox
                     Name="ComboBox1"
                     Width="200"
@@ -24,9 +24,10 @@
                 <TextBox
                     Name="TextBox1"
                     Width="200"
+                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Classes="input1"
-                    Watermark="过滤器" />
+                    Watermark="{setting:Localize GameEditWindow.Tab3.Text2}" />
 
                 <Button
                     Name="Button1"
@@ -34,32 +35,32 @@
                     Height="25"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
-                    Content="筛选文件" />
+                    Content="{setting:Localize GameEditWindow.Tab3.Button1}" />
                 <Button
                     Name="Button2"
                     Width="85"
                     Height="25"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="打开文件夹" />
+                    Content="{setting:Localize GameEditWindow.Tab3.Button2}" />
                 <Button
                     Name="Button3"
                     Width="85"
                     Height="25"
                     Margin="5"
                     VerticalAlignment="Center"
-                    Content="保存修改" />
+                    Content="{setting:Localize GameEditWindow.Tab3.Button3}" />
             </StackPanel>
             <Grid>
                 <Label
                     Name="Label1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="无法编辑此文件"
+                    Content="{setting:Localize GameEditWindow.Tab3.Text3}"
                     IsVisible="False" />
                 <ae:TextEditor
                     Name="TextEditor1"
-                    Background="White"
+                    Background="{setting:Colors TranBack}"
                     FontSize="14"
                     FontWeight="Normal"
                     Foreground="Black"

@@ -3,18 +3,18 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     Height="100"
     d:DesignHeight="100"
     d:DesignWidth="500"
     mc:Ignorable="d">
-    <Grid Margin="1" Background="#88ffffff">
+    <Grid Margin="1" Background="{setting:Colors TranBack}">
         <Rectangle
             Name="Rectangle1"
-            Fill="White"
+            Fill="{setting:Colors TranBack}"
             IsVisible="False"
-            Stroke="#FF5ABED6"
+            Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
         <Grid Margin="5">
             <Image
@@ -38,7 +38,7 @@
                     Margin="20,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="{i18n:Localize CurseForgeControl.Text1}" />
+                    Content="{setting:Localize AddCurseForgeWindow.Control.Text1}" />
                 <Label
                     Name="Label2"
                     Margin="0,0,5,0"
@@ -59,7 +59,7 @@
                 <Label
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="{i18n:Localize CurseForgeControl.Text2}" />
+                    Content="{setting:Localize AddCurseForgeWindow.Control.Text2}" />
                 <Label
                     Name="Label3"
                     HorizontalAlignment="Left"
@@ -69,7 +69,7 @@
                     Margin="50,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="{i18n:Localize CurseForgeControl.Text3}" />
+                    Content="{setting:Localize AddCurseForgeWindow.Control.Text3}" />
                 <Label
                     Name="Label4"
                     Margin="0,0,5,0"

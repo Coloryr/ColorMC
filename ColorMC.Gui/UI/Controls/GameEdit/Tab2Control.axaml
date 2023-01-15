@@ -3,13 +3,13 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Language"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="850"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
+        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
 
         <ScrollViewer Margin="5">
 
@@ -19,13 +19,13 @@
                     Margin="5"
                     HorizontalAlignment="Center"
                     Content="1" />
-                <Label Margin="5" Content="{i18n:Localize Tab4Control1.Text1}" />
+                <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text1}" />
                 <StackPanel Orientation="Horizontal">
                     <Label
                         Margin="5"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Content="{i18n:Localize Tab4Control1.Text2}" />
+                        Content="{setting:Localize GameEditWindow.Tab2.Text2}" />
                     <ComboBox
                         Name="ComboBox1"
                         Width="200"
@@ -38,28 +38,22 @@
                     Margin="5"
                     Classes="input1"
                     IsEnabled="False"
-                    Watermark="{i18n:Localize Tab4Control1.Text3}" />
+                    Watermark="{setting:Localize GameEditWindow.Tab2.Text3}" />
 
                 <StackPanel Orientation="Horizontal">
-                    <Label Margin="5" Content="{i18n:Localize Tab4Control1.Text4}" />
+                    <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text4}" />
                     <NumericUpDown
                         Name="Input1"
                         Width="150"
                         Height="30"
-                        Background="#FFF4F4F4"
-                        BorderBrush="#FF5ABED6"
-                        BorderThickness="2"
                         Minimum="1"
                         Value="1" />
 
-                    <Label Margin="20,5,5,5" Content="{i18n:Localize Tab4Control1.Text5}" />
+                    <Label Margin="20,5,5,5" Content="{setting:Localize GameEditWindow.Tab2.Text5}" />
                     <NumericUpDown
                         Name="Input2"
                         Width="150"
                         Height="30"
-                        Background="#FFF4F4F4"
-                        BorderBrush="#FF5ABED6"
-                        BorderThickness="2"
                         Minimum="1"
                         Value="1" />
                 </StackPanel>
@@ -67,18 +61,18 @@
                     Name="TextBox2"
                     Margin="5"
                     Classes="input1"
-                    Watermark="{i18n:Localize Tab4Control1.Text6}" />
+                    Watermark="{setting:Localize GameEditWindow.Tab2.Text6}" />
                 <TextBox
                     Name="TextBox3"
                     Margin="5"
                     Classes="input1"
                     MaxLength="5"
-                    Watermark="{i18n:Localize Tab4Control1.Text7}" />
+                    Watermark="{setting:Localize GameEditWindow.Tab2.Text7}" />
                 <TextBox
                     Name="TextBox4"
                     Margin="5"
                     Classes="input1"
-                    Watermark="{i18n:Localize Tab4Control1.Text8}" />
+                    Watermark="{setting:Localize GameEditWindow.Tab2.Text8}" />
                 <Button
                     Name="Button_Set"
                     Width="80"
@@ -86,36 +80,30 @@
                     Margin="10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Content="{i18n:Localize Button.Set}" />
+                    Content="{setting:Localize Button.Set}" />
 
-                <Label Margin="5" Content="{i18n:Localize Tab4Control1.Text9}" />
+                <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text9}" />
                 <StackPanel Orientation="Horizontal">
-                    <Label Margin="5" Content="{i18n:Localize Tab4Control1.Text10}" />
+                    <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text10}" />
                     <NumericUpDown
                         Name="Input3"
                         Width="150"
                         Height="30"
-                        Background="#FFF4F4F4"
-                        BorderBrush="#FF5ABED6"
-                        BorderThickness="2"
                         Minimum="1"
                         Value="1" />
 
-                    <Label Margin="20,5,5,5" Content="{i18n:Localize Tab4Control1.Text11}" />
+                    <Label Margin="20,5,5,5" Content="{setting:Localize GameEditWindow.Tab2.Text11}" />
                     <NumericUpDown
                         Name="Input4"
                         Width="150"
                         Height="30"
-                        Background="#FFF4F4F4"
-                        BorderBrush="#FF5ABED6"
-                        BorderThickness="2"
                         Minimum="1"
                         Value="1" />
 
                     <CheckBox
                         Name="CheckBox1"
                         Margin="20,0,0,0"
-                        Content="{i18n:Localize Tab4Control1.Text12}" />
+                        Content="{setting:Localize GameEditWindow.Tab2.Text12}" />
                 </StackPanel>
 
                 <Button
@@ -125,24 +113,24 @@
                     Margin="10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Content="{i18n:Localize Button.Set}" />
+                    Content="{setting:Localize Button.Set}" />
 
                 <StackPanel>
-                    <Label Margin="5" Content="{i18n:Localize Tab2Control2.Text2}" />
+                    <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text14}" />
                     <StackPanel Orientation="Horizontal">
                         <TextBox
                             Name="TextBox5"
                             Width="300"
                             Margin="5"
                             Classes="input1"
-                            Watermark="{i18n:Localize Tab2Control2.Text3}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text15}" />
                         <TextBox
                             Name="TextBox6"
                             Width="100"
                             Margin="5"
                             Classes="input1"
                             MaxLength="5"
-                            Watermark="{i18n:Localize Tab2Control2.Text4}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text16}" />
                     </StackPanel>
                 </StackPanel>
 
@@ -153,37 +141,37 @@
                     Margin="10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Content="{i18n:Localize Button.Set}" />
+                    Content="{setting:Localize Button.Set}" />
 
                 <StackPanel>
-                    <Label Margin="5" Content="{i18n:Localize Tab3Control1.Text3}" />
+                    <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text16}" />
                     <StackPanel Orientation="Horizontal">
                         <TextBox
                             Name="TextBox7"
                             Width="200"
                             Margin="5"
                             Classes="input1"
-                            Watermark="{i18n:Localize Tab3Control1.Text4}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text17}" />
                         <TextBox
                             Name="TextBox8"
                             Width="80"
                             Margin="5"
                             Classes="input1"
                             MaxLength="5"
-                            Watermark="{i18n:Localize Tab3Control1.Text5}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text18}" />
                         <TextBox
                             Name="TextBox9"
                             Width="200"
                             Margin="5"
                             Classes="input1"
-                            Watermark="{i18n:Localize Tab3Control1.Text6}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text19}" />
                         <TextBox
                             Name="TextBox10"
                             Width="200"
                             Margin="5"
                             Classes="input1"
                             PasswordChar="*"
-                            Watermark="{i18n:Localize Tab3Control1.Text7}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text20}" />
                     </StackPanel>
                 </StackPanel>
 
@@ -194,7 +182,7 @@
                     Margin="10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Content="{i18n:Localize Button.Set}" />
+                    Content="{setting:Localize Button.Set}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -1,17 +1,17 @@
 ﻿using Avalonia.Data;
-using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.Language;
+namespace ColorMC.Gui.Utils.LaunchSetting;
 
-public class LocalizeExtension : MarkupExtension
+public class ColorsExtension : MarkupExtension
 {
-    public LocalizeExtension(string key)
+    public ColorsExtension(string key)
     {
         Key = key;
     }
@@ -29,7 +29,7 @@ public class LocalizeExtension : MarkupExtension
         var binding = new ReflectionBindingExtension($"[{keyToUse}]")
         {
             Mode = BindingMode.OneWay,
-            Source = Localizer.Instance,
+            Source = Colors.Instance,
         };
 
         return binding.ProvideValue(serviceProvider);

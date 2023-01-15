@@ -1,8 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Gui.Language;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 
 namespace ColorMC.Gui.UI.Controls.Hello;

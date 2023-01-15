@@ -4,18 +4,11 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
         <Border Padding="20">
-            <StackPanel Height="400">
-                <ComboBox Width="500">
-                    <ComboBoxItem>Inline Items</ComboBoxItem>
-                    <ComboBoxItem>Inline Item 2</ComboBoxItem>
-                    <ComboBoxItem>Inline Item 3</ComboBoxItem>
-                    <ComboBoxItem>Inline Item 4</ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
+            <NumericUpDown Width="150" Height="30" />
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="ComboBox">
+    <Style Selector="NumericUpDown">
         <Setter Property="Background" Value="{setting:Colors Back}" />
         <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
         <Setter Property="BorderThickness" Value="2" />

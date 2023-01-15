@@ -4,11 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Styles>
         <FluentTheme Mode="Light" />
-		<StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" /> 
+        <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
         <StyleInclude Source="/Style/Button.axaml" />
         <StyleInclude Source="/Style/Tab.axaml" />
         <StyleInclude Source="/Style/TextBox.axaml" />
         <StyleInclude Source="/Style/ComboBox.axaml" />
+        <StyleInclude Source="/Style/NumericUpDown.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
     </Application.Styles>
 </Application>

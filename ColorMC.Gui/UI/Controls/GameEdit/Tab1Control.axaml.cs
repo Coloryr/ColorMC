@@ -6,8 +6,8 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Core.Objs;
 using DynamicData;
 using ColorMC.Core.Net.Apis;
-using ColorMC.Gui.Language;
 using ColorMC.Core.Net;
+using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -105,7 +105,7 @@ public partial class Tab1Control : UserControl
             CheckBox_Fabric.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
-            var list = await ForgeHelper.GetVersionList(Obj.Version, BaseClient.Source);
+            var list = await GameBinding.GetForgeVersion(Obj.Version);
             Window.Info1.Close();
             if (list == null)
             {
@@ -122,7 +122,7 @@ public partial class Tab1Control : UserControl
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
-            var list = await FabricHelper.GetLoaders(Obj.Version, BaseClient.Source);
+            var list = await GameBinding.GetFabricVersion(Obj.Version);
             Window.Info1.Close();
             if (list == null)
             {
@@ -139,7 +139,7 @@ public partial class Tab1Control : UserControl
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = false;
 
-            var list = await QuiltHelper.GetLoaders(Obj.Version, BaseClient.Source);
+            var list = await GameBinding.GetQuiltVersion(Obj.Version);
             Window.Info1.Close();
             if (list == null)
             {
@@ -206,19 +206,19 @@ public partial class Tab1Control : UserControl
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
         Window.Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
-        var list = await ForgeHelper.GetSupportVersion();
+        var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(Obj.Version))
         {
             CheckBox_Forge.IsEnabled = true;
         }
 
-        list = await FabricHelper.GetSupportVersion();
+        list = await GameBinding.GetFabricSupportVersion();
         if (list != null && list.Contains(Obj.Version))
         {
             CheckBox_Fabric.IsEnabled = true;
         }
 
-        list = await QuiltHelper.GetSupportVersion();
+        list = await GameBinding.GetQuiltSupportVersion();
         if (list != null && list.Contains(Obj.Version))
         {
             CheckBox_Quilt.IsEnabled = true;
@@ -228,12 +228,12 @@ public partial class Tab1Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Info1.Show("正在读取游戏版本");
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Info1"]);
         var res= await GameBinding.ReloadVersion();
         Window.Info1.Close();
         if (!res)
         {
-            Window.Info.Show("版本读取失败");
+            Window.Info.Show(Localizer.Instance["GameEditWindow.Error1"]);
             return;
         }
 
