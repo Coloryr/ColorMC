@@ -166,6 +166,8 @@ public partial class AddCurseForgeWindow : Window
             ListBox_Items.Children.Add(control);
             a++;
         }
+
+        ScrollViewer1.ScrollToHome();
     }
 
     private async void Load1()

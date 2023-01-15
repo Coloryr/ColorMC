@@ -1,0 +1,133 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.WorldControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    Height="100"
+    d:DesignHeight="100"
+    d:DesignWidth="500"
+    mc:Ignorable="d">
+    <Grid Margin="1" Background="{setting:Colors TranBack}">
+        <Rectangle
+            Name="Rectangle1"
+            Fill="{setting:Colors TranBack}"
+            IsVisible="False"
+            Stroke="{setting:Colors Main}"
+            StrokeThickness="3" />
+
+        <Grid Margin="5">
+            <Image
+                Name="Image1"
+                Width="90"
+                Height="90"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
+            <StackPanel Margin="100,0,0,0">
+                <StackPanel
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Name="Label1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="Name" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{setting:Localize GameEditWindow.Control.Text1}" />
+                    <TextBlock
+                        Name="Label2"
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="GameType" />
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{setting:Localize GameEditWindow.Control.Text3}" />
+                    <TextBlock
+                        Name="Label5"
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="GameType" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{setting:Localize GameEditWindow.Control.Text4}" />
+                    <TextBlock
+                        Name="Label6"
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="GameType" />
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{setting:Localize GameEditWindow.Control.Text2}" />
+                    <TextBlock
+                        Name="Label3"
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="Time" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Name="Label4"
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="Local" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid
+            Name="Grid1"
+            Background="#EEEEEE"
+            IsVisible="False">
+            <StackPanel VerticalAlignment="Center">
+                <Label HorizontalAlignment="Center" Content="{setting:Localize AddModWindow.Control.Info1}" />
+                <ProgressBar
+                    Height="20"
+                    Margin="10"
+                    IsIndeterminate="True" />
+            </StackPanel>
+        </Grid>
+        <Grid
+            Name="Grid2"
+            HorizontalAlignment="Right"
+            IsVisible="False">
+            <Label
+                Margin="0,3,5,0"
+                VerticalAlignment="Top"
+                Background="#EEEEEE"
+                Content="{setting:Localize AddModWindow.Control.Info2}" />
+        </Grid>
+    </Grid>
+</UserControl>

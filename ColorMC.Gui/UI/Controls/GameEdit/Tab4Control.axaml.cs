@@ -15,8 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -89,7 +87,7 @@ public partial class Tab4Control : UserControl
         OpenFileDialog openFile = new()
         {
             Title = "Mod",
-            AllowMultiple = false,
+            AllowMultiple = true,
             Filters = new()
             {
                 new FileDialogFilter()

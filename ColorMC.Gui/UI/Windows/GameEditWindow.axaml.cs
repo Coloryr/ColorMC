@@ -16,6 +16,7 @@ public partial class GameEditWindow : Window
     private readonly Tab2Control tab2 = new();
     private readonly Tab3Control tab3 = new();
     private readonly Tab4Control tab4 = new();
+    private readonly Tab5Control tab5 = new();
 
     private readonly ContentControl content1 = new();
     private readonly ContentControl content2 = new();
@@ -42,6 +43,7 @@ public partial class GameEditWindow : Window
         tab2.SetWindow(this);
         tab3.SetWindow(this);
         tab4.SetWindow(this);
+        tab5.SetWindow(this);
 
         content1.Content = tab1;
 
@@ -94,10 +96,11 @@ public partial class GameEditWindow : Window
         Obj = obj;
         Head.Title = string.Format(Localizer.Instance["GameEditWindow.Title"], obj.Name);
 
-        tab1.SetGame(Obj);
-        tab2.SetGame(Obj);
-        tab3.SetGame(Obj);
-        tab4.SetGame(Obj);
+        tab1.SetGame(obj);
+        tab2.SetGame(obj);
+        tab3.SetGame(obj);
+        tab4.SetGame(obj);
+        tab5.SetGame(obj);
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -120,8 +123,8 @@ public partial class GameEditWindow : Window
                 Go(tab4);
                 break;
             case 4:
-                //tab5.Load();
-                //Go(tab5);
+                tab5.Update();
+                Go(tab5);
                 break;
             case 5:
                 //tab5.Load();

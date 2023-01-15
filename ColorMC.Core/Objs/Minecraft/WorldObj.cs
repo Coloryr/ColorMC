@@ -18,6 +18,7 @@ public record WorldObj
     public byte Hardcore { get; set; }
     public long SizeOnDisk { get; set; }
     public string LevelName { get; set; }
+    public byte Difficulty { get; set; }
 
     public string Local { get; set; }
     public byte[] Icon { get; set; }
