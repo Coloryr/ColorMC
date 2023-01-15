@@ -28,7 +28,7 @@ public partial class Tab2Control : UserControl
     private void Button_Change_Click(object? sender, RoutedEventArgs e)
     {
         var type = (LanguageType)ComboBox2.SelectedIndex;
-        Window.Info1.Show(Localizer.Instance["Tab2Control1.Info1"]);
+        Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info1"]);
         LanguageHelper.Change(type);
         Window.Info1.Close();
     }
@@ -69,7 +69,7 @@ public partial class Tab2Control : UserControl
     {
         string file = TextBox1.Text;
 
-        Window.Info1.Show(Localizer.Instance["Tab2Control1.Info2"]);
+        Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info2"]);
         await ConfigBinding.SetGuiConfig(new()
         {
             BackImage = file,
@@ -80,14 +80,14 @@ public partial class Tab2Control : UserControl
         });
         Window.Info1.Close();
 
-        Window.Info2.Show(Localizer.Instance["Tab2Control1.Info4"]);
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info4"]);
     }
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
         OpenFileDialog openFile = new()
         {
-            Title = Localizer.Instance["Tab2Control1.Info5"],
+            Title = Localizer.Instance["SettingWindow.Tab2.Info5"],
             AllowMultiple = false,
             Filters = new()
             {

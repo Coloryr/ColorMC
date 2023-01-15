@@ -23,7 +23,7 @@ public partial class Tab3Control : UserControl
     {
         if (UIUtils.CheckNumb(TextBox2.Text) || UIUtils.CheckNumb(Input1.Text))
         {
-            Window.Info.Show(Localizer.Instance["Tab3Control1.Error1"]);
+            Window.Info.Show(Localizer.Instance["SettingWindow.Tab3.Error1"]);
             return;
         }
         ConfigBinding.SetHttpConfig(new()
@@ -38,7 +38,7 @@ public partial class Tab3Control : UserControl
             DownloadProxy = CheckBox2.IsChecked == true,
             GameProxy = CheckBox3.IsChecked == true
         });
-        Window.Info2.Show(Localizer.Instance["Tab3Control1.Info1"]);
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab3.Info1"]);
     }
 
     public void SetWindow(SettingWindow window)

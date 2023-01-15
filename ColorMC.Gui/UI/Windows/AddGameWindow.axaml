@@ -3,7 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
@@ -20,7 +20,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="{i18n:Localize AddGameWindow.Title}"
+            Title="{setting:Localize AddGameWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Name="Grid1" Margin="0,35,0,0">
@@ -34,14 +34,14 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Background="#88ffffff">
-                <Label Margin="5" Content="{i18n:Localize AddGameWindow.Text1}" />
+                <Label Margin="5" Content="{setting:Localize AddGameWindow.Text1}" />
                 <TextBox
                     Name="TextBox_Input1"
                     Margin="5"
                     Classes="input1"
-                    Watermark="{i18n:Localize AddGameWindow.Text2}" />
+                    Watermark="{setting:Localize AddGameWindow.Text2}" />
                 <StackPanel Margin="5" Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{i18n:Localize AddGameWindow.Text3}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Text3}" />
                     <ComboBox
                         Name="ComboBox_GameVersion"
                         Width="200"
@@ -49,20 +49,20 @@
                     <CheckBox
                         Name="CheckBox_Release"
                         Margin="20,0,0,0"
-                        Content="{i18n:Localize AddGameWindow.CheckBox1}"
+                        Content="{setting:Localize AddGameWindow.CheckBox1}"
                         IsChecked="True" />
                     <CheckBox
                         Name="CheckBox_Snapshot"
                         Margin="20,0,0,0"
-                        Content="{i18n:Localize AddGameWindow.CheckBox2}" />
+                        Content="{setting:Localize AddGameWindow.CheckBox2}" />
                     <CheckBox
                         Name="CheckBox_Other"
                         Margin="20,0,0,0"
-                        Content="{i18n:Localize AddGameWindow.CheckBox3}" />
+                        Content="{setting:Localize AddGameWindow.CheckBox3}" />
                 </StackPanel>
 
                 <StackPanel Margin="5" Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{i18n:Localize AddGameWindow.Text4}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Text4}" />
                     <ComboBox
                         Name="ComboBox_LoaderVersion"
                         Width="200"
@@ -86,7 +86,7 @@
                 </StackPanel>
 
                 <StackPanel Margin="5" Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{i18n:Localize AddGameWindow.Text5}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Text5}" />
                     <ComboBox
                         Name="ComboBox_Group"
                         Width="200"
@@ -98,7 +98,7 @@
                         Height="25"
                         Margin="10,0,0,0"
                         VerticalAlignment="Center"
-                        Content="{i18n:Localize AddGameWindow.Button6}" />
+                        Content="{setting:Localize AddGameWindow.Button6}" />
                 </StackPanel>
 
                 <Grid Margin="0,5,0,0">
@@ -109,7 +109,7 @@
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Content="{i18n:Localize AddGameWindow.Button1}" />
+                        Content="{setting:Localize AddGameWindow.Button1}" />
                     <Button
                         Name="Button_Add2"
                         Width="190"
@@ -117,7 +117,7 @@
                         Margin="205,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Content="{i18n:Localize AddGameWindow.Button2}" />
+                        Content="{setting:Localize AddGameWindow.Button2}" />
 
                     <Button
                         Name="Button_Add3"
@@ -126,7 +126,7 @@
                         Margin="400,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Content="{i18n:Localize AddGameWindow.Button3}" />
+                        Content="{setting:Localize AddGameWindow.Button3}" />
 
                     <Button
                         Name="Button_Add4"
@@ -135,7 +135,7 @@
                         Margin="595,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Content="{i18n:Localize AddGameWindow.Button4}" />
+                        Content="{setting:Localize AddGameWindow.Button4}" />
 
                     <Button
                         Name="Button_Add5"
@@ -144,7 +144,7 @@
                         Margin="10,30,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Content="{i18n:Localize AddGameWindow.Button5}" />
+                        Content="{setting:Localize AddGameWindow.Button5}" />
                 </Grid>
             </StackPanel>
 
@@ -155,7 +155,7 @@
                 Margin="10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                Content="{i18n:Localize Button.Add}" />
+                Content="{setting:Localize Button.Add}" />
 
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info3Control Name="Info3" IsVisible="False" />

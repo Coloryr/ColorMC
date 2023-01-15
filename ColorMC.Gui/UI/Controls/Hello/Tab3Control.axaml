@@ -3,54 +3,50 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
         <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
-        <StackPanel Margin="10,10,10,0" VerticalAlignment="Top">
-            <Grid Margin="0,0,0,0">
-                <Border
-                    BorderBrush="#FF5ABED6"
-                    BorderThickness="2"
-                    CornerRadius="5" />
-                <StackPanel Margin="5">
-                    <Label Content="{i18n:Localize Tab3Control.Text1}" />
-                    <StackPanel Orientation="Horizontal">
-                        <Label VerticalAlignment="Center" Content="{i18n:Localize Tab3Control.Text2}" />
-                        <ComboBox
-                            Name="ComboBox_UserType"
-                            Width="200"
-                            Margin="5,0,0,0" />
-                    </StackPanel>
-                    <TextBox
-                        Name="TextBox_Input1"
-                        Margin="5"
-                        Classes="input1"
-                        IsEnabled="False"
-                        Watermark="" />
-                </StackPanel>
+
+        <StackPanel Margin="5">
+            <Label Margin="5" Content="{setting:Localize HelloWindow.Tab3.Text1}" />
+            <TextBox
+                Name="TextBox_Name"
+                Margin="5"
+                Classes="input1"
+                Watermark="{setting:Localize HelloWindow.Tab3.Text2}" />
+            <TextBox
+                Name="TextBox_Local"
+                Margin="5"
+                Classes="input1"
+                Watermark="{setting:Localize HelloWindow.Tab3.Text3}" />
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button
+                    Name="Button_SelectFile"
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,10,0"
+                    Content="{setting:Localize Button.Select}" />
                 <Button
                     Name="Button_Add"
                     Width="80"
                     Height="25"
-                    Margin="0,10,10,10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Content="{i18n:Localize Button.Add}" />
-            </Grid>
-            <Label Margin="5" Content="{i18n:Localize Tab3Control.Text3}" />
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize Button.Add}" />
+            </StackPanel>
+            <Label Margin="5" Content="{setting:Localize HelloWindow.Tab3.Text4}" />
         </StackPanel>
 
-        <Grid Margin="10,150,10,40">
+        <Grid Margin="10,180,10,40">
             <Border
                 BorderBrush="#FF5ABED6"
                 BorderThickness="2"
                 CornerRadius="5">
                 <ListBox
-                    Name="List_User"
+                    Name="List_Java"
                     Margin="2"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
@@ -67,12 +63,12 @@
                                         <TextBlock
                                             Margin="0,0,0,5"
                                             FontSize="20"
-                                            Text="{Binding Info}" />
+                                            Text="{Binding Name}" />
                                         <TextBlock
                                             Margin="10,0,0,5"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
-                                            Text="{Binding Name}" />
+                                            Text="{Binding Info}" />
                                     </StackPanel>
                                     <TextBlock Name="Text_Local" Text="{Binding Path}" />
                                 </StackPanel>
@@ -90,7 +86,7 @@
             Margin="100,0,0,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Content="{i18n:Localize Button.Delete}" />
+            Content="{setting:Localize Button.Delete}" />
 
         <Button
             Name="Button_Refash"
@@ -99,7 +95,7 @@
             Margin="10,0,0,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Content="{i18n:Localize Button.Refash}" />
+            Content="{setting:Localize Button.Refash}" />
 
         <Button
             Name="Button_Next"
@@ -108,6 +104,6 @@
             Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="{i18n:Localize Button.Next}" />
+            Content="{setting:Localize Button.Next}" />
     </Grid>
 </UserControl>

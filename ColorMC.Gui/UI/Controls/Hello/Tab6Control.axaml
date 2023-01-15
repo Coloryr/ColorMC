@@ -1,0 +1,94 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Hello.Tab6Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
+
+        <StackPanel Margin="5">
+            <Label
+                Margin="5"
+                HorizontalAlignment="Center"
+                Content="{setting:Localize HelloWindow.Tab6.Text1}"
+                FontSize="40" />
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <Label
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize HelloWindow.Tab6.Text2}"
+                    FontSize="20" />
+                <Label
+                    Name="Label_Count1"
+                    VerticalAlignment="Center"
+                    Content="0"
+                    FontSize="20" />
+            </StackPanel>
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <Label
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize HelloWindow.Tab6.Text3}"
+                    FontSize="20" />
+                <Label
+                    Name="Label_Count2"
+                    VerticalAlignment="Center"
+                    Content="0"
+                    FontSize="20" />
+            </StackPanel>
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <Label
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize HelloWindow.Tab6.Text4}"
+                    FontSize="20" />
+                <Label
+                    Name="Label_Count3"
+                    VerticalAlignment="Center"
+                    Content="0"
+                    FontSize="20" />
+            </StackPanel>
+
+            <StackPanel
+                Margin="5"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Name="Button_LoadConfig"
+                    Width="100"
+                    Height="25"
+                    Margin="5"
+                    Content="{setting:Localize HelloWindow.Tab6.Button1}" />
+                <Button
+                    Name="Button_AddJava"
+                    Width="100"
+                    Height="25"
+                    Margin="5"
+                    Content="{setting:Localize HelloWindow.Tab6.Button2}" />
+                <Button
+                    Name="Button_AddUser"
+                    Width="100"
+                    Height="25"
+                    Margin="5"
+                    Content="{setting:Localize HelloWindow.Tab6.Button3}" />
+                <Button
+                    Name="Button_AddGame"
+                    Width="100"
+                    Height="25"
+                    Margin="5"
+                    Content="{setting:Localize HelloWindow.Tab6.Button4}" />
+            </StackPanel>
+        </StackPanel>
+
+        <Button
+            Name="Button_Next"
+            Width="80"
+            Height="25"
+            Margin="0,0,10,10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Content="完成" />
+    </Grid>
+</UserControl>

@@ -3,8 +3,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
     Width="800"
@@ -20,19 +20,19 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="{i18n:Localize HelloWindow.Title}"
+            Title="{setting:Localize HelloWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
-        <Grid Margin="0,35,0,0" Background="#88FFFFFF">
+        <Grid Margin="0,35,0,0" Background="{setting:Colors TranBack}">
 
             <DockPanel Margin="3" LastChildFill="True">
                 <TabControl Name="Tabs" DockPanel.Dock="Top">
-                    <TabItem Header="{i18n:Localize HelloWindow.Tab1}" />
-                    <TabItem Header="{i18n:Localize HelloWindow.Tab2}" />
-                    <TabItem Header="{i18n:Localize HelloWindow.Tab3}" />
-                    <TabItem Header="{i18n:Localize HelloWindow.Tab4}" />
-                    <TabItem Header="{i18n:Localize HelloWindow.Tab5}" />
-                    <TabItem Header="{i18n:Localize HelloWindow.Tab6}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tab1.Title}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tab2.Title}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tab3.Title}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tab4.Title}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tab5.Title}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tab6.Title}" />
                 </TabControl>
 
                 <Grid
@@ -48,7 +48,7 @@
 
             <Rectangle
                 Name="Rectangle1"
-                Stroke="#FF5ABED6"
+                Stroke="{setting:Colors Main}"
                 StrokeThickness="3" />
         </Grid>
     </Grid>

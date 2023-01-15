@@ -1,6 +1,7 @@
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.CurseForge;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
+using Avalonia;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -44,10 +46,36 @@ public partial class AddCurseForgeWindow : Window
         ButtonCancel.Click += ButtonCancel_Click;
         ButtonDownload.Click += ButtonDownload_Click;
 
+        Input2.PropertyChanged += Input2_PropertyChanged;
+        Input3.PropertyChanged += Input3_PropertyChanged;
+
         Opened += AddCurseForgeWindow_Opened;
         Closed += AddCurseForgeWindow_Closed;
 
+        for (int a = 0; a < 50; a++)
+        {
+            List.Add(new());
+        }
+
         Update();
+    }
+
+    private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        var property = e.Property.Name;
+        if (property == "Value")
+        {
+            Load1();
+        }
+    }
+
+    private void Input2_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        var property = e.Property.Name;
+        if (property == "Value")
+        {
+            Load();
+        }
     }
 
     private void ButtonDownload_Click(object? sender, RoutedEventArgs e)
@@ -120,7 +148,7 @@ public partial class AddCurseForgeWindow : Window
     {
         Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info2"]);
         var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string,
-            ComboBox1.SelectedIndex + 1, Input1.Text, int.Parse(Input2.Text), ComboBox3.SelectedIndex);
+            ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value, ComboBox3.SelectedIndex);
         Info1.Close();
         if (data == null)
         {
@@ -128,15 +156,15 @@ public partial class AddCurseForgeWindow : Window
             return;
         }
 
-        List.Clear();
         ListBox_Items.Children.Clear();
+        int a = 0;
         foreach (var item in data.data)
         {
-            CurseForgeControl control = new();
+            var control = List[a];
             control.SetWindow(this);
             control.Load(item);
-            List.Add(control);
             ListBox_Items.Children.Add(control);
+            a++;
         }
     }
 

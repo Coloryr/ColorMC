@@ -86,9 +86,6 @@
     <Compile Update="UI\Controls\Hello\Tab6Control.axaml.cs">
       <DependentUpon>Tab6Control.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Controls\Hello\Tab1Control.axaml.cs">
-      <DependentUpon>Tab1Control.axaml</DependentUpon>
-    </Compile>
     <Compile Update="UI\Controls\Info3Control.axaml.cs">
       <DependentUpon>Info3Control.axaml</DependentUpon>
     </Compile>
@@ -104,8 +101,8 @@
     <Compile Update="UI\Controls\Setting\FlyoutsControl.axaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="UI\Controls\Setting\HelloWindow.Tab2.axaml.cs">
-      <DependentUpon>HelloWindow.Tab2.axaml</DependentUpon>
+    <Compile Update="UI\Controls\Setting\HelloWindow.Tab3.axaml.cs">
+      <DependentUpon>HelloWindow.Tab3.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

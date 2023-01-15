@@ -1,6 +1,8 @@
+using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
@@ -50,8 +52,16 @@ public partial class AddModWindow : Window
         ButtonCancel.Click += ButtonCancel_Click;
         ButtonDownload.Click += ButtonDownload_Click;
 
+        Input2.PropertyChanged += Input2_PropertyChanged;
+        Input3.PropertyChanged += Input3_PropertyChanged;
+
         Opened += AddModWindow_Opened;
         Closed += AddModWindow_Closed;
+
+        for (int a = 0; a < 50; a++)
+        {
+            List.Add(new());
+        }
 
         Update();
     }
@@ -80,6 +90,23 @@ public partial class AddModWindow : Window
         if (res)
         {
             Install1(item.File);
+        }
+    }
+    private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        var property = e.Property.Name;
+        if (property == "Value")
+        {
+            Load1();
+        }
+    }
+
+    private void Input2_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        var property = e.Property.Name;
+        if (property == "Value")
+        {
+            Load();
         }
     }
 
@@ -127,7 +154,7 @@ public partial class AddModWindow : Window
             return;
         }
         await Task.Run(() => GameBinding.AddModInfo(Obj, data));
-        con?.DownloadDone();
+        con?.SetDownloadDone(true);
     }
 
     public void SetSelect(CurseForge1Control last)
@@ -150,19 +177,23 @@ public partial class AddModWindow : Window
             return;
         }
 
-        List.Clear();
         ListBox_Items.Children.Clear();
+        int a = 0;
         foreach (var item in data.data)
         {
-            CurseForge1Control control = new();
+            var control = List[a];
             control.SetWindow(this);
             control.Load(item);
-            List.Add(control);
             ListBox_Items.Children.Add(control);
             if (Obj.Datas.ContainsKey(item.id))
             {
-                control.DownloadDone();
+                control.SetDownloadDone(true);
             }
+            else
+            {
+                control.SetDownloadDone(false);
+            }
+            a++;
         }
     }
 

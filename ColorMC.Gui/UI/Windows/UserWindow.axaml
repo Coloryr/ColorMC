@@ -3,7 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:i18n="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
@@ -20,7 +20,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
-            Title="{i18n:Localize UserWindow.Title}"
+            Title="{setting:Localize UserWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Name="Grid1" Margin="0,35,0,0">
@@ -40,27 +40,27 @@
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn
                         Binding="{Binding Use}"
-                        Header="{i18n:Localize UserWindow.Data.Title1}"
+                        Header="{setting:Localize UserWindow.Data.Title1}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{i18n:Localize UserWindow.Data.Title2}"
+                        Header="{setting:Localize UserWindow.Data.Title2}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Type}"
-                        Header="{i18n:Localize UserWindow.Data.Title3}"
+                        Header="{setting:Localize UserWindow.Data.Title3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding UUID}"
-                        Header="{i18n:Localize UserWindow.Data.Title4}"
+                        Header="{setting:Localize UserWindow.Data.Title4}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Text1}"
-                        Header="{i18n:Localize UserWindow.Data.Title5}"
+                        Header="{setting:Localize UserWindow.Data.Title5}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Text2}"
-                        Header="{i18n:Localize UserWindow.Data.Title6}"
+                        Header="{setting:Localize UserWindow.Data.Title6}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
@@ -86,7 +86,7 @@
                             Width="100"
                             Height="30"
                             Margin="4,0,0,0"
-                            Content="{i18n:Localize UserWindow.Button1}" />
+                            Content="{setting:Localize UserWindow.Button1}" />
                     </Expander>
                 </Grid>
                 <Grid Margin="0,5,0,0">
@@ -109,7 +109,7 @@
                             Width="100"
                             Height="30"
                             Margin="4,0,0,0"
-                            Content="{i18n:Localize UserWindow.Button2}" />
+                            Content="{setting:Localize UserWindow.Button2}" />
                     </Expander>
                 </Grid>
                 <Grid Margin="0,5,0,0">
@@ -132,7 +132,7 @@
                             Width="100"
                             Height="30"
                             Margin="4,0,0,0"
-                            Content="{i18n:Localize UserWindow.Button3}" />
+                            Content="{setting:Localize UserWindow.Button3}" />
                     </Expander>
                 </Grid>
             </StackPanel>
@@ -143,7 +143,7 @@
                 Background="#EEEEEEEE"
                 IsVisible="False">
                 <StackPanel Margin="5">
-                    <Label Content="{i18n:Localize UserWindow.Grid}" />
+                    <Label Content="{setting:Localize UserWindow.Grid}" />
                     <StackPanel Orientation="Horizontal">
                         <Label VerticalAlignment="Center" Content="账户类型" />
                         <ComboBox
@@ -162,14 +162,14 @@
                         Margin="5"
                         Classes="input1"
                         IsEnabled="False"
-                        Watermark="{i18n:Localize UserWindow.Text1}" />
+                        Watermark="{setting:Localize UserWindow.Text1}" />
                     <TextBox
                         Name="TextBox_Input3"
                         Margin="5"
                         Classes="input1"
                         IsEnabled="False"
                         PasswordChar="*"
-                        Watermark="{i18n:Localize UserWindow.Text2}" />
+                        Watermark="{setting:Localize UserWindow.Text2}" />
                 </StackPanel>
 
                 <Button
@@ -179,7 +179,7 @@
                     Margin="10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    Content="{i18n:Localize Button.Cancel}" />
+                    Content="{setting:Localize Button.Cancel}" />
 
                 <Button
                     Name="Button_Add"
@@ -188,7 +188,7 @@
                     Margin="10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Content="{i18n:Localize Button.Add}" />
+                    Content="{setting:Localize Button.Add}" />
             </Grid>
 
             <views:Info1Control Name="Info1" IsVisible="False" />

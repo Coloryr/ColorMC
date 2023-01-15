@@ -9,7 +9,7 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class SettingWindow : Window, IBaseWindow
 {
-    private readonly Controls.Hello.Tab1Control tab1 = new();
+    private readonly Controls.Hello.Tab2Control tab1 = new();
     private readonly Tab2Control tab2 = new();
     private readonly Tab3Control tab3 = new();
     private readonly Tab4Control tab4 = new();

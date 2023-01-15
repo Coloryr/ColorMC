@@ -17,6 +17,7 @@ public partial class CurseForge1Control : UserControl
     private AddModWindow Window;
     private bool IsDownload;
     private bool NowDownload;
+    private bool haveimg;
     public CurseForgeObj.Data Data { get; private set; }
     public CurseForge1Control()
     {
@@ -57,21 +58,24 @@ public partial class CurseForge1Control : UserControl
         Label2.Content = temp;
         Label3.Content = data.downloadCount;
         Label4.Content = DateTime.Parse(data.dateModified);
+        haveimg = false;
         if (data.logo != null)
         {
             try
             {
-                var data1 = await BaseClient.DownloadClient.GetAsync(data.logo.url);
-                Dispatcher.UIThread.Post(() =>
-                {
-                    var bitmap = new Bitmap(data1.Content.ReadAsStream());
-                    Image_Logo.Source = bitmap;
-                });
+                using var data1 = await BaseClient.DownloadClient.GetAsync(data.logo.url);
+                var bitmap = new Bitmap(data1.Content.ReadAsStream());
+                Image_Logo.Source = bitmap;
+                haveimg = true;
             }
             catch (Exception e)
             {
                 Logs.Error(Localizer.Instance["AddCurseForgeWindow.Error5"], e);
             }
+        }
+        if (!haveimg)
+        {
+            Image_Logo.Source = App.GameIcon;
         }
     }
 
@@ -81,11 +85,11 @@ public partial class CurseForge1Control : UserControl
         Grid1.IsVisible = true;
     }
 
-    public void DownloadDone() 
+    public void SetDownloadDone(bool res) 
     {
-        IsDownload = true;
+        IsDownload = res;
         Grid1.IsVisible = false;
-        Grid2.IsVisible = true;
+        Grid2.IsVisible = res;
     }
 
     public void SetWindow(AddModWindow window)

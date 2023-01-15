@@ -18,7 +18,7 @@
                     Name="Title"
                     Margin="5"
                     HorizontalAlignment="Center"
-                    Content="1" />
+                    Content="{setting:Localize GameEditWindow.Tab2.Text13}" />
                 <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text1}" />
                 <StackPanel Orientation="Horizontal">
                     <Label
