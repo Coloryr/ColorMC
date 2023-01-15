@@ -34,6 +34,7 @@ public static class InstancesPath
     private const string Name13 = "mods";
     private const string Name14 = "saves";
     private const string Name15 = "config";
+    private const string Name16 = "cfmod.json";
 
     private static Dictionary<string, GameSettingObj> InstallGames = new();
     private static Dictionary<string, List<GameSettingObj>> GameGroups = new();
@@ -118,6 +119,7 @@ public static class InstancesPath
                 var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
                 if (game != null)
                 {
+                    game.ReadCurseForgeMod();
                     AddToGroup(game);
                 }
             }
@@ -219,6 +221,11 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name15}");
     }
 
+    public static string GetCurseForgeModJson(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name16}");
+    }
+
     public static async Task<GameSettingObj?> CreateVersion(this GameSettingObj game)
     {
         if (InstallGames.ContainsKey(game.Name))
@@ -236,6 +243,7 @@ public static class InstancesPath
         }
 
         game.DirName = game.Name;
+        game.Datas ??= new();
 
         var dir = game.GetBaseDir();
         if (Directory.Exists(dir))
@@ -356,6 +364,53 @@ public static class InstancesPath
         }
 
         return null;
+    }
+
+    public static void SaveCurseForgeMod(this GameSettingObj obj)
+    {
+        if (obj.Datas == null)
+            return;
+
+        File.WriteAllText(obj.GetCurseForgeModJson(), JsonConvert.SerializeObject(obj.Datas));
+    }
+
+    public static void ReadCurseForgeMod(this GameSettingObj obj)
+    {
+        string file = obj.GetCurseForgeModJson();
+        if (!File.Exists(file))
+        {
+            obj.Datas = new();
+            return;
+        }
+
+        obj.Datas = JsonConvert.DeserializeObject<Dictionary<long, CurseForgeModObj1>>(
+            File.ReadAllText(file)) ?? new();
+
+        var list = PathC.GetAllFile(obj.GetModsPath());
+        var remove = new List<long>();
+        foreach (var item in obj.Datas)
+        {
+            bool find = false;
+            foreach (var item1 in list)
+            {
+                if (item.Value.File == item1.Name)
+                {
+                    find = true;
+                    break;
+                }
+            }
+
+            if (!find)
+            {
+                remove.Add(item.Key);
+            }
+        }
+
+        if (remove.Count != 0)
+        {
+            remove.ForEach(item => obj.Datas.Remove(item));
+            obj.SaveCurseForgeMod();
+        }
     }
 
     public static Task Remove(this GameSettingObj obj)

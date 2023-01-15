@@ -68,7 +68,11 @@ public static class GameDownload
         var down = ForgeHelper.BuildForgeInster(mc, version);
         try
         {
-            await DownloadManager.Download(down);
+            var res = await DownloadManager.Download(down);
+            if (!res)
+            {
+                return (DownloadState.Init, null);
+            }
         }
         catch
         {

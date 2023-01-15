@@ -10,6 +10,7 @@
         <StyleInclude Source="/Style/TextBox.axaml" />
         <StyleInclude Source="/Style/ComboBox.axaml" />
         <StyleInclude Source="/Style/NumericUpDown.axaml" />
+        <StyleInclude Source="/Style/ProgressBar.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
     </Application.Styles>
 </Application>

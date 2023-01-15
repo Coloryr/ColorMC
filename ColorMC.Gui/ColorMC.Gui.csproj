@@ -65,6 +65,9 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UI\Controls\CurseForge\CurseForge1Control.axaml.cs">
+      <DependentUpon>CurseForge1Control.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\GameEdit\Flyouts1Control.axaml.cs">
       <DependentUpon>Flyouts1Control.axaml</DependentUpon>
     </Compile>

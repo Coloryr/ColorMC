@@ -1,6 +1,7 @@
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.CurseForge;
@@ -10,16 +11,19 @@ using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
 
 public partial class AddModWindow : Window
 {
-    private readonly List<CurseForgeControl> List = new();
+    private readonly List<CurseForge1Control> List = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
-    private CurseForgeControl? Last;
+    private CurseForge1Control? Last;
     private Tab4Control Tab;
+    private GameSettingObj Obj;
 
     private readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
 
@@ -52,9 +56,12 @@ public partial class AddModWindow : Window
         Update();
     }
 
-    public void SetTab4Control(Tab4Control tab)
+    public void SetTab4Control(GameSettingObj obj, Tab4Control tab)
     {
+        Obj = obj;
         Tab = tab;
+
+        Head.Title = string.Format(Localizer.Instance["AddModWindow.Title"], obj.Name);
     }
 
     private void ButtonDownload_Click(object? sender, RoutedEventArgs e)
@@ -69,7 +76,7 @@ public partial class AddModWindow : Window
             return;
 
         var res = await Info.ShowWait(
-            string.Format(Localizer.Instance["AddCurseForgeWindow.Info1"], item.File.displayName));
+            string.Format(Localizer.Instance["AddModWindow.Info1"], item.File.displayName));
         if (res)
         {
             Install1(item.File);
@@ -90,7 +97,7 @@ public partial class AddModWindow : Window
     {
         if (Last == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error1"]);
+            Info.Show(Localizer.Instance["AddModWindow.Error1"]);
             return;
         }
 
@@ -108,14 +115,22 @@ public partial class AddModWindow : Window
         Load1();
     }
 
-    public void Install1(CurseForgeObj.Data.LatestFiles data)
+    public async void Install1(CurseForgeObj.Data.LatestFiles data)
     {
-        App.ShowAddGame();
-        App.AddGameWindow?.Install(data);
-        Close();
+        transition.Start(GridVersion, null, CancellationToken.None);
+        var con = Last;
+        con?.Download();
+        var res = await GameBinding.DownloadMod(Obj, data);
+        if (!res)
+        {
+            Info.Show(Localizer.Instance["AddModWindow.Error3"]);
+            return;
+        }
+        await Task.Run(() => GameBinding.AddModInfo(Obj, data));
+        con?.DownloadDone();
     }
 
-    public void SetSelect(CurseForgeControl last)
+    public void SetSelect(CurseForge1Control last)
     {
         Button2.IsEnabled = true;
         Last?.SetSelect(false);
@@ -125,13 +140,13 @@ public partial class AddModWindow : Window
 
     private async void Load()
     {
-        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info2"]);
-        var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string,
+        Info1.Show(Localizer.Instance["AddModWindow.Info2"]);
+        var data = await GameBinding.GetModList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, int.Parse(Input2.Text), ComboBox3.SelectedIndex);
         Info1.Close();
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error2"]);
+            Info.Show(Localizer.Instance["AddModWindow.Error2"]);
             return;
         }
 
@@ -139,24 +154,28 @@ public partial class AddModWindow : Window
         ListBox_Items.Children.Clear();
         foreach (var item in data.data)
         {
-            CurseForgeControl control = new();
-            //control.SetWindow(this);
+            CurseForge1Control control = new();
+            control.SetWindow(this);
             control.Load(item);
             List.Add(control);
             ListBox_Items.Children.Add(control);
+            if (Obj.Datas.ContainsKey(item.id))
+            {
+                control.DownloadDone();
+            }
         }
     }
 
     private async void Load1()
     {
         List1.Clear();
-        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info3"]);
+        Info1.Show(Localizer.Instance["AddModWindow.Info3"]);
         var data = await GameBinding.GetPackFile(Last!.Data.id, int.Parse(Input3.Text));
         Info1.Close();
 
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error3"]);
+            Info.Show(Localizer.Instance["AddModWindow.Error4"]);
             return;
         }
 
@@ -165,7 +184,7 @@ public partial class AddModWindow : Window
             List1.Add(new()
             {
                 Name = item.displayName,
-                Size = $"{item.fileLength / 1000 / 1000:0.00}",
+                Size = UIUtils.MakeFileSize1(item.fileLength),
                 Download = item.downloadCount,
                 Time = DateTime.Parse(item.fileDate).ToString(),
                 File = item
@@ -181,16 +200,21 @@ public partial class AddModWindow : Window
     private async void AddModWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
-        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info4"]);
+        Info1.Show(Localizer.Instance["AddModWindow.Info4"]);
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();
         if (list == null)
         {
-            //Info.Show(Localizer.Instance["AddCurseForgeWindow.Error4"]);
+            //Info.Show(Localizer.Instance["AddModWindow.Error5"]);
             return;
         }
 
         ComboBox2.Items = list;
+        if (list.Contains(Obj.Version))
+        {
+            ComboBox2.SelectedItem = Obj.Version;
+        }
+
         Load();
     }
 

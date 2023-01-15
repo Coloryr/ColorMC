@@ -2,6 +2,7 @@
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
@@ -91,6 +92,11 @@ public static class GameBinding
     public static Task<CurseForgeObj?> GetPackList(string version, int sort, string filter, int page, int sortOrder)
     {
         return CurseForge.GetPackList(version, page, sort, filter, sortOrder: sortOrder);
+    }
+
+    public static Task<CurseForgeObj?> GetModList(string version, int sort, string filter, int page, int sortOrder)
+    {
+        return CurseForge.GetModList(version, page, sort, filter, sortOrder: sortOrder);
     }
 
     public static List<string> GetCurseForgeTypes()
@@ -271,9 +277,18 @@ public static class GameBinding
         }
     }
 
-    public static void DeleteMod(ModObj obj)
+    public static void DeleteMod(GameSettingObj obj, ModObj mod)
     {
-        obj.Delete();
+        foreach (var item in obj.Datas)
+        {
+            if (item.Value.File == new FileInfo(mod.Local).Name)
+            {
+                obj.Datas.Remove(item.Key);
+                obj.SaveCurseForgeMod();
+                break;
+            }
+        }
+        mod.Delete();
     }
 
     public static void AddMods(GameSettingObj obj, string[] file)
@@ -375,5 +390,41 @@ public static class GameBinding
     public static Task<List<string>?> GetQuiltSupportVersion()
     {
         return QuiltHelper.GetSupportVersion();
+    }
+
+    public static Task<bool> DownloadMod(GameSettingObj obj, CurseForgeObj.Data.LatestFiles data)
+    {
+        var item = new DownloadItem()
+        {
+            Name = data.displayName,
+            Url = data.downloadUrl,
+            Local = Path.GetFullPath(obj.GetModsPath() + "/" + data.fileName),
+            SHA1 = data.hashes[0].value,
+            Overwrite = true
+        };
+
+        return DownloadManager.Download(item);
+    }
+
+    public static void AddModInfo(GameSettingObj obj, CurseForgeObj.Data.LatestFiles data)
+    {
+        var obj1 = new CurseForgeModObj1()
+        {
+            Id = data.id,
+            ModId = data.modId,
+            File = data.fileName,
+            Name = data.displayName,
+            Url = data.downloadUrl,
+            SHA1 = data.hashes[0].value
+        };
+        if (obj.Datas.ContainsKey(obj1.ModId))
+        {
+            obj.Datas[obj1.ModId] = obj1;
+        }
+        else
+        {
+            obj.Datas.Add(obj1.ModId, obj1);
+        }
+        obj.SaveCurseForgeMod();
     }
 }

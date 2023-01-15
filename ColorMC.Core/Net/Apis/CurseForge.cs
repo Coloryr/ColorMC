@@ -38,13 +38,13 @@ public static class CurseForge
     }
 
     public static Task<CurseForgeObj?> GetPackList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
+        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
     {
         return GetList(4471, version, page, sort, filter, pagesize, sortOrder);
     }
 
     public static Task<CurseForgeObj?> GetModList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
+        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
     {
         return GetList(6, version, page, sort, filter, pagesize, sortOrder);
     }
@@ -186,7 +186,7 @@ public static class CurseForge
     {
         try
         {
-            string temp = CurseForgeUrl + $"v1/mods/{id}/files?index={page * 50}";
+            string temp = CurseForgeUrl + $"v1/mods/{id}/files?index={page * 50}&pageSize=50";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,

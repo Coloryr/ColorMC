@@ -1,4 +1,7 @@
-﻿namespace ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs.CurseForge;
+using Newtonsoft.Json;
+
+namespace ColorMC.Core.Objs;
 
 public enum Loaders
 {
@@ -33,4 +36,7 @@ public record GameSettingObj
     public ServerObj StartServer { get; set; }
     public ProxyHostObj ProxyHost { get; set; }
     public bool ModPack { get; set; }
+
+    [JsonIgnore]
+    public Dictionary<long, CurseForgeModObj1> Datas { get; set; }
 }

@@ -22,9 +22,6 @@
                 Name="ProgressBar_Value"
                 Height="20"
                 Margin="20,0,20,50"
-                BorderBrush="White"
-                BorderThickness="1"
-                Foreground="#FF5EBDD3"
                 IsIndeterminate="True"
                 Value="20" />
             <Button
