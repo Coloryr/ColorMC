@@ -63,22 +63,30 @@ public partial class App : Application
         var uri = new Uri("resm:ColorMC.Gui.Resource.Pic.game.png");
 
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        var asset = assets.Open(uri);
+        var asset = assets!.Open(uri);
 
         GameIcon = new Bitmap(asset);
     }
 
     public static void LoadLanguage(LanguageType type)
     {
-        Assembly assm = Assembly.GetExecutingAssembly();
+        var assm = Assembly.GetExecutingAssembly();
+        if (assm == null)
+        {
+            return;
+        }
         string name = type switch
         {
             LanguageType.en_us => "ColorMC.Gui.Resource.Language.en-us",
             _ => "ColorMC.Gui.Resource.Language.zh-cn"
         };
-        Stream istr = assm?.GetManifestResourceStream(name);
+        var item = assm.GetManifestResourceStream(name);
+        if (item == null)
+        {
+            return;
+        }
         MemoryStream stream = new();
-        istr?.CopyTo(stream);
+        item.CopyTo(stream);
         var temp = Encoding.UTF8.GetString(stream.ToArray());
         Language = AvaloniaRuntimeXamlLoader.Load(temp) as ResourceDictionary;
     }
