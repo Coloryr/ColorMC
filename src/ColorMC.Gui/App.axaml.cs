@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Media.Fonts;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using ColorMC.Core;
@@ -224,8 +225,15 @@ public partial class App : Application
         }
         else
         {
-            SettingWindow = new();
-            SettingWindow.Show();
+            try
+            {
+                SettingWindow = new();
+                SettingWindow.Show();
+            }
+            catch (Exception e)
+            {
+                Logs.Error("´°¿Ú´ò¿ªÊ§°Ü", e);
+            }
         }
     }
 

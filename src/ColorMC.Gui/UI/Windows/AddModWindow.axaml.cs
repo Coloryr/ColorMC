@@ -35,7 +35,6 @@ public partial class AddModWindow : Window
 
         this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
-        FontFamily = Program.FontFamily;
 
         ComboBox1.Items = GameBinding.GetCurseForgeTypes();
         ComboBox3.Items = GameBinding.GetSortOrder();

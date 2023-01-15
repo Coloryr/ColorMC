@@ -24,12 +24,14 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="Resource\Font\SourceHanSansHWSC-Regular.otf" />
     <None Remove="Resource\Language\en-us" />
     <None Remove="Resource\Language\zh-cn" />
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\user.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resource\Font\SourceHanSansHWSC-Regular.otf" />
     <EmbeddedResource Include="Resource\Language\en-us" />
     <EmbeddedResource Include="Resource\Language\zh-cn">
       <Generator></Generator>

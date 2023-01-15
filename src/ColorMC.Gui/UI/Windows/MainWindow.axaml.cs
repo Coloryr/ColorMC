@@ -27,7 +27,6 @@ public partial class MainWindow : Window
 
         this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
-        FontFamily = Program.FontFamily;
 
         ItemInfo.SetWindow(this);
 
