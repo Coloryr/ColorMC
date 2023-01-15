@@ -33,7 +33,6 @@ public partial class GameEditWindow : Window
 
         this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
-        FontFamily = Program.FontFamily;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
         Tab1.Children.Add(content1);

@@ -28,7 +28,6 @@ public partial class AddGameWindow : Window
 
         this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
-        FontFamily = Program.FontFamily;
 
         ComboBox_GameVersion.Items = List;
         ComboBox_GameVersion.SelectionChanged += GameVersion_SelectionChanged;

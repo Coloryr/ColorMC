@@ -32,7 +32,6 @@ public partial class DownloadWindow : Window
 
         this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
-        FontFamily = Program.FontFamily;
 
         CoreMain.DownloadItemStateUpdate = DownloadItemStateUpdate;
 

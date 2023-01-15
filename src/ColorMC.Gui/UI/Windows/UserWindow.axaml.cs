@@ -27,7 +27,6 @@ public partial class UserWindow : Window
 
         this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
-        FontFamily = Program.FontFamily;
 
         if (App.BackBitmap != null)
         {

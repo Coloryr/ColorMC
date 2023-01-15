@@ -11,7 +11,6 @@ public partial class ErrorWindow : Window
 
         this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
-        FontFamily = Program.FontFamily;
     }
 
     public void Show(string data, Exception e, bool close)

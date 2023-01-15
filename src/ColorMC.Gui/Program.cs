@@ -1,12 +1,11 @@
 using Avalonia;
+using Avalonia.Media;
 using System;
 
 namespace ColorMC.Gui;
 
 internal class Program
 {
-    public const string FontFamily = "Microsoft YaHei,Simsun,苹方-简,宋体-简";  // 使用英文逗号分隔
-
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -28,6 +27,10 @@ internal class Program
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
+            .With(new FontManagerOptions
+            {
+                DefaultFamilyName = "avares://ColorMC.Gui/Resource/Font/SourceHanSansHWSC-Regular.otf"
+            })
             .UsePlatformDetect()
             .LogToTrace();
 }
