@@ -1,13 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
-using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UIBinding;
-using System.Collections.ObjectModel;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 

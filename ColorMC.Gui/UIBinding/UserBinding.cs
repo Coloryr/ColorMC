@@ -136,12 +136,12 @@ public static class UserBinding
         }
     }
 
-    public static void RemoveLockUser(LoginObj obj) 
+    public static void RemoveLockUser(LoginObj obj)
     {
         LockUser.Remove(obj);
     }
 
-    public static bool IsLock(LoginObj obj) 
+    public static bool IsLock(LoginObj obj)
     {
         return LockUser.Contains(obj);
     }

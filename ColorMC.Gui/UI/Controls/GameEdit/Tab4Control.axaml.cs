@@ -7,12 +7,12 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using System.Collections.Generic;
-using System;
-using System.Collections.ObjectModel;
-using DynamicData;
-using System.Linq;
 using ColorMC.Gui.Utils.LaunchSetting;
+using DynamicData;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -23,8 +23,8 @@ public partial class Tab4Control : UserControl
     private readonly Dictionary<string, ModObj> Dir1 = new();
     private AddModWindow? AddModWindow;
 
-    private readonly List<string> FName = new() 
-    { 
+    private readonly List<string> FName = new()
+    {
         Localizer.Instance["GameEditWindow.Tab4.Filter.Item1"],
         Localizer.Instance["GameEditWindow.Tab4.Filter.Item2"],
         Localizer.Instance["GameEditWindow.Tab4.Filter.Item3"]
@@ -134,7 +134,7 @@ public partial class Tab4Control : UserControl
         }
     }
 
-    public void CloseAddMod() 
+    public void CloseAddMod()
     {
         AddModWindow = null;
     }
@@ -243,7 +243,7 @@ public partial class Tab4Control : UserControl
         Load1();
     }
 
-    private void Load1() 
+    private void Load1()
     {
         string fil = TextBox1.Text;
         if (string.IsNullOrWhiteSpace(fil))
@@ -264,8 +264,8 @@ public partial class Tab4Control : UserControl
                     break;
                 case 1:
                     list = from item in Items
-                               where item.Local.Contains(fil)
-                               select item;
+                           where item.Local.Contains(fil)
+                           select item;
                     List.Clear();
                     List.AddRange(list);
                     break;

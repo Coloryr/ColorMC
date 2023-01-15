@@ -1,27 +1,17 @@
 using Avalonia.Controls;
-using Avalonia.Input;
+using Avalonia.Interactivity;
+using AvaloniaEdit.Indentation.CSharp;
+using AvaloniaEdit.TextMate;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using System;
+using DynamicData;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Avalonia.Interactivity;
-using System.Linq;
-using ColorMC.Core.LaunchPath;
 using System.IO;
-using Avalonia.Threading;
-using AvaloniaEdit.Indentation.CSharp;
-using AvaloniaEdit;
+using System.Linq;
 using TextMateSharp.Grammars;
-using AvaloniaEdit.TextMate;
-using DynamicData;
-using AvaloniaEdit.Document;
-using System.Resources;
-using System.Security.Cryptography.X509Certificates;
-using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -85,10 +75,10 @@ public partial class Tab3Control : UserControl
         var ex = item[item.LastIndexOf('.')..];
 
         EditGa(ex);
-        TextEditor1.Document = new AvaloniaEdit.Document.TextDocument(text); 
+        TextEditor1.Document = new AvaloniaEdit.Document.TextDocument(text);
     }
 
-    public void EditGa(string name) 
+    public void EditGa(string name)
     {
         var item = registryOptions.GetLanguageByExtension(name);
         if (item == null)
@@ -102,7 +92,7 @@ public partial class Tab3Control : UserControl
         textMateInstallation.SetGrammar(item1);
     }
 
-    public void Load() 
+    public void Load()
     {
         string fil = TextBox1.Text;
         List.Clear();

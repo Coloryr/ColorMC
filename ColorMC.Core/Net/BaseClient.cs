@@ -1,8 +1,5 @@
 ﻿using ColorMC.Core.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net;
-using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net;
 
@@ -33,7 +30,7 @@ public static class BaseClient
 
         if (ConfigUtils.Config.Http.DownloadProxy)
         {
-            
+
             DownloadClient = new(new HttpClientHandler()
             {
                 Proxy = new WebProxy(ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort)

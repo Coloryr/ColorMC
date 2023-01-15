@@ -6,7 +6,6 @@ using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using Newtonsoft.Json;
-using System;
 using System.Reflection;
 using System.Text;
 

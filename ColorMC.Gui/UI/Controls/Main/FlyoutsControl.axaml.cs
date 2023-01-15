@@ -3,7 +3,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -65,7 +64,7 @@ public class MainFlyout : FlyoutBase
 {
     private GameSettingObj Obj;
     private MainWindow Win;
-    public MainFlyout(MainWindow win,  GameSettingObj obj)
+    public MainFlyout(MainWindow win, GameSettingObj obj)
     {
         Win = win;
         Obj = obj;

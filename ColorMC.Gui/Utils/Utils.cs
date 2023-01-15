@@ -1,12 +1,10 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
-using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -15,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -137,8 +134,8 @@ public static partial class UIUtils
         }
     }
 
-    public static void MakeResizeDrag(this Avalonia.Controls.Shapes.Rectangle rectangle, 
-        Window window) 
+    public static void MakeResizeDrag(this Avalonia.Controls.Shapes.Rectangle rectangle,
+        Window window)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {

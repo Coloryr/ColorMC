@@ -4,7 +4,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

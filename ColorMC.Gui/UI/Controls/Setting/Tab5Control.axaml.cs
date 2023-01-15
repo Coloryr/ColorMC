@@ -44,7 +44,7 @@ public partial class Tab5Control : UserControl
         LayoutUpdated += Tab5Control_LayoutUpdated;
     }
 
-    private void DataGrid1_CellPointerPressed(object? sender, 
+    private void DataGrid1_CellPointerPressed(object? sender,
         DataGridCellPointerPressedEventArgs e)
     {
         Dispatcher.UIThread.Post(() =>

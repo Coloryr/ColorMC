@@ -1,16 +1,14 @@
 using Avalonia.Controls;
-using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Avalonia.Input;
-using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -102,7 +100,7 @@ public partial class MainWindow : Window
                 return await Info.ShowWait(Localizer.Instance["MainWindow.Lost3"]);
             case LaunchState.LostLoginCore:
                 return await Info.ShowWait(Localizer.Instance["MainWindow.Lost4"]);
-        } 
+        }
     }
 
     private void GameLunch(GameSettingObj obj, LaunchState state)
@@ -201,7 +199,7 @@ public partial class MainWindow : Window
         App.Update(this, Image_Back, Grid1);
     }
 
-    public async void EditGroup(GameSettingObj obj) 
+    public async void EditGroup(GameSettingObj obj)
     {
         await Group.Set(obj);
         Group.Close();
@@ -214,7 +212,7 @@ public partial class MainWindow : Window
         GameBinding.MoveGameGroup(obj, res);
     }
 
-    public async Task AddGroup() 
+    public async Task AddGroup()
     {
         await Info3.ShowOne("×éÃû", false);
         Info3.Close();

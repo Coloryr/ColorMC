@@ -6,12 +6,12 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 

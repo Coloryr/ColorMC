@@ -1,8 +1,6 @@
 ﻿using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
-using Heijden.DNS;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net.Apis;
@@ -18,7 +16,7 @@ public static class CurseForge
         try
         {
             string temp = CurseForgeUrl + $"v1/mods/search?gameId=432&classId={classid}&"
-                + $"gameVersion={version}&index={page * pagesize}&sortField={sort}&" 
+                + $"gameVersion={version}&index={page * pagesize}&sortField={sort}&"
                 + $"searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}";
             HttpRequestMessage httpRequest = new()
             {

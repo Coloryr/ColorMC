@@ -10,7 +10,7 @@ public static class DownloadManager
     private readonly static List<string> Name = new();
     private static List<DownloadThread> threads = new();
     private static Semaphore semaphore = new(0, 10);
-    public static CoreRunState State { get;private set; }
+    public static CoreRunState State { get; private set; }
 
     public static int AllSize { get; private set; }
     public static int DoneSize { get; private set; }

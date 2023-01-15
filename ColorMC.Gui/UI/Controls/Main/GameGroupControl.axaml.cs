@@ -1,14 +1,13 @@
-using Avalonia.Controls;
-using ColorMC.Gui.UI.Windows;
-using Avalonia.Interactivity;
 using Avalonia.Animation;
-using System;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UIBinding;
+using DynamicData;
+using System;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using DynamicData;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -67,7 +66,7 @@ public partial class GameGroupControl : UserControl
     {
         transition.Start(this, null, CancellationToken.None);
     }
-    public string? Read() 
+    public string? Read()
     {
         return ComboBox1.SelectedItem as string;
     }

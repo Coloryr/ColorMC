@@ -56,7 +56,7 @@ public partial class GameEditWindow : Window
         tab1.Update();
     }
 
-    public void SetType(int type) 
+    public void SetType(int type)
     {
         switch (type)
         {
@@ -81,7 +81,7 @@ public partial class GameEditWindow : Window
         }
     }
 
-    public void Log(string? data) 
+    public void Log(string? data)
     {
         if (data == null)
             return;
@@ -89,7 +89,7 @@ public partial class GameEditWindow : Window
 
     }
 
-    public void SetGame(GameSettingObj obj) 
+    public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
         Head.Title = string.Format(Localizer.Instance["GameEditWindow.Title"], obj.Name);

@@ -214,7 +214,7 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}");
     }
 
-    public static string GetConfigPath(this GameSettingObj obj) 
+    public static string GetConfigPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name15}");
     }
@@ -279,7 +279,7 @@ public static class InstancesPath
         return GameDownload.DownloadQuilt(obj.Version, version);
     }
 
-    public static bool AddGroup(string name) 
+    public static bool AddGroup(string name)
     {
         if (GameGroups.ContainsKey(name))
         {
@@ -291,7 +291,7 @@ public static class InstancesPath
         return true;
     }
 
-    public static void MoveGameGroup(this GameSettingObj obj, string? now) 
+    public static void MoveGameGroup(this GameSettingObj obj, string? now)
     {
         string group = obj.GroupName;
         if (string.IsNullOrWhiteSpace(group))

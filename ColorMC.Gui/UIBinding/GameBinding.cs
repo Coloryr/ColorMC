@@ -6,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class GameBinding
 {
-    private readonly static List<string> SortOrder = new() 
+    private readonly static List<string> SortOrder = new()
     {
         Localizer.Instance["GameBinding.SortOrder.Item1"],
         Localizer.Instance["GameBinding.SortOrder.Item2"]
@@ -231,31 +230,31 @@ public static class GameBinding
         obj.Save();
     }
 
-    public static void SetGameJvmArg(GameSettingObj obj, JvmArgObj obj1) 
+    public static void SetGameJvmArg(GameSettingObj obj, JvmArgObj obj1)
     {
         obj.JvmArg = obj1;
         obj.Save();
     }
 
-    public static void SetGameWindow(GameSettingObj obj, WindowSettingObj obj1) 
+    public static void SetGameWindow(GameSettingObj obj, WindowSettingObj obj1)
     {
         obj.Window = obj1;
         obj.Save();
     }
 
-    public static void SetGameServer(GameSettingObj obj, ServerObj obj1) 
+    public static void SetGameServer(GameSettingObj obj, ServerObj obj1)
     {
         obj.StartServer = obj1;
         obj.Save();
     }
 
-    public static void SetGameProxy(GameSettingObj obj, ProxyHostObj obj1) 
+    public static void SetGameProxy(GameSettingObj obj, ProxyHostObj obj1)
     {
         obj.ProxyHost = obj1;
         obj.Save();
     }
 
-    public static Task<List<ModObj>> GetGameMods(GameSettingObj obj) 
+    public static Task<List<ModObj>> GetGameMods(GameSettingObj obj)
     {
         return obj.GetMods();
     }
@@ -292,12 +291,12 @@ public static class GameBinding
         }
     }
 
-    public static void OpFile(string item) 
+    public static void OpFile(string item)
     {
         switch (SystemInfo.Os)
         {
             case OsType.Windows:
-                System.Diagnostics.Process.Start("explorer", 
+                System.Diagnostics.Process.Start("explorer",
                     $@"/select,{item}");
                 break;
             case OsType.Linux:
@@ -311,7 +310,7 @@ public static class GameBinding
         }
     }
 
-    public static List<string> GetAllConfig(GameSettingObj obj) 
+    public static List<string> GetAllConfig(GameSettingObj obj)
     {
         var list = new List<string>();
         var dir = obj.GetGameDir().Length + 1;
@@ -334,14 +333,14 @@ public static class GameBinding
         return list;
     }
 
-    public static string ReadConfigFile(GameSettingObj obj, string name) 
+    public static string ReadConfigFile(GameSettingObj obj, string name)
     {
         var dir = obj.GetGameDir();
 
         return File.ReadAllText(Path.GetFullPath(dir + "/" + name));
     }
 
-    public static void SaveConfigFile(GameSettingObj obj, string name, string text) 
+    public static void SaveConfigFile(GameSettingObj obj, string name, string text)
     {
         var dir = obj.GetGameDir();
 
@@ -363,7 +362,7 @@ public static class GameBinding
         return QuiltHelper.GetLoaders(version, BaseClient.Source);
     }
 
-    public static Task<List<string>?> GetForgeSupportVersion() 
+    public static Task<List<string>?> GetForgeSupportVersion()
     {
         return ForgeHelper.GetSupportVersion();
     }

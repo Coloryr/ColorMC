@@ -28,7 +28,7 @@ public static class PathC
         return (path, name);
     }
 
-    public static List<FileInfo> GetAllFile(string dir) 
+    public static List<FileInfo> GetAllFile(string dir)
     {
         var list = new List<FileInfo>();
         var info = new DirectoryInfo(dir);
