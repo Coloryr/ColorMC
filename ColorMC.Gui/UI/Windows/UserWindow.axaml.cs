@@ -4,15 +4,12 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core;
-using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 
@@ -147,14 +144,14 @@ public partial class UserWindow : Window
                     Info.Show(Localizer.Instance["UserWindow.Error3"]);
                     break;
                 }
-                if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) || 
+                if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                     string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
                     Info.Show(Localizer.Instance["UserWindow.Error2"]);
                     break;
                 }
                 Info1.Show(Localizer.Instance["UserWindow.Info2"]);
-                res = await UserBinding.AddUser(2, server, 
+                res = await UserBinding.AddUser(2, server,
                     TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
                 if (!res.Item1)
@@ -179,7 +176,7 @@ public partial class UserWindow : Window
                     break;
                 }
                 Info1.Show(Localizer.Instance["UserWindow.Info2"]);
-                res = await UserBinding.AddUser(3, server, 
+                res = await UserBinding.AddUser(3, server,
                     TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
                 if (!res.Item1)
@@ -198,7 +195,7 @@ public partial class UserWindow : Window
                     break;
                 }
                 Info1.Show(Localizer.Instance["UserWindow.Info2"]);
-                res = await UserBinding.AddUser(4, 
+                res = await UserBinding.AddUser(4,
                     TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
                 if (!res.Item1)
@@ -222,7 +219,7 @@ public partial class UserWindow : Window
                     break;
                 }
                 Info1.Show(Localizer.Instance["UserWindow.Info2"]);
-                res = await UserBinding.AddUser(5, server, 
+                res = await UserBinding.AddUser(5, server,
                     TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
                 if (!res.Item1)

@@ -1,15 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -87,7 +84,7 @@ public partial class App : Application
         BackBitmap = null;
     }
 
-    public static async Task<bool> LoadImage(string file, int eff) 
+    public static async Task<bool> LoadImage(string file, int eff)
     {
         RemoveImage();
 
@@ -215,7 +212,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowGameEdit(GameSettingObj obj, int type = 0) 
+    public static void ShowGameEdit(GameSettingObj obj, int type = 0)
     {
         if (GameEditWindows.TryGetValue(obj, out var win))
         {

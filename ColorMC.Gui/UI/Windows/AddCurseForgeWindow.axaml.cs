@@ -119,7 +119,7 @@ public partial class AddCurseForgeWindow : Window
     private async void Load()
     {
         Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info2"]);
-        var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string, 
+        var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, int.Parse(Input2.Text), ComboBox3.SelectedIndex);
         Info1.Close();
         if (data == null)

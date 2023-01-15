@@ -1,21 +1,16 @@
-﻿using Avalonia.Controls;
-using ColorMC.Core;
-using ColorMC.Core.Game.Auth;
+﻿using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class OtherBinding
 {
     private static List<string> WindowTranTypes = new()
-    { 
+    {
         "普通透明", "模糊", "亚克力模糊", "强制亚克力模糊", "云母"
     };
     public static (int, int) GetDownloadSize()

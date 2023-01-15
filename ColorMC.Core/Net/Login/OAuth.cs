@@ -91,14 +91,14 @@ public static class OAuthAPI
         if (data.Contains("error"))
         {
             Logs.Error(data);
-            return (LoginState.Error, 
+            return (LoginState.Error,
                 LanguageHelper.GetName("Core.Http.Login.OAuth.Error1"), null);
         }
         var obj1 = JObject.Parse(data);
         var obj2 = obj1.ToObject<OAuthObj>();
         if (obj2 == null)
         {
-            return (LoginState.JsonError, 
+            return (LoginState.JsonError,
                 LanguageHelper.GetName("Core.Http.Login.OAuth.Error2"), null);
         }
         code = obj2.user_code;

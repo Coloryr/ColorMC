@@ -72,7 +72,7 @@ public static class AuthHelper
             case AuthType.SelfLittleSkin:
                 return await BaseAuth.RefreshWithLittleSkin(obj);
             default:
-                return (AuthState.Token, LoginState.Done, obj, 
+                return (AuthState.Token, LoginState.Done, obj,
                     LanguageHelper.GetName("Core.Http.Login.None"));
         }
     }

@@ -1,13 +1,11 @@
 using Avalonia.Controls;
-using ColorMC.Gui.UI.Windows;
 using Avalonia.Interactivity;
-using System.Collections.ObjectModel;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Core.Objs;
-using DynamicData;
-using ColorMC.Core.Net.Apis;
-using ColorMC.Core.Net;
+using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using DynamicData;
+using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -54,7 +52,7 @@ public partial class Tab1Control : UserControl
         {
             loaders = Loaders.Fabric;
         }
-        else if (CheckBox_Quilt.IsChecked == true) 
+        else if (CheckBox_Quilt.IsChecked == true)
         {
             loaders = Loaders.Quilt;
         }
@@ -133,7 +131,7 @@ public partial class Tab1Control : UserControl
             List1.Clear();
             List1.AddRange(list);
         }
-        else if (CheckBox_Quilt.IsChecked == true) 
+        else if (CheckBox_Quilt.IsChecked == true)
         {
             Window.Info1.Show(Localizer.Instance["AddGameWindow.Info4"]);
             CheckBox_Forge.IsEnabled = false;
@@ -229,7 +227,7 @@ public partial class Tab1Control : UserControl
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         Window.Info1.Show(Localizer.Instance["GameEditWindow.Info1"]);
-        var res= await GameBinding.ReloadVersion();
+        var res = await GameBinding.ReloadVersion();
         Window.Info1.Close();
         if (!res)
         {
@@ -240,7 +238,7 @@ public partial class Tab1Control : UserControl
         Update();
     }
 
-    private void Load1() 
+    private void Load1()
     {
         List.Clear();
         List.AddRange(GameBinding.GetGameVersion(CheckBox_Release.IsChecked,
@@ -265,12 +263,12 @@ public partial class Tab1Control : UserControl
         Window = window;
     }
 
-    public void SetGame(GameSettingObj obj) 
+    public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
     }
 
-    public void Update() 
+    public void Update()
     {
         if (Obj == null)
             return;

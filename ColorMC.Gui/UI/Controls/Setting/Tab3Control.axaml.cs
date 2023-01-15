@@ -1,10 +1,8 @@
 using Avalonia.Controls;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 using Avalonia.Interactivity;
 using ColorMC.Core.Net;
-using Avalonia.Input;
-using System.Text.RegularExpressions;
+using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
@@ -26,7 +24,7 @@ public partial class Tab3Control : UserControl
         if (UIUtils.CheckNumb(TextBox2.Text) || UIUtils.CheckNumb(Input1.Text))
         {
             Window.Info.Show(Localizer.Instance["Tab3Control1.Error1"]);
-            return;   
+            return;
         }
         ConfigBinding.SetHttpConfig(new()
         {

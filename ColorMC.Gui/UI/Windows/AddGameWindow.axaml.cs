@@ -135,7 +135,7 @@ public partial class AddGameWindow : Window
         }
 
         add = true;
-        var res = await GameBinding.AddGame(name, version, loader, 
+        var res = await GameBinding.AddGame(name, version, loader,
             loaderversion, ComboBox_Group.SelectedItem as string);
         if (!res)
         {

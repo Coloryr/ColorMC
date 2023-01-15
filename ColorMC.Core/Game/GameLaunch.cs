@@ -17,7 +17,7 @@ namespace ColorMC.Core.Game;
 public enum LaunchState
 {
     Login, Check, CheckVersion, CheckLib, CheckAssets, CheckLoader, CheckLoginCore,
-    LostVersion, LostLib, LostLoader, LostLoginCore, LostGame, 
+    LostVersion, LostLib, LostLoader, LostLoginCore, LostGame,
     Download,
     JvmPrepare,
     VersionError, AssetsError, LoaderError, JvmError, LoginFail

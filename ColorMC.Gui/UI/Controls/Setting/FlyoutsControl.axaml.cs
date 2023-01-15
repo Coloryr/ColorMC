@@ -1,7 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Login;
 using Avalonia.Interactivity;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;

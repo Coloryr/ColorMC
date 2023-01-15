@@ -209,7 +209,7 @@ public static class Mods
             {
                 return -1;
             }
-            else if (y == null) 
+            else if (y == null)
             {
                 return 1;
             }

@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Setting;
-using ColorMC.Gui.UIBinding;
 using System;
 using System.Threading;
 
@@ -115,14 +114,14 @@ public partial class SettingWindow : Window, IBaseWindow
     public void Update()
     {
         App.Update(this, Image_Back, Grid1);
-    } 
+    }
 
     public void Next()
     {
-        
+
     }
 
-    public void Tab5Load() 
+    public void Tab5Load()
     {
         tab5.Load();
     }
