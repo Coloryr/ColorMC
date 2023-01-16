@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 public partial class WorldControl : UserControl
 {
     private Tab5Control Tab;
-    public WorldDisplayObj World;
+    public WorldDisplayObj World { get; private set; }
     public WorldControl()
     {
         InitializeComponent();
@@ -19,6 +19,11 @@ public partial class WorldControl : UserControl
     private void WorldControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         Tab.SetSelect(this);
+
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        {
+            new GameEditFlyout2(Tab, World).ShowAt(this, true);
+        }
     }
 
     public void Load(WorldDisplayObj world) 

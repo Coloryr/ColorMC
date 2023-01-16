@@ -174,7 +174,7 @@ public partial class Tab4Control : UserControl
 
         if (Dir1.Remove(item.Local, out var obj))
         {
-            GameBinding.DeleteMod(Obj, obj);
+            GameBinding.DeleteMod(obj);
             List.Remove(item);
 
             Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);

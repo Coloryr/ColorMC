@@ -101,6 +101,11 @@ public static class GameBinding
         return CurseForge.GetModList(version, page, sort, filter, sortOrder: sortOrder);
     }
 
+    public static Task<CurseForgeObj?> GetWorldList(string version, int sort, string filter, int page, int sortOrder)
+    {
+        return CurseForge.GetWorldList(version, page, sort, filter, sortOrder: sortOrder);
+    }
+
     public static List<string> GetCurseForgeTypes()
     {
         var list = new List<string>();
@@ -279,14 +284,14 @@ public static class GameBinding
         }
     }
 
-    public static void DeleteMod(GameSettingObj obj, ModObj mod)
+    public static void DeleteMod(ModObj mod)
     {
-        foreach (var item in obj.Datas)
+        foreach (var item in mod.Game.Datas)
         {
             if (item.Value.File == new FileInfo(mod.Local).Name)
             {
-                obj.Datas.Remove(item.Key);
-                obj.SaveCurseForgeMod();
+                mod.Game.Datas.Remove(item.Key);
+                mod.Game.SaveCurseForgeMod();
                 break;
             }
         }
@@ -462,5 +467,35 @@ public static class GameBinding
     public static Task<bool> AddWorld(GameSettingObj obj, string file) 
     {
         return obj.ImportWorldZip(file);
+    }
+
+    public static void DeleteWorld(WorldObj world)
+    {
+        world.Remove();
+    }
+
+    public static Task ExportWorld(WorldObj world, string file) 
+    {
+        return world.ExportWorldZip(file);
+    }
+
+    public static async Task<bool> DownloadWorld(GameSettingObj obj, CurseForgeObj.Data.LatestFiles data) 
+    {
+        var item = new DownloadItem()
+        {
+            Name = data.displayName,
+            Url = data.downloadUrl,
+            Local = Path.GetFullPath(obj.GetBaseDir() + "/" + data.fileName),
+            SHA1 = data.hashes[0].value,
+            Overwrite = true
+        };
+
+        var res = await DownloadManager.Download(item);
+        if (!res)
+        {
+            return false;
+        }
+
+        return await AddWorld(obj, item.Local);
     }
 }

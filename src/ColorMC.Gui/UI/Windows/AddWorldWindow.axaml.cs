@@ -12,18 +12,22 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using Avalonia;
+using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Controls.GameEdit;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class AddCurseForgeWindow : Window, IBase1Window
+public partial class AddWorldWindow : Window, IBase1Window
 {
     private readonly List<CurseForgeControl> List = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private CurseForgeControl? Last;
+    private Tab5Control Tab;
+    private GameSettingObj Obj;
 
     private readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
 
-    public AddCurseForgeWindow()
+    public AddWorldWindow()
     {
         InitializeComponent();
 
@@ -57,6 +61,14 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
         }
 
         Update();
+    }
+
+    public void SetTab5Control(GameSettingObj obj, Tab5Control tab)
+    {
+        Obj = obj;
+        Tab = tab;
+
+        Head.Title = string.Format(Localizer.Instance["AddWorldWindow.Title"], obj.Name);
     }
 
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -119,7 +131,7 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
 
     private void AddCurseForgeWindow_Closed(object? sender, EventArgs e)
     {
-        App.AddCurseForgeWindow = null;
+        Tab.CloseAddWorld();
     }
 
     public void Install()
@@ -130,9 +142,8 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
 
     public void Install1(CurseForgeObj.Data.LatestFiles data)
     {
-        App.ShowAddGame();
-        App.AddGameWindow?.Install(data);
         Close();
+        Tab.AddWorld(data);
     }
 
     public void SetSelect(CurseForgeControl last)
@@ -146,7 +157,7 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
     private async void Load()
     {
         Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info2"]);
-        var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string,
+        var data = await GameBinding.GetWorldList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value, ComboBox3.SelectedIndex);
         Info1.Close();
         if (data == null)
@@ -213,6 +224,10 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
         }
 
         ComboBox2.Items = list;
+        if (list.Contains(Obj.Version))
+        {
+            ComboBox2.SelectedItem = Obj.Version;
+        }
         Load();
     }
 

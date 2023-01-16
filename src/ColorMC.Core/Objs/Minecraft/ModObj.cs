@@ -27,4 +27,6 @@ public record ModObj
     public Loaders Loaders { get; set; }
     [JsonIgnore]
     public bool V2 { get; set; }
+    [JsonIgnore]
+    public GameSettingObj Game { get; set; }
 }

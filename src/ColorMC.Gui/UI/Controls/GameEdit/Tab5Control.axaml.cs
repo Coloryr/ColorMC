@@ -7,8 +7,12 @@ using ColorMC.Gui.UIBinding;
 using DynamicData;
 using Avalonia.Interactivity;
 using System;
+using Avalonia;
 using System.Collections.Generic;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System.IO;
+using ColorMC.Core;
+using ColorMC.Core.Objs.CurseForge;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -18,6 +22,7 @@ public partial class Tab5Control : UserControl
     private GameEditWindow Window;
     private GameSettingObj Obj;
     private WorldControl? Last;
+    private AddWorldWindow? AddWorldWindow;
 
     public Tab5Control()
     {
@@ -39,6 +44,11 @@ public partial class Tab5Control : UserControl
         LayoutUpdated += Tab5Control_LayoutUpdated1;
     }
 
+    public void CloseAddWorld() 
+    {
+        AddWorldWindow = null;
+    }
+
     private void Button_R1_Click(object? sender, RoutedEventArgs e)
     {
         Load();
@@ -46,14 +56,23 @@ public partial class Tab5Control : UserControl
 
     private void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        
+        if (AddWorldWindow == null)
+        {
+            AddWorldWindow = new();
+            AddWorldWindow.SetTab5Control(Obj, this);
+            AddWorldWindow.Show();
+        }
+        else
+        {
+            AddWorldWindow.Activate();
+        }
     }
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         OpenFileDialog openFile = new()
         {
-            Title = "地图压缩包",
+            Title = Localizer.Instance["GameEditWindow.Tab5.Info2"],
             AllowMultiple = false,
             Filters = new()
             {
@@ -115,6 +134,76 @@ public partial class Tab5Control : UserControl
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
         Expander_R.IsExpanded = true;
+    }
+
+    public async void Export(WorldDisplayObj obj) 
+    {
+        SaveFileDialog openFile = new()
+        {
+            Title = Localizer.Instance["GameEditWindow.Tab5.Info2"],
+            DefaultExtension = ".zip"
+        };
+
+        var file = await openFile.ShowAsync(Window);
+        if (!string.IsNullOrWhiteSpace(file))
+        {
+            //if (File.Exists(file) && await Window.Info.ShowWait(string.Format(
+            //        Localizer.Instance["GameEditWindow.Tab5.Info3"], file)) == false)
+            //{
+            //    return;
+            //}
+
+            Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info5"]);
+            bool error = false;
+            try
+            {
+                await GameBinding.ExportWorld(obj.World, file);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(Localizer.Instance["GameEditWindow.Tab5.Error1"], e);
+                error = true;
+            }
+            Window.Info1.Close();
+            if (error)
+            {
+                Window.Info.Show(Localizer.Instance["GameEditWindow.Tab5.Error1"]);
+            }
+            else
+            {
+                Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info4"]);
+            }
+        }
+    }
+
+    public async void AddWorld(CurseForgeObj.Data.LatestFiles data) 
+    {
+        Window.Info1.Show("正在下载世界压缩包");
+        var res= await GameBinding.DownloadWorld(Obj, data);
+        Window.Info1.Close();
+        if (res)
+        {
+            Window.Info2.Show("添加世界完成");
+            Load();
+        }
+        else
+        {
+            Window.Info.Show("添加世界失败");
+        }
+    }
+
+    public async void Delete(WorldDisplayObj obj) 
+    {
+        var res = await Window.Info.ShowWait(
+            string.Format(Localizer.Instance["GameEditWindow.Tab5.Info1"], obj.Name));
+        if (!res)
+        {
+            return;
+        }
+
+        GameBinding.DeleteWorld(obj.World);
+        Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
+        Load();
     }
 
     public void SetWindow(GameEditWindow window)

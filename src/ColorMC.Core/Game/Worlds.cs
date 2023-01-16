@@ -1,7 +1,12 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 using fNbt;
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using static ICSharpCode.SharpZipLib.Tar.TarInputStream;
 //using SharpNBT;
 
 namespace ColorMC.Core.Game;
@@ -107,6 +112,62 @@ public static class Worlds
         string dir = Path.GetFullPath(world.Game.GetBaseDir() + "/remove_worlds");
         Directory.CreateDirectory(dir);
         Directory.Move(world.Local, Path.GetFullPath(dir + "/" + world.LevelName));
+    }
+
+    public static async Task<bool> ImportWorldZip(this GameSettingObj obj, string file)
+    {
+        var dir = obj.GetSavesPath();
+        var info = new FileInfo(file);
+        dir = Path.GetFullPath(dir + "/" + info.Name[..^info.Extension.Length] + "/");
+        Directory.CreateDirectory(dir);
+        try
+        {
+            using ZipFile zFile = new(file);
+            using var stream1 = new MemoryStream();
+            string dir1 = "";
+            bool find = false;
+            foreach (ZipEntry e in zFile)
+            {
+                if (e.IsFile && e.Name.EndsWith("level.dat"))
+                {
+                    dir1 = e.Name.Replace("level.dat", "");
+                    find = true;
+                    break;
+                }
+            }
+
+            if (!find)
+            {
+                return false;
+            }
+
+            foreach (ZipEntry e in zFile)
+            {
+                if (e.IsFile)
+                {
+                    using var stream = zFile.GetInputStream(e);
+                    string file1 = Path.GetFullPath(dir + e.Name[dir1.Length..]);
+                    FileInfo info2 = new(file1);
+                    info2.Directory.Create();
+                    using FileStream stream3 = new(file1, FileMode.Create,
+                        FileAccess.ReadWrite, FileShare.ReadWrite);
+                    await stream.CopyToAsync(stream3);
+                }
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.GetName("Core.Path.Instances.Load.Error"), e);
+        }
+
+        return false;
+    }
+
+    public static Task ExportWorldZip(this WorldObj world, string file)
+    {
+        return ZipFloClass.ZipFile(world.Local, file);
     }
 
     //public static async Task Save(this WorldObj world, List<WorldSave> list)

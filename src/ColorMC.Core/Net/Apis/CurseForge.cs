@@ -49,6 +49,12 @@ public static class CurseForge
         return GetList(6, version, page, sort, filter, pagesize, sortOrder);
     }
 
+    public static Task<CurseForgeObj?> GetWorldList(string version = "", int page = 0,
+        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
+    {
+        return GetList(17, version, page, sort, filter, pagesize, sortOrder);
+    }
+
     public static async Task<CurseForgeModObj?> GetMod(CurseForgePackObj.Files obj)
     {
         try

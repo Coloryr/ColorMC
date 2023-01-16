@@ -1,5 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Zip;
+using System.Security.Cryptography;
 using System.Text;
+using System;
 
 namespace ColorMC.Core.Utils;
 
@@ -37,4 +40,53 @@ public static class Funtcions
         byte[] bytes = Encoding.UTF8.GetBytes(input);
         return Convert.ToBase64String(bytes);
     }
+}
+
+public static class ZipFloClass
+{
+    public static async Task ZipFile(string strFile, string strZip)
+    {
+        if (strFile[^1] != Path.DirectorySeparatorChar)
+            strFile += Path.DirectorySeparatorChar;
+        using var s = new ZipOutputStream(File.Create(strZip));
+        s.SetLevel(6); // 0 - store only to 9 - means best compression
+        await Zip(strFile, s, strFile);
+        await s.FinishAsync(CancellationToken.None);
+        s.Close();
+    }
+
+    private static async Task Zip(string strFile, ZipOutputStream s, string staticFile)
+    {
+        if (strFile[^1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
+        var crc = new Crc32();
+        string[] filenames = Directory.GetFileSystemEntries(strFile);
+        foreach (string file in filenames)
+        {
+            if (Directory.Exists(file))
+            {
+                await Zip(file, s, staticFile);
+            }
+
+            else // 否则直接压缩文件
+            {
+                //打开压缩文件
+                using var fs = File.OpenRead(file);
+
+                byte[] buffer = new byte[fs.Length];
+                await fs.ReadAsync(buffer);
+                string tempfile = file[(staticFile.LastIndexOf("\\") + 1)..];
+                var entry = new ZipEntry(tempfile)
+                {
+                    DateTime = DateTime.Now,
+                    Size = fs.Length
+                };
+                crc.Reset();
+                crc.Update(buffer);
+                entry.Crc = crc.Value;
+                await s.PutNextEntryAsync(entry);
+                await s.WriteAsync(buffer);
+            }
+        }
+    }
+
 }
