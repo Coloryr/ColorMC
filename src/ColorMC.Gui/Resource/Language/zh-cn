@@ -20,6 +20,8 @@
 	<sys:String x:Key="MainWindow.Check8">正在下载所需文件</sys:String>
 	<sys:String x:Key="MainWindow.Check9">正在准备Jvm参数</sys:String>
 	<sys:String x:Key="MainWindow.Error1">账户登录失败</sys:String>
+	<sys:String x:Key="MainWindow.Error2">没有合适的Java</sys:String>
+	<sys:String x:Key="MainWindow.Error3">启动失败</sys:String>
 	<sys:String x:Key="MainWindow.DefaultGroup">默认分组</sys:String>
 	<sys:String x:Key="MainWindow.Flyouts.Button1">启动实例</sys:String>
 	<sys:String x:Key="MainWindow.Flyouts.Button2">查看Mod</sys:String>

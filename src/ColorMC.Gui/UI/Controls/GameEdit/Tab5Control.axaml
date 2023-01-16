@@ -41,11 +41,11 @@
                         Name="Button_I1"
                         Width="100"
                         Height="30"
-                        Margin="4,0,0,0"
+                        Margin="6,0,0,0"
                         Content="{setting:Localize GameEditWindow.Tab4.Button4}" />
                 </Expander>
             </Grid>
-            <Grid Margin="0,5,0,0">
+            <Grid>
                 <Button
                     Name="Button_A"
                     Width="20"
@@ -64,11 +64,11 @@
                         Name="Button_A1"
                         Width="100"
                         Height="30"
-                        Margin="4,0,0,0"
+                        Margin="6,0,0,0"
                         Content="{setting:Localize GameEditWindow.Tab4.Button1}" />
                 </Expander>
             </Grid>
-            <Grid Margin="0,5,0,0">
+            <Grid>
                 <Button
                     Name="Button_R"
                     Width="20"
@@ -87,7 +87,7 @@
                         Name="Button_R1"
                         Width="100"
                         Height="30"
-                        Margin="4,0,0,0"
+                        Margin="6,0,0,0"
                         Content="{setting:Localize GameEditWindow.Tab4.Button2}" />
                 </Expander>
             </Grid>

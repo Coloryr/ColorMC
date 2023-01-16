@@ -106,6 +106,7 @@ public partial class UserWindow : Window
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
+        bool ok = false;
         Button_Add.IsEnabled = false;
         switch (ComboBox_UserType.SelectedIndex)
         {
@@ -123,6 +124,7 @@ public partial class UserWindow : Window
                 }
                 Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
+                ok = true;
                 break;
             case 1:
                 CoreMain.LoginOAuthCode = LoginOAuthCode;
@@ -135,6 +137,7 @@ public partial class UserWindow : Window
                 }
                 Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
+                ok = true;
                 break;
             case 2:
                 var server = TextBox_Input1.Text;
@@ -160,6 +163,7 @@ public partial class UserWindow : Window
                 }
                 Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
+                ok = true;
                 break;
             case 3:
                 server = TextBox_Input1.Text;
@@ -185,6 +189,7 @@ public partial class UserWindow : Window
                 }
                 Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
+                ok = true;
                 break;
             case 4:
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
@@ -203,6 +208,7 @@ public partial class UserWindow : Window
                     break;
                 }
                 Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                ok = true;
                 break;
             case 5:
                 server = TextBox_Input1.Text;
@@ -228,13 +234,17 @@ public partial class UserWindow : Window
                 }
                 Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
+                ok = true;
                 break;
             default:
                 Info.Show(Localizer.Instance["UserWindow.Error5"]);
                 break;
         }
         Load();
-        await CrossFade.Start(Grid_Add, null, CancellationToken.None);
+        if (ok)
+        {
+            await CrossFade.Start(Grid_Add, null, CancellationToken.None);
+        }
         Button_Add.IsEnabled = true;
     }
 

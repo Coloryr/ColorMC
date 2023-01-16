@@ -21,6 +21,8 @@ public partial class MainWindow : Window
     public delegate void UserEditHandler();
     public static event UserEditHandler UserEdit;
 
+    private LaunchState Last;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -47,10 +49,21 @@ public partial class MainWindow : Window
     {
         Info1.Show(Localizer.Instance["MainWindow.Launch"]);
         var res = await GameBinding.Launch(Obj, debug);
+        Info1.Close();
         if (res.Item1 == false)
         {
-            Info1.Close();
-            Info.Show(res.Item2!);
+            switch (Last)
+            {
+                case LaunchState.LoginFail:
+                    Info.Show(Localizer.Instance["MainWindow.Error1"]);
+                    break;
+                case LaunchState.JvmError:
+                    Info.Show(Localizer.Instance["MainWindow.Error2"]);
+                    break;
+                default:
+                    Info.Show(Localizer.Instance["MainWindow.Error3"]);
+                    break;
+            }
         }
     }
 
@@ -104,6 +117,7 @@ public partial class MainWindow : Window
 
     private void GameLunch(GameSettingObj obj, LaunchState state)
     {
+        Last = state;
         switch (state)
         {
             case LaunchState.Login:
@@ -132,11 +146,6 @@ public partial class MainWindow : Window
                 break;
             case LaunchState.JvmPrepare:
                 Info1.NextText(Localizer.Instance["MainWindow.Check9"]);
-                break;
-
-            case LaunchState.LoginFail:
-                Info1.Close();
-                Info.Show(Localizer.Instance["MainWindow.Error1"]);
                 break;
         }
     }

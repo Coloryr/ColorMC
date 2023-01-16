@@ -200,7 +200,11 @@ public static partial class UIUtils
 
         foreach (var item in visual.VisualChildren)
         {
-            return FindToEnd<T>(item);
+            var res = FindToEnd<T>(item);
+            if (res != null)
+            {
+                return res;
+            }
         }
 
         return default;

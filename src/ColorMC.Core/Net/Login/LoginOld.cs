@@ -67,7 +67,8 @@ public static class LoginOld
             Method = HttpMethod.Post,
             RequestUri = new(server + "/authserver/refresh")
         };
-        message.Headers.UserAgent.Add(new("ColorMC"));
+        message.Headers.UserAgent.Append(
+            new("ColorMC", CoreMain.Version));
         message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
             MediaTypeHeaderValue.Parse("application/json"));
 
@@ -76,7 +77,7 @@ public static class LoginOld
         if (string.IsNullOrWhiteSpace(data))
             return (LoginState.Error, null);
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
-        if (obj2 == null)
+        if (obj2 == null || obj2.selectedProfile == null)
             return (LoginState.JsonError, null);
 
         obj.UserName = obj2.selectedProfile.name;

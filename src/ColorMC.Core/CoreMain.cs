@@ -41,6 +41,7 @@ public static class CoreMain
     public static Action<int, int>? PackUpdate { get; set; }
 
     public static Action<Process?, string?>? ProcessLog { get; set; }
+    public static Action<GameSettingObj, string?>? GameLog { get; set; }
 
     public static Action<AuthState>? AuthStateUpdate { get; set; }
     public static Action<string, string>? LoginOAuthCode { get; set; }
