@@ -3,13 +3,13 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
-using DynamicData;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,14 +40,14 @@ public partial class Tab4Control : UserControl
 
         DataGrid1.Items = List;
 
-        Button_A1.PointerLeave += Button_A1_PointerLeave;
-        Button_A.PointerEnter += Button_A_PointerEnter;
+        Button_A1.PointerExited += Button_A1_PointerLeave;
+        Button_A.PointerEntered += Button_A_PointerEnter;
 
-        Button_I1.PointerLeave += Button_I1_PointerLeave;
-        Button_I.PointerEnter += Button_I_PointerEnter;
+        Button_I1.PointerExited += Button_I1_PointerLeave;
+        Button_I.PointerEntered += Button_I_PointerEnter;
 
-        Button_R1.PointerLeave += Button_R1_PointerLeave;
-        Button_R.PointerEnter += Button_R_PointerEnter;
+        Button_R1.PointerExited += Button_R1_PointerLeave;
+        Button_R.PointerEntered += Button_R_PointerEnter;
 
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;

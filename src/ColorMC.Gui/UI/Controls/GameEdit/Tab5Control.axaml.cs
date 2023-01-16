@@ -25,14 +25,14 @@ public partial class Tab5Control : UserControl
     {
         InitializeComponent();
 
-        Button_A1.PointerLeave += Button_A1_PointerLeave;
-        Button_A.PointerEnter += Button_A_PointerEnter;
+        Button_A1.PointerExited += Button_A1_PointerLeave;
+        Button_A.PointerEntered += Button_A_PointerEnter;
 
-        Button_I1.PointerLeave += Button_I1_PointerLeave;
-        Button_I.PointerEnter += Button_I_PointerEnter;
+        Button_I1.PointerExited += Button_I1_PointerLeave;
+        Button_I.PointerEntered += Button_I_PointerEnter;
 
-        Button_R1.PointerLeave += Button_R1_PointerLeave;
-        Button_R.PointerEnter += Button_R_PointerEnter;
+        Button_R1.PointerExited += Button_R1_PointerLeave;
+        Button_R.PointerEntered += Button_R_PointerEnter;
 
         Button_R1.Click += Button_R1_Click;
         Button_A1.Click += Button_A1_Click;

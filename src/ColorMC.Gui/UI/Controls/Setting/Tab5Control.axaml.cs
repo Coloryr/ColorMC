@@ -26,11 +26,11 @@ public partial class Tab5Control : UserControl
         Button_SelectFile.Click += Button_SelectFile_Click;
         Button_Add.Click += Button_Add_Click;
 
-        Button_R1.PointerLeave += Button_R1_PointerLeave;
-        Button_R.PointerEnter += Button_R_PointerEnter;
+        Button_R1.PointerExited += Button_R1_PointerLeave;
+        Button_R.PointerEntered += Button_R_PointerEnter;
 
-        Button_D1.PointerLeave += Button_D1_PointerLeave;
-        Button_D.PointerEnter += Button_D_PointerEnter;
+        Button_D1.PointerExited += Button_D1_PointerLeave;
+        Button_D.PointerEntered += Button_D_PointerEnter;
 
         Button_R1.Click += Button_R1_Click;
         Button_D1.Click += Button_D1_Click;

@@ -7,7 +7,7 @@ namespace ColorMC.Gui;
 
 internal class Program
 {
-    public const string Font = "resm:ColorMC.Gui.Resource.Font.SourceHanSansHWSC-Regular.otf";
+    public const string Font = "avares://ColorMC.Gui/Resource/Font/SourceHanSansHWSC-Regular.otf";
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
