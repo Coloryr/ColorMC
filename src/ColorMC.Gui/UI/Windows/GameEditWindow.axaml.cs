@@ -75,9 +75,11 @@ public partial class GameEditWindow : Window
                 break;
             //µ¼³ö
             case 5:
+
                 break;
             //²âÊÔ
             case 6:
+
                 break;
         }
     }

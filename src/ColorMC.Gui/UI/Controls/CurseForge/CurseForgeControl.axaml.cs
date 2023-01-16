@@ -14,7 +14,7 @@ namespace ColorMC.Gui.UI.Controls.CurseForge;
 
 public partial class CurseForgeControl : UserControl
 {
-    private AddCurseForgeWindow Window;
+    private IBase1Window Window;
     private bool haveimg;
     public CurseForgeObj.Data Data { get; private set; }
     public CurseForgeControl()
@@ -75,7 +75,7 @@ public partial class CurseForgeControl : UserControl
         }
     }
 
-    public void SetWindow(AddCurseForgeWindow window)
+    public void SetWindow(IBase1Window window)
     {
         Window = window;
     }

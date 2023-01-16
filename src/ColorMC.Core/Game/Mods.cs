@@ -88,7 +88,8 @@ public static class Mods
                         V2 = true,
                         Loaders = Loaders.Forge,
                         Local = Path.GetFullPath(item.FullName),
-                        Disable = item.Extension is ".disable"
+                        Disable = item.Extension is ".disable",
+                        Game = obj
                     };
                     model2.TryGetValue("modId", out object item2);
                     obj3.modid = item2 as string;

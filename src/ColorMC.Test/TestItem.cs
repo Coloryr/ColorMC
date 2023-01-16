@@ -393,4 +393,11 @@ public static class TestItem
 
         Console.WriteLine();
     }
+
+    public static void Item17()
+    {
+        var game = InstancesPath.Games[0];
+        var list = game.GetWorlds().Result;
+        list[0].ExportWorldZip("test.zip").Wait();
+    }
 }

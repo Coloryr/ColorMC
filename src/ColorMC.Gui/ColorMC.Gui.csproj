@@ -67,8 +67,17 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaXaml Update="UI\Controls\GameEdit\Flyouts2Control.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Update="UI\Controls\CurseForge\CurseForge1Control.axaml.cs">
       <DependentUpon>CurseForge1Control.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\GameEdit\Flyouts2Control.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Flyouts2Control.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\GameEdit\Flyouts1Control.axaml.cs">
       <DependentUpon>Flyouts1Control.axaml</DependentUpon>
@@ -108,6 +117,9 @@
     </Compile>
     <Compile Update="UI\Controls\Setting\HelloWindow.Tab2.axaml.cs">
       <DependentUpon>HelloWindow.Tab2.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Windows\AddWorldWindow.axaml.cs">
+      <DependentUpon>AddWorldWindow.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

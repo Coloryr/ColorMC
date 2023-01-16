@@ -236,6 +236,12 @@
 	<sys:String x:Key="GameEditWindow.Tab4.Info3">删除完成</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Info4">是否要删除Mod {0}</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Error1">Mod列表加载失败</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Info1">是否要删除世界 {0}</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Info2">地图压缩包</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Info3">文件 {0} 已存在，是否覆盖</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Info4">地图导出成功</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Info5">正在导出地图</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Error1">地图导出错误</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text1">游戏模式</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text2">最后游戏与</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text3">游戏难度</sys:String>
@@ -243,6 +249,9 @@
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button1">启用/禁用</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button2">删除Mod</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button3">打开文件夹</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts2.Button1">打开文件夹</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts2.Button2">导出世界</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts2.Button3">删除世界</sys:String>
 	<sys:String x:Key="GameEditWindow.Info1">正在读取游戏版本</sys:String>
 	<sys:String x:Key="GameEditWindow.Error1">版本读取失败</sys:String>
 
@@ -342,6 +351,8 @@
 	<sys:String x:Key="AddModWindow.Error5">Mod数据加载失败</sys:String>
 	<sys:String x:Key="AddModWindow.Control.Info1">正在下载中</sys:String>
 	<sys:String x:Key="AddModWindow.Control.Info2">已下载</sys:String>
+
+	<sys:String x:Key="AddWorldWindow.Title">ColorMC 实例 {0} 添加世界</sys:String>
 
 	<sys:String x:Key="GameBinding.SortOrder.Item1">顺序</sys:String>
 	<sys:String x:Key="GameBinding.SortOrder.Item2">倒序</sys:String>

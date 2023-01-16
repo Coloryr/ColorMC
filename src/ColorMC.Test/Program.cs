@@ -13,7 +13,7 @@ internal class Program
     {
         Console.WriteLine("Hello, World!");
 
-        CoreMain.Init("E:\\code\\ColorMC\\buildout\\");
+        CoreMain.Init(AppContext.BaseDirectory);
 
         CoreMain.DownloaderUpdate = Update;
         CoreMain.DownloadItemStateUpdate = Update;
@@ -25,7 +25,7 @@ internal class Program
         CoreMain.LoginOAuthCode = Login;
         CoreMain.AuthStateUpdate = AuthStateUpdate;
 
-        TestItem.Item16();
+        TestItem.Item17();
 
         Console.ReadLine();
     }
