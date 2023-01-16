@@ -15,17 +15,12 @@ using Avalonia.Data.Converters;
 using Avalonia.Platform;
 using Avalonia;
 using System.Globalization;
-using ReactiveUI;
 using System.Collections.ObjectModel;
-using Avalonia.Threading;
-using System.Runtime.InteropServices;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Media.Imaging;
-using Avalonia.Controls.Selection;
+using ReactiveUI;
+using Avalonia.Controls.Templates;
 using System.ComponentModel;
-using System.Reflection;
-using static System.Net.Mime.MediaTypeNames;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

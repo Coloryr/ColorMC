@@ -37,14 +37,14 @@ public partial class UserWindow : Window
         DataGrid_User.DoubleTapped += DataGrid_User_DoubleTapped;
         DataGrid_User.CellPointerPressed += DataGrid_User_PointerPressed;
 
-        Button_A1.PointerLeave += Button_A1_PointerLeave;
-        Button_A.PointerEnter += Button_A_PointerEnter;
+        Button_A1.PointerExited += Button_A1_PointerLeave;
+        Button_A.PointerEntered += Button_A_PointerEnter;
 
-        Button_D1.PointerLeave += Button_D1_PointerLeave;
-        Button_D.PointerEnter += Button_D_PointerEnter;
+        Button_D1.PointerExited += Button_D1_PointerLeave;
+        Button_D.PointerEntered += Button_D_PointerEnter;
 
-        Button_S1.PointerLeave += Button_S1_PointerLeave;
-        Button_S.PointerEnter += Button_S_PointerEnter;
+        Button_S1.PointerExited += Button_S1_PointerLeave;
+        Button_S.PointerEntered += Button_S_PointerEnter;
 
         Button_A1.Click += Button_A1_Click;
         Button_D1.Click += Button_D1_Click;

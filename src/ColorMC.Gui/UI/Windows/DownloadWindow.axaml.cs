@@ -40,11 +40,11 @@ public partial class DownloadWindow : Window
         Expander_P.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(100));
         Expander_S.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(100));
 
-        Button_P1.PointerLeave += Button_P1_PointerLeave;
-        Button_P.PointerEnter += Button_P_PointerEnter;
+        Button_P1.PointerExited += Button_P1_PointerLeave;
+        Button_P.PointerEntered += Button_P_PointerEnter;
 
-        Button_S1.PointerLeave += Button_S1_PointerLeave;
-        Button_S.PointerEnter += Button_S_PointerEnter;
+        Button_S1.PointerExited += Button_S1_PointerLeave;
+        Button_S.PointerEntered += Button_S_PointerEnter;
 
         Button_P1.Click += Button_P_Click;
         Button_S1.Click += Button_S_Click;
