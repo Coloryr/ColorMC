@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.CurseForge;

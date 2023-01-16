@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -97,7 +96,7 @@ public static class OtherUtils
 {
     public static DateTime TimestampToDataTime(long unixTimeStamp)
     {
-        DateTime start = new DateTime(1970, 1, 1) + 
+        DateTime start = new DateTime(1970, 1, 1) +
             TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
         DateTime dt = start.AddMilliseconds(unixTimeStamp);
         return dt;

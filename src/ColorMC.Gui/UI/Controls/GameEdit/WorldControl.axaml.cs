@@ -1,7 +1,6 @@
 using Avalonia.Controls;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using Avalonia.Input;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -26,7 +25,7 @@ public partial class WorldControl : UserControl
         }
     }
 
-    public void Load(WorldDisplayObj world) 
+    public void Load(WorldDisplayObj world)
     {
         World = world;
 

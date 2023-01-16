@@ -1,19 +1,18 @@
+using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Threading;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.CurseForge;
+using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
-using Avalonia;
-using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Controls.GameEdit;
 
 namespace ColorMC.Gui.UI.Windows;
 

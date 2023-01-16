@@ -138,7 +138,7 @@ public static class PackDownload
                     Id = item.id,
                     ModId = item.modId,
                     Url = item.downloadUrl
-                }); 
+                });
 
                 Now++;
 

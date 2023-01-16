@@ -1,18 +1,15 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
+using ColorMC.Core;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using DynamicData;
-using Avalonia.Interactivity;
-using System;
-using Avalonia;
-using System.Collections.Generic;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System.IO;
-using ColorMC.Core;
-using ColorMC.Core.Objs.CurseForge;
+using System;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -44,7 +41,7 @@ public partial class Tab5Control : UserControl
         LayoutUpdated += Tab5Control_LayoutUpdated1;
     }
 
-    public void CloseAddWorld() 
+    public void CloseAddWorld()
     {
         AddWorldWindow = null;
     }
@@ -136,7 +133,7 @@ public partial class Tab5Control : UserControl
         Expander_R.IsExpanded = true;
     }
 
-    public async void Export(WorldDisplayObj obj) 
+    public async void Export(WorldDisplayObj obj)
     {
         SaveFileDialog openFile = new()
         {
@@ -176,10 +173,10 @@ public partial class Tab5Control : UserControl
         }
     }
 
-    public async void AddWorld(CurseForgeObj.Data.LatestFiles data) 
+    public async void AddWorld(CurseForgeObj.Data.LatestFiles data)
     {
         Window.Info1.Show("正在下载世界压缩包");
-        var res= await GameBinding.DownloadWorld(Obj, data);
+        var res = await GameBinding.DownloadWorld(Obj, data);
         Window.Info1.Close();
         if (res)
         {
@@ -192,7 +189,7 @@ public partial class Tab5Control : UserControl
         }
     }
 
-    public async void Delete(WorldDisplayObj obj) 
+    public async void Delete(WorldDisplayObj obj)
     {
         var res = await Window.Info.ShowWait(
             string.Format(Localizer.Instance["GameEditWindow.Tab5.Info1"], obj.Name));
@@ -216,14 +213,14 @@ public partial class Tab5Control : UserControl
         Obj = obj;
     }
 
-    public void SetSelect(WorldControl item) 
+    public void SetSelect(WorldControl item)
     {
         Last?.SetSelect(false);
         Last = item;
         Last.SetSelect(true);
     }
 
-    private async void Load() 
+    private async void Load()
     {
         Window.Info1.Show("正在加载地图列表");
         List.Clear();
