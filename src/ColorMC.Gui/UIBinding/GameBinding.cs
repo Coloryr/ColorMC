@@ -498,4 +498,10 @@ public static class GameBinding
 
         return await AddWorld(obj, item.Local);
     }
+
+    public static Task ExportGame(GameSettingObj obj,
+        string file, List<string> filter)
+    {
+        return obj.Export(file, filter);
+    }
 }

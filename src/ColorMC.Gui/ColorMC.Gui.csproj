@@ -27,6 +27,9 @@
     <None Remove="Resource\Font\SourceHanSansHWSC-Regular.otf" />
     <None Remove="Resource\Language\en-us" />
     <None Remove="Resource\Language\zh-cn" />
+    <None Remove="Resource\Pic\file.png" />
+    <None Remove="Resource\Pic\folder-open.png" />
+    <None Remove="Resource\Pic\folder.png" />
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\user.png" />
   </ItemGroup>
@@ -36,6 +39,9 @@
     <EmbeddedResource Include="Resource\Language\zh-cn">
       <Generator></Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resource\Pic\file.png" />
+    <EmbeddedResource Include="Resource\Pic\folder-open.png" />
+    <EmbeddedResource Include="Resource\Pic\folder.png" />
     <EmbeddedResource Include="Resource\Pic\game.png" />
     <EmbeddedResource Include="Resource\Pic\user.png" />
   </ItemGroup>
@@ -50,6 +56,7 @@
     <PackageReference Include="Avalonia" Version="0.10.18" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.12.2" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.10.18" />
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="0.10.18.1" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.18" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.18" />

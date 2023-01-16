@@ -175,17 +175,17 @@ public partial class Tab5Control : UserControl
 
     public async void AddWorld(CurseForgeObj.Data.LatestFiles data)
     {
-        Window.Info1.Show("正在下载世界压缩包");
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info6"]);
         var res = await GameBinding.DownloadWorld(Obj, data);
         Window.Info1.Close();
         if (res)
         {
-            Window.Info2.Show("添加世界完成");
+            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info7"]);
             Load();
         }
         else
         {
-            Window.Info.Show("添加世界失败");
+            Window.Info.Show(Localizer.Instance["GameEditWindow.Tab5.Error2"]);
         }
     }
 
@@ -222,7 +222,7 @@ public partial class Tab5Control : UserControl
 
     private async void Load()
     {
-        Window.Info1.Show("正在加载地图列表");
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info8"]);
         List.Clear();
         ListBox_Items.Children.Clear();
 
