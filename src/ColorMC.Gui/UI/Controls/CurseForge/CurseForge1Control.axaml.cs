@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.CurseForge;
@@ -85,7 +84,7 @@ public partial class CurseForge1Control : UserControl
         Grid1.IsVisible = true;
     }
 
-    public void SetDownloadDone(bool res) 
+    public void SetDownloadDone(bool res)
     {
         IsDownload = res;
         Grid1.IsVisible = false;

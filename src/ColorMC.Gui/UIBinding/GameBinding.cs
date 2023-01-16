@@ -435,7 +435,7 @@ public static class GameBinding
         obj.SaveCurseForgeMod();
     }
 
-    public static async Task<List<WorldDisplayObj>> GetWorlds(GameSettingObj obj) 
+    public static async Task<List<WorldDisplayObj>> GetWorlds(GameSettingObj obj)
     {
         var list = new List<WorldDisplayObj>();
         var res = await obj.GetWorlds();
@@ -464,7 +464,7 @@ public static class GameBinding
         return list;
     }
 
-    public static Task<bool> AddWorld(GameSettingObj obj, string file) 
+    public static Task<bool> AddWorld(GameSettingObj obj, string file)
     {
         return obj.ImportWorldZip(file);
     }
@@ -474,12 +474,12 @@ public static class GameBinding
         world.Remove();
     }
 
-    public static Task ExportWorld(WorldObj world, string file) 
+    public static Task ExportWorld(WorldObj world, string file)
     {
         return world.ExportWorldZip(file);
     }
 
-    public static async Task<bool> DownloadWorld(GameSettingObj obj, CurseForgeObj.Data.LatestFiles data) 
+    public static async Task<bool> DownloadWorld(GameSettingObj obj, CurseForgeObj.Data.LatestFiles data)
     {
         var item = new DownloadItem()
         {

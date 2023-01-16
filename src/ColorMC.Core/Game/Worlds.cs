@@ -3,10 +3,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using fNbt;
-using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using static ICSharpCode.SharpZipLib.Tar.TarInputStream;
 //using SharpNBT;
 
 namespace ColorMC.Core.Game;

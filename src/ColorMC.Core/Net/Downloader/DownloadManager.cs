@@ -1,5 +1,4 @@
 ﻿using ColorMC.Core.Utils;
-using System;
 using System.Buffers;
 using System.Collections.Concurrent;
 

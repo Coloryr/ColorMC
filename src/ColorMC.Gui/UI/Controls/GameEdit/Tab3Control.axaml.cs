@@ -115,7 +115,7 @@ public partial class Tab3Control : UserControl
         textMateInstallation.SetGrammar(item1);
     }
 
-    private void Load() 
+    private void Load()
     {
         Items.Clear();
         var list = GameBinding.GetAllConfig(Obj);
