@@ -85,11 +85,11 @@
                             Name="Button_S1"
                             Width="100"
                             Height="30"
-                            Margin="4,0,0,0"
+                            Margin="6,0,0,0"
                             Content="{setting:Localize UserWindow.Button1}" />
                     </Expander>
                 </Grid>
-                <Grid Margin="0,5,0,0">
+                <Grid>
                     <Button
                         Name="Button_A"
                         Width="20"
@@ -108,11 +108,11 @@
                             Name="Button_A1"
                             Width="100"
                             Height="30"
-                            Margin="4,0,0,0"
+                            Margin="6,0,0,0"
                             Content="{setting:Localize UserWindow.Button2}" />
                     </Expander>
                 </Grid>
-                <Grid Margin="0,5,0,0">
+                <Grid>
                     <Button
                         Name="Button_D"
                         Width="20"
@@ -131,7 +131,7 @@
                             Name="Button_D1"
                             Width="100"
                             Height="30"
-                            Margin="4,0,0,0"
+                            Margin="6,0,0,0"
                             Content="{setting:Localize UserWindow.Button3}" />
                     </Expander>
                 </Grid>

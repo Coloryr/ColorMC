@@ -12,6 +12,7 @@
         Name="Expander_Head"
         VerticalAlignment="Top"
         CornerRadius="0"
+		HorizontalAlignment="Stretch"
         IsExpanded="True">
         <WrapPanel
             Name="WrapPanel_Items"

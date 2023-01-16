@@ -3,8 +3,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     Title="ColorMC"
     Width="800"
@@ -116,11 +116,11 @@
                             Name="Button_P1"
                             Width="100"
                             Height="30"
-                            Margin="4,0,0,0"
+                            Margin="6,0,0,0"
                             Content="{setting:Localize DownloadWindow.Button1}" />
                     </Expander>
                 </Grid>
-                <Grid Margin="0,5,0,0">
+                <Grid>
                     <Button
                         Name="Button_S"
                         Width="20"
@@ -139,7 +139,7 @@
                             Name="Button_S1"
                             Width="100"
                             Height="30"
-                            Margin="4,0,0,0"
+                            Margin="6,0,0,0"
                             Content="{setting:Localize DownloadWindow.Button2}" />
                     </Expander>
                 </Grid>

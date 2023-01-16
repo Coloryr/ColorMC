@@ -29,14 +29,9 @@ public partial class Tab5Control : UserControl
         Button_R1.PointerExited += Button_R1_PointerLeave;
         Button_R.PointerEntered += Button_R_PointerEnter;
 
-        Button_D1.PointerExited += Button_D1_PointerLeave;
-        Button_D.PointerEntered += Button_D_PointerEnter;
-
         Button_R1.Click += Button_R1_Click;
-        Button_D1.Click += Button_D1_Click;
 
         Expander_R.ContentTransition = CrossFade1;
-        Expander_D.ContentTransition = CrossFade1;
 
         DataGrid1.Items = List;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
@@ -64,7 +59,6 @@ public partial class Tab5Control : UserControl
     {
         DataGrid1.MakeTran();
         Expander_R.MakePadingNull();
-        Expander_D.MakePadingNull();
     }
 
     private void Button_D1_Click(object? sender, RoutedEventArgs e)
@@ -93,16 +87,6 @@ public partial class Tab5Control : UserControl
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
         Expander_R.IsExpanded = true;
-    }
-
-    private void Button_D1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        Expander_D.IsExpanded = false;
-    }
-
-    private void Button_D_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Expander_D.IsExpanded = true;
     }
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)

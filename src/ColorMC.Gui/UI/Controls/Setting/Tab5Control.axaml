@@ -3,8 +3,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -95,31 +95,8 @@
                         Name="Button_R1"
                         Width="100"
                         Height="30"
-                        Margin="4,0,0,0"
+                        Margin="6,0,0,0"
                         Content="{setting:Localize Button.Refash}" />
-                </Expander>
-            </Grid>
-            <Grid Margin="0,5,0,0">
-                <Button
-                    Name="Button_D"
-                    Width="20"
-                    Height="30"
-                    Content="D" />
-                <Expander
-                    Name="Expander_D"
-                    Height="30"
-                    Margin="-84,0,0,0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    CornerRadius="0"
-                    ExpandDirection="Right"
-                    IsExpanded="False">
-                    <Button
-                        Name="Button_D1"
-                        Width="100"
-                        Height="30"
-                        Margin="4,0,0,0"
-                        Content="{setting:Localize Button.Delete}" />
                 </Expander>
             </Grid>
         </StackPanel>

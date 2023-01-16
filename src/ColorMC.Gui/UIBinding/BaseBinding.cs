@@ -22,6 +22,7 @@ public static class BaseBinding
         CoreMain.NewStart = ShowNew;
         CoreMain.DownloaderUpdate = DownloaderUpdate;
         CoreMain.ProcessLog = PLog;
+        CoreMain.GameLog = PLog;
         CoreMain.LanguageReload = Change;
 
         CoreMain.Init(AppContext.BaseDirectory);
@@ -36,6 +37,10 @@ public static class BaseBinding
 
     public static async Task<bool> Launch(GameSettingObj obj, LoginObj obj1)
     {
+        if (App.GameEditWindows.TryGetValue(obj, out var win))
+        {
+            win.ClearLog();
+        }
         var res = await obj.StartGame(obj1, null);
         if (res != null)
         {
@@ -45,7 +50,7 @@ public static class BaseBinding
             };
             Games.Add(res, obj);
         }
-        return res == null;
+        return res != null;
     }
 
     public static void DownloaderUpdate(CoreRunState state)
@@ -57,6 +62,14 @@ public static class BaseBinding
     {
         if (Games.TryGetValue(p, out var obj)
             && App.GameEditWindows.TryGetValue(obj, out var win))
+        {
+            win.Log(d);
+        }
+    }
+
+    public static void PLog(GameSettingObj obj, string? d)
+    {
+        if (App.GameEditWindows.TryGetValue(obj, out var win))
         {
             win.Log(d);
         }

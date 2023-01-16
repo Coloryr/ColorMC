@@ -88,6 +88,11 @@ public partial class GameEditWindow : Window
         }
     }
 
+    public void ClearLog() 
+    {
+        tab7.Clear();
+    }
+
     public void Log(string? data)
     {
         if (data == null)

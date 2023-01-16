@@ -19,7 +19,7 @@ public enum LaunchState
     Login, Check, CheckVersion, CheckLib, CheckAssets, CheckLoader, CheckLoginCore,
     LostVersion, LostLib, LostLoader, LostLoginCore, LostGame,
     Download,
-    JvmPrepare,
+    JvmPrepare, 
     VersionError, AssetsError, LoaderError, JvmError, LoginFail
 }
 
@@ -587,7 +587,7 @@ public static class Launch
             }
         }
 
-        if (obj.JvmArg.GameArgs != null)
+        if (obj.JvmArg?.GameArgs != null)
         {
             gameArg.Add(obj.JvmArg.GameArgs);
         }
@@ -775,6 +775,25 @@ public static class Launch
 
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null)
     {
+        JavaInfo? jvm = null;
+        if (jvmCfg == null)
+        {
+            jvm = FindJvm(obj);
+        }
+        else
+        {
+            jvm = JvmPath.GetInfo(jvmCfg.Name);
+        }
+
+        if (jvm == null)
+        {
+            CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
+            return null;
+        }
+
+        CoreMain.GameLog?.Invoke(obj, "游戏使用的JAVA");
+        CoreMain.GameLog?.Invoke(obj, jvm.Path);
+
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Login);
         var login1 = await login.RefreshToken();
         if (login1.State1 != LoginState.Done)
@@ -784,6 +803,7 @@ public static class Launch
         }
 
         login = login1.Obj!;
+        AuthDatabase.SaveAuth(login);
 
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Check);
         var res = await CheckGameFile(obj, login);
@@ -811,28 +831,11 @@ public static class Launch
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
 
         var arg = await MakeArg(obj, login);
+        CoreMain.GameLog?.Invoke(obj, "游戏启动参数");
         foreach (var item in arg)
         {
-            Console.WriteLine(item);
+            CoreMain.GameLog?.Invoke(obj, item);
         }
-
-        JavaInfo? jvm = null;
-        if (jvmCfg == null)
-        {
-            jvm = FindJvm(obj);
-        }
-        else
-        {
-            jvm = JvmPath.GetInfo(jvmCfg.Name);
-        }
-
-        if (jvm == null)
-        {
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
-            return null;
-        }
-
-        Console.WriteLine(jvm.Path);
 
         Process process = new();
         process.StartInfo.FileName = jvm.Path;
