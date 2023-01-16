@@ -432,6 +432,12 @@ public static class InstancesPath
         return await InstallFromZip(item.Local, PackType.CurseForge);
     }
 
+    public static Task Export(this GameSettingObj obj, 
+        string file, List<string> filter) 
+    {
+        return ZipFloClass.ZipFile(obj.GetBaseDir(), file, filter);
+    }
+
     public static async Task<bool> InstallFromZip(string dir, PackType type)
     {
         GameSettingObj? game = null;

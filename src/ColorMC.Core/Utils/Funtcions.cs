@@ -88,4 +88,52 @@ public static class ZipFloClass
         }
     }
 
+
+    public static async Task ZipFile(string strFile, string strZip, List<string> filter)
+    {
+        if (strFile[^1] != Path.DirectorySeparatorChar)
+            strFile += Path.DirectorySeparatorChar;
+        using var s = new ZipOutputStream(File.Create(strZip));
+        s.SetLevel(6); // 0 - store only to 9 - means best compression
+        await Zip(strFile, s, strFile, filter);
+        await s.FinishAsync(CancellationToken.None);
+        s.Close();
+    }
+
+    private static async Task Zip(string strFile, ZipOutputStream s, 
+        string staticFile, List<string> filter)
+    {
+        if (strFile[^1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
+        var crc = new Crc32();
+        string[] filenames = Directory.GetFileSystemEntries(strFile);
+        foreach (string file in filenames)
+        {
+            if (filter.Contains(file))
+            {
+                continue;
+            }
+            if (Directory.Exists(file))
+            {
+                await Zip(file, s, staticFile);
+            }
+            else
+            {
+                using var fs = File.OpenRead(file);
+
+                byte[] buffer = new byte[fs.Length];
+                await fs.ReadAsync(buffer);
+                string tempfile = file[(staticFile.LastIndexOf("\\") + 1)..];
+                var entry = new ZipEntry(tempfile)
+                {
+                    DateTime = DateTime.Now,
+                    Size = fs.Length
+                };
+                crc.Reset();
+                crc.Update(buffer);
+                entry.Crc = crc.Value;
+                await s.PutNextEntryAsync(entry);
+                await s.WriteAsync(buffer);
+            }
+        }
+    }
 }

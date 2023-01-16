@@ -17,6 +17,8 @@ public partial class GameEditWindow : Window
     private readonly Tab3Control tab3 = new();
     private readonly Tab4Control tab4 = new();
     private readonly Tab5Control tab5 = new();
+    private readonly Tab6Control tab6 = new();
+    private readonly Tab7Control tab7 = new();
 
     private readonly ContentControl content1 = new();
     private readonly ContentControl content2 = new();
@@ -43,6 +45,8 @@ public partial class GameEditWindow : Window
         tab3.SetWindow(this);
         tab4.SetWindow(this);
         tab5.SetWindow(this);
+        tab6.SetWindow(this);
+        tab7.SetWindow(this);
 
         content1.Content = tab1;
 
@@ -75,11 +79,11 @@ public partial class GameEditWindow : Window
                 break;
             //µ¼³ö
             case 5:
-
+                Tabs.SelectedIndex = 5;
                 break;
             //²âÊÔ
             case 6:
-
+                Tabs.SelectedIndex = 6;
                 break;
         }
     }
@@ -89,7 +93,7 @@ public partial class GameEditWindow : Window
         if (data == null)
             return;
 
-
+        tab7.Log(data);
     }
 
     public void SetGame(GameSettingObj obj)
@@ -102,6 +106,8 @@ public partial class GameEditWindow : Window
         tab3.SetGame(obj);
         tab4.SetGame(obj);
         tab5.SetGame(obj);
+        tab6.SetGame(obj);
+        tab7.SetGame(obj);
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -128,8 +134,12 @@ public partial class GameEditWindow : Window
                 Go(tab5);
                 break;
             case 5:
-                //tab5.Load();
-                //Go(tab6);
+                tab6.Update();
+                Go(tab6);
+                break;
+            case 6:
+                tab7.Update();
+                Go(tab7);
                 break;
         }
 

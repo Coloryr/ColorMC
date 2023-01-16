@@ -100,7 +100,8 @@ public partial class AddWorldWindow : Window, IBase1Window
             return;
 
         var res = await Info.ShowWait(
-            string.Format(Localizer.Instance["AddCurseForgeWindow.Info1"], item.File.displayName));
+            string.Format(Localizer.Instance["AddWorldWindow.Info1"], 
+            item.File.displayName));
         if (res)
         {
             Install1(item.File);
@@ -121,7 +122,7 @@ public partial class AddWorldWindow : Window, IBase1Window
     {
         if (Last == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error1"]);
+            Info.Show(Localizer.Instance["AddWorldWindow.Error1"]);
             return;
         }
 
@@ -155,13 +156,13 @@ public partial class AddWorldWindow : Window, IBase1Window
 
     private async void Load()
     {
-        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info2"]);
+        Info1.Show(Localizer.Instance["AddWorldWindow.Info2"]);
         var data = await GameBinding.GetWorldList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value, ComboBox3.SelectedIndex);
         Info1.Close();
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error2"]);
+            Info.Show(Localizer.Instance["AddWorldWindow.Error2"]);
             return;
         }
 
@@ -182,13 +183,13 @@ public partial class AddWorldWindow : Window, IBase1Window
     private async void Load1()
     {
         List1.Clear();
-        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info3"]);
+        Info1.Show(Localizer.Instance["AddWorldWindow.Info3"]);
         var data = await GameBinding.GetPackFile(Last!.Data.id, int.Parse(Input3.Text));
         Info1.Close();
 
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error3"]);
+            Info.Show(Localizer.Instance["AddWorldWindow.Error3"]);
             return;
         }
 
@@ -213,12 +214,12 @@ public partial class AddWorldWindow : Window, IBase1Window
     private async void AddCurseForgeWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
-        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info4"]);
+        Info1.Show(Localizer.Instance["AddWorldWindow.Info4"]);
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();
         if (list == null)
         {
-            //Info.Show(Localizer.Instance["AddCurseForgeWindow.Error4"]);
+            //Info.Show(Localizer.Instance["AddWorldWindow.Error4"]);
             return;
         }
 

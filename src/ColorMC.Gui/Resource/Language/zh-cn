@@ -241,7 +241,19 @@
 	<sys:String x:Key="GameEditWindow.Tab5.Info3">文件 {0} 已存在，是否覆盖</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5.Info4">地图导出成功</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5.Info5">正在导出地图</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Info6">正在下载世界压缩包</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Info7">添加世界完成</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Info8">正在加载地图列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5.Error1">地图导出错误</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab5.Error2">添加世界失败</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Info1">选择导出的文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Info2">实例压缩包</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Info3">正在导出实例</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Info4">实例导出成功</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Button1">导出ColorMC压缩包</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Error1">实例导出失败</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Data.Title1">导出</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Data.Title2">路径</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text1">游戏模式</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text2">最后游戏与</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text3">游戏难度</sys:String>
@@ -353,6 +365,14 @@
 	<sys:String x:Key="AddModWindow.Control.Info2">已下载</sys:String>
 
 	<sys:String x:Key="AddWorldWindow.Title">ColorMC 实例 {0} 添加世界</sys:String>
+	<sys:String x:Key="AddWorldWindow.Info1">是否下载世界 {0}</sys:String>
+	<sys:String x:Key="AddWorldWindow.Info2">正在搜索世界中</sys:String>
+	<sys:String x:Key="AddWorldWindow.Info3">正在获取世界版本中</sys:String>
+	<sys:String x:Key="AddWorldWindow.Info4">正在加载版本数据中</sys:String>
+	<sys:String x:Key="AddWorldWindow.Error1">你还没有选择世界</sys:String>
+	<sys:String x:Key="AddWorldWindow.Error2">世界数据加载失败</sys:String>
+	<sys:String x:Key="AddWorldWindow.Error3">世界版本数据加载失败</sys:String>
+	<sys:String x:Key="AddWorldWindow.Error4">游戏版本加载失败</sys:String>
 
 	<sys:String x:Key="GameBinding.SortOrder.Item1">顺序</sys:String>
 	<sys:String x:Key="GameBinding.SortOrder.Item2">倒序</sys:String>

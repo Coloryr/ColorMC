@@ -1,18 +1,20 @@
 using Avalonia;
 using Avalonia.Media;
 using System;
+using System.Text;
 
 namespace ColorMC.Gui;
 
 internal class Program
 {
+    public const string Font = "resm:ColorMC.Gui.Resource.Font.SourceHanSansHWSC-Regular.otf";
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
     public static void Main(string[] args)
     {
-        //Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
         //Console.WriteLine("wait");
         //while (!Debugger.IsAttached)
@@ -29,7 +31,7 @@ internal class Program
         => AppBuilder.Configure<App>()
             .With(new FontManagerOptions
             {
-                DefaultFamilyName = "avares://ColorMC.Gui/Resource/Font/SourceHanSansHWSC-Regular.otf"
+                DefaultFamilyName = Font
             })
             .UsePlatformDetect()
             .LogToTrace();
