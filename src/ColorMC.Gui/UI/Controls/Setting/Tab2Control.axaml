@@ -133,6 +133,14 @@
                         Content="重置" />
                 </StackPanel>
 
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        Name="CheckBox2"
+                        Margin="5"
+                        Content="RGB!!!" />
+                    <Label VerticalAlignment="Center" Content="&lt;---这是什么危险的东西，不要碰它" />
+                </StackPanel>
+
                 <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text9}" />
                 <StackPanel Margin="5" Orientation="Horizontal">
                     <CheckBox

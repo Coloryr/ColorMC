@@ -27,9 +27,17 @@ public partial class Tab2Control : UserControl
         Button_Change.Click += Button_Change_Click;
 
         CheckBox1.Click += CheckBox1_Click;
+        CheckBox2.Click += CheckBox2_Click;
 
         ComboBox1.Items = OtherBinding.GetWindowTranTypes();
         ComboBox2.Items = OtherBinding.GetLanguages();
+    }
+
+    private void CheckBox2_Click(object? sender, RoutedEventArgs e)
+    {
+        GuiConfigUtils.Config.RGB = CheckBox2.IsChecked == true;
+        GuiConfigUtils.Save();
+        Colors.Load();
     }
 
     private void Button_Set4_Click(object? sender, RoutedEventArgs e)
@@ -103,6 +111,7 @@ public partial class Tab2Control : UserControl
             ColorPicker1.Color = Colors.MainColor.ToColor();
             ColorPicker2.Color = Colors.BackColor.ToColor();
             ColorPicker3.Color = Colors.Back1Color.ToColor();
+            CheckBox2.IsChecked = config.Item2.RGB;
             if (config.Item2.WindowTran)
             {
                 ComboBox1.IsEnabled = true;
