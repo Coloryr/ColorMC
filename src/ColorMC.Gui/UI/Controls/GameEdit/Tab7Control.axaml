@@ -10,11 +10,25 @@
     mc:Ignorable="d">
     <Grid>
         <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
-        <TextBox
-            Name="TextBox1"
-            Margin="3"
-            IsReadOnly="True"
-            ScrollViewer.HorizontalScrollBarVisibility="Visible"
-            TextWrapping="Wrap" />
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <CheckBox
+                    Name="CheckBox1"
+                    Margin="10,5,0,0"
+                    Content="自动换行"
+                    IsChecked="True" />
+                <CheckBox
+                    Name="CheckBox2"
+                    Margin="10,5,0,0"
+                    Content="自动下拉"
+                    IsChecked="True" />
+            </StackPanel>
+            <TextBox
+                Name="TextBox1"
+                Margin="5"
+                IsReadOnly="True"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                TextWrapping="Wrap" />
+        </DockPanel>
     </Grid>
 </UserControl>

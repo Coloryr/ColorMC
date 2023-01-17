@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -261,7 +262,10 @@ public partial class App : Application
 
     public static void ShowError(string data, Exception e, bool close = false)
     {
-        new ErrorWindow().Show(data, e, close);
+        Dispatcher.UIThread.Post(() =>
+        {
+            new ErrorWindow().Show(data, e, close);
+        });
     }
 
     public static void Close()
