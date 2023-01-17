@@ -17,6 +17,7 @@
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaTitleBarHeightHint="-1"
     ExtendClientAreaToDecorationsHint="True"
+    SystemDecorations="BorderOnly"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Grid>

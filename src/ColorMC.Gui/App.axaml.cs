@@ -90,6 +90,7 @@ public partial class App : Application
             LanguageType.en_us => "ColorMC.Gui.Resource.Language.en-us",
             _ => "ColorMC.Gui.Resource.Language.zh-cn"
         };
+        var names = assm.GetManifestResourceNames();
         var item = assm.GetManifestResourceStream(name);
         if (item == null)
         {

@@ -34,7 +34,6 @@ public partial class HelloWindow : Window, IBaseWindow
     {
         InitializeComponent();
 
-        this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;

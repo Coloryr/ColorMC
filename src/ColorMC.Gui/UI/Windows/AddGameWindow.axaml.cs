@@ -26,7 +26,6 @@ public partial class AddGameWindow : Window
     {
         InitializeComponent();
 
-        this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
 
         ComboBox_GameVersion.Items = List;

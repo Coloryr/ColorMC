@@ -28,7 +28,6 @@ public partial class AddModWindow : Window
     {
         InitializeComponent();
 
-        this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
 
         ComboBox1.Items = GameBinding.GetCurseForgeTypes();
