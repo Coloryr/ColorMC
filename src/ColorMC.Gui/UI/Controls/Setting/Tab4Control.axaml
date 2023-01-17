@@ -3,13 +3,13 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
+        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
 
         <ScrollViewer Margin="5">
 
@@ -41,9 +41,6 @@
                         Name="Input1"
                         Width="150"
                         Height="30"
-                        Background="#FFF4F4F4"
-                        BorderBrush="#FF5ABED6"
-                        BorderThickness="2"
                         Minimum="1"
                         Value="1" />
 
@@ -52,9 +49,6 @@
                         Name="Input2"
                         Width="150"
                         Height="30"
-                        Background="#FFF4F4F4"
-                        BorderBrush="#FF5ABED6"
-                        BorderThickness="2"
                         Minimum="1"
                         Value="1" />
                 </StackPanel>
@@ -90,9 +84,6 @@
                         Name="Input3"
                         Width="150"
                         Height="30"
-                        Background="#FFF4F4F4"
-                        BorderBrush="#FF5ABED6"
-                        BorderThickness="2"
                         Minimum="1"
                         Value="1" />
 
@@ -101,9 +92,6 @@
                         Name="Input4"
                         Width="150"
                         Height="30"
-                        Background="#FFF4F4F4"
-                        BorderBrush="#FF5ABED6"
-                        BorderThickness="2"
                         Minimum="1"
                         Value="1" />
 

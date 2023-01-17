@@ -17,7 +17,14 @@ public partial class FlyoutsControl : UserControl
         InitializeComponent();
 
         Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        FlyoutBase.Hide();
+        Win.ReLogin(Obj);
     }
 
     private void Button3_Click(object? sender, RoutedEventArgs e)

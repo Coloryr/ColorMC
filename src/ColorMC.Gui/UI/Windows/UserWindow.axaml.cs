@@ -19,8 +19,7 @@ public partial class UserWindow : Window
 {
     private readonly ObservableCollection<UserDisplayObj> List = new();
 
-    private readonly CrossFade CrossFade = new(TimeSpan.FromMilliseconds(300));
-    private readonly CrossFade CrossFade1 = new(TimeSpan.FromMilliseconds(100));
+
     public UserWindow()
     {
         InitializeComponent();
@@ -40,22 +39,12 @@ public partial class UserWindow : Window
         Button_A1.PointerExited += Button_A1_PointerLeave;
         Button_A.PointerEntered += Button_A_PointerEnter;
 
-        Button_D1.PointerExited += Button_D1_PointerLeave;
-        Button_D.PointerEntered += Button_D_PointerEnter;
-
-        Button_S1.PointerExited += Button_S1_PointerLeave;
-        Button_S.PointerEntered += Button_S_PointerEnter;
-
         Button_A1.Click += Button_A1_Click;
-        Button_D1.Click += Button_D1_Click;
-        Button_S1.Click += Button_S1_Click;
 
         Button_Cancel.Click += Button_Cancel_Click;
         Button_Add.Click += Button_Add_Click;
 
-        Expander_A.ContentTransition = CrossFade1;
-        Expander_D.ContentTransition = CrossFade1;
-        Expander_S.ContentTransition = CrossFade1;
+        Expander_A.ContentTransition = App.CrossFade100;
 
         Closed += UserWindow_Closed;
         Opened += UserWindow_Opened;
@@ -63,8 +52,9 @@ public partial class UserWindow : Window
         ComboBox_UserType.SelectionChanged += UserType_SelectionChanged;
         ComboBox_UserType.Items = UserBinding.GetUserTypes();
 
-        Update();
+        App.PicUpdate += Update;
 
+        Update();
         Load();
     }
 
@@ -243,7 +233,7 @@ public partial class UserWindow : Window
         Load();
         if (ok)
         {
-            await CrossFade.Start(Grid_Add, null, CancellationToken.None);
+            await App.CrossFade300.Start(Grid_Add, null, CancellationToken.None);
         }
         Button_Add.IsEnabled = true;
     }
@@ -318,7 +308,7 @@ public partial class UserWindow : Window
 
     private void Button_Cancel_Click(object? sender, RoutedEventArgs e)
     {
-        CrossFade.Start(Grid_Add, null, CancellationToken.None);
+        App.CrossFade300.Start(Grid_Add, null, CancellationToken.None);
     }
 
     private void Button_D1_Click(object? sender, RoutedEventArgs e)
@@ -345,26 +335,6 @@ public partial class UserWindow : Window
         SetAdd();
     }
 
-    private void Button_S1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        Expander_S.IsExpanded = false;
-    }
-
-    private void Button_S_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Expander_S.IsExpanded = true;
-    }
-
-    private void Button_D1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        Expander_D.IsExpanded = false;
-    }
-
-    private void Button_D_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Expander_D.IsExpanded = true;
-    }
-
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
     {
         Expander_A.IsExpanded = false;
@@ -379,19 +349,54 @@ public partial class UserWindow : Window
     {
         DataGrid_User.MakeTran();
         Expander_A.MakePadingNull();
-        Expander_D.MakePadingNull();
-        Expander_S.MakePadingNull();
     }
 
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
+        App.PicUpdate -= Update;
+
         App.UserWindow = null;
         CoreMain.LoginOAuthCode = null;
     }
 
+    public async void ReLogin(UserDisplayObj obj)
+    {
+        Info1.Show("正在刷新登录");
+        var res = await UserBinding.ReLogin(obj.UUID, obj.AuthType);
+        Info1.Close();
+        if (!res)
+        {
+            Info.Show("刷新失败");
+            var user = UserBinding.GetUser(obj.UUID, obj.AuthType);
+            if (user == null)
+                return;
+
+            switch (ComboBox_UserType.SelectedIndex)
+            {
+                case 2:
+                case 3:
+                case 5:
+                    UserType_SelectionChanged(null, null);
+                    SetAdd();
+                    TextBox_Input2.Text = user.Text2;
+                    TextBox_Input1.Text = user.Text1;
+                    break;
+                case 4:
+                    UserType_SelectionChanged(null, null);
+                    SetAdd();
+                    TextBox_Input2.Text = user.Text2;
+                    break;
+            }
+        }
+        else
+        {
+            Info2.Show("已刷新");
+        }
+    }
+
     public void SetAdd()
     {
-        CrossFade.Start(null, Grid_Add, CancellationToken.None);
+        App.CrossFade300.Start(null, Grid_Add, CancellationToken.None);
     }
 
     public void Load()

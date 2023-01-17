@@ -68,29 +68,6 @@
             <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
                 <Grid>
                     <Button
-                        Name="Button_S"
-                        Width="20"
-                        Height="30"
-                        Content="S" />
-                    <Expander
-                        Name="Expander_S"
-                        Height="30"
-                        Margin="-84,0,0,0"
-                        HorizontalAlignment="Left"
-                        Background="Transparent"
-                        CornerRadius="0"
-                        ExpandDirection="Right"
-                        IsExpanded="False">
-                        <Button
-                            Name="Button_S1"
-                            Width="100"
-                            Height="30"
-                            Margin="6,0,0,0"
-                            Content="{setting:Localize UserWindow.Button1}" />
-                    </Expander>
-                </Grid>
-                <Grid>
-                    <Button
                         Name="Button_A"
                         Width="20"
                         Height="30"
@@ -109,30 +86,7 @@
                             Width="100"
                             Height="30"
                             Margin="6,0,0,0"
-                            Content="{setting:Localize UserWindow.Button2}" />
-                    </Expander>
-                </Grid>
-                <Grid>
-                    <Button
-                        Name="Button_D"
-                        Width="20"
-                        Height="30"
-                        Content="D" />
-                    <Expander
-                        Name="Expander_D"
-                        Height="30"
-                        Margin="-84,0,0,0"
-                        HorizontalAlignment="Left"
-                        Background="Transparent"
-                        CornerRadius="0"
-                        ExpandDirection="Right"
-                        IsExpanded="False">
-                        <Button
-                            Name="Button_D1"
-                            Width="100"
-                            Height="30"
-                            Margin="6,0,0,0"
-                            Content="{setting:Localize UserWindow.Button3}" />
+                            Content="{setting:Localize UserWindow.Button1}" />
                     </Expander>
                 </Grid>
             </StackPanel>
@@ -198,7 +152,7 @@
 
             <Rectangle
                 Name="Rectangle1"
-                Stroke="#FF5ABED6"
+                Stroke="{setting:Colors Main}"
                 StrokeThickness="3" />
         </Grid>
     </Grid>

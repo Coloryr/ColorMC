@@ -53,6 +53,8 @@ public partial class AddGameWindow : Window
         CoreMain.PackUpdate = PackUpdate;
         CoreMain.GameOverwirte = GameOverwirte;
 
+        App.PicUpdate += Update;
+
         Closed += AddGameWindow_Closed;
 
         Load();
@@ -88,6 +90,8 @@ public partial class AddGameWindow : Window
 
     private void AddGameWindow_Closed(object? sender, EventArgs e)
     {
+        App.PicUpdate -= Update;
+
         CoreMain.PackState = null;
         CoreMain.PackUpdate = null;
         CoreMain.GameOverwirte = null;

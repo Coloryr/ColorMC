@@ -17,4 +17,6 @@ public record ResourcepackObj
     public byte[] Icon { get; set; }
     [JsonIgnore]
     public bool Disable { get; set; }
+    [JsonIgnore]
+    public bool Broken { get; set; }
 }

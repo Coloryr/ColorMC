@@ -25,8 +25,8 @@ public static class BaseBinding
         CoreMain.GameLog = PLog;
         CoreMain.LanguageReload = Change;
 
-        CoreMain.Init(AppContext.BaseDirectory);
         GuiConfigUtils.Init(AppContext.BaseDirectory);
+        CoreMain.Init(AppContext.BaseDirectory);
     }
 
     public static void Exit()

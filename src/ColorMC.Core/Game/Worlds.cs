@@ -29,16 +29,11 @@ public static class Worlds
 
         ParallelOptions options = new()
         {
-            MaxDegreeOfParallelism = 1
+            MaxDegreeOfParallelism = 5
         };
-        //await Parallel.ForEachAsync(info.GetDirectories(), options, async (item, cacenl) =>
-        //{
-
-        //});
-
-
-        foreach (var item in info.GetDirectories())
+        await Parallel.ForEachAsync(info.GetDirectories(), options, (item, cacenl) => 
         {
+            bool find = false;
             foreach (var item1 in item.GetFiles())
             {
                 if (item1.Name != "level.dat")
@@ -92,14 +87,27 @@ public static class Worlds
                     }
 
                     list.Add(obj);
+                    find = true;
                     break;
                 }
                 catch (Exception e)
                 {
+                    Logs.Error("地图读取失败", e);
+                }
 
+                if (!find)
+                {
+                    list.Add(new()
+                    {
+                        Broken = true,
+                        Local = Path.GetFullPath(item.FullName),
+                        Game = game
+                    });
                 }
             }
-        }
+
+            return new ValueTask();
+        });
 
         return list;
     }

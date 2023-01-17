@@ -59,6 +59,7 @@ public partial class DownloadWindow : Window
             AutoReset = true
         };
         Timer.Elapsed += Timer_Elapsed;
+        App.PicUpdate += Update;
 
         Update();
     }
@@ -133,6 +134,8 @@ public partial class DownloadWindow : Window
 
     private void DownloadWindow_Closed(object? sender, EventArgs e)
     {
+        App.PicUpdate -= Update;
+
         CoreMain.DownloadItemStateUpdate = null;
         App.DownloadWindow = null;
     }

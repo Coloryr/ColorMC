@@ -109,6 +109,19 @@ public static class UserBinding
         return AuthDatabase.Get(obj.UUID, obj.Type);
     }
 
+    public static async Task<bool> ReLogin(string uuid, AuthType type)
+    {
+        var obj = AuthDatabase.Get(uuid, type);
+        if (obj == null)
+        {
+            return false;
+        }
+
+        var res = await obj.RefreshToken();
+
+        return res.State1 == LoginState.Done;
+    }
+
     public static void SetLastUser(string uuid, AuthType type)
     {
         GuiConfigUtils.Config.LastUser = new()
@@ -126,6 +139,11 @@ public static class UserBinding
     {
         GuiConfigUtils.Config.LastUser = null;
         GuiConfigUtils.Save();
+    }
+
+    public static LoginObj? GetUser(string uuid, AuthType type) 
+    {
+        return AuthDatabase.Get(uuid, type);
     }
 
     public static void AddLockUser(LoginObj obj)

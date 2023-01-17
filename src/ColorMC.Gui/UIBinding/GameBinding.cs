@@ -200,7 +200,8 @@ public static class GameBinding
 
         if (UserBinding.IsLock(login))
         {
-            var res = await App.MainWindow!.Info.ShowWait("用户已被占用，是否继续使用这个账户");
+            var res = await App.MainWindow!
+                .Info.ShowWait("用户已被占用，是否继续使用这个账户");
             if (!res)
                 return (false, "账户冲突");
         }
@@ -298,12 +299,12 @@ public static class GameBinding
         mod.Delete();
     }
 
-    public static void AddMods(GameSettingObj obj, string[] file)
+    public static void AddMods(GameSettingObj obj, List<string> file)
     {
         foreach (var item in file)
         {
             var info = new FileInfo(item);
-            var info1 = new FileInfo(Path.GetFullPath(obj.GetModsPath() + info.Name));
+            var info1 = new FileInfo(Path.GetFullPath(obj.GetModsPath() + "/" + info.Name));
             if (info1.Exists)
             {
                 info1.Delete();

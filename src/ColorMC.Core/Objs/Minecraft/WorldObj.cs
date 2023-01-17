@@ -22,5 +22,6 @@ public record WorldObj
 
     public string Local { get; set; }
     public byte[] Icon { get; set; }
+    public bool Broken { get; set; }
     public GameSettingObj Game { get; set; }
 }

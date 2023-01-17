@@ -3,12 +3,12 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:setting="clr-namespace:ColorMC.Gui"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     Height="35"
     d:DesignHeight="35"
     d:DesignWidth="800"
-    Background="#5ebdd3"
+    Background="{setting:Colors Main}"
     mc:Ignorable="d">
     <Grid Margin="5,5,5,0">
         <Label

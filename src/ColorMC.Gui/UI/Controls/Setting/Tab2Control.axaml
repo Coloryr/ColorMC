@@ -3,34 +3,51 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="#FF5ABED6" StrokeThickness="3" />
+        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
 
-        <StackPanel Margin="5">
-            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text1}" />
-                <ComboBox Name="ComboBox2" Width="200" />
-                <Button
-                    Name="Button_Change"
-                    Width="80"
-                    Height="25"
-                    Margin="20,0,0,0"
-                    HorizontalAlignment="Right"
-                    Content="切换" />
-            </StackPanel>
+        <ScrollViewer Margin="5" HorizontalScrollBarVisibility="Visible">
+            <StackPanel>
+                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                    <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text1}" />
+                    <ComboBox Name="ComboBox2" Width="200" />
+                    <Button
+                        Name="Button_Change"
+                        Width="80"
+                        Height="25"
+                        Margin="20,0,0,0"
+                        HorizontalAlignment="Right"
+                        Content="切换" />
+                </StackPanel>
 
-            <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text2}" />
-            <TextBox
-                Name="TextBox1"
-                Margin="5"
-                Classes="input1"
-                Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
-            <Grid>
+                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text2}" />
+                <DockPanel>
+                    <Button
+                        Name="Button_Delete"
+                        Width="80"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize Button.Delete}"
+                        DockPanel.Dock="Right" />
+                    <Button
+                        Name="Button_SelectFile"
+                        Width="80"
+                        Height="25"
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize Button.Select}"
+                        DockPanel.Dock="Right" />
+
+                    <TextBox
+                        Name="TextBox1"
+                        Margin="5,0,10,0"
+                        Classes="input1"
+                        Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
+                </DockPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label
                         Margin="5"
@@ -41,7 +58,7 @@
                         Width="200"
                         Margin="5,0,0,0"
                         HorizontalAlignment="Left"
-                        Foreground="#FF5ABED6"
+                        Foreground="{setting:Colors Main}"
                         IsSnapToTickEnabled="True"
                         LargeChange="1"
                         Maximum="100"
@@ -49,8 +66,17 @@
                         SmallChange="1"
                         TickFrequency="1"
                         Value="0" />
+                    <Button
+                        Name="Button_Set2"
+                        Width="80"
+                        Height="25"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize Button.Set}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <Label
-                        Margin="20,5,5,5"
+                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text5}" />
                     <Slider
@@ -58,7 +84,7 @@
                         Width="200"
                         Margin="5,0,0,0"
                         HorizontalAlignment="Left"
-                        Foreground="#FF5ABED6"
+                        Foreground="{setting:Colors Main}"
                         IsSnapToTickEnabled="True"
                         LargeChange="1"
                         Maximum="100"
@@ -66,24 +92,42 @@
                         SmallChange="1"
                         TickFrequency="1"
                         Value="0" />
+                    <Button
+                        Name="Button_Set"
+                        Width="80"
+                        Height="25"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize Button.Set}" />
                 </StackPanel>
 
-                <Button
-                    Name="Button_Delete"
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,90,0"
-                    HorizontalAlignment="Right"
-                    Content="{setting:Localize Button.Delete}" />
-                <Button
-                    Name="Button_SelectFile"
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    HorizontalAlignment="Right"
-                    Content="{setting:Localize Button.Select}" />
-            </Grid>
-            <StackPanel>
+                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="主题色" />
+                    <ColorPicker Name="ColorPicker1" />
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="背景色" />
+                    <ColorPicker Name="ColorPicker2" />
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="透明背景色" />
+                    <ColorPicker Name="ColorPicker3" />
+                    <Button
+                        Name="Button_Set3"
+                        Width="80"
+                        Height="25"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize Button.Set}" />
+                </StackPanel>
+
+                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text9}" />
                 <StackPanel Margin="5" Orientation="Horizontal">
                     <CheckBox
                         Name="CheckBox1"
@@ -96,18 +140,18 @@
                     <ComboBox
                         Name="ComboBox1"
                         Width="200"
+                        VerticalAlignment="Center"
                         IsEnabled="False" />
+                    <Button
+                        Name="Button_Set1"
+                        Width="80"
+                        Height="25"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize Button.Set}" />
                 </StackPanel>
+                <Label Content="{setting:Localize SettingWindow.Tab2.Text8}" />
             </StackPanel>
-            <Label Content="{setting:Localize SettingWindow.Tab2.Text8}" />
-        </StackPanel>
-        <Button
-            Name="Button_Set"
-            Width="80"
-            Height="25"
-            Margin="10"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Content="{setting:Localize Button.Set}" />
+        </ScrollViewer>
     </Grid>
 </UserControl>

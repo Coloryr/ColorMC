@@ -21,10 +21,11 @@ public static class Resourcepacks
 
         ParallelOptions options = new()
         {
-            MaxDegreeOfParallelism = 10
+            MaxDegreeOfParallelism = 5
         };
         await Parallel.ForEachAsync(info.GetFiles(), options, async (item, cancel) =>
         {
+            bool find = false;
             if (item.Extension is not (".zip" or ".disable"))
                 return;
             try
@@ -51,12 +52,23 @@ public static class Resourcepacks
                             obj1.Icon = stream3.ToArray();
                         }
                         list.Add(obj1);
+                        find = true;
                     }
                 }
             }
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.GetName("Core.Game.Error2"), e);
+            }
+
+            if (!find)
+            {
+                list.Add(new() 
+                {
+                    Disable = item.Extension is ".disable",
+                    Local = Path.GetFullPath(item.FullName),
+                    Broken = true
+                });
             }
         });
 

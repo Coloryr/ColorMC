@@ -138,6 +138,12 @@ public static class Mods
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.GetName("Core.Game.Error1"), e);
+                list.Add(new()
+                {
+                    Local = Path.GetFullPath(item.FullName),
+                    Disable = item.Extension is ".disable",
+                    Broken = true
+                });
             }
         });
 

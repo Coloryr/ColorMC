@@ -40,9 +40,6 @@
                     Name="ProgressBar1"
                     Height="20"
                     Margin="20,20,20,0"
-                    BorderBrush="White"
-                    BorderThickness="1"
-                    Foreground="#FF5EBDD3"
                     IsIndeterminate="True" />
             </StackPanel>
 

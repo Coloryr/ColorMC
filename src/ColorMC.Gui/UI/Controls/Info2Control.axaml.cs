@@ -3,6 +3,7 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +12,6 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class Info2Control : UserControl
 {
-    private readonly static IBrush Back = Brush.Parse("#5ABED6");
     private readonly static IBrush Back1 = Brush.Parse("#FFFFFF");
 
     private readonly static CrossFade transition = new(TimeSpan.FromMilliseconds(200));
@@ -25,7 +25,7 @@ public partial class Info2Control : UserControl
     {
         var grid = new Grid()
         {
-            Background = Back,
+            Background = Utils.LaunchSetting.Colors.MainColor,
             Margin = new Thickness(0, 0, 0, 60),
             VerticalAlignment = VerticalAlignment.Bottom,
             HorizontalAlignment = HorizontalAlignment.Center

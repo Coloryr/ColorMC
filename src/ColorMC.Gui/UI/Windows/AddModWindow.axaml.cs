@@ -60,6 +60,8 @@ public partial class AddModWindow : Window
             List.Add(new());
         }
 
+        App.PicUpdate += Update;
+
         Update();
     }
 
@@ -130,6 +132,8 @@ public partial class AddModWindow : Window
 
     private void AddModWindow_Closed(object? sender, EventArgs e)
     {
+        App.PicUpdate -= Update;
+
         Tab.CloseAddMod();
     }
 
