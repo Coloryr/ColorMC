@@ -63,7 +63,7 @@ public partial class MainWindow : Window
                     Info.Show(Localizer.Instance["MainWindow.Error2"]);
                     break;
                 default:
-                    Info.Show(Localizer.Instance["MainWindow.Error3"]);
+                    Info.Show(res.Item2!);
                     break;
             }
         }
@@ -125,56 +125,62 @@ public partial class MainWindow : Window
         }
     }
 
-    private async Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
+    private Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
     {
-        switch (state)
+        return Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            default:
-            case LaunchState.LostGame:
-            case LaunchState.LostVersion:
-                return await Info.ShowWait(Localizer.Instance["MainWindow.Lost1"]);
-            case LaunchState.LostLib:
-                return await Info.ShowWait(Localizer.Instance["MainWindow.Lost2"]);
-            case LaunchState.LostLoader:
-                return await Info.ShowWait(Localizer.Instance["MainWindow.Lost3"]);
-            case LaunchState.LostLoginCore:
-                return await Info.ShowWait(Localizer.Instance["MainWindow.Lost4"]);
-        }
+            switch (state)
+            {
+                default:
+                case LaunchState.LostGame:
+                case LaunchState.LostVersion:
+                    return await Info.ShowWait(Localizer.Instance["MainWindow.Lost1"]);
+                case LaunchState.LostLib:
+                    return await Info.ShowWait(Localizer.Instance["MainWindow.Lost2"]);
+                case LaunchState.LostLoader:
+                    return await Info.ShowWait(Localizer.Instance["MainWindow.Lost3"]);
+                case LaunchState.LostLoginCore:
+                    return await Info.ShowWait(Localizer.Instance["MainWindow.Lost4"]);
+            }
+        });
     }
 
     private void GameLunch(GameSettingObj obj, LaunchState state)
     {
-        Last = state;
-        switch (state)
+        Dispatcher.UIThread.Post(() =>
         {
-            case LaunchState.Login:
-                Info1.NextText(Localizer.Instance["MainWindow.Check1"]);
-                break;
-            case LaunchState.Check:
-                Info1.NextText(Localizer.Instance["MainWindow.Check2"]);
-                break;
-            case LaunchState.CheckVersion:
-                Info1.NextText(Localizer.Instance["MainWindow.Check3"]);
-                break;
-            case LaunchState.CheckLib:
-                Info1.NextText(Localizer.Instance["MainWindow.Check4"]);
-                break;
-            case LaunchState.CheckAssets:
-                Info1.NextText(Localizer.Instance["MainWindow.Check5"]);
-                break;
-            case LaunchState.CheckLoader:
-                Info1.NextText(Localizer.Instance["MainWindow.Check6"]);
-                break;
-            case LaunchState.CheckLoginCore:
-                Info1.NextText(Localizer.Instance["MainWindow.Check7"]);
-                break;
-            case LaunchState.Download:
-                Info1.NextText(Localizer.Instance["MainWindow.Check8"]);
-                break;
-            case LaunchState.JvmPrepare:
-                Info1.NextText(Localizer.Instance["MainWindow.Check9"]);
-                break;
-        }
+            Last = state;
+            switch (state)
+            {
+                case LaunchState.Login:
+                    Info1.NextText(Localizer.Instance["MainWindow.Check1"]);
+                    break;
+                case LaunchState.Check:
+                    Info1.NextText(Localizer.Instance["MainWindow.Check2"]);
+                    break;
+                case LaunchState.CheckVersion:
+                    Info1.NextText(Localizer.Instance["MainWindow.Check3"]);
+                    break;
+                case LaunchState.CheckLib:
+                    Info1.NextText(Localizer.Instance["MainWindow.Check4"]);
+                    break;
+                case LaunchState.CheckAssets:
+                    Info1.NextText(Localizer.Instance["MainWindow.Check5"]);
+                    break;
+                case LaunchState.CheckLoader:
+                    Info1.NextText(Localizer.Instance["MainWindow.Check6"]);
+                    break;
+                case LaunchState.CheckLoginCore:
+                    Info1.NextText(Localizer.Instance["MainWindow.Check7"]);
+                    break;
+                case LaunchState.Download:
+                    Info1.NextText(Localizer.Instance["MainWindow.Check8"]);
+                    break;
+                case LaunchState.JvmPrepare:
+                    Info1.NextText(Localizer.Instance["MainWindow.Check9"]);
+                    break;
+            }
+        });
     }
 
     private void Load1()

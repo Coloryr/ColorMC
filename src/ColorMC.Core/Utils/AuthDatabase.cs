@@ -54,7 +54,7 @@ public static class AuthDatabase
     `Text2` text
 );");
 
-        GetAll();
+        GetAll().Wait();
     }
 
     public static bool LoadData(string dir)
@@ -96,7 +96,7 @@ public static class AuthDatabase
         }
     }
 
-    public static void SaveAuth(LoginObj obj)
+    public static async Task SaveAuth(LoginObj obj)
     {
         if (string.IsNullOrWhiteSpace(obj.UUID))
         {
@@ -106,12 +106,12 @@ public static class AuthDatabase
         if (Auths.ContainsKey((obj.UUID, obj.AuthType)))
         {
             Auths[(obj.UUID, obj.AuthType)] = obj;
-            Update(obj);
+            await Update(obj);
         }
         else
         {
             Auths.Add((obj.UUID, obj.AuthType), obj);
-            Add(obj);
+            await Add(obj);
         }
     }
 
@@ -125,11 +125,11 @@ public static class AuthDatabase
         return null;
     }
 
-    private static void GetAll()
+    private static async Task GetAll()
     {
         Logs.Info(LanguageHelper.GetName("Core.Auth.Read"));
         using var sql = GetSqliteConnection();
-        var list = sql.Query<QLogin>("SELECT UserName,UUID,AccessToken," +
+        var list = await sql.QueryAsync<QLogin>("SELECT UserName,UUID,AccessToken," +
             "RefreshToken,ClientToken," +
             "AuthType,Properties,Text1,Text2 FROM auth");
 
@@ -139,26 +139,26 @@ public static class AuthDatabase
         }
     }
 
-    public static void Delete(LoginObj obj)
+    public static Task Delete(LoginObj obj)
     {
         Auths.Remove((obj.UUID, obj.AuthType));
         using var sql = GetSqliteConnection();
-        sql.Execute("DELETE FROM auth WHERE UUID=@UUID AND AuthType=@AuthType", new { obj.UUID, obj.AuthType });
+        return sql.ExecuteAsync("DELETE FROM auth WHERE UUID=@UUID AND AuthType=@AuthType", new { obj.UUID, obj.AuthType });
     }
 
-    private static void Add(LoginObj obj)
+    private static Task Add(LoginObj obj)
     {
         using var sql = GetSqliteConnection();
-        sql.Execute("INSERT INTO auth(`UserName`,`UUID`,`AccessToken`,`RefreshToken`,`ClientToken`," +
+        return sql.ExecuteAsync("INSERT INTO auth(`UserName`,`UUID`,`AccessToken`,`RefreshToken`,`ClientToken`," +
             "`AuthType`,`Properties`,`Text1`,`Text2`) " +
             "VALUES (@UserName,@UUID,@AccessToken,@RefreshToken,@ClientToken," +
             "@AuthType,@Properties,@Text1,@Text2)", obj.ToQLogin());
     }
 
-    private static void Update(LoginObj obj)
+    private static Task Update(LoginObj obj)
     {
         using var sql = GetSqliteConnection();
-        sql.Execute("UPDATE auth SET UserName=@UserName," +
+        return sql.ExecuteAsync("UPDATE auth SET UserName=@UserName," +
             "AccessToken=@AccessToken,RefreshToken=@RefreshToken," +
             "ClientToken=@ClientToken,Properties=@Properties," +
             "Text1=@Text1,Text2=@Text2 WHERE UUID=@UUID AND AuthType=@AuthType",

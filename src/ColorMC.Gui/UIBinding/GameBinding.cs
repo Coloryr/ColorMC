@@ -214,7 +214,9 @@ public static class GameBinding
             App.ShowGameEdit(obj, 6);
         }
 
-        return (await BaseBinding.Launch(obj, login), null);
+        var res1 = await BaseBinding.Launch(obj, login);
+
+        return (res1, null);
     }
 
     public static bool AddGameGroup(string name)
