@@ -791,7 +791,7 @@ public static class Launch
         }
 
         login = login1.Obj!;
-        AuthDatabase.SaveAuth(login);
+        await AuthDatabase.SaveAuth(login);
 
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Check);
         var res = await CheckGameFile(obj, login);
@@ -844,7 +844,10 @@ public static class Launch
         CoreMain.GameLog?.Invoke(obj, "游戏使用的JAVA");
         CoreMain.GameLog?.Invoke(obj, jvm.Path);
 
-        Process process = new();
+        Process process = new()
+        {
+            EnableRaisingEvents = true
+        };
         process.StartInfo.FileName = jvm.Path;
         process.StartInfo.WorkingDirectory = InstancesPath.GetGameDir(obj);
         Directory.CreateDirectory(process.StartInfo.WorkingDirectory);

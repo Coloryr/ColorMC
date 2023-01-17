@@ -18,7 +18,10 @@ public partial class Tab7Control : UserControl
 
     public void Clear() 
     {
-        TextBox1.Text = "";
+        Dispatcher.UIThread.Post(() =>
+        {
+            TextBox1.Text = "";
+        });
     }
 
     public void Log(string data) 

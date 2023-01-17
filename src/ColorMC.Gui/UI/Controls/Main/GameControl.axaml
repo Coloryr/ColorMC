@@ -36,6 +36,7 @@
             Margin="0,40,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
+            IsVisible="False"
             Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
             Stretch="UniformToFill" />
     </Grid>

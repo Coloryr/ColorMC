@@ -47,13 +47,25 @@ public static class BaseBinding
         {
             win.ClearLog();
         }
-        var res = await obj.StartGame(obj1, null);
+        var res = await Task.Run(() => 
+        {
+            try
+            {
+                return obj.StartGame(obj1, null).Result;
+            }
+            catch (Exception e)
+            {
+                Logs.Error("游戏启动失败", e);
+                CoreMain.OnError?.Invoke("游戏启动失败", e, false);
+                return null;
+            }
+        });
         if (res != null)
         {
             res.Exited += (a, b) =>
             {
                 if (Games.Remove(res, out var obj1))
-                {
+                { 
                     App.MainWindow?.GameClose(obj1);
                 }
             };

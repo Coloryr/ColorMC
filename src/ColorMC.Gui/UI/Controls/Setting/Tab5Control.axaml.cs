@@ -148,7 +148,7 @@ public partial class Tab5Control : UserControl
         {
             var item = file[0];
             item.TryGetUri(out var uri);
-            TextBox2.Text = uri!.AbsolutePath;
+            TextBox2.Text = uri!.LocalPath;
         }
     }
 
