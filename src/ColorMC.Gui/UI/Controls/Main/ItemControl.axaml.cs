@@ -152,6 +152,7 @@ public partial class ItemControl : UserControl
         if (Obj1 == null)
         {
             Image1.Source = bitmap;
+            ProgressBar1.IsVisible = false;
             return;
         }
 
@@ -159,6 +160,7 @@ public partial class ItemControl : UserControl
         if (file == null)
         {
             Image1.Source = bitmap;
+            ProgressBar1.IsVisible = false;
             return;
         }
 
@@ -166,6 +168,7 @@ public partial class ItemControl : UserControl
         if (file == null)
         {
             Image1.Source = bitmap;
+            ProgressBar1.IsVisible = false;
             return;
         }
 

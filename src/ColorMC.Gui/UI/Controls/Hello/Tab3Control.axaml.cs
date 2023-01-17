@@ -97,7 +97,7 @@ public partial class Tab3Control : UserControl
         {
             var item = file[0];
             item.TryGetUri(out var uri);
-            TextBox_Local.Text = uri!.OriginalString;
+            TextBox_Local.Text = uri!.AbsolutePath;
         }
     }
 
