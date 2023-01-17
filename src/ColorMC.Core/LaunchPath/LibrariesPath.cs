@@ -30,17 +30,22 @@ public static class LibrariesPath
         return dir;
     }
 
-    public static List<DownloadItem> CheckGame(GameArgObj obj)
+    public static async Task<List<DownloadItem>> CheckGame(GameArgObj obj)
     {
         var list = new List<DownloadItem>();
 
         var list1 = GameHelper.MakeGameLibs(obj);
-        foreach (var item in list1)
+
+        ParallelOptions options = new()
+        {
+            MaxDegreeOfParallelism = 5
+        };
+        await Parallel.ForEachAsync(list1, options, (item, cacenl) =>
         {
             if (!File.Exists(item.Local))
             {
                 list.Add(item);
-                continue;
+                return ValueTask.CompletedTask;
             }
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
                 FileShare.Read);
@@ -50,12 +55,14 @@ public static class LibrariesPath
                 list.Add(item);
             }
             item.Later?.Invoke(stream);
-        }
+
+            return ValueTask.CompletedTask;
+        });
 
         return list;
     }
 
-    public static List<DownloadItem>? CheckForge(GameSettingObj obj)
+    public static async Task<List<DownloadItem>?> CheckForge(GameSettingObj obj)
     {
         var v2 = CheckRule.GameLaunchVersion(obj.Version);
         if (v2)
@@ -69,15 +76,21 @@ public static class LibrariesPath
 
         var list = new List<DownloadItem>();
         var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
-        foreach (var item in list1)
+
+
+        ParallelOptions options = new()
+        {
+            MaxDegreeOfParallelism = 5
+        };
+        await Parallel.ForEachAsync(list1, options, (item, cacenl) =>
         {
             if (!File.Exists(item.Local))
             {
                 list.Add(item);
-                continue;
+                return ValueTask.CompletedTask;
             }
             if (item.SHA1 == null)
-                continue;
+                return ValueTask.CompletedTask;
 
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
@@ -86,7 +99,9 @@ public static class LibrariesPath
             {
                 list.Add(item);
             }
-        }
+
+            return ValueTask.CompletedTask;
+        });
 
         var forgeinstall = VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion);
         if (forgeinstall == null && v2)
@@ -94,12 +109,12 @@ public static class LibrariesPath
 
         if (forgeinstall != null)
         {
-            foreach (var item in forgeinstall.libraries)
+            await Parallel.ForEachAsync(forgeinstall.libraries, options, (item, cacenl) =>
             {
                 if (item.name.StartsWith("net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
                 {
-                    continue;
+                    return ValueTask.CompletedTask;
                 }
 
                 string file = $"{BaseDir}/{item.downloads.artifact.path}";
@@ -112,7 +127,7 @@ public static class LibrariesPath
                         SHA1 = item.downloads.artifact.sha1,
                         Url = item.downloads.artifact.url
                     });
-                    continue;
+                    return ValueTask.CompletedTask;
                 }
                 using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
                     FileShare.ReadWrite);
@@ -127,7 +142,8 @@ public static class LibrariesPath
                         Url = item.downloads.artifact.url
                     });
                 }
-            }
+                return ValueTask.CompletedTask;
+            });
         }
 
         return list;

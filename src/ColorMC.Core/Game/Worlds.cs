@@ -105,7 +105,7 @@ public static class Worlds
                 }
             }
 
-            return new ValueTask();
+            return ValueTask.CompletedTask;
         });
 
         return list;
