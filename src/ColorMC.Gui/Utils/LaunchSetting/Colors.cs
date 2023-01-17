@@ -89,10 +89,10 @@ public class Colors : INotifyPropertyChanged
             {
                 now += 1;
                 now %= 360;
-                Color = new ImmutableSolidColorBrush(HsvColor.ToRgb(now, 1, 1));
-                Reload();
+                Color = new ImmutableSolidColorBrush(HsvColor.ToRgb(now, 0.8, 1));
+                Dispatcher.UIThread.InvokeAsync(Reload).Wait();
             }
-            Thread.Sleep(50);
+            Thread.Sleep(20);
         }
     }
 
