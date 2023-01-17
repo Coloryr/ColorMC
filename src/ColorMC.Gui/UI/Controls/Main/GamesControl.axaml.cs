@@ -13,8 +13,6 @@ public partial class GamesControl : UserControl
 {
     private readonly Dictionary<string, GameControl> Items = new();
 
-    private static readonly CrossFade CrossFade = new(TimeSpan.FromMilliseconds(300));
-
     private MainWindow Window;
     private List<GameSettingObj> List;
     private GameControl? Last;
@@ -28,7 +26,7 @@ public partial class GamesControl : UserControl
         LayoutUpdated += GamesControl_LayoutUpdated;
         Expander_Head.PointerPressed += WrapPanel_Items_PointerPressed;
         WrapPanel_Items.DoubleTapped += WrapPanel_Items_DoubleTapped;
-        Expander_Head.ContentTransition = CrossFade;
+        Expander_Head.ContentTransition = App.CrossFade300;
     }
 
     private void WrapPanel_Items_DoubleTapped(object? sender, RoutedEventArgs e)

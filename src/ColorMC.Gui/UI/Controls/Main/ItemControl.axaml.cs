@@ -42,7 +42,7 @@ public partial class ItemControl : UserControl
         var asset = assets.Open(uri);
 
         Image1.Source = bitmap = new Bitmap(asset);
-        Expander1.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(300));
+        Expander1.ContentTransition = App.CrossFade300;
         Button1.Content = ">";
     }
 

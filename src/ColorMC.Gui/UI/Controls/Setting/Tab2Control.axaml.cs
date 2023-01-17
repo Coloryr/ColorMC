@@ -46,7 +46,7 @@ public partial class Tab2Control : UserControl
         ColorPicker1.Color = Colors.MainColor.ToColor();
         ColorPicker2.Color = Colors.BackColor.ToColor();
         ColorPicker3.Color = Colors.Back1Color.ToColor();
-        Window.Info2.Show("已重置");
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info6"]);
     }
 
     private void Button_Set3_Click(object? sender, RoutedEventArgs e)
@@ -60,7 +60,7 @@ public partial class Tab2Control : UserControl
     {
         if (string.IsNullOrWhiteSpace(TextBox1.Text))
         {
-            Window.Info.Show("没有选择图片");
+            Window.Info.Show(Localizer.Instance["SettingWindow.Tab2.Error1"]);
             return;
         }
         Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info2"]);
@@ -72,11 +72,11 @@ public partial class Tab2Control : UserControl
 
     private void Button_Set1_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Info1.Show("正在设置透明效果");
+        Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info7"]);
         ConfigBinding.SetBl(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
         Window.Info1.Close();
 
-        Window.Info2.Show("已设置");
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info8"]);
     }
 
     private void Button_Change_Click(object? sender, RoutedEventArgs e)
@@ -137,7 +137,7 @@ public partial class Tab2Control : UserControl
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FilePickerFileType("图片")
+                new FilePickerFileType(Localizer.Instance["SettingWindow.Tab2.Info9"])
                 {
                     Patterns = new List<string>()
                     {

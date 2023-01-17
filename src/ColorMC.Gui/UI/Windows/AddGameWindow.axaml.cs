@@ -105,7 +105,7 @@ public partial class AddGameWindow : Window
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        string name = TextBox_Input1.Text;
+        var name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
             Info.Show(Localizer.Instance["AddGameWindow.Error1"]);

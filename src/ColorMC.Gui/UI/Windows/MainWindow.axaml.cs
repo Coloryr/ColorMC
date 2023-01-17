@@ -226,7 +226,7 @@ public partial class MainWindow : Window
 
     public async Task AddGroup()
     {
-        await Info3.ShowOne("组名", false);
+        await Info3.ShowOne(Localizer.Instance["MainWindow.Info1"], false);
         Info3.Close();
         if (Info3.Cancel)
         {
@@ -236,13 +236,13 @@ public partial class MainWindow : Window
         var res = Info3.Read().Item1;
         if (string.IsNullOrWhiteSpace(res))
         {
-            Info1.Show("请输入名字");
+            Info1.Show(Localizer.Instance["MainWindow.Error4"]);
             return;
         }
 
         if (!GameBinding.AddGameGroup(res))
         {
-            Info1.Show("游戏分组添加失败");
+            Info1.Show(Localizer.Instance["MainWindow.Error5"]);
             return;
         }
     }

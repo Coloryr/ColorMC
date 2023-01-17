@@ -255,7 +255,7 @@ public partial class Tab4Control : UserControl
             {
                 obj = new ModDisplayObj()
                 {
-                    Name = "损坏的mod",
+                    Name = Localizer.Instance["GameEditWindow.Tab4.Text3"],
                     Local = item.Local,
                     Enable = item.Disable
                 };
@@ -280,7 +280,8 @@ public partial class Tab4Control : UserControl
 
         if (count != 0)
         {
-            Window.Info.Show(string.Format("读取到有{0}个破损的Mod文件", count));
+            Window.Info.Show(string.Format(Localizer
+                .Instance["GameEditWindow.Tab4.Text4"], count));
         }
 
         Load1();

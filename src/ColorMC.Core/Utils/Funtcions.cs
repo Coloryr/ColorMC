@@ -66,9 +66,8 @@ public static class ZipFloClass
                 await Zip(file, s, staticFile);
             }
 
-            else // 否则直接压缩文件
+            else 
             {
-                //打开压缩文件
                 using var fs = File.OpenRead(file);
 
                 byte[] buffer = new byte[fs.Length];

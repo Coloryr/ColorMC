@@ -450,7 +450,7 @@ public static class ImageUtils
             }
             catch (Exception e)
             {
-                Logs.Error("背景图片加载失败", e);
+                Logs.Error(Localizer.Instance["Error1"], e);
                 return null;
             }
         });
@@ -475,7 +475,7 @@ public static class GuiConfigUtils
 
     public static bool Load(string name, bool quit = false)
     {
-        Logs.Info($"正在读取配置文件");
+        Logs.Info(Localizer.Instance["Info1"]);
         if (File.Exists(name))
         {
             try
@@ -484,8 +484,8 @@ public static class GuiConfigUtils
             }
             catch (Exception e)
             {
-                CoreMain.OnError?.Invoke("配置文件读取错误", e, true);
-                Logs.Error("配置文件读取错误", e);
+                CoreMain.OnError?.Invoke(Localizer.Instance["Error2"], e, true);
+                Logs.Error(Localizer.Instance["Error2"], e);
             }
         }
 
@@ -495,7 +495,7 @@ public static class GuiConfigUtils
             {
                 return false;
             }
-            Logs.Warn("配置为空，旧版配置文件会被覆盖");
+            Logs.Warn(Localizer.Instance["Warn1"]);
 
             Config = MakeDefaultConfig();
             Save();
@@ -510,8 +510,16 @@ public static class GuiConfigUtils
 
     public static void Save()
     {
-        Logs.Info($"正在保存配置文件");
-        File.WriteAllText(Name, JsonConvert.SerializeObject(Config, Formatting.Indented));
+        Logs.Info(Localizer.Instance["Info2"]);
+        try
+        {
+            File.WriteAllText(Name, JsonConvert.SerializeObject(Config, Formatting.Indented));
+        }
+        catch (Exception e)
+        {
+            CoreMain.OnError?.Invoke(Localizer.Instance["Error3"], e, true);
+            Logs.Error(Localizer.Instance["Error3"], e);
+        }
     }
 
     private static GuiConfigObj MakeDefaultConfig()

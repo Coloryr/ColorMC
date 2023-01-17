@@ -15,6 +15,7 @@ namespace ColorMC.Gui.UIBinding;
 public static class BaseBinding
 {
     public readonly static Dictionary<Process, GameSettingObj> Games = new();
+    public static bool ISNewStart { get; private set; } = false;
 
     public static void Init()
     {
@@ -83,7 +84,7 @@ public static class BaseBinding
 
     private static void ShowNew()
     {
-        App.ShowHello();
+        ISNewStart = true;
     }
 
     private static void Change(LanguageType type)

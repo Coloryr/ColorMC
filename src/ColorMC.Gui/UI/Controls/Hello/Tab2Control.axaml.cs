@@ -1,9 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 
@@ -28,7 +31,7 @@ public partial class Tab2Control : UserControl
 
     private void Button_Input2_Click(object? sender, RoutedEventArgs e)
     {
-        string local = TextBox_Local2.Text;
+        var local = TextBox_Local2.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
             Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error1"]);
@@ -60,27 +63,27 @@ public partial class Tab2Control : UserControl
 
     private async void Button_SelectFile2_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        var file = await  Window.Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["HelloWindow.Tab2.Info3"],
             AllowMultiple = false,
-            Filters = new()
+            FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FileDialogFilter()
-                {
-                    Extensions = new()
-                    {
-                        "json"
-                    }
+                new(Localizer.Instance["HelloWindow.Tab2.Text7"])
+                { 
+                     Patterns = new List<string>()
+                     { 
+                        "*.json"
+                     }
                 }
             }
-        };
+        });
 
-        var file = await openFile.ShowAsync(Window.Window);
-        if (file?.Length > 0)
+        if (file?.Any() == true)
         {
             var item = file[0];
-            TextBox_Local2.Text = item;
+            item.TryGetUri(out var uri);
+            TextBox_Local2.Text = uri!.OriginalString;
         }
     }
 
@@ -103,7 +106,7 @@ public partial class Tab2Control : UserControl
 
     private void Button_Input_Click(object? sender, RoutedEventArgs e)
     {
-        string local = TextBox_Local.Text;
+        var local = TextBox_Local.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
             Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error1"]);
@@ -135,33 +138,33 @@ public partial class Tab2Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        var file = await Window.Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["HelloWindow.Tab2.Info3"],
             AllowMultiple = false,
-            Filters = new()
+            FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FileDialogFilter()
+                new(Localizer.Instance["HelloWindow.Tab2.Text7"])
                 {
-                    Extensions = new()
-                    {
-                        "json"
-                    }
+                     Patterns = new List<string>()
+                     {
+                        "*.json"
+                     }
                 }
             }
-        };
+        });
 
-        var file = await openFile.ShowAsync(Window.Window);
-        if (file?.Length > 0)
+        if (file?.Any() == true)
         {
             var item = file[0];
-            TextBox_Local.Text = item;
+            item.TryGetUri(out var uri);
+            TextBox_Local.Text = uri.OriginalString;
         }
     }
 
     private void Button_Input1_Click(object? sender, RoutedEventArgs e)
     {
-        string local = TextBox_Local1.Text;
+        var local = TextBox_Local1.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
             Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error1"]);
@@ -192,27 +195,27 @@ public partial class Tab2Control : UserControl
 
     private async void Button_SelectFile1_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        var file = await Window.Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["HelloWindow.Tab2.Info6"],
             AllowMultiple = false,
-            Filters = new()
+            FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FileDialogFilter()
+                new(Localizer.Instance["HelloWindow.Tab2.Text8"])
                 {
-                    Extensions = new()
-                    {
-                        "db"
-                    }
+                     Patterns = new List<string>()
+                     {
+                        "*.db"
+                     }
                 }
             }
-        };
+        });
 
-        var file = await openFile.ShowAsync(Window.Window);
-        if (file?.Length > 0)
+        if (file?.Any() == true)
         {
             var item = file[0];
-            TextBox_Local1.Text = item;
+            item.TryGetUri(out var uri);
+            TextBox_Local1.Text = uri.OriginalString;
         }
     }
 }

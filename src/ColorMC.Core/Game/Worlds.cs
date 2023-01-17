@@ -4,7 +4,6 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using fNbt;
 using ICSharpCode.SharpZipLib.Zip;
-//using SharpNBT;
 
 namespace ColorMC.Core.Game;
 

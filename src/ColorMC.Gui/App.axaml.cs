@@ -33,7 +33,9 @@ public partial class App : Application
     public static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
 
     public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
+    public static readonly CrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
     public static readonly CrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));
+    public static readonly PageSlide PageSlide500 = new(TimeSpan.FromMilliseconds(500));
 
     public static event Action PicUpdate;
 

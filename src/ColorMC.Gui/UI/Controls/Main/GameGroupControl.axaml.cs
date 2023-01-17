@@ -13,7 +13,6 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class GameGroupControl : UserControl
 {
-    private readonly static CrossFade transition = new(TimeSpan.FromMilliseconds(300));
     private readonly Semaphore semaphore = new(0, 2);
     private ObservableCollection<string> List = new();
     public bool Cancel { get; private set; }
@@ -52,7 +51,7 @@ public partial class GameGroupControl : UserControl
         List.Clear();
         List.AddRange(GameBinding.GetGameGroups().Keys);
 
-        transition.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this, CancellationToken.None);
 
         ComboBox1.SelectedItem = obj.GroupName;
 
@@ -64,7 +63,7 @@ public partial class GameGroupControl : UserControl
 
     public void Close()
     {
-        transition.Start(this, null, CancellationToken.None);
+        App.CrossFade300.Start(this, null, CancellationToken.None);
     }
     public string? Read()
     {

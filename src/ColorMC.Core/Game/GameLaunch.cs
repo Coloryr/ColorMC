@@ -74,7 +74,8 @@ public static class Launch
         }
         else
         {
-            using FileStream stream2 = new(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+            using FileStream stream2 = new(file, FileMode.Open, FileAccess.ReadWrite, 
+                FileShare.ReadWrite);
             stream2.Seek(0, SeekOrigin.Begin);
             string sha1 = Funtcions.GenSha1(stream2);
             if (sha1 != game.downloads.client.sha1)
@@ -451,7 +452,8 @@ public static class Launch
         if (v2 && obj.Loader == Loaders.Forge)
         {
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
-            jvmHead.Add($"-Dforgewrapper.installer={ForgeHelper.BuildForgeInster(obj.Version, obj.LoaderVersion).Local}");
+            jvmHead.Add($"-Dforgewrapper.installer={ForgeHelper
+                .BuildForgeInster(obj.Version, obj.LoaderVersion).Local}");
             jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.MakeGameDir(obj.Version)}");
         }
 
@@ -644,7 +646,8 @@ public static class Launch
             foreach (var item in fabric.libraries)
             {
                 var name = PathC.ToName(item.name);
-                list.AddOrUpdate(PathC.MakeVersionObj(name.Name), $"{LibrariesPath.BaseDir}/{name.Path}");
+                list.AddOrUpdate(PathC.MakeVersionObj(name.Name), 
+                    $"{LibrariesPath.BaseDir}/{name.Path}");
             }
         }
         else if (obj.Loader == Loaders.Quilt)
@@ -653,7 +656,8 @@ public static class Launch
             foreach (var item in quilt.libraries)
             {
                 var name = PathC.ToName(item.name);
-                list.AddOrUpdate(PathC.MakeVersionObj(name.Name), $"{LibrariesPath.BaseDir}/{name.Path}");
+                list.AddOrUpdate(PathC.MakeVersionObj(name.Name), 
+                    $"{LibrariesPath.BaseDir}/{name.Path}");
             }
         }
 
@@ -773,7 +777,8 @@ public static class Launch
         return list;
     }
 
-    public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, JvmConfigObj? jvmCfg = null)
+    public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, 
+        JvmConfigObj? jvmCfg = null)
     {
         JavaInfo? jvm = null;
         if (jvmCfg == null)

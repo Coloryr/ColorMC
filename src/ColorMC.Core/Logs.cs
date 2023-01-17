@@ -11,7 +11,7 @@ public static class Logs
     private static StreamWriter Writer;
     private static Thread ThreadLog = new(Run)
     {
-        Name = "ColorMC_Log"
+        Name = "ColorMC-Log"
     };
     private static ConcurrentBag<string> bags = new();
     private static Semaphore semaphore = new(0, 10);

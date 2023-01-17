@@ -11,8 +11,6 @@ public partial class Info4Control : UserControl
 {
     private Action<bool>? call;
 
-    private static readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
-
     public Info4Control()
     {
         InitializeComponent();
@@ -24,7 +22,7 @@ public partial class Info4Control : UserControl
     private async void Cancel_Click(object? sender, RoutedEventArgs e)
     {
         Button_Cancel.IsEnabled = false;
-        await transition.Start(this, null, CancellationToken.None);
+        await App.CrossFade300.Start(this, null, CancellationToken.None);
 
         call?.Invoke(false);
     }
@@ -33,7 +31,7 @@ public partial class Info4Control : UserControl
     {
         Button_Confirm.IsEnabled = false;
         Button_Cancel.IsEnabled = false;
-        await transition.Start(this, null, CancellationToken.None);
+        await App.CrossFade300.Start(this, null, CancellationToken.None);
 
         call?.Invoke(true);
     }
@@ -47,7 +45,7 @@ public partial class Info4Control : UserControl
         TextBlock_Text.Text = title;
         call = res;
 
-        await transition.Start(null, this, cancellationToken: CancellationToken.None);
+        await App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
     }
 
     public async Task<bool> ShowWait(string title)
@@ -66,7 +64,7 @@ public partial class Info4Control : UserControl
             semaphore.Release();
         };
 
-        await transition.Start(null, this, cancellationToken: CancellationToken.None);
+        await App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
 
         await Task.Run(() =>
         {
@@ -82,6 +80,6 @@ public partial class Info4Control : UserControl
         Button_Cancel.IsVisible = false;
         TextBlock_Text.Text = title;
 
-        await transition.Start(null, this, cancellationToken: CancellationToken.None);
+        await App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
     }
 }

@@ -230,7 +230,7 @@ public static class LanguageHelper
         {
             LanguageType.en_us => "English",
             LanguageType.zh_cn => "简体中文",
-            _ => "未知的语言"
+            _ => ""
         };
     }
 

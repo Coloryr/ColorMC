@@ -89,6 +89,6 @@
             Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="完成" />
+            Content="{setting:Localize HelloWindow.Tab6.Button5}" />
     </Grid>
 </UserControl>

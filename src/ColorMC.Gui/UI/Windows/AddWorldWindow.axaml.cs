@@ -24,8 +24,6 @@ public partial class AddWorldWindow : Window, IBase1Window
     private Tab5Control Tab;
     private GameSettingObj Obj;
 
-    private readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
-
     public AddWorldWindow()
     {
         InitializeComponent();
@@ -112,7 +110,7 @@ public partial class AddWorldWindow : Window, IBase1Window
 
     private void ButtonCancel_Click(object? sender, RoutedEventArgs e)
     {
-        transition.Start(GridVersion, null, CancellationToken.None);
+        App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
     }
 
     private void ButtonSearch_Click(object? sender, RoutedEventArgs e)
@@ -140,7 +138,7 @@ public partial class AddWorldWindow : Window, IBase1Window
 
     public void Install()
     {
-        transition.Start(null, GridVersion, CancellationToken.None);
+        App.CrossFade300.Start(null, GridVersion, CancellationToken.None);
         Load1();
     }
 

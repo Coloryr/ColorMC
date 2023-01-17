@@ -2,6 +2,7 @@
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -78,7 +79,7 @@ public static class UserBinding
                 return (true, null);
         }
 
-        return (false, "登录类型错误");
+        return (false, Localizer.Instance["UserBinding.Error1"]);
     }
 
     public static Dictionary<(string, AuthType), LoginObj> GetAllUser()

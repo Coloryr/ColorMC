@@ -1,11 +1,14 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 
@@ -40,8 +43,8 @@ public partial class Tab3Control : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        string name = TextBox_Name.Text;
-        string local = TextBox_Local.Text;
+        var name = TextBox_Name.Text;
+        var local = TextBox_Local.Text;
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
@@ -74,28 +77,27 @@ public partial class Tab3Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        var file = await Window.Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["HelloWindow.Tab3.Info2"],
             AllowMultiple = false,
-            Filters = SystemInfo.Os == OsType.Windows ? new()
+            FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FileDialogFilter()
+                new("Java")
                 {
-                    Name =  "javaw" ,
-                    Extensions =new()
-                    {
-                        "exe"
-                    }
+                     Patterns = SystemInfo.Os == OsType.Windows ? new List<string>()
+                     {
+                        "*.json"
+                     } : new()
                 }
-            } : new()
-        };
+            }
+        });
 
-        var file = await openFile.ShowAsync(Window);
-        if (file?.Length > 0)
+        if (file?.Any() == true)
         {
             var item = file[0];
-            TextBox_Local.Text = item;
+            item.TryGetUri(out var uri);
+            TextBox_Local.Text = uri!.OriginalString;
         }
     }
 

@@ -14,8 +14,6 @@ public partial class Info2Control : UserControl
 {
     private readonly static IBrush Back1 = Brush.Parse("#FFFFFF");
 
-    private readonly static CrossFade transition = new(TimeSpan.FromMilliseconds(200));
-
     public Info2Control()
     {
         InitializeComponent();
@@ -42,9 +40,9 @@ public partial class Info2Control : UserControl
         grid.Children.Add(text);
 
         Grid_List.Children.Add(grid);
-        await transition.Start(null, grid, CancellationToken.None);
+        await App.CrossFade200.Start(null, grid, CancellationToken.None);
         await Task.Delay(TimeSpan.FromSeconds(2));
-        await transition.Start(grid, null, CancellationToken.None);
+        await App.CrossFade200.Start(grid, null, CancellationToken.None);
         Grid_List.Children.Remove(grid);
     }
 }

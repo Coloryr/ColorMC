@@ -340,7 +340,7 @@ public static class TestItem
     public static void Item13()
     {
         var games = InstancesPath.Games;
-        var list = Servers.GetServerInfo(games[0]).Result;
+        var list = Servers.GetServerInfo(games[0]);
 
         foreach (var item in list)
         {
@@ -358,9 +358,9 @@ public static class TestItem
             Console.WriteLine($"{item}");
         }
 
-        packs[0].Disable();
+        //packs[0].Disable();
         Console.ReadLine();
-        packs[0].Enable();
+        //packs[0].Enable();
     }
 
     public static void Item15()

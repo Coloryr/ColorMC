@@ -1,73 +1,78 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using SharpNBT;
+using fNbt;
 
 namespace ColorMC.Core.Game;
 
 public static class Servers
 {
-    public static async Task<List<ServerInfoObj>> GetServerInfo(this GameSettingObj game)
+    public static List<ServerInfoObj> GetServerInfo(this GameSettingObj game)
     {
         List<ServerInfoObj> list = new();
         string file = game.GetServersFile();
         if (!File.Exists(file))
             return list;
-        CompoundTag tag = await NbtFile.ReadAsync(file, FormatOptions.Java, CompressionType.AutoDetect);
-        var nbtList = tag["servers"] as ListTag;
+        var myFile = new NbtFile();
+        myFile.LoadFromFile(file);
+        var myCompoundTag = myFile.RootTag as NbtCompound;
+
+        var nbtList = myCompoundTag.Get<NbtList>("servers");
         if (nbtList == null)
             return list;
-        foreach (CompoundTag item in nbtList.Cast<CompoundTag>())
+        foreach (NbtCompound item in nbtList)
         {
             list.Add(ToServerInfo(item));
         }
         return list;
     }
 
-    public static async Task AddServer(this GameSettingObj game, string name, string ip)
+    public static void AddServer(this GameSettingObj game, string name, string ip)
     {
-        var list = await game.GetServerInfo();
+        var list = game.GetServerInfo();
         list.Add(new ServerInfoObj()
         {
             Name = name,
             IP = ip
         });
-        await game.SaveServer(list);
+        game.SaveServer(list);
     }
 
-    public static async Task SaveServer(this GameSettingObj game, List<ServerInfoObj> list)
+    public static void SaveServer(this GameSettingObj game, List<ServerInfoObj> list)
     {
-        CompoundTag tag = new(null);
-        ListTag list1 = new("servers", TagType.Compound);
+        NbtCompound tag = new();
+        NbtList list1 = new("servers");
         foreach (var item in list)
         {
-            CompoundTag tag1 = new(null)
+            NbtCompound tag1 = new()
             {
-                new StringTag("name", item.Name),
-                new StringTag("ip", item.IP)
+                new NbtString("name", item.Name),
+                new NbtString("ip", item.IP)
             };
             if (!string.IsNullOrWhiteSpace(item.Icon))
             {
-                tag1.Add(new StringTag("icon", item.Icon));
+                tag1.Add(new NbtString("icon", item.Icon));
             }
-            tag1.Add(new BoolTag("acceptTextures", item.AcceptTextures));
+            tag1.Add(new NbtByte("acceptTextures", 
+                item.AcceptTextures ? (byte)1 : (byte)0));
             list1.Add(tag1);
         }
 
         tag.Add(list1);
         string file = game.GetServersFile();
-        await NbtFile.WriteAsync(file, tag, FormatOptions.Java, CompressionType.AutoDetect);
+        var myFile = new NbtFile(tag);
+        myFile.SaveToFile(file, NbtCompression.AutoDetect);
     }
 
-    private static ServerInfoObj ToServerInfo(CompoundTag tag)
+    private static ServerInfoObj ToServerInfo(NbtCompound tag)
     {
         var info = new ServerInfoObj()
         {
-            Name = (tag["name"] as StringTag).Value,
-            IP = (tag["ip"] as StringTag).Value
+            Name = tag.Get<NbtString>("name").Value,
+            IP = tag.Get<NbtString>("ip").Value
         };
 
-        var data = tag["icon"] as StringTag;
+        var data = tag.Get<NbtString>("icon");
         if (data != null)
         {
             info.Icon = data.Value;
@@ -75,7 +80,7 @@ public static class Servers
         var data1 = tag["acceptTextures"];
         if (data1 != null)
         {
-            info.AcceptTextures = (data1 as BoolTag).Value;
+            info.AcceptTextures = (data1 as NbtByte).Value == 1;
         }
 
         return info;
