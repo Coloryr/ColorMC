@@ -23,12 +23,22 @@ public partial class Tab2Control : UserControl
         Button_Set1.Click += Button_Set1_Click;
         Button_Set2.Click += Button_Set2_Click;
         Button_Set3.Click += Button_Set3_Click;
+        Button_Set4.Click += Button_Set4_Click;
         Button_Change.Click += Button_Change_Click;
 
         CheckBox1.Click += CheckBox1_Click;
 
         ComboBox1.Items = OtherBinding.GetWindowTranTypes();
         ComboBox2.Items = OtherBinding.GetLanguages();
+    }
+
+    private void Button_Set4_Click(object? sender, RoutedEventArgs e)
+    {
+        ConfigBinding.SetColor("#FF5ABED6", "#FFF4F4F5", "#88FFFFFF");
+        ColorPicker1.Color = Colors.MainColor.ToColor();
+        ColorPicker2.Color = Colors.BackColor.ToColor();
+        ColorPicker3.Color = Colors.Back1Color.ToColor();
+        Window.Info2.Show("“—÷ÿ÷√");
     }
 
     private void Button_Set3_Click(object? sender, RoutedEventArgs e)

@@ -1,7 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Dialogs;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;
@@ -222,7 +224,11 @@ public static partial class UIUtils
             var item1 = expander.FindToEnd<Border>();
             if (item1 != null)
             {
-                item1.Background = Avalonia.Media.Brush.Parse("#88f2f2f2");
+                item1.Bind(Border.BackgroundProperty, new Binding
+                {
+                    Source = Utils.LaunchSetting.Colors.Instance,
+                    Path = "[TranBack]"
+                });
             }
         }
         catch
@@ -238,13 +244,13 @@ public static partial class UIUtils
             var item1 = grid.FindToEnd<DataGridColumnHeadersPresenter>();
             if (item1 != null)
             {
-                item1.Background = Avalonia.Media.Brush.Parse("#ccffffff");
+                item1.Background = Brush.Parse("#ccffffff");
                 foreach (var item in item1.GetVisualChildren())
                 {
                     var item2 = item.FindToEnd<TextBlock>();
                     if (item2 != null)
                     {
-                        item2.Foreground = Avalonia.Media.Brushes.Black;
+                        item2.Foreground = Brushes.Black;
                     }
                 }
             }
@@ -262,9 +268,9 @@ public static partial class UIUtils
             var item = expander.FindToEnd<Border>();
             if (item != null)
             {
-                item.Background = Avalonia.Media.Brushes.Transparent;
+                item.Background = Brushes.Transparent;
                 item.Padding = new Thickness(0);
-                item.BorderBrush = Avalonia.Media.Brushes.Transparent;
+                item.BorderBrush = Brushes.Transparent;
             }
         }
         catch
@@ -283,9 +289,20 @@ public static partial class UIUtils
                 var item1 = item.FindToEnd<Border>();
                 if (item1 == null)
                     return;
-                item1.Background = Utils.LaunchSetting.Colors.Instance["Main"];
+
+                item1.Bind(Border.BackgroundProperty, new Binding
+                {
+                    Source = Utils.LaunchSetting.Colors.Instance,
+                    Path = "[Main]"
+                });
+
+                item1.Bind(Border.BorderBrushProperty, new Binding
+                {
+                    Source = Utils.LaunchSetting.Colors.Instance,
+                    Path = "[TranBack]"
+                });
+
                 item1.BorderThickness = new Thickness(2);
-                item1.BorderBrush = Utils.LaunchSetting.Colors.Instance["TranBack"];
             }
         }
         catch
