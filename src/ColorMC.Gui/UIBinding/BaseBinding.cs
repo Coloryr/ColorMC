@@ -39,6 +39,10 @@ public static class BaseBinding
 
     public static async Task<bool> Launch(GameSettingObj obj, LoginObj obj1)
     {
+        if (Games.ContainsValue(obj))
+        {
+            return false;
+        }
         if (App.GameEditWindows.TryGetValue(obj, out var win))
         {
             win.ClearLog();
@@ -48,7 +52,10 @@ public static class BaseBinding
         {
             res.Exited += (a, b) =>
             {
-                Games.Remove(res);
+                if (Games.Remove(res, out var obj1))
+                {
+                    App.MainWindow?.GameClose(obj1);
+                }
             };
             Games.Add(res, obj);
         }

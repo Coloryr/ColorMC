@@ -24,6 +24,11 @@ public partial class GameControl : UserControl
         Rectangle_Select.IsVisible = select;
     }
 
+    public void SetLaunch(bool state) 
+    {
+        Image2.IsVisible = state;
+    }
+
     public void Reload()
     {
         TextBlock1.Text = Obj.Name;
