@@ -3,6 +3,7 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -71,6 +72,7 @@ public partial class MainWindow : Window
         {
             Launchs.Add(Obj.Obj, Obj);
             Obj.SetLaunch(true);
+            Info2.Show("ÒÑÆô¶¯");
         }
     }
 

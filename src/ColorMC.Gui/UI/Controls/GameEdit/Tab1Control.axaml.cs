@@ -41,7 +41,7 @@ public partial class Tab1Control : UserControl
 
     private void Button_Set_Click(object? sender, RoutedEventArgs e)
     {
-        GameBinding.MoveGameGroup(Obj, ComboBox2.SelectedItem as string);
+        GameBinding.MoveGameGroup(Obj, ComboBox3.SelectedItem as string);
 
         Loaders loaders = Loaders.Normal;
         if (CheckBox_Forge.IsChecked == true)

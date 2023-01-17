@@ -159,22 +159,22 @@ public partial class DownloadWindow : Window
 
     public void DownloadItemStateUpdate(int index, DownloadItem item)
     {
-        if (item.State == DownloadItemState.Init)
-        {
-            var item1 = new DownloadDisplayObj()
-            {
-                Name = item.Name,
-                State = item.State.GetName(),
-            };
-            List.Add(item1);
-            List1.Add(item.Name, item1);
-            Timer.Start();
-
-            return;
-        }
-
         Dispatcher.UIThread.Post(() =>
         {
+            if (item.State == DownloadItemState.Init)
+            {
+                var item11 = new DownloadDisplayObj()
+                {
+                    Name = item.Name,
+                    State = item.State.GetName(),
+                };
+                List.Add(item11);
+                List1.Add(item.Name, item11);
+                Timer.Start();
+
+                return;
+            }
+
             if (!List1.ContainsKey(item.Name))
                 return;
 

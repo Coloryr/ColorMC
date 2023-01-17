@@ -1,4 +1,5 @@
-﻿using ColorMC.Core;
+﻿using Avalonia.Threading;
+using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
@@ -76,7 +77,10 @@ public static class BaseBinding
 
     public static void DownloaderUpdate(CoreRunState state)
     {
-        App.DownloaderUpdate(state);
+        Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            App.DownloaderUpdate(state);
+        }).Wait();
     }
 
     public static void PLog(Process? p, string? d)
