@@ -704,9 +704,11 @@ public static class Launch
         var libraries = GetLibs(obj, v2);
         StringBuilder arg = new();
         string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
+        CoreMain.GameLog?.Invoke(obj, "游戏使用的运行库");
         foreach (var item in libraries)
         {
             arg.Append($"{item}{sep}");
+            CoreMain.GameLog?.Invoke(obj, item);
         }
         arg.Remove(arg.Length - 1, 1);
         string classpath = arg.ToString().Trim();
@@ -780,25 +782,6 @@ public static class Launch
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, 
         JvmConfigObj? jvmCfg = null)
     {
-        JavaInfo? jvm = null;
-        if (jvmCfg == null)
-        {
-            jvm = FindJvm(obj);
-        }
-        else
-        {
-            jvm = JvmPath.GetInfo(jvmCfg.Name);
-        }
-
-        if (jvm == null)
-        {
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
-            return null;
-        }
-
-        CoreMain.GameLog?.Invoke(obj, "游戏使用的JAVA");
-        CoreMain.GameLog?.Invoke(obj, jvm.Path);
-
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.Login);
         var login1 = await login.RefreshToken();
         if (login1.State1 != LoginState.Done)
@@ -841,6 +824,25 @@ public static class Launch
         {
             CoreMain.GameLog?.Invoke(obj, item);
         }
+
+        JavaInfo? jvm = null;
+        if (jvmCfg == null)
+        {
+            jvm = FindJvm(obj);
+        }
+        else
+        {
+            jvm = JvmPath.GetInfo(jvmCfg.Name);
+        }
+
+        if (jvm == null)
+        {
+            CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
+            return null;
+        }
+
+        CoreMain.GameLog?.Invoke(obj, "游戏使用的JAVA");
+        CoreMain.GameLog?.Invoke(obj, jvm.Path);
 
         Process process = new();
         process.StartInfo.FileName = jvm.Path;
