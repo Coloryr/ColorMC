@@ -153,7 +153,7 @@ public partial class Tab2Control : UserControl
         {
             var item = file[0];
             item.TryGetUri(out var uri);
-            TextBox1.Text = uri!.OriginalString;
+            TextBox1.Text = uri!.AbsolutePath;
 
             Button_Set2_Click(sender, e);
         }
