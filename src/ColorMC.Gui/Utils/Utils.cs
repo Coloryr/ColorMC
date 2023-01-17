@@ -1,10 +1,15 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Dialogs;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Media.Immutable;
+using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -278,9 +283,9 @@ public static partial class UIUtils
                 var item1 = item.FindToEnd<Border>();
                 if (item1 == null)
                     return;
-                item1.Background = Avalonia.Media.Brush.Parse("#FF5ABED6");
+                item1.Background = Utils.LaunchSetting.Colors.Instance["Main"];
                 item1.BorderThickness = new Thickness(2);
-                item1.BorderBrush = Avalonia.Media.Brush.Parse("#88FFFFFF");
+                item1.BorderBrush = Utils.LaunchSetting.Colors.Instance["TranBack"];
             }
         }
         catch
@@ -343,6 +348,16 @@ public static partial class UIUtils
         {
             return $"{size}N";
         }
+    }
+
+    public static Avalonia.Media.Color ToColor(this IBrush brush)
+    {
+        if (brush is ImmutableSolidColorBrush brush1)
+        {
+            return brush1.Color;
+        }
+
+        return new(255, 255, 255, 255);
     }
 }
 
@@ -468,10 +483,8 @@ public static class GuiConfigUtils
             Config = MakeDefaultConfig();
             Save();
         }
-        else
-        {
 
-        }
+        Utils.LaunchSetting.Colors.Load();
 
         Save();
 
@@ -489,6 +502,9 @@ public static class GuiConfigUtils
         return new()
         {
             Version = CoreMain.Version,
+            ColorMain = "#FF5ABED6",
+            ColorBack = "#FFF4F4F5",
+            ColorTranBack = "#88FFFFFF"
         };
     }
 }

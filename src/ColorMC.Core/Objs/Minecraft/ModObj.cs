@@ -28,5 +28,7 @@ public record ModObj
     [JsonIgnore]
     public bool V2 { get; set; }
     [JsonIgnore]
+    public bool Broken { get; set; }
+    [JsonIgnore]
     public GameSettingObj Game { get; set; }
 }

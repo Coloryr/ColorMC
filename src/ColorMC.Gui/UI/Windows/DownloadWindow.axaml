@@ -33,8 +33,7 @@
             <Grid VerticalAlignment="Top">
                 <Rectangle
                     Margin="0,0,0,0"
-                    Fill="#88ffffff"
-                    Stroke="#FF5ABED6"
+                    Fill="{setting:Colors TranBack}"
                     StrokeThickness="3" />
                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
                     <Label Margin="5" Content="{setting:Localize DownloadWindow.Label1}" />
@@ -68,7 +67,7 @@
 
             <DataGrid
                 Name="DataGrid_Download"
-                Margin="3,34,3,3"
+                Margin="3,30,3,3"
                 AutoGenerateColumns="False"
                 Background="#88ffffff"
                 CanUserSortColumns="False">
@@ -150,7 +149,7 @@
 
             <Rectangle
                 Name="Rectangle1"
-                Stroke="#FF5ABED6"
+                Stroke="{setting:Colors Main}"
                 StrokeThickness="3" />
         </Grid>
     </Grid>

@@ -1,7 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Dialogs;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
@@ -10,6 +12,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using DynamicData;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -83,26 +86,30 @@ public partial class Tab4Control : UserControl
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        var file = await Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = "Mod",
             AllowMultiple = true,
-            Filters = new()
+            FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FileDialogFilter()
+                new FilePickerFileType("Mod")
                 {
-                    Extensions = new()
+                    Patterns = new List<string>()
                     {
-                        "jar"
+                        "*.jar"
                     }
                 }
             }
-        };
-
-        var file = await openFile.ShowAsync(Window);
-        if (file?.Length > 0)
+        });
+        if (file?.Any() == true)
         {
-            GameBinding.AddMods(Obj, file);
+            var list = new List<string>();
+            foreach (var item in file)
+            {
+                item.TryGetUri(out var uri);
+                list.Add(uri!.OriginalString);
+            }
+            GameBinding.AddMods(Obj, list);
             Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
             Load();
         }
@@ -239,20 +246,41 @@ public partial class Tab4Control : UserControl
             return;
         }
 
+        int count = 0;
+
         foreach (var item in res)
         {
-            var obj = new ModDisplayObj()
+            ModDisplayObj obj;
+            if (item.Broken)
             {
-                Name = item.name,
-                Version = item.version,
-                Local = item.Local,
-                Author = item.authorList.Make(),
-                Url = item.url,
-                Enable = item.Disable
-            };
+                obj = new ModDisplayObj()
+                {
+                    Name = "损坏的mod",
+                    Local = item.Local,
+                    Enable = item.Disable
+                };
+                count++;
+            }
+            else
+            {
+                obj = new ModDisplayObj()
+                {
+                    Name = item.name,
+                    Version = item.version,
+                    Local = item.Local,
+                    Author = item.authorList.Make(),
+                    Url = item.url,
+                    Enable = item.Disable
+                };
+            }
 
             Items.Add(obj);
             Dir1.Add(obj.Local, item);
+        }
+
+        if (count != 0)
+        {
+            Window.Info.Show(string.Format("读取到有{0}个破损的Mod文件", count));
         }
 
         Load1();

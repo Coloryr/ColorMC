@@ -16,4 +16,8 @@ public record GuiConfigObj
     public int BackTran { get; set; }
     public bool WindowTran { get; set; }
     public int WindowTranType { get; set; }
+
+    public string ColorMain { get; set; }
+    public string ColorBack { get; set; }
+    public string ColorTranBack { get; set; }
 }

@@ -55,6 +55,8 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
             List.Add(new());
         }
 
+        App.PicUpdate += Update;
+
         Update();
     }
 
@@ -118,6 +120,8 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
 
     private void AddCurseForgeWindow_Closed(object? sender, EventArgs e)
     {
+        App.PicUpdate -= Update;
+
         App.AddCurseForgeWindow = null;
     }
 

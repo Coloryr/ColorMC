@@ -40,11 +40,15 @@
     </Style>
 
     <Style Selector="Button:pointerover /template/ Border#Border">
-        <Setter Property="Background" Value="#FF71e4ff" />
+        <Setter Property="Background" Value="#FFDDDDDD" />
+    </Style>
+
+    <Style Selector="Button:pointerover /template/ TextBlock#Data">
+        <Setter Property="Foreground" Value="#FF000000" />
     </Style>
 
     <Style Selector="Button /template/ Border#Border">
-        <Setter Property="Background" Value="{setting:Colors Button}" />
+        <Setter Property="Background" Value="{setting:Colors Main}" />
     </Style>
 
     <Style Selector="Button:pressed  /template/ Border#Border">
@@ -52,7 +56,7 @@
     </Style>
 
     <Style Selector="Button:disabled /template/ Border#Border">
-        <Setter Property="Background" Value="#FF3b7886" />
+        <Setter Property="Background" Value="#FF666666" />
     </Style>
     <Style Selector="Button:disabled /template/ TextBlock#Data">
         <Setter Property="Foreground" Value="#FFCDCDCD" />

@@ -51,6 +51,8 @@ public partial class SettingWindow : Window, IBaseWindow
 
         Closed += SettingWindow_Closed;
 
+        App.PicUpdate += Update;
+
         Update();
     }
 
@@ -107,6 +109,8 @@ public partial class SettingWindow : Window, IBaseWindow
 
     private void SettingWindow_Closed(object? sender, EventArgs e)
     {
+        App.PicUpdate -= Update;
+
         App.SettingWindow = null;
     }
 

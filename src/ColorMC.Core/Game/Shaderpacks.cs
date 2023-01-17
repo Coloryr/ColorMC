@@ -17,7 +17,7 @@ public static class Shaderpacks
 
         ParallelOptions options = new()
         {
-            MaxDegreeOfParallelism = 10
+            MaxDegreeOfParallelism = 5
         };
         Parallel.ForEach(info.GetFiles(), options, (item) =>
         {

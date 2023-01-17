@@ -42,6 +42,8 @@ public partial class MainWindow : Window
         Opened += MainWindow_Opened;
         Closed += MainWindow_Closed;
 
+        App.PicUpdate += Update;
+
         Update();
     }
 
@@ -82,6 +84,8 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closed(object? sender, EventArgs e)
     {
+        App.PicUpdate -= Update;
+
         App.MainWindow = null;
         CoreMain.GameLaunch = null;
         CoreMain.GameDownload = null;

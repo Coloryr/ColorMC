@@ -1,9 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -17,12 +20,45 @@ public partial class Tab2Control : UserControl
         Button_Delete.Click += Button_Delete_Click;
         Button_SelectFile.Click += Button_SelectFile_Click;
         Button_Set.Click += Button_Set_Click;
+        Button_Set1.Click += Button_Set1_Click;
+        Button_Set2.Click += Button_Set2_Click;
+        Button_Set3.Click += Button_Set3_Click;
         Button_Change.Click += Button_Change_Click;
 
         CheckBox1.Click += CheckBox1_Click;
 
         ComboBox1.Items = OtherBinding.GetWindowTranTypes();
         ComboBox2.Items = OtherBinding.GetLanguages();
+    }
+
+    private void Button_Set3_Click(object? sender, RoutedEventArgs e)
+    {
+        ConfigBinding.SetColor(ColorPicker1.Color.ToString(), 
+            ColorPicker2.Color.ToString(), ColorPicker3.Color.ToString());
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info4"]);
+    }
+
+    private async void Button_Set2_Click(object? sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(TextBox1.Text))
+        {
+            Window.Info.Show("没有选择图片");
+            return;
+        }
+        Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info2"]);
+        await ConfigBinding.SetBackPic(TextBox1.Text, (int)Slider1.Value);
+        Window.Info1.Close();
+
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info4"]);
+    }
+
+    private void Button_Set1_Click(object? sender, RoutedEventArgs e)
+    {
+        Window.Info1.Show("正在设置透明效果");
+        ConfigBinding.SetBl(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
+        Window.Info1.Close();
+
+        Window.Info2.Show("已设置");
     }
 
     private void Button_Change_Click(object? sender, RoutedEventArgs e)
@@ -54,6 +90,9 @@ public partial class Tab2Control : UserControl
             CheckBox1.IsChecked = config.Item2.WindowTran;
             ComboBox1.SelectedIndex = config.Item2.WindowTranType;
             ComboBox2.SelectedIndex = (int)config.Item1.Language;
+            ColorPicker1.Color = Colors.MainColor.ToColor();
+            ColorPicker2.Color = Colors.BackColor.ToColor();
+            ColorPicker3.Color = Colors.Back1Color.ToColor();
             if (config.Item2.WindowTran)
             {
                 ComboBox1.IsEnabled = true;
@@ -65,49 +104,39 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    private async void Button_Set_Click(object? sender, RoutedEventArgs e)
+    private void Button_Set_Click(object? sender, RoutedEventArgs e)
     {
-        string file = TextBox1.Text;
-
-        Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info2"]);
-        await ConfigBinding.SetGuiConfig(new()
-        {
-            BackImage = file,
-            BackEffect = (int)Slider1.Value,
-            BackTran = (int)Slider2.Value,
-            WindowTran = CheckBox1.IsChecked == true,
-            WindowTranType = ComboBox1.SelectedIndex
-        });
-        Window.Info1.Close();
-
+        ConfigBinding.SetBackTran((int)Slider2.Value);
         Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info4"]);
     }
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        var file =  await Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["SettingWindow.Tab2.Info5"],
             AllowMultiple = false,
-            Filters = new()
+            FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FileDialogFilter()
+                new FilePickerFileType("图片")
                 {
-                    Extensions = new()
+                    Patterns = new List<string>()
                     {
-                        "png",
-                        "jpg",
-                        "bmp"
+                        "*.png",
+                        "*.jpg",
+                        "*.bmp"
                     }
                 }
             }
-        };
+        });
 
-        var file = await openFile.ShowAsync(Window);
-        if (file?.Length > 0)
+        if (file?.Any() == true)
         {
             var item = file[0];
-            TextBox1.Text = item;
+            item.TryGetUri(out var uri);
+            TextBox1.Text = uri!.OriginalString;
+
+            Button_Set2_Click(sender, e);
         }
     }
 

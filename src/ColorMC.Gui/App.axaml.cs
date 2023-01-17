@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -21,9 +22,6 @@ namespace ColorMC.Gui;
 
 public partial class App : Application
 {
-    public static readonly IBrush BackColor = Brush.Parse("#FFFFFFFF");
-    public static readonly IBrush BackColor1 = Brush.Parse("#11FFFFFF"); //Brushes.Transparent;
-
     private static IClassicDesktopStyleApplicationLifetime Life;
     public static DownloadWindow? DownloadWindow;
     public static UserWindow? UserWindow;
@@ -33,6 +31,11 @@ public partial class App : Application
     public static AddCurseForgeWindow? AddCurseForgeWindow;
     public static SettingWindow? SettingWindow;
     public static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
+
+    public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
+    public static readonly CrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));
+
+    public static event Action PicUpdate;
 
     public static ResourceDictionary? Language;
 
@@ -68,6 +71,11 @@ public partial class App : Application
         GameIcon = new Bitmap(asset);
     }
 
+    public static void OnPicUpdate() 
+    {
+        PicUpdate.Invoke();
+    }
+
     public static void LoadLanguage(LanguageType type)
     {
         var assm = Assembly.GetExecutingAssembly();
@@ -93,11 +101,7 @@ public partial class App : Application
 
     public static void RemoveImage()
     {
-        if (BackBitmap != null)
-        {
-            BackBitmap.Dispose();
-        }
-
+        BackBitmap?.Dispose();
         BackBitmap = null;
     }
 
@@ -287,14 +291,14 @@ public partial class App : Application
 
             if (GuiConfigUtils.Config.WindowTran)
             {
-                rec.Background = BackColor1;
+                rec.Background = Utils.LaunchSetting.Colors.AppBackColor1;
                 window.TransparencyLevelHint = (WindowTransparencyLevel)
                     (GuiConfigUtils.Config.WindowTranType + 1);
             }
             else
             {
                 window.TransparencyLevelHint = WindowTransparencyLevel.None;
-                rec.Background = BackColor;
+                rec.Background = Utils.LaunchSetting.Colors.AppBackColor;
             }
         }
     }
