@@ -122,9 +122,15 @@
                         Name="Button_Set3"
                         Width="80"
                         Height="25"
-                        Margin="10"
+                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize Button.Set}" />
+                    <Button
+                        Name="Button_Set4"
+                        Width="80"
+                        Height="25"
+                        VerticalAlignment="Center"
+                        Content="重置" />
                 </StackPanel>
 
                 <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text9}" />

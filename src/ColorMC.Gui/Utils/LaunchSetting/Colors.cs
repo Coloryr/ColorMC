@@ -13,7 +13,6 @@ public class Colors : INotifyPropertyChanged
     public static IBrush MainColor = Brush.Parse("#FF5ABED6");
     public static IBrush BackColor = Brush.Parse("#FFF4F4F5");
     public static IBrush Back1Color = Brush.Parse("#88FFFFFF");
-    public static IBrush ButtonColor = Brush.Parse("#FF5EBDD3");
 
     public static Colors Instance { get; set; } = new Colors();
 
@@ -46,8 +45,6 @@ public class Colors : INotifyPropertyChanged
                 return BackColor;
             else if (key == "TranBack")
                 return Back1Color;
-            else if (key == "Button")
-                return ButtonColor;
 
             return Brushes.White;
         }
