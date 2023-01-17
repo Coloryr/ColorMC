@@ -103,7 +103,7 @@ public static class Launch
             AssetsPath.AddIndex(assets, game);
         }
 
-        var list1 = AssetsPath.Check(assets);
+        var list1 = await AssetsPath.Check(assets);
         foreach (var (Name, Hash) in list1)
         {
             list.Add(new()
@@ -117,7 +117,7 @@ public static class Launch
         }
 
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
-        var list2 = LibrariesPath.CheckGame(game);
+        var list2 = await LibrariesPath.CheckGame(game);
         if (list2.Count != 0)
         {
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLib);
@@ -127,7 +127,7 @@ public static class Launch
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
         if (obj.Loader == Loaders.Forge)
         {
-            var list3 = LibrariesPath.CheckForge(obj);
+            var list3 = await LibrariesPath.CheckForge(obj);
             if (list3 == null)
             {
                 CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
