@@ -24,7 +24,6 @@ public partial class UserWindow : Window
     {
         InitializeComponent();
 
-        this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
 
         if (App.BackBitmap != null)

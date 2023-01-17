@@ -18,6 +18,7 @@
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaTitleBarHeightHint="-1"
     ExtendClientAreaToDecorationsHint="True"
+    SystemDecorations="BorderOnly"
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl

@@ -27,7 +27,6 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
 
         ItemInfo.SetWindow(this);

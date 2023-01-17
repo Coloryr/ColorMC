@@ -32,7 +32,6 @@ public partial class SettingWindow : Window, IBaseWindow
     {
         InitializeComponent();
 
-        this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;

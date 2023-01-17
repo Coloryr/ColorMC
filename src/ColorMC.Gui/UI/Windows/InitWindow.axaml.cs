@@ -12,7 +12,6 @@ public partial class InitWindow : Window
     {
         InitializeComponent();
 
-        this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
 
         Opened += MainWindow_Opened;

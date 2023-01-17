@@ -9,7 +9,6 @@ public partial class ErrorWindow : Window
     {
         InitializeComponent();
 
-        this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
     }
 

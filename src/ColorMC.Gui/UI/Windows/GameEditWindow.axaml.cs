@@ -31,7 +31,6 @@ public partial class GameEditWindow : Window
     {
         InitializeComponent();
 
-        this.MakeItNoChrome();
         Rectangle1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
