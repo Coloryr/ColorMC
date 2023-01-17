@@ -31,6 +31,7 @@ public static class BaseBinding
 
     public static void Exit()
     {
+        Colors.Instance.Stop();
         Logs.Stop();
         DownloadManager.Stop();
     }

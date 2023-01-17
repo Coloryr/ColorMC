@@ -15,13 +15,13 @@
             StrokeThickness="3" />
         <Expander
             Name="Expander1"
-            Margin="3,3,-80,3"
+            Margin="3,3,-120,3"
             VerticalAlignment="Stretch"
             BorderThickness="0"
             CornerRadius="0"
             ExpandDirection="Left"
             IsExpanded="True">
-            <StackPanel VerticalAlignment="Top">
+            <StackPanel Margin="0,0,40,0" VerticalAlignment="Top">
                 <Image
                     Name="Image1"
                     Width="80"
