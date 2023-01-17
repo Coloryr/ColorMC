@@ -60,7 +60,10 @@ public partial class Tab7Control : UserControl
                 if (CheckBox2.IsChecked == true)
                 {
                     scroll.ScrollToEnd();
-                    CheckBox2.IsChecked = true;
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        CheckBox2.IsChecked = true;
+                    });
                 }
             }
         });
