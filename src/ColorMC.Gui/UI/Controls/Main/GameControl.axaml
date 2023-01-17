@@ -28,6 +28,16 @@
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
         </StackPanel>
+
+        <Image
+            Name="Image2"
+            Width="32"
+            Height="32"
+            Margin="0,40,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
+            Stretch="UniformToFill" />
     </Grid>
 
 </UserControl>

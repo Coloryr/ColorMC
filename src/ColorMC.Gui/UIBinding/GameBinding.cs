@@ -191,6 +191,11 @@ public static class GameBinding
             return (false, Localizer.Instance["GameBinding.Error1"]);
         }
 
+        if (BaseBinding.Games.ContainsValue(obj))
+        {
+            return (false, "游戏已经启动了");
+        }
+
         var login = UserBinding.GetLastUser();
         if (login == null)
         {

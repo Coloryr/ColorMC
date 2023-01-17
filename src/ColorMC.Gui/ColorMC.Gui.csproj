@@ -31,6 +31,7 @@
     <None Remove="Resource\Pic\folder-open.png" />
     <None Remove="Resource\Pic\folder.png" />
     <None Remove="Resource\Pic\game.png" />
+    <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\user.png" />
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +44,7 @@
     <EmbeddedResource Include="Resource\Pic\folder-open.png" />
     <EmbeddedResource Include="Resource\Pic\folder.png" />
     <EmbeddedResource Include="Resource\Pic\game.png" />
+    <EmbeddedResource Include="Resource\Pic\launch.png" />
     <EmbeddedResource Include="Resource\Pic\user.png" />
   </ItemGroup>
   <ItemGroup>

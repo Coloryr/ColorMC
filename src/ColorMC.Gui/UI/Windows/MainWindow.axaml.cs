@@ -16,7 +16,8 @@ public partial class MainWindow : Window
 {
     private readonly List<GamesControl> Groups = new();
     private GamesControl DefaultGroup;
-    private GameSettingObj? Obj;
+    private GameControl? Obj;
+    private Dictionary<GameSettingObj, GameControl> Launchs = new();
 
     public delegate void UserEditHandler();
     public static event UserEditHandler UserEdit;
@@ -49,7 +50,7 @@ public partial class MainWindow : Window
     public async void Launch(bool debug)
     {
         Info1.Show(Localizer.Instance["MainWindow.Launch"]);
-        var res = await GameBinding.Launch(Obj, debug);
+        var res = await GameBinding.Launch(Obj!.Obj, debug);
         Info1.Close();
         if (res.Item1 == false)
         {
@@ -66,6 +67,11 @@ public partial class MainWindow : Window
                     break;
             }
         }
+        else
+        {
+            Launchs.Add(Obj.Obj, Obj);
+            Obj.SetLaunch(true);
+        }
     }
 
     public static void OnUserEdit()
@@ -73,6 +79,17 @@ public partial class MainWindow : Window
         if (UserEdit != null)
         {
             UserEdit();
+        }
+    }
+
+    public void GameClose(GameSettingObj obj) 
+    {
+        if (Launchs.Remove(obj, out var con))
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                con.SetLaunch(false);
+            });
         }
     }
 
@@ -95,10 +112,17 @@ public partial class MainWindow : Window
         ItemInfo.Expander1.MakeTran();
     }
 
-    public void GameItemSelect(GameSettingObj? obj)
+    public void GameItemSelect(GameControl? obj)
     {
         Obj = obj;
-        ItemInfo.SetGame(obj);
+        if (obj != null)
+        {
+            ItemInfo.SetGame(obj.Obj);
+        }
+        else
+        {
+            ItemInfo.SetGame(null);
+        }
     }
 
     private async Task<bool> GameDownload(LaunchState state, GameSettingObj obj)

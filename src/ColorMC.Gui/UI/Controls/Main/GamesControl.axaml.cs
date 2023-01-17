@@ -94,7 +94,7 @@ public partial class GamesControl : UserControl
         Last?.SetSelect(false);
         Last = game;
         Last?.SetSelect(true);
-        Window.GameItemSelect(Last?.Obj);
+        Window.GameItemSelect(Last);
 
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {

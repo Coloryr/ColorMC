@@ -195,6 +195,9 @@ public class DownloadThread
                         }
 
                         stream.Dispose();
+                        if (File.Exists(item.Local))
+                            File.Delete(item.Local);
+
                         File.Move(file, item.Local);
 
                         item.State = DownloadItemState.Action;
