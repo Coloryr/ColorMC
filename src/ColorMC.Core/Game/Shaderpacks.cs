@@ -33,25 +33,27 @@ public static class Shaderpacks
 
         return list;
     }
-    public static void Disable(this ShaderpackObj pack)
-    {
-        if (pack.Disable)
-            return;
+    //public static void Disable(this ShaderpackObj pack)
+    //{
+    //    if (pack.Disable)
+    //        return;
 
-        var file = new FileInfo(pack.Local);
-        pack.Disable = true;
-        pack.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name.Replace(".zip", ".disable")}");
-        File.Move(file.FullName, pack.Local);
-    }
+    //    var file = new FileInfo(pack.Local);
+    //    pack.Disable = true;
+    //    pack.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name
+    //        .Replace(".zip", ".disable")}");
+    //    File.Move(file.FullName, pack.Local);
+    //}
 
-    public static void Enable(this ShaderpackObj pack)
-    {
-        if (!pack.Disable)
-            return;
+    //public static void Enable(this ShaderpackObj pack)
+    //{
+    //    if (!pack.Disable)
+    //        return;
 
-        var file = new FileInfo(pack.Local);
-        pack.Disable = false;
-        pack.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name.Replace(".disable", ".zip")}");
-        File.Move(file.FullName, pack.Local);
-    }
+    //    var file = new FileInfo(pack.Local);
+    //    pack.Disable = false;
+    //    pack.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name
+    //        .Replace(".disable", ".zip")}");
+    //    File.Move(file.FullName, pack.Local);
+    //}
 }

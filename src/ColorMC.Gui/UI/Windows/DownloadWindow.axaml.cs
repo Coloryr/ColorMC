@@ -37,8 +37,8 @@ public partial class DownloadWindow : Window
 
         DataGrid_Download.Items = List;
 
-        Expander_P.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(100));
-        Expander_S.ContentTransition = new CrossFade(TimeSpan.FromMilliseconds(100));
+        Expander_P.ContentTransition = App.CrossFade100;
+        Expander_S.ContentTransition = App.CrossFade100;
 
         Button_P1.PointerExited += Button_P1_PointerLeave;
         Button_P.PointerEntered += Button_P_PointerEnter;

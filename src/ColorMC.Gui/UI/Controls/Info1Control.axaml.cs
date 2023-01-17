@@ -10,8 +10,6 @@ public partial class Info1Control : UserControl
 {
     private Action? call;
 
-    private readonly static CrossFade transition = new(TimeSpan.FromMilliseconds(300));
-
     public Info1Control()
     {
         InitializeComponent();
@@ -22,7 +20,7 @@ public partial class Info1Control : UserControl
     private void Cancel_Click(object? sender, RoutedEventArgs e)
     {
         Button_Cancel.IsEnabled = false;
-        transition.Start(this, null, CancellationToken.None);
+        App.CrossFade300.Start(this, null, CancellationToken.None);
 
         call?.Invoke();
     }
@@ -30,12 +28,12 @@ public partial class Info1Control : UserControl
     public void Close()
     {
         Button_Cancel.IsEnabled = false;
-        transition.Start(this, null, CancellationToken.None);
+        App.CrossFade300.Start(this, null, CancellationToken.None);
     }
 
     public void Show()
     {
-        transition.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
     public void Show(string title)
@@ -46,7 +44,7 @@ public partial class Info1Control : UserControl
 
         Button_Cancel.IsVisible = false;
 
-        transition.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
     public void Show(string title, Action cancel)
@@ -55,7 +53,7 @@ public partial class Info1Control : UserControl
         TextBlock_Text.Text = title;
         call = cancel;
 
-        transition.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
     public void Progress(double value)

@@ -16,7 +16,7 @@ public partial class ErrorWindow : Window
     public void Show(string data, Exception e, bool close)
     {
         Data.Text = $"{data}{Environment.NewLine}{e}";
-        ShowDialog(App.MainWindow);
+        ShowDialog(App.MainWindow == null ? App.HelloWindow! : App.MainWindow);
 
         if (close)
         {

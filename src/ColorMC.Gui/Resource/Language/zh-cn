@@ -18,9 +18,11 @@
 	<sys:String x:Key="MainWindow.Check7">正在检测游戏外置登陆器</sys:String>
 	<sys:String x:Key="MainWindow.Check8">正在下载所需文件</sys:String>
 	<sys:String x:Key="MainWindow.Check9">正在准备Jvm参数</sys:String>
-	<sys:String x:Key="MainWindow.Error1">账户登录失败</sys:String>
+	<sys:String x:Key="MainWindow.Error1">账户登录失败，请重新登录</sys:String>
 	<sys:String x:Key="MainWindow.Error2">没有合适的Java</sys:String>
 	<sys:String x:Key="MainWindow.Error3">启动失败</sys:String>
+	<sys:String x:Key="MainWindow.Error4">请输入名字</sys:String>
+	<sys:String x:Key="MainWindow.Error5">游戏分组添加失败</sys:String>
 	<sys:String x:Key="MainWindow.DefaultGroup">默认分组</sys:String>
 	<sys:String x:Key="MainWindow.Flyouts.Button1">启动实例</sys:String>
 	<sys:String x:Key="MainWindow.Flyouts.Button2">查看Mod</sys:String>
@@ -39,6 +41,7 @@
 	<sys:String x:Key="MainWindow.Control.Info2">没有用户</sys:String>
 	<sys:String x:Key="MainWindow.Control1.Text1">切换游戏分组</sys:String>
 	<sys:String x:Key="MainWindow.Control1.Button1">添加分组</sys:String>
+	<sys:String x:Key="MainWindow.Info1">组名</sys:String>
 
 	<sys:String x:Key="InitWindow.Title">ColorMC 加载</sys:String>
 	<sys:String x:Key="InitWindow.Text">ColorMC正在初始化</sys:String>
@@ -63,15 +66,19 @@
 	<sys:String x:Key="UserWindow.Text6">服务器UUID</sys:String>
 	<sys:String x:Key="UserWindow.Text7">服务器地址</sys:String>
 	<sys:String x:Key="UserWindow.Text8">皮肤站地址</sys:String>
+	<sys:String x:Key="UserWindow.Text9">账户类型</sys:String>
 	<sys:String x:Key="UserWindow.Error1">请先选择账户</sys:String>
 	<sys:String x:Key="UserWindow.Error2">请输入必要信息</sys:String>
 	<sys:String x:Key="UserWindow.Error3">服务器UUID错误</sys:String>
 	<sys:String x:Key="UserWindow.Error4">服务器Url错误</sys:String>
 	<sys:String x:Key="UserWindow.Error5">请选择类型</sys:String>
+	<sys:String x:Key="UserWindow.Error6">刷新失败</sys:String>
 	<sys:String x:Key="UserWindow.Ok1">切换成功</sys:String>
 	<sys:String x:Key="UserWindow.Ok2">添加成功</sys:String>
 	<sys:String x:Key="UserWindow.Info1">正在加载</sys:String>
 	<sys:String x:Key="UserWindow.Info2">正在登录</sys:String>
+	<sys:String x:Key="UserWindow.Info3">正在刷新登录</sys:String>
+	<sys:String x:Key="UserWindow.Info4">已刷新</sys:String>
 
 	<sys:String x:Key="SettingWindow.Title">ColorMC 设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab1.Title">导入配置</sys:String>
@@ -90,11 +97,22 @@
 	<sys:String x:Key="SettingWindow.Tab2.Text8">不是所有系统都支持半透明效果</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text9">窗口透明效果</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text10">颜色设置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text11">切换</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text12">主题色</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text13">背景色</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text14">透明背景色</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text15">重置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text16">&lt;---这是什么危险的东西，不要碰它</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info1">正在切换语言</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info2">正在设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info3">正在切换语言</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info4">配置背景已设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info5">选择配置文件</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Info6">已重置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Info7">正在设置透明效果</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Info8">已设置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Info9">图片</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Error1">没有选择图片</sys:String>
 	<sys:String x:Key="SettingWindow.Tab3.Text1">下载源选择</sys:String>
 	<sys:String x:Key="SettingWindow.Tab3.Text2">下载线程数</sys:String>
 	<sys:String x:Key="SettingWindow.Tab3.Text3">端口代理设置</sys:String>
@@ -152,6 +170,8 @@
 	<sys:String x:Key="HelloWindow.Tab2.Text4">账户储存数据库路径</sys:String>
 	<sys:String x:Key="HelloWindow.Tab2.Text5">导入图形配置文件</sys:String>
 	<sys:String x:Key="HelloWindow.Tab2.Text6">图形配置文件路径</sys:String>
+	<sys:String x:Key="HelloWindow.Tab2.Text7">配置文件</sys:String>
+	<sys:String x:Key="HelloWindow.Tab2.Text8">数据库</sys:String>
 	<sys:String x:Key="HelloWindow.Tab2.Info1">正在加载配置</sys:String>
 	<sys:String x:Key="HelloWindow.Tab2.Info2">配置文件已加载</sys:String>
 	<sys:String x:Key="HelloWindow.Tab2.Info3">选择配置文件</sys:String>
@@ -181,6 +201,7 @@
 	<sys:String x:Key="HelloWindow.Tab6.Button2">添加Java</sys:String>
 	<sys:String x:Key="HelloWindow.Tab6.Button3">添加账户</sys:String>
 	<sys:String x:Key="HelloWindow.Tab6.Button4">添加游戏</sys:String>
+	<sys:String x:Key="HelloWindow.Tab6.Button5">完成</sys:String>
 
 	<sys:String x:Key="GameEditWindow.Title">ColorMC 游戏实例 {0} 设置</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab1.Title">版本设置</sys:String>
@@ -226,6 +247,8 @@
 	<sys:String x:Key="GameEditWindow.Tab4.Button4">导入</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Text1">过滤内容</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Text2">过滤选项</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Text3">损坏的Mod</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Text4">读取到有{0}个破损的Mod文件</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Filter.Item1">名字</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Filter.Item2">文件名</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Filter.Item3">作者</sys:String>
@@ -380,6 +403,25 @@
 
 	<sys:String x:Key="GameBinding.SortOrder.Item1">顺序</sys:String>
 	<sys:String x:Key="GameBinding.SortOrder.Item2">倒序</sys:String>
+	<sys:String x:Key="GameBinding.Info1">账户已被占用，是否继续使用这个账户</sys:String>
+	<sys:String x:Key="GameBinding.Error1">没有选择游戏实例</sys:String>
+	<sys:String x:Key="GameBinding.Error2">没有选择账户</sys:String>
+	<sys:String x:Key="GameBinding.Error3">账户冲突</sys:String>
+
+	<sys:String x:Key="OtherBinding.TranTypes.Item1">普通透明</sys:String>
+	<sys:String x:Key="OtherBinding.TranTypes.Item2">模糊</sys:String>
+	<sys:String x:Key="OtherBinding.TranTypes.Item3">亚克力模糊</sys:String>
+	<sys:String x:Key="OtherBinding.TranTypes.Item4">强制亚克力模糊</sys:String>
+	<sys:String x:Key="OtherBinding.TranTypes.Item5">云母</sys:String>
+
+	<sys:String x:Key="UserBinding.Error1">登录类型错误</sys:String>
+
+	<sys:String x:Key="Info1">正在读取配置文件</sys:String>
+	<sys:String x:Key="Info2">正在保存配置文件</sys:String>
+	<sys:String x:Key="Warn1">配置为空，旧版配置文件会被覆盖</sys:String>
+	<sys:String x:Key="Error1">背景图片加载失败</sys:String>
+	<sys:String x:Key="Error2">配置文件读取错误</sys:String>
+	<sys:String x:Key="Error3">配置文件保存错误</sys:String>
 
 	<sys:String x:Key="Button.Set">设置</sys:String>
 	<sys:String x:Key="Button.Select">选择文件</sys:String>

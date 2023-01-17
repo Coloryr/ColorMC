@@ -361,12 +361,12 @@ public partial class UserWindow : Window
 
     public async void ReLogin(UserDisplayObj obj)
     {
-        Info1.Show("正在刷新登录");
+        Info1.Show(Localizer.Instance["UserWindow.Info3"]);
         var res = await UserBinding.ReLogin(obj.UUID, obj.AuthType);
         Info1.Close();
         if (!res)
         {
-            Info.Show("刷新失败");
+            Info.Show(Localizer.Instance["UserWindow.Error6"]);
             var user = UserBinding.GetUser(obj.UUID, obj.AuthType);
             if (user == null)
                 return;
@@ -390,7 +390,7 @@ public partial class UserWindow : Window
         }
         else
         {
-            Info2.Show("已刷新");
+            Info2.Show(Localizer.Instance["UserWindow.Info4"]);
         }
     }
 

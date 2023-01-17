@@ -160,7 +160,8 @@ public static class Mods
 
         var file = new FileInfo(mod.Local);
         mod.Disable = true;
-        mod.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name.Replace(".jar", ".disable")}");
+        mod.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name
+            .Replace(".jar", ".disable")}");
         File.Move(file.FullName, mod.Local);
     }
 
@@ -171,7 +172,8 @@ public static class Mods
 
         var file = new FileInfo(mod.Local);
         mod.Disable = false;
-        mod.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name.Replace(".disable", ".jar")}");
+        mod.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name
+            .Replace(".disable", ".jar")}");
         File.Move(file.FullName, mod.Local);
     }
 

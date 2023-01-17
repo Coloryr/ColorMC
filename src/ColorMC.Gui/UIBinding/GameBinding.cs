@@ -20,11 +20,6 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class GameBinding
 {
-    private readonly static List<string> SortOrder = new()
-    {
-        Localizer.Instance["GameBinding.SortOrder.Item1"],
-        Localizer.Instance["GameBinding.SortOrder.Item2"]
-    };
     public static List<GameSettingObj> GetGames()
     {
         return InstancesPath.Games;
@@ -120,7 +115,11 @@ public static class GameBinding
 
     public static List<string> GetSortOrder()
     {
-        return SortOrder;
+        return new()
+        {
+            Localizer.Instance["GameBinding.SortOrder.Item1"],
+            Localizer.Instance["GameBinding.SortOrder.Item2"]
+        };
     }
 
     public static async Task<List<string>?> GetCurseForgeGameVersions()
@@ -189,21 +188,20 @@ public static class GameBinding
     {
         if (obj == null)
         {
-            return (false, "没有选择游戏实例");
+            return (false, Localizer.Instance["GameBinding.Error1"]);
         }
 
         var login = UserBinding.GetLastUser();
         if (login == null)
         {
-            return (false, "没有选择账户");
+            return (false, Localizer.Instance["GameBinding.Error2"]);
         }
 
         if (UserBinding.IsLock(login))
         {
-            var res = await App.MainWindow!
-                .Info.ShowWait("用户已被占用，是否继续使用这个账户");
+            var res = await App.MainWindow!.Info.ShowWait(Localizer.Instance["GameBinding.Info1"]);
             if (!res)
-                return (false, "账户冲突");
+                return (false, Localizer.Instance["GameBinding.Error3"]);
         }
 
         if (debug)

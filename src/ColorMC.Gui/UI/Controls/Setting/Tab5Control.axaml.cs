@@ -2,6 +2,7 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -10,7 +11,9 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -18,7 +21,6 @@ public partial class Tab5Control : UserControl
 {
     private SettingWindow Window;
     private readonly ObservableCollection<JavaDisplayObj> List = new();
-    private readonly CrossFade CrossFade1 = new(TimeSpan.FromMilliseconds(100));
     public Tab5Control()
     {
         InitializeComponent();
@@ -31,7 +33,7 @@ public partial class Tab5Control : UserControl
 
         Button_R1.Click += Button_R1_Click;
 
-        Expander_R.ContentTransition = CrossFade1;
+        Expander_R.ContentTransition = App.CrossFade100;
 
         DataGrid1.Items = List;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
@@ -91,8 +93,8 @@ public partial class Tab5Control : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        string name = TextBox1.Text;
-        string local = TextBox2.Text;
+        var name = TextBox1.Text;
+        var local = TextBox2.Text;
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
@@ -126,28 +128,27 @@ public partial class Tab5Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        var file = await Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["SettingWindow.Tab5.Info2"],
             AllowMultiple = false,
-            Filters = SystemInfo.Os == OsType.Windows ? new()
+            FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FileDialogFilter()
+                new FilePickerFileType(Localizer.Instance["SettingWindow.Tab2.Info9"])
                 {
-                    Name =  "javaw" ,
-                    Extensions =new()
+                    Patterns = SystemInfo.Os == OsType.Windows ? new List<string>()
                     {
-                        "exe"
-                    }
+                        "javaw.exe"
+                    } : new List<string>()
                 }
-            } : new()
-        };
+            }
+        });
 
-        var file = await openFile.ShowAsync(Window);
-        if (file?.Length > 0)
+        if (file?.Any() == true)
         {
             var item = file[0];
-            TextBox2.Text = item;
+            item.TryGetUri(out var uri);
+            TextBox2.Text = uri!.OriginalString;
         }
     }
 

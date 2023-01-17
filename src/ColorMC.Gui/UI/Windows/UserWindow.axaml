@@ -99,7 +99,7 @@
                 <StackPanel Margin="5">
                     <Label Content="{setting:Localize UserWindow.Grid}" />
                     <StackPanel Orientation="Horizontal">
-                        <Label VerticalAlignment="Center" Content="账户类型" />
+                        <Label VerticalAlignment="Center" Content="{setting:Localize UserWindow.Text9}" />
                         <ComboBox
                             Name="ComboBox_UserType"
                             Width="200"

@@ -23,8 +23,6 @@ public partial class GameEditWindow : Window
     private readonly ContentControl content1 = new();
     private readonly ContentControl content2 = new();
 
-    private readonly PageSlide slide = new(TimeSpan.FromMilliseconds(500));
-
     private int now;
 
     private GameSettingObj Obj;
@@ -158,12 +156,12 @@ public partial class GameEditWindow : Window
         if (!switch1)
         {
             content2.Content = to;
-            await slide.Start(content1, content2, now < Tabs.SelectedIndex, CancellationToken.None);
+            await App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, CancellationToken.None);
         }
         else
         {
             content1.Content = to;
-            await slide.Start(content2, content1, now < Tabs.SelectedIndex, CancellationToken.None);
+            await App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, CancellationToken.None);
         }
 
         switch1 = !switch1;

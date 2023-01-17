@@ -32,8 +32,14 @@ public partial class InitWindow : Window
 
             Dispatcher.UIThread.Post(() =>
             {
-                //App.ShowHello();
-                App.ShowMain();
+                if (BaseBinding.ISNewStart)
+                {
+                    App.ShowHello();
+                }
+                else
+                {
+                    App.ShowMain();
+                }
                 Close();
             });
         });

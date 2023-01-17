@@ -23,8 +23,8 @@ public static class CoreMain
     /// 错误显示回调
     /// 标题 错误 关闭程序
     /// </summary>
-    public static Action<string, Exception, bool>? OnError;
-    public static Action? NewStart;
+    public static Action<string, Exception, bool>? OnError { get; set; }
+    public static Action? NewStart { get; set; }
 
     /// <summary>
     /// 下载线程相应回调

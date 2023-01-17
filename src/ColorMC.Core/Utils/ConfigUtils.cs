@@ -37,6 +37,10 @@ public static class ConfigUtils
                 Logs.Error(text, e);
             }
         }
+        else
+        {
+            CoreMain.NewStart?.Invoke();
+        }
 
         if (Config == null)
         {
@@ -87,7 +91,7 @@ public static class ConfigUtils
 
         BaseClient.Init();
         JvmPath.AddList(Config.JavaList);
-        LanguageHelper.Change(ConfigUtils.Config.Language);
+        LanguageHelper.Change(Config.Language);
         BaseClient.Source = Config.Http.Source;
 
         Save();

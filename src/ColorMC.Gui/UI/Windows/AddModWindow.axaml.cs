@@ -24,9 +24,6 @@ public partial class AddModWindow : Window
     private CurseForge1Control? Last;
     private Tab4Control Tab;
     private GameSettingObj Obj;
-
-    private readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
-
     public AddModWindow()
     {
         InitializeComponent();
@@ -111,7 +108,7 @@ public partial class AddModWindow : Window
 
     private void ButtonCancel_Click(object? sender, RoutedEventArgs e)
     {
-        transition.Start(GridVersion, null, CancellationToken.None);
+        App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
     }
 
     private void ButtonSearch_Click(object? sender, RoutedEventArgs e)
@@ -139,13 +136,13 @@ public partial class AddModWindow : Window
 
     public void Install()
     {
-        transition.Start(null, GridVersion, CancellationToken.None);
+        App.CrossFade300.Start(null, GridVersion, CancellationToken.None);
         Load1();
     }
 
     public async void Install1(CurseForgeObj.Data.LatestFiles data)
     {
-        transition.Start(GridVersion, null, CancellationToken.None);
+        App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
         var con = Last;
         con?.Download();
         var res = await GameBinding.DownloadMod(Obj, data);

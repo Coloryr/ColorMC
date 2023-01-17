@@ -22,7 +22,8 @@ public enum LoginState
 
 public static class BaseAuth
 {
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> LoginWithOAuth()
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
+        string Message)> LoginWithOAuth()
     {
         AuthState now = AuthState.OAuth;
         try
@@ -89,7 +90,8 @@ public static class BaseAuth
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> RefreshWithOAuth(LoginObj obj)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+        string Message)> RefreshWithOAuth(LoginObj obj)
     {
         AuthState now = AuthState.OAuth;
         try
@@ -152,7 +154,8 @@ public static class BaseAuth
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> LoginWithNide8(string server, string user, string pass)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
+        string Message)> LoginWithNide8(string server, string user, string pass)
     {
         try
         {
@@ -176,7 +179,8 @@ public static class BaseAuth
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> RefreshWithNide8(LoginObj obj)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
+        string Message)> RefreshWithNide8(LoginObj obj)
     {
         try
         {
@@ -203,7 +207,8 @@ public static class BaseAuth
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> LoginWithAuthlibInjector(string server, string user, string pass)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
+        string Message)> LoginWithAuthlibInjector(string server, string user, string pass)
     {
         try
         {
@@ -227,7 +232,8 @@ public static class BaseAuth
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> RefreshWithAuthlibInjector(LoginObj obj)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
+        string Message)> RefreshWithAuthlibInjector(LoginObj obj)
     {
         try
         {
@@ -254,7 +260,8 @@ public static class BaseAuth
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> LoginWithLittleSkin(string user, string pass, string? server = null)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
+        string Message)> LoginWithLittleSkin(string user, string pass, string? server = null)
     {
         try
         {
@@ -278,7 +285,8 @@ public static class BaseAuth
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> RefreshWithLittleSkin(LoginObj obj)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
+        string Message)> RefreshWithLittleSkin(LoginObj obj)
     {
         try
         {

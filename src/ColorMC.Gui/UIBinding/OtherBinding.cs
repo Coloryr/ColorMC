@@ -2,6 +2,7 @@
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 
@@ -9,10 +10,6 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class OtherBinding
 {
-    private static List<string> WindowTranTypes = new()
-    {
-        "普通透明", "模糊", "亚克力模糊", "强制亚克力模糊", "云母"
-    };
     public static (int, int) GetDownloadSize()
     {
         return (DownloadManager.AllSize, DownloadManager.DoneSize);
@@ -37,7 +34,14 @@ public static class OtherBinding
 
     public static List<string> GetWindowTranTypes()
     {
-        return WindowTranTypes;
+        return new()
+        {
+            Localizer.Instance["OtherBinding.TranTypes.Item1"],
+            Localizer.Instance["OtherBinding.TranTypes.Item2"],
+            Localizer.Instance["OtherBinding.TranTypes.Item3"],
+            Localizer.Instance["OtherBinding.TranTypes.Item4"],
+            Localizer.Instance["OtherBinding.TranTypes.Item5"]
+        };
     }
 
     public static List<string> GetLanguages()

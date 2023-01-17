@@ -9,8 +9,6 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class Info3Control : UserControl
 {
-    private static readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
-
     private readonly Semaphore semaphore = new(0, 2);
 
     public bool Cancel { get; private set; }
@@ -37,7 +35,7 @@ public partial class Info3Control : UserControl
 
     public void Close()
     {
-        transition.Start(this, null, CancellationToken.None);
+        App.CrossFade300.Start(this, null, CancellationToken.None);
     }
 
     public Task Show(string title, string title1, bool lock1 = true)
@@ -76,7 +74,7 @@ public partial class Info3Control : UserControl
 
             TextBox_Text1.PasswordChar = '*';
         }
-        transition.Start(null, this, cancellationToken: CancellationToken.None);
+        App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
 
         if (!lock1)
         {
@@ -121,7 +119,7 @@ public partial class Info3Control : UserControl
             Button_Cancel.IsEnabled = true;
             Button_Cancel.IsVisible = true;
         }
-        transition.Start(null, this, cancellationToken: CancellationToken.None);
+        App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
 
         if (!lock1)
         {
@@ -134,7 +132,7 @@ public partial class Info3Control : UserControl
         return Task.CompletedTask;
     }
 
-    public (string, string) Read()
+    public (string?, string?) Read()
     {
         return (TextBox_Text.Text, TextBox_Text1.Text);
     }

@@ -20,8 +20,6 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private CurseForgeControl? Last;
 
-    private readonly CrossFade transition = new(TimeSpan.FromMilliseconds(300));
-
     public AddCurseForgeWindow()
     {
         InitializeComponent();
@@ -99,7 +97,7 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
 
     private void ButtonCancel_Click(object? sender, RoutedEventArgs e)
     {
-        transition.Start(GridVersion, null, CancellationToken.None);
+        App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
     }
 
     private void ButtonSearch_Click(object? sender, RoutedEventArgs e)
@@ -127,7 +125,7 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
 
     public void Install()
     {
-        transition.Start(null, GridVersion, CancellationToken.None);
+        App.CrossFade300.Start(null, GridVersion, CancellationToken.None);
         Load1();
     }
 
