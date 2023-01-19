@@ -11,6 +11,9 @@
         <StyleInclude Source="/Style/ComboBox.axaml" />
         <StyleInclude Source="/Style/NumericUpDown.axaml" />
         <StyleInclude Source="/Style/ProgressBar.axaml" />
+        <StyleInclude Source="/Style/Label.axaml" />
+        <StyleInclude Source="/Style/CheckBox.axaml" />
+        <StyleInclude Source="/Style/TextBlock.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />

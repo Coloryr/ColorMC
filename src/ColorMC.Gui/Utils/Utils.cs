@@ -530,7 +530,11 @@ public static class GuiConfigUtils
             Version = CoreMain.Version,
             ColorMain = "#FF5ABED6",
             ColorBack = "#FFF4F4F5",
-            ColorTranBack = "#88FFFFFF"
+            ColorTranBack = "#88FFFFFF",
+            RGBS = 100,
+            RGBV = 100,
+            ColorFont1 = "#FFFFFFFF",
+            ColorFont2 = "#FF000000"
         };
     }
 }

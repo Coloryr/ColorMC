@@ -140,6 +140,7 @@ public static class Mods
                 Logs.Error(LanguageHelper.GetName("Core.Game.Error1"), e);
                 list.Add(new()
                 {
+                    name = "",
                     Local = Path.GetFullPath(item.FullName),
                     Disable = item.Extension is ".disable",
                     Broken = true

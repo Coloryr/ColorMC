@@ -95,16 +95,19 @@ public partial class HelloWindow : Window, IBaseWindow
                 Go(tab2);
                 break;
             case 2:
+                tab3.Load();
                 Go(tab3);
                 break;
             case 3:
+                tab4.Load();
                 Go(tab4);
                 break;
             case 4:
+                tab5.Load();
                 Go(tab5);
                 break;
             case 5:
-                tab5.Load();
+                tab6.Load();
                 Go(tab6);
                 break;
         }

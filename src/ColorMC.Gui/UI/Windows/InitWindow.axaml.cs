@@ -8,6 +8,7 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class InitWindow : Window
 {
+    private bool InitDone = false;
     public InitWindow()
     {
         InitializeComponent();
@@ -15,6 +16,15 @@ public partial class InitWindow : Window
         Rectangle1.MakeResizeDrag(this);
 
         Opened += MainWindow_Opened;
+        Closed += InitWindow_Closed;
+    }
+
+    private void InitWindow_Closed(object? sender, EventArgs e)
+    {
+        if (!InitDone)
+        {
+            App.Close();
+        }
     }
 
     private void MainWindow_Opened(object? sender, EventArgs e)
@@ -31,6 +41,7 @@ public partial class InitWindow : Window
 
             Dispatcher.UIThread.Post(() =>
             {
+                InitDone = true;
                 if (BaseBinding.ISNewStart)
                 {
                     App.ShowHello();

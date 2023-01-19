@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Net;
+﻿using Avalonia.Controls;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -29,11 +30,29 @@ public static class ConfigBinding
         return (ConfigUtils.Config, GuiConfigUtils.Config);
     }
 
-    public static void SetColor(string main, string back, string back1) 
+    public static void SetRgb(bool enable) 
+    {
+        GuiConfigUtils.Config.RGB = enable;
+        
+        GuiConfigUtils.Save();
+        Colors.Load();
+    }
+
+    public static void SetRgb(int v1, int v2) 
+    {
+        GuiConfigUtils.Config.RGBS = v1;
+        GuiConfigUtils.Config.RGBV = v2;
+        GuiConfigUtils.Save();
+        Colors.Load();
+    }
+
+    public static void SetColor(string main, string back, string back1, string font1, string font2) 
     {
         GuiConfigUtils.Config.ColorMain = main;
         GuiConfigUtils.Config.ColorBack = back;
         GuiConfigUtils.Config.ColorTranBack = back1;
+        GuiConfigUtils.Config.ColorFont1 = font1;
+        GuiConfigUtils.Config.ColorFont2 = font2;
         GuiConfigUtils.Save();
         Colors.Load();
     }

@@ -19,6 +19,8 @@ public class Colors : INotifyPropertyChanged
     public static IBrush MainColor = Brush.Parse("#FF5ABED6");
     public static IBrush BackColor = Brush.Parse("#FFF4F4F5");
     public static IBrush Back1Color = Brush.Parse("#88FFFFFF");
+    public static IBrush ButtonFont = Brush.Parse("#FFFFFFFF");
+    public static IBrush FontColor = Brush.Parse("#FF000000");
 
     public static Colors Instance { get; set; } = new Colors();
 
@@ -39,6 +41,8 @@ public class Colors : INotifyPropertyChanged
                 MainColor = Brush.Parse(GuiConfigUtils.Config.ColorMain);
                 BackColor = Brush.Parse(GuiConfigUtils.Config.ColorBack);
                 Back1Color = Brush.Parse(GuiConfigUtils.Config.ColorTranBack);
+                ButtonFont = Brush.Parse(GuiConfigUtils.Config.ColorFont1);
+                FontColor = Brush.Parse(GuiConfigUtils.Config.ColorFont2);
 
                 Instance.Reload();
             }
@@ -52,6 +56,8 @@ public class Colors : INotifyPropertyChanged
     private Thread timer;
     private bool rbg;
     private bool run;
+    private double rbg_s = 1;
+    private double rbg_v = 1;
 
     public Colors()
     {
@@ -71,6 +77,9 @@ public class Colors : INotifyPropertyChanged
     public void EnableRGB() 
     {
         rbg = true;
+
+        rbg_s = (double)GuiConfigUtils.Config.RGBS / 100;
+        rbg_v = (double)GuiConfigUtils.Config.RGBV / 100;
     }
 
     public void DisableRGB()
@@ -79,7 +88,9 @@ public class Colors : INotifyPropertyChanged
     }
 
     private int now;
+    private int now1;
     private IBrush Color = MainColor;
+    private IBrush Color1 = FontColor;
 
     private void Tick(object? obj)
     {
@@ -89,7 +100,28 @@ public class Colors : INotifyPropertyChanged
             {
                 now += 1;
                 now %= 360;
-                Color = new ImmutableSolidColorBrush(HsvColor.ToRgb(now, 0.8, 1));
+                var temp = HsvColor.ToRgb(now, rbg_s, rbg_v);
+                Color = new ImmutableSolidColorBrush(temp);
+                if (rbg_v >= 0.8)
+                {
+                    if (now == 190)
+                    {
+                        Color1 = Brush.Parse("#FFFFFFFF");
+                    }
+                    else if (now == 10)
+                    {
+                        Color1 = Brush.Parse("#FF000000");
+                    }
+                }
+                else
+                {
+                    Color1 = Brush.Parse("#FFFFFFFF");
+                }
+
+                //Color1 = new ImmutableSolidColorBrush(HsvColor.ToRgb(now1, 1, 1));
+
+                //Color1 = new ImmutableSolidColorBrush(Avalonia.Media.Color
+                //    .FromRgb());
                 Dispatcher.UIThread.InvokeAsync(Reload).Wait();
             }
             Thread.Sleep(20);
@@ -106,6 +138,10 @@ public class Colors : INotifyPropertyChanged
                 return BackColor;
             else if (key == "TranBack")
                 return Back1Color;
+            else if (key == "Font")
+                return FontColor;
+            else if (key == "ButtonFont")
+                return rbg ? Color1 : ButtonFont;
 
             return Brushes.White;
         }

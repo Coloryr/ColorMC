@@ -18,7 +18,7 @@
     </Design.PreviewWith>
 
     <Style Selector="TextBlock">
-        <Setter Property="FontFamily" Value="avares://ColorMC.Gui/Resource/Font/fangzheng.ttf" />
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
     </Style>
 
     <Style Selector="TextBox:focus.input1">
@@ -26,6 +26,7 @@
     </Style>
 
     <Style Selector="TextBox.input1">
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="CornerRadius" Value="0" />
     </Style>

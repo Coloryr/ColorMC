@@ -15,7 +15,7 @@
             Name="TitleShow"
             Margin="10,0,0,0"
             Content="{Binding Title}"
-            Foreground="White" />
+            Foreground="{setting:Colors ButtonFont}" />
         <StackPanel
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
@@ -25,21 +25,18 @@
                 Width="24"
                 Height="24"
                 Margin="0,0,5,0"
-                BorderBrush="White"
                 Content="-" />
             <Button
                 Name="Button_Max"
                 Width="24"
                 Height="24"
                 Margin="0,0,5,0"
-                BorderBrush="White"
                 Content="▢" />
             <Button
                 Name="Button_Close"
                 Width="24"
                 Height="24"
                 Margin="0,0,2,0"
-                BorderBrush="White"
                 Content="X" />
         </StackPanel>
     </Grid>
