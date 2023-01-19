@@ -418,7 +418,8 @@ public static class GameBinding
             Name = data.displayName,
             Url = data.downloadUrl,
             Local = Path.GetFullPath(obj.GetModsPath() + "/" + data.fileName),
-            SHA1 = data.hashes[0].value,
+            SHA1 = data.hashes.Where(a => a.algo == 1)
+                        .Select(a => a.value).FirstOrDefault(),
             Overwrite = true
         };
 
@@ -434,7 +435,8 @@ public static class GameBinding
             File = data.fileName,
             Name = data.displayName,
             Url = data.downloadUrl,
-            SHA1 = data.hashes[0].value
+            SHA1 = data.hashes.Where(a => a.algo == 1)
+                        .Select(a => a.value).FirstOrDefault()
         };
         if (obj.Datas.ContainsKey(obj1.ModId))
         {
@@ -498,7 +500,8 @@ public static class GameBinding
             Name = data.displayName,
             Url = data.downloadUrl,
             Local = Path.GetFullPath(obj.GetBaseDir() + "/" + data.fileName),
-            SHA1 = data.hashes[0].value,
+            SHA1 = data.hashes.Where(a => a.algo == 1)
+                        .Select(a => a.value).FirstOrDefault(),
             Overwrite = true
         };
 

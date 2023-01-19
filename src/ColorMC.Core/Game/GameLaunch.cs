@@ -16,7 +16,7 @@ namespace ColorMC.Core.Game;
 
 public enum LaunchState
 {
-    Login, Check, CheckVersion, CheckLib, CheckAssets, CheckLoader, CheckLoginCore,
+    Login, Check, CheckVersion, CheckLib, CheckAssets, CheckLoader, CheckLoginCore, CheckMods,
     LostVersion, LostLib, LostLoader, LostLoginCore, LostGame,
     Download,
     JvmPrepare, 
@@ -212,6 +212,53 @@ public static class Launch
             or AuthType.LittleSkin or AuthType.SelfLittleSkin)
         {
             await AuthHelper.ReadyAuthlibInjector();
+        }
+
+
+        if (obj.ModPack)
+        {
+            CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckMods);
+
+            var mods = await obj.GetMods();
+            ModObj? mod = null;
+            int find = 0;
+            var array = obj.Datas.Values.ToArray();
+            for (int a = 0; a < array.Length; a++)
+            {
+                var item = array[a];
+                foreach (var item1 in mods)
+                {
+                    if (item1.Sha1 == item.SHA1 &&
+                        item1.Local.ToLower().EndsWith(item.File.ToLower()))
+                    {
+                        mod = item1;
+                        break;
+                    }
+                }
+                if (mod != null)
+                {
+                    mods.Remove(mod);
+                    find++;
+                    mod = null;
+                    array[a] = null;
+                }
+            }
+            if (find != array.Length)
+            {
+                foreach (var item in array)
+                {
+                    if (item == null)
+                        continue;
+
+                    list.Add(new()
+                    {
+                        Url = item.Url,
+                        Name = item.File,
+                        Local = obj.GetGameDir() + "/mods/" + item.File,
+                        SHA1 = item.SHA1
+                    });
+                }
+            }
         }
 
         return list;

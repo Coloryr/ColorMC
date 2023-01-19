@@ -179,6 +179,9 @@ public partial class MainWindow : Window
                 case LaunchState.CheckLoginCore:
                     Info1.NextText(Localizer.Instance["MainWindow.Check7"]);
                     break;
+                case LaunchState.CheckMods:
+                    Info1.NextText(Localizer.Instance["MainWindow.Check10"]);
+                    break;
                 case LaunchState.Download:
                     Info1.NextText(Localizer.Instance["MainWindow.Check8"]);
                     break;
