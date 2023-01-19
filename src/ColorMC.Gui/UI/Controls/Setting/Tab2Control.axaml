@@ -118,6 +118,19 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text14}" />
                     <ColorPicker Name="ColorPicker3" />
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize SettingWindow.Tab2.Text19}" />
+                    <ColorPicker Name="ColorPicker4" />
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize SettingWindow.Tab2.Text20}" />
+                    <ColorPicker Name="ColorPicker5" />
+
+                </StackPanel>
+                <StackPanel Margin="5" Orientation="Horizontal">
                     <Button
                         Name="Button_Set3"
                         Width="80"
@@ -139,6 +152,51 @@
                         Margin="5"
                         Content="RGB!!!" />
                     <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text16}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize SettingWindow.Tab2.Text17}" />
+                    <Slider
+                        Name="Slider3"
+                        Width="200"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Left"
+                        Foreground="{setting:Colors Main}"
+                        IsEnabled="False"
+                        IsSnapToTickEnabled="True"
+                        LargeChange="1"
+                        Maximum="100"
+                        Minimum="0"
+                        SmallChange="1"
+                        TickFrequency="1"
+                        Value="0" />
+                    <Label
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize SettingWindow.Tab2.Text18}" />
+                    <Slider
+                        Name="Slider4"
+                        Width="200"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Left"
+                        Foreground="{setting:Colors Main}"
+                        IsEnabled="False"
+                        IsSnapToTickEnabled="True"
+                        LargeChange="1"
+                        Maximum="100"
+                        Minimum="0"
+                        SmallChange="1"
+                        TickFrequency="1"
+                        Value="0" />
+                    <Button
+                        Name="Button_Set5"
+                        Width="80"
+                        Height="25"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize Button.Set}" />
                 </StackPanel>
 
                 <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text9}" />

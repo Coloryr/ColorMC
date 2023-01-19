@@ -107,6 +107,8 @@ public partial class MainWindow : Window
         App.MainWindow = null;
         CoreMain.GameLaunch = null;
         CoreMain.GameDownload = null;
+
+        App.Close();
     }
 
     private void MainWindow_Opened(object? sender, EventArgs e)

@@ -20,5 +20,9 @@ public record GuiConfigObj
     public string ColorMain { get; set; }
     public string ColorBack { get; set; }
     public string ColorTranBack { get; set; }
+    public string ColorFont1 { get; set; }
+    public string ColorFont2 { get; set; }
     public bool RGB { get; set; }
+    public int RGBS { get; set; }
+    public int RGBV { get; set; }
 }

@@ -271,6 +271,8 @@ public partial class App : Application
     public static void Close()
     {
         Life?.Shutdown();
+
+        Environment.Exit(Environment.ExitCode);
     }
 
     public static void Update(Window window, Image iamge, Grid rec)

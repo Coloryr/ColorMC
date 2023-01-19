@@ -103,6 +103,10 @@
 	<sys:String x:Key="SettingWindow.Tab2.Text14">透明背景色</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text15">重置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text16">&lt;---这是什么危险的东西，不要碰它</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text17">饱和度</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text18">色彩度</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text19">字体颜色1</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text20">字体颜色2</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info1">正在切换语言</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info2">正在设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info3">正在切换语言</sys:String>
