@@ -31,8 +31,12 @@ public static class Mods
         {
             if (item.Extension is not (".jar" or ".disable"))
                 return;
+            string sha1 = "";
             try
             {
+                var data1 = File.ReadAllBytes(item.FullName);
+                sha1 = Funtcions.GenSha1(data1);
+
                 using ZipFile zFile = new(item.FullName);
                 var item1 = zFile.GetEntry("mcmod.info");
                 if (item1 != null)
@@ -52,6 +56,7 @@ public static class Mods
                             obj3.Local = Path.GetFullPath(item.FullName);
                             obj3.Disable = item.Extension is ".disable";
                             obj3.Loaders = Loaders.Forge;
+                            obj3.Sha1 = sha1;
                             list.Add(obj3);
                         }
                     }
@@ -65,6 +70,7 @@ public static class Mods
                             obj3.Local = Path.GetFullPath(item.FullName);
                             obj3.Disable = item.Extension is ".disable";
                             obj3.Loaders = Loaders.Forge;
+                            obj3.Sha1 = sha1;
                             list.Add(obj3);
                         }
                     }
@@ -105,6 +111,7 @@ public static class Mods
                     obj3.authorList = (item2 as string).ToStringList();
                     model2.TryGetValue("displayURL", out item2);
                     obj3.url = item2 as string;
+                    obj3.Sha1 = sha1;
 
                     list.Add(obj3);
                     return;
@@ -129,7 +136,8 @@ public static class Mods
                         description = obj1["description"].ToString(),
                         version = obj1["version"].ToString(),
                         authorList = (obj1["authors"] as JArray).ToStringList(),
-                        url = obj1["contact"]?["homepage"]?.ToString()
+                        url = obj1["contact"]?["homepage"]?.ToString(),
+                        Sha1 = sha1
                     };
                     list.Add(obj3);
                     return;
@@ -143,7 +151,8 @@ public static class Mods
                     name = "",
                     Local = Path.GetFullPath(item.FullName),
                     Disable = item.Extension is ".disable",
-                    Broken = true
+                    Broken = true,
+                    Sha1 = sha1
                 });
             }
         });

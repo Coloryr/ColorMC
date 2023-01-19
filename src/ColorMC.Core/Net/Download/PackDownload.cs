@@ -99,7 +99,7 @@ public static class PackDownload
             {
                 using var stream = zFile.GetInputStream(e);
                 string file = Path.GetFullPath(game.GetGameDir() +
-                    e.Name.Substring(info.overrides.Length));
+                    e.Name[info.overrides.Length..]);
                 FileInfo info2 = new(file);
                 info2.Directory.Create();
                 using FileStream stream2 = new(file, FileMode.Create,
@@ -121,20 +121,22 @@ public static class PackDownload
             {
                 item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
 
-                list.Add(new()
+                var item11 = new DownloadItem()
                 {
                     Url = item.downloadUrl,
                     Name = item.fileName,
-                    Local = InstancesPath.GetGameDir(game) + "/mods/" + item.fileName,
+                    Local = game.GetGameDir() + "/mods/" + item.fileName,
                     SHA1 = item.hashes.Where(a => a.algo == 1)
                             .Select(a => a.value).FirstOrDefault()
-                });
+                };
+
+                list.Add(item11);
 
                 game.Datas.Add(item.modId, new()
                 {
                     Name = item.displayName,
                     File = item.fileName,
-                    SHA1 = item.hashes[0].value,
+                    SHA1 = item11.SHA1!,
                     Id = item.id,
                     ModId = item.modId,
                     Url = item.downloadUrl
@@ -164,20 +166,22 @@ public static class PackDownload
 
                 res.data.downloadUrl ??= $"https://edge.forgecdn.net/files/{res.data.id / 1000}/{res.data.id % 1000}/{res.data.fileName}";
 
-                list.Add(new()
+                var item11 = new DownloadItem()
                 {
                     Url = res.data.downloadUrl,
                     Name = res.data.displayName,
                     Local = InstancesPath.GetGameDir(game) + "/mods/" + res.data.fileName,
                     SHA1 = res.data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault()
-                });
+                };
+
+                list.Add(item11);
 
                 game.Datas.Add(res.data.modId, new()
                 {
                     Name = res.data.displayName,
                     File = res.data.fileName,
-                    SHA1 = res.data.hashes[0].value,
+                    SHA1 = item11.SHA1!,
                     Id = res.data.id,
                     ModId = res.data.modId,
                     Url = res.data.downloadUrl

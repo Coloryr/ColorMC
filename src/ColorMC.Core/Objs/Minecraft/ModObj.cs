@@ -30,5 +30,7 @@ public record ModObj
     [JsonIgnore]
     public bool Broken { get; set; }
     [JsonIgnore]
+    public string Sha1 { get; set; }
+    [JsonIgnore]
     public GameSettingObj Game { get; set; }
 }

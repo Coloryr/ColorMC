@@ -73,7 +73,7 @@ public static class InstancesPath
             }
             else
             {
-                var list = new List<GameSettingObj>
+                var list = new List<GameSettingObj>()
                 {
                     obj
                 };
@@ -385,6 +385,9 @@ public static class InstancesPath
 
         obj.Datas = JsonConvert.DeserializeObject<Dictionary<long, CurseForgeModObj1>>(
             File.ReadAllText(file)) ?? new();
+
+        if (obj.ModPack)
+            return;
 
         var list = PathC.GetAllFile(obj.GetModsPath());
         var remove = new List<long>();
