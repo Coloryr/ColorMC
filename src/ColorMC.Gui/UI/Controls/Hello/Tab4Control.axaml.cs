@@ -80,7 +80,7 @@ public partial class Tab4Control : UserControl
                 break;
             case 2:
                 var server = TextBox_Input1.Text;
-                if (server.Length != 32)
+                if (server?.Length != 32)
                 {
                     Window.Info.Show(Localizer.Instance["UserWindow.Error3"]);
                     break;

@@ -9,6 +9,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Platforms>AnyCPU;x64</Platforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>portable</DebugType>
@@ -33,6 +34,9 @@
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resource\Font\SourceHanSansHWSC-Regular.otf" />

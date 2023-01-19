@@ -85,6 +85,8 @@ public static class BaseBinding
 
     public static void PLog(Process? p, string? d)
     {
+        if (p == null)
+            return;
         if (Games.TryGetValue(p, out var obj)
             && App.GameEditWindows.TryGetValue(obj, out var win))
         {

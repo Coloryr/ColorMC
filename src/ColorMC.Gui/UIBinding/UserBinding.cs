@@ -1,10 +1,12 @@
-﻿using ColorMC.Core.Game.Auth;
+﻿using Avalonia.X11;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -26,57 +28,43 @@ public static class UserBinding
 
     public static async Task<(bool, string?)> AddUser(int type, string? input, string? input1 = null, string? input2 = null)
     {
-        switch (type)
+        if (type == 0)
         {
-            case 0:
-                AuthDatabase.SaveAuth(new()
+            await AuthDatabase.SaveAuth(new()
+            {
+                UserName = input!,
+                ClientToken = Funtcions.NewUUID(),
+                UUID = Funtcions.GenMd5(Encoding.UTF8.GetBytes(input!.ToLower())),
+                AuthType = AuthType.Offline
+            });
+            return (true, null);
+        }
+        else if (type <= 5)
+        {
+            var (State, State1, Obj, Message, Ex) = type switch
+            {
+                1 => await BaseAuth.LoginWithOAuth(),
+                2 => await BaseAuth.LoginWithNide8(input!, input1!, input2!),
+                3 => await BaseAuth.LoginWithAuthlibInjector(input!, input1!, input2!),
+                4 => await BaseAuth.LoginWithLittleSkin(input1!, input2!),
+                5 => await BaseAuth.LoginWithLittleSkin(input1!, input2!, input!),
+                _ => (AuthState.Profile, LoginState.ErrorType, null, null, null)
+            };
+
+            if (State1 != LoginState.Done)
+            {
+                if (Ex != null)
                 {
-                    UserName = input!,
-                    ClientToken = Funtcions.NewUUID(),
-                    UUID = Funtcions.NewUUID(),
-                    AuthType = AuthType.Offline
-                });
-                return (true, null);
-            case 1:
-                var (State, State1, Obj, Message) = await BaseAuth.LoginWithOAuth();
-                if (State1 != LoginState.Done)
+                    App.ShowError(Message!, Ex);
+                    return (false, "登录发生异常");
+                }
+                else
                 {
                     return (false, Message);
                 }
-                AuthDatabase.SaveAuth(Obj!);
-                return (true, null);
-            case 2:
-                (State, State1, Obj, Message) = await BaseAuth.LoginWithNide8(input!, input1!, input2!);
-                if (State1 != LoginState.Done)
-                {
-                    return (false, Message);
-                }
-                AuthDatabase.SaveAuth(Obj!);
-                return (true, null);
-            case 3:
-                (State, State1, Obj, Message) = await BaseAuth.LoginWithAuthlibInjector(input!, input1!, input2!);
-                if (State1 != LoginState.Done)
-                {
-                    return (false, Message);
-                }
-                AuthDatabase.SaveAuth(Obj!);
-                return (true, null);
-            case 4:
-                (State, State1, Obj, Message) = await BaseAuth.LoginWithLittleSkin(input1!, input2!);
-                if (State1 != LoginState.Done)
-                {
-                    return (false, Message);
-                }
-                AuthDatabase.SaveAuth(Obj!);
-                return (true, null);
-            case 5:
-                (State, State1, Obj, Message) = await BaseAuth.LoginWithLittleSkin(input1!, input2!, input!);
-                if (State1 != LoginState.Done)
-                {
-                    return (false, Message);
-                }
-                AuthDatabase.SaveAuth(Obj!);
-                return (true, null);
+            }
+            await AuthDatabase.SaveAuth(Obj!);
+            return (true, null);
         }
 
         return (false, Localizer.Instance["UserBinding.Error1"]);

@@ -45,7 +45,7 @@ public static class AddUserMenu
                         ClientToken = Funtcions.NewUUID(),
                         UUID = Funtcions.NewUUID(),
                         AuthType = AuthType.Offline
-                    });
+                    }).Wait();
                     ConsoleUtils.Ok("已添加");
                 }
                 ConsoleUtils.Keep();
@@ -56,7 +56,7 @@ public static class AddUserMenu
                 ConsoleUtils.Info("添加微软账户");
                 CoreMain.AuthStateUpdate = StateUp;
                 CoreMain.LoginOAuthCode = Code;
-                var (State, State1, Obj, Message) = BaseAuth.LoginWithOAuth().Result;
+                var (State, State1, Obj, Message, Ex) = BaseAuth.LoginWithOAuth().Result;
                 if (State1 != LoginState.Done)
                 {
                     ConsoleUtils.Error($"{State.GetName()}登录错误");
@@ -64,7 +64,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.SaveAuth(Obj!);
+                    AuthDatabase.SaveAuth(Obj!).Wait();
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -109,7 +109,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.SaveAuth(Obj!);
+                    AuthDatabase.SaveAuth(Obj!).Wait();
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -141,7 +141,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.SaveAuth(Obj!);
+                    AuthDatabase.SaveAuth(Obj!).Wait();
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -180,7 +180,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.SaveAuth(Obj!);
+                    AuthDatabase.SaveAuth(Obj!).Wait();
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -219,7 +219,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.SaveAuth(Obj!);
+                    AuthDatabase.SaveAuth(Obj!).Wait();
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();

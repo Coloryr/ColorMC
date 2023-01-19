@@ -21,7 +21,7 @@
             CornerRadius="0"
             ExpandDirection="Left"
             IsExpanded="True">
-            <StackPanel Margin="0,0,40,0" VerticalAlignment="Top">
+            <StackPanel Margin="0,0,40,0" VerticalAlignment="Center">
                 <Image
                     Name="Image1"
                     Width="80"
@@ -30,7 +30,7 @@
                 <ProgressBar
                     Name="ProgressBar1"
                     Width="100"
-                    Height="20"
+                    Height="10"
                     MinWidth="100"
                     Margin="0,5,0,0"
                     IsIndeterminate="True"
@@ -66,14 +66,14 @@
                     Name="Button_Add1"
                     Width="100"
                     Height="25"
-                    Margin="0,20,0,0"
+                    Margin="0,15,0,0"
                     Content="{setting:Localize MainWindow.Control.Button3}" />
 
                 <Button
                     Name="Button_Launch"
                     Width="100"
                     Height="25"
-                    Margin="0,20,0,0"
+                    Margin="0,15,0,0"
                     Content="{setting:Localize MainWindow.Control.Button4}"
                     IsEnabled="False" />
                 <Button
@@ -99,7 +99,7 @@
                     Name="Button_Setting"
                     Width="100"
                     Height="25"
-                    Margin="0,20,0,0"
+                    Margin="0,15,0,0"
                     Content="{setting:Localize MainWindow.Control.Button8}" />
             </StackPanel>
         </Expander>

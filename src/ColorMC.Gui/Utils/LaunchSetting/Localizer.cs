@@ -14,13 +14,13 @@ public class Localizer : INotifyPropertyChanged
         get
         {
             if (App.Language != null && App.Language.TryGetResource(key, out var res1))
-                return res1 as string;
+                return (res1 as string)!;
 
             return key;
         }
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public void Reload()
     {

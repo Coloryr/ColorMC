@@ -9,6 +9,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.IO;
@@ -39,7 +40,7 @@ public partial class ItemControl : UserControl
 
         var uri = new Uri($"resm:ColorMC.Gui.Resource.Pic.user.png");
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        var asset = assets.Open(uri);
+        var asset = assets!.Open(uri);
 
         Image1.Source = bitmap = new Bitmap(asset);
         Expander1.ContentTransition = App.CrossFade300;
@@ -117,8 +118,16 @@ public partial class ItemControl : UserControl
         }
         else
         {
-            Button_Launch.IsEnabled = true;
-            Button_Launch1.IsEnabled = true;
+            if (BaseBinding.Games.ContainsValue(obj))
+            {
+                Button_Launch.IsEnabled = false;
+                Button_Launch1.IsEnabled = false;
+            }
+            else
+            {
+                Button_Launch.IsEnabled = true;
+                Button_Launch1.IsEnabled = true;
+            }
             Button_Edit.IsEnabled = true;
             Button_Out.IsEnabled = true;
         }

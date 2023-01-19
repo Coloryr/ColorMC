@@ -34,6 +34,8 @@ public partial class HelloWindow : Window, IBaseWindow
     {
         InitializeComponent();
 
+        Icon = App.Icon;
+
         Rectangle1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;

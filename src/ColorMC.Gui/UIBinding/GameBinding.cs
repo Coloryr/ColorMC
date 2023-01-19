@@ -86,18 +86,24 @@ public static class GameBinding
         return InstancesPath.Groups;
     }
 
-    public static Task<CurseForgeObj?> GetPackList(string version, int sort, string filter, int page, int sortOrder)
+    public static Task<CurseForgeObj?> GetPackList(string? version, int sort, string? filter, int page, int sortOrder)
     {
+        version ??= "";
+        filter ??= "";
         return CurseForge.GetPackList(version, page, sort, filter, sortOrder: sortOrder);
     }
 
-    public static Task<CurseForgeObj?> GetModList(string version, int sort, string filter, int page, int sortOrder)
+    public static Task<CurseForgeObj?> GetModList(string? version, int sort, string? filter, int page, int sortOrder)
     {
+        version ??= "";
+        filter ??= "";
         return CurseForge.GetModList(version, page, sort, filter, sortOrder: sortOrder);
     }
 
-    public static Task<CurseForgeObj?> GetWorldList(string version, int sort, string filter, int page, int sortOrder)
+    public static Task<CurseForgeObj?> GetWorldList(string? version, int sort, string? filter, int page, int sortOrder)
     {
+        version ??= "";
+        filter ??= "";
         return CurseForge.GetWorldList(version, page, sort, filter, sortOrder: sortOrder);
     }
 

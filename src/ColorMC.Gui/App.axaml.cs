@@ -44,6 +44,7 @@ public partial class App : Application
 
     public static Bitmap? BackBitmap { get; private set; }
     public static Bitmap GameIcon { get; private set; }
+    public static WindowIcon Icon { get; private set; }
 
     public override void Initialize()
     {
@@ -69,9 +70,14 @@ public partial class App : Application
         var uri = new Uri("resm:ColorMC.Gui.Resource.Pic.game.png");
 
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        var asset = assets!.Open(uri);
+        using var asset = assets!.Open(uri);
 
         GameIcon = new Bitmap(asset);
+
+        var uri1 = new Uri("resm:ColorMC.Gui.icon.ico");
+        using var asset1 = assets!.Open(uri1);
+
+        Icon = new(asset1);
     }
 
     public static void OnPicUpdate() 

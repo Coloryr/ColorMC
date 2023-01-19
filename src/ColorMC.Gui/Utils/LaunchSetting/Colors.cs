@@ -88,7 +88,6 @@ public class Colors : INotifyPropertyChanged
     }
 
     private int now;
-    private int now1;
     private IBrush Color = MainColor;
     private IBrush Color1 = FontColor;
 
@@ -118,10 +117,6 @@ public class Colors : INotifyPropertyChanged
                     Color1 = Brush.Parse("#FFFFFFFF");
                 }
 
-                //Color1 = new ImmutableSolidColorBrush(HsvColor.ToRgb(now1, 1, 1));
-
-                //Color1 = new ImmutableSolidColorBrush(Avalonia.Media.Color
-                //    .FromRgb());
                 Dispatcher.UIThread.InvokeAsync(Reload).Wait();
             }
             Thread.Sleep(20);

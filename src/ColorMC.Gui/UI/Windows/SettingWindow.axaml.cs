@@ -32,6 +32,8 @@ public partial class SettingWindow : Window, IBaseWindow
     {
         InitializeComponent();
 
+        Icon = App.Icon;
+
         Rectangle1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
