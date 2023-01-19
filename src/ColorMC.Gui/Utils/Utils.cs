@@ -312,8 +312,10 @@ public static partial class UIUtils
         }
     }
 
-    public static bool CheckNumb(string input)
+    public static bool CheckNumb(string? input)
     {
+        if (input == null)
+            return true;
         return Regex1().IsMatch(input);
     }
 

@@ -29,6 +29,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        Icon = App.Icon;
+
         Rectangle1.MakeResizeDrag(this);
 
         ItemInfo.SetWindow(this);

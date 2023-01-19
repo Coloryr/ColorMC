@@ -7,6 +7,15 @@ namespace ColorMC.Core.Utils;
 
 public static class Funtcions
 {
+    public static string GenMd5(byte[] data)
+    {
+        StringBuilder EnText = new();
+        foreach (byte iByte in MD5.HashData(data))
+        {
+            EnText.AppendFormat("{0:x2}", iByte);
+        }
+        return EnText.ToString().ToLower();
+    }
     public static string GenSha1(Stream stream)
     {
         SHA1 sha1 = SHA1.Create();

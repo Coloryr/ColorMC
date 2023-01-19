@@ -263,18 +263,20 @@ public static class Launch
             {
                 arg.Add(item);
             }
-            else if (item is JObject)
+            else if (item is JObject obj1)
             {
-                JObject obj1 = item as JObject;
                 var obj2 = obj1.ToObject<GameArgObj.Arguments.Jvm>();
+                if (obj2 == null)
+                {
+                    continue;
+                }
                 bool use = CheckRule.CheckAllow(obj2.rules);
                 if (!use)
                     continue;
 
-                if (obj2.value is string)
+                if (obj2.value is string item2)
                 {
-                    string? item2 = obj2.value as string;
-                    arg.Add(item2);
+                    arg.Add(item2!);
                 }
                 else if (obj2.value is JArray)
                 {
@@ -787,6 +789,9 @@ public static class Launch
         if (login1.State1 != LoginState.Done)
         {
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.LoginFail);
+            if (login1.Ex != null)
+                throw login1.Ex;
+
             return null;
         }
 

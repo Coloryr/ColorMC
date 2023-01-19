@@ -28,6 +28,8 @@ public partial class AddWorldWindow : Window, IBase1Window
     {
         InitializeComponent();
 
+        Icon = App.Icon;
+
         Rectangle1.MakeResizeDrag(this);
 
         ComboBox1.Items = GameBinding.GetCurseForgeTypes();
@@ -185,7 +187,7 @@ public partial class AddWorldWindow : Window, IBase1Window
     {
         List1.Clear();
         Info1.Show(Localizer.Instance["AddWorldWindow.Info3"]);
-        var data = await GameBinding.GetPackFile(Last!.Data.id, int.Parse(Input3.Text));
+        var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
         Info1.Close();
 
         if (data == null)

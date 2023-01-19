@@ -13,6 +13,8 @@ public partial class InitWindow : Window
     {
         InitializeComponent();
 
+        Icon = App.Icon;
+
         Rectangle1.MakeResizeDrag(this);
 
         Opened += MainWindow_Opened;

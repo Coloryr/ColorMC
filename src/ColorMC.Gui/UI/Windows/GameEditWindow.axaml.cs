@@ -31,6 +31,8 @@ public partial class GameEditWindow : Window
     {
         InitializeComponent();
 
+        Icon = App.Icon;
+
         Rectangle1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;

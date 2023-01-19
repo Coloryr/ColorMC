@@ -81,7 +81,8 @@
                             Name="Input2"
                             Width="150"
                             Height="30"
-                            Minimum="0" />
+                            Minimum="0"
+                            Value="0" />
                     </StackPanel>
                 </StackPanel>
                 <Button
@@ -132,7 +133,8 @@
                             Name="Input3"
                             Width="150"
                             Height="30"
-                            Minimum="0" />
+                            Minimum="0"
+                            Value="0" />
                     </StackPanel>
 
                     <Button

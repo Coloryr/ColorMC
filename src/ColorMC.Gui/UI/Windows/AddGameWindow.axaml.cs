@@ -26,6 +26,8 @@ public partial class AddGameWindow : Window
     {
         InitializeComponent();
 
+        Icon = App.Icon;
+
         Rectangle1.MakeResizeDrag(this);
 
         ComboBox_GameVersion.Items = List;

@@ -28,6 +28,8 @@ public partial class AddModWindow : Window
     {
         InitializeComponent();
 
+        Icon = App.Icon;
+
         Rectangle1.MakeResizeDrag(this);
 
         ComboBox1.Items = GameBinding.GetCurseForgeTypes();
@@ -141,7 +143,7 @@ public partial class AddModWindow : Window
 
     public async void Install1(CurseForgeObj.Data.LatestFiles data)
     {
-        App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
+        _ = App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
         var con = Last;
         con?.Download();
         var res = await GameBinding.DownloadMod(Obj, data);
@@ -166,7 +168,7 @@ public partial class AddModWindow : Window
     {
         Info1.Show(Localizer.Instance["AddModWindow.Info2"]);
         var data = await GameBinding.GetModList(ComboBox2.SelectedItem as string,
-            ComboBox1.SelectedIndex + 1, Input1.Text, int.Parse(Input2.Text), ComboBox3.SelectedIndex);
+            ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
         Info1.Close();
         if (data == null)
         {
@@ -200,7 +202,7 @@ public partial class AddModWindow : Window
     {
         List1.Clear();
         Info1.Show(Localizer.Instance["AddModWindow.Info3"]);
-        var data = await GameBinding.GetPackFile(Last!.Data.id, int.Parse(Input3.Text));
+        var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
         Info1.Close();
 
         if (data == null)

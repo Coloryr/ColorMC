@@ -58,7 +58,7 @@ public static class AuthHelper
             return null;
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message)> RefreshToken(this LoginObj obj)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message, Exception? Ex)> RefreshToken(this LoginObj obj)
     {
         switch (obj.AuthType)
         {
@@ -73,7 +73,7 @@ public static class AuthHelper
                 return await BaseAuth.RefreshWithLittleSkin(obj);
             default:
                 return (AuthState.Token, LoginState.Done, obj,
-                    LanguageHelper.GetName("Core.Http.Login.None"));
+                    LanguageHelper.GetName("Core.Http.Login.None"), null);
         }
     }
 }

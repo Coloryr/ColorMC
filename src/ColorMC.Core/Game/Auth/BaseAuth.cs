@@ -22,8 +22,8 @@ public enum LoginState
 
 public static class BaseAuth
 {
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
-        string Message)> LoginWithOAuth()
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+        string Message, Exception? e)> LoginWithOAuth()
     {
         AuthState now = AuthState.OAuth;
         try
@@ -32,14 +32,14 @@ public static class BaseAuth
             var oauth = await OAuthAPI.GetCode();
             if (oauth.Done != LoginState.Done)
             {
-                return (AuthState.OAuth, oauth.Done, null, oauth.Url!);
+                return (AuthState.OAuth, oauth.Done, null, oauth.Url!, null);
             }
             CoreMain.LoginOAuthCode?.Invoke(oauth.Url!, oauth.Code!);
             var oauth1 = await OAuthAPI.RunGetCode();
             if (oauth1.Done != LoginState.Done)
             {
                 return (AuthState.OAuth, oauth1.Done, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error1"));
+                    LanguageHelper.GetName("Core.Http.Login.Error1"), null);
             }
             now = AuthState.XBox;
             CoreMain.AuthStateUpdate?.Invoke(AuthState.XBox);
@@ -47,7 +47,7 @@ public static class BaseAuth
             if (xbox.Done != LoginState.Done)
             {
                 return (AuthState.XBox, xbox.Done, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error2"));
+                    LanguageHelper.GetName("Core.Http.Login.Error2"), null);
             }
             now = AuthState.XSTS;
             CoreMain.AuthStateUpdate?.Invoke(AuthState.XSTS);
@@ -55,7 +55,7 @@ public static class BaseAuth
             if (xsts.Done != LoginState.Done)
             {
                 return (AuthState.XSTS, xsts.Done, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error3"));
+                    LanguageHelper.GetName("Core.Http.Login.Error3"), null);
             }
             now = AuthState.Token;
             CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
@@ -63,14 +63,14 @@ public static class BaseAuth
             if (auth.Done != LoginState.Done)
             {
                 return (AuthState.Token, auth.Done, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error4"));
+                    LanguageHelper.GetName("Core.Http.Login.Error4"), null);
             }
 
             var profile = await MinecraftAPI.GetMinecraftProfileAsync(auth.AccessToken!);
             if (profile == null)
             {
                 return (AuthState.Profile, LoginState.Error, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error5"));
+                    LanguageHelper.GetName("Core.Http.Login.Error5"), null);
             }
 
             return (AuthState.Profile, LoginState.Done, new()
@@ -80,18 +80,18 @@ public static class BaseAuth
                 AccessToken = auth.AccessToken!,
                 UserName = profile.name,
                 UUID = profile.id
-            }, LanguageHelper.GetName("Core.Http.Login.Done"));
+            }, LanguageHelper.GetName("Core.Http.Login.Done"), null);
         }
         catch (Exception e)
         {
             string text = LanguageHelper.GetName("Core.Http.Login.Error6");
             Logs.Error(text, e);
-            return (now, LoginState.Crash, null, text + Environment.NewLine + e.ToString());
+            return (now, LoginState.Crash, null, text, e);
         }
     }
 
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
-        string Message)> RefreshWithOAuth(LoginObj obj)
+        string Message, Exception? Ex)> RefreshWithOAuth(LoginObj obj)
     {
         AuthState now = AuthState.OAuth;
         try
@@ -99,7 +99,7 @@ public static class BaseAuth
             if (obj.AuthType != AuthType.OAuth)
             {
                 return (AuthState.OAuth, LoginState.ErrorType, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error7"));
+                    LanguageHelper.GetName("Core.Http.Login.Error7"), null);
             }
 
             CoreMain.AuthStateUpdate?.Invoke(AuthState.OAuth);
@@ -107,35 +107,35 @@ public static class BaseAuth
             if (oauth.Done != LoginState.Done)
             {
                 return (AuthState.OAuth, oauth.Done, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error1"));
+                    LanguageHelper.GetName("Core.Http.Login.Error1"), null);
             }
             CoreMain.AuthStateUpdate?.Invoke(AuthState.XBox);
             var xbox = await OAuthAPI.GetXBLAsync(oauth.Auth!.access_token);
             if (xbox.Done != LoginState.Done)
             {
                 return (AuthState.XBox, xbox.Done, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error2"));
+                    LanguageHelper.GetName("Core.Http.Login.Error2"), null);
             }
             CoreMain.AuthStateUpdate?.Invoke(AuthState.XSTS);
             var xsts = await OAuthAPI.GetXSTSAsync(xbox.XNLToken!);
             if (xsts.Done != LoginState.Done)
             {
                 return (AuthState.XSTS, xsts.Done, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error3"));
+                    LanguageHelper.GetName("Core.Http.Login.Error3"), null);
             }
             CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
             var auth = await OAuthAPI.GetMinecraftAsync(xsts.XSTSUhs!, xsts.XSTSToken!);
             if (auth.Done != LoginState.Done)
             {
                 return (AuthState.Token, auth.Done, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error4"));
+                    LanguageHelper.GetName("Core.Http.Login.Error4"), null);
             }
 
             var profile = await MinecraftAPI.GetMinecraftProfileAsync(auth.AccessToken!);
             if (auth.Done != LoginState.Done)
             {
                 return (AuthState.Token, LoginState.Error, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error5"));
+                    LanguageHelper.GetName("Core.Http.Login.Error5"), null);
             }
 
             obj.UserName = profile.name;
@@ -144,18 +144,18 @@ public static class BaseAuth
             obj.AccessToken = auth.AccessToken!;
 
             return (AuthState.Profile, LoginState.Done, obj,
-                LanguageHelper.GetName("Core.Http.Login.Refresh"));
+                LanguageHelper.GetName("Core.Http.Login.Refresh"), null);
         }
         catch (Exception e)
         {
             string text = LanguageHelper.GetName("Core.Http.Login.Error8");
             Logs.Error(text, e);
-            return (now, LoginState.Crash, null, text + Environment.NewLine + e.ToString());
+            return (now, LoginState.Crash, null, text, e);
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
-        string Message)> LoginWithNide8(string server, string user, string pass)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+        string Message, Exception? Ex)> LoginWithNide8(string server, string user, string pass)
     {
         try
         {
@@ -164,23 +164,23 @@ public static class BaseAuth
             if (State != LoginState.Done)
             {
                 return (AuthState.Token, State, null,
-                    string.Format(LanguageHelper.GetName("Core.Http.Login.Error9"), Msg));
+                    string.Format(LanguageHelper.GetName("Core.Http.Login.Error9"), Msg), null);
             }
 
             Obj!.Text2 = user;
             return (AuthState.Profile, LoginState.Done, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Done1"));
+                LanguageHelper.GetName("Core.Http.Login.Done1"), null);
         }
         catch (Exception e)
         {
             string text = LanguageHelper.GetName("Core.Http.Login.Error10");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text + Environment.NewLine + e.ToString());
+            return (AuthState.Profile, LoginState.Crash, null, text, e);
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
-        string Message)> RefreshWithNide8(LoginObj obj)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+        string Message, Exception? Ex)> RefreshWithNide8(LoginObj obj)
     {
         try
         {
@@ -188,27 +188,27 @@ public static class BaseAuth
             if (obj.AuthType != AuthType.Nide8)
             {
                 return (AuthState.Token, LoginState.ErrorType, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error7"));
+                    LanguageHelper.GetName("Core.Http.Login.Error7"), null);
             }
 
             var (State, Obj) = await Nide8.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error11"));
+                    LanguageHelper.GetName("Core.Http.Login.Error11"), null);
 
             return (AuthState.Profile, LoginState.Done, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Refresh1"));
+                LanguageHelper.GetName("Core.Http.Login.Refresh1"), null);
         }
         catch (Exception e)
         {
             string text = LanguageHelper.GetName("Core.Http.Login.Error12");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text + Environment.NewLine + e.ToString());
+            return (AuthState.Profile, LoginState.Crash, null, text, e);
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
-        string Message)> LoginWithAuthlibInjector(string server, string user, string pass)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+        string Message, Exception? Ex)> LoginWithAuthlibInjector(string server, string user, string pass)
     {
         try
         {
@@ -217,23 +217,23 @@ public static class BaseAuth
             if (State != LoginState.Done)
             {
                 return (AuthState.Token, State, null,
-                    string.Format(LanguageHelper.GetName("Core.Http.Login.Error13"), Msg));
+                    string.Format(LanguageHelper.GetName("Core.Http.Login.Error13"), Msg), null);
             }
 
             Obj!.Text2 = user;
             return (AuthState.Profile, LoginState.Done, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Done2"));
+                LanguageHelper.GetName("Core.Http.Login.Done2"), null);
         }
         catch (Exception e)
         {
             string text = LanguageHelper.GetName("Core.Http.Login.Error14");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text + Environment.NewLine + e.ToString());
+            return (AuthState.Profile, LoginState.Crash, null, text, e);
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
-        string Message)> RefreshWithAuthlibInjector(LoginObj obj)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+        string Message, Exception? Ex)> RefreshWithAuthlibInjector(LoginObj obj)
     {
         try
         {
@@ -241,27 +241,27 @@ public static class BaseAuth
             if (obj.AuthType != AuthType.AuthlibInjector)
             {
                 return (AuthState.Token, LoginState.ErrorType, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error7"));
+                    LanguageHelper.GetName("Core.Http.Login.Error7"), null);
             }
 
             var (State, Obj) = await AuthlibInjector.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error15"));
+                    LanguageHelper.GetName("Core.Http.Login.Error15"), null);
 
             return (AuthState.Token, State, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Refresh2"));
+                LanguageHelper.GetName("Core.Http.Login.Refresh2"), null);
         }
         catch (Exception e)
         {
             string text = LanguageHelper.GetName("Core.Http.Login.Error16");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text + Environment.NewLine + e.ToString());
+            return (AuthState.Profile, LoginState.Crash, null, text, e);
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
-        string Message)> LoginWithLittleSkin(string user, string pass, string? server = null)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+        string Message, Exception? Ex)> LoginWithLittleSkin(string user, string pass, string? server = null)
     {
         try
         {
@@ -270,23 +270,23 @@ public static class BaseAuth
             if (State != LoginState.Done)
             {
                 return (AuthState.Token, State, null,
-                    string.Format(LanguageHelper.GetName("Core.Http.Login.Error17"), Msg));
+                    string.Format(LanguageHelper.GetName("Core.Http.Login.Error17"), Msg), null);
             }
 
             Obj!.Text2 = user;
             return (AuthState.Profile, LoginState.Done, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Done3"));
+                LanguageHelper.GetName("Core.Http.Login.Done3"), null);
         }
         catch (Exception e)
         {
             string text = LanguageHelper.GetName("Core.Http.Login.Error18");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text + Environment.NewLine + e.ToString());
+            return (AuthState.Profile, LoginState.Crash, null, text, e);
         }
     }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, 
-        string Message)> RefreshWithLittleSkin(LoginObj obj)
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+        string Message, Exception? Ex)> RefreshWithLittleSkin(LoginObj obj)
     {
         try
         {
@@ -295,22 +295,22 @@ public static class BaseAuth
                 || obj.AuthType != AuthType.SelfLittleSkin)
             {
                 return (AuthState.Token, LoginState.ErrorType, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error7"));
+                    LanguageHelper.GetName("Core.Http.Login.Error7"), null);
             }
 
             var (State, Obj) = await LittleSkin.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error19"));
+                    LanguageHelper.GetName("Core.Http.Login.Error19"), null);
 
             return (AuthState.Token, State, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Refresh3"));
+                LanguageHelper.GetName("Core.Http.Login.Refresh3"), null);
         }
         catch (Exception e)
         {
             string text = LanguageHelper.GetName("Core.Http.Login.Error20");
             Logs.Error(text, e);
-            return (AuthState.Profile, LoginState.Crash, null, text + Environment.NewLine + e.ToString());
+            return (AuthState.Profile, LoginState.Crash, null, text, e);
         }
     }
 }

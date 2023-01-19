@@ -36,7 +36,7 @@ public partial class Tab2Control : UserControl
         GameBinding.SetGameProxy(Obj, new()
         {
             IP = TextBox7.Text,
-            Port = ushort.Parse(TextBox8.Text),
+            Port = ushort.Parse(TextBox8.Text!),
             User = TextBox9.Text,
             Password = TextBox10.Text
         });
@@ -54,7 +54,7 @@ public partial class Tab2Control : UserControl
         GameBinding.SetGameServer(Obj, new()
         {
             IP = TextBox5.Text,
-            Port = ushort.Parse(TextBox6.Text)
+            Port = ushort.Parse(TextBox6.Text!)
         });
         Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
     }
@@ -63,8 +63,8 @@ public partial class Tab2Control : UserControl
     {
         GameBinding.SetGameWindow(Obj, new()
         {
-            Width = (uint)Input3.Value,
-            Height = (uint)Input4.Value,
+            Width = (uint)Input3.Value!,
+            Height = (uint)Input4.Value!,
             FullScreen = CheckBox1.IsChecked == true
         });
         Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);

@@ -24,6 +24,8 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
     {
         InitializeComponent();
 
+        Icon = App.Icon;
+
         Rectangle1.MakeResizeDrag(this);
 
         ComboBox1.Items = GameBinding.GetCurseForgeTypes();
@@ -147,7 +149,7 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
     {
         Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info2"]);
         var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string,
-            ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value, ComboBox3.SelectedIndex);
+            ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
         Info1.Close();
         if (data == null)
         {
@@ -173,7 +175,7 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
     {
         List1.Clear();
         Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info3"]);
-        var data = await GameBinding.GetPackFile(Last!.Data.id, int.Parse(Input3.Text));
+        var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
         Info1.Close();
 
         if (data == null)

@@ -24,6 +24,8 @@ public partial class UserWindow : Window
     {
         InitializeComponent();
 
+        Icon = App.Icon;
+
         Rectangle1.MakeResizeDrag(this);
 
         if (App.BackBitmap != null)
@@ -130,7 +132,7 @@ public partial class UserWindow : Window
                 break;
             case 2:
                 var server = TextBox_Input1.Text;
-                if (server.Length != 32)
+                if (server?.Length != 32)
                 {
                     Info.Show(Localizer.Instance["UserWindow.Error3"]);
                     break;

@@ -47,6 +47,10 @@ public static class JavaBinding
         else
         {
             var info = JvmPath.GetInfo(res.Msg);
+            if (info == null)
+            {
+                return (null, "Java找不到");
+            }
             return (MakeInfo(res.Msg, info), null);
         }
     }
