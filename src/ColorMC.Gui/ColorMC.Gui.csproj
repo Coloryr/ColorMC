@@ -90,10 +90,16 @@
     <AvaloniaXaml Update="UI\Controls\GameEdit\Flyouts2Control.axaml">
       <SubType>Designer</SubType>
     </AvaloniaXaml>
+    <AvaloniaXaml Update="UI\Windows\AddResourcePackWindow.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="UI\Controls\CurseForge\CurseForge1Control.axaml.cs">
       <DependentUpon>CurseForge1Control.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\GameEdit\Flyouts3Control.axaml.cs">
+      <DependentUpon>Flyouts3Control.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\GameEdit\Flyouts2Control.axaml.cs">
       <SubType>Code</SubType>
@@ -101,6 +107,12 @@
     </Compile>
     <Compile Update="UI\Controls\GameEdit\Flyouts1Control.axaml.cs">
       <DependentUpon>Flyouts1Control.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\GameEdit\Tab8Control.axaml.cs">
+      <DependentUpon>Tab8Control.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\GameEdit\ResourcePackControl.axaml.cs">
+      <DependentUpon>ResourcePackControl.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\Hello\Tab2Control.axaml.cs">
       <DependentUpon>Tab2Control.axaml</DependentUpon>
@@ -137,6 +149,10 @@
     </Compile>
     <Compile Update="UI\Controls\Setting\HelloWindow.Tab2.axaml.cs">
       <DependentUpon>HelloWindow.Tab2.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Windows\AddResourcePackWindow.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>AddResourcePackWindow.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Windows\AddWorldWindow.axaml.cs">
       <DependentUpon>AddWorldWindow.axaml</DependentUpon>

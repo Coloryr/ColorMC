@@ -72,7 +72,7 @@ public class DownloadThread
 
                 try
                 {
-                    if (File.Exists(item.Local))
+                    if (File.Exists(item.Local) && ConfigUtils.Config.Http.CheckFile)
                     {
                         if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Overwrite)
                         {

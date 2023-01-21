@@ -1,0 +1,97 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Tab8Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
+
+        <ScrollViewer
+            Name="ScrollViewer1"
+            Margin="3"
+            VerticalScrollBarVisibility="Visible">
+            <StackPanel
+                Name="ListBox_Items"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" />
+        </ScrollViewer>
+
+        <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
+            <Grid Margin="0,5,0,0">
+                <Button
+                    Name="Button_I"
+                    Width="20"
+                    Height="30"
+                    Content="I" />
+                <Expander
+                    Name="Expander_I"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_I1"
+                        Width="100"
+                        Height="30"
+                        Margin="6,0,0,0"
+                        Content="{setting:Localize GameEditWindow.Tab4.Button4}" />
+                </Expander>
+            </Grid>
+            <Grid>
+                <Button
+                    Name="Button_A"
+                    Width="20"
+                    Height="30"
+                    Content="A" />
+                <Expander
+                    Name="Expander_A"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_A1"
+                        Width="100"
+                        Height="30"
+                        Margin="6,0,0,0"
+                        Content="{setting:Localize GameEditWindow.Tab4.Button1}" />
+                </Expander>
+            </Grid>
+            <Grid>
+                <Button
+                    Name="Button_R"
+                    Width="20"
+                    Height="30"
+                    Content="R" />
+                <Expander
+                    Name="Expander_R"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_R1"
+                        Width="100"
+                        Height="30"
+                        Margin="6,0,0,0"
+                        Content="{setting:Localize GameEditWindow.Tab4.Button2}" />
+                </Expander>
+            </Grid>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

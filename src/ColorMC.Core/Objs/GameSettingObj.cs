@@ -32,6 +32,8 @@ public record GameSettingObj
     public Loaders Loader { get; set; }
     public string LoaderVersion { get; set; }
     public JvmArgObj JvmArg { get; set; }
+    public string JvmName { get; set; }
+    public string JvmLocal { get; set; }
     public WindowSettingObj Window { get; set; }
     public ServerObj StartServer { get; set; }
     public ProxyHostObj ProxyHost { get; set; }

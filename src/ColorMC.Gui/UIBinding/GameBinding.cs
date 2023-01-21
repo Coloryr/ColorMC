@@ -90,7 +90,7 @@ public static class GameBinding
     {
         version ??= "";
         filter ??= "";
-        return CurseForge.GetPackList(version, page, sort, filter, sortOrder: sortOrder);
+        return CurseForge.GetModPackList(version, page, sort, filter, sortOrder: sortOrder);
     }
 
     public static Task<CurseForgeObj?> GetModList(string? version, int sort, string? filter, int page, int sortOrder)
@@ -105,6 +105,13 @@ public static class GameBinding
         version ??= "";
         filter ??= "";
         return CurseForge.GetWorldList(version, page, sort, filter, sortOrder: sortOrder);
+    }
+
+    public static Task<CurseForgeObj?> GetResourcepackList(string? version, int sort, string? filter, int page, int sortOrder)
+    {
+        version ??= "";
+        filter ??= "";
+        return CurseForge.GetResourcepackList(version, page, sort, filter, sortOrder: sortOrder);
     }
 
     public static List<string> GetCurseForgeTypes()
@@ -252,6 +259,13 @@ public static class GameBinding
         {
             obj.LoaderVersion = loadv;
         }
+        obj.Save();
+    }
+
+    public static void SetJavaLocal(GameSettingObj obj, string? name, string? local)
+    {
+        obj.JvmName = name;
+        obj.JvmLocal = local;
         obj.Save();
     }
 
@@ -518,5 +532,71 @@ public static class GameBinding
         string file, List<string> filter)
     {
         return obj.Export(file, filter);
+    }
+
+    public static async Task<List<ResourcepackDisplayObj>> GetResourcepacks(GameSettingObj obj)
+    {
+        var list = new List<ResourcepackDisplayObj>();
+        var list1 = await obj.GetResourcepacks();
+
+        foreach (var item in list1)
+        {
+            if (item.Broken)
+            {
+                list.Add(new()
+                {
+                    Local = item.Local,
+                });
+            }
+            else
+            {
+                var obj1 = new ResourcepackDisplayObj()
+                {
+                    Local = item.Local,
+                    PackFormat = item.pack.pack_format,
+                    Description = item.pack.description,
+                    Pack = item
+                };
+
+                if (item.Icon != null)
+                {
+                    using MemoryStream stream = new();
+                    await stream.WriteAsync(item.Icon);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    obj1.Icon = new Avalonia.Media.Imaging.Bitmap(stream);
+                }
+
+                list.Add(obj1);
+            }
+        }
+
+        return list;
+    }
+
+    public static void DeleteResourcepack(ResourcepackObj obj)
+    {
+        File.Delete(obj.Local);
+    }
+
+    public static Task<bool> AddResourcepack(GameSettingObj obj, string file)
+    {
+        return obj.ImportResourcepack(file);
+    }
+
+    public static async Task<bool> DownloadResourcepack(GameSettingObj obj, CurseForgeObj.Data.LatestFiles data)
+    {
+        var item = new DownloadItem()
+        {
+            Name = data.displayName,
+            Url = data.downloadUrl,
+            Local = Path.GetFullPath(obj.GetResourcepacksPath() + "/" + data.fileName),
+            SHA1 = data.hashes.Where(a => a.algo == 1)
+                        .Select(a => a.value).FirstOrDefault(),
+            Overwrite = true
+        };
+
+        var res = await DownloadManager.Download(item);
+
+        return res;
     }
 }

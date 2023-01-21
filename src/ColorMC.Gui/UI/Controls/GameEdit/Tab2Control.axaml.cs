@@ -1,9 +1,12 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -19,10 +22,54 @@ public partial class Tab2Control : UserControl
         Button_Set1.Click += Button_Set1_Click;
         Button_Set2.Click += Button_Set2_Click;
         Button_Set3.Click += Button_Set3_Click;
+        Button_Set4.Click += Button_Set4_Click;
+        Button_Set5.Click += Button_Set5_Click;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
         ComboBox1.Items = JavaBinding.GetGCTypes();
+
+        TextBox11.PropertyChanged += TextBox11_TextInput;
+    }
+
+    private async void Button_Set5_Click(object? sender, RoutedEventArgs e)
+    {
+        OpenFileDialog openFile = new()
+        {
+            Title = Localizer.Instance["SettingWindow.Tab5.Info2"],
+            AllowMultiple = false,
+        };
+
+        var file = await openFile.ShowAsync(Window);
+        if (file?.Length > 0)
+        {
+            TextBox11.Text = file[0];
+        }
+    }
+
+    private void Button_Set4_Click(object? sender, RoutedEventArgs e)
+    {
+        GameBinding.SetJavaLocal(Obj, ComboBox2.SelectedItem as string, TextBox11.Text);
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
+    }
+
+    private void TextBox11_TextInput(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        var property = e.Property.Name;
+        if (property == "Text")
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (string.IsNullOrWhiteSpace(TextBox11.Text))
+                {
+                    ComboBox2.IsEnabled = true;
+                }
+                else
+                {
+                    ComboBox2.IsEnabled = false;
+                }
+            });
+        }
     }
 
     private void Button_Set3_Click(object? sender, RoutedEventArgs e)
@@ -92,6 +139,11 @@ public partial class Tab2Control : UserControl
 
     private void Load()
     {
+        ComboBox2.Items = JavaBinding.GetJavaName();
+
+        ComboBox2.SelectedItem = Obj.JvmName;
+        TextBox11.Text = Obj.JvmLocal;
+
         var config = Obj.JvmArg;
         if (config != null)
         {

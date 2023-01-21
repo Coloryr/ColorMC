@@ -1,0 +1,68 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.ResourcePackControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    Height="100"
+    d:DesignHeight="100"
+    d:DesignWidth="500"
+    mc:Ignorable="d">
+    <Grid Margin="1" Background="{setting:Colors TranBack}">
+        <Rectangle
+            Name="Rectangle1"
+            Fill="{setting:Colors TranBack}"
+            IsVisible="False"
+            Stroke="{setting:Colors Main}"
+            StrokeThickness="3" />
+
+        <Grid Margin="5">
+            <Image
+                Name="Image1"
+                Width="90"
+                Height="90"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
+            <StackPanel Margin="100,0,0,0">
+                <TextBlock
+                    Name="Label1"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="Local"
+                    TextWrapping="Wrap" />
+                <StackPanel
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0,0,5,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{setting:Localize GameEditWindow.Control.Text5}" />
+                    <TextBlock
+                        Name="Label2"
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="PackFormat" />
+                </StackPanel>
+                <TextBlock
+                    Name="Label3"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="Description" />
+                <TextBlock
+                    Name="Label4"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="Broken" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

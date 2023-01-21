@@ -124,7 +124,8 @@ public static class ConfigUtils
             Source = SourceLocal.Offical,
             DownloadThread = 5,
             ProxyIP = "127.0.0.1",
-            ProxyPort = 1080
+            ProxyPort = 1080,
+            CheckFile = true
         };
     }
 

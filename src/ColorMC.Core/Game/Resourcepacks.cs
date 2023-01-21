@@ -41,7 +41,7 @@ public static class Resourcepacks
                     var obj1 = JsonConvert.DeserializeObject<ResourcepackObj>(data);
                     if (obj1 != null)
                     {
-                        obj1.Disable = item.Extension is ".disable";
+                        //obj1.Disable = item.Extension is ".disable";
                         obj1.Local = Path.GetFullPath(item.FullName);
                         item1 = zFile.GetEntry("pack.png");
                         if (item1 != null)
@@ -65,7 +65,7 @@ public static class Resourcepacks
             {
                 list.Add(new() 
                 {
-                    Disable = item.Extension is ".disable",
+                    //Disable = item.Extension is ".disable",
                     Local = Path.GetFullPath(item.FullName),
                     Broken = true
                 });
@@ -74,6 +74,31 @@ public static class Resourcepacks
 
         return list;
     }
+
+    public static async Task<bool> ImportResourcepack(this GameSettingObj obj, string file)
+    {
+        var path = obj.GetResourcepacksPath();
+        var name = Path.GetFileName(file);
+        var local = Path.GetFullPath(path + "/" + name);
+        if (File.Exists(local))
+            return false;
+
+        bool ok = true;
+        await Task.Run(() =>
+        {
+            try
+            {
+                File.Copy(file, local);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                ok = false;
+            }
+        });
+        return ok;
+    }
+
 
     //public static void Disable(this ResourcepackObj pack)
     //{

@@ -37,7 +37,7 @@ public static class CurseForge
         }
     }
 
-    public static Task<CurseForgeObj?> GetPackList(string version = "", int page = 0,
+    public static Task<CurseForgeObj?> GetModPackList(string version = "", int page = 0,
         int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
     {
         return GetList(4471, version, page, sort, filter, pagesize, sortOrder);
@@ -53,6 +53,12 @@ public static class CurseForge
         int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
     {
         return GetList(17, version, page, sort, filter, pagesize, sortOrder);
+    }
+
+    public static Task<CurseForgeObj?> GetResourcepackList(string version = "", int page = 0,
+        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
+    {
+        return GetList(12, version, page, sort, filter, pagesize, sortOrder);
     }
 
     public static async Task<CurseForgeModObj?> GetMod(CurseForgePackObj.Files obj)

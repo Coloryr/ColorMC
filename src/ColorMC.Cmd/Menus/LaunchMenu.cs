@@ -73,7 +73,7 @@ public static class LaunchMenu
         {
             ConsoleUtils.Info1("正在刷新登录");
 
-            var (State, State1, Obj, Message) = AuthHelper.RefreshToken(obj).Result;
+            var (State, State1, Obj, Message, Ex) = AuthHelper.RefreshToken(obj).Result;
 
             if (State1 != LoginState.Done)
             {

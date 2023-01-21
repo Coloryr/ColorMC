@@ -101,7 +101,7 @@ public static class AddUserMenu
                     ConsoleUtils.Keep();
                     break;
                 }
-                (State, State1, Obj, Message) = BaseAuth.LoginWithNide8(server, name, pass).Result;
+                (State, State1, Obj, Message, Ex) = BaseAuth.LoginWithNide8(server, name, pass).Result;
                 if (State1 != LoginState.Done)
                 {
                     ConsoleUtils.Error($"{State.GetName()}登录错误");
@@ -133,7 +133,7 @@ public static class AddUserMenu
                     ConsoleUtils.Keep();
                     break;
                 }
-                (State, State1, Obj, Message) = BaseAuth.LoginWithLittleSkin(name, pass).Result;
+                (State, State1, Obj, Message, Ex) = BaseAuth.LoginWithLittleSkin(name, pass).Result;
                 if (State1 != LoginState.Done)
                 {
                     ConsoleUtils.Error($"{State.GetName()}登录错误");
@@ -172,7 +172,7 @@ public static class AddUserMenu
                     ConsoleUtils.Keep();
                     break;
                 }
-                (State, State1, Obj, Message) = BaseAuth.LoginWithLittleSkin(name, pass, server).Result;
+                (State, State1, Obj, Message, Ex) = BaseAuth.LoginWithLittleSkin(name, pass, server).Result;
                 if (State1 != LoginState.Done)
                 {
                     ConsoleUtils.Error($"{State.GetName()}登录错误");
@@ -211,7 +211,7 @@ public static class AddUserMenu
                     ConsoleUtils.Keep();
                     break;
                 }
-                (State, State1, Obj, Message) = BaseAuth.LoginWithAuthlibInjector(name, pass, server).Result;
+                (State, State1, Obj, Message, Ex) = BaseAuth.LoginWithAuthlibInjector(name, pass, server).Result;
                 if (State1 != LoginState.Done)
                 {
                     ConsoleUtils.Error($"{State.GetName()}登录错误");

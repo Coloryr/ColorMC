@@ -187,22 +187,25 @@ public static class DownloadManager
                     .ConfigureAwait(false);
             }
 
-            if (!string.IsNullOrWhiteSpace(item.SHA1))
+            if (ConfigUtils.Config.Http.CheckFile)
             {
-                stream.Seek(0, SeekOrigin.Begin);
-                string sha1 = Funtcions.GenSha1(stream);
-                if (sha1 != item.SHA1)
+                if (!string.IsNullOrWhiteSpace(item.SHA1))
                 {
-                    return false;
+                    stream.Seek(0, SeekOrigin.Begin);
+                    string sha1 = Funtcions.GenSha1(stream);
+                    if (sha1 != item.SHA1)
+                    {
+                        return false;
+                    }
                 }
-            }
-            if (!string.IsNullOrWhiteSpace(item.SHA256))
-            {
-                stream.Seek(0, SeekOrigin.Begin);
-                string sha1 = Funtcions.GenSha256(stream);
-                if (sha1 != item.SHA256)
+                if (!string.IsNullOrWhiteSpace(item.SHA256))
                 {
-                    return false;
+                    stream.Seek(0, SeekOrigin.Begin);
+                    string sha1 = Funtcions.GenSha256(stream);
+                    if (sha1 != item.SHA256)
+                    {
+                        return false;
+                    }
                 }
             }
 
