@@ -92,6 +92,7 @@
     "Core.Http.Login.Refresh3": "LittleSkin刷新登录完成",
     "Core.Game.Error1": "Mod解析失败",
     "Core.Game.Error2": "Resourcepack解析失败",
+    "Core.Game.Error3": "Resourcepack导入失败",
     "AuthType.Offline": "离线",
     "AuthType.OAuth": "微软登录",
     "AuthType.Nide8": "统一通行证",

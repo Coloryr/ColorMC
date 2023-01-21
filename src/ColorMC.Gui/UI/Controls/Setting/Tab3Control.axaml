@@ -79,7 +79,12 @@
                         Name="CheckBox3"
                         Margin="5"
                         Content="{setting:Localize SettingWindow.Tab3.Text10}" />
+
                 </StackPanel>
+                <CheckBox
+                    Name="CheckBox4"
+                    Margin="5"
+                    Content="{setting:Localize SettingWindow.Tab3.Text11}" />
             </StackPanel>
         </StackPanel>
 

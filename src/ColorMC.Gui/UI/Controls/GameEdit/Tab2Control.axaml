@@ -19,7 +19,43 @@
                     Margin="5"
                     HorizontalAlignment="Center"
                     Content="{setting:Localize GameEditWindow.Tab2.Text13}" />
+                <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text24}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Margin="5"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab2.Text22}" />
+                    <ComboBox
+                        Name="ComboBox2"
+                        Width="200"
+                        Margin="5" />
+                </StackPanel>
+                <TextBox
+                    Name="TextBox11"
+                    Margin="5"
+                    Classes="input1"
+                    Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
+
+                <StackPanel
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+                    <Button
+                        Name="Button_Set5"
+                        Width="80"
+                        Height="25"
+                        Content="{setting:Localize Button.Select}" />
+                    <Button
+                        Name="Button_Set4"
+                        Width="80"
+                        Height="25"
+                        Margin="10"
+                        Content="{setting:Localize Button.Set}" />
+                </StackPanel>
+
                 <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text1}" />
+
                 <StackPanel Orientation="Horizontal">
                     <Label
                         Margin="5"
@@ -30,9 +66,7 @@
                         Name="ComboBox1"
                         Width="200"
                         Margin="5" />
-
                 </StackPanel>
-
                 <TextBox
                     Name="TextBox1"
                     Margin="5"

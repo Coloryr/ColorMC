@@ -82,7 +82,7 @@ public static class TestItem
 
     public static void Item6()
     {
-        var list = CurseForge.GetPackList("1.16.5").Result;
+        var list = CurseForge.GetModPackList("1.16.5").Result;
         if (list == null)
         {
             Console.WriteLine("整合包信息为空");

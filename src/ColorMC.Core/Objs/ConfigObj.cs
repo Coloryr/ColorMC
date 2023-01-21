@@ -21,6 +21,8 @@ public record HttpObj
     public bool LoginProxy { get; set; }
     public bool DownloadProxy { get; set; }
     public bool GameProxy { get; set; }
+
+    public bool CheckFile { get; set; }
 }
 
 public record WindowSettingObj

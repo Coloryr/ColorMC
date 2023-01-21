@@ -50,6 +50,7 @@
                     <TabItem Header="{setting:Localize GameEditWindow.Tab5.Title}" />
                     <TabItem Header="{setting:Localize GameEditWindow.Tab6.Title}" />
                     <TabItem Header="{setting:Localize GameEditWindow.Tab7.Title}" />
+                    <TabItem Header="{setting:Localize GameEditWindow.Tab8.Title}" />
                 </TabControl>
 
                 <Grid

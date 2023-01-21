@@ -37,6 +37,17 @@ public static class JavaBinding
         return res;
     }
 
+    public static List<string> GetJavaName()
+    {
+        var list = new List<string>();
+        foreach (var item in JvmPath.Jvms)
+        {
+            list.Add(item.Key);
+        }
+
+        return list;
+    }
+
     public static (JavaInfoObj?, string?) AddJava(string name, string local)
     {
         var res = JvmPath.AddItem(name, local);
