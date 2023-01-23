@@ -11,7 +11,9 @@
     <Grid>
         <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
 
-        <WrapPanel Name="WrapPanel1" Margin="5" />
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+            <WrapPanel Name="WrapPanel1" Margin="5" />
+        </ScrollViewer>
         <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
             <Grid>
                 <Button
@@ -34,6 +36,29 @@
                         Height="30"
                         Margin="6,0,0,0"
                         Content="{setting:Localize Button.Refash}" />
+                </Expander>
+            </Grid>
+            <Grid>
+                <Button
+                    Name="Button_C"
+                    Width="20"
+                    Height="30"
+                    Content="C" />
+                <Expander
+                    Name="Expander_C"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_C1"
+                        Width="100"
+                        Height="30"
+                        Margin="6,0,0,0"
+                        Content="{setting:Localize GameEditWindow.Flyouts4.Button1}" />
                 </Expander>
             </Grid>
 

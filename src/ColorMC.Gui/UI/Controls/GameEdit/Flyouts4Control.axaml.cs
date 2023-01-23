@@ -19,7 +19,6 @@ public partial class Flyouts4Control : UserControl
         Button2.Click += Button2_Click;
     }
 
-
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
