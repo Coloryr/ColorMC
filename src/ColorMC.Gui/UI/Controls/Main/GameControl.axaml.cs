@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using System.IO;
 
@@ -24,7 +25,7 @@ public partial class GameControl : UserControl
         Rectangle_Select.IsVisible = select;
     }
 
-    public void SetLaunch(bool state) 
+    public void SetLaunch(bool state)
     {
         Image2.IsVisible = state;
     }
@@ -32,9 +33,10 @@ public partial class GameControl : UserControl
     public void Reload()
     {
         TextBlock1.Text = Obj.Name;
-        if (!string.IsNullOrWhiteSpace(Obj.Image) && File.Exists(Obj.Image))
+        string file = Obj.GetIconFile();
+        if (File.Exists(file))
         {
-            Image1.Source = new Bitmap(Obj.Image);
+            Image1.Source = new Bitmap(file);
         }
         else
         {

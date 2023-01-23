@@ -29,7 +29,7 @@ public partial class Flyouts3Control : UserControl
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        GameBinding.OpFile(Obj.Local);
+        BaseBinding.OpFile(Obj.Local, true);
     }
 
     public void Set(FlyoutBase fb, ResourcepackDisplayObj obj, Tab8Control con)

@@ -30,8 +30,8 @@ public partial class Tab2Control : UserControl
         CheckBox1.Click += CheckBox1_Click;
         CheckBox2.Click += CheckBox2_Click;
 
-        ComboBox1.Items = OtherBinding.GetWindowTranTypes();
-        ComboBox2.Items = OtherBinding.GetLanguages();
+        ComboBox1.Items = BaseBinding.GetWindowTranTypes();
+        ComboBox2.Items = BaseBinding.GetLanguages();
     }
 
     private void Button_Set5_Click(object? sender, RoutedEventArgs e)
@@ -67,8 +67,8 @@ public partial class Tab2Control : UserControl
 
     private void Button_Set3_Click(object? sender, RoutedEventArgs e)
     {
-        ConfigBinding.SetColor(ColorPicker1.Color.ToString(), 
-            ColorPicker2.Color.ToString(), ColorPicker3.Color.ToString(), 
+        ConfigBinding.SetColor(ColorPicker1.Color.ToString(),
+            ColorPicker2.Color.ToString(), ColorPicker3.Color.ToString(),
             ColorPicker4.Color.ToString(), ColorPicker5.Color.ToString());
         Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info4"]);
     }
@@ -160,7 +160,7 @@ public partial class Tab2Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var file =  await Window.StorageProvider.OpenFilePickerAsync(new()
+        var file = await Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["SettingWindow.Tab2.Info5"],
             AllowMultiple = false,

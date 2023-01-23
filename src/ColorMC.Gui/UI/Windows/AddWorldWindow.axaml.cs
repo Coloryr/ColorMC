@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
@@ -101,7 +100,7 @@ public partial class AddWorldWindow : Window, IBase1Window
             return;
 
         var res = await Info.ShowWait(
-            string.Format(Localizer.Instance["AddWorldWindow.Info1"], 
+            string.Format(Localizer.Instance["AddWorldWindow.Info1"],
             item.File.displayName));
         if (res)
         {

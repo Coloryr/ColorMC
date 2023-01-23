@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Cmd.Menus;
@@ -39,13 +40,13 @@ public static class AddUserMenu
                 else
                 {
                     ConsoleUtils.Info($"正在添加离线账户:{name}");
-                    AuthDatabase.SaveAuth(new()
+                    new LoginObj()
                     {
                         UserName = name,
                         ClientToken = Funtcions.NewUUID(),
                         UUID = Funtcions.NewUUID(),
                         AuthType = AuthType.Offline
-                    }).Wait();
+                    }.Save().Wait();
                     ConsoleUtils.Ok("已添加");
                 }
                 ConsoleUtils.Keep();
@@ -64,7 +65,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.SaveAuth(Obj!).Wait();
+                    AuthDatabase.Save(Obj!).Wait();
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -109,7 +110,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.SaveAuth(Obj!).Wait();
+                    AuthDatabase.Save(Obj!).Wait();
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -141,7 +142,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.SaveAuth(Obj!).Wait();
+                    AuthDatabase.Save(Obj!).Wait();
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -180,7 +181,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.SaveAuth(Obj!).Wait();
+                    AuthDatabase.Save(Obj!).Wait();
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -219,7 +220,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.SaveAuth(Obj!).Wait();
+                    AuthDatabase.Save(Obj!).Wait();
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();

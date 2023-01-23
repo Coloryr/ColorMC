@@ -1,26 +1,22 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
+using Avalonia.Data.Converters;
+using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using ColorMC.Core;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
-using System.Collections.Generic;
-using System;
-using System.Formats.Tar;
-using System.IO;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.UIBinding;
-using Avalonia.Interactivity;
 using ColorMC.Gui.Utils.LaunchSetting;
-using ColorMC.Core;
-using System.Linq;
-using Avalonia.Data.Converters;
-using Avalonia.Platform;
-using Avalonia;
-using System.Globalization;
-using System.Collections.ObjectModel;
-using Avalonia.Controls.Models.TreeDataGrid;
-using Avalonia.Media.Imaging;
 using ReactiveUI;
-using Avalonia.Controls.Templates;
-using System.ComponentModel;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -200,7 +196,7 @@ public class FileTreeNodeModel : ReactiveObject
                 list.AddRange(item.GetUnSelectItems());
             }
         }
-        
+
         if (!IsChecked && !IsDirectory)
         {
             list.Add(System.IO.Path.GetFullPath(Path));
@@ -269,11 +265,11 @@ public class FilesPageViewModel : ReactiveObject
 
         Source.RowSelection!.SingleSelect = false;
 
-        _root = new FileTreeNodeModel(obj.GetBaseDir(), null, true, true);
+        _root = new FileTreeNodeModel(obj.GetBasePath(), null, true, true);
         Source.Items = new[] { _root };
     }
 
-    public List<string> GetUnSelectItems() 
+    public List<string> GetUnSelectItems()
     {
         return _root.GetUnSelectItems();
     }
@@ -371,7 +367,7 @@ public partial class Tab6Control : UserControl
             try
             {
                 await GameBinding.ExportGame(Obj, file, list, PackType.ColorMC);
-                GameBinding.OpFile(file);
+                BaseBinding.OpFile(file, true);
             }
             catch (Exception e1)
             {
@@ -390,7 +386,7 @@ public partial class Tab6Control : UserControl
         }
     }
 
-    private void Load() 
+    private void Load()
     {
         FilesPageViewModel = new FilesPageViewModel(Obj);
         FileViewer.Source = Files.Source;

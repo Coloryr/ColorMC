@@ -1,5 +1,4 @@
 using Avalonia;
-using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
@@ -184,7 +183,7 @@ public partial class AddModWindow : Window
             control.SetWindow(this);
             control.Load(item);
             ListBox_Items.Children.Add(control);
-            if (Obj.Datas.ContainsKey(item.id))
+            if (Obj.CurseForgeMods.ContainsKey(item.id))
             {
                 control.SetDownloadDone(true);
             }

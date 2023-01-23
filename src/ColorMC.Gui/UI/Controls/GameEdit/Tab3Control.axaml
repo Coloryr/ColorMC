@@ -42,7 +42,7 @@
                     Height="25"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Button2}" />
+                    Content="{setting:Localize Button.OpFile}" />
                 <Button
                     Name="Button3"
                     Width="85"

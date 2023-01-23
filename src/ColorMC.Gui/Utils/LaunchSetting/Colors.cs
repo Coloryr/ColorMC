@@ -1,13 +1,10 @@
-﻿using Avalonia;
-using Avalonia.Controls.Documents;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Threading;
 using ColorMC.Core;
 using System;
 using System.ComponentModel;
 using System.Threading;
-using System.Timers;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 
@@ -62,19 +59,19 @@ public class Colors : INotifyPropertyChanged
     public Colors()
     {
         timer = new(Tick)
-        { 
+        {
             Name = "ColorMC-RGB"
         };
         run = true;
         timer.Start();
     }
 
-    public void Stop() 
+    public void Stop()
     {
         run = false;
     }
 
-    public void EnableRGB() 
+    public void EnableRGB()
     {
         rbg = true;
 

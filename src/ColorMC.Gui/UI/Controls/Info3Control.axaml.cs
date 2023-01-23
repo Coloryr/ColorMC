@@ -1,7 +1,5 @@
-using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 

@@ -6,25 +6,19 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
-public partial class Flyouts1Control : UserControl
+public partial class Flyouts4Control : UserControl
 {
-    private ModDisplayObj Obj;
+    private ScreenshotDisplayObj Obj;
     private FlyoutBase FlyoutBase;
-    private Tab4Control Con;
-    public Flyouts1Control()
+    private Tab9Control Con;
+    public Flyouts4Control()
     {
         InitializeComponent();
 
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
-        Button3.Click += Button3_Click;
     }
 
-    private void Button3_Click(object? sender, RoutedEventArgs e)
-    {
-        FlyoutBase.Hide();
-        BaseBinding.OpFile(Obj.Local, true);
-    }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
@@ -35,10 +29,10 @@ public partial class Flyouts1Control : UserControl
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        Con.DisE(Obj);
+        BaseBinding.OpFile(Obj.Local, true);
     }
 
-    public void Set(FlyoutBase fb, ModDisplayObj obj, Tab4Control con)
+    public void Set(FlyoutBase fb, ScreenshotDisplayObj obj, Tab9Control con)
     {
         Obj = obj;
         Con = con;
@@ -46,18 +40,18 @@ public partial class Flyouts1Control : UserControl
     }
 }
 
-public class GameEditFlyout1 : FlyoutBase
+public class GameEditFlyout4 : FlyoutBase
 {
-    private ModDisplayObj Obj;
-    private Tab4Control Con;
-    public GameEditFlyout1(Tab4Control con, ModDisplayObj obj)
+    private ScreenshotDisplayObj Obj;
+    private Tab9Control Con;
+    public GameEditFlyout4(Tab9Control con, ScreenshotDisplayObj obj)
     {
         Con = con;
         Obj = obj;
     }
     protected override Control CreatePresenter()
     {
-        var control = new Flyouts1Control();
+        var control = new Flyouts4Control();
         control.Set(this, Obj, Con);
         return control;
     }

@@ -87,6 +87,14 @@ public static class ConfigUtils
                 }
                 Config.Window = MakeWindowSettingConfig();
             }
+            if (Config.GameCheck == null)
+            {
+                if (quit)
+                {
+                    return false;
+                }
+                Config.GameCheck = MakeGameCheckConfig();
+            }
         }
 
         BaseClient.Init();
@@ -113,7 +121,8 @@ public static class ConfigUtils
             JavaList = new(),
             Http = MakeHttpConfig(),
             DefaultJvmArg = MakeJvmArgConfig(),
-            Window = MakeWindowSettingConfig()
+            Window = MakeWindowSettingConfig(),
+            GameCheck = MakeGameCheckConfig()
         };
     }
 
@@ -152,13 +161,14 @@ public static class ConfigUtils
         };
     }
 
-    public static void CopyTo(this JvmArgObj obj1, JvmArgObj obj2)
+    public static GameCheckObj MakeGameCheckConfig()
     {
-        obj2.JvmArgs = obj1.JvmArgs;
-        obj2.GCArgument = obj1.GCArgument;
-        obj2.GC = obj1.GC;
-        obj2.JavaAgent = obj1.JavaAgent;
-        obj2.MaxMemory = obj1.MaxMemory;
-        obj2.MinMemory = obj1.MinMemory;
+        return new()
+        { 
+            CheckCore = true,
+            CheckAssets = true,
+            CheckLib = true,
+            CheckMod = true
+        };
     }
 }

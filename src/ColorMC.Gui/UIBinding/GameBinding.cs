@@ -312,11 +312,12 @@ public static class GameBinding
 
     public static void DeleteMod(ModObj mod)
     {
-        foreach (var item in mod.Game.Datas)
+        string name = new FileInfo(mod.Local).Name;
+        foreach (var item in mod.Game.CurseForgeMods)
         {
-            if (item.Value.File == new FileInfo(mod.Local).Name)
+            if (item.Value.File == name)
             {
-                mod.Game.Datas.Remove(item.Key);
+                mod.Game.CurseForgeMods.Remove(item.Key);
                 mod.Game.SaveCurseForgeMod();
                 break;
             }
@@ -326,42 +327,13 @@ public static class GameBinding
 
     public static void AddMods(GameSettingObj obj, List<string> file)
     {
-        foreach (var item in file)
-        {
-            var info = new FileInfo(item);
-            var info1 = new FileInfo(Path.GetFullPath(obj.GetModsPath() + "/" + info.Name));
-            if (info1.Exists)
-            {
-                info1.Delete();
-            }
-
-            File.Copy(info.FullName, info1.FullName);
-        }
-    }
-
-    public static void OpFile(string item)
-    {
-        switch (SystemInfo.Os)
-        {
-            case OsType.Windows:
-                System.Diagnostics.Process.Start("explorer",
-                    $@"/select,{item}");
-                break;
-            case OsType.Linux:
-                System.Diagnostics.Process.Start("nautilus",
-                    '"' + item + '"');
-                break;
-            case OsType.MacOS:
-                System.Diagnostics.Process.Start("open",
-                    '"' + item + '"');
-                break;
-        }
+        obj.AddMods(file);
     }
 
     public static List<string> GetAllConfig(GameSettingObj obj)
     {
         var list = new List<string>();
-        var dir = obj.GetGameDir().Length + 1;
+        var dir = obj.GetGamePath().Length + 1;
 
         var file = obj.GetOptionsFile();
         if (!File.Exists(file))
@@ -383,14 +355,14 @@ public static class GameBinding
 
     public static string ReadConfigFile(GameSettingObj obj, string name)
     {
-        var dir = obj.GetGameDir();
+        var dir = obj.GetGamePath();
 
         return File.ReadAllText(Path.GetFullPath(dir + "/" + name));
     }
 
     public static void SaveConfigFile(GameSettingObj obj, string name, string text)
     {
-        var dir = obj.GetGameDir();
+        var dir = obj.GetGamePath();
 
         File.WriteAllText(Path.GetFullPath(dir + "/" + name), text);
     }
@@ -452,13 +424,13 @@ public static class GameBinding
             SHA1 = data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault()
         };
-        if (obj.Datas.ContainsKey(obj1.ModId))
+        if (obj.CurseForgeMods.ContainsKey(obj1.ModId))
         {
-            obj.Datas[obj1.ModId] = obj1;
+            obj.CurseForgeMods[obj1.ModId] = obj1;
         }
         else
         {
-            obj.Datas.Add(obj1.ModId, obj1);
+            obj.CurseForgeMods.Add(obj1.ModId, obj1);
         }
         obj.SaveCurseForgeMod();
     }
@@ -513,7 +485,7 @@ public static class GameBinding
         {
             Name = data.displayName,
             Url = data.downloadUrl,
-            Local = Path.GetFullPath(obj.GetBaseDir() + "/" + data.fileName),
+            Local = Path.GetFullPath(obj.GetBasePath() + "/" + data.fileName),
             SHA1 = data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault(),
             Overwrite = true

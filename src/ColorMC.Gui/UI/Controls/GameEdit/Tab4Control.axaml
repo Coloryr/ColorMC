@@ -97,7 +97,7 @@
                         Width="100"
                         Height="30"
                         Margin="6,0,0,0"
-                        Content="{setting:Localize GameEditWindow.Tab4.Button4}" />
+                        Content="{setting:Localize Button.Input}" />
                 </Expander>
             </Grid>
             <Grid>
@@ -120,7 +120,7 @@
                         Width="100"
                         Height="30"
                         Margin="6,0,0,0"
-                        Content="{setting:Localize GameEditWindow.Tab4.Button1}" />
+                        Content="{setting:Localize Button.Add}" />
                 </Expander>
             </Grid>
             <Grid>
@@ -143,7 +143,7 @@
                         Width="100"
                         Height="30"
                         Margin="6,0,0,0"
-                        Content="{setting:Localize GameEditWindow.Tab4.Button2}" />
+                        Content="{setting:Localize Button.Refash}" />
                 </Expander>
             </Grid>
 

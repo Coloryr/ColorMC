@@ -5,6 +5,12 @@ namespace ColorMC.Core.Game;
 
 public static class Options
 {
+    /// <summary>
+    /// 读取配置文件
+    /// </summary>
+    /// <param name="file">文件</param>
+    /// <param name="sp">分隔符</param>
+    /// <returns></returns>
     public static Dictionary<string, string> ReadOptions(string file, string sp = ":")
     {
         var options = new Dictionary<string, string>();
@@ -25,22 +31,22 @@ public static class Options
 
         return options;
     }
-    public static Dictionary<string, string> ReadOptions(this GameSettingObj game)
-    {
-        var file = game.GetOptionsFile();
-        if (File.Exists(file))
-            return new();
-        return ReadOptions(File.ReadAllText(file));
-    }
+    //public static Dictionary<string, string> ReadOptions(this GameSettingObj game)
+    //{
+    //    var file = game.GetOptionsFile();
+    //    if (File.Exists(file))
+    //        return new();
+    //    return ReadOptions(File.ReadAllText(file));
+    //}
 
-    public static void SaveOptions(this GameSettingObj game, Dictionary<string, string> dir)
-    {
-        string data = "";
-        foreach (var item in dir)
-        {
-            data += $"{item.Key}:{item.Value}{Environment.NewLine}";
-        }
+    //public static void SaveOptions(this GameSettingObj game, Dictionary<string, string> dir)
+    //{
+    //    string data = "";
+    //    foreach (var item in dir)
+    //    {
+    //        data += $"{item.Key}:{item.Value}{Environment.NewLine}";
+    //    }
 
-        File.WriteAllText(game.GetOptionsFile(), data);
-    }
+    //    File.WriteAllText(game.GetOptionsFile(), data);
+    //}
 }

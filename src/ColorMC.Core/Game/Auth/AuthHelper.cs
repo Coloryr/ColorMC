@@ -53,13 +53,14 @@ public static class AuthHelper
     /// <returns>Nide8Injector下载实例</returns>
     public static DownloadItem? ReadyNide8()
     {
-        var item = BuildNide8Item();
-        NowNide8Injector = item.Local;
-
-        if (File.Exists(NowNide8Injector))
+        if (!string.IsNullOrWhiteSpace(NowNide8Injector) &&
+            File.Exists(NowNide8Injector))
         {
             return null;
         }
+
+        var item = BuildNide8Item();
+        NowNide8Injector = item.Local;
 
         return item;
     }
@@ -70,23 +71,21 @@ public static class AuthHelper
     /// <returns>AuthlibInjector下载实例</returns>
     public static async Task<DownloadItem?> ReadyAuthlibInjector()
     {
+        if (!string.IsNullOrWhiteSpace(NowAuthlibInjector) &&
+            File.Exists(NowAuthlibInjector))
+            return null;
+
         var meta = await BaseClient.GetString(UrlHelper.AuthlibInjectorMeta(BaseClient.Source));
-        var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta);
-        if (obj == null)
-            throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+        var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta) 
+            ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
         var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
 
         var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
-        var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(meta);
-        if (obj1 == null)
-            throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
-
+        var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(meta) 
+            ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
         var item1 = BuildAuthlibInjectorItem(obj1);
 
         NowAuthlibInjector = item1.Local;
-
-        if (File.Exists(NowAuthlibInjector))
-            return null;
 
         return item1;
     }

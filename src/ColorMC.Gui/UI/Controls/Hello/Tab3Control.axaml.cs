@@ -80,6 +80,7 @@ public partial class Tab3Control : UserControl
         var file = await Window.Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["HelloWindow.Tab3.Info2"],
+            SuggestedStartLocation = JavaBinding.GetSuggestedStartLocation(),
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {

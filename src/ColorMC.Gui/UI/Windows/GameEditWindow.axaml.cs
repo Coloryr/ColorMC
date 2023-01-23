@@ -1,4 +1,3 @@
-using Avalonia.Animation;
 using Avalonia.Controls;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Controls.GameEdit;
@@ -89,7 +88,7 @@ public partial class GameEditWindow : Window
         }
     }
 
-    public void ClearLog() 
+    public void ClearLog()
     {
         tab7.Clear();
     }

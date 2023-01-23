@@ -30,7 +30,7 @@ public static class Worlds
         {
             MaxDegreeOfParallelism = 5
         };
-        await Parallel.ForEachAsync(info.GetDirectories(), options, (item, cacenl) => 
+        await Parallel.ForEachAsync(info.GetDirectories(), options, (item, cacenl) =>
         {
             bool find = false;
             foreach (var item1 in item.GetFiles())
@@ -113,9 +113,9 @@ public static class Worlds
 
     public static void Remove(this WorldObj world)
     {
-        string dir = Path.GetFullPath(world.Game.GetBaseDir() + "/remove_worlds");
+        string dir = Path.GetFullPath(world.Game.GetBasePath() + "/remove_worlds");
         Directory.CreateDirectory(dir);
-        Directory.Move(world.Local, Path.GetFullPath(dir + "/" + world.LevelName));
+        Directory.Move(world.Local, Path.GetFullPath(dir + world.LevelName));
     }
 
     public static async Task<bool> ImportWorldZip(this GameSettingObj obj, string file)

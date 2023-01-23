@@ -1,5 +1,4 @@
-﻿using Avalonia.X11;
-using ColorMC.Core.Game.Auth;
+﻿using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
@@ -30,7 +29,7 @@ public static class UserBinding
     {
         if (type == 0)
         {
-            await AuthDatabase.SaveAuth(new()
+            await AuthDatabase.Save(new()
             {
                 UserName = input!,
                 ClientToken = Funtcions.NewUUID(),
@@ -48,7 +47,7 @@ public static class UserBinding
                 3 => await BaseAuth.LoginWithAuthlibInjector(input!, input1!, input2!),
                 4 => await BaseAuth.LoginWithLittleSkin(input1!, input2!),
                 5 => await BaseAuth.LoginWithLittleSkin(input1!, input2!, input!),
-                _ => (AuthState.Profile, LoginState.ErrorType, null, null, null)
+                _ => (AuthState.Profile, LoginState.Error, null, null, null)
             };
 
             if (State1 != LoginState.Done)
@@ -63,7 +62,7 @@ public static class UserBinding
                     return (false, Message);
                 }
             }
-            await AuthDatabase.SaveAuth(Obj!);
+            await AuthDatabase.Save(Obj!);
             return (true, null);
         }
 
@@ -130,7 +129,7 @@ public static class UserBinding
         GuiConfigUtils.Save();
     }
 
-    public static LoginObj? GetUser(string uuid, AuthType type) 
+    public static LoginObj? GetUser(string uuid, AuthType type)
     {
         return AuthDatabase.Get(uuid, type);
     }

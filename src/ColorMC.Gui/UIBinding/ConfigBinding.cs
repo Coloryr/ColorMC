@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using ColorMC.Core.Net;
+﻿using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -30,15 +29,15 @@ public static class ConfigBinding
         return (ConfigUtils.Config, GuiConfigUtils.Config);
     }
 
-    public static void SetRgb(bool enable) 
+    public static void SetRgb(bool enable)
     {
         GuiConfigUtils.Config.RGB = enable;
-        
+
         GuiConfigUtils.Save();
         Colors.Load();
     }
 
-    public static void SetRgb(int v1, int v2) 
+    public static void SetRgb(int v1, int v2)
     {
         GuiConfigUtils.Config.RGBS = v1;
         GuiConfigUtils.Config.RGBV = v2;
@@ -46,7 +45,7 @@ public static class ConfigBinding
         Colors.Load();
     }
 
-    public static void SetColor(string main, string back, string back1, string font1, string font2) 
+    public static void SetColor(string main, string back, string back1, string font1, string font2)
     {
         GuiConfigUtils.Config.ColorMain = main;
         GuiConfigUtils.Config.ColorBack = back;
@@ -65,7 +64,7 @@ public static class ConfigBinding
         App.OnPicUpdate();
     }
 
-    public static async Task SetBackPic(string dir, int data) 
+    public static async Task SetBackPic(string dir, int data)
     {
         GuiConfigUtils.Config.BackEffect = data;
         GuiConfigUtils.Config.BackImage = dir;

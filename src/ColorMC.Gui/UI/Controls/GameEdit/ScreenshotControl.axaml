@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Flyouts3Control"
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.ScreenshotControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,20 +10,23 @@
     mc:Ignorable="d">
     <Grid>
         <Rectangle
-            Fill="{setting:Colors Back}"
+            Name="Rectangle1"
+            Fill="{setting:Colors TranBack}"
+            IsVisible="False"
             Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
+
         <StackPanel Margin="5">
-            <Button
-                Name="Button1"
-                Width="80"
-                Height="25"
-                Content="{setting:Localize Button.OpFile}" />
-            <Button
-                Name="Button2"
-                Width="80"
-                Height="25"
-                Content="{setting:Localize GameEditWindow.Flyouts3.Button2}" />
+            <Image
+                Name="Image1"
+                Width="200"
+                Height="120"
+                Source="resm:ColorMC.Gui.Resource.Pic.game.png"
+                Stretch="UniformToFill" />
+            <Label
+                Name="Label1"
+                HorizontalAlignment="Center"
+                Content="Name" />
         </StackPanel>
     </Grid>
 </UserControl>

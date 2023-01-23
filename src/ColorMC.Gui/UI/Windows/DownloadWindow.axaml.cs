@@ -1,4 +1,3 @@
-using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -143,7 +142,7 @@ public partial class DownloadWindow : Window
 
     private async void DownloadWindow_Closing(object? sender, CancelEventArgs e)
     {
-        if (OtherBinding.GetDownloadState() != CoreRunState.End)
+        if (BaseBinding.GetDownloadState() != CoreRunState.End)
         {
             var res = await Info.ShowWait(Localizer.Instance["DownloadWindow.Info4"]);
             if (res)
@@ -185,7 +184,7 @@ public partial class DownloadWindow : Window
             if (item.State == DownloadItemState.Done
                 && List1.TryGetValue(item.Name, out var item1))
             {
-                var data = OtherBinding.GetDownloadSize();
+                var data = BaseBinding.GetDownloadSize();
                 Load();
                 List.Remove(item1);
             }
@@ -209,7 +208,7 @@ public partial class DownloadWindow : Window
 
     public void Load()
     {
-        var data = OtherBinding.GetDownloadSize();
+        var data = BaseBinding.GetDownloadSize();
         ProgressBar1.Maximum = 100;
         ProgressBar1.Value = (double)data.Item2 / data.Item1 * 100;
         Label2.Content = data.Item1;

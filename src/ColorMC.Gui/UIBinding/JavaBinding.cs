@@ -1,10 +1,13 @@
-﻿using ColorMC.Core.LaunchPath;
+﻿using Avalonia.Platform.Storage;
+using Avalonia.Platform.Storage.FileIO;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -101,5 +104,24 @@ public static class JavaBinding
         }
 
         return res;
+    }
+
+    public static IStorageFolder? GetSuggestedStartLocation()
+    {
+        switch (SystemInfo.Os)
+        {
+            case OsType.Windows:
+                if (Directory.Exists("C:\\Program Files\\java"))
+                    return new BclStorageFolder(new DirectoryInfo("C:\\Program Files\\java"));
+
+                break;
+            case OsType.MacOS:
+                if (Directory.Exists("/Library/Java/JavaVirtualMachines/"))
+                    return new BclStorageFolder(new DirectoryInfo("/Library/Java/JavaVirtualMachines/"));
+
+                break;
+        }
+
+        return null;
     }
 }

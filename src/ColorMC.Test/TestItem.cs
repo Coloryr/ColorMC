@@ -140,7 +140,7 @@ public static class TestItem
                 Loader = Loaders.Forge,
                 LoaderVersion = "14.23.5.2860"
             };
-            var process = game.StartGame(login.Obj!, null).Result;
+            var process = game.StartGame(login.Obj!).Result;
             process?.WaitForExit();
         }
     }
@@ -155,7 +155,7 @@ public static class TestItem
             UserName = "Test"
         };
 
-        var process = game[0].StartGame(login, null).Result;
+        var process = game[0].StartGame(login).Result;
         process?.WaitForExit();
     }
 
@@ -279,7 +279,7 @@ public static class TestItem
 
         game.Version = "1.19.2";
         game.LoaderVersion = "43.1.52";
-        process = game.StartGame(login, null).Result;
+        process = game.StartGame(login).Result;
         process?.WaitForExit();
         Console.WriteLine("exit");
         Console.ReadLine();
@@ -302,7 +302,7 @@ public static class TestItem
                 Loader = Loaders.Forge,
                 LoaderVersion = "40.1.85"
             };
-            var process = game.StartGame(login.Obj, null).Result;
+            var process = game.StartGame(login.Obj).Result;
             process?.WaitForExit();
         }
     }

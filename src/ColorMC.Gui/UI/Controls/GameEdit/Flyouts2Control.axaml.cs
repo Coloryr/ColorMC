@@ -35,7 +35,7 @@ public partial class Flyouts2Control : UserControl
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        GameBinding.OpFile(Obj.Local);
+        BaseBinding.OpFile(Obj.Local, false);
     }
 
     public void Set(FlyoutBase fb, WorldDisplayObj obj, Tab5Control con)
