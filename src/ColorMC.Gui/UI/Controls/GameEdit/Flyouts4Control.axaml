@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Flyouts2Control"
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Flyouts4Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -23,12 +23,7 @@
                 Name="Button2"
                 Width="80"
                 Height="25"
-                Content="{setting:Localize GameEditWindow.Flyouts2.Button2}" />
-            <Button
-                Name="Button3"
-                Width="80"
-                Height="25"
-                Content="{setting:Localize GameEditWindow.Flyouts2.Button3}" />
+                Content="{setting:Localize Button.Delete}" />
         </StackPanel>
     </Grid>
 </UserControl>

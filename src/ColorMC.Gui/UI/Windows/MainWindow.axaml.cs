@@ -3,7 +3,6 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -86,7 +85,7 @@ public partial class MainWindow : Window
         }
     }
 
-    public void GameClose(GameSettingObj obj) 
+    public void GameClose(GameSettingObj obj)
     {
         if (Launchs.Remove(obj, out var con))
         {

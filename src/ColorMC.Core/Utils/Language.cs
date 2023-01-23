@@ -97,7 +97,6 @@ public static class LanguageHelper
             LoginState.TimeOut => GetName("LoginState.TimeOut"),
             LoginState.JsonError => GetName("LoginState.JsonError"),
             LoginState.Error => GetName("LoginState.Error"),
-            LoginState.ErrorType => GetName("LoginState.ErrorType"),
             LoginState.Crash => GetName("LoginState.Crash"),
             _ => GetName("LoginState.Other")
         };
@@ -122,6 +121,8 @@ public static class LanguageHelper
             LaunchState.VersionError => GetName("LaunchState.VersionError"),
             LaunchState.AssetsError => GetName("LaunchState.AssetsError"),
             LaunchState.LoaderError => GetName("LaunchState.LoaderError"),
+            LaunchState.LostFile => GetName("LaunchState.LostFile"),
+            LaunchState.DownloadFail => GetName("LaunchState.DownloadFail"),
             LaunchState.JvmError => GetName("LaunchState.JvmError"),
             _ => GetName("LaunchState.Other")
         };

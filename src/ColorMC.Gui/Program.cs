@@ -1,9 +1,7 @@
 using Avalonia;
 using Avalonia.Media;
 using System;
-using System.Diagnostics;
 using System.Text;
-using System.Threading;
 
 namespace ColorMC.Gui;
 

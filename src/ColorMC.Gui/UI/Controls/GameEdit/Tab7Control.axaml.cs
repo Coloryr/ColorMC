@@ -1,10 +1,10 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using System;
 using System.Timers;
-using Avalonia.Controls.Primitives;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -74,7 +74,7 @@ public partial class Tab7Control : UserControl
         CheckBox2.IsChecked = false;
     }
 
-    public void Clear() 
+    public void Clear()
     {
         Dispatcher.UIThread.Post(() =>
         {
@@ -82,7 +82,7 @@ public partial class Tab7Control : UserControl
         });
     }
 
-    public void Log(string data) 
+    public void Log(string data)
     {
         if (!timer.Enabled)
         {

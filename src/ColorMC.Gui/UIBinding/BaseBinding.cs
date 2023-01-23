@@ -1,6 +1,7 @@
 ﻿using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -9,6 +10,7 @@ using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -48,11 +50,11 @@ public static class BaseBinding
         {
             win.ClearLog();
         }
-        var res = await Task.Run(() => 
+        var res = await Task.Run(() =>
         {
             try
             {
-                return obj.StartGame(obj1, null).Result;
+                return obj.StartGame(obj1).Result;
             }
             catch (Exception e)
             {
@@ -67,7 +69,7 @@ public static class BaseBinding
             res.Exited += (a, b) =>
             {
                 if (Games.Remove(res, out var obj1))
-                { 
+                {
                     App.MainWindow?.GameClose(obj1);
                 }
             };
@@ -117,5 +119,97 @@ public static class BaseBinding
     {
         App.LoadLanguage(type);
         Localizer.Instance.Reload();
+    }
+
+    public static (int, int) GetDownloadSize()
+    {
+        return (DownloadManager.AllSize, DownloadManager.DoneSize);
+    }
+
+    public static CoreRunState GetDownloadState()
+    {
+        return DownloadManager.State;
+    }
+
+    public static List<string> GetDownloadSources()
+    {
+        var list = new List<string>();
+        Array values = Enum.GetValues(typeof(SourceLocal));
+        foreach (SourceLocal value in values)
+        {
+            list.Add(value.GetName());
+        }
+
+        return list;
+    }
+
+    public static List<string> GetWindowTranTypes()
+    {
+        return new()
+        {
+            Localizer.Instance["OtherBinding.TranTypes.Item1"],
+            Localizer.Instance["OtherBinding.TranTypes.Item2"],
+            Localizer.Instance["OtherBinding.TranTypes.Item3"],
+            Localizer.Instance["OtherBinding.TranTypes.Item4"],
+            Localizer.Instance["OtherBinding.TranTypes.Item5"]
+        };
+    }
+
+    public static List<string> GetLanguages()
+    {
+        var list = new List<string>();
+        Array values = Enum.GetValues(typeof(LanguageType));
+        foreach (LanguageType value in values)
+        {
+            list.Add(value.GetName());
+        }
+
+        return list;
+    }
+
+    public static void OpFile(string item, bool file)
+    {
+        switch (SystemInfo.Os)
+        {
+            case OsType.Windows:
+                Process.Start("explorer",
+                    $@"/select,{item}");
+                break;
+            case OsType.Linux:
+                Process.Start("nautilus",
+                    '"' + item + '"');
+                break;
+            case OsType.MacOS:
+                if (file)
+                {
+                    var file1 = new FileInfo(item);
+                    Process.Start("open", '"' + file1.Directory.FullName + '"');
+                }
+                else
+                {
+                    Process.Start("open",
+                        '"' + item + '"');
+                }
+                break;
+        }
+    }
+
+    public static void OpUrl(string url)
+    {
+        switch (SystemInfo.Os)
+        {
+            case OsType.Windows:
+                Process.Start("start",
+                    '"' + url + '"');
+                break;
+            case OsType.Linux:
+                Process.Start("xdg-open",
+                    '"' + url + '"');
+                break;
+            case OsType.MacOS:
+                Process.Start("open -a Safari",
+                    '"' + url + '"');
+                break;
+        }
     }
 }

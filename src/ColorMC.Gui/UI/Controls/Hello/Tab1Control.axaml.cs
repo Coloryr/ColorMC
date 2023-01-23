@@ -13,7 +13,7 @@ public partial class Tab1Control : UserControl
     {
         InitializeComponent();
 
-        Lang.Items = OtherBinding.GetLanguages();
+        Lang.Items = BaseBinding.GetLanguages();
         Lang.SelectedIndex = 0;
 
         Button_Next.Click += Button_Next_Click;

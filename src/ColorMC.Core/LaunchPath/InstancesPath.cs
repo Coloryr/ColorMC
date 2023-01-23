@@ -141,12 +141,12 @@ public static class InstancesPath
         File.WriteAllText(obj.GetGameJsonPath(), JsonConvert.SerializeObject(obj));
     }
 
-    public static string GetBaseDir(this GameSettingObj obj)
+    public static string GetBasePath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}");
     }
 
-    public static string GetGameDir(this GameSettingObj obj)
+    public static string GetGamePath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}");
     }
@@ -178,17 +178,17 @@ public static class InstancesPath
 
     public static string GetScreenshotsPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name7}");
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name7}/");
     }
 
     public static string GetResourcepacksPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name8}");
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name8}/");
     }
 
     public static string GetShaderpacksPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name9}");
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name9}/");
     }
 
     public static string GetUserCacheFile(this GameSettingObj obj)
@@ -208,20 +208,20 @@ public static class InstancesPath
 
     public static string GetModsPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name13}");
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name13}/");
     }
 
     public static string GetSavesPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}");
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}/");
     }
 
     public static string GetConfigPath(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name15}");
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name15}/");
     }
 
-    public static string GetCurseForgeModJson(this GameSettingObj obj)
+    public static string GetCurseForgeModJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name16}");
     }
@@ -243,16 +243,16 @@ public static class InstancesPath
         }
 
         game.DirName = game.Name;
-        game.Datas ??= new();
+        game.CurseForgeMods ??= new();
 
-        var dir = game.GetBaseDir();
+        var dir = game.GetBasePath();
         if (Directory.Exists(dir))
         {
             return null;
         }
 
         Directory.CreateDirectory(dir);
-        Directory.CreateDirectory(game.GetGameDir());
+        Directory.CreateDirectory(game.GetGamePath());
 
         game.Save();
         AddToGroup(game);
@@ -353,7 +353,7 @@ public static class InstancesPath
         });
         if (obj1 != null)
         {
-            await PathC.CopyFiles(GetGameDir(obj), GetGameDir(obj1));
+            await PathC.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
             if (obj.ModPack)
             {
                 File.Copy(obj.GetModJsonFile(), obj1.GetModJsonFile(), true);
@@ -368,22 +368,22 @@ public static class InstancesPath
 
     public static void SaveCurseForgeMod(this GameSettingObj obj)
     {
-        if (obj.Datas == null)
+        if (obj.CurseForgeMods == null)
             return;
 
-        File.WriteAllText(obj.GetCurseForgeModJson(), JsonConvert.SerializeObject(obj.Datas));
+        File.WriteAllText(obj.GetCurseForgeModJsonFile(), JsonConvert.SerializeObject(obj.CurseForgeMods));
     }
 
     public static void ReadCurseForgeMod(this GameSettingObj obj)
     {
-        string file = obj.GetCurseForgeModJson();
+        string file = obj.GetCurseForgeModJsonFile();
         if (!File.Exists(file))
         {
-            obj.Datas = new();
+            obj.CurseForgeMods = new();
             return;
         }
 
-        obj.Datas = JsonConvert.DeserializeObject<Dictionary<long, CurseForgeModObj1>>(
+        obj.CurseForgeMods = JsonConvert.DeserializeObject<Dictionary<long, CurseForgeModObj1>>(
             File.ReadAllText(file)) ?? new();
 
         if (obj.ModPack)
@@ -391,7 +391,7 @@ public static class InstancesPath
 
         var list = PathC.GetAllFile(obj.GetModsPath());
         var remove = new List<long>();
-        foreach (var item in obj.Datas)
+        foreach (var item in obj.CurseForgeMods)
         {
             bool find = false;
             foreach (var item1 in list)
@@ -411,7 +411,7 @@ public static class InstancesPath
 
         if (remove.Count != 0)
         {
-            remove.ForEach(item => obj.Datas.Remove(item));
+            remove.ForEach(item => obj.CurseForgeMods.Remove(item));
             obj.SaveCurseForgeMod();
         }
     }
@@ -419,7 +419,7 @@ public static class InstancesPath
     public static Task Remove(this GameSettingObj obj)
     {
         RemoveFromGroup(obj);
-        return PathC.DeleteFiles(obj.GetBaseDir());
+        return PathC.DeleteFiles(obj.GetBasePath());
     }
 
     public static async Task<bool> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data)
@@ -435,13 +435,13 @@ public static class InstancesPath
         return await InstallFromZip(item.Local, PackType.CurseForge);
     }
 
-    public static Task Export(this GameSettingObj obj, 
-        string file, List<string> filter, PackType type) 
+    public static Task Export(this GameSettingObj obj,
+        string file, List<string> filter, PackType type)
     {
         switch (type)
         {
             case PackType.ColorMC:
-                return ZipFloClass.ZipFile(obj.GetBaseDir(), file, filter);
+                return ZipFloClass.ZipFile(obj.GetBasePath(), file, filter);
         }
         return null;
     }
@@ -490,7 +490,7 @@ public static class InstancesPath
                             if (e.IsFile)
                             {
                                 using var stream = zFile.GetInputStream(e);
-                                string file = Path.GetFullPath(game.GetGameDir() +
+                                string file = Path.GetFullPath(game.GetGamePath() +
                      e.Name.Substring(game.Name.Length));
                                 FileInfo info2 = new(file);
                                 info2.Directory.Create();
@@ -638,7 +638,7 @@ public static class InstancesPath
                             if (e.IsFile)
                             {
                                 using var stream = zFile.GetInputStream(e);
-                                string file = Path.GetFullPath(game.GetBaseDir() +
+                                string file = Path.GetFullPath(game.GetBasePath() +
                     e.Name.Substring(game.Name.Length));
                                 FileInfo info2 = new(file);
                                 info2.Directory.Create();
@@ -771,7 +771,7 @@ public static class InstancesPath
                             if (e.IsFile)
                             {
                                 using var stream = zFile.GetInputStream(e);
-                                string file = Path.GetFullPath(game.GetGameDir() +
+                                string file = Path.GetFullPath(game.GetGamePath() +
                      overrides.Substring(game.Name.Length));
                                 FileInfo info2 = new(file);
                                 info2.Directory.Create();

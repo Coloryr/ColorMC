@@ -33,7 +33,7 @@ public partial class ResourcePackControl : UserControl
         Label1.Text = pack.Local;
         Label2.Text = pack.PackFormat.ToString();
         Label3.Text = pack.Description;
-        Label4.Text = pack.Pack.Broken ? 
+        Label4.Text = pack.Pack.Broken ?
             Localizer.Instance["GameEditWindow.Tab8.Info9"] : "";
 
         if (pack.Icon != null)

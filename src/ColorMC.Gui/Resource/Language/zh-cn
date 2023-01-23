@@ -248,13 +248,9 @@
 	<sys:String x:Key="GameEditWindow.Tab3.Text2">过滤器</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Text3">无法编辑此文件</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Button1">筛选文件</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab3.Button2">打开文件夹</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Button3">保存修改</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Button4">刷新列表</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab4.Button1">添加</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab4.Button2">刷新</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Button3">过滤</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab4.Button4">导入</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Text1">过滤内容</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Text2">过滤选项</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Text3">损坏的Mod</sys:String>
@@ -305,11 +301,8 @@
 	<sys:String x:Key="GameEditWindow.Control.Text5">整合包格式</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button1">启用/禁用</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button2">删除Mod</sys:String>
-	<sys:String x:Key="GameEditWindow.Flyouts1.Button3">打开文件夹</sys:String>
-	<sys:String x:Key="GameEditWindow.Flyouts2.Button1">打开文件夹</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts2.Button2">导出世界</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts2.Button3">删除世界</sys:String>
-	<sys:String x:Key="GameEditWindow.Flyouts3.Button1">打开文件夹</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts3.Button2">删除资源包</sys:String>
 	<sys:String x:Key="GameEditWindow.Info1">正在读取游戏版本</sys:String>
 	<sys:String x:Key="GameEditWindow.Error1">版本读取失败</sys:String>
@@ -456,6 +449,7 @@
 	<sys:String x:Key="Error5">找不到指定的Java</sys:String>
 	<sys:String x:Key="Error6">游戏启动失败</sys:String>
 
+	<sys:String x:Key="Button.OpFile">打开文件夹</sys:String>
 	<sys:String x:Key="Button.Set">设置</sys:String>
 	<sys:String x:Key="Button.Select">选择文件</sys:String>
 	<sys:String x:Key="Button.Input">导入</sys:String>

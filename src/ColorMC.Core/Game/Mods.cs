@@ -12,6 +12,12 @@ namespace ColorMC.Core.Game;
 
 public static class Mods
 {
+    private static ModComparer ModSort = new();
+    /// <summary>
+    /// 获取Mod列表
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
     public static async Task<List<ModObj>> GetMods(this GameSettingObj obj)
     {
         var list = new List<ModObj>();
@@ -22,12 +28,14 @@ public static class Mods
         {
             return list;
         }
+        var files = info.GetFiles();
 
+        //多线程同时检查
         ParallelOptions options = new()
         {
-            MaxDegreeOfParallelism = 10
+            MaxDegreeOfParallelism = Math.Max(10, files.Length / 10)
         };
-        await Parallel.ForEachAsync(info.GetFiles(), options, async (item, cancel) =>
+        await Parallel.ForEachAsync(files, options, async (item, cancel) =>
         {
             if (item.Extension is not (".jar" or ".disable"))
                 return;
@@ -158,11 +166,15 @@ public static class Mods
         });
 
 
-        list.Sort(new ModComparer());
+        list.Sort(ModSort);
 
         return list;
     }
 
+    /// <summary>
+    /// 禁用Mod
+    /// </summary>
+    /// <param name="mod"></param>
     public static void Disable(this ModObj mod)
     {
         if (mod.Disable)
@@ -175,6 +187,10 @@ public static class Mods
         File.Move(file.FullName, mod.Local);
     }
 
+    /// <summary>
+    /// 启用Mod
+    /// </summary>
+    /// <param name="mod"></param>
     public static void Enable(this ModObj mod)
     {
         if (!mod.Disable)
@@ -187,9 +203,34 @@ public static class Mods
         File.Move(file.FullName, mod.Local);
     }
 
+    /// <summary>
+    /// 删除Mod
+    /// </summary>
+    /// <param name="mod"></param>
     public static void Delete(this ModObj mod)
     {
         File.Delete(mod.Local);
+    }
+
+    /// <summary>
+    /// 导入Mod
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件列表</param>
+    public static void AddMods(this GameSettingObj obj, List<string> file)
+    {
+        string path = obj.GetModsPath();
+        foreach (var item in file)
+        {
+            var info = new FileInfo(item);
+            var info1 = new FileInfo(Path.GetFullPath(path + "/" + info.Name));
+            if (info1.Exists)
+            {
+                info1.Delete();
+            }
+
+            File.Copy(info.FullName, info1.FullName);
+        }
     }
 
     private static List<string> ToStringList(this string obj)
@@ -216,7 +257,7 @@ public static class Mods
     }
 
 
-    class ModComparer : IComparer<ModObj>
+    private class ModComparer : IComparer<ModObj>
     {
         public int Compare(ModObj? x, ModObj? y)
         {

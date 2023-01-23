@@ -82,6 +82,13 @@ public record JvmArgObj
     public uint? MinMemory { get; set; }
 }
 
+public record GameCheckObj
+{ 
+    public bool CheckCore { get; set; }
+    public bool CheckLib { get; set; }
+    public bool CheckAssets { get; set; }
+    public bool CheckMod { get; set; }
+}
 
 public record ConfigObj
 {
@@ -92,4 +99,5 @@ public record ConfigObj
     public HttpObj Http { get; set; }
     public JvmArgObj DefaultJvmArg { get; set; }
     public WindowSettingObj Window { get; set; }
+    public GameCheckObj GameCheck { get; set; }
 }

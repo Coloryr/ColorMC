@@ -10,6 +10,11 @@ namespace ColorMC.Core.Game;
 
 public static class Resourcepacks
 {
+    /// <summary>
+    /// 获取材质包列表
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns></returns>
     public static async Task<List<ResourcepackObj>> GetResourcepacks(this GameSettingObj game)
     {
         var list = new List<ResourcepackObj>();
@@ -63,7 +68,7 @@ public static class Resourcepacks
 
             if (!find)
             {
-                list.Add(new() 
+                list.Add(new()
                 {
                     //Disable = item.Extension is ".disable",
                     Local = Path.GetFullPath(item.FullName),
@@ -75,6 +80,12 @@ public static class Resourcepacks
         return list;
     }
 
+    /// <summary>
+    /// 导入材质包
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public static async Task<bool> ImportResourcepack(this GameSettingObj obj, string file)
     {
         var path = obj.GetResourcepacksPath();

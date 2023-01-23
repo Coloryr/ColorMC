@@ -63,16 +63,16 @@ public partial class Tab2Control : UserControl
 
     private async void Button_SelectFile2_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await  Window.Window.StorageProvider.OpenFilePickerAsync(new()
+        var file = await Window.Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["HelloWindow.Tab2.Info3"],
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
                 new(Localizer.Instance["HelloWindow.Tab2.Text7"])
-                { 
+                {
                      Patterns = new List<string>()
-                     { 
+                     {
                         "*.json"
                      }
                 }

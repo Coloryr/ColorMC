@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
@@ -95,13 +94,6 @@ public partial class Tab8Control : UserControl
             Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
             Load();
         }
-    }
-
-    private void Tab5Control_LayoutUpdated1(object? sender, EventArgs e)
-    {
-        Expander_I.MakePadingNull();
-        Expander_A.MakePadingNull();
-        Expander_R.MakePadingNull();
     }
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)

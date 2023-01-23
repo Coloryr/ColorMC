@@ -93,7 +93,7 @@ public static class AuthDatabase
         }
     }
 
-    public static async Task SaveAuth(LoginObj obj)
+    public static async Task Save(this LoginObj obj)
     {
         if (string.IsNullOrWhiteSpace(obj.UUID))
         {
@@ -139,7 +139,7 @@ public static class AuthDatabase
     {
         Auths.Remove((obj.UUID, obj.AuthType));
         using var sql = GetSqliteConnection();
-        return sql.ExecuteAsync("DELETE FROM auth WHERE UUID=@UUID AND AuthType=@AuthType", 
+        return sql.ExecuteAsync("DELETE FROM auth WHERE UUID=@UUID AND AuthType=@AuthType",
             new { obj.UUID, obj.AuthType });
     }
 

@@ -85,7 +85,7 @@ public static class ZipFloClass
                 await Zip(file, s, staticFile);
             }
 
-            else 
+            else
             {
                 using var fs = File.OpenRead(file);
 
@@ -118,7 +118,7 @@ public static class ZipFloClass
         s.Close();
     }
 
-    private static async Task Zip(string strFile, ZipOutputStream s, 
+    private static async Task Zip(string strFile, ZipOutputStream s,
         string staticFile, List<string> filter)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;

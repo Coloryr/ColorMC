@@ -1,9 +1,7 @@
 using Avalonia;
-using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

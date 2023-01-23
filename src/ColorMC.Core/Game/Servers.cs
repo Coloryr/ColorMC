@@ -53,7 +53,7 @@ public static class Servers
             {
                 tag1.Add(new NbtString("icon", item.Icon));
             }
-            tag1.Add(new NbtByte("acceptTextures", 
+            tag1.Add(new NbtByte("acceptTextures",
                 item.AcceptTextures ? (byte)1 : (byte)0));
             list1.Add(tag1);
         }

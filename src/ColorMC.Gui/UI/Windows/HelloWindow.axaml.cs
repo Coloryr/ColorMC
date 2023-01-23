@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using ColorMC.Core;
-using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Hello;
 using System;

@@ -98,7 +98,7 @@ public static class PackDownload
             if (e.IsFile && e.Name.StartsWith(info.overrides + "/"))
             {
                 using var stream = zFile.GetInputStream(e);
-                string file = Path.GetFullPath(game.GetGameDir() +
+                string file = Path.GetFullPath(game.GetGamePath() +
                     e.Name[info.overrides.Length..]);
                 FileInfo info2 = new(file);
                 info2.Directory.Create();
@@ -111,7 +111,7 @@ public static class PackDownload
         File.WriteAllBytes(game.GetModJsonFile(), array1);
 
         CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
-        game.Datas = new();
+        game.CurseForgeMods = new();
         Size = info.files.Count;
         Now = 0;
         var res = await CurseForge.GetMods(info.files);
@@ -125,14 +125,14 @@ public static class PackDownload
                 {
                     Url = item.downloadUrl,
                     Name = item.fileName,
-                    Local = game.GetGameDir() + "/mods/" + item.fileName,
+                    Local = game.GetGamePath() + "/mods/" + item.fileName,
                     SHA1 = item.hashes.Where(a => a.algo == 1)
                             .Select(a => a.value).FirstOrDefault()
                 };
 
                 list.Add(item11);
 
-                game.Datas.Add(item.modId, new()
+                game.CurseForgeMods.Add(item.modId, new()
                 {
                     Name = item.displayName,
                     File = item.fileName,
@@ -170,14 +170,14 @@ public static class PackDownload
                 {
                     Url = res.data.downloadUrl,
                     Name = res.data.displayName,
-                    Local = InstancesPath.GetGameDir(game) + "/mods/" + res.data.fileName,
+                    Local = InstancesPath.GetGamePath(game) + "/mods/" + res.data.fileName,
                     SHA1 = res.data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault()
                 };
 
                 list.Add(item11);
 
-                game.Datas.Add(res.data.modId, new()
+                game.CurseForgeMods.Add(res.data.modId, new()
                 {
                     Name = res.data.displayName,
                     File = res.data.fileName,

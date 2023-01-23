@@ -28,7 +28,7 @@
                 Name="Button3"
                 Width="80"
                 Height="25"
-                Content="{setting:Localize GameEditWindow.Flyouts1.Button3}" />
+                Content="{setting:Localize Button.OpFile}" />
         </StackPanel>
     </Grid>
 </UserControl>

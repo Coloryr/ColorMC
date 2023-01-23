@@ -10,19 +10,19 @@ public enum AuthType
     /// <summary>
     /// 离线账户
     /// </summary>
-    Offline, 
+    Offline,
     /// <summary>
     /// 正版登录
     /// </summary>
-    OAuth, 
+    OAuth,
     /// <summary>
     /// 统一通行证
     /// </summary>
-    Nide8, 
+    Nide8,
     /// <summary>
     /// 外置登录
     /// </summary>
-    AuthlibInjector, 
+    AuthlibInjector,
     /// <summary>
     /// 皮肤站
     /// </summary>
@@ -33,14 +33,39 @@ public enum AuthType
     SelfLittleSkin
 }
 
+/// <summary>
+/// 目前登录状态
+/// </summary>
 public enum AuthState
 {
     OAuth, XBox, XSTS, Token, Profile
 }
 
+/// <summary>
+/// 登录结果
+/// </summary>
 public enum LoginState
 {
-    Done, TimeOut, JsonError, Error, ErrorType, Crash
+    /// <summary>
+    /// 完成
+    /// </summary>
+    Done, 
+    /// <summary>
+    /// 请求超时
+    /// </summary>
+    TimeOut, 
+    /// <summary>
+    /// 数据错误
+    /// </summary>
+    JsonError, 
+    /// <summary>
+    /// 错误
+    /// </summary>
+    Error, 
+    /// <summary>
+    /// 发送崩溃
+    /// </summary>
+    Crash
 }
 
 public static class BaseAuth
@@ -128,12 +153,6 @@ public static class BaseAuth
         AuthState now = AuthState.OAuth;
         try
         {
-            if (obj.AuthType != AuthType.OAuth)
-            {
-                return (AuthState.OAuth, LoginState.ErrorType, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error7"), null);
-            }
-
             CoreMain.AuthStateUpdate?.Invoke(AuthState.OAuth);
             var oauth = await OAuthAPI.RefreshTokenAsync(obj.Text1);
             if (oauth.Done != LoginState.Done)
@@ -226,13 +245,6 @@ public static class BaseAuth
     {
         try
         {
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
-            if (obj.AuthType != AuthType.Nide8)
-            {
-                return (AuthState.Token, LoginState.ErrorType, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error7"), null);
-            }
-
             var (State, Obj) = await Nide8.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null,
@@ -289,13 +301,6 @@ public static class BaseAuth
     {
         try
         {
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
-            if (obj.AuthType != AuthType.AuthlibInjector)
-            {
-                return (AuthState.Token, LoginState.ErrorType, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error7"), null);
-            }
-
             var (State, Obj) = await AuthlibInjector.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null,
@@ -352,14 +357,6 @@ public static class BaseAuth
     {
         try
         {
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
-            if (obj.AuthType != AuthType.LittleSkin
-                || obj.AuthType != AuthType.SelfLittleSkin)
-            {
-                return (AuthState.Token, LoginState.ErrorType, null,
-                    LanguageHelper.GetName("Core.Http.Login.Error7"), null);
-            }
-
             var (State, Obj) = await LittleSkin.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null,
