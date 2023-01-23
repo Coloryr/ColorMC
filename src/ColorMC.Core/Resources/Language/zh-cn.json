@@ -82,14 +82,6 @@
     "Core.Http.Login.Error18": "LittleSkin登录发生错误",
     "Core.Http.Login.Error19": "LittleSkin刷新登录失败",
     "Core.Http.Login.Error20": "LittleSkin刷新登录发生错误",
-    "Core.Http.Login.Done": "OAuth登录完成",
-    "Core.Http.Login.Done1": "Nide8登陆完成",
-    "Core.Http.Login.Done2": "AuthlibInjector登陆完成",
-    "Core.Http.Login.Done3": "LittleSkin登陆完成",
-    "Core.Http.Login.Refresh": "刷新登录完成",
-    "Core.Http.Login.Refresh1": "Nide8刷新登录完成",
-    "Core.Http.Login.Refresh2": "AuthlibInjector刷新登录完成",
-    "Core.Http.Login.Refresh3": "LittleSkin刷新登录完成",
     "Core.Game.Error1": "Mod解析失败",
     "Core.Game.Error2": "Resourcepack解析失败",
     "Core.Game.Error3": "Resourcepack导入失败",
@@ -181,6 +173,7 @@
     "Difficulty.Hard": "困难难度",
     "Difficulty.Easy": "简单难度",
     "Difficulty.Other": "其他难度",
+    "AuthlibInjector.Error1": "AuthlibInjector信息获取失败",
     "Log.Init.Error": "日志文件初始化错误",
     "Language": "加载语言zh-cn"
   }

@@ -2,6 +2,7 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 
@@ -60,7 +61,7 @@ public static class JavaBinding
             var info = JvmPath.GetInfo(res.Msg);
             if (info == null)
             {
-                return (null, "Java找不到");
+                return (null, Localizer.Instance["Error5"]);
             }
             return (MakeInfo(res.Msg, info), null);
         }

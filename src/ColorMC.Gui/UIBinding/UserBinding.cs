@@ -56,7 +56,7 @@ public static class UserBinding
                 if (Ex != null)
                 {
                     App.ShowError(Message!, Ex);
-                    return (false, "登录发生异常");
+                    return (false, Localizer.Instance["Error4"]);
                 }
                 else
                 {

@@ -12,7 +12,6 @@ public record QLogin
     public string UserName { get; set; }
     public string UUID { get; set; }
     public string AccessToken { get; set; }
-    public string RefreshToken { get; set; }
     public string ClientToken { get; set; }
     public AuthType AuthType { get; set; }
     public string Properties { get; set; }
@@ -46,7 +45,6 @@ public static class AuthDatabase
     `UserName` text,
     `UUID` text,
     `AccessToken` text,
-    `RefreshToken` text,
     `ClientToken` text,
     `AuthType` integer,
     `Properties` text,
@@ -67,8 +65,7 @@ public static class AuthDatabase
         try
         {
             var list = conn.Query<QLogin>("SELECT UserName,UUID,AccessToken," +
-               "RefreshToken,ClientToken," +
-               "AuthType,Properties,Text1,Text2 FROM auth");
+               "ClientToken,AuthType,Properties,Text1,Text2 FROM auth");
 
             Auths.Clear();
 
@@ -83,7 +80,7 @@ public static class AuthDatabase
             {
                 sql.Execute("INSERT INTO auth(`UserName`,`UUID`,`AccessToken`,`RefreshToken`,`ClientToken`," +
                     "`AuthType`,`Properties`,`Text1`,`Text2`) " +
-                    "VALUES (@UserName,@UUID,@AccessToken,@RefreshToken,@ClientToken," +
+                    "VALUES (@UserName,@UUID,@AccessToken,@ClientToken," +
                     "@AuthType,@Properties,@Text1,@Text2)", item.Value.ToQLogin());
             }
 
@@ -130,8 +127,7 @@ public static class AuthDatabase
         Logs.Info(LanguageHelper.GetName("Core.Auth.Read"));
         using var sql = GetSqliteConnection();
         var list = await sql.QueryAsync<QLogin>("SELECT UserName,UUID,AccessToken," +
-            "RefreshToken,ClientToken," +
-            "AuthType,Properties,Text1,Text2 FROM auth");
+            "ClientToken,AuthType,Properties,Text1,Text2 FROM auth");
 
         foreach (var item in list)
         {
@@ -143,15 +139,16 @@ public static class AuthDatabase
     {
         Auths.Remove((obj.UUID, obj.AuthType));
         using var sql = GetSqliteConnection();
-        return sql.ExecuteAsync("DELETE FROM auth WHERE UUID=@UUID AND AuthType=@AuthType", new { obj.UUID, obj.AuthType });
+        return sql.ExecuteAsync("DELETE FROM auth WHERE UUID=@UUID AND AuthType=@AuthType", 
+            new { obj.UUID, obj.AuthType });
     }
 
     private static Task Add(LoginObj obj)
     {
         using var sql = GetSqliteConnection();
-        return sql.ExecuteAsync("INSERT INTO auth(`UserName`,`UUID`,`AccessToken`,`RefreshToken`,`ClientToken`," +
+        return sql.ExecuteAsync("INSERT INTO auth(`UserName`,`UUID`,`AccessToken`,`ClientToken`," +
             "`AuthType`,`Properties`,`Text1`,`Text2`) " +
-            "VALUES (@UserName,@UUID,@AccessToken,@RefreshToken,@ClientToken," +
+            "VALUES (@UserName,@UUID,@AccessToken,@ClientToken," +
             "@AuthType,@Properties,@Text1,@Text2)", obj.ToQLogin());
     }
 
@@ -159,8 +156,7 @@ public static class AuthDatabase
     {
         using var sql = GetSqliteConnection();
         return sql.ExecuteAsync("UPDATE auth SET UserName=@UserName," +
-            "AccessToken=@AccessToken,RefreshToken=@RefreshToken," +
-            "ClientToken=@ClientToken,Properties=@Properties," +
+            "AccessToken=@AccessToken,ClientToken=@ClientToken,Properties=@Properties," +
             "Text1=@Text1,Text2=@Text2 WHERE UUID=@UUID AND AuthType=@AuthType",
             obj.ToQLogin());
     }
@@ -172,7 +168,6 @@ public static class AuthDatabase
             UserName = obj.UserName,
             UUID = obj.UUID,
             AccessToken = obj.AccessToken,
-            RefreshToken = obj.RefreshToken,
             ClientToken = obj.ClientToken,
             AuthType = obj.AuthType,
             Properties = JsonConvert.DeserializeObject<List<UserPropertyObj>>(obj.Properties)!,
@@ -189,7 +184,6 @@ public static class AuthDatabase
             UserName = obj.UserName,
             UUID = obj.UUID,
             AccessToken = obj.AccessToken,
-            RefreshToken = obj.RefreshToken,
             ClientToken = obj.ClientToken,
             AuthType = obj.AuthType,
             Properties = JsonConvert.SerializeObject(obj.Properties),

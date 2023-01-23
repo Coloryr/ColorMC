@@ -9,8 +9,20 @@ namespace ColorMC.Core.Game.Auth;
 
 public static class AuthHelper
 {
+    /// <summary>
+    /// AuthlibInjector 物理位置
+    /// </summary>
     public static string NowAuthlibInjector { get; private set; }
-    public static DownloadItem BuildNide8Item()
+    /// <summary>
+    /// Nide8Injector 物理位置
+    /// </summary>
+    public static string NowNide8Injector { get; private set; }
+
+    /// <summary>
+    /// 创建Nide8Injector下载实例
+    /// </summary>
+    /// <returns>下载实例</returns>
+    private static DownloadItem BuildNide8Item()
     {
         return new()
         {
@@ -19,8 +31,12 @@ public static class AuthHelper
             Local = $"{LibrariesPath.BaseDir}/com/nide8/login2/nide8auth/2.3/nide8auth.2.3.jar",
         };
     }
-
-    public static DownloadItem BuildAuthlibInjectorItem(AuthlibInjectorObj obj)
+    /// <summary>
+    /// 创建AuthlibInjector下载实例
+    /// </summary>
+    /// <param name="obj">AuthlibInjector信息</param>
+    /// <returns>下载实例</returns>
+    private static DownloadItem BuildAuthlibInjectorItem(AuthlibInjectorObj obj)
     {
         return new()
         {
@@ -31,49 +47,47 @@ public static class AuthHelper
         };
     }
 
+    /// <summary>
+    /// 初始化Nide8Injector，存在不下载
+    /// </summary>
+    /// <returns>Nide8Injector下载实例</returns>
     public static DownloadItem? ReadyNide8()
     {
         var item = BuildNide8Item();
-        if (!File.Exists(item.Local))
-            return item;
+        NowNide8Injector = item.Local;
 
-        return null;
+        if (File.Exists(NowNide8Injector))
+        {
+            return null;
+        }
+
+        return item;
     }
 
+    /// <summary>
+    /// 初始化AuthlibInjector，存在不下载
+    /// </summary>
+    /// <returns>AuthlibInjector下载实例</returns>
     public static async Task<DownloadItem?> ReadyAuthlibInjector()
     {
         var meta = await BaseClient.GetString(UrlHelper.AuthlibInjectorMeta(BaseClient.Source));
         var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta);
+        if (obj == null)
+            throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
         var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
 
         var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
         var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(meta);
+        if (obj1 == null)
+            throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
 
         var item1 = BuildAuthlibInjectorItem(obj1);
 
         NowAuthlibInjector = item1.Local;
-        if (!File.Exists(NowAuthlibInjector))
-            return item1;
-        else
-            return null;
-    }
 
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string Message, Exception? Ex)> RefreshToken(this LoginObj obj)
-    {
-        switch (obj.AuthType)
-        {
-            case AuthType.OAuth:
-                return await BaseAuth.RefreshWithOAuth(obj);
-            case AuthType.Nide8:
-                return await BaseAuth.RefreshWithNide8(obj);
-            case AuthType.AuthlibInjector:
-                return await BaseAuth.RefreshWithAuthlibInjector(obj);
-            case AuthType.LittleSkin:
-            case AuthType.SelfLittleSkin:
-                return await BaseAuth.RefreshWithLittleSkin(obj);
-            default:
-                return (AuthState.Token, LoginState.Done, obj,
-                    LanguageHelper.GetName("Core.Http.Login.None"), null);
-        }
+        if (File.Exists(NowAuthlibInjector))
+            return null;
+
+        return item1;
     }
 }

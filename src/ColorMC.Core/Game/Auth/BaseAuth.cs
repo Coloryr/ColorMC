@@ -7,7 +7,30 @@ namespace ColorMC.Core.Game.Auth;
 
 public enum AuthType
 {
-    Offline, OAuth, Nide8, AuthlibInjector, LittleSkin, SelfLittleSkin
+    /// <summary>
+    /// 离线账户
+    /// </summary>
+    Offline, 
+    /// <summary>
+    /// 正版登录
+    /// </summary>
+    OAuth, 
+    /// <summary>
+    /// 统一通行证
+    /// </summary>
+    Nide8, 
+    /// <summary>
+    /// 外置登录
+    /// </summary>
+    AuthlibInjector, 
+    /// <summary>
+    /// 皮肤站
+    /// </summary>
+    LittleSkin,
+    /// <summary>
+    /// 自建皮肤站
+    /// </summary>
+    SelfLittleSkin
 }
 
 public enum AuthState
@@ -22,8 +45,12 @@ public enum LoginState
 
 public static class BaseAuth
 {
+    /// <summary>
+    /// 从OAuth登录
+    /// </summary>
+    /// <returns></returns>
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
-        string Message, Exception? e)> LoginWithOAuth()
+        string? Message, Exception? e)> LoginWithOAuth()
     {
         AuthState now = AuthState.OAuth;
         try
@@ -75,12 +102,12 @@ public static class BaseAuth
 
             return (AuthState.Profile, LoginState.Done, new()
             {
-                RefreshToken = oauth1.Obj!.refresh_token,
+                Text1 = oauth1.Obj!.refresh_token,
                 AuthType = AuthType.OAuth,
                 AccessToken = auth.AccessToken!,
                 UserName = profile.name,
                 UUID = profile.id
-            }, LanguageHelper.GetName("Core.Http.Login.Done"), null);
+            }, null, null);
         }
         catch (Exception e)
         {
@@ -90,8 +117,13 @@ public static class BaseAuth
         }
     }
 
+    /// <summary>
+    /// 从OAuth刷新登录
+    /// </summary>
+    /// <param name="obj">保存的账户</param>
+    /// <returns></returns>
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
-        string Message, Exception? Ex)> RefreshWithOAuth(LoginObj obj)
+        string? Message, Exception? Ex)> RefreshWithOAuth(LoginObj obj)
     {
         AuthState now = AuthState.OAuth;
         try
@@ -103,7 +135,7 @@ public static class BaseAuth
             }
 
             CoreMain.AuthStateUpdate?.Invoke(AuthState.OAuth);
-            var oauth = await OAuthAPI.RefreshTokenAsync(obj.RefreshToken);
+            var oauth = await OAuthAPI.RefreshTokenAsync(obj.Text1);
             if (oauth.Done != LoginState.Done)
             {
                 return (AuthState.OAuth, oauth.Done, null,
@@ -140,11 +172,10 @@ public static class BaseAuth
 
             obj.UserName = profile.name;
             obj.UUID = profile.id;
-            obj.RefreshToken = oauth.Auth!.refresh_token;
+            obj.Text1 = oauth.Auth!.refresh_token;
             obj.AccessToken = auth.AccessToken!;
 
-            return (AuthState.Profile, LoginState.Done, obj,
-                LanguageHelper.GetName("Core.Http.Login.Refresh"), null);
+            return (AuthState.Profile, LoginState.Done, obj, null, null);
         }
         catch (Exception e)
         {
@@ -154,8 +185,15 @@ public static class BaseAuth
         }
     }
 
+    /// <summary>
+    /// 从统一通行证登录
+    /// </summary>
+    /// <param name="server">服务器UUID</param>
+    /// <param name="user">用户名</param>
+    /// <param name="pass">密码</param>
+    /// <returns></returns>
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
-        string Message, Exception? Ex)> LoginWithNide8(string server, string user, string pass)
+        string? Message, Exception? Ex)> LoginWithNide8(string server, string user, string pass)
     {
         try
         {
@@ -168,8 +206,7 @@ public static class BaseAuth
             }
 
             Obj!.Text2 = user;
-            return (AuthState.Profile, LoginState.Done, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Done1"), null);
+            return (AuthState.Profile, LoginState.Done, Obj, null, null);
         }
         catch (Exception e)
         {
@@ -179,8 +216,13 @@ public static class BaseAuth
         }
     }
 
+    /// <summary>
+    /// 从统一通行证刷新登录
+    /// </summary>
+    /// <param name="obj">保存的账户</param>
+    /// <returns></returns>
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
-        string Message, Exception? Ex)> RefreshWithNide8(LoginObj obj)
+        string? Message, Exception? Ex)> RefreshWithNide8(LoginObj obj)
     {
         try
         {
@@ -196,8 +238,7 @@ public static class BaseAuth
                 return (AuthState.Token, State, null,
                     LanguageHelper.GetName("Core.Http.Login.Error11"), null);
 
-            return (AuthState.Profile, LoginState.Done, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Refresh1"), null);
+            return (AuthState.Profile, LoginState.Done, Obj, null, null);
         }
         catch (Exception e)
         {
@@ -207,8 +248,15 @@ public static class BaseAuth
         }
     }
 
+    /// <summary>
+    /// 从外置登录登录
+    /// </summary>
+    /// <param name="server">服务器地址</param>
+    /// <param name="user">用户名</param>
+    /// <param name="pass">密码</param>
+    /// <returns></returns>
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
-        string Message, Exception? Ex)> LoginWithAuthlibInjector(string server, string user, string pass)
+        string? Message, Exception? Ex)> LoginWithAuthlibInjector(string server, string user, string pass)
     {
         try
         {
@@ -221,8 +269,7 @@ public static class BaseAuth
             }
 
             Obj!.Text2 = user;
-            return (AuthState.Profile, LoginState.Done, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Done2"), null);
+            return (AuthState.Profile, LoginState.Done, Obj, null, null);
         }
         catch (Exception e)
         {
@@ -232,8 +279,13 @@ public static class BaseAuth
         }
     }
 
+    /// <summary>
+    /// 从外置登录刷新登录
+    /// </summary>
+    /// <param name="obj">保存的账户</param>
+    /// <returns></returns>
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
-        string Message, Exception? Ex)> RefreshWithAuthlibInjector(LoginObj obj)
+        string? Message, Exception? Ex)> RefreshWithAuthlibInjector(LoginObj obj)
     {
         try
         {
@@ -249,8 +301,7 @@ public static class BaseAuth
                 return (AuthState.Token, State, null,
                     LanguageHelper.GetName("Core.Http.Login.Error15"), null);
 
-            return (AuthState.Token, State, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Refresh2"), null);
+            return (AuthState.Token, State, Obj, null, null);
         }
         catch (Exception e)
         {
@@ -260,8 +311,15 @@ public static class BaseAuth
         }
     }
 
+    /// <summary>
+    /// 从皮肤站登录
+    /// </summary>
+    /// <param name="user">用户名</param>
+    /// <param name="pass">密码</param>
+    /// <param name="server">自定义皮肤站地址</param>
+    /// <returns></returns>
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
-        string Message, Exception? Ex)> LoginWithLittleSkin(string user, string pass, string? server = null)
+        string? Message, Exception? Ex)> LoginWithLittleSkin(string user, string pass, string? server = null)
     {
         try
         {
@@ -274,8 +332,7 @@ public static class BaseAuth
             }
 
             Obj!.Text2 = user;
-            return (AuthState.Profile, LoginState.Done, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Done3"), null);
+            return (AuthState.Profile, LoginState.Done, Obj, null, null);
         }
         catch (Exception e)
         {
@@ -285,8 +342,13 @@ public static class BaseAuth
         }
     }
 
+    /// <summary>
+    /// 从皮肤站刷新登录
+    /// </summary>
+    /// <param name="obj">保存的账户</param>
+    /// <returns></returns>
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
-        string Message, Exception? Ex)> RefreshWithLittleSkin(LoginObj obj)
+        string? Message, Exception? Ex)> RefreshWithLittleSkin(LoginObj obj)
     {
         try
         {
@@ -303,14 +365,36 @@ public static class BaseAuth
                 return (AuthState.Token, State, null,
                     LanguageHelper.GetName("Core.Http.Login.Error19"), null);
 
-            return (AuthState.Token, State, Obj,
-                LanguageHelper.GetName("Core.Http.Login.Refresh3"), null);
+            return (AuthState.Token, State, Obj, null, null);
         }
         catch (Exception e)
         {
             string text = LanguageHelper.GetName("Core.Http.Login.Error20");
             Logs.Error(text, e);
             return (AuthState.Profile, LoginState.Crash, null, text, e);
+        }
+    }
+
+    /// <summary>
+    /// 刷新登录登录
+    /// </summary>
+    /// <param name="obj">登录信息</param>
+    /// <returns>结果</returns>
+    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string? Message, Exception? Ex)> RefreshToken(this LoginObj obj)
+    {
+        switch (obj.AuthType)
+        {
+            case AuthType.OAuth:
+                return await RefreshWithOAuth(obj);
+            case AuthType.Nide8:
+                return await RefreshWithNide8(obj);
+            case AuthType.AuthlibInjector:
+                return await RefreshWithAuthlibInjector(obj);
+            case AuthType.LittleSkin:
+            case AuthType.SelfLittleSkin:
+                return await RefreshWithLittleSkin(obj);
+            default:
+                return (AuthState.Token, LoginState.Done, obj, null, null);
         }
     }
 }
