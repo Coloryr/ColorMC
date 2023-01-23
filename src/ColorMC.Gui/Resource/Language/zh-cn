@@ -216,8 +216,9 @@
 	<sys:String x:Key="GameEditWindow.Tab4.Title">Mod列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5.Title">地图列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab6.Title">资源包</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab7.Title">导出</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab8.Title">运行日志</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab7.Title">游戏截图</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab8.Title">导出</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab9.Title">运行日志</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab1.Text1">游戏版本</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab1.Button1">刷新版本</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab2.Text1">Jvm参数设置</sys:String>
@@ -294,6 +295,9 @@
 	<sys:String x:Key="GameEditWindow.Tab8.Info7">添加资源包完成</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Info8">正在加载资源包列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Info9">损坏的资源包</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab9.Info1">是否要删除截图 {0}</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab9.Info2">是否要清空实例 {0} 的截图</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab9.Info3">正在加载实例截图</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text1">游戏模式</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text2">最后游戏与</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text3">游戏难度</sys:String>
@@ -304,6 +308,7 @@
 	<sys:String x:Key="GameEditWindow.Flyouts2.Button2">导出世界</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts2.Button3">删除世界</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts3.Button2">删除资源包</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts4.Button1">清空截图</sys:String>
 	<sys:String x:Key="GameEditWindow.Info1">正在读取游戏版本</sys:String>
 	<sys:String x:Key="GameEditWindow.Error1">版本读取失败</sys:String>
 
@@ -430,6 +435,7 @@
 	<sys:String x:Key="GameBinding.Error1">没有选择游戏实例</sys:String>
 	<sys:String x:Key="GameBinding.Error2">没有选择账户</sys:String>
 	<sys:String x:Key="GameBinding.Error3">账户冲突</sys:String>
+	<sys:String x:Key="GameBinding.Error4">游戏已经启动了</sys:String>
 
 	<sys:String x:Key="OtherBinding.TranTypes.Item1">普通透明</sys:String>
 	<sys:String x:Key="OtherBinding.TranTypes.Item2">模糊</sys:String>

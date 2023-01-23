@@ -10,11 +10,15 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -206,7 +210,7 @@ public static class GameBinding
 
         if (BaseBinding.Games.ContainsValue(obj))
         {
-            return (false, "游戏已经启动了");
+            return (false, Localizer.Instance["GameBinding.Error4"]);
         }
 
         var login = UserBinding.GetLastUser();
@@ -555,6 +559,16 @@ public static class GameBinding
         return obj.ImportResourcepack(file);
     }
 
+    public static void DeleteScreenshot(string file)
+    {
+        File.Delete(file);
+    }
+
+    public static void ClearScreenshots(GameSettingObj obj)
+    {
+        obj.ClearScreenshots();
+    }
+
     public static async Task<bool> DownloadResourcepack(GameSettingObj obj, CurseForgeObj.Data.LatestFiles data)
     {
         var item = new DownloadItem()
@@ -570,5 +584,38 @@ public static class GameBinding
         var res = await DownloadManager.Download(item);
 
         return res;
+    }
+
+    public static async Task<List<ScreenshotDisplayObj>> GetScreenshots(GameSettingObj obj)
+    {
+        var list = new List<ScreenshotDisplayObj>();
+        var list1 = obj.GetScreenshots();
+
+
+        ParallelOptions options = new()
+        {
+            MaxDegreeOfParallelism = 5
+        };
+        await Parallel.ForEachAsync(list1, options, async (item, cancel) =>
+        {
+            using var image = Image.Load(item);
+            image.Mutate(p =>
+            {
+                p.Resize(200, 120);
+            });
+            using var stream = new MemoryStream();
+            await image.SaveAsPngAsync(stream, cancel);
+            stream.Seek(0, SeekOrigin.Begin);
+            var obj1 = new ScreenshotDisplayObj()
+            {
+                Local = item,
+                Image = new(stream),
+                Name = Path.GetFileName(item)
+            };
+
+            list.Add(obj1);
+        });
+
+        return list;
     }
 }
