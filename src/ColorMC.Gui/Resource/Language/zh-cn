@@ -452,6 +452,9 @@
 	<sys:String x:Key="Error1">背景图片加载失败</sys:String>
 	<sys:String x:Key="Error2">配置文件读取错误</sys:String>
 	<sys:String x:Key="Error3">配置文件保存错误</sys:String>
+	<sys:String x:Key="Error4">登录发生异常</sys:String>
+	<sys:String x:Key="Error5">找不到指定的Java</sys:String>
+	<sys:String x:Key="Error6">游戏启动失败</sys:String>
 
 	<sys:String x:Key="Button.Set">设置</sys:String>
 	<sys:String x:Key="Button.Select">选择文件</sys:String>

@@ -238,15 +238,8 @@ public partial class App : Application
         }
         else
         {
-            try
-            {
-                SettingWindow = new();
-                SettingWindow.Show();
-            }
-            catch (Exception e)
-            {
-                Logs.Error("窗口打开失败", e);
-            }
+            SettingWindow = new();
+            SettingWindow.Show();
         }
     }
 

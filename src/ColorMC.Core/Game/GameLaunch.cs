@@ -14,6 +14,9 @@ using System.Text;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 登录状态
+/// </summary>
 public enum LaunchState
 {
     Login, Check, CheckVersion, CheckLib, CheckAssets, CheckLoader, CheckLoginCore, CheckMods,
@@ -25,6 +28,12 @@ public enum LaunchState
 
 public static class Launch
 {
+    /// <summary>
+    /// 检查游戏文件
+    /// </summary>
+    /// <param name="obj">实例储存</param>
+    /// <param name="login">保存的账户</param>
+    /// <returns></returns>
     public static async Task<List<DownloadItem>?> CheckGameFile(GameSettingObj obj, LoginObj login)
     {
         var list = new List<DownloadItem>();
@@ -211,7 +220,11 @@ public static class Launch
         else if (login.AuthType is AuthType.AuthlibInjector
             or AuthType.LittleSkin or AuthType.SelfLittleSkin)
         {
-            await AuthHelper.ReadyAuthlibInjector();
+            var item = await AuthHelper.ReadyAuthlibInjector();
+            if (item != null)
+            {
+                list.Add(item);
+            }
         }
 
 
@@ -518,7 +531,7 @@ public static class Launch
 
         if (login.AuthType == AuthType.Nide8)
         {
-            jvmHead.Add($"-javaagent:{AuthHelper.BuildNide8Item().Local}={login.Text1}");
+            jvmHead.Add($"-javaagent:{AuthHelper.NowNide8Injector}={login.Text1}");
             jvmHead.Add("-Dnide8auth.client=true");
         }
         else if (login.AuthType == AuthType.AuthlibInjector)

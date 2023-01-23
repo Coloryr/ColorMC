@@ -370,7 +370,7 @@ public partial class Tab6Control : UserControl
             bool error = false;
             try
             {
-                await GameBinding.ExportGame(Obj, file, list);
+                await GameBinding.ExportGame(Obj, file, list, PackType.ColorMC);
                 GameBinding.OpFile(file);
             }
             catch (Exception e1)

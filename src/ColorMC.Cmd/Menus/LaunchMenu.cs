@@ -14,7 +14,7 @@ public static class LaunchMenu
     private const string Title = "启动游戏";
     private const string Select1 = "选择实例";
 
-    private static GameSettingObj game;
+    private static GameSettingObj? game;
 
     public static void Show()
     {
@@ -73,7 +73,7 @@ public static class LaunchMenu
         {
             ConsoleUtils.Info1("正在刷新登录");
 
-            var (State, State1, Obj, Message, Ex) = AuthHelper.RefreshToken(obj).Result;
+            var (State, State1, Obj, Message, Ex) = BaseAuth.RefreshToken(obj).Result;
 
             if (State1 != LoginState.Done)
             {
@@ -83,10 +83,10 @@ public static class LaunchMenu
                 return;
             }
 
-            AuthDatabase.SaveAuth(Obj);
-            obj = Obj;
+            AuthDatabase.SaveAuth(Obj!).Wait();
+            obj = Obj!;
         }
-        var res = game?.StartGame(obj).Result;
+        var res = game?.StartGame(obj!).Result;
         if (res == null)
         {
             ConsoleUtils.Error("游戏启动失败");

@@ -222,7 +222,7 @@ public partial class AddResourcePackWindow : Window, IBase1Window
         Info1.Close();
         if (list == null)
         {
-            //Info.Show(Localizer.Instance["AddWorldWindow.Error4"]);
+            Info.Show(Localizer.Instance["AddWorldWindow.Error4"]);
             return;
         }
 

@@ -237,7 +237,7 @@ public partial class AddModWindow : Window
         Info1.Close();
         if (list == null)
         {
-            //Info.Show(Localizer.Instance["AddModWindow.Error5"]);
+            Info.Show(Localizer.Instance["AddModWindow.Error5"]);
             return;
         }
 

@@ -210,7 +210,7 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
         Info1.Close();
         if (list == null)
         {
-            //Info.Show(Localizer.Instance["AddCurseForgeWindow.Error4"]);
+            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error4"]);
             return;
         }
 

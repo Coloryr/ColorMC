@@ -436,9 +436,14 @@ public static class InstancesPath
     }
 
     public static Task Export(this GameSettingObj obj, 
-        string file, List<string> filter) 
+        string file, List<string> filter, PackType type) 
     {
-        return ZipFloClass.ZipFile(obj.GetBaseDir(), file, filter);
+        switch (type)
+        {
+            case PackType.ColorMC:
+                return ZipFloClass.ZipFile(obj.GetBaseDir(), file, filter);
+        }
+        return null;
     }
 
     public static async Task<bool> InstallFromZip(string dir, PackType type)

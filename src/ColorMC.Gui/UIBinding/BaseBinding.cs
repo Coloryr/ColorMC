@@ -56,8 +56,9 @@ public static class BaseBinding
             }
             catch (Exception e)
             {
-                Logs.Error("游戏启动失败", e);
-                CoreMain.OnError?.Invoke("游戏启动失败", e, false);
+                string temp = Localizer.Instance["Error6"];
+                Logs.Error(temp, e);
+                CoreMain.OnError?.Invoke(temp, e, false);
                 return null;
             }
         });

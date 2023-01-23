@@ -529,9 +529,9 @@ public static class GameBinding
     }
 
     public static Task ExportGame(GameSettingObj obj,
-        string file, List<string> filter)
+        string file, List<string> filter, PackType pack)
     {
-        return obj.Export(file, filter);
+        return obj.Export(file, filter, pack);
     }
 
     public static async Task<List<ResourcepackDisplayObj>> GetResourcepacks(GameSettingObj obj)
