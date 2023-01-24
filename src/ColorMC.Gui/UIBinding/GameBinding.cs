@@ -625,4 +625,9 @@ public static class GameBinding
         App.CloseGameEdit(obj);
         App.MainWindow?.Load();
     }
+
+    public static GameSettingObj? GetGame(string? name)
+    {
+        return InstancesPath.GetGame(name);
+    }
 }

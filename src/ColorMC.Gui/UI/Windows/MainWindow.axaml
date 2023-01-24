@@ -36,12 +36,12 @@
                     Name="ItemInfo"
                     Margin="0,0,3,0"
                     DockPanel.Dock="Right" />
-                <ScrollViewer Margin="3,3,0,3">
-                    <StackPanel>
-                        <views:ServerMotdControl Name="ServerMotdControl1" />
+                <DockPanel Margin="3,3,0,3" LastChildFill="True">
+                    <views:ServerMotdControl Name="ServerMotdControl1" DockPanel.Dock="Top" />
+                    <ScrollViewer>
                         <StackPanel Name="GameGroups" />
-                    </StackPanel>
-                </ScrollViewer>
+                    </ScrollViewer>
+                </DockPanel>
             </DockPanel>
 
             <views1:GameGroupControl Name="Group" IsVisible="False" />

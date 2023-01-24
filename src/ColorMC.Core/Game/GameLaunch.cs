@@ -658,24 +658,12 @@ public static class Launch
 
         if (obj.StartServer != null && !string.IsNullOrWhiteSpace(obj.StartServer.IP))
         {
-            var server = await ServerMotd.GetServerInfo(obj.StartServer.IP, obj.StartServer.Port);
-
-            if (server.State == StateType.GOOD)
+            gameArg.Add($"--server");
+            gameArg.Add(obj.StartServer.IP);
+            if (obj.StartServer.Port > 0)
             {
-                gameArg.Add($"--server");
-                gameArg.Add(server.ServerAddress);
                 gameArg.Add($"--port");
-                gameArg.Add(server.ServerPort.ToString());
-            }
-            else
-            {
-                gameArg.Add($"--server");
-                gameArg.Add(server.ServerAddress);
-                if (obj.StartServer.Port > 0)
-                {
-                    gameArg.Add($"--port");
-                    gameArg.Add(obj.StartServer.Port.ToString());
-                }
+                gameArg.Add(obj.StartServer.Port.ToString());
             }
         }
 

@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="450"
+    d:DesignHeight="850"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
@@ -100,7 +100,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize Button.Set}" />
                 </StackPanel>
-
+                <Label Margin="5" Content="注意：背景图尺寸越大，启动器越卡" />
                 <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
                 <StackPanel Margin="5" Orientation="Horizontal">
                     <Label

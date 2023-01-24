@@ -126,8 +126,11 @@ public static class InstancesPath
         }
     }
 
-    public static GameSettingObj? GetGame(string name)
+    public static GameSettingObj? GetGame(string? name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+            return null;
+
         if (InstallGames.TryGetValue(name, out var item))
         {
             return item;
@@ -341,15 +344,44 @@ public static class InstancesPath
         obj.Save();
     }
 
+    public static GameSettingObj CopyObj(this GameSettingObj obj)
+    {
+        return new()
+        {
+            Name = obj.Name,
+            GroupName = obj.GroupName,
+            DirName = obj.DirName,
+            Version = obj.Version,
+            ModPack = obj.ModPack,
+            Loader = obj.Loader,
+            LoaderVersion = obj.LoaderVersion,
+            JvmArg = obj.JvmArg,
+            JvmName = obj.JvmName,
+            JvmLocal = obj.JvmLocal,
+            Window = obj.Window,
+            StartServer = obj.StartServer,
+            ProxyHost = obj.ProxyHost,
+            CurseForgeMods = obj.CurseForgeMods
+        };
+    }
+
     public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
     {
         var obj1 = await CreateVersion(new()
         {
             Name = name,
+            GroupName = obj.GroupName,
             Version = obj.Version,
             ModPack = obj.ModPack,
             Loader = obj.Loader,
-            LoaderVersion = obj.LoaderVersion
+            LoaderVersion = obj.LoaderVersion,
+            JvmArg = obj.JvmArg,
+            JvmName = obj.JvmName,
+            JvmLocal = obj.JvmLocal,
+            Window = obj.Window,
+            StartServer = obj.StartServer,
+            ProxyHost = obj.ProxyHost,
+            CurseForgeMods = obj.CurseForgeMods
         });
         if (obj1 != null)
         {

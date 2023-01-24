@@ -12,7 +12,6 @@
         <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
 
         <ScrollViewer Margin="5">
-
             <StackPanel>
                 <Label Margin="5" Content="{setting:Localize SettingWindow.Tab4.Text1}" />
                 <StackPanel Orientation="Horizontal">

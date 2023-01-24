@@ -38,7 +38,7 @@ public record ServerObj
     /// <summary>
     /// 服务器端口
     /// </summary>
-    public ushort Port { get; set; }
+    public int Port { get; set; }
 }
 
 /// <summary>

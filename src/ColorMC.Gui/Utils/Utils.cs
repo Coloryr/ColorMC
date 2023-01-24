@@ -308,9 +308,9 @@ public static partial class UIUtils
         }
     }
 
-    public static bool CheckNumb(string? input)
+    public static bool CheckNotNumber(string? input)
     {
-        if (input == null)
+        if (string.IsNullOrWhiteSpace(input))
             return true;
         return Regex1().IsMatch(input);
     }
@@ -497,7 +497,17 @@ public static class GuiConfigUtils
             Logs.Warn(Localizer.Instance["Warn1"]);
 
             Config = MakeDefaultConfig();
-            Save();
+        }
+        else if (Config.ServerCustom == null)
+        {
+            if (quit)
+            {
+                return false;
+            }
+
+            Logs.Warn(Localizer.Instance["Warn1"]);
+
+            Config.ServerCustom = MakeServerCustomConfig();
         }
 
         Utils.LaunchSetting.Colors.Load();
@@ -533,6 +543,15 @@ public static class GuiConfigUtils
             RGBV = 100,
             ColorFont1 = "#FFFFFFFF",
             ColorFont2 = "#FF000000"
+        };
+    }
+
+    public static ServerCustom MakeServerCustomConfig()
+    {
+        return new()
+        {
+            MotdColor = "#FFFFFFFF",
+            MotdBackColor = "#FF000000"
         };
     }
 }

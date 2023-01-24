@@ -3,6 +3,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -118,5 +119,25 @@ public static class ConfigBinding
         ConfigUtils.Save();
 
         BaseClient.Init();
+    }
+
+    public static void SetServerCustom(ServerCustom obj)
+    {
+        GuiConfigUtils.Config.ServerCustom = obj;
+        GuiConfigUtils.Save();
+
+        App.MainWindow?.MotdLoad();
+
+        Colors.Load();
+    }
+
+    public static void SetServerCustom(bool enable, string? name)
+    {
+        GuiConfigUtils.Config.ServerCustom.LockGame = enable;
+        GuiConfigUtils.Config.ServerCustom.GameName = name;
+
+        GuiConfigUtils.Save();
+
+        App.MainWindow?.Load();
     }
 }

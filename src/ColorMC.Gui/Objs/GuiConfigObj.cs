@@ -7,6 +7,19 @@ public record LastUser
     public string UUID { get; set; }
     public AuthType Type { get; set; }
 }
+
+public record ServerCustom
+{ 
+    public string IP { get; set; }
+    public int Port { get; set; }
+    public bool Motd { get; set; }
+    public bool JoinServer { get; set; }
+    public string MotdColor { get; set; }
+    public string MotdBackColor { get; set; }
+
+    public bool LockGame { get; set; }
+    public string GameName { get; set; }
+}
 public record GuiConfigObj
 {
     public string Version { get; set; }
@@ -16,6 +29,8 @@ public record GuiConfigObj
     public int BackTran { get; set; }
     public bool WindowTran { get; set; }
     public int WindowTranType { get; set; }
+
+    public ServerCustom ServerCustom { get; set; }
 
     public string ColorMain { get; set; }
     public string ColorBack { get; set; }
