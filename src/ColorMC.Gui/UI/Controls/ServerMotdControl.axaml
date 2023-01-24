@@ -1,0 +1,90 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.ServerMotdControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid VerticalAlignment="Top">
+        <Rectangle
+            Name="Rectangle1"
+            Fill="#88000000"
+            Stroke="{setting:Colors Main}"
+            StrokeThickness="3" />
+
+        <Grid Margin="5">
+            <Image
+                Name="Image1"
+                Width="64"
+                Height="64"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
+            <StackPanel Margin="64,0,0,0" VerticalAlignment="Center">
+                <StackPanel
+                    Name="StackPanel1"
+                    Margin="3,0,0,0"
+                    Orientation="Horizontal" />
+                <StackPanel
+                    Name="StackPanel2"
+                    Margin="3,0,0,0"
+                    Orientation="Horizontal" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="玩家数量：" Foreground="White" />
+                    <Label
+                        Name="Label2"
+                        Content="0"
+                        Foreground="White" />
+                    <Label Content="/" Foreground="White" />
+                    <Label
+                        Name="Label3"
+                        Content="0"
+                        Foreground="White" />
+                    <Label
+                        Margin="10,0,0,0"
+                        Content="服务器版本："
+                        Foreground="White" />
+                    <Label
+                        Name="Label4"
+                        Content="ServerType"
+                        Foreground="White" />
+                    <Label
+                        Margin="10,0,0,0"
+                        Content="延迟："
+                        Foreground="White" />
+                    <Label
+                        Name="Label5"
+                        Content="ServerType"
+                        Foreground="White" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid
+            Name="Grid1"
+            Background="#EEEEEE"
+            IsVisible="False">
+            <StackPanel VerticalAlignment="Center">
+                <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="正在获取Motd" />
+                <ProgressBar
+                    Height="10"
+                    Margin="10,0,10,0"
+                    IsIndeterminate="True" />
+            </StackPanel>
+        </Grid>
+        <Grid
+            Name="Grid2"
+            Background="#EEEEEE"
+            IsVisible="False">
+            <Label
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="服务器Motd获取失败" />
+        </Grid>
+    </Grid>
+</UserControl>

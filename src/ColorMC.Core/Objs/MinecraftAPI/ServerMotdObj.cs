@@ -15,7 +15,7 @@ public enum StateType
 public class Chat
 {
     [JsonProperty("text")]
-    public string Text { get; set; }
+    public string Text { get; set; } = "";
 
     [JsonProperty("bold")]
     public bool Bold { get; set; }
@@ -85,9 +85,8 @@ public record Mod
     public string Version { get; set; }
 }
 
-public class ServerInfo
+public class ServerMotdObj
 {
-    #region own property
     /// <summary>
     /// Server's address, support srv.
     /// </summary>
@@ -98,18 +97,8 @@ public class ServerInfo
     /// Server's runing port
     /// </summary>
     [JsonIgnore]
-    public ushort ServerPort { get; set; }
+    public int ServerPort { get; set; }
 
-    /// <summary>
-    /// The server's name, it's used to display server name in ui.
-    /// </summary>
-    [JsonIgnore]
-    public string ServerName { get; set; }
-    #endregion
-
-    #region Handshake json response property
-
-    #endregion
     /// <summary>
     /// The server version info such name or protocol
     /// </summary>
@@ -140,10 +129,6 @@ public class ServerInfo
     [JsonProperty("modinfo")]
     public ModInfo ModInfo { get; private set; }
 
-    #region The gen info
-    [JsonIgnore]
-    public string Motd { get => Description?.ToString(); }
-
     [JsonIgnore]
     public byte[] FaviconByteArray { get { return Convert.FromBase64String(Favicon.Replace("data:image/png;base64,", "")); } }
 
@@ -167,9 +152,8 @@ public class ServerInfo
 
     [JsonIgnore]
     public bool AcceptTextures { get; set; }
-    #endregion
 
-    public ServerInfo(string ip, ushort port)
+    public ServerMotdObj(string ip, int port)
     {
         ServerAddress = ip;
         ServerPort = port;

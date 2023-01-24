@@ -37,7 +37,10 @@
                     Margin="0,0,3,0"
                     DockPanel.Dock="Right" />
                 <ScrollViewer Margin="3,3,0,3">
-                    <StackPanel Name="GameGroups" />
+                    <StackPanel>
+                        <views:ServerMotdControl Name="ServerMotdControl1" />
+                        <StackPanel Name="GameGroups" />
+                    </StackPanel>
                 </ScrollViewer>
             </DockPanel>
 

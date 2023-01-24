@@ -114,6 +114,8 @@ public partial class MainWindow : Window
 
     private void MainWindow_Opened(object? sender, EventArgs e)
     {
+        ServerMotdControl1.Load("color.coloryr.xyz", 25565);
+
         ItemInfo.Expander1.MakeTran();
     }
 
