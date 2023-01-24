@@ -43,7 +43,7 @@ public partial class ItemControl : UserControl
 
         Image1.Source = bitmap = new Bitmap(asset);
         Expander1.ContentTransition = App.CrossFade300;
-        Button1.Content = "¡ú";
+        Button1.Content = "â†’";
     }
 
     private void Button_Setting_Click(object? sender, RoutedEventArgs e)
@@ -60,11 +60,11 @@ public partial class ItemControl : UserControl
     {
         if (Expander1.IsExpanded)
         {
-            Button1.Content = "¡û";
+            Button1.Content = "â†";
         }
         else
         {
-            Button1.Content = "¡ú";
+            Button1.Content = "â†’";
         }
         Expander1.IsExpanded = !Expander1.IsExpanded;
     }

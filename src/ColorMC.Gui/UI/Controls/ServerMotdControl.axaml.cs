@@ -36,7 +36,7 @@ public partial class ServerMotdControl : UserControl
         Button2.Click += Button2_Click;
 
         Expander1.ContentTransition = App.CrossFade300;
-        Button1.Content = "¡ü";
+        Button1.Content = "â†‘";
 
         thread = new Thread(Run)
         {
@@ -54,11 +54,11 @@ public partial class ServerMotdControl : UserControl
     {
         if (Expander1.IsExpanded)
         {
-            Button1.Content = "¡ý";
+            Button1.Content = "â†“";
         }
         else
         {
-            Button1.Content = "¡ü";
+            Button1.Content = "â†‘";
         }
         Expander1.IsExpanded = !Expander1.IsExpanded;
     }
