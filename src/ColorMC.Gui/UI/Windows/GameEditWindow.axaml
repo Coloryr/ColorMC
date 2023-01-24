@@ -39,20 +39,26 @@
                 Background="{setting:Colors TranBack}"
                 LastChildFill="True">
 
-                <TabControl
-                    Name="Tabs"
+                <ScrollViewer
+                    Name="ScrollViewer1"
+                    Margin="5,5,5,0"
                     VerticalAlignment="Top"
-                    DockPanel.Dock="Top">
-                    <TabItem Header="{setting:Localize GameEditWindow.Tab1.Title}" />
-                    <TabItem Header="{setting:Localize GameEditWindow.Tab2.Title}" />
-                    <TabItem Header="{setting:Localize GameEditWindow.Tab3.Title}" />
-                    <TabItem Header="{setting:Localize GameEditWindow.Tab4.Title}" />
-                    <TabItem Header="{setting:Localize GameEditWindow.Tab5.Title}" />
-                    <TabItem Header="{setting:Localize GameEditWindow.Tab6.Title}" />
-                    <TabItem Header="{setting:Localize GameEditWindow.Tab7.Title}" />
-                    <TabItem Header="{setting:Localize GameEditWindow.Tab8.Title}" />
-                    <TabItem Header="{setting:Localize GameEditWindow.Tab9.Title}" />
-                </TabControl>
+                    AllowAutoHide="True"
+                    DockPanel.Dock="Top"
+                    HorizontalScrollBarVisibility="Hidden"
+                    VerticalScrollBarVisibility="Disabled">
+                    <TabControl Name="Tabs">
+                        <TabItem Header="{setting:Localize GameEditWindow.Tab1.Title}" />
+                        <TabItem Header="{setting:Localize GameEditWindow.Tab2.Title}" />
+                        <TabItem Header="{setting:Localize GameEditWindow.Tab3.Title}" />
+                        <TabItem Header="{setting:Localize GameEditWindow.Tab4.Title}" />
+                        <TabItem Header="{setting:Localize GameEditWindow.Tab5.Title}" />
+                        <TabItem Header="{setting:Localize GameEditWindow.Tab6.Title}" />
+                        <TabItem Header="{setting:Localize GameEditWindow.Tab7.Title}" />
+                        <TabItem Header="{setting:Localize GameEditWindow.Tab8.Title}" />
+                        <TabItem Header="{setting:Localize GameEditWindow.Tab9.Title}" />
+                    </TabControl>
+                </ScrollViewer>
 
                 <Grid
                     Name="Tab1"

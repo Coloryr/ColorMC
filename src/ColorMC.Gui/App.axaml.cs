@@ -266,6 +266,14 @@ public partial class App : Application
         });
     }
 
+    public static void CloseGameEdit(GameSettingObj obj)
+    {
+        if (GameEditWindows.TryGetValue(obj, out var win))
+        {
+            Dispatcher.UIThread.Post(win.Close);
+        }
+    }
+
     public static void Close()
     {
         Life?.Shutdown();

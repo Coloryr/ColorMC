@@ -10,52 +10,68 @@ namespace ColorMC.Core.Net.Apis;
 
 public static class ForgeHelper
 {
+    private static List<string>? SupportVersion;
     public static async Task<List<string>?> GetSupportVersion()
     {
-        if (BaseClient.Source == SourceLocal.BMCLAPI
-            || BaseClient.Source == SourceLocal.MCBBS)
+        try
         {
-            string url = UrlHelper.ForgeVersion(BaseClient.Source);
-            var data = await BaseClient.GetString(url);
-            var obj = JsonConvert.DeserializeObject<List<string>>(data);
-            if (obj == null)
-                return null;
+            if (SupportVersion != null)
+                return SupportVersion;
 
-            return obj;
-        }
-        else
-        {
-            string url = UrlHelper.ForgeVersion(SourceLocal.Offical);
-            var html = await BaseClient.GetString(url);
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            var nodes = doc.DocumentNode.Descendants("li")
-                .Where(x => x.Attributes["class"]?.Value == "li-version-list");
-            if (nodes == null)
-                return null;
-            List<string> list = new();
-
-            foreach (var item in nodes)
+            if (BaseClient.Source == SourceLocal.BMCLAPI
+                || BaseClient.Source == SourceLocal.MCBBS)
             {
-                var nodes1 = item.SelectNodes("ul/li/a");
-                if (nodes1 == null)
+                string url = UrlHelper.ForgeVersion(BaseClient.Source);
+                var data = await BaseClient.GetString(url);
+                var obj = JsonConvert.DeserializeObject<List<string>>(data);
+                if (obj == null)
                     return null;
 
-                foreach (var item1 in nodes1)
-                {
-                    list.Add(item1.InnerText.Trim());
-                }
+                SupportVersion = obj;
 
-                var nodes2 = item.SelectNodes("ul/li")
-                    .Where(a => a.HasClass("elem-active"));
-
-                foreach (var item1 in nodes2)
-                {
-                    list.Add(item1.InnerText.Trim());
-                }
+                return obj;
             }
+            else
+            {
+                string url = UrlHelper.ForgeVersion(SourceLocal.Offical);
+                var html = await BaseClient.GetString(url);
+                var doc = new HtmlDocument();
+                doc.LoadHtml(html);
+                var nodes = doc.DocumentNode.Descendants("li")
+                    .Where(x => x.Attributes["class"]?.Value == "li-version-list");
+                if (nodes == null)
+                    return null;
+                List<string> list = new();
 
-            return list;
+                foreach (var item in nodes)
+                {
+                    var nodes1 = item.SelectNodes("ul/li/a");
+                    if (nodes1 == null)
+                        return null;
+
+                    foreach (var item1 in nodes1)
+                    {
+                        list.Add(item1.InnerText.Trim());
+                    }
+
+                    var nodes2 = item.SelectNodes("ul/li")
+                        .Where(a => a.HasClass("elem-active"));
+
+                    foreach (var item1 in nodes2)
+                    {
+                        list.Add(item1.InnerText.Trim());
+                    }
+                }
+
+                SupportVersion = list;
+
+                return list;
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error("获取Forge支持版本错误", e);
+            return null;
         }
     }
 
@@ -379,61 +395,69 @@ public static class ForgeHelper
 
     public static async Task<List<string>?> GetVersionList(string version, SourceLocal? local = null)
     {
-        List<string> list = new();
-        if (local == SourceLocal.BMCLAPI
-            || local == SourceLocal.MCBBS)
+        try
         {
-            string url = UrlHelper.ForgeVersions(version, local) + version;
-            var data = await BaseClient.GetString(url);
-            var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data);
-            if (obj == null)
-                return null;
+            List<string> list = new();
+            if (local == SourceLocal.BMCLAPI
+                || local == SourceLocal.MCBBS)
+            {
+                string url = UrlHelper.ForgeVersions(version, local) + version;
+                var data = await BaseClient.GetString(url);
+                var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data);
+                if (obj == null)
+                    return null;
 
-            foreach (var item in obj)
-            {
-                list.Add(item.version);
-            }
-            return list;
-        }
-        else
-        {
-            string url = UrlHelper.ForgeVersions(version, SourceLocal.Offical) + version + ".html";
-            var data = await BaseClient.DownloadClient.GetAsync(url);
-
-            string html = null;
-            if (data.IsSuccessStatusCode)
-            {
-                html = await data.Content.ReadAsStringAsync();
-            }
-            if (string.IsNullOrWhiteSpace(html))
-            {
-                return null;
-            }
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            var nodes = doc.DocumentNode.Descendants("table")
-                .Where(x => x.Attributes["class"]?.Value == "download-list").FirstOrDefault();
-            if (nodes == null)
-                return null;
-            var nodes1 = nodes.Descendants("tbody").FirstOrDefault();
-            if (nodes1 == null)
-                return null;
-
-            foreach (var item in nodes1.Descendants("tr"))
-            {
-                var item1 = item.Descendants("td").Where(x => x.Attributes["class"]?.Value == "download-version").FirstOrDefault();
-                if (item1 != null)
+                foreach (var item in obj)
                 {
-                    string item2 = item1.InnerText.Trim();
-                    if (item2.Contains("Branch:"))
-                    {
-                        int a = item2.IndexOf(' ');
-                        item2 = item2[..a].Trim();
-                    }
-                    list.Add(item2);
+                    list.Add(item.version);
                 }
+                return list;
             }
-            return list;
+            else
+            {
+                string url = UrlHelper.ForgeVersions(version, SourceLocal.Offical) + version + ".html";
+                var data = await BaseClient.DownloadClient.GetAsync(url);
+
+                string html = null;
+                if (data.IsSuccessStatusCode)
+                {
+                    html = await data.Content.ReadAsStringAsync();
+                }
+                if (string.IsNullOrWhiteSpace(html))
+                {
+                    return null;
+                }
+                var doc = new HtmlDocument();
+                doc.LoadHtml(html);
+                var nodes = doc.DocumentNode.Descendants("table")
+                    .Where(x => x.Attributes["class"]?.Value == "download-list").FirstOrDefault();
+                if (nodes == null)
+                    return null;
+                var nodes1 = nodes.Descendants("tbody").FirstOrDefault();
+                if (nodes1 == null)
+                    return null;
+
+                foreach (var item in nodes1.Descendants("tr"))
+                {
+                    var item1 = item.Descendants("td").Where(x => x.Attributes["class"]?.Value == "download-version").FirstOrDefault();
+                    if (item1 != null)
+                    {
+                        string item2 = item1.InnerText.Trim();
+                        if (item2.Contains("Branch:"))
+                        {
+                            int a = item2.IndexOf(' ');
+                            item2 = item2[..a].Trim();
+                        }
+                        list.Add(item2);
+                    }
+                }
+                return list;
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error("获取Forge版本错误", e);
+            return null;
         }
     }
 }

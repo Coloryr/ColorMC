@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="900"
     mc:Ignorable="d">
     <Grid>
         <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
@@ -73,7 +73,7 @@
                     Foreground="Black"
                     HorizontalScrollBarVisibility="Auto"
                     ShowLineNumbers="True"
-                    VerticalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Visible"
                     WordWrap="True" />
             </Grid>
         </DockPanel>

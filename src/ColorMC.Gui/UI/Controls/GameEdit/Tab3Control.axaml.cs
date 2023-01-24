@@ -125,7 +125,7 @@ public partial class Tab3Control : UserControl
 
     private void Load1()
     {
-        string fil = TextBox1.Text;
+        var fil = TextBox1.Text;
         List.Clear();
         if (string.IsNullOrWhiteSpace(fil))
         {

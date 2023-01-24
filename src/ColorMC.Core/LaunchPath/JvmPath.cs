@@ -101,8 +101,11 @@ public static class JvmPath
 
     }
 
-    public static JavaInfo? GetInfo(string name)
+    public static JavaInfo? GetInfo(string? name)
     {
+        if (name == null)
+            return null;
+
         if (Jvms.TryGetValue(name, out var info))
         {
             return info;
