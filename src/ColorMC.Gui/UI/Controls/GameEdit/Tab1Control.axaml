@@ -93,6 +93,15 @@
             </StackPanel>
         </StackPanel>
         <Button
+            Name="Button5"
+            Width="80"
+            Height="25"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Content="{setting:Localize Button.Delete}" />
+
+        <Button
             Name="Button_Set"
             Width="80"
             Height="25"

@@ -20,6 +20,13 @@ public partial class FlyoutsControl : UserControl
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
         Button5.Click += Button5_Click;
+        Button6.Click += Button6_Click;
+    }
+
+    private void Button6_Click(object? sender, RoutedEventArgs e)
+    {
+        FlyoutBase.Hide();
+        Win.DeleteGame(Obj);
     }
 
     private void Button5_Click(object? sender, RoutedEventArgs e)

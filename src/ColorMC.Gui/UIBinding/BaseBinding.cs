@@ -59,8 +59,16 @@ public static class BaseBinding
             catch (Exception e)
             {
                 string temp = Localizer.Instance["Error6"];
-                Logs.Error(temp, e);
-                CoreMain.OnError?.Invoke(temp, e, false);
+                if (e is LaunchException launch && launch.Ex != null)
+                {
+                    Logs.Error(temp, launch.Ex);
+                    CoreMain.OnError?.Invoke(temp, launch.Ex, false);
+                }
+                else
+                {
+                    Logs.Error(temp, e);
+                    CoreMain.OnError?.Invoke(temp, e, false);
+                }
                 return null;
             }
         });
@@ -199,8 +207,14 @@ public static class BaseBinding
         switch (SystemInfo.Os)
         {
             case OsType.Windows:
-                Process.Start("start",
-                    '"' + url + '"');
+                var ps = Process.Start(new ProcessStartInfo()
+                {
+                    FileName = "cmd",
+                    CreateNoWindow = true,
+                    RedirectStandardInput = true,
+                });
+                ps.StandardInput.WriteLine($"start {url}");
+                ps.Close();
                 break;
             case OsType.Linux:
                 Process.Start("xdg-open",

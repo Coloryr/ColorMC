@@ -4,6 +4,8 @@ using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Threading;
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -37,6 +39,9 @@ public partial class GameEditWindow : Window
         Rectangle1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
+
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+
         Tab1.Children.Add(content1);
         Tab1.Children.Add(content2);
 
@@ -56,6 +61,18 @@ public partial class GameEditWindow : Window
         Opened += GameEditWindow_Opened;
 
         Update();
+    }
+
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (e.Delta.Y > 0)
+        {
+            ScrollViewer1.LineLeft();
+        }
+        else if (e.Delta.Y < 0)
+        {
+            ScrollViewer1.LineRight();
+        }
     }
 
     private void GameEditWindow_Opened(object? sender, EventArgs e)

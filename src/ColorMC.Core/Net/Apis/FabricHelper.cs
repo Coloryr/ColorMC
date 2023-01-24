@@ -6,6 +6,8 @@ namespace ColorMC.Core.Net.Apis;
 
 public static class FabricHelper
 {
+    private static List<string>? SupportVersion;
+
     public static async Task<FabricMetaObj?> GetMeta(SourceLocal? local = null)
     {
         try
@@ -70,6 +72,9 @@ public static class FabricHelper
     {
         try
         {
+            if (SupportVersion != null)
+                return SupportVersion;
+
             string url = $"{UrlHelper.FabricMeta(local)}/game";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))
@@ -84,6 +89,8 @@ public static class FabricHelper
             {
                 list1.Add(item.version);
             }
+
+            SupportVersion = list1;
 
             return list1;
         }

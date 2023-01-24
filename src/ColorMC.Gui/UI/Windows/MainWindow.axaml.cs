@@ -283,4 +283,13 @@ public partial class MainWindow : Window
             return;
         }
     }
+
+    public async void DeleteGame(GameSettingObj obj)
+    {
+        var res = await Info.ShowWait(string.Format("ÊÇ·ñÒªÉ¾³ýÊµÀý {0}", obj.Name));
+        if (!res)
+            return;
+
+        await GameBinding.DeleteGame(obj);
+    }
 }

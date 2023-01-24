@@ -618,4 +618,11 @@ public static class GameBinding
 
         return list;
     }
+
+    public static async Task DeleteGame(GameSettingObj obj)
+    {
+        await obj.Remove();
+        App.CloseGameEdit(obj);
+        App.MainWindow?.Load();
+    }
 }

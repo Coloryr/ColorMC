@@ -111,6 +111,7 @@ public partial class UserWindow : Window
                 if (!res.Item1)
                 {
                     Info.Show(res.Item2!);
+                    break;
                 }
                 Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
@@ -124,6 +125,7 @@ public partial class UserWindow : Window
                 if (!res.Item1)
                 {
                     Info.Show(res.Item2!);
+                    break;
                 }
                 Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
                 TextBox_Input1.Text = "";
@@ -243,6 +245,7 @@ public partial class UserWindow : Window
         Info1.Close();
         Info3.Show(string.Format(Localizer.Instance["UserWindow.Text3"], url),
             string.Format(Localizer.Instance["UserWindow.Text4"], code));
+        BaseBinding.OpUrl(url);
     }
 
     private void UserType_SelectionChanged(object? sender, SelectionChangedEventArgs e)

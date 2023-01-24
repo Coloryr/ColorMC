@@ -6,10 +6,15 @@ namespace ColorMC.Core.Net.Apis;
 
 public static class QuiltHelper
 {
+    private static List<string>? SupportVersion;
+
     public static async Task<List<string>?> GetSupportVersion(SourceLocal? local = null)
     {
         try
         {
+            if (SupportVersion != null)
+                return SupportVersion;
+            
             string url = $"{UrlHelper.QuiltMeta(local)}/game";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))
@@ -24,6 +29,8 @@ public static class QuiltHelper
             {
                 list1.Add(item.version);
             }
+
+            SupportVersion = list1;
 
             return list1;
         }
