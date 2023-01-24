@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Layout;
+using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -254,6 +255,7 @@ public partial class MainWindow : Window
                         var item = new GameControl();
                         item.SetItem(game);
                         item.SetSelect(true);
+                        item.DoubleTapped += Item_DoubleTapped;
 
                         GameItemSelect(item);
 
@@ -310,6 +312,11 @@ public partial class MainWindow : Window
                 });
             }
         });
+    }
+
+    private void Item_DoubleTapped(object? sender, TappedEventArgs e)
+    {
+        Launch(false);
     }
 
     public void Update()
