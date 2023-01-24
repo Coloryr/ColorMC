@@ -47,6 +47,7 @@
                     <TabItem Header="{setting:Localize SettingWindow.Tab3.Title}" />
                     <TabItem Header="{setting:Localize SettingWindow.Tab4.Title}" />
                     <TabItem Header="{setting:Localize SettingWindow.Tab5.Title}" />
+                    <TabItem Header="{setting:Localize SettingWindow.Tab6.Title}" />
                 </TabControl>
 
                 <Grid

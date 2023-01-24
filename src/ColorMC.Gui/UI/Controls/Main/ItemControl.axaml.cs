@@ -43,7 +43,7 @@ public partial class ItemControl : UserControl
 
         Image1.Source = bitmap = new Bitmap(asset);
         Expander1.ContentTransition = App.CrossFade300;
-        Button1.Content = ">";
+        Button1.Content = "¡ú";
     }
 
     private void Button_Setting_Click(object? sender, RoutedEventArgs e)
@@ -60,11 +60,11 @@ public partial class ItemControl : UserControl
     {
         if (Expander1.IsExpanded)
         {
-            Button1.Content = "<";
+            Button1.Content = "¡û";
         }
         else
         {
-            Button1.Content = ">";
+            Button1.Content = "¡ú";
         }
         Expander1.IsExpanded = !Expander1.IsExpanded;
     }
@@ -184,5 +184,19 @@ public partial class ItemControl : UserControl
         Image1.Source = new Bitmap(data);
         data.Close();
         ProgressBar1.IsVisible = false;
+    }
+
+    public void Load()
+    {
+        if (GuiConfigUtils.Config.ServerCustom.LockGame)
+        {
+            Button_Add1.IsVisible = false;
+            Button_Out.IsVisible = false;
+        }
+        else
+        {
+            Button_Add1.IsVisible = true;
+            Button_Out.IsVisible = true;
+        }
     }
 }

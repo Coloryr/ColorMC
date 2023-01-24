@@ -21,7 +21,7 @@ public partial class Tab3Control : UserControl
 
     private void Button_Set_Click(object? sender, RoutedEventArgs e)
     {
-        if (UIUtils.CheckNumb(TextBox2.Text) || UIUtils.CheckNumb(Input1.Text))
+        if (UIUtils.CheckNotNumber(TextBox2.Text) || UIUtils.CheckNotNumber(Input1.Text))
         {
             Window.Info.Show(Localizer.Instance["SettingWindow.Tab3.Error1"]);
             return;

@@ -87,6 +87,7 @@
 	<sys:String x:Key="SettingWindow.Tab3.Title">网络设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab4.Title">参数设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Title">Java路径</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Title">客户端定制</sys:String>
 	<sys:String x:Key="SettingWindow.Flyouts.Button1">删除Java</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text1">语言选择</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text2">修改背景图片</sys:String>
@@ -95,7 +96,7 @@
 	<sys:String x:Key="SettingWindow.Tab2.Text5">透明度</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text6">启用</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text7">效果器</sys:String>
-	<sys:String x:Key="SettingWindow.Tab2.Text8">不是所有系统都支持半透明效果</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text8">注意：不是所有系统都支持半透明效果</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text9">窗口透明效果</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text10">颜色设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text11">切换</sys:String>

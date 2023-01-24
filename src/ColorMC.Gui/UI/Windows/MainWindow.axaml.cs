@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
@@ -9,6 +10,7 @@ using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Avalonia.Layout;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -114,9 +116,23 @@ public partial class MainWindow : Window
 
     private void MainWindow_Opened(object? sender, EventArgs e)
     {
-        ServerMotdControl1.Load("color.coloryr.xyz", 25565);
-
         ItemInfo.Expander1.MakeTran();
+        MotdLoad();
+    }
+
+    public void MotdLoad()
+    {
+        var config = ConfigBinding.GetAllConfig().Item2;
+        if (config.ServerCustom != null && config.ServerCustom.Motd &&
+            !string.IsNullOrWhiteSpace(config.ServerCustom.IP))
+        {
+            ServerMotdControl1.IsVisible = true;
+            ServerMotdControl1.Load(config.ServerCustom.IP, config.ServerCustom.Port);
+        }
+        else
+        {
+            ServerMotdControl1.IsVisible = false;
+        }
     }
 
     public void GameItemSelect(GameControl? obj)
@@ -136,19 +152,13 @@ public partial class MainWindow : Window
     {
         return Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            switch (state)
+            return state switch
             {
-                default:
-                case LaunchState.LostGame:
-                case LaunchState.LostVersion:
-                    return await Info.ShowWait(Localizer.Instance["MainWindow.Lost1"]);
-                case LaunchState.LostLib:
-                    return await Info.ShowWait(Localizer.Instance["MainWindow.Lost2"]);
-                case LaunchState.LostLoader:
-                    return await Info.ShowWait(Localizer.Instance["MainWindow.Lost3"]);
-                case LaunchState.LostLoginCore:
-                    return await Info.ShowWait(Localizer.Instance["MainWindow.Lost4"]);
-            }
+                LaunchState.LostLib => await Info.ShowWait(Localizer.Instance["MainWindow.Lost2"]),
+                LaunchState.LostLoader => await Info.ShowWait(Localizer.Instance["MainWindow.Lost3"]),
+                LaunchState.LostLoginCore => await Info.ShowWait(Localizer.Instance["MainWindow.Lost4"]),
+                _ => await Info.ShowWait(Localizer.Instance["MainWindow.Lost1"]),
+            };
         });
     }
 
@@ -200,48 +210,105 @@ public partial class MainWindow : Window
 
     public void Load()
     {
+        Dispatcher.UIThread.Post(() =>
+        {
+            ItemInfo.Load();
+        });
+
         Task.Run(async () =>
         {
-            var list = GameBinding.GetGameGroups();
-
             Groups.Clear();
-            await Dispatcher.UIThread.InvokeAsync(() =>
+
+            if (GuiConfigUtils.Config.ServerCustom.LockGame)
             {
-                DefaultGroup = new();
-            });
-            DefaultGroup.SetWindow(this);
-            foreach (var item in list)
-            {
-                if (item.Key == " ")
+                var game = GameBinding.GetGame(GuiConfigUtils.Config.ServerCustom.GameName);
+                if (game == null)
                 {
-                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        DefaultGroup.SetItems(item.Value);
-                        DefaultGroup.SetName(Localizer.Instance["MainWindow.DefaultGroup"]);
+                        GameGroups.Children.Clear();
+
+                        var item = new Grid
+                        {
+                            Background = Brush.Parse("#EEEEEE")
+                        };
+                        var item1 = new Label
+                        {
+                            Content = "没有启动实例，请联系服务器管理员"
+                        };
+
+                        item.Children.Add(item1);
+
+                        GameGroups.VerticalAlignment = VerticalAlignment.Center;
+                        GameGroups.HorizontalAlignment = HorizontalAlignment.Center;
+
+                        GameGroups.Children.Add(item);
                     });
                 }
                 else
                 {
-                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        var group = new GamesControl();
-                        group.SetItems(item.Value);
-                        group.SetName(item.Key);
-                        group.SetWindow(this);
-                        Groups.Add(group);
+                        GameGroups.Children.Clear();
+
+                        var item = new GameControl();
+                        item.SetItem(game);
+                        item.SetSelect(true);
+
+                        GameItemSelect(item);
+
+                        GameGroups.VerticalAlignment = VerticalAlignment.Center;
+                        GameGroups.HorizontalAlignment = HorizontalAlignment.Center;
+
+                        GameGroups.Children.Add(item);
                     });
                 }
             }
-
-            Dispatcher.UIThread.Post(() =>
+            else
             {
-                GameGroups.Children.Clear();
-                foreach (var item in Groups)
+                var list = GameBinding.GetGameGroups();
+
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    GameGroups.Children.Add(item);
+                    GameGroups.VerticalAlignment = VerticalAlignment.Top;
+                    GameGroups.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+                    DefaultGroup = new();
+                });
+                DefaultGroup.SetWindow(this);
+                foreach (var item in list)
+                {
+                    if (item.Key == " ")
+                    {
+                        await Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            DefaultGroup.SetItems(item.Value);
+                            DefaultGroup.SetName(Localizer.Instance["MainWindow.DefaultGroup"]);
+                        });
+                    }
+                    else
+                    {
+                        await Dispatcher.UIThread.InvokeAsync(() =>
+                        {
+                            var group = new GamesControl();
+                            group.SetItems(item.Value);
+                            group.SetName(item.Key);
+                            group.SetWindow(this);
+                            Groups.Add(group);
+                        });
+                    }
                 }
-                GameGroups.Children.Add(DefaultGroup);
-            });
+
+                Dispatcher.UIThread.Post(() =>
+                {
+                    GameGroups.Children.Clear();
+                    foreach (var item in Groups)
+                    {
+                        GameGroups.Children.Add(item);
+                    }
+                    GameGroups.Children.Add(DefaultGroup);
+                });
+            }
         });
     }
 

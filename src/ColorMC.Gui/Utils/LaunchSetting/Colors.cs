@@ -18,6 +18,8 @@ public class Colors : INotifyPropertyChanged
     public static IBrush Back1Color = Brush.Parse("#88FFFFFF");
     public static IBrush ButtonFont = Brush.Parse("#FFFFFFFF");
     public static IBrush FontColor = Brush.Parse("#FF000000");
+    public static IBrush MotdColor = Brush.Parse("#FFFFFFFF");
+    public static IBrush MotdBackColor = Brush.Parse("#FF000000");
 
     public static Colors Instance { get; set; } = new Colors();
 
@@ -40,6 +42,9 @@ public class Colors : INotifyPropertyChanged
                 Back1Color = Brush.Parse(GuiConfigUtils.Config.ColorTranBack);
                 ButtonFont = Brush.Parse(GuiConfigUtils.Config.ColorFont1);
                 FontColor = Brush.Parse(GuiConfigUtils.Config.ColorFont2);
+
+                MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
+                MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
 
                 Instance.Reload();
             }
@@ -134,6 +139,10 @@ public class Colors : INotifyPropertyChanged
                 return FontColor;
             else if (key == "ButtonFont")
                 return rbg ? Color1 : ButtonFont;
+            else if (key == "Motd")
+                return MotdColor;
+            else if (key == "MotdBack")
+                return MotdBackColor;
 
             return Brushes.White;
         }

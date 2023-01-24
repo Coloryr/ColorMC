@@ -1,6 +1,7 @@
 ﻿using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
@@ -45,6 +46,15 @@ public static class BaseBinding
         if (Games.ContainsValue(obj))
         {
             return false;
+        }
+        if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
+            !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
+        {
+            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP, GuiConfigUtils.Config.ServerCustom.Port);
+
+            obj = obj.CopyObj();
+            obj.StartServer.IP = server.ServerAddress;
+            obj.StartServer.Port = server.ServerPort;
         }
         if (App.GameEditWindows.TryGetValue(obj, out var win))
         {

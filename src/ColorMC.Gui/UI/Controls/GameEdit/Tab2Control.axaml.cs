@@ -73,7 +73,7 @@ public partial class Tab2Control : UserControl
 
     private void Button_Set3_Click(object? sender, RoutedEventArgs e)
     {
-        if (UIUtils.CheckNumb(TextBox8.Text))
+        if (UIUtils.CheckNotNumber(TextBox8.Text))
         {
             Window.Info.Show(Localizer.Instance["SettingWindow.Tab3.Error1"]);
             return;
@@ -91,7 +91,7 @@ public partial class Tab2Control : UserControl
 
     private void Button_Set2_Click(object? sender, RoutedEventArgs e)
     {
-        if (UIUtils.CheckNumb(TextBox6.Text))
+        if (UIUtils.CheckNotNumber(TextBox6.Text))
         {
             Window.Info.Show(Localizer.Instance["SettingWindow.Tab3.Error1"]);
             return;

@@ -11,11 +11,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection.Emit;
 using System.Threading;
+using Avalonia.Interactivity;
 
 namespace ColorMC.Gui.UI.Controls;
 
 public partial class ServerMotdControl : UserControl
 {
+    private string IP;
+    private int Port;
+
     private bool FirstLine =true;
     private Thread thread;
     private bool IsRun = true;
@@ -25,11 +29,43 @@ public partial class ServerMotdControl : UserControl
     public ServerMotdControl()
     {
         InitializeComponent();
+
+        this.LayoutUpdated += ServerMotdControl_LayoutUpdated;
+
+        Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
+
+        Expander1.ContentTransition = App.CrossFade300;
+        Button1.Content = "¡ü";
+
         thread = new Thread(Run)
         {
             Name = "ColorMC-Motd"
         };
         thread.Start();
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        Update();
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        if (Expander1.IsExpanded)
+        {
+            Button1.Content = "¡ý";
+        }
+        else
+        {
+            Button1.Content = "¡ü";
+        }
+        Expander1.IsExpanded = !Expander1.IsExpanded;
+    }
+
+    private void ServerMotdControl_LayoutUpdated(object? sender, EventArgs e)
+    {
+        Expander1.MakePadingNull();
     }
 
     private void Run(object? arg)
@@ -50,15 +86,24 @@ public partial class ServerMotdControl : UserControl
         }
     }
 
-    public async void Load(string ip, int port)
+    public void Load(string ip, int port)
+    {
+        IP = ip;
+        Port = port;
+
+        Update();
+    }
+
+    private async void Update()
     {
         Grid1.IsVisible = true;
 
         FirstLine = true;
         StackPanel1.Children.Clear();
         StackPanel2.Children.Clear();
+        ObfuscatedList.Clear();
 
-        var motd = await ServerMotd.GetServerInfo(ip, port);
+        var motd = await ServerMotd.GetServerInfo(IP, Port);
         if (motd.State == StateType.GOOD)
         {
             Grid2.IsVisible = false;
