@@ -658,8 +658,7 @@ public static class Launch
 
         if (obj.StartServer != null && !string.IsNullOrWhiteSpace(obj.StartServer.IP))
         {
-            ServerInfo server = new(obj.StartServer.IP, obj.StartServer.Port);
-            await server.StartGetServerInfo();
+            var server = await ServerMotd.GetServerInfo(obj.StartServer.IP, obj.StartServer.Port);
 
             if (server.State == StateType.GOOD)
             {

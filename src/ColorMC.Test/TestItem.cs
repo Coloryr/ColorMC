@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
@@ -399,5 +400,12 @@ public static class TestItem
         var game = InstancesPath.Games[0];
         var list = game.GetWorlds().Result;
         list[0].ExportWorldZip("test.zip").Wait();
+    }
+
+    public static void Item18()
+    {
+        var motd = ServerMotd.GetServerInfo("color.coloryr.xyz", 25565).Result;
+
+        Console.WriteLine(motd.State);
     }
 }

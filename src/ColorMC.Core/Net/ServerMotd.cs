@@ -16,7 +16,95 @@ public class ServerDescriptionJsonConverter : JsonConverter<Chat>
     {
         if (reader.TokenType == JsonToken.String)
         {
-            return new Chat() { Text = reader.Value.ToString() };
+            var str1 = reader.Value?.ToString();
+            if(string.IsNullOrWhiteSpace(str1))
+                return new Chat() { Text = "" };
+
+            var lines = str1.Split("\n");
+            var chat = new Chat()
+            {
+                Extra = new()
+            };
+
+            foreach (var item in lines)
+            {
+                var chat1 = new Chat();
+                bool mode = false;
+                for (var a = 0; a < item.Length; a++)
+                {
+                    var char1 = item[a];
+                    if (char1 == '§' && mode == false)
+                    {
+                        if (!string.IsNullOrWhiteSpace(chat1.Text))
+                        {
+                            chat.Extra.Add(chat1);
+                        }
+                        chat1 = new()
+                        {
+                            Bold = chat1.Bold,
+                            Underlined = chat1.Underlined,
+                            Obfuscated = chat1.Obfuscated,
+                            Strikethrough = chat1.Strikethrough,
+                            Italic = chat1.Italic,
+                            Color = chat1.Color
+                        };
+                        mode = true;
+                    }
+                    else if (mode == true)
+                    {
+                        mode = false;
+                        if (ServerMotd.MinecraftColors.TryGetValue(char1, out var color))
+                        {
+                            chat1.Color = color;
+                        }
+                        else if (char1 == 'r' || char1 == 'R')
+                        {
+                            chat1.Underlined = false;
+                            chat1.Obfuscated = false;
+                            chat1.Strikethrough = false;
+                            chat1.Italic = false;
+                            chat1.Bold = false;
+                            chat1.Color = "#FFFFFF";
+                        }
+                        else if (char1 == 'k' || char1 == 'K')
+                        {
+                            chat1.Obfuscated = true;
+                        }
+                        else if (char1 == 'l' || char1 == 'L')
+                        {
+                            chat1.Bold = true;
+                        }
+                        else if (char1 == 'm' || char1 == 'M')
+                        {
+                            chat1.Strikethrough = true;
+                        }
+                        else if (char1 == 'n' || char1 == 'N')
+                        {
+                            chat1.Underlined = true;
+                        }
+                        else if (char1 == 'o' || char1 == 'O')
+                        {
+                            chat1.Italic = true;
+                        }
+                    }
+                    else
+                    {
+                        chat1.Text += char1;
+                    }
+                }
+
+                chat.Extra.Add(chat1);
+
+                if (lines.Length != 1)
+                {
+                    chat.Extra.Add(new Chat()
+                    {
+                        Text = "\n"
+                    });
+                }
+            }
+
+            return chat;
         }
         else
         {
@@ -88,31 +176,31 @@ public static class ServerMotd
             { 'f', "#FFFFFF" }
         };
 
-    public static async Task StartGetServerInfo(this ServerInfo info)
+    public static async Task<ServerMotdObj> GetServerInfo(string ip, int port)
     {
+        var info = new ServerMotdObj(ip, port);
         try
         {
             TcpClient tcp = null;
-
             try
             {
-                tcp = new TcpClient(info.ServerAddress, info.ServerPort);
+                tcp = new TcpClient(ip, port);
             }
             catch (SocketException ex)
             {
-                var data = await new Resolver().Query("_minecraft._tcp." + info.ServerAddress, QType.SRV);
+                var data = await new Resolver().Query("_minecraft._tcp." + ip, QType.SRV);
                 RecordSRV? result = data.Answers?.FirstOrDefault()?.RECORD as RecordSRV;
                 if (result != null)
                 {
                     tcp = new TcpClient(result.TARGET, result.PORT);
-                    info.ServerAddress = result.TARGET;
-                    info.ServerPort = result.PORT;
+                    ip = result.TARGET;
+                    port = result.PORT;
                 }
                 else
                 {
                     info.State = StateType.BAD_CONNECT;
                     info.Message = ex.Message;
-                    return;
+                    return info;
                 }
             }
 
@@ -138,10 +226,10 @@ public static class ServerMotd
                 // Packet ID: 0x00
                 byte[] packet_id = ProtocolHandler.GetVarInt(0);
 
-                byte[] protocol_version = ProtocolHandler.GetVarInt(-1);
-                byte[] server_adress_val = Encoding.UTF8.GetBytes(info.ServerAddress);
+                byte[] protocol_version = ProtocolHandler.GetVarInt(754);
+                byte[] server_adress_val = Encoding.UTF8.GetBytes(ip);
                 byte[] server_adress_len = ProtocolHandler.GetVarInt(server_adress_val.Length);
-                byte[] server_port = BitConverter.GetBytes(info.ServerPort);
+                byte[] server_port = BitConverter.GetBytes((ushort)port);
                 Array.Reverse(server_port);
                 byte[] next_state = ProtocolHandler.GetVarInt(1);
 
@@ -158,11 +246,11 @@ public static class ServerMotd
                 tcp.Client.Send(request_packet, SocketFlags.None);
 
                 // Response
-                ProtocolHandler handler = new ProtocolHandler(tcp);
+                ProtocolHandler handler = new(tcp);
                 int packetLength = handler.ReadNextVarIntRAW();
                 if (packetLength > 0)
                 {
-                    List<byte> packetData = new List<byte>(handler.readDataRAW(packetLength));
+                    List<byte> packetData = new(handler.readDataRAW(packetLength));
                     if (ProtocolHandler.ReadNextVarInt(packetData) == 0x00) //Read Packet ID
                     {
                         string result = ProtocolHandler.ReadNextString(packetData); //Get the Json data
@@ -180,7 +268,7 @@ public static class ServerMotd
                 {
                     tcp.ReceiveTimeout = 1000;
 
-                    Stopwatch pingWatcher = new Stopwatch();
+                    Stopwatch pingWatcher = new();
 
                     pingWatcher.Start();
                     tcp.Client.Send(ping_tosend, SocketFlags.None);
@@ -189,7 +277,7 @@ public static class ServerMotd
                     pingWatcher.Stop();
                     if (pingLenghth > 0)
                     {
-                        List<byte> packetData = new List<byte>(handler.readDataRAW(pingLenghth));
+                        List<byte> packetData = new(handler.readDataRAW(pingLenghth));
                         if (ProtocolHandler.ReadNextVarInt(packetData) == 0x01) //Read Packet ID
                         {
                             long content = ProtocolHandler.ReadNextByte(packetData); //Get the Json data
@@ -222,6 +310,8 @@ public static class ServerMotd
             info.State = StateType.EXCEPTION;
             info.Message = ex.Message;
         }
+
+        return info;
     }
 
     public static string ClearColor(string str)

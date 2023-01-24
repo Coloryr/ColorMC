@@ -28,7 +28,6 @@
             Max="False"
             Min="False" />
         <Grid Margin="0,35,0,0" Background="{setting:Colors TranBack}">
-
             <StackPanel VerticalAlignment="Center">
                 <TextBlock
                     Name="Text"
