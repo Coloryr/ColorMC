@@ -188,7 +188,9 @@ public partial class ItemControl : UserControl
 
     public void Load()
     {
-        if (GuiConfigUtils.Config.ServerCustom.LockGame)
+        var config = ConfigBinding.GetAllConfig();
+        if (config.Item2 != null &&
+            config.Item2.ServerCustom?.LockGame == true)
         {
             Button_Add1.IsVisible = false;
             Button_Out.IsVisible = false;

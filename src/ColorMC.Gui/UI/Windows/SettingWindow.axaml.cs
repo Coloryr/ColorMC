@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Setting;
 using System;
+using Avalonia.Input;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -36,6 +37,8 @@ public partial class SettingWindow : Window, IBaseWindow
 
         Rectangle1.MakeResizeDrag(this);
 
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+
         Tabs.SelectionChanged += Tabs_SelectionChanged;
         Tab1.Children.Add(content1);
         Tab1.Children.Add(content2);
@@ -54,6 +57,18 @@ public partial class SettingWindow : Window, IBaseWindow
         App.PicUpdate += Update;
 
         Update();
+    }
+
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (e.Delta.Y > 0)
+        {
+            ScrollViewer1.LineLeft();
+        }
+        else if (e.Delta.Y < 0)
+        {
+            ScrollViewer1.LineRight();
+        }
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)

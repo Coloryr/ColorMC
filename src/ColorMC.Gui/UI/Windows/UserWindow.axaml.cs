@@ -324,7 +324,7 @@ public partial class UserWindow : Window
         }
 
         UserBinding.Remove(item.UUID, item.AuthType);
-        MainWindow.OnUserEdit();
+        App.OnUserEdit();
         Load();
     }
 

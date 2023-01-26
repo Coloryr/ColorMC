@@ -1,9 +1,6 @@
 using Avalonia.Controls;
-using ColorMC.Gui.Objs;
 using Avalonia.Input;
-using static ColorMC.Core.Objs.Minecraft.ResourcepackObj;
-using ColorMC.Gui.Utils.LaunchSetting;
-using System.Reflection.Emit;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

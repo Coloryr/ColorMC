@@ -1,17 +1,22 @@
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
-using Avalonia.Layout;
-using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -21,9 +26,6 @@ public partial class MainWindow : Window
     private GamesControl DefaultGroup;
     private GameControl? Obj;
     private Dictionary<GameSettingObj, GameControl> Launchs = new();
-
-    public delegate void UserEditHandler();
-    public static event UserEditHandler UserEdit;
 
     private LaunchState Last;
 
@@ -43,7 +45,7 @@ public partial class MainWindow : Window
         CoreMain.GameLaunch = GameLunch;
         CoreMain.GameDownload = GameDownload;
 
-        UserEdit += MainWindow_OnUserEdit;
+        App.UserEdit += MainWindow_OnUserEdit;
         Opened += MainWindow_Opened;
         Closed += MainWindow_Closed;
 
@@ -80,14 +82,6 @@ public partial class MainWindow : Window
         }
     }
 
-    public static void OnUserEdit()
-    {
-        if (UserEdit != null)
-        {
-            UserEdit();
-        }
-    }
-
     public void GameClose(GameSettingObj obj)
     {
         if (Launchs.Remove(obj, out var con))
@@ -107,6 +101,7 @@ public partial class MainWindow : Window
     private void MainWindow_Closed(object? sender, EventArgs e)
     {
         App.PicUpdate -= Update;
+        App.UserEdit -= MainWindow_OnUserEdit;
 
         App.MainWindow = null;
         CoreMain.GameLaunch = null;
@@ -118,17 +113,18 @@ public partial class MainWindow : Window
     private void MainWindow_Opened(object? sender, EventArgs e)
     {
         ItemInfo.Expander1.MakeTran();
+
         MotdLoad();
     }
 
     public void MotdLoad()
     {
-        var config = ConfigBinding.GetAllConfig().Item2;
-        if (config.ServerCustom != null && config.ServerCustom.Motd &&
-            !string.IsNullOrWhiteSpace(config.ServerCustom.IP))
+        var config = ConfigBinding.GetAllConfig();
+        if (config.Item2 != null && config.Item2.ServerCustom?.Motd == true &&
+            !string.IsNullOrWhiteSpace(config.Item2.ServerCustom.IP))
         {
             ServerMotdControl1.IsVisible = true;
-            ServerMotdControl1.Load(config.ServerCustom.IP, config.ServerCustom.Port);
+            ServerMotdControl1.Load(config.Item2.ServerCustom.IP, config.Item2.ServerCustom.Port);
         }
         else
         {
@@ -211,18 +207,17 @@ public partial class MainWindow : Window
 
     public void Load()
     {
-        Dispatcher.UIThread.Post(() =>
-        {
-            ItemInfo.Load();
-        });
+        Dispatcher.UIThread.Post(ItemInfo.Load);
 
         Task.Run(async () =>
         {
             Groups.Clear();
 
-            if (GuiConfigUtils.Config.ServerCustom.LockGame)
+            var config = ConfigBinding.GetAllConfig();
+
+            if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)
             {
-                var game = GameBinding.GetGame(GuiConfigUtils.Config.ServerCustom.GameName);
+                var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
                 if (game == null)
                 {
                     Dispatcher.UIThread.Post(() =>

@@ -189,7 +189,7 @@ public static class ServerMotd
             catch (SocketException ex)
             {
                 var data = await new Resolver().Query("_minecraft._tcp." + ip, QType.SRV);
-                RecordSRV? result = data.Answers?.FirstOrDefault()?.RECORD as RecordSRV;
+                var result = data.Answers?.FirstOrDefault()?.RECORD as RecordSRV;
                 if (result != null)
                 {
                     tcp = new TcpClient(result.TARGET, result.PORT);

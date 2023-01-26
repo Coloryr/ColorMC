@@ -212,6 +212,11 @@ public static class BaseBinding
         }
     }
 
+    public static byte[] GetUIJson()
+    {
+        return App.GetFile("ColorMC.Gui.Resource.UI.CustomUI.json");
+    }
+
     public static void OpUrl(string url)
     {
         switch (SystemInfo.Os)

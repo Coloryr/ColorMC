@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace ColorMC.Gui.UIBinding;
 
