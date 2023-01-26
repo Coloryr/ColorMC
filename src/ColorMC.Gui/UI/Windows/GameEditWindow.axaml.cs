@@ -1,11 +1,10 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Threading;
-using Avalonia.Controls.Primitives;
-using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Windows;
 

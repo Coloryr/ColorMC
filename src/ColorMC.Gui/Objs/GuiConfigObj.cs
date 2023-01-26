@@ -9,7 +9,7 @@ public record LastUser
 }
 
 public record ServerCustom
-{ 
+{
     public string IP { get; set; }
     public int Port { get; set; }
     public bool Motd { get; set; }
@@ -19,6 +19,7 @@ public record ServerCustom
 
     public bool LockGame { get; set; }
     public string GameName { get; set; }
+    public string UIFile { get; set; }
 }
 public record GuiConfigObj
 {

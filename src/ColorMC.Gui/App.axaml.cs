@@ -9,8 +9,10 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +30,7 @@ public partial class App : Application
     public static MainWindow? MainWindow;
     public static HelloWindow? HelloWindow;
     public static AddGameWindow? AddGameWindow;
+    public static CustomWindow? CustomWindow;
     public static AddCurseForgeWindow? AddCurseForgeWindow;
     public static SettingWindow? SettingWindow;
     public static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
@@ -40,6 +43,9 @@ public partial class App : Application
     public static event Action PicUpdate;
 
     public static ResourceDictionary? Language;
+
+    public delegate void UserEditHandler();
+    public static event UserEditHandler UserEdit;
 
     public static Bitmap? BackBitmap { get; private set; }
     public static Bitmap GameIcon { get; private set; }
@@ -79,6 +85,14 @@ public partial class App : Application
         Icon = new(asset1);
     }
 
+    public static void OnUserEdit()
+    {
+        if (UserEdit != null)
+        {
+            UserEdit();
+        }
+    }
+
     public static void OnPicUpdate()
     {
         PicUpdate.Invoke();
@@ -102,10 +116,19 @@ public partial class App : Application
         {
             return;
         }
-        MemoryStream stream = new();
+        using MemoryStream stream = new();
         item.CopyTo(stream);
         var temp = Encoding.UTF8.GetString(stream.ToArray());
         Language = AvaloniaRuntimeXamlLoader.Load(temp) as ResourceDictionary;
+    }
+
+    public static byte[] GetFile(string name)
+    {
+        var assm = Assembly.GetExecutingAssembly();
+        var item = assm.GetManifestResourceStream(name);
+        using MemoryStream stream = new();
+        item.CopyTo(stream);
+        return stream.ToArray();
     }
 
     public static void RemoveImage()
@@ -146,6 +169,21 @@ public partial class App : Application
     private void Life_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
     {
         BaseBinding.Exit();
+    }
+
+    public static void ShowCustom(UIObj obj)
+    {
+        if (CustomWindow != null)
+        {
+            CustomWindow.Activate();
+        }
+        else
+        {
+            CustomWindow = new();
+            CustomWindow.Show();
+        }
+
+        CustomWindow.Load(obj);
     }
 
     public static void ShowAddGame()

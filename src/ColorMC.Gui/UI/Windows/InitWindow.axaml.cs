@@ -1,7 +1,11 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
+using ColorMC.Core;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -50,10 +54,54 @@ public partial class InitWindow : Window
                 }
                 else
                 {
-                    App.ShowMain();
+                    ShowMain();
                 }
                 Close();
             });
         });
+    }
+
+    private void ShowMain()
+    {
+        bool ok;
+        var config = ConfigBinding.GetAllConfig();
+        if (config.Item2 == null || string.IsNullOrWhiteSpace(config.Item2.ServerCustom.UIFile))
+        {
+            ok = false;
+        }
+        else
+        {
+            try
+            {
+                string file = config.Item2.ServerCustom.UIFile;
+                if (File.Exists(file))
+                {
+                    var obj = JsonConvert.DeserializeObject<UIObj>(File.ReadAllText(file));
+                    if (obj == null)
+                    {
+                        ok = false;
+                    }
+                    else
+                    {
+                        App.ShowCustom(obj);
+                        ok = true;
+                    }
+                }
+                else
+                {
+                    ok = false;
+                }
+            }
+            catch (Exception e)
+            {
+                CoreMain.OnError?.Invoke("自定义UI加载失败", e, true);
+                ok = false;
+            }
+        }
+
+        if (!ok)
+        {
+            App.ShowMain();
+        }
     }
 }

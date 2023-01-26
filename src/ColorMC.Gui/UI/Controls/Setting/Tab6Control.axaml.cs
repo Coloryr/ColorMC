@@ -1,10 +1,13 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using ColorMC.Core;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using Avalonia.Interactivity;
-using System.Collections.Generic;
 using ColorMC.Gui.Utils.LaunchSetting;
-using ColorMC.Gui.Objs;
+using Newtonsoft.Json;
+using System;
+using System.IO;
 using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
@@ -19,13 +22,108 @@ public partial class Tab6Control : UserControl
 
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
+        Button3.Click += Button3_Click;
+        Button4.Click += Button4_Click;
+        Button5.Click += Button5_Click;
+        Button6.Click += Button6_Click;
+        Button7.Click += Button7_Click;
 
         CheckBox3.Click += CheckBox3_Click;
     }
 
+    private void Button7_Click(object? sender, RoutedEventArgs e)
+    {
+        var file = TextBox3.Text;
+        if(string.IsNullOrWhiteSpace(file))
+        {
+            Window.Info.Show("没有设置文件");
+            return;    
+        }
+        if (!File.Exists(TextBox3.Text))
+        {
+            Window.Info.Show("文件找不到");
+            return;
+        }
+        try
+        {
+            var obj = JsonConvert.DeserializeObject<UIObj>(File.ReadAllText(file));
+            if (obj == null)
+            {
+                Window.Info.Show("UI文件错误");
+                return;
+            }
+
+            App.ShowCustom(obj);
+        }
+        catch (Exception ex)
+        {
+            CoreMain.OnError?.Invoke("测试启动错误", ex, false);
+        }
+    }
+
+    private async void Button6_Click(object? sender, RoutedEventArgs e)
+    {
+        SaveFileDialog save = new()
+        {
+            Title = "选择保存的文件",
+            DefaultExtension = ".json",
+            InitialFileName = "ui.json"
+        };
+
+        var str = await save.ShowAsync(Window);
+        if (!string.IsNullOrWhiteSpace(str))
+        {
+            if (File.Exists(str))
+            {
+                File.Delete(str);
+            }
+
+            File.WriteAllBytes(str, BaseBinding.GetUIJson());
+        }
+    }
+
+    private void Button5_Click(object? sender, RoutedEventArgs e)
+    {
+        ConfigBinding.SetUIFile(TextBox3.Text);
+
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info8"]);
+    }
+
+    private void Button4_Click(object? sender, RoutedEventArgs e)
+    {
+        TextBox3.Text = null;
+    }
+
+    private async void Button3_Click(object? sender, RoutedEventArgs e)
+    {
+        OpenFileDialog open = new()
+        {
+            Title = "选择UI文件",
+            AllowMultiple =false,
+            Filters =new()
+            { 
+                new()
+                {
+                    Name = "UI文件",
+                    Extensions = new()
+                    { 
+                        "json"
+                    }
+                }
+            }
+        };
+
+        var res = await open.ShowAsync(Window);
+        if (res?.Length > 0)
+        {
+            var file = res[0];
+            TextBox3.Text = file;
+        }
+    }
+
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        ConfigBinding.SetServerCustom(CheckBox3.IsChecked == true, 
+        ConfigBinding.SetServerCustom(CheckBox3.IsChecked == true,
             ComboBox1.SelectedItem as string);
 
         Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info8"]);
@@ -48,7 +146,7 @@ public partial class Tab6Control : UserControl
         ConfigBinding.SetServerCustom(new ServerCustom()
         {
             IP = TextBox1.Text,
-            Port = UIUtils.CheckNotNumber(TextBox2.Text) ?  0 : int.Parse(TextBox2.Text!),
+            Port = UIUtils.CheckNotNumber(TextBox2.Text) ? 0 : int.Parse(TextBox2.Text!),
             Motd = CheckBox1.IsChecked == true,
             JoinServer = CheckBox2.IsChecked == true,
             MotdColor = ColorPicker1.Color.ToString(),
@@ -67,12 +165,13 @@ public partial class Tab6Control : UserControl
     {
         ComboBox1.Items = from item in GameBinding.GetGames() select item.Name;
 
-        var config = ConfigBinding.GetAllConfig().Item2.ServerCustom;
+        var config = ConfigBinding.GetAllConfig().Item2?.ServerCustom;
 
         if (config != null)
         {
             TextBox1.Text = config.IP;
             TextBox2.Text = config.Port.ToString();
+            TextBox3.Text = config.UIFile;
 
             CheckBox1.IsChecked = config.Motd;
             CheckBox2.IsChecked = config.JoinServer;

@@ -34,6 +34,7 @@
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\user.png" />
+    <None Remove="Resource\UI\CustomUI.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="icon.ico" />
@@ -50,6 +51,7 @@
     <EmbeddedResource Include="Resource\Pic\game.png" />
     <EmbeddedResource Include="Resource\Pic\launch.png" />
     <EmbeddedResource Include="Resource\Pic\user.png" />
+    <EmbeddedResource Include="Resource\UI\CustomUI.json" />
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.
@@ -162,6 +164,9 @@
     </Compile>
     <Compile Update="UI\Windows\AddWorldWindow.axaml.cs">
       <DependentUpon>AddWorldWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Windows\CustomWindow.axaml.cs">
+      <DependentUpon>CustomWindow.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

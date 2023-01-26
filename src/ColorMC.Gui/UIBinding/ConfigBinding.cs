@@ -140,4 +140,10 @@ public static class ConfigBinding
 
         App.MainWindow?.Load();
     }
+
+    public static void SetUIFile(string text)
+    {
+        GuiConfigUtils.Config.ServerCustom.UIFile = text;
+        GuiConfigUtils.Save();
+    }
 }

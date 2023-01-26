@@ -1,17 +1,16 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
-using AvaloniaEdit.Highlighting;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.Minecraft;
 using DynamicData;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection.Emit;
 using System.Threading;
-using Avalonia.Interactivity;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -20,7 +19,7 @@ public partial class ServerMotdControl : UserControl
     private string IP;
     private int Port;
 
-    private bool FirstLine =true;
+    private bool FirstLine = true;
     private Thread thread;
     private bool IsRun = true;
     private List<TextBlock> ObfuscatedList = new();
@@ -103,21 +102,27 @@ public partial class ServerMotdControl : UserControl
         StackPanel2.Children.Clear();
         ObfuscatedList.Clear();
 
-        var motd = await ServerMotd.GetServerInfo(IP, Port);
+        var motd = await Task.Run(async () =>
+        {
+            return await ServerMotd.GetServerInfo(IP, Port);
+        });
         if (motd.State == StateType.GOOD)
         {
             Grid2.IsVisible = false;
             using var stream = new MemoryStream();
             await stream.WriteAsync(motd.FaviconByteArray);
             stream.Seek(0, SeekOrigin.Begin);
-            Image1.Source = new Bitmap(stream);
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                Image1.Source = new Bitmap(stream);
 
-            Label2.Content = motd.Players.Online;
-            Label3.Content = motd.Players.Max;
-            Label4.Content = motd.Version.Name;
-            Label5.Content = motd.Ping;
+                Label2.Content = motd.Players.Online;
+                Label3.Content = motd.Players.Max;
+                Label4.Content = motd.Version.Name;
+                Label5.Content = motd.Ping;
 
-            MakeText(motd.Description);
+                MakeText(motd.Description);
+            });
         }
         else
         {

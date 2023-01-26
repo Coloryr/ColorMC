@@ -11,71 +11,112 @@
     <Grid>
         <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
 
-        <StackPanel Margin="5">
-            <Label Margin="5" Content="Motd显示" />
-            <StackPanel Orientation="Horizontal">
+        <ScrollViewer Margin="5">
+            <StackPanel>
+                <Label Margin="5" Content="Motd显示" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Name="TextBox1"
+                        Width="200"
+                        Margin="5"
+                        Classes="input1"
+                        Watermark="服务器地址" />
+                    <TextBox
+                        Name="TextBox2"
+                        Width="100"
+                        Margin="5"
+                        Classes="input1"
+                        MaxLength="5"
+                        Watermark="服务器端口" />
+
+                    <CheckBox
+                        Name="CheckBox1"
+                        Margin="10,0,0,0"
+                        Content="显示Motd" />
+                    <CheckBox
+                        Name="CheckBox2"
+                        Margin="10,0,0,0"
+                        Content="自动加入服务器" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Margin="5" Content="背景颜色" />
+                    <ColorPicker Name="ColorPicker1" />
+                    <Label Margin="5" Content="字体颜色" />
+                    <ColorPicker Name="ColorPicker2" />
+                </StackPanel>
+
+                <Button
+                    Name="Button1"
+                    Width="80"
+                    Height="25"
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Content="{setting:Localize Button.Set}" />
+
+                <Label Margin="5" Content="游戏启动设置" />
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        Name="CheckBox3"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="锁定启动的实例" />
+                    <ComboBox
+                        Name="ComboBox1"
+                        Width="300"
+                        Margin="10,0,0,0"
+                        IsEnabled="False" />
+
+                </StackPanel>
+
+                <Button
+                    Name="Button2"
+                    Width="80"
+                    Height="25"
+                    Margin="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Content="{setting:Localize Button.Set}" />
+
+                <Label Margin="5" Content="自定义主界面UI" />
                 <TextBox
-                    Name="TextBox1"
-                    Width="200"
+                    Name="TextBox3"
                     Margin="5"
                     Classes="input1"
-                    Watermark="服务器地址" />
-                <TextBox
-                    Name="TextBox2"
-                    Width="100"
-                    Margin="5"
-                    Classes="input1"
-                    MaxLength="5"
-                    Watermark="服务器端口" />
-
-                <CheckBox
-                    Name="CheckBox1"
-                    Margin="10,0,0,0"
-                    Content="显示Motd" />
-                <CheckBox
-                    Name="CheckBox2"
-                    Margin="10,0,0,0"
-                    Content="自动加入服务器" />
+                    Watermark="配置文件路径" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button
+                        Name="Button6"
+                        Width="80"
+                        Height="25"
+                        Content="导出模板" />
+                    <Button
+                        Name="Button3"
+                        Width="80"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize Button.Select}" />
+                    <Button
+                        Name="Button4"
+                        Width="80"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize Button.Delete}" />
+                    <Button
+                        Name="Button5"
+                        Width="80"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize Button.Set}" />
+                    <Button
+                        Name="Button7"
+                        Width="80"
+                        Height="25"
+                        Margin="5,0,10,0"
+                        Content="测试启动" />
+                </StackPanel>
+                <Label Margin="5" Content="重启后自定义UI生效" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Margin="5" Content="背景颜色" />
-                <ColorPicker Name="ColorPicker1" />
-                <Label Margin="5" Content="字体颜色" />
-                <ColorPicker Name="ColorPicker2" />
-            </StackPanel>
-
-            <Button
-                Name="Button1"
-                Width="80"
-                Height="25"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Content="{setting:Localize Button.Set}" />
-
-            <Label Margin="5" Content="游戏启动设置" />
-            <StackPanel Orientation="Horizontal">
-                <CheckBox
-                    Name="CheckBox3"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="锁定启动的实例" />
-                <ComboBox
-                    Name="ComboBox1"
-                    Width="300"
-                    Margin="10,0,0,0"
-                    IsEnabled="False" />
-
-            </StackPanel>
-
-            <Button
-                Name="Button2"
-                Width="80"
-                Height="25"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Content="{setting:Localize Button.Set}" />
-        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
