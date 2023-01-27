@@ -1,8 +1,8 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Setting;
 using System;
-using Avalonia.Input;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;

@@ -34,14 +34,14 @@ public partial class Tab6Control : UserControl
     private void Button7_Click(object? sender, RoutedEventArgs e)
     {
         var file = TextBox3.Text;
-        if(string.IsNullOrWhiteSpace(file))
+        if (string.IsNullOrWhiteSpace(file))
         {
-            Window.Info.Show("没有设置文件");
-            return;    
+            Window.Info.Show(Localizer.Instance["Error8"]);
+            return;
         }
         if (!File.Exists(TextBox3.Text))
         {
-            Window.Info.Show("文件找不到");
+            Window.Info.Show(Localizer.Instance["Error9"]);
             return;
         }
         try
@@ -49,7 +49,7 @@ public partial class Tab6Control : UserControl
             var obj = JsonConvert.DeserializeObject<UIObj>(File.ReadAllText(file));
             if (obj == null)
             {
-                Window.Info.Show("UI文件错误");
+                Window.Info.Show(Localizer.Instance["SettingWindow.Tab6.Error1"]);
                 return;
             }
 
@@ -57,7 +57,7 @@ public partial class Tab6Control : UserControl
         }
         catch (Exception ex)
         {
-            CoreMain.OnError?.Invoke("测试启动错误", ex, false);
+            CoreMain.OnError?.Invoke(Localizer.Instance["SettingWindow.Tab6.Error2"], ex, false);
         }
     }
 
@@ -65,7 +65,7 @@ public partial class Tab6Control : UserControl
     {
         SaveFileDialog save = new()
         {
-            Title = "选择保存的文件",
+            Title = Localizer.Instance["SettingWindow.Tab6.Info1"],
             DefaultExtension = ".json",
             InitialFileName = "ui.json"
         };
@@ -84,9 +84,22 @@ public partial class Tab6Control : UserControl
 
     private void Button5_Click(object? sender, RoutedEventArgs e)
     {
-        ConfigBinding.SetUIFile(TextBox3.Text);
+        var file = TextBox3.Text;
+        if (string.IsNullOrWhiteSpace(file))
+        {
+            Window.Info.Show(Localizer.Instance["Error7"]);
+            return;
+        }
 
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info8"]);
+        if (File.Exists(file))
+        {
+            Window.Info.Show(Localizer.Instance["Error9"]);
+            return;
+        }
+
+        ConfigBinding.SetUIFile(file);
+
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
@@ -98,15 +111,15 @@ public partial class Tab6Control : UserControl
     {
         OpenFileDialog open = new()
         {
-            Title = "选择UI文件",
-            AllowMultiple =false,
-            Filters =new()
-            { 
+            Title = Localizer.Instance["SettingWindow.Tab6.Info2"],
+            AllowMultiple = false,
+            Filters = new()
+            {
                 new()
                 {
-                    Name = "UI文件",
+                    Name = Localizer.Instance["SettingWindow.Tab6.Info3"],
                     Extensions = new()
-                    { 
+                    {
                         "json"
                     }
                 }
@@ -126,7 +139,7 @@ public partial class Tab6Control : UserControl
         ConfigBinding.SetServerCustom(CheckBox3.IsChecked == true,
             ComboBox1.SelectedItem as string);
 
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info8"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void CheckBox3_Click(object? sender, RoutedEventArgs e)
@@ -153,7 +166,7 @@ public partial class Tab6Control : UserControl
             MotdBackColor = ColorPicker2.Color.ToString()
         });
 
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info8"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     public void SetWindow(SettingWindow window)

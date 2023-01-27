@@ -17,7 +17,7 @@ public class ServerDescriptionJsonConverter : JsonConverter<Chat>
         if (reader.TokenType == JsonToken.String)
         {
             var str1 = reader.Value?.ToString();
-            if(string.IsNullOrWhiteSpace(str1))
+            if (string.IsNullOrWhiteSpace(str1))
                 return new Chat() { Text = "" };
 
             var lines = str1.Split("\n");

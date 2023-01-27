@@ -16,9 +16,24 @@ public partial class Tab4Control : UserControl
 
         Button_Set.Click += Button_Set_Click;
         Button_Set1.Click += Button_Set1_Click;
+        Button_Set2.Click += Button_Set2_Click;
+
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
         ComboBox1.Items = JavaBinding.GetGCTypes();
+    }
+
+    private void Button_Set2_Click(object? sender, RoutedEventArgs e)
+    {
+        ConfigBinding.SetGameCheckConfig(new() 
+        {
+            CheckCore = CheckBox2.IsChecked == true,
+            CheckAssets = CheckBox3.IsChecked == true,
+            CheckLib = CheckBox4.IsChecked == true,
+            CheckMod = CheckBox5.IsChecked == true,
+        });
+
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void Button_Set1_Click(object? sender, RoutedEventArgs e)
@@ -29,7 +44,7 @@ public partial class Tab4Control : UserControl
             Height = (uint)Input4.Value,
             FullScreen = CheckBox1.IsChecked == true
         });
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -49,7 +64,7 @@ public partial class Tab4Control : UserControl
             MaxMemory = (uint)Input2.Value,
             MinMemory = (uint)Input1.Value
         });
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     public void SetWindow(SettingWindow window)
@@ -66,15 +81,19 @@ public partial class Tab4Control : UserControl
 
             Input1.Value = (uint)config.Item1.DefaultJvmArg.MinMemory;
             Input2.Value = (uint)config.Item1.DefaultJvmArg.MaxMemory;
+            Input3.Value = config.Item1.Window.Width;
+            Input4.Value = config.Item1.Window.Height;
 
             TextBox1.Text = config.Item1.DefaultJvmArg.GCArgument;
             TextBox2.Text = config.Item1.DefaultJvmArg.JavaAgent;
             TextBox3.Text = config.Item1.DefaultJvmArg.JvmArgs;
             TextBox4.Text = config.Item1.DefaultJvmArg.GameArgs;
 
-            Input3.Value = config.Item1.Window.Width;
-            Input4.Value = config.Item1.Window.Height;
             CheckBox1.IsChecked = config.Item1.Window.FullScreen;
+            CheckBox2.IsChecked = config.Item1.GameCheck.CheckCore;
+            CheckBox3.IsChecked = config.Item1.GameCheck.CheckAssets;
+            CheckBox4.IsChecked = config.Item1.GameCheck.CheckLib;
+            CheckBox5.IsChecked = config.Item1.GameCheck.CheckMod;
         }
     }
 }

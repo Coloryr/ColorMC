@@ -38,7 +38,7 @@
                             Margin="3,0,0,0"
                             Orientation="Horizontal" />
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="玩家数量：" Foreground="{setting:Colors Motd}" />
+                            <Label Content="{setting:Localize ServerMotdControl.Text1}" Foreground="{setting:Colors Motd}" />
                             <Label
                                 Name="Label2"
                                 Content="0"
@@ -50,7 +50,7 @@
                                 Foreground="{setting:Colors Motd}" />
                             <Label
                                 Margin="10,0,0,0"
-                                Content="服务器版本："
+                                Content="{setting:Localize ServerMotdControl.Text2}"
                                 Foreground="{setting:Colors Motd}" />
                             <Label
                                 Name="Label4"
@@ -58,7 +58,7 @@
                                 Foreground="{setting:Colors Motd}" />
                             <Label
                                 Margin="10,0,0,0"
-                                Content="延迟："
+                                Content="{setting:Localize ServerMotdControl.Text3}"
                                 Foreground="{setting:Colors Motd}" />
                             <Label
                                 Name="Label5"
@@ -75,7 +75,7 @@
                         <Label
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Content="正在获取Motd" />
+                            Content="{setting:Localize ServerMotdControl.Text4}" />
                         <ProgressBar
                             Height="10"
                             Margin="10,0,10,0"
@@ -89,7 +89,7 @@
                     <Label
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Content="服务器Motd获取失败" />
+                        Content="{setting:Localize ServerMotdControl.Text5}" />
                 </Grid>
 
                 <Button
@@ -99,7 +99,7 @@
                     Margin="10"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Content="刷新" />
+                    Content="{setting:Localize Button.Refash}" />
             </Grid>
         </Expander>
 

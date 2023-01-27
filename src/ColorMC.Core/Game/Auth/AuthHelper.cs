@@ -76,12 +76,12 @@ public static class AuthHelper
             return null;
 
         var meta = await BaseClient.GetString(UrlHelper.AuthlibInjectorMeta(BaseClient.Source));
-        var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta) 
+        var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta)
             ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
         var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
 
         var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
-        var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(meta) 
+        var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(meta)
             ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
         var item1 = BuildAuthlibInjectorItem(obj1);
 

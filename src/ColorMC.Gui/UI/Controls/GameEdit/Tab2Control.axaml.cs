@@ -49,7 +49,7 @@ public partial class Tab2Control : UserControl
     private void Button_Set4_Click(object? sender, RoutedEventArgs e)
     {
         GameBinding.SetJavaLocal(Obj, ComboBox2.SelectedItem as string, TextBox11.Text);
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void TextBox11_TextInput(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -75,7 +75,7 @@ public partial class Tab2Control : UserControl
     {
         if (UIUtils.CheckNotNumber(TextBox8.Text))
         {
-            Window.Info.Show(Localizer.Instance["SettingWindow.Tab3.Error1"]);
+            Window.Info.Show(Localizer.Instance["Error7"]);
             return;
         }
 
@@ -86,14 +86,14 @@ public partial class Tab2Control : UserControl
             User = TextBox9.Text,
             Password = TextBox10.Text
         });
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void Button_Set2_Click(object? sender, RoutedEventArgs e)
     {
         if (UIUtils.CheckNotNumber(TextBox6.Text))
         {
-            Window.Info.Show(Localizer.Instance["SettingWindow.Tab3.Error1"]);
+            Window.Info.Show(Localizer.Instance["Error7"]);
             return;
         }
 
@@ -102,7 +102,7 @@ public partial class Tab2Control : UserControl
             IP = TextBox5.Text,
             Port = ushort.Parse(TextBox6.Text!)
         });
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void Button_Set1_Click(object? sender, RoutedEventArgs e)
@@ -113,7 +113,7 @@ public partial class Tab2Control : UserControl
             Height = (uint)Input4.Value!,
             FullScreen = CheckBox1.IsChecked == true
         });
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -133,7 +133,7 @@ public partial class Tab2Control : UserControl
             MaxMemory = (uint)Input2.Value,
             MinMemory = (uint)Input1.Value
         });
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab4.Info1"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void Load()

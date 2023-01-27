@@ -14,7 +14,7 @@ public static class QuiltHelper
         {
             if (SupportVersion != null)
                 return SupportVersion;
-            
+
             string url = $"{UrlHelper.QuiltMeta(local)}/game";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))

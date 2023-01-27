@@ -83,7 +83,7 @@ public record JvmArgObj
 }
 
 public record GameCheckObj
-{ 
+{
     public bool CheckCore { get; set; }
     public bool CheckLib { get; set; }
     public bool CheckAssets { get; set; }

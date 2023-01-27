@@ -15,12 +15,12 @@
                 <CheckBox
                     Name="CheckBox1"
                     Margin="10,5,0,0"
-                    Content="自动换行"
+                    Content="{setting:Localize GameEditWindow.Tab7.Text1}"
                     IsChecked="True" />
                 <CheckBox
                     Name="CheckBox2"
                     Margin="10,5,0,0"
-                    Content="自动下拉"
+                    Content="{setting:Localize GameEditWindow.Tab7.Text2}"
                     IsChecked="True" />
             </StackPanel>
             <TextBox

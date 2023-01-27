@@ -70,8 +70,24 @@ public static class DownloadManager
         DoneSize = 0;
     }
 
-    public static async Task<bool> Start()
+    public static async Task<bool> Start(List<DownloadItem> list)
     {
+        Clear();
+        Logs.Info(LanguageHelper.GetName("Core.Http.Downloader.Fill"));
+        CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
+        foreach (var item in list)
+        {
+            if (Name.Contains(item.Name))
+                continue;
+            CoreMain.DownloadItemStateUpdate?.Invoke(-1, item);
+            item.Update = (index) =>
+            {
+                CoreMain.DownloadItemStateUpdate?.Invoke(index, item);
+            };
+            Items.Enqueue(item);
+            Name.Add(item.Name);
+        }
+
         Logs.Info(LanguageHelper.GetName("Core.Http.Downloader.Start"));
         DoneSize = 0;
         AllSize = Items.Count;
@@ -91,24 +107,6 @@ public static class DownloadManager
         CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.End);
 
         return AllSize == DoneSize;
-    }
-
-    public static void FillAll(List<DownloadItem> list)
-    {
-        Logs.Info(LanguageHelper.GetName("Core.Http.Downloader.Fill"));
-        CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
-        foreach (var item in list)
-        {
-            if (Name.Contains(item.Name))
-                continue;
-            CoreMain.DownloadItemStateUpdate?.Invoke(-1, item);
-            item.Update = (index) =>
-            {
-                CoreMain.DownloadItemStateUpdate?.Invoke(index, item);
-            };
-            Items.Enqueue(item);
-            Name.Add(item.Name);
-        }
     }
 
     public static DownloadItem? GetItem()
@@ -210,6 +208,10 @@ public static class DownloadManager
             }
 
             stream.Dispose();
+            if (File.Exists(item.Local))
+            {
+                File.Delete(item.Local);
+            }
             File.Move(file, item.Local);
 
             return true;

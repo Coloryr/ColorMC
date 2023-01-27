@@ -42,7 +42,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button5_Click(object? sender, RoutedEventArgs e)
     {
-        var res = await Window.Info.ShowWait(string.Format("ÊÇ·ñÒªÉ¾³ýÊµÀý {0}", Obj.Name));
+        var res = await Window.Info.ShowWait(string.Format(Localizer.Instance["GameEditWindow.Tab1.Info1"], Obj.Name));
         if (!res)
             return;
 

@@ -155,8 +155,7 @@ public static class AddGameMenu
 
         items.AddRange(list.List!);
 
-        DownloadManager.FillAll(items);
-        var download = DownloadManager.Start().Result;
+        var download = DownloadManager.Start(items).Result;
         if (!download)
         {
             ConsoleUtils.Error("游戏下载失败");
@@ -225,8 +224,7 @@ public static class AddGameMenu
 
         items.AddRange(list.List!);
 
-        DownloadManager.FillAll(items);
-        var download = DownloadManager.Start().Result;
+        var download = DownloadManager.Start(items).Result;
         if (!download)
         {
             ConsoleUtils.Error("游戏下载失败");
@@ -295,8 +293,7 @@ public static class AddGameMenu
 
         items.AddRange(list.List!);
 
-        DownloadManager.FillAll(items);
-        var download = DownloadManager.Start().Result;
+        var download = DownloadManager.Start(items).Result;
         if (!download)
         {
             ConsoleUtils.Error("游戏下载失败");

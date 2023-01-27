@@ -100,7 +100,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize Button.Set}" />
                 </StackPanel>
-                <Label Margin="5" Content="注意：背景图尺寸越大，启动器越卡" />
+                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
                 <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
                 <StackPanel Margin="5" Orientation="Horizontal">
                     <Label

@@ -6,16 +6,11 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -56,7 +51,7 @@ public partial class MainWindow : Window
 
     public async void Launch(bool debug)
     {
-        Info1.Show(Localizer.Instance["MainWindow.Launch"]);
+        Info1.Show(Localizer.Instance["MainWindow.Info3"]);
         var res = await GameBinding.Launch(Obj!.Obj, debug);
         Info1.Close();
         if (res.Item1 == false)
@@ -78,7 +73,7 @@ public partial class MainWindow : Window
         {
             Launchs.Add(Obj.Obj, Obj);
             Obj.SetLaunch(true);
-            Info2.Show("ÒÑÆô¶¯");
+            Info2.Show(Localizer.Instance["MainWindow.Info2"]);
         }
     }
 
@@ -203,6 +198,12 @@ public partial class MainWindow : Window
     private void Load1()
     {
         ItemInfo.SetUser(UserBinding.GetLastUser());
+    }
+
+    public void IsDelete()
+    {
+        Obj = null;
+        ItemInfo.SetGame(null);
     }
 
     public void Load()

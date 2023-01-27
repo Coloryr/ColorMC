@@ -158,6 +158,9 @@
     <Compile Update="UI\Controls\Setting\HelloWindow.Tab2.axaml.cs">
       <DependentUpon>HelloWindow.Tab2.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Windows\AddModPackWindow.axaml.cs">
+      <DependentUpon>AddModPackWindow.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Windows\AddResourcePackWindow.axaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>AddResourcePackWindow.axaml</DependentUpon>

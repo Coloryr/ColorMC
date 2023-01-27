@@ -10,7 +10,6 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ColorMC.Core.Game;
@@ -36,7 +35,7 @@ public static class Launch
     /// <param name="login">登录的账户</param>
     /// <exception cref="LaunchException">抛出的错误</exception>
     /// <returns>下载列表</returns>
-    public static async Task<List<DownloadItem>> CheckGameFile(GameSettingObj obj, LoginObj login) 
+    public static async Task<List<DownloadItem>> CheckGameFile(GameSettingObj obj, LoginObj login)
     {
         var list = new List<DownloadItem>();
 
@@ -47,26 +46,26 @@ public static class Launch
         {
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostVersion);
             if (CoreMain.GameDownload == null)
-                throw new LaunchException(LaunchState.VersionError, 
+                throw new LaunchException(LaunchState.VersionError,
                     LanguageHelper.GetName("Core.Launch.Error1"));
 
             var res = await CoreMain.GameDownload.Invoke(LaunchState.LostVersion, obj);
             if (res != true)
-                throw new LaunchException(LaunchState.VersionError, 
+                throw new LaunchException(LaunchState.VersionError,
                     LanguageHelper.GetName("Core.Launch.Error1"));
 
             var version = VersionPath.Versions?.versions.Where(a => a.id == obj.Version).FirstOrDefault();
             if (version == null)
             {
                 CoreMain.GameLaunch?.Invoke(obj, LaunchState.VersionError);
-                throw new LaunchException(LaunchState.VersionError, 
+                throw new LaunchException(LaunchState.VersionError,
                     LanguageHelper.GetName("Core.Launch.Error1"));
             }
 
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
             var res1 = await GameDownload.Download(version);
             if (res1.State != DownloadState.End)
-                throw new LaunchException(LaunchState.VersionError, 
+                throw new LaunchException(LaunchState.VersionError,
                     LanguageHelper.GetName("Core.Launch.Error1"));
 
             list.AddRange(res1.List!);
@@ -124,7 +123,7 @@ public static class Launch
                 if (assets == null)
                 {
                     CoreMain.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
-                    throw new LaunchException(LaunchState.AssetsError, 
+                    throw new LaunchException(LaunchState.AssetsError,
                         LanguageHelper.GetName("Core.Launch.Error2"));
                 }
                 AssetsPath.AddIndex(assets, game);
@@ -952,7 +951,7 @@ public static class Launch
         if (res.Count != 0)
         {
             if (CoreMain.GameDownload == null)
-                throw new LaunchException(LaunchState.LostGame, 
+                throw new LaunchException(LaunchState.LostGame,
                     LanguageHelper.GetName("Core.Launch.Error4"));
 
             var res1 = await CoreMain.GameDownload.Invoke(LaunchState.LostFile, obj);
@@ -960,10 +959,8 @@ public static class Launch
                 throw new LaunchException(LaunchState.LostFile,
                     LanguageHelper.GetName("Core.Launch.Error4"));
 
-            DownloadManager.Clear();
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
-            DownloadManager.FillAll(res);
-            var ok = await DownloadManager.Start();
+            var ok = await DownloadManager.Start(res);
             if (!ok)
             {
                 throw new LaunchException(LaunchState.LostFile,
@@ -974,7 +971,7 @@ public static class Launch
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
 
         var arg = await MakeArg(obj, login);
-        CoreMain.GameLog?.Invoke(obj,LanguageHelper.GetName("Core.Launch.Log1"));
+        CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Log1"));
         foreach (var item in arg)
         {
             CoreMain.GameLog?.Invoke(obj, item);

@@ -229,7 +229,7 @@ public class FilesPageViewModel : ReactiveObject
                     }),
                 new HierarchicalExpanderColumn<FileTreeNodeModel>(
                     new TemplateColumn<FileTreeNodeModel>(
-                        "Name",
+                        Localizer.Instance["GameEditWindow.Tab6.Data.Title3"],
                         "FileNameCell",
                         new GridLength(1, GridUnitType.Star),
                         new ColumnOptions<FileTreeNodeModel>
@@ -245,7 +245,7 @@ public class FilesPageViewModel : ReactiveObject
                     x => x.HasChildren,
                     x => x.IsExpanded),
                 new TextColumn<FileTreeNodeModel, long?>(
-                    "Size",
+                    Localizer.Instance["GameEditWindow.Tab6.Data.Title4"],
                     x => x.Size,
                     options: new TextColumnOptions<FileTreeNodeModel>
                     {
@@ -253,7 +253,7 @@ public class FilesPageViewModel : ReactiveObject
                         CompareDescending = FileTreeNodeModel.SortDescending(x => x.Size),
                     }),
                 new TextColumn<FileTreeNodeModel, DateTimeOffset?>(
-                    "Modified",
+                    Localizer.Instance["GameEditWindow.Tab6.Data.Title5"],
                     x => x.Modified,
                     options: new TextColumnOptions<FileTreeNodeModel>
                     {

@@ -189,7 +189,7 @@ public partial class AddGameWindow : Window
     {
         if (CheckBox_Quilt.IsChecked == true)
         {
-            string? item = ComboBox_GameVersion.SelectedItem as string;
+            var item = ComboBox_GameVersion.SelectedItem as string;
             if (item == null)
                 return;
 
@@ -318,7 +318,6 @@ public partial class AddGameWindow : Window
         {
             TextBox_Input1.Text = "";
             ComboBox_GameVersion.SelectedItem = null;
-            Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
             App.MainWindow?.Load();
             Info1.Close();
         }
@@ -467,6 +466,10 @@ public partial class AddGameWindow : Window
         if (!res)
         {
             Info.Show(Localizer.Instance["AddGameWindow.Error4"]);
+        }
+        else
+        {
+            Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
         }
     }
 

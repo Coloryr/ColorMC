@@ -458,9 +458,7 @@ public static class InstancesPath
     {
         var item = PackDownload.MakeCurseForge(data);
 
-        DownloadManager.Clear();
-        DownloadManager.FillAll(new() { item });
-        var res1 = await DownloadManager.Start();
+        var res1 = await DownloadManager.Start(new() { item });
         if (!res1)
             return false;
 
@@ -548,9 +546,7 @@ public static class InstancesPath
                     }
 
                     CoreMain.PackState?.Invoke(CoreRunState.Download);
-                    DownloadManager.Clear();
-                    DownloadManager.FillAll(res.List!);
-                    res1111 = await DownloadManager.Start();
+                    res1111 = await DownloadManager.Start(res.List!);
 
                     CoreMain.PackState?.Invoke(CoreRunState.End);
                     break;
@@ -821,11 +817,12 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
+            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Core.Path.Instances.Load.Error"), e, false);
             Logs.Error(LanguageHelper.GetName("Core.Path.Instances.Load.Error"), e);
         }
-        if (!res1111)
+        if (!res1111 && game != null)
         {
-            game?.Remove();
+            await game.Remove();
         }
         CoreMain.PackState?.Invoke(CoreRunState.End);
         return res1111;

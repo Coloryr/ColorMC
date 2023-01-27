@@ -12,7 +12,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +30,7 @@ public partial class App : Application
     public static HelloWindow? HelloWindow;
     public static AddGameWindow? AddGameWindow;
     public static CustomWindow? CustomWindow;
-    public static AddCurseForgeWindow? AddCurseForgeWindow;
+    public static AddModPackWindow? AddModPackWindow;
     public static SettingWindow? SettingWindow;
     public static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
 
@@ -256,14 +255,14 @@ public partial class App : Application
 
     public static void ShowCurseForge()
     {
-        if (AddCurseForgeWindow != null)
+        if (AddModPackWindow != null)
         {
-            AddCurseForgeWindow.Activate();
+            AddModPackWindow.Activate();
         }
         else
         {
-            AddCurseForgeWindow = new();
-            AddCurseForgeWindow.Show();
+            AddModPackWindow = new();
+            AddModPackWindow.Show();
         }
     }
 
