@@ -2,7 +2,7 @@
 
 public enum DownloadItemState
 {
-    Wait, Download, GetInfo, Init, Action, Done,
+    Wait, Download, GetInfo, Pause, Init, Action, Done,
     Error,
 }
 

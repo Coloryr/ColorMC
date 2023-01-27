@@ -31,11 +31,16 @@ public class DownloadThread
         run = false;
         cancel?.Cancel();
         semaphore.Release();
+        //semaphore1.Release();
     }
 
     public void DownloadStop()
     {
         cancel?.Cancel();
+        if (pause)
+        {
+            Resume();
+        }
     }
 
     public void Start()
@@ -55,7 +60,7 @@ public class DownloadThread
         semaphore1.Release();
     }
 
-    private async void Run()
+    private void Run()
     {
         while (run)
         {
@@ -66,7 +71,14 @@ public class DownloadThread
             while ((item = DownloadManager.GetItem()) != null)
             {
                 if (pause)
+                {
+                    item.State = DownloadItemState.Pause;
+                    item.Update?.Invoke(index);
                     semaphore1.WaitOne();
+                }
+
+                if (cancel.IsCancellationRequested)
+                    break;
 
                 byte[]? buffer = null;
 
@@ -127,6 +139,9 @@ public class DownloadThread
                     continue;
                 }
 
+                if (cancel.IsCancellationRequested)
+                    break;
+
                 int time = 0;
 
                 do
@@ -134,10 +149,17 @@ public class DownloadThread
                     try
                     {
                         if (pause)
+                        {
+                            item.State = DownloadItemState.Pause;
+                            item.Update?.Invoke(index);
                             semaphore1.WaitOne();
+                        }
 
-                        var data = await BaseClient.DownloadClient.GetAsync(item.Url,
-                            HttpCompletionOption.ResponseHeadersRead, cancel.Token);
+                        if (cancel.IsCancellationRequested)
+                            break;
+
+                        var data = BaseClient.DownloadClient.GetAsync(item.Url,
+                            HttpCompletionOption.ResponseHeadersRead, cancel.Token).Result;
                         item.AllSize = (long)data.Content.Headers.ContentLength!;
                         item.State = DownloadItemState.GetInfo;
                         item.NowSize = 0;
@@ -150,14 +172,21 @@ public class DownloadThread
                         using FileStream stream = new(file, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
 
                         int bytesRead;
-                        while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer),
-                            cancel.Token).ConfigureAwait(false)) != 0)
+                        while ((bytesRead = stream1.ReadAsync(new Memory<byte>(buffer), 
+                            cancel.Token).Result) != 0)
                         {
-                            await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0,
-                                bytesRead), cancel.Token).ConfigureAwait(false);
+                            stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0,
+                                bytesRead), cancel.Token).AsTask().Wait(cancel.Token);
 
                             if (pause)
+                            {
+                                item.State = DownloadItemState.Pause;
+                                item.Update?.Invoke(index);
                                 semaphore1.WaitOne();
+                            }
+
+                            if (cancel.IsCancellationRequested)
+                                break;
 
                             item.State = DownloadItemState.Download;
                             item.NowSize += bytesRead;
@@ -165,7 +194,13 @@ public class DownloadThread
                         }
 
                         if (pause)
+                        {
+                            item.State = DownloadItemState.Pause;
                             semaphore1.WaitOne();
+                        }
+
+                        if (cancel.IsCancellationRequested)
+                            break;
 
                         if (ConfigUtils.Config.Http.CheckFile)
                         {
@@ -206,7 +241,11 @@ public class DownloadThread
                         item.Update?.Invoke(index);
 
                         if (pause)
+                        {
+                            item.State = DownloadItemState.Pause;
+                            item.Update?.Invoke(index);
                             semaphore1.WaitOne();
+                        }
 
                         item.Later?.Invoke(stream);
 
@@ -218,7 +257,7 @@ public class DownloadThread
                     catch (Exception e)
                     {
                         if (cancel.IsCancellationRequested)
-                            return;
+                            break;
 
                         item.State = DownloadItemState.Error;
                         item.ErrorTime++;
