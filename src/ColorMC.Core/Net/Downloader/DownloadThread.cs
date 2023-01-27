@@ -172,7 +172,7 @@ public class DownloadThread
                         using FileStream stream = new(file, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
 
                         int bytesRead;
-                        while ((bytesRead = stream1.ReadAsync(new Memory<byte>(buffer), 
+                        while ((bytesRead = stream1.ReadAsync(new Memory<byte>(buffer),
                             cancel.Token).Result) != 0)
                         {
                             stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0,

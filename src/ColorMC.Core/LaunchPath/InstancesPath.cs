@@ -230,7 +230,7 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name16}");
     }
 
-    public static string GetLogLatestFile(this GameSettingObj obj) 
+    public static string GetLogLatestFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name17}");
     }

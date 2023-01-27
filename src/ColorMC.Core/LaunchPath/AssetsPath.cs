@@ -33,7 +33,7 @@ public static class AssetsPath
         DirectoryInfo info = new($"{BaseDir}/{Name1}");
         foreach (var item in info.GetFiles())
         {
-            
+
         }
     }
 

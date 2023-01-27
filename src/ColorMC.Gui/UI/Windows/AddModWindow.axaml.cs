@@ -168,7 +168,7 @@ public partial class AddModWindow : Window
         Info1.Show(Localizer.Instance["AddModWindow.Info2"]);
         var data = await GameBinding.GetModList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
-        
+
         if (data == null)
         {
             Info.Show(Localizer.Instance["AddModWindow.Error2"]);
