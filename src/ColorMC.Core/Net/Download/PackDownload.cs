@@ -157,11 +157,7 @@ public static class PackDownload
         else
         {
             bool done = true;
-            ParallelOptions options = new()
-            {
-                MaxDegreeOfParallelism = 10
-            };
-            await Parallel.ForEachAsync(info.files, options, async (item, token) =>
+            await Parallel.ForEachAsync(info.files, async (item, token) =>
             {
                 var res = await CurseForge.GetMod(item);
                 if (res == null)

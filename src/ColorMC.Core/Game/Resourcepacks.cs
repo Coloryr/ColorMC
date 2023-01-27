@@ -24,11 +24,7 @@ public static class Resourcepacks
         if (!info.Exists)
             return list;
 
-        ParallelOptions options = new()
-        {
-            MaxDegreeOfParallelism = 5
-        };
-        await Parallel.ForEachAsync(info.GetFiles(), options, async (item, cancel) =>
+        await Parallel.ForEachAsync(info.GetFiles(), async (item, cancel) =>
         {
             bool find = false;
             if (item.Extension is not (".zip" or ".disable"))

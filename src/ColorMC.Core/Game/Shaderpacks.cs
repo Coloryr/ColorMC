@@ -15,11 +15,7 @@ public static class Shaderpacks
         if (!info.Exists)
             return list;
 
-        ParallelOptions options = new()
-        {
-            MaxDegreeOfParallelism = 5
-        };
-        Parallel.ForEach(info.GetFiles(), options, (item) =>
+        Parallel.ForEach(info.GetFiles(), (item) =>
         {
             if (item.Extension is not (".zip" or ".disable"))
                 return;

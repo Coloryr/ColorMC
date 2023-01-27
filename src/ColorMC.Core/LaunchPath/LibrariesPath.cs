@@ -36,11 +36,7 @@ public static class LibrariesPath
 
         var list1 = GameHelper.MakeGameLibs(obj);
 
-        ParallelOptions options = new()
-        {
-            MaxDegreeOfParallelism = 5
-        };
-        await Parallel.ForEachAsync(list1, options, (item, cacenl) =>
+        await Parallel.ForEachAsync(list1, (item, cacenl) =>
         {
             if (!File.Exists(item.Local))
             {
@@ -77,12 +73,7 @@ public static class LibrariesPath
         var list = new List<DownloadItem>();
         var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
 
-
-        ParallelOptions options = new()
-        {
-            MaxDegreeOfParallelism = 5
-        };
-        await Parallel.ForEachAsync(list1, options, (item, cacenl) =>
+        await Parallel.ForEachAsync(list1, (item, cacenl) =>
         {
             if (!File.Exists(item.Local))
             {
@@ -109,7 +100,7 @@ public static class LibrariesPath
 
         if (forgeinstall != null)
         {
-            await Parallel.ForEachAsync(forgeinstall.libraries, options, (item, cacenl) =>
+            await Parallel.ForEachAsync(forgeinstall.libraries, (item, cacenl) =>
             {
                 if (item.name.StartsWith("net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item.downloads.artifact.url))

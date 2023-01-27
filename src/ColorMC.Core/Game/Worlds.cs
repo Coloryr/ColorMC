@@ -26,11 +26,7 @@ public static class Worlds
         if (!info.Exists)
             return list;
 
-        ParallelOptions options = new()
-        {
-            MaxDegreeOfParallelism = 5
-        };
-        await Parallel.ForEachAsync(info.GetDirectories(), options, (item, cacenl) =>
+        await Parallel.ForEachAsync(info.GetDirectories(), (item, cacenl) =>
         {
             bool find = false;
             foreach (var item1 in item.GetFiles())
