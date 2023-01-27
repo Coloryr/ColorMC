@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Minecraft;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -19,5 +20,29 @@ public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
     public int GetHashCode([DisallowNull] CurseForgeModObj.Data obj)
     {
         return obj.id;
+    }
+}
+
+public class ModComparer : IComparer<ModObj>
+{
+    public int Compare(ModObj? x, ModObj? y)
+    {
+        if (x == null && y == null)
+        {
+            return 0;
+        }
+        else if (x == null)
+        {
+            return -1;
+        }
+        else if (y == null)
+        {
+            return 1;
+        }
+        if (x.name != y.name)
+        {
+            return x.name.CompareTo(y.name);
+        }
+        else return 0;
     }
 }
