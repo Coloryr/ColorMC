@@ -6,7 +6,6 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace ColorMC.Core.Net.Download;
@@ -26,7 +25,7 @@ public static class PackDownload
         };
     }
 
-    public static async Task<(DownloadState State, List<DownloadItem>? List, 
+    public static async Task<(DownloadState State, List<DownloadItem>? List,
         List<CurseForgeModObj.Data>? Pack, GameSettingObj? Game)> DownloadCurseForge(string zip)
     {
         var list = new List<DownloadItem>();
@@ -243,5 +242,5 @@ public static class PackDownload
         return (DownloadState.End, list, list2, game);
     }
 
-    
+
 }

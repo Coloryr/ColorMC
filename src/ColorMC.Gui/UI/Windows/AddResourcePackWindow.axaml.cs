@@ -161,7 +161,7 @@ public partial class AddResourcePackWindow : Window, IBase1Window
         Info1.Show(Localizer.Instance["AddResourcePackWindow.Info2"]);
         var data = await GameBinding.GetResourcepackList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value, ComboBox3.SelectedIndex);
-        
+
         if (data == null)
         {
             Info.Show(Localizer.Instance["AddResourcePackWindow.Error2"]);

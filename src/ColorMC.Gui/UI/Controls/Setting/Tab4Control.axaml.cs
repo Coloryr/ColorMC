@@ -25,7 +25,7 @@ public partial class Tab4Control : UserControl
 
     private void Button_Set2_Click(object? sender, RoutedEventArgs e)
     {
-        ConfigBinding.SetGameCheckConfig(new() 
+        ConfigBinding.SetGameCheckConfig(new()
         {
             CheckCore = CheckBox2.IsChecked == true,
             CheckAssets = CheckBox3.IsChecked == true,

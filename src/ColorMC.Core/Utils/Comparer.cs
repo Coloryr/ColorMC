@@ -1,11 +1,6 @@
 ﻿using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Utils;
 
@@ -25,6 +20,8 @@ public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
 
 public class ModComparer : IComparer<ModObj>
 {
+    public static ModComparer Instance = new();
+
     public int Compare(ModObj? x, ModObj? y)
     {
         if (x == null && y == null)

@@ -13,7 +13,6 @@ namespace ColorMC.Core.Game;
 
 public static class Mods
 {
-    private static ModComparer ModSort = new();
     /// <summary>
     /// 获取Mod列表
     /// </summary>
@@ -172,7 +171,7 @@ public static class Mods
         });
 
         var list1 = list.ToList();
-        list1.Sort(ModSort);
+        list1.Sort(ModComparer.Instance);
 
         return list1;
     }
