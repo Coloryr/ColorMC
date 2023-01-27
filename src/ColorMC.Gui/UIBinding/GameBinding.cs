@@ -590,12 +590,7 @@ public static class GameBinding
         var list = new List<ScreenshotDisplayObj>();
         var list1 = obj.GetScreenshots();
 
-
-        ParallelOptions options = new()
-        {
-            MaxDegreeOfParallelism = 5
-        };
-        await Parallel.ForEachAsync(list1, options, async (item, cancel) =>
+        await Parallel.ForEachAsync(list1, async (item, cancel) =>
         {
             using var image = Image.Load(item);
             image.Mutate(p =>

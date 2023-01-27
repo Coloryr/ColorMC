@@ -56,11 +56,7 @@ public static class AssetsPath
     public static async Task<List<(string Name, string Hash)>> Check(AssetsObj obj)
     {
         var list = new List<(string, string)>();
-        ParallelOptions options = new()
-        {
-            MaxDegreeOfParallelism = 10
-        };
-        await Parallel.ForEachAsync(obj.objects, options, (item, cancel) =>
+        await Parallel.ForEachAsync(obj.objects, (item, cancel) =>
         {
             string file = $"{ObjectsDir}/{item.Value.hash[..2]}/{item.Value.hash}";
             if (!File.Exists(file))
