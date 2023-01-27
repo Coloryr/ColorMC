@@ -4,7 +4,6 @@
 	<sys:String x:Key="Name">ColorMC</sys:String>
 
 	<sys:String x:Key="MainWindow.Title">ColorMC 主界面</sys:String>
-	<sys:String x:Key="MainWindow.Launch">正在启动游戏</sys:String>
 	<sys:String x:Key="MainWindow.Lost1">是否下载缺失的游戏文件</sys:String>
 	<sys:String x:Key="MainWindow.Lost2">是否下载缺失的运行库文件</sys:String>
 	<sys:String x:Key="MainWindow.Lost3">是否下载缺失的Mod加载器</sys:String>
@@ -30,6 +29,7 @@
 	<sys:String x:Key="MainWindow.Flyouts.Button3">查看配置</sys:String>
 	<sys:String x:Key="MainWindow.Flyouts.Button4">查看地图</sys:String>
 	<sys:String x:Key="MainWindow.Flyouts.Button5">修改分组</sys:String>
+	<sys:String x:Key="MainWindow.Flyouts.Button6">删除实例</sys:String>
 	<sys:String x:Key="MainWindow.Control.Button1">用户列表</sys:String>
 	<sys:String x:Key="MainWindow.Control.Button2">添加用户</sys:String>
 	<sys:String x:Key="MainWindow.Control.Button3">添加实例</sys:String>
@@ -43,6 +43,8 @@
 	<sys:String x:Key="MainWindow.Control1.Text1">切换游戏分组</sys:String>
 	<sys:String x:Key="MainWindow.Control1.Button1">添加分组</sys:String>
 	<sys:String x:Key="MainWindow.Info1">组名</sys:String>
+	<sys:String x:Key="MainWindow.Info2">已启动</sys:String>
+	<sys:String x:Key="MainWindow.Info3">正在启动游戏</sys:String>
 
 	<sys:String x:Key="InitWindow.Title">ColorMC 加载</sys:String>
 	<sys:String x:Key="InitWindow.Text">ColorMC正在初始化</sys:String>
@@ -85,10 +87,11 @@
 	<sys:String x:Key="SettingWindow.Tab1.Title">导入配置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Title">界面设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab3.Title">网络设置</sys:String>
-	<sys:String x:Key="SettingWindow.Tab4.Title">参数设置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab4.Title">启动设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Title">Java路径</sys:String>
 	<sys:String x:Key="SettingWindow.Tab6.Title">客户端定制</sys:String>
 	<sys:String x:Key="SettingWindow.Flyouts.Button1">删除Java</sys:String>
+
 	<sys:String x:Key="SettingWindow.Tab2.Text1">语言选择</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text2">修改背景图片</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text3">背景图片位置</sys:String>
@@ -109,16 +112,16 @@
 	<sys:String x:Key="SettingWindow.Tab2.Text18">色彩度</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text19">字体颜色1</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text20">字体颜色2</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text21">注意：背景图尺寸越大，启动器越卡</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info1">正在切换语言</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info2">正在设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info3">正在切换语言</sys:String>
-	<sys:String x:Key="SettingWindow.Tab2.Info4">配置背景已设置</sys:String>
-	<sys:String x:Key="SettingWindow.Tab2.Info5">选择配置文件</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Info5">选择图片文件</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info6">已重置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info7">正在设置透明效果</sys:String>
-	<sys:String x:Key="SettingWindow.Tab2.Info8">已设置</sys:String>
-	<sys:String x:Key="SettingWindow.Tab2.Info9">图片</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Info9">背景图片</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Error1">没有选择图片</sys:String>
+
 	<sys:String x:Key="SettingWindow.Tab3.Text1">下载源选择</sys:String>
 	<sys:String x:Key="SettingWindow.Tab3.Text2">下载线程数</sys:String>
 	<sys:String x:Key="SettingWindow.Tab3.Text3">端口代理设置</sys:String>
@@ -130,8 +133,7 @@
 	<sys:String x:Key="SettingWindow.Tab3.Text9">代理下载过程</sys:String>
 	<sys:String x:Key="SettingWindow.Tab3.Text10">代理游戏过程</sys:String>
 	<sys:String x:Key="SettingWindow.Tab3.Text11">下载后验证完整性</sys:String>
-	<sys:String x:Key="SettingWindow.Tab3.Error1">输入信息有误</sys:String>
-	<sys:String x:Key="SettingWindow.Tab3.Info1">设置完成</sys:String>
+
 	<sys:String x:Key="SettingWindow.Tab4.Text1">Jvm参数设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab4.Text2">垃圾回收器设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab4.Text3">手动GC参数</sys:String>
@@ -144,21 +146,43 @@
 	<sys:String x:Key="SettingWindow.Tab4.Text10">水平大小</sys:String>
 	<sys:String x:Key="SettingWindow.Tab4.Text11">垂直大小</sys:String>
 	<sys:String x:Key="SettingWindow.Tab4.Text12">全屏化</sys:String>
-	<sys:String x:Key="SettingWindow.Tab4.Info1">设置完成</sys:String>
+	<sys:String x:Key="SettingWindow.Tab4.Text13">游运行前戏文件检查</sys:String>
+	<sys:String x:Key="SettingWindow.Tab4.Text14">检查游戏核心文件</sys:String>
+	<sys:String x:Key="SettingWindow.Tab4.Text15">检查资源文件</sys:String>
+	<sys:String x:Key="SettingWindow.Tab4.Text16">检查运行库文件</sys:String>
+	<sys:String x:Key="SettingWindow.Tab4.Text17">检查Mod文件</sys:String>
+
 	<sys:String x:Key="SettingWindow.Tab5.Text1">添加Java路径</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Text2">Java名字</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Text3">Java路径</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Text4">现有的Java</sys:String>
+	<sys:String x:Key="SettingWindow.Tab5.Text5">Java文件</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title1">名字</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title2">路径</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title3">主版本</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title4">版本</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title5">类型</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title6">发行版</sys:String>
-	<sys:String x:Key="SettingWindow.Tab5.Error1">请先选择需要删除的Java</sys:String>
-	<sys:String x:Key="SettingWindow.Tab5.Error2">请输入必要信息</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Info1">正在检查Java</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Info2">选择Java</sys:String>
+
+	<sys:String x:Key="SettingWindow.Tab6.Text1">Motd显示</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text2">服务器地址</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text3">服务器端口</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text4">自动加入服务器</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text5">Motd背景颜色</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text6">Motd字体颜色</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text7">锁定启动实例</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text8">自定义主界面UI</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text9">配置文件路径</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text10">导出模板</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text11">测试启动</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Text12">注意：重启后自定义UI才会生效</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Error1">UI文件错误</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Error2">自定义UI窗口启动错误</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Info1">保存UI文件</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Info2">选择UI文件</sys:String>
+	<sys:String x:Key="SettingWindow.Tab6.Info3">UI文件</sys:String>
 
 	<sys:String x:Key="HelloWindow.Title">ColorMC 初始设置</sys:String>
 	<sys:String x:Key="HelloWindow.Tab1.Title">开始</sys:String>
@@ -220,8 +244,11 @@
 	<sys:String x:Key="GameEditWindow.Tab7.Title">游戏截图</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Title">导出</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab9.Title">运行日志</sys:String>
+
 	<sys:String x:Key="GameEditWindow.Tab1.Text1">游戏版本</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab1.Button1">刷新版本</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab1.Info1">是否要删除实例 {0}</sys:String>
+
 	<sys:String x:Key="GameEditWindow.Tab2.Text1">Jvm参数设置</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab2.Text2">垃圾回收器设置</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab2.Text3">手动GC参数</sys:String>
@@ -246,12 +273,14 @@
 	<sys:String x:Key="GameEditWindow.Tab2.Text22">使用的Java</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab2.Text23">指定Java路径</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab2.Text24">Java路径设置</sys:String>
+
 	<sys:String x:Key="GameEditWindow.Tab3.Text1">配置文件</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Text2">过滤器</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Text3">无法编辑此文件</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Button1">筛选文件</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Button3">保存修改</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Button4">刷新列表</sys:String>
+
 	<sys:String x:Key="GameEditWindow.Tab4.Button3">过滤</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Text1">过滤内容</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Text2">过滤选项</sys:String>
@@ -271,9 +300,9 @@
 	<sys:String x:Key="GameEditWindow.Tab4.Info3">删除完成</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Info4">是否要删除Mod {0}</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Error1">Mod列表加载失败</sys:String>
+	
 	<sys:String x:Key="GameEditWindow.Tab5.Info1">是否要删除世界 {0}</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5.Info2">地图压缩包</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab5.Info3">文件 {0} 已存在，是否覆盖</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5.Info4">地图导出成功</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5.Info5">正在导出地图</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5.Info6">正在下载世界压缩包</sys:String>
@@ -281,6 +310,7 @@
 	<sys:String x:Key="GameEditWindow.Tab5.Info8">正在加载地图列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5.Error1">地图导出错误</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab5.Error2">添加世界失败</sys:String>
+
 	<sys:String x:Key="GameEditWindow.Tab6.Info1">选择导出的文件</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab6.Info2">实例压缩包</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab6.Info3">正在导出实例</sys:String>
@@ -289,6 +319,13 @@
 	<sys:String x:Key="GameEditWindow.Tab6.Error1">实例导出失败</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab6.Data.Title1">导出</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab6.Data.Title2">路径</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Data.Title3">文件名</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Data.Title4">大小</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab6.Data.Title5">修改日期</sys:String>
+
+	<sys:String x:Key="GameEditWindow.Tab7.Text1">自动换行</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab7.Text2">自动下拉</sys:String>
+
 	<sys:String x:Key="GameEditWindow.Tab8.Info1">是否要删除资源包 {0}</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Info2">资源包</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Info3">文件 {0} 已存在，是否覆盖</sys:String>
@@ -296,9 +333,11 @@
 	<sys:String x:Key="GameEditWindow.Tab8.Info7">添加资源包完成</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Info8">正在加载资源包列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Info9">损坏的资源包</sys:String>
+
 	<sys:String x:Key="GameEditWindow.Tab9.Info1">是否要删除截图 {0}</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab9.Info2">是否要清空实例 {0} 的截图</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab9.Info3">正在加载实例截图</sys:String>
+
 	<sys:String x:Key="GameEditWindow.Control.Text1">游戏模式</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text2">最后游戏与</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text3">游戏难度</sys:String>
@@ -446,8 +485,16 @@
 
 	<sys:String x:Key="UserBinding.Error1">登录类型错误</sys:String>
 
+	<sys:String x:Key="ServerMotdControl.Text1">玩家数量：</sys:String>
+	<sys:String x:Key="ServerMotdControl.Text2">服务器版本：</sys:String>
+	<sys:String x:Key="ServerMotdControl.Text3">延迟：</sys:String>
+	<sys:String x:Key="ServerMotdControl.Text4">正在获取Motd</sys:String>
+	<sys:String x:Key="ServerMotdControl.Text5">服务器Motd获取失败</sys:String>
+	<sys:String x:Key="ServerMotdControl.Text6">正在获取Motd</sys:String>
+
 	<sys:String x:Key="Info1">正在读取配置文件</sys:String>
 	<sys:String x:Key="Info2">正在保存配置文件</sys:String>
+	<sys:String x:Key="Info3">已设置</sys:String>
 	<sys:String x:Key="Warn1">配置为空，旧版配置文件会被覆盖</sys:String>
 	<sys:String x:Key="Error1">背景图片加载失败</sys:String>
 	<sys:String x:Key="Error2">配置文件读取错误</sys:String>
@@ -455,6 +502,9 @@
 	<sys:String x:Key="Error4">登录发生异常</sys:String>
 	<sys:String x:Key="Error5">找不到指定的Java</sys:String>
 	<sys:String x:Key="Error6">游戏启动失败</sys:String>
+	<sys:String x:Key="Error7">输入信息有误</sys:String>
+	<sys:String x:Key="Error8">请输入必要信息</sys:String>
+	<sys:String x:Key="Error9">找不到指定的文件</sys:String>
 
 	<sys:String x:Key="Button.OpFile">打开文件夹</sys:String>
 	<sys:String x:Key="Button.Set">设置</sys:String>

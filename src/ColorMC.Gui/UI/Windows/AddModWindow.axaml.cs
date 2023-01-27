@@ -168,10 +168,11 @@ public partial class AddModWindow : Window
         Info1.Show(Localizer.Instance["AddModWindow.Info2"]);
         var data = await GameBinding.GetModList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
-        Info1.Close();
+        
         if (data == null)
         {
             Info.Show(Localizer.Instance["AddModWindow.Error2"]);
+            Info1.Close();
             return;
         }
 
@@ -195,6 +196,7 @@ public partial class AddModWindow : Window
         }
 
         ScrollViewer1.ScrollToHome();
+        Info1.Close();
     }
 
     private async void Load1()
@@ -202,11 +204,11 @@ public partial class AddModWindow : Window
         List1.Clear();
         Info1.Show(Localizer.Instance["AddModWindow.Info3"]);
         var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
-        Info1.Close();
 
         if (data == null)
         {
             Info.Show(Localizer.Instance["AddModWindow.Error4"]);
+            Info1.Close();
             return;
         }
 
@@ -221,6 +223,7 @@ public partial class AddModWindow : Window
                 File = item
             });
         }
+        Info1.Close();
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

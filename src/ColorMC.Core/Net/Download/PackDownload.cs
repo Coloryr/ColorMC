@@ -6,6 +6,7 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace ColorMC.Core.Net.Download;
@@ -25,7 +26,8 @@ public static class PackDownload
         };
     }
 
-    public static async Task<(DownloadState State, List<DownloadItem>? List, List<CurseForgeModObj.Data>? Pack, GameSettingObj? Game)> DownloadCurseForge(string zip)
+    public static async Task<(DownloadState State, List<DownloadItem>? List, 
+        List<CurseForgeModObj.Data>? Pack, GameSettingObj? Game)> DownloadCurseForge(string zip)
     {
         var list = new List<DownloadItem>();
         var list2 = new List<CurseForgeModObj.Data>();
@@ -59,10 +61,10 @@ public static class PackDownload
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
-            return (DownloadState.GetInfo, null, null, null);
+            return (DownloadState.Init, null, null, null);
         }
         if (info == null)
-            return (DownloadState.GetInfo, null, null, null);
+            return (DownloadState.Init, null, null, null);
 
         Loaders loaders = Loaders.Normal;
         string loaderversion = null;
@@ -87,12 +89,15 @@ public static class PackDownload
             Version = info.minecraft.version,
             ModPack = true,
             Loader = loaders,
-            LoaderVersion = loaderversion
+            LoaderVersion = loaderversion,
+            CurseForgeMods = new()
         });
+
         if (game == null)
         {
             return (DownloadState.GetInfo, null, null, game);
         }
+
         foreach (ZipEntry e in zFile)
         {
             if (e.IsFile && e.Name.StartsWith(info.overrides + "/"))
@@ -111,13 +116,14 @@ public static class PackDownload
         File.WriteAllBytes(game.GetModJsonFile(), array1);
 
         CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
-        game.CurseForgeMods = new();
+
         Size = info.files.Count;
         Now = 0;
         var res = await CurseForge.GetMods(info.files);
         if (res != null)
         {
-            foreach (var item in res)
+            var res1 = res.Distinct(CurseDataComparer.Instance);
+            foreach (var item in res1)
             {
                 item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
 
@@ -153,11 +159,11 @@ public static class PackDownload
             bool done = true;
             ParallelOptions options = new()
             {
-                MaxDegreeOfParallelism = 5
+                MaxDegreeOfParallelism = 10
             };
-            Parallel.ForEach(info.files, options, item =>
+            await Parallel.ForEachAsync(info.files, options, async (item, token) =>
             {
-                var res = CurseForge.GetMod(item).Result;
+                var res = await CurseForge.GetMod(item);
                 if (res == null)
                 {
                     done = false;
@@ -201,43 +207,45 @@ public static class PackDownload
 
         game.SaveCurseForgeMod();
 
-        var version = VersionPath.Versions?.versions
-            .Where(a => a.id == info.minecraft.version).FirstOrDefault();
+        //var version = VersionPath.Versions?.versions
+        //    .Where(a => a.id == info.minecraft.version).FirstOrDefault();
 
-        (DownloadState State, List<DownloadItem>? List) list1;
+        //(DownloadState State, List<DownloadItem>? List) list1;
 
-        if (version != null)
-        {
-            list1 = await GameDownload.Download(version);
-            if (list1.State != DownloadState.End)
-            {
-                return (DownloadState.GetInfo, null, null, game);
-            }
+        //if (version != null)
+        //{
+        //    list1 = await GameDownload.Download(version);
+        //    if (list1.State != DownloadState.End)
+        //    {
+        //        return (DownloadState.GetInfo, null, null, game);
+        //    }
 
-            list.AddRange(list1.List!);
-        }
+        //    list.AddRange(list1.List!);
+        //}
 
-        if (loaders == Loaders.Forge)
-        {
-            list1 = await GameDownload.DownloadForge(game.Version, game.LoaderVersion);
-            if (list1.State != DownloadState.End)
-            {
-                return (DownloadState.GetInfo, null, null, game);
-            }
+        //if (loaders == Loaders.Forge)
+        //{
+        //    list1 = await GameDownload.DownloadForge(game.Version, game.LoaderVersion);
+        //    if (list1.State != DownloadState.End)
+        //    {
+        //        return (DownloadState.GetInfo, null, null, game);
+        //    }
 
-            list.AddRange(list1.List!);
-        }
-        else if (loaders == Loaders.Fabric)
-        {
-            list1 = await GameDownload.DownloadFabric(game.Version, game.LoaderVersion);
-            if (list1.State != DownloadState.End)
-            {
-                return (DownloadState.GetInfo, null, null, game);
-            }
+        //    list.AddRange(list1.List!);
+        //}
+        //else if (loaders == Loaders.Fabric)
+        //{
+        //    list1 = await GameDownload.DownloadFabric(game.Version, game.LoaderVersion);
+        //    if (list1.State != DownloadState.End)
+        //    {
+        //        return (DownloadState.GetInfo, null, null, game);
+        //    }
 
-            list.AddRange(list1.List!);
-        }
+        //    list.AddRange(list1.List!);
+        //}
 
         return (DownloadState.End, list, list2, game);
     }
+
+    
 }

@@ -36,8 +36,7 @@ public static class TestItem
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.FillAll(list.List!);
-            DownloadManager.Start().Wait();
+            DownloadManager.Start(list.List!).Wait();
         }
     }
 
@@ -49,8 +48,7 @@ public static class TestItem
             Console.WriteLine("下载列表获取失败");
             return;
         }
-        DownloadManager.FillAll(list.List!);
-        DownloadManager.Start().Wait();
+        DownloadManager.Start(list.List!).Wait();
     }
 
     public static void Item4()
@@ -69,8 +67,7 @@ public static class TestItem
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.FillAll(list.List!);
-            DownloadManager.Start();
+            DownloadManager.Start(list.List!).Wait();
         }
     }
 
@@ -93,8 +90,7 @@ public static class TestItem
             var data = list.data[6];
 
             var item2 = PackDownload.MakeCurseForge(data.latestFiles[0]);
-            DownloadManager.FillAll(new() { item2 });
-            DownloadManager.Start().Wait();
+            DownloadManager.Start(new() { item2 }).Wait();
 
             var list1 = PackDownload.DownloadCurseForge(item2.Local).Result;
             if (list1.State != DownloadState.End)
@@ -102,8 +98,7 @@ public static class TestItem
                 Console.WriteLine("下载列表获取失败");
                 return;
             }
-            DownloadManager.FillAll(list1.List!);
-            DownloadManager.Start().Wait();
+            DownloadManager.Start(list1.List!).Wait();
         }
     }
 

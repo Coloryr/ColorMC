@@ -1,7 +1,4 @@
-﻿using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs;
-
-namespace ColorMC.Core.Game;
+﻿namespace ColorMC.Core.Game;
 
 public static class Options
 {

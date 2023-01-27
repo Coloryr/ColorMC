@@ -164,7 +164,7 @@ public static class ConfigUtils
     public static GameCheckObj MakeGameCheckConfig()
     {
         return new()
-        { 
+        {
             CheckCore = true,
             CheckAssets = true,
             CheckLib = true,

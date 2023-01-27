@@ -11,7 +11,7 @@ public enum Loaders
     /// <summary>
     /// 无Mod加载器
     /// </summary>
-    Normal, 
+    Normal,
     /// <summary>
     /// Forge加载器
     /// </summary>

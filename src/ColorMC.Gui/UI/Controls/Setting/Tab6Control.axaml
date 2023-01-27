@@ -13,35 +13,35 @@
 
         <ScrollViewer Margin="5">
             <StackPanel>
-                <Label Margin="5" Content="Motd显示" />
+                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text1}" />
                 <StackPanel Orientation="Horizontal">
                     <TextBox
                         Name="TextBox1"
                         Width="200"
                         Margin="5"
                         Classes="input1"
-                        Watermark="服务器地址" />
+                        Watermark="{setting:Localize SettingWindow.Tab6.Text2}" />
                     <TextBox
                         Name="TextBox2"
                         Width="100"
                         Margin="5"
                         Classes="input1"
                         MaxLength="5"
-                        Watermark="服务器端口" />
+                        Watermark="{setting:Localize SettingWindow.Tab6.Text3}" />
 
                     <CheckBox
                         Name="CheckBox1"
                         Margin="10,0,0,0"
-                        Content="显示Motd" />
+                        Content="{setting:Localize SettingWindow.Tab6.Text1}" />
                     <CheckBox
                         Name="CheckBox2"
                         Margin="10,0,0,0"
-                        Content="自动加入服务器" />
+                        Content="{setting:Localize SettingWindow.Tab6.Text4}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label Margin="5" Content="背景颜色" />
+                    <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text5}" />
                     <ColorPicker Name="ColorPicker1" />
-                    <Label Margin="5" Content="字体颜色" />
+                    <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text6}" />
                     <ColorPicker Name="ColorPicker2" />
                 </StackPanel>
 
@@ -54,13 +54,12 @@
                     VerticalAlignment="Bottom"
                     Content="{setting:Localize Button.Set}" />
 
-                <Label Margin="5" Content="游戏启动设置" />
                 <StackPanel Orientation="Horizontal">
                     <CheckBox
                         Name="CheckBox3"
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
-                        Content="锁定启动的实例" />
+                        Content="{setting:Localize SettingWindow.Tab6.Text7}" />
                     <ComboBox
                         Name="ComboBox1"
                         Width="300"
@@ -78,18 +77,18 @@
                     VerticalAlignment="Bottom"
                     Content="{setting:Localize Button.Set}" />
 
-                <Label Margin="5" Content="自定义主界面UI" />
+                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text8}" />
                 <TextBox
                     Name="TextBox3"
                     Margin="5"
                     Classes="input1"
-                    Watermark="配置文件路径" />
+                    Watermark="{setting:Localize SettingWindow.Tab6.Text9}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         Name="Button6"
                         Width="80"
                         Height="25"
-                        Content="导出模板" />
+                        Content="{setting:Localize SettingWindow.Tab6.Text10}" />
                     <Button
                         Name="Button3"
                         Width="80"
@@ -113,9 +112,12 @@
                         Width="80"
                         Height="25"
                         Margin="5,0,10,0"
-                        Content="测试启动" />
+                        Content="{setting:Localize SettingWindow.Tab6.Text11}" />
                 </StackPanel>
-                <Label Margin="5" Content="重启后自定义UI生效" />
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab6.Text12}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

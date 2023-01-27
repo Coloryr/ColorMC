@@ -23,7 +23,7 @@ public partial class Tab3Control : UserControl
     {
         if (UIUtils.CheckNotNumber(TextBox2.Text) || UIUtils.CheckNotNumber(Input1.Text))
         {
-            Window.Info.Show(Localizer.Instance["SettingWindow.Tab3.Error1"]);
+            Window.Info.Show(Localizer.Instance["Error7"]);
             return;
         }
         ConfigBinding.SetHttpConfig(new()
@@ -36,9 +36,10 @@ public partial class Tab3Control : UserControl
             ProxyPassword = TextBox4.Text,
             LoginProxy = CheckBox1.IsChecked == true,
             DownloadProxy = CheckBox2.IsChecked == true,
-            GameProxy = CheckBox3.IsChecked == true
+            GameProxy = CheckBox3.IsChecked == true,
+            CheckFile = CheckBox4.IsChecked == true
         });
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab3.Info1"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     public void SetWindow(SettingWindow window)
@@ -63,6 +64,7 @@ public partial class Tab3Control : UserControl
             CheckBox1.IsChecked = config.Item1.Http.LoginProxy;
             CheckBox2.IsChecked = config.Item1.Http.DownloadProxy;
             CheckBox3.IsChecked = config.Item1.Http.GameProxy;
+            CheckBox4.IsChecked = config.Item1.Http.CheckFile;
         }
     }
 }

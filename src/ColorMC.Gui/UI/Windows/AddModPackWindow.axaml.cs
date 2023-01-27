@@ -13,13 +13,13 @@ using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class AddCurseForgeWindow : Window, IBase1Window
+public partial class AddModPackWindow : Window, IBase1Window
 {
     private readonly List<CurseForgeControl> List = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private CurseForgeControl? Last;
 
-    public AddCurseForgeWindow()
+    public AddModPackWindow()
     {
         InitializeComponent();
 
@@ -120,7 +120,7 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
     {
         App.PicUpdate -= Update;
 
-        App.AddCurseForgeWindow = null;
+        App.AddModPackWindow = null;
     }
 
     public void Install()
@@ -149,10 +149,11 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
         Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info2"]);
         var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
-        Info1.Close();
+
         if (data == null)
         {
             Info.Show(Localizer.Instance["AddCurseForgeWindow.Error2"]);
+            Info1.Close();
             return;
         }
 
@@ -168,6 +169,7 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
         }
 
         ScrollViewer1.ScrollToHome();
+        Info1.Close();
     }
 
     private async void Load1()
@@ -175,11 +177,10 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
         List1.Clear();
         Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info3"]);
         var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
-        Info1.Close();
-
         if (data == null)
         {
             Info.Show(Localizer.Instance["AddCurseForgeWindow.Error3"]);
+            Info1.Close();
             return;
         }
 
@@ -194,6 +195,7 @@ public partial class AddCurseForgeWindow : Window, IBase1Window
                 File = item
             });
         }
+        Info1.Close();
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

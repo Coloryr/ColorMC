@@ -97,7 +97,7 @@ public partial class Tab5Control : UserControl
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show(Localizer.Instance["SettingWindow.Tab5.Error2"]);
+            Window.Info.Show(Localizer.Instance["Error8"]);
             return;
         }
 
@@ -133,7 +133,7 @@ public partial class Tab5Control : UserControl
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FilePickerFileType(Localizer.Instance["SettingWindow.Tab2.Info9"])
+                new FilePickerFileType(Localizer.Instance["SettingWindow.Tab5.Text5"])
                 {
                     Patterns = SystemInfo.Os == OsType.Windows ? new List<string>()
                     {

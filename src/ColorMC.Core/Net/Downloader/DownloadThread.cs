@@ -72,7 +72,7 @@ public class DownloadThread
 
                 try
                 {
-                    if (File.Exists(item.Local) && ConfigUtils.Config.Http.CheckFile)
+                    if (ConfigUtils.Config.Http.CheckFile && File.Exists(item.Local))
                     {
                         if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Overwrite)
                         {
@@ -167,30 +167,32 @@ public class DownloadThread
                         if (pause)
                             semaphore1.WaitOne();
 
-                        if (!string.IsNullOrWhiteSpace(item.SHA1))
+                        if (ConfigUtils.Config.Http.CheckFile)
                         {
                             stream.Seek(0, SeekOrigin.Begin);
-                            string sha1 = Funtcions.GenSha1(stream);
-                            if (sha1 != item.SHA1)
+                            if (!string.IsNullOrWhiteSpace(item.SHA1))
                             {
-                                item.State = DownloadItemState.Error;
-                                item.Update?.Invoke(index);
-                                DownloadManager.Error(index, item, new Exception("hash error"));
+                                string sha1 = Funtcions.GenSha1(stream);
+                                if (sha1 != item.SHA1)
+                                {
+                                    item.State = DownloadItemState.Error;
+                                    item.Update?.Invoke(index);
+                                    DownloadManager.Error(index, item, new Exception("hash error"));
 
-                                break;
+                                    break;
+                                }
                             }
-                        }
-                        else if (!string.IsNullOrWhiteSpace(item.SHA256))
-                        {
-                            stream.Seek(0, SeekOrigin.Begin);
-                            string sha1 = Funtcions.GenSha256(stream);
-                            if (sha1 != item.SHA256)
+                            else if (!string.IsNullOrWhiteSpace(item.SHA256))
                             {
-                                item.State = DownloadItemState.Error;
-                                item.Update?.Invoke(index);
-                                DownloadManager.Error(index, item, new Exception("hash error"));
+                                string sha1 = Funtcions.GenSha256(stream);
+                                if (sha1 != item.SHA256)
+                                {
+                                    item.State = DownloadItemState.Error;
+                                    item.Update?.Invoke(index);
+                                    DownloadManager.Error(index, item, new Exception("hash error"));
 
-                                break;
+                                    break;
+                                }
                             }
                         }
 

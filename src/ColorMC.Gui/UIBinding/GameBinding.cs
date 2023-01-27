@@ -622,6 +622,8 @@ public static class GameBinding
     {
         await obj.Remove();
         App.CloseGameEdit(obj);
+
+        App.MainWindow?.IsDelete();
         App.MainWindow?.Load();
     }
 

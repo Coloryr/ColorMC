@@ -74,8 +74,9 @@ public static class GameDownload
                 return (DownloadState.Init, null);
             }
         }
-        catch
+        catch (Exception e)
         {
+            CoreMain.OnError?.Invoke("Forge核心下载失败", e, false);
             return (DownloadState.Init, null);
         }
 

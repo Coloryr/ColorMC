@@ -146,4 +146,10 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.UIFile = text;
         GuiConfigUtils.Save();
     }
+
+    public static void SetGameCheckConfig(GameCheckObj obj)
+    {
+        ConfigUtils.Config.GameCheck = obj;
+        ConfigUtils.Save();
+    }
 }

@@ -144,12 +144,6 @@ public partial class Tab5Control : UserControl
         var file = await openFile.ShowAsync(Window);
         if (!string.IsNullOrWhiteSpace(file))
         {
-            //if (File.Exists(file) && await Window.Info.ShowWait(string.Format(
-            //        Localizer.Instance["GameEditWindow.Tab5.Info3"], file)) == false)
-            //{
-            //    return;
-            //}
-
             Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info5"]);
             bool error = false;
             try

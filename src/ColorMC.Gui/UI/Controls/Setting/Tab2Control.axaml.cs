@@ -70,7 +70,7 @@ public partial class Tab2Control : UserControl
         ConfigBinding.SetColor(ColorPicker1.Color.ToString(),
             ColorPicker2.Color.ToString(), ColorPicker3.Color.ToString(),
             ColorPicker4.Color.ToString(), ColorPicker5.Color.ToString());
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info4"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private async void Button_Set2_Click(object? sender, RoutedEventArgs e)
@@ -84,7 +84,7 @@ public partial class Tab2Control : UserControl
         await ConfigBinding.SetBackPic(TextBox1.Text, (int)Slider1.Value);
         Window.Info1.Close();
 
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info4"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void Button_Set1_Click(object? sender, RoutedEventArgs e)
@@ -93,7 +93,7 @@ public partial class Tab2Control : UserControl
         ConfigBinding.SetBl(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
         Window.Info1.Close();
 
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info8"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void Button_Change_Click(object? sender, RoutedEventArgs e)
@@ -155,7 +155,7 @@ public partial class Tab2Control : UserControl
     private void Button_Set_Click(object? sender, RoutedEventArgs e)
     {
         ConfigBinding.SetBackTran((int)Slider2.Value);
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info4"]);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)

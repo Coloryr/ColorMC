@@ -145,6 +145,8 @@ public partial class CustomWindow : Window
 
         CoreMain.GameLaunch = null;
         CoreMain.GameDownload = null;
+
+        App.CustomWindow = null;
     }
 
     public async void Launch()
@@ -186,13 +188,22 @@ public partial class CustomWindow : Window
             return;
         }
 
+        Grid2.Children.Clear();
+
         Obj = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
         if (Obj == null)
         {
+            Grid2.Children.Add(new Label()
+            {
+                Content = "没有锁定的实例，请联系服务器管理员",
+                Foreground = Brushes.Black,
+                Background = Brush.Parse("#EEEEEE"),
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center
+            });
             return;
         }
 
-        Grid2.Children.Clear();
         HeadImg = null;
 
         Head.Title = UI.Title;

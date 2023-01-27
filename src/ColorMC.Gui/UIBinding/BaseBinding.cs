@@ -98,10 +98,7 @@ public static class BaseBinding
 
     public static void DownloaderUpdate(CoreRunState state)
     {
-        Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            App.DownloaderUpdate(state);
-        }).Wait();
+        App.DownloaderUpdate(state);
     }
 
     public static void PLog(Process? p, string? d)
