@@ -35,6 +35,7 @@ public static class InstancesPath
     private const string Name14 = "saves";
     private const string Name15 = "config";
     private const string Name16 = "cfmod.json";
+    private const string Name17 = "logs/latest.log";
 
     private static Dictionary<string, GameSettingObj> InstallGames = new();
     private static Dictionary<string, List<GameSettingObj>> GameGroups = new();
@@ -227,6 +228,11 @@ public static class InstancesPath
     public static string GetCurseForgeModJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name16}");
+    }
+
+    public static string GetLogLatestFile(this GameSettingObj obj) 
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name17}");
     }
 
     public static async Task<GameSettingObj?> CreateVersion(this GameSettingObj game)

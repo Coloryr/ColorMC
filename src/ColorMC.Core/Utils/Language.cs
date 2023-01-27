@@ -144,8 +144,10 @@ public static class LanguageHelper
         return state switch
         {
             DownloadItemState.Wait => GetName("DownloadItemState.Wait"),
+            DownloadItemState.GetInfo => GetName("DownloadItemState.GetInfo"),
             DownloadItemState.Download => GetName("DownloadItemState.Download"),
             DownloadItemState.Init => GetName("DownloadItemState.Init"),
+            DownloadItemState.Pause => GetName("DownloadItemState.Pause"),
             DownloadItemState.Action => GetName("DownloadItemState.Action"),
             DownloadItemState.Done => GetName("DownloadItemState.Done"),
             DownloadItemState.Error => GetName("DownloadItemState.Error"),

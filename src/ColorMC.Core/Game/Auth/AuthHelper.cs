@@ -53,14 +53,14 @@ public static class AuthHelper
     /// <returns>Nide8Injector下载实例</returns>
     public static DownloadItem? ReadyNide8()
     {
+        var item = BuildNide8Item();
+        NowNide8Injector = item.Local;
+
         if (!string.IsNullOrWhiteSpace(NowNide8Injector) &&
             File.Exists(NowNide8Injector))
         {
             return null;
         }
-
-        var item = BuildNide8Item();
-        NowNide8Injector = item.Local;
 
         return item;
     }
@@ -71,10 +71,6 @@ public static class AuthHelper
     /// <returns>AuthlibInjector下载实例</returns>
     public static async Task<DownloadItem?> ReadyAuthlibInjector()
     {
-        if (!string.IsNullOrWhiteSpace(NowAuthlibInjector) &&
-            File.Exists(NowAuthlibInjector))
-            return null;
-
         var meta = await BaseClient.GetString(UrlHelper.AuthlibInjectorMeta(BaseClient.Source));
         var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta)
             ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
@@ -86,6 +82,10 @@ public static class AuthHelper
         var item1 = BuildAuthlibInjectorItem(obj1);
 
         NowAuthlibInjector = item1.Local;
+
+        if (!string.IsNullOrWhiteSpace(NowAuthlibInjector) &&
+    File.Exists(NowAuthlibInjector))
+            return null;
 
         return item1;
     }

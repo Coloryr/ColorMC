@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
@@ -296,6 +297,14 @@ public partial class App : Application
     }
 
     public static void ShowError(string data, Exception e, bool close = false)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            new ErrorWindow().Show(data, e, close);
+        });
+    }
+
+    public static void ShowError(string data, string e, bool close = false)
     {
         Dispatcher.UIThread.Post(() =>
         {

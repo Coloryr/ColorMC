@@ -4,6 +4,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
+using System.Collections.Concurrent;
 using System.Text;
 using Tomlyn;
 using Tomlyn.Model;
@@ -20,26 +21,23 @@ public static class Mods
     /// <returns></returns>
     public static async Task<List<ModObj>> GetMods(this GameSettingObj obj)
     {
-        var list = new List<ModObj>();
+        var list = new ConcurrentBag<ModObj>();
         string dir = obj.GetModsPath();
 
         DirectoryInfo info = new(dir);
         if (!info.Exists)
         {
-            return list;
+            return list.ToList();
         }
         var files = info.GetFiles();
 
         //多线程同时检查
-        ParallelOptions options = new()
-        {
-            MaxDegreeOfParallelism = Math.Max(10, files.Length / 10)
-        };
-        await Parallel.ForEachAsync(files, options, async (item, cancel) =>
+        await Parallel.ForEachAsync(files, async (item, cancel) =>
         {
             if (item.Extension is not (".jar" or ".disable"))
                 return;
             string sha1 = "";
+            bool find = false;
             try
             {
                 var data1 = File.ReadAllBytes(item.FullName);
@@ -66,6 +64,8 @@ public static class Mods
                             obj3.Loaders = Loaders.Forge;
                             obj3.Sha1 = sha1;
                             list.Add(obj3);
+                            find = true;
+                            return;
                         }
                     }
                     else if (data.StartsWith("["))
@@ -80,9 +80,10 @@ public static class Mods
                             obj3.Loaders = Loaders.Forge;
                             obj3.Sha1 = sha1;
                             list.Add(obj3);
+                            find = true;
+                            return;
                         }
                     }
-                    return;
                 }
 
                 item1 = zFile.GetEntry("META-INF/mods.toml");
@@ -122,6 +123,7 @@ public static class Mods
                     obj3.Sha1 = sha1;
 
                     list.Add(obj3);
+                    find = true;
                     return;
                 }
 
@@ -148,12 +150,16 @@ public static class Mods
                         Sha1 = sha1
                     };
                     list.Add(obj3);
+                    find = true;
                     return;
                 }
             }
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.GetName("Core.Game.Error1"), e);
+            }
+            if (!find)
+            {
                 list.Add(new()
                 {
                     name = "",
@@ -165,10 +171,10 @@ public static class Mods
             }
         });
 
+        var list1 = list.ToList();
+        list1.Sort(ModSort);
 
-        list.Sort(ModSort);
-
-        return list;
+        return list1;
     }
 
     /// <summary>

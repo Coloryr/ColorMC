@@ -27,6 +27,7 @@
                 Name="TextBox1"
                 Margin="5"
                 IsReadOnly="True"
+                MaxLines="10000"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 TextWrapping="Wrap" />
         </DockPanel>

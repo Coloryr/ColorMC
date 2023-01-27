@@ -28,4 +28,19 @@ public partial class ErrorWindow : Window
             Show();
         }
     }
+
+    public void Show(string data, string e, bool close)
+    {
+        Data.Text = $"{data}{Environment.NewLine}{e}";
+
+        if (close)
+        {
+            ShowDialog(App.MainWindow == null ? App.HelloWindow! : App.MainWindow);
+            App.Close();
+        }
+        else
+        {
+            Show();
+        }
+    }
 }

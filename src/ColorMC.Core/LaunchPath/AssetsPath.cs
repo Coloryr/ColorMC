@@ -7,8 +7,6 @@ namespace ColorMC.Core.LaunchPath;
 
 public static class AssetsPath
 {
-    private readonly static Dictionary<string, AssetsObj?> Assets = new();
-
     public const string Name = "assets";
 
     public const string Name1 = "indexes";
@@ -35,10 +33,7 @@ public static class AssetsPath
         DirectoryInfo info = new($"{BaseDir}/{Name1}");
         foreach (var item in info.GetFiles())
         {
-            var data = File.ReadAllText(item.FullName);
-
-            var obj = JsonConvert.DeserializeObject<AssetsObj>(data);
-            Assets.Add(item.Name.Replace(".json", ""), obj);
+            
         }
     }
 
@@ -48,24 +43,14 @@ public static class AssetsPath
             return;
         string file = $"{BaseDir}/{Name1}/{game.assets}.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
-        if (Assets.ContainsKey(game.assets))
-        {
-            Assets[game.assets] = obj;
-        }
-        else
-        {
-            Assets.Add(game.assets, obj);
-        }
     }
 
     public static AssetsObj? GetIndex(GameArgObj game)
     {
-        if (Assets.TryGetValue(game.assets, out var item))
-        {
-            return item;
-        }
+        string file = $"{BaseDir}/{Name1}/{game.assets}.json";
+        var data = File.ReadAllText(file);
 
-        return null;
+        return JsonConvert.DeserializeObject<AssetsObj>(data);
     }
 
     public static async Task<List<(string Name, string Hash)>> Check(AssetsObj obj)
@@ -97,7 +82,7 @@ public static class AssetsPath
     }
 
     /// <summary>
-    /// ¸üÐÂjson
+    /// æ›´æ–°json
     /// </summary>
     /// <param name="version"></param>
     /// <returns></returns>

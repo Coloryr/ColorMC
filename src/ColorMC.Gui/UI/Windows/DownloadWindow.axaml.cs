@@ -81,7 +81,7 @@ public partial class DownloadWindow : Window
         {
             List.Clear();
             List1.Clear();
-            DownloadManager.Stop();
+            DownloadManager.DownloadStop();
         }
     }
 
@@ -148,7 +148,7 @@ public partial class DownloadWindow : Window
             if (res)
             {
                 Timer.Dispose();
-                DownloadManager.Stop();
+                DownloadManager.DownloadStop();
             }
             else
             {

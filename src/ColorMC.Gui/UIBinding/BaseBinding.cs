@@ -60,6 +60,9 @@ public static class BaseBinding
         {
             win.ClearLog();
         }
+
+        CoreMain.DownloaderUpdate = DownloaderUpdateOnThread;
+
         var res = await Task.Run(() =>
         {
             try
@@ -90,10 +93,39 @@ public static class BaseBinding
                 {
                     App.MainWindow?.GameClose(obj1);
                 }
+                if (a is Process)
+                {
+                    var p = a as Process;
+                    if (p?.ExitCode == 0)
+                    {
+                        return;
+                    }
+                    string file = obj.GetLogLatestFile();
+                    if (!File.Exists(file))
+                    {
+                        return;
+                    }
+
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        App.ShowError("游戏启动错误", File.ReadAllText(file));
+                    });
+                }
             };
             Games.Add(res, obj);
         }
+
+        CoreMain.DownloaderUpdate = DownloaderUpdate;
+
         return res != null;
+    }
+
+    public static void DownloaderUpdateOnThread(CoreRunState state)
+    {
+        Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            App.DownloaderUpdate(state);
+        }).Wait();
     }
 
     public static void DownloaderUpdate(CoreRunState state)
