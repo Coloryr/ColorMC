@@ -8,12 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ColorMC.Gui.UI.Controls.Hello;
+namespace ColorMC.Gui.UI.Controls.Setting;
 
-public partial class Tab2Control : UserControl
+public partial class Tab1Control : UserControl
 {
-    private HelloWindow Window;
-    public Tab2Control()
+    private SettingWindow Window;
+
+    public Tab1Control()
     {
         InitializeComponent();
 
@@ -25,8 +26,6 @@ public partial class Tab2Control : UserControl
 
         Button_SelectFile2.Click += Button_SelectFile2_Click;
         Button_Input2.Click += Button_Input2_Click;
-
-        Button_Next.Click += Button_Next_Click;
     }
 
     private void Button_Input2_Click(object? sender, RoutedEventArgs e)
@@ -87,14 +86,9 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    public void SetWindow(HelloWindow window)
+    public void SetWindow(SettingWindow window)
     {
         Window = window;
-    }
-
-    private void Button_Next_Click(object? sender, RoutedEventArgs e)
-    {
-        Window.Next();
     }
 
     private void Button_Input_Click(object? sender, RoutedEventArgs e)
