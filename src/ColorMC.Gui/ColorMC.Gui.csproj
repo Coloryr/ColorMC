@@ -172,4 +172,7 @@
       <DependentUpon>CustomWindow.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="UI\Controls\Setting\Tab1Control.axaml" />
+  </ItemGroup>
 </Project>

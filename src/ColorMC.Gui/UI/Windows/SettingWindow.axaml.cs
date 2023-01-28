@@ -7,27 +7,21 @@ using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class SettingWindow : Window, IBaseWindow
+public partial class SettingWindow : Window
 {
-    private readonly Controls.Hello.Tab2Control tab1 = new();
-    private readonly Tab2Control tab2 = new();
-    private readonly Tab3Control tab3 = new();
-    private readonly Tab4Control tab4 = new();
-    private readonly Tab5Control tab5 = new();
-    private readonly Tab6Control tab6 = new();
+    private Tab1Control tab1 = new();
+    private Tab2Control tab2 = new();
+    private Tab3Control tab3 = new();
+    private Tab4Control tab4 = new();
+    private Tab5Control tab5 = new();
+    private Tab6Control tab6 = new();
 
     private bool switch1 = false;
 
-    private readonly ContentControl content1 = new();
-    private readonly ContentControl content2 = new();
+    private ContentControl content1 = new();
+    private ContentControl content2 = new();
 
     private int now;
-
-    Info4Control IBaseWindow.Info => Info;
-    Info1Control IBaseWindow.Info1 => Info1;
-    Info2Control IBaseWindow.Info2 => Info2;
-    Info3Control IBaseWindow.Info3 => Info3;
-    public Window Window => this;
 
     public SettingWindow()
     {
@@ -127,6 +121,23 @@ public partial class SettingWindow : Window, IBaseWindow
         App.PicUpdate -= Update;
 
         App.SettingWindow = null;
+
+        tab1.SetWindow(null);
+        tab2.SetWindow(null);
+        tab3.SetWindow(null);
+        tab4.SetWindow(null);
+        tab5.SetWindow(null);
+        tab6.SetWindow(null);
+
+        tab1 = null;
+        tab2 = null;
+        tab3 = null;
+        tab4 = null;
+        tab5 = null;
+        tab6 = null;
+
+        content1 = null;
+        content2 = null;
     }
 
     public void Update()

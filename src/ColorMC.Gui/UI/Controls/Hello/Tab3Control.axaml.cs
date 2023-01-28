@@ -77,7 +77,7 @@ public partial class Tab3Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await Window.Window.StorageProvider.OpenFilePickerAsync(new()
+        var file = await Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["HelloWindow.Tab3.Info2"],
             SuggestedStartLocation = JavaBinding.GetSuggestedStartLocation(),

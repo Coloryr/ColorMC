@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class HelloWindow : Window, IBaseWindow
+public partial class HelloWindow : Window
 {
     private readonly Tab1Control tab1 = new();
     private readonly Tab2Control tab2 = new();
@@ -22,12 +22,6 @@ public partial class HelloWindow : Window, IBaseWindow
     private readonly ContentControl content2 = new();
 
     private int now;
-
-    Info4Control IBaseWindow.Info => Info;
-    Info1Control IBaseWindow.Info1 => Info1;
-    Info2Control IBaseWindow.Info2 => Info2;
-    Info3Control IBaseWindow.Info3 => Info3;
-    public Window Window => this;
 
     public HelloWindow()
     {
