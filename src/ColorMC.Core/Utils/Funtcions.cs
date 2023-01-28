@@ -58,6 +58,15 @@ public static class Funtcions
         byte[] bytes = Encoding.UTF8.GetBytes(input);
         return Convert.ToBase64String(bytes);
     }
+
+    public static void RunGC() 
+    {
+        Task.Run(() =>
+        {
+            Task.Delay(1000).Wait();
+            GC.Collect(2);
+        });
+    }
 }
 
 public static class ZipFloClass

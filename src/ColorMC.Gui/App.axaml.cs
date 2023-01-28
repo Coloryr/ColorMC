@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -86,10 +87,7 @@ public partial class App : Application
 
     public static void OnUserEdit()
     {
-        if (UserEdit != null)
-        {
-            UserEdit();
-        }
+        UserEdit?.Invoke();
     }
 
     public static void OnPicUpdate()
