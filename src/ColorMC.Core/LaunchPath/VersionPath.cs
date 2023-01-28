@@ -9,11 +9,6 @@ namespace ColorMC.Core.LaunchPath;
 
 public static class VersionPath
 {
-    private readonly static Dictionary<string, GameArgObj> Version = new();
-    private readonly static Dictionary<string, ForgeLaunchObj> Forges = new();
-    private readonly static Dictionary<string, ForgeInstallObj> ForgeInstalls = new();
-    private readonly static Dictionary<string, FabricLoaderObj> Fabrics = new();
-    private readonly static Dictionary<string, QuiltLoaderObj> Quilts = new();
     public static VersionObj? Versions { get; private set; }
 
     public static string ForgeDir => BaseDir + "/" + Name1;
@@ -41,31 +36,6 @@ public static class VersionPath
         Directory.CreateDirectory(FabricDir);
         Directory.CreateDirectory(QuiltDir);
 
-        DirectoryInfo info = new(BaseDir);
-
-        try
-        {
-            foreach (var item in info.GetFiles())
-            {
-                if (!item.Name.EndsWith(".json"))
-                    continue;
-
-                if (item.Name == "version.json")
-                    continue;
-
-                var data = File.ReadAllText(item.FullName);
-
-                var obj = JsonConvert.DeserializeObject<GameArgObj>(data);
-                if (obj != null)
-                {
-                    Version.Add(obj.id, obj);
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error1"), e);
-        }
         try
         {
             if (!GetFromWeb().Result || !ReadVersions())
@@ -130,24 +100,16 @@ public static class VersionPath
             return;
         string file = $"{BaseDir}/{obj.id}.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
-        if (Version.ContainsKey(obj.id))
-        {
-            Version[obj.id] = obj;
-        }
-        else
-        {
-            Version.Add(obj.id, obj);
-        }
     }
 
     public static GameArgObj? GetGame(string version)
     {
-        if (Version.TryGetValue(version, out var item))
-        {
-            return item;
-        }
+        string file = $"{BaseDir}/{version}.json";
 
-        return null;
+        if (!File.Exists(file))
+            return null;
+
+        return JsonConvert.DeserializeObject<GameArgObj>(File.ReadAllText(file));
     }
 
     /// <summary>
@@ -174,29 +136,12 @@ public static class VersionPath
 
     public static ForgeInstallObj? GetForgeInstallObj(string mc, string version)
     {
-        string key = $"{mc}-{version}";
-        if (ForgeInstalls.TryGetValue(key, out var value) && value != null)
-        {
-            return value;
-        }
-
         string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}-install.json";
 
         if (!File.Exists(file))
             return null;
 
-        try
-        {
-            var data = File.ReadAllText(file);
-            var data1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
-            ForgeInstalls.Add(key, data1);
-            return data1;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error5"), e);
-            return null;
-        }
+        return JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file));
     }
 
     public static ForgeLaunchObj? GetForgeObj(GameSettingObj obj)
@@ -206,29 +151,12 @@ public static class VersionPath
 
     public static ForgeLaunchObj? GetForgeObj(string mc, string version)
     {
-        string key = $"{mc}-{version}";
-        if (Forges.TryGetValue(key, out var value) && value != null)
-        {
-            return value;
-        }
-
         string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}.json";
 
         if (!File.Exists(file))
             return null;
 
-        try
-        {
-            var data = File.ReadAllText(file);
-            var data1 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
-            Forges.Add(key, data1);
-            return data1;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error6"), e);
-            return null;
-        }
+        return JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file));
     }
 
     public static FabricLoaderObj? GetFabricObj(GameSettingObj obj)
@@ -238,29 +166,12 @@ public static class VersionPath
 
     public static FabricLoaderObj? GetFabricObj(string mc, string version)
     {
-        string key = $"{mc}-{version}";
-        if (Fabrics.TryGetValue(key, out var value) && value != null)
-        {
-            return value;
-        }
-
         string file = $"{BaseDir}/{Name2}/fabric-loader-{version}-{mc}.json";
 
         if (!File.Exists(file))
             return null;
 
-        try
-        {
-            var data = File.ReadAllText(file);
-            var data1 = JsonConvert.DeserializeObject<FabricLoaderObj>(data)!;
-            Fabrics.Add(key, data1);
-            return data1;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error7"), e);
-            return null;
-        }
+        return JsonConvert.DeserializeObject<FabricLoaderObj>(File.ReadAllText(file));
     }
 
     public static QuiltLoaderObj? GetQuiltObj(GameSettingObj obj)
@@ -270,28 +181,11 @@ public static class VersionPath
 
     public static QuiltLoaderObj? GetQuiltObj(string mc, string version)
     {
-        string key = $"{mc}-{version}";
-        if (Quilts.TryGetValue(key, out var value) && value != null)
-        {
-            return value;
-        }
-
         string file = $"{BaseDir}/{Name3}/quilt-loader-{version}-{mc}.json";
 
         if (!File.Exists(file))
             return null;
 
-        try
-        {
-            var data = File.ReadAllText(file);
-            var data1 = JsonConvert.DeserializeObject<QuiltLoaderObj>(data)!;
-            Quilts.Add(key, data1);
-            return data1;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error8"), e);
-            return null;
-        }
+        return JsonConvert.DeserializeObject<QuiltLoaderObj>(File.ReadAllText(file));
     }
 }

@@ -484,6 +484,7 @@
 	<sys:String x:Key="OtherBinding.TranTypes.Item5">云母</sys:String>
 
 	<sys:String x:Key="UserBinding.Error1">登录类型错误</sys:String>
+	<sys:String x:Key="UserBinding.Error2">游戏启动错误</sys:String>
 
 	<sys:String x:Key="ServerMotdControl.Text1">玩家数量：</sys:String>
 	<sys:String x:Key="ServerMotdControl.Text2">服务器版本：</sys:String>

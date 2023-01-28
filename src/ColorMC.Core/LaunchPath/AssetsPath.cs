@@ -29,12 +29,6 @@ public static class AssetsPath
         Directory.CreateDirectory($"{BaseDir}/{Name1}");
         Directory.CreateDirectory($"{BaseDir}/{Name2}");
         Directory.CreateDirectory($"{BaseDir}/{Name3}");
-
-        DirectoryInfo info = new($"{BaseDir}/{Name1}");
-        foreach (var item in info.GetFiles())
-        {
-
-        }
     }
 
     public static void AddIndex(AssetsObj? obj, GameArgObj game)
