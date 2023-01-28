@@ -85,6 +85,7 @@ public static class BaseBinding
                 return null;
             }
         });
+        Funtcions.RunGC();
         if (res != null)
         {
             res.Exited += (a, b) =>
