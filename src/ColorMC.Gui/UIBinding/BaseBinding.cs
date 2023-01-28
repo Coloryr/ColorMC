@@ -108,7 +108,7 @@ public static class BaseBinding
 
                     Dispatcher.UIThread.Post(() =>
                     {
-                        App.ShowError("游戏启动错误", File.ReadAllText(file));
+                        App.ShowError(Localizer.Instance["UserBinding.Error2"], File.ReadAllText(file));
                     });
                 }
             };
