@@ -11,8 +11,7 @@ public class SteveC
     public static (float[], ushort[]) GetSteve(ModelSourceTextureType modelType)
     {
         var steveCoords = new List<float>();
-        var steveIndicies =
-            CubeC.GetCubeIndicies(modelType == ModelSourceTextureType.RATIO_2_1 ? 7 : 12);
+        var steveIndicies = CubeC.GetCubeIndicies(6);
 
         // Head
         steveCoords.AddRange(CubeC.GetSquare(addY: CubeC.Value * 2.5f));
@@ -75,6 +74,14 @@ public class SteveC
             addY: -CubeC.Value * 3f
         ));
 
+        return (steveCoords.ToArray(), steveIndicies);
+    }
+
+    public static (float[], ushort[]) GetSteveTop(ModelSourceTextureType modelType)
+    {
+        var steveCoords = new List<float>();
+        var steveIndicies =
+            CubeC.GetCubeIndicies(modelType == ModelSourceTextureType.RATIO_2_1 ? 1 : 6);
         // Hat
         steveCoords.AddRange(CubeC.GetSquare(
             addY: CubeC.Value * 2.5f,
@@ -151,6 +158,7 @@ public class SteveC
                 enlarge: 1.125f
             ));
         }
+
         return (steveCoords.ToArray(), steveIndicies);
     }
 }
