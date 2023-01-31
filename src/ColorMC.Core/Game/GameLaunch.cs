@@ -19,7 +19,26 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public enum LaunchState
 {
-    Login, Check, CheckVersion, CheckLib, CheckAssets, CheckLoader, CheckLoginCore, CheckMods,
+    /// <summary>
+    /// 登陆中
+    /// </summary>
+    Login, 
+    /// <summary>
+    /// 检查中
+    /// </summary>
+    Check, 
+    /// <summary>
+    /// 检查版本文件中
+    /// </summary>
+    CheckVersion, 
+    /// <summary>
+    /// 检查运行库中
+    /// </summary>
+    CheckLib, 
+    /// <summary>
+    /// 检查资源文件中
+    /// </summary>
+    CheckAssets, CheckLoader, CheckLoginCore, CheckMods,
     LostVersion, LostLib, LostLoader, LostLoginCore, LostGame, LostFile,
     Download, DownloadFail,
     JvmPrepare,

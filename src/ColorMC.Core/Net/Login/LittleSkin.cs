@@ -5,25 +5,37 @@ namespace ColorMC.Core.Net.Login;
 
 public static class LittleSkin
 {
-    private const string ServerUrl = "https://littleskin.cn/api/yggdrasil";
+    private const string ServerUrl = "https://littleskin.cn";
     public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Authenticate(string clientToken,
         string user, string pass, string? server = null)
     {
-        server ??= ServerUrl;
-        if (!server.EndsWith("/api/yggdrasil"))
+        var type = AuthType.LittleSkin;
+        string server1;
+        if (string.IsNullOrWhiteSpace(server))
         {
-            server += "/api/yggdrasil";
-        }
-        var obj = await LoginOld.Authenticate(server, clientToken, user, pass);
-        if (obj.State != LoginState.Done)
-            return obj;
-        if (server == null)
-        {
-            obj.Obj.AuthType = AuthType.LittleSkin;
+            server1 = ServerUrl;
         }
         else
         {
-            obj.Obj.AuthType = AuthType.SelfLittleSkin;
+            type = AuthType.SelfLittleSkin;
+            if (server.EndsWith("/api/yggdrasil"))
+            {
+                server = server.Replace("/api/yggdrasil", "");
+            }
+            if (server.EndsWith("/user"))
+            {
+                server = server.Replace("/user", "");
+            }
+            server1 = server;
+        }
+        
+        var obj = await LoginOld.Authenticate(server1 + "/api/yggdrasil", clientToken, user, pass);
+        if (obj.State != LoginState.Done)
+            return obj;
+
+        obj.Obj!.AuthType = type;
+        if (type == AuthType.SelfLittleSkin)
+        {
             obj.Obj.Text1 = server;
         }
 
@@ -39,7 +51,7 @@ public static class LittleSkin
         }
         else
         {
-            server = obj.Text1;
+            server = obj.Text1 + "/api/yggdrasil";
         }
 
         return LoginOld.Refresh(server, obj);

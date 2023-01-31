@@ -10,6 +10,7 @@ using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -62,7 +63,7 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;
-            desktop.MainWindow = new InitWindow();
+            desktop.MainWindow = new SkinWindow();
         }
 
         base.OnFrameworkInitializationCompleted();

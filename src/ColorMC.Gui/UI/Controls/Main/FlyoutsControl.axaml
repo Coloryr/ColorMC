@@ -40,6 +40,11 @@
                 Height="25"
                 Content="{setting:Localize MainWindow.Flyouts.Button5}" />
             <Button
+                Name="Button7"
+                Width="80"
+                Height="25"
+                Content="{setting:Localize Button.OpFile}" />
+            <Button
                 Name="Button6"
                 Width="80"
                 Height="25"

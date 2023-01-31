@@ -24,6 +24,13 @@ internal class Program
 
         BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
+
+        //using (OpenglTest game = new(800, 600, "LearnOpenTK"))
+        //{
+        //    //Run takes a double, which is how many frames per second it should strive to reach.
+        //    //You can leave that out and it'll just update as fast as the hardware will allow it.
+        //    game.Run();
+        //}
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
@@ -33,6 +40,7 @@ internal class Program
             {
                 DefaultFamilyName = Font
             })
+            .With(new Win32PlatformOptions { UseWgl = true })
             .UsePlatformDetect()
             .LogToTrace();
 }

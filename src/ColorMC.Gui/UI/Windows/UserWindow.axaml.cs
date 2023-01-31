@@ -216,8 +216,8 @@ public partial class UserWindow : Window
                     break;
                 }
                 Info1.Show(Localizer.Instance["UserWindow.Info2"]);
-                res = await UserBinding.AddUser(5, server,
-                    TextBox_Input2.Text, TextBox_Input3.Text);
+                res = await UserBinding.AddUser(5, 
+                    TextBox_Input2.Text, TextBox_Input3.Text, server);
                 Info1.Close();
                 if (!res.Item1)
                 {

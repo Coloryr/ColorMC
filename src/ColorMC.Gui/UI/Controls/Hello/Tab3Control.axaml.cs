@@ -88,7 +88,7 @@ public partial class Tab3Control : UserControl
                 {
                      Patterns = SystemInfo.Os == OsType.Windows ? new List<string>()
                      {
-                        "*.json"
+                        "*.exe"
                      } : new()
                 }
             }

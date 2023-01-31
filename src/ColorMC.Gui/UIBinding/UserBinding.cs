@@ -24,15 +24,15 @@ public static class UserBinding
         return list;
     }
 
-    public static async Task<(bool, string?)> AddUser(int type, string? input, string? input1 = null, string? input2 = null)
+    public static async Task<(bool, string?)> AddUser(int type, string? input1, string? input2 = null, string? input3 = null)
     {
         if (type == 0)
         {
             await AuthDatabase.Save(new()
             {
-                UserName = input!,
+                UserName = input1!,
                 ClientToken = Funtcions.NewUUID(),
-                UUID = Funtcions.GenMd5(Encoding.UTF8.GetBytes(input!.ToLower())),
+                UUID = Funtcions.GenMd5(Encoding.UTF8.GetBytes(input1!.ToLower())),
                 AuthType = AuthType.Offline
             });
             return (true, null);
@@ -42,10 +42,10 @@ public static class UserBinding
             var (State, State1, Obj, Message, Ex) = type switch
             {
                 1 => await BaseAuth.LoginWithOAuth(),
-                2 => await BaseAuth.LoginWithNide8(input!, input1!, input2!),
-                3 => await BaseAuth.LoginWithAuthlibInjector(input!, input1!, input2!),
+                2 => await BaseAuth.LoginWithNide8(input1!, input2!, input3!),
+                3 => await BaseAuth.LoginWithAuthlibInjector(input1!, input2!, input3!),
                 4 => await BaseAuth.LoginWithLittleSkin(input1!, input2!),
-                5 => await BaseAuth.LoginWithLittleSkin(input1!, input2!, input!),
+                5 => await BaseAuth.LoginWithLittleSkin(input1!, input2!, input3!),
                 _ => (AuthState.Profile, LoginState.Error, null, null, null)
             };
 

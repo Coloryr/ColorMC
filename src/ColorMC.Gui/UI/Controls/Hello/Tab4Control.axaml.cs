@@ -185,7 +185,7 @@ public partial class Tab4Control : UserControl
                     break;
                 }
                 Window.Info1.Show(Localizer.Instance["UserWindow.Info2"]);
-                res = await UserBinding.AddUser(3, server, user.Item1, user.Item2);
+                res = await UserBinding.AddUser(3, user.Item1, user.Item2, server);
                 Window.Info1.Close();
                 if (!res.Item1)
                 {
