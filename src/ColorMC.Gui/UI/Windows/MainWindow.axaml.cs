@@ -47,6 +47,8 @@ public partial class MainWindow : Window
         App.PicUpdate += Update;
 
         Update();
+
+        new SkinWindow().Show();
     }
 
     public async void Launch(bool debug)

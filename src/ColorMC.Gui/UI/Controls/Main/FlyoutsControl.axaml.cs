@@ -3,6 +3,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -21,6 +22,13 @@ public partial class FlyoutsControl : UserControl
         Button4.Click += Button4_Click;
         Button5.Click += Button5_Click;
         Button6.Click += Button6_Click;
+        Button7.Click += Button7_Click;
+    }
+
+    private void Button7_Click(object? sender, RoutedEventArgs e)
+    {
+        FlyoutBase.Hide();
+        GameBinding.OpFile(Obj);
     }
 
     private void Button6_Click(object? sender, RoutedEventArgs e)

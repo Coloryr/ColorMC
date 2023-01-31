@@ -43,7 +43,8 @@ public static class AuthHelper
             SHA256 = obj.checksums.sha256,
             Url = UrlHelper.DownloadAuthlibInjector(obj, BaseClient.Source),
             Name = $"moe.yushi:authlibinjector:{obj.version}",
-            Local = $"{LibrariesPath.BaseDir}/moe/yushi/authlibinjector/{obj.version}/authlib-injector-{obj.version}.jar",
+            Local = $"{LibrariesPath.BaseDir}/moe/yushi/authlibinjector/" +
+            $"{obj.version}/authlib-injector-{obj.version}.jar",
         };
     }
 
@@ -56,8 +57,8 @@ public static class AuthHelper
         var item = BuildNide8Item();
         NowNide8Injector = item.Local;
 
-        if (!string.IsNullOrWhiteSpace(NowNide8Injector) &&
-            File.Exists(NowNide8Injector))
+        if (!string.IsNullOrWhiteSpace(NowNide8Injector)
+            && File.Exists(NowNide8Injector))
         {
             return null;
         }
@@ -77,14 +78,14 @@ public static class AuthHelper
         var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
 
         var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
-        var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(meta)
+        var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(info)
             ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
         var item1 = BuildAuthlibInjectorItem(obj1);
 
         NowAuthlibInjector = item1.Local;
 
-        if (!string.IsNullOrWhiteSpace(NowAuthlibInjector) &&
-    File.Exists(NowAuthlibInjector))
+        if (!string.IsNullOrWhiteSpace(NowAuthlibInjector)
+            && File.Exists(NowAuthlibInjector))
             return null;
 
         return item1;

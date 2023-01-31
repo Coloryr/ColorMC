@@ -61,7 +61,7 @@ public static class GetSkin
             var obj1 = JsonConvert.DeserializeObject<TexturesObj>(data1);
             if (obj1 == null)
                 return null;
-            return obj1.textures.SKIN.url;
+            return obj1.textures?.SKIN?.url;
         }
         catch (Exception e)
         {
@@ -82,16 +82,16 @@ public static class GetSkin
 
     public static Task<string?> LoadFromAuthlibInjector(LoginObj obj)
     {
-        return BaseLoad(obj.UUID, $"{obj.Text1}/session/minecraft/profile/{obj.UUID}");
+        return BaseLoad(obj.UUID, $"{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 
     public static Task<string?> LoadFromLittleskin(LoginObj obj)
     {
-        return BaseLoad(obj.UUID, $"https://littleskin.cn/api/yggdrasil/session/minecraft/profile/{obj.UUID}");
+        return BaseLoad(obj.UUID, $"https://littleskin.cn/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 
     public static Task<string?> LoadFromSelfLittleskin(LoginObj obj)
     {
-        return BaseLoad(obj.UUID, $"{obj.Text1}/api/yggdrasil/session/minecraft/profile/{obj.UUID}");
+        return BaseLoad(obj.UUID, $"{obj.Text1}/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 }

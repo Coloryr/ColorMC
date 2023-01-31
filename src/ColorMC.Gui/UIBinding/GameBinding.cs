@@ -626,4 +626,9 @@ public static class GameBinding
     {
         return InstancesPath.GetGame(name);
     }
+
+    public static void OpFile(GameSettingObj obj)
+    {
+        BaseBinding.OpFile(obj.GetGamePath(), false);
+    }
 }
