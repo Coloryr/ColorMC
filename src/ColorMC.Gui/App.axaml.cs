@@ -259,7 +259,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowUser(bool add)
+    public static void ShowUser()
     {
         if (UserWindow != null)
         {
@@ -270,9 +270,6 @@ public partial class App : Application
             UserWindow = new();
             UserWindow.Show();
         }
-
-        if (add)
-            UserWindow.SetAdd();
     }
 
     public static void ShowMain()

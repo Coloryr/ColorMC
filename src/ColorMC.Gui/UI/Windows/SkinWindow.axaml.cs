@@ -312,6 +312,10 @@ public class OpenGlPageControl : OpenGlControlBase
         DiffXY.Y = 0;
         XY.X = 0;
         XY.Y = 0;
+        SaveXY.X = 0;
+        SaveXY.Y = 0;
+        LastXY.X = 0;
+        LastXY.Y = 0;
 
         InvalidateVisual();
     }

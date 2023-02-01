@@ -23,6 +23,13 @@ public partial class FlyoutsControl : UserControl
         Button5.Click += Button5_Click;
         Button6.Click += Button6_Click;
         Button7.Click += Button7_Click;
+        Button8.Click += Button8_Click;
+    }
+
+    private void Button8_Click(object? sender, RoutedEventArgs e)
+    {
+        FlyoutBase.Hide();
+        App.ShowGameEdit(Obj, 5);
     }
 
     private void Button7_Click(object? sender, RoutedEventArgs e)
@@ -64,7 +71,7 @@ public partial class FlyoutsControl : UserControl
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        Win.Launch(false);
+        Win.Launch(true);
     }
 
     public void Set(FlyoutBase fb, GameSettingObj obj, MainWindow win)

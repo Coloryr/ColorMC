@@ -113,7 +113,7 @@ public static class OAuthAPI
     {
         Arg2["code"] = device_code;
         long startTime = DateTime.Now.Ticks;
-        int delay = 5;
+        int delay = 2;
         do
         {
             await Task.Delay(delay * 1000);

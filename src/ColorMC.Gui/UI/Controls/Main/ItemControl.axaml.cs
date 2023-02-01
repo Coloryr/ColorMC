@@ -26,13 +26,10 @@ public partial class ItemControl : UserControl
         InitializeComponent();
 
         Button_Launch.Click += Button_Launch_Click;
-        Button_Launch1.Click += Button_Launch1_Click;
         Button_Edit.Click += Button_Edit_Click;
         Button_Add1.Click += Button_Add1_Click;
-        Button_Out.Click += Button_Out_Click;
 
         Button_Switch.Click += Button_Switch_Click;
-        Button_Add.Click += Button_Add_Click;
 
         Button1.Click += Button1_Click;
         Button_Setting.Click += Button_Setting_Click;
@@ -71,19 +68,9 @@ public partial class ItemControl : UserControl
         Expander1.IsExpanded = !Expander1.IsExpanded;
     }
 
-    private void Button_Add_Click(object? sender, RoutedEventArgs e)
-    {
-        App.ShowUser(true);
-    }
-
     private void Button_Switch_Click(object? sender, RoutedEventArgs e)
     {
-        App.ShowUser(false);
-    }
-
-    private void Button_Launch1_Click(object? sender, RoutedEventArgs e)
-    {
-        Window.Launch(true);
+        App.ShowUser();
     }
 
     private void Button_Edit_Click(object? sender, RoutedEventArgs e)
@@ -99,38 +86,25 @@ public partial class ItemControl : UserControl
         Window.Launch(false);
     }
 
-    private void Button_Out_Click(object? sender, RoutedEventArgs e)
-    {
-        if (Obj != null)
-        {
-            App.ShowGameEdit(Obj, 5);
-        }
-    }
-
     public void SetGame(GameSettingObj? obj)
     {
         Obj = obj;
         if (obj == null)
         {
             Button_Launch.IsEnabled = false;
-            Button_Launch1.IsEnabled = false;
             Button_Edit.IsEnabled = false;
-            Button_Out.IsEnabled = false;
         }
         else
         {
             if (BaseBinding.Games.ContainsValue(obj))
             {
                 Button_Launch.IsEnabled = false;
-                Button_Launch1.IsEnabled = false;
             }
             else
             {
                 Button_Launch.IsEnabled = true;
-                Button_Launch1.IsEnabled = true;
             }
             Button_Edit.IsEnabled = true;
-            Button_Out.IsEnabled = true;
         }
     }
 
@@ -157,7 +131,7 @@ public partial class ItemControl : UserControl
         LoadHead();
     }
 
-    private async void LoadHead()
+    private void LoadHead()
     {
         ProgressBar1.IsVisible = true;
 
@@ -173,12 +147,10 @@ public partial class ItemControl : UserControl
             config.Item2.ServerCustom?.LockGame == true)
         {
             Button_Add1.IsVisible = false;
-            Button_Out.IsVisible = false;
         }
         else
         {
             Button_Add1.IsVisible = true;
-            Button_Out.IsVisible = true;
         }
     }
 }
