@@ -375,6 +375,19 @@ public static partial class UIUtils
 
         return new(255, 255, 255, 255);
     }
+
+    public static (double X, double Y) GetXY(this IVisual visual)
+    {
+        var temp = (visual.Bounds.X, visual.Bounds.Y);
+        if (visual.VisualParent != null)
+        {
+            var (X, Y) = GetXY(visual.VisualParent);
+            temp.X += X;
+            temp.Y += Y;
+        }
+
+        return temp;
+    }
 }
 
 public static class ImageUtils

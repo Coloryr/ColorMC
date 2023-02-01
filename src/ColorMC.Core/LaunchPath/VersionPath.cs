@@ -38,7 +38,8 @@ public static class VersionPath
 
         try
         {
-            if (!GetFromWeb().Result || !ReadVersions())
+            //!GetFromWeb().Result || 
+            if (!ReadVersions())
             {
                 Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error2"));
             }
