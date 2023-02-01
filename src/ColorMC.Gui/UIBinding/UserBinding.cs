@@ -1,9 +1,17 @@
-﻿using ColorMC.Core.Game.Auth;
+﻿using Avalonia;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Skin;
 using ColorMC.Gui.Utils.LaunchSetting;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +20,8 @@ namespace ColorMC.Gui.UIBinding;
 public static class UserBinding
 {
     private readonly static List<LoginObj> LockUser = new();
+    public static Image<Rgba32>? SkinImage { get; private set; }
+    public static Bitmap? HeadBitmap { get; private set; }
     public static List<string> GetUserTypes()
     {
         var list = new List<string>();
@@ -73,7 +83,7 @@ public static class UserBinding
         return AuthDatabase.Auths;
     }
 
-    public static void Remove(string uuid, AuthType type)
+    public static async void Remove(string uuid, AuthType type)
     {
         if (GuiConfigUtils.Config.LastUser != null
             && type == GuiConfigUtils.Config.LastUser.Type
@@ -83,9 +93,9 @@ public static class UserBinding
         }
         var item = AuthDatabase.Get(uuid, type);
         if (item != null)
-            AuthDatabase.Delete(item);
+            await AuthDatabase.Delete(item);
 
-        App.OnUserEdit();
+        await App.OnUserEdit();
     }
 
     public static LoginObj? GetLastUser()
@@ -109,7 +119,7 @@ public static class UserBinding
         return res.State1 == LoginState.Done;
     }
 
-    public static void SetLastUser(string uuid, AuthType type)
+    public static async void SetLastUser(string uuid, AuthType type)
     {
         GuiConfigUtils.Config.LastUser = new()
         {
@@ -119,7 +129,7 @@ public static class UserBinding
 
         GuiConfigUtils.Save();
 
-        App.OnUserEdit();
+        await App.OnUserEdit();
     }
 
     public static void ClearLastUser()
@@ -149,5 +159,57 @@ public static class UserBinding
     public static bool IsLock(LoginObj obj)
     {
         return LockUser.Contains(obj);
+    }
+
+    public static async Task LoadSkin()
+    {
+        var obj = GetLastUser();
+
+        SkinImage?.Dispose();
+        HeadBitmap?.Dispose();
+
+        SkinImage = null;
+
+        var uri = new Uri($"resm:ColorMC.Gui.Resource.Pic.user.png");
+        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+        using var asset = assets!.Open(uri);
+
+        if (obj == null)
+        {
+            HeadBitmap = new Bitmap(asset);
+            return;
+        }
+
+        var file = await GetSkin.DownloadSkin(obj);
+        if (file == null)
+        {
+            HeadBitmap = new Bitmap(asset);
+            return;
+        }
+
+        SkinImage = Image.Load<Rgba32>(file);
+
+        var data = await ImageUtils.MakeHeadImage(file);
+        if (file == null)
+        {
+            HeadBitmap = new Bitmap(asset);
+            return;
+        }
+
+        data.Seek(0, SeekOrigin.Begin);
+        HeadBitmap = new Bitmap(data);
+        data.Close();
+    }
+
+    public static List<string> GetSkinType()
+    {
+        var list = new List<string>();
+        Array values = Enum.GetValues(typeof(SkinType));
+        foreach (SkinType value in values)
+        {
+            list.Add(value.GetName());
+        }
+
+        return list;
     }
 }

@@ -13,6 +13,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,6 +35,7 @@ public partial class App : Application
     public static CustomWindow? CustomWindow;
     public static AddModPackWindow? AddModPackWindow;
     public static SettingWindow? SettingWindow;
+    public static SkinWindow? SkinWindow;
     public static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
 
     public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
@@ -63,7 +65,7 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;
-            desktop.MainWindow = new SkinWindow();
+            desktop.MainWindow = new InitWindow();
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -86,8 +88,10 @@ public partial class App : Application
         Icon = new(asset1);
     }
 
-    public static void OnUserEdit()
+    public static async Task OnUserEdit()
     {
+        await UserBinding.LoadSkin();
+
         UserEdit?.Invoke();
     }
 
@@ -167,6 +171,50 @@ public partial class App : Application
     private void Life_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
     {
         BaseBinding.Exit();
+    }
+
+    public static void ShowCustom()
+    {
+        bool ok;
+        var config = ConfigBinding.GetAllConfig();
+        if (config.Item2 == null || string.IsNullOrWhiteSpace(config.Item2.ServerCustom.UIFile))
+        {
+            ok = false;
+        }
+        else
+        {
+            try
+            {
+                string file = config.Item2.ServerCustom.UIFile;
+                if (File.Exists(file))
+                {
+                    var obj = JsonConvert.DeserializeObject<UIObj>(File.ReadAllText(file));
+                    if (obj == null)
+                    {
+                        ok = false;
+                    }
+                    else
+                    {
+                        App.ShowCustom(obj);
+                        ok = true;
+                    }
+                }
+                else
+                {
+                    ok = false;
+                }
+            }
+            catch (Exception e)
+            {
+                CoreMain.OnError?.Invoke("自定义UI加载失败", e, true);
+                ok = false;
+            }
+        }
+
+        if (!ok)
+        {
+            App.ShowMain();
+        }
     }
 
     public static void ShowCustom(UIObj obj)
@@ -275,6 +323,19 @@ public partial class App : Application
         {
             SettingWindow = new();
             SettingWindow.Show();
+        }
+    }
+
+    public static void ShowSkin()
+    {
+        if (SkinWindow != null)
+        {
+            SkinWindow.Activate();
+        }
+        else
+        {
+            SkinWindow = new();
+            SkinWindow.Show();
         }
     }
 

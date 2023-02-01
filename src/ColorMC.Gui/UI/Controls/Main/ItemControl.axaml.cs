@@ -12,6 +12,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.IO;
+using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -19,7 +20,6 @@ public partial class ItemControl : UserControl
 {
     private MainWindow Window;
     private LoginObj? Obj1;
-    private Bitmap bitmap;
     private GameSettingObj? Obj;
     public ItemControl()
     {
@@ -37,13 +37,15 @@ public partial class ItemControl : UserControl
         Button1.Click += Button1_Click;
         Button_Setting.Click += Button_Setting_Click;
 
-        var uri = new Uri($"resm:ColorMC.Gui.Resource.Pic.user.png");
-        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        var asset = assets!.Open(uri);
+        Image1.PointerPressed += Image1_PointerPressed;
 
-        Image1.Source = bitmap = new Bitmap(asset);
         Expander1.ContentTransition = App.CrossFade300;
         Button1.Content = "→";
+    }
+
+    private void Image1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        App.ShowSkin();
     }
 
     private void Button_Setting_Click(object? sender, RoutedEventArgs e)
@@ -140,9 +142,9 @@ public partial class ItemControl : UserControl
     public void SetUser(LoginObj? obj)
     {
         Obj1 = obj;
+
         if (Obj1 == null)
         {
-            Image1.Source = bitmap;
             TextBlock_Type.Text = Localizer.Instance["MainWindow.Control.Info1"];
             TextBlock_Name.Text = Localizer.Instance["MainWindow.Control.Info2"];
         }
@@ -150,39 +152,17 @@ public partial class ItemControl : UserControl
         {
             TextBlock_Name.Text = Obj1.UserName;
             TextBlock_Type.Text = Obj1.AuthType.GetName();
-            LoadHead();
         }
+
+        LoadHead();
     }
 
     private async void LoadHead()
     {
         ProgressBar1.IsVisible = true;
-        if (Obj1 == null)
-        {
-            Image1.Source = bitmap;
-            ProgressBar1.IsVisible = false;
-            return;
-        }
 
-        var file = await GetSkin.DownloadSkin(Obj1);
-        if (file == null)
-        {
-            Image1.Source = bitmap;
-            ProgressBar1.IsVisible = false;
-            return;
-        }
+        Image1.Source = UserBinding.HeadBitmap!;
 
-        var data = await ImageUtils.MakeHeadImage(file);
-        if (file == null)
-        {
-            Image1.Source = bitmap;
-            ProgressBar1.IsVisible = false;
-            return;
-        }
-
-        data.Seek(0, SeekOrigin.Begin);
-        Image1.Source = new Bitmap(data);
-        data.Close();
         ProgressBar1.IsVisible = false;
     }
 

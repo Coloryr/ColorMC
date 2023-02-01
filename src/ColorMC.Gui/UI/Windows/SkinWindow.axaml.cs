@@ -6,12 +6,12 @@ using static Avalonia.OpenGL.GlConsts;
 using System.Runtime.InteropServices;
 using System.Numerics;
 using System;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp;
-using Image = SixLabors.ImageSharp.Image;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.Skin.Model;
-using Avalonia.SourceGenerator;
+using Avalonia.Input;
+using ColorMC.Gui.UIBinding;
+using Avalonia.Threading;
+using Avalonia.Interactivity;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -20,45 +20,66 @@ public partial class SkinWindow : Window
     public SkinWindow()
     {
         InitializeComponent();
+        ComboBox1.Items = UserBinding.GetSkinType();
+
+        GL.SetWindow(this);
+
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+        Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
+
+        Closed += SkinWindow_Closed;
+
+        App.PicUpdate += Update;
+        App.UserEdit += App_UserEdit;
+
+        Update();
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        GL.Reset();
+    }
+
+    private void App_UserEdit()
+    {
+        GL.ChangeSkin();
+    }
+
+    private void SkinWindow_Closed(object? sender, EventArgs e)
+    {
+        App.PicUpdate -= Update;
+
+        App.SkinWindow = null;
+    }
+
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (ComboBox1.SelectedIndex == (int)GL.steveModelType)
+            return;
+        if (ComboBox1.SelectedIndex == (int)SkinType.UNKNOWN)
+        {
+            Info.Show("你不能选择该类型");
+            ComboBox1.SelectedIndex = (int)GL.steveModelType;
+            return;
+        }
+        GL.ChangeType(ComboBox1.SelectedIndex);
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        GL.ChangeSkin();
+    }
+
+    public void Update()
+    {
+        App.Update(this, Image_Back, Grid1);
     }
 }
 
 public class OpenGlPageControl : OpenGlControlBase
 {
-    private float _yaw;
-
-    public static readonly DirectProperty<OpenGlPageControl, float> YawProperty =
-        AvaloniaProperty.RegisterDirect<OpenGlPageControl, float>("Yaw", o => o.Yaw, (o, v) => o.Yaw = v);
-
-    public float Yaw
-    {
-        get => _yaw;
-        set => SetAndRaise(YawProperty, ref _yaw, value);
-    }
-
-    private float _pitch;
-
-    public static readonly DirectProperty<OpenGlPageControl, float> PitchProperty =
-        AvaloniaProperty.RegisterDirect<OpenGlPageControl, float>("Pitch", o => o.Pitch, (o, v) => o.Pitch = v);
-
-    public float Pitch
-    {
-        get => _pitch;
-        set => SetAndRaise(PitchProperty, ref _pitch, value);
-    }
-
-
-    private float _roll;
-
-    public static readonly DirectProperty<OpenGlPageControl, float> RollProperty =
-        AvaloniaProperty.RegisterDirect<OpenGlPageControl, float>("Roll", o => o.Roll, (o, v) => o.Roll = v);
-
-    public float Roll
-    {
-        get => _roll;
-        set => SetAndRaise(RollProperty, ref _roll, value);
-    }
-
+    private SkinWindow Window;
     private string _info = string.Empty;
 
     public static readonly DirectProperty<OpenGlPageControl, string> InfoProperty =
@@ -101,14 +122,23 @@ public class OpenGlPageControl : OpenGlControlBase
         public Vector2 UV;
     }
 
-    private readonly Vertex[] points;
-    private readonly Vertex[] pointsTop;
-    private Image<Rgba32> _Image;
+    private bool HaveSkin = false;
+    private bool SwitchModel = false;
+    private bool SwitchSkin = false;
+
+    private float Dis = 7;
+    private Vector2 RotXY;
+    private Vector2 DiffXY;
+
+    private Vector2 XY;
+    private Vector2 SaveXY;
+    private Vector2 LastXY;
+
     private int texture;
 
-    private ModelSourceTextureType steveModelType;
-    private ushort[] steveModelDrawOrder;
-    private ushort[] steveModelDrawOrderTop;
+    public SkinType steveModelType;
+    private int steveModelDrawOrder;
+    private int steveModelDrawOrderTop;
 
     private int _vertexShader;
     private int _fragmentShader;
@@ -133,75 +163,35 @@ public class OpenGlPageControl : OpenGlControlBase
     public GlFunc4 glDepthMask;
     public GlFunc2 glCullFace;
     public GlFunc2 glDisable;
+    public GlFunc2 glDisableVertexAttribArray;
 
-    public OpenGlPageControl()
+    public void SetWindow(SkinWindow window)
     {
-        _Image = Image.Load<Rgba32>("C:\\Users\\40206\\Desktop\\color_yr.png");
-
-        steveModelType = SkinUtil.GetTextType(_Image);
-        steveModelType = ModelSourceTextureType.RATIO_1_1_SLIM;
-
-        {
-            var steve = SteveC.GetSteve(steveModelType);
-            var steveModelCoords = steve.Item1;
-            steveModelDrawOrder = steve.Item2;
-            var steveTextureCoords = Steve3DTexture.GetSteveTexture(steveModelType);
-
-            points = new Vertex[steveModelCoords.Length / 3];
-
-            for (var primitive = 0; primitive < steveModelCoords.Length / 3; primitive++)
-            {
-                var srci = primitive * 3;
-                var srci1 = primitive * 2;
-                points[primitive] = new Vertex
-                {
-                    Position = new Vector3(steveModelCoords[srci], steveModelCoords[srci + 1], steveModelCoords[srci + 2]),
-                    UV = new Vector2(steveTextureCoords[srci1], steveTextureCoords[srci1 + 1])
-                };
-            }
-        }
-
-        {
-            var steve1 = SteveC.GetSteveTop(steveModelType);
-            var steveModelCoords1 = steve1.Item1;
-            steveModelDrawOrderTop = steve1.Item2;
-            var steveTextureCoords1 = Steve3DTexture.GetSteveTextureTop(steveModelType);
-
-            pointsTop = new Vertex[steveModelCoords1.Length / 3];
-
-            for (var primitive = 0; primitive < steveModelCoords1.Length / 3; primitive++)
-            {
-                var srci = primitive * 3;
-                var srci1 = primitive * 2;
-                pointsTop[primitive] = new Vertex
-                {
-                    Position = new Vector3(steveModelCoords1[srci], steveModelCoords1[srci + 1], steveModelCoords1[srci + 2]),
-                    UV = new Vector2(steveTextureCoords1[srci1], steveTextureCoords1[srci1 + 1])
-                };
-            }
-        }
+        Window = window;
     }
 
-    protected override unsafe void OnOpenGlInit(GlInterface GL, int fb)
+    protected override unsafe void OnOpenGlInit(GlInterface gl, int fb)
     {
-        IntPtr temp = GL.GetProcAddress("glDepthFunc");
+        IntPtr temp = gl.GetProcAddress("glDepthFunc");
         glDepthFunc = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
-        temp = GL.GetProcAddress("glClearDepth");
+        temp = gl.GetProcAddress("glClearDepth");
         glClearDepth = (GlFunc3)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc3));
-        temp = GL.GetProcAddress("glBlendFunc");
+        temp = gl.GetProcAddress("glBlendFunc");
         glBlendFunc = (GlFunc1)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc1));
-        temp = GL.GetProcAddress("glDepthMask");
+        temp = gl.GetProcAddress("glDepthMask");
         glDepthMask = (GlFunc4)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc4));
-        temp = GL.GetProcAddress("glCullFace");
+        temp = gl.GetProcAddress("glCullFace");
         glCullFace = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
-        temp = GL.GetProcAddress("glDisable");
+        temp = gl.GetProcAddress("glDisable");
         glDisable = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
+        temp = gl.GetProcAddress("glDisableVertexAttribArray");
+        glDisableVertexAttribArray = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
 
-        GL.ClearColor(0, 0, 0, 1);
-        GL.Enable(GL_DEPTH_TEST);
+        gl.ClearColor(0, 0, 0, 1);
+        gl.Enable(GL_DEPTH_TEST);
 
         //GL_BLEND
-        GL.Enable(3042);
+        gl.Enable(3042);
 
         //gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA
         glBlendFunc(770, 771);
@@ -210,130 +200,330 @@ public class OpenGlPageControl : OpenGlControlBase
         glCullFace(1029);
 
         //gl.GL_CULL_FACE
-        GL.Enable(2884);
+        gl.Enable(2884);
 
-        CheckError(GL);
+        CheckError(gl);
 
-        Info = $"Renderer: {GL.GetString(GL_RENDERER)} Version: {GL.GetString(GL_VERSION)}";
+        Info = $"Renderer: {gl.GetString(GL_RENDERER)} Version: {gl.GetString(GL_VERSION)}";
 
         // Load the source of the vertex shader and compile it.
-        _vertexShader = GL.CreateShader(GL_VERTEX_SHADER);
-        var error = GL.CompileShaderAndGetError(_vertexShader, VertexShaderSource);
+        _vertexShader = gl.CreateShader(GL_VERTEX_SHADER);
+        var error = gl.CompileShaderAndGetError(_vertexShader, VertexShaderSource);
         Console.WriteLine(error);
 
         // Load the source of the fragment shader and compile it.
-        _fragmentShader = GL.CreateShader(GL_FRAGMENT_SHADER);
-        error = GL.CompileShaderAndGetError(_fragmentShader, FragmentShaderSource);
+        _fragmentShader = gl.CreateShader(GL_FRAGMENT_SHADER);
+        error = gl.CompileShaderAndGetError(_fragmentShader, FragmentShaderSource);
         Console.WriteLine(error);
 
         // Create the shader program, attach the vertex and fragment shaders and link the program.
-        _shaderProgram = GL.CreateProgram();
-        GL.AttachShader(_shaderProgram, _vertexShader);
-        GL.AttachShader(_shaderProgram, _fragmentShader);
-        error = GL.LinkProgramAndGetError(_shaderProgram);
+        _shaderProgram = gl.CreateProgram();
+        gl.AttachShader(_shaderProgram, _vertexShader);
+        gl.AttachShader(_shaderProgram, _fragmentShader);
+        error = gl.LinkProgramAndGetError(_shaderProgram);
         Console.WriteLine(error);
-        CheckError(GL);
+        CheckError(gl);
 
         int[] temp2 = new int[2];
 
         fixed (int* pdata = temp2)
-            GL.GenVertexArrays(2, pdata);
+            gl.GenVertexArrays(2, pdata);
+
         _vertexArrayObject = temp2[0];
         _vertexArrayObjectTop = temp2[1];
 
+        _vertexBufferObject = gl.GenBuffer();
+        _indexBufferObject = gl.GenBuffer();
+
+        _vertexBufferObjectTop = gl.GenBuffer();
+        _indexBufferObjectTop = gl.GenBuffer();
+
+        PointerWheelChanged += OpenGlPageControl_PointerWheelChanged;
+        PointerPressed += OpenGlPageControl_PointerPressed;
+        PointerReleased += OpenGlPageControl_PointerReleased;
+        PointerMoved += OpenGlPageControl_PointerMoved;
+
+        LoadSkin(gl);
+    }
+
+    public void ChangeType(int index)
+    {
+        steveModelType = (SkinType)index;
+
+        SwitchModel = true;
+
+        InvalidateVisual();
+    }
+
+    public void ChangeSkin()
+    {
+        SwitchSkin = true;
+
+        InvalidateVisual();
+    }
+
+    public void Reset()
+    {
+        Dis = 7;
+        RotXY.X = 0;
+        RotXY.Y = 0;
+        DiffXY.X = 0;
+        DiffXY.Y = 0;
+        XY.X = 0;
+        XY.Y = 0;
+
+        InvalidateVisual();
+    }
+
+    private unsafe void LoadSkin(GlInterface gl)
+    {
+        if (UserBinding.SkinImage == null)
         {
-            GL.BindVertexArray(_vertexArrayObject);
-
-            _vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
-            var vertexSize = Marshal.SizeOf<Vertex>();
-            fixed (void* pdata = points)
-                GL.BufferData(GL_ARRAY_BUFFER, new IntPtr(points.Length * vertexSize),
-                    new IntPtr(pdata), GL_STATIC_DRAW);
-
-            _indexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferObject);
-            fixed (void* pdata = steveModelDrawOrder)
-                GL.BufferData(GL_ELEMENT_ARRAY_BUFFER, new IntPtr(steveModelDrawOrder.Length * sizeof(ushort)), new IntPtr(pdata), GL_STATIC_DRAW);
-            CheckError(GL);
-
-            int positionLocation = GL.GetAttribLocationString(_shaderProgram, "a_Position");
-            int uv = GL.GetAttribLocationString(_shaderProgram, "a_texCoord");
-            GL.VertexAttribPointer(positionLocation, 3, GL_FLOAT,
-                0, 5 * sizeof(float), 0);
-            GL.VertexAttribPointer(uv, 2, GL_FLOAT,
-                0, 5 * sizeof(float), 3 * sizeof(float));
-
-            GL.EnableVertexAttribArray(positionLocation);
-            GL.EnableVertexAttribArray(uv);
-
-            GL.BindVertexArray(0);
+            HaveSkin = false;
+            Dispatcher.UIThread.Post(() =>
+            {
+                Window.Label1.IsVisible = true;
+                Window.Label1.Content = "没有皮肤";
+            });
+            return;
         }
 
+        steveModelType = SkinUtil.GetTextType(UserBinding.SkinImage);
+        if (steveModelType == SkinType.UNKNOWN)
         {
-            GL.BindVertexArray(_vertexArrayObjectTop);
-
-            _vertexBufferObjectTop = GL.GenBuffer();
-            GL.BindBuffer(GL_ARRAY_BUFFER, _vertexBufferObjectTop);
-            var vertexSize = Marshal.SizeOf<Vertex>();
-            fixed (void* pdata = pointsTop)
-                GL.BufferData(GL_ARRAY_BUFFER, new IntPtr(points.Length * vertexSize),
-                    new IntPtr(pdata), GL_STATIC_DRAW);
-
-            _indexBufferObjectTop = GL.GenBuffer();
-            GL.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferObjectTop);
-            fixed (void* pdata = steveModelDrawOrderTop)
-                GL.BufferData(GL_ELEMENT_ARRAY_BUFFER, new IntPtr(steveModelDrawOrder.Length * sizeof(ushort)), new IntPtr(pdata), GL_STATIC_DRAW);
-            CheckError(GL);
-
-            int positionLocation = GL.GetAttribLocationString(_shaderProgram, "a_Position");
-            int uv = GL.GetAttribLocationString(_shaderProgram, "a_texCoord");
-            GL.VertexAttribPointer(positionLocation, 3, GL_FLOAT,
-                0, 5 * sizeof(float), 0);
-            GL.VertexAttribPointer(uv, 2, GL_FLOAT,
-                0, 5 * sizeof(float), 3 * sizeof(float));
-
-            GL.EnableVertexAttribArray(positionLocation);
-            GL.EnableVertexAttribArray(uv);
-
-            GL.BindVertexArray(0);
+            HaveSkin = false;
+            Dispatcher.UIThread.Post(() =>
+            {
+                Window.Label1.IsVisible = true;
+                Window.Label1.Content = "未知的皮肤类型";
+            });
+            return;
         }
 
-        GL.UseProgram(_shaderProgram);
+        texture = gl.GenTexture();
+        gl.ActiveTexture(GL_TEXTURE0);
+        gl.BindTexture(GL_TEXTURE_2D, texture);
 
-        
-        CheckError(GL);
-
-        texture = GL.GenTexture();
-        GL.ActiveTexture(GL_TEXTURE0);
-        GL.BindTexture(GL_TEXTURE_2D, texture);
-
-        GL.TexParameteri(
+        gl.TexParameteri(
             GL_TEXTURE_2D,
             GL_TEXTURE_MIN_FILTER, GL_LINEAR
         );
-        GL.TexParameteri(
+        gl.TexParameteri(
             GL_TEXTURE_2D,
             GL_TEXTURE_MAG_FILTER, GL_NEAREST
         );
         //TextureWrapS ClampToEdge
-        GL.TexParameteri(
+        gl.TexParameteri(
             GL_TEXTURE_2D,
             10242, 33071
         );
         //TextureWrapT ClampToEdge
-        GL.TexParameteri(
+        gl.TexParameteri(
             GL_TEXTURE_2D,
             10243, 33071
         );
 
-        var pixels = new byte[4 * _Image.Width * _Image.Height];
-        _Image.CopyPixelDataTo(pixels);
+        var pixels = new byte[4 * UserBinding.SkinImage.Width * UserBinding.SkinImage.Height];
+        UserBinding.SkinImage.CopyPixelDataTo(pixels);
 
         fixed (void* pdata = pixels)
-            GL.TexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _Image.Width, _Image.Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, new IntPtr(pdata));
+            gl.TexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, UserBinding.SkinImage.Width, UserBinding.SkinImage.Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, new IntPtr(pdata));
 
-        CheckError(GL);
+        CheckError(gl);
+
+        LoadModel(gl);
+
+        CheckError(gl);
+
+        HaveSkin = true;
+        Dispatcher.UIThread.Post(() =>
+        {
+            Window.ComboBox1.SelectedIndex = (int)steveModelType;
+            Window.Label1.IsVisible = false;
+        });
+    }
+
+    private unsafe void LoadModel(GlInterface gl)
+    {
+        {
+            gl.UseProgram(_shaderProgram);
+            gl.BindVertexArray(_vertexArrayObject);
+
+            int a_Position = gl.GetAttribLocationString(_shaderProgram, "a_Position");
+            int a_texCoord = gl.GetAttribLocationString(_shaderProgram, "a_texCoord");
+
+            glDisableVertexAttribArray(a_Position);
+            glDisableVertexAttribArray(a_texCoord);
+
+            var steve = SteveC.GetSteve(steveModelType);
+            var model = steve.Item1;
+            var draw = steve.Item2;
+            var uv = Steve3DTexture.GetSteveTexture(steveModelType);
+
+            var points = new Vertex[model.Length / 3];
+
+            for (var primitive = 0; primitive < model.Length / 3; primitive++)
+            {
+                var srci = primitive * 3;
+                var srci1 = primitive * 2;
+                points[primitive] = new Vertex
+                {
+                    Position = new Vector3(model[srci], model[srci + 1], model[srci + 2]),
+                    UV = new Vector2(uv[srci1], uv[srci1 + 1])
+                };
+            }
+
+            gl.BindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
+            var vertexSize = Marshal.SizeOf<Vertex>();
+            fixed (void* pdata = points)
+                gl.BufferData(GL_ARRAY_BUFFER, new IntPtr(points.Length * vertexSize),
+                    new IntPtr(pdata), GL_STATIC_DRAW);
+
+            gl.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferObject);
+            fixed (void* pdata = draw)
+                gl.BufferData(GL_ELEMENT_ARRAY_BUFFER, new IntPtr(draw.Length * sizeof(ushort)), new IntPtr(pdata), GL_STATIC_DRAW);
+            
+            gl.VertexAttribPointer(a_Position, 3, GL_FLOAT,
+                0, 5 * sizeof(float), 0);
+            gl.VertexAttribPointer(a_texCoord, 2, GL_FLOAT,
+                0, 5 * sizeof(float), 3 * sizeof(float));
+
+            gl.EnableVertexAttribArray(a_Position);
+            gl.EnableVertexAttribArray(a_texCoord);
+
+            gl.BindVertexArray(0);
+
+            CheckError(gl);
+
+            steveModelDrawOrder = draw.Length;
+        }
+
+        {
+            gl.UseProgram(_shaderProgram);
+            gl.BindVertexArray(_vertexArrayObjectTop);
+
+            int a_Position = gl.GetAttribLocationString(_shaderProgram, "a_Position");
+            int a_texCoord = gl.GetAttribLocationString(_shaderProgram, "a_texCoord");
+
+            glDisableVertexAttribArray(a_Position);
+            glDisableVertexAttribArray(a_texCoord);
+
+            var steve = SteveC.GetSteveTop(steveModelType);
+            var model = steve.Item1;
+            var draw = steve.Item2;
+            var uv = Steve3DTexture.GetSteveTextureTop(steveModelType);
+
+            var points = new Vertex[model.Length / 3];
+
+            for (var primitive = 0; primitive < model.Length / 3; primitive++)
+            {
+                var srci = primitive * 3;
+                var srci1 = primitive * 2;
+                points[primitive] = new Vertex
+                {
+                    Position = new Vector3(model[srci], model[srci + 1], model[srci + 2]),
+                    UV = new Vector2(uv[srci1], uv[srci1 + 1])
+                };
+            }
+
+            gl.BindBuffer(GL_ARRAY_BUFFER, _vertexBufferObjectTop);
+            var vertexSize = Marshal.SizeOf<Vertex>();
+            fixed (void* pdata = points)
+                gl.BufferData(GL_ARRAY_BUFFER, new IntPtr(points.Length * vertexSize),
+                    new IntPtr(pdata), GL_STATIC_DRAW);
+
+            gl.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferObjectTop);
+            fixed (void* pdata = draw)
+                gl.BufferData(GL_ELEMENT_ARRAY_BUFFER, new IntPtr(draw.Length * sizeof(ushort)), new IntPtr(pdata), GL_STATIC_DRAW);
+
+            gl.VertexAttribPointer(a_Position, 3, GL_FLOAT,
+                0, 5 * sizeof(float), 0);
+            gl.VertexAttribPointer(a_texCoord, 2, GL_FLOAT,
+                0, 5 * sizeof(float), 3 * sizeof(float));
+
+            gl.EnableVertexAttribArray(a_Position);
+            gl.EnableVertexAttribArray(a_texCoord);
+
+            gl.BindVertexArray(0);
+
+            CheckError(gl);
+
+            steveModelDrawOrderTop = draw.Length;
+        }
+    }
+
+    private void OpenGlPageControl_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (!HaveSkin)
+            return;
+
+        var po = e.GetCurrentPoint(this);
+        var pos = e.GetPosition(this);
+
+        if (po.Properties.IsLeftButtonPressed)
+        {
+            DiffXY.X = (float)pos.X - RotXY.Y;
+            DiffXY.Y = -(float)pos.Y + RotXY.X;
+        }
+        else if (po.Properties.IsRightButtonPressed)
+        {
+            LastXY.X = (float)pos.X;
+            LastXY.Y = (float)pos.Y;
+        }
+    }
+
+    private void OpenGlPageControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (!HaveSkin)
+            return;
+
+        if (e.InitialPressMouseButton == MouseButton.Right)
+        {
+            SaveXY.X = XY.X;
+            SaveXY.Y = XY.Y;
+        }
+    }
+
+    private void OpenGlPageControl_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (!HaveSkin)
+            return;
+
+        var po = e.GetCurrentPoint(this);
+
+        if (po.Properties.IsLeftButtonPressed)
+        {
+            var point = e.GetPosition(this);
+            RotXY.Y = (float)point.X - DiffXY.X;
+            RotXY.X = (float)point.Y + DiffXY.Y;
+
+            InvalidateVisual();
+        }
+        else if (po.Properties.IsRightButtonPressed) 
+        {
+            var point = e.GetPosition(this);
+            XY.X = (-(LastXY.X - (float)point.X) / 100) + SaveXY.X;
+            XY.Y = ((LastXY.Y - (float)point.Y) / 100) + SaveXY.Y;
+
+            InvalidateVisual();
+        }
+    }
+
+    private void OpenGlPageControl_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (!HaveSkin)
+            return;
+
+        if (e.Delta.Y > 0)
+        {
+            Dis -= 0.1f;
+        }
+        else if (e.Delta.Y < 0)
+        {
+            Dis += 0.1f;
+        }
+
+        InvalidateVisual();
     }
 
     protected override void OnOpenGlDeinit(GlInterface GL, int fb)
@@ -351,6 +541,7 @@ public class OpenGlPageControl : OpenGlControlBase
 
         GL.DeleteBuffer(_vertexBufferObjectTop);
         GL.DeleteBuffer(_indexBufferObjectTop);
+        GL.DeleteVertexArray(_vertexArrayObjectTop);
 
         GL.DeleteProgram(_shaderProgram);
         GL.DeleteShader(_fragmentShader);
@@ -359,53 +550,59 @@ public class OpenGlPageControl : OpenGlControlBase
 
     protected override unsafe void OnOpenGlRender(GlInterface gl, int fb)
     {
+        if (SwitchSkin)
+        {
+            LoadSkin(gl);
+            SwitchSkin = false;
+        }
+        if (SwitchModel)
+        {
+            LoadModel(gl);
+            SwitchModel = false;
+        }
+
+        if (!HaveSkin)
+            return;
+
         gl.ClearColor(0, 0, 0, 1);
 
         gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
-        var GL = gl;
 
-        GL.ActiveTexture(GL_TEXTURE0);
-        GL.BindTexture(GL_TEXTURE_2D, texture);
-       
-        GL.UseProgram(_shaderProgram);
-        CheckError(GL);
+        gl.ActiveTexture(GL_TEXTURE0);
+        gl.BindTexture(GL_TEXTURE_2D, texture);
+
+        gl.UseProgram(_shaderProgram);
+        CheckError(gl);
 
         var projection =
             Matrix4x4.CreatePerspectiveFieldOfView((float)(Math.PI / 4), (float)(Bounds.Width / Bounds.Height),
                 0.01f, 1000);
 
-        var view = Matrix4x4.CreateLookAt(new Vector3(0, 0, 7), new Vector3(), new Vector3(0, 1, 0));
-        var model = Matrix4x4.CreateFromYawPitchRoll(_yaw, _pitch, _roll);
-        var modelLoc = GL.GetUniformLocationString(_shaderProgram, "uModel");
-        var viewLoc = GL.GetUniformLocationString(_shaderProgram, "uView");
-        var projectionLoc = GL.GetUniformLocationString(_shaderProgram, "uProjection");
-        GL.UniformMatrix4fv(modelLoc, 1, false, &model);
-        GL.UniformMatrix4fv(viewLoc, 1, false, &view);
-        GL.UniformMatrix4fv(projectionLoc, 1, false, &projection);
+        var view = Matrix4x4.CreateLookAt(new Vector3(0,0, Dis), new Vector3(), new Vector3(0, 1, 0));
+        var model = Matrix4x4.CreateRotationX(RotXY.X / 360) * Matrix4x4.CreateRotationY(RotXY.Y / 360) * Matrix4x4.CreateTranslation(new Vector3(XY.X, XY.Y, 0));
+        var modelLoc = gl.GetUniformLocationString(_shaderProgram, "uModel");
+        var viewLoc = gl.GetUniformLocationString(_shaderProgram, "uView");
+        var projectionLoc = gl.GetUniformLocationString(_shaderProgram, "uProjection");
+        gl.UniformMatrix4fv((int)modelLoc, 1, false, (void*)&model);
+        gl.UniformMatrix4fv((int)viewLoc, 1, false, (void*)&view);
+        gl.UniformMatrix4fv((int)projectionLoc, 1, false, (void*)&projection);
 
-        CheckError(GL);
+        CheckError(gl);
 
-        GL.BindVertexArray(_vertexArrayObject);
-        GL.DrawElements(GL_TRIANGLES, steveModelDrawOrder.Length, GL_UNSIGNED_SHORT, IntPtr.Zero);
+        gl.BindVertexArray(_vertexArrayObject);
+        gl.DrawElements(GL_TRIANGLES, steveModelDrawOrder, GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        GL.Enable(3042); //GL_BLEND
+        gl.Enable(3042); //GL_BLEND
         glBlendFunc(770, 771); //gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA
         glDepthMask(false);
-        GL.BindVertexArray(_vertexArrayObjectTop);
-        GL.DrawElements(GL_TRIANGLES, steveModelDrawOrderTop.Length, GL_UNSIGNED_SHORT, IntPtr.Zero);
+        gl.BindVertexArray(_vertexArrayObjectTop);
+        gl.DrawElements(GL_TRIANGLES, steveModelDrawOrderTop, GL_UNSIGNED_SHORT, IntPtr.Zero);
         glDisable(3042);
         glDepthMask(true);
 
-        CheckError(GL);
-    }
-
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        if (change.Property == YawProperty || change.Property == RollProperty || change.Property == PitchProperty)
-            InvalidateVisual();
-        base.OnPropertyChanged(change);
+        CheckError(gl);
     }
 
     private string GetShader(bool fragment, string shader)
