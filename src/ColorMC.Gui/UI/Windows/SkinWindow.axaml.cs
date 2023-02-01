@@ -12,6 +12,13 @@ using Avalonia.Input;
 using ColorMC.Gui.UIBinding;
 using Avalonia.Threading;
 using Avalonia.Interactivity;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using Avalonia.Media.Imaging;
+using ColorMC.Core.Net;
+using Avalonia.Utilities;
+using Avalonia.Media;
+using ColorMC.Gui.Utils.LaunchSetting;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -59,7 +66,7 @@ public partial class SkinWindow : Window
             return;
         if (ComboBox1.SelectedIndex == (int)SkinType.UNKNOWN)
         {
-            Info.Show("你不能选择该类型");
+            Info.Show(Localizer.Instance["SkinWindow.Info1"]);
             ComboBox1.SelectedIndex = (int)GL.steveModelType;
             return;
         }
@@ -135,6 +142,7 @@ public class OpenGlPageControl : OpenGlControlBase
     private Vector2 LastXY;
 
     private int texture;
+    private int texture1;
 
     public SkinType steveModelType;
     private int steveModelDrawOrder;
@@ -156,6 +164,7 @@ public class OpenGlPageControl : OpenGlControlBase
     public delegate void GlFunc2(int v1);
     public delegate void GlFunc3(float v1);
     public delegate void GlFunc4(bool v1);
+    public delegate void GlFunc5(int v1, int v2, nint v3);
 
     public GlFunc2 glDepthFunc;
     public GlFunc3 glClearDepth;
@@ -164,6 +173,7 @@ public class OpenGlPageControl : OpenGlControlBase
     public GlFunc2 glCullFace;
     public GlFunc2 glDisable;
     public GlFunc2 glDisableVertexAttribArray;
+    public GlFunc5 glLightfv;
 
     public void SetWindow(SkinWindow window)
     {
@@ -186,9 +196,10 @@ public class OpenGlPageControl : OpenGlControlBase
         glDisable = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
         temp = gl.GetProcAddress("glDisableVertexAttribArray");
         glDisableVertexAttribArray = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
+        temp = gl.GetProcAddress("glLightfv");
+        glLightfv = (GlFunc5)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc5));
 
         gl.ClearColor(0, 0, 0, 1);
-        gl.Enable(GL_DEPTH_TEST);
 
         //GL_BLEND
         gl.Enable(3042);
@@ -199,35 +210,28 @@ public class OpenGlPageControl : OpenGlControlBase
         //gl.GL_BACK
         glCullFace(1029);
 
-        //gl.GL_CULL_FACE
-        gl.Enable(2884);
-
         CheckError(gl);
 
         Info = $"Renderer: {gl.GetString(GL_RENDERER)} Version: {gl.GetString(GL_VERSION)}";
 
-        // Load the source of the vertex shader and compile it.
         _vertexShader = gl.CreateShader(GL_VERTEX_SHADER);
         var error = gl.CompileShaderAndGetError(_vertexShader, VertexShaderSource);
         Console.WriteLine(error);
 
-        // Load the source of the fragment shader and compile it.
         _fragmentShader = gl.CreateShader(GL_FRAGMENT_SHADER);
         error = gl.CompileShaderAndGetError(_fragmentShader, FragmentShaderSource);
         Console.WriteLine(error);
 
-        // Create the shader program, attach the vertex and fragment shaders and link the program.
         _shaderProgram = gl.CreateProgram();
         gl.AttachShader(_shaderProgram, _vertexShader);
         gl.AttachShader(_shaderProgram, _fragmentShader);
         error = gl.LinkProgramAndGetError(_shaderProgram);
-        Console.WriteLine(error);
         CheckError(gl);
 
-        int[] temp2 = new int[2];
+        int[] temp2 = new int[3];
 
         fixed (int* pdata = temp2)
-            gl.GenVertexArrays(2, pdata);
+            gl.GenVertexArrays(3, pdata);
 
         _vertexArrayObject = temp2[0];
         _vertexArrayObjectTop = temp2[1];
@@ -283,7 +287,7 @@ public class OpenGlPageControl : OpenGlControlBase
             Dispatcher.UIThread.Post(() =>
             {
                 Window.Label1.IsVisible = true;
-                Window.Label1.Content = "没有皮肤";
+                Window.Label1.Content = Localizer.Instance["SkinWindow.Info2"];
             });
             return;
         }
@@ -295,7 +299,7 @@ public class OpenGlPageControl : OpenGlControlBase
             Dispatcher.UIThread.Post(() =>
             {
                 Window.Label1.IsVisible = true;
-                Window.Label1.Content = "未知的皮肤类型";
+                Window.Label1.Content = Localizer.Instance["SkinWindow.Info3"];
             });
             return;
         }
@@ -564,32 +568,37 @@ public class OpenGlPageControl : OpenGlControlBase
         if (!HaveSkin)
             return;
 
-        gl.ClearColor(0, 0, 0, 1);
+        gl.ClearColor(0, 0, 0, 0);
 
         gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
 
+        CheckError(gl);
+        //gl.GL_CULL_FACE
+        gl.Enable(2884);
+        gl.Enable(GL_DEPTH_TEST);
         gl.ActiveTexture(GL_TEXTURE0);
         gl.BindTexture(GL_TEXTURE_2D, texture);
-
         gl.UseProgram(_shaderProgram);
         CheckError(gl);
 
-        var projection =
-            Matrix4x4.CreatePerspectiveFieldOfView((float)(Math.PI / 4), (float)(Bounds.Width / Bounds.Height),
-                0.01f, 1000);
-
-        var view = Matrix4x4.CreateLookAt(new Vector3(0,0, Dis), new Vector3(), new Vector3(0, 1, 0));
-        var model = Matrix4x4.CreateRotationX(RotXY.X / 360) * Matrix4x4.CreateRotationY(RotXY.Y / 360) * Matrix4x4.CreateTranslation(new Vector3(XY.X, XY.Y, 0));
         var modelLoc = gl.GetUniformLocationString(_shaderProgram, "uModel");
         var viewLoc = gl.GetUniformLocationString(_shaderProgram, "uView");
         var projectionLoc = gl.GetUniformLocationString(_shaderProgram, "uProjection");
-        gl.UniformMatrix4fv((int)modelLoc, 1, false, (void*)&model);
-        gl.UniformMatrix4fv((int)viewLoc, 1, false, (void*)&view);
-        gl.UniformMatrix4fv((int)projectionLoc, 1, false, (void*)&projection);
 
         CheckError(gl);
+
+        var projection =
+        Matrix4x4.CreatePerspectiveFieldOfView((float)(Math.PI / 4), (float)(Bounds.Width / Bounds.Height),
+            0.01f, 1000);
+
+        var view = Matrix4x4.CreateLookAt(new Vector3(0, 0, Dis), new Vector3(), new Vector3(0, 1, 0));
+        var model = Matrix4x4.CreateRotationX(RotXY.X / 360) * Matrix4x4.CreateRotationY(RotXY.Y / 360)
+            * Matrix4x4.CreateTranslation(new Vector3(XY.X, XY.Y, 0));
+        gl.UniformMatrix4fv(modelLoc, 1, false, &model);
+        gl.UniformMatrix4fv(viewLoc, 1, false, &view);
+        gl.UniformMatrix4fv(projectionLoc, 1, false, &projection);
 
         gl.BindVertexArray(_vertexArrayObject);
         gl.DrawElements(GL_TRIANGLES, steveModelDrawOrder, GL_UNSIGNED_SHORT, IntPtr.Zero);
@@ -607,9 +616,9 @@ public class OpenGlPageControl : OpenGlControlBase
 
     private string GetShader(bool fragment, string shader)
     {
-        var version = (GlVersion.Type == GlProfileType.OpenGL ?
+        var version = GlVersion.Type == GlProfileType.OpenGL ?
             RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 150 : 120 :
-            100);
+            100;
         var data = "#version " + version + "\n";
         if (GlVersion.Type == GlProfileType.OpenGLES)
             data += "precision mediump float;\n";

@@ -20,7 +20,7 @@ namespace ColorMC.Gui.UIBinding;
 public static class UserBinding
 {
     private readonly static List<LoginObj> LockUser = new();
-    public static Image<Rgba32>? SkinImage { get; private set; }
+    public static Image<Rgba32>? SkinImage { get; set; }
     public static Bitmap? HeadBitmap { get; private set; }
     public static List<string> GetUserTypes()
     {
