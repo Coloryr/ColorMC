@@ -63,8 +63,8 @@
 	<sys:String x:Key="UserWindow.Grid">添加账户</sys:String>
 	<sys:String x:Key="UserWindow.Text1">账户</sys:String>
 	<sys:String x:Key="UserWindow.Text2">密码</sys:String>
-	<sys:String x:Key="UserWindow.Text3">打开网址{0}</sys:String>
-	<sys:String x:Key="UserWindow.Text4">输入代码：{0}</sys:String>
+	<sys:String x:Key="UserWindow.Text3">打开网址：{0}</sys:String>
+	<sys:String x:Key="UserWindow.Text4">输入代码：{0} 继续登录</sys:String>
 	<sys:String x:Key="UserWindow.Text5">用户名</sys:String>
 	<sys:String x:Key="UserWindow.Text6">服务器UUID</sys:String>
 	<sys:String x:Key="UserWindow.Text7">服务器地址</sys:String>
