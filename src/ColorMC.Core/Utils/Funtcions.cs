@@ -59,7 +59,7 @@ public static class Funtcions
         return Convert.ToBase64String(bytes);
     }
 
-    public static void RunGC() 
+    public static void RunGC()
     {
         Task.Run(() =>
         {

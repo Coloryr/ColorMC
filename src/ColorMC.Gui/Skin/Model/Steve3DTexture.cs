@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ColorMC.Gui.Skin.Model;
 
@@ -149,7 +145,7 @@ public class Steve3DTexture
         20f, 0f, 20f, 4f, 12f, 4f, 12f, 0f
     };
 
-    public static float[] GetTex(float[] input, SkinType type ,
+    public static float[] GetTex(float[] input, SkinType type,
         float offsetU = 0f,
         float offsetV = 0f)
     {

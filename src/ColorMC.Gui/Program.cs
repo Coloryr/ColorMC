@@ -1,12 +1,6 @@
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Platform;
-using Avalonia.Skia;
-using SkiaSharp;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Text;
 
 namespace ColorMC.Gui;

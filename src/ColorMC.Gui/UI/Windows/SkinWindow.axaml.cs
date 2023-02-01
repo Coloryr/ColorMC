@@ -1,26 +1,19 @@
-using Avalonia.Controls;
 using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
-using static Avalonia.OpenGL.GlConsts;
-using System.Runtime.InteropServices;
-using System.Numerics;
-using System;
+using Avalonia.Threading;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.Skin.Model;
-using Avalonia.Input;
 using ColorMC.Gui.UIBinding;
-using Avalonia.Threading;
-using Avalonia.Interactivity;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-using Avalonia.Media.Imaging;
-using ColorMC.Core.Net;
-using Avalonia.Utilities;
-using Avalonia.Media;
 using ColorMC.Gui.Utils.LaunchSetting;
-using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Utils;
+using System;
+using System.Numerics;
+using System.Runtime.InteropServices;
+using static Avalonia.OpenGL.GlConsts;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -428,7 +421,7 @@ public class OpenGlPageControl : OpenGlControlBase
             gl.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferObject);
             fixed (void* pdata = draw)
                 gl.BufferData(GL_ELEMENT_ARRAY_BUFFER, new IntPtr(draw.Length * sizeof(ushort)), new IntPtr(pdata), GL_STATIC_DRAW);
-            
+
             gl.VertexAttribPointer(a_Position, 3, GL_FLOAT,
                 0, 5 * sizeof(float), 0);
             gl.VertexAttribPointer(a_texCoord, 2, GL_FLOAT,
@@ -545,7 +538,7 @@ public class OpenGlPageControl : OpenGlControlBase
 
             InvalidateVisual();
         }
-        else if (po.Properties.IsRightButtonPressed) 
+        else if (po.Properties.IsRightButtonPressed)
         {
             var point = e.GetPosition(this);
             XY.X = (-(LastXY.X - (float)point.X) / 100) + SaveXY.X;
@@ -622,9 +615,9 @@ public class OpenGlPageControl : OpenGlControlBase
         gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         var screen = Window.PlatformImpl?.Screen.ScreenFromWindow(Window.PlatformImpl);
-        if (screen!=null)
+        if (screen != null)
         {
-            gl.Viewport(0, 0, (int)(Bounds.Width * screen.Scaling), 
+            gl.Viewport(0, 0, (int)(Bounds.Width * screen.Scaling),
                 (int)(Bounds.Height * screen.Scaling));
         }
         else
