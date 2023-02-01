@@ -208,6 +208,7 @@ public partial class Tab4Control : UserControl
         Window.Info1.Close();
         Window.Info3.Show(string.Format(Localizer.Instance["UserWindow.Text3"], url),
             string.Format(Localizer.Instance["UserWindow.Text4"], code));
+        BaseBinding.OpUrl(url);
     }
 
     private void UserType_SelectionChanged(object? sender, SelectionChangedEventArgs e)
