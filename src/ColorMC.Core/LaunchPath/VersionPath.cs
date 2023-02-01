@@ -38,7 +38,6 @@ public static class VersionPath
 
         try
         {
-            //!GetFromWeb().Result || 
             if (!ReadVersions())
             {
                 Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error2"));
@@ -47,6 +46,8 @@ public static class VersionPath
             {
                 SaveVersions(Versions);
             }
+
+            Task.Run(GetFromWeb);
         }
         catch (Exception e)
         {

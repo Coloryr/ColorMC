@@ -67,6 +67,8 @@ public partial class CustomWindow : Window
     {
         InitializeComponent();
 
+        FontFamily = Program.Font;
+
         this.Closed += CustomWindow_Closed;
 
         CoreMain.GameLaunch = GameLunch;

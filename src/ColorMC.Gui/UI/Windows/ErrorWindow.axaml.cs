@@ -9,6 +9,8 @@ public partial class ErrorWindow : Window
     {
         InitializeComponent();
 
+        FontFamily = Program.Font;
+
         Icon = App.Icon;
 
         Rectangle1.MakeResizeDrag(this);

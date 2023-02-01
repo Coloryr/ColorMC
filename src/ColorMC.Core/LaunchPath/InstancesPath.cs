@@ -526,8 +526,8 @@ public static class InstancesPath
                             if (e.IsFile)
                             {
                                 using var stream = zFile.GetInputStream(e);
-                                string file = Path.GetFullPath(game.GetGamePath() +
-                     e.Name.Substring(game.Name.Length));
+                                var path = game.GetBasePath();
+                                string file = Path.GetFullPath(path + '\\' + e.Name);
                                 FileInfo info2 = new(file);
                                 info2.Directory.Create();
                                 using FileStream stream2 = new(file, FileMode.Create,

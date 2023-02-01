@@ -28,6 +28,9 @@ public partial class SkinWindow : Window
     public SkinWindow()
     {
         InitializeComponent();
+
+        FontFamily = Program.Font;
+
         ComboBox1.Items = UserBinding.GetSkinType();
 
         GL.SetWindow(this);
@@ -103,6 +106,8 @@ public partial class SkinWindow : Window
     public void Update()
     {
         App.Update(this, Image_Back, Grid1);
+
+        GL.InvalidateVisual();
     }
 }
 
@@ -231,6 +236,16 @@ public class OpenGlPageControl : OpenGlControlBase
 
         //gl.GL_BACK
         glCullFace(1029);
+
+        //glShadeModel(GL_SMOOTH);
+
+        int[] AmbientLight = { 1, 1, 1, 1 };
+
+        fixed (void* pdata = AmbientLight)
+            glLightfv(16384, 4608, new IntPtr(pdata));
+        gl.Enable(16384);       //开启GL_LIGHT0光源
+        gl.Enable(2896);     //开启光照系统
+        gl.Enable(GL_DEPTH_TEST);
 
         CheckError(gl);
 
@@ -590,7 +605,14 @@ public class OpenGlPageControl : OpenGlControlBase
         if (!HaveSkin)
             return;
 
-        gl.ClearColor(0, 0, 0, 0);
+        if (App.BackBitmap != null)
+        {
+            gl.ClearColor(0, 0, 0, 0.2f);
+        }
+        else
+        {
+            gl.ClearColor(0, 0, 0, 1);
+        }
 
         gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

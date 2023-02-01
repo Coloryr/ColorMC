@@ -29,6 +29,8 @@ public partial class DownloadWindow : Window
     {
         InitializeComponent();
 
+        FontFamily = Program.Font;
+
         Icon = App.Icon;
 
         Rectangle1.MakeResizeDrag(this);
