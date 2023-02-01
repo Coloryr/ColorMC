@@ -20,6 +20,7 @@ using Avalonia.Utilities;
 using Avalonia.Media;
 using ColorMC.Gui.Utils.LaunchSetting;
 using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -239,13 +240,13 @@ public class OpenGlPageControl : OpenGlControlBase
 
         //glShadeModel(GL_SMOOTH);
 
-        int[] AmbientLight = { 1, 1, 1, 1 };
+        //int[] AmbientLight = { 1, 1, 1, 1 };
 
-        fixed (void* pdata = AmbientLight)
-            glLightfv(16384, 4608, new IntPtr(pdata));
-        gl.Enable(16384);       //开启GL_LIGHT0光源
-        gl.Enable(2896);     //开启光照系统
-        gl.Enable(GL_DEPTH_TEST);
+        //fixed (void* pdata = AmbientLight)
+        //    glLightfv(16384, 4608, new IntPtr(pdata));
+        //gl.Enable(16384);       //开启GL_LIGHT0光源
+        //gl.Enable(2896);     //开启光照系统
+        //gl.Enable(GL_DEPTH_TEST);
 
         CheckError(gl);
 
@@ -620,7 +621,16 @@ public class OpenGlPageControl : OpenGlControlBase
 
         gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
+        var screen = Window.PlatformImpl?.Screen.ScreenFromWindow(Window.PlatformImpl);
+        if (screen!=null)
+        {
+            gl.Viewport(0, 0, (int)(Bounds.Width * screen.Scaling), 
+                (int)(Bounds.Height * screen.Scaling));
+        }
+        else
+        {
+            gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
+        }
 
         CheckError(gl);
         //gl.GL_CULL_FACE
@@ -639,7 +649,7 @@ public class OpenGlPageControl : OpenGlControlBase
 
         var projection =
         Matrix4x4.CreatePerspectiveFieldOfView((float)(Math.PI / 4), (float)(Bounds.Width / Bounds.Height),
-            0.01f, 1000);
+            0.001f, 1000);
 
         var view = Matrix4x4.CreateLookAt(new Vector3(0, 0, Dis), new Vector3(), new Vector3(0, 1, 0));
         var model = Matrix4x4.CreateRotationX(RotXY.X / 360) * Matrix4x4.CreateRotationY(RotXY.Y / 360)

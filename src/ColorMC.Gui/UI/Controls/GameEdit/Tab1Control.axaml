@@ -12,83 +12,93 @@
         <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
 
         <StackPanel Margin="5,10,5,5">
+            <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab1.Text1}" />
+
             <StackPanel Orientation="Horizontal">
-                <Label
-                    Margin="5"
-                    HorizontalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text1}" />
+
                 <ComboBox
                     Name="ComboBox1"
-                    Width="200"
+                    Width="250"
+                    Margin="5,0,0,0"
                     HorizontalAlignment="Center" />
                 <CheckBox
                     Name="CheckBox_Release"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Content="{setting:Localize AddGameWindow.CheckBox1}"
                     IsChecked="True" />
                 <CheckBox
                     Name="CheckBox_Snapshot"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Content="{setting:Localize AddGameWindow.CheckBox2}" />
                 <CheckBox
                     Name="CheckBox_Other"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Content="{setting:Localize AddGameWindow.CheckBox3}" />
                 <Button
                     Name="Button1"
-                    Width="80"
+                    Width="100"
                     Height="25"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Content="{setting:Localize GameEditWindow.Tab1.Button1}" />
             </StackPanel>
 
-            <StackPanel Margin="5" Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Text4}" />
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddGameWindow.Text4}" />
+
+            <StackPanel Orientation="Horizontal">
+
                 <ComboBox
                     Name="ComboBox2"
-                    Width="200"
+                    Width="250"
                     Margin="5,0,0,0"
                     IsEnabled="False" />
                 <CheckBox
                     Name="CheckBox_Forge"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Content="Forge"
                     IsEnabled="False" />
                 <CheckBox
                     Name="CheckBox_Fabric"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Content="Fabric"
                     IsEnabled="False" />
                 <CheckBox
                     Name="CheckBox_Quilt"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Content="Quilt"
                     IsEnabled="False" />
                 <Button
                     Name="Button2"
                     Width="100"
                     Height="25"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Content="{setting:Localize AddGameWindow.Tab1.Button1}" />
                 <Button
                     Name="Button3"
-                    Width="80"
+                    Width="100"
                     Height="25"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Content="{setting:Localize AddGameWindow.Tab1.Button2}" />
             </StackPanel>
 
-            <StackPanel Margin="5" Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Text5}" />
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddGameWindow.Text5}" />
+
+            <StackPanel Orientation="Horizontal">
+
                 <ComboBox
                     Name="ComboBox3"
-                    Width="200"
+                    Width="250"
                     Margin="5,0,0,0" />
                 <Button
                     Name="Button4"
-                    Width="80"
+                    Width="100"
                     Height="25"
-                    Margin="20,0,0,0"
+                    Margin="10,0,0,0"
                     Content="{setting:Localize AddGameWindow.Button6}" />
             </StackPanel>
         </StackPanel>
