@@ -21,7 +21,7 @@ public static class BaseBinding
     public readonly static Dictionary<Process, GameSettingObj> Games = new();
     public static bool ISNewStart { get; private set; } = false;
 
-    public static void Init()
+    public static async Task Init()
     {
         CoreMain.OnError = ShowError;
         CoreMain.NewStart = ShowNew;
@@ -32,6 +32,14 @@ public static class BaseBinding
 
         GuiConfigUtils.Init(AppContext.BaseDirectory);
         CoreMain.Init(AppContext.BaseDirectory);
+
+        await UserBinding.LoadSkin();
+
+        if (GuiConfigUtils.Config != null)
+        {
+            await App.LoadImage(GuiConfigUtils.Config.BackImage,
+                GuiConfigUtils.Config.BackEffect);
+        }
     }
 
     public static void Exit()

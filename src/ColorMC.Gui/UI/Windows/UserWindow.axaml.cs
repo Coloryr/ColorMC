@@ -314,7 +314,7 @@ public partial class UserWindow : Window
         App.CrossFade300.Start(Grid_Add, null, CancellationToken.None);
     }
 
-    private void Button_D1_Click(object? sender, RoutedEventArgs e)
+    private async void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
         var item = DataGrid_User.SelectedItem as UserDisplayObj;
         if (item == null)
@@ -324,7 +324,7 @@ public partial class UserWindow : Window
         }
 
         UserBinding.Remove(item.UUID, item.AuthType);
-        App.OnUserEdit();
+
         Load();
     }
 

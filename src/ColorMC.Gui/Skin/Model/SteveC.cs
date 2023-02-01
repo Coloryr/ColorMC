@@ -8,7 +8,7 @@ namespace ColorMC.Gui.Skin.Model;
 
 public class SteveC
 {
-    public static (float[], ushort[]) GetSteve(ModelSourceTextureType modelType)
+    public static (float[], ushort[]) GetSteve(SkinType modelType)
     {
         var steveCoords = new List<float>();
         var steveIndicies = CubeC.GetCubeIndicies(6);
@@ -19,7 +19,7 @@ public class SteveC
         // Torso
         steveCoords.AddRange(CubeC.GetSquare(multiplyZ: 0.5f, multiplyY: 1.5f));
 
-        if (modelType == ModelSourceTextureType.RATIO_1_1_SLIM)
+        if (modelType == SkinType.New_Slim)
         {
             // Left Arm
             steveCoords.AddRange(CubeC.GetSquare(
@@ -77,18 +77,19 @@ public class SteveC
         return (steveCoords.ToArray(), steveIndicies);
     }
 
-    public static (float[], ushort[]) GetSteveTop(ModelSourceTextureType modelType)
+    public static (float[], ushort[]) GetSteveTop(SkinType modelType)
     {
         var steveCoords = new List<float>();
         var steveIndicies =
-            CubeC.GetCubeIndicies(modelType == ModelSourceTextureType.RATIO_2_1 ? 1 : 6);
+            CubeC.GetCubeIndicies(modelType == SkinType.Old ? 1 : 6);
+
         // Hat
         steveCoords.AddRange(CubeC.GetSquare(
             addY: CubeC.Value * 2.5f,
             enlarge: 1.125f
         ));
 
-        if (modelType != ModelSourceTextureType.RATIO_2_1)
+        if (modelType != SkinType.Old)
         {
             // Torso 2nd layer
             steveCoords.AddRange(CubeC.GetSquare(
@@ -97,7 +98,7 @@ public class SteveC
                 enlarge: 1.125f
             ));
 
-            if (modelType == ModelSourceTextureType.RATIO_1_1_SLIM)
+            if (modelType == SkinType.New_Slim)
             {
                 // Left Arm 2nd Layer
                 steveCoords.AddRange(CubeC.GetSquare(

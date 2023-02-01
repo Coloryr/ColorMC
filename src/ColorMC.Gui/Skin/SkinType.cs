@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Skin;
 
-public enum ModelSourceTextureType
+public enum SkinType
 {
-    RATIO_2_1,
-    RATIO_1_1,
-    RATIO_1_1_SLIM,
+    Old,
+    New,
+    New_Slim,
     UNKNOWN
 }

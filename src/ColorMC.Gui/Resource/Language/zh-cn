@@ -493,6 +493,11 @@
 	<sys:String x:Key="ServerMotdControl.Text5">服务器Motd获取失败</sys:String>
 	<sys:String x:Key="ServerMotdControl.Text6">正在获取Motd</sys:String>
 
+	<sys:String x:Key="SkinType.Old">旧版皮肤</sys:String>
+	<sys:String x:Key="SkinType.New">新版皮肤</sys:String>
+	<sys:String x:Key="SkinType.New_Slim">新版纤细皮肤</sys:String>
+	<sys:String x:Key="SkinType.Other">未知的皮肤类型</sys:String>
+
 	<sys:String x:Key="Info1">正在读取配置文件</sys:String>
 	<sys:String x:Key="Info2">正在保存配置文件</sys:String>
 	<sys:String x:Key="Info3">已设置</sys:String>

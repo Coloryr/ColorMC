@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls.Documents;
+using ColorMC.Gui.Utils.LaunchSetting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
@@ -9,28 +10,28 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Skin;
 
-public class SkinUtil
+public static class SkinUtil
 {
-    public static ModelSourceTextureType GetTextType(Image<Rgba32> image)
+    public static SkinType GetTextType(Image<Rgba32> image)
     {
         if(image.Width >= 64 && image.Height >= 64 && image.Width == image.Height)
         {
             if (IsSlimSkin(image))
             {
-                return ModelSourceTextureType.RATIO_1_1_SLIM;
+                return SkinType.New_Slim;
             }
             else
             {
-                return ModelSourceTextureType.RATIO_1_1;
+                return SkinType.New;
             }
         }
         else if (image.Width == image.Height * 2)
         {
-            return ModelSourceTextureType.RATIO_2_1;
+            return SkinType.Old;
         }
         else
         {
-            return ModelSourceTextureType.UNKNOWN;
+            return SkinType.UNKNOWN;
         }
     }
 
@@ -65,5 +66,16 @@ public class SkinUtil
         }
 
         return true;
+    }
+
+    public static string GetName(this SkinType type)
+    {
+        return type switch
+        {
+            SkinType.Old => Localizer.Instance["SkinType.Old"],
+            SkinType.New => Localizer.Instance["SkinType.New"],
+            SkinType.New_Slim => Localizer.Instance["SkinType.New_Slim"],
+            _ => Localizer.Instance["SkinType.Other"]
+        };
     }
 }
