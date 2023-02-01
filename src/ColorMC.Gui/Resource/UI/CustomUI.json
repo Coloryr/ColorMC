@@ -42,16 +42,6 @@
       "Margin": "10, 10, 10, 70"
     },
     {
-      "Type": "Button",
-      "Content": "添加账户",
-      "VerticalAlignment": "Bottom",
-      "HorizontalAlignment": "Right",
-      "Width": 100,
-      "Height": 20,
-      "Funtion": "UserAdd",
-      "Margin": "10, 10, 10, 90"
-    },
-    {
       "Type": "Label",
       "Content": "xxx服务器专用客户端",
       "FontSize": "20",

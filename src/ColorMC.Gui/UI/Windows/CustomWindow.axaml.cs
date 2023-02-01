@@ -473,11 +473,7 @@ public partial class CustomWindow : Window
         }
         else if (name == "UserEdit")
         {
-            App.ShowUser(false);
-        }
-        else if (name == "UserAdd")
-        {
-            App.ShowUser(true);
+            App.ShowUser();
         }
         else if (name == "Setting")
         {

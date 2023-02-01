@@ -56,11 +56,6 @@
                     Width="100"
                     Height="25"
                     Content="{setting:Localize MainWindow.Control.Button1}" />
-                <Button
-                    Name="Button_Add"
-                    Width="100"
-                    Height="25"
-                    Content="{setting:Localize MainWindow.Control.Button2}" />
 
                 <Button
                     Name="Button_Add1"
@@ -72,27 +67,16 @@
                 <Button
                     Name="Button_Launch"
                     Width="100"
-                    Height="25"
+                    Height="35"
                     Margin="0,15,0,0"
                     Content="{setting:Localize MainWindow.Control.Button4}"
                     IsEnabled="False" />
                 <Button
-                    Name="Button_Launch1"
-                    Width="100"
-                    Height="25"
-                    Content="{setting:Localize MainWindow.Control.Button5}"
-                    IsEnabled="False" />
-                <Button
                     Name="Button_Edit"
                     Width="100"
-                    Height="25"
+                    Height="35"
+                    Margin="0,5,0,0"
                     Content="{setting:Localize MainWindow.Control.Button6}"
-                    IsEnabled="False" />
-                <Button
-                    Name="Button_Out"
-                    Width="100"
-                    Height="25"
-                    Content="{setting:Localize MainWindow.Control.Button7}"
                     IsEnabled="False" />
 
                 <Button

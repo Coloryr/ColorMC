@@ -41,6 +41,15 @@
         </StackPanel>
 
         <Button
+            Name="Button1"
+            Width="80"
+            Height="25"
+            Margin="10,0,10,10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Content="跳过设置" />
+
+        <Button
             Name="Button_Next"
             Width="80"
             Height="25"

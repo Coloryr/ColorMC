@@ -17,7 +17,13 @@ public partial class Tab1Control : UserControl
         Lang.SelectedIndex = 0;
 
         Button_Next.Click += Button_Next_Click;
+        Button1.Click += Button1_Click;
         Lang.SelectionChanged += Lang_SelectionChanged;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        Window.Done();
     }
 
     private void Lang_SelectionChanged(object? sender, SelectionChangedEventArgs e)

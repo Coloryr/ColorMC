@@ -16,37 +16,42 @@
         <StackPanel Margin="5">
             <Button
                 Name="Button1"
-                Width="80"
+                Width="100"
                 Height="25"
-                Content="{setting:Localize MainWindow.Flyouts.Button1}" />
+                Content="{setting:Localize MainWindow.Control.Button5}" />
             <Button
                 Name="Button2"
-                Width="80"
+                Width="100"
                 Height="25"
                 Content="{setting:Localize MainWindow.Flyouts.Button2}" />
             <Button
                 Name="Button3"
-                Width="80"
+                Width="100"
                 Height="25"
                 Content="{setting:Localize MainWindow.Flyouts.Button3}" />
             <Button
                 Name="Button4"
-                Width="80"
+                Width="100"
                 Height="25"
                 Content="{setting:Localize MainWindow.Flyouts.Button4}" />
             <Button
                 Name="Button5"
-                Width="80"
+                Width="100"
                 Height="25"
                 Content="{setting:Localize MainWindow.Flyouts.Button5}" />
             <Button
                 Name="Button7"
-                Width="80"
+                Width="100"
                 Height="25"
                 Content="{setting:Localize Button.OpFile}" />
             <Button
+                Name="Button8"
+                Width="100"
+                Height="25"
+                Content="{setting:Localize MainWindow.Control.Button7}" />
+            <Button
                 Name="Button6"
-                Width="80"
+                Width="100"
                 Height="25"
                 Content="{setting:Localize MainWindow.Flyouts.Button6}" />
         </StackPanel>
