@@ -1,11 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
-using ColorMC.Core;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
-using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;

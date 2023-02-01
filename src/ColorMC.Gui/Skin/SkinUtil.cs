@@ -1,12 +1,6 @@
-﻿using Avalonia.Controls.Documents;
-using ColorMC.Gui.Utils.LaunchSetting;
+﻿using ColorMC.Gui.Utils.LaunchSetting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Skin;
 
@@ -14,7 +8,7 @@ public static class SkinUtil
 {
     public static SkinType GetTextType(Image<Rgba32> image)
     {
-        if(image.Width >= 64 && image.Height >= 64 && image.Width == image.Height)
+        if (image.Width >= 64 && image.Height >= 64 && image.Width == image.Height)
         {
             if (IsSlimSkin(image))
             {

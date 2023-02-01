@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Setting;
 using System;
 using System.Threading;
