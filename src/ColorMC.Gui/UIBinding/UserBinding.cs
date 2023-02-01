@@ -212,4 +212,30 @@ public static class UserBinding
 
         return list;
     }
+
+    public static void EditSkin()
+    {
+        var obj = GetLastUser();
+        if (obj == null || obj.AuthType == AuthType.Offline)
+            return;
+
+        switch (obj.AuthType)
+        {
+            case AuthType.OAuth:
+                BaseBinding.OpUrl("https://www.minecraft.net/en-us/msaprofile/mygames/editskin");
+                break;
+            case AuthType.Nide8:
+                BaseBinding.OpUrl($"https://login.mc-user.com:233/{obj.Text1}/skin");
+                break;
+            case AuthType.AuthlibInjector:
+                //BaseBinding.OpUrl($"https://login.mc-user.com:233/{obj.Text1}/skin");
+                break;
+            case AuthType.LittleSkin:
+                BaseBinding.OpUrl("https://littleskin.cn/user/closet");
+                break;
+            case AuthType.SelfLittleSkin:
+                BaseBinding.OpUrl($"{obj.Text1}/user/closet");
+                break;
+        }
+    }
 }

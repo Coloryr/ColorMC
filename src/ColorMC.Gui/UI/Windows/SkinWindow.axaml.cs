@@ -19,6 +19,7 @@ using ColorMC.Core.Net;
 using Avalonia.Utilities;
 using Avalonia.Media;
 using ColorMC.Gui.Utils.LaunchSetting;
+using ColorMC.Core.Game.Auth;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -34,13 +35,20 @@ public partial class SkinWindow : Window
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
+        Button3.Click += Button3_Click;
 
         Closed += SkinWindow_Closed;
 
         App.PicUpdate += Update;
         App.UserEdit += App_UserEdit;
 
+        Check();
         Update();
+    }
+
+    private void Button3_Click(object? sender, RoutedEventArgs e)
+    {
+        UserBinding.EditSkin();
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
@@ -48,8 +56,22 @@ public partial class SkinWindow : Window
         GL.Reset();
     }
 
+    private void Check()
+    {
+        if (UserBinding.GetLastUser()?.AuthType != AuthType.Offline)
+        {
+            Button3.IsEnabled = true;
+        }
+        else
+        {
+            Button3.IsEnabled = false;
+        }
+    }
+
     private void App_UserEdit()
     {
+        Check();
+
         GL.ChangeSkin();
     }
 

@@ -472,6 +472,7 @@
 	<sys:String x:Key="SkinWindow.Title">ColorMC 皮肤预览</sys:String>
 	<sys:String x:Key="SkinWindow.Text1">重置视角</sys:String>
 	<sys:String x:Key="SkinWindow.Text2">操作：左键旋转，右键平移</sys:String>
+	<sys:String x:Key="SkinWindow.Text3">修改皮肤</sys:String>
 	<sys:String x:Key="SkinWindow.Info1">你不能选择该类型</sys:String>
 	<sys:String x:Key="SkinWindow.Info2">没有皮肤</sys:String>
 	<sys:String x:Key="SkinWindow.Info3">未知的皮肤类型</sys:String>
