@@ -49,7 +49,6 @@ public class Steve3DTexture
         switch (type)
         {
             case SkinType.Old:
-            case SkinType.New:
                 {
                     var list = new List<float>();
                     list.AddRange(GetTex(HeadTex, type));
@@ -60,6 +59,17 @@ public class Steve3DTexture
                     list.AddRange(GetTex(LegArmTex, type, 0f, 16f));
                     return list.ToArray();
                 }
+            case SkinType.New:
+                {
+                    var list = new List<float>();
+                    list.AddRange(GetTex(HeadTex, type));
+                    list.AddRange(GetTex(TorsoTex, type, 16f, 16f));
+                    list.AddRange(GetTex(LegArmTex, type, 40f, 16f));
+                    list.AddRange(GetTex(LegArmTex, type, 40f, 16f));
+                    list.AddRange(GetTex(LegArmTex, type, 16f, 48f));
+                    list.AddRange(GetTex(LegArmTex, type, 0f, 16f));
+                    return list.ToArray();
+                }
             case SkinType.New_Slim:
                 {
                     var list = new List<float>();
@@ -67,7 +77,7 @@ public class Steve3DTexture
                     list.AddRange(GetTex(TorsoTex, type, 16f, 16f));
                     list.AddRange(GetTex(SlimArmTex, type, 40f, 16f));
                     list.AddRange(GetTex(SlimArmTex, type, 40f, 16f));
-                    list.AddRange(GetTex(LegArmTex, type, 0f, 16f));
+                    list.AddRange(GetTex(LegArmTex, type, 16f, 48f));
                     list.AddRange(GetTex(LegArmTex, type, 0f, 16f));
                     return list.ToArray();
                 }

@@ -27,6 +27,8 @@ public partial class AddResourcePackWindow : Window, IBase1Window
     {
         InitializeComponent();
 
+        FontFamily = Program.Font;
+
         Icon = App.Icon;
 
         Rectangle1.MakeResizeDrag(this);

@@ -17,6 +17,8 @@ public partial class InitWindow : Window
     {
         InitializeComponent();
 
+        FontFamily = Program.Font;
+
         Icon = App.Icon;
 
         Rectangle1.MakeResizeDrag(this);

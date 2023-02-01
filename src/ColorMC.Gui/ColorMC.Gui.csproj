@@ -41,7 +41,7 @@
     <EmbeddedResource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resource\Font\SourceHanSansHWSC-Regular.otf" />
+    <AvaloniaResource Include="Resource\Font\SourceHanSansHWSC-Regular.otf" />
     <EmbeddedResource Include="Resource\Language\en-us" />
     <EmbeddedResource Include="Resource\Language\zh-cn">
       <Generator></Generator>
