@@ -1,8 +1,10 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Styling;
 using System;
 
 namespace ColorMC.Gui.UI.Controls;
@@ -44,7 +46,7 @@ public partial class HeadControl : UserControl
 
     public void SetWindow(Window window)
     {
-        //BindWindow = window;
+        BindWindow = window;
     }
 
     public HeadControl()
