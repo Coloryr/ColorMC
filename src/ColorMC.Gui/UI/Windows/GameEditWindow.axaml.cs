@@ -33,6 +33,8 @@ public partial class GameEditWindow : Window
     {
         InitializeComponent();
 
+        Head.SetWindow(this);
+
         FontFamily = Program.Font;
 
         Icon = App.Icon;

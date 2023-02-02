@@ -29,6 +29,8 @@ public partial class DownloadWindow : Window
     {
         InitializeComponent();
 
+        Head.SetWindow(this);
+
         FontFamily = Program.Font;
 
         Icon = App.Icon;

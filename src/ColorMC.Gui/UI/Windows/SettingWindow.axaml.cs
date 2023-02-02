@@ -26,6 +26,8 @@ public partial class SettingWindow : Window
     {
         InitializeComponent();
 
+        Head.SetWindow(this);
+
         FontFamily = Program.Font;
 
         Icon = App.Icon;

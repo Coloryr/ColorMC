@@ -22,6 +22,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
+            Name="Head"
             Title="{setting:Localize SettingWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />

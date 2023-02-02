@@ -23,6 +23,8 @@ public partial class UserWindow : Window
     {
         InitializeComponent();
 
+        Head.SetWindow(this);
+
         FontFamily = Program.Font;
 
         Icon = App.Icon;

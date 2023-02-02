@@ -40,7 +40,12 @@ public partial class HeadControl : UserControl
         }
     }
 
-    private Window? window;
+    private Window BindWindow;
+
+    public void SetWindow(Window window)
+    {
+        //BindWindow = window;
+    }
 
     public HeadControl()
     {
@@ -50,8 +55,6 @@ public partial class HeadControl : UserControl
 
         PointerPressed += HeadControl_PointerPressed;
 
-        Initialized += HeadControl_Initialized;
-
         Button_Min.Click += ButtonMin_Click;
         Button_Max.Click += ButtonMax_Click;
         Button_Close.Click += ButtonClose_Click;
@@ -59,52 +62,36 @@ public partial class HeadControl : UserControl
 
     private void ButtonClose_Click(object? sender, RoutedEventArgs e)
     {
-        if (window == null)
+        if (BindWindow == null)
             return;
 
-        window.Close();
+        BindWindow.Close();
     }
 
     private void ButtonMax_Click(object? sender, RoutedEventArgs e)
     {
-        if (window == null)
+        if (BindWindow == null)
             return;
 
-        if (window.WindowState == WindowState.Maximized)
-            window.WindowState = WindowState.Normal;
+        if (BindWindow.WindowState == WindowState.Maximized)
+            BindWindow.WindowState = WindowState.Normal;
         else
-            window.WindowState = WindowState.Maximized;
+            BindWindow.WindowState = WindowState.Maximized;
     }
 
     private void ButtonMin_Click(object? sender, RoutedEventArgs e)
     {
-        if (window == null)
+        if (BindWindow == null)
             return;
 
-        window.WindowState = WindowState.Minimized;
-    }
-
-    private void HeadControl_Initialized(object? sender, EventArgs e)
-    {
-        var control = Parent;
-        do
-        {
-            if (control is Window)
-            {
-                window = control as Window;
-                break;
-            }
-            else
-            {
-                control = control?.Parent;
-            }
-        } while (control != null);
+        BindWindow.WindowState = WindowState.Minimized;
     }
 
     private void HeadControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (window == null)
+        if (BindWindow == null)
             return;
-        window.BeginMoveDrag(e);
+
+        BindWindow.BeginMoveDrag(e);
     }
 }

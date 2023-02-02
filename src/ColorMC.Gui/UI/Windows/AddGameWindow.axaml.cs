@@ -26,6 +26,8 @@ public partial class AddGameWindow : Window
     {
         InitializeComponent();
 
+        Head.SetWindow(this);
+
         FontFamily = Program.Font;
 
         Icon = App.Icon;

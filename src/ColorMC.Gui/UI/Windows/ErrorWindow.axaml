@@ -20,6 +20,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
+            Name="Head"
             Title="{setting:Localize ErrorWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
