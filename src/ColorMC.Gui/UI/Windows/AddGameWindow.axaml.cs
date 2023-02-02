@@ -261,10 +261,9 @@ public partial class AddGameWindow : Window
         }
         else
         {
-            TextBox_Input1.Text = "";
-            ComboBox_GameVersion.SelectedItem = null;
             Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
             App.MainWindow?.Load();
+            Close();
         }
     }
 

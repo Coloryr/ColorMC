@@ -82,8 +82,7 @@ public partial class Tab2Control : UserControl
         if (file?.Any() == true)
         {
             var item = file[0];
-            item.TryGetUri(out var uri);
-            TextBox_Local2.Text = uri!.LocalPath;
+            TextBox_Local2.Text = item.Path!.LocalPath;
         }
     }
 
@@ -150,8 +149,7 @@ public partial class Tab2Control : UserControl
         if (file?.Any() == true)
         {
             var item = file[0];
-            item.TryGetUri(out var uri);
-            TextBox_Local.Text = uri!.LocalPath;
+            TextBox_Local.Text = item.Path!.LocalPath;
         }
     }
 
@@ -207,8 +205,7 @@ public partial class Tab2Control : UserControl
         if (file?.Any() == true)
         {
             var item = file[0];
-            item.TryGetUri(out var uri);
-            TextBox_Local1.Text = uri!.LocalPath;
+            TextBox_Local1.Text = item.Path!.LocalPath;
         }
     }
 }

@@ -173,6 +173,10 @@
                                 Binding="{Binding Name}"
                                 Header="{setting:Localize AddCurseForgeWindow.Data.Title1}"
                                 IsReadOnly="True" />
+                            <DataGridCheckBoxColumn
+                                Binding="{Binding IsDownload}"
+                                Header="已下载"
+                                IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Size}"
                                 Header="{setting:Localize AddCurseForgeWindow.Data.Title2}"

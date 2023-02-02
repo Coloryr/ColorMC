@@ -214,6 +214,7 @@ public static class DownloadManager
             {
                 File.Delete(item.Local);
             }
+            new FileInfo(item.Local).Directory?.Create();
             File.Move(file, item.Local);
 
             return true;

@@ -152,7 +152,7 @@
 	<sys:String x:Key="SettingWindow.Tab5.Text1">添加Java路径</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Text2">Java名字</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Text3">Java路径</sys:String>
-	<sys:String x:Key="SettingWindow.Tab5.Text4">现有的Java</sys:String>
+	<sys:String x:Key="SettingWindow.Tab5.Text4">已添加的Java</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Text5">Java文件</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title1">名字</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title2">路径</sys:String>

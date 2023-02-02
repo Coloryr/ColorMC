@@ -60,7 +60,7 @@ public static class Mods
                             obj3.V2 = false;
                             obj3.Local = Path.GetFullPath(item.FullName);
                             obj3.Disable = item.Extension is ".disable";
-                            obj3.Loaders = Loaders.Forge;
+                            obj3.Loader = Loaders.Forge;
                             obj3.Sha1 = sha1;
                             list.Add(obj3);
                             find = true;
@@ -76,7 +76,7 @@ public static class Mods
                             obj3.V2 = false;
                             obj3.Local = Path.GetFullPath(item.FullName);
                             obj3.Disable = item.Extension is ".disable";
-                            obj3.Loaders = Loaders.Forge;
+                            obj3.Loader = Loaders.Forge;
                             obj3.Sha1 = sha1;
                             list.Add(obj3);
                             find = true;
@@ -100,7 +100,7 @@ public static class Mods
                     ModObj obj3 = new()
                     {
                         V2 = true,
-                        Loaders = Loaders.Forge,
+                        Loader = Loaders.Forge,
                         Local = Path.GetFullPath(item.FullName),
                         Disable = item.Extension is ".disable",
                         Game = obj
@@ -138,7 +138,7 @@ public static class Mods
                     {
                         Local = Path.GetFullPath(item.FullName),
                         Disable = item.Extension is ".disable",
-                        Loaders = Loaders.Fabric,
+                        Loader = Loaders.Fabric,
                         V2 = true,
                         modid = obj1["id"].ToString(),
                         name = obj1["name"].ToString(),

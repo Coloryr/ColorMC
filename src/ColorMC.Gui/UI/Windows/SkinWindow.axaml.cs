@@ -201,7 +201,7 @@ public class OpenGlPageControl : OpenGlControlBase
         Window = window;
     }
 
-    protected override unsafe void OnOpenGlInit(GlInterface gl, int fb)
+    protected override unsafe void OnOpenGlInit(GlInterface gl)
     {
         IntPtr temp = gl.GetProcAddress("glDepthFunc");
         glDepthFunc = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
@@ -565,7 +565,7 @@ public class OpenGlPageControl : OpenGlControlBase
         InvalidateVisual();
     }
 
-    protected override void OnOpenGlDeinit(GlInterface GL, int fb)
+    protected override void OnOpenGlDeinit(GlInterface GL)
     {
         // Unbind everything
         GL.BindBuffer(GL_ARRAY_BUFFER, 0);

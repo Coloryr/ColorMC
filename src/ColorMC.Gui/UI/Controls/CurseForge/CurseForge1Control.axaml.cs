@@ -28,7 +28,7 @@ public partial class CurseForge1Control : UserControl
 
     private void CurseForgeControl_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        if (IsDownload || NowDownload)
+        if (NowDownload)
             return;
         Window.Install();
     }
@@ -86,6 +86,7 @@ public partial class CurseForge1Control : UserControl
 
     public void SetDownloadDone(bool res)
     {
+        NowDownload = false;
         IsDownload = res;
         Grid1.IsVisible = false;
         Grid2.IsVisible = res;
