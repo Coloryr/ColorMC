@@ -21,7 +21,7 @@ public static class LanguageHelper
     private static LanguageObj Languages;
     public static LanguageType Type;
 
-    public static void Load(LanguageType type)
+    public static async void Load(LanguageType type)
     {
         string name = type switch
         {
@@ -29,15 +29,15 @@ public static class LanguageHelper
             _ => "ColorMC.Core.Resources.Language.zh-cn.json"
         };
         Assembly assm = Assembly.GetExecutingAssembly();
-        Stream istr = assm.GetManifestResourceStream(name);
-        MemoryStream stream = new();
-        istr?.CopyTo(stream);
+        using var istr = assm.GetManifestResourceStream(name);
+        using MemoryStream stream = new();
+        await istr!.CopyToAsync(stream);
         stream.Seek(0, SeekOrigin.Begin);
         var array = stream.ToArray();
         var temp = Encoding.UTF8.GetString(array);
         try
         {
-            Languages = JsonConvert.DeserializeObject<LanguageObj>(temp);
+            Languages = JsonConvert.DeserializeObject<LanguageObj>(temp)!;
             Logs.Info(GetName("Language"));
         }
         catch (Exception e)
@@ -48,6 +48,9 @@ public static class LanguageHelper
 
     public static void Change(LanguageType type)
     {
+        if (Type == type)
+            return;
+
         Type = type;
         Load(type);
         CoreMain.LanguageReload?.Invoke(type);

@@ -33,8 +33,6 @@ public static class BaseBinding
         GuiConfigUtils.Init(AppContext.BaseDirectory);
         CoreMain.Init(AppContext.BaseDirectory);
 
-        await UserBinding.LoadSkin();
-
         if (GuiConfigUtils.Config != null)
         {
             await App.LoadImage(GuiConfigUtils.Config.BackImage,
@@ -75,10 +73,12 @@ public static class BaseBinding
         {
             try
             {
+                UserBinding.AddLockUser(obj1);
                 return obj.StartGame(obj1).Result;
             }
             catch (Exception e)
             {
+                UserBinding.RemoveLockUser(obj1);
                 string temp = Localizer.Instance["Error6"];
                 if (e is LaunchException launch && launch.Ex != null)
                 {
@@ -98,9 +98,10 @@ public static class BaseBinding
         {
             res.Exited += (a, b) =>
             {
-                if (Games.Remove(res, out var obj1))
+                UserBinding.RemoveLockUser(obj1);
+                if (Games.Remove(res, out var obj2))
                 {
-                    App.MainWindow?.GameClose(obj1);
+                    App.MainWindow?.GameClose(obj2);
                 }
                 if (a is Process)
                 {

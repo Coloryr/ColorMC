@@ -83,7 +83,7 @@ public static class UserBinding
         return AuthDatabase.Auths;
     }
 
-    public static async void Remove(string uuid, AuthType type)
+    public static void Remove(string uuid, AuthType type)
     {
         if (GuiConfigUtils.Config.LastUser != null
             && type == GuiConfigUtils.Config.LastUser.Type
@@ -93,9 +93,9 @@ public static class UserBinding
         }
         var item = AuthDatabase.Get(uuid, type);
         if (item != null)
-            await AuthDatabase.Delete(item);
+            AuthDatabase.Delete(item);
 
-        await App.OnUserEdit();
+        App.OnUserEdit();
     }
 
     public static LoginObj? GetLastUser()
@@ -119,7 +119,7 @@ public static class UserBinding
         return res.State1 == LoginState.Done;
     }
 
-    public static async void SetLastUser(string uuid, AuthType type)
+    public static void SetLastUser(string uuid, AuthType type)
     {
         GuiConfigUtils.Config.LastUser = new()
         {
@@ -129,7 +129,7 @@ public static class UserBinding
 
         GuiConfigUtils.Save();
 
-        await App.OnUserEdit();
+        App.OnUserEdit();
     }
 
     public static void ClearLastUser()
@@ -177,6 +177,7 @@ public static class UserBinding
         if (obj == null)
         {
             HeadBitmap = new Bitmap(asset);
+            App.OnSkinLoad();
             return;
         }
 
@@ -184,21 +185,25 @@ public static class UserBinding
         if (file == null)
         {
             HeadBitmap = new Bitmap(asset);
+            App.OnSkinLoad();
             return;
         }
 
-        SkinImage = Image.Load<Rgba32>(file);
+        SkinImage = await Image.LoadAsync<Rgba32>(file);
 
         var data = await ImageUtils.MakeHeadImage(file);
         if (file == null)
         {
             HeadBitmap = new Bitmap(asset);
+            App.OnSkinLoad();
             return;
         }
 
         data.Seek(0, SeekOrigin.Begin);
         HeadBitmap = new Bitmap(data);
         data.Close();
+
+        App.OnSkinLoad();
     }
 
     public static List<string> GetSkinType()

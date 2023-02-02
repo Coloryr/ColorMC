@@ -22,7 +22,7 @@ public partial class ErrorWindow : Window
 
         if (close)
         {
-            ShowDialog(App.MainWindow == null ? App.HelloWindow! : App.MainWindow);
+            Show();
             App.Close();
         }
         else
@@ -37,7 +37,7 @@ public partial class ErrorWindow : Window
 
         if (close)
         {
-            ShowDialog(App.MainWindow == null ? App.HelloWindow! : App.MainWindow);
+            Show();
             App.Close();
         }
         else

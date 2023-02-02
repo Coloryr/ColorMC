@@ -83,7 +83,6 @@ public static class JvmPath
                     info.Path, info.Version));
                 Jvms.Add(a.Name, info);
             }
-
         });
 
         if (objs.Count != Jvms.Count)

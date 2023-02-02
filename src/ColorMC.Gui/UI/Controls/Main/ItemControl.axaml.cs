@@ -32,6 +32,15 @@ public partial class ItemControl : UserControl
 
         Expander1.ContentTransition = App.CrossFade300;
         Button1.Content = "→";
+
+        App.SkinLoad += App_SkinLoad;
+    }
+
+    private void App_SkinLoad()
+    {
+        Image1.Source = UserBinding.HeadBitmap!;
+
+        ProgressBar1.IsVisible = false;
     }
 
     private void Image1_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -107,7 +116,7 @@ public partial class ItemControl : UserControl
         Window = window;
     }
 
-    public void SetUser(LoginObj? obj)
+    public async void SetUser(LoginObj? obj)
     {
         Obj1 = obj;
 
@@ -122,16 +131,9 @@ public partial class ItemControl : UserControl
             TextBlock_Type.Text = Obj1.AuthType.GetName();
         }
 
-        LoadHead();
-    }
-
-    private void LoadHead()
-    {
         ProgressBar1.IsVisible = true;
 
-        Image1.Source = UserBinding.HeadBitmap!;
-
-        ProgressBar1.IsVisible = false;
+        await UserBinding.LoadSkin();
     }
 
     public void Load()

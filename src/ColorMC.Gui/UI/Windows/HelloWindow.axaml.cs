@@ -50,7 +50,6 @@ public partial class HelloWindow : Window
 
     private void HelloWindow_Closed(object? sender, EventArgs e)
     {
-        App.HelloWindow = null;
         CoreMain.PackState = null;
         CoreMain.PackUpdate = null;
         CoreMain.GameOverwirte = null;
