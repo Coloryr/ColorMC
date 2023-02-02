@@ -61,6 +61,10 @@
                         Header="{setting:Localize GameEditWindow.Tab4.Data.Title3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
+                        Binding="{Binding Loader}"
+                        Header="加载器"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
                         Binding="{Binding Local}"
                         Header="{setting:Localize GameEditWindow.Tab4.Data.Title4}"
                         IsReadOnly="True" />

@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -105,8 +106,7 @@ public partial class Tab4Control : UserControl
             var list = new List<string>();
             foreach (var item in file)
             {
-                item.TryGetUri(out var uri);
-                list.Add(uri!.OriginalString);
+                list.Add(item.Path!.OriginalString);
             }
             GameBinding.AddMods(Obj, list);
             Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
@@ -269,6 +269,7 @@ public partial class Tab4Control : UserControl
                     Local = item.Local,
                     Author = item.authorList.Make(),
                     Url = item.url,
+                    Loader = item.Loader.GetName(),
                     Enable = item.Disable
                 };
             }

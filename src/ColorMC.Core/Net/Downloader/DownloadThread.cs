@@ -236,6 +236,7 @@ public class DownloadThread
                         {
                             File.Delete(item.Local);
                         }
+                        new FileInfo(item.Local).Directory?.Create();
                         File.Move(file, item.Local);
 
                         item.State = DownloadItemState.Action;

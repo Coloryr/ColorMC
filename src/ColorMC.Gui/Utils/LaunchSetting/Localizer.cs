@@ -13,7 +13,7 @@ public class Localizer : INotifyPropertyChanged
     {
         get
         {
-            if (App.Language != null && App.Language.TryGetResource(key, out var res1))
+            if (App.Language != null && App.Language.TryGetValue(key, out var res1))
                 return (res1 as string)!;
 
             return key;

@@ -23,7 +23,8 @@
         <views:HeadControl
             Title="{setting:Localize AddGameWindow.Title}"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Min="False" />
         <Grid Name="Grid1" Margin="0,35,0,0">
             <Image
                 Name="Image_Back"

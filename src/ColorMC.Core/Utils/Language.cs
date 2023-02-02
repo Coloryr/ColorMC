@@ -240,6 +240,18 @@ public static class LanguageHelper
         };
     }
 
+    public static string GetName(this Loaders type)
+    {
+        return type switch
+        {
+            Loaders.Normal => "Normal",
+            Loaders.Forge => "Forge",
+            Loaders.Fabric => "Fabric",
+            Loaders.Quilt => "Quilt",
+            _ => "Unkown"
+        };
+    }
+
     public static string GetNameWithGameType(int type)
     {
         return type switch

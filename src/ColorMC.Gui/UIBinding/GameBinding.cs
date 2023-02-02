@@ -404,7 +404,15 @@ public static class GameBinding
 
     public static Task<bool> DownloadMod(GameSettingObj obj, CurseForgeObj.Data.LatestFiles data)
     {
-        var item = new DownloadItem()
+        foreach (var item in obj.CurseForgeMods)
+        {
+            if (item.Key == data.modId)
+            {
+                File.Delete(Path.GetFullPath(obj.GetModsPath() + '/' + item.Value.File));
+            }
+        }
+
+        var item1 = new DownloadItem()
         {
             Name = data.displayName,
             Url = data.downloadUrl,
@@ -414,7 +422,7 @@ public static class GameBinding
             Overwrite = true
         };
 
-        return DownloadManager.Download(item);
+        return DownloadManager.Download(item1);
     }
 
     public static void AddModInfo(GameSettingObj obj, CurseForgeObj.Data.LatestFiles data)

@@ -38,7 +38,19 @@ public enum LaunchState
     /// <summary>
     /// 检查资源文件中
     /// </summary>
-    CheckAssets, CheckLoader, CheckLoginCore, CheckMods,
+    CheckAssets, 
+    /// <summary>
+    /// 检查Mod加载器
+    /// </summary>
+    CheckLoader, 
+    /// <summary>
+    /// 检查登录核心
+    /// </summary>
+    CheckLoginCore, 
+    /// <summary>
+    /// 检查Mod
+    /// </summary>
+    CheckMods,
     LostVersion, LostLib, LostLoader, LostLoginCore, LostGame, LostFile,
     Download, DownloadFail,
     JvmPrepare,

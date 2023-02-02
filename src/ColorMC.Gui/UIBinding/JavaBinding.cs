@@ -116,13 +116,13 @@ public static class JavaBinding
         switch (SystemInfo.Os)
         {
             case OsType.Windows:
-                if (Directory.Exists("C:\\Program Files\\java"))
-                    return new BclStorageFolder(new DirectoryInfo("C:\\Program Files\\java"));
+                //if (Directory.Exists("C:\\Program Files\\java"))
+                    //return new BclStorageFolder(new DirectoryInfo("C:\\Program Files\\java"));
 
                 break;
             case OsType.MacOS:
-                if (Directory.Exists("/Library/Java/JavaVirtualMachines/"))
-                    return new BclStorageFolder(new DirectoryInfo("/Library/Java/JavaVirtualMachines/"));
+                //if (Directory.Exists("/Library/Java/JavaVirtualMachines/"))
+                    //return new BclStorageFolder(new DirectoryInfo("/Library/Java/JavaVirtualMachines/"));
 
                 break;
         }

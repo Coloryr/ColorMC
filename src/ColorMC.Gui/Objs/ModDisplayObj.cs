@@ -11,6 +11,7 @@ public record ModDisplayObj : INotifyPropertyChanged
     public string Local { get; set; }
     public string Author { get; set; }
     public string Url { get; set; }
+    public string Loader { get; set; }
     public bool Enable
     {
         get { return !disable; }

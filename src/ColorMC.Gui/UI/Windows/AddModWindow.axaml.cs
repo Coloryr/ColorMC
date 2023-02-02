@@ -77,18 +77,13 @@ public partial class AddModWindow : Window
         DataGridFiles_DoubleTapped(sender, e);
     }
 
-    private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
+    private void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
         var item = DataGridFiles.SelectedItem as FileDisplayObj;
         if (item == null)
             return;
 
-        var res = await Info.ShowWait(
-            string.Format(Localizer.Instance["AddModWindow.Info1"], item.File.displayName));
-        if (res)
-        {
-            Install1(item.File);
-        }
+        Install1(item.File);
     }
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
@@ -214,10 +209,21 @@ public partial class AddModWindow : Window
             return;
         }
 
+        long down = 0;
+        foreach (var item in Obj.CurseForgeMods)
+        {
+            if (item.Key == Last!.Data.id)
+            {
+                down = item.Value.Id;
+                break;
+            }
+        }
+
         foreach (var item in data.data)
         {
             List1.Add(new()
             {
+                IsDownload = down == item.id,
                 Name = item.displayName,
                 Size = UIUtils.MakeFileSize1(item.fileLength),
                 Download = item.downloadCount,
@@ -236,6 +242,10 @@ public partial class AddModWindow : Window
     private async void AddModWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
+
+        if (Obj == null)
+            return;
+
         Info1.Show(Localizer.Instance["AddModWindow.Info4"]);
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();

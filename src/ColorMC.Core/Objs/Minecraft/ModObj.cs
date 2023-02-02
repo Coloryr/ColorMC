@@ -24,7 +24,7 @@ public record ModObj
     [JsonIgnore]
     public bool Disable { get; set; }
     [JsonIgnore]
-    public Loaders Loaders { get; set; }
+    public Loaders Loader { get; set; }
     [JsonIgnore]
     public bool V2 { get; set; }
     [JsonIgnore]
