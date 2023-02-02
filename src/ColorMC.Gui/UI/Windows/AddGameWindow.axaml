@@ -41,56 +41,91 @@
                     Margin="5"
                     Classes="input1"
                     Watermark="{setting:Localize AddGameWindow.Text2}" />
-                <StackPanel Margin="5" Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Text3}" />
+
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddGameWindow.Text3}" />
+
+                <StackPanel Orientation="Horizontal">
+
                     <ComboBox
                         Name="ComboBox_GameVersion"
-                        Width="200"
+                        Width="250"
                         Margin="5,0,0,0" />
                     <CheckBox
                         Name="CheckBox_Release"
-                        Margin="20,0,0,0"
+                        Margin="10,0,0,0"
                         Content="{setting:Localize AddGameWindow.CheckBox1}"
                         IsChecked="True" />
                     <CheckBox
                         Name="CheckBox_Snapshot"
-                        Margin="20,0,0,0"
+                        Margin="10,0,0,0"
                         Content="{setting:Localize AddGameWindow.CheckBox2}" />
                     <CheckBox
                         Name="CheckBox_Other"
-                        Margin="20,0,0,0"
+                        Margin="10,0,0,0"
                         Content="{setting:Localize AddGameWindow.CheckBox3}" />
+
+                    <Button
+                        Name="Button1"
+                        Width="100"
+                        Height="25"
+                        Margin="10,0,0,0"
+                        Content="{setting:Localize GameEditWindow.Tab1.Button1}" />
                 </StackPanel>
 
-                <StackPanel Margin="5" Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Text4}" />
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddGameWindow.Text4}" />
+
+                <StackPanel Orientation="Horizontal">
                     <ComboBox
                         Name="ComboBox_LoaderVersion"
-                        Width="200"
+                        Width="250"
                         Margin="5,0,0,0"
                         IsEnabled="False" />
                     <CheckBox
                         Name="CheckBox_Forge"
-                        Margin="20,0,0,0"
+                        Margin="10,0,0,0"
                         Content="Forge"
                         IsEnabled="False" />
                     <CheckBox
                         Name="CheckBox_Fabric"
-                        Margin="20,0,0,0"
+                        Margin="10,0,0,0"
                         Content="Fabric"
                         IsEnabled="False" />
                     <CheckBox
                         Name="CheckBox_Quilt"
-                        Margin="20,0,0,0"
+                        Margin="10,0,0,0"
                         Content="Quilt"
                         IsEnabled="False" />
+
+                    <Button
+                        Name="Button2"
+                        Width="100"
+                        Height="25"
+                        Margin="10,0,0,0"
+                        Content="{setting:Localize AddGameWindow.Tab1.Button1}" />
+                    <Button
+                        Name="Button3"
+                        Width="100"
+                        Height="25"
+                        Margin="10,0,0,0"
+                        Content="{setting:Localize AddGameWindow.Tab1.Button2}" />
                 </StackPanel>
 
-                <StackPanel Margin="5" Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Text5}" />
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddGameWindow.Text5}" />
+
+                <StackPanel Orientation="Horizontal">
+
                     <ComboBox
                         Name="ComboBox_Group"
-                        Width="200"
+                        Width="250"
                         Margin="5,0,0,0" />
 
                     <Button
@@ -102,7 +137,7 @@
                         Content="{setting:Localize AddGameWindow.Button6}" />
                 </StackPanel>
 
-                <Grid Margin="0,5,0,0">
+                <Grid Margin="0,10,0,0">
                     <Button
                         Name="Button_Add1"
                         Width="190"

@@ -123,7 +123,6 @@ public partial class HelloWindow : Window
 
     public void Done()
     {
-        App.ShowMain();
         Close();
     }
 }

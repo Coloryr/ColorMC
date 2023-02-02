@@ -38,16 +38,7 @@ public static class VersionPath
 
         try
         {
-            if (!ReadVersions())
-            {
-                Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error2"));
-            }
-            else
-            {
-                SaveVersions(Versions);
-            }
-
-            Task.Run(GetFromWeb);
+            ReadVersions();
         }
         catch (Exception e)
         {
@@ -55,19 +46,27 @@ public static class VersionPath
         }
     }
 
-    public static async Task<bool> GetFromWeb()
+    public static async Task GetFromWeb()
     {
         Versions = await Get.GetVersions();
+        if (Versions != null)
+        {
+            SaveVersions();
+            return;
+        }
+        Versions = await Get.GetVersions(SourceLocal.Offical);
         if (Versions == null)
         {
-            Versions = await Get.GetVersions(SourceLocal.Offical);
-            if (Versions == null)
-            {
-                Logs.Warn(LanguageHelper.GetName("Core.Path.Version.Load.Error4"));
-                return false;
-            }
+            Logs.Warn(LanguageHelper.GetName("Core.Path.Version.Load.Error4"));
         }
+        else
+        {
+            SaveVersions();
+        }
+    }
 
+    public static bool Have()
+    {
         return Versions != null;
     }
 
@@ -76,24 +75,28 @@ public static class VersionPath
         return Versions?.versions.Where(a => a.id == version).Any() == true;
     }
 
-    public static bool ReadVersions()
+    public static async void ReadVersions()
     {
         string file = BaseDir + "/version.json";
         if (File.Exists(file))
         {
             string data = File.ReadAllText(file);
             Versions = JsonConvert.DeserializeObject<VersionObj>(data);
-            return Versions != null;
+
+            await Task.Run(GetFromWeb);
         }
-        return false;
+        else
+        {
+            await GetFromWeb();
+        }
     }
 
-    public static void SaveVersions(VersionObj? obj)
+    public static void SaveVersions()
     {
-        if (obj == null)
+        if (Versions == null)
             return;
         string file = BaseDir + "/version.json";
-        File.WriteAllText(file, JsonConvert.SerializeObject(obj));
+        File.WriteAllText(file, JsonConvert.SerializeObject(Versions));
     }
 
     public static void AddGame(GameArgObj? obj)
@@ -122,7 +125,9 @@ public static class VersionPath
     public static async Task CheckUpdate(string version)
     {
         if (Versions == null)
-            return;
+        {
+            await GetFromWeb();
+        }
 
         var data = Versions.versions.Where(a => a.id == version).FirstOrDefault();
         if (data != null)
