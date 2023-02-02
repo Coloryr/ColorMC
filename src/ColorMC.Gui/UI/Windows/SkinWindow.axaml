@@ -23,6 +23,7 @@
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
+            Name="Head"
             Title="{setting:Localize SkinWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
@@ -54,7 +55,8 @@
                             VerticalContentAlignment="Center"
                             Background="#EEEEEE"
                             Content=""
-                            FontSize="20" />
+                            FontSize="20"
+                            IsVisible="False" />
                     </Grid>
                 </Grid>
 

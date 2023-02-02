@@ -23,6 +23,8 @@ public partial class SkinWindow : Window
     {
         InitializeComponent();
 
+        Head.SetWindow(this);
+
         FontFamily = Program.Font;
 
         ComboBox1.Items = UserBinding.GetSkinType();
@@ -101,7 +103,7 @@ public partial class SkinWindow : Window
     {
         App.Update(this, Image_Back, Grid1);
 
-        GL.InvalidateVisual();
+        GL.RequestNextFrameRendering();
     }
 }
 
@@ -287,14 +289,14 @@ public class OpenGlPageControl : OpenGlControlBase
 
         SwitchModel = true;
 
-        InvalidateVisual();
+        RequestNextFrameRendering();
     }
 
     public void ChangeSkin()
     {
         SwitchSkin = true;
 
-        InvalidateVisual();
+        RequestNextFrameRendering();
     }
 
     public void Reset()
@@ -311,7 +313,7 @@ public class OpenGlPageControl : OpenGlControlBase
         LastXY.X = 0;
         LastXY.Y = 0;
 
-        InvalidateVisual();
+        RequestNextFrameRendering();
     }
 
     private unsafe void LoadSkin(GlInterface gl)
@@ -536,7 +538,7 @@ public class OpenGlPageControl : OpenGlControlBase
             RotXY.Y = (float)point.X - DiffXY.X;
             RotXY.X = (float)point.Y + DiffXY.Y;
 
-            InvalidateVisual();
+            RequestNextFrameRendering();
         }
         else if (po.Properties.IsRightButtonPressed)
         {
@@ -544,7 +546,7 @@ public class OpenGlPageControl : OpenGlControlBase
             XY.X = (-(LastXY.X - (float)point.X) / 100) + SaveXY.X;
             XY.Y = ((LastXY.Y - (float)point.Y) / 100) + SaveXY.Y;
 
-            InvalidateVisual();
+            RequestNextFrameRendering();
         }
     }
 
@@ -562,7 +564,7 @@ public class OpenGlPageControl : OpenGlControlBase
             Dis += 0.1f;
         }
 
-        InvalidateVisual();
+        RequestNextFrameRendering();
     }
 
     protected override void OnOpenGlDeinit(GlInterface GL)

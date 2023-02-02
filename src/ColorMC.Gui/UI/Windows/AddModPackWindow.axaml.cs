@@ -23,6 +23,8 @@ public partial class AddModPackWindow : Window, IBase1Window
     {
         InitializeComponent();
 
+        Head.SetWindow(this);
+
         FontFamily = Program.Font;
 
         Icon = App.Icon;

@@ -67,6 +67,8 @@ public partial class CustomWindow : Window
     {
         InitializeComponent();
 
+        Head.SetWindow(this);
+
         FontFamily = Program.Font;
 
         this.Closed += CustomWindow_Closed;
