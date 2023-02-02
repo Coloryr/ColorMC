@@ -136,7 +136,7 @@ public static class GameDownload
             foreach (var item1 in info1.libraries)
             {
                 list.Add(new()
-                {
+                { 
                     Url = UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
                              BaseClient.Source),
                     Name = item1.name,

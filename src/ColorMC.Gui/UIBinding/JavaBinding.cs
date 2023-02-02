@@ -70,6 +70,11 @@ public static class JavaBinding
         }
     }
 
+    public static JavaInfo? GetJavaInfo(string path)
+    {
+        return JvmPath.GetJavaInfo(path);
+    }
+
     public static void RemoveJava(string name)
     {
         JvmPath.Remove(name);
@@ -123,5 +128,10 @@ public static class JavaBinding
         }
 
         return null;
+    }
+
+    public static void RemoveAllJava()
+    {
+        JvmPath.RemoveAll();
     }
 }

@@ -89,16 +89,16 @@ public static class TestItem
         {
             var data = list.data[6];
 
-            var item2 = PackDownload.MakeCurseForge(data.latestFiles[0]);
-            DownloadManager.Start(new() { item2 }).Wait();
+            //var item2 = PackDownload.MakeCurseForge(data.latestFiles[0]);
+            //DownloadManager.Start(new() { item2 }).Wait();
 
-            var list1 = PackDownload.DownloadCurseForge(item2.Local).Result;
-            if (list1.State != DownloadState.End)
-            {
-                Console.WriteLine("下载列表获取失败");
-                return;
-            }
-            DownloadManager.Start(list1.List!).Wait();
+            //var list1 = PackDownload.DownloadCurseForge(item2.Local).Result;
+            //if (list1.State != DownloadState.End)
+            //{
+            //    Console.WriteLine("下载列表获取失败");
+            //    return;
+            //}
+            //DownloadManager.Start(list1.List!).Wait();
         }
     }
 

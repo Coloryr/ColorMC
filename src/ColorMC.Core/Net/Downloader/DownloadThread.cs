@@ -167,7 +167,7 @@ public class DownloadThread
                         using Stream stream1 = data.Content.ReadAsStream(cancel.Token);
                         buffer = ArrayPool<byte>.Shared.Rent(DownloadManager.GetCopyBufferSize(stream1));
 
-                        string file = item.Local + ".temp";
+                        string file = Path.GetFullPath(DownloadManager.DownloadDir + '/' + Guid.NewGuid().ToString());
 
                         using FileStream stream = new(file, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
 
@@ -233,8 +233,9 @@ public class DownloadThread
 
                         stream.Dispose();
                         if (File.Exists(item.Local))
+                        {
                             File.Delete(item.Local);
-
+                        }
                         File.Move(file, item.Local);
 
                         item.State = DownloadItemState.Action;

@@ -2,6 +2,7 @@
 
 using ColorMC.Core.Utils;
 using System.Collections.Concurrent;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ColorMC.Core;
 
@@ -15,7 +16,7 @@ public static class Logs
     };
     private static ConcurrentBag<string> bags = new();
     private static Semaphore semaphore = new(0, 10);
-    private static bool Close = false;
+    private static bool IsRun = false;
 
     public static void Init(string dir)
     {
@@ -25,6 +26,7 @@ public static class Logs
         {
             Writer = File.AppendText(Local);
             Writer.AutoFlush = true;
+            IsRun = true;
             ThreadLog.Start();
         }
         catch (Exception e)
@@ -35,11 +37,9 @@ public static class Logs
 
     private static void Run()
     {
-        while (true)
+        while (IsRun)
         {
             semaphore.WaitOne();
-            if (Close)
-                return;
             while (bags.TryTake(out var item))
             {
                 Writer.WriteLine(item);
@@ -49,39 +49,44 @@ public static class Logs
 
     public static void Stop()
     {
-        Close = true;
+        IsRun = false;
+        semaphore.Release();
+    }
+
+    private static void AddText(string text)
+    {
+        if (!IsRun)
+            return;
+
+        bags.Add(text);
         semaphore.Release();
     }
 
     public static void Info(string data)
     {
         string text = $"[{DateTime.Now}][Info]{data}";
-        bags.Add(text);
-        semaphore.Release();
         Console.WriteLine(text);
+        AddText(text);
     }
 
     public static void Warn(string data)
     {
         string text = $"[{DateTime.Now}][Warn]{data}";
-        bags.Add(text);
-        semaphore.Release();
         Console.WriteLine(text);
+        AddText(text);
     }
 
     public static void Error(string data)
     {
         string text = $"[{DateTime.Now}][Error]{data}";
-        bags.Add(text);
-        semaphore.Release();
         Console.WriteLine(text);
+        AddText(text);
     }
 
     public static void Error(string data, Exception e)
     {
         string text = $"[{DateTime.Now}][Error]{data}{Environment.NewLine}{e}";
-        bags.Add(text);
-        semaphore.Release();
         Console.WriteLine(text);
+        AddText(text);
     }
 }

@@ -490,7 +490,7 @@ public static class GameBinding
         {
             Name = data.displayName,
             Url = data.downloadUrl,
-            Local = Path.GetFullPath(obj.GetBasePath() + "/" + data.fileName),
+            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.fileName),
             SHA1 = data.hashes.Where(a => a.algo == 1)
                         .Select(a => a.value).FirstOrDefault(),
             Overwrite = true

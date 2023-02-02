@@ -6,6 +6,7 @@ namespace ColorMC.Core.LaunchPath;
 
 public static class JvmPath
 {
+    public const string Unknow = "unknow";
     public static Dictionary<string, JavaInfo> Jvms { get; } = new();
 
     public static (bool Res, string Msg) AddItem(string name, string local)
@@ -83,21 +84,16 @@ public static class JvmPath
                     info.Path, info.Version));
                 Jvms.Add(a.Name, info);
             }
-        });
-
-        if (objs.Count != Jvms.Count)
-        {
-            objs.Clear();
-            foreach (var item in Jvms)
+            else
             {
-                objs.Add(new JvmConfigObj()
-                {
-                    Name = item.Key,
-                    Local = item.Value.Path
+                Jvms.Add(a.Name, new JavaInfo()
+                { 
+                    Path = a.Local,
+                    Type = Unknow,
+                    Version = Unknow
                 });
             }
-        }
-
+        });
     }
 
     public static JavaInfo? GetInfo(string? name)
@@ -155,5 +151,12 @@ public static class JvmPath
         {
             return null;
         }
+    }
+
+    public static void RemoveAll()
+    {
+        Jvms.Clear();
+        ConfigUtils.Config.JavaList.Clear();
+        ConfigUtils.Save();
     }
 }

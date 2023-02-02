@@ -45,12 +45,12 @@
                     HorizontalScrollBarVisibility="Hidden"
                     VerticalScrollBarVisibility="Disabled">
                     <TabControl Name="Tabs">
-                        <TabItem Header="{setting:Localize SettingWindow.Tab1.Title}" />
                         <TabItem Header="{setting:Localize SettingWindow.Tab2.Title}" />
                         <TabItem Header="{setting:Localize SettingWindow.Tab3.Title}" />
                         <TabItem Header="{setting:Localize SettingWindow.Tab4.Title}" />
                         <TabItem Header="{setting:Localize SettingWindow.Tab5.Title}" />
                         <TabItem Header="{setting:Localize SettingWindow.Tab6.Title}" />
+                        <TabItem Header="{setting:Localize SettingWindow.Tab1.Title}" />
                     </TabControl>
                 </ScrollViewer>
 
