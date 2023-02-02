@@ -246,9 +246,11 @@ public static class GameBinding
         App.MainWindow?.Load();
     }
 
-    public static Task<bool> ReloadVersion()
+    public static async Task<bool> ReloadVersion()
     {
-        return VersionPath.GetFromWeb();
+        await VersionPath.GetFromWeb();
+
+        return VersionPath.Have();
     }
 
     public static void SaveGame(GameSettingObj obj, string? versi, Loaders loader, string? loadv)

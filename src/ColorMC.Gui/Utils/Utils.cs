@@ -514,6 +514,8 @@ public static class GuiConfigUtils
             Logs.Warn(Localizer.Instance["Warn1"]);
 
             Config = MakeDefaultConfig();
+
+            Save();
         }
         else if (Config.ServerCustom == null)
         {
@@ -525,11 +527,11 @@ public static class GuiConfigUtils
             Logs.Warn(Localizer.Instance["Warn1"]);
 
             Config.ServerCustom = MakeServerCustomConfig();
+
+            Save();
         }
 
         Utils.LaunchSetting.Colors.Load();
-
-        Save();
 
         return true;
     }
@@ -559,7 +561,8 @@ public static class GuiConfigUtils
             RGBS = 100,
             RGBV = 100,
             ColorFont1 = "#FFFFFFFF",
-            ColorFont2 = "#FF000000"
+            ColorFont2 = "#FF000000",
+            ServerCustom = MakeServerCustomConfig()
         };
     }
 

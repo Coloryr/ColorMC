@@ -44,6 +44,9 @@ public partial class AddGameWindow : Window
         Button_Add4.Click += Button_Add4_Click;
         Button_Add5.Click += Button_Add5_Click;
         Button_AddGroup.Click += Button_AddGroup_Click;
+        Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
+        Button3.Click += Button3_Click;
 
         CheckBox_Forge.Click += Forge_Click;
         CheckBox_Fabric.Click += Fabric_Click;
@@ -61,6 +64,115 @@ public partial class AddGameWindow : Window
         Closed += AddGameWindow_Closed;
 
         Load();
+    }
+
+    private async void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        Info1.Show(Localizer.Instance["GameEditWindow.Info1"]);
+        var res = await GameBinding.ReloadVersion();
+        Info1.Close();
+        if (!res)
+        {
+            Info.Show(Localizer.Instance["GameEditWindow.Error1"]);
+            return;
+        }
+
+        Update();
+    }
+
+    private async void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        CheckBox_Forge.IsEnabled = false;
+        CheckBox_Fabric.IsEnabled = false;
+        CheckBox_Quilt.IsEnabled = false;
+
+        var item = ComboBox_GameVersion.SelectedItem as string;
+        if (string.IsNullOrWhiteSpace(item))
+        {
+            return;
+        }    
+
+        Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
+        var list = await GameBinding.GetForgeSupportVersion();
+        if (list != null && list.Contains(item))
+        {
+            CheckBox_Forge.IsEnabled = true;
+        }
+
+        list = await GameBinding.GetFabricSupportVersion();
+        if (list != null && list.Contains(item))
+        {
+            CheckBox_Fabric.IsEnabled = true;
+        }
+
+        list = await GameBinding.GetQuiltSupportVersion();
+        if (list != null && list.Contains(item))
+        {
+            CheckBox_Quilt.IsEnabled = true;
+        }
+        Info1.Close();
+    }
+    private async void Button3_Click(object? sender, RoutedEventArgs e)
+    {
+        ComboBox_LoaderVersion.IsEnabled = false;
+
+        var item = ComboBox_GameVersion.SelectedItem as string;
+        if (string.IsNullOrWhiteSpace(item))
+        {
+            return;
+        }
+
+        if (CheckBox_Forge.IsChecked == true)
+        {
+            Info1.Show(Localizer.Instance["AddGameWindow.Info6"]);
+            CheckBox_Fabric.IsEnabled = false;
+            CheckBox_Quilt.IsEnabled = false;
+
+            var list = await GameBinding.GetForgeVersion(item);
+            Info1.Close();
+            if (list == null)
+            {
+                return;
+            }
+
+            ComboBox_LoaderVersion.IsEnabled = true;
+            List1.Clear();
+            List1.AddRange(list);
+        }
+        else if (CheckBox_Fabric.IsChecked == true)
+        {
+            Info1.Show(Localizer.Instance["AddGameWindow.Info5"]);
+            CheckBox_Forge.IsEnabled = false;
+            CheckBox_Quilt.IsEnabled = false;
+
+            var list = await GameBinding.GetFabricVersion(item);
+            Info1.Close();
+            if (list == null)
+            {
+                return;
+            }
+
+            ComboBox_LoaderVersion.IsEnabled = true;
+            List1.Clear();
+            List1.AddRange(list);
+        }
+        else if (CheckBox_Quilt.IsChecked == true)
+        {
+            Info1.Show(Localizer.Instance["AddGameWindow.Info4"]);
+            CheckBox_Forge.IsEnabled = false;
+            CheckBox_Fabric.IsEnabled = false;
+
+            var list = await GameBinding.GetQuiltVersion(item);
+            Info1.Close();
+            if (list == null)
+            {
+                return;
+            }
+
+            ComboBox_LoaderVersion.IsEnabled = true;
+            List1.Clear();
+            List1.AddRange(list);
+        }
     }
 
     private async void Button_AddGroup_Click(object? sender, RoutedEventArgs e)
@@ -156,35 +268,9 @@ public partial class AddGameWindow : Window
         }
     }
 
-    private async void GameVersion_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void GameVersion_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        CheckBox_Forge.IsEnabled = false;
-        CheckBox_Fabric.IsEnabled = false;
-        CheckBox_Quilt.IsEnabled = false;
-
-        string? item = ComboBox_GameVersion.SelectedItem as string;
-        if (!string.IsNullOrWhiteSpace(item))
-        {
-            Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
-            var list = await ForgeHelper.GetSupportVersion();
-            if (list != null && list.Contains(item))
-            {
-                CheckBox_Forge.IsEnabled = true;
-            }
-
-            list = await FabricHelper.GetSupportVersion();
-            if (list != null && list.Contains(item))
-            {
-                CheckBox_Fabric.IsEnabled = true;
-            }
-
-            list = await QuiltHelper.GetSupportVersion();
-            if (list != null && list.Contains(item))
-            {
-                CheckBox_Quilt.IsEnabled = true;
-            }
-            Info1.Close();
-        }
+        Button2_Click(null, null);
     }
 
     private async void Quilt_Click(object? sender, RoutedEventArgs e)
