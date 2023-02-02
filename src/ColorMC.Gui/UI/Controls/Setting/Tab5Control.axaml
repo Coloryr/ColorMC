@@ -75,7 +75,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Margin="4,160,0,0" VerticalAlignment="Center">
+        <StackPanel Margin="4,180,0,0" VerticalAlignment="Center">
             <Grid>
                 <Button
                     Name="Button_R"
@@ -97,6 +97,30 @@
                         Height="30"
                         Margin="6,0,0,0"
                         Content="{setting:Localize Button.Refash}" />
+                </Expander>
+            </Grid>
+
+            <Grid>
+                <Button
+                    Name="Button_D"
+                    Width="20"
+                    Height="30"
+                    Content="D" />
+                <Expander
+                    Name="Expander_D"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_D1"
+                        Width="100"
+                        Height="30"
+                        Margin="6,0,0,0"
+                        Content="删除所有" />
                 </Expander>
             </Grid>
         </StackPanel>

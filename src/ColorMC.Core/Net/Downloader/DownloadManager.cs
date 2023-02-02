@@ -11,12 +11,15 @@ public static class DownloadManager
     private static List<DownloadThread> threads = new();
     private static Semaphore semaphore = new(0, 10);
     public static CoreRunState State { get; private set; }
+    public static string DownloadDir { get; private set; }
 
     public static int AllSize { get; private set; }
     public static int DoneSize { get; private set; }
 
-    public static void Init()
+    public static void Init(string dir)
     {
+        DownloadDir = dir + '/' + "download";
+        Directory.CreateDirectory(DownloadDir);
         Logs.Info(string.Format(LanguageHelper.GetName("Core.Http.Downloader.Init"),
             ConfigUtils.Config.Http.DownloadThread));
         semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
@@ -162,10 +165,9 @@ public static class DownloadManager
         return bufferSize;
     }
 
-
     public static async Task<bool> Download(DownloadItem item)
     {
-        string file = item.Local + ".temp";
+        string file = Path.GetFullPath(DownloadDir + "/" + Guid.NewGuid().ToString());
         FileInfo info = new(file);
         if (!Directory.Exists(info.DirectoryName))
         {

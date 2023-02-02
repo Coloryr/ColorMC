@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Utils;
+﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Objs;
 
@@ -10,6 +11,10 @@ public record JavaInfo
     {
         get
         {
+            if (Version == JvmPath.Unknow)
+            {
+                return -1;
+            }
             string[] vers = Version.Trim().Split('.', '_', '-', '+', 'u', 'U');
             if (vers[0] == "1")
             {

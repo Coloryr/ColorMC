@@ -32,6 +32,11 @@ public partial class Tab5Control : UserControl
 
         Button_R1.Click += Button_R1_Click;
 
+        Button_D1.PointerExited += Button_D1_PointerLeave;
+        Button_D.PointerEntered += Button_D_PointerEnter;
+
+        Button_D1.Click += Button_D1_Click;
+
         Expander_R.ContentTransition = App.CrossFade100;
 
         DataGrid1.Items = List;
@@ -60,24 +65,32 @@ public partial class Tab5Control : UserControl
     {
         DataGrid1.MakeTran();
         Expander_R.MakePadingNull();
+        Expander_D.MakePadingNull();
     }
 
-    private void Button_D1_Click(object? sender, RoutedEventArgs e)
+    private async void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
-        var item = DataGrid1.SelectedItem as JavaDisplayObj;
-        if (item == null)
-        {
-            Window.Info.Show(Localizer.Instance["SettingWindow.Tab5.Error1"]);
+        var res = await Window.Info.ShowWait("ÊÇ·ñÉ¾³ýËùÓÐJava");
+        if (!res)
             return;
-        }
 
-        JavaBinding.RemoveJava(item.Name);
+        JavaBinding.RemoveAllJava();
         Load();
     }
 
     private void Button_R1_Click(object? sender, RoutedEventArgs e)
     {
         Load();
+    }
+
+    private void Button_D1_PointerLeave(object? sender, PointerEventArgs e)
+    {
+        Expander_D.IsExpanded = false;
+    }
+
+    private void Button_D_PointerEnter(object? sender, PointerEventArgs e)
+    {
+        Expander_D.IsExpanded = true;
     }
 
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
@@ -130,6 +143,7 @@ public partial class Tab5Control : UserControl
         var file = await Window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = Localizer.Instance["SettingWindow.Tab5.Info2"],
+            SuggestedStartLocation = JavaBinding.GetSuggestedStartLocation(),
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
@@ -137,7 +151,7 @@ public partial class Tab5Control : UserControl
                 {
                     Patterns = SystemInfo.Os == OsType.Windows ? new List<string>()
                     {
-                        "javaw.exe"
+                        "*.exe"
                     } : new List<string>()
                 }
             }
@@ -148,6 +162,11 @@ public partial class Tab5Control : UserControl
             var item = file[0];
             item.TryGetUri(out var uri);
             TextBox2.Text = uri!.LocalPath;
+            var info = JavaBinding.GetJavaInfo(uri!.LocalPath);
+            if (info != null)
+            {
+                TextBox1.Text = info.Type + "_" + info.Version;
+            }
         }
     }
 

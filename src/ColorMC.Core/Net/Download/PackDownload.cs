@@ -15,16 +15,6 @@ public static class PackDownload
     public static int Size { get; private set; }
     public static int Now { get; private set; }
 
-    public static DownloadItem MakeCurseForge(CurseForgeObj.Data.LatestFiles obj)
-    {
-        return new()
-        {
-            Url = obj.downloadUrl,
-            Name = obj.fileName,
-            Local = InstancesPath.BaseDir + "/" + obj.fileName,
-        };
-    }
-
     public static async Task<(DownloadState State, List<DownloadItem>? List,
         List<CurseForgeModObj.Data>? Pack, GameSettingObj? Game)> DownloadCurseForge(string zip)
     {

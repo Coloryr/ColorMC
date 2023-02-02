@@ -15,13 +15,11 @@ public record DownloadItem
     public string? SHA256 { get; set; }
     public bool Overwrite { get; set; } = false;
 
-
     public long AllSize { get; set; }
     public long NowSize { get; set; }
     public DownloadItemState State { get; set; } = DownloadItemState.Init;
     public Action<FileStream> Later { get; set; }
     public int ErrorTime { get; set; }
-
 
     public Action<int> Update { get; set; }
 }

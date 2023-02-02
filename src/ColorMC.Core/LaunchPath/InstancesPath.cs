@@ -462,7 +462,12 @@ public static class InstancesPath
 
     public static async Task<bool> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data)
     {
-        var item = PackDownload.MakeCurseForge(data);
+        var item = new DownloadItem()
+        {
+            Url = data.downloadUrl,
+            Name = data.fileName,
+            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.fileName),
+        };
 
         var res1 = await DownloadManager.Start(new() { item });
         if (!res1)
@@ -479,7 +484,7 @@ public static class InstancesPath
             case PackType.ColorMC:
                 return ZipFloClass.ZipFile(obj.GetBasePath(), file, filter);
         }
-        return null;
+        return Task.CompletedTask;
     }
 
     public static async Task<bool> InstallFromZip(string dir, PackType type)

@@ -45,7 +45,7 @@ public partial class SettingWindow : Window
         tab5.SetWindow(this);
         tab6.SetWindow(this);
 
-        content1.Content = tab1;
+        content1.Content = tab2;
 
         Closed += SettingWindow_Closed;
 
@@ -71,27 +71,27 @@ public partial class SettingWindow : Window
         switch (Tabs.SelectedIndex)
         {
             case 0:
-                Go(tab1);
-                break;
-            case 1:
                 tab2.Load();
                 Go(tab2);
                 break;
-            case 2:
+            case 1:
                 tab3.Load();
                 Go(tab3);
                 break;
-            case 3:
+            case 2:
                 tab4.Load();
                 Go(tab4);
                 break;
-            case 4:
+            case 3:
                 tab5.Load();
                 Go(tab5);
                 break;
-            case 5:
+            case 4:
                 tab6.Load();
                 Go(tab6);
+                break;
+            case 5:
+                Go(tab1);
                 break;
         }
 
@@ -122,33 +122,11 @@ public partial class SettingWindow : Window
         App.PicUpdate -= Update;
 
         App.SettingWindow = null;
-
-        tab1.SetWindow(null);
-        tab2.SetWindow(null);
-        tab3.SetWindow(null);
-        tab4.SetWindow(null);
-        tab5.SetWindow(null);
-        tab6.SetWindow(null);
-
-        tab1 = null;
-        tab2 = null;
-        tab3 = null;
-        tab4 = null;
-        tab5 = null;
-        tab6 = null;
-
-        content1 = null;
-        content2 = null;
     }
 
     public void Update()
     {
         App.Update(this, Image_Back, Grid1);
-    }
-
-    public void Next()
-    {
-
     }
 
     public void Tab5Load()
