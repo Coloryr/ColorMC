@@ -37,10 +37,17 @@ public partial class SkinWindow : Window
         Closed += SkinWindow_Closed;
 
         App.PicUpdate += Update;
-        App.UserEdit += App_UserEdit;
+        App.SkinLoad += App_SkinLoad;
 
         Check();
         Update();
+    }
+
+    private void App_SkinLoad()
+    {
+        Check();
+
+        GL.ChangeSkin();
     }
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
@@ -63,13 +70,6 @@ public partial class SkinWindow : Window
         {
             Button3.IsEnabled = false;
         }
-    }
-
-    private void App_UserEdit()
-    {
-        Check();
-
-        GL.ChangeSkin();
     }
 
     private void SkinWindow_Closed(object? sender, EventArgs e)

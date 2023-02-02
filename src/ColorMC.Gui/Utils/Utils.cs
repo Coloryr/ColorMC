@@ -441,24 +441,28 @@ public static class ImageUtils
 
     public static Task<Bitmap?> MakeImageSharp(string file, int value)
     {
-        return Task.Run(async () =>
+        return Task.Run(() =>
         {
             try
             {
-                using var image = await SixLabors.ImageSharp.Image.LoadAsync(file);
                 if (value > 0)
                 {
+                    using var image = SixLabors.ImageSharp.Image.Load(file);
                     image.Mutate(p =>
                     {
                         p.GaussianBlur(value);
                     });
+
+                    using var stream = new MemoryStream();
+                    image.SaveAsPng(stream);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    return new Bitmap(stream);
+                }
+                else
+                {
+                    return new Bitmap(file);
                 }
 
-                using var stream = new MemoryStream();
-                await image.SaveAsPngAsync(stream);
-                stream.Seek(0, SeekOrigin.Begin);
-
-                return new Bitmap(stream);
             }
             catch (Exception e)
             {

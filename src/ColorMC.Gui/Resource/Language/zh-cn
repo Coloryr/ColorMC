@@ -46,9 +46,6 @@
 	<sys:String x:Key="MainWindow.Info2">已启动</sys:String>
 	<sys:String x:Key="MainWindow.Info3">正在启动游戏</sys:String>
 
-	<sys:String x:Key="InitWindow.Title">ColorMC 加载</sys:String>
-	<sys:String x:Key="InitWindow.Text">ColorMC正在初始化</sys:String>
-
 	<sys:String x:Key="UserWindow.Title">ColorMC 用户列表</sys:String>
 	<sys:String x:Key="UserWindow.Data.Title1">使用</sys:String>
 	<sys:String x:Key="UserWindow.Data.Title2">用户名</sys:String>

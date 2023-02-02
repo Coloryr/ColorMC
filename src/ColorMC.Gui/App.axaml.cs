@@ -15,6 +15,7 @@ using ColorMC.Gui.UIBinding;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -28,7 +29,6 @@ public partial class App : Application
     public static DownloadWindow? DownloadWindow;
     public static UserWindow? UserWindow;
     public static MainWindow? MainWindow;
-    public static HelloWindow? HelloWindow;
     public static AddGameWindow? AddGameWindow;
     public static CustomWindow? CustomWindow;
     public static AddModPackWindow? AddModPackWindow;
@@ -45,8 +45,9 @@ public partial class App : Application
 
     public static ResourceDictionary? Language;
 
-    public delegate void UserEditHandler();
-    public static event UserEditHandler UserEdit;
+    public delegate void Handler();
+    public static event Handler UserEdit;
+    public static event Handler SkinLoad;
 
     public static Bitmap? BackBitmap { get; private set; }
     public static Bitmap GameIcon { get; private set; }
@@ -57,13 +58,12 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
         LoadLanguage(LanguageType.zh_cn);
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;
-            desktop.MainWindow = new InitWindow();
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -84,18 +84,25 @@ public partial class App : Application
         using var asset1 = assets!.Open(uri1);
 
         Icon = new(asset1);
+
+        await BaseBinding.Init();
+
+        ShowCustom();
     }
 
-    public static async Task OnUserEdit()
+    public static void OnUserEdit()
     {
-        await UserBinding.LoadSkin();
-
         UserEdit?.Invoke();
     }
 
     public static void OnPicUpdate()
     {
-        PicUpdate.Invoke();
+        PicUpdate?.Invoke();
+    }
+
+    public static void OnSkinLoad()
+    {
+        SkinLoad?.Invoke();
     }
 
     public static void LoadLanguage(LanguageType type)
@@ -193,7 +200,7 @@ public partial class App : Application
                     }
                     else
                     {
-                        App.ShowCustom(obj);
+                        ShowCustom(obj);
                         ok = true;
                     }
                 }
@@ -211,7 +218,7 @@ public partial class App : Application
 
         if (!ok)
         {
-            App.ShowMain();
+            ShowMain();
         }
     }
 
@@ -280,18 +287,10 @@ public partial class App : Application
             MainWindow = new();
             MainWindow.Show();
         }
-    }
 
-    public static void ShowHello()
-    {
-        if (HelloWindow != null)
+        if (BaseBinding.ISNewStart)
         {
-            HelloWindow.Activate();
-        }
-        else
-        {
-            HelloWindow = new();
-            HelloWindow.Show();
+            new HelloWindow().ShowDialog(MainWindow);
         }
     }
 
