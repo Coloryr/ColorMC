@@ -33,7 +33,7 @@ internal class Program
             {
                 DefaultFamilyName = Font,
             })
-            .With(new Win32PlatformOptions { UseWgl = true })
+            //.With(new Win32PlatformOptions { UseWgl = true })
             .UsePlatformDetect()
             .LogToTrace();
 }

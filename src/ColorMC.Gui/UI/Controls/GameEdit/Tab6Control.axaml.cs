@@ -389,7 +389,7 @@ public partial class Tab6Control : UserControl
     private void Load()
     {
         FilesPageViewModel = new FilesPageViewModel(Obj);
-        //FileViewer.Source = Files.Source;
+        FileViewer.Source = Files.Source;
     }
 
     public void SetWindow(GameEditWindow window)

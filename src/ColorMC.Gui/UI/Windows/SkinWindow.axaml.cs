@@ -103,7 +103,7 @@ public partial class SkinWindow : Window
     {
         App.Update(this, Image_Back, Grid1);
 
-        GL.RequestNextFrameRendering();
+        GL.InvalidateVisual();
     }
 }
 
@@ -203,7 +203,7 @@ public class OpenGlPageControl : OpenGlControlBase
         Window = window;
     }
 
-    protected override unsafe void OnOpenGlInit(GlInterface gl)
+    protected override unsafe void OnOpenGlInit(GlInterface gl, int fb)
     {
         IntPtr temp = gl.GetProcAddress("glDepthFunc");
         glDepthFunc = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
@@ -289,14 +289,14 @@ public class OpenGlPageControl : OpenGlControlBase
 
         SwitchModel = true;
 
-        RequestNextFrameRendering();
+        InvalidateVisual();
     }
 
     public void ChangeSkin()
     {
         SwitchSkin = true;
 
-        RequestNextFrameRendering();
+        InvalidateVisual();
     }
 
     public void Reset()
@@ -313,7 +313,7 @@ public class OpenGlPageControl : OpenGlControlBase
         LastXY.X = 0;
         LastXY.Y = 0;
 
-        RequestNextFrameRendering();
+        InvalidateVisual();
     }
 
     private unsafe void LoadSkin(GlInterface gl)
@@ -538,7 +538,7 @@ public class OpenGlPageControl : OpenGlControlBase
             RotXY.Y = (float)point.X - DiffXY.X;
             RotXY.X = (float)point.Y + DiffXY.Y;
 
-            RequestNextFrameRendering();
+            InvalidateVisual();
         }
         else if (po.Properties.IsRightButtonPressed)
         {
@@ -546,7 +546,7 @@ public class OpenGlPageControl : OpenGlControlBase
             XY.X = (-(LastXY.X - (float)point.X) / 100) + SaveXY.X;
             XY.Y = ((LastXY.Y - (float)point.Y) / 100) + SaveXY.Y;
 
-            RequestNextFrameRendering();
+            InvalidateVisual();
         }
     }
 
@@ -564,10 +564,10 @@ public class OpenGlPageControl : OpenGlControlBase
             Dis += 0.1f;
         }
 
-        RequestNextFrameRendering();
+        InvalidateVisual();
     }
 
-    protected override void OnOpenGlDeinit(GlInterface GL)
+    protected override void OnOpenGlDeinit(GlInterface GL,  int fb)
     {
         // Unbind everything
         GL.BindBuffer(GL_ARRAY_BUFFER, 0);

@@ -106,7 +106,8 @@ public partial class Tab4Control : UserControl
             var list = new List<string>();
             foreach (var item in file)
             {
-                list.Add(item.Path!.OriginalString);
+                item.TryGetUri(out var uri);
+                list.Add(uri!.OriginalString);
             }
             GameBinding.AddMods(Obj, list);
             Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
