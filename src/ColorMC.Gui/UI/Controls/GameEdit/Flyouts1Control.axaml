@@ -16,19 +16,24 @@
         <StackPanel Margin="5">
             <Button
                 Name="Button1"
-                Width="80"
+                Width="100"
                 Height="25"
                 Content="{setting:Localize GameEditWindow.Flyouts1.Button1}" />
             <Button
                 Name="Button2"
-                Width="80"
+                Width="100"
                 Height="25"
                 Content="{setting:Localize GameEditWindow.Flyouts1.Button2}" />
             <Button
                 Name="Button3"
-                Width="80"
+                Width="100"
                 Height="25"
                 Content="{setting:Localize Button.OpFile}" />
+            <Button
+                Name="Button4"
+                Width="100"
+                Height="25"
+                Content="mcmod搜索" />
         </StackPanel>
     </Grid>
 </UserControl>

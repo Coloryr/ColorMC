@@ -641,4 +641,9 @@ public static class GameBinding
     {
         BaseBinding.OpFile(obj.GetGamePath(), false);
     }
+
+    public static void OpenMcmod(ModDisplayObj obj)
+    {
+        BaseBinding.OpUrl($"https://search.mcmod.cn/s?key={obj.Name}");
+    }
 }

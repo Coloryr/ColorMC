@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -258,6 +259,8 @@ public static class BaseBinding
 
     public static void OpUrl(string url)
     {
+        //url = UrlEncoder.Default.Encode(url);
+        url = url.Replace(" ", "%20");
         switch (SystemInfo.Os)
         {
             case OsType.Windows:
