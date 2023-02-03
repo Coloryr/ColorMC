@@ -231,14 +231,6 @@ public class DownloadThread
                             }
                         }
 
-                        stream.Dispose();
-                        if (File.Exists(item.Local))
-                        {
-                            File.Delete(item.Local);
-                        }
-                        new FileInfo(item.Local).Directory?.Create();
-                        File.Move(file, item.Local);
-
                         item.State = DownloadItemState.Action;
                         item.Update?.Invoke(index);
 
@@ -250,6 +242,14 @@ public class DownloadThread
                         }
 
                         item.Later?.Invoke(stream);
+
+                        stream.Dispose();
+                        if (File.Exists(item.Local))
+                        {
+                            File.Delete(item.Local);
+                        }
+                        new FileInfo(item.Local).Directory?.Create();
+                        File.Move(file, item.Local);
 
                         item.State = DownloadItemState.Done;
                         item.Update?.Invoke(index);

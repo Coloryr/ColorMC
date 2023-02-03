@@ -273,7 +273,7 @@ public static class BaseAuth
         try
         {
             CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
-            var (State, Obj, Msg) = await AuthlibInjector.Authenticate(server, Funtcions.NewUUID(), user, pass);
+            var (State, Obj, Msg) = await AuthlibInjector.Authenticate(Funtcions.NewUUID(), user, pass, server);
             if (State != LoginState.Done)
             {
                 return (AuthState.Token, State, null,

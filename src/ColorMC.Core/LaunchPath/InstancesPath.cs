@@ -121,6 +121,7 @@ public static class InstancesPath
                 if (game != null)
                 {
                     game.ReadCurseForgeMod();
+                    game.CurseForgeMods ??= new();
                     AddToGroup(game);
                 }
             }
@@ -417,7 +418,6 @@ public static class InstancesPath
         string file = obj.GetCurseForgeModJsonFile();
         if (!File.Exists(file))
         {
-            obj.CurseForgeMods = new();
             return;
         }
 
