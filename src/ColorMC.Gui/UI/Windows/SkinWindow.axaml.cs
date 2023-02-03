@@ -2,18 +2,28 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.OpenGL;
-using Avalonia.OpenGL.Controls;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Media.Immutable;
+using Avalonia.Platform;
 using Avalonia.Threading;
+using Avalonia.Utilities;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.Skin.Model;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using OpenTK.Audio.OpenAL;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Desktop;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
-using System.Numerics;
+using System.IO;
 using System.Runtime.InteropServices;
-using static Avalonia.OpenGL.GlConsts;
+using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -29,13 +39,16 @@ public partial class SkinWindow : Window
 
         ComboBox1.Items = UserBinding.GetSkinType();
 
-        GL.SetWindow(this);
+        Skin.SetWindow(this);
+
+        Text1.Text = Skin.Info;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
 
+        Opened += SkinWindow_Opened;
         Closed += SkinWindow_Closed;
 
         App.PicUpdate += Update;
@@ -45,11 +58,18 @@ public partial class SkinWindow : Window
         Update();
     }
 
+    private void SkinWindow_Opened(object? sender, EventArgs e)
+    {
+        var pos = Skin.GetXY();
+        var temp = Matrix.CreateRotation(Math.PI);//* Matrix.CreateTranslation(new(0, pos.Y / 2));
+        Skin.RenderTransform = new ImmutableTransform(temp);
+    }
+
     private void App_SkinLoad()
     {
         Check();
 
-        GL.ChangeSkin();
+        Skin.ChangeSkin();
     }
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
@@ -59,7 +79,7 @@ public partial class SkinWindow : Window
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        GL.Reset();
+        Skin.Reset();
     }
 
     private void Check()
@@ -79,46 +99,50 @@ public partial class SkinWindow : Window
         App.PicUpdate -= Update;
 
         App.SkinWindow = null;
+
+        Skin.Close();
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (ComboBox1.SelectedIndex == (int)GL.steveModelType)
+        if (ComboBox1.SelectedIndex == (int)Skin.steveModelType)
             return;
         if (ComboBox1.SelectedIndex == (int)SkinType.UNKNOWN)
         {
             Info.Show(Localizer.Instance["SkinWindow.Info1"]);
-            ComboBox1.SelectedIndex = (int)GL.steveModelType;
+            ComboBox1.SelectedIndex = (int)Skin.steveModelType;
             return;
         }
-        GL.ChangeType(ComboBox1.SelectedIndex);
+        Skin.ChangeType(ComboBox1.SelectedIndex);
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        GL.ChangeSkin();
+        Skin.ChangeSkin();
     }
 
     public void Update()
     {
         App.Update(this, Image_Back, Grid1);
 
-        GL.InvalidateVisual();
+        Skin.InvalidateVisual();
     }
 }
 
-public class OpenGlPageControl : OpenGlControlBase
+public class SkinRender : Control
 {
     private SkinWindow Window;
-    private string _info = string.Empty;
+    private Win Window1;
 
-    public static readonly DirectProperty<OpenGlPageControl, string> InfoProperty =
-        AvaloniaProperty.RegisterDirect<OpenGlPageControl, string>("Info", o => o.Info, (o, v) => o.Info = v);
-
-    public string Info
+    class Win : GameWindow
     {
-        get => _info;
-        private set => SetAndRaise(InfoProperty, ref _info, value);
+        public Win() : base(new(), new()
+        {
+            StartVisible = false
+        })
+        {
+            
+        }
     }
 
     private string VertexShaderSource => GetShader(false, @"
@@ -183,104 +207,82 @@ public class OpenGlPageControl : OpenGlControlBase
     private int _indexBufferObjectTop;
     private int _vertexArrayObjectTop;
 
-    public delegate void GlFunc1(int v1, int v2);
-    public delegate void GlFunc2(int v1);
-    public delegate void GlFunc3(float v1);
-    public delegate void GlFunc4(bool v1);
-    public delegate void GlFunc5(int v1, int v2, nint v3);
+    private Vector2 LastSize;
+    private WriteableBitmap bitmap;
 
-    public GlFunc2 glDepthFunc;
-    public GlFunc3 glClearDepth;
-    public GlFunc1 glBlendFunc;
-    public GlFunc4 glDepthMask;
-    public GlFunc2 glCullFace;
-    public GlFunc2 glDisable;
-    public GlFunc2 glDisableVertexAttribArray;
-    public GlFunc5 glLightfv;
+    public string Info;
+
+    public SkinRender()
+    {
+        Window1 = new();
+
+        Init();
+    }
 
     public void SetWindow(SkinWindow window)
     {
         Window = window;
     }
 
-    protected override unsafe void OnOpenGlInit(GlInterface gl, int fb)
+    public void Init()
     {
-        IntPtr temp = gl.GetProcAddress("glDepthFunc");
-        glDepthFunc = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
-        temp = gl.GetProcAddress("glClearDepth");
-        glClearDepth = (GlFunc3)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc3));
-        temp = gl.GetProcAddress("glBlendFunc");
-        glBlendFunc = (GlFunc1)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc1));
-        temp = gl.GetProcAddress("glDepthMask");
-        glDepthMask = (GlFunc4)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc4));
-        temp = gl.GetProcAddress("glCullFace");
-        glCullFace = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
-        temp = gl.GetProcAddress("glDisable");
-        glDisable = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
-        temp = gl.GetProcAddress("glDisableVertexAttribArray");
-        glDisableVertexAttribArray = (GlFunc2)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc2));
-        temp = gl.GetProcAddress("glLightfv");
-        glLightfv = (GlFunc5)Marshal.GetDelegateForFunctionPointer(temp, typeof(GlFunc5));
-
-        gl.ClearColor(0, 0, 0, 1);
+        GL.ClearColor(0, 0, 0, 1);
 
         //GL_BLEND
-        gl.Enable(3042);
+        GL.Enable(EnableCap.Blend);
 
-        //gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA
-        glBlendFunc(770, 771);
+        //GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-        //gl.GL_BACK
-        glCullFace(1029);
-
-        //glShadeModel(GL_SMOOTH);
+        //GL.GL_BACK
+        GL.CullFace(CullFaceMode.Back);
 
         //int[] AmbientLight = { 1, 1, 1, 1 };
 
         //fixed (void* pdata = AmbientLight)
-        //    glLightfv(16384, 4608, new IntPtr(pdata));
-        //gl.Enable(16384);       //开启GL_LIGHT0光源
-        //gl.Enable(2896);     //开启光照系统
-        //gl.Enable(GL_DEPTH_TEST);
+        //    GLLightfv(16384, 4608, new IntPtr(pdata));
+        //GL.Enable(16384);       //开启GL_LIGHT0光源
+        //GL.Enable(2896);     //开启光照系统
+        //GL.Enable(GL_DEPTH_TEST);
 
-        CheckError(gl);
+        CheckError();
 
-        Info = $"Renderer: {gl.GetString(GL_RENDERER)} Version: {gl.GetString(GL_VERSION)}";
+        Info = $"Renderer: {GL.GetString(StringName.Renderer)} Version: {GL.GetString(StringName.Version)}";
 
-        _vertexShader = gl.CreateShader(GL_VERTEX_SHADER);
-        var error = gl.CompileShaderAndGetError(_vertexShader, VertexShaderSource);
-        Console.WriteLine(error);
+        _vertexShader = GL.CreateShader(ShaderType.VertexShader);
+        GL.ShaderSource(_vertexShader, VertexShaderSource);
+        CompileShader(_vertexShader);
 
-        _fragmentShader = gl.CreateShader(GL_FRAGMENT_SHADER);
-        error = gl.CompileShaderAndGetError(_fragmentShader, FragmentShaderSource);
-        Console.WriteLine(error);
+        _fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+        GL.ShaderSource(_fragmentShader, FragmentShaderSource);
+        CompileShader(_vertexShader);
 
-        _shaderProgram = gl.CreateProgram();
-        gl.AttachShader(_shaderProgram, _vertexShader);
-        gl.AttachShader(_shaderProgram, _fragmentShader);
-        error = gl.LinkProgramAndGetError(_shaderProgram);
-        CheckError(gl);
+        _shaderProgram = GL.CreateProgram();
+        GL.AttachShader(_shaderProgram, _vertexShader);
+        GL.AttachShader(_shaderProgram, _fragmentShader);
+        LinkProgram(_shaderProgram);
 
         int[] temp2 = new int[3];
 
-        fixed (int* pdata = temp2)
-            gl.GenVertexArrays(3, pdata);
+        GL.GenVertexArrays(3, temp2);
 
         _vertexArrayObject = temp2[0];
         _vertexArrayObjectTop = temp2[1];
 
-        _vertexBufferObject = gl.GenBuffer();
-        _indexBufferObject = gl.GenBuffer();
+        _vertexBufferObject = GL.GenBuffer();
+        _indexBufferObject = GL.GenBuffer();
 
-        _vertexBufferObjectTop = gl.GenBuffer();
-        _indexBufferObjectTop = gl.GenBuffer();
+        _vertexBufferObjectTop = GL.GenBuffer();
+        _indexBufferObjectTop = GL.GenBuffer();
+
+        CheckError();
 
         PointerWheelChanged += OpenGlPageControl_PointerWheelChanged;
         PointerPressed += OpenGlPageControl_PointerPressed;
         PointerReleased += OpenGlPageControl_PointerReleased;
         PointerMoved += OpenGlPageControl_PointerMoved;
 
-        LoadSkin(gl);
+        LoadSkin();
     }
 
     public void ChangeType(int index)
@@ -316,7 +318,7 @@ public class OpenGlPageControl : OpenGlControlBase
         InvalidateVisual();
     }
 
-    private unsafe void LoadSkin(GlInterface gl)
+    private unsafe void LoadSkin()
     {
         if (UserBinding.SkinImage == null)
         {
@@ -341,40 +343,35 @@ public class OpenGlPageControl : OpenGlControlBase
             return;
         }
 
-        texture = gl.GenTexture();
-        gl.ActiveTexture(GL_TEXTURE0);
-        gl.BindTexture(GL_TEXTURE_2D, texture);
+        texture = GL.GenTexture();
+        GL.ActiveTexture(TextureUnit.Texture0);
+        GL.BindTexture(TextureTarget.Texture2D, texture);
 
-        gl.TexParameteri(
-            GL_TEXTURE_2D,
-            GL_TEXTURE_MIN_FILTER, GL_LINEAR
+        GL.TexParameter(
+            TextureTarget.Texture2D,
+            TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear
         );
-        gl.TexParameteri(
-            GL_TEXTURE_2D,
-            GL_TEXTURE_MAG_FILTER, GL_NEAREST
+        GL.TexParameter(
+            TextureTarget.Texture2D,
+            TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest
         );
-        //TextureWrapS ClampToEdge
-        gl.TexParameteri(
-            GL_TEXTURE_2D,
-            10242, 33071
+        GL.TexParameter(
+            TextureTarget.Texture2D,
+            TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge
         );
-        //TextureWrapT ClampToEdge
-        gl.TexParameteri(
-            GL_TEXTURE_2D,
-            10243, 33071
+        GL.TexParameter(
+            TextureTarget.Texture2D,
+            TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge
         );
 
         var pixels = new byte[4 * UserBinding.SkinImage.Width * UserBinding.SkinImage.Height];
         UserBinding.SkinImage.CopyPixelDataTo(pixels);
 
-        fixed (void* pdata = pixels)
-            gl.TexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, UserBinding.SkinImage.Width, UserBinding.SkinImage.Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, new IntPtr(pdata));
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, UserBinding.SkinImage.Width, UserBinding.SkinImage.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
 
-        CheckError(gl);
+        CheckError();
 
-        LoadModel(gl);
-
-        CheckError(gl);
+        LoadModel();
 
         HaveSkin = true;
         Dispatcher.UIThread.Post(() =>
@@ -384,17 +381,17 @@ public class OpenGlPageControl : OpenGlControlBase
         });
     }
 
-    private unsafe void LoadModel(GlInterface gl)
+    private unsafe void LoadModel()
     {
         {
-            gl.UseProgram(_shaderProgram);
-            gl.BindVertexArray(_vertexArrayObject);
+            GL.UseProgram(_shaderProgram);
+            GL.BindVertexArray(_vertexArrayObject);
 
-            int a_Position = gl.GetAttribLocationString(_shaderProgram, "a_Position");
-            int a_texCoord = gl.GetAttribLocationString(_shaderProgram, "a_texCoord");
+            int a_Position = GL.GetAttribLocation(_shaderProgram, "a_Position");
+            int a_texCoord = GL.GetAttribLocation(_shaderProgram, "a_texCoord");
 
-            glDisableVertexAttribArray(a_Position);
-            glDisableVertexAttribArray(a_texCoord);
+            GL.DisableVertexAttribArray((uint)a_Position);
+            GL.DisableVertexAttribArray((uint)a_texCoord);
 
             var steve = SteveC.GetSteve(steveModelType);
             var model = steve.Item1;
@@ -409,45 +406,45 @@ public class OpenGlPageControl : OpenGlControlBase
                 var srci1 = primitive * 2;
                 points[primitive] = new Vertex
                 {
-                    Position = new Vector3(model[srci], model[srci + 1], model[srci + 2]),
-                    UV = new Vector2(uv[srci1], uv[srci1 + 1])
+                    Position = new(model[srci], model[srci + 1], model[srci + 2]),
+                    UV = new(uv[srci1], uv[srci1 + 1])
                 };
             }
 
-            gl.BindBuffer(GL_ARRAY_BUFFER, _vertexBufferObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             var vertexSize = Marshal.SizeOf<Vertex>();
             fixed (void* pdata = points)
-                gl.BufferData(GL_ARRAY_BUFFER, new IntPtr(points.Length * vertexSize),
-                    new IntPtr(pdata), GL_STATIC_DRAW);
+                GL.BufferData(BufferTarget.ArrayBuffer, points.Length * vertexSize,
+                    new IntPtr(pdata), BufferUsageHint.StaticDraw);
 
-            gl.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferObject);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _indexBufferObject);
             fixed (void* pdata = draw)
-                gl.BufferData(GL_ELEMENT_ARRAY_BUFFER, new IntPtr(draw.Length * sizeof(ushort)), new IntPtr(pdata), GL_STATIC_DRAW);
+                GL.BufferData(BufferTarget.ElementArrayBuffer, draw.Length * sizeof(ushort), new IntPtr(pdata), BufferUsageHint.StaticDraw);
 
-            gl.VertexAttribPointer(a_Position, 3, GL_FLOAT,
-                0, 5 * sizeof(float), 0);
-            gl.VertexAttribPointer(a_texCoord, 2, GL_FLOAT,
-                0, 5 * sizeof(float), 3 * sizeof(float));
+            GL.VertexAttribPointer((uint)a_Position, 3, VertexAttribPointerType.Float,
+                false, 5 * sizeof(float), 0);
+            GL.VertexAttribPointer((uint)a_texCoord, 2, VertexAttribPointerType.Float,
+                false, 5 * sizeof(float), 3 * sizeof(float));
 
-            gl.EnableVertexAttribArray(a_Position);
-            gl.EnableVertexAttribArray(a_texCoord);
+            GL.EnableVertexAttribArray((uint)a_Position);
+            GL.EnableVertexAttribArray((uint)a_texCoord);
 
-            gl.BindVertexArray(0);
+            GL.BindVertexArray(0);
 
-            CheckError(gl);
+            CheckError();
 
             steveModelDrawOrder = draw.Length;
         }
 
         {
-            gl.UseProgram(_shaderProgram);
-            gl.BindVertexArray(_vertexArrayObjectTop);
+            GL.UseProgram(_shaderProgram);
+            GL.BindVertexArray(_vertexArrayObjectTop);
 
-            int a_Position = gl.GetAttribLocationString(_shaderProgram, "a_Position");
-            int a_texCoord = gl.GetAttribLocationString(_shaderProgram, "a_texCoord");
+            int a_Position = GL.GetAttribLocation(_shaderProgram, "a_Position");
+            int a_texCoord = GL.GetAttribLocation(_shaderProgram, "a_texCoord");
 
-            glDisableVertexAttribArray(a_Position);
-            glDisableVertexAttribArray(a_texCoord);
+            GL.DisableVertexAttribArray((uint)a_Position);
+            GL.DisableVertexAttribArray((uint)a_texCoord);
 
             var steve = SteveC.GetSteveTop(steveModelType);
             var model = steve.Item1;
@@ -462,32 +459,32 @@ public class OpenGlPageControl : OpenGlControlBase
                 var srci1 = primitive * 2;
                 points[primitive] = new Vertex
                 {
-                    Position = new Vector3(model[srci], model[srci + 1], model[srci + 2]),
-                    UV = new Vector2(uv[srci1], uv[srci1 + 1])
+                    Position = new(model[srci], model[srci + 1], model[srci + 2]),
+                    UV = new(uv[srci1], uv[srci1 + 1])
                 };
             }
 
-            gl.BindBuffer(GL_ARRAY_BUFFER, _vertexBufferObjectTop);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObjectTop);
             var vertexSize = Marshal.SizeOf<Vertex>();
             fixed (void* pdata = points)
-                gl.BufferData(GL_ARRAY_BUFFER, new IntPtr(points.Length * vertexSize),
-                    new IntPtr(pdata), GL_STATIC_DRAW);
+                GL.BufferData(BufferTarget.ArrayBuffer, points.Length * vertexSize,
+                    new IntPtr(pdata), BufferUsageHint.StaticDraw);
 
-            gl.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBufferObjectTop);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _indexBufferObjectTop);
             fixed (void* pdata = draw)
-                gl.BufferData(GL_ELEMENT_ARRAY_BUFFER, new IntPtr(draw.Length * sizeof(ushort)), new IntPtr(pdata), GL_STATIC_DRAW);
+                GL.BufferData(BufferTarget.ElementArrayBuffer, draw.Length * sizeof(ushort), new IntPtr(pdata), BufferUsageHint.StaticDraw);
 
-            gl.VertexAttribPointer(a_Position, 3, GL_FLOAT,
-                0, 5 * sizeof(float), 0);
-            gl.VertexAttribPointer(a_texCoord, 2, GL_FLOAT,
-                0, 5 * sizeof(float), 3 * sizeof(float));
+            GL.VertexAttribPointer((uint)a_Position, 3, VertexAttribPointerType.Float,
+                false, 5 * sizeof(float), 0);
+            GL.VertexAttribPointer((uint)a_texCoord, 2, VertexAttribPointerType.Float,
+                false, 5 * sizeof(float), 3 * sizeof(float));
 
-            gl.EnableVertexAttribArray(a_Position);
-            gl.EnableVertexAttribArray(a_texCoord);
+            GL.EnableVertexAttribArray((uint)a_Position);
+            GL.EnableVertexAttribArray((uint)a_texCoord);
 
-            gl.BindVertexArray(0);
+            GL.BindVertexArray(0);
 
-            CheckError(gl);
+            CheckError();
 
             steveModelDrawOrderTop = draw.Length;
         }
@@ -511,6 +508,8 @@ public class OpenGlPageControl : OpenGlControlBase
             LastXY.X = (float)pos.X;
             LastXY.Y = (float)pos.Y;
         }
+
+        InvalidateVisual();
     }
 
     private void OpenGlPageControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
@@ -523,6 +522,8 @@ public class OpenGlPageControl : OpenGlControlBase
             SaveXY.X = XY.X;
             SaveXY.Y = XY.Y;
         }
+
+        InvalidateVisual();
     }
 
     private void OpenGlPageControl_PointerMoved(object? sender, PointerEventArgs e)
@@ -537,17 +538,15 @@ public class OpenGlPageControl : OpenGlControlBase
             var point = e.GetPosition(this);
             RotXY.Y = (float)point.X - DiffXY.X;
             RotXY.X = (float)point.Y + DiffXY.Y;
-
-            InvalidateVisual();
         }
         else if (po.Properties.IsRightButtonPressed)
         {
             var point = e.GetPosition(this);
             XY.X = (-(LastXY.X - (float)point.X) / 100) + SaveXY.X;
             XY.Y = ((LastXY.Y - (float)point.Y) / 100) + SaveXY.Y;
-
-            InvalidateVisual();
         }
+
+        InvalidateVisual();
     }
 
     private void OpenGlPageControl_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -567,114 +566,145 @@ public class OpenGlPageControl : OpenGlControlBase
         InvalidateVisual();
     }
 
-    protected override void OnOpenGlDeinit(GlInterface GL,  int fb)
+    public unsafe override void Render(DrawingContext context)
     {
-        // Unbind everything
-        GL.BindBuffer(GL_ARRAY_BUFFER, 0);
-        GL.BindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        GL.BindVertexArray(0);
-        GL.UseProgram(0);
+        base.Render(context);
 
-        // Delete all resources.
-        GL.DeleteBuffer(_vertexBufferObject);
-        GL.DeleteBuffer(_indexBufferObject);
-        GL.DeleteVertexArray(_vertexArrayObject);
-
-        GL.DeleteBuffer(_vertexBufferObjectTop);
-        GL.DeleteBuffer(_indexBufferObjectTop);
-        GL.DeleteVertexArray(_vertexArrayObjectTop);
-
-        GL.DeleteProgram(_shaderProgram);
-        GL.DeleteShader(_fragmentShader);
-        GL.DeleteShader(_vertexShader);
-    }
-
-    protected override unsafe void OnOpenGlRender(GlInterface gl, int fb)
-    {
         if (SwitchSkin)
         {
-            LoadSkin(gl);
+            LoadSkin();
             SwitchSkin = false;
         }
         if (SwitchModel)
         {
-            LoadModel(gl);
+            LoadModel();
             SwitchModel = false;
         }
 
         if (!HaveSkin)
             return;
 
-        if (App.BackBitmap != null)
-        {
-            gl.ClearColor(0, 0, 0, 0.2f);
-        }
-        else
-        {
-            gl.ClearColor(0, 0, 0, 1);
-        }
-
-        gl.Clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        int x = (int)Bounds.Width;
+        int y = (int)Bounds.Height;
 
         var screen = Window.PlatformImpl?.Screen.ScreenFromWindow(Window.PlatformImpl);
         if (screen != null)
         {
-            gl.Viewport(0, 0, (int)(Bounds.Width * screen.Scaling),
-                (int)(Bounds.Height * screen.Scaling));
+            x = (int)(Bounds.Width * screen.Scaling);
+            y = (int)(Bounds.Height * screen.Scaling);
+        }
+
+        var pos = this.GetXY();
+        //y += (int)pos.Y;
+
+        if (LastSize.X != x || LastSize.Y != y)
+        {
+            LastSize = new(x, y);
+            bitmap?.Dispose();
+            bitmap = new WriteableBitmap(new PixelSize(x, y), new Vector(96, 96), Avalonia.Platform.PixelFormat.Rgba8888, AlphaFormat.Premul);
+        }
+
+        if (Window1.Size.X != x || Window1.Size.Y != y)
+        {
+            Window1.Size = new(x, y);
+        }
+
+        GL.Viewport(0, 0, x, y);
+
+        if (App.BackBitmap != null)
+        {
+            GL.ClearColor(0, 0, 0, 0.2f);
         }
         else
         {
-            gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
+            GL.ClearColor(0, 0, 0, 1);
         }
 
-        CheckError(gl);
+        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+        CheckError();
         //gl.GL_CULL_FACE
-        gl.Enable(2884);
-        gl.Enable(GL_DEPTH_TEST);
-        gl.ActiveTexture(GL_TEXTURE0);
-        gl.BindTexture(GL_TEXTURE_2D, texture);
-        gl.UseProgram(_shaderProgram);
-        CheckError(gl);
+        GL.Enable(EnableCap.CullFace);
+        GL.Enable(EnableCap.DepthTest);
+        GL.ActiveTexture(TextureUnit.Texture0);
+        GL.BindTexture(TextureTarget.Texture2D, texture);
+        GL.UseProgram(_shaderProgram);
+        CheckError();
 
-        var modelLoc = gl.GetUniformLocationString(_shaderProgram, "uModel");
-        var viewLoc = gl.GetUniformLocationString(_shaderProgram, "uView");
-        var projectionLoc = gl.GetUniformLocationString(_shaderProgram, "uProjection");
+        var modelLoc = GL.GetUniformLocation(_shaderProgram, "uModel");
+        var viewLoc = GL.GetUniformLocation(_shaderProgram, "uView");
+        var projectionLoc = GL.GetUniformLocation(_shaderProgram, "uProjection");
 
-        CheckError(gl);
+        CheckError();
 
         var projection =
-        Matrix4x4.CreatePerspectiveFieldOfView((float)(Math.PI / 4), (float)(Bounds.Width / Bounds.Height),
+        Matrix4.CreatePerspectiveFieldOfView((float)(Math.PI / 4), (float)(Bounds.Width / Bounds.Height),
             0.001f, 1000);
 
-        var view = Matrix4x4.CreateLookAt(new Vector3(0, 0, Dis), new Vector3(), new Vector3(0, 1, 0));
-        var model = Matrix4x4.CreateRotationX(RotXY.X / 360) * Matrix4x4.CreateRotationY(RotXY.Y / 360)
-            * Matrix4x4.CreateTranslation(new Vector3(XY.X, XY.Y, 0));
-        gl.UniformMatrix4fv(modelLoc, 1, false, &model);
-        gl.UniformMatrix4fv(viewLoc, 1, false, &view);
-        gl.UniformMatrix4fv(projectionLoc, 1, false, &projection);
+        var view = Matrix4.LookAt(new(0, 0, Dis), new(), new(0, 1, 0));
+        var model = Matrix4.CreateRotationX(RotXY.X / 360) * Matrix4.CreateRotationY(RotXY.Y / 360)
+            * Matrix4.CreateTranslation(new(XY.X, XY.Y, 0));
+        GL.UniformMatrix4(modelLoc, false, ref model);
+        GL.UniformMatrix4(viewLoc, false, ref view);
+        GL.UniformMatrix4(projectionLoc, false, ref projection);
 
-        gl.BindVertexArray(_vertexArrayObject);
-        gl.DrawElements(GL_TRIANGLES, steveModelDrawOrder, GL_UNSIGNED_SHORT, IntPtr.Zero);
+        GL.BindVertexArray(_vertexArrayObject);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
 
-        gl.Enable(3042); //GL_BLEND
-        glBlendFunc(770, 771); //gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA
-        glDepthMask(false);
-        gl.BindVertexArray(_vertexArrayObjectTop);
-        gl.DrawElements(GL_TRIANGLES, steveModelDrawOrderTop, GL_UNSIGNED_SHORT, IntPtr.Zero);
-        glDisable(3042);
-        glDepthMask(true);
+        GL.Enable(EnableCap.Blend); //GL_BLEND
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha); //gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA
+        GL.DepthMask(false);
+        GL.BindVertexArray(_vertexArrayObjectTop);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrderTop, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.Disable(EnableCap.Blend);
+        GL.DepthMask(true);
+        
+        using (var fb = bitmap.Lock())
+        {
+            GL.ReadPixels(0, 0, x, y, PixelFormat.Rgba, PixelType.UnsignedByte, fb.Address);
+        }
 
-        CheckError(gl);
+        context.DrawImage(bitmap, new(0, 0, x, y), Bounds);
+
+        CheckError();
     }
 
-    private string GetShader(bool fragment, string shader)
+    private static void CompileShader(int shader)
     {
-        var version = GlVersion.Type == GlProfileType.OpenGL ?
-            RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 150 : 120 :
-            100;
+        // Try to compile the shader
+        GL.CompileShader(shader);
+
+        // Check for compilation errors
+        GL.GetShader(shader, ShaderParameter.CompileStatus, out var code);
+        if (code != (int)All.True)
+        {
+            // We can use `GL.GetShaderInfoLog(shader)` to get information about the error.
+            var infoLog = GL.GetShaderInfoLog(shader);
+            Console.WriteLine($"Error occurred whilst compiling Shader({shader}).\n\n{infoLog}");
+        }
+    }
+
+    private static void LinkProgram(int program)
+    {
+        // We link the program
+        GL.LinkProgram(program);
+
+        // Check for linking errors
+        GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
+        if (code != (int)All.True)
+        {
+            // We can use `GL.GetProgramInfoLog(program)` to get information about the error.
+            GL.GetProgramInfoLog(program, out var error);
+            Console.WriteLine($"Error occurred whilst linking Program({program})\n\n{error}");
+        }
+    }
+
+    private static string GetShader(bool fragment, string shader)
+    {
+        var version = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 150 : 120;
         var data = "#version " + version + "\n";
-        if (GlVersion.Type == GlProfileType.OpenGLES)
-            data += "precision mediump float;\n";
+        data += "precision mediump float;\n";
+
         if (version >= 150)
         {
             shader = shader.Replace("attribute", "in");
@@ -692,10 +722,36 @@ public class OpenGlPageControl : OpenGlControlBase
         return data;
     }
 
-    private static void CheckError(GlInterface gl)
+    private static void CheckError()
     {
-        int err;
-        while ((err = gl.GetError()) != GL_NO_ERROR)
+        ErrorCode err;
+        while ((err = GL.GetError()) != ErrorCode.NoError)
             Console.WriteLine(err);
+    }
+
+    internal void Close()
+    {
+        Window1.Close();
+        
+        // Unbind everything
+        GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+        GL.BindVertexArray(0);
+        GL.UseProgram(0);
+
+        // Delete all resources.
+        GL.DeleteBuffer(_vertexBufferObject);
+        GL.DeleteBuffer(_indexBufferObject);
+        GL.DeleteVertexArray(_vertexArrayObject);
+
+        GL.DeleteBuffer(_vertexBufferObjectTop);
+        GL.DeleteBuffer(_indexBufferObjectTop);
+        GL.DeleteVertexArray(_vertexArrayObjectTop);
+
+        GL.DeleteProgram(_shaderProgram);
+        GL.DeleteShader(_fragmentShader);
+        GL.DeleteShader(_vertexShader);
+
+        Window1.Dispose();
     }
 }
