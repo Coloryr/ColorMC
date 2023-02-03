@@ -2,6 +2,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -47,11 +48,15 @@ public static class AssetsPath
         return JsonConvert.DeserializeObject<AssetsObj>(data);
     }
 
-    public static async Task<List<(string Name, string Hash)>> Check(AssetsObj obj)
+    public static async Task<ConcurrentBag<(string Name, string Hash)>> Check(AssetsObj obj)
     {
-        var list = new List<(string, string)>();
+        var list1 = new ConcurrentBag<string>();
+        var list = new ConcurrentBag<(string, string)>();
         await Parallel.ForEachAsync(obj.objects, (item, cancel) =>
         {
+            if (list1.Contains(item.Value.hash))
+                return ValueTask.CompletedTask;
+
             string file = $"{ObjectsDir}/{item.Value.hash[..2]}/{item.Value.hash}";
             if (!File.Exists(file))
             {
@@ -63,6 +68,7 @@ public static class AssetsPath
             if (item.Value.hash != sha1)
             {
                 list.Add((item.Key, item.Value.hash));
+                list1.Add(item.Value.hash);
             }
 
             return ValueTask.CompletedTask;
