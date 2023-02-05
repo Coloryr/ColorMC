@@ -53,6 +53,7 @@
                         <TabItem Header="{setting:Localize GameEditWindow.Tab5.Title}" />
                         <TabItem Header="{setting:Localize GameEditWindow.Tab6.Title}" />
                         <TabItem Header="{setting:Localize GameEditWindow.Tab7.Title}" />
+                        <TabItem Header="{setting:Localize GameEditWindow.Tab10.Title}" />
                         <TabItem Header="{setting:Localize GameEditWindow.Tab8.Title}" />
                         <TabItem Header="{setting:Localize GameEditWindow.Tab9.Title}" />
                     </TabControl>

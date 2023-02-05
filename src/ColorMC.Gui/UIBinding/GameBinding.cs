@@ -646,4 +646,19 @@ public static class GameBinding
     {
         BaseBinding.OpUrl($"https://search.mcmod.cn/s?key={obj.Name}");
     }
+
+    public static List<ServerInfoObj> GetServers(GameSettingObj obj)
+    {
+        return obj.GetServerInfo();
+    }
+
+    public static void AddServer(GameSettingObj obj, string name, string ip)
+    {
+        obj.AddServer(name, ip);
+    }
+
+    public static void SetServer(GameSettingObj obj, List<ServerInfoObj> list)
+    {
+        obj.SaveServer(list);
+    }
 }

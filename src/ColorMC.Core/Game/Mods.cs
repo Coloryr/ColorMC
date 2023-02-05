@@ -43,6 +43,8 @@ public static class Mods
                 sha1 = Funtcions.GenSha1(data1);
 
                 using ZipFile zFile = new(item.FullName);
+
+                //forge 1.13以下
                 var item1 = zFile.GetEntry("mcmod.info");
                 if (item1 != null)
                 {
@@ -85,6 +87,7 @@ public static class Mods
                     }
                 }
 
+                //forge 1.13及以上
                 item1 = zFile.GetEntry("META-INF/mods.toml");
                 if (item1 != null)
                 {
@@ -126,6 +129,7 @@ public static class Mods
                     return;
                 }
 
+                //fabric
                 item1 = zFile.GetEntry("fabric.mod.json");
                 if (item1 != null)
                 {
@@ -146,6 +150,34 @@ public static class Mods
                         version = obj1["version"]?.ToString(),
                         authorList = (obj1["authors"] as JArray)?.ToStringList(),
                         url = obj1["contact"]?["homepage"]?.ToString(),
+                        Sha1 = sha1
+                    };
+                    list.Add(obj3);
+                    find = true;
+                    return;
+                }
+
+                //quilt
+                item1 = zFile.GetEntry("quilt.mod.json");
+                if (item1 != null)
+                {
+                    using var stream1 = zFile.GetInputStream(item1);
+                    using var stream = new MemoryStream();
+                    await stream1.CopyToAsync(stream, cancel);
+                    var data = Encoding.UTF8.GetString(stream.ToArray());
+                    var obj1 = JObject.Parse(data);
+                    var obj3 = new ModObj
+                    {
+                        Local = Path.GetFullPath(item.FullName),
+                        Disable = item.Extension is ".disable",
+                        Loader = Loaders.Quilt,
+                        V2 = true,
+                        modid = obj1["quilt_loader"]?["id"]?.ToString(),
+                        name = obj1["quilt_loader"]?["metadata"]?["name"]?.ToString(),
+                        description = obj1["quilt_loader"]?["metadata"]?["description"]?.ToString(),
+                        version = obj1["quilt_loader"]?["version"]?.ToString(),
+                        authorList = (obj1["quilt_loader"]?["metadata"]?["contributors"] as JObject)?.ToStringList(),
+                        url = obj1["quilt_loader"]?["contact"]?["homepage"]?.ToString(),
                         Sha1 = sha1
                     };
                     list.Add(obj3);
@@ -263,6 +295,17 @@ public static class Mods
             {
                 list.Add(item.ToString());
             }
+        }
+
+        return list;
+    }
+
+    private static List<string> ToStringList(this JObject array)
+    {
+        List<string> list = new();
+        foreach (var item in array)
+        {
+            list.Add(item.Key.ToString());
         }
 
         return list;

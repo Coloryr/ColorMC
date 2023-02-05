@@ -36,51 +36,54 @@ public partial class Info3Control : UserControl
         App.CrossFade300.Start(this, null, CancellationToken.None);
     }
 
-    public Task Show(string title, string title1, bool lock1 = true)
+    public Task ShowInput(string title, string title1, bool password)
     {
-        TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = lock1;
-        if (lock1)
-        {
-            TextBox_Text.Text = title;
-            TextBox_Text1.Text = title1;
+        TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = false;
 
-            TextBox_Text.Watermark = "";
-            TextBox_Text1.Watermark = "";
+        ProgressBar_Value.IsVisible = false;
 
-            ProgressBar_Value.IsVisible = true;
+        TextBox_Text.Text = "";
+        TextBox_Text1.Text = "";
 
-            Button_Confirm.IsEnabled = false;
-            Button_Confirm.IsVisible = false;
+        TextBox_Text.Watermark = title;
+        TextBox_Text1.Watermark = title1;
 
-            Button_Cancel.IsEnabled = false;
-            Button_Cancel.IsVisible = false;
+        Button_Confirm.IsEnabled = true;
+        Button_Confirm.IsVisible = true;
 
-            TextBox_Text1.PasswordChar = (char)0;
-        }
-        else
-        {
-            ProgressBar_Value.IsVisible = false;
+        Button_Cancel.IsEnabled = true;
+        Button_Cancel.IsVisible = true;
 
-            TextBox_Text.Watermark = title;
-            TextBox_Text1.Watermark = title1;
-
-            Button_Confirm.IsEnabled = true;
-            Button_Confirm.IsVisible = true;
-
-            Button_Cancel.IsEnabled = true;
-            Button_Cancel.IsVisible = true;
-
-            TextBox_Text1.PasswordChar = '*';
-        }
+        TextBox_Text1.PasswordChar = password ? '*' : (char)0;
         App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
 
-        if (!lock1)
+        return Task.Run(() =>
         {
-            return Task.Run(() =>
-            {
-                semaphore.WaitOne();
-            });
-        }
+            semaphore.WaitOne();
+        });
+    }
+
+    public Task Show(string title, string title1)
+    {
+        TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = true;
+        TextBox_Text.Text = title;
+        TextBox_Text1.Text = title1;
+
+        TextBox_Text.Watermark = "";
+        TextBox_Text1.Watermark = "";
+
+        ProgressBar_Value.IsVisible = true;
+
+        Button_Confirm.IsEnabled = false;
+        Button_Confirm.IsVisible = false;
+
+        Button_Cancel.IsEnabled = false;
+        Button_Cancel.IsVisible = false;
+
+        TextBox_Text1.PasswordChar = (char)0;
+
+        App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
+
 
         return Task.CompletedTask;
     }

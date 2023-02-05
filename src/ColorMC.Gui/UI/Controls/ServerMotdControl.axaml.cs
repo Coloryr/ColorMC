@@ -20,10 +20,8 @@ public partial class ServerMotdControl : UserControl
     private int Port;
 
     private bool FirstLine = true;
-    private Thread thread;
-    private bool IsRun = true;
-    private List<TextBlock> ObfuscatedList = new();
-    private Random random = new();
+    private readonly Thread thread;
+    private readonly Random random = new();
 
     public ServerMotdControl()
     {
@@ -36,12 +34,6 @@ public partial class ServerMotdControl : UserControl
 
         Expander1.ContentTransition = App.CrossFade300;
         Button1.Content = "↑";
-
-        thread = new Thread(Run)
-        {
-            Name = "ColorMC-Motd"
-        };
-        thread.Start();
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
@@ -67,22 +59,21 @@ public partial class ServerMotdControl : UserControl
         Expander1.MakePadingNull();
     }
 
-    private void Run(object? arg)
+    public void Load(string ip)
     {
-        while (IsRun)
+        int index = ip.LastIndexOf(':');
+        if (index == -1)
         {
-            if (ObfuscatedList.Count != 0)
-            {
-                Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    foreach (var item in ObfuscatedList)
-                    {
-                        item.Text = new string((char)random.Next(33, 126), 1);
-                    }
-                }).Wait();
-            }
-            Thread.Sleep(10);
+            IP = ip;
+            Port = 25565;
         }
+        else
+        {
+            IP = ip[..index];
+            _ = int.TryParse(ip[(index + 1)..], out Port);
+        }
+
+        Update();
     }
 
     public void Load(string ip, int port)
@@ -100,7 +91,6 @@ public partial class ServerMotdControl : UserControl
         FirstLine = true;
         StackPanel1.Children.Clear();
         StackPanel2.Children.Clear();
-        ObfuscatedList.Clear();
 
         var motd = await Task.Run(async () =>
         {
@@ -143,7 +133,7 @@ public partial class ServerMotdControl : UserControl
         {
             TextBlock text = new()
             {
-                Text = chat.Obfuscated ? "0" : chat.Text,
+                Text = chat.Obfuscated ? " " : chat.Text,
                 Foreground = Brush.Parse(chat.Color)
             };
 
@@ -180,7 +170,7 @@ public partial class ServerMotdControl : UserControl
 
             if (chat.Obfuscated)
             {
-                ObfuscatedList.Add(text);
+                text.Text = new string((char)random.Next(33, 126), 1);
             }
 
             AddText(text);

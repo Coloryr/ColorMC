@@ -1,0 +1,90 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Tab10Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
+
+        <DockPanel LastChildFill="True">
+            <view:ServerMotdControl
+                Name="ServerMotd"
+                Margin="3"
+                DockPanel.Dock="Top" />
+            <DataGrid
+                Name="DataGrid1"
+                Margin="3,0,3,3"
+                AutoGenerateColumns="False"
+                Background="#88ffffff"
+                CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="{setting:Localize DownloadWindow.Data.Title1}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding IP}"
+                        Header="地址"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+
+        <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
+            <Grid>
+                <Button
+                    Name="Button_A"
+                    Width="20"
+                    Height="30"
+                    Content="A" />
+                <Expander
+                    Name="Expander_A"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_A1"
+                        Width="100"
+                        Height="30"
+                        Margin="6,0,0,0"
+                        Content="{setting:Localize Button.Add}" />
+                </Expander>
+            </Grid>
+            <Grid>
+                <Button
+                    Name="Button_R"
+                    Width="20"
+                    Height="30"
+                    Content="R" />
+                <Expander
+                    Name="Expander_R"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_R1"
+                        Width="100"
+                        Height="30"
+                        Margin="6,0,0,0"
+                        Content="{setting:Localize Button.Refash}" />
+                </Expander>
+            </Grid>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

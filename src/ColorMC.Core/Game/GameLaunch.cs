@@ -51,10 +51,62 @@ public enum LaunchState
     /// 检查Mod
     /// </summary>
     CheckMods,
-    LostVersion, LostLib, LostLoader, LostLoginCore, LostGame, LostFile,
-    Download, DownloadFail,
+    /// <summary>
+    /// 缺失版本文件
+    /// </summary>
+    LostVersion, 
+    /// <summary>
+    /// 缺失运行库
+    /// </summary>
+    LostLib, 
+    /// <summary>
+    /// 缺失加载器
+    /// </summary>
+    LostLoader, 
+    /// <summary>
+    /// 缺失登陆核心
+    /// </summary>
+    LostLoginCore, 
+    /// <summary>
+    /// 缺失游戏
+    /// </summary>
+    LostGame, 
+    /// <summary>
+    /// 缺失文件
+    /// </summary>
+    LostFile,
+    /// <summary>
+    /// 下载文件
+    /// </summary>
+    Download, 
+    /// <summary>
+    /// 下载失败
+    /// </summary>
+    DownloadFail,
+    /// <summary>
+    /// 准备Jvm参数
+    /// </summary>
     JvmPrepare,
-    VersionError, AssetsError, LoaderError, JvmError, LoginFail
+    /// <summary>
+    /// 版本错误
+    /// </summary>
+    VersionError, 
+    /// <summary>
+    /// 资源文件错误
+    /// </summary>
+    AssetsError, 
+    /// <summary>
+    /// 加载器错误
+    /// </summary>
+    LoaderError, 
+    /// <summary>
+    /// Java错误
+    /// </summary>
+    JavaError,
+    /// <summary>
+    /// 登录失败
+    /// </summary>
+    LoginFail
 }
 
 public static class Launch
@@ -76,14 +128,6 @@ public static class Launch
         if (game == null)
         {
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostVersion);
-            if (CoreMain.GameDownload == null)
-                throw new LaunchException(LaunchState.VersionError,
-                    LanguageHelper.GetName("Core.Launch.Error1"));
-
-            var res = await CoreMain.GameDownload.Invoke(LaunchState.LostVersion, obj);
-            if (res != true)
-                throw new LaunchException(LaunchState.VersionError,
-                    LanguageHelper.GetName("Core.Launch.Error1"));
 
             var version = VersionPath.Versions?.versions.Where(a => a.id == obj.Version).FirstOrDefault();
             if (version == null)
@@ -93,7 +137,6 @@ public static class Launch
                     LanguageHelper.GetName("Core.Launch.Error1"));
             }
 
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
             var res1 = await GameDownload.Download(version);
             if (res1.State != DownloadState.End)
                 throw new LaunchException(LaunchState.VersionError,
@@ -192,16 +235,7 @@ public static class Launch
                 if (list3 == null)
                 {
                     CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
-                    if (CoreMain.GameDownload == null)
-                        throw new LaunchException(LaunchState.LostLoader,
-                        LanguageHelper.GetName("Core.Launch.Error3"));
 
-                    var res = await CoreMain.GameDownload.Invoke(LaunchState.LostLoader, obj);
-                    if (res != true)
-                        throw new LaunchException(LaunchState.LostLoader,
-                        LanguageHelper.GetName("Core.Launch.Error3"));
-
-                    CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
                     var list4 = await GameDownload.DownloadForge(obj.Version, obj.LoaderVersion);
                     if (list4.State != DownloadState.End)
                         throw new LaunchException(LaunchState.LostLoader,
@@ -220,16 +254,7 @@ public static class Launch
                 if (list3 == null)
                 {
                     CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
-                    if (CoreMain.GameDownload == null)
-                        throw new LaunchException(LaunchState.LostLoader,
-                        LanguageHelper.GetName("Core.Launch.Error3"));
 
-                    var res = await CoreMain.GameDownload.Invoke(LaunchState.LostLoader, obj);
-                    if (res != true)
-                        throw new LaunchException(LaunchState.LostLoader,
-                        LanguageHelper.GetName("Core.Launch.Error3"));
-
-                    CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
                     var list4 = await GameDownload.DownloadFabric(obj.Version, obj.LoaderVersion);
                     if (list4.State != DownloadState.End)
                         throw new LaunchException(LaunchState.LostLoader,
@@ -248,16 +273,7 @@ public static class Launch
                 if (list3 == null)
                 {
                     CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
-                    if (CoreMain.GameDownload == null)
-                        throw new LaunchException(LaunchState.LostLoader,
-                        LanguageHelper.GetName("Core.Launch.Error3"));
 
-                    var res = await CoreMain.GameDownload.Invoke(LaunchState.LostLoader, obj);
-                    if (res != true)
-                        throw new LaunchException(LaunchState.LostLoader,
-                        LanguageHelper.GetName("Core.Launch.Error3"));
-
-                    CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
                     var list4 = await GameDownload.DownloadQuilt(obj.Version, obj.LoaderVersion);
                     if (list4.State != DownloadState.End)
                         throw new LaunchException(LaunchState.LostLoader,
@@ -999,6 +1015,7 @@ public static class Launch
             }
         }
 
+        //准备Jvm参数
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
 
         var arg = await MakeArg(obj, login);
@@ -1014,7 +1031,7 @@ public static class Launch
             JavaInfo? jvm = JvmPath.GetInfo(obj.JvmName) ?? FindJava(obj);
             if (jvm == null)
             {
-                CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmError);
+                CoreMain.GameLaunch?.Invoke(obj, LaunchState.JavaError);
                 throw new Exception(LanguageHelper.GetName("Core.Launch.Error3"));
             }
 
@@ -1024,6 +1041,7 @@ public static class Launch
         CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Log3"));
         CoreMain.GameLog?.Invoke(obj, path);
 
+        //启动进程
         Process process = new()
         {
             EnableRaisingEvents = true

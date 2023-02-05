@@ -103,6 +103,9 @@
     <Compile Update="UI\Controls\CurseForge\CurseForge1Control.axaml.cs">
       <DependentUpon>CurseForge1Control.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Controls\GameEdit\Flyouts5Control.axaml.cs">
+      <DependentUpon>Flyouts5Control.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\GameEdit\Flyouts4Control.axaml.cs">
       <DependentUpon>Flyouts4Control.axaml</DependentUpon>
     </Compile>
