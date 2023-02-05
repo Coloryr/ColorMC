@@ -122,6 +122,7 @@ public static class BaseBinding
                         App.ShowError(Localizer.Instance["UserBinding.Error2"], File.ReadAllText(file));
                     });
                 }
+                res.Dispose();
             };
             Games.Add(res, obj);
         }
@@ -241,7 +242,7 @@ public static class BaseBinding
                 if (file)
                 {
                     var file1 = new FileInfo(item);
-                    Process.Start("open", '"' + file1.Directory.FullName + '"');
+                    Process.Start("open", '"' + file1.Directory?.FullName + '"');
                 }
                 else
                 {

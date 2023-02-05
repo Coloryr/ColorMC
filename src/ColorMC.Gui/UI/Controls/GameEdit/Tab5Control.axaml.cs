@@ -38,7 +38,7 @@ public partial class Tab5Control : UserControl
         Button_A1.Click += Button_A1_Click;
         Button_I1.Click += Button_I1_Click;
 
-        LayoutUpdated += Tab5Control_LayoutUpdated1;
+        LayoutUpdated += Tab5Control_LayoutUpdated;
     }
 
     public void CloseAddWorld()
@@ -95,13 +95,6 @@ public partial class Tab5Control : UserControl
             Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
             Load();
         }
-    }
-
-    private void Tab5Control_LayoutUpdated1(object? sender, EventArgs e)
-    {
-        Expander_I.MakePadingNull();
-        Expander_A.MakePadingNull();
-        Expander_R.MakePadingNull();
     }
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)

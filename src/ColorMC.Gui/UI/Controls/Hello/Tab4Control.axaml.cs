@@ -85,8 +85,8 @@ public partial class Tab4Control : UserControl
                     Window.Info.Show(Localizer.Instance["UserWindow.Error3"]);
                     break;
                 }
-                await Window.Info3.Show(Localizer.Instance["UserWindow.Text1"],
-                    Localizer.Instance["UserWindow.Text2"], false);
+                await Window.Info3.ShowInput(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], true);
                 Window.Info3.Close();
                 if (Window.Info3.Cancel)
                 {
@@ -116,8 +116,8 @@ public partial class Tab4Control : UserControl
                     Window.Info.Show(Localizer.Instance["UserWindow.Error4"]);
                     break;
                 }
-                await Window.Info3.Show(Localizer.Instance["UserWindow.Text1"],
-                    Localizer.Instance["UserWindow.Text2"], false);
+                await Window.Info3.ShowInput(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], true);
                 Window.Info3.Close();
                 if (Window.Info3.Cancel)
                 {
@@ -141,8 +141,8 @@ public partial class Tab4Control : UserControl
                 TextBox_Input1.Text = "";
                 break;
             case 4:
-                await Window.Info3.Show(Localizer.Instance["UserWindow.Text1"],
-                    Localizer.Instance["UserWindow.Text2"], false);
+                await Window.Info3.ShowInput(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], true);
                 Window.Info3.Close();
                 if (Window.Info3.Cancel)
                 {
@@ -171,8 +171,8 @@ public partial class Tab4Control : UserControl
                     Window.Info.Show(Localizer.Instance["UserWindow.Error4"]);
                     break;
                 }
-                await Window.Info3.Show(Localizer.Instance["UserWindow.Text1"],
-                    Localizer.Instance["UserWindow.Text2"], false);
+                await Window.Info3.ShowInput(Localizer.Instance["UserWindow.Text1"],
+                    Localizer.Instance["UserWindow.Text2"], true);
                 Window.Info3.Close();
                 if (Window.Info3.Cancel)
                 {

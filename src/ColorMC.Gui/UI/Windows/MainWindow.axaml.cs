@@ -65,7 +65,7 @@ public partial class MainWindow : Window
                 case LaunchState.LoginFail:
                     Info.Show(Localizer.Instance["MainWindow.Error1"]);
                     break;
-                case LaunchState.JvmError:
+                case LaunchState.JavaError:
                     Info.Show(Localizer.Instance["MainWindow.Error2"]);
                     break;
                 default:

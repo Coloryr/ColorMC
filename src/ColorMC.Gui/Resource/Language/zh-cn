@@ -241,6 +241,7 @@
 	<sys:String x:Key="GameEditWindow.Tab7.Title">游戏截图</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Title">导出</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab9.Title">运行日志</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab10.Title">服务器列表</sys:String>
 
 	<sys:String x:Key="GameEditWindow.Tab1.Text1">游戏版本</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab1.Button1">刷新版本</sys:String>

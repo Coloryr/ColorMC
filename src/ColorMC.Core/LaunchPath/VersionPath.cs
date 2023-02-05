@@ -82,8 +82,6 @@ public static class VersionPath
         {
             string data = File.ReadAllText(file);
             Versions = JsonConvert.DeserializeObject<VersionObj>(data);
-
-            await Task.Run(GetFromWeb);
         }
         else
         {
