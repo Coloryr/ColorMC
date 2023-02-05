@@ -125,6 +125,8 @@ public partial class AddModPackWindow : Window, IBase1Window
         App.PicUpdate -= Update;
 
         App.AddModPackWindow = null;
+
+        Head.SetWindow(null);
     }
 
     public void Install()

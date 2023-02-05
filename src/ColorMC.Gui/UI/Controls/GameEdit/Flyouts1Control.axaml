@@ -34,6 +34,11 @@
                 Width="100"
                 Height="25"
                 Content="mcmod搜索" />
+            <Button
+                Name="Button5"
+                Width="100"
+                Height="25"
+                Content="打开链接" />
         </StackPanel>
     </Grid>
 </UserControl>

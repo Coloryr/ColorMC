@@ -138,6 +138,8 @@ public partial class AddResourcePackWindow : Window, IBase1Window
         App.PicUpdate -= Update;
 
         Tab.CloseAddResourcepack();
+
+        Head.SetWindow(null);
     }
 
     public void Install()

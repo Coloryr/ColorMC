@@ -423,7 +423,7 @@ public static class ImageUtils
         }
 
         MemoryStream stream = new();
-        await image2.SaveAsPngAsync(stream);
+        await image2.SaveAsBmpAsync(stream);
         return stream;
     }
 

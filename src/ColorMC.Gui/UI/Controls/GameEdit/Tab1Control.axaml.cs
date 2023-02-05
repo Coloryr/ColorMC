@@ -40,6 +40,11 @@ public partial class Tab1Control : UserControl
         ComboBox3.Items = List2;
     }
 
+    public void SetWindow(GameEditWindow window)
+    {
+        Window = window;
+    }
+
     private async void Button5_Click(object? sender, RoutedEventArgs e)
     {
         var res = await Window.Info.ShowWait(string.Format(Localizer.Instance["GameEditWindow.Tab1.Info1"], Obj.Name));
@@ -265,11 +270,6 @@ public partial class Tab1Control : UserControl
         {
             ComboBox2.SelectedItem = Obj.GroupName;
         }
-    }
-
-    public void SetWindow(GameEditWindow window)
-    {
-        Window = window;
     }
 
     public void SetGame(GameSettingObj obj)

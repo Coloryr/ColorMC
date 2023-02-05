@@ -18,8 +18,8 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class AddGameWindow : Window
 {
-    private ObservableCollection<string> List = new();
-    private ObservableCollection<string> List1 = new();
+    private readonly ObservableCollection<string> List = new();
+    private readonly ObservableCollection<string> List1 = new();
     private bool add;
 
     public AddGameWindow()
@@ -213,6 +213,8 @@ public partial class AddGameWindow : Window
         CoreMain.PackUpdate = null;
         CoreMain.GameOverwirte = null;
         App.AddGameWindow = null;
+
+        Head.SetWindow(null);
     }
 
     private void Button_Add5_Click(object? sender, RoutedEventArgs e)
@@ -263,7 +265,7 @@ public partial class AddGameWindow : Window
         }
         else
         {
-            Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
+            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
             App.MainWindow?.Load();
             Close();
         }
@@ -422,7 +424,9 @@ public partial class AddGameWindow : Window
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.HMCL))
         {
-            Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
+            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
+            App.MainWindow?.Load();
+            Close();
         }
         else
         {
@@ -441,7 +445,9 @@ public partial class AddGameWindow : Window
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.MMC))
         {
-            Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
+            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
+            App.MainWindow?.Load();
+            Close();
         }
         else
         {
@@ -460,7 +466,9 @@ public partial class AddGameWindow : Window
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.CurseForge))
         {
-            Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
+            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
+            App.MainWindow?.Load();
+            Close();
         }
         else
         {
@@ -479,7 +487,9 @@ public partial class AddGameWindow : Window
         DisableButton();
         if (await GameBinding.AddPack(name, PackType.ColorMC))
         {
-            Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
+            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
+            App.MainWindow?.Load();
+            Close();
         }
         else
         {
@@ -558,7 +568,9 @@ public partial class AddGameWindow : Window
         }
         else
         {
-            Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
+            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
+            App.MainWindow?.Load();
+            Close();
         }
     }
 

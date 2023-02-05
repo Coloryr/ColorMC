@@ -140,11 +140,11 @@ public static class Mods
                         Disable = item.Extension is ".disable",
                         Loader = Loaders.Fabric,
                         V2 = true,
-                        modid = obj1["id"].ToString(),
-                        name = obj1["name"].ToString(),
-                        description = obj1["description"].ToString(),
-                        version = obj1["version"].ToString(),
-                        authorList = (obj1["authors"] as JArray).ToStringList(),
+                        modid = obj1["id"]?.ToString(),
+                        name = obj1["name"]?.ToString(),
+                        description = obj1["description"]?.ToString(),
+                        version = obj1["version"]?.ToString(),
+                        authorList = (obj1["authors"] as JArray)?.ToStringList(),
                         url = obj1["contact"]?["homepage"]?.ToString(),
                         Sha1 = sha1
                     };
@@ -255,7 +255,14 @@ public static class Mods
         List<string> list = new();
         foreach (var item in array)
         {
-            list.Add(item.ToString());
+            if (item is JObject obj && obj.ContainsKey("name"))
+            {
+                list.Add(item["name"]!.ToString());
+            }
+            else
+            {
+                list.Add(item.ToString());
+            }
         }
 
         return list;
