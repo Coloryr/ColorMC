@@ -60,7 +60,6 @@ public partial class CustomWindow : Window
 
     private LaunchState Last;
     private Image? HeadImg;
-    private readonly Bitmap bitmap;
     private ServerMotdControl? Motd;
 
     public CustomWindow()
@@ -78,14 +77,17 @@ public partial class CustomWindow : Window
 
         App.PicUpdate += Update;
         App.UserEdit += App_UserEdit;
-
-        var uri = new Uri($"resm:ColorMC.Gui.Resource.Pic.user.png");
-        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        var asset = assets!.Open(uri);
-
-        bitmap = new Bitmap(asset);
+        App.SkinLoad += App_SkinLoad;
 
         Update();
+    }
+
+    private void App_SkinLoad()
+    {
+        if (HeadImg != null)
+        {
+            HeadImg.Source = UserBinding.HeadBitmap!;
+        }
     }
 
     private void App_UserEdit()
@@ -98,7 +100,6 @@ public partial class CustomWindow : Window
 
             if (HeadImg != null)
             {
-                HeadImg.Source = bitmap;
                 CustomModel.Type = Localizer.Instance["MainWindow.Control.Info1"];
                 CustomModel.Name = Localizer.Instance["MainWindow.Control.Info2"];
             }
@@ -106,41 +107,15 @@ public partial class CustomWindow : Window
             {
                 CustomModel.Type = User.AuthType.GetName();
                 CustomModel.Name = User.UserName;
-
-                LoadHead();
             }
+
+            LoadHead();
         });
     }
 
     private async void LoadHead()
     {
-        if (HeadImg == null)
-        {
-            return;
-        }
-        if (User == null)
-        {
-            HeadImg.Source = bitmap;
-            return;
-        }
-
-        var file = await GetSkin.DownloadSkin(User);
-        if (file == null)
-        {
-            HeadImg.Source = bitmap;
-            return;
-        }
-
-        var data = await ImageUtils.MakeHeadImage(file);
-        if (file == null)
-        {
-            HeadImg.Source = bitmap;
-            return;
-        }
-
-        data.Seek(0, SeekOrigin.Begin);
-        HeadImg.Source = new Bitmap(data);
-        data.Close();
+        await UserBinding.LoadSkin();
     }
 
     private void CustomWindow_Closed(object? sender, EventArgs e)
@@ -151,6 +126,8 @@ public partial class CustomWindow : Window
         CoreMain.GameDownload = null;
 
         App.CustomWindow = null;
+
+        Head.SetWindow(null);
     }
 
     public async void Launch()

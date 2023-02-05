@@ -42,9 +42,9 @@ public partial class HeadControl : UserControl
         }
     }
 
-    private Window BindWindow;
+    private Window? BindWindow;
 
-    public void SetWindow(Window window)
+    public void SetWindow(Window? window)
     {
         BindWindow = window;
     }

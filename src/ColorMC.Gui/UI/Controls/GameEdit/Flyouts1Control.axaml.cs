@@ -19,6 +19,13 @@ public partial class Flyouts1Control : UserControl
         Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
+        Button5.Click += Button5_Click;
+    }
+
+    private void Button5_Click(object? sender, RoutedEventArgs e)
+    {
+        FlyoutBase.Hide();
+        BaseBinding.OpUrl(Obj.Url);
     }
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
@@ -50,6 +57,11 @@ public partial class Flyouts1Control : UserControl
         Obj = obj;
         Con = con;
         FlyoutBase = fb;
+
+        if(string.IsNullOrWhiteSpace(Obj.Url))
+        {
+            Button5.IsEnabled = false;
+        }
     }
 }
 

@@ -88,6 +88,19 @@ public partial class App : Application
         await BaseBinding.Init();
 
         ShowCustom();
+
+        for (int a = 0; a < 100; a++)
+        {
+            var win = new SettingWindow();
+            win.Show();
+            win.Close();
+        }
+
+        await Task.Run(() =>
+        {
+            Task.Delay(1000);
+            GC.Collect();
+        });
     }
 
     public static void OnUserEdit()

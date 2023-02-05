@@ -131,6 +131,8 @@ public partial class AddModWindow : Window
         App.PicUpdate -= Update;
 
         Tab.CloseAddMod();
+
+        Head.SetWindow(null);
     }
 
     public void Install()

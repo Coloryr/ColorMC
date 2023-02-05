@@ -138,6 +138,8 @@ public partial class AddWorldWindow : Window, IBase1Window
         App.PicUpdate -= Update;
 
         Tab.CloseAddWorld();
+
+        Head.SetWindow(null);
     }
 
     public void Install()
