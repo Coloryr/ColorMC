@@ -55,7 +55,7 @@ public partial class HeadControl : UserControl
 
         DataContext = this;
 
-        PointerPressed += HeadControl_PointerPressed;
+        Rectangle1.PointerPressed += HeadControl_PointerPressed;
 
         Button_Min.Click += ButtonMin_Click;
         Button_Max.Click += ButtonMax_Click;
@@ -94,6 +94,6 @@ public partial class HeadControl : UserControl
         if (BindWindow == null)
             return;
 
-        BindWindow.BeginMoveDrag(e);
+            BindWindow.BeginMoveDrag(e);
     }
 }

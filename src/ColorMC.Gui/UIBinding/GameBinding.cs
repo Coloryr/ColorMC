@@ -365,7 +365,7 @@ public static class GameBinding
         return File.ReadAllText(Path.GetFullPath(dir + "/" + name));
     }
 
-    public static void SaveConfigFile(GameSettingObj obj, string name, string text)
+    public static void SaveConfigFile(GameSettingObj obj, string name, string? text)
     {
         var dir = obj.GetGamePath();
 

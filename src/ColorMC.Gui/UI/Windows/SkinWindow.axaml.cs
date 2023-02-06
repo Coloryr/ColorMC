@@ -644,6 +644,7 @@ public class SkinRender : Control
         var view = Matrix4.LookAt(new(0, 0, Dis), new(), new(0, 1, 0));
         var model = Matrix4.CreateRotationX(RotXY.X / 360) * Matrix4.CreateRotationY(RotXY.Y / 360)
             * Matrix4.CreateTranslation(new(XY.X, XY.Y, 0));
+
         GL.UniformMatrix4(modelLoc, false, ref model);
         GL.UniformMatrix4(viewLoc, false, ref view);
         GL.UniformMatrix4(projectionLoc, false, ref projection);
@@ -729,7 +730,7 @@ public class SkinRender : Control
             Console.WriteLine(err);
     }
 
-    internal void Close()
+    public void Close()
     {
         Window1.Close();
         

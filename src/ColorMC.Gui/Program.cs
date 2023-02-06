@@ -22,18 +22,13 @@ internal class Program
         //    Thread.Sleep(100);
         //}
 
-        BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
-    }
-
-    // Avalonia configuration, don't remove; also used by visual designer.
-    public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
+        AppBuilder.Configure<App>()
             .With(new FontManagerOptions
             {
                 DefaultFamilyName = Font,
             })
-            //.With(new Win32PlatformOptions { UseWgl = true })
+            .LogToTrace()
             .UsePlatformDetect()
-            .LogToTrace();
+            .StartWithClassicDesktopLifetime(args);
+    }
 }

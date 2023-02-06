@@ -181,8 +181,7 @@ public partial class Tab2Control : UserControl
         if (file?.Any() == true)
         {
             var item = file[0];
-            item.TryGetUri(out var uri);
-            TextBox1.Text = uri!.LocalPath;
+            TextBox1.Text = item.Path.LocalPath;
 
             Button_Set2_Click(sender, e);
         }
