@@ -1,4 +1,5 @@
-﻿using Avalonia.Threading;
+﻿using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
@@ -283,5 +284,11 @@ public static class BaseBinding
                     '"' + url + '"');
                 break;
         }
+    }
+
+    public static string GetPath(this IStorageFile file)
+    {
+        file.TryGetUri(out var uri);
+        return uri!.LocalPath;
     }
 }

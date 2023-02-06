@@ -160,8 +160,8 @@ public partial class Tab5Control : UserControl
         if (file?.Any() == true)
         {
             var item = file[0];
-            TextBox2.Text = item.Path.LocalPath;
-            var info = JavaBinding.GetJavaInfo(item.Path.LocalPath);
+            TextBox2.Text = item.GetPath();
+            var info = JavaBinding.GetJavaInfo(item.GetPath());
             if (info != null)
             {
                 TextBox1.Text = info.Type + "_" + info.Version;

@@ -1,6 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using AvaloniaEdit.Indentation.CSharp;
+using AvaloniaEdit.TextMate;
+using AvaloniaEdit.TextMate.Grammars;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -19,8 +22,8 @@ public partial class Tab3Control : UserControl
     private readonly List<string> Items = new();
     private GameEditWindow Window;
     private GameSettingObj Obj;
-    //private TextMate.Installation textMateInstallation;
-    //private RegistryOptions registryOptions;
+    private TextMate.Installation textMateInstallation;
+    private RegistryOptions registryOptions;
     public Tab3Control()
     {
         InitializeComponent();
@@ -33,11 +36,12 @@ public partial class Tab3Control : UserControl
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
 
-        //TextEditor1.Options.ShowBoxForControlCharacters = true;
-        //TextEditor1.TextArea.IndentationStrategy = new CSharpIndentationStrategy(TextEditor1.Options);
+        TextEditor1.Options.ShowBoxForControlCharacters = true;
+        TextEditor1.TextArea.IndentationStrategy = 
+            new CSharpIndentationStrategy(TextEditor1.Options);
 
-        //registryOptions = new RegistryOptions(ThemeName.LightPlus);
-        //textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
+        registryOptions = new RegistryOptions(ThemeName.LightPlus);
+        textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
 
         TextBox1.PropertyChanged += TextBox1_TextInput;
     }
@@ -63,8 +67,8 @@ public partial class Tab3Control : UserControl
         if (item == null)
             return;
 
-        //GameBinding.SaveConfigFile(Obj, item, TextEditor1.Document.Text);
-        GameBinding.SaveConfigFile(Obj, item, TextEditor1.Text);
+        GameBinding.SaveConfigFile(Obj, item, TextEditor1.Document.Text);
+        //GameBinding.SaveConfigFile(Obj, item, TextEditor1.Text);
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)

@@ -97,8 +97,8 @@ public partial class Tab3Control : UserControl
         if (file?.Any() == true)
         {
             var item = file[0];
-            TextBox_Local.Text = item.Path.LocalPath;
-            var info = JavaBinding.GetJavaInfo(item.Path.LocalPath);
+            TextBox_Local.Text = item.GetPath();
+            var info = JavaBinding.GetJavaInfo(item.GetPath());
             if (info != null)
             {
                 TextBox_Name.Text = info.Type + "_" + info.Version;
