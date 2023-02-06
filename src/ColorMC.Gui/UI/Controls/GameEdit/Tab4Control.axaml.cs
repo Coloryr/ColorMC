@@ -105,7 +105,7 @@ public partial class Tab4Control : UserControl
             var list = new List<string>();
             foreach (var item in file)
             {
-                list.Add(item.Path.OriginalString);
+                list.Add(item.GetPath());
             }
             GameBinding.AddMods(Obj, list);
             Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
