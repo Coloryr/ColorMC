@@ -164,7 +164,7 @@ public class PageSlide : IPageTransition
     /// <remarks>
     /// Any one of the parameters may be null, but not both.
     /// </remarks>
-    protected static IVisual GetVisualParent(Visual? from, Visual? to)
+    protected static Visual GetVisualParent(Visual? from, Visual? to)
     {
         var p1 = (from ?? to)!.GetVisualParent();
         var p2 = (to ?? from)!.GetVisualParent();

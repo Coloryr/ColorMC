@@ -1,6 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Models.TreeDataGrid;
+//using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
@@ -216,57 +216,57 @@ public class FilesPageViewModel : ReactiveObject
     {
         Obj = obj;
 
-        Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(Array.Empty<FileTreeNodeModel>())
-        {
-            Columns =
-            {
-                new TemplateColumn<FileTreeNodeModel>(
-                    null,
-                    "FileNameCell1",
-                    options: new ColumnOptions<FileTreeNodeModel>
-                    {
-                        CanUserResizeColumn = false
-                    }),
-                new HierarchicalExpanderColumn<FileTreeNodeModel>(
-                    new TemplateColumn<FileTreeNodeModel>(
-                        Localizer.Instance["GameEditWindow.Tab6.Data.Title3"],
-                        "FileNameCell",
-                        new GridLength(1, GridUnitType.Star),
-                        new ColumnOptions<FileTreeNodeModel>
-                        {
-                            CompareAscending = FileTreeNodeModel.SortAscending(x => x.Name),
-                            CompareDescending = FileTreeNodeModel.SortDescending(x => x.Name),
-                        })
-                    {
-                        IsTextSearchEnabled = true,
-                        TextSearchValueSelector = x => x.Name
-                    },
-                    x => x.Children,
-                    x => x.HasChildren,
-                    x => x.IsExpanded),
-                new TextColumn<FileTreeNodeModel, long?>(
-                    Localizer.Instance["GameEditWindow.Tab6.Data.Title4"],
-                    x => x.Size,
-                    options: new TextColumnOptions<FileTreeNodeModel>
-                    {
-                        CompareAscending = FileTreeNodeModel.SortAscending(x => x.Size),
-                        CompareDescending = FileTreeNodeModel.SortDescending(x => x.Size),
-                    }),
-                new TextColumn<FileTreeNodeModel, DateTimeOffset?>(
-                    Localizer.Instance["GameEditWindow.Tab6.Data.Title5"],
-                    x => x.Modified,
-                    options: new TextColumnOptions<FileTreeNodeModel>
-                    {
-                        CompareAscending = FileTreeNodeModel.SortAscending(x => x.Modified),
-                        CompareDescending = FileTreeNodeModel.SortDescending(x => x.Modified),
-                    }),
-            }
-        };
+        //Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(Array.Empty<FileTreeNodeModel>())
+        //{
+        //    Columns =
+        //    {
+        //        new TemplateColumn<FileTreeNodeModel>(
+        //            null,
+        //            "FileNameCell1",
+        //            options: new ColumnOptions<FileTreeNodeModel>
+        //            {
+        //                CanUserResizeColumn = false
+        //            }),
+        //        new HierarchicalExpanderColumn<FileTreeNodeModel>(
+        //            new TemplateColumn<FileTreeNodeModel>(
+        //                Localizer.Instance["GameEditWindow.Tab6.Data.Title3"],
+        //                "FileNameCell",
+        //                new GridLength(1, GridUnitType.Star),
+        //                new ColumnOptions<FileTreeNodeModel>
+        //                {
+        //                    CompareAscending = FileTreeNodeModel.SortAscending(x => x.Name),
+        //                    CompareDescending = FileTreeNodeModel.SortDescending(x => x.Name),
+        //                })
+        //            {
+        //                IsTextSearchEnabled = true,
+        //                TextSearchValueSelector = x => x.Name
+        //            },
+        //            x => x.Children,
+        //            x => x.HasChildren,
+        //            x => x.IsExpanded),
+        //        new TextColumn<FileTreeNodeModel, long?>(
+        //            Localizer.Instance["GameEditWindow.Tab6.Data.Title4"],
+        //            x => x.Size,
+        //            options: new TextColumnOptions<FileTreeNodeModel>
+        //            {
+        //                CompareAscending = FileTreeNodeModel.SortAscending(x => x.Size),
+        //                CompareDescending = FileTreeNodeModel.SortDescending(x => x.Size),
+        //            }),
+        //        new TextColumn<FileTreeNodeModel, DateTimeOffset?>(
+        //            Localizer.Instance["GameEditWindow.Tab6.Data.Title5"],
+        //            x => x.Modified,
+        //            options: new TextColumnOptions<FileTreeNodeModel>
+        //            {
+        //                CompareAscending = FileTreeNodeModel.SortAscending(x => x.Modified),
+        //                CompareDescending = FileTreeNodeModel.SortDescending(x => x.Modified),
+        //            }),
+        //    }
+        //};
 
-        Source.RowSelection!.SingleSelect = false;
+        //Source.RowSelection!.SingleSelect = false;
 
-        _root = new FileTreeNodeModel(obj.GetBasePath(), null, true, true);
-        Source.Items = new[] { _root };
+        //_root = new FileTreeNodeModel(obj.GetBasePath(), null, true, true);
+        //Source.Items = new[] { _root };
     }
 
     public List<string> GetUnSelectItems()
@@ -274,7 +274,7 @@ public class FilesPageViewModel : ReactiveObject
         return _root.GetUnSelectItems();
     }
 
-    public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; }
+    //public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; }
 
     public static IMultiValueConverter FileIconConverter
     {
@@ -389,7 +389,7 @@ public partial class Tab6Control : UserControl
     private void Load()
     {
         FilesPageViewModel = new FilesPageViewModel(Obj);
-        FileViewer.Source = Files.Source;
+        //FileViewer.Source = Files.Source;
     }
 
     public void SetWindow(GameEditWindow window)

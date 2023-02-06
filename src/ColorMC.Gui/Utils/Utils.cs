@@ -192,7 +192,7 @@ public static partial class UIUtils
         }
     }
 
-    public static T? FindToEnd<T>(this IVisual visual)
+    public static T? FindToEnd<T>(this Visual visual)
     {
         foreach (var item in visual.GetVisualChildren())
         {
@@ -376,7 +376,7 @@ public static partial class UIUtils
         return new(255, 255, 255, 255);
     }
 
-    public static (double X, double Y) GetXY(this IVisual visual)
+    public static (double X, double Y) GetXY(this Visual visual)
     {
         var temp = (visual.Bounds.X, visual.Bounds.Y);
         if (visual.GetVisualParent() != null)

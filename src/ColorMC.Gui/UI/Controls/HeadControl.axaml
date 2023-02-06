@@ -8,36 +8,38 @@
     Height="35"
     d:DesignHeight="35"
     d:DesignWidth="800"
-    Background="{setting:Colors Main}"
     mc:Ignorable="d">
-    <Grid Margin="5,5,5,0">
-        <Label
-            Name="TitleShow"
-            Margin="10,0,0,0"
-            Content="{Binding Title}"
-            Foreground="{setting:Colors ButtonFont}" />
-        <StackPanel
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Orientation="Horizontal">
-            <Button
-                Name="Button_Min"
-                Width="24"
-                Height="24"
-                Margin="0,0,5,0"
-                Content="-" />
-            <Button
-                Name="Button_Max"
-                Width="24"
-                Height="24"
-                Margin="0,0,5,0"
-                Content="▢" />
-            <Button
-                Name="Button_Close"
-                Width="24"
-                Height="24"
-                Margin="0,0,2,0"
-                Content="X" />
-        </StackPanel>
+    <Grid>
+        <Rectangle Name="Rectangle1" Fill="{setting:Colors Main}" />
+        <Grid Margin="5,5,5,0">
+            <Label
+                Name="TitleShow"
+                Margin="10,0,0,0"
+                Content="{Binding Title}"
+                Foreground="{setting:Colors ButtonFont}" />
+            <StackPanel
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Orientation="Horizontal">
+                <Button
+                    Name="Button_Min"
+                    Width="24"
+                    Height="24"
+                    Margin="0,0,5,0"
+                    Content="-" />
+                <Button
+                    Name="Button_Max"
+                    Width="24"
+                    Height="24"
+                    Margin="0,0,5,0"
+                    Content="▢" />
+                <Button
+                    Name="Button_Close"
+                    Width="24"
+                    Height="24"
+                    Margin="0,0,2,0"
+                    Content="X" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

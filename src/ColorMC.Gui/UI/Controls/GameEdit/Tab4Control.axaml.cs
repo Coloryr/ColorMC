@@ -4,7 +4,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
@@ -106,8 +105,7 @@ public partial class Tab4Control : UserControl
             var list = new List<string>();
             foreach (var item in file)
             {
-                item.TryGetUri(out var uri);
-                list.Add(uri!.OriginalString);
+                list.Add(item.Path.OriginalString);
             }
             GameBinding.AddMods(Obj, list);
             Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);

@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -10,6 +9,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using DynamicData;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
