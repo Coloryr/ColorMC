@@ -25,7 +25,7 @@ namespace ColorMC.Gui;
 
 public partial class App : Application
 {
-    private static IClassicDesktopStyleApplicationLifetime Life;
+    public static IClassicDesktopStyleApplicationLifetime Life;
     public static DownloadWindow? DownloadWindow;
     public static UserWindow? UserWindow;
     public static MainWindow? MainWindow;
@@ -60,34 +60,49 @@ public partial class App : Application
 
     public override async void OnFrameworkInitializationCompleted()
     {
-        LoadLanguage(LanguageType.zh_cn);
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;
         }
 
-        base.OnFrameworkInitializationCompleted();
-
-        if (Life != null)
+        try
         {
-            Life.Exit += Life_Exit;
+            if (Life != null)
+            {
+                Life.Exit += Life_Exit;
+            }
+
+            var uri = new Uri("resm:ColorMC.Gui.Resource.Pic.game.png");
+
+            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+            using var asset = assets!.Open(uri);
+
+            GameIcon = new Bitmap(asset);
+
+            var uri1 = new Uri("resm:ColorMC.Gui.icon.ico");
+            using var asset1 = assets!.Open(uri1);
+
+            Icon = new(asset1);
+
+            App.LoadLanguage(LanguageType.zh_cn);
+
+            BaseBinding.Init();
+
+            ShowCustom();
+
+            if (GuiConfigUtils.Config != null &&
+                await LoadImage(GuiConfigUtils.Config.BackImage,
+                    GuiConfigUtils.Config.BackEffect))
+            {
+                OnPicUpdate();
+            }
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e);
         }
 
-        var uri = new Uri("resm:ColorMC.Gui.Resource.Pic.game.png");
-
-        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        using var asset = assets!.Open(uri);
-
-        GameIcon = new Bitmap(asset);
-
-        var uri1 = new Uri("resm:ColorMC.Gui.icon.ico");
-        using var asset1 = assets!.Open(uri1);
-
-        Icon = new(asset1);
-
-        await BaseBinding.Init();
-
-        ShowCustom();
+        base.OnFrameworkInitializationCompleted();
     }
 
     public static void OnUserEdit()

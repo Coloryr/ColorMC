@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Media;
+using ColorMC.Core;
 using System;
 using System.Text;
 
@@ -7,7 +8,7 @@ namespace ColorMC.Gui;
 
 internal class Program
 {
-    public const string Font = "avares://ColorMC.Gui/Resource/Font/SourceHanSansHWSC-Regular.otf";
+    public const string Font = "avares://ColorMC.Gui/Resource/Font/MiSans-Normal.ttf#MiSans";
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -22,13 +23,18 @@ internal class Program
         //    Thread.Sleep(100);
         //}
 
-        AppBuilder.Configure<App>()
+        CoreMain.Init(AppContext.BaseDirectory);
+
+        BuildAvaloniaApp()
+             .StartWithClassicDesktopLifetime(args);
+    }
+
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
             .With(new FontManagerOptions
             {
                 DefaultFamilyName = Font,
             })
             .LogToTrace()
-            .UsePlatformDetect()
-            .StartWithClassicDesktopLifetime(args);
-    }
+            .UsePlatformDetect();
 }

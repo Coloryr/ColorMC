@@ -25,7 +25,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
-    <None Remove="Resource\Font\SourceHanSansHWSC-Regular.otf" />
+    <None Remove="Resource\Font\MiSans-Normal.ttf" />
     <None Remove="Resource\Language\en-us" />
     <None Remove="Resource\Language\zh-cn" />
     <None Remove="Resource\Pic\file.png" />
@@ -41,7 +41,7 @@
     <EmbeddedResource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Resource\Font\SourceHanSansHWSC-Regular.otf" />
+    <AvaloniaResource Include="Resource\Font\MiSans-Normal.ttf" />
     <EmbeddedResource Include="Resource\Language\en-us" />
     <EmbeddedResource Include="Resource\Language\zh-cn">
       <Generator></Generator>

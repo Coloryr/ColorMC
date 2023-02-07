@@ -41,4 +41,7 @@ public record GuiConfigObj
     public bool RGB { get; set; }
     public int RGBS { get; set; }
     public int RGBV { get; set; }
+
+    public string FontName { get; set; }
+    public bool FontDefault { get; set; }
 }

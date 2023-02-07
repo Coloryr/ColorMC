@@ -1,4 +1,5 @@
-﻿using Avalonia.Platform.Storage;
+﻿using Avalonia.Media;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
@@ -13,8 +14,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Colors = ColorMC.Gui.Utils.LaunchSetting.Colors;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -23,7 +26,7 @@ public static class BaseBinding
     public readonly static Dictionary<Process, GameSettingObj> Games = new();
     public static bool ISNewStart { get; private set; } = false;
 
-    public static async Task Init()
+    public static void Init()
     {
         CoreMain.OnError = ShowError;
         CoreMain.NewStart = ShowNew;
@@ -33,13 +36,7 @@ public static class BaseBinding
         CoreMain.LanguageReload = Change;
 
         GuiConfigUtils.Init(AppContext.BaseDirectory);
-        CoreMain.Init(AppContext.BaseDirectory);
-
-        if (GuiConfigUtils.Config != null)
-        {
-            await App.LoadImage(GuiConfigUtils.Config.BackImage,
-                GuiConfigUtils.Config.BackEffect);
-        }
+        FontSel.Load();
     }
 
     public static void Exit()
@@ -290,5 +287,10 @@ public static class BaseBinding
     {
         file.TryGetUri(out var uri);
         return uri!.LocalPath;
+    }
+
+    public static List<string> GetFontList()
+    {
+        return FontManager.Current.GetInstalledFontFamilyNames().ToList();
     }
 }

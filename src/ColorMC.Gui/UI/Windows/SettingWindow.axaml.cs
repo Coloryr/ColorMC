@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.UI.Controls.Setting;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Threading;
 
@@ -27,11 +28,8 @@ public partial class SettingWindow : Window
         InitializeComponent();
 
         Head.SetWindow(this);
-
-        FontFamily = Program.Font;
-
+        this.BindFont();
         Icon = App.Icon;
-
         Rectangle1.MakeResizeDrag(this);
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
@@ -48,6 +46,8 @@ public partial class SettingWindow : Window
         tab6.SetWindow(this);
 
         content1.Content = tab2;
+
+        tab2.Load();
 
         Closed += SettingWindow_Closed;
 

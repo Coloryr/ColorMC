@@ -25,6 +25,24 @@
                         Content="{setting:Localize SettingWindow.Tab2.Text11}" />
                 </StackPanel>
 
+                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                    <Label Margin="5" Content="字体选择" />
+                    <ComboBox Name="ComboBox3" Width="200" />
+
+                    <CheckBox
+                        Name="CheckBox3"
+                        Margin="10,0,0,0"
+                        Content="默认字体" />
+
+                    <Button
+                        Name="Button_Change1"
+                        Width="80"
+                        Height="25"
+                        Margin="20,0,0,0"
+                        HorizontalAlignment="Right"
+                        Content="{setting:Localize SettingWindow.Tab2.Text11}" />
+                </StackPanel>
+
                 <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text2}" />
                 <DockPanel>
                     <Button
@@ -48,6 +66,7 @@
                         Classes="input1"
                         Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
                 </DockPanel>
+
                 <StackPanel Orientation="Horizontal">
                     <Label
                         Margin="5"
@@ -73,8 +92,7 @@
                         Margin="10"
                         VerticalAlignment="Center"
                         Content="{setting:Localize Button.Set}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+
                     <Label
                         Margin="5"
                         VerticalAlignment="Center"
@@ -100,6 +118,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize Button.Set}" />
                 </StackPanel>
+
                 <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
                 <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
                 <StackPanel Margin="5" Orientation="Horizontal">
@@ -130,7 +149,10 @@
                     <ColorPicker Name="ColorPicker5" />
 
                 </StackPanel>
-                <StackPanel Margin="5" Orientation="Horizontal">
+                <StackPanel
+                    Margin="5"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
                     <Button
                         Name="Button_Set3"
                         Width="80"

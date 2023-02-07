@@ -29,11 +29,8 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         Head.SetWindow(this);
-
-        FontFamily = Program.Font;
-
+        this.BindFont();
         Icon = App.Icon;
-
         Rectangle1.MakeResizeDrag(this);
 
         ItemInfo.SetWindow(this);
@@ -235,7 +232,7 @@ public partial class MainWindow : Window
                         };
                         var item1 = new Label
                         {
-                            Content = "Ã»ÓÐÆô¶¯ÊµÀý£¬ÇëÁªÏµ·þÎñÆ÷¹ÜÀíÔ±"
+                            Content = "Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±"
                         };
 
                         item.Children.Add(item1);
@@ -362,7 +359,7 @@ public partial class MainWindow : Window
 
     public async void DeleteGame(GameSettingObj obj)
     {
-        var res = await Info.ShowWait(string.Format("ÊÇ·ñÒªÉ¾³ýÊµÀý {0}", obj.Name));
+        var res = await Info.ShowWait(string.Format("ï¿½Ç·ï¿½ÒªÉ¾ï¿½ï¿½Êµï¿½ï¿½ {0}", obj.Name));
         if (!res)
             return;
 

@@ -388,6 +388,15 @@ public static partial class UIUtils
 
         return temp;
     }
+
+    public static void BindFont(this Window window)
+    {
+        window.Bind(TemplatedControl.FontFamilyProperty, new Binding
+        {
+            Source = FontSel.Instance,
+            Path = "[Font]"
+        });
+    }
 }
 
 public static class ImageUtils
@@ -439,30 +448,49 @@ public static class ImageUtils
         return rgba;
     }
 
+    public static (int X, int Y) GetMaxSize()
+    {
+        int x = 0, y = 0;
+        foreach (var item in App.MainWindow!.Screens.All)
+        {
+            x = x < item.Bounds.Width ? item.Bounds.Width : x;
+            y = y < item.Bounds.Height ? item.Bounds.Height : y;
+        }
+
+        return (x, y);
+    }
+
     public static Task<Bitmap?> MakeImageSharp(string file, int value)
     {
         return Task.Run(() =>
         {
             try
             {
+                var (X, Y) = GetMaxSize();
+                using var image = SixLabors.ImageSharp.Image.Load(file);
+                if (X != 0 && Y != 0
+                && image.Width > X && image.Height > Y)
+                {
+                    int x = X;
+                    int y = (int)(image.Height / ((float)image.Width / X));
+                    image.Mutate(p =>
+                    {
+                        p.Resize(x, y);
+                    });
+                }
+
                 if (value > 0)
                 {
-                    using var image = SixLabors.ImageSharp.Image.Load(file);
                     image.Mutate(p =>
                     {
                         p.GaussianBlur(value);
                     });
-
-                    using var stream = new MemoryStream();
-                    image.SaveAsPng(stream);
-                    stream.Seek(0, SeekOrigin.Begin);
-                    return new Bitmap(stream);
-                }
-                else
-                {
-                    return new Bitmap(file);
                 }
 
+                using var stream = new MemoryStream();
+                image.SaveAsPng(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+                return new Bitmap(stream);
             }
             catch (Exception e)
             {
@@ -562,7 +590,8 @@ public static class GuiConfigUtils
             RGBV = 100,
             ColorFont1 = "#FFFFFFFF",
             ColorFont2 = "#FF000000",
-            ServerCustom = MakeServerCustomConfig()
+            ServerCustom = MakeServerCustomConfig(),
+            FontDefault = true
         };
     }
 
