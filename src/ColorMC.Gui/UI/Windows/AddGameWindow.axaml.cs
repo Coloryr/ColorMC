@@ -27,11 +27,8 @@ public partial class AddGameWindow : Window
         InitializeComponent();
 
         Head.SetWindow(this);
-
-        FontFamily = Program.Font;
-
+        this.BindFont();
         Icon = App.Icon;
-
         Rectangle1.MakeResizeDrag(this);
 
         ComboBox_GameVersion.Items = List;

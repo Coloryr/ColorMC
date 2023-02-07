@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -10,11 +11,8 @@ public partial class ErrorWindow : Window
         InitializeComponent();
 
         Head.SetWindow(this);
-
-        FontFamily = Program.Font;
-
+        this.BindFont();
         Icon = App.Icon;
-
         Rectangle1.MakeResizeDrag(this);
     }
 

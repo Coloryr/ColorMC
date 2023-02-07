@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using ColorMC.Core;
 using ColorMC.Gui.UI.Controls.Hello;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Threading;
 
@@ -27,11 +28,8 @@ public partial class HelloWindow : Window
         InitializeComponent();
 
         Head.SetWindow(this);
-
-        FontFamily = Program.Font;
-
+        this.BindFont();
         Icon = App.Icon;
-
         Rectangle1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;

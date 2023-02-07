@@ -67,8 +67,9 @@ public partial class CustomWindow : Window
         InitializeComponent();
 
         Head.SetWindow(this);
-
-        FontFamily = Program.Font;
+        this.BindFont();
+        Icon = App.Icon;
+        Rectangle1.MakeResizeDrag(this);
 
         this.Closed += CustomWindow_Closed;
 
@@ -152,7 +153,7 @@ public partial class CustomWindow : Window
         }
         else
         {
-            Info2.Show("ÒÑÆô¶¯");
+            Info2.Show("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
     }
 
@@ -176,7 +177,7 @@ public partial class CustomWindow : Window
         {
             Grid2.Children.Add(new Label()
             {
-                Content = "Ã»ÓÐËø¶¨µÄÊµÀý£¬ÇëÁªÏµ·þÎñÆ÷¹ÜÀíÔ±",
+                Content = "Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±",
                 Foreground = Brushes.Black,
                 Background = Brush.Parse("#EEEEEE"),
                 VerticalAlignment = VerticalAlignment.Center,

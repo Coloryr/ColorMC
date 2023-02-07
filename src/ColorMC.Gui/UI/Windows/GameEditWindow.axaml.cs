@@ -35,11 +35,8 @@ public partial class GameEditWindow : Window
         InitializeComponent();
 
         Head.SetWindow(this);
-
-        FontFamily = Program.Font;
-
+        this.BindFont();
         Icon = App.Icon;
-
         Rectangle1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
@@ -89,23 +86,23 @@ public partial class GameEditWindow : Window
     {
         switch (type)
         {
-            //²é¿´Mod
+            //ï¿½é¿´Mod
             case 1:
                 Tabs.SelectedIndex = 3;
                 break;
-            //²é¿´ÅäÖÃÎÄ¼þ
+            //ï¿½é¿´ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
             case 2:
                 Tabs.SelectedIndex = 2;
                 break;
-            //²é¿´µØÍ¼
+            //ï¿½é¿´ï¿½ï¿½Í¼
             case 3:
                 Tabs.SelectedIndex = 4;
                 break;
-            //µ¼³ö
+            //ï¿½ï¿½ï¿½ï¿½
             case 5:
                 Tabs.SelectedIndex = 7;
                 break;
-            //²âÊÔ
+            //ï¿½ï¿½ï¿½ï¿½
             case 6:
                 Tabs.SelectedIndex = 8;
                 break;

@@ -34,8 +34,9 @@ public partial class SkinWindow : Window
         InitializeComponent();
 
         Head.SetWindow(this);
-
-        FontFamily = Program.Font;
+        this.BindFont();
+        Icon = App.Icon;
+        Rectangle1.MakeResizeDrag(this);
 
         ComboBox1.Items = UserBinding.GetSkinType();
 
@@ -241,8 +242,8 @@ public class SkinRender : Control
 
         //fixed (void* pdata = AmbientLight)
         //    GLLightfv(16384, 4608, new IntPtr(pdata));
-        //GL.Enable(16384);       //¿ªÆôGL_LIGHT0¹âÔ´
-        //GL.Enable(2896);     //¿ªÆô¹âÕÕÏµÍ³
+        //GL.Enable(16384);       //ï¿½ï¿½ï¿½ï¿½GL_LIGHT0ï¿½ï¿½Ô´
+        //GL.Enable(2896);     //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³
         //GL.Enable(GL_DEPTH_TEST);
 
         CheckError();

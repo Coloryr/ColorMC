@@ -26,12 +26,34 @@ public partial class Tab2Control : UserControl
         Button_Set4.Click += Button_Set4_Click;
         Button_Set5.Click += Button_Set5_Click;
         Button_Change.Click += Button_Change_Click;
+        Button_Change1.Click += Button_Change1_Click;
 
         CheckBox1.Click += CheckBox1_Click;
         CheckBox2.Click += CheckBox2_Click;
+        CheckBox3.Click += CheckBox3_Click;
 
         ComboBox1.Items = BaseBinding.GetWindowTranTypes();
         ComboBox2.Items = BaseBinding.GetLanguages();
+        ComboBox3.Items = BaseBinding.GetFontList();
+    }
+
+    private void CheckBox3_Click(object? sender, RoutedEventArgs e)
+    {
+        if (CheckBox3.IsChecked == true)
+        {
+            ComboBox3.IsEnabled = false;
+            ConfigBinding.SetFont(ComboBox3.SelectedItem as string, true);
+        }
+        else
+        {
+            ComboBox3.IsEnabled = true;
+        }
+    }
+
+    private void Button_Change1_Click(object? sender, RoutedEventArgs e)
+    {
+        ConfigBinding.SetFont(ComboBox3.SelectedItem as string, CheckBox3.IsChecked == true);
+        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void Button_Set5_Click(object? sender, RoutedEventArgs e)
@@ -127,12 +149,14 @@ public partial class Tab2Control : UserControl
             CheckBox1.IsChecked = config.Item2.WindowTran;
             ComboBox1.SelectedIndex = config.Item2.WindowTranType;
             ComboBox2.SelectedIndex = (int)config.Item1.Language;
+            ComboBox3.SelectedItem = config.Item2.FontName;
             ColorPicker1.Color = Colors.MainColor.ToColor();
             ColorPicker2.Color = Colors.BackColor.ToColor();
             ColorPicker3.Color = Colors.Back1Color.ToColor();
             ColorPicker4.Color = Colors.ButtonFont.ToColor();
             ColorPicker5.Color = Colors.FontColor.ToColor();
             CheckBox2.IsChecked = config.Item2.RGB;
+            CheckBox3.IsChecked = config.Item2.FontDefault;
             if (config.Item2.WindowTran)
             {
                 ComboBox1.IsEnabled = true;
@@ -148,6 +172,14 @@ public partial class Tab2Control : UserControl
             else
             {
                 Slider3.IsEnabled = Slider4.IsEnabled = false;
+            }
+            if (CheckBox3.IsChecked == true)
+            {
+                ComboBox3.IsEnabled = false;
+            }
+            else
+            {
+                ComboBox3.IsEnabled = true;
             }
         }
     }
