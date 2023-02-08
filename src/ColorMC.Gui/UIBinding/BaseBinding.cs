@@ -1,4 +1,5 @@
-﻿using Avalonia.Media;
+﻿using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
@@ -37,6 +38,37 @@ public static class BaseBinding
 
         GuiConfigUtils.Init(AppContext.BaseDirectory);
         FontSel.Load();
+    }
+
+    public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title, string ext, string name) 
+    {
+        return window.StorageProvider.OpenFilePickerAsync(new()
+        {
+            Title = title,
+            AllowMultiple = false,
+            FileTypeFilter = new List<FilePickerFileType>()
+            {
+                new(name)
+                {
+                     Patterns = new List<string>()
+                     {
+                        ext
+                     }
+                }
+            }
+        });
+    }
+
+    public static Task<string?> OpSave(Window window, string title, string ext, string name)
+    {
+        SaveFileDialog save = new()
+        {
+            Title = title,
+            DefaultExtension = ext,
+            InitialFileName = name
+        };
+
+        return save.ShowAsync(window);
     }
 
     public static void Exit()

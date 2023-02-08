@@ -678,7 +678,7 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="v2">V2模式</param>
     /// <returns></returns>
-    public static async Task<List<string>> GameArg(GameSettingObj obj, bool v2)
+    public static List<string> GameArg(GameSettingObj obj, bool v2)
     {
         List<string> gameArg = new();
         gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
@@ -839,11 +839,20 @@ public static class Launch
         return new(list.Values) { LibrariesPath.MakeGameDir(obj.Version) };
     }
 
-    private static string UserPropertyToList(List<UserPropertyObj> properties)
+    private static string UserPropertyToList(LoginObj obj, List<UserPropertyObj> properties)
     {
         if (properties == null)
         {
-            return "{}";
+            var skin = obj.GetSkinFile();
+            if (skin == null)
+                return "{}";
+            else
+            {
+                return @"{
+            ""name"": ""textures"",
+            ""value"": ""1234""
+        }";
+            }
         }
         var sb = new StringBuilder();
         foreach (var item in properties)
@@ -905,7 +914,7 @@ public static class Launch
                 {"${auth_uuid}",login.UUID },
                 {"${auth_access_token}",login.AccessToken },
                 {"${game_assets}",assetsPath },
-                {"${user_properties}",UserPropertyToList(login.Properties) },
+                {"${user_properties}",UserPropertyToList(login, login.Properties) },
                 {"${user_type}", "legacy" },
                 {"${version_type}", "ColorMC" },
                 {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
@@ -960,7 +969,7 @@ public static class Launch
             list.Add(quilt.mainClass);
         }
 
-        list.AddRange(await GameArg(obj, v2));
+        list.AddRange(GameArg(obj, v2));
 
         ReplaceAll(obj, login, list, v2);
 
@@ -1032,7 +1041,7 @@ public static class Launch
             if (jvm == null)
             {
                 CoreMain.GameLaunch?.Invoke(obj, LaunchState.JavaError);
-                throw new Exception(LanguageHelper.GetName("Core.Launch.Error3"));
+                return null;
             }
 
             path = jvm.Path;

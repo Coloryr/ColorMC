@@ -1,7 +1,9 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using ColorMC.Core.Game.Auth;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
@@ -12,8 +14,10 @@ using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -181,7 +185,16 @@ public static class UserBinding
             return;
         }
 
-        var file = await GetSkin.DownloadSkin(obj);
+        string? file;
+        if (obj.AuthType == AuthType.Offline)
+        {
+            file = AssetsPath.GetSkin(obj);
+        }
+        else
+        {
+            file = await GetSkin.DownloadSkin(obj);
+        }
+
         if (file == null)
         {
             HeadBitmap = new Bitmap(asset);
@@ -218,14 +231,22 @@ public static class UserBinding
         return list;
     }
 
-    public static void EditSkin()
+    public static async void EditSkin(Window window)
     {
         var obj = GetLastUser();
-        if (obj == null || obj.AuthType == AuthType.Offline)
+        if (obj == null)
             return;
 
         switch (obj.AuthType)
         {
+            case AuthType.Offline:
+                var file = await BaseBinding.OpFile(window, "选择皮肤导入", "*.png", "皮肤文件");
+                if (file?.Any() == true)
+                {
+                    var item = file[0];
+                    AssetsPath.SaveSkin(obj, item.GetPath());
+                }
+                break;
             case AuthType.OAuth:
                 BaseBinding.OpUrl("https://www.minecraft.net/en-us/msaprofile/mygames/editskin");
                 break;
