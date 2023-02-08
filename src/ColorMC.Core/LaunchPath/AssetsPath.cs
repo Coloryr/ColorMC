@@ -1,4 +1,5 @@
 using ColorMC.Core.Net;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
@@ -94,5 +95,31 @@ public static class AssetsPath
         if (obj == null)
             return;
         AddIndex(obj, item);
+    }
+
+    public static void SaveSkin(LoginObj obj, string file)
+    {
+        var path = obj.GetSkinFile();
+
+        if (File.Exists(path))
+            File.Delete(path);
+        var info = new FileInfo(path);
+        info.Directory?.Create();
+        File.Copy(file, path);
+    }
+
+    public static string? GetSkin(LoginObj obj)
+    {
+        var path = obj.GetSkinFile(); 
+
+        if (File.Exists(path))
+            return path;
+        else
+            return null;
+    }
+
+    public static string GetSkinFile(this LoginObj obj) 
+    {
+        return Path.GetFullPath($"{BaseDir}/{Name3}/{obj.UUID}.png");
     }
 }

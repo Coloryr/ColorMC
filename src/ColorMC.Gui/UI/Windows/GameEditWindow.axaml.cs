@@ -86,25 +86,25 @@ public partial class GameEditWindow : Window
     {
         switch (type)
         {
-            //�鿴Mod
+
             case 1:
                 Tabs.SelectedIndex = 3;
                 break;
-            //�鿴�����ļ�
+
             case 2:
                 Tabs.SelectedIndex = 2;
                 break;
-            //�鿴��ͼ
+
             case 3:
                 Tabs.SelectedIndex = 4;
                 break;
-            //����
+
             case 5:
                 Tabs.SelectedIndex = 7;
                 break;
-            //����
+
             case 6:
-                Tabs.SelectedIndex = 8;
+                Tabs.SelectedIndex = 9;
                 break;
         }
     }

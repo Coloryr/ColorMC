@@ -48,6 +48,7 @@ public partial class SkinWindow : Window
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
+        Button4.Click += Button4_Click;
 
         Opened += SkinWindow_Opened;
         Closed += SkinWindow_Closed;
@@ -59,23 +60,32 @@ public partial class SkinWindow : Window
         Update();
     }
 
+    private async void Button4_Click(object? sender, RoutedEventArgs e)
+    {
+        var res= await BaseBinding.OpSave(this, "保存皮肤", ".png", "skin.png");
+        if (!string.IsNullOrWhiteSpace(res))
+        {
+            await UserBinding.SkinImage.SaveAsPngAsync(res);
+            Info2.Show("已保存");
+        }
+    }
+
     private void SkinWindow_Opened(object? sender, EventArgs e)
     {
-        var pos = Skin.GetXY();
-        var temp = Matrix.CreateRotation(Math.PI);//* Matrix.CreateTranslation(new(0, pos.Y / 2));
+        var temp = Matrix.CreateRotation(Math.PI);
         Skin.RenderTransform = new ImmutableTransform(temp);
     }
 
     private void App_SkinLoad()
     {
-        Check();
-
         Skin.ChangeSkin();
+
+        Check();
     }
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        UserBinding.EditSkin();
+        UserBinding.EditSkin(this);
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
@@ -85,13 +95,13 @@ public partial class SkinWindow : Window
 
     private void Check()
     {
-        if (UserBinding.GetLastUser()?.AuthType != AuthType.Offline)
+        if (Skin.HaveSkin)
         {
-            Button3.IsEnabled = true;
+            Button4.IsEnabled = true;
         }
         else
         {
-            Button3.IsEnabled = false;
+            Button4.IsEnabled = false;
         }
     }
 
@@ -117,9 +127,9 @@ public partial class SkinWindow : Window
         Skin.ChangeType(ComboBox1.SelectedIndex);
     }
 
-    private void Button1_Click(object? sender, RoutedEventArgs e)
+    private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        Skin.ChangeSkin();
+        await UserBinding.LoadSkin();
     }
 
     public void Update()
@@ -142,7 +152,7 @@ public class SkinRender : Control
             StartVisible = false
         })
         {
-            
+
         }
     }
 
@@ -177,7 +187,7 @@ public class SkinRender : Control
         public Vector2 UV;
     }
 
-    private bool HaveSkin = false;
+    public bool HaveSkin { get; private set; } = false;
     private bool SwitchModel = false;
     private bool SwitchSkin = false;
 

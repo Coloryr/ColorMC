@@ -63,14 +63,7 @@ public partial class Tab6Control : UserControl
 
     private async void Button6_Click(object? sender, RoutedEventArgs e)
     {
-        SaveFileDialog save = new()
-        {
-            Title = Localizer.Instance["SettingWindow.Tab6.Info1"],
-            DefaultExtension = ".json",
-            InitialFileName = "ui.json"
-        };
-
-        var str = await save.ShowAsync(Window);
+        var str = await BaseBinding.OpSave(Window, Localizer.Instance["SettingWindow.Tab6.Info1"], ".json", "ui.json");
         if (!string.IsNullOrWhiteSpace(str))
         {
             if (File.Exists(str))
