@@ -176,7 +176,7 @@ public partial class AddGameWindow : Window
 
     private async void Button_AddGroup_Click(object? sender, RoutedEventArgs e)
     {
-        await Info3.ShowOne(Localizer.Instance["AddGameWindow.Info15"], false);
+        await Info3.ShowOne(Localizer.Instance["AddGameWindow.Info1"], false);
         Info3.Close();
         if (Info3.Cancel)
         {

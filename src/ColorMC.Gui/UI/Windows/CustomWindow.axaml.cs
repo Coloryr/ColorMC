@@ -153,7 +153,7 @@ public partial class CustomWindow : Window
         }
         else
         {
-            Info2.Show("������");
+            Info2.Show(Localizer.Instance["MainWindow.Info2"]);
         }
     }
 
@@ -177,7 +177,7 @@ public partial class CustomWindow : Window
         {
             Grid2.Children.Add(new Label()
             {
-                Content = "û��������ʵ��������ϵ����������Ա",
+                Content = Localizer.Instance["MainWindow.Info18"],
                 Foreground = Brushes.Black,
                 Background = Brush.Parse("#EEEEEE"),
                 VerticalAlignment = VerticalAlignment.Center,
@@ -386,10 +386,10 @@ public partial class CustomWindow : Window
         {
             return state switch
             {
-                LaunchState.LostLib => await Info.ShowWait(Localizer.Instance["MainWindow.Lost2"]),
-                LaunchState.LostLoader => await Info.ShowWait(Localizer.Instance["MainWindow.Lost3"]),
-                LaunchState.LostLoginCore => await Info.ShowWait(Localizer.Instance["MainWindow.Lost4"]),
-                _ => await Info.ShowWait(Localizer.Instance["MainWindow.Lost1"]),
+                LaunchState.LostLib => await Info.ShowWait(Localizer.Instance["MainWindow.Info5"]),
+                LaunchState.LostLoader => await Info.ShowWait(Localizer.Instance["MainWindow.Info6"]),
+                LaunchState.LostLoginCore => await Info.ShowWait(Localizer.Instance["MainWindow.Info7"]),
+                _ => await Info.ShowWait(Localizer.Instance["MainWindow.Info4"]),
             };
         });
     }
@@ -402,34 +402,34 @@ public partial class CustomWindow : Window
             switch (state)
             {
                 case LaunchState.Login:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check1"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info8"]);
                     break;
                 case LaunchState.Check:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check2"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info9"]);
                     break;
                 case LaunchState.CheckVersion:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check3"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info10"]);
                     break;
                 case LaunchState.CheckLib:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check4"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info11"]);
                     break;
                 case LaunchState.CheckAssets:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check5"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info12"]);
                     break;
                 case LaunchState.CheckLoader:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check6"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info13"]);
                     break;
                 case LaunchState.CheckLoginCore:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check7"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info14"]);
                     break;
                 case LaunchState.CheckMods:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check10"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info17"]);
                     break;
                 case LaunchState.Download:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check8"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info15"]);
                     break;
                 case LaunchState.JvmPrepare:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check9"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info16"]);
                     break;
             }
         });

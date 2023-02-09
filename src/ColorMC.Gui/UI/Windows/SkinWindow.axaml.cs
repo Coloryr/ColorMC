@@ -605,8 +605,6 @@ public class SkinRender : Control
             y = (int)(Bounds.Height * screen.Scaling);
         }
 
-        var pos = this.GetXY();
-        //y += (int)pos.Y;
 
         if (LastSize.X != x || LastSize.Y != y)
         {
@@ -744,6 +742,7 @@ public class SkinRender : Control
     public void Close()
     {
         Window1.Close();
+        bitmap?.Dispose();
         
         // Unbind everything
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

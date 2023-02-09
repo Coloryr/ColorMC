@@ -91,7 +91,7 @@ public partial class UserWindow : Window
 
         UserBinding.SetLastUser(item.UUID, item.AuthType);
 
-        Info2.Show(Localizer.Instance["UserWindow.Ok1"]);
+        Info2.Show(Localizer.Instance["UserWindow.Info5"]);
         Load();
     }
 
@@ -114,7 +114,7 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Info2.Show(Localizer.Instance["Info4"]);
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -128,7 +128,7 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Info2.Show(Localizer.Instance["Info4"]);
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -154,7 +154,7 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Info2.Show(Localizer.Instance["Info4"]);
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -180,7 +180,7 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Info2.Show(Localizer.Instance["Info4"]);
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -200,7 +200,7 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Info2.Show(Localizer.Instance["Info4"]);
                 ok = true;
                 break;
             case 5:
@@ -225,7 +225,7 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Info2.Show(Localizer.Instance["Info4"]);
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;

@@ -24,16 +24,16 @@
                 <CheckBox
                     Name="CheckBox_Release"
                     Margin="10,0,0,0"
-                    Content="{setting:Localize AddGameWindow.CheckBox1}"
+                    Content="{setting:Localize AddGameWindow.Text6}"
                     IsChecked="True" />
                 <CheckBox
                     Name="CheckBox_Snapshot"
                     Margin="10,0,0,0"
-                    Content="{setting:Localize AddGameWindow.CheckBox2}" />
+                    Content="{setting:Localize AddGameWindow.Text7}" />
                 <CheckBox
                     Name="CheckBox_Other"
                     Margin="10,0,0,0"
-                    Content="{setting:Localize AddGameWindow.CheckBox3}" />
+                    Content="{setting:Localize AddGameWindow.Text8}" />
                 <Button
                     Name="Button1"
                     Width="100"
@@ -99,7 +99,7 @@
                     Width="100"
                     Height="25"
                     Margin="10,0,0,0"
-                    Content="{setting:Localize AddGameWindow.Button6}" />
+                    Content="{setting:Localize AddGameWindow.Text14}" />
             </StackPanel>
         </StackPanel>
         <Button

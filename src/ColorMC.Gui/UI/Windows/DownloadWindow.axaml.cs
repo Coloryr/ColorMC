@@ -93,14 +93,14 @@ public partial class DownloadWindow : Window
             DownloadManager.Pause();
             pause = true;
             Button_P.Content = "R";
-            Button_P1.Content = Localizer.Instance["DownloadWindow.Button3"];
+            Button_P1.Content = Localizer.Instance["DownloadWindow.Text3"];
             Info2.Show(Localizer.Instance["DownloadWindow.Info2"]);
         }
         else
         {
             DownloadManager.Resume();
             Button_P.Content = "P";
-            Button_P1.Content = Localizer.Instance["DownloadWindow.Button1"];
+            Button_P1.Content = Localizer.Instance["DownloadWindow.Text1"];
             pause = false;
             Info2.Show(Localizer.Instance["DownloadWindow.Info3"]);
         }
