@@ -21,7 +21,7 @@ public record JavaInfoObj
 public static class JavaBinding
 {
     private readonly static List<string> JavaType = 
-        new() { "Adoptium", "Zulu", "Dragonwell" };
+        new() { "Adoptium", "Zulu", "Dragonwell", "OpenJ9" };
     private readonly static List<string> SystemType =
         new() { "", "Windows", "Linux", "MacOS" };
     private static JavaInfoObj MakeInfo(string name, JavaInfo item)

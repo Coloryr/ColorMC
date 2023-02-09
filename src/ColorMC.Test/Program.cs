@@ -25,7 +25,7 @@ internal class Program
         CoreMain.LoginOAuthCode = Login;
         CoreMain.AuthStateUpdate = AuthStateUpdate;
 
-        TestItem.Item18();
+        TestItem.Item19();
 
         Console.ReadLine();
     }

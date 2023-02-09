@@ -5,6 +5,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
+using ColorMC.Core.Net.Java;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
@@ -402,5 +403,10 @@ public static class TestItem
         var motd = ServerMotd.GetServerInfo("color.coloryr.xyz", 25565).Result;
 
         Console.WriteLine(motd.State);
+    }
+
+    public static void Item19()
+    {
+        var res = OpenJ9.GetJavaList().Result;
     }
 }
