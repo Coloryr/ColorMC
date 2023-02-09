@@ -2,6 +2,9 @@
 
 namespace ColorMC.Core.Objs.Minecraft;
 
+/// <summary>
+/// 游戏数据
+/// </summary>
 public record GameArgObj
 {
     public record Arguments

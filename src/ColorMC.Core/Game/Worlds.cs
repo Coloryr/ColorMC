@@ -7,16 +7,14 @@ using ICSharpCode.SharpZipLib.Zip;
 
 namespace ColorMC.Core.Game;
 
-public enum WorldSave
-{
-    LevelName, Raining, MapFeatures, RandomSeed,
-    SpawnX, SpawnY, SpawnZ, LastPlayed, GameType,
-    ThunderTime, Version, RainTime, Time,
-    Thundering, Hardcore, SizeOnDisk
-}
-
 public static class Worlds
 {
+
+    /// <summary>
+    /// 获取世界列表
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns>世界列表</returns>
     public static async Task<List<WorldObj>> GetWorlds(this GameSettingObj game)
     {
         List<WorldObj> list = new();
@@ -47,30 +45,6 @@ public static class Worlds
                     obj.Hardcore = tag1.Get<NbtByte>("hardcore").Value;
                     obj.Difficulty = tag1.Get<NbtByte>("Difficulty").Value;
                     obj.LevelName = tag1.Get<NbtString>("LevelName").Value;
-
-                    //CompoundTag tag = await NbtFile.ReadAsync(item1.FullName, 
-                    //    FormatOptions.None, CompressionType.AutoDetect);
-                    //var tag1 = tag["Data"] as CompoundTag;
-                    //if (tag1 == null)
-                    //    break;
-
-                    ////obj.Raining = (byte)((tag1["raining"] as ByteTag)?.Value);
-                    ////    obj.RandomSeed = (long)((tag1["RandomSeed"] as LongTag)?.Value);
-                    ////    obj.SpawnX = (int)((tag1["SpawnX"] as IntTag)?.Value);
-                    ////obj.SpawnZ = (int)((tag1["SpawnZ"] as IntTag)?.Value);
-                    //obj.LastPlayed = (long)((tag1["LastPlayed"] as LongTag)?.Value);
-                    //obj.GameType = (int)((tag1["GameType"] as IntTag)?.Value);
-                    ////    obj.SpawnY = (int)((tag1["SpawnY"] as IntTag)?.Value);
-                    ////    obj.MapFeatures = (byte)((tag1["MapFeatures"] as ByteTag)?.Value);
-                    ////    obj.ThunderTime = (int)((tag1["thunderTime"] as IntTag)?.Value);
-                    ////    obj.Version = (int)((tag1["version"] as IntTag)?.Value);
-                    ////    obj.RainTime = (int)((tag1["rainTime"] as IntTag)?.Value);
-                    ////    obj.Time = (long)((tag1["Time"] as LongTag)?.Value);
-                    ////    obj.Thundering = (byte)((tag1["thundering"] as ByteTag)?.Value);
-                    //obj.Hardcore = (byte)((tag1["hardcore"] as ByteTag)?.Value);
-                    //obj.Difficulty = (byte)((tag1["Difficulty"] as ByteTag)?.Value);
-                    ////    obj.SizeOnDisk = (long)((tag1["SizeOnDisk"] as LongTag)?.Value);
-                    //obj.LevelName = (tag1["LevelName"] as StringTag)?.Value;
 
                     obj.Local = Path.GetFullPath(item.FullName);
                     obj.Game = game;
@@ -107,6 +81,10 @@ public static class Worlds
         return list;
     }
 
+    /// <summary>
+    /// 删除世界
+    /// </summary>
+    /// <param name="world">世界实例</param>
     public static void Remove(this WorldObj world)
     {
         string dir = Path.GetFullPath(world.Game.GetBasePath() + "/remove_worlds");
@@ -114,6 +92,12 @@ public static class Worlds
         Directory.Move(world.Local, Path.GetFullPath(dir + world.LevelName));
     }
 
+    /// <summary>
+    /// 导入世界压缩包
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件位置</param>
+    /// <returns>结果</returns>
     public static async Task<bool> ImportWorldZip(this GameSettingObj obj, string file)
     {
         var dir = obj.GetSavesPath();
@@ -165,74 +149,14 @@ public static class Worlds
         return false;
     }
 
+    /// <summary>
+    /// 导出世界
+    /// </summary>
+    /// <param name="world">世界实例</param>
+    /// <param name="file">输出文件位置</param>
+    /// <returns></returns>
     public static Task ExportWorldZip(this WorldObj world, string file)
     {
         return ZipFloClass.ZipFile(world.Local, file);
     }
-
-    //public static async Task Save(this WorldObj world, List<WorldSave> list)
-    //{
-    //    CompoundTag tag = await NbtFile.ReadAsync(world.Local + "/level.dat", FormatOptions.Java, CompressionType.AutoDetect);
-    //    var tag1 = tag["Data"] as CompoundTag;
-    //    if (tag1 == null)
-    //        return;
-
-    //    foreach (var item in list)
-    //    {
-    //        switch (item)
-    //        {
-    //            case WorldSave.Raining:
-    //                tag1.Add(new ByteTag("raining", world.Raining));
-    //                break;
-    //            case WorldSave.RandomSeed:
-    //                tag1.Add(new LongTag("RandomSeed", world.RandomSeed));
-    //                break;
-    //            case WorldSave.SpawnX:
-    //                tag1.Add(new IntTag("SpawnX", world.SpawnX));
-    //                break;
-    //            case WorldSave.SpawnY:
-    //                tag1.Add(new IntTag("SpawnY", world.SpawnY));
-    //                break;
-    //            case WorldSave.SpawnZ:
-    //                tag1.Add(new IntTag("SpawnZ", world.SpawnZ));
-    //                break;
-    //            case WorldSave.LastPlayed:
-    //                tag1.Add(new LongTag("LastPlayed", world.LastPlayed));
-    //                break;
-    //            case WorldSave.GameType:
-    //                tag1.Add(new IntTag("GameType", world.GameType));
-    //                break;
-    //            case WorldSave.MapFeatures:
-    //                tag1.Add(new ByteTag("MapFeatures", world.MapFeatures));
-    //                break;
-    //            case WorldSave.ThunderTime:
-    //                tag1.Add(new IntTag("thunderTime", world.ThunderTime));
-    //                break;
-    //            case WorldSave.Version:
-    //                tag1.Add(new IntTag("version", world.Version));
-    //                break;
-    //            case WorldSave.RainTime:
-    //                tag1.Add(new IntTag("rainTime", world.RainTime));
-    //                break;
-    //            case WorldSave.Time:
-    //                tag1.Add(new LongTag("Time", world.Time));
-    //                break;
-    //            case WorldSave.Thundering:
-    //                tag1.Add(new ByteTag("thundering", world.Thundering));
-    //                break;
-    //            case WorldSave.Hardcore:
-    //                tag1.Add(new ByteTag("hardcore", world.Hardcore));
-    //                break;
-    //            case WorldSave.SizeOnDisk:
-    //                tag1.Add(new LongTag("SizeOnDisk", world.SizeOnDisk));
-    //                break;
-    //            case WorldSave.LevelName:
-    //                tag1.Add(new StringTag("LevelName", world.LevelName));
-    //                break;
-    //        }
-    //    }
-
-    //    tag.Add(tag1);
-    //    await NbtFile.WriteAsync(world.Local + "/level.dat", tag, FormatOptions.Java, CompressionType.AutoDetect);
-    //}
 }

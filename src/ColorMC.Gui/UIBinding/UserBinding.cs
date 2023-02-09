@@ -188,7 +188,11 @@ public static class UserBinding
         string? file;
         if (obj.AuthType == AuthType.Offline)
         {
-            file = AssetsPath.GetSkin(obj);
+            file = AssetsPath.GetSkinFile(obj);
+            if (!File.Exists(file))
+            {
+                file = null;
+            }
         }
         else
         {

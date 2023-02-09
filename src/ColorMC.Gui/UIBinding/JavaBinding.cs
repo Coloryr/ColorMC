@@ -20,6 +20,10 @@ public record JavaInfoObj
 
 public static class JavaBinding
 {
+    private readonly static List<string> JavaType = 
+        new() { "Adoptium", "Zulu", "Dragonwell" };
+    private readonly static List<string> SystemType =
+        new() { "", "Windows", "Linux", "MacOS" };
     private static JavaInfoObj MakeInfo(string name, JavaInfo item)
     {
         return new JavaInfoObj()
@@ -133,5 +137,15 @@ public static class JavaBinding
     public static void RemoveAllJava()
     {
         JvmPath.RemoveAll();
+    }
+
+    public static List<string> GetJavaType()
+    {
+        return JavaType;
+    }
+
+    public static List<string> GetSystemType()
+    {
+        return SystemType;
     }
 }

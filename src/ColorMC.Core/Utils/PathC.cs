@@ -104,4 +104,16 @@ public static class PathC
                 Directory.Delete(dir, true);
         });
     }
+
+    public static string? GetFile(string path, string name)
+    {
+        var list = GetAllFile(path);
+        foreach (var item in list)
+        {
+            if (item.Name == name)
+                return item.FullName;
+        }
+
+        return null;
+    }
 }
