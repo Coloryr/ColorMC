@@ -53,7 +53,9 @@ public partial class MainWindow : Window
     public async void Launch(bool debug)
     {
         Info1.Show(Localizer.Instance["MainWindow.Info3"]);
-        var res = await GameBinding.Launch(Obj!.Obj, debug);
+        var item = Obj!;
+        var game = item.Obj;
+        var res = await GameBinding.Launch(game, debug);
         Info1.Close();
         if (res.Item1 == false)
         {
@@ -72,8 +74,8 @@ public partial class MainWindow : Window
         }
         else
         {
-            Launchs.Add(Obj.Obj, Obj);
-            Obj.SetLaunch(true);
+            Launchs.Add(game, item);
+            item.SetLaunch(true);
             Info2.Show(Localizer.Instance["MainWindow.Info2"]);
         }
     }

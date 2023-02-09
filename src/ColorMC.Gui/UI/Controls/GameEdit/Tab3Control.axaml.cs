@@ -60,7 +60,6 @@ public partial class Tab3Control : UserControl
         }
     }
 
-
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
         var item = ComboBox1.SelectedItem as string;
@@ -95,26 +94,26 @@ public partial class Tab3Control : UserControl
         var text = GameBinding.ReadConfigFile(Obj, item);
         var ex = item[item.LastIndexOf('.')..];
 
-        //TextEditor1.Document = new AvaloniaEdit.Document.TextDocument(text);
+        TextEditor1.Document = new AvaloniaEdit.Document.TextDocument(text);
         EditGa(ex);
     }
 
     public void EditGa(string name)
     {
-        //if (name == ".json5")
-        //{
-        //    name = ".json";
-        //}
-        //var item = registryOptions.GetLanguageByExtension(name);
-        //if (item == null)
-        //{
-        //    textMateInstallation.SetGrammar(null);
-        //    return;
-        //}
-        //var item1 = registryOptions.GetScopeByLanguageId(item.Id);
-        //if (item1 == null)
-        //    return;
-        //textMateInstallation.SetGrammar(item1);
+        if (name == ".json5")
+        {
+            name = ".json";
+        }
+        var item = registryOptions.GetLanguageByExtension(name);
+        if (item == null)
+        {
+            textMateInstallation.SetGrammar(null);
+            return;
+        }
+        var item1 = registryOptions.GetScopeByLanguageId(item.Id);
+        if (item1 == null)
+            return;
+        textMateInstallation.SetGrammar(item1);
     }
 
     private void Load()
@@ -147,7 +146,7 @@ public partial class Tab3Control : UserControl
         }
         else
         {
-            //TextEditor1.Document = null;
+            TextEditor1.Document = null;
         }
     }
 
