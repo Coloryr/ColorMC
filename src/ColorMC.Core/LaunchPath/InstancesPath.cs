@@ -37,11 +37,23 @@ public static class InstancesPath
     private const string Name16 = "cfmod.json";
     private const string Name17 = "logs/latest.log";
 
+    /// <summary>
+    /// 游戏实例列表
+    /// </summary>
     private static Dictionary<string, GameSettingObj> InstallGames = new();
+    /// <summary>
+    /// 游戏实例组
+    /// </summary>
     private static Dictionary<string, List<GameSettingObj>> GameGroups = new();
 
+    /// <summary>
+    /// 基础路径
+    /// </summary>
     public static string BaseDir { get; private set; }
 
+    /// <summary>
+    /// 获取所有游戏实例
+    /// </summary>
     public static List<GameSettingObj> Games
     {
         get
@@ -50,6 +62,9 @@ public static class InstancesPath
         }
     }
 
+    /// <summary>
+    /// 获取所有游戏实例组
+    /// </summary>
     public static Dictionary<string, List<GameSettingObj>> Groups
     {
         get
@@ -83,6 +98,10 @@ public static class InstancesPath
         }
     }
 
+    /// <summary>
+    /// 从组中删除游戏实例
+    /// </summary>
+    /// <param name="obj"></param>
     private static void RemoveFromGroup(GameSettingObj obj)
     {
         InstallGames.Remove(obj.Name);
@@ -97,6 +116,10 @@ public static class InstancesPath
         }
     }
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
         BaseDir = Path.GetFullPath(dir + "/" + Name);
@@ -128,6 +151,11 @@ public static class InstancesPath
         }
     }
 
+    /// <summary>
+    /// 获取游戏实例
+    /// </summary>
+    /// <param name="name">实例名</param>
+    /// <returns>游戏实例</returns>
     public static GameSettingObj? GetGame(string? name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -141,56 +169,110 @@ public static class InstancesPath
         return null;
     }
 
+    /// <summary>
+    /// 保存游戏实例
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static void Save(this GameSettingObj obj)
     {
-        File.WriteAllText(obj.GetGameJsonPath(), JsonConvert.SerializeObject(obj));
+        File.WriteAllText(obj.GetGameJsonFile(), JsonConvert.SerializeObject(obj));
     }
 
+    /// <summary>
+    /// 获取游戏实例基础路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
     public static string GetBasePath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}");
     }
 
+    /// <summary>
+    /// 获取游戏实例游戏路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
     public static string GetGamePath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}");
     }
 
-    public static string GetGameJsonPath(this GameSettingObj obj)
+    /// <summary>
+    /// 获取游戏实例储存文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>文件路径</returns>
+    public static string GetGameJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name1}");
     }
 
+    /// <summary>
+    /// 获取游戏实例mod信息文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>文件路径</returns>
     public static string GetModJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name3}");
     }
 
+    /// <summary>
+    /// 获取游戏实例mod列表文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>文件路径</returns>
     public static string GetModInfoJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name4}");
     }
 
+    /// <summary>
+    /// 获取游戏实例视频选项文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>文件路径</returns>
     public static string GetOptionsFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name5}");
     }
 
+    /// <summary>
+    /// 获取游戏实例服务器储存文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>文件路径</returns>
     public static string GetServersFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name6}");
     }
 
+    /// <summary>
+    /// 获取游戏实例截图路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
     public static string GetScreenshotsPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name7}/");
     }
 
+    /// <summary>
+    /// 获取游戏实例资源包路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
     public static string GetResourcepacksPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name8}/");
     }
 
+    /// <summary>
+    /// 获取游戏实例光影包路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
     public static string GetShaderpacksPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name9}/");
@@ -206,36 +288,71 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name11}");
     }
 
+    /// <summary>
+    /// 获取游戏实例图标文件路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>文件路径</returns>
     public static string GetIconFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name12}");
     }
 
+    /// <summary>
+    /// 获取游戏实例mod文件路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
     public static string GetModsPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name13}/");
     }
 
+    /// <summary>
+    /// 获取游戏实例世界路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
     public static string GetSavesPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}/");
     }
 
+    /// <summary>
+    /// 获取游戏实例配置文件路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
     public static string GetConfigPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name15}/");
     }
 
+    /// <summary>
+    /// 获取游戏实例cfmod数据文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>文件路径</returns>
     public static string GetCurseForgeModJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name16}");
     }
 
+    /// <summary>
+    /// 获取游戏实例最后日志文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>文件路径</returns>
     public static string GetLogLatestFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name17}");
     }
 
+    /// <summary>
+    /// 新建游戏版本
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns>结果</returns>
     public static async Task<GameSettingObj?> CreateVersion(this GameSettingObj game)
     {
         if (InstallGames.ContainsKey(game.Name))
@@ -270,33 +387,38 @@ public static class InstancesPath
         return game;
     }
 
-    public static Task InstallForge(this GameSettingObj obj, string version)
-    {
-        obj.LoaderVersion = version;
-        obj.Loader = Loaders.Forge;
-        obj.Save();
+    //public static Task InstallForge(this GameSettingObj obj, string version)
+    //{
+    //    obj.LoaderVersion = version;
+    //    obj.Loader = Loaders.Forge;
+    //    obj.Save();
 
-        return GameDownload.DownloadForge(obj.Version, version);
-    }
+    //    return GameDownload.DownloadForge(obj.Version, version);
+    //}
 
-    public static Task InstallFabric(this GameSettingObj obj, string version)
-    {
-        obj.LoaderVersion = version;
-        obj.Loader = Loaders.Fabric;
-        obj.Save();
+    //public static Task InstallFabric(this GameSettingObj obj, string version)
+    //{
+    //    obj.LoaderVersion = version;
+    //    obj.Loader = Loaders.Fabric;
+    //    obj.Save();
 
-        return GameDownload.DownloadFabric(obj.Version, version);
-    }
+    //    return GameDownload.DownloadFabric(obj.Version, version);
+    //}
 
-    public static Task InstallQuilt(this GameSettingObj obj, string version)
-    {
-        obj.LoaderVersion = version;
-        obj.Loader = Loaders.Quilt;
-        obj.Save();
+    //public static Task InstallQuilt(this GameSettingObj obj, string version)
+    //{
+    //    obj.LoaderVersion = version;
+    //    obj.Loader = Loaders.Quilt;
+    //    obj.Save();
 
-        return GameDownload.DownloadQuilt(obj.Version, version);
-    }
+    //    return GameDownload.DownloadQuilt(obj.Version, version);
+    //}
 
+    /// <summary>
+    /// 新建游戏组
+    /// </summary>
+    /// <param name="name">组名字</param>
+    /// <returns>结果</returns>
     public static bool AddGroup(string name)
     {
         if (GameGroups.ContainsKey(name))
@@ -309,6 +431,11 @@ public static class InstancesPath
         return true;
     }
 
+    /// <summary>
+    /// 移动游戏实例到组
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="now">组名</param>
     public static void MoveGameGroup(this GameSettingObj obj, string? now)
     {
         string group = obj.GroupName;
@@ -344,13 +471,18 @@ public static class InstancesPath
         obj.Save();
     }
 
-    public static void UninstallLoader(this GameSettingObj obj)
-    {
-        obj.LoaderVersion = null;
-        obj.Loader = Loaders.Normal;
-        obj.Save();
-    }
+    //public static void UninstallLoader(this GameSettingObj obj)
+    //{
+    //    obj.LoaderVersion = null;
+    //    obj.Loader = Loaders.Normal;
+    //    obj.Save();
+    //}
 
+    /// <summary>
+    /// 复制游戏实例
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>游戏实例</returns>
     public static GameSettingObj CopyObj(this GameSettingObj obj)
     {
         return new()
@@ -372,39 +504,43 @@ public static class InstancesPath
         };
     }
 
-    public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
-    {
-        var obj1 = await CreateVersion(new()
-        {
-            Name = name,
-            GroupName = obj.GroupName,
-            Version = obj.Version,
-            ModPack = obj.ModPack,
-            Loader = obj.Loader,
-            LoaderVersion = obj.LoaderVersion,
-            JvmArg = obj.JvmArg,
-            JvmName = obj.JvmName,
-            JvmLocal = obj.JvmLocal,
-            Window = obj.Window,
-            StartServer = obj.StartServer,
-            ProxyHost = obj.ProxyHost,
-            CurseForgeMods = obj.CurseForgeMods
-        });
-        if (obj1 != null)
-        {
-            await PathC.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
-            if (obj.ModPack)
-            {
-                File.Copy(obj.GetModJsonFile(), obj1.GetModJsonFile(), true);
-                File.Copy(obj.GetModInfoJsonFile(), obj1.GetModInfoJsonFile(), true);
-            }
+    //public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
+    //{
+    //    var obj1 = await CreateVersion(new()
+    //    {
+    //        Name = name,
+    //        GroupName = obj.GroupName,
+    //        Version = obj.Version,
+    //        ModPack = obj.ModPack,
+    //        Loader = obj.Loader,
+    //        LoaderVersion = obj.LoaderVersion,
+    //        JvmArg = obj.JvmArg,
+    //        JvmName = obj.JvmName,
+    //        JvmLocal = obj.JvmLocal,
+    //        Window = obj.Window,
+    //        StartServer = obj.StartServer,
+    //        ProxyHost = obj.ProxyHost,
+    //        CurseForgeMods = obj.CurseForgeMods
+    //    });
+    //    if (obj1 != null)
+    //    {
+    //        await PathC.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
+    //        if (obj.ModPack)
+    //        {
+    //            File.Copy(obj.GetModJsonFile(), obj1.GetModJsonFile(), true);
+    //            File.Copy(obj.GetModInfoJsonFile(), obj1.GetModInfoJsonFile(), true);
+    //        }
 
-            return obj1;
-        }
+    //        return obj1;
+    //    }
 
-        return null;
-    }
+    //    return null;
+    //}
 
+    /// <summary>
+    /// 保存游戏实例cfmod数据
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static void SaveCurseForgeMod(this GameSettingObj obj)
     {
         if (obj.CurseForgeMods == null)
@@ -413,6 +549,10 @@ public static class InstancesPath
         File.WriteAllText(obj.GetCurseForgeModJsonFile(), JsonConvert.SerializeObject(obj.CurseForgeMods));
     }
 
+    /// <summary>
+    /// 读取游戏实例cfmod数据
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static void ReadCurseForgeMod(this GameSettingObj obj)
     {
         string file = obj.GetCurseForgeModJsonFile();
@@ -454,12 +594,21 @@ public static class InstancesPath
         }
     }
 
+    /// <summary>
+    /// 删除游戏实例
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static Task Remove(this GameSettingObj obj)
     {
         RemoveFromGroup(obj);
         return PathC.DeleteFiles(obj.GetBasePath());
     }
 
+    /// <summary>
+    /// 安装curseforge整合包
+    /// </summary>
+    /// <param name="data">整合包信息</param>
+    /// <returns>结果</returns>
     public static async Task<bool> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data)
     {
         var item = new DownloadItem()
@@ -476,6 +625,13 @@ public static class InstancesPath
         return await InstallFromZip(item.Local, PackType.CurseForge);
     }
 
+    /// <summary>
+    /// 导出
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">导出路径</param>
+    /// <param name="filter">过滤文件</param>
+    /// <param name="type">压缩包类型</param>
     public static Task Export(this GameSettingObj obj,
         string file, List<string> filter, PackType type)
     {
@@ -487,6 +643,11 @@ public static class InstancesPath
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// 导入整合包
+    /// </summary>
+    /// <param name="dir">压缩包路径</param>
+    /// <param name="type">类型</param>
     public static async Task<bool> InstallFromZip(string dir, PackType type)
     {
         GameSettingObj? game = null;
@@ -495,6 +656,7 @@ public static class InstancesPath
         {
             switch (type)
             {
+                //ColorMC格式
                 case PackType.ColorMC:
                     {
                         CoreMain.PackState?.Invoke(CoreRunState.Read);
@@ -547,6 +709,7 @@ public static class InstancesPath
                         res1111 = true;
                         break;
                     }
+                //Curseforge压缩包
                 case PackType.CurseForge:
                     CoreMain.PackState?.Invoke(CoreRunState.Read);
                     var res = await PackDownload.DownloadCurseForge(dir);
@@ -561,6 +724,7 @@ public static class InstancesPath
 
                     CoreMain.PackState?.Invoke(CoreRunState.End);
                     break;
+                //MMC压缩包
                 case PackType.MMC:
                     {
                         CoreMain.PackState?.Invoke(CoreRunState.Read);
@@ -691,6 +855,7 @@ public static class InstancesPath
                         res1111 = true;
                         break;
                     }
+                //HMCL压缩包
                 case PackType.HMCL:
                     {
                         CoreMain.PackState?.Invoke(CoreRunState.Read);

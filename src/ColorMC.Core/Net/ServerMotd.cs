@@ -178,6 +178,10 @@ public static class ServerMotd
 
     public static async Task<ServerMotdObj> GetServerInfo(string ip, int port)
     {
+        if(port == 0)
+        {
+            port = 25565;
+        }
         var info = new ServerMotdObj(ip, port);
         try
         {

@@ -23,20 +23,30 @@
                 Margin="5"
                 Classes="input1"
                 Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <DockPanel>
                 <Button
                     Name="Button_SelectFile"
                     Width="80"
                     Height="25"
                     Margin="0,0,10,0"
-                    Content="{setting:Localize Button.Select}" />
+                    Content="{setting:Localize Button.Select}"
+                    DockPanel.Dock="Right" />
                 <Button
                     Name="Button_Add"
                     Width="80"
                     Height="25"
                     Margin="0,0,5,0"
-                    Content="{setting:Localize Button.Add}" />
-            </StackPanel>
+                    Content="{setting:Localize Button.Add}"
+                    DockPanel.Dock="Right" />
+
+                <Button
+                    Name="Button1"
+                    Width="80"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Content="下载"
+                    DockPanel.Dock="Right" />
+            </DockPanel>
             <Label Margin="5" Content="{setting:Localize SettingWindow.Tab5.Text4}" />
         </StackPanel>
 

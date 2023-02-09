@@ -15,10 +15,20 @@ public static class AssetsPath
     public const string Name2 = "objects";
     public const string Name3 = "skins";
 
+    /// <summary>
+    /// 基础路径
+    /// </summary>
     public static string BaseDir { get; private set; }
 
+    /// <summary>
+    /// 资源文件路径
+    /// </summary>
     public static string ObjectsDir { get; private set; }
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir">运行目录</param>
     public static void Init(string dir)
     {
         BaseDir = dir + "/" + Name;
@@ -33,6 +43,11 @@ public static class AssetsPath
         Directory.CreateDirectory($"{BaseDir}/{Name3}");
     }
 
+    /// <summary>
+    /// 添加资源数据
+    /// </summary>
+    /// <param name="obj">资源数据</param>
+    /// <param name="game">游戏数据</param>
     public static void AddIndex(AssetsObj? obj, GameArgObj game)
     {
         if (obj == null)
@@ -41,6 +56,11 @@ public static class AssetsPath
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
     }
 
+    /// <summary>
+    /// 获取资源数据
+    /// </summary>
+    /// <param name="game">游戏数据</param>
+    /// <returns></returns>
     public static AssetsObj? GetIndex(GameArgObj game)
     {
         string file = $"{BaseDir}/{Name1}/{game.assets}.json";
@@ -49,6 +69,11 @@ public static class AssetsPath
         return JsonConvert.DeserializeObject<AssetsObj>(data);
     }
 
+    /// <summary>
+    /// 检查丢失的资源
+    /// </summary>
+    /// <param name="obj">资源数据</param>
+    /// <returns>丢失列表</returns>
     public static async Task<ConcurrentBag<(string Name, string Hash)>> Check(AssetsObj obj)
     {
         var list1 = new ConcurrentBag<string>();
@@ -79,11 +104,10 @@ public static class AssetsPath
     }
 
     /// <summary>
-    /// 更新json
+    /// 检查资源文件
     /// </summary>
-    /// <param name="version"></param>
-    /// <returns></returns>
-    public static async Task CheckUpdate(string version)
+    /// <param name="version">游戏版本</param>
+    public static async Task Check(string version)
     {
         var item = VersionPath.GetGame(version);
         if (item == null)
@@ -97,6 +121,11 @@ public static class AssetsPath
         AddIndex(obj, item);
     }
 
+    /// <summary>
+    /// 保存皮肤
+    /// </summary>
+    /// <param name="obj">保存的账户</param>
+    /// <param name="file">保存路径</param>
     public static void SaveSkin(LoginObj obj, string file)
     {
         var path = obj.GetSkinFile();
@@ -108,16 +137,11 @@ public static class AssetsPath
         File.Copy(file, path);
     }
 
-    public static string? GetSkin(LoginObj obj)
-    {
-        var path = obj.GetSkinFile(); 
-
-        if (File.Exists(path))
-            return path;
-        else
-            return null;
-    }
-
+    /// <summary>
+    /// 获取皮肤文件
+    /// </summary>
+    /// <param name="obj">保存的账户</param>
+    /// <returns>皮肤路径</returns>
     public static string GetSkinFile(this LoginObj obj) 
     {
         return Path.GetFullPath($"{BaseDir}/{Name3}/{obj.UUID}.png");

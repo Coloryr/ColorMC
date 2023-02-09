@@ -6,6 +6,11 @@ namespace ColorMC.Core.Game;
 
 public static class Shaderpacks
 {
+    /// <summary>
+    /// 获取游戏实例资源包
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns>资源包列表</returns>
     public static List<ShaderpackObj> GetShaderpacks(this GameSettingObj game)
     {
         var list = new List<ShaderpackObj>();

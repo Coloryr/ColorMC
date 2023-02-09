@@ -2,6 +2,7 @@
 using ICSharpCode.SharpZipLib.Zip;
 using System.Security.Cryptography;
 using System.Text;
+using System;
 
 namespace ColorMC.Core.Utils;
 
@@ -162,5 +163,41 @@ public static class ZipFloClass
                 await s.WriteAsync(buffer);
             }
         }
+    }
+
+    public static async Task<string> Unzip(string path, string file)
+    {
+        bool get = false ;
+        string first = "";
+        using ZipInputStream s = new(File.OpenRead(file));
+
+        ZipEntry theEntry;
+        while ((theEntry = s.GetNextEntry()) != null)
+        {
+            string name = path + "/" + theEntry.Name;
+            if (!get)
+            {
+                first = name;
+                get = true;
+            }
+           
+            var directoryName = Path.GetDirectoryName(name);
+            string fileName = Path.GetFileName(theEntry.Name);
+
+            // create directory
+            if (directoryName?.Length > 0)
+            {
+                Directory.CreateDirectory(directoryName);
+            }
+
+            if (fileName != string.Empty)
+            {
+                using FileStream streamWriter = File.Create(name);
+
+                await s.CopyToAsync(streamWriter);
+            }
+        }
+
+        return first;
     }
 }

@@ -1,5 +1,8 @@
 ﻿namespace ColorMC.Core.Objs.Minecraft;
 
+/// <summary>
+/// 资源数据
+/// </summary>
 public record AssetsObj
 {
     public record Objects

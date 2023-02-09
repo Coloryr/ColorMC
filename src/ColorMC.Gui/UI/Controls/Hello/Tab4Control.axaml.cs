@@ -52,7 +52,7 @@ public partial class Tab4Control : UserControl
         switch (ComboBox_UserType.SelectedIndex)
         {
             case 0:
-                string name = TextBox_Input1.Text;
+                var name = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(name))
                 {
                     Window.Info.Show(Localizer.Instance["UserWindow.Error2"]);

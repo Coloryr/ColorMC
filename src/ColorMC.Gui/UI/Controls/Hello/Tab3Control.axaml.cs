@@ -27,8 +27,14 @@ public partial class Tab3Control : UserControl
         Button_Refash.Click += Button_Refash_Click;
         Button_Next.Click += Button_Next_Click;
         Button_Delete.Click += Button_Delete_Click;
+        Button1.Click += Button1_Click;
 
         Load();
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        App.ShowAddJava();
     }
 
     private void Button_Delete_Click(object? sender, RoutedEventArgs e)

@@ -34,6 +34,7 @@ public partial class App : Application
     public static AddModPackWindow? AddModPackWindow;
     public static SettingWindow? SettingWindow;
     public static SkinWindow? SkinWindow;
+    public static AddJavaWindow? AddJavaWindow;
     public static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
 
     public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
@@ -361,6 +362,19 @@ public partial class App : Application
             window.Show();
             window.SetType(type);
             GameEditWindows.Add(obj, window);
+        }
+    }
+
+    public static void ShowAddJava()
+    {
+        if (AddJavaWindow != null)
+        {
+            AddJavaWindow.Activate();
+        }
+        else
+        {
+            AddJavaWindow = new();
+            AddJavaWindow.Show();
         }
     }
 

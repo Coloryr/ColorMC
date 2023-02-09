@@ -37,12 +37,19 @@ public partial class Tab5Control : UserControl
 
         Button_D1.Click += Button_D1_Click;
 
+        Button1.Click += Button1_Click;
+
         Expander_R.ContentTransition = App.CrossFade100;
 
         DataGrid1.Items = List;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        App.ShowAddJava();
     }
 
     private void DataGrid1_CellPointerPressed(object? sender,

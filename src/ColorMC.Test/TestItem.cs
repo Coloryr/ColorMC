@@ -17,7 +17,7 @@ public static class TestItem
     public static void Item1()
     {
         VersionPath.CheckUpdate("1.12.2").Wait();
-        AssetsPath.CheckUpdate("1.12.2").Wait();
+        AssetsPath.Check("1.12.2").Wait();
     }
 
     public static void Item2()

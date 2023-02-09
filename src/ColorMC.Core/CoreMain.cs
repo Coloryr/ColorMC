@@ -55,6 +55,7 @@ public static class CoreMain
         ConfigUtils.Init(dir);
         SystemInfo.Init();
         DownloadManager.Init(dir);
+        JvmPath.Init();
         AuthDatabase.Init();
         MCPath.Init(dir);
 
