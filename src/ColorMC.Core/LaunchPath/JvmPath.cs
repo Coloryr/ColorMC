@@ -78,12 +78,12 @@ public static class JvmPath
 
     private static async Task<(bool, string?)> UnzipJava(string name, string file)
     {
-        string path = BaseDir + "/";
+        string path = BaseDir + "/" + name;
         Directory.CreateDirectory(path);
 
-        var path1 = await ZipFloClass.Unzip(path, file);
+        await Task.Run(() => ZipFloClass.Unzip(path, file));
 
-        var java = Find(path1);
+        var java = Find(path);
         if (java == null)
             return (false, "没有找到Java");
 

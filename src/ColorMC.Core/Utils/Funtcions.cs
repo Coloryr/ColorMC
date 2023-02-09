@@ -3,6 +3,9 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.Security.Cryptography;
 using System.Text;
 using System;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
 
 namespace ColorMC.Core.Utils;
 
@@ -165,39 +168,40 @@ public static class ZipFloClass
         }
     }
 
-    public static async Task<string> Unzip(string path, string file)
+    public static void Unzip(string path, string local)
     {
-        bool get = false ;
-        string first = "";
-        using ZipInputStream s = new(File.OpenRead(file));
-
-        ZipEntry theEntry;
-        while ((theEntry = s.GetNextEntry()) != null)
+        if (local.EndsWith("tar.gz"))
         {
-            string name = path + "/" + theEntry.Name;
-            if (!get)
+            using var inStream = File.OpenRead(local);
+            using var gzipStream = new GZipInputStream(inStream);
+            var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
+            tarArchive.ExtractContents(path);
+            tarArchive.Close();
+        }
+        else
+        {
+            ZipInputStream s = new(File.OpenRead(local));
+            ZipEntry theEntry;
+            while ((theEntry = s.GetNextEntry()) != null)
             {
-                first = name;
-                get = true;
-            }
-           
-            var directoryName = Path.GetDirectoryName(name);
-            string fileName = Path.GetFileName(theEntry.Name);
+                string filename = $"{path}/{theEntry.Name}";
 
-            // create directory
-            if (directoryName?.Length > 0)
-            {
-                Directory.CreateDirectory(directoryName);
-            }
+                var directoryName = Path.GetDirectoryName(filename);
+                string fileName = Path.GetFileName(theEntry.Name);
 
-            if (fileName != string.Empty)
-            {
-                using FileStream streamWriter = File.Create(name);
+                // create directory
+                if (directoryName?.Length > 0)
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
 
-                await s.CopyToAsync(streamWriter);
+                if (fileName != string.Empty)
+                {
+                    using FileStream streamWriter = File.Create(filename);
+
+                    s.CopyTo(streamWriter);
+                }
             }
         }
-
-        return first;
     }
 }
