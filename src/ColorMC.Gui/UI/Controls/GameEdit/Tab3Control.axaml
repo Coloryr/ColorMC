@@ -36,6 +36,9 @@
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
                     Content="{setting:Localize GameEditWindow.Tab3.Button1}" />
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <Button
                     Name="Button2"
                     Width="85"
