@@ -78,7 +78,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
-        await Window.Info3.ShowOne(Localizer.Instance["AddGameWindow.Info15"], false);
+        await Window.Info3.ShowOne(Localizer.Instance["AddGameWindow.Info1"], false);
         Window.Info3.Close();
         if (Window.Info3.Cancel)
         {

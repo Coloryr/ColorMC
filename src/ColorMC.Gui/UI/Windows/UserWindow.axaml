@@ -88,7 +88,7 @@
                             Width="100"
                             Height="30"
                             Margin="6,0,0,0"
-                            Content="{setting:Localize UserWindow.Button1}" />
+                            Content="{setting:Localize UserWindow.Text10}" />
                     </Expander>
                 </Grid>
             </StackPanel>
@@ -99,7 +99,7 @@
                 Background="#EEEEEEEE"
                 IsVisible="False">
                 <StackPanel Margin="5">
-                    <Label Content="{setting:Localize UserWindow.Grid}" />
+                    <Label Content="{setting:Localize UserWindow.Text11}" />
                     <StackPanel Orientation="Horizontal">
                         <Label VerticalAlignment="Center" Content="{setting:Localize UserWindow.Text9}" />
                         <ComboBox

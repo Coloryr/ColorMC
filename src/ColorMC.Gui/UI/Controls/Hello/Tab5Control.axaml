@@ -27,16 +27,16 @@
                 <CheckBox
                     Name="CheckBox_Release"
                     Margin="20,0,0,0"
-                    Content="{setting:Localize AddGameWindow.CheckBox1}"
+                    Content="{setting:Localize AddGameWindow.Text6}"
                     IsChecked="True" />
                 <CheckBox
                     Name="CheckBox_Snapshot"
                     Margin="20,0,0,0"
-                    Content="{setting:Localize AddGameWindow.CheckBox2}" />
+                    Content="{setting:Localize AddGameWindow.Text7}" />
                 <CheckBox
                     Name="CheckBox_Other"
                     Margin="20,0,0,0"
-                    Content="{setting:Localize AddGameWindow.CheckBox3}" />
+                    Content="{setting:Localize AddGameWindow.Text8}" />
             </StackPanel>
 
             <StackPanel Margin="5" Orientation="Horizontal">
@@ -80,7 +80,7 @@
             Margin="10,170,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="{setting:Localize AddGameWindow.Button1}" />
+            Content="{setting:Localize AddGameWindow.Text9}" />
 
         <Button
             Name="Button_Add2"
@@ -89,7 +89,7 @@
             Margin="195,170,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="{setting:Localize AddGameWindow.Button2}" />
+            Content="{setting:Localize AddGameWindow.Text10}" />
 
         <Button
             Name="Button_Add3"
@@ -98,7 +98,7 @@
             Margin="380,170,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="{setting:Localize AddGameWindow.Button3}" />
+            Content="{setting:Localize AddGameWindow.Text11}" />
 
         <Button
             Name="Button_Add4"
@@ -107,7 +107,7 @@
             Margin="565,170,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="{setting:Localize AddGameWindow.Button4}" />
+            Content="{setting:Localize AddGameWindow.Text12}" />
 
         <Button
             Name="Button_Next"

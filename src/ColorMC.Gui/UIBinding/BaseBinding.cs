@@ -236,11 +236,11 @@ public static class BaseBinding
     {
         return new()
         {
-            Localizer.Instance["OtherBinding.TranTypes.Item1"],
-            Localizer.Instance["OtherBinding.TranTypes.Item2"],
-            Localizer.Instance["OtherBinding.TranTypes.Item3"],
-            Localizer.Instance["OtherBinding.TranTypes.Item4"],
-            Localizer.Instance["OtherBinding.TranTypes.Item5"]
+            Localizer.Instance["TranTypes.Item1"],
+            Localizer.Instance["TranTypes.Item2"],
+            Localizer.Instance["TranTypes.Item3"],
+            Localizer.Instance["TranTypes.Item4"],
+            Localizer.Instance["TranTypes.Item5"]
         };
     }
 

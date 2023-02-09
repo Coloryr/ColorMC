@@ -63,7 +63,7 @@ public partial class Tab4Control : UserControl
                 {
                     Window.Info.Show(res.Item2!);
                 }
-                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Window.Info2.Show(Localizer.Instance["Info4"]);
                 TextBox_Input1.Text = "";
                 break;
             case 1:
@@ -75,7 +75,7 @@ public partial class Tab4Control : UserControl
                 {
                     Window.Info.Show(res.Item2!);
                 }
-                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Window.Info2.Show(Localizer.Instance["Info4"]);
                 TextBox_Input1.Text = "";
                 break;
             case 2:
@@ -106,7 +106,7 @@ public partial class Tab4Control : UserControl
                     Window.Info.Show(res.Item2!);
                     break;
                 }
-                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Window.Info2.Show(Localizer.Instance["Info4"]);
                 TextBox_Input1.Text = "";
                 break;
             case 3:
@@ -137,7 +137,7 @@ public partial class Tab4Control : UserControl
                     Window.Info.Show(res.Item2!);
                     break;
                 }
-                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Window.Info2.Show(Localizer.Instance["Info4"]);
                 TextBox_Input1.Text = "";
                 break;
             case 4:
@@ -162,7 +162,7 @@ public partial class Tab4Control : UserControl
                     Window.Info.Show(res.Item2!);
                     break;
                 }
-                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Window.Info2.Show(Localizer.Instance["Info4"]);
                 break;
             case 5:
                 server = TextBox_Input1.Text;
@@ -192,7 +192,7 @@ public partial class Tab4Control : UserControl
                     Window.Info.Show(res.Item2!);
                     break;
                 }
-                Window.Info2.Show(Localizer.Instance["UserWindow.Ok2"]);
+                Window.Info2.Show(Localizer.Instance["Info4"]);
                 TextBox_Input1.Text = "";
                 break;
             default:

@@ -13,10 +13,6 @@
         <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
         <DockPanel Margin="5">
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Text1}" />
                 <ComboBox
                     Name="ComboBox1"
                     Width="200"
@@ -29,16 +25,6 @@
                     Classes="input1"
                     Watermark="{setting:Localize GameEditWindow.Tab3.Text2}" />
 
-                <Button
-                    Name="Button1"
-                    Width="85"
-                    Height="25"
-                    Margin="10,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Button1}" />
-            </StackPanel>
-
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <Button
                     Name="Button2"
                     Width="85"

@@ -92,7 +92,7 @@
                     Margin="5"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="{setting:Localize AddCurseForgeWindow.Button1}" />
+                    Content="{setting:Localize AddCurseForgeWindow.Text8}" />
 
                 <Button
                     Name="Button2"
@@ -101,7 +101,7 @@
                     Margin="5"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Content="{setting:Localize AddCurseForgeWindow.Button2}"
+                    Content="{setting:Localize AddCurseForgeWindow.Text9}"
                     IsEnabled="False" />
             </Grid>
 
@@ -153,7 +153,7 @@
                         Margin="2,2,110,2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Content="{setting:Localize AddCurseForgeWindow.Button3}" />
+                        Content="{setting:Localize AddCurseForgeWindow.Text10}" />
 
                     <Button
                         Name="ButtonDownload"
@@ -162,7 +162,7 @@
                         Margin="2,2,215,2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Content="{setting:Localize AddCurseForgeWindow.Button2}" />
+                        Content="{setting:Localize AddCurseForgeWindow.Text9}" />
 
                     <DataGrid
                         Name="DataGridFiles"

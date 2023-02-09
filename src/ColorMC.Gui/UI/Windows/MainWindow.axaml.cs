@@ -149,10 +149,10 @@ public partial class MainWindow : Window
         {
             return state switch
             {
-                LaunchState.LostLib => await Info.ShowWait(Localizer.Instance["MainWindow.Lost2"]),
-                LaunchState.LostLoader => await Info.ShowWait(Localizer.Instance["MainWindow.Lost3"]),
-                LaunchState.LostLoginCore => await Info.ShowWait(Localizer.Instance["MainWindow.Lost4"]),
-                _ => await Info.ShowWait(Localizer.Instance["MainWindow.Lost1"]),
+                LaunchState.LostLib => await Info.ShowWait(Localizer.Instance["MainWindow.Info5"]),
+                LaunchState.LostLoader => await Info.ShowWait(Localizer.Instance["MainWindow.Info6"]),
+                LaunchState.LostLoginCore => await Info.ShowWait(Localizer.Instance["MainWindow.Info7"]),
+                _ => await Info.ShowWait(Localizer.Instance["MainWindow.Info4"]),
             };
         });
     }
@@ -165,34 +165,34 @@ public partial class MainWindow : Window
             switch (state)
             {
                 case LaunchState.Login:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check1"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info8"]);
                     break;
                 case LaunchState.Check:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check2"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info9"]);
                     break;
                 case LaunchState.CheckVersion:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check3"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info10"]);
                     break;
                 case LaunchState.CheckLib:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check4"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info11"]);
                     break;
                 case LaunchState.CheckAssets:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check5"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info12"]);
                     break;
                 case LaunchState.CheckLoader:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check6"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info13"]);
                     break;
                 case LaunchState.CheckLoginCore:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check7"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info14"]);
                     break;
                 case LaunchState.CheckMods:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check10"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info17"]);
                     break;
                 case LaunchState.Download:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check8"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info15"]);
                     break;
                 case LaunchState.JvmPrepare:
-                    Info1.NextText(Localizer.Instance["MainWindow.Check9"]);
+                    Info1.NextText(Localizer.Instance["MainWindow.Info16"]);
                     break;
             }
         });
@@ -234,7 +234,7 @@ public partial class MainWindow : Window
                         };
                         var item1 = new Label
                         {
-                            Content = "û������ʵ��������ϵ����������Ա"
+                            Content = Localizer.Instance["MainWindow.Info18"]
                         };
 
                         item.Children.Add(item1);
@@ -284,7 +284,7 @@ public partial class MainWindow : Window
                         await Dispatcher.UIThread.InvokeAsync(() =>
                         {
                             DefaultGroup.SetItems(item.Value);
-                            DefaultGroup.SetName(Localizer.Instance["MainWindow.DefaultGroup"]);
+                            DefaultGroup.SetName(Localizer.Instance["Name1"]);
                         });
                     }
                     else
@@ -361,7 +361,8 @@ public partial class MainWindow : Window
 
     public async void DeleteGame(GameSettingObj obj)
     {
-        var res = await Info.ShowWait(string.Format("�Ƿ�Ҫɾ��ʵ�� {0}", obj.Name));
+        var res = await Info.ShowWait(
+            string.Format(Localizer.Instance["MainWindow.Info19"], obj.Name));
         if (!res)
             return;
 

@@ -38,7 +38,7 @@
                     Fill="{setting:Colors TranBack}"
                     StrokeThickness="3" />
                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                    <Label Margin="5" Content="{setting:Localize DownloadWindow.Label1}" />
+                    <Label Margin="5" Content="{setting:Localize DownloadWindow.Text4}" />
                     <ProgressBar
                         Name="ProgressBar1"
                         Width="500"
@@ -118,7 +118,7 @@
                             Width="100"
                             Height="30"
                             Margin="6,0,0,0"
-                            Content="{setting:Localize DownloadWindow.Button1}" />
+                            Content="{setting:Localize DownloadWindow.Text1}" />
                     </Expander>
                 </Grid>
                 <Grid>
@@ -141,7 +141,7 @@
                             Width="100"
                             Height="30"
                             Margin="6,0,0,0"
-                            Content="{setting:Localize DownloadWindow.Button2}" />
+                            Content="{setting:Localize DownloadWindow.Text2}" />
                     </Expander>
                 </Grid>
             </StackPanel>
