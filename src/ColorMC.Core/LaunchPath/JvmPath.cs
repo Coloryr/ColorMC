@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Game;
+using ColorMC.Core.Game;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -20,13 +20,21 @@ public static class JvmPath
         Directory.CreateDirectory(BaseDir);
     }
 
+    /// <summary>
+    /// 安装Java
+    /// </summary>
+    /// <param name="file">文件名</param>
+    /// <param name="name">Java名</param>
+    /// <param name="sha256">验证</param>
+    /// <param name="url">地址</param>
+    /// <returns>结果</returns>
     public static async Task<(CoreRunState, string?)> Install(string file, string name, string sha256, string url)
     {
         Jvms.Remove(name);
         var res = await Download(file, sha256, url);
         if (!res.Item1)
         {
-            return (CoreRunState.Error, "Java下载失败");
+            return (CoreRunState.Error, LanguageHelper.GetName("Core.Java.Error1"));
         }
         res = await UnzipJava(name, res.Item2!);
         if (!res.Item1)
@@ -85,17 +93,17 @@ public static class JvmPath
 
         var java = Find(path);
         if (java == null)
-            return (false, "没有找到Java");
+            return (false, LanguageHelper.GetName("Core.Java.Error2"));
 
         return AddItem(name, Path.GetRelativePath(AppContext.BaseDirectory, java));
     }
 
     /// <summary>
-    /// 添加java项目
+    /// 添加Java
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="local"></param>
-    /// <returns></returns>
+    /// <param name="name">名字</param>
+    /// <param name="local">路径</param>
+    /// <returns>结果</returns>
     public static (bool Res, string Msg) AddItem(string name, string local)
     {
         Jvms.Remove(name);
@@ -115,6 +123,13 @@ public static class JvmPath
         return (false, LanguageHelper.GetName("Core.Path.Jvm.Error2"));
     }
 
+    /// <summary>
+    /// 编辑Java项目
+    /// </summary>
+    /// <param name="old">旧名字</param>
+    /// <param name="name">新名字</param>
+    /// <param name="local">路径</param>
+    /// <returns>结果</returns>
     public static (bool Res, string Msg) EditItem(string old, string name, string local)
     {
         if (old != name)
@@ -142,6 +157,10 @@ public static class JvmPath
         return (false, LanguageHelper.GetName("Core.Path.Jvm.Error5"));
     }
 
+    /// <summary>
+    /// 删除Java
+    /// </summary>
+    /// <param name="name">名字</param>
     public static void Remove(string name)
     {
         if (!Jvms.ContainsKey(name))
@@ -155,11 +174,15 @@ public static class JvmPath
         ConfigUtils.Save();
     }
 
-    public static void AddList(List<JvmConfigObj> objs)
+    /// <summary>
+    /// 添加到列表
+    /// </summary>
+    /// <param name="list">列表</param>
+    public static void AddList(List<JvmConfigObj> list)
     {
         Logs.Info(LanguageHelper.GetName("Core.Path.Jvm.Load"));
         Jvms.Clear();
-        objs.ForEach(a =>
+        list.ForEach(a =>
         {
             var info = GetJavaInfo(a.Local);
             if (info != null)
@@ -180,6 +203,11 @@ public static class JvmPath
         });
     }
 
+    /// <summary>
+    /// 获取Java信息
+    /// </summary>
+    /// <param name="name">名字</param>
+    /// <returns>信息</returns>
     public static JavaInfo? GetInfo(string? name)
     {
         if (name == null)
@@ -195,14 +223,19 @@ public static class JvmPath
         }
     }
 
-    public static JavaInfo? GetJavaInfo(string javaPath)
+    /// <summary>
+    /// 获取Java信息
+    /// </summary>
+    /// <param name="path">路径</param>
+    /// <returns>信息</returns>
+    public static JavaInfo? GetJavaInfo(string path)
     {
         try
         {
-            if (!string.IsNullOrWhiteSpace(javaPath) && File.Exists(javaPath))
+            if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
             {
                 Process p = new();
-                p.StartInfo.FileName = javaPath;
+                p.StartInfo.FileName = path;
                 p.StartInfo.Arguments = "-version";
                 p.StartInfo.RedirectStandardError = true;
                 p.StartInfo.UseShellExecute = false;
@@ -218,7 +251,7 @@ public static class JvmPath
                 ArchEnum arch = is64 ? ArchEnum.x64 : ArchEnum.x32;
                 JavaInfo info = new()
                 {
-                    Path = javaPath,
+                    Path = path,
                     Version = version,
                     Arch = arch,
                     Type = type
@@ -237,6 +270,9 @@ public static class JvmPath
         }
     }
 
+    /// <summary>
+    /// 删除所有Java
+    /// </summary>
     public static void RemoveAll()
     {
         Jvms.Clear();

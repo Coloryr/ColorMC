@@ -16,6 +16,11 @@ public static class Adoptium
         "8", "11", "16", "17", "18", "19"
     };
 
+    public readonly static List<string> SystemType = new()
+    { 
+        "", "Windows", "Linux", "MacOS" 
+    };
+
     public static string GetOs(int type)
     {
         return type switch

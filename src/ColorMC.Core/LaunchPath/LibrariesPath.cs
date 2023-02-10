@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Net;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
@@ -8,12 +8,19 @@ using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.LaunchPath;
 
+/// <summary>
+/// 运行库
+/// </summary>
 public static class LibrariesPath
 {
     private const string Name = "libraries";
     public static string BaseDir { get; private set; }
     private static string NativeDir;
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
         BaseDir = dir + "/" + Name;
@@ -23,6 +30,11 @@ public static class LibrariesPath
         Directory.CreateDirectory(NativeDir);
     }
 
+    /// <summary>
+    /// native路径
+    /// </summary>
+    /// <param name="version">游戏版本</param>
+    /// <returns>路径</returns>
     public static string GetNativeDir(string version)
     {
         string dir = $"{NativeDir}/{version}";
@@ -30,6 +42,11 @@ public static class LibrariesPath
         return dir;
     }
 
+    /// <summary>
+    /// 检查游戏运行库
+    /// </summary>
+    /// <param name="obj">游戏数据</param>
+    /// <returns>丢失的库</returns>
     public static async Task<List<DownloadItem>> CheckGame(GameArgObj obj)
     {
         var list = new List<DownloadItem>();
@@ -58,6 +75,11 @@ public static class LibrariesPath
         return list;
     }
 
+    /// <summary>
+    /// 检查Forge的运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>丢失的库</returns>
     public static async Task<List<DownloadItem>?> CheckForge(GameSettingObj obj)
     {
         var v2 = CheckRule.GameLaunchVersion(obj.Version);
@@ -140,6 +162,11 @@ public static class LibrariesPath
         return list;
     }
 
+    /// <summary>
+    /// 检查Fabric的运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>丢失的库</returns>
     public static List<DownloadItem>? CheckFabric(GameSettingObj obj)
     {
         var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion);
@@ -167,6 +194,11 @@ public static class LibrariesPath
         return list;
     }
 
+    /// <summary>
+    /// 检查Quilt的运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>丢失的库</returns>
     public static List<DownloadItem>? CheckQuilt(GameSettingObj obj)
     {
         var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion);
@@ -194,8 +226,13 @@ public static class LibrariesPath
         return list;
     }
 
-    public static string MakeGameDir(string mc)
+    /// <summary>
+    /// 获取游戏核心路径
+    /// </summary>
+    /// <param name="version">游戏版本</param>
+    /// <returns>游戏路径</returns>
+    public static string GetGameFile(string version)
     {
-        return $"{BaseDir}/net/minecraft/client/{mc}/client-{mc}.jar";
+        return $"{BaseDir}/net/minecraft/client/{version}/client-{version}.jar";
     }
 }

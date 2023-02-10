@@ -38,21 +38,21 @@ public static class InstancesPath
     private const string Name17 = "logs/latest.log";
 
     /// <summary>
-    /// ÓÎÏ·ÊµÀıÁĞ±í
+    /// æ¸¸æˆå®ä¾‹åˆ—è¡¨
     /// </summary>
     private static Dictionary<string, GameSettingObj> InstallGames = new();
     /// <summary>
-    /// ÓÎÏ·ÊµÀı×é
+    /// æ¸¸æˆå®ä¾‹ç»„
     /// </summary>
     private static Dictionary<string, List<GameSettingObj>> GameGroups = new();
 
     /// <summary>
-    /// »ù´¡Â·¾¶
+    /// åŸºç¡€è·¯å¾„
     /// </summary>
     public static string BaseDir { get; private set; }
 
     /// <summary>
-    /// »ñÈ¡ËùÓĞÓÎÏ·ÊµÀı
+    /// è·å–æ‰€æœ‰æ¸¸æˆå®ä¾‹
     /// </summary>
     public static List<GameSettingObj> Games
     {
@@ -63,7 +63,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// »ñÈ¡ËùÓĞÓÎÏ·ÊµÀı×é
+    /// è·å–æ‰€æœ‰æ¸¸æˆå®ä¾‹ç»„
     /// </summary>
     public static Dictionary<string, List<GameSettingObj>> Groups
     {
@@ -99,7 +99,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// ´Ó×éÖĞÉ¾³ıÓÎÏ·ÊµÀı
+    /// ä»ç»„ä¸­åˆ é™¤æ¸¸æˆå®ä¾‹
     /// </summary>
     /// <param name="obj"></param>
     private static void RemoveFromGroup(GameSettingObj obj)
@@ -117,9 +117,9 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// ³õÊ¼»¯
+    /// åˆå§‹åŒ–
     /// </summary>
-    /// <param name="dir">ÔËĞĞÂ·¾¶</param>
+    /// <param name="dir">è¿è¡Œè·¯å¾„</param>
     public static void Init(string dir)
     {
         BaseDir = Path.GetFullPath(dir + "/" + Name);
@@ -152,10 +152,10 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀı
+    /// è·å–æ¸¸æˆå®ä¾‹
     /// </summary>
-    /// <param name="name">ÊµÀıÃû</param>
-    /// <returns>ÓÎÏ·ÊµÀı</returns>
+    /// <param name="name">å®ä¾‹å</param>
+    /// <returns>æ¸¸æˆå®ä¾‹</returns>
     public static GameSettingObj? GetGame(string? name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -170,109 +170,109 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// ±£´æÓÎÏ·ÊµÀı
+    /// ä¿å­˜æ¸¸æˆå®ä¾‹
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
     public static void Save(this GameSettingObj obj)
     {
         File.WriteAllText(obj.GetGameJsonFile(), JsonConvert.SerializeObject(obj));
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀı»ù´¡Â·¾¶
+    /// è·å–æ¸¸æˆå®ä¾‹åŸºç¡€è·¯å¾„
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>Â·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>è·¯å¾„</returns>
     public static string GetBasePath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀıÓÎÏ·Â·¾¶
+    /// è·å–æ¸¸æˆå®ä¾‹æ¸¸æˆè·¯å¾„
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>Â·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>è·¯å¾„</returns>
     public static string GetGamePath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀı´¢´æÎÄ¼ş
+    /// è·å–æ¸¸æˆå®ä¾‹å‚¨å­˜æ–‡ä»¶
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>ÎÄ¼şÂ·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æ–‡ä»¶è·¯å¾„</returns>
     public static string GetGameJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name1}");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀımodĞÅÏ¢ÎÄ¼ş
+    /// è·å–æ¸¸æˆå®ä¾‹modä¿¡æ¯æ–‡ä»¶
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>ÎÄ¼şÂ·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æ–‡ä»¶è·¯å¾„</returns>
     public static string GetModJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name3}");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀımodÁĞ±íÎÄ¼ş
+    /// è·å–æ¸¸æˆå®ä¾‹modåˆ—è¡¨æ–‡ä»¶
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>ÎÄ¼şÂ·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æ–‡ä»¶è·¯å¾„</returns>
     public static string GetModInfoJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name4}");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀıÊÓÆµÑ¡ÏîÎÄ¼ş
+    /// è·å–æ¸¸æˆå®ä¾‹è§†é¢‘é€‰é¡¹æ–‡ä»¶
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>ÎÄ¼şÂ·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æ–‡ä»¶è·¯å¾„</returns>
     public static string GetOptionsFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name5}");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀı·şÎñÆ÷´¢´æÎÄ¼ş
+    /// è·å–æ¸¸æˆå®ä¾‹æœåŠ¡å™¨å‚¨å­˜æ–‡ä»¶
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>ÎÄ¼şÂ·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æ–‡ä»¶è·¯å¾„</returns>
     public static string GetServersFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name6}");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀı½ØÍ¼Â·¾¶
+    /// è·å–æ¸¸æˆå®ä¾‹æˆªå›¾è·¯å¾„
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>Â·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>è·¯å¾„</returns>
     public static string GetScreenshotsPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name7}/");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀı×ÊÔ´°üÂ·¾¶
+    /// è·å–æ¸¸æˆå®ä¾‹èµ„æºåŒ…è·¯å¾„
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>Â·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>è·¯å¾„</returns>
     public static string GetResourcepacksPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name8}/");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀı¹âÓ°°üÂ·¾¶
+    /// è·å–æ¸¸æˆå®ä¾‹å…‰å½±åŒ…è·¯å¾„
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>Â·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>è·¯å¾„</returns>
     public static string GetShaderpacksPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name9}/");
@@ -289,70 +289,70 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀıÍ¼±êÎÄ¼şÂ·¾¶
+    /// è·å–æ¸¸æˆå®ä¾‹å›¾æ ‡æ–‡ä»¶è·¯å¾„
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>ÎÄ¼şÂ·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æ–‡ä»¶è·¯å¾„</returns>
     public static string GetIconFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name12}");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀımodÎÄ¼şÂ·¾¶
+    /// è·å–æ¸¸æˆå®ä¾‹modæ–‡ä»¶è·¯å¾„
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>Â·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>è·¯å¾„</returns>
     public static string GetModsPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name13}/");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀıÊÀ½çÂ·¾¶
+    /// è·å–æ¸¸æˆå®ä¾‹ä¸–ç•Œè·¯å¾„
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>Â·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>è·¯å¾„</returns>
     public static string GetSavesPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}/");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀıÅäÖÃÎÄ¼şÂ·¾¶
+    /// è·å–æ¸¸æˆå®ä¾‹é…ç½®æ–‡ä»¶è·¯å¾„
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>Â·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>è·¯å¾„</returns>
     public static string GetConfigPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name15}/");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀıcfmodÊı¾İÎÄ¼ş
+    /// è·å–æ¸¸æˆå®ä¾‹cfmodæ•°æ®æ–‡ä»¶
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>ÎÄ¼şÂ·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æ–‡ä»¶è·¯å¾„</returns>
     public static string GetCurseForgeModJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name16}");
     }
 
     /// <summary>
-    /// »ñÈ¡ÓÎÏ·ÊµÀı×îºóÈÕÖ¾ÎÄ¼ş
+    /// è·å–æ¸¸æˆå®ä¾‹æœ€åæ—¥å¿—æ–‡ä»¶
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>ÎÄ¼şÂ·¾¶</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æ–‡ä»¶è·¯å¾„</returns>
     public static string GetLogLatestFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name17}");
     }
 
     /// <summary>
-    /// ĞÂ½¨ÓÎÏ·°æ±¾
+    /// æ–°å»ºæ¸¸æˆç‰ˆæœ¬
     /// </summary>
-    /// <param name="game">ÓÎÏ·ÊµÀı</param>
-    /// <returns>½á¹û</returns>
+    /// <param name="game">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>ç»“æœ</returns>
     public static async Task<GameSettingObj?> CreateVersion(this GameSettingObj game)
     {
         if (InstallGames.ContainsKey(game.Name))
@@ -415,10 +415,10 @@ public static class InstancesPath
     //}
 
     /// <summary>
-    /// ĞÂ½¨ÓÎÏ·×é
+    /// æ–°å»ºæ¸¸æˆç»„
     /// </summary>
-    /// <param name="name">×éÃû×Ö</param>
-    /// <returns>½á¹û</returns>
+    /// <param name="name">ç»„åå­—</param>
+    /// <returns>ç»“æœ</returns>
     public static bool AddGroup(string name)
     {
         if (GameGroups.ContainsKey(name))
@@ -432,10 +432,10 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// ÒÆ¶¯ÓÎÏ·ÊµÀıµ½×é
+    /// ç§»åŠ¨æ¸¸æˆå®ä¾‹åˆ°ç»„
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <param name="now">×éÃû</param>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <param name="now">ç»„å</param>
     public static void MoveGameGroup(this GameSettingObj obj, string? now)
     {
         string group = obj.GroupName;
@@ -479,10 +479,10 @@ public static class InstancesPath
     //}
 
     /// <summary>
-    /// ¸´ÖÆÓÎÏ·ÊµÀı
+    /// å¤åˆ¶æ¸¸æˆå®ä¾‹
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>ÓÎÏ·ÊµÀı</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æ¸¸æˆå®ä¾‹</returns>
     public static GameSettingObj CopyObj(this GameSettingObj obj)
     {
         return new()
@@ -538,9 +538,9 @@ public static class InstancesPath
     //}
 
     /// <summary>
-    /// ±£´æÓÎÏ·ÊµÀıcfmodÊı¾İ
+    /// ä¿å­˜æ¸¸æˆå®ä¾‹cfmodæ•°æ®
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
     public static void SaveCurseForgeMod(this GameSettingObj obj)
     {
         if (obj.CurseForgeMods == null)
@@ -550,9 +550,9 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// ¶ÁÈ¡ÓÎÏ·ÊµÀıcfmodÊı¾İ
+    /// è¯»å–æ¸¸æˆå®ä¾‹cfmodæ•°æ®
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
     public static void ReadCurseForgeMod(this GameSettingObj obj)
     {
         string file = obj.GetCurseForgeModJsonFile();
@@ -595,9 +595,9 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// É¾³ıÓÎÏ·ÊµÀı
+    /// åˆ é™¤æ¸¸æˆå®ä¾‹
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
     public static Task Remove(this GameSettingObj obj)
     {
         RemoveFromGroup(obj);
@@ -605,10 +605,10 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// °²×°curseforgeÕûºÏ°ü
+    /// å®‰è£…curseforgeæ•´åˆåŒ…
     /// </summary>
-    /// <param name="data">ÕûºÏ°üĞÅÏ¢</param>
-    /// <returns>½á¹û</returns>
+    /// <param name="data">æ•´åˆåŒ…ä¿¡æ¯</param>
+    /// <returns>ç»“æœ</returns>
     public static async Task<bool> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data)
     {
         var item = new DownloadItem()
@@ -626,12 +626,12 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// µ¼³ö
+    /// å¯¼å‡º
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <param name="file">µ¼³öÂ·¾¶</param>
-    /// <param name="filter">¹ıÂËÎÄ¼ş</param>
-    /// <param name="type">Ñ¹Ëõ°üÀàĞÍ</param>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <param name="file">å¯¼å‡ºè·¯å¾„</param>
+    /// <param name="filter">è¿‡æ»¤æ–‡ä»¶</param>
+    /// <param name="type">å‹ç¼©åŒ…ç±»å‹</param>
     public static Task Export(this GameSettingObj obj,
         string file, List<string> filter, PackType type)
     {
@@ -644,10 +644,10 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// µ¼ÈëÕûºÏ°ü
+    /// å¯¼å…¥æ•´åˆåŒ…
     /// </summary>
-    /// <param name="dir">Ñ¹Ëõ°üÂ·¾¶</param>
-    /// <param name="type">ÀàĞÍ</param>
+    /// <param name="dir">å‹ç¼©åŒ…è·¯å¾„</param>
+    /// <param name="type">ç±»å‹</param>
     public static async Task<bool> InstallFromZip(string dir, PackType type)
     {
         GameSettingObj? game = null;
@@ -656,7 +656,7 @@ public static class InstancesPath
         {
             switch (type)
             {
-                //ColorMC¸ñÊ½
+                //ColorMCæ ¼å¼
                 case PackType.ColorMC:
                     {
                         CoreMain.PackState?.Invoke(CoreRunState.Read);
@@ -696,7 +696,7 @@ public static class InstancesPath
                                 var path = game.GetBasePath();
                                 string file = Path.GetFullPath(path + '\\' + e.Name);
                                 FileInfo info2 = new(file);
-                                info2.Directory.Create();
+                                info2.Directory?.Create();
                                 using FileStream stream2 = new(file, FileMode.Create,
                                     FileAccess.ReadWrite, FileShare.ReadWrite);
                                 await stream.CopyToAsync(stream2);
@@ -709,7 +709,7 @@ public static class InstancesPath
                         res1111 = true;
                         break;
                     }
-                //CurseforgeÑ¹Ëõ°ü
+                //Curseforgeå‹ç¼©åŒ…
                 case PackType.CurseForge:
                     CoreMain.PackState?.Invoke(CoreRunState.Read);
                     var res = await PackDownload.DownloadCurseForge(dir);
@@ -724,7 +724,7 @@ public static class InstancesPath
 
                     CoreMain.PackState?.Invoke(CoreRunState.End);
                     break;
-                //MMCÑ¹Ëõ°ü
+                //MMCå‹ç¼©åŒ…
                 case PackType.MMC:
                     {
                         CoreMain.PackState?.Invoke(CoreRunState.Read);
@@ -844,7 +844,7 @@ public static class InstancesPath
                                 string file = Path.GetFullPath(game.GetBasePath() +
                     e.Name.Substring(game.Name.Length));
                                 FileInfo info2 = new(file);
-                                info2.Directory.Create();
+                                info2.Directory?.Create();
                                 using FileStream stream3 = new(file, FileMode.Create,
                                     FileAccess.ReadWrite, FileShare.ReadWrite);
                                 await stream.CopyToAsync(stream3);
@@ -855,7 +855,7 @@ public static class InstancesPath
                         res1111 = true;
                         break;
                     }
-                //HMCLÑ¹Ëõ°ü
+                //HMCLå‹ç¼©åŒ…
                 case PackType.HMCL:
                     {
                         CoreMain.PackState?.Invoke(CoreRunState.Read);
@@ -978,7 +978,7 @@ public static class InstancesPath
                                 string file = Path.GetFullPath(game.GetGamePath() +
                      overrides.Substring(game.Name.Length));
                                 FileInfo info2 = new(file);
-                                info2.Directory.Create();
+                                info2.Directory?.Create();
                                 using FileStream stream3 = new(file, FileMode.Create,
                                     FileAccess.ReadWrite, FileShare.ReadWrite);
                                 await stream.CopyToAsync(stream3);

@@ -36,7 +36,7 @@ public static class GameDownload
         {
             Name = $"{obj.id}.jar",
             Url = UrlHelper.Download(obj1.downloads.client.url, BaseClient.Source),
-            Local = LibrariesPath.MakeGameDir(obj.id),
+            Local = LibrariesPath.GetGameFile(obj.id),
             SHA1 = obj1.downloads.client.sha1
         });
 

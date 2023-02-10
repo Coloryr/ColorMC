@@ -11,7 +11,6 @@ using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using System.Threading.Tasks;
 using ColorMC.Core.LaunchPath;
-using static ColorMC.Core.Objs.Java.AdoptiumObj;
 using ColorMC.Core.Objs.Java;
 using System.IO;
 
@@ -36,6 +35,9 @@ public partial class AddJavaWindow : Window
         ComboBox1.Items = JavaBinding.GetJavaType();
 
         ComboBox1.SelectedIndex = 0;
+        ComboBox2.SelectedIndex = 0;
+        ComboBox3.SelectedIndex = 0;
+        ComboBox4.SelectedIndex = 0;
 
         Switch();
 
@@ -61,11 +63,12 @@ public partial class AddJavaWindow : Window
             return;
 
         Info1.Show("正在下载Java");
-        var res1 = await JvmPath.Install(obj.File, obj.Name, obj.Sha256, obj.Url);
+        var res1 = await JavaBinding.DownloadJava(obj);
         Info1.Close();
-        if (res1.Item1 != Core.CoreRunState.Init)
+        if (!res1.Item1)
         {
             Info.Show(res1.Item2!);
+            return;
         }
 
         Info2.Show("下载Java成功");
@@ -124,27 +127,27 @@ public partial class AddJavaWindow : Window
         List1.Clear();
         List.Clear();
 
-        switch (ComboBox1.SelectedIndex)
-        {
-            case 0:
-                if (ComboBox3.SelectedItem is not string version)
-                    return;
+        var res = await JavaBinding.GetJavaList(ComboBox1.SelectedIndex, ComboBox2.SelectedIndex, ComboBox3.SelectedIndex);
 
-                await GetAdoptiumList(version);
-                break;
-            case 1:
-                await GetZuluList();
-                break;
-            case 2:
-                await GetDragonwellList();
-                break;
+        if (res.Item1)
+        {
+            ComboBox2.Items = res.Os;
+            ComboBox3.Items = res.MainVersion;
+            ComboBox4.Items = res.Arch;
+
+            List1.AddRange(res.Item5!);
+
+            Select();
+
+            Info1.Close();
+        }
+        else
+        {
+            Info1.Close();
+            Info.Show("获取失败");
         }
 
-        Select();
-
         load = false;
-
-        Info1.Close();
     }
 
     private void Select()
@@ -164,7 +167,7 @@ public partial class AddJavaWindow : Window
         }
         if (ComboBox2.SelectedItem is string temp2)
         {
-            os = temp2.ToLower();
+            os = temp2;
         }
         bool arch1 = !string.IsNullOrWhiteSpace(arch);
         bool version1 = !string.IsNullOrWhiteSpace(version);
@@ -182,366 +185,11 @@ public partial class AddJavaWindow : Window
 
     private void Switch()
     {
-        switch (ComboBox1.SelectedIndex)
-        {
-            case 0:
-                ComboBox3.Items = Adoptium.JavaVersion;
-                ComboBox2.Items = JavaBinding.GetSystemType();
-                ComboBox3.SelectedIndex = 0;
-                ComboBox2.SelectedIndex = 0;
-                ComboBox4.SelectedIndex = 0;
-                break;
-            case 1:
-                ComboBox3.SelectedItem = null;
-                ComboBox2.Items = JavaBinding.GetSystemType();
-                ComboBox3.Items = null;
-                ComboBox2.SelectedIndex = 0;
-                ComboBox4.SelectedIndex = 0;
-                break;
-            case 2:
-                ComboBox2.Items = null;
-                ComboBox3.Items = null;
-                ComboBox4.Items = null;
-                ComboBox3.SelectedIndex = 0;
-                ComboBox2.SelectedIndex = 0;
-                ComboBox4.SelectedIndex = 0;
-                break;
-        }
-    }
-
-    private async Task GetZuluList()
-    {
-        try
-        {
-            var list = await Zulu.GetJavaList();
-            if (list == null)
-            {
-                Info.Show("获取失败");
-                return;
-            }
-
-            var list1 =
-                from item in list
-                group item by item.arch + '_' + item.hw_bitness into newGroup
-                orderby newGroup.Key descending
-                select newGroup.Key;
-
-            var list2 = new List<string>
-            {
-                ""
-            };
-            list2.AddRange(list1);
-            ComboBox4.Items = list2;
-            ComboBox4.SelectedIndex = 0;
-
-            var list3 =
-                from item in list
-                group item by item.java_version[0] into newGroup
-                orderby newGroup.Key descending
-                select newGroup.Key.ToString();
-
-            var list4 = new List<string>
-            {
-                ""
-            };
-            list4.AddRange(list3);
-            ComboBox3.Items = list4;
-            ComboBox3.SelectedIndex = 0;
-
-            foreach (var item in list)
-            {
-                List1.Add(new()
-                {
-                    Name = item.name,
-                    Arch = item.arch + '_' + item.hw_bitness,
-                    Os = item.os,
-                    MainVersion = item.zulu_version[0].ToString(),
-                    Version = ToStr(item.zulu_version),
-                    Size = UIUtils.MakeFileSize1(0),
-                    Url = item.url,
-                    Sha256 = item.sha256_hash,
-                    File = item.name
-                });
-            }
-        }
-        catch (Exception e)
-        {
-            App.ShowError("获取Java列表", e);
-            Info.Show("获取失败");
-            return;
-        }
-    }
-
-    private string ToStr(List<int> list)
-    {
-        string a = "";
-        foreach (var item in list)
-        {
-            a += item + ".";
-        }
-        return a[..^1];
-    }
-
-    private async Task GetAdoptiumList(string version)
-    {
-        try
-        {
-            var list = await Adoptium.GetJavaList(version, ComboBox2.SelectedIndex);
-            if (list == null)
-            {
-                Info.Show("获取失败");
-                return;
-            }
-
-            var list1 =
-                from item in list
-                group item by item.binary.architecture into newGroup
-                orderby newGroup.Key descending
-                select newGroup.Key;
-
-            var list2 = new List<string>
-            {
-                ""
-            };
-            list2.AddRange(list1);
-            ComboBox4.Items = list2;
-
-            foreach (var item in list)
-            {
-                List1.Add(new()
-                {
-                    Name = item.binary.scm_ref + "_" + item.binary.image_type,
-                    Arch = item.binary.architecture,
-                    Os = item.binary.os,
-                    MainVersion = version,
-                    Version = item.version.openjdk_version,
-                    Size = UIUtils.MakeFileSize1(item.binary.package.size),
-                    Url = item.binary.package.link,
-                    Sha256 = item.binary.package.checksum,
-                    File = item.binary.package.name
-                });
-            }
-        }
-        catch (Exception e)
-        {
-            App.ShowError("获取Java列表", e);
-            Info.Show("获取失败");
-            return;
-        }
-    }
-
-    private void AddDragonwell(DragonwellObj.Item item)
-    {
-        string main = "8";
-        string version = item.version8;
-        string file;
-        if (item.xurl8 != null)
-        {
-            file = Path.GetFileName(item.xurl8);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "x64",
-                Os = "linux",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.xurl8,
-                File = file
-            });
-        }
-        if (item.aurl8 != null)
-        {
-            file = Path.GetFileName(item.aurl8);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "aarch64",
-                Os = "linux",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.aurl8,
-                File = file
-            });
-        }
-        if (item.wurl8 != null)
-        {
-            file = Path.GetFileName(item.wurl8);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "x64",
-                Os = "windows",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.wurl8,
-                File = file
-            });
-        }
-
-        main = "11";
-        version = item.version11;
-        if (item.xurl11 != null)
-        {
-            file = Path.GetFileName(item.xurl11);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "x64",
-                Os = "linux",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.xurl11,
-                File = file
-            });
-        }
-        if (item.aurl11 != null)
-        {
-            file = Path.GetFileName(item.aurl11);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "aarch64",
-                Os = "linux",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.aurl11,
-                File = file
-            });
-        }
-        if (item.apurl11 != null)
-        {
-            file = Path.GetFileName(item.apurl11);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "x64_alpine",
-                Os = "linux",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.apurl11,
-                File = file
-            });
-        }
-        if (item.wurl11 != null)
-        {
-            file = Path.GetFileName(item.wurl11);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "x64",
-                Os = "windows",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.wurl11,
-                File = file
-            });
-        }
-        if (item.rurl11 != null)
-        {
-            file = Path.GetFileName(item.rurl11);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "riscv64",
-                Os = "linux",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.rurl11,
-                File = file
-            });
-        }
-
-        main = "17";
-        version = item.version17;
-        if (item.xurl17 != null)
-        {
-            file = Path.GetFileName(item.xurl17);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "x64",
-                Os = "linux",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.xurl17,
-                File = file
-            });
-        }
-        if (item.aurl17 != null)
-        {
-            file = Path.GetFileName(item.aurl17);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "aarch64",
-                Os = "linux",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.aurl17,
-                File = file
-            });
-        }
-        if (item.apurl17 != null)
-        {
-            file = Path.GetFileName(item.apurl17);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "x64_alpine",
-                Os = "linux",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.apurl17,
-                File = file
-            });
-        }
-        if (item.wurl17 != null)
-        {
-            file = Path.GetFileName(item.wurl17);
-            List1.Add(new()
-            {
-                Name = file,
-                Arch = "x64",
-                Os = "windows",
-                MainVersion = main,
-                Version = version,
-                Size = "0",
-                Url = item.wurl17,
-                File = file
-            });
-        }
-    }
-
-    private async Task GetDragonwellList()
-    {
-        try
-        {
-            var list = await Dragonwell.GetJavaList();
-            if (list == null)
-            {
-                Info.Show("获取失败");
-                return;
-            }
-
-            AddDragonwell(list.extended);
-            AddDragonwell(list.standard);
-        }
-        catch (Exception e)
-        {
-            App.ShowError("获取Java列表", e);
-            Info.Show("获取失败");
-            return;
-        }
+        ComboBox2.Items = null;
+        ComboBox3.Items = null;
+        ComboBox4.Items = null;
+        ComboBox3.SelectedIndex = 0;
+        ComboBox2.SelectedIndex = 0;
+        ComboBox4.SelectedIndex = 0;
     }
 }

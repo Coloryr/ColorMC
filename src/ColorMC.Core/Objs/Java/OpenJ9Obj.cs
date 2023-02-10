@@ -43,10 +43,3 @@ public record OpenJ9Obj1
     }
     public List<Downloads> downloads { get; set; }
 }
-
-public record OpenJ9Obj2
-{ 
-    public string Name { get; set; }
-    public string Os { get; set; }
-    public string Arch { get; set; }
-}

@@ -48,7 +48,7 @@
                         Margin="5"
                         VerticalAlignment="Center"
                         Content="系统" />
-                    <ComboBox Name="ComboBox2" Width="100" />
+                    <ComboBox Name="ComboBox2" Width="120" />
 
                     <Label
                         Margin="5"
