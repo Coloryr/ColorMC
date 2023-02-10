@@ -89,7 +89,7 @@
                             Height="25"
                             Margin="5,5,5,0"
                             HorizontalAlignment="Stretch"
-                            Content="导出皮肤" />
+                            Content="{setting:Localize SkinWindow.Text4}" />
 
                         <ComboBox
                             Name="ComboBox1"

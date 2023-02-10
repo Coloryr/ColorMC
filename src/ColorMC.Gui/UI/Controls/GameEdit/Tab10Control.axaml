@@ -31,7 +31,7 @@
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding IP}"
-                        Header="地址"
+                        Header="{setting:Localize GameEditWindow.Tab10.Text1}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>

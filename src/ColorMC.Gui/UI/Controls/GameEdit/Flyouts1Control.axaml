@@ -33,12 +33,12 @@
                 Name="Button4"
                 Width="100"
                 Height="25"
-                Content="mcmod搜索" />
+                Content="{setting:Localize GameEditWindow.Flyouts1.Button3}" />
             <Button
                 Name="Button5"
                 Width="100"
                 Height="25"
-                Content="打开链接" />
+                Content="{setting:Localize GameEditWindow.Flyouts1.Button4}" />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -259,7 +259,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError("获取Java列表", e);
+            App.ShowError(Localizer.Instance["JavaBinding.Error1"], e);
             return (false, null, null, null, null);
         }
     }
@@ -316,7 +316,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError("获取Java列表", e);
+            App.ShowError(Localizer.Instance["JavaBinding.Error1"], e);
             return (false, null, null);
         }
     }
@@ -533,7 +533,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError("获取Java列表", e);
+            App.ShowError(Localizer.Instance["JavaBinding.Error1"], e);
             return null;
         }
     }
@@ -590,7 +590,7 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            App.ShowError("获取Java列表", e);
+            App.ShowError(Localizer.Instance["JavaBinding.Error1"], e);
             return (false, null, null, null, null);
         }
     }

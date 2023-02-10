@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 
-public class Colors : INotifyPropertyChanged
+public class ColorSel : INotifyPropertyChanged
 {
     public static readonly IBrush AppBackColor = Brush.Parse("#FFFFFFFF");
     public static readonly IBrush AppBackColor1 = Brush.Parse("#11FFFFFF");
@@ -21,22 +21,22 @@ public class Colors : INotifyPropertyChanged
     public static IBrush MotdColor = Brush.Parse("#FFFFFFFF");
     public static IBrush MotdBackColor = Brush.Parse("#FF000000");
 
-    public static Colors Instance { get; set; } = new Colors();
+    public static ColorSel Instance { get; set; } = new ColorSel();
 
     private const string IndexerName = "Item";
     private const string IndexerArrayName = "Item[]";
 
-    public static void Load()
+    public void Load()
     {
         try
         {
             if (GuiConfigUtils.Config.RGB == true)
             {
-                Instance.EnableRGB();
+                EnableRGB();
             }
             else
             {
-                Instance.DisableRGB();
+                DisableRGB();
                 MainColor = Brush.Parse(GuiConfigUtils.Config.ColorMain);
                 BackColor = Brush.Parse(GuiConfigUtils.Config.ColorBack);
                 Back1Color = Brush.Parse(GuiConfigUtils.Config.ColorTranBack);
@@ -46,7 +46,7 @@ public class Colors : INotifyPropertyChanged
                 MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
                 MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
 
-                Instance.Reload();
+                Reload();
             }
         }
         catch (Exception e)
@@ -61,7 +61,7 @@ public class Colors : INotifyPropertyChanged
     private double rbg_s = 1;
     private double rbg_v = 1;
 
-    public Colors()
+    public ColorSel()
     {
         timer = new(Tick)
         {

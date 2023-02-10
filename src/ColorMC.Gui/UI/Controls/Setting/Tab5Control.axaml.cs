@@ -77,7 +77,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
-        var res = await Window.Info.ShowWait("ÊÇ·ñÉ¾³ýËùÓÐJava");
+        var res = await Window.Info.ShowWait(Localizer.Instance["SettingWindow.Tab5.Info3"]);
         if (!res)
             return;
 

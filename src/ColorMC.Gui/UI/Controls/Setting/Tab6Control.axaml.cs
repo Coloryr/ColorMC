@@ -183,8 +183,8 @@ public partial class Tab6Control : UserControl
             CheckBox2.IsChecked = config.JoinServer;
             CheckBox3.IsChecked = config.LockGame;
 
-            ColorPicker1.Color = Colors.MotdColor.ToColor();
-            ColorPicker2.Color = Colors.MotdBackColor.ToColor();
+            ColorPicker1.Color = ColorSel.MotdColor.ToColor();
+            ColorPicker2.Color = ColorSel.MotdBackColor.ToColor();
 
             ComboBox1.SelectedItem = config.GameName;
 

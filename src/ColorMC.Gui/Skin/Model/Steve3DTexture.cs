@@ -4,7 +4,7 @@ namespace ColorMC.Gui.Skin.Model;
 
 public class Steve3DTexture
 {
-    public static float[] GetSteveTextureTop(SkinType type)
+    public float[] GetSteveTextureTop(SkinType type)
     {
         switch (type)
         {
@@ -40,7 +40,7 @@ public class Steve3DTexture
         }
     }
 
-    public static float[] GetSteveTexture(SkinType type)
+    public float[] GetSteveTexture(SkinType type)
     {
         switch (type)
         {
@@ -81,7 +81,7 @@ public class Steve3DTexture
         }
     }
 
-    private static float[] HeadTex = new float[]
+    private float[] HeadTex = new float[]
     {
         // back
         32f, 8f, 32f, 16f, 24f, 16f, 24f, 8f,
@@ -97,7 +97,7 @@ public class Steve3DTexture
         24f, 0f, 24f, 8f, 16f, 8f, 16f, 0f
     };
 
-    private static float[] LegArmTex = new float[]
+    private float[] LegArmTex = new float[]
     {
         // back
         12f, 4f, 12f, 16f, 16f, 16f, 16f, 4f,
@@ -113,7 +113,7 @@ public class Steve3DTexture
         12f, 0f, 12f, 4f, 8f, 4f, 8f, 0f,
     };
 
-    private static float[] SlimArmTex = new float[]
+    private float[] SlimArmTex = new float[]
     {
         // back
         11f, 4f, 11f, 16f, 14f, 16f, 14f, 4f,
@@ -129,7 +129,7 @@ public class Steve3DTexture
         10f, 0f, 10f, 4f, 7f, 4f, 7f, 0f,
     };
 
-    private static float[] TorsoTex = new float[]
+    private float[] TorsoTex = new float[]
     {
         // back
         24f, 4f, 24f, 16f, 16f, 16f, 16f, 4f,
@@ -145,7 +145,7 @@ public class Steve3DTexture
         20f, 0f, 20f, 4f, 12f, 4f, 12f, 0f
     };
 
-    public static float[] GetTex(float[] input, SkinType type,
+    public float[] GetTex(float[] input, SkinType type,
         float offsetU = 0f,
         float offsetV = 0f)
     {

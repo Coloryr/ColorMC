@@ -26,13 +26,13 @@
                 </StackPanel>
 
                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <Label Margin="5" Content="字体选择" />
+                    <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text22}" />
                     <ComboBox Name="ComboBox3" Width="200" />
 
                     <CheckBox
                         Name="CheckBox3"
                         Margin="10,0,0,0"
-                        Content="默认字体" />
+                        Content="{setting:Localize SettingWindow.Tab2.Text23}" />
 
                     <Button
                         Name="Button_Change1"

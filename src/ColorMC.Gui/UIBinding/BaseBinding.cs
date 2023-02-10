@@ -17,7 +17,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Colors = ColorMC.Gui.Utils.LaunchSetting.Colors;
+using ColorSel = ColorMC.Gui.Utils.LaunchSetting.ColorSel;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -36,7 +36,7 @@ public static class BaseBinding
         CoreMain.LanguageReload = Change;
 
         GuiConfigUtils.Init(AppContext.BaseDirectory);
-        FontSel.Load();
+        FontSel.Instance.Load();
     }
 
     public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title, string ext, string name)
@@ -72,7 +72,7 @@ public static class BaseBinding
 
     public static void Exit()
     {
-        Colors.Instance.Stop();
+        ColorSel.Instance.Stop();
         Logs.Stop();
         DownloadManager.Stop();
     }

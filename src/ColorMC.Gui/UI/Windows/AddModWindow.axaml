@@ -175,7 +175,7 @@
                                 IsReadOnly="True" />
                             <DataGridCheckBoxColumn
                                 Binding="{Binding IsDownload}"
-                                Header="已下载"
+                                Header="{setting:Localize AddCurseForgeWindow.Data.Title5}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Size}"

@@ -47,7 +47,7 @@
             Margin="10,0,10,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Content="跳过设置" />
+            Content="{setting:Localize HelloWindow.Tab1.Text5}" />
 
         <Button
             Name="Button_Next"

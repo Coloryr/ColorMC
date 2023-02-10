@@ -12,6 +12,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -226,7 +227,7 @@ public partial class App : Application
             }
             catch (Exception e)
             {
-                CoreMain.OnError?.Invoke("自定义UI加载失败", e, true);
+                CoreMain.OnError?.Invoke(Localizer.Instance["Error10"], e, true);
                 ok = false;
             }
         }
@@ -433,14 +434,14 @@ public partial class App : Application
 
             if (GuiConfigUtils.Config.WindowTran)
             {
-                rec.Background = Utils.LaunchSetting.Colors.AppBackColor1;
+                rec.Background = Utils.LaunchSetting.ColorSel.AppBackColor1;
                 window.TransparencyLevelHint = (WindowTransparencyLevel)
                     (GuiConfigUtils.Config.WindowTranType + 1);
             }
             else
             {
                 window.TransparencyLevelHint = WindowTransparencyLevel.None;
-                rec.Background = Utils.LaunchSetting.Colors.AppBackColor;
+                rec.Background = Utils.LaunchSetting.ColorSel.AppBackColor;
             }
         }
     }

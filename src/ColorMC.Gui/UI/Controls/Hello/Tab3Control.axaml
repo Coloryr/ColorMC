@@ -43,7 +43,7 @@
                     Width="80"
                     Height="25"
                     Margin="5,0,0,0"
-                    Content="下载Java"
+                    Content="{setting:Localize HelloWindow.Tab3.Text5}"
                     DockPanel.Dock="Right" />
             </DockPanel>
             <Label Margin="5" Content="{setting:Localize HelloWindow.Tab3.Text4}" />

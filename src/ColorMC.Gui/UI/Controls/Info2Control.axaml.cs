@@ -21,7 +21,7 @@ public partial class Info2Control : UserControl
     {
         var grid = new Grid()
         {
-            Background = Utils.LaunchSetting.Colors.MainColor,
+            Background = Utils.LaunchSetting.ColorSel.MainColor,
             Margin = new Thickness(0, 0, 0, 60),
             VerticalAlignment = VerticalAlignment.Bottom,
             HorizontalAlignment = HorizontalAlignment.Center

@@ -244,7 +244,9 @@ public static class UserBinding
         switch (obj.AuthType)
         {
             case AuthType.Offline:
-                var file = await BaseBinding.OpFile(window, "选择皮肤导入", "*.png", "皮肤文件");
+                var file = await BaseBinding.OpFile(window, 
+                    Localizer.Instance["UserBinding.Info1"], "*.png",
+                    Localizer.Instance["UserBinding.Info2"]);
                 if (file?.Any() == true)
                 {
                     var item = file[0];
