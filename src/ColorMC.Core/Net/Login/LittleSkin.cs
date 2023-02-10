@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Objs.Login;
 
 namespace ColorMC.Core.Net.Login;
@@ -6,6 +6,13 @@ namespace ColorMC.Core.Net.Login;
 public static class LittleSkin
 {
     private const string ServerUrl = "https://littleskin.cn";
+    /// <summary>
+    /// 皮肤站登录
+    /// </summary>
+    /// <param name="clientToken">客户端代码</param>
+    /// <param name="user">用户名</param>
+    /// <param name="pass">密码</param>
+    /// <param name="server">服务器地址</param>
     public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Authenticate(string clientToken,
         string user, string pass, string? server = null)
     {
@@ -36,12 +43,16 @@ public static class LittleSkin
         obj.Obj!.AuthType = type;
         if (type == AuthType.SelfLittleSkin)
         {
-            obj.Obj.Text1 = server;
+            obj.Obj.Text1 = server!;
         }
 
         return obj;
     }
 
+    /// <summary>
+    /// 刷新登录
+    /// </summary>
+    /// <param name="obj">保存的账户</param>
     public static Task<(LoginState State, LoginObj? Obj)> Refresh(LoginObj obj)
     {
         string server;

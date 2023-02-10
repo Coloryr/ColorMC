@@ -32,7 +32,7 @@ public static class TestItem
         {
             //GameDownload.Download(version.versions.First()).Wait();
             var list = GameDownload.Download(version.versions.Where(a => a.id == "1.12.2").First()).Result;
-            if (list.State != DownloadState.End)
+            if (list.State != GetDownloadState.End)
             {
                 Console.WriteLine("下载列表获取失败");
                 return;
@@ -43,8 +43,8 @@ public static class TestItem
 
     public static void Item3()
     {
-        var list = PackDownload.DownloadCurseForge("H:\\ColonyVenture-1.13.zip").Result;
-        if (list.State != DownloadState.End)
+        var list = PackDownload.DownloadCurseForgeModPack("H:\\ColonyVenture-1.13.zip").Result;
+        if (list.State != GetDownloadState.End)
         {
             Console.WriteLine("下载列表获取失败");
             return;
@@ -63,7 +63,7 @@ public static class TestItem
         {
             var item = res.loader.First();
             var list = GameDownload.DownloadFabric("1.19.2", item.version).Result;
-            if (list.State != DownloadState.End)
+            if (list.State != GetDownloadState.End)
             {
                 Console.WriteLine("下载列表获取失败");
                 return;

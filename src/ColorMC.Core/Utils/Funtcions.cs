@@ -1,4 +1,4 @@
-﻿using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Security.Cryptography;
 using System.Text;
@@ -75,6 +75,11 @@ public static class Funtcions
 
 public static class ZipFloClass
 {
+    /// <summary>
+    /// 压缩文件
+    /// </summary>
+    /// <param name="strFile">路径</param>
+    /// <param name="strZip">文件名</param>
     public static async Task ZipFile(string strFile, string strZip)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar)
@@ -119,7 +124,13 @@ public static class ZipFloClass
         }
     }
 
-
+    /// <summary>
+    /// 压缩文件
+    /// </summary>
+    /// <param name="strFile">路径</param>
+    /// <param name="strZip">文件名</param>
+    /// <param name="filter">过滤</param>
+    /// <returns></returns>
     public static async Task ZipFile(string strFile, string strZip, List<string> filter)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar)
@@ -168,6 +179,11 @@ public static class ZipFloClass
         }
     }
 
+    /// <summary>
+    /// 解压
+    /// </summary>
+    /// <param name="path">路径</param>
+    /// <param name="local">文件</param>
     public static void Unzip(string path, string local)
     {
         if (local.EndsWith("tar.gz"))

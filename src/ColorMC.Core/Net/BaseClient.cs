@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Utils;
+using ColorMC.Core.Utils;
 using System.Net;
 
 namespace ColorMC.Core.Net;
@@ -14,9 +14,12 @@ public static class BaseClient
 {
     public static SourceLocal Source { get; set; }
 
-    public static HttpClient DownloadClient;
-    public static HttpClient LoginClient;
+    public static HttpClient DownloadClient { get; private set; }
+    public static HttpClient LoginClient { get; private set; }
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
     public static void Init()
     {
         Logs.Info(LanguageHelper.GetName("Core.Http.Init"));
@@ -57,39 +60,23 @@ public static class BaseClient
         LoginClient.Timeout = TimeSpan.FromSeconds(10);
     }
 
-    public static async Task<string> GetString(string url, Dictionary<string, string>? arg = null)
+    /// <summary>
+    /// GET 获取字符串
+    /// </summary>
+    /// <param name="url">地址</param>
+    /// <returns></returns>
+    public static async Task<string> GetString(string url)
     {
-        if (arg == null)
-        {
-            return await DownloadClient.GetStringAsync(url);
-        }
-        else
-        {
-            string temp = url;
-            foreach (var item in arg)
-            {
-                temp += $"{item.Key}={item.Value}&";
-            }
-            temp = temp[..^1];
-            return await DownloadClient.GetStringAsync(temp);
-        }
+        return await DownloadClient.GetStringAsync(url);
     }
 
-    public static async Task<byte[]> GetBytes(string url, Dictionary<string, string>? arg = null)
+    /// <summary>
+    /// GET 获取二进制
+    /// </summary>
+    /// <param name="url">地址</param>
+    /// <returns></returns>
+    public static async Task<byte[]> GetBytes(string url)
     {
-        if (arg == null)
-        {
-            return await DownloadClient.GetByteArrayAsync(url);
-        }
-        else
-        {
-            string temp = url;
-            foreach (var item in arg)
-            {
-                temp += $"{item.Key}={item.Value}&";
-            }
-            temp = temp[..^1];
-            return await DownloadClient.GetByteArrayAsync(temp);
-        }
+        return await DownloadClient.GetByteArrayAsync(url);
     }
 }

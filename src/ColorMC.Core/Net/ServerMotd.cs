@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Heijden.Dns.Portable;
 using Heijden.DNS;
@@ -123,6 +123,11 @@ public class ServerDescriptionJsonConverter : JsonConverter<Chat>
 
 public static class ServerMotd
 {
+    /// <summary>
+    /// 转字符串
+    /// </summary>
+    /// <param name="chat"></param>
+    /// <returns></returns>
     public static string ToPlainTextString(this Chat chat)
     {
         StringBuilder stringBuilder = new(chat.Text);
@@ -136,6 +141,11 @@ public static class ServerMotd
         return stringBuilder.ToString();
     }
 
+    /// <summary>
+    /// 清除格式
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
     public static string CleanFormat(string str)
     {
         str = str.Replace(@"\n", "\n");
@@ -156,26 +166,33 @@ public static class ServerMotd
     /// <summary>
     /// 获取与特定格式代码相关联的颜色代码
     /// </summary>
-    public static Dictionary<char, string> MinecraftColors { get; private set; } = new Dictionary<char, string>()
-        {
-            { '0', "#000000" },
-            { '1', "#0000AA" },
-            { '2', "#00AA00" },
-            { '3', "#00AAAA" },
-            { '4', "#AA0000" },
-            { '5', "#AA00AA" },
-            { '6', "#FFAA00" },
-            { '7', "#AAAAAA" },
-            { '8', "#555555" },
-            { '9', "#5555FF" },
-            { 'a', "#55FF55" },
-            { 'b', "#55FFFF" },
-            { 'c', "#FF5555" },
-            { 'd', "#FF55FF" },
-            { 'e', "#FFFF55" },
-            { 'f', "#FFFFFF" }
-        };
+    public static Dictionary<char, string> MinecraftColors { get; private set; } = 
+        new Dictionary<char, string>()
+    {
+        { '0', "#000000" },
+        { '1', "#0000AA" },
+        { '2', "#00AA00" },
+        { '3', "#00AAAA" },
+        { '4', "#AA0000" },
+        { '5', "#AA00AA" },
+        { '6', "#FFAA00" },
+        { '7', "#AAAAAA" },
+        { '8', "#555555" },
+        { '9', "#5555FF" },
+        { 'a', "#55FF55" },
+        { 'b', "#55FFFF" },
+        { 'c', "#FF5555" },
+        { 'd', "#FF55FF" },
+        { 'e', "#FFFF55" },
+        { 'f', "#FFFFFF" }
+    };
 
+    /// <summary>
+    /// 获取服务器信息
+    /// </summary>
+    /// <param name="ip"></param>
+    /// <param name="port"></param>
+    /// <returns></returns>
     public static async Task<ServerMotdObj> GetServerInfo(string ip, int port)
     {
         if(port == 0)
@@ -185,7 +202,7 @@ public static class ServerMotd
         var info = new ServerMotdObj(ip, port);
         try
         {
-            TcpClient tcp = null;
+            TcpClient tcp;
             try
             {
                 tcp = new TcpClient(ip, port);
@@ -318,13 +335,13 @@ public static class ServerMotd
         return info;
     }
 
-    public static string ClearColor(string str)
-    {
-        str = str.Replace(@"\n", "\n");
-        while (str.Contains('§'))
-        {
-            str = str.Remove(str.IndexOf('§'), 2);
-        }
-        return str.Trim();
-    }
+    //public static string ClearColor(string str)
+    //{
+    //    str = str.Replace(@"\n", "\n");
+    //    while (str.Contains('§'))
+    //    {
+    //        str = str.Remove(str.IndexOf('§'), 2);
+    //    }
+    //    return str.Trim();
+    //}
 }

@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
@@ -11,25 +11,44 @@ using System.Text;
 
 namespace ColorMC.Core.Net.Download;
 
-public enum DownloadState
+/// <summary>
+/// 下载状态
+/// </summary>
+public enum GetDownloadState
 {
-    Init, GetInfo, End
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    Init, 
+    /// <summary>
+    /// 获取数据中
+    /// </summary>
+    GetInfo, 
+    /// <summary>
+    /// 结束
+    /// </summary>
+    End
 }
 
 public static class GameDownload
 {
-    public static async Task<(DownloadState State, List<DownloadItem>? List)> Download(VersionObj.Versions obj)
+    /// <summary>
+    /// 下载哟游戏
+    /// </summary>
+    /// <param name="obj">版本数据</param>
+    /// <returns></returns>
+    public static async Task<(GetDownloadState State, List<DownloadItem>? List)> Download(VersionObj.Versions obj)
     {
         var list = new List<DownloadItem>();
 
-        var obj1 = await Get.GetGame(obj.url);
+        var obj1 = await GetHelper.GetGame(obj.url);
         if (obj1 == null)
-            return (DownloadState.Init, null);
+            return (GetDownloadState.Init, null);
 
         VersionPath.AddGame(obj1);
-        var obj2 = await Get.GetAssets(obj1.assetIndex.url);
+        var obj2 = await GetHelper.GetAssets(obj1.assetIndex.url);
         if (obj2 == null)
-            return (DownloadState.GetInfo, null);
+            return (GetDownloadState.GetInfo, null);
 
         AssetsPath.AddIndex(obj2, obj1);
         list.Add(new()
@@ -53,15 +72,24 @@ public static class GameDownload
             });
         }
 
-        return (DownloadState.End, list);
+        return (GetDownloadState.End, list);
     }
 
-    public static Task<(DownloadState State, List<DownloadItem>? List)> DownloadForge(GameSettingObj obj)
+    /// <summary>
+    /// 获取Forge下载项目
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    public static Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadForge(GameSettingObj obj)
     {
         return DownloadForge(obj.Version, obj.LoaderVersion);
     }
 
-    public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadForge(string mc, string version)
+    /// <summary>
+    /// 获取Forge下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version"><forge版本/param>
+    public static async Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadForge(string mc, string version)
     {
         bool v2 = CheckRule.GameLaunchVersion(mc);
 
@@ -71,13 +99,13 @@ public static class GameDownload
             var res = await DownloadManager.Download(down);
             if (!res)
             {
-                return (DownloadState.Init, null);
+                return (GetDownloadState.Init, null);
             }
         }
         catch (Exception e)
         {
-            CoreMain.OnError?.Invoke("Forge核心下载失败", e, false);
-            return (DownloadState.Init, null);
+            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Download.Forge.Error4"), e, false);
+            return (GetDownloadState.Init, null);
         }
 
         string name = $"forge-{mc}-{version}";
@@ -101,6 +129,7 @@ public static class GameDownload
         }
 
         var list = new List<DownloadItem>();
+        //1.12.2 最新版及以上
         if (v2 || (mc == "1.12.2" && find1))
         {
             byte[] array1 = stream1.ToArray();
@@ -114,7 +143,7 @@ public static class GameDownload
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.GetName("Core.Http.Download.Forge.Error1"), e);
-                return (DownloadState.GetInfo, null);
+                return (GetDownloadState.GetInfo, null);
             }
 
             list.AddRange(ForgeHelper.MakeForgeLibs(info, mc, version));
@@ -130,7 +159,7 @@ public static class GameDownload
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.GetName("Core.Http.Download.Forge.Error2"), e);
-                return (DownloadState.GetInfo, null);
+                return (GetDownloadState.GetInfo, null);
             }
 
             foreach (var item1 in info1.libraries)
@@ -145,7 +174,7 @@ public static class GameDownload
                 });
             }
         }
-
+        //旧forge
         else
         {
             ForgeInstallObj1 obj;
@@ -198,25 +227,34 @@ public static class GameDownload
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.GetName("Core.Http.Download.Forge.Error3"), e);
-                return (DownloadState.GetInfo, null);
+                return (GetDownloadState.GetInfo, null);
             }
         }
 
-        return (DownloadState.End, list);
+        return (GetDownloadState.End, list);
     }
 
-    public static Task<(DownloadState State, List<DownloadItem>? List)> DownloadFabric(GameSettingObj obj)
+    /// <summary>
+    /// 获取Fabric下载项目
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    public static Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadFabric(GameSettingObj obj)
     {
         return DownloadFabric(obj.Version, obj.LoaderVersion);
     }
 
-    public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadFabric(string mc, string? version = null)
+    /// <summary>
+    /// 获取Fabric下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">fabric版本</param>
+    public static async Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadFabric(string mc, string? version = null)
     {
         var list = new List<DownloadItem>();
         var meta = await FabricHelper.GetMeta(BaseClient.Source);
         if (meta == null)
         {
-            return (DownloadState.Init, null);
+            return (GetDownloadState.Init, null);
         }
 
         FabricMetaObj.Loader? fabric;
@@ -231,7 +269,7 @@ public static class GameDownload
         }
         if (fabric == null)
         {
-            return (DownloadState.GetInfo, null);
+            return (GetDownloadState.GetInfo, null);
         }
 
         version = fabric.version;
@@ -239,7 +277,7 @@ public static class GameDownload
         FabricLoaderObj? meta1 = await FabricHelper.GetLoader(mc, version, BaseClient.Source);
         if (meta1 == null)
         {
-            return (DownloadState.GetInfo, null);
+            return (GetDownloadState.GetInfo, null);
         }
 
         File.WriteAllText($"{VersionPath.FabricDir}/{meta1.id}.json",
@@ -257,21 +295,30 @@ public static class GameDownload
 
         }
 
-        return (DownloadState.End, list);
+        return (GetDownloadState.End, list);
     }
 
-    public static Task<(DownloadState State, List<DownloadItem>? List)> DownloadQuilt(GameSettingObj obj)
+    /// <summary>
+    /// 获取Quilt下载项目
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    public static Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadQuilt(GameSettingObj obj)
     {
         return DownloadQuilt(obj.Version, obj.LoaderVersion);
     }
 
-    public static async Task<(DownloadState State, List<DownloadItem>? List)> DownloadQuilt(string mc, string? version = null)
+    /// <summary>
+    /// 获取Quilt下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">quilt版本</param>
+    public static async Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadQuilt(string mc, string? version = null)
     {
         var list = new List<DownloadItem>();
         var meta = await QuiltHelper.GetMeta(BaseClient.Source);
         if (meta == null)
         {
-            return (DownloadState.Init, null);
+            return (GetDownloadState.Init, null);
         }
 
         QuiltMetaObj.Loader? quilt;
@@ -286,7 +333,7 @@ public static class GameDownload
         }
         if (quilt == null)
         {
-            return (DownloadState.GetInfo, null);
+            return (GetDownloadState.GetInfo, null);
         }
 
         version = quilt.version;
@@ -294,7 +341,7 @@ public static class GameDownload
         QuiltLoaderObj? meta1 = await QuiltHelper.GetLoader(mc, version, BaseClient.Source);
         if (meta1 == null)
         {
-            return (DownloadState.GetInfo, null);
+            return (GetDownloadState.GetInfo, null);
         }
 
         File.WriteAllText($"{VersionPath.QuiltDir}/{meta1.id}.json",
@@ -312,6 +359,6 @@ public static class GameDownload
 
         }
 
-        return (DownloadState.End, list);
+        return (GetDownloadState.End, list);
     }
 }

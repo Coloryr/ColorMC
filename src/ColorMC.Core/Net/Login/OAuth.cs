@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -60,7 +60,7 @@ public static class OAuthAPI
     private static string device_code;
     private static int expires_in;
 
-    public static async Task<string> PostString(string url, Dictionary<string, string> arg)
+    private static async Task<string> PostString(string url, Dictionary<string, string> arg)
     {
         FormUrlEncodedContent content = new(arg);
         var message = await BaseClient.LoginClient.PostAsync(url, content);
@@ -68,7 +68,7 @@ public static class OAuthAPI
         return await message.Content.ReadAsStringAsync();
     }
 
-    public static async Task<JObject> PostObj(string url, object arg)
+    private static async Task<JObject> PostObj(string url, object arg)
     {
         var data1 = JsonConvert.SerializeObject(arg);
         StringContent content = new(data1, MediaTypeHeaderValue.Parse("application/json"));
@@ -77,7 +77,7 @@ public static class OAuthAPI
         return JObject.Parse(data);
     }
 
-    public static async Task<JObject> PostObj(string url, Dictionary<string, string> arg)
+    private static async Task<JObject> PostObj(string url, Dictionary<string, string> arg)
     {
         FormUrlEncodedContent content = new(arg);
         var message = await BaseClient.LoginClient.PostAsync(url, content);
@@ -85,6 +85,9 @@ public static class OAuthAPI
         return JObject.Parse(data);
     }
 
+    /// <summary>
+    /// 获取登录码
+    /// </summary>
     public static async Task<(LoginState Done, string? Code, string? Url)> GetCode()
     {
         var data = await PostString(OAuthCode, Arg1);
@@ -109,6 +112,9 @@ public static class OAuthAPI
         return (LoginState.Done, code, url);
     }
 
+    /// <summary>
+    /// 获取token
+    /// </summary>
     public static async Task<(LoginState Done, OAuth1Obj? Obj)> RunGetCode()
     {
         Arg2["code"] = device_code;
@@ -154,6 +160,9 @@ public static class OAuthAPI
         } while (true);
     }
 
+    /// <summary>
+    /// 刷新密匙
+    /// </summary>
     public static async Task<(LoginState Done, OAuth1Obj? Auth)> RefreshTokenAsync(string token)
     {
         var dir = new Dictionary<string, string>(Arg3);
@@ -227,6 +236,9 @@ public static class OAuthAPI
         return (LoginState.Done, xstsToken, xstsUhs);
     }
 
+    /// <summary>
+    /// 获取账户信息
+    /// </summary>
     public static async Task<(LoginState Done, string? AccessToken)> GetMinecraftAsync(string token, string token1)
     {
         var json = await PostObj(XBoxProfile, new

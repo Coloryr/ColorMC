@@ -16,6 +16,10 @@ public static class DownloadManager
     public static int AllSize { get; private set; }
     public static int DoneSize { get; private set; }
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
         DownloadDir = dir + '/' + "download";
@@ -34,12 +38,18 @@ public static class DownloadManager
         Clear();
     }
 
+    /// <summary>
+    /// 关闭下载器
+    /// </summary>
     public static void Stop()
     {
         threads.ForEach(a => a.Close());
         threads.Clear();
     }
 
+    /// <summary>
+    /// 停止下载
+    /// </summary>
     public static void DownloadStop()
     {
         Name.Clear();
@@ -48,7 +58,10 @@ public static class DownloadManager
         threads.ForEach(a => a.DownloadStop());
     }
 
-    public static void Pause()
+    /// <summary>
+    /// 暂停下载
+    /// </summary>
+    public static void DownloadPause()
     {
         foreach (var item in threads)
         {
@@ -56,7 +69,10 @@ public static class DownloadManager
         }
     }
 
-    public static void Resume()
+    /// <summary>
+    /// 继续下载
+    /// </summary>
+    public static void DownloadResume()
     {
         foreach (var item in threads)
         {
@@ -64,7 +80,7 @@ public static class DownloadManager
         }
     }
 
-    public static void Clear()
+    private static void Clear()
     {
         Logs.Info(LanguageHelper.GetName("Core.Http.Downloader.Clear"));
         Name.Clear();
@@ -73,6 +89,11 @@ public static class DownloadManager
         DoneSize = 0;
     }
 
+    /// <summary>
+    /// 开始下载
+    /// </summary>
+    /// <param name="list">下载列表</param>
+    /// <returns>结果</returns>
     public static async Task<bool> Start(List<DownloadItem> list)
     {
         Clear();
@@ -112,6 +133,10 @@ public static class DownloadManager
         return AllSize == DoneSize;
     }
 
+    /// <summary>
+    /// 获取下载项目
+    /// </summary>
+    /// <returns></returns>
     public static DownloadItem? GetItem()
     {
         if (Items.TryDequeue(out var item))
@@ -122,16 +147,28 @@ public static class DownloadManager
         return null;
     }
 
+    /// <summary>
+    /// 下载完成
+    /// </summary>
     public static void Done()
     {
         DoneSize++;
     }
 
+    /// <summary>
+    /// 线程完成
+    /// </summary>
     public static void ThreadDone()
     {
         semaphore.Release();
     }
 
+    /// <summary>
+    /// 下载错误
+    /// </summary>
+    /// <param name="index">下载器号</param>
+    /// <param name="item">下载项目</param>
+    /// <param name="e">错误内容</param>
     public static void Error(int index, DownloadItem item, Exception e)
     {
         Logs.Error(string.Format(LanguageHelper.GetName("Core.Http.Downloader.Item.Error"),
@@ -139,6 +176,11 @@ public static class DownloadManager
         CoreMain.DownloadItemError?.Invoke(index, item, e);
     }
 
+    /// <summary>
+    /// buffer大小
+    /// </summary>
+    /// <param name="stream">流</param>
+    /// <returns>大小</returns>
     public static int GetCopyBufferSize(Stream stream)
     {
         const int DefaultCopyBufferSize = 81920;
@@ -165,6 +207,11 @@ public static class DownloadManager
         return bufferSize;
     }
 
+    /// <summary>
+    /// 下载项目
+    /// </summary>
+    /// <param name="item">下载项目</param>
+    /// <returns>结果</returns>
     public static async Task<bool> Download(DownloadItem item)
     {
         string file = Path.GetFullPath(DownloadDir + "/" + Guid.NewGuid().ToString());

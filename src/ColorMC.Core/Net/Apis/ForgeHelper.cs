@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
@@ -11,17 +11,21 @@ namespace ColorMC.Core.Net.Apis;
 public static class ForgeHelper
 {
     private static List<string>? SupportVersion;
-    public static async Task<List<string>?> GetSupportVersion()
+    /// <summary>
+    /// 获取支持的版本
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<List<string>?> GetSupportVersion(SourceLocal? local = null)
     {
         try
         {
             if (SupportVersion != null)
                 return SupportVersion;
 
-            if (BaseClient.Source == SourceLocal.BMCLAPI
-                || BaseClient.Source == SourceLocal.MCBBS)
+            if (local == SourceLocal.BMCLAPI
+                || local == SourceLocal.MCBBS)
             {
-                string url = UrlHelper.ForgeVersion(BaseClient.Source);
+                string url = UrlHelper.ForgeVersion(local);
                 var data = await BaseClient.GetString(url);
                 var obj = JsonConvert.DeserializeObject<List<string>>(data);
                 if (obj == null)
@@ -75,6 +79,11 @@ public static class ForgeHelper
         }
     }
 
+    /// <summary>
+    /// 解压native
+    /// </summary>
+    /// <param name="version">游戏版本</param>
+    /// <param name="stream">文件流</param>
     public static void UnpackNative(string version, FileStream stream)
     {
         stream.Seek(0, SeekOrigin.Begin);
@@ -93,6 +102,13 @@ public static class ForgeHelper
         }
     }
 
+    /// <summary>
+    /// 创建Forge运行库下载文件列表
+    /// </summary>
+    /// <param name="info">Forge启动数据</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <returns></returns>
     public static List<DownloadItem> MakeForgeLibs(ForgeLaunchObj info, string mc, string version)
     {
         var v2 = CheckRule.GameLaunchVersion(mc);
@@ -129,7 +145,7 @@ public static class ForgeHelper
         return list;
     }
 
-    public static string FixForgeUrl(string mc)
+    private static string FixForgeUrl(string mc)
     {
         if (mc == "1.7.2")
         {
@@ -159,7 +175,7 @@ public static class ForgeHelper
         return string.Empty;
     }
 
-    public static DownloadItem BuildForgeItem(string mc, string version, string type)
+    private static DownloadItem BuildForgeItem(string mc, string version, string type)
     {
         version += FixForgeUrl(mc);
         string name = $"forge-{mc}-{version}-{type}";
@@ -173,11 +189,21 @@ public static class ForgeHelper
         };
     }
 
+    /// <summary>
+    /// 创建Forge安装器下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
     public static DownloadItem BuildForgeInster(string mc, string version)
     {
         return BuildForgeItem(mc, version, "installer");
     }
 
+    /// <summary>
+    /// 创建Forge下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
     public static DownloadItem BuildForgeUniversal(string mc, string version)
     {
         return BuildForgeItem(mc, version, "universal");
@@ -188,12 +214,15 @@ public static class ForgeHelper
     //    return BuildForgeItem(mc, version, "launcher");
     //}
 
-    public static DownloadItem BuildForgeClient(string mc, string version)
-    {
-        return BuildForgeItem(mc, version, "client");
-    }
+    // public static DownloadItem BuildForgeClient(string mc, string version)
+    // {
+    //     return BuildForgeItem(mc, version, "client");
+    // }
 
-    public static ForgeLaunchObj.Libraries MakeLibObj(ForgeInstallObj1.VersionInfo.Libraries item)
+    /// <summary>
+    /// Forge运行库修改映射
+    /// </summary>
+    public static ForgeLaunchObj.Libraries? MakeLibObj(ForgeInstallObj1.VersionInfo.Libraries item)
     {
         var args = item.name.Split(":");
         if (args[0] == "net.minecraftforge" && args[1] == "forge")
@@ -205,7 +234,7 @@ public static class ForgeHelper
                 {
                     artifact = new()
                     {
-                        url = null
+                        url = ""
                     }
                 }
             };
@@ -418,7 +447,7 @@ public static class ForgeHelper
                 string url = UrlHelper.ForgeVersions(version, SourceLocal.Offical) + version + ".html";
                 var data = await BaseClient.DownloadClient.GetAsync(url);
 
-                string html = null;
+                string? html = null;
                 if (data.IsSuccessStatusCode)
                 {
                     html = await data.Content.ReadAsStringAsync();
@@ -456,7 +485,7 @@ public static class ForgeHelper
         }
         catch (Exception e)
         {
-            Logs.Error("获取Forge版本错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Game.Error5"), e);
             return null;
         }
     }

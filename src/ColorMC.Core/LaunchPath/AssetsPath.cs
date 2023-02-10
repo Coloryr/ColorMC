@@ -115,7 +115,7 @@ public static class AssetsPath
             return;
         }
 
-        var obj = await Get.GetAssets(item.assetIndex.url);
+        var obj = await GetHelper.GetAssets(item.assetIndex.url);
         if (obj == null)
             return;
         AddIndex(obj, item);

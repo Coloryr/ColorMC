@@ -1,5 +1,8 @@
-﻿namespace ColorMC.Core.Objs.CurseForge;
+namespace ColorMC.Core.Objs.CurseForge;
 
+/// <summary>
+/// CF 数据
+/// </summary>
 public record CurseForgePackObj
 {
     public record Minecraft

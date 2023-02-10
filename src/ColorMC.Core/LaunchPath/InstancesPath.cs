@@ -712,9 +712,9 @@ public static class InstancesPath
                 //Curseforge压缩包
                 case PackType.CurseForge:
                     CoreMain.PackState?.Invoke(CoreRunState.Read);
-                    var res = await PackDownload.DownloadCurseForge(dir);
+                    var res = await PackDownload.DownloadCurseForgeModPack(dir);
                     game = res.Game;
-                    if (res.State != DownloadState.End)
+                    if (res.State != GetDownloadState.End)
                     {
                         break;
                     }

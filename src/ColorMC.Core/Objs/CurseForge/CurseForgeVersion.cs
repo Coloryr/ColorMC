@@ -1,4 +1,8 @@
-﻿namespace ColorMC.Core.Objs.CurseForge;
+namespace ColorMC.Core.Objs.CurseForge;
+
+/// <summary>
+/// CF 版本数据
+/// </summary>
 public record CurseForgeVersion
 {
     public record Item
@@ -10,6 +14,9 @@ public record CurseForgeVersion
     public List<Item> data { get; set; }
 }
 
+/// <summary>
+/// CF 版本类型
+/// </summary>
 public record CurseForgeVersionType
 {
     public record Item

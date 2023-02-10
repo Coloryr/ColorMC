@@ -1,11 +1,15 @@
-﻿using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net;
 
-public static class Get
+public static class GetHelper
 {
+    /// <summary>
+    /// 下载资源文件
+    /// </summary>
+    /// <param name="url">网址</param>
     public static async Task<AssetsObj?> GetAssets(string url)
     {
         try
@@ -22,6 +26,10 @@ public static class Get
         }
     }
 
+    /// <summary>
+    /// 下载游戏数据
+    /// </summary>
+    /// <param name="url">网址</param>
     public static async Task<GameArgObj?> GetGame(string url)
     {
         try
@@ -38,7 +46,9 @@ public static class Get
         }
     }
 
-
+    /// <summary>
+    /// 下载版本数据
+    /// </summary>
     public static async Task<VersionObj?> GetVersions(SourceLocal? local = null)
     {
         try

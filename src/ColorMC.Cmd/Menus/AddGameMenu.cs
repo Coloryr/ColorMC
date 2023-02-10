@@ -64,7 +64,7 @@ public static class AddGameMenu
             Name = name,
             Version = item
         };
-        Items = ForgeHelper.GetSupportVersion().Result;
+        Items = ForgeHelper.GetSupportVersion(BaseClient.Source).Result;
         if (Items?.Contains(item) == true)
         {
             var loader = ConsoleUtils.YesNo("启用Forge");
@@ -144,7 +144,7 @@ public static class AddGameMenu
         var list = GameDownload.Download(VersionPath.Versions!
             .versions.Where(a => a.id == Game.Version).First()).Result;
 
-        if (list.State != DownloadState.End)
+        if (list.State != GetDownloadState.End)
         {
             ConsoleUtils.Error("获取游戏安装信息失败");
             ConsoleUtils.Error(list.State.GetName());
@@ -201,7 +201,7 @@ public static class AddGameMenu
         var list = GameDownload.Download(VersionPath.Versions!
             .versions.Where(a => a.id == Game.Version).First()).Result;
 
-        if (list.State != DownloadState.End)
+        if (list.State != GetDownloadState.End)
         {
             ConsoleUtils.Error("获取游戏安装信息失败");
             ConsoleUtils.Error(list.State.GetName());
@@ -213,7 +213,7 @@ public static class AddGameMenu
         items.AddRange(list.List!);
 
         list = GameDownload.DownloadFabric(Game).Result;
-        if (list.State != DownloadState.End)
+        if (list.State != GetDownloadState.End)
         {
             ConsoleUtils.Error("获取mod加载器信息失败");
             ConsoleUtils.Error(list.State.GetName());
@@ -270,7 +270,7 @@ public static class AddGameMenu
         var list = GameDownload.Download(VersionPath.Versions!
             .versions.Where(a => a.id == Game.Version).First()).Result;
 
-        if (list.State != DownloadState.End)
+        if (list.State != GetDownloadState.End)
         {
             ConsoleUtils.Error("获取游戏安装信息失败");
             ConsoleUtils.Error(list.State.GetName());
@@ -282,7 +282,7 @@ public static class AddGameMenu
         items.AddRange(list.List!);
 
         list = GameDownload.DownloadFabric(Game).Result;
-        if (list.State != DownloadState.End)
+        if (list.State != GetDownloadState.End)
         {
             ConsoleUtils.Error("获取mod加载器信息失败");
             ConsoleUtils.Error(list.State.GetName());

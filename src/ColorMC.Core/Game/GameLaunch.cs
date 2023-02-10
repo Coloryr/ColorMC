@@ -138,7 +138,7 @@ public static class Launch
             }
 
             var res1 = await GameDownload.Download(version);
-            if (res1.State != DownloadState.End)
+            if (res1.State != GetDownloadState.End)
                 throw new LaunchException(LaunchState.VersionError,
                     LanguageHelper.GetName("Core.Launch.Error1"));
 
@@ -193,7 +193,7 @@ public static class Launch
             var assets = AssetsPath.GetIndex(game);
             if (assets == null)
             {
-                assets = await Get.GetAssets(game.assetIndex.url);
+                assets = await GetHelper.GetAssets(game.assetIndex.url);
                 if (assets == null)
                 {
                     CoreMain.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
@@ -236,8 +236,8 @@ public static class Launch
                 {
                     CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                    var list4 = await GameDownload.DownloadForge(obj.Version, obj.LoaderVersion);
-                    if (list4.State != DownloadState.End)
+                    var list4 = await GameDownload.DownloadForge(obj);
+                    if (list4.State != GetDownloadState.End)
                         throw new LaunchException(LaunchState.LostLoader,
                         LanguageHelper.GetName("Core.Launch.Error3"));
 
@@ -255,8 +255,8 @@ public static class Launch
                 {
                     CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                    var list4 = await GameDownload.DownloadFabric(obj.Version, obj.LoaderVersion);
-                    if (list4.State != DownloadState.End)
+                    var list4 = await GameDownload.DownloadFabric(obj);
+                    if (list4.State != GetDownloadState.End)
                         throw new LaunchException(LaunchState.LostLoader,
                         LanguageHelper.GetName("Core.Launch.Error3"));
 
@@ -274,8 +274,8 @@ public static class Launch
                 {
                     CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                    var list4 = await GameDownload.DownloadQuilt(obj.Version, obj.LoaderVersion);
-                    if (list4.State != DownloadState.End)
+                    var list4 = await GameDownload.DownloadQuilt(obj);
+                    if (list4.State != GetDownloadState.End)
                         throw new LaunchException(LaunchState.LostLoader,
                         LanguageHelper.GetName("Core.Launch.Error3"));
 
@@ -839,22 +839,6 @@ public static class Launch
         return new(list.Values) { LibrariesPath.GetGameFile(obj.Version) };
     }
 
-    private static string UserPropertyToList(LoginObj obj, List<UserPropertyObj> properties)
-    {
-        if (properties == null)
-        {
-            return "{}";
-        }
-        var sb = new StringBuilder();
-        foreach (var item in properties)
-        {
-            sb.Append($"{item.name}:[{item.value}],");
-        }
-        var totalSb = new StringBuilder();
-        totalSb.Append('{').Append(sb.ToString().TrimEnd(',').Trim()).Append('}');
-        return totalSb.ToString();
-    }
-
     /// <summary>
     /// 替换参数
     /// </summary>
@@ -905,7 +889,7 @@ public static class Launch
                 {"${auth_uuid}",login.UUID },
                 {"${auth_access_token}",login.AccessToken },
                 {"${game_assets}",assetsPath },
-                {"${user_properties}",UserPropertyToList(login, login.Properties) },
+                {"${user_properties}", "{}" },
                 {"${user_type}", "legacy" },
                 {"${version_type}", "ColorMC" },
                 {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
@@ -990,7 +974,7 @@ public static class Launch
         }
 
         login = Obj!;
-        _ = login.Save();
+        login.Save();
 
         //检查游戏文件
         var res = await CheckGameFile(obj, login);

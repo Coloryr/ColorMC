@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs.Java;
+using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System;
@@ -21,6 +21,10 @@ public static class Adoptium
         "", "Windows", "Linux", "MacOS" 
     };
 
+    /// <summary>
+    /// 获取系统类型
+    /// </summary>
+    /// <param name="type">类型</param>
     public static string GetOs(int type)
     {
         return type switch
@@ -32,6 +36,12 @@ public static class Adoptium
         };
     }
 
+    /// <summary>
+    /// 获取列表
+    /// </summary>
+    /// <param name="version">版本</param>
+    /// <param name="os">系统</param>
+    /// <returns></returns>
     public static async Task<List<AdoptiumObj>?> GetJavaList(string version, int os)
     {
         string url;

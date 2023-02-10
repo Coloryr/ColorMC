@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Objs.Login;
 
 namespace ColorMC.Core.Net;
 
@@ -19,6 +19,9 @@ public static class UrlHelper
     private static readonly string[] originServers3 =
       { "https://maven.fabricmc.net/"};
 
+    /// <summary>
+    /// 游戏版本
+    /// </summary>
     public static string GameVersion(SourceLocal? local)
     {
         return local switch
@@ -29,6 +32,9 @@ public static class UrlHelper
         };
     }
 
+    /// <summary>
+    /// 下载地址
+    /// </summary>
     public static string Download(string url, SourceLocal? local)
     {
         string? to = local switch
@@ -50,6 +56,9 @@ public static class UrlHelper
         return url;
     }
 
+    /// <summary>
+    /// 运行库地址
+    /// </summary>
     public static string DownloadLibraries(string url, SourceLocal? local)
     {
         string? to = local switch
@@ -71,6 +80,9 @@ public static class UrlHelper
         return url;
     }
 
+    /// <summary>
+    /// 资源文件地址
+    /// </summary>
     public static string DownloadAssets(string uuid, SourceLocal? local)
     {
         string? url = local switch
@@ -83,6 +95,9 @@ public static class UrlHelper
         return url;
     }
 
+    /// <summary>
+    /// Forge地址
+    /// </summary>
     public static string DownloadForgeJar(string mc, string version, SourceLocal? local)
     {
         string? url = local switch
@@ -95,6 +110,9 @@ public static class UrlHelper
         return url;
     }
 
+    /// <summary>
+    /// Forge运行库地址
+    /// </summary>
     public static string DownloadForgeLib(string url, SourceLocal? local)
     {
         string? to = local switch
@@ -116,6 +134,9 @@ public static class UrlHelper
         return url;
     }
 
+    /// <summary>
+    /// Fabric地址
+    /// </summary>
     public static string FabricMeta(SourceLocal? local)
     {
         string? url = local switch
@@ -128,6 +149,9 @@ public static class UrlHelper
         return url;
     }
 
+    /// <summary>
+    /// Quilt地址
+    /// </summary>
     public static string QuiltMeta(SourceLocal? local)
     {
         string? url = local switch
@@ -140,6 +164,9 @@ public static class UrlHelper
         return url;
     }
 
+    /// <summary>
+    /// Fabric地址
+    /// </summary>
     public static string DownloadFabric(string url, SourceLocal? local)
     {
         string? replace = local switch
@@ -155,6 +182,9 @@ public static class UrlHelper
         return url.Replace("https://maven.fabricmc.net/", replace);
     }
 
+    /// <summary>
+    /// Quilt地址
+    /// </summary>
     public static string DownloadQuilt(string url, SourceLocal? local)
     {
         string? replace = local switch
@@ -170,6 +200,9 @@ public static class UrlHelper
         return url.Replace("https://maven.quiltmc.org/repository/release/", replace);
     }
 
+    /// <summary>
+    /// 外置登录信息地址
+    /// </summary>
     public static string AuthlibInjectorMeta(SourceLocal? local)
     {
         return local switch
@@ -180,6 +213,9 @@ public static class UrlHelper
         };
     }
 
+    /// <summary>
+    /// 外置登录地址
+    /// </summary>
     public static string AuthlibInjector(AuthlibInjectorMetaObj.Artifacts obj, SourceLocal? local)
     {
         return local switch
@@ -190,6 +226,9 @@ public static class UrlHelper
         };
     }
 
+    /// <summary>
+    /// 外置登录下载地址
+    /// </summary>
     public static string DownloadAuthlibInjector(AuthlibInjectorObj obj, SourceLocal? local)
     {
         return local switch
@@ -200,6 +239,9 @@ public static class UrlHelper
         };
     }
 
+    /// <summary>
+    /// Forge版本地址
+    /// </summary>
     public static string ForgeVersion(SourceLocal? local)
     {
         return local switch
@@ -210,6 +252,9 @@ public static class UrlHelper
         };
     }
 
+    /// <summary>
+    /// Forge版本地址
+    /// </summary>
     public static string ForgeVersions(string version, SourceLocal? local)
     {
         return local switch

@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Utils;
+using ColorMC.Core.Utils;
 using System.Buffers;
 
 namespace ColorMC.Core.Net.Downloader;
@@ -12,6 +12,11 @@ public class DownloadThread
     private readonly Semaphore semaphore1 = new(0, 2);
     private CancellationTokenSource cancel;
     private bool pause = false;
+
+    /// <summary>
+    /// 初始化下载器
+    /// </summary>
+    /// <param name="index">标号</param>
     public void Init(int index)
     {
         this.index = index;
@@ -23,6 +28,9 @@ public class DownloadThread
         thread.Start();
     }
 
+    /// <summary>
+    /// 关闭下载器
+    /// </summary>
     public void Close()
     {
         if (!run)
@@ -31,9 +39,11 @@ public class DownloadThread
         run = false;
         cancel?.Cancel();
         semaphore.Release();
-        //semaphore1.Release();
     }
 
+    /// <summary>
+    /// 停止下载
+    /// </summary>
     public void DownloadStop()
     {
         cancel?.Cancel();
@@ -43,17 +53,26 @@ public class DownloadThread
         }
     }
 
+    /// <summary>
+    /// 开始下载
+    /// </summary>
     public void Start()
     {
         cancel = new();
         semaphore.Release();
     }
 
+    /// <summary>
+    /// 暂停下载
+    /// </summary>
     public void Pause()
     {
         pause = true;
     }
 
+    /// <summary>
+    /// 恢复下载
+    /// </summary>
     public void Resume()
     {
         pause = false;
@@ -84,6 +103,7 @@ public class DownloadThread
 
                 try
                 {
+                    //检查文件
                     if (ConfigUtils.Config.Http.CheckFile && File.Exists(item.Local))
                     {
                         if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Overwrite)
@@ -158,6 +178,7 @@ public class DownloadThread
                         if (cancel.IsCancellationRequested)
                             break;
 
+                        //网络请求
                         var data = BaseClient.DownloadClient.GetAsync(item.Url,
                             HttpCompletionOption.ResponseHeadersRead, cancel.Token).Result;
                         item.AllSize = (long)data.Content.Headers.ContentLength!;
@@ -202,6 +223,7 @@ public class DownloadThread
                         if (cancel.IsCancellationRequested)
                             break;
 
+                        //检查文件
                         if (ConfigUtils.Config.Http.CheckFile)
                         {
                             stream.Seek(0, SeekOrigin.Begin);
@@ -241,6 +263,7 @@ public class DownloadThread
                             semaphore1.WaitOne();
                         }
 
+                        //后续操作
                         item.Later?.Invoke(stream);
 
                         stream.Dispose();

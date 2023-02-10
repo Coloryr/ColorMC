@@ -1,13 +1,10 @@
-﻿using System.Net.Sockets;
+using System.Net.Sockets;
 using System.Text;
 
 namespace ColorMC.Core.Utils;
 
 public class ProtocolHandler
 {
-    /// <summary>
-    /// 实例中全局TCP客户端
-    /// </summary>
     public TcpClient Tcp { get; set; }
 
     public ProtocolHandler(TcpClient tcp)

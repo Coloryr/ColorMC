@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs.Login;
@@ -11,6 +11,11 @@ namespace ColorMC.Core.Net;
 
 public static class GetSkin
 {
+    /// <summary>
+    /// 下载皮肤
+    /// </summary>
+    /// <param name="obj">保存的账户</param>
+    /// <returns>皮肤路径</returns>
     public static async Task<string?> DownloadSkin(LoginObj obj)
     {
         if (obj.AuthType == AuthType.Offline)
@@ -31,10 +36,10 @@ public static class GetSkin
 
         try
         {
-            string file = $"{AssetsPath.BaseDir}/{AssetsPath.Name3}/{obj.UUID[0..2]}/{obj.UUID}";
+            string file = $"{AssetsPath.BaseDir}/{AssetsPath.Name3}/{obj.UserName}.png";
             file = Path.GetFullPath(file);
             FileInfo info = new(file);
-            info.Directory.Create();
+            info.Directory?.Create();
             var data2 = await BaseClient.GetBytes(url);
             File.WriteAllBytes(file, data2);
             return file;
@@ -70,27 +75,27 @@ public static class GetSkin
         }
     }
 
-    public static Task<string?> LoadFromMinecraft(LoginObj obj)
+    private static Task<string?> LoadFromMinecraft(LoginObj obj)
     {
         return BaseLoad(obj.UUID);
     }
 
-    public static Task<string?> LoadFromNide8(LoginObj obj)
+    private static Task<string?> LoadFromNide8(LoginObj obj)
     {
         return BaseLoad(obj.UUID, $"https://auth.mc-user.com:233/{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 
-    public static Task<string?> LoadFromAuthlibInjector(LoginObj obj)
+    private static Task<string?> LoadFromAuthlibInjector(LoginObj obj)
     {
         return BaseLoad(obj.UUID, $"{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 
-    public static Task<string?> LoadFromLittleskin(LoginObj obj)
+    private static Task<string?> LoadFromLittleskin(LoginObj obj)
     {
         return BaseLoad(obj.UUID, $"https://littleskin.cn/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 
-    public static Task<string?> LoadFromSelfLittleskin(LoginObj obj)
+    private static Task<string?> LoadFromSelfLittleskin(LoginObj obj)
     {
         return BaseLoad(obj.UUID, $"{obj.Text1}/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }

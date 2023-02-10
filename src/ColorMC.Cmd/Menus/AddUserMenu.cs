@@ -46,7 +46,7 @@ public static class AddUserMenu
                         ClientToken = Funtcions.NewUUID(),
                         UUID = Funtcions.NewUUID(),
                         AuthType = AuthType.Offline
-                    }.Save().Wait();
+                    }.Save();
                     ConsoleUtils.Ok("已添加");
                 }
                 ConsoleUtils.Keep();
@@ -65,7 +65,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.Save(Obj!).Wait();
+                    AuthDatabase.Save(Obj!);
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -110,7 +110,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.Save(Obj!).Wait();
+                    AuthDatabase.Save(Obj!);
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -142,7 +142,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.Save(Obj!).Wait();
+                    AuthDatabase.Save(Obj!);
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -181,7 +181,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.Save(Obj!).Wait();
+                    AuthDatabase.Save(Obj!);
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();
@@ -220,7 +220,7 @@ public static class AddUserMenu
                 }
                 else
                 {
-                    AuthDatabase.Save(Obj!).Wait();
+                    AuthDatabase.Save(Obj!);
                     ConsoleUtils.Ok(Message);
                 }
                 ConsoleUtils.Keep();

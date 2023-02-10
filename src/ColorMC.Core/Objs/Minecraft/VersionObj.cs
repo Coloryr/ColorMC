@@ -1,5 +1,9 @@
 ﻿namespace ColorMC.Core.Objs.Minecraft;
 
+/// <summary>
+/// 版本数据
+/// </summary>
+/// <value></value>
 public record VersionObj
 {
     public record Lastest

@@ -1,5 +1,9 @@
 ﻿namespace ColorMC.Core.Objs.MinecraftAPI;
 
+/// <summary>
+/// 皮肤信息
+/// </summary>
+/// <value></value>
 public record UserProfileObj
 {
     public record Properties

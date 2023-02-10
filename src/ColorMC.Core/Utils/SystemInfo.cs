@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 namespace ColorMC.Core.Utils;
 
@@ -23,6 +23,9 @@ public static class SystemInfo
     public static string System { get; private set; }
     public static int ProcessorCount { get; private set; }
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
     public static void Init()
     {
         Logs.Info(LanguageHelper.GetName("Core.GetSystem"));

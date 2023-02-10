@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Game;
+using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Download;
@@ -21,6 +21,9 @@ public static class LanguageHelper
     private static LanguageObj Languages;
     public static LanguageType Type;
 
+    /// <summary>
+    /// 加载语言文件
+    /// </summary>
     public static async void Load(LanguageType type)
     {
         string name = type switch
@@ -46,6 +49,9 @@ public static class LanguageHelper
         }
     }
 
+    /// <summary>
+    /// 切换语言文件
+    /// </summary>
     public static void Change(LanguageType type)
     {
         if (Type == type)
@@ -131,13 +137,13 @@ public static class LanguageHelper
         };
     }
 
-    public static string GetName(this DownloadState state)
+    public static string GetName(this GetDownloadState state)
     {
         return state switch
         {
-            DownloadState.Init => GetName("DownloadState.Init"),
-            DownloadState.GetInfo => GetName("DownloadState.GetInfo"),
-            DownloadState.End => GetName("DownloadState.End"),
+            GetDownloadState.Init => GetName("DownloadState.Init"),
+            GetDownloadState.GetInfo => GetName("DownloadState.GetInfo"),
+            GetDownloadState.End => GetName("DownloadState.End"),
             _ => GetName("DownloadState.Other")
         };
     }

@@ -2,6 +2,9 @@
 
 namespace ColorMC.Core.Objs.Loader;
 
+/// <summary>
+/// Forge启动数据
+/// </summary>
 public record ForgeLaunchObj
 {
     public record Logging
