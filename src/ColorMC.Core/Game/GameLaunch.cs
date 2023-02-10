@@ -156,7 +156,7 @@ public static class Launch
         if (ConfigUtils.Config.GameCheck.CheckCore)
         {
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckVersion);
-            string file = LibrariesPath.MakeGameDir(game.id);
+            string file = LibrariesPath.GetGameFile(game.id);
             if (!File.Exists(file))
             {
                 list.Add(new()
@@ -632,7 +632,7 @@ public static class Launch
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
             jvmHead.Add($"-Dforgewrapper.installer={ForgeHelper
                 .BuildForgeInster(obj.Version, obj.LoaderVersion).Local}");
-            jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.MakeGameDir(obj.Version)}");
+            jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
         }
 
         //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");
@@ -836,23 +836,14 @@ public static class Launch
             }
         }
 
-        return new(list.Values) { LibrariesPath.MakeGameDir(obj.Version) };
+        return new(list.Values) { LibrariesPath.GetGameFile(obj.Version) };
     }
 
     private static string UserPropertyToList(LoginObj obj, List<UserPropertyObj> properties)
     {
         if (properties == null)
         {
-            var skin = obj.GetSkinFile();
-            if (skin == null)
-                return "{}";
-            else
-            {
-                return @"{
-            ""name"": ""textures"",
-            ""value"": ""1234""
-        }";
-            }
+            return "{}";
         }
         var sb = new StringBuilder();
         foreach (var item in properties)

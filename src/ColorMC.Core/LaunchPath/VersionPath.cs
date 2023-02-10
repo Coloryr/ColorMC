@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Net;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.LaunchPath;
 
+/// <summary>
+/// 版本
+/// </summary>
 public static class VersionPath
 {
     public static VersionObj? Versions { get; private set; }
@@ -24,6 +27,10 @@ public static class VersionPath
 
     public static string BaseDir { get; private set; }
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
         BaseDir = dir + "/" + Name;
@@ -46,6 +53,10 @@ public static class VersionPath
         }
     }
 
+    /// <summary>
+    /// 从在线获取版本信息
+    /// </summary>
+    /// <returns></returns>
     public static async Task GetFromWeb()
     {
         Versions = await Get.GetVersions();
@@ -65,6 +76,10 @@ public static class VersionPath
         }
     }
 
+    /// <summary>
+    /// 是否存在版本信息
+    /// </summary>
+    /// <returns>结果</returns>
     public static bool Have()
     {
         return Versions != null;
@@ -118,15 +133,17 @@ public static class VersionPath
     /// <summary>
     /// 更新json
     /// </summary>
-    /// <param name="version"></param>
-    /// <returns></returns>
+    /// <param name="version">游戏版本</param>
     public static async Task CheckUpdate(string version)
     {
         if (Versions == null)
         {
             await GetFromWeb();
         }
-
+        if (Versions == null)
+        {
+            return;
+        }
         var data = Versions.versions.Where(a => a.id == version).FirstOrDefault();
         if (data != null)
         {

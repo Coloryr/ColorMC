@@ -61,7 +61,7 @@ public static class Worlds
                 }
                 catch (Exception e)
                 {
-                    Logs.Error("地图读取失败", e);
+                    Logs.Error(LanguageHelper.GetName("Core.Game.Error4"), e);
                 }
 
                 if (!find)
@@ -132,7 +132,7 @@ public static class Worlds
                     using var stream = zFile.GetInputStream(e);
                     string file1 = Path.GetFullPath(dir + e.Name[dir1.Length..]);
                     FileInfo info2 = new(file1);
-                    info2.Directory.Create();
+                    info2.Directory?.Create();
                     using FileStream stream3 = new(file1, FileMode.Create,
                         FileAccess.ReadWrite, FileShare.ReadWrite);
                     await stream.CopyToAsync(stream3);

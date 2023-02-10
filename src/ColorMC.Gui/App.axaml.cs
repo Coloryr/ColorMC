@@ -89,6 +89,8 @@ public partial class App : Application
 
             BaseBinding.Init();
 
+            ShowAddJava();
+
             ShowCustom();
 
             if (GuiConfigUtils.Config != null &&
