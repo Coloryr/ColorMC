@@ -58,7 +58,7 @@ public partial class Flyouts1Control : UserControl
         Con = con;
         FlyoutBase = fb;
 
-        if(string.IsNullOrWhiteSpace(Obj.Url))
+        if (string.IsNullOrWhiteSpace(Obj.Url))
         {
             Button5.IsEnabled = false;
         }

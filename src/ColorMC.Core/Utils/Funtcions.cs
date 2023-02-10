@@ -1,11 +1,9 @@
 using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Security.Cryptography;
 using System.Text;
-using System;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using ICSharpCode.SharpZipLib.GZip;
-using ICSharpCode.SharpZipLib.Tar;
 
 namespace ColorMC.Core.Utils;
 

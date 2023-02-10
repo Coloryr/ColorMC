@@ -1,11 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Styling;
-using System;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -94,6 +91,6 @@ public partial class HeadControl : UserControl
         if (BindWindow == null)
             return;
 
-            BindWindow.BeginMoveDrag(e);
+        BindWindow.BeginMoveDrag(e);
     }
 }

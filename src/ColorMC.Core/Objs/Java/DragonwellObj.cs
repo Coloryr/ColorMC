@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Java;
+﻿namespace ColorMC.Core.Objs.Java;
 
 public record DragonwellObj
 {
     public record Item
-    { 
+    {
         public string version8 { get; set; }
         public string xurl8 { get; set; }
         public string aurl8 { get; set; }

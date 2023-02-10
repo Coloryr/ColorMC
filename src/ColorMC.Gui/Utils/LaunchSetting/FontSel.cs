@@ -1,13 +1,7 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Data;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 

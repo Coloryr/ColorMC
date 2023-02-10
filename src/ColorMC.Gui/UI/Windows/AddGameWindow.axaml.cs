@@ -89,7 +89,7 @@ public partial class AddGameWindow : Window
         if (string.IsNullOrWhiteSpace(item))
         {
             return;
-        }    
+        }
 
         Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
         var list = await GameBinding.GetForgeSupportVersion();

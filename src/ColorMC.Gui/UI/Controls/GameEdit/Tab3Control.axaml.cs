@@ -36,7 +36,7 @@ public partial class Tab3Control : UserControl
         Button4.Click += Button4_Click;
 
         TextEditor1.Options.ShowBoxForControlCharacters = true;
-        TextEditor1.TextArea.IndentationStrategy = 
+        TextEditor1.TextArea.IndentationStrategy =
             new CSharpIndentationStrategy(TextEditor1.Options);
 
         registryOptions = new RegistryOptions(ThemeName.LightPlus);
