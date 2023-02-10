@@ -28,7 +28,7 @@ public static class SystemInfo
     /// </summary>
     public static void Init()
     {
-        Logs.Info(LanguageHelper.GetName("Core.GetSystem"));
+        Logs.Info(LanguageHelper.GetName("Core.System.Info1"));
         if (Environment.Is64BitOperatingSystem)
         {
             SystemArch = ArchEnum.x64;

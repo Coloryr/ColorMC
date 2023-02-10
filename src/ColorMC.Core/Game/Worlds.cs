@@ -143,7 +143,7 @@ public static class Worlds
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Path.Instances.Load.Error"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Pack.Error2"), e);
         }
 
         return false;

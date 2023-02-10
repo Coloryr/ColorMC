@@ -102,6 +102,6 @@ public static class CoreMain
         AuthDatabase.Init(dir);
         MCPath.Init(dir);
 
-        Logs.Info(LanguageHelper.GetName("Core.Init"));
+        Logs.Info(LanguageHelper.GetName("Core.Info1"));
     }
 }

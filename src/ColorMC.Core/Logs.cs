@@ -34,7 +34,7 @@ public static class Logs
         }
         catch (Exception e)
         {
-            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Log.Init.Error"), e, true);
+            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Core.Log.Error1"), e, true);
         }
     }
 

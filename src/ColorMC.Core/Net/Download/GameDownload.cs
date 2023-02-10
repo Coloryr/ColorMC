@@ -104,7 +104,7 @@ public static class GameDownload
         }
         catch (Exception e)
         {
-            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Download.Forge.Error4"), e, false);
+            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error5"), e, false);
             return (GetDownloadState.Init, null);
         }
 
@@ -142,7 +142,7 @@ public static class GameDownload
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Http.Download.Forge.Error1"), e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Error2"), e);
                 return (GetDownloadState.GetInfo, null);
             }
 
@@ -158,7 +158,7 @@ public static class GameDownload
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Http.Download.Forge.Error2"), e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Error3"), e);
                 return (GetDownloadState.GetInfo, null);
             }
 
@@ -226,7 +226,7 @@ public static class GameDownload
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Http.Download.Forge.Error3"), e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Error4"), e);
                 return (GetDownloadState.GetInfo, null);
             }
         }

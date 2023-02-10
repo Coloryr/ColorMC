@@ -124,7 +124,7 @@ public static class InstancesPath
     {
         BaseDir = Path.GetFullPath(dir + "/" + Name);
 
-        Logs.Info(LanguageHelper.GetName("Core.Path.Instances.Load"));
+        Logs.Info(LanguageHelper.GetName("Core.Pack.Info2"));
 
         Directory.CreateDirectory(BaseDir);
 
@@ -993,8 +993,8 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Core.Path.Instances.Load.Error"), e, false);
-            Logs.Error(LanguageHelper.GetName("Core.Path.Instances.Load.Error"), e);
+            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Core.Pack.Error2"), e, false);
+            Logs.Error(LanguageHelper.GetName("Core.Pack.Error2"), e);
         }
         if (!res1111 && game != null)
         {

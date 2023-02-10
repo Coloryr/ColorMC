@@ -870,7 +870,7 @@ public static class Launch
         var libraries = GetLibs(obj, v2);
         StringBuilder arg = new();
         string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
-        CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Log2"));
+        CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info2"));
         foreach (var item in libraries)
         {
             arg.Append($"{item}{sep}");
@@ -1003,7 +1003,7 @@ public static class Launch
         CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
 
         var arg = await MakeArg(obj, login);
-        CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Log1"));
+        CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info1"));
         foreach (var item in arg)
         {
             CoreMain.GameLog?.Invoke(obj, item);
@@ -1022,7 +1022,7 @@ public static class Launch
             path = jvm.Path;
         }
 
-        CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Log3"));
+        CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info3"));
         CoreMain.GameLog?.Invoke(obj, path);
 
         //启动进程

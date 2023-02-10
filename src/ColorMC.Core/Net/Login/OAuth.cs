@@ -95,14 +95,14 @@ public static class OAuthAPI
         {
             Logs.Error(data);
             return (LoginState.Error,
-                LanguageHelper.GetName("Core.Http.Login.OAuth.Error1"), null);
+                LanguageHelper.GetName("Core.Login.Error21"), null);
         }
         var obj1 = JObject.Parse(data);
         var obj2 = obj1.ToObject<OAuthObj>();
         if (obj2 == null)
         {
             return (LoginState.JsonError,
-                LanguageHelper.GetName("Core.Http.Login.OAuth.Error2"), null);
+                LanguageHelper.GetName("Core.Login.Error22"), null);
         }
         code = obj2.user_code;
         url = obj2.verification_uri;

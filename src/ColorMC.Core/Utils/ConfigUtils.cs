@@ -30,7 +30,7 @@ public static class ConfigUtils
     /// </summary>
     public static bool Load(string name, bool quit = false)
     {
-        Logs.Info(LanguageHelper.GetName("Core.Config.Load"));
+        Logs.Info(LanguageHelper.GetName("Core.Config.Info1"));
         if (File.Exists(name))
         {
             try
@@ -39,7 +39,7 @@ public static class ConfigUtils
             }
             catch (Exception e)
             {
-                string text = LanguageHelper.GetName("Core.Config.Load.Error");
+                string text = LanguageHelper.GetName("Core.Config.Error1");
                 CoreMain.OnError?.Invoke(text, e, true);
                 Logs.Error(text, e);
             }
@@ -55,7 +55,7 @@ public static class ConfigUtils
             {
                 return false;
             }
-            Logs.Warn(LanguageHelper.GetName("Core.Config.Empty"));
+            Logs.Warn(LanguageHelper.GetName("Core.Config.Warn1"));
 
             Config = MakeDefaultConfig();
             Save();
@@ -119,7 +119,7 @@ public static class ConfigUtils
     /// </summary>
     public static void Save()
     {
-        Logs.Info(LanguageHelper.GetName("Core.Config.Save"));
+        Logs.Info(LanguageHelper.GetName("Core.Config.Info2"));
         File.WriteAllText(Name, JsonConvert.SerializeObject(Config, Formatting.Indented));
     }
 

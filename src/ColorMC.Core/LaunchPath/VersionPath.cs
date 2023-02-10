@@ -35,7 +35,7 @@ public static class VersionPath
     {
         BaseDir = dir + "/" + Name;
 
-        Logs.Info(LanguageHelper.GetName("Core.Path.Version.Load"));
+        Logs.Info(LanguageHelper.GetName("Core.Path.Info2"));
 
         Directory.CreateDirectory(BaseDir);
 
@@ -49,7 +49,7 @@ public static class VersionPath
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Path.Version.Load.Error3"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Path.Error2"), e);
         }
     }
 
@@ -68,7 +68,7 @@ public static class VersionPath
         Versions = await GetHelper.GetVersions(SourceLocal.Offical);
         if (Versions == null)
         {
-            Logs.Warn(LanguageHelper.GetName("Core.Path.Version.Load.Error4"));
+            Logs.Warn(LanguageHelper.GetName("Core.Path.Error3"));
         }
         else
         {
