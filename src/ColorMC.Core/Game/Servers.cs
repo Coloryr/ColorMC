@@ -21,7 +21,7 @@ public static class Servers
         var myFile = new NbtFile();
         myFile.LoadFromFile(file);
         var myCompoundTag = myFile.RootTag as NbtCompound;
-        if(myCompoundTag == null)
+        if (myCompoundTag == null)
             return list;
 
         var nbtList = myCompoundTag.Get<NbtList>("servers");

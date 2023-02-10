@@ -4,7 +4,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System.Threading.Tasks;
-using static ColorMC.Core.Objs.Minecraft.PlayerAttributesObj.Privileges;
 
 namespace ColorMC.Gui.UIBinding;
 

@@ -1,4 +1,3 @@
-using ColorMC.Core.Game;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -14,7 +13,7 @@ public static class JvmPath
 
     public static string BaseDir;
 
-    public static void Init() 
+    public static void Init()
     {
         BaseDir = Name1;
         Directory.CreateDirectory(BaseDir);
@@ -45,7 +44,7 @@ public static class JvmPath
         return (CoreRunState.Init, null);
     }
 
-    private static async Task<(bool, string?)> Download(string name,  string sha256, string url)
+    private static async Task<(bool, string?)> Download(string name, string sha256, string url)
     {
         var item = new DownloadItem()
         {
@@ -54,7 +53,7 @@ public static class JvmPath
             Local = DownloadManager.DownloadDir + "/" + name,
             Url = url
         };
-        
+
         var res = await DownloadManager.Start(new List<DownloadItem>()
         {
             item
@@ -194,7 +193,7 @@ public static class JvmPath
             else
             {
                 Jvms.Add(a.Name, new JavaInfo()
-                { 
+                {
                     Path = a.Local,
                     Type = Unknow,
                     Version = Unknow

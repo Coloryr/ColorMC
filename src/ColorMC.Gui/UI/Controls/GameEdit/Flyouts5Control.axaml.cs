@@ -2,8 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

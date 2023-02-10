@@ -1,14 +1,7 @@
 using ColorMC.Core.Objs.Java;
 using HtmlAgilityPack;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.ClearScript;
-using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Java;
 
@@ -17,7 +10,7 @@ public static class OpenJ9
     /// <summary>
     /// 获取列表
     /// </summary>
-    public static async Task<(List<string>? Arch, List<string>? Os, 
+    public static async Task<(List<string>? Arch, List<string>? Os,
         List<string>? MainVersion, List<OpenJ9Obj1.Downloads>? Data)> GetJavaList()
     {
         var url = "https://developer.ibm.com/middleware/v1/contents/static/semeru-runtime-downloads";
@@ -55,9 +48,9 @@ public static class OpenJ9
         {
             ""
         };
-        foreach(var item in nodes1)
+        foreach (var item in nodes1)
         {
-            mainversion.Add(item.Attributes["value"].Value);    
+            mainversion.Add(item.Attributes["value"].Value);
         }
 
         nodes = doc.DocumentNode.Descendants("select")
@@ -109,11 +102,11 @@ public static class OpenJ9
 
         using var engine = new V8ScriptEngine();
         var obj1 = engine.Evaluate(item2);
-        if(obj1 == null)
+        if (obj1 == null)
             return (null, null, null, null);
 
         var obj2 = JsonConvert.DeserializeObject<OpenJ9Obj1>(obj1.ToString()!);
-        if(obj2 == null)
+        if (obj2 == null)
             return (null, null, null, null);
 
         return (arch, system, mainversion, obj2.downloads);

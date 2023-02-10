@@ -1,11 +1,5 @@
 using ColorMC.Core.Objs.Java;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Net.Java;
 
@@ -17,8 +11,8 @@ public static class Adoptium
     };
 
     public readonly static List<string> SystemType = new()
-    { 
-        "", "Windows", "Linux", "MacOS" 
+    {
+        "", "Windows", "Linux", "MacOS"
     };
 
     /// <summary>

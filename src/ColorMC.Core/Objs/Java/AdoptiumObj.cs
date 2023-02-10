@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Java;
+﻿namespace ColorMC.Core.Objs.Java;
 
 public record AdoptiumObj
 {
     public record Binary
     {
         public record Package
-        { 
+        {
             public string checksum { get; set; }
             public string checksum_link { get; set; }
             public int download_count { get; set; }
@@ -33,7 +27,7 @@ public record AdoptiumObj
         public string updated_at { get; set; }
     }
     public record Version
-    { 
+    {
         public int build { get; set; }
         public int major { get; set; }
         public int minor { get; set; }

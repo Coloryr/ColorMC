@@ -15,7 +15,6 @@ using ColorMC.Gui.UIBinding;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -100,7 +99,7 @@ public partial class App : Application
                 OnPicUpdate();
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Console.WriteLine(e);
         }

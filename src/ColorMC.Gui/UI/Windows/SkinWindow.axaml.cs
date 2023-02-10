@@ -7,21 +7,15 @@ using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;
 using Avalonia.Platform;
 using Avalonia.Threading;
-using Avalonia.Utilities;
-using ColorMC.Core.Game.Auth;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.Skin.Model;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
-using OpenTK.Audio.OpenAL;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
@@ -62,7 +56,7 @@ public partial class SkinWindow : Window
 
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
-        var res= await BaseBinding.OpSave(this, "保存皮肤", ".png", "skin.png");
+        var res = await BaseBinding.OpSave(this, "保存皮肤", ".png", "skin.png");
         if (!string.IsNullOrWhiteSpace(res))
         {
             await UserBinding.SkinImage.SaveAsPngAsync(res);
@@ -668,7 +662,7 @@ public class SkinRender : Control
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrderTop, DrawElementsType.UnsignedShort, IntPtr.Zero);
         GL.Disable(EnableCap.Blend);
         GL.DepthMask(true);
-        
+
         using (var fb = bitmap.Lock())
         {
             GL.ReadPixels(0, 0, x, y, PixelFormat.Rgba, PixelType.UnsignedByte, fb.Address);
@@ -743,7 +737,7 @@ public class SkinRender : Control
     {
         Window1.Close();
         bitmap?.Dispose();
-        
+
         // Unbind everything
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);

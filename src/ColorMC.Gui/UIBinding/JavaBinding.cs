@@ -1,5 +1,6 @@
 ﻿using Avalonia.Platform.Storage;
 using Avalonia.Platform.Storage.FileIO;
+using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Java;
 using ColorMC.Core.Objs;
@@ -12,7 +13,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ColorMC.Core;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -25,7 +25,7 @@ public record JavaInfoObj
 
 public static class JavaBinding
 {
-    private readonly static List<string> JavaType = 
+    private readonly static List<string> JavaType =
         new() { "Adoptium", "Zulu", "Dragonwell", "OpenJ9" };
 
     private static JavaInfoObj MakeInfo(string name, JavaInfo item)
@@ -188,7 +188,7 @@ public static class JavaBinding
                     }
                     else
                     {
-                        return (true, null, null, null, res);    
+                        return (true, null, null, null, res);
                     }
                 }
             case 3:
@@ -216,9 +216,9 @@ public static class JavaBinding
                 ""
             };
             arch.AddRange(from item in list
-                           group item by item.arch + '_' + item.hw_bitness into newGroup
-                           orderby newGroup.Key descending
-                           select newGroup.Key);
+                          group item by item.arch + '_' + item.hw_bitness into newGroup
+                          orderby newGroup.Key descending
+                          select newGroup.Key);
 
             var mainversion = new List<string>
             {
@@ -274,7 +274,7 @@ public static class JavaBinding
         return a[..^1];
     }
 
-    private static async Task<(bool, List<string>? Arch, List<JavaDownloadDisplayObj>?)> 
+    private static async Task<(bool, List<string>? Arch, List<JavaDownloadDisplayObj>?)>
         GetAdoptiumList(int mainversion, int os)
     {
         try
@@ -291,9 +291,9 @@ public static class JavaBinding
                 ""
             };
             arch.AddRange(from item in list
-                           group item by item.binary.architecture into newGroup
-                           orderby newGroup.Key descending
-                           select newGroup.Key);
+                          group item by item.binary.architecture into newGroup
+                          orderby newGroup.Key descending
+                          select newGroup.Key);
 
             var list3 = new List<JavaDownloadDisplayObj>();
             foreach (var item in list)

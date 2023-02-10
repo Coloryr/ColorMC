@@ -7,7 +7,6 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs.Minecraft;
 using DynamicData;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ColorMC.Core.Objs.Java;
 
-namespace ColorMC.Core.Objs.Java;
-
-public  record OpenJ9Obj
+public record OpenJ9Obj
 {
     public record Results
-    { 
+    {
         public string content { get; set; }
         public string pagepost_custom_js_value { get; set; }
     }
@@ -26,7 +20,7 @@ public record OpenJ9Obj1
         public record Jdk
         {
             public record Opt
-            { 
+            {
                 public string displayName { get; set; }
                 public string downloadLink { get; set; }
                 public string checksum { get; set; }

@@ -1,18 +1,12 @@
 using Avalonia.Controls;
-using ColorMC.Gui.UIBinding;
+using Avalonia.Input;
 using Avalonia.Interactivity;
-using ColorMC.Core.Net.Java;
-using System.Linq;
-using System;
+using AvaloniaEdit.Utils;
+using ColorMC.Gui.Objs;
+using ColorMC.Gui.UIBinding;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using ColorMC.Gui.Objs;
-using Avalonia.Input;
-using AvaloniaEdit.Utils;
-using System.Threading.Tasks;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs.Java;
-using System.IO;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Windows;
 

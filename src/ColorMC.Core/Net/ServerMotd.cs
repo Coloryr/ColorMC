@@ -166,7 +166,7 @@ public static class ServerMotd
     /// <summary>
     /// 获取与特定格式代码相关联的颜色代码
     /// </summary>
-    public static Dictionary<char, string> MinecraftColors { get; private set; } = 
+    public static Dictionary<char, string> MinecraftColors { get; private set; } =
         new Dictionary<char, string>()
     {
         { '0', "#000000" },
@@ -195,7 +195,7 @@ public static class ServerMotd
     /// <returns></returns>
     public static async Task<ServerMotdObj> GetServerInfo(string ip, int port)
     {
-        if(port == 0)
+        if (port == 0)
         {
             port = 25565;
         }

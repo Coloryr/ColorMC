@@ -142,7 +142,7 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">保存的账户</param>
     /// <returns>皮肤路径</returns>
-    public static string GetSkinFile(this LoginObj obj) 
+    public static string GetSkinFile(this LoginObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{Name3}/{obj.UUID}.png");
     }

@@ -6,10 +6,8 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -70,7 +68,7 @@ public partial class Tab10Control : UserControl
 
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        await Window.Info3.ShowInput("服务器名","服务器IP", false);
+        await Window.Info3.ShowInput("服务器名", "服务器IP", false);
         Window.Info3.Close();
         var res = Window.Info3.Read();
 
