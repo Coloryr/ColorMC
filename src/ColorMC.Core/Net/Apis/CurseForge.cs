@@ -10,6 +10,17 @@ public static class CurseForge
     private const string CurseForgeKEY = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m";
     private const string CurseForgeUrl = "https://api.curseforge.com/";
 
+    /// <summary>
+    /// 获取列表
+    /// </summary>
+    /// <param name="classid">cid</param>
+    /// <param name="version">版本</param>
+    /// <param name="page">页数</param>
+    /// <param name="sort">排序</param>
+    /// <param name="filter">过滤</param>
+    /// <param name="pagesize">页大小</param>
+    /// <param name="sortOrder">排序</param>
+    /// <returns></returns>
     private static async Task<CurseForgeObj?> GetList(int classid, string version, int page,
         int sort, string filter, int pagesize, int sortOrder)
     {
@@ -37,30 +48,45 @@ public static class CurseForge
         }
     }
 
+    /// <summary>
+    /// 获取整合包列表
+    /// </summary>
     public static Task<CurseForgeObj?> GetModPackList(string version = "", int page = 0,
         int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
     {
         return GetList(4471, version, page, sort, filter, pagesize, sortOrder);
     }
 
+    /// <summary>
+    /// 获取Mod列表
+    /// </summary>
     public static Task<CurseForgeObj?> GetModList(string version = "", int page = 0,
         int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
     {
         return GetList(6, version, page, sort, filter, pagesize, sortOrder);
     }
 
+    /// <summary>
+    /// 获取世界列表
+    /// </summary>
     public static Task<CurseForgeObj?> GetWorldList(string version = "", int page = 0,
         int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
     {
         return GetList(17, version, page, sort, filter, pagesize, sortOrder);
     }
 
+    /// <summary>
+    /// 获取资源包列表
+    /// </summary>
     public static Task<CurseForgeObj?> GetResourcepackList(string version = "", int page = 0,
         int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
     {
         return GetList(12, version, page, sort, filter, pagesize, sortOrder);
     }
 
+    /// <summary>
+    /// 获取Mod信息
+    /// </summary>
     public static async Task<CurseForgeModObj?> GetMod(CurseForgePackObj.Files obj)
     {
         try
@@ -95,6 +121,9 @@ public static class CurseForge
         public List<CurseForgeModObj.Data> data { get; set; } = new();
     }
 
+    /// <summary>
+    /// 查询Mod信息
+    /// </summary>
     public static async Task<List<CurseForgeModObj.Data>?> GetMods(List<CurseForgePackObj.Files> obj)
     {
         try
@@ -146,6 +175,9 @@ public static class CurseForge
     //    }
     //}
 
+    /// <summary>
+    /// 获取版本信息
+    /// </summary>
     public static async Task<CurseForgeVersion?> GetCurseForgeVersion()
     {
         try
@@ -170,6 +202,9 @@ public static class CurseForge
         }
     }
 
+    /// <summary>
+    /// 获取版本类型
+    /// </summary>
     public static async Task<CurseForgeVersionType?> GetCurseForgeVersionType()
     {
         try
@@ -194,6 +229,9 @@ public static class CurseForge
         }
     }
 
+    /// <summary>
+    /// 获取文件列表
+    /// </summary>
     public static async Task<CurseForgeFileObj?> GetCurseForgeFiles(long id, int page = 0)
     {
         try

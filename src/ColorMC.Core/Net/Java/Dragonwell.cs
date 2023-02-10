@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs.Java;
+using ColorMC.Core.Objs.Java;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,9 @@ namespace ColorMC.Core.Net.Java;
 
 public static class Dragonwell
 {
+    /// <summary>
+    /// 获取列表
+    /// </summary>
     public static async Task<DragonwellObj?> GetJavaList()
     {
         var url = "https://dragonwell-jdk.io/releases.json";

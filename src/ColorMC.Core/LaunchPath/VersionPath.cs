@@ -59,13 +59,13 @@ public static class VersionPath
     /// <returns></returns>
     public static async Task GetFromWeb()
     {
-        Versions = await Get.GetVersions();
+        Versions = await GetHelper.GetVersions();
         if (Versions != null)
         {
             SaveVersions();
             return;
         }
-        Versions = await Get.GetVersions(SourceLocal.Offical);
+        Versions = await GetHelper.GetVersions(SourceLocal.Offical);
         if (Versions == null)
         {
             Logs.Warn(LanguageHelper.GetName("Core.Path.Version.Load.Error4"));
@@ -85,11 +85,14 @@ public static class VersionPath
         return Versions != null;
     }
 
-    public static bool Have(string version)
-    {
-        return Versions?.versions.Where(a => a.id == version).Any() == true;
-    }
+    // public static bool Have(string version)
+    // {
+    //     return Versions?.versions.Where(a => a.id == version).Any() == true;
+    // }
 
+    /// <summary>
+    /// 读取版本信息
+    /// </summary>
     public static async void ReadVersions()
     {
         string file = BaseDir + "/version.json";
@@ -104,6 +107,9 @@ public static class VersionPath
         }
     }
 
+    /// <summary>
+    /// 保存版本信息
+    /// </summary>
     public static void SaveVersions()
     {
         if (Versions == null)
@@ -112,6 +118,10 @@ public static class VersionPath
         File.WriteAllText(file, JsonConvert.SerializeObject(Versions));
     }
 
+    /// <summary>
+    /// 添加版本信息
+    /// </summary>
+    /// <param name="obj">游戏数据</param>
     public static void AddGame(GameArgObj? obj)
     {
         if (obj == null)
@@ -120,6 +130,11 @@ public static class VersionPath
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
     }
 
+    /// <summary>
+    /// 获取版本信息
+    /// </summary>
+    /// <param name="version">游戏版本</param>
+    /// <returns>游戏数据</returns>
     public static GameArgObj? GetGame(string version)
     {
         string file = $"{BaseDir}/{version}.json";
@@ -147,15 +162,21 @@ public static class VersionPath
         var data = Versions.versions.Where(a => a.id == version).FirstOrDefault();
         if (data != null)
         {
-            AddGame(await Get.GetGame(data.url));
+            AddGame(await GetHelper.GetGame(data.url));
         }
     }
 
-    public static ForgeInstallObj? GetForgeInstallObj(GameSettingObj obj)
-    {
-        return GetForgeInstallObj(obj.Version, obj.LoaderVersion);
-    }
+    // public static ForgeInstallObj? GetForgeInstallObj(GameSettingObj obj)
+    // {
+    //     return GetForgeInstallObj(obj.Version, obj.LoaderVersion);
+    // }
 
+    /// <summary>
+    /// 获取Forge安装数数据
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <returns>Forge安装数据</returns>
     public static ForgeInstallObj? GetForgeInstallObj(string mc, string version)
     {
         string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}-install.json";
@@ -166,11 +187,22 @@ public static class VersionPath
         return JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file));
     }
 
+    /// <summary>
+    /// 获取Forge启动数据
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>启动数据</returns>
     public static ForgeLaunchObj? GetForgeObj(GameSettingObj obj)
     {
         return GetForgeObj(obj.Version, obj.LoaderVersion);
     }
 
+    /// <summary>
+    /// 获取Forge启动数据
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <returns>启动数据</returns>
     public static ForgeLaunchObj? GetForgeObj(string mc, string version)
     {
         string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}.json";
@@ -181,11 +213,22 @@ public static class VersionPath
         return JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file));
     }
 
+    /// <summary>
+    /// 获取Fabric数据
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>数据</returns>
     public static FabricLoaderObj? GetFabricObj(GameSettingObj obj)
     {
         return GetFabricObj(obj.Version, obj.LoaderVersion);
     }
 
+    /// <summary>
+    /// 获取Fabric数据
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">fabric版本</param>
+    /// <returns>数据</returns>
     public static FabricLoaderObj? GetFabricObj(string mc, string version)
     {
         string file = $"{BaseDir}/{Name2}/fabric-loader-{version}-{mc}.json";
@@ -196,11 +239,22 @@ public static class VersionPath
         return JsonConvert.DeserializeObject<FabricLoaderObj>(File.ReadAllText(file));
     }
 
+    /// <summary>
+    /// 获取Quilt数据
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>数据</returns>
     public static QuiltLoaderObj? GetQuiltObj(GameSettingObj obj)
     {
         return GetQuiltObj(obj.Version, obj.LoaderVersion);
     }
 
+    /// <summary>
+    /// 获取Quilt数据
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">quilt版本</param>
+    /// <returns>数据</returns>
     public static QuiltLoaderObj? GetQuiltObj(string mc, string version)
     {
         string file = $"{BaseDir}/{Name3}/quilt-loader-{version}-{mc}.json";

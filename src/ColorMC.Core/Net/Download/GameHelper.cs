@@ -8,6 +8,10 @@ namespace ColorMC.Core.Net.Download;
 
 public static class GameHelper
 {
+    /// <summary>
+    /// 创建游戏运行库项目
+    /// </summary>
+    /// <param name="obj">游戏数据</param>
     public static List<DownloadItem> MakeGameLibs(GameArgObj obj)
     {
         var list = new List<DownloadItem>();

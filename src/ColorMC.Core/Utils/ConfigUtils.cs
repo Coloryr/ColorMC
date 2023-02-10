@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using Newtonsoft.Json;
@@ -13,6 +13,10 @@ public static class ConfigUtils
 
     private static string Name;
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
         Dir = dir;
@@ -21,6 +25,9 @@ public static class ConfigUtils
         Load(Name);
     }
 
+    /// <summary>
+    /// 加载
+    /// </summary>
     public static bool Load(string name, bool quit = false)
     {
         Logs.Info(LanguageHelper.GetName("Core.Config.Load"));
@@ -107,6 +114,9 @@ public static class ConfigUtils
         return true;
     }
 
+    /// <summary>
+    /// 保存
+    /// </summary>
     public static void Save()
     {
         Logs.Info(LanguageHelper.GetName("Core.Config.Save"));
@@ -138,7 +148,7 @@ public static class ConfigUtils
         };
     }
 
-    public static JvmArgObj MakeJvmArgConfig()
+    private static JvmArgObj MakeJvmArgConfig()
     {
         return new()
         {
@@ -151,7 +161,7 @@ public static class ConfigUtils
         };
     }
 
-    public static WindowSettingObj MakeWindowSettingConfig()
+    private static WindowSettingObj MakeWindowSettingConfig()
     {
         return new()
         {
@@ -161,7 +171,7 @@ public static class ConfigUtils
         };
     }
 
-    public static GameCheckObj MakeGameCheckConfig()
+    private static GameCheckObj MakeGameCheckConfig()
     {
         return new()
         {

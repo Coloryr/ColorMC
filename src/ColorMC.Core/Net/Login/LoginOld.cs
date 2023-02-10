@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Objs.Login;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,6 +8,13 @@ namespace ColorMC.Core.Net.Login;
 
 public static class LoginOld
 {
+    /// <summary>
+    /// 登录
+    /// </summary>
+    /// <param name="server">服务器地址</param>
+    /// <param name="clientToken">客户端代码</param>
+    /// <param name="user">用户名</param>
+    /// <param name="pass">密码</param>
     public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Authenticate(string server, string clientToken,
         string user, string pass)
     {
@@ -39,7 +46,7 @@ public static class LoginOld
 
         if (obj1.ContainsKey("error"))
         {
-            return (LoginState.Error, null, obj1["errorMessage"].ToString());
+            return (LoginState.Error, null, obj1["errorMessage"]?.ToString());
         }
 
         var obj2 = obj1.ToObject<AuthenticateResObj>();
@@ -55,6 +62,11 @@ public static class LoginOld
         }, null);
     }
 
+    /// <summary>
+    /// 刷新登录
+    /// </summary>
+    /// <param name="server">服务器地址</param>
+    /// <param name="obj">保存的账户</param>
     public static async Task<(LoginState State, LoginObj? Obj)> Refresh(string server, LoginObj obj)
     {
         var obj1 = new RefreshObj

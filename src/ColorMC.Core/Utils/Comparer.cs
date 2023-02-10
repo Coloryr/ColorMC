@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
 using System.Diagnostics.CodeAnalysis;
 

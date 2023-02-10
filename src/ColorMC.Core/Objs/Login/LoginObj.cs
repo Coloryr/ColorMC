@@ -28,7 +28,12 @@ public record LoginObj
     /// 账户类型
     /// </summary>
     public AuthType AuthType { get; set; }
-    public List<UserPropertyObj> Properties { get; set; }
+    /// <summary>
+    /// 数据1
+    /// </summary>
     public string Text1 { get; set; }
+    /// <summary>
+    /// 数据2
+    /// </summary>
     public string Text2 { get; set; }
 }

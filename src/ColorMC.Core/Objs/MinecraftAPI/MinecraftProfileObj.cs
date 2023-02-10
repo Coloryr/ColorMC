@@ -1,5 +1,9 @@
 ﻿namespace ColorMC.Core.Objs.MoJang;
 
+/// <summary>
+/// 账户信息
+/// </summary>
+/// <value></value>
 public record MinecraftProfileObj
 {
     public record MinecraftSkin

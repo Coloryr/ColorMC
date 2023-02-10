@@ -8,6 +8,9 @@ public static class FabricHelper
 {
     private static List<string>? SupportVersion;
 
+    /// <summary>
+    /// 获取元数据
+    /// </summary>
     public static async Task<FabricMetaObj?> GetMeta(SourceLocal? local = null)
     {
         try
@@ -24,6 +27,11 @@ public static class FabricHelper
         }
     }
 
+    /// <summary>
+    /// 获取加载器数据
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">fabric版本</param>
     public static async Task<FabricLoaderObj?> GetLoader(string mc, string version, SourceLocal? local = null)
     {
         try
@@ -41,6 +49,10 @@ public static class FabricHelper
         }
     }
 
+    /// <summary>
+    /// 获取加载器版本
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
     public static async Task<List<string>?> GetLoaders(string mc, SourceLocal? local = null)
     {
         try
@@ -68,6 +80,9 @@ public static class FabricHelper
         }
     }
 
+    /// <summary>
+    /// 获取支持的版本
+    /// </summary>
     public static async Task<List<string>?> GetSupportVersion(SourceLocal? local = null)
     {
         try

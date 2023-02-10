@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Game;
+using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Downloader;
@@ -24,30 +24,73 @@ public static class CoreMain
     /// 标题 错误 关闭程序
     /// </summary>
     public static Action<string, Exception, bool>? OnError { get; set; }
+    /// <summary>
+    /// 新建回调
+    /// </summary>
     public static Action? NewStart { get; set; }
 
     /// <summary>
     /// 下载线程相应回调
     /// </summary>
     public static Action<CoreRunState>? DownloaderUpdate { get; set; }
+    /// <summary>
+    /// 下载项目更新回调
+    /// </summary>
     public static Action<int, DownloadItem>? DownloadItemStateUpdate { get; set; }
+    /// <summary>
+    /// 下载项目错误回调
+    /// </summary>
     public static Action<int, DownloadItem, Exception>? DownloadItemError { get; set; }
 
+    /// <summary>
+    /// 游戏实例覆盖回调
+    /// </summary>
     public static Func<GameSettingObj, Task<bool>>? GameOverwirte { get; set; }
+    /// <summary>
+    /// 是否下载游戏回调
+    /// </summary>
     public static Func<LaunchState, GameSettingObj, Task<bool>>? GameDownload { get; set; }
+    /// <summary>
+    /// 游戏启动回调
+    /// </summary>
     public static Action<GameSettingObj, LaunchState>? GameLaunch { get; set; }
 
+    /// <summary>
+    /// 压缩包处理回调
+    /// </summary>
     public static Action<CoreRunState>? PackState { get; set; }
+    /// <summary>
+    /// 压缩包更新回调
+    /// </summary>
     public static Action<int, int>? PackUpdate { get; set; }
 
+    /// <summary>
+    /// 游戏进程日志回调
+    /// </summary>
     public static Action<Process?, string?>? ProcessLog { get; set; }
+    /// <summary>
+    /// 游戏日志回调
+    /// </summary>
     public static Action<GameSettingObj, string?>? GameLog { get; set; }
 
+    /// <summary>
+    /// 登录状态回调
+    /// </summary>
     public static Action<AuthState>? AuthStateUpdate { get; set; }
+    /// <summary>
+    /// 登录码回调
+    /// </summary>
     public static Action<string, string>? LoginOAuthCode { get; set; }
 
+    /// <summary>
+    /// 语言更新回调
+    /// </summary>
     public static Action<LanguageType>? LanguageReload { get; set; }
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
         LanguageHelper.Load(LanguageType.zh_cn);
@@ -56,7 +99,7 @@ public static class CoreMain
         SystemInfo.Init();
         DownloadManager.Init(dir);
         JvmPath.Init();
-        AuthDatabase.Init();
+        AuthDatabase.Init(dir);
         MCPath.Init(dir);
 
         Logs.Info(LanguageHelper.GetName("Core.Init"));

@@ -83,7 +83,7 @@ public static class LaunchMenu
                 return;
             }
 
-            Obj!.Save().Wait();
+            Obj!.Save();
             obj = Obj!;
         }
         var res = game?.StartGame(obj!).Result;

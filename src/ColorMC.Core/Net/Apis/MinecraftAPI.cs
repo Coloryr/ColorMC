@@ -7,6 +7,11 @@ namespace ColorMC.Core.Net.Apis;
 
 public static class MinecraftAPI
 {
+    /// <summary>
+    /// 获取账户信息
+    /// </summary>
+    /// <param name="accessToken">token</param>
+    /// <returns>账户信息</returns>
     public static async Task<MinecraftProfileObj?> GetMinecraftProfileAsync(string accessToken)
     {
         var endpoint = "https://api.minecraftservices.com/minecraft/profile";
@@ -19,18 +24,24 @@ public static class MinecraftAPI
         return JsonConvert.DeserializeObject<MinecraftProfileObj>(data1); ;
     }
 
-    public static async Task<PlayerAttributesObj?> GetPlayerAttributes(string accessToken)
-    {
-        var endpoint = "https://api.minecraftservices.com/minecraft/profile";
-        HttpRequestMessage message = new(HttpMethod.Get, endpoint);
-        message.Headers.Add("Authorization", $"Bearer {accessToken}");
-        var data = await BaseClient.LoginClient.SendAsync(message);
+    // public static async Task<PlayerAttributesObj?> GetPlayerAttributes(string accessToken)
+    // {
+    //     var endpoint = "https://api.minecraftservices.com/minecraft/profile";
+    //     HttpRequestMessage message = new(HttpMethod.Get, endpoint);
+    //     message.Headers.Add("Authorization", $"Bearer {accessToken}");
+    //     var data = await BaseClient.LoginClient.SendAsync(message);
 
-        var data1 = await data.Content.ReadAsStringAsync();
+    //     var data1 = await data.Content.ReadAsStringAsync();
 
-        return JsonConvert.DeserializeObject<PlayerAttributesObj>(data1);
-    }
+    //     return JsonConvert.DeserializeObject<PlayerAttributesObj>(data1);
+    // }
 
+    /// <summary>
+    /// 获取皮肤信息
+    /// </summary>
+    /// <param name="uuid">uuid</param>
+    /// <param name="url">网址</param>
+    /// <returns>皮肤信息</returns>
     public static async Task<UserProfileObj?> GetUserProfile(string? uuid, string? url = null)
     {
         url ??= $"https://sessionserver.mojang.com/session/minecraft/profile/{uuid}";

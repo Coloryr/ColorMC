@@ -42,7 +42,7 @@ public static class UserBinding
     {
         if (type == 0)
         {
-            await AuthDatabase.Save(new()
+            AuthDatabase.Save(new()
             {
                 UserName = input1!,
                 ClientToken = Funtcions.NewUUID(),
@@ -75,7 +75,7 @@ public static class UserBinding
                     return (false, Message);
                 }
             }
-            await AuthDatabase.Save(Obj!);
+            AuthDatabase.Save(Obj!);
             return (true, null);
         }
 

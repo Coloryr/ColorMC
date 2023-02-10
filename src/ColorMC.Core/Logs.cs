@@ -1,4 +1,4 @@
-﻿
+
 
 using ColorMC.Core.Utils;
 using System.Collections.Concurrent;
@@ -18,6 +18,10 @@ public static class Logs
     private static Semaphore semaphore = new(0, 10);
     private static bool IsRun = false;
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
         Local = dir + "logs.log";
@@ -47,6 +51,9 @@ public static class Logs
         }
     }
 
+    /// <summary>
+    /// 关闭
+    /// </summary>
     public static void Stop()
     {
         IsRun = false;

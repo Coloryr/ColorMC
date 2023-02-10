@@ -106,19 +106,19 @@ public partial class Tab5Control : UserControl
         if (!string.IsNullOrWhiteSpace(item))
         {
             Window.Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
-            var list = await ForgeHelper.GetSupportVersion();
+            var list = await GameBinding.GetForgeSupportVersion();
             if (list != null && list.Contains(item))
             {
                 CheckBox_Forge.IsEnabled = true;
             }
 
-            list = await FabricHelper.GetSupportVersion();
+            list = await GameBinding.GetFabricSupportVersion();
             if (list != null && list.Contains(item))
             {
                 CheckBox_Fabric.IsEnabled = true;
             }
 
-            list = await QuiltHelper.GetSupportVersion();
+            list = await GameBinding.GetQuiltSupportVersion();
             if (list != null && list.Contains(item))
             {
                 CheckBox_Quilt.IsEnabled = true;

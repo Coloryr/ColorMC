@@ -387,21 +387,6 @@ public static class GameBinding
         return QuiltHelper.GetLoaders(version, BaseClient.Source);
     }
 
-    public static Task<List<string>?> GetForgeSupportVersion()
-    {
-        return ForgeHelper.GetSupportVersion();
-    }
-
-    public static Task<List<string>?> GetFabricSupportVersion()
-    {
-        return FabricHelper.GetSupportVersion();
-    }
-
-    public static Task<List<string>?> GetQuiltSupportVersion()
-    {
-        return QuiltHelper.GetSupportVersion();
-    }
-
     public static Task<bool> DownloadMod(GameSettingObj obj, CurseForgeObj.Data.LatestFiles data)
     {
         foreach (var item in obj.CurseForgeMods)
@@ -660,5 +645,19 @@ public static class GameBinding
     public static void SetServer(GameSettingObj obj, List<ServerInfoObj> list)
     {
         obj.SaveServer(list);
+    }
+
+    public static Task<List<string>?> GetForgeSupportVersion()
+    {
+        return ForgeHelper.GetSupportVersion(BaseClient.Source);
+    }
+
+    public static Task<List<string>?> GetFabricSupportVersion()
+    {
+        return FabricHelper.GetSupportVersion(BaseClient.Source);
+    }
+    public static Task<List<string>?> GetQuiltSupportVersion()
+    {
+        return QuiltHelper.GetSupportVersion(BaseClient.Source);
     }
 }

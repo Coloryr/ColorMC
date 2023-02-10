@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs.Java;
+using ColorMC.Core.Objs.Java;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 using System;
@@ -14,6 +14,9 @@ namespace ColorMC.Core.Net.Java;
 
 public static class OpenJ9
 {
+    /// <summary>
+    /// 获取列表
+    /// </summary>
     public static async Task<(List<string>? Arch, List<string>? Os, 
         List<string>? MainVersion, List<OpenJ9Obj1.Downloads>? Data)> GetJavaList()
     {

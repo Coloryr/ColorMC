@@ -1,5 +1,8 @@
-﻿namespace ColorMC.Core.Objs.CurseForge;
+namespace ColorMC.Core.Objs.CurseForge;
 
+/// <summary>
+/// CF MOD信息
+/// </summary>
 public record CurseForgeModObj1
 {
     public string Name { get; set; }
@@ -10,6 +13,9 @@ public record CurseForgeModObj1
     public string Url { get; set; }
 }
 
+/// <summary>
+/// CF MOD信息
+/// </summary>
 public record CurseForgeModObj
 {
     public record Data

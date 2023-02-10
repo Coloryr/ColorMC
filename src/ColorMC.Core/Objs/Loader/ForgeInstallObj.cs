@@ -1,5 +1,8 @@
 ﻿namespace ColorMC.Core.Objs.Loader;
 
+/// <summary>
+/// Forge安装数据
+/// </summary>
 public record ForgeInstallObj
 {
     public record Data

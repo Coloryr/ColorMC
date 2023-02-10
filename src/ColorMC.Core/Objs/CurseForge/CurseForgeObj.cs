@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Objs.CurseForge;
+namespace ColorMC.Core.Objs.CurseForge;
 
 public enum SortField
 {
@@ -12,6 +12,9 @@ public enum SortField
     GameVersion = 8
 }
 
+/// <summary>
+/// CF 数据列表
+/// </summary>
 public record CurseForgeObj
 {
     public record Data

@@ -1,9 +1,12 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.Utils;
 
 public static class PathC
 {
+    /// <summary>
+    /// 获取名字
+    /// </summary>
     public static (string Path, string Name) ToName(string input)
     {
         var arg = input.Split(':');
@@ -28,6 +31,11 @@ public static class PathC
         return (path, name);
     }
 
+    /// <summary>
+    /// 获取所有文件
+    /// </summary>
+    /// <param name="dir">路径</param>
+    /// <returns>文件列表</returns>
     public static List<FileInfo> GetAllFile(string dir)
     {
         var list = new List<FileInfo>();
@@ -46,6 +54,9 @@ public static class PathC
         return list;
     }
 
+    /// <summary>
+    /// 版本名
+    /// </summary>
     public static LibVersionObj MakeVersionObj(string name)
     {
         var arg = name.Split(":");
@@ -68,7 +79,10 @@ public static class PathC
         };
     }
 
-    public static void Copys(string dir, string dir1)
+    /// <summary>
+    /// 复制文件夹
+    /// </summary>
+    private static void Copys(string dir, string dir1)
     {
         var floderName = Path.GetFileName(dir);
         var di = Directory.CreateDirectory(Path.Combine(dir1, floderName));
@@ -88,6 +102,9 @@ public static class PathC
         }
     }
 
+    /// <summary>
+    /// 复制文件夹
+    /// </summary>
     public static Task CopyFiles(string dir, string dir1)
     {
         return Task.Run(() =>
@@ -96,6 +113,9 @@ public static class PathC
         });
     }
 
+    /// <summary>
+    /// 删除文件夹
+    /// </summary>
     public static Task DeleteFiles(string dir)
     {
         return Task.Run(() =>
@@ -105,6 +125,12 @@ public static class PathC
         });
     }
 
+    /// <summary>
+    /// 查找文件
+    /// </summary>
+    /// <param name="path">路径</param>
+    /// <param name="name">文件名</param>
+    /// <returns>文件名</returns>
     public static string? GetFile(string path, string name)
     {
         var list = GetAllFile(path);

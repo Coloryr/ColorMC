@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs.Loader;
+using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
@@ -8,6 +8,9 @@ public static class QuiltHelper
 {
     private static List<string>? SupportVersion;
 
+    /// <summary>
+    /// 获取支持的版本
+    /// </summary>
     public static async Task<List<string>?> GetSupportVersion(SourceLocal? local = null)
     {
         try
@@ -40,6 +43,10 @@ public static class QuiltHelper
             return null;
         }
     }
+
+    /// <summary>
+    /// 获取元数据
+    /// </summary>
     public static async Task<QuiltMetaObj?> GetMeta(SourceLocal? local = null)
     {
         try
@@ -56,6 +63,10 @@ public static class QuiltHelper
         }
     }
 
+    /// <summary>
+    /// 获取加载器版本
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
     public static async Task<List<string>?> GetLoaders(string mc, SourceLocal? local = null)
     {
         try
@@ -83,6 +94,11 @@ public static class QuiltHelper
         }
     }
 
+    /// <summary>
+    /// 获取加载器数据
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">fabric版本</param>
     public static async Task<QuiltLoaderObj?> GetLoader(string mc, string version, SourceLocal? local = null)
     {
         try

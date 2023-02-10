@@ -1,9 +1,12 @@
-﻿using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.Minecraft;
 
 namespace ColorMC.Core.Utils;
 
 public static class CheckRule
 {
+    /// <summary>
+    /// 检查是否允许
+    /// </summary>
     public static bool CheckAllow(List<GameArgObj.Libraries.Rules> list)
     {
         bool download = true;
@@ -72,6 +75,9 @@ public static class CheckRule
         return download;
     }
 
+    /// <summary>
+    /// 是否V2版本
+    /// </summary>
     public static bool GameLaunchVersion(string version)
     {
         Version version1 = new(version);

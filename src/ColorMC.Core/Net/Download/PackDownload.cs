@@ -14,9 +14,13 @@ public static class PackDownload
 {
     public static int Size { get; private set; }
     public static int Now { get; private set; }
+    /// <summary>
+    /// 下载整合包
+    /// </summary>
+    /// <param name="zip">压缩包路径</param>
 
-    public static async Task<(DownloadState State, List<DownloadItem>? List,
-        List<CurseForgeModObj.Data>? Pack, GameSettingObj? Game)> DownloadCurseForge(string zip)
+    public static async Task<(GetDownloadState State, List<DownloadItem>? List,
+        List<CurseForgeModObj.Data>? Pack, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip)
     {
         var list = new List<DownloadItem>();
         var list2 = new List<CurseForgeModObj.Data>();
@@ -25,6 +29,7 @@ public static class PackDownload
         using ZipFile zFile = new(zip);
         using MemoryStream stream1 = new();
         bool find = false;
+        //获取主信息
         foreach (ZipEntry e in zFile)
         {
             if (e.IsFile && e.Name == "manifest.json")
@@ -38,7 +43,7 @@ public static class PackDownload
 
         if (!find)
         {
-            return (DownloadState.Init, null, null, null);
+            return (GetDownloadState.Init, null, null, null);
         }
         CurseForgePackObj info;
         byte[] array1 = stream1.ToArray();
@@ -50,13 +55,14 @@ public static class PackDownload
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
-            return (DownloadState.Init, null, null, null);
+            return (GetDownloadState.Init, null, null, null);
         }
         if (info == null)
-            return (DownloadState.Init, null, null, null);
+            return (GetDownloadState.Init, null, null, null);
 
+        //获取版本数据
         Loaders loaders = Loaders.Normal;
-        string loaderversion = null;
+        string loaderversion = "";
         foreach (var item in info.minecraft.modLoaders)
         {
             if (item.id.StartsWith("forge"))
@@ -72,6 +78,7 @@ public static class PackDownload
         }
         string name = $"{info.name}-{info.version}";
 
+        //创建游戏实例
         var game = await InstancesPath.CreateVersion(new()
         {
             Name = name,
@@ -84,9 +91,10 @@ public static class PackDownload
 
         if (game == null)
         {
-            return (DownloadState.GetInfo, null, null, game);
+            return (GetDownloadState.GetInfo, null, null, game);
         }
 
+        //解压文件
         foreach (ZipEntry e in zFile)
         {
             if (e.IsFile && e.Name.StartsWith(info.overrides + "/"))
@@ -95,7 +103,7 @@ public static class PackDownload
                 string file = Path.GetFullPath(game.GetGamePath() +
                     e.Name[info.overrides.Length..]);
                 FileInfo info2 = new(file);
-                info2.Directory.Create();
+                info2.Directory?.Create();
                 using FileStream stream2 = new(file, FileMode.Create,
                     FileAccess.ReadWrite, FileShare.ReadWrite);
                 await stream.CopyToAsync(stream2);
@@ -106,6 +114,7 @@ public static class PackDownload
 
         CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
 
+        //获取Mod信息
         Size = info.files.Count;
         Now = 0;
         var res = await CurseForge.GetMods(info.files);
@@ -186,51 +195,12 @@ public static class PackDownload
             });
             if (!done)
             {
-                return (DownloadState.GetInfo, list, list2, game);
+                return (GetDownloadState.GetInfo, list, list2, game);
             }
         }
 
         game.SaveCurseForgeMod();
 
-        //var version = VersionPath.Versions?.versions
-        //    .Where(a => a.id == info.minecraft.version).FirstOrDefault();
-
-        //(DownloadState State, List<DownloadItem>? List) list1;
-
-        //if (version != null)
-        //{
-        //    list1 = await GameDownload.Download(version);
-        //    if (list1.State != DownloadState.End)
-        //    {
-        //        return (DownloadState.GetInfo, null, null, game);
-        //    }
-
-        //    list.AddRange(list1.List!);
-        //}
-
-        //if (loaders == Loaders.Forge)
-        //{
-        //    list1 = await GameDownload.DownloadForge(game.Version, game.LoaderVersion);
-        //    if (list1.State != DownloadState.End)
-        //    {
-        //        return (DownloadState.GetInfo, null, null, game);
-        //    }
-
-        //    list.AddRange(list1.List!);
-        //}
-        //else if (loaders == Loaders.Fabric)
-        //{
-        //    list1 = await GameDownload.DownloadFabric(game.Version, game.LoaderVersion);
-        //    if (list1.State != DownloadState.End)
-        //    {
-        //        return (DownloadState.GetInfo, null, null, game);
-        //    }
-
-        //    list.AddRange(list1.List!);
-        //}
-
-        return (DownloadState.End, list, list2, game);
+        return (GetDownloadState.End, list, list2, game);
     }
-
-
 }
