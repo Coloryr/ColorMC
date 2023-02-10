@@ -217,6 +217,9 @@ public class SkinRender : Control
 
     public string Info;
 
+    private SteveC SteveC = new();
+    private Steve3DTexture SteveTexture = new();
+
     public SkinRender()
     {
         Window1 = new();
@@ -241,14 +244,6 @@ public class SkinRender : Control
 
         //GL.GL_BACK
         GL.CullFace(CullFaceMode.Back);
-
-        //int[] AmbientLight = { 1, 1, 1, 1 };
-
-        //fixed (void* pdata = AmbientLight)
-        //    GLLightfv(16384, 4608, new IntPtr(pdata));
-        //GL.Enable(16384);       //����GL_LIGHT0��Դ
-        //GL.Enable(2896);     //��������ϵͳ
-        //GL.Enable(GL_DEPTH_TEST);
 
         CheckError();
 
@@ -401,7 +396,7 @@ public class SkinRender : Control
             var steve = SteveC.GetSteve(steveModelType);
             var model = steve.Item1;
             var draw = steve.Item2;
-            var uv = Steve3DTexture.GetSteveTexture(steveModelType);
+            var uv = SteveTexture.GetSteveTexture(steveModelType);
 
             var points = new Vertex[model.Length / 3];
 
@@ -454,7 +449,7 @@ public class SkinRender : Control
             var steve = SteveC.GetSteveTop(steveModelType);
             var model = steve.Item1;
             var draw = steve.Item2;
-            var uv = Steve3DTexture.GetSteveTextureTop(steveModelType);
+            var uv = SteveTexture.GetSteveTextureTop(steveModelType);
 
             var points = new Vertex[model.Length / 3];
 

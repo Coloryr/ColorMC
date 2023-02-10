@@ -110,6 +110,8 @@
 	<sys:String x:Key="SettingWindow.Tab2.Text19">字体颜色1</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text20">字体颜色2</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text21">注意：背景图尺寸越大，启动器越卡</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text22">字体选择</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text23">默认字体</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info1">正在切换语言</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info2">正在设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info3">正在切换语言</sys:String>
@@ -154,6 +156,8 @@
 	<sys:String x:Key="SettingWindow.Tab5.Text3">Java路径</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Text4">已添加的Java</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Text5">Java文件</sys:String>
+	<sys:String x:Key="SettingWindow.Tab5.Text6">下载Java</sys:String>
+	<sys:String x:Key="SettingWindow.Tab5.Text7">删除所有</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title1">名字</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title2">路径</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title3">主版本</sys:String>
@@ -162,6 +166,7 @@
 	<sys:String x:Key="SettingWindow.Tab5.Data.Title6">发行版</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Info1">正在检查Java</sys:String>
 	<sys:String x:Key="SettingWindow.Tab5.Info2">选择Java</sys:String>
+	<sys:String x:Key="SettingWindow.Tab5.Info3">是否删除所有Java</sys:String>
 
 	<sys:String x:Key="SettingWindow.Tab6.Text1">Motd显示</sys:String>
 	<sys:String x:Key="SettingWindow.Tab6.Text2">服务器地址</sys:String>
@@ -192,6 +197,7 @@
 	<sys:String x:Key="HelloWindow.Tab1.Text2">进行一些初始设定</sys:String>
 	<sys:String x:Key="HelloWindow.Tab1.Text3">开始使用吧！</sys:String>
 	<sys:String x:Key="HelloWindow.Tab1.Text4">语言选择：</sys:String>
+	<sys:String x:Key="HelloWindow.Tab1.Text5">跳过设置</sys:String>
 	<sys:String x:Key="HelloWindow.Tab2.Text1">导入配置文件</sys:String>
 	<sys:String x:Key="HelloWindow.Tab2.Text2">配置文件路径</sys:String>
 	<sys:String x:Key="HelloWindow.Tab2.Text3">导入账户储存数据库</sys:String>
@@ -215,6 +221,7 @@
 	<sys:String x:Key="HelloWindow.Tab3.Text2">Java名字</sys:String>
 	<sys:String x:Key="HelloWindow.Tab3.Text3">Java路径</sys:String>
 	<sys:String x:Key="HelloWindow.Tab3.Text4">现有Java路径</sys:String>
+	<sys:String x:Key="HelloWindow.Tab3.Text5">下载Java</sys:String>
 	<sys:String x:Key="HelloWindow.Tab3.Info1">正在检查Java</sys:String>
 	<sys:String x:Key="HelloWindow.Tab3.Info2">选择Java</sys:String>
 	<sys:String x:Key="HelloWindow.Tab3.Error1">请输入必要信息</sys:String>
@@ -293,6 +300,7 @@
 	<sys:String x:Key="GameEditWindow.Tab4.Data.Title4">路径</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Data.Title5">作者</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Data.Title6">链接</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Data.Title7">加载器</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Info1">正在加载Mod列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Info2">添加完成</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Info3">删除完成</sys:String>
@@ -336,6 +344,14 @@
 	<sys:String x:Key="GameEditWindow.Tab9.Info2">是否要清空实例 {0} 的截图</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab9.Info3">正在加载实例截图</sys:String>
 
+	<sys:String x:Key="GameEditWindow.Tab10.Text1">地址</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab10.Info1">服务器名</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab10.Info2">服务器地址</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab10.Info3">添加成功</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab10.Info4">正在获取</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab10.Info5">删除成功</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab10.Error1">错误的参数</sys:String>
+
 	<sys:String x:Key="GameEditWindow.Control.Text1">游戏模式</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text2">最后游戏与</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text3">游戏难度</sys:String>
@@ -343,6 +359,8 @@
 	<sys:String x:Key="GameEditWindow.Control.Text5">整合包格式</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button1">启用/禁用</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Button2">删除Mod</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts1.Button3">mcmod搜索</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts1.Button4">打开链接</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts2.Button2">导出世界</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts2.Button3">删除世界</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts3.Button2">删除资源包</sys:String>
@@ -421,6 +439,7 @@
 	<sys:String x:Key="AddCurseForgeWindow.Data.Title2">大小(Mb)</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Data.Title3">下载次数</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Data.Title4">发布时间</sys:String>
+	<sys:String x:Key="AddCurseForgeWindow.Data.Title5">已下载</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Info1">是否安装整合包 {0}</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Info2">正在搜索整合包中</sys:String>
 	<sys:String x:Key="AddCurseForgeWindow.Info3">正在获取整合包版本中</sys:String>
@@ -467,10 +486,28 @@
 	<sys:String x:Key="AddWorldWindow.Error3">世界版本数据加载失败</sys:String>
 	<sys:String x:Key="AddWorldWindow.Error4">游戏版本加载失败</sys:String>
 
+	<sys:String x:Key="AddJavaWindow.Title">ColorMC 下载Java</sys:String>
+	<sys:String x:Key="AddJavaWindow.Text1">下载源</sys:String>
+	<sys:String x:Key="AddJavaWindow.Text2">系统</sys:String>
+	<sys:String x:Key="AddJavaWindow.Text3">版本</sys:String>
+	<sys:String x:Key="AddJavaWindow.Text4">构建</sys:String>
+	<sys:String x:Key="AddJavaWindow.Info1">是否要下载 {0}</sys:String>
+	<sys:String x:Key="AddJavaWindow.Info2">正在下载Java</sys:String>
+	<sys:String x:Key="AddJavaWindow.Info3">下载Java成功</sys:String>
+	<sys:String x:Key="AddJavaWindow.Info4">正在获取版本</sys:String>
+	<sys:String x:Key="AddJavaWindow.Error1">获取失败</sys:String>
+	<sys:String x:Key="AddJavaWindow.Data.Title1">名字</sys:String>
+	<sys:String x:Key="AddJavaWindow.Data.Title2">构建</sys:String>
+	<sys:String x:Key="AddJavaWindow.Data.Title3">系统</sys:String>
+	<sys:String x:Key="AddJavaWindow.Data.Title4">主版本</sys:String>
+	<sys:String x:Key="AddJavaWindow.Data.Title5">版本</sys:String>
+	<sys:String x:Key="AddJavaWindow.Data.Title6">大小</sys:String>
+
 	<sys:String x:Key="SkinWindow.Title">ColorMC 皮肤预览</sys:String>
 	<sys:String x:Key="SkinWindow.Text1">重置视角</sys:String>
 	<sys:String x:Key="SkinWindow.Text2">操作：左键旋转，右键平移</sys:String>
 	<sys:String x:Key="SkinWindow.Text3">修改皮肤</sys:String>
+	<sys:String x:Key="SkinWindow.Text4">导出皮肤</sys:String>
 	<sys:String x:Key="SkinWindow.Info1">你不能选择该类型</sys:String>
 	<sys:String x:Key="SkinWindow.Info2">没有皮肤</sys:String>
 	<sys:String x:Key="SkinWindow.Info3">未知的皮肤类型</sys:String>
@@ -505,6 +542,11 @@
 	<sys:String x:Key="SkinType.New_Slim">新版纤细皮肤</sys:String>
 	<sys:String x:Key="SkinType.Other">未知的皮肤类型</sys:String>
 
+	<sys:String x:Key="JavaBinding.Error1">获取Java列表错误</sys:String>
+
+	<sys:String x:Key="UserBinding.Info1">选择皮肤导入</sys:String>
+	<sys:String x:Key="UserBinding.Info2">皮肤文件</sys:String>
+
 	<sys:String x:Key="Name1">默认分组</sys:String>
 	<sys:String x:Key="Info1">正在读取配置文件</sys:String>
 	<sys:String x:Key="Info2">正在保存配置文件</sys:String>
@@ -520,6 +562,7 @@
 	<sys:String x:Key="Error7">输入信息有误</sys:String>
 	<sys:String x:Key="Error8">请输入必要信息</sys:String>
 	<sys:String x:Key="Error9">找不到指定的文件</sys:String>
+	<sys:String x:Key="Error10">自定义UI加载失败</sys:String>
 
 	<sys:String x:Key="Button.OpFile">打开文件夹</sys:String>
 	<sys:String x:Key="Button.Set">设置</sys:String>

@@ -24,24 +24,24 @@ public class FontSel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public void Reload()
+    private void Reload()
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerName));
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerArrayName));
     }
 
-    public static void Load()
+    public void Load()
     {
         if (!GuiConfigUtils.Config.FontDefault && FontManager.Current.GetInstalledFontFamilyNames()
                 .Contains(GuiConfigUtils.Config.FontName))
         {
             Font = new(GuiConfigUtils.Config.FontName);
-            Instance.Reload();
+            Reload();
         }
         else
         {
             Font = new(Program.Font);
-            Instance.Reload();
+            Reload();
         }
     }
 }

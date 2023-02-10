@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using AvaloniaEdit.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -52,11 +53,12 @@ public partial class AddJavaWindow : Window
         if (DataGrid1.SelectedItem is not JavaDownloadDisplayObj obj)
             return;
 
-        var res = await Info.ShowWait(string.Format("是否要下载 {0}", obj.Name));
+        var res = await Info.ShowWait(string.Format(
+            Localizer.Instance["AddJavaWindow.Info1"], obj.Name));
         if (!res)
             return;
 
-        Info1.Show("正在下载Java");
+        Info1.Show(Localizer.Instance["AddJavaWindow.Info2"]);
         var res1 = await JavaBinding.DownloadJava(obj);
         Info1.Close();
         if (!res1.Item1)
@@ -65,7 +67,7 @@ public partial class AddJavaWindow : Window
             return;
         }
 
-        Info2.Show("下载Java成功");
+        Info2.Show(Localizer.Instance["AddJavaWindow.Info3"]);
     }
 
     private void ComboBox4_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -114,7 +116,7 @@ public partial class AddJavaWindow : Window
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        Info1.Show("正在获取版本");
+        Info1.Show(Localizer.Instance["AddJavaWindow.Info4"]);
 
         load = true;
 
@@ -138,7 +140,7 @@ public partial class AddJavaWindow : Window
         else
         {
             Info1.Close();
-            Info.Show("获取失败");
+            Info.Show(Localizer.Instance["AddJavaWindow.Error1"]);
         }
 
         load = false;
@@ -167,14 +169,11 @@ public partial class AddJavaWindow : Window
         bool version1 = !string.IsNullOrWhiteSpace(version);
         bool os1 = !string.IsNullOrWhiteSpace(os);
 
-        var list =
-               from item in List1
-               where (arch1 ? (item.Arch == arch) : true)
-               && (version1 ? (item.MainVersion == version) : true)
-               && (ComboBox1.SelectedIndex == 0 ? true : os1 ? (item.Os == os) : true)
-               select item;
-
-        List.AddRange(list);
+        List.AddRange(from item in List1
+                      where (!arch1 || (item.Arch == arch))
+                      && (!version1 || (item.MainVersion == version))
+                      && (ComboBox1.SelectedIndex == 0 || !os1 || (item.Os == os))
+                      select item);
     }
 
     private void Switch()

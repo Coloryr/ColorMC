@@ -4,7 +4,8 @@ namespace ColorMC.Gui.Skin.Model;
 
 public class SteveC
 {
-    public static (float[], ushort[]) GetSteve(SkinType modelType)
+    public CubeC CubeC  = new();
+    public (float[], ushort[]) GetSteve(SkinType modelType)
     {
         var steveCoords = new List<float>();
         var steveIndicies = CubeC.GetCubeIndicies(6);
@@ -73,7 +74,7 @@ public class SteveC
         return (steveCoords.ToArray(), steveIndicies);
     }
 
-    public static (float[], ushort[]) GetSteveTop(SkinType modelType)
+    public (float[], ushort[]) GetSteveTop(SkinType modelType)
     {
         var steveCoords = new List<float>();
         var steveIndicies =

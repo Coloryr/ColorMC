@@ -22,7 +22,7 @@
     <Grid>
         <views:HeadControl
             Name="Head"
-            Title="{setting:Localize MainWindow.Title}"
+            Title="{setting:Localize AddJavaWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
 
@@ -41,25 +41,25 @@
                     <Label
                         Margin="5"
                         VerticalAlignment="Center"
-                        Content="下载源" />
+                        Content="{setting:Localize AddJavaWindow.Text1}" />
                     <ComboBox Name="ComboBox1" Width="120" />
 
                     <Label
                         Margin="5"
                         VerticalAlignment="Center"
-                        Content="系统" />
+                        Content="{setting:Localize AddJavaWindow.Text2}" />
                     <ComboBox Name="ComboBox2" Width="120" />
 
                     <Label
                         Margin="5"
                         VerticalAlignment="Center"
-                        Content="版本" />
+                        Content="{setting:Localize AddJavaWindow.Text3}" />
                     <ComboBox Name="ComboBox3" Width="70" />
 
                     <Label
                         Margin="5"
                         VerticalAlignment="Center"
-                        Content="构建" />
+                        Content="{setting:Localize AddJavaWindow.Text4}" />
                     <ComboBox Name="ComboBox4" Width="100" />
 
                     <Button
@@ -68,7 +68,7 @@
                         Height="25"
                         Margin="10,0,0,0"
                         VerticalAlignment="Center"
-                        Content="刷新" />
+                        Content="{setting:Localize Button.Refash}" />
                 </StackPanel>
 
                 <DataGrid
@@ -79,27 +79,27 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Binding="{Binding Name}"
-                            Header="名字"
+                            Header="{setting:Localize AddJavaWindow.Data.Title1}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Arch}"
-                            Header="构建"
+                            Header="{setting:Localize AddJavaWindow.Data.Title2}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Os}"
-                            Header="系统"
+                            Header="{setting:Localize AddJavaWindow.Data.Title3}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding MainVersion}"
-                            Header="主版本"
+                            Header="{setting:Localize AddJavaWindow.Data.Title4}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Version}"
-                            Header="版本"
+                            Header="{setting:Localize AddJavaWindow.Data.Title5}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Size}"
-                            Header="大小"
+                            Header="{setting:Localize AddJavaWindow.Data.Title6}"
                             IsReadOnly="True" />
                     </DataGrid.Columns>
                 </DataGrid>

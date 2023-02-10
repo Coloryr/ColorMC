@@ -352,13 +352,10 @@ public partial class Tab6Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        SaveFileDialog openFile = new()
-        {
-            Title = Localizer.Instance["GameEditWindow.Tab6.Info2"],
-            DefaultExtension = ".zip"
-        };
+        
 
-        var file = await openFile.ShowAsync(Window);
+        var file = await BaseBinding.OpSave(Window, 
+            Localizer.Instance["GameEditWindow.Tab6.Info2"], ".zip", "game.zip");
         if (!string.IsNullOrWhiteSpace(file))
         {
             Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab6.Info3"]);

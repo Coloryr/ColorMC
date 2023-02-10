@@ -6,6 +6,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;
@@ -68,18 +69,19 @@ public partial class Tab10Control : UserControl
 
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        await Window.Info3.ShowInput("服务器名", "服务器IP", false);
+        await Window.Info3.ShowInput(Localizer.Instance["GameEditWindow.Tab10.Info1"],
+            Localizer.Instance["GameEditWindow.Tab10.Info2"], false);
         Window.Info3.Close();
         var res = Window.Info3.Read();
 
         if (string.IsNullOrWhiteSpace(res.Item1) || string.IsNullOrWhiteSpace(res.Item2))
         {
-            Window.Info.Show("错误的参数");
+            Window.Info.Show(Localizer.Instance["GameEditWindow.Tab10.Error1"]);
             return;
         }
 
         GameBinding.AddServer(Obj, res.Item1, res.Item2);
-        Window.Info2.Show("添加成功");
+        Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab10.Info3"]);
         Load();
     }
 
@@ -110,7 +112,7 @@ public partial class Tab10Control : UserControl
 
     private void Load()
     {
-        Window.Info1.Show("正在获取");
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab10.Info4"]);
         List.Clear();
         List.AddRange(GameBinding.GetServers(Obj));
         Window.Info1.Close();
@@ -140,7 +142,7 @@ public partial class Tab10Control : UserControl
         list.Remove(obj);
 
         GameBinding.SetServer(Obj, list);
-        Window.Info2.Show("删除成功");
+        Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab10.Info5"]);
         Load();
     }
 }

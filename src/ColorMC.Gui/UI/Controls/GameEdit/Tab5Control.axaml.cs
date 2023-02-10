@@ -128,13 +128,8 @@ public partial class Tab5Control : UserControl
 
     public async void Export(WorldDisplayObj obj)
     {
-        SaveFileDialog openFile = new()
-        {
-            Title = Localizer.Instance["GameEditWindow.Tab5.Info2"],
-            DefaultExtension = ".zip"
-        };
-
-        var file = await openFile.ShowAsync(Window);
+        var file = await BaseBinding.OpSave(Window, 
+            Localizer.Instance["GameEditWindow.Tab5.Info2"], ".zip", "world.zip");
         if (!string.IsNullOrWhiteSpace(file))
         {
             Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info5"]);

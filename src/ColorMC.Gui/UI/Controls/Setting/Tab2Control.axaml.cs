@@ -79,11 +79,11 @@ public partial class Tab2Control : UserControl
     private void Button_Set4_Click(object? sender, RoutedEventArgs e)
     {
         ConfigBinding.SetColor("#FF5ABED6", "#FFF4F4F5", "#88FFFFFF", "#FFFFFFFF", "#FF000000");
-        ColorPicker1.Color = Colors.MainColor.ToColor();
-        ColorPicker2.Color = Colors.BackColor.ToColor();
-        ColorPicker3.Color = Colors.Back1Color.ToColor();
-        ColorPicker4.Color = Colors.ButtonFont.ToColor();
-        ColorPicker5.Color = Colors.FontColor.ToColor();
+        ColorPicker1.Color = ColorSel.MainColor.ToColor();
+        ColorPicker2.Color = ColorSel.BackColor.ToColor();
+        ColorPicker3.Color = ColorSel.Back1Color.ToColor();
+        ColorPicker4.Color = ColorSel.ButtonFont.ToColor();
+        ColorPicker5.Color = ColorSel.FontColor.ToColor();
         Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info6"]);
     }
 
@@ -150,11 +150,11 @@ public partial class Tab2Control : UserControl
             ComboBox1.SelectedIndex = config.Item2.WindowTranType;
             ComboBox2.SelectedIndex = (int)config.Item1.Language;
             ComboBox3.SelectedItem = config.Item2.FontName;
-            ColorPicker1.Color = Colors.MainColor.ToColor();
-            ColorPicker2.Color = Colors.BackColor.ToColor();
-            ColorPicker3.Color = Colors.Back1Color.ToColor();
-            ColorPicker4.Color = Colors.ButtonFont.ToColor();
-            ColorPicker5.Color = Colors.FontColor.ToColor();
+            ColorPicker1.Color = ColorSel.MainColor.ToColor();
+            ColorPicker2.Color = ColorSel.BackColor.ToColor();
+            ColorPicker3.Color = ColorSel.Back1Color.ToColor();
+            ColorPicker4.Color = ColorSel.ButtonFont.ToColor();
+            ColorPicker5.Color = ColorSel.FontColor.ToColor();
             CheckBox2.IsChecked = config.Item2.RGB;
             CheckBox3.IsChecked = config.Item2.FontDefault;
             if (config.Item2.WindowTran)

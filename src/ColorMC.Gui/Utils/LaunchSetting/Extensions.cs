@@ -25,7 +25,7 @@ public class ColorsExtension : MarkupExtension
         var binding = new ReflectionBindingExtension($"[{keyToUse}]")
         {
             Mode = BindingMode.OneWay,
-            Source = Colors.Instance,
+            Source = ColorSel.Instance,
         };
 
         return binding.ProvideValue(serviceProvider);

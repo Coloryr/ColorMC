@@ -196,7 +196,7 @@ public partial class Tab2Control : UserControl
                 {
                      Patterns = new List<string>()
                      {
-                        "*.db"
+                        "*.json"
                      }
                 }
             }

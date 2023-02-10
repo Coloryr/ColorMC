@@ -34,7 +34,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.RGB = enable;
 
         GuiConfigUtils.Save();
-        Colors.Load();
+        ColorSel.Instance.Load();
     }
 
     public static void SetRgb(int v1, int v2)
@@ -42,7 +42,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.RGBS = v1;
         GuiConfigUtils.Config.RGBV = v2;
         GuiConfigUtils.Save();
-        Colors.Load();
+        ColorSel.Instance.Load();
     }
 
     public static void SetColor(string main, string back, string back1, string font1, string font2)
@@ -53,7 +53,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ColorFont1 = font1;
         GuiConfigUtils.Config.ColorFont2 = font2;
         GuiConfigUtils.Save();
-        Colors.Load();
+        ColorSel.Instance.Load();
     }
 
     public static void DeleteGuiImageConfig()
@@ -127,7 +127,7 @@ public static class ConfigBinding
 
         App.MainWindow?.MotdLoad();
 
-        Colors.Load();
+        ColorSel.Instance.Load();
     }
 
     public static void SetServerCustom(bool enable, string? name)
@@ -159,6 +159,6 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
 
-        FontSel.Load();
+        FontSel.Instance.Load();
     }
 }

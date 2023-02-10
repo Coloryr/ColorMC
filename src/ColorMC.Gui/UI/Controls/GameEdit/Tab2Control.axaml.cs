@@ -148,8 +148,8 @@ public partial class Tab2Control : UserControl
         {
             ComboBox1.SelectedIndex = (int)config.GC;
 
-            Input1.Value = (uint)config.MinMemory;
-            Input2.Value = (uint)config.MaxMemory;
+            Input1.Value = config.MinMemory;
+            Input2.Value = config.MaxMemory;
 
             TextBox1.Text = config.GCArgument;
             TextBox2.Text = config.JavaAgent;
