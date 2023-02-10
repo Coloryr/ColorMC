@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.ClearScript;
+using Microsoft.ClearScript.JavaScript;
+using Microsoft.ClearScript.V8;
 
 namespace ColorMC.Core.Net.Java;
 
@@ -85,6 +88,20 @@ public static class OpenJ9
                 continue;
             arch.Add(value);
         }
+
+        var temp = item2.IndexOf("function");
+        item2 = item2[..temp];
+        item2 += Environment.NewLine;
+        item2 += "JSON.stringify(sourceDataJson)";
+
+        using var engine = new V8ScriptEngine();
+        var obj1 = engine.Evaluate(item2);
+        if(obj1 == null)
+            return (null, null, null);
+
+        var obj2 = JsonConvert.DeserializeObject<OpenJ9Obj1>(obj1.ToString());
+
+
 
         return (null, null, null);
     }
