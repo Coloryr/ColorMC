@@ -17,3 +17,36 @@ public  record OpenJ9Obj
     public bool error { get; set; }
     public List<Results> results { get; set; }
 }
+
+
+public record OpenJ9Obj1
+{
+    public record Downloads
+    {
+        public record Jdk
+        {
+            public record Opt
+            { 
+                public string displayName { get; set; }
+                public string downloadLink { get; set; }
+                public string checksum { get; set; }
+                public string sig { get; set; }
+            }
+            public Opt opt1 { get; set; }
+        }
+        public string name { get; set; }
+        public int version { get; set; }
+        public string os { get; set; }
+        public string arch { get; set; }
+        public Jdk jdk { get; set; }
+        public Jdk jre { get; set; }
+    }
+    public List<Downloads> downloads { get; set; }
+}
+
+public record OpenJ9Obj2
+{ 
+    public string Name { get; set; }
+    public string Os { get; set; }
+    public string Arch { get; set; }
+}
