@@ -17,7 +17,7 @@ public static class AuthDatabase
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
-        Logs.Info(LanguageHelper.GetName("Core.Auth"));
+        Logs.Info(LanguageHelper.GetName("Core.Auth.Info1"));
 
         Dir = Path.GetFullPath(dir + Name);
         var data = File.ReadAllText(Dir);

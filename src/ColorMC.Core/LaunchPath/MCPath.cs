@@ -15,7 +15,7 @@ public static class MCPath
     {
         BaseDir = dir + Name;
 
-        Logs.Info(string.Format(LanguageHelper.GetName("Core.Path.Init"), BaseDir));
+        Logs.Info(string.Format(LanguageHelper.GetName("Core.Path.Info1"), BaseDir));
 
         Directory.CreateDirectory(BaseDir);
 

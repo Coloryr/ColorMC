@@ -46,7 +46,7 @@ public static class GetSkin
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Skin.Get.Error"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error20"), e);
         }
 
         return null;
@@ -70,7 +70,7 @@ public static class GetSkin
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Skin.Read.Error"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error21"), e);
             return null;
         }
     }

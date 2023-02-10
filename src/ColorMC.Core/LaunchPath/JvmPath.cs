@@ -33,7 +33,7 @@ public static class JvmPath
         var res = await Download(file, sha256, url);
         if (!res.Item1)
         {
-            return (CoreRunState.Error, LanguageHelper.GetName("Core.Java.Error1"));
+            return (CoreRunState.Error, LanguageHelper.GetName("Core.Jvm.Error5"));
         }
         res = await UnzipJava(name, res.Item2!);
         if (!res.Item1)
@@ -92,7 +92,7 @@ public static class JvmPath
 
         var java = Find(path);
         if (java == null)
-            return (false, LanguageHelper.GetName("Core.Java.Error2"));
+            return (false, LanguageHelper.GetName("Core.Jvm.Error6"));
 
         return AddItem(name, Path.GetRelativePath(AppContext.BaseDirectory, java));
     }
@@ -119,7 +119,7 @@ public static class JvmPath
             return (true, name);
         }
 
-        return (false, LanguageHelper.GetName("Core.Path.Jvm.Error2"));
+        return (false, LanguageHelper.GetName("Core.Jvm.Error1"));
     }
 
     /// <summary>
@@ -135,11 +135,11 @@ public static class JvmPath
         {
             if (!Jvms.ContainsKey(old))
             {
-                return (false, LanguageHelper.GetName("Core.Path.Jvm.Error3"));
+                return (false, LanguageHelper.GetName("Core.Jvm.Error2"));
             }
             if (Jvms.ContainsKey(name))
             {
-                return (false, LanguageHelper.GetName("Core.Path.Jvm.Error4"));
+                return (false, LanguageHelper.GetName("Core.Jvm.Error3"));
             }
         }
         var info = GetJavaInfo(local);
@@ -153,7 +153,7 @@ public static class JvmPath
             return (true, name);
         }
 
-        return (false, LanguageHelper.GetName("Core.Path.Jvm.Error5"));
+        return (false, LanguageHelper.GetName("Core.Jvm.Error4"));
     }
 
     /// <summary>
@@ -179,14 +179,14 @@ public static class JvmPath
     /// <param name="list">列表</param>
     public static void AddList(List<JvmConfigObj> list)
     {
-        Logs.Info(LanguageHelper.GetName("Core.Path.Jvm.Load"));
+        Logs.Info(LanguageHelper.GetName("Core.Jvm.Info1"));
         Jvms.Clear();
         list.ForEach(a =>
         {
             var info = GetJavaInfo(a.Local);
             if (info != null)
             {
-                Logs.Info(string.Format(LanguageHelper.GetName("Core.Path.Jvm.Info"),
+                Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info2"),
                     info.Path, info.Version));
                 Jvms.Add(a.Name, info);
             }

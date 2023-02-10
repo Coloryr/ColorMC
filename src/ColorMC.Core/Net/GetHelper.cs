@@ -21,7 +21,7 @@ public static class GetHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Assets.Error"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error22"), e);
             return null;
         }
     }
@@ -41,7 +41,7 @@ public static class GetHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Game.Error"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error23"), e);
             return null;
         }
     }
@@ -60,7 +60,7 @@ public static class GetHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Version.Error"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error24"), e);
             return null;
         }
     }

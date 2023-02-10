@@ -39,7 +39,7 @@ public static class QuiltHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Quilt.Error1"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error16"), e);
             return null;
         }
     }
@@ -58,7 +58,7 @@ public static class QuiltHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Quilt.Error2"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error17"), e);
             return null;
         }
     }
@@ -89,7 +89,7 @@ public static class QuiltHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Quilt.Error3"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error18"), e);
             return null;
         }
     }
@@ -111,7 +111,7 @@ public static class QuiltHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Get.Quilt.Error4"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error19"), e);
             return null;
         }
     }
