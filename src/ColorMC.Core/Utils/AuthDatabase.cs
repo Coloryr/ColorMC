@@ -20,14 +20,21 @@ public static class AuthDatabase
         Logs.Info(LanguageHelper.GetName("Core.Auth.Info1"));
 
         Dir = Path.GetFullPath(dir + Name);
-        var data = File.ReadAllText(Dir);
-        var list = JsonConvert.DeserializeObject<List<LoginObj>>(data);
-        if (list == null)
-            return;
-
-        foreach (var item in list)
+        if (File.Exists(Dir))
         {
-            Auths.Add((item.UUID, item.AuthType), item);
+            var data = File.ReadAllText(Dir);
+            var list = JsonConvert.DeserializeObject<List<LoginObj>>(data);
+            if (list == null)
+                return;
+
+            foreach (var item in list)
+            {
+                Auths.Add((item.UUID, item.AuthType), item);
+            }
+        }
+        else
+        {
+            Save();
         }
     }
 
