@@ -15,6 +15,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;
 using SixLabors.ImageSharp;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
@@ -37,12 +38,18 @@ public partial class SkinWindow : Window
 
         Text1.Text = Skin.Info;
 
+        ComboBox2.Items = new List<string>()
+        {
+            "手臂旋转", "腿部旋转", "头部旋转"
+        };
+
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
+        Button5.Click += Button5_Click;
         CheckBox1.Click += CheckBox1_Click;
 
         Opened += SkinWindow_Opened;
@@ -51,16 +58,143 @@ public partial class SkinWindow : Window
         App.PicUpdate += Update;
         App.SkinLoad += App_SkinLoad;
 
+        Slider1.PropertyChanged += Slider1_PropertyChanged;
+        Slider2.PropertyChanged += Slider2_PropertyChanged;
+        Slider3.PropertyChanged += Slider3_PropertyChanged;
+
+        ComboBox2.SelectedIndex = 0;
+
         Check();
         Update();
     }
 
+    private void Button5_Click(object? sender, RoutedEventArgs e)
+    {
+        switch (ComboBox2.SelectedIndex)
+        {
+            case 0:
+                Skin.ArmRotate.X = 0;
+                Skin.ArmRotate.Y = 0;
+                Skin.ArmRotate.Z = 0;
+                break;
+            case 1:
+                Skin.LegRotate.X = 0;
+                Skin.LegRotate.Y = 0;
+                Skin.LegRotate.Z = 0;
+                break;
+            case 2:
+                Skin.HeadRotate.X = 0;
+                Skin.HeadRotate.Y = 0;
+                Skin.HeadRotate.Z = 0;
+                break;
+            default:
+                return;
+        }
+        Slider1.Value = 0;
+        Slider2.Value = 0;
+        Slider3.Value = 0;
+        Skin.InvalidateVisual();
+    }
+
+    private void Slider3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Value")
+        {
+            switch (ComboBox2.SelectedIndex)
+            {
+                case 0:
+                    Skin.ArmRotate.Z = (float)Slider2.Value;
+                    break;
+                case 1:
+                    Skin.LegRotate.Z = (float)Slider3.Value;
+                    break;
+                case 2:
+                    Skin.HeadRotate.Z = (float)Slider3.Value;
+                    break;
+                default:
+                    return;
+            }
+            Skin.InvalidateVisual();
+        }
+    }
+
+    private void Slider2_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Value")
+        {
+            switch (ComboBox2.SelectedIndex)
+            {
+                case 0:
+                    Skin.ArmRotate.Y = (float)Slider2.Value;
+                    break;
+                case 1:
+                    Skin.LegRotate.Y = (float)Slider2.Value;
+                    break;
+                case 2:
+                    Skin.HeadRotate.Y = (float)Slider2.Value;
+                    break;
+                default:
+                    return;
+            }
+            Skin.InvalidateVisual();
+        }
+    }
+
+    private void Slider1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Value")
+        {
+            switch (ComboBox2.SelectedIndex)
+            {
+                case 0:
+                    Skin.ArmRotate.X = (float)Slider1.Value;
+                    break;
+                case 1:
+                    Skin.LegRotate.X = (float)Slider1.Value;
+                    break;
+                case 2:
+                    Skin.HeadRotate.X = (float)Slider1.Value;
+                    break;
+                default:
+                    return;
+            }
+            Skin.InvalidateVisual();
+        }
+    }
+
     private void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        switch (ComboBox2.selec)
-        { 
-            
+        Vector3 rotate;
+        switch (ComboBox2.SelectedIndex)
+        {
+            case 0:
+                rotate = Skin.ArmRotate;
+                Slider1.Minimum = 0;
+                Slider2.Minimum = -360;
+                Slider3.Minimum = 0;
+                Slider3.IsEnabled = false;
+                break;
+            case 1:
+                rotate = Skin.LegRotate;
+                Slider1.Minimum = 0;
+                Slider2.Minimum = -360;
+                Slider3.Minimum = 0;
+                Slider3.IsEnabled = false;
+                break;
+            case 2:
+                rotate = Skin.HeadRotate;
+                Slider3.IsEnabled = true;
+                Slider1.Minimum = -360;
+                Slider2.Minimum = -360;
+                Slider3.Minimum = -360;
+                break;
+            default:
+                return;
         }
+
+        Slider1.Value = rotate.X;
+        Slider2.Value = rotate.Y;
+        Slider3.Value = rotate.Z;
     }
 
     private void CheckBox1_Click(object? sender, RoutedEventArgs e)
@@ -235,9 +369,9 @@ public class SkinRender : Control
     private int _fragmentShader;
     private int _shaderProgram;
 
-    private Vector3 ArmRotate;
-    private Vector3 LegRotate;
-    private Vector3 HeadRotate;
+    public Vector3 ArmRotate;
+    public Vector3 LegRotate;
+    public Vector3 HeadRotate;
 
     private int VaoList;
 
@@ -351,7 +485,7 @@ public class SkinRender : Control
 
     public void Reset()
     {
-        Dis = 7;
+        Dis = 1;
         RotXY.X = 0;
         RotXY.Y = 0;
         DiffXY.X = 0;
@@ -593,25 +727,33 @@ public class SkinRender : Control
         var model = Matrix4.Identity;
         GL.UniformMatrix4(modelLoc, false, ref model);
 
-        //GL.BindVertexArray(NormalVAO.Head.VertexArrayObject);
-        //GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
-
         GL.BindVertexArray(NormalVAO.Body.VertexArrayObject);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+
+        model = Matrix4.CreateTranslation(0, CubeC.Value, 0) *
+               Matrix4.CreateRotationZ(HeadRotate.X / 360) *
+               Matrix4.CreateRotationX(HeadRotate.Y / 360) *
+               Matrix4.CreateRotationY(HeadRotate.Z / 360) *
+               Matrix4.CreateTranslation(0, CubeC.Value * 1.5f, 0);
+        GL.UniformMatrix4(modelLoc, false, ref model);
+
+        GL.BindVertexArray(NormalVAO.Head.VertexArrayObject);
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         if (steveModelType == SkinType.New_Slim)
         {
-            model = Matrix4.CreateTranslation(CubeC.Value / 2, -CubeC.Value / 2, 0) *
+            model = Matrix4.CreateTranslation(CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
                 Matrix4.CreateRotationZ(ArmRotate.X / 360) *
+                Matrix4.CreateRotationX(ArmRotate.Y / 360) *
                 Matrix4.CreateTranslation(
-                    (-1.375f * CubeC.Value) - (CubeC.Value / 2), CubeC.Value / 2, 0);
+                    (1.375f * CubeC.Value) - (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
         }
         else
         {
-            model = Matrix4.CreateTranslation(CubeC.Value / 2, -CubeC.Value / 2, 0) *
+            model = Matrix4.CreateTranslation(CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
                 Matrix4.CreateRotationZ(ArmRotate.X / 360) *
                 Matrix4.CreateTranslation(
-                    (1.5f * CubeC.Value) - (CubeC.Value / 2), CubeC.Value / 2, 0);
+                    (1.5f * CubeC.Value) - (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
         }
         GL.UniformMatrix4(modelLoc, false, ref model);
 
@@ -620,48 +762,118 @@ public class SkinRender : Control
 
         if (steveModelType == SkinType.New_Slim)
         {
-            model = Matrix4.CreateTranslation(CubeC.Value / 2, -CubeC.Value / 2, 0) *
+            model = Matrix4.CreateTranslation(-CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
                 Matrix4.CreateRotationZ(-ArmRotate.X / 360) *
+                Matrix4.CreateRotationX(-ArmRotate.Y / 360) *
                 Matrix4.CreateTranslation(
-                    (1.375f * CubeC.Value) - (CubeC.Value / 2), CubeC.Value / 2, 0);
+                    (-1.375f * CubeC.Value) + (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
         }
         else
         {
-            model = Matrix4.CreateTranslation(CubeC.Value / 2, -CubeC.Value / 2, 0) *
+            model = Matrix4.CreateTranslation(-CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
                 Matrix4.CreateRotationZ(-ArmRotate.X / 360) *
+                Matrix4.CreateRotationX(-ArmRotate.Y / 360) *
                 Matrix4.CreateTranslation(
-                    (-1.5f * CubeC.Value) - (CubeC.Value / 2), CubeC.Value / 2, 0);
+                    (-1.5f * CubeC.Value) + (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
         }
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(NormalVAO.RightArm.VertexArrayObject);
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
 
-        //GL.BindVertexArray(NormalVAO.LeftLeg.VertexArrayObject);
-        //GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
+               Matrix4.CreateRotationZ(LegRotate.X / 360) *
+               Matrix4.CreateRotationX(LegRotate.Y / 360) *
+               Matrix4.CreateTranslation(CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
+        GL.UniformMatrix4(modelLoc, false, ref model);
 
-        //GL.BindVertexArray(NormalVAO.RightLeg.VertexArrayObject);
-        //GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.BindVertexArray(NormalVAO.LeftLeg.VertexArrayObject);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+
+        model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
+               Matrix4.CreateRotationZ(-LegRotate.X / 360) *
+               Matrix4.CreateRotationX(-LegRotate.Y / 360) *
+               Matrix4.CreateTranslation(-CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
+        GL.UniformMatrix4(modelLoc, false, ref model);
+
+        GL.BindVertexArray(NormalVAO.RightLeg.VertexArrayObject);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
     }
 
     private void DrawTop()
     {
-        
-
-        GL.BindVertexArray(TopVAO.Head.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        var modelLoc = GL.GetUniformLocation(_shaderProgram, "uSelf");
+        var model = Matrix4.Identity;
+        GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(TopVAO.Body.VertexArrayObject);
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
 
+        model = Matrix4.CreateTranslation(0, CubeC.Value, 0) *
+               Matrix4.CreateRotationZ(HeadRotate.X / 360) *
+               Matrix4.CreateRotationX(HeadRotate.Y / 360) *
+               Matrix4.CreateRotationY(HeadRotate.Z / 360) *
+               Matrix4.CreateTranslation(0, CubeC.Value * 1.5f, 0);
+        GL.UniformMatrix4(modelLoc, false, ref model);
+
+        GL.BindVertexArray(TopVAO.Head.VertexArrayObject);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+
+        if (steveModelType == SkinType.New_Slim)
+        {
+            model = Matrix4.CreateTranslation(CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
+                Matrix4.CreateRotationZ(ArmRotate.X / 360) *
+                Matrix4.CreateRotationX(ArmRotate.Y / 360) *
+                Matrix4.CreateTranslation(
+                    (1.375f * CubeC.Value) - (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
+        }
+        else
+        {
+            model = Matrix4.CreateTranslation(CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
+                Matrix4.CreateRotationZ(ArmRotate.X / 360) *
+                Matrix4.CreateTranslation(
+                    (1.5f * CubeC.Value) - (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
+        }
+        GL.UniformMatrix4(modelLoc, false, ref model);
+
         GL.BindVertexArray(TopVAO.LeftArm.VertexArrayObject);
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+
+        if (steveModelType == SkinType.New_Slim)
+        {
+            model = Matrix4.CreateTranslation(-CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
+                Matrix4.CreateRotationZ(-ArmRotate.X / 360) *
+                Matrix4.CreateRotationX(-ArmRotate.Y / 360) *
+                Matrix4.CreateTranslation(
+                    (-1.375f * CubeC.Value) + (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
+        }
+        else
+        {
+            model = Matrix4.CreateTranslation(-CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
+                Matrix4.CreateRotationZ(-ArmRotate.X / 360) *
+                Matrix4.CreateRotationX(-ArmRotate.Y / 360) *
+                Matrix4.CreateTranslation(
+                    (-1.5f * CubeC.Value) + (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
+        }
+        GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(TopVAO.RightArm.VertexArrayObject);
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
 
+        model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
+               Matrix4.CreateRotationZ(LegRotate.X / 360) *
+               Matrix4.CreateRotationX(LegRotate.Y / 360) *
+               Matrix4.CreateTranslation(CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
+        GL.UniformMatrix4(modelLoc, false, ref model);
+
         GL.BindVertexArray(TopVAO.LeftLeg.VertexArrayObject);
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+
+        model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
+               Matrix4.CreateRotationZ(-LegRotate.X / 360) *
+               Matrix4.CreateRotationX(-LegRotate.Y / 360) *
+               Matrix4.CreateTranslation(-CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
+        GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(TopVAO.RightLeg.VertexArrayObject);
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
@@ -754,17 +966,17 @@ public class SkinRender : Control
 
         DrawNormal();
 
-        //if (TopDisplay)
-        //{
-        //    GL.Enable(EnableCap.Blend);
-        //    GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        //    GL.DepthMask(false);
+        if (TopDisplay)
+        {
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            GL.DepthMask(false);
 
-        //    DrawTop();
+            DrawTop();
 
-        //    GL.Disable(EnableCap.Blend);
-        //    GL.DepthMask(true);
-        //}
+            GL.Disable(EnableCap.Blend);
+            GL.DepthMask(true);
+        }
 
         using (var fb = bitmap.Lock())
         {
