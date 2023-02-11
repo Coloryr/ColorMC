@@ -1,6 +1,6 @@
 using ColorMC.Core.Objs.Java;
 using HtmlAgilityPack;
-using Microsoft.ClearScript.V8;
+using Jint;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Java;
@@ -100,7 +100,7 @@ public static class OpenJ9
         item2 += Environment.NewLine;
         item2 += "JSON.stringify(sourceDataJson)";
 
-        using var engine = new V8ScriptEngine();
+        using var engine = new Engine();
         var obj1 = engine.Evaluate(item2);
         if (obj1 == null)
             return (null, null, null, null);
