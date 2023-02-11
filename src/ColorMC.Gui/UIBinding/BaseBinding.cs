@@ -24,12 +24,17 @@ namespace ColorMC.Gui.UIBinding;
 public static class BaseBinding
 {
     public readonly static Dictionary<Process, GameSettingObj> Games = new();
-    public static bool ISNewStart { get; private set; } = false;
+    public static bool ISNewStart
+    {
+        get
+        {
+            return CoreMain.NewStart;
+        }
+    }
 
     public static void Init()
     {
         CoreMain.OnError = ShowError;
-        CoreMain.NewStart = ShowNew;
         CoreMain.DownloaderUpdate = DownloaderUpdate;
         CoreMain.ProcessLog = PLog;
         CoreMain.GameLog = PLog;
@@ -196,11 +201,6 @@ public static class BaseBinding
     private static void ShowError(string data, Exception e, bool close)
     {
         App.ShowError(data, e, close);
-    }
-
-    private static void ShowNew()
-    {
-        ISNewStart = true;
     }
 
     private static void Change(LanguageType type)

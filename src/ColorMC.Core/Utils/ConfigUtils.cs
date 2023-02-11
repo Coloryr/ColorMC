@@ -46,7 +46,7 @@ public static class ConfigUtils
         }
         else
         {
-            CoreMain.NewStart?.Invoke();
+            CoreMain.NewStart = true;
         }
 
         if (Config == null)

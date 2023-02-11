@@ -25,11 +25,6 @@ public static class CoreMain
     /// </summary>
     public static Action<string, Exception, bool>? OnError { get; set; }
     /// <summary>
-    /// 新建回调
-    /// </summary>
-    public static Action? NewStart { get; set; }
-
-    /// <summary>
     /// 下载线程相应回调
     /// </summary>
     public static Action<CoreRunState>? DownloaderUpdate { get; set; }
@@ -86,6 +81,8 @@ public static class CoreMain
     /// 语言更新回调
     /// </summary>
     public static Action<LanguageType>? LanguageReload { get; set; }
+
+    public static bool NewStart { get; set; }
 
     /// <summary>
     /// 初始化

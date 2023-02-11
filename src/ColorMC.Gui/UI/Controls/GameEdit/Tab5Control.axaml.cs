@@ -128,7 +128,7 @@ public partial class Tab5Control : UserControl
 
     public async void Export(WorldDisplayObj obj)
     {
-        var file = await BaseBinding.OpSave(Window, 
+        var file = await BaseBinding.OpSave(Window,
             Localizer.Instance["GameEditWindow.Tab5.Info2"], ".zip", "world.zip");
         if (!string.IsNullOrWhiteSpace(file))
         {

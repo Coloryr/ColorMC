@@ -7,7 +7,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Skin;
+using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.Utils.LaunchSetting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -244,7 +244,7 @@ public static class UserBinding
         switch (obj.AuthType)
         {
             case AuthType.Offline:
-                var file = await BaseBinding.OpFile(window, 
+                var file = await BaseBinding.OpFile(window,
                     Localizer.Instance["UserBinding.Info1"], "*.png",
                     Localizer.Instance["UserBinding.Info2"]);
                 if (file?.Any() == true)
