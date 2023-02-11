@@ -14,6 +14,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -222,7 +223,10 @@ public partial class SkinWindow : Window
     {
         Skin.ChangeSkin();
 
-        Check();
+        Dispatcher.UIThread.Post(() => 
+        {
+            Check();
+        });
     }
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
@@ -313,6 +317,7 @@ public class SkinRender : Control
         public VAOItem RightArm = new();
         public VAOItem LeftLeg = new();
         public VAOItem RightLeg = new();
+        public VAOItem Cape = new();
     }
 
     private string VertexShaderSource => GetShader(false, @"
@@ -348,9 +353,11 @@ public class SkinRender : Control
     }
 
     public bool HaveSkin { get; private set; } = false;
+    private bool HaveCape = false;
     private bool SwitchModel = false;
     private bool SwitchSkin = false;
     private bool TopDisplay = true;
+    private bool CapeDisplay = true;
 
     private float Dis = 1;
     private Vector2 RotXY;
@@ -361,6 +368,7 @@ public class SkinRender : Control
     private Vector2 LastXY;
 
     private int texture;
+    private int texture1;
 
     public SkinType steveModelType;
     private int steveModelDrawOrder;
@@ -428,6 +436,9 @@ public class SkinRender : Control
         InitVAO(NormalVAO);
         InitVAO(TopVAO);
 
+        texture = GL.GenTexture();
+        texture1 = GL.GenTexture();
+
         CheckError();
 
         PointerWheelChanged += OpenGlPageControl_PointerWheelChanged;
@@ -448,9 +459,9 @@ public class SkinRender : Control
 
     private static void InitVAO(ModelVAO vao)
     {
-        int[] temp1 = new int[6];
+        int[] temp1 = new int[7];
 
-        GL.GenVertexArrays(6, temp1);
+        GL.GenVertexArrays(7, temp1);
 
         vao.Head.VertexArrayObject = temp1[0];
         vao.Body.VertexArrayObject = temp1[1];
@@ -458,6 +469,7 @@ public class SkinRender : Control
         vao.RightArm.VertexArrayObject = temp1[3];
         vao.LeftLeg.VertexArrayObject = temp1[4];
         vao.RightLeg.VertexArrayObject = temp1[5];
+        vao.Cape.VertexArrayObject = temp1[6];
 
         InitVAOItem(vao.Head);
         InitVAOItem(vao.Body);
@@ -465,6 +477,7 @@ public class SkinRender : Control
         InitVAOItem(vao.RightArm);
         InitVAOItem(vao.LeftLeg);
         InitVAOItem(vao.RightLeg);
+        InitVAOItem(vao.Cape);
     }
 
     public void ChangeType(int index)
@@ -500,7 +513,38 @@ public class SkinRender : Control
         InvalidateVisual();
     }
 
-    private unsafe void LoadSkin()
+    private static void LoadTex(Image<Rgba32> image, int tex)
+    {
+        GL.ActiveTexture(TextureUnit.Texture0);
+        GL.BindTexture(TextureTarget.Texture2D, tex);
+
+        GL.TexParameter(
+            TextureTarget.Texture2D,
+            TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear
+        );
+        GL.TexParameter(
+            TextureTarget.Texture2D,
+            TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest
+        );
+        GL.TexParameter(
+            TextureTarget.Texture2D,
+            TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge
+        );
+        GL.TexParameter(
+            TextureTarget.Texture2D,
+            TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge
+        );
+
+        var pixels = new byte[4 * image.Width * image.Height];
+        image.CopyPixelDataTo(pixels);
+
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width,
+           image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+
+        GL.BindTexture(TextureTarget.Texture2D, 0);
+    }
+
+    private void LoadSkin()
     {
         if (UserBinding.SkinImage == null)
         {
@@ -524,33 +568,18 @@ public class SkinRender : Control
             });
             return;
         }
-
-        texture = GL.GenTexture();
-        GL.ActiveTexture(TextureUnit.Texture0);
-        GL.BindTexture(TextureTarget.Texture2D, texture);
-
-        GL.TexParameter(
-            TextureTarget.Texture2D,
-            TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear
-        );
-        GL.TexParameter(
-            TextureTarget.Texture2D,
-            TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest
-        );
-        GL.TexParameter(
-            TextureTarget.Texture2D,
-            TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge
-        );
-        GL.TexParameter(
-            TextureTarget.Texture2D,
-            TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge
-        );
-
-        var pixels = new byte[4 * UserBinding.SkinImage.Width * UserBinding.SkinImage.Height];
-        UserBinding.SkinImage.CopyPixelDataTo(pixels);
-
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, UserBinding.SkinImage.Width,
-            UserBinding.SkinImage.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+        GLMode(true);
+        LoadTex(UserBinding.SkinImage, texture);
+        if (UserBinding.CapeIamge != null)
+        {
+            LoadTex(UserBinding.CapeIamge, texture1);
+            HaveCape = true;
+        }
+        else
+        {
+            HaveCape = false;
+        }
+        GLMode(false);
 
         CheckError();
 
@@ -562,6 +591,22 @@ public class SkinRender : Control
             Window.ComboBox1.SelectedIndex = (int)steveModelType;
             Window.Label1.IsVisible = false;
         });
+    }
+
+    private void GLMode(bool mode)
+    {
+        if (mode)
+        {
+            GL.Disable(EnableCap.Texture2D);
+            GL.Disable(EnableCap.Lighting);
+            GL.Enable(EnableCap.Blend);
+        }
+        else
+        {
+            GL.Disable(EnableCap.Blend);
+            GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.Texture2D);
+        }
     }
 
     private unsafe void PutVAO(VAOItem vao, ModelItem model, float[] uv)
@@ -632,6 +677,7 @@ public class SkinRender : Control
         PutVAO(NormalVAO.RightArm, normal.RightArm, tex.RightArm);
         PutVAO(NormalVAO.LeftLeg, normal.LeftLeg, tex.LeftLeg);
         PutVAO(NormalVAO.RightLeg, normal.RightLeg, tex.RightLeg);
+        PutVAO(NormalVAO.Cape, normal.Cape, tex.Cape);
 
         PutVAO(TopVAO.Head, top.Head, textop.Head);
         if (steveModelType != SkinType.Old)
@@ -721,8 +767,32 @@ public class SkinRender : Control
         InvalidateVisual();
     }
 
+    private void DrawCape()
+    {
+        if (HaveCape && CapeDisplay)
+        {
+            GL.BindTexture(TextureTarget.Texture2D, texture1);
+
+            var modelLoc = GL.GetUniformLocation(_shaderProgram, "uSelf");
+
+            var model = Matrix4.CreateTranslation(0, -2f * CubeC.Value, -CubeC.Value * 0.1f) *
+               Matrix4.CreateRotationX((float)(10.8 * Math.PI / 180)) *
+               Matrix4.CreateTranslation(0, 1.6f * CubeC.Value,
+               -CubeC.Value * 0.5f);
+            GL.UniformMatrix4(modelLoc, false, ref model);
+
+            GL.BindVertexArray(NormalVAO.Cape.VertexArrayObject);
+            GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, 
+                DrawElementsType.UnsignedShort, IntPtr.Zero);
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+        }
+    }
+
     private void DrawNormal()
     {
+        GL.BindTexture(TextureTarget.Texture2D, texture);
+
         var modelLoc = GL.GetUniformLocation(_shaderProgram, "uSelf");
         var model = Matrix4.Identity;
         GL.UniformMatrix4(modelLoc, false, ref model);
@@ -738,7 +808,8 @@ public class SkinRender : Control
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(NormalVAO.Head.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                 DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         if (steveModelType == SkinType.New_Slim)
         {
@@ -758,7 +829,8 @@ public class SkinRender : Control
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(NormalVAO.LeftArm.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         if (steveModelType == SkinType.New_Slim)
         {
@@ -779,7 +851,8 @@ public class SkinRender : Control
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(NormalVAO.RightArm.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                 DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
                Matrix4.CreateRotationZ(LegRotate.X / 360) *
@@ -788,7 +861,8 @@ public class SkinRender : Control
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(NormalVAO.LeftLeg.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
                Matrix4.CreateRotationZ(-LegRotate.X / 360) *
@@ -797,17 +871,23 @@ public class SkinRender : Control
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(NormalVAO.RightLeg.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                DrawElementsType.UnsignedShort, IntPtr.Zero);
+
+        GL.BindTexture(TextureTarget.Texture2D, 0);
     }
 
     private void DrawTop()
     {
+        GL.BindTexture(TextureTarget.Texture2D, texture);
+
         var modelLoc = GL.GetUniformLocation(_shaderProgram, "uSelf");
         var model = Matrix4.Identity;
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(TopVAO.Body.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                 DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, CubeC.Value, 0) *
                Matrix4.CreateRotationZ(HeadRotate.X / 360) *
@@ -817,7 +897,8 @@ public class SkinRender : Control
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(TopVAO.Head.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                 DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         if (steveModelType == SkinType.New_Slim)
         {
@@ -837,7 +918,8 @@ public class SkinRender : Control
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(TopVAO.LeftArm.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         if (steveModelType == SkinType.New_Slim)
         {
@@ -858,7 +940,8 @@ public class SkinRender : Control
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(TopVAO.RightArm.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
                Matrix4.CreateRotationZ(LegRotate.X / 360) *
@@ -867,7 +950,8 @@ public class SkinRender : Control
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(TopVAO.LeftLeg.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                 DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
                Matrix4.CreateRotationZ(-LegRotate.X / 360) *
@@ -876,7 +960,10 @@ public class SkinRender : Control
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(TopVAO.RightLeg.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
+                DrawElementsType.UnsignedShort, IntPtr.Zero);
+
+        GL.BindTexture(TextureTarget.Texture2D, 0);
     }
 
     public override void Render(DrawingContext context)
@@ -907,7 +994,6 @@ public class SkinRender : Control
             y = (int)(Bounds.Height * screen.Scaling);
         }
 
-
         if (LastSize.X != x || LastSize.Y != y)
         {
             LastSize = new(x, y);
@@ -935,11 +1021,9 @@ public class SkinRender : Control
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
         CheckError();
-        //gl.GL_CULL_FACE
         GL.Enable(EnableCap.CullFace);
         GL.Enable(EnableCap.DepthTest);
         GL.ActiveTexture(TextureUnit.Texture0);
-        GL.BindTexture(TextureTarget.Texture2D, texture);
         GL.UseProgram(_shaderProgram);
         CheckError();
 
@@ -965,6 +1049,8 @@ public class SkinRender : Control
         GL.UniformMatrix4(projectionLoc, false, ref projection);
 
         DrawNormal();
+
+        DrawCape();
 
         if (TopDisplay)
         {

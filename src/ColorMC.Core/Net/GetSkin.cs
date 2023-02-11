@@ -12,16 +12,16 @@ namespace ColorMC.Core.Net;
 public static class GetSkin
 {
     /// <summary>
-    /// 下载皮肤
+    /// 下载皮肤和披风
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    /// <returns>皮肤路径</returns>
-    public static async Task<string?> DownloadSkin(LoginObj obj)
+    /// <returns>皮肤路径, 披风路径</returns>
+    public static async Task<(bool, bool)> DownloadSkin(LoginObj obj)
     {
         if (obj.AuthType == AuthType.Offline)
-            return null;
+            return (false, false);
 
-        string? url = obj.AuthType switch
+        TexturesObj? url = obj.AuthType switch
         {
             AuthType.OAuth => await LoadFromMinecraft(obj),
             AuthType.Nide8 => await LoadFromNide8(obj),
@@ -32,27 +32,47 @@ public static class GetSkin
         };
 
         if (url == null)
-            return null;
+            return (false, false);
 
-        try
+        bool skin = false, cape = false;
+        if (!string.IsNullOrWhiteSpace(url.textures.SKIN?.url))
         {
-            string file = $"{AssetsPath.BaseDir}/{AssetsPath.Name3}/{obj.UserName}.png";
-            file = Path.GetFullPath(file);
-            FileInfo info = new(file);
-            info.Directory?.Create();
-            var data2 = await BaseClient.GetBytes(url);
-            File.WriteAllBytes(file, data2);
-            return file;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error20"), e);
+            try
+            {
+                var file = Path.GetFullPath(obj.GetSkinFile());
+                FileInfo info = new(file);
+                info.Directory?.Create();
+                var data2 = await BaseClient.GetBytes(url.textures.SKIN.url);
+                File.WriteAllBytes(file, data2);
+                skin = true;
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.GetName("Core.Http.Error20"), e);
+            }
         }
 
-        return null;
+        if (!string.IsNullOrWhiteSpace(url.textures.CAPE?.url))
+        {
+            try
+            {
+                var file = Path.GetFullPath(obj.GetCapeFile());
+                FileInfo info = new(file);
+                info.Directory?.Create();
+                var data2 = await BaseClient.GetBytes(url.textures.CAPE.url);
+                File.WriteAllBytes(file, data2);
+                cape = true;
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.GetName("Core.Http.Error20"), e);
+            }
+        }
+
+        return (skin, cape);
     }
 
-    private static async Task<string?> BaseLoad(string uuid, string? url = null)
+    private static async Task<TexturesObj?> BaseLoad(string uuid, string? url = null)
     {
         try
         {
@@ -63,10 +83,7 @@ public static class GetSkin
                 return null;
             var data = Convert.FromBase64String(res.properties[0].value);
             var data1 = Encoding.UTF8.GetString(data);
-            var obj1 = JsonConvert.DeserializeObject<TexturesObj>(data1);
-            if (obj1 == null)
-                return null;
-            return obj1.textures?.SKIN?.url;
+            return JsonConvert.DeserializeObject<TexturesObj>(data1);
         }
         catch (Exception e)
         {
@@ -75,27 +92,27 @@ public static class GetSkin
         }
     }
 
-    private static Task<string?> LoadFromMinecraft(LoginObj obj)
+    private static Task<TexturesObj?> LoadFromMinecraft(LoginObj obj)
     {
         return BaseLoad(obj.UUID);
     }
 
-    private static Task<string?> LoadFromNide8(LoginObj obj)
+    private static Task<TexturesObj?> LoadFromNide8(LoginObj obj)
     {
         return BaseLoad(obj.UUID, $"https://auth.mc-user.com:233/{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 
-    private static Task<string?> LoadFromAuthlibInjector(LoginObj obj)
+    private static Task<TexturesObj?> LoadFromAuthlibInjector(LoginObj obj)
     {
         return BaseLoad(obj.UUID, $"{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 
-    private static Task<string?> LoadFromLittleskin(LoginObj obj)
+    private static Task<TexturesObj?> LoadFromLittleskin(LoginObj obj)
     {
         return BaseLoad(obj.UUID, $"https://littleskin.cn/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 
-    private static Task<string?> LoadFromSelfLittleskin(LoginObj obj)
+    private static Task<TexturesObj?> LoadFromSelfLittleskin(LoginObj obj)
     {
         return BaseLoad(obj.UUID, $"{obj.Text1}/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }

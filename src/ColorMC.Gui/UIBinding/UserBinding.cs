@@ -25,6 +25,7 @@ public static class UserBinding
 {
     private readonly static List<LoginObj> LockUser = new();
     public static Image<Rgba32>? SkinImage { get; set; }
+    public static Image<Rgba32>? CapeIamge { get; set; }
     public static Bitmap? HeadBitmap { get; private set; }
     public static List<string> GetUserTypes()
     {
@@ -118,9 +119,7 @@ public static class UserBinding
             return false;
         }
 
-        var res = await obj.RefreshToken();
-
-        return res.State1 == LoginState.Done;
+        return (await obj.RefreshToken()).State1 == LoginState.Done;
     }
 
     public static void SetLastUser(string uuid, AuthType type)
@@ -170,9 +169,11 @@ public static class UserBinding
         var obj = GetLastUser();
 
         SkinImage?.Dispose();
+        CapeIamge?.Dispose();
         HeadBitmap?.Dispose();
 
         SkinImage = null;
+        CapeIamge = null;
 
         var uri = new Uri($"resm:ColorMC.Gui.Resource.Pic.user.png");
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
@@ -185,7 +186,8 @@ public static class UserBinding
             return;
         }
 
-        string? file;
+        string? file = null, file1 = null;
+        (bool, bool) temp;
         if (obj.AuthType == AuthType.Offline)
         {
             file = AssetsPath.GetSkinFile(obj);
@@ -196,29 +198,42 @@ public static class UserBinding
         }
         else
         {
-            file = await GetSkin.DownloadSkin(obj);
+            temp = await GetSkin.DownloadSkin(obj);
+            if (temp.Item1)
+            {
+                file = AssetsPath.GetSkinFile(obj);
+            }
+            if (temp.Item2)
+            {
+                file1 = AssetsPath.GetCapeFile(obj);
+            }
         }
 
         if (file == null)
         {
             HeadBitmap = new Bitmap(asset);
-            App.OnSkinLoad();
             return;
         }
-
-        SkinImage = await Image.LoadAsync<Rgba32>(file);
-
-        var data = await ImageUtils.MakeHeadImage(file);
-        if (file == null)
+        else
         {
-            HeadBitmap = new Bitmap(asset);
-            App.OnSkinLoad();
-            return;
+            SkinImage = await Image.LoadAsync<Rgba32>(file);
+            var data = await ImageUtils.MakeHeadImage(file);
+            if (file == null)
+            {
+                HeadBitmap = new Bitmap(asset);
+            }
+            else
+            {
+                data.Seek(0, SeekOrigin.Begin);
+                HeadBitmap = new Bitmap(data);
+                data.Close();
+            }
         }
 
-        data.Seek(0, SeekOrigin.Begin);
-        HeadBitmap = new Bitmap(data);
-        data.Close();
+        if (file1 != null)
+        {
+            CapeIamge = await Image.LoadAsync<Rgba32>(file1);
+        }
 
         App.OnSkinLoad();
     }
