@@ -25,7 +25,7 @@ namespace ColorMC.Gui;
 
 public partial class App : Application
 {
-    public static IClassicDesktopStyleApplicationLifetime Life;
+    public static IClassicDesktopStyleApplicationLifetime? Life;
     public static DownloadWindow? DownloadWindow;
     public static UserWindow? UserWindow;
     public static MainWindow? MainWindow;
@@ -91,8 +91,6 @@ public partial class App : Application
 
             ShowCustom();
 
-            ShowSkin();
-
             if (GuiConfigUtils.Config != null &&
                 await LoadImage(GuiConfigUtils.Config.BackImage,
                     GuiConfigUtils.Config.BackEffect))
@@ -152,7 +150,7 @@ public partial class App : Application
         var assm = Assembly.GetExecutingAssembly();
         var item = assm.GetManifestResourceStream(name);
         using MemoryStream stream = new();
-        item.CopyTo(stream);
+        item!.CopyTo(stream);
         return stream.ToArray();
     }
 

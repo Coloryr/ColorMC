@@ -19,7 +19,6 @@ public partial class ServerMotdControl : UserControl
     private int Port;
 
     private bool FirstLine = true;
-    private readonly Thread thread;
     private readonly Random random = new();
 
     public ServerMotdControl()

@@ -320,36 +320,71 @@ public class SkinRender : Control
         public VAOItem Cape = new();
     }
 
-    private string VertexShaderSource => GetShader(false, @"
-        attribute vec3 a_Position;
-        attribute vec2 a_texCoord;
-        uniform mat4 uModel;
-        uniform mat4 uProjection;
-        uniform mat4 uView;
-        uniform mat4 uSelf;
-        varying vec2 v_texCoord;
-        void main()
-        {
-            v_texCoord = a_texCoord;
-            
-            gl_Position = uProjection * uView * uModel * uSelf * vec4(a_Position, 1.0);
-        }
-");
+    private string VertexShaderSource =>
+@"
+#version 330 core
 
-    private string FragmentShaderSource => GetShader(true, @"
-        varying vec2 v_texCoord;
-        uniform sampler2D texture0;
-        void main()
-        {
-            gl_FragColor = texture2D(texture0, v_texCoord);
-        }
-");
+layout (location = 0) in vec3 a_position;
+layout (location = 1) in vec2 a_texCoord;
+layout (location = 2) in vec3 a_normal;
+
+uniform mat4 model;
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 self;
+
+out vec3 normalIn;
+out vec2 texIn;
+out vec3 fragPosIn;
+
+void main()
+{
+    texIn = a_texCoord;
+	
+    mat4 temp = view * model * self;
+
+    fragPosIn = vec3(temp * vec4(a_position, 1.0f));
+    normalIn = mat3(transpose(inverse(temp))) * a_normal;
+
+	gl_Position = projection * temp * vec4(a_position, 1.0);
+}
+";
+
+    private string FragmentShaderSource =>
+@"
+#version 330 core
+uniform sampler2D texture0;
+
+uniform vec3 lightColor;
+
+in vec3 fragPosIn;
+in vec3 normalIn;
+in vec2 texIn;
+
+out vec4 FragColor;
+
+void main()
+{
+    float ambientStrength = 0.1f;
+    vec3 ambient = ambientStrength * lightColor;
+ 
+    vec3 norm = normalize(normalIn);
+    vec3 lightDir = normalize(-fragPosIn);
+    float diff = max(dot(norm, lightDir), 0.0f);
+    vec3 diffuse = diff * lightColor;
+ 
+    vec3 result = (ambient + diffuse);
+
+    FragColor = texture(texture0, texIn) * vec4(result, 1.0f);
+}
+";
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
     private struct Vertex
     {
         public Vector3 Position;
         public Vector2 UV;
+        public Vector3 Normal;
     }
 
     public bool HaveSkin { get; private set; } = false;
@@ -381,8 +416,6 @@ public class SkinRender : Control
     public Vector3 LegRotate;
     public Vector3 HeadRotate;
 
-    private int VaoList;
-
     private Vector2 LastSize;
     private WriteableBitmap bitmap;
 
@@ -406,14 +439,8 @@ public class SkinRender : Control
     public void Init()
     {
         GL.ClearColor(0, 0, 0, 1);
-
-        //GL_BLEND
         GL.Enable(EnableCap.Blend);
-
-        //GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
-        //GL.GL_BACK
         GL.CullFace(CullFaceMode.Back);
 
         CheckError();
@@ -599,11 +626,11 @@ public class SkinRender : Control
         {
             GL.Disable(EnableCap.Texture2D);
             GL.Disable(EnableCap.Lighting);
-            GL.Enable(EnableCap.Blend);
+            //GL.Enable(EnableCap.Blend);
         }
         else
         {
-            GL.Disable(EnableCap.Blend);
+            //GL.Disable(EnableCap.Blend);
             GL.Enable(EnableCap.Lighting);
             GL.Enable(EnableCap.Texture2D);
         }
@@ -611,14 +638,49 @@ public class SkinRender : Control
 
     private unsafe void PutVAO(VAOItem vao, ModelItem model, float[] uv)
     {
+        float[] vertices =
+        {
+            0.0f,  0.0f, -1.0f,
+            0.0f,  0.0f, -1.0f,
+            0.0f,  0.0f, -1.0f,
+            0.0f,  0.0f, -1.0f,
+
+            0.0f,  0.0f,  1.0f,
+            0.0f,  0.0f,  1.0f,
+            0.0f,  0.0f,  1.0f,
+            0.0f,  0.0f,  1.0f,
+
+            -1.0f,  0.0f,  0.0f,
+            -1.0f,  0.0f,  0.0f,
+            -1.0f,  0.0f,  0.0f,
+            -1.0f,  0.0f,  0.0f,
+
+            1.0f,  0.0f,  0.0f,
+            1.0f,  0.0f,  0.0f,
+            1.0f,  0.0f,  0.0f,
+            1.0f,  0.0f,  0.0f,
+
+            0.0f,  1.0f,  0.0f,
+            0.0f,  1.0f,  0.0f,
+            0.0f,  1.0f,  0.0f,
+            0.0f,  1.0f,  0.0f,
+
+            0.0f, -1.0f,  0.0f,
+            0.0f, -1.0f,  0.0f,
+            0.0f, -1.0f,  0.0f,
+            0.0f, -1.0f,  0.0f,
+        };
+
         GL.UseProgram(_shaderProgram);
         GL.BindVertexArray(vao.VertexArrayObject);
 
-        int a_Position = GL.GetAttribLocation(_shaderProgram, "a_Position");
+        int a_Position = GL.GetAttribLocation(_shaderProgram, "a_position");
         int a_texCoord = GL.GetAttribLocation(_shaderProgram, "a_texCoord");
+        int a_normal = GL.GetAttribLocation(_shaderProgram, "a_normal");
 
         GL.DisableVertexAttribArray((uint)a_Position);
         GL.DisableVertexAttribArray((uint)a_texCoord);
+        GL.DisableVertexAttribArray((uint)a_normal);
 
         int size = model.Model.Length / 3;
 
@@ -631,7 +693,8 @@ public class SkinRender : Control
             points[primitive] = new Vertex
             {
                 Position = new(model.Model[srci], model.Model[srci + 1], model.Model[srci + 2]),
-                UV = new(uv[srci1], uv[srci1 + 1])
+                UV = new(uv[srci1], uv[srci1 + 1]),
+                Normal = new(vertices[srci], vertices[srci + 1], vertices[srci + 2])
             };
         }
 
@@ -647,12 +710,15 @@ public class SkinRender : Control
                 model.Point.Length * sizeof(ushort), new IntPtr(pdata), BufferUsageHint.StaticDraw);
 
         GL.VertexAttribPointer((uint)a_Position, 3, VertexAttribPointerType.Float,
-            false, 5 * sizeof(float), 0);
+            false, 8 * sizeof(float), 0);
         GL.VertexAttribPointer((uint)a_texCoord, 2, VertexAttribPointerType.Float,
-            false, 5 * sizeof(float), 3 * sizeof(float));
+            false, 8 * sizeof(float), 3 * sizeof(float));
+        GL.VertexAttribPointer((uint)a_normal, 3, VertexAttribPointerType.Float,
+            false, 8 * sizeof(float), 5 * sizeof(float));
 
         GL.EnableVertexAttribArray((uint)a_Position);
         GL.EnableVertexAttribArray((uint)a_texCoord);
+        GL.EnableVertexAttribArray((uint)a_normal);
 
         GL.BindVertexArray(0);
 
@@ -773,7 +839,7 @@ public class SkinRender : Control
         {
             GL.BindTexture(TextureTarget.Texture2D, texture1);
 
-            var modelLoc = GL.GetUniformLocation(_shaderProgram, "uSelf");
+            var modelLoc = GL.GetUniformLocation(_shaderProgram, "self");
 
             var model = Matrix4.CreateTranslation(0, -2f * CubeC.Value, -CubeC.Value * 0.1f) *
                Matrix4.CreateRotationX((float)(10.8 * Math.PI / 180)) *
@@ -793,7 +859,7 @@ public class SkinRender : Control
     {
         GL.BindTexture(TextureTarget.Texture2D, texture);
 
-        var modelLoc = GL.GetUniformLocation(_shaderProgram, "uSelf");
+        var modelLoc = GL.GetUniformLocation(_shaderProgram, "self");
         var model = Matrix4.Identity;
         GL.UniformMatrix4(modelLoc, false, ref model);
 
@@ -881,7 +947,7 @@ public class SkinRender : Control
     {
         GL.BindTexture(TextureTarget.Texture2D, texture);
 
-        var modelLoc = GL.GetUniformLocation(_shaderProgram, "uSelf");
+        var modelLoc = GL.GetUniformLocation(_shaderProgram, "self");
         var model = Matrix4.Identity;
         GL.UniformMatrix4(modelLoc, false, ref model);
 
@@ -1027,15 +1093,15 @@ public class SkinRender : Control
         GL.UseProgram(_shaderProgram);
         CheckError();
 
-        var viewLoc = GL.GetUniformLocation(_shaderProgram, "uView");
-        var projectionLoc = GL.GetUniformLocation(_shaderProgram, "uProjection");
-        var modelLoc = GL.GetUniformLocation(_shaderProgram, "uModel");
+        var viewLoc = GL.GetUniformLocation(_shaderProgram, "view");
+        var projectionLoc = GL.GetUniformLocation(_shaderProgram, "projection");
+        var modelLoc = GL.GetUniformLocation(_shaderProgram, "model");
 
-        CheckError();
+        var lightColorLoc = GL.GetUniformLocation(_shaderProgram, "lightColor");
 
-        var projection =
-        Matrix4.CreatePerspectiveFieldOfView((float)(Math.PI / 4), (float)(Bounds.Width / Bounds.Height),
-            0.001f, 1000) ;
+        var projection = Matrix4.CreatePerspectiveFieldOfView(
+            (float)(Math.PI / 4), (float)(Bounds.Width / Bounds.Height),
+            0.001f, 1000);
 
         var view = Matrix4.LookAt(new(0, 0, 7), new(), new(0, 1, 0));
 
@@ -1044,9 +1110,13 @@ public class SkinRender : Control
                     * Matrix4.CreateTranslation(new(XY.X, XY.Y, 0))
                     * Matrix4.CreateScale(Dis);
 
+        GL.Uniform3(lightColorLoc, 1.0f, 1.0f, 1.0f);       //光源：默认为白色
+
         GL.UniformMatrix4(viewLoc, false, ref view);
         GL.UniformMatrix4(modelLoc, false, ref model);
         GL.UniformMatrix4(projectionLoc, false, ref projection);
+
+        CheckError();
 
         DrawNormal();
 
@@ -1100,38 +1170,17 @@ public class SkinRender : Control
         {
             // We can use `GL.GetProgramInfoLog(program)` to get information about the error.
             GL.GetProgramInfoLog(program, out var error);
-            Console.WriteLine($"Error occurred whilst linking Program({program})\n\n{error}");
+            App.ShowError("着色程序错误", new Exception(error));
         }
-    }
-
-    private static string GetShader(bool fragment, string shader)
-    {
-        var version = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 150 : 120;
-        var data = "#version " + version + "\n";
-        data += "precision mediump float;\n";
-
-        if (version >= 150)
-        {
-            shader = shader.Replace("attribute", "in");
-            if (fragment)
-                shader = shader
-                    .Replace("varying", "in")
-                    .Replace("//DECLAREGLFRAG", "out vec4 outFragColor;")
-                    .Replace("gl_FragColor", "outFragColor");
-            else
-                shader = shader.Replace("varying", "out");
-        }
-
-        data += shader;
-
-        return data;
     }
 
     private static void CheckError()
     {
         ErrorCode err;
         while ((err = GL.GetError()) != ErrorCode.NoError)
+        {
             Console.WriteLine(err);
+        }
     }
 
     private static void DeleteVAOItem(VAOItem item)
