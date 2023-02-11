@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -27,11 +27,7 @@
   <ItemGroup>
     <PackageReference Include="Heijden.Dns.Portable" Version="2.0.19" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
-    <PackageReference Include="Microsoft.ClearScript.Core" Version="7.3.7" />
-    <PackageReference Include="Microsoft.ClearScript.V8" Version="7.3.7" />
-    <PackageReference Include="Microsoft.ClearScript.V8.Native.linux-x64" Version="7.3.7" />
-    <PackageReference Include="Microsoft.ClearScript.V8.Native.osx-x64" Version="7.3.7" />
-    <PackageReference Include="Microsoft.ClearScript.V8.Native.win-x64" Version="7.3.7" />
+    <PackageReference Include="Jint" Version="3.0.0-beta-2046" />
     <PackageReference Include="MiNET.fnbt" Version="1.0.22" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
