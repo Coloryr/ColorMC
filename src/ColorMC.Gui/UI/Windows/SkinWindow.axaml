@@ -107,9 +107,28 @@
                             Margin="5,5,5,0"
                             HorizontalAlignment="Stretch" />
 
-                        <Slider Name="Slider1" Margin="5,-10,5,-10" />
-                        <Slider Name="Slider2" Margin="5,-10,5,-10" />
-                        <Slider Name="Slider3" Margin="5,-10,5,-10" />
+                        <Slider
+                            Name="Slider1"
+                            Margin="5,-10,5,-10"
+                            Maximum="360"
+                            Minimum="0" />
+                        <Slider
+                            Name="Slider2"
+                            Margin="5,-10,5,-10"
+                            Maximum="360"
+                            Minimum="0" />
+                        <Slider
+                            Name="Slider3"
+                            Margin="5,-10,5,-10"
+                            Maximum="360"
+                            Minimum="0" />
+
+                        <Button
+                            Name="Button5"
+                            Height="25"
+                            Margin="5,5,5,0"
+                            HorizontalAlignment="Stretch"
+                            Content="重置动作" />
                     </StackPanel>
                     <Label
                         Margin="5"
