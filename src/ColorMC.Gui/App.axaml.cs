@@ -91,6 +91,8 @@ public partial class App : Application
 
             ShowCustom();
 
+            ShowSkin();
+
             if (GuiConfigUtils.Config != null &&
                 await LoadImage(GuiConfigUtils.Config.BackImage,
                     GuiConfigUtils.Config.BackEffect))

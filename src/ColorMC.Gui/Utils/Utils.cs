@@ -8,7 +8,7 @@ using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Skin;
+using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
@@ -156,9 +156,9 @@ public static class SkinUtil
                 SixLabors.ImageSharp.Color.Transparent)) ||
                 (Check(image, 50 * scale, 16 * scale, 2 * scale, 4 * scale,
                 SixLabors.ImageSharp.Color.White) &&
-                        Check(image, 54 * scale, 20 * scale, 2 * scale, 12 * scale, 
+                        Check(image, 54 * scale, 20 * scale, 2 * scale, 12 * scale,
                         SixLabors.ImageSharp.Color.White) &&
-                        Check(image, 42 * scale, 48 * scale, 2 * scale, 4 * scale, 
+                        Check(image, 42 * scale, 48 * scale, 2 * scale, 4 * scale,
                         SixLabors.ImageSharp.Color.White) &&
                         Check(image, 46 * scale, 52 * scale, 2 * scale, 12 * scale,
                         SixLabors.ImageSharp.Color.White)) ||

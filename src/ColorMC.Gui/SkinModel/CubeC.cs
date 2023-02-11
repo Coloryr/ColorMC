@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ColorMC.Gui.Skin.Model;
+namespace ColorMC.Gui.SkinModel;
 
 public class CubeC
 {
@@ -43,7 +43,8 @@ public class CubeC
        20, 21, 22, 20, 22, 23
     };
 
-    public float[] GetSquare(float multiplyX = 1.0f, float multiplyY = 1.0f, float multiplyZ = 1.0f, float addX = 0.0f, float addY = 0.0f, float addZ = 0.0f, float enlarge = 1.0f)
+    public float[] GetSquare(float multiplyX = 1.0f, float multiplyY = 1.0f, float multiplyZ = 1.0f,
+        float addX = 0.0f, float addY = 0.0f, float addZ = 0.0f, float enlarge = 1.0f)
     {
         var temp = new float[cube.Length];
         for (int a = 0; a < temp.Length; a++)
@@ -66,7 +67,7 @@ public class CubeC
         return temp;
     }
 
-    public ushort[] GetSquareIndicies(int offset)
+    public ushort[] GetSquareIndicies(int offset = 0)
     {
         var temp = new ushort[cubeIndicies.Length];
         for (int a = 0; a < temp.Length; a++)
