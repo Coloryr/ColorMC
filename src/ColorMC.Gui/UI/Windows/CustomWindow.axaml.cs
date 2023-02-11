@@ -50,7 +50,6 @@ public partial class CustomWindow : Window
 {
     private UIObj UI;
     private GameSettingObj? Obj;
-    private LoginObj User;
 
     private CustomWindowModel CustomModel = new();
 
@@ -102,8 +101,8 @@ public partial class CustomWindow : Window
             }
             else
             {
-                CustomModel.Type = User.AuthType.GetName();
-                CustomModel.Name = User.UserName;
+                CustomModel.Type = user.AuthType.GetName();
+                CustomModel.Name = user.UserName;
             }
 
             LoadHead();
