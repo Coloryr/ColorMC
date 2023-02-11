@@ -85,7 +85,7 @@ public partial class App : Application
 
             Icon = new(asset1);
 
-            App.LoadLanguage(LanguageType.zh_cn);
+            LoadLanguage(LanguageType.zh_cn);
 
             BaseBinding.Init();
 

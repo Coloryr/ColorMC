@@ -8,6 +8,7 @@ public record SteveTexture
     public float[] RightArm;
     public float[] LeftLeg;
     public float[] RightLeg;
+    public float[] Cape;
 }
 
 public class Steve3DTexture
@@ -16,7 +17,7 @@ public class Steve3DTexture
     {
         SteveTexture tex = new()
         {
-            Head = GetTex(HeadTex, type, 32f, 0f)
+            Head = GetTex(HeadTex, type, 32f, 0f),
         };
 
         if (type != SkinType.Old)
@@ -37,6 +38,7 @@ public class Steve3DTexture
         {
             Head = GetTex(HeadTex, type),
             Body = GetTex(BodyTex, type, 16f, 16f),
+            Cape = GetTex1(CapeTex),
         };
 
         if (type == SkinType.Old)
@@ -121,7 +123,23 @@ public class Steve3DTexture
         20f, 0f, 20f, 4f, 12f, 4f, 12f, 0f
     };
 
-    public float[] GetTex(float[] input, SkinType type,
+    private float[] CapeTex = new float[]
+    {
+        // back
+        11f, 1f, 11f, 17f, 1f, 17f, 1f, 1f,
+        // front
+        12f, 1f, 12f, 17f, 22f, 17f, 22f, 1f,
+        // left
+        11f, 1f, 11f, 17f, 12f, 17f, 12f, 1f, 
+        // right
+        0f, 1f, 0f, 17f, 1f, 17f, 1f, 1f,
+        // top
+        1f, 0f,1f, 1f, 11f, 1f, 11f, 0f, 
+        // bottom
+        21f, 0f, 21f, 1f, 11f, 1f, 11f, 0f,
+    };
+
+    public static float[] GetTex(float[] input, SkinType type,
         float offsetU = 0f,
         float offsetV = 0f)
     {
@@ -144,6 +162,25 @@ public class Steve3DTexture
             else
             {
                 temp[a] /= 64f;
+            }
+        }
+
+        return temp;
+    }
+
+    public static float[] GetTex1(float[] input)
+    {
+        var temp = new float[input.Length];
+        for (int a = 0; a < input.Length; a++)
+        {
+            temp[a] = input[a];
+            if (a % 2 == 0)
+            {
+                temp[a] /= 64f;
+            }
+            else
+            {
+                temp[a] /= 32f;
             }
         }
 
