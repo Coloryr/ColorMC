@@ -10,6 +10,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -56,7 +57,7 @@ public partial class Tab5Control : UserControl
         if (AddWorldWindow == null)
         {
             AddWorldWindow = new();
-            AddWorldWindow.SetTab5Control(Obj, this);
+            AddWorldWindow.SetTab5Control(Obj!, this);
             AddWorldWindow.Show();
         }
         else
@@ -67,32 +68,17 @@ public partial class Tab5Control : UserControl
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        var file = await BaseBinding.OpFile(Window!, Localizer.Instance["GameEditWindow.Tab5.Info2"],
+            "*.zip", "ÊÀ½çÑ¹Ëõ°ü");
+        if (file.Any())
         {
-            Title = Localizer.Instance["GameEditWindow.Tab5.Info2"],
-            AllowMultiple = false,
-            Filters = new()
-            {
-                new FileDialogFilter()
-                {
-                    Extensions = new()
-                    {
-                        "zip"
-                    }
-                }
-            }
-        };
-
-        var file = await openFile.ShowAsync(Window);
-        if (file?.Length > 0)
-        {
-            var res = await GameBinding.AddWorld(Obj, file[0]);
+            var res = await GameBinding.AddWorld(Obj!, file[0].GetPath());
             if (!res)
             {
-                Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+                Window!.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
                 return;
             }
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+            Window!.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
             Load();
         }
     }
@@ -130,35 +116,35 @@ public partial class Tab5Control : UserControl
     {
         var file = await BaseBinding.OpSave(Window,
             Localizer.Instance["GameEditWindow.Tab5.Info2"], ".zip", "world.zip");
-        if (!string.IsNullOrWhiteSpace(file))
+        if (file == null)
+            return;
+
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info5"]);
+        bool error = false;
+        try
         {
-            Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info5"]);
-            bool error = false;
-            try
-            {
-                await GameBinding.ExportWorld(obj.World, file);
-            }
-            catch (Exception e)
-            {
-                Logs.Error(Localizer.Instance["GameEditWindow.Tab5.Error1"], e);
-                error = true;
-            }
-            Window.Info1.Close();
-            if (error)
-            {
-                Window.Info.Show(Localizer.Instance["GameEditWindow.Tab5.Error1"]);
-            }
-            else
-            {
-                Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info4"]);
-            }
+            await GameBinding.ExportWorld(obj.World, file.GetPath());
+        }
+        catch (Exception e)
+        {
+            Logs.Error(Localizer.Instance["GameEditWindow.Tab5.Error1"], e);
+            error = true;
+        }
+        Window.Info1.Close();
+        if (error)
+        {
+            Window.Info.Show(Localizer.Instance["GameEditWindow.Tab5.Error1"]);
+        }
+        else
+        {
+            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info4"]);
         }
     }
 
     public async void AddWorld(CurseForgeObj.Data.LatestFiles data)
     {
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info6"]);
-        var res = await GameBinding.DownloadWorld(Obj, data);
+        Window!.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info6"]);
+        var res = await GameBinding.DownloadWorld(Obj!, data);
         Window.Info1.Close();
         if (res)
         {
@@ -173,7 +159,7 @@ public partial class Tab5Control : UserControl
 
     public async void Delete(WorldDisplayObj obj)
     {
-        var res = await Window.Info.ShowWait(
+        var res = await Window!.Info.ShowWait(
             string.Format(Localizer.Instance["GameEditWindow.Tab5.Info1"], obj.Name));
         if (!res)
         {
@@ -204,11 +190,11 @@ public partial class Tab5Control : UserControl
 
     private async void Load()
     {
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info8"]);
+        Window!.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info8"]);
         List.Clear();
         ListBox_Items.Children.Clear();
 
-        var res = await GameBinding.GetWorlds(Obj);
+        var res = await GameBinding.GetWorlds(Obj!);
         Window.Info1.Close();
         foreach (var item in res)
         {

@@ -609,7 +609,7 @@ public static class InstancesPath
     /// </summary>
     /// <param name="data">整合包信息</param>
     /// <returns>结果</returns>
-    public static async Task<bool> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data)
+    public static async Task<(bool, GameSettingObj?)> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data)
     {
         var item = new DownloadItem()
         {
@@ -620,7 +620,7 @@ public static class InstancesPath
 
         var res1 = await DownloadManager.Start(new() { item });
         if (!res1)
-            return false;
+            return (false, null);
 
         return await InstallFromZip(item.Local, PackType.CurseForge);
     }
@@ -643,12 +643,17 @@ public static class InstancesPath
         return Task.CompletedTask;
     }
 
+    public static void SetIcon(this GameSettingObj obj, string file)
+    { 
+        
+    }
+
     /// <summary>
     /// 导入整合包
     /// </summary>
     /// <param name="dir">压缩包路径</param>
     /// <param name="type">类型</param>
-    public static async Task<bool> InstallFromZip(string dir, PackType type)
+    public static async Task<(bool, GameSettingObj?)> InstallFromZip(string dir, PackType type)
     {
         GameSettingObj? game = null;
         bool res1111 = false;
@@ -1001,6 +1006,6 @@ public static class InstancesPath
             await game.Remove();
         }
         CoreMain.PackState?.Invoke(CoreRunState.End);
-        return res1111;
+        return (res1111, game);
     }
 }

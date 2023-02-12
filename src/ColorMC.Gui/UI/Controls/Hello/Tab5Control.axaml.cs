@@ -11,17 +11,22 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
 
 public partial class Tab5Control : UserControl
 {
+    private readonly ObservableCollection<string> List = new();
+
+    [AllowNull]
     private HelloWindow Window;
 
-    private ObservableCollection<string> List = new();
-
     private bool add;
+
     public Tab5Control()
     {
         InitializeComponent();
@@ -52,7 +57,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        string name = TextBox_Input1.Text;
+        var name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
             Window.Info.Show(Localizer.Instance["AddGameWindow.Error1"]);
@@ -262,64 +267,27 @@ public partial class Tab5Control : UserControl
         }
     }
 
-    private async void Button_Add4_Click(object? sender, RoutedEventArgs e)
+    private void Button_Add4_Click(object? sender, RoutedEventArgs e)
     {
-        add = false;
-        var name = await SelectPack();
-        if (name == null)
-            return;
-
-        DisableButton();
-        if (await GameBinding.AddPack(name, PackType.HMCL))
-        {
-            Window.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
-        }
-        else
-        {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
-        }
-        EnableButton();
+        AddPack(PackType.HMCL);
     }
 
-    private async void Button_Add3_Click(object? sender, RoutedEventArgs e)
+    private void Button_Add3_Click(object? sender, RoutedEventArgs e)
     {
-        add = false;
-        var name = await SelectPack();
-        if (name == null)
-            return;
-
-        DisableButton();
-        if (await GameBinding.AddPack(name, PackType.MMC))
-        {
-            Window.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
-        }
-        else
-        {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
-        }
-        EnableButton();
+        AddPack(PackType.MMC);
     }
 
-    private async void Button_Add2_Click(object? sender, RoutedEventArgs e)
+    private void Button_Add2_Click(object? sender, RoutedEventArgs e)
     {
-        add = false;
-        var name = await SelectPack();
-        if (name == null)
-            return;
-
-        DisableButton();
-        if (await GameBinding.AddPack(name, PackType.CurseForge))
-        {
-            Window.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
-        }
-        else
-        {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
-        }
-        EnableButton();
+        AddPack(PackType.CurseForge);
     }
 
-    private async void Button_Add1_Click(object? sender, RoutedEventArgs e)
+    private void Button_Add1_Click(object? sender, RoutedEventArgs e)
+    {
+        AddPack(PackType.ColorMC);
+    }
+
+    private async void AddPack(PackType type)
     {
         add = false;
         var name = await SelectPack();
@@ -327,7 +295,8 @@ public partial class Tab5Control : UserControl
             return;
 
         DisableButton();
-        if (await GameBinding.AddPack(name, PackType.ColorMC))
+        var res = await GameBinding.AddPack(name, type);
+        if (res.Item1)
         {
             Window.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
         }
@@ -340,27 +309,11 @@ public partial class Tab5Control : UserControl
 
     private async Task<string?> SelectPack()
     {
-        OpenFileDialog openFile = new()
+        var file = await BaseBinding.OpFile(Window, Localizer.Instance["AddGameWindow.Info13"],
+            "*.zip", "Ñ¹Ëõ°ü");
+        if (file.Any())
         {
-            Title = Localizer.Instance["AddGameWindow.Info13"],
-            AllowMultiple = false,
-            Filters = SystemInfo.Os == OsType.Windows ? new()
-            {
-                new FileDialogFilter()
-                {
-                    Extensions =new()
-                    {
-                        "zip"
-                    }
-                }
-            } : new()
-        };
-
-        var file = await openFile.ShowAsync(Window);
-        if (file?.Length > 0)
-        {
-            var item = file[0];
-            return item;
+            return file[0].GetPath();
         }
 
         return null;

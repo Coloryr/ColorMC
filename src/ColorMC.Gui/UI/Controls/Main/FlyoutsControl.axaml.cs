@@ -9,7 +9,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class FlyoutsControl : UserControl
 {
-    private GameSettingObj Obj;
+    private GameControl Obj;
     private FlyoutBase FlyoutBase;
     private MainWindow Win;
     public FlyoutsControl()
@@ -24,48 +24,56 @@ public partial class FlyoutsControl : UserControl
         Button6.Click += Button6_Click;
         Button7.Click += Button7_Click;
         Button8.Click += Button8_Click;
+        Button9.Click += Button9_Click;
+    }
+
+    private async void Button9_Click(object? sender, RoutedEventArgs e)
+    {
+        FlyoutBase.Hide();
+        await GameBinding.SetGameIconFromFile(Win, Obj.Obj);
+        Obj.Reload();
     }
 
     private void Button8_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        App.ShowGameEdit(Obj, 5);
+        App.ShowGameEdit(Obj.Obj, 5);
     }
 
     private void Button7_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        GameBinding.OpFile(Obj);
+        GameBinding.OpFile(Obj.Obj);
     }
 
     private void Button6_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        Win.DeleteGame(Obj);
+        Win.DeleteGame(Obj.Obj);
     }
 
     private void Button5_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        Win.EditGroup(Obj);
+        Win.EditGroup(Obj.Obj);
     }
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        App.ShowGameEdit(Obj, 3);
+        App.ShowGameEdit(Obj.Obj, 3);
     }
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        App.ShowGameEdit(Obj, 2);
+        App.ShowGameEdit(Obj.Obj, 2);
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        App.ShowGameEdit(Obj, 1);
+        App.ShowGameEdit(Obj.Obj, 1);
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -74,7 +82,7 @@ public partial class FlyoutsControl : UserControl
         Win.Launch(true);
     }
 
-    public void Set(FlyoutBase fb, GameSettingObj obj, MainWindow win)
+    public void Set(FlyoutBase fb, GameControl obj, MainWindow win)
     {
         Obj = obj;
         FlyoutBase = fb;
@@ -84,9 +92,9 @@ public partial class FlyoutsControl : UserControl
 
 public class MainFlyout : FlyoutBase
 {
-    private GameSettingObj Obj;
+    private GameControl Obj;
     private MainWindow Win;
-    public MainFlyout(MainWindow win, GameSettingObj obj)
+    public MainFlyout(MainWindow win, GameControl obj)
     {
         Win = win;
         Obj = obj;

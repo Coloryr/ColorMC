@@ -64,15 +64,17 @@ public partial class Tab6Control : UserControl
     private async void Button6_Click(object? sender, RoutedEventArgs e)
     {
         var str = await BaseBinding.OpSave(Window, Localizer.Instance["SettingWindow.Tab6.Info1"], ".json", "ui.json");
-        if (!string.IsNullOrWhiteSpace(str))
-        {
-            if (File.Exists(str))
-            {
-                File.Delete(str);
-            }
+        if (str == null)
+            return;
 
-            File.WriteAllBytes(str, BaseBinding.GetUIJson());
+        var file = str.GetPath();
+
+        if (File.Exists(file))
+        {
+            File.Delete(file);
         }
+
+        File.WriteAllBytes(file, BaseBinding.GetUIJson());
     }
 
     private void Button5_Click(object? sender, RoutedEventArgs e)
@@ -102,28 +104,11 @@ public partial class Tab6Control : UserControl
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog open = new()
+        var res = await BaseBinding.OpFile(Window, Localizer.Instance["SettingWindow.Tab6.Info2"],
+            "*.json", Localizer.Instance["SettingWindow.Tab6.Info3"]);
+        if (res.Any())
         {
-            Title = Localizer.Instance["SettingWindow.Tab6.Info2"],
-            AllowMultiple = false,
-            Filters = new()
-            {
-                new()
-                {
-                    Name = Localizer.Instance["SettingWindow.Tab6.Info3"],
-                    Extensions = new()
-                    {
-                        "json"
-                    }
-                }
-            }
-        };
-
-        var res = await open.ShowAsync(Window);
-        if (res?.Length > 0)
-        {
-            var file = res[0];
-            TextBox3.Text = file;
+            TextBox3.Text = res[0].GetPath();
         }
     }
 
@@ -136,6 +121,11 @@ public partial class Tab6Control : UserControl
     }
 
     private void CheckBox3_Click(object? sender, RoutedEventArgs e)
+    {
+        Switch();
+    }
+
+    private void Switch()
     {
         if (CheckBox3.IsChecked == true)
         {
@@ -151,7 +141,7 @@ public partial class Tab6Control : UserControl
     {
         ConfigBinding.SetServerCustom(new ServerCustom()
         {
-            IP = TextBox1.Text,
+            IP = TextBox1.Text!,
             Port = UIUtils.CheckNotNumber(TextBox2.Text) ? 0 : int.Parse(TextBox2.Text!),
             Motd = CheckBox1.IsChecked == true,
             JoinServer = CheckBox2.IsChecked == true,
@@ -188,7 +178,7 @@ public partial class Tab6Control : UserControl
 
             ComboBox1.SelectedItem = config.GameName;
 
-            CheckBox3_Click(null, null);
+            Switch();
         }
     }
 }

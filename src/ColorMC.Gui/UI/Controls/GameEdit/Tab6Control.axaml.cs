@@ -15,6 +15,7 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 
@@ -334,8 +335,11 @@ public class FilesPageViewModel : ReactiveObject
 
 public partial class Tab6Control : UserControl
 {
+    [AllowNull]
     private GameEditWindow Window;
+    [AllowNull]
     private GameSettingObj Obj;
+    [AllowNull]
     private FilesPageViewModel FilesPageViewModel;
 
     public FilesPageViewModel Files
@@ -352,34 +356,34 @@ public partial class Tab6Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-
-
         var file = await BaseBinding.OpSave(Window,
             Localizer.Instance["GameEditWindow.Tab6.Info2"], ".zip", "game.zip");
-        if (!string.IsNullOrWhiteSpace(file))
+
+        if (file == null)
+            return;
+
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab6.Info3"]);
+        var list = FilesPageViewModel.GetUnSelectItems();
+        bool error = false;
+        try
         {
-            Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab6.Info3"]);
-            var list = FilesPageViewModel.GetUnSelectItems();
-            bool error = false;
-            try
-            {
-                await GameBinding.ExportGame(Obj, file, list, PackType.ColorMC);
-                BaseBinding.OpFile(file, true);
-            }
-            catch (Exception e1)
-            {
-                Logs.Error(Localizer.Instance["GameEditWindow.Tab6.Error1"], e1);
-                error = true;
-            }
-            Window.Info1.Close();
-            if (error)
-            {
-                Window.Info.Show(Localizer.Instance["GameEditWindow.Tab6.Error1"]);
-            }
-            else
-            {
-                Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab6.Info4"]);
-            }
+            var name = file.GetPath();
+            await GameBinding.ExportGame(Obj, name, list, PackType.ColorMC);
+            BaseBinding.OpFile(name, true);
+        }
+        catch (Exception e1)
+        {
+            Logs.Error(Localizer.Instance["GameEditWindow.Tab6.Error1"], e1);
+            error = true;
+        }
+        Window.Info1.Close();
+        if (error)
+        {
+            Window.Info.Show(Localizer.Instance["GameEditWindow.Tab6.Error1"]);
+        }
+        else
+        {
+            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab6.Info4"]);
         }
     }
 

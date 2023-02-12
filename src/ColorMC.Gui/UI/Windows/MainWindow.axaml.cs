@@ -6,6 +6,8 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -15,14 +17,22 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class MainWindow : Window
+public partial class MainWindow : Window, IBaseWindow
 {
     private readonly List<GamesControl> Groups = new();
-    private GamesControl DefaultGroup;
+    private readonly Dictionary<GameSettingObj, GameControl> Launchs = new();
+    private GamesControl? DefaultGroup;
     private GameControl? Obj;
-    private Dictionary<GameSettingObj, GameControl> Launchs = new();
 
     private LaunchState Last;
+
+    Info3Control IBaseWindow.Info3 => Info3;
+
+    Info1Control IBaseWindow.Info1 => Info1;
+
+    Info4Control IBaseWindow.Info => Info;
+
+    Info2Control IBaseWindow.Info2 => Info2;
 
     public MainWindow()
     {
@@ -276,7 +286,7 @@ public partial class MainWindow : Window
 
                     DefaultGroup = new();
                 });
-                DefaultGroup.SetWindow(this);
+                DefaultGroup!.SetWindow(this);
                 foreach (var item in list)
                 {
                     if (item.Key == " ")
@@ -367,5 +377,15 @@ public partial class MainWindow : Window
             return;
 
         await GameBinding.DeleteGame(obj);
+    }
+
+    public void SetSelect(CurseForgeControl control)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Install()
+    {
+        throw new NotImplementedException();
     }
 }

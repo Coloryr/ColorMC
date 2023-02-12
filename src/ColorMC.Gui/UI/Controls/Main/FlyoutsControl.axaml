@@ -45,6 +45,11 @@
                 Height="25"
                 Content="{setting:Localize Button.OpFile}" />
             <Button
+                Name="Button9"
+                Width="100"
+                Height="25"
+                Content="设置图标" />
+            <Button
                 Name="Button8"
                 Width="100"
                 Height="25"

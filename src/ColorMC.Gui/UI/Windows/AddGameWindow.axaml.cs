@@ -12,6 +12,7 @@ using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -79,7 +80,12 @@ public partial class AddGameWindow : Window
         Update();
     }
 
-    private async void Button2_Click(object? sender, RoutedEventArgs e)
+    private  void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        VersionSelect();
+    }
+
+    private async void VersionSelect()
     {
         CheckBox_Forge.IsEnabled = false;
         CheckBox_Fabric.IsEnabled = false;
@@ -111,6 +117,7 @@ public partial class AddGameWindow : Window
         }
         Info1.Close();
     }
+
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
         ComboBox_LoaderVersion.IsEnabled = false;
@@ -270,7 +277,7 @@ public partial class AddGameWindow : Window
 
     private void GameVersion_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        Button2_Click(null, null);
+        VersionSelect();
     }
 
     private async void Quilt_Click(object? sender, RoutedEventArgs e)
@@ -411,70 +418,27 @@ public partial class AddGameWindow : Window
         }
     }
 
-    private async void Button_Add4_Click(object? sender, RoutedEventArgs e)
+    private void Button_Add4_Click(object? sender, RoutedEventArgs e)
     {
-        add = false;
-        var name = await SelectPack();
-        if (name == null)
-            return;
-
-        DisableButton();
-        if (await GameBinding.AddPack(name, PackType.HMCL))
-        {
-            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
-            App.MainWindow?.Load();
-            Close();
-        }
-        else
-        {
-            Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
-        }
-        EnableButton();
+        AddPack(PackType.HMCL);
     }
 
-    private async void Button_Add3_Click(object? sender, RoutedEventArgs e)
+    private void Button_Add3_Click(object? sender, RoutedEventArgs e)
     {
-        add = false;
-        var name = await SelectPack();
-        if (name == null)
-            return;
-
-        DisableButton();
-        if (await GameBinding.AddPack(name, PackType.MMC))
-        {
-            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
-            App.MainWindow?.Load();
-            Close();
-        }
-        else
-        {
-            Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
-        }
-        EnableButton();
+        AddPack(PackType.MMC);
     }
 
-    private async void Button_Add2_Click(object? sender, RoutedEventArgs e)
+    private void Button_Add2_Click(object? sender, RoutedEventArgs e)
     {
-        add = false;
-        var name = await SelectPack();
-        if (name == null)
-            return;
-
-        DisableButton();
-        if (await GameBinding.AddPack(name, PackType.CurseForge))
-        {
-            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
-            App.MainWindow?.Load();
-            Close();
-        }
-        else
-        {
-            Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
-        }
-        EnableButton();
+        AddPack(PackType.CurseForge);
     }
 
-    private async void Button_Add1_Click(object? sender, RoutedEventArgs e)
+    private void Button_Add1_Click(object? sender, RoutedEventArgs e)
+    {
+        AddPack(PackType.ColorMC);
+    }
+
+    private async void AddPack(PackType type)
     {
         add = false;
         var name = await SelectPack();
@@ -482,7 +446,8 @@ public partial class AddGameWindow : Window
             return;
 
         DisableButton();
-        if (await GameBinding.AddPack(name, PackType.ColorMC))
+        var res = await GameBinding.AddPack(name, type);
+        if (res.Item1)
         {
             App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
             App.MainWindow?.Load();
@@ -497,27 +462,11 @@ public partial class AddGameWindow : Window
 
     private async Task<string?> SelectPack()
     {
-        OpenFileDialog openFile = new()
+        var file = await BaseBinding.OpFile(this, Localizer.Instance["AddGameWindow.Info13"],
+            "*.zip", "Ñ¹Ëõ°ü");
+        if (file.Any())
         {
-            Title = Localizer.Instance["AddGameWindow.Info13"],
-            AllowMultiple = false,
-            Filters = SystemInfo.Os == OsType.Windows ? new()
-            {
-                new FileDialogFilter()
-                {
-                    Extensions =new()
-                    {
-                        "zip"
-                    }
-                }
-            } : new()
-        };
-
-        var file = await openFile.ShowAsync(this);
-        if (file?.Length > 0)
-        {
-            var item = file[0];
-            return item;
+            return file[0].GetPath();
         }
 
         return null;
@@ -554,10 +503,10 @@ public partial class AddGameWindow : Window
         Load();
     }
 
-    public async void Install(CurseForgeObj.Data.LatestFiles data)
+    public async void Install(CurseForgeObj.Data.LatestFiles data, CurseForgeObj.Data data1)
     {
         Info1.Show(Localizer.Instance["AddGameWindow.Info14"]);
-        var res = await GameBinding.InstallCurseForge(data);
+        var res = await GameBinding.InstallCurseForge(data, data1);
         Info1.Close();
         if (!res)
         {

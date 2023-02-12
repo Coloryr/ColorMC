@@ -41,13 +41,9 @@ public class LocalizeExtension : MarkupExtension
 
     public string Key { get; set; }
 
-    public string Context { get; set; }
-
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         var keyToUse = Key;
-        if (!string.IsNullOrWhiteSpace(Context))
-            keyToUse = $"{Context}/{Key}";
 
         var binding = new ReflectionBindingExtension($"[{keyToUse}]")
         {

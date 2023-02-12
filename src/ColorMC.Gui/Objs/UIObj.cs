@@ -14,6 +14,7 @@ public record ViewObj
     public string Content { get; set; }
     public string VerticalAlignment { get; set; }
     public string HorizontalAlignment { get; set; }
+    public string Orientation { get; set; }
     public string Funtion { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
