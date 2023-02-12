@@ -1,11 +1,6 @@
 # ColorMC
 
-![](/image/icon.ico)
-
-一个全新的全平台启动器
-外观基于[NsisoLauncher](https://github.com/Coloryr/NsisoLauncher-1)
-
-**当前为A测版**
+![](/Img/pic.png)
 
 ## 支持平台
 - Linux
@@ -63,26 +58,32 @@ $ dotnet ColorMC.Gui.dll
 $ dotnet ColorMC.Gui.dll
 ```
 
-
-## 功能
-- 基础启动器功能
-- 整合包/Mod 搜索下载
-- 导入/导出 MMC/HMCL压缩包 (未完成)
-- 全自定义UI (未完成)
-- 服务器资源同步 (未完成)
-- 多实例/多账户 启动
-
 ## 项目
 - ColorMC.Core 启动器底层核心
-- ColorMC.Cmd CLI模式
+- ColorMC.Cmd CLI模式 (已放弃)
 - ColorMC.Gui Gui模式
 - ColorMC.Test 用于启动器核心测试
 
-## 界面
+## 皮肤预览
 
-![](/image/pic1.png)  
-![](/image/pic2.png)
-![](/image/pic3.png)
-![](/image/pic4.png)
-![](/image/pic5.png)
-![](/image/pic6.png)
+![](/image/GIF1.gif)  
+
+## 引用的项目
+
+[AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) 跨平台UI框架  
+[Heijden.Dns.Portable]() DNS解析  
+[HtmlAgilityPack](https://html-agility-pack.net/) HTML解析器  
+[Jint](https://github.com/sebastienros/jint) JS解析执行器  
+[MiNET.fnbt]() NBT解析器  
+[Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
+[SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
+[Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器
+[OpenTK](https://opentk.net/) Opengl渲染  
+[ReactiveUI](https://github.com/reactiveui/ReactiveUI) MVVM 框架  
+[SixLabors](https://sixlabors.com/) 图片处理
+
+## 使用的IDE
+
+[Visual Studio Code](https://code.visualstudio.com/)
+
+[Visual Studio](https://visualstudio.microsoft.com/)
