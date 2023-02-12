@@ -77,7 +77,7 @@ $ dotnet ColorMC.Gui.dll
 [MiNET.fnbt]() NBT解析器  
 [Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
 [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
-[Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器
+[Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
 [OpenTK](https://opentk.net/) Opengl渲染  
 [ReactiveUI](https://github.com/reactiveui/ReactiveUI) MVVM 框架  
 [SixLabors](https://sixlabors.com/) 图片处理
