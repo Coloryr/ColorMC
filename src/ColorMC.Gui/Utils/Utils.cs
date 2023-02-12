@@ -410,8 +410,10 @@ public static partial class UIUtils
     [GeneratedRegex("[^0-9]+")]
     private static partial Regex Regex1();
 
-    public static string Make(this List<string> strings)
+    public static string Make(this List<string>? strings)
     {
+        if (strings == null)
+            return "";
         string temp = "";
         foreach (var item in strings)
         {
