@@ -107,7 +107,6 @@ public static class BaseBinding
         {
             try
             {
-                UserBinding.AddLockUser(obj1);
                 return obj.StartGame(obj1).Result;
             }
             catch (Exception e)
@@ -130,6 +129,7 @@ public static class BaseBinding
         Funtcions.RunGC();
         if (res != null)
         {
+            UserBinding.AddLockUser(obj1);
             res.Exited += (a, b) =>
             {
                 UserBinding.RemoveLockUser(obj1);

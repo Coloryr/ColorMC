@@ -23,6 +23,7 @@
 	<sys:String x:Key="MainWindow.Control.Button6">修改实例</sys:String>
 	<sys:String x:Key="MainWindow.Control.Button7">导出实例</sys:String>
 	<sys:String x:Key="MainWindow.Control.Button8">启动器设置</sys:String>
+	<sys:String x:Key="MainWindow.Control.Button9">设置图标</sys:String>
 	<sys:String x:Key="MainWindow.Control.Info1">空账户</sys:String>
 	<sys:String x:Key="MainWindow.Control.Info2">没有用户</sys:String>
 	<sys:String x:Key="MainWindow.Control1.Text1">切换游戏分组</sys:String>
@@ -508,9 +509,16 @@
 	<sys:String x:Key="SkinWindow.Text2">操作：左键旋转，右键平移，滚轮缩放</sys:String>
 	<sys:String x:Key="SkinWindow.Text3">修改皮肤</sys:String>
 	<sys:String x:Key="SkinWindow.Text4">导出皮肤</sys:String>
+	<sys:String x:Key="SkinWindow.Text5">显示第二层</sys:String>
+	<sys:String x:Key="SkinWindow.Text6">显示披风</sys:String>
+	<sys:String x:Key="SkinWindow.Text7">启用动画</sys:String>
+	<sys:String x:Key="SkinWindow.Text8">重置动作</sys:String>
 	<sys:String x:Key="SkinWindow.Info1">你不能选择该类型</sys:String>
 	<sys:String x:Key="SkinWindow.Info2">没有皮肤</sys:String>
 	<sys:String x:Key="SkinWindow.Info3">未知的皮肤类型</sys:String>
+	<sys:String x:Key="SkinWindow.Items.Item1">手臂旋转</sys:String>
+	<sys:String x:Key="SkinWindow.Items.Item2">腿部旋转</sys:String>
+	<sys:String x:Key="SkinWindow.Items.Item3">头部旋转</sys:String>
 
 	<sys:String x:Key="GameBinding.Info1">账户已被占用，是否继续使用这个账户</sys:String>
 	<sys:String x:Key="GameBinding.Error1">没有选择游戏实例</sys:String>
@@ -563,6 +571,7 @@
 	<sys:String x:Key="Error8">请输入必要信息</sys:String>
 	<sys:String x:Key="Error9">找不到指定的文件</sys:String>
 	<sys:String x:Key="Error10">自定义UI加载失败</sys:String>
+	<sys:String x:Key="Error11">颜色数据读取失败</sys:String>
 
 	<sys:String x:Key="Button.OpFile">打开文件夹</sys:String>
 	<sys:String x:Key="Button.Set">设置</sys:String>

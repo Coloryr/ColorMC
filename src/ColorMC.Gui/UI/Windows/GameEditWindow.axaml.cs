@@ -62,6 +62,8 @@ public partial class GameEditWindow : Window
         Closed += SettingWindow_Closed;
         Opened += GameEditWindow_Opened;
 
+        App.PicUpdate += Update;
+
         Update();
     }
 
@@ -208,6 +210,8 @@ public partial class GameEditWindow : Window
 
     private void SettingWindow_Closed(object? sender, EventArgs e)
     {
+        App.PicUpdate -= Update;
+
         App.GameEditWindows.Remove(Obj!);
     }
 
