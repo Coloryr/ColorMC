@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -17,7 +18,9 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
+using System.Threading;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -41,7 +44,9 @@ public partial class SkinWindow : Window
 
         ComboBox2.Items = new List<string>()
         {
-            "手臂旋转", "腿部旋转", "头部旋转"
+            Localizer.Instance["SkinWindow.Items.Item1"],
+            Localizer.Instance["SkinWindow.Items.Item2"],
+            Localizer.Instance["SkinWindow.Items.Item3"]
         };
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
@@ -73,7 +78,7 @@ public partial class SkinWindow : Window
 
     private void CheckBox3_Click(object? sender, RoutedEventArgs e)
     {
-        
+        Skin.SetAnimation(CheckBox3.IsChecked == true);
     }
 
     private void CheckBox2_Click(object? sender, RoutedEventArgs e)
@@ -300,9 +305,109 @@ public partial class SkinWindow : Window
 
 public class SkinRender : Control
 {
-    class SkinAnimation
-    { 
-        
+    class SkinAnimation : IDisposable
+    {
+        private Thread thread;
+        private bool run;
+        private bool start;
+        private Semaphore semaphore = new(0, 2);
+        private int frame = 0;
+        private SkinRender Render;
+
+        public Vector3 Arm;
+        public Vector3 Leg;
+        public Vector3 Head;
+
+        public SkinAnimation(SkinRender render)
+        {
+            Render = render;
+            thread = new(Tick)
+            {
+                Name = "ColorMC-SkinAnimation"
+            };
+            run = true;
+            thread.Start();
+
+            Arm.X = 40;
+        }
+
+        public void Dispose()
+        {
+            run = false;
+            thread.Join();
+        }
+
+        public void Start()
+        {
+            start = true;
+            semaphore.Release();
+        }
+
+        public void Pause()
+        {
+            start = false;
+        }
+
+        private void Tick()
+        {
+            while (run)
+            {
+                semaphore.WaitOne();
+                while (start)
+                {
+                    frame++;
+                    if (frame > 120)
+                    {
+                        frame = 0;
+                    }
+
+                    if (frame <= 60)
+                    {
+                        //0 360
+                        //-180 180
+                        Arm.Y = (frame * 6) - 180;
+                        //0 180
+                        //90 -90
+                        Leg.Y = 90 - (frame * 3);
+                        //-30 30
+                        if (Render.steveModelType == SkinType.New_Slim)
+                        {
+                            Head.Z = 0;
+                            Head.X = frame - 30;
+                        }
+                        else
+                        {
+                            Head.X = 0;
+                            Head.Z = frame - 30;
+                        }
+                    }
+                    else
+                    {
+                        //360 720
+                        //180 -180
+                        Arm.Y = 540 - (frame * 6);
+                        //180 360
+                        //-90 90
+                        Leg.Y = (frame * 3) - 270;
+                        //30 -30
+                        if (Render.steveModelType == SkinType.New_Slim)
+                        {
+                            Head.Z = 0;
+                            Head.X = 90 - frame;
+                        }
+                        else
+                        {
+                            Head.X = 0;
+                            Head.Z = 90 - frame;
+                        }
+                    }
+
+                    Dispatcher.UIThread.InvokeAsync(Render.InvalidateVisual).Wait();
+
+                    Thread.Sleep(10);
+                }
+            }
+        }
     }
 
     class Win : GameWindow
@@ -407,6 +512,7 @@ void main()
     private bool SwitchSkin = false;
     private bool TopDisplay = true;
     private bool CapeDisplay = true;
+    private bool Animation = true;
 
     private float Dis = 1;
     private Vector2 RotXY;
@@ -419,7 +525,7 @@ void main()
     private int texture;
     private int texture1;
 
-    public SkinType steveModelType;
+    public SkinType steveModelType { get; private set; }
     private int steveModelDrawOrder;
 
     private int _vertexShader;
@@ -440,10 +546,14 @@ void main()
 
     private SkinWindow Window;
     private Win Window1;
+    private SkinAnimation skina;
 
     public SkinRender()
     {
         Window1 = new();
+
+        skina = new(this);
+        skina.Start();
 
         Init();
     }
@@ -863,12 +973,13 @@ void main()
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(NormalVAO.Body.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, DrawElementsType.UnsignedShort, IntPtr.Zero);
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, 
+            DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, CubeC.Value, 0) *
-               Matrix4.CreateRotationZ(HeadRotate.X / 360) *
-               Matrix4.CreateRotationX(HeadRotate.Y / 360) *
-               Matrix4.CreateRotationY(HeadRotate.Z / 360) *
+               Matrix4.CreateRotationZ((Animation ? skina.Head.X : HeadRotate.X) / 360) *
+               Matrix4.CreateRotationX((Animation ? skina.Head.Y : HeadRotate.Y) / 360) *
+               Matrix4.CreateRotationY((Animation ? skina.Head.Z : HeadRotate.Z) / 360) *
                Matrix4.CreateTranslation(0, CubeC.Value * 1.5f, 0);
         GL.UniformMatrix4(modelLoc, false, ref model);
 
@@ -879,15 +990,16 @@ void main()
         if (steveModelType == SkinType.New_Slim)
         {
             model = Matrix4.CreateTranslation(CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
-                Matrix4.CreateRotationZ(ArmRotate.X / 360) *
-                Matrix4.CreateRotationX(ArmRotate.Y / 360) *
+                Matrix4.CreateRotationZ((Animation ? skina.Arm.X : ArmRotate.X) / 360) *
+                Matrix4.CreateRotationX((Animation ? skina.Arm.Y : ArmRotate.Y) / 360) *
                 Matrix4.CreateTranslation(
                     (1.375f * CubeC.Value) - (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
         }
         else
         {
             model = Matrix4.CreateTranslation(CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
-                Matrix4.CreateRotationZ(ArmRotate.X / 360) *
+                Matrix4.CreateRotationZ((Animation ? skina.Arm.X : ArmRotate.X) / 360) *
+                Matrix4.CreateRotationX((Animation ? skina.Arm.Y : ArmRotate.Y) / 360) *
                 Matrix4.CreateTranslation(
                     (1.5f * CubeC.Value) - (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
         }
@@ -900,16 +1012,16 @@ void main()
         if (steveModelType == SkinType.New_Slim)
         {
             model = Matrix4.CreateTranslation(-CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
-                Matrix4.CreateRotationZ(-ArmRotate.X / 360) *
-                Matrix4.CreateRotationX(-ArmRotate.Y / 360) *
+                Matrix4.CreateRotationZ((Animation ? -skina.Arm.X : -ArmRotate.X) / 360) *
+                Matrix4.CreateRotationX((Animation ? -skina.Arm.Y : -ArmRotate.Y) / 360) *
                 Matrix4.CreateTranslation(
                     (-1.375f * CubeC.Value) + (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
         }
         else
         {
             model = Matrix4.CreateTranslation(-CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
-                Matrix4.CreateRotationZ(-ArmRotate.X / 360) *
-                Matrix4.CreateRotationX(-ArmRotate.Y / 360) *
+                Matrix4.CreateRotationZ((Animation ? -skina.Arm.X : -ArmRotate.X) / 360) *
+                Matrix4.CreateRotationX((Animation ? -skina.Arm.Y : -ArmRotate.Y) / 360) *
                 Matrix4.CreateTranslation(
                     (-1.5f * CubeC.Value) + (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
         }
@@ -920,8 +1032,8 @@ void main()
                  DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
-               Matrix4.CreateRotationZ(LegRotate.X / 360) *
-               Matrix4.CreateRotationX(LegRotate.Y / 360) *
+               Matrix4.CreateRotationZ((Animation ? skina.Leg.X : LegRotate.X) / 360) *
+               Matrix4.CreateRotationX((Animation ? skina.Leg.Y : LegRotate.Y) / 360) *
                Matrix4.CreateTranslation(CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
         GL.UniformMatrix4(modelLoc, false, ref model);
 
@@ -930,8 +1042,8 @@ void main()
                 DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
-               Matrix4.CreateRotationZ(-LegRotate.X / 360) *
-               Matrix4.CreateRotationX(-LegRotate.Y / 360) *
+               Matrix4.CreateRotationZ((Animation ? -skina.Leg.X : -LegRotate.X) / 360) *
+               Matrix4.CreateRotationX((Animation ? -skina.Leg.Y : -LegRotate.Y) / 360) *
                Matrix4.CreateTranslation(-CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
         GL.UniformMatrix4(modelLoc, false, ref model);
 
@@ -955,9 +1067,9 @@ void main()
                  DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, CubeC.Value, 0) *
-               Matrix4.CreateRotationZ(HeadRotate.X / 360) *
-               Matrix4.CreateRotationX(HeadRotate.Y / 360) *
-               Matrix4.CreateRotationY(HeadRotate.Z / 360) *
+               Matrix4.CreateRotationZ((Animation ? skina.Head.X : HeadRotate.X) / 360) *
+               Matrix4.CreateRotationX((Animation ? skina.Head.Y : HeadRotate.Y) / 360) *
+               Matrix4.CreateRotationY((Animation ? skina.Head.Z : HeadRotate.Z) / 360) *
                Matrix4.CreateTranslation(0, CubeC.Value * 1.5f, 0);
         GL.UniformMatrix4(modelLoc, false, ref model);
 
@@ -968,15 +1080,16 @@ void main()
         if (steveModelType == SkinType.New_Slim)
         {
             model = Matrix4.CreateTranslation(CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
-                Matrix4.CreateRotationZ(ArmRotate.X / 360) *
-                Matrix4.CreateRotationX(ArmRotate.Y / 360) *
+                Matrix4.CreateRotationZ((Animation ? skina.Arm.X : ArmRotate.X) / 360) *
+                Matrix4.CreateRotationX((Animation ? skina.Arm.Y : ArmRotate.Y) / 360) *
                 Matrix4.CreateTranslation(
                     (1.375f * CubeC.Value) - (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
         }
         else
         {
             model = Matrix4.CreateTranslation(CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
-                Matrix4.CreateRotationZ(ArmRotate.X / 360) *
+                Matrix4.CreateRotationZ((Animation ? skina.Arm.X : ArmRotate.X) / 360) *
+                Matrix4.CreateRotationX((Animation ? skina.Arm.Y : ArmRotate.Y) / 360) *
                 Matrix4.CreateTranslation(
                     (1.5f * CubeC.Value) - (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
         }
@@ -989,16 +1102,16 @@ void main()
         if (steveModelType == SkinType.New_Slim)
         {
             model = Matrix4.CreateTranslation(-CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
-                Matrix4.CreateRotationZ(-ArmRotate.X / 360) *
-                Matrix4.CreateRotationX(-ArmRotate.Y / 360) *
+                Matrix4.CreateRotationZ((Animation ? -skina.Arm.X : -ArmRotate.X) / 360) *
+                Matrix4.CreateRotationX((Animation ? -skina.Arm.Y : -ArmRotate.Y) / 360) *
                 Matrix4.CreateTranslation(
                     (-1.375f * CubeC.Value) + (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
         }
         else
         {
             model = Matrix4.CreateTranslation(-CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
-                Matrix4.CreateRotationZ(-ArmRotate.X / 360) *
-                Matrix4.CreateRotationX(-ArmRotate.Y / 360) *
+                Matrix4.CreateRotationZ((Animation ? -skina.Arm.X : -ArmRotate.X) / 360) *
+                Matrix4.CreateRotationX((Animation ? -skina.Arm.Y : -ArmRotate.Y) / 360) *
                 Matrix4.CreateTranslation(
                     (-1.5f * CubeC.Value) + (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
         }
@@ -1009,8 +1122,8 @@ void main()
                 DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
-               Matrix4.CreateRotationZ(LegRotate.X / 360) *
-               Matrix4.CreateRotationX(LegRotate.Y / 360) *
+               Matrix4.CreateRotationZ((Animation ? skina.Leg.X : LegRotate.X) / 360) *
+               Matrix4.CreateRotationX((Animation ? skina.Leg.Y : LegRotate.Y) / 360) *
                Matrix4.CreateTranslation(CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
         GL.UniformMatrix4(modelLoc, false, ref model);
 
@@ -1019,8 +1132,8 @@ void main()
                  DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
-               Matrix4.CreateRotationZ(-LegRotate.X / 360) *
-               Matrix4.CreateRotationX(-LegRotate.Y / 360) *
+               Matrix4.CreateRotationZ((Animation ? -skina.Leg.X : -LegRotate.X) / 360) *
+               Matrix4.CreateRotationX((Animation ? -skina.Leg.Y : -LegRotate.Y) / 360) *
                Matrix4.CreateTranslation(-CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
         GL.UniformMatrix4(modelLoc, false, ref model);
 
@@ -1234,9 +1347,24 @@ void main()
         InvalidateVisual();
     }
 
-    internal void SetCapeDisplay(bool value)
+    public void SetCapeDisplay(bool value)
     {
         CapeDisplay = value;
+
+        InvalidateVisual();
+    }
+
+    public void SetAnimation(bool value)
+    {
+        Animation = value;
+        if (value)
+        {
+            skina.Start();
+        }
+        else
+        {
+            skina.Pause();
+        }
 
         InvalidateVisual();
     }

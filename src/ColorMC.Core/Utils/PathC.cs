@@ -60,6 +60,13 @@ public static class PathC
     public static LibVersionObj MakeVersionObj(string name)
     {
         var arg = name.Split(":");
+        if (arg.Length < 3)
+        {
+            return new()
+            {
+                Name = name
+            };
+        }
         if (arg.Length > 3)
         {
             return new()

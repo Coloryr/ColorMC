@@ -13,13 +13,13 @@ public class ColorSel : INotifyPropertyChanged
     public static readonly IBrush AppBackColor = Brush.Parse("#FFFFFFFF");
     public static readonly IBrush AppBackColor1 = Brush.Parse("#11FFFFFF");
 
-    public static IBrush MainColor = Brush.Parse("#FF5ABED6");
-    public static IBrush BackColor = Brush.Parse("#FFF4F4F5");
-    public static IBrush Back1Color = Brush.Parse("#88FFFFFF");
-    public static IBrush ButtonFont = Brush.Parse("#FFFFFFFF");
-    public static IBrush FontColor = Brush.Parse("#FF000000");
-    public static IBrush MotdColor = Brush.Parse("#FFFFFFFF");
-    public static IBrush MotdBackColor = Brush.Parse("#FF000000");
+    public static IBrush MainColor { get; private set; } = Brush.Parse("#FF5ABED6");
+    public static IBrush BackColor { get; private set; } = Brush.Parse("#FFF4F4F5");
+    public static IBrush Back1Color { get; private set; } = Brush.Parse("#88FFFFFF");
+    public static IBrush ButtonFont { get; private set; } = Brush.Parse("#FFFFFFFF");
+    public static IBrush FontColor { get; private set; } = Brush.Parse("#FF000000");
+    public static IBrush MotdColor { get; private set; } = Brush.Parse("#FFFFFFFF");
+    public static IBrush MotdBackColor { get; private set; } = Brush.Parse("#FF000000");
 
     public static ColorSel Instance { get; set; } = new ColorSel();
 
@@ -51,11 +51,11 @@ public class ColorSel : INotifyPropertyChanged
         }
         catch (Exception e)
         {
-            Logs.Error("颜色数据读取失败", e);
+            Logs.Error(Localizer.Instance["Error11"], e);
         }
     }
 
-    private Thread timer;
+    private readonly Thread timer;
     private bool rbg;
     private bool run;
     private double rbg_s = 1;
@@ -82,6 +82,8 @@ public class ColorSel : INotifyPropertyChanged
 
         rbg_s = (double)GuiConfigUtils.Config.RGBS / 100;
         rbg_v = (double)GuiConfigUtils.Config.RGBV / 100;
+
+        semaphore.Release();
     }
 
     public void DisableRGB()
@@ -92,12 +94,14 @@ public class ColorSel : INotifyPropertyChanged
     private int now;
     private IBrush Color = MainColor;
     private IBrush Color1 = FontColor;
+    private Semaphore semaphore = new(0, 2);
 
     private void Tick(object? obj)
     {
         while (run)
         {
-            if (rbg)
+            semaphore.WaitOne();
+            while (rbg)
             {
                 now += 1;
                 now %= 360;
@@ -120,8 +124,9 @@ public class ColorSel : INotifyPropertyChanged
                 }
 
                 Dispatcher.UIThread.InvokeAsync(Reload).Wait();
+
+                Thread.Sleep(20);
             }
-            Thread.Sleep(20);
         }
     }
 

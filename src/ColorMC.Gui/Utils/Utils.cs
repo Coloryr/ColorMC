@@ -16,7 +16,6 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -307,7 +306,7 @@ public static partial class UIUtils
             {
                 item1.Bind(Border.BackgroundProperty, new Binding
                 {
-                    Source = Utils.LaunchSetting.ColorSel.Instance,
+                    Source = ColorSel.Instance,
                     Path = "[TranBack]"
                 });
             }
@@ -317,6 +316,15 @@ public static partial class UIUtils
 
         }
     }
+
+    //public static ReflectionBindingExtension BindLang(string name)
+    //{
+    //    return new ReflectionBindingExtension
+    //    {
+    //        Source = Localizer.Instance,
+    //        Path = $"[{name}]"
+    //    };
+    //}
 
     public static void MakeTran(this DataGrid grid)
     {
@@ -373,13 +381,13 @@ public static partial class UIUtils
 
                 item1.Bind(Border.BackgroundProperty, new Binding
                 {
-                    Source = Utils.LaunchSetting.ColorSel.Instance,
+                    Source = ColorSel.Instance,
                     Path = "[Main]"
                 });
 
                 item1.Bind(Border.BorderBrushProperty, new Binding
                 {
-                    Source = Utils.LaunchSetting.ColorSel.Instance,
+                    Source = ColorSel.Instance,
                     Path = "[TranBack]"
                 });
 

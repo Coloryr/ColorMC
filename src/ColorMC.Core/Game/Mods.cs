@@ -33,7 +33,7 @@ public static class Mods
         //多线程同时检查
         await Parallel.ForEachAsync(files, async (item, cancel) =>
         {
-            if (item.Extension is not (".jar" or ".disable"))
+            if (item.Extension is not (".zip" or ".jar" or ".disable"))
                 return;
             string sha1 = "";
             bool find = false;
@@ -41,6 +41,23 @@ public static class Mods
             {
                 var data1 = File.ReadAllBytes(item.FullName);
                 sha1 = Funtcions.GenSha1(data1);
+
+                //Mod 资源包
+                if (item.Extension is ".zip")
+                {
+                    var obj3 = new ModObj
+                    {
+                        Local = Path.GetFullPath(item.FullName),
+                        Disable = item.Extension is ".disable",
+                        Loader = Loaders.Fabric,
+                        V2 = true,
+                        name = item.Name,
+                        Sha1 = sha1
+                    };
+                    list.Add(obj3);
+                    find = true;
+                    return;
+                }
 
                 using ZipFile zFile = new(item.FullName);
 
