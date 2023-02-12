@@ -17,7 +17,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ColorSel = ColorMC.Gui.Utils.LaunchSetting.ColorSel;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -44,12 +43,13 @@ public static class BaseBinding
         FontSel.Instance.Load();
     }
 
-    public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title, string ext, string name)
+    public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title, 
+        string ext, string name, bool multiple = false )
     {
         return window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = title,
-            AllowMultiple = false,
+            AllowMultiple = multiple,
             FileTypeFilter = new List<FilePickerFileType>()
             {
                 new(name)
@@ -63,16 +63,14 @@ public static class BaseBinding
         });
     }
 
-    public static Task<string?> OpSave(Window window, string title, string ext, string name)
+    public static Task<IStorageFile?> OpSave(Window window, string title, string ext, string name)
     {
-        SaveFileDialog save = new()
+        return window.StorageProvider.SaveFilePickerAsync(new()
         {
             Title = title,
             DefaultExtension = ext,
-            InitialFileName = name
-        };
-
-        return save.ShowAsync(window);
+            SuggestedFileName = name
+        });
     }
 
     public static void Exit()
@@ -91,7 +89,8 @@ public static class BaseBinding
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
             !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
         {
-            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP, GuiConfigUtils.Config.ServerCustom.Port);
+            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP, 
+                GuiConfigUtils.Config.ServerCustom.Port);
 
             obj = obj.CopyObj();
             obj.StartServer.IP = server.ServerAddress;
@@ -300,8 +299,11 @@ public static class BaseBinding
                     CreateNoWindow = true,
                     RedirectStandardInput = true,
                 });
-                ps.StandardInput.WriteLine($"start {url}");
-                ps.Close();
+                if (ps != null)
+                {
+                    ps.StandardInput.WriteLine($"start {url}");
+                    ps.Close();
+                }
                 break;
             case OsType.Linux:
                 Process.Start("xdg-open",

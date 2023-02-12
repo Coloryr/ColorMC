@@ -16,6 +16,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -459,8 +460,10 @@ public static partial class UIUtils
         return new(255, 255, 255, 255);
     }
 
-    public static (double X, double Y) GetXY(this IVisual visual)
+    public static (double X, double Y) GetXY(this IVisual? visual)
     {
+        if (visual == null)
+            return (0, 0);
         var temp = (visual.Bounds.X, visual.Bounds.Y);
         if (visual.GetVisualParent() != null)
         {
@@ -588,13 +591,10 @@ public static class GuiConfigUtils
 {
     public static GuiConfigObj Config { get; set; }
 
-    public static string Dir;
-
     private static string Name;
 
     public static void Init(string dir)
     {
-        Dir = dir;
         Name = dir + "gui.json";
 
         Load(Name);

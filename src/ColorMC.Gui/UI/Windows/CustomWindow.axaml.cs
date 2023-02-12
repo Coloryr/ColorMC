@@ -23,8 +23,8 @@ namespace ColorMC.Gui.UI.Windows;
 
 public class CustomWindowModel : INotifyPropertyChanged
 {
-    private string name;
-    private string type;
+    private string name = "";
+    private string type = "";
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -48,7 +48,7 @@ public class CustomWindowModel : INotifyPropertyChanged
 
 public partial class CustomWindow : Window
 {
-    private UIObj UI;
+    private UIObj? UI;
     private GameSettingObj? Obj;
 
     private CustomWindowModel CustomModel = new();
@@ -199,8 +199,11 @@ public partial class CustomWindow : Window
         Motd?.Load(config.Item2.ServerCustom!.IP, config.Item2.ServerCustom.Port);
     }
 
-    private void MakeItems(Panel panel, ViewObj ui)
+    private void MakeItems(Panel? panel, ViewObj ui)
     {
+        if (panel == null)
+            return;
+
         foreach (var item in ui.Views)
         {
             var obj = MakeItem(item);
@@ -277,7 +280,7 @@ public partial class CustomWindow : Window
         {
             if (type == ViewType.Button || type == ViewType.Label)
             {
-                (con as ContentControl).Content = obj.Content;
+                (con as ContentControl)!.Content = obj.Content;
             }
         }
 
@@ -285,7 +288,7 @@ public partial class CustomWindow : Window
         {
             if (type == ViewType.Button)
             {
-                (con as Button).Click += (s, e) =>
+                (con as Button)!.Click += (s, e) =>
                 {
                     ButtonClick(obj.Funtion);
                 };
@@ -303,16 +306,16 @@ public partial class CustomWindow : Window
             switch (type)
             {
                 case ViewType.Button:
-                    (con as Button).Background = color;
+                    (con as Button)!.Background = color;
                     break;
                 case ViewType.Label:
-                    (con as Label).Background = color;
+                    (con as Label)!.Background = color;
                     break;
                 case ViewType.StackPanel:
-                    (con as StackPanel).Background = color;
+                    (con as StackPanel)!.Background = color;
                     break;
                 case ViewType.Grid:
-                    (con as Grid).Background = color;
+                    (con as Grid)!.Background = color;
                     break;
             }
         }
@@ -323,10 +326,10 @@ public partial class CustomWindow : Window
             switch (type)
             {
                 case ViewType.Button:
-                    (con as Button).Foreground = color;
+                    (con as Button)!.Foreground = color;
                     break;
                 case ViewType.Label:
-                    (con as Label).Foreground = color;
+                    (con as Label)!.Foreground = color;
                     break;
             }
         }
@@ -343,8 +346,20 @@ public partial class CustomWindow : Window
 
         if (type == ViewType.GameItem)
         {
-            (con as GameControl).SetItem(Obj!);
-            (con as GameControl).SetSelect(true);
+            (con as GameControl)!.SetItem(Obj!);
+            (con as GameControl)!.SetSelect(true);
+        }
+
+        if (type == ViewType.StackPanel)
+        {
+            if (!string.IsNullOrWhiteSpace(obj.Orientation))
+            {
+                if (Enum.TryParse(typeof(Orientation), obj.Orientation,
+                    true, out var arg))
+                {
+                    (con as StackPanel)!.Orientation = (Orientation)arg;
+                }
+            }
         }
 
         if (type == ViewType.Grid || type == ViewType.StackPanel)
@@ -356,7 +371,7 @@ public partial class CustomWindow : Window
         {
             if (obj.Content == "{UserName}")
             {
-                (con as Label).Bind(ContentProperty, new Binding
+                (con as Label)!.Bind(ContentProperty, new Binding
                 {
                     Source = CustomModel,
                     Path = "Name"
@@ -364,7 +379,7 @@ public partial class CustomWindow : Window
             }
             else if (obj.Content == "{UserType}")
             {
-                (con as Label).Bind(ContentProperty, new Binding
+                (con as Label)!.Bind(ContentProperty, new Binding
                 {
                     Source = CustomModel,
                     Path = "Type"

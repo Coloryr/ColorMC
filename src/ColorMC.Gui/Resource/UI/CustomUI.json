@@ -66,6 +66,7 @@
       "VerticalAlignment": "Top",
       "HorizontalAlignment": "Right",
       "Margin": "10, 80, 10, 10",
+      "Orientation": "Vertical",
       "Views": [
         {
           "Type": "UsearHead",

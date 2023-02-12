@@ -39,14 +39,21 @@
                     <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
                     <Grid Margin="3">
                         <view2:SkinRender x:Name="Skin" />
-                        <StackPanel VerticalAlignment="Bottom">
-                            <TextBlock
-                                Name="Text1"
-                                Margin="2,0,0,0"
-                                Background="#EEEEEE"
-                                Foreground="Black"
-                                TextWrapping="Wrap" />
-                        </StackPanel>
+                        <Label
+                            Margin="5"
+                            VerticalAlignment="Top"
+                            Background="#EEEEEE"
+                            Content="{setting:Localize SkinWindow.Text2}"
+                            Foreground="Black" />
+
+                        <TextBlock
+                            Name="Text1"
+                            Margin="2,0,0,0"
+                            VerticalAlignment="Bottom"
+                            Background="#EEEEEE"
+                            Foreground="Black"
+                            TextWrapping="Wrap" />
+
                         <Label
                             Name="Label1"
                             HorizontalAlignment="Stretch"
@@ -62,78 +69,88 @@
 
                 <Grid Grid.Column="1" Margin="2,0,0,0">
                     <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
-                    <StackPanel Margin="3" Background="{setting:Colors TranBack}">
-                        <Button
-                            Name="Button1"
-                            Height="25"
-                            Margin="5"
-                            HorizontalAlignment="Stretch"
-                            Content="{setting:Localize Button.Refash}" />
+                    <ScrollViewer>
+                        <StackPanel Margin="3" Background="{setting:Colors TranBack}">
+                            <Button
+                                Name="Button1"
+                                Height="25"
+                                Margin="5"
+                                HorizontalAlignment="Stretch"
+                                Content="{setting:Localize Button.Refash}" />
 
-                        <Button
-                            Name="Button2"
-                            Height="25"
-                            Margin="5,0,5,0"
-                            HorizontalAlignment="Stretch"
-                            Content="{setting:Localize SkinWindow.Text1}" />
+                            <Button
+                                Name="Button2"
+                                Height="25"
+                                Margin="5,0,5,0"
+                                HorizontalAlignment="Stretch"
+                                Content="{setting:Localize SkinWindow.Text1}" />
 
-                        <Button
-                            Name="Button3"
-                            Height="25"
-                            Margin="5,5,5,0"
-                            HorizontalAlignment="Stretch"
-                            Content="{setting:Localize SkinWindow.Text3}" />
+                            <Button
+                                Name="Button3"
+                                Height="25"
+                                Margin="5,5,5,0"
+                                HorizontalAlignment="Stretch"
+                                Content="{setting:Localize SkinWindow.Text3}" />
 
-                        <Button
-                            Name="Button4"
-                            Height="25"
-                            Margin="5,5,5,0"
-                            HorizontalAlignment="Stretch"
-                            Content="{setting:Localize SkinWindow.Text4}" />
+                            <Button
+                                Name="Button4"
+                                Height="25"
+                                Margin="5,5,5,0"
+                                HorizontalAlignment="Stretch"
+                                Content="{setting:Localize SkinWindow.Text4}" />
 
-                        <ComboBox
-                            Name="ComboBox1"
-                            Margin="5,5,5,0"
-                            HorizontalAlignment="Stretch" />
+                            <ComboBox
+                                Name="ComboBox1"
+                                Margin="5,5,5,0"
+                                HorizontalAlignment="Stretch" />
 
-                        <CheckBox
-                            Name="CheckBox1"
-                            Margin="5"
-                            Content="显示第二层"
-                            IsChecked="True" />
+                            <CheckBox
+                                Name="CheckBox1"
+                                Margin="5,0,0,0"
+                                Content="显示第二层"
+                                IsChecked="True" />
 
-                        <ComboBox
-                            Name="ComboBox2"
-                            Margin="5,5,5,0"
-                            HorizontalAlignment="Stretch" />
+                            <CheckBox
+                                Name="CheckBox2"
+                                Margin="5,0,0,0"
+                                Content="显示披风"
+                                IsChecked="True" />
 
-                        <Slider
-                            Name="Slider1"
-                            Margin="5,-10,5,-10"
-                            Maximum="360"
-                            Minimum="0" />
-                        <Slider
-                            Name="Slider2"
-                            Margin="5,-10,5,-10"
-                            Maximum="360"
-                            Minimum="0" />
-                        <Slider
-                            Name="Slider3"
-                            Margin="5,-10,5,-10"
-                            Maximum="360"
-                            Minimum="0" />
+                            <CheckBox
+                                Name="CheckBox3"
+                                Margin="5,0,0,0"
+                                Content="启用动画"
+                                IsChecked="True" />
 
-                        <Button
-                            Name="Button5"
-                            Height="25"
-                            Margin="5,5,5,0"
-                            HorizontalAlignment="Stretch"
-                            Content="重置动作" />
-                    </StackPanel>
-                    <Label
-                        Margin="5"
-                        VerticalAlignment="Bottom"
-                        Content="{setting:Localize SkinWindow.Text2}" />
+                            <ComboBox
+                                Name="ComboBox2"
+                                Margin="5,5,5,0"
+                                HorizontalAlignment="Stretch" />
+
+                            <Slider
+                                Name="Slider1"
+                                Margin="5,-10,5,-10"
+                                Maximum="360"
+                                Minimum="0" />
+                            <Slider
+                                Name="Slider2"
+                                Margin="5,-10,5,-10"
+                                Maximum="360"
+                                Minimum="0" />
+                            <Slider
+                                Name="Slider3"
+                                Margin="5,-10,5,-10"
+                                Maximum="360"
+                                Minimum="0" />
+
+                            <Button
+                                Name="Button5"
+                                Height="25"
+                                Margin="5,5,5,0"
+                                HorizontalAlignment="Stretch"
+                                Content="重置动作" />
+                        </StackPanel>
+                    </ScrollViewer>
                 </Grid>
 
             </Grid>

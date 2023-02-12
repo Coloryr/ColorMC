@@ -52,6 +52,8 @@ public partial class SkinWindow : Window
         Button4.Click += Button4_Click;
         Button5.Click += Button5_Click;
         CheckBox1.Click += CheckBox1_Click;
+        CheckBox2.Click += CheckBox2_Click;
+        CheckBox3.Click += CheckBox3_Click;
 
         Opened += SkinWindow_Opened;
         Closed += SkinWindow_Closed;
@@ -67,6 +69,16 @@ public partial class SkinWindow : Window
 
         Check();
         Update();
+    }
+
+    private void CheckBox3_Click(object? sender, RoutedEventArgs e)
+    {
+        
+    }
+
+    private void CheckBox2_Click(object? sender, RoutedEventArgs e)
+    {
+        Skin.SetCapeDisplay(CheckBox2.IsChecked == true);
     }
 
     private void Button5_Click(object? sender, RoutedEventArgs e)
@@ -206,9 +218,9 @@ public partial class SkinWindow : Window
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
         var res = await BaseBinding.OpSave(this, "保存皮肤", ".png", "skin.png");
-        if (!string.IsNullOrWhiteSpace(res))
+        if (res != null)
         {
-            await UserBinding.SkinImage.SaveAsPngAsync(res);
+            await UserBinding.SkinImage.SaveAsPngAsync(res.GetPath());
             Info2.Show("已保存");
         }
     }
@@ -288,8 +300,10 @@ public partial class SkinWindow : Window
 
 public class SkinRender : Control
 {
-    private SkinWindow Window;
-    private Win Window1;
+    class SkinAnimation
+    { 
+        
+    }
 
     class Win : GameWindow
     {
@@ -419,10 +433,13 @@ void main()
     private Vector2 LastSize;
     private WriteableBitmap bitmap;
 
-    public string Info;
+    public string Info = "";
 
     private readonly ModelVAO NormalVAO = new();
     private readonly ModelVAO TopVAO = new();
+
+    private SkinWindow Window;
+    private Win Window1;
 
     public SkinRender()
     {
@@ -595,7 +612,6 @@ void main()
             });
             return;
         }
-        GLMode(true);
         LoadTex(UserBinding.SkinImage, texture);
         if (UserBinding.CapeIamge != null)
         {
@@ -606,7 +622,6 @@ void main()
         {
             HaveCape = false;
         }
-        GLMode(false);
 
         CheckError();
 
@@ -618,22 +633,6 @@ void main()
             Window.ComboBox1.SelectedIndex = (int)steveModelType;
             Window.Label1.IsVisible = false;
         });
-    }
-
-    private void GLMode(bool mode)
-    {
-        if (mode)
-        {
-            GL.Disable(EnableCap.Texture2D);
-            GL.Disable(EnableCap.Lighting);
-            //GL.Enable(EnableCap.Blend);
-        }
-        else
-        {
-            //GL.Disable(EnableCap.Blend);
-            GL.Enable(EnableCap.Lighting);
-            GL.Enable(EnableCap.Texture2D);
-        }
     }
 
     private unsafe void PutVAO(VAOItem vao, ModelItem model, float[] uv)
@@ -1231,6 +1230,13 @@ void main()
     public void SetTopDisplay(bool value)
     {
         TopDisplay = value;
+
+        InvalidateVisual();
+    }
+
+    internal void SetCapeDisplay(bool value)
+    {
+        CapeDisplay = value;
 
         InvalidateVisual();
     }

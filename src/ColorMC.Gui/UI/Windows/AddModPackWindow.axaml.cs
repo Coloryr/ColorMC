@@ -135,7 +135,7 @@ public partial class AddModPackWindow : Window, IBase1Window
     public void Install1(CurseForgeObj.Data.LatestFiles data)
     {
         App.ShowAddGame();
-        App.AddGameWindow?.Install(data);
+        App.AddGameWindow!.Install(data, Last!.Data);
         Close();
     }
 

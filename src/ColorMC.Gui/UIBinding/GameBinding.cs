@@ -1,4 +1,7 @@
-﻿using ColorMC.Core.Game;
+﻿using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using ColorMC.Core;
+using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -8,6 +11,7 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using SixLabors.ImageSharp;
@@ -18,6 +22,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -79,7 +84,7 @@ public static class GameBinding
         return game != null;
     }
 
-    public static Task<bool> AddPack(string dir, PackType type)
+    public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type)
     {
         return InstancesPath.InstallFromZip(dir, type);
     }
@@ -190,9 +195,78 @@ public static class GameBinding
         return list3;
     }
 
-    public static Task<bool> InstallCurseForge(CurseForgeObj.Data.LatestFiles data)
+    public static async Task<bool> InstallCurseForge(CurseForgeObj.Data.LatestFiles data,
+        CurseForgeObj.Data data1)
     {
-        return InstancesPath.InstallFromCurseForge(data);
+        var res = await InstancesPath.InstallFromCurseForge(data);
+        if (!res.Item1)
+        {
+            return false;
+        }
+        if (data1.logo != null)
+        {
+            await SetGameIconFromUrl(res.Item2!, data1.logo.url);
+        }
+
+        return true;
+    }
+
+    public static async Task<bool> SetGameIconFromUrl(GameSettingObj obj, string url)
+    {
+        try
+        {
+            var data = await BaseClient.GetBytes(url);
+            await File.WriteAllBytesAsync(obj.GetIconFile(), data);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("保存图标错误", e);
+            App.ShowError("保存图标错误", e);
+            return false;
+        }
+    }
+
+    public static async Task SetGameIconFromFile(Window win, GameSettingObj obj)
+    {
+        try
+        {
+            var file = await win.StorageProvider.OpenFilePickerAsync(new()
+            {
+                Title = "设置游戏实例图标",
+                AllowMultiple = false,
+                FileTypeFilter = new List<FilePickerFileType>()
+            {
+                new("图标")
+                {
+                     Patterns = new List<string>()
+                     {
+                        "*.png",
+                        "*.jpg",
+                        "*.bmp"
+                     }
+                }
+            }
+            });
+            if (file?.Any() == true)
+            {
+                var item = file[0];
+                var name = item.GetPath();
+                var info = await Image.IdentifyAsync(name);
+                if (info.Width != info.Height || info.Width > 200 || info.Height > 200)
+                {
+                    (win as IBaseWindow)?.Info.Show("不允许的图片尺寸");
+                    return;
+                }
+                var data = await File.ReadAllBytesAsync(name);
+                await File.WriteAllBytesAsync(obj.GetIconFile(), data);
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error("保存图标错误", e);
+            App.ShowError("保存图标错误", e);
+        }
     }
 
     public static Task<CurseForgeFileObj?> GetPackFile(long id, int page)

@@ -28,7 +28,7 @@ public partial class GameEditWindow : Window
 
     private int now;
 
-    private GameSettingObj Obj;
+    private GameSettingObj? Obj;
 
     public GameEditWindow()
     {
@@ -98,9 +98,9 @@ public partial class GameEditWindow : Window
             case 3:
                 Tabs.SelectedIndex = 4;
                 break;
-
+            
             case 5:
-                Tabs.SelectedIndex = 7;
+                Tabs.SelectedIndex = 8;
                 break;
 
             case 6:
@@ -208,7 +208,7 @@ public partial class GameEditWindow : Window
 
     private void SettingWindow_Closed(object? sender, EventArgs e)
     {
-        App.GameEditWindows.Remove(Obj);
+        App.GameEditWindows.Remove(Obj!);
     }
 
     public void Update()

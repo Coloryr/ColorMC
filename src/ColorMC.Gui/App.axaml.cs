@@ -25,34 +25,31 @@ namespace ColorMC.Gui;
 
 public partial class App : Application
 {
-    public static IClassicDesktopStyleApplicationLifetime? Life;
-    public static DownloadWindow? DownloadWindow;
-    public static UserWindow? UserWindow;
-    public static MainWindow? MainWindow;
-    public static AddGameWindow? AddGameWindow;
-    public static CustomWindow? CustomWindow;
-    public static AddModPackWindow? AddModPackWindow;
-    public static SettingWindow? SettingWindow;
-    public static SkinWindow? SkinWindow;
-    public static AddJavaWindow? AddJavaWindow;
-    public static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
+    public static IClassicDesktopStyleApplicationLifetime? Life { get; private set; }
+    public static DownloadWindow? DownloadWindow { get; set; }
+    public static UserWindow? UserWindow { get; set; }
+    public static MainWindow? MainWindow { get; set; }
+    public static AddGameWindow? AddGameWindow { get; set; }
+    public static CustomWindow? CustomWindow { get; set; }
+    public static AddModPackWindow? AddModPackWindow { get; set; }
+    public static SettingWindow? SettingWindow { get; set; }
+    public static SkinWindow? SkinWindow { get; set; }
+    public static AddJavaWindow? AddJavaWindow { get; set; }
+    public readonly static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
 
     public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly CrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
     public static readonly CrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));
     public static readonly PageSlide PageSlide500 = new(TimeSpan.FromMilliseconds(500));
 
-    public static event Action PicUpdate;
+    public static event Action? PicUpdate;
+    public static event Action? UserEdit;
+    public static event Action? SkinLoad;
 
     public static ResourceDictionary? Language;
-
-    public delegate void Handler();
-    public static event Handler UserEdit;
-    public static event Handler SkinLoad;
-
     public static Bitmap? BackBitmap { get; private set; }
-    public static Bitmap GameIcon { get; private set; }
-    public static WindowIcon Icon { get; private set; }
+    public static Bitmap? GameIcon { get; private set; }
+    public static WindowIcon? Icon { get; private set; }
 
     public override void Initialize()
     {
@@ -409,39 +406,39 @@ public partial class App : Application
         Environment.Exit(Environment.ExitCode);
     }
 
-    public static void Update(Window window, Image iamge, Grid rec)
+    public static void Update(Window window, Image image, Grid rec)
     {
         if (GuiConfigUtils.Config != null)
         {
             if (BackBitmap != null)
             {
-                iamge.Source = BackBitmap;
+                image.Source = BackBitmap;
                 if (GuiConfigUtils.Config.BackTran != 0)
                 {
-                    iamge.Opacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
+                    image.Opacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
                 }
                 else
                 {
-                    iamge.Opacity = 100;
+                    image.Opacity = 100;
                 }
-                iamge.IsVisible = true;
+                image.IsVisible = true;
             }
             else
             {
-                iamge.IsVisible = false;
-                iamge.Source = null;
+                image.IsVisible = false;
+                image.Source = null;
             }
 
             if (GuiConfigUtils.Config.WindowTran)
             {
-                rec.Background = Utils.LaunchSetting.ColorSel.AppBackColor1;
+                rec.Background = ColorSel.AppBackColor1;
                 window.TransparencyLevelHint = (WindowTransparencyLevel)
                     (GuiConfigUtils.Config.WindowTranType + 1);
             }
             else
             {
                 window.TransparencyLevelHint = WindowTransparencyLevel.None;
-                rec.Background = Utils.LaunchSetting.ColorSel.AppBackColor;
+                rec.Background = ColorSel.AppBackColor;
             }
         }
     }

@@ -134,7 +134,7 @@ public partial class AddWorldWindow : Window, IBase1Window
     {
         App.PicUpdate -= Update;
 
-        Tab.CloseAddWorld();
+        Tab!.CloseAddWorld();
 
         Head.SetWindow(null);
     }
@@ -148,7 +148,7 @@ public partial class AddWorldWindow : Window, IBase1Window
     public void Install1(CurseForgeObj.Data.LatestFiles data)
     {
         Close();
-        Tab.AddWorld(data);
+        Tab!.AddWorld(data);
     }
 
     public void SetSelect(CurseForgeControl last)
@@ -163,7 +163,7 @@ public partial class AddWorldWindow : Window, IBase1Window
     {
         Info1.Show(Localizer.Instance["AddWorldWindow.Info2"]);
         var data = await GameBinding.GetWorldList(ComboBox2.SelectedItem as string,
-            ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value, ComboBox3.SelectedIndex);
+            ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
 
         if (data == null)
         {
@@ -232,7 +232,7 @@ public partial class AddWorldWindow : Window, IBase1Window
         }
 
         ComboBox2.Items = list;
-        if (list.Contains(Obj.Version))
+        if (list.Contains(Obj!.Version))
         {
             ComboBox2.SelectedItem = Obj.Version;
         }
