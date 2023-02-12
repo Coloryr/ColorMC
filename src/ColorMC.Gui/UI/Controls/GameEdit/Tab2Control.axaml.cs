@@ -1,11 +1,15 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -13,6 +17,7 @@ public partial class Tab2Control : UserControl
 {
     private GameEditWindow Window;
     private GameSettingObj Obj;
+    private bool load = false;
     public Tab2Control()
     {
         InitializeComponent();
@@ -25,24 +30,37 @@ public partial class Tab2Control : UserControl
         Button_Set5.Click += Button_Set5_Click;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+        ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
 
         ComboBox1.Items = JavaBinding.GetGCTypes();
 
         TextBox11.PropertyChanged += TextBox11_TextInput;
     }
 
+    private void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (ComboBox2.SelectedIndex == 0)
+        {
+            GameBinding.SetJavaLocal(Obj, null, TextBox11.Text);
+        }
+        else
+        {
+            GameBinding.SetJavaLocal(Obj, ComboBox2.SelectedItem as string, TextBox11.Text);
+        }
+        
+        Window.Info2.Show(Localizer.Instance["Info3"]);
+    }
+
     private async void Button_Set5_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        var file = await BaseBinding.OpFile(Window, Localizer.Instance["SettingWindow.Tab5.Info2"],
+            SystemInfo.Os == OsType.Windows ? "*.exe" : "", Localizer.Instance["SettingWindow.Tab5.Info2"]);
+        if (file.Any())
         {
-            Title = Localizer.Instance["SettingWindow.Tab5.Info2"],
-            AllowMultiple = false,
-        };
-
-        var file = await openFile.ShowAsync(Window);
-        if (file?.Length > 0)
-        {
-            TextBox11.Text = file[0];
+            TextBox11.Text = file[0].GetPath();
         }
     }
 
@@ -138,9 +156,17 @@ public partial class Tab2Control : UserControl
 
     private void Load()
     {
-        ComboBox2.Items = JavaBinding.GetJavaName();
+        load = true;
 
-        ComboBox2.SelectedItem = Obj.JvmName;
+        var list = new List<string>()
+        { 
+            ""
+        };
+        list.AddRange(JavaBinding.GetJavaName());
+
+        ComboBox2.Items = list;
+
+        ComboBox2.SelectedItem = Obj.JvmName ?? "";
         TextBox11.Text = Obj.JvmLocal;
 
         var config = Obj.JvmArg;
@@ -180,6 +206,8 @@ public partial class Tab2Control : UserControl
             TextBox9.Text = config3.User;
             TextBox10.Text = config3.Password;
         }
+
+        load = false;
     }
 
     public void SetWindow(GameEditWindow window)

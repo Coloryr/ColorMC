@@ -371,12 +371,19 @@ public static class Launch
         var list = JvmPath.Jvms.Where(a => a.Value.MajorVersion == jv)
             .Select(a => a.Value);
 
-        if (!list.Any() && jv > 8)
+        if (!list.Any())
         {
-            list = JvmPath.Jvms.Where(a => a.Value.MajorVersion >= jv)
-            .Select(a => a.Value);
-            if (!list.Any())
+            if (jv > 8)
+            {
+                list = JvmPath.Jvms.Where(a => a.Value.MajorVersion >= jv)
+                .Select(a => a.Value);
+                if (!list.Any())
+                    return null;
+            }
+            else
+            {
                 return null;
+            }
         }
         var find = list.Where(a => a.Arch == SystemInfo.SystemArch);
         int max;

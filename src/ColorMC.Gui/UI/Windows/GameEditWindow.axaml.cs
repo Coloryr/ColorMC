@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
@@ -8,7 +9,7 @@ using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class GameEditWindow : Window
+public partial class GameEditWindow : Window, IBaseWindow
 {
     private bool switch1 = false;
 
@@ -29,6 +30,14 @@ public partial class GameEditWindow : Window
     private int now;
 
     private GameSettingObj? Obj;
+
+    Info3Control IBaseWindow.Info3 => Info3;
+
+    Info1Control IBaseWindow.Info1 => Info1;
+
+    Info4Control IBaseWindow.Info => Info;
+
+    Info2Control IBaseWindow.Info2 => Info2;
 
     public GameEditWindow()
     {
@@ -146,6 +155,7 @@ public partial class GameEditWindow : Window
         switch (Tabs.SelectedIndex)
         {
             case 0:
+                tab1.Update();
                 Go(tab1);
                 break;
             case 1:

@@ -59,6 +59,11 @@
                 Width="100"
                 Height="25"
                 Content="{setting:Localize MainWindow.Flyouts.Button6}" />
+            <Button
+                Name="Button10"
+                Width="100"
+                Height="25"
+                Content="{setting:Localize MainWindow.Flyouts.Button7}" />
         </StackPanel>
     </Grid>
 </UserControl>

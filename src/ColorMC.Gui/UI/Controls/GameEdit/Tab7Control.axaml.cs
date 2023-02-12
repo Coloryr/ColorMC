@@ -5,6 +5,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using System;
 using System.Timers;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -12,7 +15,6 @@ public partial class Tab7Control : UserControl
 {
     private GameEditWindow Window;
     private GameSettingObj Obj;
-    private ScrollViewer? scroll;
 
     private string temp = "";
     private Timer timer;
@@ -21,10 +23,32 @@ public partial class Tab7Control : UserControl
     {
         InitializeComponent();
 
-        timer = new(TimeSpan.FromMilliseconds(1000));
+        timer = new(TimeSpan.FromMilliseconds(100));
         timer.BeginInit();
         timer.Elapsed += Timer_Elapsed;
         timer.EndInit();
+
+        CheckBox1.Click += CheckBox1_Click;
+
+        Button1.Click += Button1_Click;
+
+        TextEditor1.PointerWheelChanged += TextEditor1_PointerWheelChanged;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.StopGame(Obj);
+        Button1.IsEnabled = false;
+    }
+
+    private void CheckBox1_Click(object? sender, RoutedEventArgs e)
+    {
+        TextEditor1.WordWrap = CheckBox1.IsChecked == true;
+    }
+
+    private void TextEditor1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        CheckBox2.IsChecked = false;
     }
 
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
@@ -35,50 +59,23 @@ public partial class Tab7Control : UserControl
             {
                 if (!string.IsNullOrWhiteSpace(temp))
                 {
-                    TextBox1.Text += temp;
+                    TextEditor1.AppendText(temp);
                     temp = "";
                 }
             }
-            if (scroll == null)
+
+            if (CheckBox2.IsChecked == true)
             {
-                scroll = TextBox1.FindToEnd<ScrollViewer>();
-                if (scroll != null)
-                {
-                    scroll.ScrollChanged += Scroll_ScrollChanged;
-                }
-            }
-            else
-            {
-                if (CheckBox1.IsChecked == true)
-                {
-                    scroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
-                }
-                else
-                {
-                    scroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-                }
-                if (CheckBox2.IsChecked == true)
-                {
-                    scroll.ScrollToEnd();
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        CheckBox2.IsChecked = true;
-                    });
-                }
+                TextEditor1.ScrollToLine(TextEditor1.LineCount);            
             }
         });
-    }
-
-    private void Scroll_ScrollChanged(object? sender, ScrollChangedEventArgs e)
-    {
-        CheckBox2.IsChecked = false;
     }
 
     public void Clear()
     {
         Dispatcher.UIThread.Post(() =>
         {
-            TextBox1.Text = "";
+            TextEditor1.Text = "";
         });
     }
 
@@ -108,7 +105,8 @@ public partial class Tab7Control : UserControl
     {
         if (Obj == null)
             return;
+
+        Button1.IsEnabled = true;
     }
 }
-
 

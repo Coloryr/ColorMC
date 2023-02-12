@@ -42,8 +42,8 @@ public partial class Flyouts3Control : UserControl
 
 public class GameEditFlyout3 : FlyoutBase
 {
-    private ResourcepackDisplayObj Obj;
-    private Tab8Control Con;
+    private readonly ResourcepackDisplayObj Obj;
+    private readonly Tab8Control Con;
     public GameEditFlyout3(Tab8Control con, ResourcepackDisplayObj obj)
     {
         Con = con;

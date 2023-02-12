@@ -17,7 +17,7 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 public partial class Tab10Control : UserControl
 {
     private readonly ObservableCollection<ServerInfoObj> List = new();
-    private GameEditWindow Window;
+    private IBaseWindow Window;
     private GameSettingObj Obj;
 
     public Tab10Control()
@@ -126,7 +126,7 @@ public partial class Tab10Control : UserControl
         Load();
     }
 
-    public void SetWindow(GameEditWindow window)
+    public void SetWindow(IBaseWindow window)
     {
         Window = window;
     }

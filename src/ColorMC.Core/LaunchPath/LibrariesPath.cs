@@ -63,10 +63,12 @@ public static class LibrariesPath
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
                 FileShare.Read);
             var sha1 = Funtcions.GenSha1(stream);
-            if (item.SHA1 != sha1)
+            if (!string.IsNullOrWhiteSpace(item.SHA1)
+            && item.SHA1 != sha1)
             {
                 list.Add(item);
             }
+
             item.Later?.Invoke(stream);
 
             return ValueTask.CompletedTask;

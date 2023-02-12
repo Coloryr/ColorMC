@@ -41,8 +41,8 @@ public partial class Flyouts4Control : UserControl
 
 public class GameEditFlyout4 : FlyoutBase
 {
-    private ScreenshotDisplayObj Obj;
-    private Tab9Control Con;
+    private readonly ScreenshotDisplayObj Obj;
+    private readonly Tab9Control Con;
     public GameEditFlyout4(Tab9Control con, ScreenshotDisplayObj obj)
     {
         Con = con;

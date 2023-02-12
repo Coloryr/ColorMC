@@ -119,7 +119,10 @@ public static class ForgeHelper
             //list.Add(BuildForgeLauncher(mc, version));
             //list.Add(BuildForgeInster(mc, version));
             //list.Add(BuildForgeClient(mc, version));
-            //list.Add(BuildForgeUniversal(mc, version));
+        }
+        else
+        {
+            list.Add(BuildForgeUniversal(mc, version));
         }
 
         foreach (var item1 in info.libraries)

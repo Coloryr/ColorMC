@@ -23,6 +23,7 @@ namespace ColorMC.Gui.UIBinding;
 public static class BaseBinding
 {
     public readonly static Dictionary<Process, GameSettingObj> Games = new();
+    public readonly static Dictionary<string, Process> RunGames = new();
     public static bool ISNewStart
     {
         get
@@ -80,6 +81,19 @@ public static class BaseBinding
         DownloadManager.Stop();
     }
 
+    public static bool IsGameRun(GameSettingObj obj)
+    {
+        return RunGames.ContainsKey(obj.Name);
+    }
+
+    public static void StopGame(GameSettingObj obj)
+    {
+        if (RunGames.TryGetValue(obj.Name, out var item))
+        {
+            Task.Run(item.Kill);
+        }
+    }
+
     public static async Task<bool> Launch(GameSettingObj obj, LoginObj obj1)
     {
         if (Games.ContainsValue(obj))
@@ -113,15 +127,23 @@ public static class BaseBinding
             {
                 UserBinding.RemoveLockUser(obj1);
                 string temp = Localizer.Instance["Error6"];
-                if (e is LaunchException launch && launch.Ex != null)
+                if (e.InnerException is LaunchException launch)
                 {
-                    Logs.Error(temp, launch.Ex);
-                    CoreMain.OnError?.Invoke(temp, launch.Ex, false);
+                    if (launch.Ex != null)
+                    {
+                        Logs.Error(temp, launch.Ex);
+                        App.ShowError(temp, launch.Ex);
+                    }
+                    else
+                    {
+                        Logs.Error(temp, launch);
+                        App.ShowError(temp, launch);
+                    }
                 }
                 else
                 {
                     Logs.Error(temp, e);
-                    CoreMain.OnError?.Invoke(temp, e, false);
+                    App.ShowError(temp, e, false);
                 }
                 return null;
             }
@@ -132,6 +154,7 @@ public static class BaseBinding
             UserBinding.AddLockUser(obj1);
             res.Exited += (a, b) =>
             {
+                RunGames.Remove(obj.Name);
                 UserBinding.RemoveLockUser(obj1);
                 if (Games.Remove(res, out var obj2))
                 {
@@ -158,6 +181,7 @@ public static class BaseBinding
                 res.Dispose();
             };
             Games.Add(res, obj);
+            RunGames.Add(obj.Name, res);
         }
 
         CoreMain.DownloaderUpdate = DownloaderUpdate;
