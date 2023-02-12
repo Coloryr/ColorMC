@@ -67,8 +67,8 @@ public partial class Flyouts1Control : UserControl
 
 public class GameEditFlyout1 : FlyoutBase
 {
-    private ModDisplayObj Obj;
-    private Tab4Control Con;
+    private readonly ModDisplayObj Obj;
+    private readonly Tab4Control Con;
     public GameEditFlyout1(Tab4Control con, ModDisplayObj obj)
     {
         Con = con;

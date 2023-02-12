@@ -3,6 +3,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using System.Linq;
 
 namespace ColorMC.Core.Net.Download;
 
@@ -15,6 +16,7 @@ public static class GameHelper
     public static List<DownloadItem> MakeGameLibs(GameArgObj obj)
     {
         var list = new List<DownloadItem>();
+        var list1 = new List<string>();
         foreach (var item1 in obj.libraries)
         {
             bool download = CheckRule.CheckAllow(item1.rules);
@@ -23,6 +25,9 @@ public static class GameHelper
 
             if (item1.downloads.artifact != null)
             {
+                if (list1.Contains(item1.downloads.artifact.sha1))
+                    continue;
+
                 list.Add(new()
                 {
                     Name = item1.name,
@@ -30,6 +35,8 @@ public static class GameHelper
                     Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
                     SHA1 = item1.downloads.artifact.sha1
                 });
+
+                list1.Add(item1.downloads.artifact.sha1);
             }
 
             if (item1.downloads.classifiers != null)
@@ -59,6 +66,9 @@ public static class GameHelper
 
                 if (lib != null)
                 {
+                    if (list1.Contains(lib.sha1))
+                        continue;
+
                     list.Add(new()
                     {
                         Name = item1.name + "-native" + SystemInfo.Os,
@@ -67,6 +77,8 @@ public static class GameHelper
                         SHA1 = lib.sha1,
                         Later = (test) => ForgeHelper.UnpackNative(obj.id, test)
                     });
+
+                    list1.Add(lib.sha1);
                 }
             }
         }

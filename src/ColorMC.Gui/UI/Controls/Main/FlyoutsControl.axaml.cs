@@ -25,6 +25,13 @@ public partial class FlyoutsControl : UserControl
         Button7.Click += Button7_Click;
         Button8.Click += Button8_Click;
         Button9.Click += Button9_Click;
+        Button10.Click += Button10_Click;
+    }
+
+    private void Button10_Click(object? sender, RoutedEventArgs e)
+    {
+        FlyoutBase.Hide();
+        BaseBinding.StopGame(Obj.Obj);
     }
 
     private async void Button9_Click(object? sender, RoutedEventArgs e)
@@ -87,6 +94,19 @@ public partial class FlyoutsControl : UserControl
         Obj = obj;
         FlyoutBase = fb;
         Win = win;
+
+        var run = BaseBinding.IsGameRun(obj.Obj);
+        if (run)
+        {
+            Button1.IsEnabled = false;
+            Button6.IsEnabled = false;
+            Button8.IsEnabled = false;
+            Button10.IsEnabled = true;
+        }
+        else
+        {
+            Button10.IsEnabled = false;
+        }
     }
 }
 

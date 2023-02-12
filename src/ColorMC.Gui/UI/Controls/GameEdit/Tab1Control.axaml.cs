@@ -14,7 +14,7 @@ public partial class Tab1Control : UserControl
     private readonly ObservableCollection<string> List = new();
     private readonly ObservableCollection<string> List1 = new();
     private readonly ObservableCollection<string> List2 = new();
-    private GameEditWindow Window;
+    private IBaseWindow Window;
     private GameSettingObj Obj;
     public Tab1Control()
     {
@@ -35,12 +35,23 @@ public partial class Tab1Control : UserControl
 
         Button_Set.Click += Button_Set_Click;
 
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+
         ComboBox1.Items = List;
         ComboBox2.Items = List1;
         ComboBox3.Items = List2;
     }
 
-    public void SetWindow(GameEditWindow window)
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        ComboBox2.SelectedItem = null;
+        List1.Clear();
+        CheckBox_Forge.IsChecked = false;
+        CheckBox_Fabric.IsChecked = false;
+        CheckBox_Quilt.IsChecked = false;
+    }
+
+    public void SetWindow(IBaseWindow window)
     {
         Window = window;
     }
@@ -305,6 +316,14 @@ public partial class Tab1Control : UserControl
             List1.Clear();
             List1.Add(Obj.LoaderVersion);
             ComboBox2.SelectedItem = Obj.LoaderVersion;
+        }
+        if (BaseBinding.IsGameRun(Obj))
+        {
+            Button5.IsEnabled = false;
+        }
+        else
+        {
+            Button5.IsEnabled = true;
         }
     }
 }

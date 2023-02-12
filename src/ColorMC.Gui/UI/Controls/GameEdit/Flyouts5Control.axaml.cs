@@ -33,8 +33,8 @@ public partial class Flyouts5Control : UserControl
 
 public class GameEditFlyout5 : FlyoutBase
 {
-    private ServerInfoObj Obj;
-    private Tab10Control Con;
+    private readonly ServerInfoObj Obj;
+    private readonly Tab10Control Con;
     public GameEditFlyout5(Tab10Control con, ServerInfoObj obj)
     {
         Con = con;

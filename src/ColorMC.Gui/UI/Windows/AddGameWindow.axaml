@@ -24,8 +24,7 @@
             Name="Head"
             Title="{setting:Localize AddGameWindow.Title}"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
-            Min="False" />
+            VerticalAlignment="Top" />
         <Grid Name="Grid1" Margin="0,35,0,0">
             <Image
                 Name="Image_Back"

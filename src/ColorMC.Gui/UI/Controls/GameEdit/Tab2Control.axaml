@@ -28,7 +28,7 @@
                         Content="{setting:Localize GameEditWindow.Tab2.Text22}" />
                     <ComboBox
                         Name="ComboBox2"
-                        Width="200"
+                        Width="400"
                         Margin="5" />
                 </StackPanel>
                 <TextBox

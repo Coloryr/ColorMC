@@ -48,8 +48,8 @@ public partial class Flyouts2Control : UserControl
 
 public class GameEditFlyout2 : FlyoutBase
 {
-    private WorldDisplayObj Obj;
-    private Tab5Control Con;
+    private readonly WorldDisplayObj Obj;
+    private readonly Tab5Control Con;
     public GameEditFlyout2(Tab5Control con, WorldDisplayObj obj)
     {
         Con = con;

@@ -10,14 +10,11 @@ public static class UrlHelper
     private static readonly string[] originServers =
       { "https://launchermeta.mojang.com/", "https://launcher.mojang.com/", "https://piston-data.mojang.com" };
 
-    private static readonly string[] originServers1 =
-      { "https://libraries.minecraft.net/"};
+    private static readonly string originServers1 = "https://libraries.minecraft.net/";
 
-    private static readonly string[] originServers2 =
-      { "https://maven.minecraftforge.net/"};
+    private static readonly string originServers2 = "https://maven.minecraftforge.net/";
 
-    private static readonly string[] originServers3 =
-      { "https://maven.fabricmc.net/"};
+    private static readonly string originServers3 = "https://maven.fabricmc.net/";
 
     /// <summary>
     /// 游戏版本
@@ -72,10 +69,7 @@ public static class UrlHelper
             return url;
         }
 
-        foreach (var item in originServers1)
-        {
-            url = url.Replace(item, to);
-        }
+        url = url.Replace(originServers1, to);
 
         return url;
     }
@@ -126,10 +120,7 @@ public static class UrlHelper
             return url;
         }
 
-        foreach (var item in originServers2)
-        {
-            url = url.Replace(item, to);
-        }
+        url = url.Replace(originServers2, to);
 
         return url;
     }
@@ -263,5 +254,16 @@ public static class UrlHelper
             SourceLocal.MCBBS => $"{MCBBS}/forge/minecraft/",
             _ => "https://files.minecraftforge.net/net/minecraftforge/forge/index_"
         };
+    }
+
+    public static string UrlChange(string old)
+    {
+        if (old.StartsWith("https://maven.minecraftforge.net"))
+        {
+            return old.Replace("https://maven.minecraftforge.net",
+                $"{BMCLAPI}maven");
+        }
+
+        return old;
     }
 }

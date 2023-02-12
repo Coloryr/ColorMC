@@ -32,7 +32,7 @@
                 BorderBrush="{setting:Colors Main}"
                 BorderThickness="2"
                 CornerRadius="0"
-                FontSize="12"
+                FontSize="14"
                 IsReadOnly="True"
                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
                 TextWrapping="Wrap" />

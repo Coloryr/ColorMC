@@ -289,6 +289,8 @@ public class DownloadThread
                         item.Update?.Invoke(index);
                         time++;
                         DownloadManager.Error(index, item, e);
+
+                        item.Url = UrlHelper.UrlChange(item.Url);
                     }
                     finally
                     {
