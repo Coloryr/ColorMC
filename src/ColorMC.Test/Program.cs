@@ -24,6 +24,7 @@ internal class Program
         CoreMain.ProcessLog = Log;
         CoreMain.LoginOAuthCode = Login;
         CoreMain.AuthStateUpdate = AuthStateUpdate;
+        CoreMain.GameLog = Log;
 
         TestItem.Item10();
 
@@ -50,6 +51,11 @@ internal class Program
         });
     }
 
+    public static void Log(GameSettingObj obj, string? log)
+    {
+        Console.WriteLine(log);
+    }
+
     public static void Log(Process? progress, string? log)
     {
         Console.WriteLine(log);
@@ -62,7 +68,10 @@ internal class Program
 
     public static void Update(int index, DownloadItem item)
     {
-        Console.WriteLine($"下载器{index} 下载项目:{item.Name} {item.AllSize}/{item.NowSize}");
+        if(item.State == DownloadItemState.Error)
+        {
+            Console.WriteLine($"下载器{index} 下载项目:{item.Name} 下载错误");
+        }
     }
 
     public static void Update(CoreRunState item)

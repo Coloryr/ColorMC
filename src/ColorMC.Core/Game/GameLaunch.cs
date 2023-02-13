@@ -231,7 +231,7 @@ public static class Launch
             CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
             if (obj.Loader == Loaders.Forge)
             {
-                var list3 = await LibrariesPath.CheckForge(obj);
+                var list3 = LibrariesPath.CheckForge(obj);
                 if (list3 == null)
                 {
                     CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
@@ -897,7 +897,7 @@ public static class Launch
                 {"${auth_access_token}",login.AccessToken },
                 {"${game_assets}",assetsPath },
                 {"${user_properties}", "{}" },
-                {"${user_type}", "legacy" },
+                {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "legacy" },
                 {"${version_type}", "ColorMC" },
                 {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
                 {"${library_directory}",LibrariesPath.BaseDir },

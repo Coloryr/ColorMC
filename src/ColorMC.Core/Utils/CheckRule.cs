@@ -83,4 +83,10 @@ public static class CheckRule
         Version version1 = new(version);
         return version1.Minor > 12;
     }
+
+    public static bool GameLaunchVersion117(string version)
+    {
+        Version version1 = new(version);
+        return version1.Minor >= 17;
+    }
 }

@@ -261,7 +261,7 @@ public static class UrlHelper
         if (old.StartsWith("https://maven.minecraftforge.net"))
         {
             return old.Replace("https://maven.minecraftforge.net",
-                $"{BMCLAPI}maven");
+                $"https://repo1.maven.org/maven2");
         }
 
         return old;
