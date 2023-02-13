@@ -256,14 +256,28 @@ public static class UrlHelper
         };
     }
 
-    public static string UrlChange(string old)
+    public static (bool, string?) UrlChange(string old)
     {
-        if (old.StartsWith("https://maven.minecraftforge.net"))
+        var random = new Random();
+        if (BaseClient.Source == SourceLocal.Offical)
         {
-            return old.Replace("https://maven.minecraftforge.net",
-                $"https://repo1.maven.org/maven2");
+            if (old.StartsWith(originServers2))
+            {
+                return (true, old.Replace(originServers2,
+                    random.Next() % 2 == 0 ? $"{BMCLAPI}/maven" : $"{MCBBS}/maven"));
+            }
+            else if (old.StartsWith(originServers1))
+            {
+                return (true, old.Replace(originServers1,
+                   random.Next() % 2 == 0 ? $"{BMCLAPI}/maven" : $"{MCBBS}/maven"));
+            }
+            else if (old.StartsWith(originServers3))
+            {
+                return (true, old.Replace(originServers3,
+                   random.Next() % 2 == 0 ? $"{BMCLAPI}/maven" : $"{MCBBS}/maven"));
+            }
         }
 
-        return old;
+        return (false, null);
     }
 }

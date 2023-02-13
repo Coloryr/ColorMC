@@ -29,13 +29,15 @@ public static class UserBinding
     public static Bitmap? HeadBitmap { get; private set; }
     public static List<string> GetUserTypes()
     {
-        var list = new List<string>();
-        Array values = Enum.GetValues(typeof(AuthType));
-        foreach (AuthType value in values)
+        var list = new List<string>()
         {
-            list.Add(value.GetName());
-        }
-
+            AuthType.Offline.GetName(),
+            AuthType.OAuth.GetName(),
+            AuthType.Nide8.GetName(),
+            AuthType.AuthlibInjector.GetName(),
+            AuthType.LittleSkin.GetName(),
+            AuthType.SelfLittleSkin.GetName()
+        };
         return list;
     }
 
@@ -239,12 +241,13 @@ public static class UserBinding
 
     public static List<string> GetSkinType()
     {
-        var list = new List<string>();
-        Array values = Enum.GetValues(typeof(SkinType));
-        foreach (SkinType value in values)
+        var list = new List<string>()
         {
-            list.Add(value.GetName());
-        }
+            SkinType.Old.GetName(),
+            SkinType.New.GetName(),
+            SkinType.NewSlim.GetName(),
+            SkinType.Unkonw.GetName(),
+        };
 
         return list;
     }

@@ -281,7 +281,7 @@ public partial class SkinWindow : Window
     {
         if (ComboBox1.SelectedIndex == (int)Skin.steveModelType)
             return;
-        if (ComboBox1.SelectedIndex == (int)SkinType.UNKNOWN)
+        if (ComboBox1.SelectedIndex == (int)SkinType.Unkonw)
         {
             Info.Show(Localizer.Instance["SkinWindow.Info1"]);
             ComboBox1.SelectedIndex = (int)Skin.steveModelType;
@@ -370,7 +370,7 @@ public class SkinRender : Control
                         //90 -90
                         Leg.Y = 90 - (frame * 3);
                         //-30 30
-                        if (Render.steveModelType == SkinType.New_Slim)
+                        if (Render.steveModelType == SkinType.NewSlim)
                         {
                             Head.Z = 0;
                             Head.X = frame - 30;
@@ -390,7 +390,7 @@ public class SkinRender : Control
                         //-90 90
                         Leg.Y = (frame * 3) - 270;
                         //30 -30
-                        if (Render.steveModelType == SkinType.New_Slim)
+                        if (Render.steveModelType == SkinType.NewSlim)
                         {
                             Head.Z = 0;
                             Head.X = 90 - frame;
@@ -712,7 +712,7 @@ void main()
         }
 
         steveModelType = SkinUtil.GetTextType(UserBinding.SkinImage);
-        if (steveModelType == SkinType.UNKNOWN)
+        if (steveModelType == SkinType.Unkonw)
         {
             HaveSkin = false;
             Dispatcher.UIThread.Post(() =>
@@ -987,7 +987,7 @@ void main()
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
                  DrawElementsType.UnsignedShort, IntPtr.Zero);
 
-        if (steveModelType == SkinType.New_Slim)
+        if (steveModelType == SkinType.NewSlim)
         {
             model = Matrix4.CreateTranslation(CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
                 Matrix4.CreateRotationZ((Animation ? skina.Arm.X : ArmRotate.X) / 360) *
@@ -1009,7 +1009,7 @@ void main()
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
                 DrawElementsType.UnsignedShort, IntPtr.Zero);
 
-        if (steveModelType == SkinType.New_Slim)
+        if (steveModelType == SkinType.NewSlim)
         {
             model = Matrix4.CreateTranslation(-CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
                 Matrix4.CreateRotationZ((Animation ? -skina.Arm.X : -ArmRotate.X) / 360) *
@@ -1077,7 +1077,7 @@ void main()
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
                  DrawElementsType.UnsignedShort, IntPtr.Zero);
 
-        if (steveModelType == SkinType.New_Slim)
+        if (steveModelType == SkinType.NewSlim)
         {
             model = Matrix4.CreateTranslation(CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
                 Matrix4.CreateRotationZ((Animation ? skina.Arm.X : ArmRotate.X) / 360) *
@@ -1099,7 +1099,7 @@ void main()
         GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
                 DrawElementsType.UnsignedShort, IntPtr.Zero);
 
-        if (steveModelType == SkinType.New_Slim)
+        if (steveModelType == SkinType.NewSlim)
         {
             model = Matrix4.CreateTranslation(-CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
                 Matrix4.CreateRotationZ((Animation ? -skina.Arm.X : -ArmRotate.X) / 360) *

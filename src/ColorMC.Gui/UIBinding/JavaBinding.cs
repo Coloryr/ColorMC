@@ -90,13 +90,14 @@ public static class JavaBinding
 
     public static List<string> GetGCTypes()
     {
-        var list = new List<string>();
-        Array values = Enum.GetValues(typeof(GCType));
-        foreach (GCType value in values)
+        var list = new List<string>()
         {
-            list.Add(value.GetName());
-        }
-
+            GCType.G1GC.GetName(),
+            GCType.SerialGC.GetName(),
+            GCType.ParallelGC.GetName(),
+            GCType.CMSGC.GetName(),
+            GCType.User.GetName()
+        };
         return list;
     }
 

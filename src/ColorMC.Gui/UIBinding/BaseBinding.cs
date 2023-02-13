@@ -94,11 +94,11 @@ public static class BaseBinding
         }
     }
 
-    public static async Task<bool> Launch(GameSettingObj obj, LoginObj obj1)
+    public static async Task<(bool, string?)> Launch(GameSettingObj obj, LoginObj obj1)
     {
         if (Games.ContainsValue(obj))
         {
-            return false;
+            return (false, Localizer.Instance["GameBinding.Error4"]);
         }
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
             !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
@@ -117,6 +117,8 @@ public static class BaseBinding
 
         CoreMain.DownloaderUpdate = DownloaderUpdateOnThread;
 
+        string? temp = null;
+
         var res = await Task.Run(() =>
         {
             try
@@ -126,9 +128,9 @@ public static class BaseBinding
             catch (Exception e)
             {
                 UserBinding.RemoveLockUser(obj1);
-                string temp = Localizer.Instance["Error6"];
                 if (e.InnerException is LaunchException launch)
                 {
+                    temp = launch.Message;
                     if (launch.Ex != null)
                     {
                         Logs.Error(temp, launch.Ex);
@@ -136,12 +138,12 @@ public static class BaseBinding
                     }
                     else
                     {
-                        Logs.Error(temp, launch);
-                        App.ShowError(temp, launch);
+                        temp = launch.Message;
                     }
                 }
                 else
                 {
+                    temp = Localizer.Instance["Error6"];
                     Logs.Error(temp, e);
                     App.ShowError(temp, e, false);
                 }
@@ -186,7 +188,7 @@ public static class BaseBinding
 
         CoreMain.DownloaderUpdate = DownloaderUpdate;
 
-        return res != null;
+        return (res != null, temp);
     }
 
     public static void DownloaderUpdateOnThread(CoreRunState state)

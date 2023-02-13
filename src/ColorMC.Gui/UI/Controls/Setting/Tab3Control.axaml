@@ -87,6 +87,8 @@
                     Content="{setting:Localize SettingWindow.Tab3.Text11}" />
 
             </StackPanel>
+
+            <Label Margin="5" Content="{setting:Localize SettingWindow.Tab3.Text12}" />
         </StackPanel>
 
         <Button

@@ -53,6 +53,7 @@ public partial class HeadControl : UserControl
         DataContext = this;
 
         Rectangle1.PointerPressed += HeadControl_PointerPressed;
+        TitleShow.PointerPressed += HeadControl_PointerPressed;
 
         Button_Min.Click += ButtonMin_Click;
         Button_Max.Click += ButtonMax_Click;

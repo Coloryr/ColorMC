@@ -14,8 +14,7 @@
     <Authors>Coloryr</Authors>
     <Company>Coloryr</Company>
     <Product>ColorMC</Product>
-	  <!--<PublishAot>true</PublishAot>-->
-	  <Title>ColorMC</Title>
+	<Title>ColorMC</Title>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>portable</DebugType>

@@ -25,8 +25,8 @@ public class Steve3DTexture
         if (type != SkinType.Old)
         {
             tex.Body = GetTex(BodyTex, type, 16f, 32f);
-            tex.LeftArm = GetTex(type == SkinType.New_Slim ? SlimArmTex : LegArmTex, type, 48f, 48f);
-            tex.RightArm = GetTex(type == SkinType.New_Slim ? SlimArmTex : LegArmTex, type, 40f, 32f);
+            tex.LeftArm = GetTex(type == SkinType.NewSlim ? SlimArmTex : LegArmTex, type, 48f, 48f);
+            tex.RightArm = GetTex(type == SkinType.NewSlim ? SlimArmTex : LegArmTex, type, 40f, 32f);
             tex.LeftLeg = GetTex(LegArmTex, type, 0f, 48f);
             tex.RightLeg = GetTex(LegArmTex, type, 0f, 32f);
         };
@@ -52,8 +52,8 @@ public class Steve3DTexture
         }
         else
         {
-            tex.LeftArm = GetTex(type == SkinType.New_Slim ? SlimArmTex : LegArmTex, type, 32f, 48f);
-            tex.RightArm = GetTex(type == SkinType.New_Slim ? SlimArmTex : LegArmTex, type, 40f, 16f);
+            tex.LeftArm = GetTex(type == SkinType.NewSlim ? SlimArmTex : LegArmTex, type, 32f, 48f);
+            tex.RightArm = GetTex(type == SkinType.NewSlim ? SlimArmTex : LegArmTex, type, 40f, 16f);
             tex.LeftLeg = GetTex(LegArmTex, type, 0f, 16f);
             tex.RightLeg = GetTex(LegArmTex, type, 16f, 48f);
         }
