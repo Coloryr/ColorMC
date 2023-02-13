@@ -88,12 +88,9 @@ public partial class App : Application
 
             ShowCustom();
 
-            if (GuiConfigUtils.Config != null &&
+            if (GuiConfigUtils.Config != null)
                 await LoadImage(GuiConfigUtils.Config.BackImage,
-                    GuiConfigUtils.Config.BackEffect))
-            {
-                OnPicUpdate();
-            }
+                    GuiConfigUtils.Config.BackEffect);
         }
         catch (Exception e)
         {
@@ -157,17 +154,16 @@ public partial class App : Application
         BackBitmap = null;
     }
 
-    public static async Task<bool> LoadImage(string file, int eff)
+    public static async Task LoadImage(string file, int eff)
     {
         RemoveImage();
 
         if (!string.IsNullOrWhiteSpace(file) && File.Exists(file))
         {
             BackBitmap = await ImageUtils.MakeImageSharp(file, eff);
-            return BackBitmap != null;
         }
 
-        return false;
+        OnPicUpdate();
     }
 
     public static void DownloaderUpdate(CoreRunState state)
