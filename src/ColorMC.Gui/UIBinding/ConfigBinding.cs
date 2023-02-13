@@ -70,11 +70,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.BackImage = dir;
         GuiConfigUtils.Save();
 
-        if (!await App.LoadImage(dir, data))
-        {
-            App.RemoveImage();
-            return;
-        }
+        await App.LoadImage(dir, data);
 
         App.OnPicUpdate();
     }
