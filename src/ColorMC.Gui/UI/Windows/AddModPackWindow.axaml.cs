@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
+using Avalonia.Input;
+using ColorMC.Gui.UI.Controls.Add;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -167,12 +169,23 @@ public partial class AddModPackWindow : Window, IBase1Window
             var control = List[a];
             control.SetWindow(this);
             control.Load(item);
+            control.PointerPressed += Control_PointerPressed;
             ListBox_Items.Children.Add(control);
             a++;
         }
 
         ScrollViewer1.ScrollToHome();
         Info1.Close();
+    }
+
+    private void Control_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        {
+            if (sender is not CurseForgeControl item)
+                return;
+            new UrlFlyout(item.Data.links.websiteUrl).ShowAt(item, true);
+        }
     }
 
     private async void Load1()
