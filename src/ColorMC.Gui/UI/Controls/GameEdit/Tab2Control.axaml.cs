@@ -32,9 +32,20 @@ public partial class Tab2Control : UserControl
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
 
+        Input1.PropertyChanged += Input1_PropertyChanged;
+
         ComboBox1.Items = JavaBinding.GetGCTypes();
 
         TextBox11.PropertyChanged += TextBox11_TextInput;
+    }
+
+    private void Input1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Value")
+        {
+            GameBinding.SetGameJvmMemArg(Obj, (uint)Input1.Value, (uint)Input2.Value);
+            Window.Info2.Show(Localizer.Instance["Info3"]);
+        }
     }
 
     private void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)

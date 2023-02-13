@@ -130,7 +130,7 @@ public static class DownloadManager
 
         CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.End);
 
-        return AllSize == DoneSize;
+        return AllSize <= DoneSize;
     }
 
     /// <summary>

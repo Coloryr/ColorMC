@@ -348,6 +348,14 @@ public static class GameBinding
         obj.Save();
     }
 
+    public static void SetGameJvmMemArg(GameSettingObj obj, uint min, uint max)
+    {
+        obj.JvmArg ??= new();
+        obj.JvmArg.MinMemory = min;
+        obj.JvmArg.MaxMemory = max;
+        obj.Save();
+    }
+
     public static void SetGameJvmArg(GameSettingObj obj, JvmArgObj obj1)
     {
         obj.JvmArg = obj1;
