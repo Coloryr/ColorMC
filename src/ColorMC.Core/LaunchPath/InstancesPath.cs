@@ -144,7 +144,6 @@ public static class InstancesPath
                 if (game != null)
                 {
                     game.ReadCurseForgeMod();
-                    game.CurseForgeMods ??= new();
                     AddToGroup(game);
                 }
             }
@@ -558,14 +557,25 @@ public static class InstancesPath
         string file = obj.GetCurseForgeModJsonFile();
         if (!File.Exists(file))
         {
+            obj.CurseForgeMods = new();
             return;
         }
 
-        obj.CurseForgeMods = JsonConvert.DeserializeObject<Dictionary<long, CurseForgeModObj1>>(
-            File.ReadAllText(file)) ?? new();
+        var res = JsonConvert.DeserializeObject<Dictionary<long, CurseForgeModObj1>>(
+            File.ReadAllText(file));
+        if (res == null)
+        {
+            obj.CurseForgeMods = new();
+        }
+        else
+        {
+            obj.CurseForgeMods = res;
+        }
 
         if (obj.ModPack)
+        {
             return;
+        }
 
         var list = PathC.GetAllFile(obj.GetModsPath());
         var remove = new List<long>();

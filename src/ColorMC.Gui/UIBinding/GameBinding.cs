@@ -124,12 +124,17 @@ public static class GameBinding
 
     public static List<string> GetCurseForgeTypes()
     {
-        var list = new List<string>();
-        Array values = Enum.GetValues(typeof(SortField));
-        foreach (SortField value in values)
+        var list = new List<string>()
         {
-            list.Add(value.GetName());
-        }
+            SortField.Featured.GetName(),
+            SortField.Popularity.GetName(),
+            SortField.LastUpdated.GetName(),
+            SortField.Name.GetName(),
+            SortField.Author.GetName(),
+            SortField.TotalDownloads.GetName(),
+            SortField.Category.GetName(),
+            SortField.GameVersion.GetName()
+        };
 
         return list;
     }
@@ -221,8 +226,8 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            Logs.Error("保存图标错误", e);
-            App.ShowError("保存图标错误", e);
+            Logs.Error(Localizer.Instance["GameBinding.Error5"], e);
+            App.ShowError(Localizer.Instance["GameBinding.Error5"], e);
             return false;
         }
     }
@@ -233,11 +238,11 @@ public static class GameBinding
         {
             var file = await win.StorageProvider.OpenFilePickerAsync(new()
             {
-                Title = "设置游戏实例图标",
+                Title = Localizer.Instance["GameBinding.Info2"],
                 AllowMultiple = false,
                 FileTypeFilter = new List<FilePickerFileType>()
             {
-                new("图标")
+                new(Localizer.Instance["GameBinding.Info3"])
                 {
                      Patterns = new List<string>()
                      {
@@ -255,7 +260,7 @@ public static class GameBinding
                 var info = await Image.IdentifyAsync(name);
                 if (info.Width != info.Height || info.Width > 200 || info.Height > 200)
                 {
-                    (win as IBaseWindow)?.Info.Show("不允许的图片尺寸");
+                    (win as IBaseWindow)?.Info.Show(Localizer.Instance["GameBinding.Erro65"]);
                     return;
                 }
                 var data = await File.ReadAllBytesAsync(name);
@@ -264,8 +269,8 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            Logs.Error("保存图标错误", e);
-            App.ShowError("保存图标错误", e);
+            Logs.Error(Localizer.Instance["GameBinding.Error5"], e);
+            App.ShowError(Localizer.Instance["GameBinding.Error5"], e);
         }
     }
 
@@ -304,9 +309,7 @@ public static class GameBinding
             App.ShowGameEdit(obj, 6);
         }
 
-        var res1 = await BaseBinding.Launch(obj, login);
-
-        return (res1, null);
+        return await BaseBinding.Launch(obj, login);
     }
 
     public static bool AddGameGroup(string name)

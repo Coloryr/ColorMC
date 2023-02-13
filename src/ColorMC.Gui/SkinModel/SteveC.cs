@@ -13,8 +13,11 @@ public enum SkinType
     /// <summary>
     /// 1.8新版纤细
     /// </summary>
-    New_Slim,
-    UNKNOWN
+    NewSlim,
+    /// <summary>
+    /// 未知的类型
+    /// </summary>
+    Unkonw
 }
 
 
@@ -52,7 +55,7 @@ public class Steve3DModel
                 Model = CubeC.GetSquare(multiplyZ: 0.5f, multiplyY: 1.5f),
                 Point = CubeC.GetSquareIndicies()
             },
-            LeftArm = modelType == SkinType.New_Slim ? new()
+            LeftArm = modelType == SkinType.NewSlim ? new()
             {
                 Model = CubeC.GetSquare(
                     multiplyX: 0.375f,
@@ -69,7 +72,7 @@ public class Steve3DModel
                 ),
                 Point = CubeC.GetSquareIndicies()
             },
-            RightArm = modelType == SkinType.New_Slim ? new()
+            RightArm = modelType == SkinType.NewSlim ? new()
             {
                 Model = CubeC.GetSquare(
                     multiplyX: 0.375f,
@@ -141,7 +144,7 @@ public class Steve3DModel
                 Point = CubeC.GetSquareIndicies()
             };
 
-            model.LeftArm = modelType == SkinType.New_Slim ? new()
+            model.LeftArm = modelType == SkinType.NewSlim ? new()
             {
                 Model = CubeC.GetSquare(
                     multiplyX: 0.375f,
@@ -161,7 +164,7 @@ public class Steve3DModel
                 Point = CubeC.GetSquareIndicies()
             };
 
-            model.RightArm = modelType == SkinType.New_Slim ? new()
+            model.RightArm = modelType == SkinType.NewSlim ? new()
             {
                 Model = CubeC.GetSquare(
                     multiplyX: 0.375f,

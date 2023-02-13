@@ -112,7 +112,7 @@ public static class OtherUtils
         {
             SkinType.Old => Localizer.Instance["SkinType.Old"],
             SkinType.New => Localizer.Instance["SkinType.New"],
-            SkinType.New_Slim => Localizer.Instance["SkinType.New_Slim"],
+            SkinType.NewSlim => Localizer.Instance["SkinType.New_Slim"],
             _ => Localizer.Instance["SkinType.Other"]
         };
     }
@@ -126,7 +126,7 @@ public static class SkinUtil
         {
             if (IsSlimSkin(image))
             {
-                return SkinType.New_Slim;
+                return SkinType.NewSlim;
             }
             else
             {
@@ -139,7 +139,7 @@ public static class SkinUtil
         }
         else
         {
-            return SkinType.UNKNOWN;
+            return SkinType.Unkonw;
         }
     }
 

@@ -79,6 +79,16 @@ public class DownloadThread
         semaphore1.Release();
     }
 
+    private void ChckPause(DownloadItem item)
+    {
+        if (pause)
+        {
+            item.State = DownloadItemState.Pause;
+            item.Update?.Invoke(index);
+            semaphore1.WaitOne();
+        }
+    }
+
     private void Run()
     {
         while (run)
@@ -89,12 +99,7 @@ public class DownloadThread
             DownloadItem? item;
             while ((item = DownloadManager.GetItem()) != null)
             {
-                if (pause)
-                {
-                    item.State = DownloadItemState.Pause;
-                    item.Update?.Invoke(index);
-                    semaphore1.WaitOne();
-                }
+                ChckPause(item);
 
                 if (cancel.IsCancellationRequested)
                     break;
@@ -108,7 +113,8 @@ public class DownloadThread
                     {
                         if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Overwrite)
                         {
-                            using FileStream stream2 = new(item.Local, FileMode.Open, FileAccess.Read, FileShare.Read);
+                            using FileStream stream2 = new(item.Local, FileMode.Open, 
+                                FileAccess.Read, FileShare.Read);
                             stream2.Seek(0, SeekOrigin.Begin);
                             string sha1 = Funtcions.GenSha1(stream2);
                             if (sha1 == item.SHA1)
@@ -126,7 +132,8 @@ public class DownloadThread
 
                         if (!string.IsNullOrWhiteSpace(item.SHA256) && !item.Overwrite)
                         {
-                            using FileStream stream2 = new(item.Local, FileMode.Open, FileAccess.Read, FileShare.Read);
+                            using FileStream stream2 = new(item.Local, FileMode.Open, 
+                                FileAccess.Read, FileShare.Read);
                             stream2.Seek(0, SeekOrigin.Begin);
                             string sha1 = Funtcions.GenSha256(stream2);
                             if (sha1 == item.SHA256)
@@ -168,12 +175,7 @@ public class DownloadThread
                 {
                     try
                     {
-                        if (pause)
-                        {
-                            item.State = DownloadItemState.Pause;
-                            item.Update?.Invoke(index);
-                            semaphore1.WaitOne();
-                        }
+                        ChckPause(item);
 
                         if (cancel.IsCancellationRequested)
                             break;
@@ -199,12 +201,7 @@ public class DownloadThread
                             stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0,
                                 bytesRead), cancel.Token).AsTask().Wait(cancel.Token);
 
-                            if (pause)
-                            {
-                                item.State = DownloadItemState.Pause;
-                                item.Update?.Invoke(index);
-                                semaphore1.WaitOne();
-                            }
+                            ChckPause(item);
 
                             if (cancel.IsCancellationRequested)
                                 break;
@@ -256,12 +253,10 @@ public class DownloadThread
                         item.State = DownloadItemState.Action;
                         item.Update?.Invoke(index);
 
-                        if (pause)
-                        {
-                            item.State = DownloadItemState.Pause;
-                            item.Update?.Invoke(index);
-                            semaphore1.WaitOne();
-                        }
+                        ChckPause(item);
+
+                        if (cancel.IsCancellationRequested)
+                            break;
 
                         //后续操作
                         item.Later?.Invoke(stream);
@@ -290,7 +285,16 @@ public class DownloadThread
                         time++;
                         DownloadManager.Error(index, item, e);
 
-                        item.Url = UrlHelper.UrlChange(item.Url);
+                        if (time == 5)
+                        {
+                            var res = UrlHelper.UrlChange(item.Url);
+                            if (res.Item1)
+                            {
+                                item.Url = res.Item2!;
+                                time = 0;
+                                continue;
+                            }
+                        }
                     }
                     finally
                     {

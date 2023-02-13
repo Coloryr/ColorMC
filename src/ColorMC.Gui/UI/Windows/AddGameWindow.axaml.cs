@@ -64,6 +64,7 @@ public partial class AddGameWindow : Window
         Closed += AddGameWindow_Closed;
 
         Load();
+        Update();
     }
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)

@@ -134,6 +134,7 @@
 	<sys:String x:Key="SettingWindow.Tab3.Text9">代理下载过程</sys:String>
 	<sys:String x:Key="SettingWindow.Tab3.Text10">代理游戏过程</sys:String>
 	<sys:String x:Key="SettingWindow.Tab3.Text11">下载后验证完整性</sys:String>
+	<sys:String x:Key="SettingWindow.Tab3.Text12">注意：默认使用系统代理，不可取消</sys:String>
 
 	<sys:String x:Key="SettingWindow.Tab4.Text1">Jvm参数设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab4.Text2">垃圾回收器设置</sys:String>
@@ -522,10 +523,14 @@
 	<sys:String x:Key="SkinWindow.Items.Item3">头部旋转</sys:String>
 
 	<sys:String x:Key="GameBinding.Info1">账户已被占用，是否继续使用这个账户</sys:String>
+	<sys:String x:Key="GameBinding.Info2">选择设置的游戏实例图标</sys:String>
+	<sys:String x:Key="GameBinding.Info3">游戏实例图标</sys:String>
 	<sys:String x:Key="GameBinding.Error1">没有选择游戏实例</sys:String>
 	<sys:String x:Key="GameBinding.Error2">没有选择账户</sys:String>
 	<sys:String x:Key="GameBinding.Error3">账户冲突</sys:String>
 	<sys:String x:Key="GameBinding.Error4">游戏已经启动了</sys:String>
+	<sys:String x:Key="GameBinding.Error5">设置图标错误</sys:String>
+	<sys:String x:Key="GameBinding.Erro65">不允许的图片尺寸</sys:String>
 
 	<sys:String x:Key="UserBinding.Error1">登录类型错误</sys:String>
 	<sys:String x:Key="UserBinding.Error2">游戏启动错误</sys:String>
