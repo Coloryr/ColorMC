@@ -1,9 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UIBinding;
@@ -102,6 +104,16 @@ public partial class AddModWindow : Window
         }
     }
 
+    private void Control_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        {
+            if (sender is not CurseForgeControl item)
+                return;
+            new UrlFlyout(item.Data.links.websiteUrl).ShowAt(item, true);
+        }
+    }
+
     private void ButtonCancel_Click(object? sender, RoutedEventArgs e)
     {
         App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
@@ -181,6 +193,7 @@ public partial class AddModWindow : Window
             var control = List[a];
             control.SetWindow(this);
             control.Load(item);
+            control.PointerPressed += Control_PointerPressed;
             ListBox_Items.Children.Add(control);
             if (Obj.CurseForgeMods.ContainsKey(item.id))
             {

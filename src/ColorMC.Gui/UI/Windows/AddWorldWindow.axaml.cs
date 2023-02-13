@@ -1,9 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UIBinding;
@@ -159,6 +161,16 @@ public partial class AddWorldWindow : Window, IBase1Window
         Last.SetSelect(true);
     }
 
+    private void Control_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        {
+            if (sender is not CurseForgeControl item)
+                return;
+            new UrlFlyout(item.Data.links.websiteUrl).ShowAt(item, true);
+        }
+    }
+
     private async void Load()
     {
         Info1.Show(Localizer.Instance["AddWorldWindow.Info2"]);
@@ -179,6 +191,7 @@ public partial class AddWorldWindow : Window, IBase1Window
             var control = List[a];
             control.SetWindow(this);
             control.Load(item);
+            control.PointerPressed += Control_PointerPressed;
             ListBox_Items.Children.Add(control);
             a++;
         }

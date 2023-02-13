@@ -107,6 +107,9 @@
     </AvaloniaXaml>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UI\Controls\Add\FlyoutsControl.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\CurseForge\CurseForge1Control.axaml.cs">
       <DependentUpon>CurseForge1Control.axaml</DependentUpon>
     </Compile>
