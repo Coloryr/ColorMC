@@ -4,12 +4,14 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using Avalonia;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
 public partial class Tab4Control : UserControl
 {
     private SettingWindow Window;
+    private bool load = false;
     public Tab4Control()
     {
         InitializeComponent();
@@ -20,7 +22,21 @@ public partial class Tab4Control : UserControl
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
+        Input1.PropertyChanged += Input_PropertyChanged;
+        Input2.PropertyChanged += Input_PropertyChanged;
+
         ComboBox1.Items = JavaBinding.GetGCTypes();
+    }
+
+    private void Input_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (e.Property.Name == "Value")
+        {
+            ConfigBinding.SetJvmArgMemConfig((uint)Input1.Value, (uint)Input2.Value);
+        }
     }
 
     private void Button_Set2_Click(object? sender, RoutedEventArgs e)
@@ -74,6 +90,7 @@ public partial class Tab4Control : UserControl
 
     public void Load()
     {
+        load = true;
         var config = ConfigBinding.GetAllConfig();
         if (config.Item1 != null)
         {
@@ -95,5 +112,7 @@ public partial class Tab4Control : UserControl
             CheckBox4.IsChecked = config.Item1.GameCheck.CheckLib;
             CheckBox5.IsChecked = config.Item1.GameCheck.CheckMod;
         }
+
+        load = false;
     }
 }

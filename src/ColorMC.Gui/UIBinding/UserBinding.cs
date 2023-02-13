@@ -212,7 +212,6 @@ public static class UserBinding
         if (file == null)
         {
             HeadBitmap = new Bitmap(asset);
-            return;
         }
         else
         {

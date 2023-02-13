@@ -226,25 +226,25 @@ public static class TestItem
         //process = game.StartGame(login).Result;
         //process?.WaitForExit();
 
-        game.Version = "1.11.2";
-        game.LoaderVersion = "13.20.1.2588";
-        process = game.StartGame(login).Result;
-        process?.WaitForExit();
+        //game.Version = "1.11.2";
+        //game.LoaderVersion = "13.20.1.2588";
+        //process = game.StartGame(login).Result;
+        //process?.WaitForExit();
 
-        game.Version = "1.12.2";
-        game.LoaderVersion = "14.23.4.2760";
-        process = game.StartGame(login).Result;
-        process?.WaitForExit();
+        //game.Version = "1.12.2";
+        //game.LoaderVersion = "14.23.4.2760";
+        //process = game.StartGame(login).Result;
+        //process?.WaitForExit();
 
-        game.Version = "1.12.2";
-        game.LoaderVersion = "14.23.5.2860";
-        process = game.StartGame(login).Result;
-        process?.WaitForExit();
+        //game.Version = "1.12.2";
+        //game.LoaderVersion = "14.23.5.2860";
+        //process = game.StartGame(login).Result;
+        //process?.WaitForExit();
 
-        game.Version = "1.13.2";
-        game.LoaderVersion = "25.0.223";
-        process = game.StartGame(login).Result;
-        process?.WaitForExit();
+        //game.Version = "1.13.2";
+        //game.LoaderVersion = "25.0.223";
+        //process = game.StartGame(login).Result;
+        //process?.WaitForExit();
 
         //game.Version = "1.14.4";
         //game.LoaderVersion = "28.2.26";
@@ -271,9 +271,15 @@ public static class TestItem
         //process = game.StartGame(login).Result;
         //process?.WaitForExit();
 
+        Stopwatch stopwatch = new();
+        stopwatch.Start();
+
         game.Version = "1.19.2";
         game.LoaderVersion = "43.1.52";
         process = game.StartGame(login).Result;
+        stopwatch.Stop();
+        Console.WriteLine(stopwatch.Elapsed);
+
         process?.WaitForExit();
     }
 

@@ -112,6 +112,15 @@ public static class ConfigBinding
         BaseClient.Init();
     }
 
+    public static void SetJvmArgMemConfig(uint min, uint max)
+    {
+        ConfigUtils.Config.DefaultJvmArg.MinMemory = min;
+        ConfigUtils.Config.DefaultJvmArg.MaxMemory = max;
+        ConfigUtils.Save();
+
+        BaseClient.Init();
+    }
+
     public static void SetWindowSettingConfig(WindowSettingObj obj)
     {
         ConfigUtils.Config.Window = obj;
