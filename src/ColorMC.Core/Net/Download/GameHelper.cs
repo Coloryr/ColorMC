@@ -25,18 +25,18 @@ public static class GameHelper
 
             if (item1.downloads.artifact != null)
             {
-                if (list1.Contains(item1.downloads.artifact.sha1))
-                    continue;
-
-                list.Add(new()
+                if (!list1.Contains(item1.downloads.artifact.sha1))
                 {
-                    Name = item1.name,
-                    Url = UrlHelper.DownloadLibraries(item1.downloads.artifact.url, BaseClient.Source),
-                    Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
-                    SHA1 = item1.downloads.artifact.sha1
-                });
+                    list.Add(new()
+                    {
+                        Name = item1.name,
+                        Url = UrlHelper.DownloadLibraries(item1.downloads.artifact.url, BaseClient.Source),
+                        Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
+                        SHA1 = item1.downloads.artifact.sha1
+                    });
 
-                list1.Add(item1.downloads.artifact.sha1);
+                    list1.Add(item1.downloads.artifact.sha1);
+                }
             }
 
             if (item1.downloads.classifiers != null)

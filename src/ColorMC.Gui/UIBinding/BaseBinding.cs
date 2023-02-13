@@ -244,12 +244,12 @@ public static class BaseBinding
 
     public static List<string> GetDownloadSources()
     {
-        var list = new List<string>();
-        Array values = Enum.GetValues(typeof(SourceLocal));
-        foreach (SourceLocal value in values)
+        var list = new List<string>
         {
-            list.Add(value.GetName());
-        }
+            SourceLocal.Offical.GetName(),
+            SourceLocal.BMCLAPI.GetName(),
+            SourceLocal.MCBBS.GetName()
+        };
 
         return list;
     }
@@ -268,12 +268,11 @@ public static class BaseBinding
 
     public static List<string> GetLanguages()
     {
-        var list = new List<string>();
-        Array values = Enum.GetValues(typeof(LanguageType));
-        foreach (LanguageType value in values)
+        var list = new List<string>
         {
-            list.Add(value.GetName());
-        }
+            LanguageType.zh_cn.GetName(),
+            LanguageType.en_us.GetName()
+        };
 
         return list;
     }

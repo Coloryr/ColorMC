@@ -101,7 +101,7 @@ public static class DownloadManager
         CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
         foreach (var item in list)
         {
-            if (Name.Contains(item.Name))
+            if (Name.Contains(item.Name) || string.IsNullOrWhiteSpace(item.Url))
                 continue;
             CoreMain.DownloadItemStateUpdate?.Invoke(-1, item);
             item.Update = (index) =>

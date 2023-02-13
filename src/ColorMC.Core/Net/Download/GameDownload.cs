@@ -7,6 +7,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System.IO;
 using System.Text;
 
 namespace ColorMC.Core.Net.Download;
@@ -113,24 +114,26 @@ public static class GameDownload
         using MemoryStream stream1 = new();
         using MemoryStream stream2 = new();
         bool find1 = false;
+        bool find2 = false;
         foreach (ZipEntry e in zFile)
         {
             if (e.IsFile && e.Name == "version.json")
             {
                 using var stream = zFile.GetInputStream(e);
                 await stream.CopyToAsync(stream1);
+                find1 = true;
             }
             else if (e.IsFile && e.Name == "install_profile.json")
             {
                 using var stream = zFile.GetInputStream(e);
                 await stream.CopyToAsync(stream2);
-                find1 = true;
+                find2 = true;
             }
         }
 
         var list = new List<DownloadItem>();
-        //1.12.2 最新版及以上
-        if (v2 || (mc == "1.12.2" && find1))
+        //1.12.2以上
+        if (find1 && find2)
         {
             byte[] array1 = stream1.ToArray();
             ForgeLaunchObj info;
@@ -164,6 +167,9 @@ public static class GameDownload
 
             foreach (var item1 in info1.libraries)
             {
+                if (string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
+                    continue;
+
                 list.Add(new()
                 {
                     Url = UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
@@ -177,6 +183,7 @@ public static class GameDownload
         //旧forge
         else
         {
+
             ForgeInstallObj1 obj;
             byte[] array1 = stream2.ToArray();
             ForgeLaunchObj info;

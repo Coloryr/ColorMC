@@ -116,13 +116,21 @@ public static class ForgeHelper
 
         if (v2)
         {
-            //list.Add(BuildForgeLauncher(mc, version));
-            //list.Add(BuildForgeInster(mc, version));
-            //list.Add(BuildForgeClient(mc, version));
+            list.Add(BuildForgeUniversal(mc, version));
+            list.Add(BuildForgeInster(mc, version));
+            if (CheckRule.GameLaunchVersion117(mc))
+            {
+                list.Add(BuildForgeClient(mc, version));
+            }
+            else
+            {
+                list.Add(BuildForgeClient(mc, version));
+                list.Add(BuildForgeLauncher(mc, version));
+            }
         }
         else
         {
-            list.Add(BuildForgeUniversal(mc, version));
+            
         }
 
         foreach (var item1 in info.libraries)
@@ -130,7 +138,12 @@ public static class ForgeHelper
             if (item1.name.StartsWith("net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
             {
-                continue;
+                if (!v2)
+                {
+                    var temp = BuildForgeUniversal(mc, version);
+                    temp.SHA1 = item1.downloads.artifact.sha1;
+                    list.Add(temp);
+                }
             }
             else
             {
@@ -212,15 +225,15 @@ public static class ForgeHelper
         return BuildForgeItem(mc, version, "universal");
     }
 
-    //public static DownloadItem BuildForgeLauncher(string mc, string version)
-    //{
-    //    return BuildForgeItem(mc, version, "launcher");
-    //}
+    public static DownloadItem BuildForgeLauncher(string mc, string version)
+    {
+        return BuildForgeItem(mc, version, "launcher");
+    }
 
-    // public static DownloadItem BuildForgeClient(string mc, string version)
-    // {
-    //     return BuildForgeItem(mc, version, "client");
-    // }
+    public static DownloadItem BuildForgeClient(string mc, string version)
+    {
+        return BuildForgeItem(mc, version, "client");
+    }
 
     /// <summary>
     /// Forge运行库修改映射

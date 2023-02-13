@@ -82,7 +82,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static async Task<List<DownloadItem>?> CheckForge(GameSettingObj obj)
+    public static List<DownloadItem>? CheckForge(GameSettingObj obj)
     {
         var v2 = CheckRule.GameLaunchVersion(obj.Version);
         if (v2)
@@ -97,15 +97,15 @@ public static class LibrariesPath
         var list = new List<DownloadItem>();
         var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
 
-        await Parallel.ForEachAsync(list1, (item, cacenl) =>
+        Parallel.ForEach(list1, (item) =>
         {
             if (!File.Exists(item.Local))
             {
                 list.Add(item);
-                return ValueTask.CompletedTask;
+                return;
             }
             if (item.SHA1 == null)
-                return ValueTask.CompletedTask;
+                return;
 
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
@@ -114,8 +114,6 @@ public static class LibrariesPath
             {
                 list.Add(item);
             }
-
-            return ValueTask.CompletedTask;
         });
 
         var forgeinstall = VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion);
@@ -124,12 +122,15 @@ public static class LibrariesPath
 
         if (forgeinstall != null)
         {
-            await Parallel.ForEachAsync(forgeinstall.libraries, (item, cacenl) =>
+            Parallel.ForEach(forgeinstall.libraries, (item, cacenl) =>
             {
                 if (item.name.StartsWith("net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
                 {
-                    return ValueTask.CompletedTask;
+                    var item1 = ForgeHelper.BuildForgeUniversal(obj.Version, obj.LoaderVersion);
+                    item1.SHA1 = item.downloads.artifact.sha1;
+                    list.Add(item1);
+                    return;
                 }
 
                 string file = $"{BaseDir}/{item.downloads.artifact.path}";
@@ -142,7 +143,7 @@ public static class LibrariesPath
                         SHA1 = item.downloads.artifact.sha1,
                         Url = item.downloads.artifact.url
                     });
-                    return ValueTask.CompletedTask;
+                    return;
                 }
                 using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
                     FileShare.ReadWrite);
@@ -157,7 +158,6 @@ public static class LibrariesPath
                         Url = item.downloads.artifact.url
                     });
                 }
-                return ValueTask.CompletedTask;
             });
         }
 
