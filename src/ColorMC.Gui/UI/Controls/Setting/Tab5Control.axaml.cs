@@ -160,7 +160,7 @@ public partial class Tab5Control : UserControl
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FilePickerFileType(Localizer.Instance["SettingWindow.Tab5.Text5"])
+                new FilePickerFileType(Localizer.Instance["SettingWindow.Tab5.Info4"])
                 {
                     Patterns = SystemInfo.Os == OsType.Windows ? new List<string>()
                     {

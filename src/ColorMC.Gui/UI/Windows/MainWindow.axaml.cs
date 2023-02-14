@@ -294,7 +294,7 @@ public partial class MainWindow : Window, IBaseWindow
                         await Dispatcher.UIThread.InvokeAsync(() =>
                         {
                             DefaultGroup.SetItems(item.Value);
-                            DefaultGroup.SetName(Localizer.Instance["Name1"]);
+                            DefaultGroup.SetName(Localizer.Instance["MainWindow.Info20"]);
                         });
                     }
                     else
@@ -358,13 +358,13 @@ public partial class MainWindow : Window, IBaseWindow
         var res = Info3.Read().Item1;
         if (string.IsNullOrWhiteSpace(res))
         {
-            Info1.Show(Localizer.Instance["MainWindow.Error4"]);
+            Info1.Show(Localizer.Instance["MainWindow.Error3"]);
             return;
         }
 
         if (!GameBinding.AddGameGroup(res))
         {
-            Info1.Show(Localizer.Instance["MainWindow.Error5"]);
+            Info1.Show(Localizer.Instance["MainWindow.Error4"]);
             return;
         }
     }

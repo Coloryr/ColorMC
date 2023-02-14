@@ -93,7 +93,7 @@ public partial class DownloadWindow : Window
             DownloadManager.DownloadPause();
             pause = true;
             Button_P.Content = "R";
-            Button_P1.Content = Localizer.Instance["DownloadWindow.Text3"];
+            Button_P1.Content = Localizer.Instance["DownloadWindow.Info5"];
             Info2.Show(Localizer.Instance["DownloadWindow.Info2"]);
         }
         else

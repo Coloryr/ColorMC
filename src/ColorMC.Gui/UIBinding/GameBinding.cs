@@ -143,8 +143,8 @@ public static class GameBinding
     {
         return new()
         {
-            Localizer.Instance["SortOrder.Item1"],
-            Localizer.Instance["SortOrder.Item2"]
+            Localizer.Instance["GameBinding.SortOrder.Item1"],
+            Localizer.Instance["GameBinding.SortOrder.Item2"]
         };
     }
 

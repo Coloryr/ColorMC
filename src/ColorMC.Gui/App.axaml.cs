@@ -48,7 +48,7 @@ public partial class App : Application
 
     public static ResourceDictionary? Language;
     public static Bitmap? BackBitmap { get; private set; }
-    public static Bitmap? GameIcon { get; private set; }
+    public static Bitmap GameIcon { get; private set; }
     public static WindowIcon? Icon { get; private set; }
 
     public override void Initialize()

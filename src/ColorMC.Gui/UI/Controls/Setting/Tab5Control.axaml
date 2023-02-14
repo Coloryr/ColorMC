@@ -44,7 +44,7 @@
                     Width="80"
                     Height="25"
                     Margin="5,0,0,0"
-                    Content="{setting:Localize SettingWindow.Tab5.Text6}"
+                    Content="{setting:Localize SettingWindow.Tab5.Text5}"
                     DockPanel.Dock="Left" />
 
                 <Button
@@ -52,7 +52,7 @@
                     Width="120"
                     Height="25"
                     Margin="5,0,0,0"
-                    Content="打开下载目录"
+                    Content="{setting:Localize SettingWindow.Tab5.Text7}"
                     DockPanel.Dock="Left" />
 
             </DockPanel>
@@ -69,27 +69,27 @@
                 <DataGridTextColumn Width="30" IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Name}"
-                    Header="{setting:Localize SettingWindow.Tab5.Data.Title1}"
+                    Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text1}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Path}"
-                    Header="{setting:Localize SettingWindow.Tab5.Data.Title2}"
+                    Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text2}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding MajorVersion}"
-                    Header="{setting:Localize SettingWindow.Tab5.Data.Title3}"
+                    Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text3}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Version}"
-                    Header="{setting:Localize SettingWindow.Tab5.Data.Title4}"
+                    Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text4}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Type}"
-                    Header="{setting:Localize SettingWindow.Tab5.Data.Title5}"
+                    Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text5}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Arch}"
-                    Header="{setting:Localize SettingWindow.Tab5.Data.Title6}"
+                    Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text6}"
                     IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
@@ -139,7 +139,7 @@
                         Width="100"
                         Height="30"
                         Margin="6,0,0,0"
-                        Content="{setting:Localize SettingWindow.Tab5.Text7}" />
+                        Content="{setting:Localize SettingWindow.Tab5.Text6}" />
                 </Expander>
             </Grid>
         </StackPanel>

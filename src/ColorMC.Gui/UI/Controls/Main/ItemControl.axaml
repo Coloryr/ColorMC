@@ -55,28 +55,28 @@
                     Name="Button_Switch"
                     Width="100"
                     Height="25"
-                    Content="{setting:Localize MainWindow.Control.Button1}" />
+                    Content="{setting:Localize MainWindow.Control.Text1}" />
 
                 <Button
                     Name="Button_Add1"
                     Width="100"
                     Height="25"
                     Margin="0,15,0,0"
-                    Content="{setting:Localize MainWindow.Control.Button3}" />
+                    Content="{setting:Localize MainWindow.Control.Text2}" />
 
                 <Button
                     Name="Button_Launch"
                     Width="100"
                     Height="35"
                     Margin="0,15,0,0"
-                    Content="{setting:Localize MainWindow.Control.Button4}"
+                    Content="{setting:Localize MainWindow.Control.Text3}"
                     IsEnabled="False" />
                 <Button
                     Name="Button_Edit"
                     Width="100"
                     Height="35"
                     Margin="0,5,0,0"
-                    Content="{setting:Localize MainWindow.Control.Button6}"
+                    Content="{setting:Localize MainWindow.Control.Text5}"
                     IsEnabled="False" />
 
                 <Button
@@ -84,7 +84,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,15,0,0"
-                    Content="{setting:Localize MainWindow.Control.Button8}" />
+                    Content="{setting:Localize MainWindow.Control.Text7}" />
             </StackPanel>
         </Expander>
         <Button

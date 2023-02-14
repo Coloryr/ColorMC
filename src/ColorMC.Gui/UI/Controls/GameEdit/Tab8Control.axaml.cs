@@ -127,12 +127,12 @@ public partial class Tab8Control : UserControl
 
     public async void AddResourcepack(CurseForgeObj.Data.LatestFiles data)
     {
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab8.Info6"]);
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab8.Info3"]);
         var res = await GameBinding.DownloadResourcepack(Obj, data);
         Window.Info1.Close();
         if (res)
         {
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab8.Info7"]);
+            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab8.Info4"]);
             Load();
         }
         else
@@ -174,7 +174,7 @@ public partial class Tab8Control : UserControl
 
     private async void Load()
     {
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab8.Info8"]);
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab8.Info5"]);
         List.Clear();
         ListBox_Items.Children.Clear();
 

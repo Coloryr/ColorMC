@@ -102,7 +102,7 @@ public partial class UserWindow : Window
         switch (ComboBox_UserType.SelectedIndex)
         {
             case 0:
-                string name = TextBox_Input1.Text;
+                var name = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(name))
                 {
                     Info.Show(Localizer.Instance["UserWindow.Error2"]);

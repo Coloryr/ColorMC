@@ -38,7 +38,7 @@
                     Fill="{setting:Colors TranBack}"
                     StrokeThickness="3" />
                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                    <Label Margin="5" Content="{setting:Localize DownloadWindow.Text4}" />
+                    <Label Margin="5" Content="{setting:Localize DownloadWindow.Text3}" />
                     <ProgressBar
                         Name="ProgressBar1"
                         Width="500"
@@ -76,23 +76,23 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize DownloadWindow.Data.Title1}"
+                        Header="{setting:Localize DownloadWindow.DataGrid.Text1}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding State}"
-                        Header="{setting:Localize DownloadWindow.Data.Title2}"
+                        Header="{setting:Localize DownloadWindow.DataGrid.Text2}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding NowSize}"
-                        Header="{setting:Localize DownloadWindow.Data.Title3}"
+                        Header="{setting:Localize DownloadWindow.DataGrid.Text3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding AllSize}"
-                        Header="{setting:Localize DownloadWindow.Data.Title4}"
+                        Header="{setting:Localize DownloadWindow.DataGrid.Text4}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding ErrorTime}"
-                        Header="{setting:Localize DownloadWindow.Data.Title5}"
+                        Header="{setting:Localize DownloadWindow.DataGrid.Text5}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>

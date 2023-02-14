@@ -84,7 +84,7 @@ public partial class Tab2Control : UserControl
         ColorPicker3.Color = ColorSel.Back1Color.ToColor();
         ColorPicker4.Color = ColorSel.ButtonFont.ToColor();
         ColorPicker5.Color = ColorSel.FontColor.ToColor();
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info6"]);
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info4"]);
     }
 
     private void Button_Set3_Click(object? sender, RoutedEventArgs e)
@@ -111,7 +111,7 @@ public partial class Tab2Control : UserControl
 
     private void Button_Set1_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info7"]);
+        Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info5"]);
         ConfigBinding.SetBl(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
         Window.Info1.Close();
 
@@ -194,11 +194,11 @@ public partial class Tab2Control : UserControl
     {
         var file = await Window.StorageProvider.OpenFilePickerAsync(new()
         {
-            Title = Localizer.Instance["SettingWindow.Tab2.Info5"],
+            Title = Localizer.Instance["SettingWindow.Tab2.Info3"],
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FilePickerFileType(Localizer.Instance["SettingWindow.Tab2.Info9"])
+                new FilePickerFileType(Localizer.Instance["SettingWindow.Tab2.Info6"])
                 {
                     Patterns = new List<string>()
                     {

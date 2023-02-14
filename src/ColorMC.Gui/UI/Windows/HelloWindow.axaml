@@ -29,12 +29,12 @@
 
             <DockPanel Margin="3" LastChildFill="True">
                 <TabControl Name="Tabs" DockPanel.Dock="Top">
-                    <TabItem Header="{setting:Localize HelloWindow.Tab1.Title}" />
-                    <TabItem Header="{setting:Localize HelloWindow.Tab2.Title}" />
-                    <TabItem Header="{setting:Localize HelloWindow.Tab3.Title}" />
-                    <TabItem Header="{setting:Localize HelloWindow.Tab4.Title}" />
-                    <TabItem Header="{setting:Localize HelloWindow.Tab5.Title}" />
-                    <TabItem Header="{setting:Localize HelloWindow.Tab6.Title}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tabs.Text1}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tabs.Text2}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tabs.Text3}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tabs.Text4}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tabs.Text5}" />
+                    <TabItem Header="{setting:Localize HelloWindow.Tabs.Text6}" />
                 </TabControl>
 
                 <Grid

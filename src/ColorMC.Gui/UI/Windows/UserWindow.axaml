@@ -42,27 +42,27 @@
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn
                         Binding="{Binding Use}"
-                        Header="{setting:Localize UserWindow.Data.Title1}"
+                        Header="{setting:Localize UserWindow.DataGrid.Text1}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize UserWindow.Data.Title2}"
+                        Header="{setting:Localize UserWindow.DataGrid.Text2}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Type}"
-                        Header="{setting:Localize UserWindow.Data.Title3}"
+                        Header="{setting:Localize UserWindow.DataGrid.Text3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding UUID}"
-                        Header="{setting:Localize UserWindow.Data.Title4}"
+                        Header="{setting:Localize UserWindow.DataGrid.Text4}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Text1}"
-                        Header="{setting:Localize UserWindow.Data.Title5}"
+                        Header="{setting:Localize UserWindow.DataGrid.Text5}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Text2}"
-                        Header="{setting:Localize UserWindow.Data.Title6}"
+                        Header="{setting:Localize UserWindow.DataGrid.Text6}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>

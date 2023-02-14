@@ -18,17 +18,17 @@
                 Name="Button1"
                 Width="80"
                 Height="25"
-                Content="{setting:Localize UserWindow.Flyouts.Button1}" />
+                Content="{setting:Localize UserWindow.Flyouts.Text1}" />
             <Button
                 Name="Button2"
                 Width="80"
                 Height="25"
-                Content="{setting:Localize UserWindow.Flyouts.Button2}" />
+                Content="{setting:Localize UserWindow.Flyouts.Text2}" />
             <Button
                 Name="Button3"
                 Width="80"
                 Height="25"
-                Content="{setting:Localize UserWindow.Flyouts.Button3}" />
+                Content="{setting:Localize UserWindow.Flyouts.Text3}" />
         </StackPanel>
     </Grid>
 </UserControl>

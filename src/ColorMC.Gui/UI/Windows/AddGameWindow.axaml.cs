@@ -464,7 +464,7 @@ public partial class AddGameWindow : Window
     private async Task<string?> SelectPack()
     {
         var file = await BaseBinding.OpFile(this, Localizer.Instance["AddGameWindow.Info13"],
-            "*.zip", "Ñ¹Ëõ°ü");
+            "*.zip", Localizer.Instance["AddGameWindow.Info16"]);
         if (file.Any())
         {
             return file[0].GetPath();
