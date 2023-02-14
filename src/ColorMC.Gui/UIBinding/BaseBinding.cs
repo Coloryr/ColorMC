@@ -64,6 +64,20 @@ public static class BaseBinding
         });
     }
 
+    public static List<string> GetFilterName() => new()
+    {
+        Localizer.Instance["BaseBinding.Filter.Item1"],
+        Localizer.Instance["BaseBinding.Filter.Item2"],
+        Localizer.Instance["BaseBinding.Filter.Item3"]
+    };
+
+    public static List<string> GetSkinRotateName() => new()
+    {
+        Localizer.Instance["BaseBinding.SkinRotate.Item1"],
+        Localizer.Instance["BaseBinding.SkinRotate.Item2"],
+        Localizer.Instance["BaseBinding.SkinRotate.Item3"]
+    };
+
     public static Task<IStorageFile?> OpSave(Window window, string title, string ext, string name)
     {
         return window.StorageProvider.SaveFilePickerAsync(new()

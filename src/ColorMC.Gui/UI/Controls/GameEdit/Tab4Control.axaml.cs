@@ -26,13 +26,6 @@ public partial class Tab4Control : UserControl
     private readonly Dictionary<string, ModObj> Dir1 = new();
     private AddModWindow? AddModWindow;
 
-    private readonly List<string> FName = new()
-    {
-        Localizer.Instance["GameEditWindow.Tab4.Filter.Item1"],
-        Localizer.Instance["GameEditWindow.Tab4.Filter.Item2"],
-        Localizer.Instance["GameEditWindow.Tab4.Filter.Item3"]
-    };
-
     private GameEditWindow Window;
     private GameSettingObj Obj;
 
@@ -60,7 +53,7 @@ public partial class Tab4Control : UserControl
 
         Button1.Click += Button1_Click;
 
-        ComboBox1.Items = FName;
+        ComboBox1.Items = BaseBinding.GetFilterName();
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox1.SelectedIndex = 0;
 
@@ -253,7 +246,7 @@ public partial class Tab4Control : UserControl
             {
                 obj = new ModDisplayObj()
                 {
-                    Name = Localizer.Instance["GameEditWindow.Tab4.Text3"],
+                    Name = Localizer.Instance["GameEditWindow.Tab4.Info5"],
                     Local = item.Local,
                     Enable = item.Disable
                 };
@@ -280,7 +273,7 @@ public partial class Tab4Control : UserControl
         if (count != 0)
         {
             Window.Info.Show(string.Format(Localizer
-                .Instance["GameEditWindow.Tab4.Text4"], count));
+                .Instance["GameEditWindow.Tab4.Info6"], count));
         }
 
         Load1();

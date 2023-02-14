@@ -13,14 +13,14 @@
         <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
         <DockPanel>
             <Grid VerticalAlignment="Top" DockPanel.Dock="Top">
-                <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab6.Info1}" />
+                <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab6.Text1}" />
                 <Button
                     Name="Button1"
                     Width="160"
                     Height="25"
                     Margin="5"
                     HorizontalAlignment="Right"
-                    Content="{setting:Localize GameEditWindow.Tab6.Button1}" />
+                    Content="{setting:Localize GameEditWindow.Tab6.Text2}" />
             </Grid>
             <TreeDataGrid Name="FileViewer" Margin="3">
                 <TreeDataGrid.Resources>

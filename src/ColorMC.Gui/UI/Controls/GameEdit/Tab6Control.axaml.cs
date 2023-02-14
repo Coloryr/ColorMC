@@ -230,7 +230,7 @@ public class FilesPageViewModel : ReactiveObject
                     }),
                 new HierarchicalExpanderColumn<FileTreeNodeModel>(
                     new TemplateColumn<FileTreeNodeModel>(
-                        Localizer.Instance["GameEditWindow.Tab6.Data.Title3"],
+                        Localizer.Instance["GameEditWindow.Tab6.Info4"],
                         "FileNameCell",
                         new GridLength(1, GridUnitType.Star),
                         new ColumnOptions<FileTreeNodeModel>
@@ -246,7 +246,7 @@ public class FilesPageViewModel : ReactiveObject
                     x => x.HasChildren,
                     x => x.IsExpanded),
                 new TextColumn<FileTreeNodeModel, long?>(
-                    Localizer.Instance["GameEditWindow.Tab6.Data.Title4"],
+                    Localizer.Instance["GameEditWindow.Tab6.Info5"],
                     x => x.Size,
                     options: new TextColumnOptions<FileTreeNodeModel>
                     {
@@ -254,7 +254,7 @@ public class FilesPageViewModel : ReactiveObject
                         CompareDescending = FileTreeNodeModel.SortDescending(x => x.Size),
                     }),
                 new TextColumn<FileTreeNodeModel, DateTimeOffset?>(
-                    Localizer.Instance["GameEditWindow.Tab6.Data.Title5"],
+                    Localizer.Instance["GameEditWindow.Tab6.Info6"],
                     x => x.Modified,
                     options: new TextColumnOptions<FileTreeNodeModel>
                     {
@@ -357,12 +357,12 @@ public partial class Tab6Control : UserControl
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         var file = await BaseBinding.OpSave(Window,
-            Localizer.Instance["GameEditWindow.Tab6.Info2"], ".zip", "game.zip");
+            Localizer.Instance["GameEditWindow.Tab6.Info1"], ".zip", "game.zip");
 
         if (file == null)
             return;
 
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab6.Info3"]);
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab6.Info2"]);
         var list = FilesPageViewModel.GetUnSelectItems();
         bool error = false;
         try
@@ -383,7 +383,7 @@ public partial class Tab6Control : UserControl
         }
         else
         {
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab6.Info4"]);
+            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab6.Info3"]);
         }
     }
 

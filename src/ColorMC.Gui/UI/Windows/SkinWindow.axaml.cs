@@ -42,12 +42,7 @@ public partial class SkinWindow : Window
 
         Text1.Text = Skin.Info;
 
-        ComboBox2.Items = new List<string>()
-        {
-            Localizer.Instance["SkinWindow.Items.Item1"],
-            Localizer.Instance["SkinWindow.Items.Item2"],
-            Localizer.Instance["SkinWindow.Items.Item3"]
-        };
+        ComboBox2.Items = BaseBinding.GetSkinRotateName();
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;

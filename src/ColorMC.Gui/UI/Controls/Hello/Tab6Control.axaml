@@ -60,25 +60,25 @@
                     Width="100"
                     Height="25"
                     Margin="5"
-                    Content="{setting:Localize HelloWindow.Tab6.Button1}" />
+                    Content="{setting:Localize HelloWindow.Tab6.Text5}" />
                 <Button
                     Name="Button_AddJava"
                     Width="100"
                     Height="25"
                     Margin="5"
-                    Content="{setting:Localize HelloWindow.Tab6.Button2}" />
+                    Content="{setting:Localize HelloWindow.Tab6.Text6}" />
                 <Button
                     Name="Button_AddUser"
                     Width="100"
                     Height="25"
                     Margin="5"
-                    Content="{setting:Localize HelloWindow.Tab6.Button3}" />
+                    Content="{setting:Localize HelloWindow.Tab6.Text7}" />
                 <Button
                     Name="Button_AddGame"
                     Width="100"
                     Height="25"
                     Margin="5"
-                    Content="{setting:Localize HelloWindow.Tab6.Button4}" />
+                    Content="{setting:Localize HelloWindow.Tab6.Text8}" />
             </StackPanel>
         </StackPanel>
 
@@ -89,6 +89,6 @@
             Margin="0,0,10,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="{setting:Localize HelloWindow.Tab6.Button5}" />
+            Content="{setting:Localize HelloWindow.Tab6.Text9}" />
     </Grid>
 </UserControl>

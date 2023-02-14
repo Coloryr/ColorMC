@@ -171,19 +171,19 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Binding="{Binding Name}"
-                                Header="{setting:Localize AddCurseForgeWindow.Data.Title1}"
+                                Header="{setting:Localize AddCurseForgeWindow.DataGrid.Text1}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Size}"
-                                Header="{setting:Localize AddCurseForgeWindow.Data.Title2}"
+                                Header="{setting:Localize AddCurseForgeWindow.DataGrid.Text2}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Download}"
-                                Header="{setting:Localize AddCurseForgeWindow.Data.Title3}"
+                                Header="{setting:Localize AddCurseForgeWindow.DataGrid.Text3}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Time}"
-                                Header="{setting:Localize AddCurseForgeWindow.Data.Title4}"
+                                Header="{setting:Localize AddCurseForgeWindow.DataGrid.Text4}"
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>

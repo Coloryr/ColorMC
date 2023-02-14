@@ -18,7 +18,7 @@
                 Name="Button1"
                 Width="100"
                 Height="25"
-                Content="打开网页" />
+                Content="{setting:Localize AddWindow.Control.Text1}" />
         </StackPanel>
     </Grid>
 </UserControl>

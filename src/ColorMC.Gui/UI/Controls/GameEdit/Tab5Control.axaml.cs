@@ -69,7 +69,7 @@ public partial class Tab5Control : UserControl
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var file = await BaseBinding.OpFile(Window!, Localizer.Instance["GameEditWindow.Tab5.Info2"],
-            "*.zip", "ÊÀ½çÑ¹Ëõ°ü");
+            "*.zip", Localizer.Instance["GameEditWindow.Tab5.Info8"]);
         if (file.Any())
         {
             var res = await GameBinding.AddWorld(Obj!, file[0].GetPath());
@@ -119,7 +119,7 @@ public partial class Tab5Control : UserControl
         if (file == null)
             return;
 
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info5"]);
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info4"]);
         bool error = false;
         try
         {
@@ -137,18 +137,18 @@ public partial class Tab5Control : UserControl
         }
         else
         {
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info4"]);
+            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info3"]);
         }
     }
 
     public async void AddWorld(CurseForgeObj.Data.LatestFiles data)
     {
-        Window!.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info6"]);
+        Window!.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info5"]);
         var res = await GameBinding.DownloadWorld(Obj!, data);
         Window.Info1.Close();
         if (res)
         {
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info7"]);
+            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info6"]);
             Load();
         }
         else
@@ -190,7 +190,7 @@ public partial class Tab5Control : UserControl
 
     private async void Load()
     {
-        Window!.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info8"]);
+        Window!.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info7"]);
         List.Clear();
         ListBox_Items.Children.Clear();
 

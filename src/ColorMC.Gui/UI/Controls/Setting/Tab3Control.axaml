@@ -93,12 +93,12 @@
 
         <Button
             Name="Button2"
-            Width="120"
+            Width="160"
             Height="25"
             Margin="10"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Content="打开下载缓存" />
+            Content="{setting:Localize SettingWindow.Tab3.Text13}" />
 
         <Button
             Name="Button_Set"

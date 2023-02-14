@@ -35,7 +35,7 @@
                         Name="Button1"
                         Width="80"
                         Height="25"
-                        Content="{setting:Localize GameEditWindow.Tab4.Button3}" />
+                        Content="{setting:Localize GameEditWindow.Tab4.Text3}" />
                 </StackPanel>
             </Grid>
 
@@ -50,31 +50,31 @@
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn
                         Binding="{Binding Enable}"
-                        Header="{setting:Localize GameEditWindow.Tab4.Data.Title1}"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text1}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize GameEditWindow.Tab4.Data.Title2}"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text2}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Version}"
-                        Header="{setting:Localize GameEditWindow.Tab4.Data.Title3}"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Loader}"
-                        Header="{setting:Localize GameEditWindow.Tab4.Data.Title7}"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text7}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Local}"
-                        Header="{setting:Localize GameEditWindow.Tab4.Data.Title4}"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text4}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Author}"
-                        Header="{setting:Localize GameEditWindow.Tab4.Data.Title5}"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text5}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Url}"
-                        Header="{setting:Localize GameEditWindow.Tab4.Data.Title6}"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text6}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>

@@ -23,7 +23,7 @@
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Classes="input1"
-                    Watermark="{setting:Localize GameEditWindow.Tab3.Text2}" />
+                    Watermark="{setting:Localize GameEditWindow.Tab3.Text1}" />
 
                 <Button
                     Name="Button2"
@@ -38,29 +38,22 @@
                     Height="25"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Button3}" />
+                    Content="{setting:Localize GameEditWindow.Tab3.Text3}" />
                 <Button
                     Name="Button4"
                     Width="85"
                     Height="25"
                     Margin="5"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Button4}" />
+                    Content="{setting:Localize GameEditWindow.Tab3.Text4}" />
             </StackPanel>
             <Grid>
                 <Label
                     Name="Label1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Text3}"
+                    Content="{setting:Localize GameEditWindow.Tab3.Text2}"
                     IsVisible="False" />
-                <!--<TextBox
-                    Name="TextEditor1"
-                    Background="{setting:Colors TranBack}"
-                    FontSize="14"
-                    FontWeight="Normal"
-                    Foreground="Black"
-                    TextWrapping="Wrap" />-->
                 <ae:TextEditor
                     Name="TextEditor1"
                     Background="{setting:Colors TranBack}"

@@ -178,34 +178,34 @@
                     Content="{setting:Localize Button.Set}" />
 
                 <StackPanel>
-                    <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text16}" />
+                    <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text17}" />
                     <StackPanel Orientation="Horizontal">
                         <TextBox
                             Name="TextBox7"
                             Width="200"
                             Margin="5"
                             Classes="input1"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text17}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text18}" />
                         <TextBox
                             Name="TextBox8"
                             Width="80"
                             Margin="5"
                             Classes="input1"
                             MaxLength="5"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text18}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text19}" />
                         <TextBox
                             Name="TextBox9"
                             Width="200"
                             Margin="5"
                             Classes="input1"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text19}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text20}" />
                         <TextBox
                             Name="TextBox10"
                             Width="200"
                             Margin="5"
                             Classes="input1"
                             PasswordChar="*"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text20}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text21}" />
                     </StackPanel>
                 </StackPanel>
 

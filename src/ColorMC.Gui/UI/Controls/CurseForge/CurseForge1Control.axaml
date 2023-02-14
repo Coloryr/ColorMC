@@ -83,7 +83,7 @@
             Background="#EEEEEE"
             IsVisible="False">
             <StackPanel VerticalAlignment="Center">
-                <Label HorizontalAlignment="Center" Content="{setting:Localize AddModWindow.Control.Info1}" />
+                <Label HorizontalAlignment="Center" Content="{setting:Localize AddModWindow.Control.Text1}" />
                 <ProgressBar
                     Height="20"
                     Margin="10"
@@ -98,7 +98,7 @@
                 Margin="0,3,5,0"
                 VerticalAlignment="Top"
                 Background="#EEEEEE"
-                Content="{setting:Localize AddModWindow.Control.Info2}" />
+                Content="{setting:Localize AddModWindow.Control.Text2}" />
         </Grid>
     </Grid>
 </UserControl>

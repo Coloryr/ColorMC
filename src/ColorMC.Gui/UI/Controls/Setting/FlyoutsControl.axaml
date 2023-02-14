@@ -18,7 +18,7 @@
                 Name="Button1"
                 Width="80"
                 Height="25"
-                Content="{setting:Localize SettingWindow.Flyouts.Button1}" />
+                Content="{setting:Localize SettingWindow.Flyouts.Text1}" />
         </StackPanel>
     </Grid>
 </UserControl>

@@ -27,7 +27,7 @@
                     <DataGridTextColumn IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize DownloadWindow.Data.Title1}"
+                        Header="{setting:Localize DownloadWindow.DataGrid.Text1}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding IP}"

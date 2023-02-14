@@ -29,7 +29,7 @@
                     Height="25"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize MainWindow.Flyouts.Button7}" />
+                    Content="{setting:Localize MainWindow.Flyouts.Text6}" />
             </StackPanel>
             <ae:TextEditor
                 Name="TextEditor1"

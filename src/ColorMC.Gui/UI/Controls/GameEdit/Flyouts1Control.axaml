@@ -18,12 +18,12 @@
                 Name="Button1"
                 Width="100"
                 Height="25"
-                Content="{setting:Localize GameEditWindow.Flyouts1.Button1}" />
+                Content="{setting:Localize GameEditWindow.Flyouts1.Text1}" />
             <Button
                 Name="Button2"
                 Width="100"
                 Height="25"
-                Content="{setting:Localize GameEditWindow.Flyouts1.Button2}" />
+                Content="{setting:Localize GameEditWindow.Flyouts1.Text2}" />
             <Button
                 Name="Button3"
                 Width="100"
@@ -33,12 +33,12 @@
                 Name="Button4"
                 Width="100"
                 Height="25"
-                Content="{setting:Localize GameEditWindow.Flyouts1.Button3}" />
+                Content="{setting:Localize GameEditWindow.Flyouts1.Text3}" />
             <Button
                 Name="Button5"
                 Width="100"
                 Height="25"
-                Content="{setting:Localize GameEditWindow.Flyouts1.Button4}" />
+                Content="{setting:Localize GameEditWindow.Flyouts1.Text4}" />
         </StackPanel>
     </Grid>
 </UserControl>

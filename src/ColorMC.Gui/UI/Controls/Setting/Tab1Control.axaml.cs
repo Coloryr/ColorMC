@@ -68,7 +68,7 @@ public partial class Tab1Control : UserControl
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
-                new(Localizer.Instance["HelloWindow.Tab2.Text7"])
+                new(Localizer.Instance["HelloWindow.Tab2.Info7"])
                 {
                      Patterns = new List<string>()
                      {
@@ -130,7 +130,7 @@ public partial class Tab1Control : UserControl
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
-                new(Localizer.Instance["HelloWindow.Tab2.Text7"])
+                new(Localizer.Instance["HelloWindow.Tab2.Info7"])
                 {
                      Patterns = new List<string>()
                      {
@@ -186,7 +186,7 @@ public partial class Tab1Control : UserControl
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
-                new(Localizer.Instance["HelloWindow.Tab2.Text8"])
+                new(Localizer.Instance["HelloWindow.Tab2.Info8"])
                 {
                      Patterns = new List<string>()
                      {

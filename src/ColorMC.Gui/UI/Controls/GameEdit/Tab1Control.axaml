@@ -39,7 +39,7 @@
                     Width="100"
                     Height="25"
                     Margin="10,0,0,0"
-                    Content="{setting:Localize GameEditWindow.Tab1.Button1}" />
+                    Content="{setting:Localize GameEditWindow.Tab1.Text2}" />
             </StackPanel>
 
             <Label
@@ -74,13 +74,13 @@
                     Width="100"
                     Height="25"
                     Margin="10,0,0,0"
-                    Content="{setting:Localize AddGameWindow.Tab1.Button1}" />
+                    Content="{setting:Localize AddGameWindow.Tab1.Text1}" />
                 <Button
                     Name="Button3"
                     Width="100"
                     Height="25"
                     Margin="10,0,0,0"
-                    Content="{setting:Localize AddGameWindow.Tab1.Button2}" />
+                    Content="{setting:Localize AddGameWindow.Tab1.Text2}" />
             </StackPanel>
 
             <Label

@@ -310,7 +310,7 @@ public partial class Tab5Control : UserControl
     private async Task<string?> SelectPack()
     {
         var file = await BaseBinding.OpFile(Window, Localizer.Instance["AddGameWindow.Info13"],
-            "*.zip", "Ñ¹Ëõ°ü");
+            "*.zip", Localizer.Instance["AddGameWindow.Info15"]);
         if (file.Any())
         {
             return file[0].GetPath();

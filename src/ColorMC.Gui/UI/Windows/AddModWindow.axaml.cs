@@ -175,7 +175,7 @@ public partial class AddModWindow : Window
 
     private async void Load()
     {
-        Info1.Show(Localizer.Instance["AddModWindow.Info2"]);
+        Info1.Show(Localizer.Instance["AddModWindow.Info1"]);
         var data = await GameBinding.GetModList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
 
@@ -213,7 +213,7 @@ public partial class AddModWindow : Window
     private async void Load1()
     {
         List1.Clear();
-        Info1.Show(Localizer.Instance["AddModWindow.Info3"]);
+        Info1.Show(Localizer.Instance["AddModWindow.Info2"]);
         var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
 
         if (data == null)
@@ -260,7 +260,7 @@ public partial class AddModWindow : Window
         if (Obj == null)
             return;
 
-        Info1.Show(Localizer.Instance["AddModWindow.Info4"]);
+        Info1.Show(Localizer.Instance["AddModWindow.Info3"]);
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();
         if (list == null)
