@@ -11,4 +11,13 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Content Include="icon.png" CopyToPublishDirectory="PreserveNewest">
+			<LinuxPath>/usr/share/icons/colormc.png</LinuxPath>
+		</Content>
+		<Content Include="ColorMC.desktop" CopyToPublishDirectory="PreserveNewest">
+			<LinuxPath>/usr/share/applications/colormc.desktop</LinuxPath>
+		</Content>
+	</ItemGroup>
+
 </Project>
