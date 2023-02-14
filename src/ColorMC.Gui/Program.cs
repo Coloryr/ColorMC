@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ColorMC.Gui;
 
-internal class Program
+public class Program
 {
     public const string Font = "avares://ColorMC.Gui/Resource/Font/MiSans-Normal.ttf#MiSans";
     // Initialization code. Don't use any Avalonia, third-party APIs or any

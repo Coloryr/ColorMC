@@ -1,0 +1,3 @@
+#!/bin/sh
+
+# runuser -c "cp /usr/share/applications/ColorMC.desktop ~/Desktop/ColorMC.desktop"
