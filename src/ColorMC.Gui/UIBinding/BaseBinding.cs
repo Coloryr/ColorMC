@@ -94,6 +94,16 @@ public static class BaseBinding
         }
     }
 
+    public static void OpenDownloadPath()
+    {
+        OpFile(DownloadManager.DownloadDir, false);
+    }
+
+    public static void OpenDownloadJavaPath()
+    {
+        OpFile(JvmPath.BaseDir, false);
+    }
+
     public static async Task<(bool, string?)> Launch(GameSettingObj obj, LoginObj obj1)
     {
         if (Games.ContainsValue(obj))

@@ -92,6 +92,15 @@
         </StackPanel>
 
         <Button
+            Name="Button2"
+            Width="120"
+            Height="25"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Content="打开下载缓存" />
+
+        <Button
             Name="Button_Set"
             Width="80"
             Height="25"

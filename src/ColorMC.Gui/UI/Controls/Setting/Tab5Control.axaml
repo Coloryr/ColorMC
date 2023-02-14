@@ -45,7 +45,16 @@
                     Height="25"
                     Margin="5,0,0,0"
                     Content="{setting:Localize SettingWindow.Tab5.Text6}"
-                    DockPanel.Dock="Right" />
+                    DockPanel.Dock="Left" />
+
+                <Button
+                    Name="Button2"
+                    Width="120"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Content="打开下载目录"
+                    DockPanel.Dock="Left" />
+
             </DockPanel>
             <Label Margin="5" Content="{setting:Localize SettingWindow.Tab5.Text4}" />
         </StackPanel>
