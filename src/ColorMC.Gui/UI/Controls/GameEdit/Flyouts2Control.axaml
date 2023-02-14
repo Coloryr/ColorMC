@@ -23,12 +23,12 @@
                 Name="Button2"
                 Width="80"
                 Height="25"
-                Content="{setting:Localize GameEditWindow.Flyouts1.Text1}" />
+                Content="{setting:Localize GameEditWindow.Flyouts2.Text1}" />
             <Button
                 Name="Button3"
                 Width="80"
                 Height="25"
-                Content="{setting:Localize GameEditWindow.Flyouts1.Text2}" />
+                Content="{setting:Localize GameEditWindow.Flyouts2.Text2}" />
         </StackPanel>
     </Grid>
 </UserControl>

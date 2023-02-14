@@ -94,7 +94,7 @@ public partial class App : Application
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Logs.Error("fail", e);
         }
 
         base.OnFrameworkInitializationCompleted();

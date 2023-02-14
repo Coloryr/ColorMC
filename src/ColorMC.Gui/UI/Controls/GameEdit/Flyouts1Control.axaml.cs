@@ -37,7 +37,7 @@ public partial class Flyouts1Control : UserControl
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        BaseBinding.OpFile(Obj.Local, true);
+        BaseBinding.OpFile(Obj.Local);
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
