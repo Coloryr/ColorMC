@@ -38,6 +38,7 @@ public partial class Tab5Control : UserControl
         Button_D1.Click += Button_D1_Click;
 
         Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
 
         Expander_R.ContentTransition = App.CrossFade100;
 
@@ -45,6 +46,11 @@ public partial class Tab5Control : UserControl
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpenDownloadJavaPath();
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

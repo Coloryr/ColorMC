@@ -17,6 +17,12 @@ public partial class Tab3Control : UserControl
 
         ComboBox1.Items = BaseBinding.GetDownloadSources();
         Button_Set.Click += Button_Set_Click;
+        Button2.Click += Button2_Click;
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpenDownloadPath();
     }
 
     private void Button_Set_Click(object? sender, RoutedEventArgs e)
