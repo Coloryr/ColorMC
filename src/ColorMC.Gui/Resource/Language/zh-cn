@@ -361,8 +361,8 @@
 	<sys:String x:Key="GameEditWindow.Flyouts1.Text2">删除Mod</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Text3">mcmod搜索</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts1.Text4">打开链接</sys:String>
-	<sys:String x:Key="GameEditWindow.Flyouts1.Text1">导出世界</sys:String>
-	<sys:String x:Key="GameEditWindow.Flyouts1.Text2">删除世界</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts2.Text1">导出世界</sys:String>
+	<sys:String x:Key="GameEditWindow.Flyouts2.Text2">删除世界</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts3.Text1">删除资源包</sys:String>
 	<sys:String x:Key="GameEditWindow.Flyouts4.Text1">清空截图</sys:String>
 	<sys:String x:Key="GameEditWindow.Info1">正在读取游戏版本</sys:String>

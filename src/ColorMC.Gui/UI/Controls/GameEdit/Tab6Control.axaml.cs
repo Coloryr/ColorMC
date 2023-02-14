@@ -369,7 +369,7 @@ public partial class Tab6Control : UserControl
         {
             var name = file.GetPath();
             await GameBinding.ExportGame(Obj, name, list, PackType.ColorMC);
-            BaseBinding.OpFile(name, true);
+            BaseBinding.OpFile(name);
         }
         catch (Exception e1)
         {

@@ -50,7 +50,7 @@ public partial class FlyoutsControl : UserControl
     private void Button7_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        GameBinding.OpFile(Obj.Obj);
+        GameBinding.OpPath(Obj.Obj);
     }
 
     private void Button6_Click(object? sender, RoutedEventArgs e)

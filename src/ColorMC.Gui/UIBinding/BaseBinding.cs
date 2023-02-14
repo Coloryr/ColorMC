@@ -110,12 +110,12 @@ public static class BaseBinding
 
     public static void OpenDownloadPath()
     {
-        OpFile(DownloadManager.DownloadDir, false);
+        OpPath(DownloadManager.DownloadDir);
     }
 
     public static void OpenDownloadJavaPath()
     {
-        OpFile(JvmPath.BaseDir, false);
+        OpPath(Path.GetFullPath(JvmPath.BaseDir));
     }
 
     public static async Task<(bool, string?)> Launch(GameSettingObj obj, LoginObj obj1)
@@ -303,7 +303,7 @@ public static class BaseBinding
         return list;
     }
 
-    public static void OpFile(string item, bool file)
+    public static void OpFile(string item)
     {
         switch (SystemInfo.Os)
         {
@@ -316,16 +316,8 @@ public static class BaseBinding
                     '"' + item + '"');
                 break;
             case OsType.MacOS:
-                if (file)
-                {
-                    var file1 = new FileInfo(item);
-                    Process.Start("open", '"' + file1.Directory?.FullName + '"');
-                }
-                else
-                {
-                    Process.Start("open",
-                        '"' + item + '"');
-                }
+                var file1 = new FileInfo(item);
+                Process.Start("open", '"' + file1.Directory?.FullName + '"');
                 break;
         }
     }
@@ -333,6 +325,25 @@ public static class BaseBinding
     public static byte[] GetUIJson()
     {
         return App.GetFile("ColorMC.Gui.Resource.UI.CustomUI.json");
+    }
+
+    public static void OpPath(string item)
+    {
+        switch (SystemInfo.Os)
+        {
+            case OsType.Windows:
+                Process.Start("explorer",
+                    $"{item}");
+                break;
+            case OsType.Linux:
+                Process.Start("nautilus",
+                    '"' + item + '"');
+                break;
+            case OsType.MacOS:
+                Process.Start("open",
+                        '"' + item + '"');
+                break;
+        }
     }
 
     public static void OpUrl(string url)

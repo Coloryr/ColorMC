@@ -76,7 +76,7 @@ public partial class Tab3Control : UserControl
             return;
 
         var dir = Obj.GetGamePath();
-        BaseBinding.OpFile(Path.GetFullPath(dir + "/" + item), true);
+        BaseBinding.OpFile(Path.GetFullPath(dir + "/" + item));
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

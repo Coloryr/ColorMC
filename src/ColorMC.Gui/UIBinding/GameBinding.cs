@@ -707,9 +707,9 @@ public static class GameBinding
         return InstancesPath.GetGame(name);
     }
 
-    public static void OpFile(GameSettingObj obj)
+    public static void OpPath(GameSettingObj obj)
     {
-        BaseBinding.OpFile(obj.GetGamePath(), false);
+        BaseBinding.OpPath(obj.GetGamePath());
     }
 
     public static void OpenMcmod(ModDisplayObj obj)
