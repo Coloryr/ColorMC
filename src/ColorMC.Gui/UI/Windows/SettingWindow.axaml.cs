@@ -8,17 +8,18 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class SettingWindow : Window
 {
-    private Tab1Control tab1 = new();
-    private Tab2Control tab2 = new();
-    private Tab3Control tab3 = new();
-    private Tab4Control tab4 = new();
-    private Tab5Control tab5 = new();
-    private Tab6Control tab6 = new();
+    private readonly Tab1Control tab1 = new();
+    private readonly Tab2Control tab2 = new();
+    private readonly Tab3Control tab3 = new();
+    private readonly Tab4Control tab4 = new();
+    private readonly Tab5Control tab5 = new();
+    private readonly Tab6Control tab6 = new();
+    private readonly Tab6Control tab7 = new();
 
     private bool switch1 = false;
 
-    private ContentControl content1 = new();
-    private ContentControl content2 = new();
+    private readonly ContentControl content1 = new();
+    private readonly ContentControl content2 = new();
 
     private int now;
 
@@ -43,6 +44,7 @@ public partial class SettingWindow : Window
         tab4.SetWindow(this);
         tab5.SetWindow(this);
         tab6.SetWindow(this);
+        tab7.SetWindow(this);
 
         content1.Content = tab2;
 
@@ -94,6 +96,9 @@ public partial class SettingWindow : Window
             case 5:
                 Go(tab1);
                 break;
+            case 6:
+                Go(tab7);
+                break;
         }
 
         now = Tabs.SelectedIndex;
@@ -120,6 +125,18 @@ public partial class SettingWindow : Window
 
     private void SettingWindow_Closed(object? sender, EventArgs e)
     {
+        content1.Content = null;
+        content2.Content = null;
+
+        tab1.SetWindow(null);
+        tab2.SetWindow(null);
+        tab3.SetWindow(null);
+        tab4.SetWindow(null);
+        tab5.SetWindow(null);
+        tab6.SetWindow(null);
+        tab7.SetWindow(null);
+        Head.SetWindow(null);
+
         App.PicUpdate -= Update;
 
         App.SettingWindow = null;

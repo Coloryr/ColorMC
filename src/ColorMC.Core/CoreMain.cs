@@ -95,7 +95,7 @@ public static class CoreMain
         ConfigUtils.Init(dir);
         SystemInfo.Init();
         DownloadManager.Init(dir);
-        JvmPath.Init();
+        JvmPath.Init(dir);
         AuthDatabase.Init(dir);
         MCPath.Init(dir);
 

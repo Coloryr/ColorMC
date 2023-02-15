@@ -42,11 +42,12 @@ public static class Logs
     {
         while (IsRun)
         {
-            semaphore.WaitOne();
             while (bags.TryTake(out var item))
             {
                 Writer.WriteLine(item);
             }
+
+            Thread.Sleep(100);
         }
     }
 
@@ -56,7 +57,6 @@ public static class Logs
     public static void Stop()
     {
         IsRun = false;
-        semaphore.Release();
     }
 
     private static void AddText(string text)
@@ -65,7 +65,6 @@ public static class Logs
             return;
 
         bags.Add(text);
-        semaphore.Release();
     }
 
     public static void Info(string data)

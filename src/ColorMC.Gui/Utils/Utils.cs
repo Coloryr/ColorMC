@@ -556,7 +556,7 @@ public static class ImageUtils
         return (x, y);
     }
 
-    public static Task<Bitmap?> MakeImageSharp(string file, int value)
+    public static Task<Bitmap?> MakeBackImage(string file, int value)
     {
         return Task.Run(() =>
         {
@@ -671,7 +671,7 @@ public static class GuiConfigUtils
         }
     }
 
-    private static GuiConfigObj MakeDefaultConfig()
+    public static GuiConfigObj MakeDefaultConfig()
     {
         return new()
         {

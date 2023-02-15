@@ -8,15 +8,15 @@ namespace ColorMC.Core.LaunchPath;
 public static class JvmPath
 {
     public const string Unknow = "unknow";
-    public const string Name1 = "./java";
+    public const string Name1 = "java";
     public static Dictionary<string, JavaInfo> Jvms { get; } = new();
 
     public static string BaseDir;
 
-    public static void Init()
+    public static void Init(string dir)
     {
-        BaseDir = Name1;
-        Directory.CreateDirectory(BaseDir);
+        BaseDir = dir;
+        Directory.CreateDirectory(dir + Name1);
     }
 
     /// <summary>
@@ -70,22 +70,18 @@ public static class JvmPath
 
     private static string? Find(string path)
     {
-        switch (SystemInfo.Os)
+        return SystemInfo.Os switch
         {
-            case OsType.Windows:
-                return PathC.GetFile(path, "javaw.exe");
-            case OsType.Linux:
-                return PathC.GetFile(path, "java");
-            case OsType.MacOS:
-                return PathC.GetFile(path, "java");
-        }
-
-        return null;
+            OsType.Windows => PathC.GetFile(path, "javaw.exe"),
+            OsType.Linux => PathC.GetFile(path, "java"),
+            OsType.MacOS => PathC.GetFile(path, "java"),
+            _ => null,
+        };
     }
 
     private static async Task<(bool, string?)> UnzipJava(string name, string file)
     {
-        string path = BaseDir + "/" + name;
+        string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
 
         await Task.Run(() => ZipFloClass.Unzip(path, file));
@@ -93,6 +89,11 @@ public static class JvmPath
         var java = Find(path);
         if (java == null)
             return (false, LanguageHelper.GetName("Core.Jvm.Error6"));
+
+        if (SystemInfo.Os == OsType.Linux)
+        {
+            Per(java);
+        }
 
         return AddItem(name, Path.GetRelativePath(AppContext.BaseDirectory, java));
     }
@@ -183,7 +184,7 @@ public static class JvmPath
         Jvms.Clear();
         list.ForEach(a =>
         {
-            var info = GetJavaInfo(a.Local);
+            var info = GetJavaInfo(Path.GetFileName(a.Local));
             if (info != null)
             {
                 Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info2"),
@@ -222,6 +223,33 @@ public static class JvmPath
         }
     }
 
+    private static void Per(string path)
+    {
+        try
+        {
+            Process p = new();
+            p.StartInfo.FileName = "sh";
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardError = true;
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+
+            p.StandardInput.WriteLine("chmod -R 777 " + path);
+            p.StandardInput.WriteLine("exit");
+            p.WaitForExit();
+
+            string temp = p.StandardOutput.ReadToEnd();
+
+            p.Dispose();
+        }
+        catch (Exception e)
+        {
+            
+        }
+    }
+
     /// <summary>
     /// 获取Java信息
     /// </summary>
@@ -231,6 +259,10 @@ public static class JvmPath
     {
         try
         {
+            if (path.StartsWith(Name1))
+            {
+                path = BaseDir + path;
+            }
             if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
             {
                 Process p = new();
@@ -263,7 +295,7 @@ public static class JvmPath
                 return null;
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
             return null;
         }

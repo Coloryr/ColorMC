@@ -150,8 +150,10 @@ public partial class App : Application
 
     public static void RemoveImage()
     {
-        BackBitmap?.Dispose();
+        var image = BackBitmap;
         BackBitmap = null;
+        OnPicUpdate();
+        image?.Dispose();
     }
 
     public static async Task LoadImage(string file, int eff)
@@ -160,10 +162,12 @@ public partial class App : Application
 
         if (!string.IsNullOrWhiteSpace(file) && File.Exists(file))
         {
-            BackBitmap = await ImageUtils.MakeImageSharp(file, eff);
+            BackBitmap = await ImageUtils.MakeBackImage(file, eff);
         }
 
         OnPicUpdate();
+
+        Funtcions.RunGC();
     }
 
     public static void DownloaderUpdate(CoreRunState state)

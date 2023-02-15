@@ -26,7 +26,7 @@ public static class UserBinding
     private readonly static List<LoginObj> LockUser = new();
     public static Image<Rgba32>? SkinImage { get; set; }
     public static Image<Rgba32>? CapeIamge { get; set; }
-    public static Bitmap? HeadBitmap { get; private set; }
+    public static Bitmap HeadBitmap { get; private set; }
     public static List<string> GetUserTypes()
     {
         var list = new List<string>()
@@ -286,5 +286,18 @@ public static class UserBinding
                 BaseBinding.OpUrl($"{obj.Text1}/user/closet");
                 break;
         }
+    }
+
+    public static void ClearAllUser()
+    {
+        AuthDatabase.Auths.Clear();
+
+        AuthDatabase.Save();
+
+        GuiConfigUtils.Config.LastUser = null;
+
+        GuiConfigUtils.Save();
+
+        App.OnUserEdit();
     }
 }

@@ -25,6 +25,8 @@
                         Content="{setting:Localize SettingWindow.Tab2.Text11}" />
                 </StackPanel>
 
+                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text24}" />
+
                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                     <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text22}" />
                     <ComboBox Name="ComboBox3" Width="200" />

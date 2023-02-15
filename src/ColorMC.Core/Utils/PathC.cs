@@ -141,8 +141,11 @@ public static class PathC
     public static string? GetFile(string path, string name)
     {
         var list = GetAllFile(path);
+        Logs.Info("seach file");
         foreach (var item in list)
         {
+            Logs.Info(item.FullName);
+
             if (item.Name == name)
                 return item.FullName;
         }
