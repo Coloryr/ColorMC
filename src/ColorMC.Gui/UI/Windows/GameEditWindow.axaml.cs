@@ -109,7 +109,7 @@ public partial class GameEditWindow : Window, IBaseWindow
             case 3:
                 Tabs.SelectedIndex = 4;
                 break;
-            
+
             case 5:
                 Tabs.SelectedIndex = 8;
                 break;

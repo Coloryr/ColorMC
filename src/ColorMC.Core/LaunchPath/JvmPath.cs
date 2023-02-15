@@ -246,7 +246,7 @@ public static class JvmPath
         }
         catch (Exception e)
         {
-            
+
         }
     }
 

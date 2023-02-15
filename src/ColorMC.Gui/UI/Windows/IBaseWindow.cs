@@ -1,5 +1,4 @@
 ﻿using ColorMC.Gui.UI.Controls;
-using ColorMC.Gui.UI.Controls.CurseForge;
 
 namespace ColorMC.Gui.UI.Windows;
 

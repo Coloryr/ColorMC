@@ -68,7 +68,7 @@ internal class Program
 
     public static void Update(int index, DownloadItem item)
     {
-        if(item.State == DownloadItemState.Error)
+        if (item.State == DownloadItemState.Error)
         {
             Console.WriteLine($"下载器{index} 下载项目:{item.Name} 下载错误");
         }

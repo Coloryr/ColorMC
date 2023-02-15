@@ -44,8 +44,8 @@ public static class BaseBinding
         FontSel.Instance.Load();
     }
 
-    public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title, 
-        string ext, string name, bool multiple = false )
+    public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title,
+        string ext, string name, bool multiple = false)
     {
         return window.StorageProvider.OpenFilePickerAsync(new()
         {
@@ -127,7 +127,7 @@ public static class BaseBinding
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
             !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
         {
-            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP, 
+            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP,
                 GuiConfigUtils.Config.ServerCustom.Port);
 
             obj = obj.CopyObj();

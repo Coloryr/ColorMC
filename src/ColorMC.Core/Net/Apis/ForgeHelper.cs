@@ -130,7 +130,7 @@ public static class ForgeHelper
         }
         else
         {
-            
+
         }
 
         foreach (var item1 in info.libraries)
