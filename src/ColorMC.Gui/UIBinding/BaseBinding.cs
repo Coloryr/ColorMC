@@ -370,7 +370,7 @@ public static class BaseBinding
                     '"' + url + '"');
                 break;
             case OsType.MacOS:
-                Process.Start("open -a Safari",
+                Process.Start("open", "-a Safari " +
                     '"' + url + '"');
                 break;
         }
