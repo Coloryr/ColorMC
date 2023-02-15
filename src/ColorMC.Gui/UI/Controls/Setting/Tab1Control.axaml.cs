@@ -26,6 +26,29 @@ public partial class Tab1Control : UserControl
 
         Button_SelectFile2.Click += Button_SelectFile2_Click;
         Button_Input2.Click += Button_Input2_Click;
+
+        Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
+    }
+
+    private async void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        var res = await Window.Info.ShowWait(Localizer.Instance["SettingWindow.Tab1.Info3"]);
+        if (!res)
+            return;
+
+        UserBinding.ClearAllUser();
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab1.Info4"]);
+    }
+
+    private async void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        var res = await Window.Info.ShowWait(Localizer.Instance["SettingWindow.Tab1.Info1"]);
+        if (!res)
+            return;
+
+        ConfigBinding.ResetConfig();
+        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab1.Info2"]);
     }
 
     private void Button_Input2_Click(object? sender, RoutedEventArgs e)

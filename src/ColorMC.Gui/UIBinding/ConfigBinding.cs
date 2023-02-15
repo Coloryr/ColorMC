@@ -3,6 +3,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -165,5 +166,12 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         FontSel.Instance.Load();
+    }
+
+    public static void ResetConfig()
+    {
+        GuiConfigUtils.Config = GuiConfigUtils.MakeDefaultConfig();
+
+        GuiConfigUtils.Save();
     }
 }

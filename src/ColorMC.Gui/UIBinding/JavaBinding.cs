@@ -242,6 +242,9 @@ public static class JavaBinding
             var list1 = new List<JavaDownloadDisplayObj>();
             foreach (var item in list)
             {
+                if (item.name.EndsWith(".deb") || item.name.EndsWith(".rpm"))
+                    continue;
+
                 list1.Add(new()
                 {
                     Name = item.name,

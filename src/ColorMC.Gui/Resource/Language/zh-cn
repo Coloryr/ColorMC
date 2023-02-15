@@ -1,6 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:sys="clr-namespace:System;assembly=mscorlib">
+	
 	<sys:String x:Key="Name">ColorMC</sys:String>
 
 	<sys:String x:Key="MainWindow.Title">ColorMC 主界面</sys:String>
@@ -82,13 +83,21 @@
 
 	<sys:String x:Key="SettingWindow.Title">ColorMC 设置</sys:String>
 	<sys:String x:Key="SettingWindow.Flyouts.Text1">删除Java</sys:String>
-	<sys:String x:Key="SettingWindow.Tabs.Text1">导入配置</sys:String>
+	<sys:String x:Key="SettingWindow.Tabs.Text1">配置文件</sys:String>
 	<sys:String x:Key="SettingWindow.Tabs.Text2">界面设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tabs.Text3">网络设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tabs.Text4">启动设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tabs.Text5">Java路径</sys:String>
 	<sys:String x:Key="SettingWindow.Tabs.Text6">客户端定制</sys:String>
+	<sys:String x:Key="SettingWindow.Tabs.Text7">关于</sys:String>
 
+	<sys:String x:Key="SettingWindow.Tab1.Text1">重置所有配置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab1.Text2">清空所有账户</sys:String>
+	<sys:String x:Key="SettingWindow.Tab1.Info1">是否重置所有配置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab1.Info2">已重置</sys:String>
+	<sys:String x:Key="SettingWindow.Tab1.Info3">是否删除所有账户</sys:String>
+	<sys:String x:Key="SettingWindow.Tab1.Info4">已清空</sys:String>
+	
 	<sys:String x:Key="SettingWindow.Tab2.Text1">语言选择</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text2">修改背景图片</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text3">背景图片位置</sys:String>
@@ -112,6 +121,7 @@
 	<sys:String x:Key="SettingWindow.Tab2.Text21">注意：背景图尺寸越大，启动器越卡</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text22">字体选择</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Text23">默认字体</sys:String>
+	<sys:String x:Key="SettingWindow.Tab2.Text24">注意：切换语言后需要重启启动器才能完全生效</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info1">正在切换语言</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info2">正在设置</sys:String>
 	<sys:String x:Key="SettingWindow.Tab2.Info3">选择图片文件</sys:String>

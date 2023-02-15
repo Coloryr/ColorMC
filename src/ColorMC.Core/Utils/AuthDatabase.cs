@@ -41,7 +41,7 @@ public static class AuthDatabase
     /// <summary>
     /// 保存
     /// </summary>
-    private static void Save()
+    public static void Save()
     {
         Task.Run(() =>
         {
