@@ -1,13 +1,12 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using System;
 using System.Timers;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -66,7 +65,7 @@ public partial class Tab7Control : UserControl
 
             if (CheckBox2.IsChecked == true)
             {
-                TextEditor1.ScrollToLine(TextEditor1.LineCount);            
+                TextEditor1.ScrollToLine(TextEditor1.LineCount);
             }
         });
     }

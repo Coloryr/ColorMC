@@ -113,7 +113,7 @@ public class DownloadThread
                     {
                         if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Overwrite)
                         {
-                            using FileStream stream2 = new(item.Local, FileMode.Open, 
+                            using FileStream stream2 = new(item.Local, FileMode.Open,
                                 FileAccess.Read, FileShare.Read);
                             stream2.Seek(0, SeekOrigin.Begin);
                             string sha1 = Funtcions.GenSha1(stream2);
@@ -132,7 +132,7 @@ public class DownloadThread
 
                         if (!string.IsNullOrWhiteSpace(item.SHA256) && !item.Overwrite)
                         {
-                            using FileStream stream2 = new(item.Local, FileMode.Open, 
+                            using FileStream stream2 = new(item.Local, FileMode.Open,
                                 FileAccess.Read, FileShare.Read);
                             stream2.Seek(0, SeekOrigin.Begin);
                             string sha1 = Funtcions.GenSha256(stream2);

@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -17,8 +16,6 @@ using OpenTK.Windowing.Desktop;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Threading;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
@@ -235,7 +232,7 @@ public partial class SkinWindow : Window
     {
         Skin.ChangeSkin();
 
-        Dispatcher.UIThread.Post(() => 
+        Dispatcher.UIThread.Post(() =>
         {
             Check();
         });
@@ -952,7 +949,7 @@ void main()
             GL.UniformMatrix4(modelLoc, false, ref model);
 
             GL.BindVertexArray(NormalVAO.Cape.VertexArrayObject);
-            GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, 
+            GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
                 DrawElementsType.UnsignedShort, IntPtr.Zero);
 
             GL.BindTexture(TextureTarget.Texture2D, 0);
@@ -968,7 +965,7 @@ void main()
         GL.UniformMatrix4(modelLoc, false, ref model);
 
         GL.BindVertexArray(NormalVAO.Body.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder, 
+        GL.DrawElements(PrimitiveType.Triangles, steveModelDrawOrder,
             DrawElementsType.UnsignedShort, IntPtr.Zero);
 
         model = Matrix4.CreateTranslation(0, CubeC.Value, 0) *

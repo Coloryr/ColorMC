@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
@@ -61,7 +60,7 @@ public partial class Tab2Control : UserControl
         {
             GameBinding.SetJavaLocal(Obj, ComboBox2.SelectedItem as string, TextBox11.Text);
         }
-        
+
         Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
@@ -170,7 +169,7 @@ public partial class Tab2Control : UserControl
         load = true;
 
         var list = new List<string>()
-        { 
+        {
             ""
         };
         list.AddRange(JavaBinding.GetJavaName());

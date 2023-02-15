@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace ColorMC.Gui.SkinModel;
+﻿namespace ColorMC.Gui.SkinModel;
 
 public record SteveTexture
 {

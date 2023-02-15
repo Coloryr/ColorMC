@@ -3,7 +3,6 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using System.Linq;
 
 namespace ColorMC.Core.Net.Download;
 

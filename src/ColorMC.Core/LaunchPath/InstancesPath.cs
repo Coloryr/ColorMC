@@ -654,8 +654,8 @@ public static class InstancesPath
     }
 
     public static void SetIcon(this GameSettingObj obj, string file)
-    { 
-        
+    {
+
     }
 
     /// <summary>

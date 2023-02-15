@@ -8,7 +8,6 @@ using ColorMC.Core.Objs.Minecraft;
 using DynamicData;
 using System;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls;

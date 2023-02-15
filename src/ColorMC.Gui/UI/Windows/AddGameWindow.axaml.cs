@@ -6,7 +6,6 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
@@ -81,7 +80,7 @@ public partial class AddGameWindow : Window
         Update();
     }
 
-    private  void Button2_Click(object? sender, RoutedEventArgs e)
+    private void Button2_Click(object? sender, RoutedEventArgs e)
     {
         VersionSelect();
     }

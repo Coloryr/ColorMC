@@ -1,8 +1,10 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -10,8 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
-using Avalonia.Input;
-using ColorMC.Gui.UI.Controls.Add;
 
 namespace ColorMC.Gui.UI.Windows;
 
