@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ColorMC.Core.Game.Auth;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
@@ -260,7 +261,7 @@ public static class GameBinding
                 var info = await Image.IdentifyAsync(name);
                 if (info.Width != info.Height || info.Width > 200 || info.Height > 200)
                 {
-                    (win as IBaseWindow)?.Info.Show(Localizer.Instance["GameBinding.Erro65"]);
+                    (win as IBaseWindow)?.Info.Show(Localizer.Instance["GameBinding.Error6"]);
                     return;
                 }
                 var data = await File.ReadAllBytesAsync(name);
@@ -294,7 +295,15 @@ public static class GameBinding
         var login = UserBinding.GetLastUser();
         if (login == null)
         {
-            return (false, Localizer.Instance["GameBinding.Error2"]);
+            return (false, Localizer.Instance["GameBinding.Error7"]);
+        }
+        if (login.AuthType == AuthType.Offline)
+        {
+            var have = AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
+            if (!have)
+            {
+                return (false, Localizer.Instance["GameBinding.Error2"]);
+            }
         }
 
         if (UserBinding.IsLock(login))

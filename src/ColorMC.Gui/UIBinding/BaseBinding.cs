@@ -386,4 +386,9 @@ public static class BaseBinding
     {
         return FontManager.Current.GetInstalledFontFamilyNames().ToList();
     }
+
+    public static void OpenBaseDir()
+    {
+        OpPath(AppContext.BaseDirectory);
+    }
 }
