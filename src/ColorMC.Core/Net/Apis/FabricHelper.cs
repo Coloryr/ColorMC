@@ -57,7 +57,7 @@ public static class FabricHelper
     {
         try
         {
-            string url = $"{UrlHelper.QuiltMeta(local)}/loader/{mc}";
+            string url = $"{UrlHelper.FabricMeta(local)}/loader/{mc}";
             var data = await BaseClient.GetString(url);
             if (string.IsNullOrWhiteSpace(data))
                 return null;

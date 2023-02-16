@@ -181,7 +181,9 @@ public partial class Tab1Control : UserControl
         if (CheckBox_Quilt.IsChecked == true)
         {
             CheckBox_Forge.IsEnabled = false;
+            CheckBox_Forge.IsChecked = false;
             CheckBox_Fabric.IsEnabled = false;
+            CheckBox_Fabric.IsChecked = false;
             Button3_Click(sender, e);
         }
         else
@@ -197,7 +199,9 @@ public partial class Tab1Control : UserControl
         if (CheckBox_Fabric.IsChecked == true)
         {
             CheckBox_Forge.IsEnabled = false;
+            CheckBox_Forge.IsChecked = false;
             CheckBox_Quilt.IsEnabled = false;
+            CheckBox_Quilt.IsChecked = false;
             Button3_Click(sender, e);
         }
         else
@@ -214,7 +218,9 @@ public partial class Tab1Control : UserControl
         if (CheckBox_Forge.IsChecked == true)
         {
             CheckBox_Fabric.IsEnabled = false;
+            CheckBox_Fabric.IsChecked = false;
             CheckBox_Quilt.IsEnabled = false;
+            CheckBox_Quilt.IsChecked = false;
             Button3_Click(sender, e);
         }
         else
