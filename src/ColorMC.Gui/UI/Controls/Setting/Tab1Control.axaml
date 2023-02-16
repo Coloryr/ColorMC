@@ -81,18 +81,26 @@
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+        <DockPanel VerticalAlignment="Bottom">
             <Button
                 Name="Button1"
                 Width="120"
                 Height="25"
-                Margin="5"
+                Margin="5,0,0,5"
                 Content="{setting:Localize SettingWindow.Tab1.Text1}" />
             <Button
                 Name="Button2"
                 Width="120"
                 Height="25"
+                Margin="5,0,0,5"
                 Content="{setting:Localize SettingWindow.Tab1.Text2}" />
-        </StackPanel>
+
+            <Button
+                Name="Button3"
+                Width="120"
+                Height="25"
+                Margin="5,0,0,5"
+                Content="{setting:Localize SettingWindow.Tab1.Text3}" />
+        </DockPanel>
     </Grid>
 </UserControl>

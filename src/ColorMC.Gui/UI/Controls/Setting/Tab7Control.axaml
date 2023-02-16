@@ -11,8 +11,35 @@
     <Grid>
         <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
 
-        <StackPanel>
-            <Image VerticalAlignment="Center" />
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Image
+                Width="120"
+                Height="120"
+                Margin="0,0,20,0"
+                HorizontalAlignment="Left"
+                Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label Content="ColorMC" FontSize="60" />
+                <Label Content="一个全平台Minecraft启动器" FontSize="30" />
+                <Label Content="作者：Coloryr" FontSize="30" />
+
+                <Button
+                    Name="Button1"
+                    Height="30"
+                    Margin="0,5,0,5"
+                    HorizontalAlignment="Stretch"
+                    Content="开源地址" />
+                <Button
+                    Name="Button2"
+                    Height="30"
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Stretch"
+                    Content="Minecraft官网" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>
