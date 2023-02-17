@@ -1,5 +1,7 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
@@ -38,8 +40,7 @@ public partial class MainWindow : Window, IBaseWindow
     {
         InitializeComponent();
 
-        Head.SetWindow(this);
-        this.BindFont();
+        this.Init();
         Icon = App.Icon;
         Rectangle1.MakeResizeDrag(this);
 
@@ -51,6 +52,8 @@ public partial class MainWindow : Window, IBaseWindow
         CoreMain.GameLaunch = GameLunch;
         CoreMain.GameDownload = GameDownload;
 
+        Button1.Click += Button1_Click;
+
         App.UserEdit += MainWindow_OnUserEdit;
         Opened += MainWindow_Opened;
         Closed += MainWindow_Closed;
@@ -59,6 +62,12 @@ public partial class MainWindow : Window, IBaseWindow
 
         Update();
     }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        ItemInfo.Display();
+    }
+
 
     public async void Launch(bool debug)
     {

@@ -13,6 +13,7 @@ namespace ColorMC.Gui.UI.Controls.Hello;
 public partial class Tab4Control : UserControl
 {
     private HelloWindow Window;
+    private bool Cancel;
 
     private readonly ObservableCollection<UserDisplayObj1> List = new();
     public Tab4Control()
@@ -67,16 +68,20 @@ public partial class Tab4Control : UserControl
                 TextBox_Input1.Text = "";
                 break;
             case 1:
+                Cancel = false;
                 CoreMain.LoginOAuthCode = LoginOAuthCode;
                 Window.Info1.Show(Localizer.Instance["UserWindow.Info1"]);
                 res = await UserBinding.AddUser(1, null);
                 Window.Info3.Close();
+                Window.Info1.Close();
+                if (Cancel)
+                    break;
                 if (!res.Item1)
                 {
                     Window.Info.Show(res.Item2!);
+                    break;
                 }
                 Window.Info2.Show(Localizer.Instance["Info4"]);
-                TextBox_Input1.Text = "";
                 break;
             case 2:
                 var server = TextBox_Input1.Text;
@@ -199,6 +204,8 @@ public partial class Tab4Control : UserControl
                 Window.Info.Show(Localizer.Instance["UserWindow.Error5"]);
                 break;
         }
+        UserBinding.UserLastUser();
+
         Load();
         Button_Add.IsEnabled = true;
     }
@@ -207,7 +214,11 @@ public partial class Tab4Control : UserControl
     {
         Window.Info1.Close();
         Window.Info3.Show(string.Format(Localizer.Instance["UserWindow.Text3"], url),
-            string.Format(Localizer.Instance["UserWindow.Text4"], code));
+            string.Format(Localizer.Instance["UserWindow.Text4"], code), () => 
+            {
+                Cancel = true;
+                UserBinding.OAuthCancel();
+            });
         BaseBinding.OpUrl(url);
     }
 

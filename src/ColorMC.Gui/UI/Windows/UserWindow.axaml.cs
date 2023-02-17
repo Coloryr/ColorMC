@@ -11,20 +11,20 @@ using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.Threading.Channels;
 
 namespace ColorMC.Gui.UI.Windows;
 
 public partial class UserWindow : Window
 {
     private readonly ObservableCollection<UserDisplayObj> List = new();
-
+    private bool Cancel;
 
     public UserWindow()
     {
         InitializeComponent();
 
-        Head.SetWindow(this);
-        this.BindFont();
+        this.Init();
         Icon = App.Icon;
         Rectangle1.MakeResizeDrag(this);
 
@@ -119,10 +119,14 @@ public partial class UserWindow : Window
                 ok = true;
                 break;
             case 1:
+                Cancel = false;
                 CoreMain.LoginOAuthCode = LoginOAuthCode;
                 Info1.Show(Localizer.Instance["UserWindow.Info1"]);
                 res = await UserBinding.AddUser(1, null);
+                Info1.Close();
                 Info3.Close();
+                if (Cancel)
+                    break;
                 if (!res.Item1)
                 {
                     Info.Show(res.Item2!);
@@ -233,11 +237,12 @@ public partial class UserWindow : Window
                 Info.Show(Localizer.Instance["UserWindow.Error5"]);
                 break;
         }
-        Load();
         if (ok)
         {
+            UserBinding.UserLastUser();
             await App.CrossFade300.Start(Grid_Add, null, CancellationToken.None);
         }
+        Load();
         Button_Add.IsEnabled = true;
     }
 
@@ -245,7 +250,11 @@ public partial class UserWindow : Window
     {
         Info1.Close();
         Info3.Show(string.Format(Localizer.Instance["UserWindow.Text3"], url),
-            string.Format(Localizer.Instance["UserWindow.Text4"], code));
+            string.Format(Localizer.Instance["UserWindow.Text4"], code), () => 
+            {
+                Cancel = true;
+                UserBinding.OAuthCancel();
+            });
         BaseBinding.OpUrl(url);
     }
 
@@ -315,7 +324,7 @@ public partial class UserWindow : Window
         App.CrossFade300.Start(Grid_Add, null, CancellationToken.None);
     }
 
-    private async void Button_D1_Click(object? sender, RoutedEventArgs e)
+    private void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
         var item = DataGrid_User.SelectedItem as UserDisplayObj;
         if (item == null)

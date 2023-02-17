@@ -7,6 +7,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using ColorMC.Core;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -485,13 +486,48 @@ public static partial class UIUtils
         return temp;
     }
 
-    public static void BindFont(this Window window)
+    public static Window? FindWindow(this IVisual visual)
+    {
+        var pan = visual.GetVisualParent();
+        while (pan != null)
+        {
+            if (pan is Window)
+            {
+                return pan as Window;
+            }
+            pan = pan.GetVisualParent();
+        }
+
+        return null;
+    }
+
+    public static T? FindTop<T>(this IVisual visual)
+    {
+        var pan = visual.GetVisualParent();
+        while (pan != null)
+        {
+            if (pan is T)
+            {
+                return (T)pan;
+            }
+            pan = pan.GetVisualParent();
+        }
+
+        return default;
+    }
+
+    public static void Init(this Window window)
     {
         window.Bind(TemplatedControl.FontFamilyProperty, new Binding
         {
             Source = FontSel.Instance,
             Path = "[Font]"
         });
+
+        if (SystemInfo.Os == OsType.Linux)
+        {
+            window.SystemDecorations = SystemDecorations.BorderOnly;
+        }
     }
 }
 

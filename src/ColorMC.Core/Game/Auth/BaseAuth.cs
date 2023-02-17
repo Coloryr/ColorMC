@@ -142,6 +142,11 @@ public static class BaseAuth
         }
     }
 
+    public static void CancelWithOAuth()
+    {
+        OAuthAPI.Cancel();
+    }
+
     /// <summary>
     /// 从OAuth刷新登录
     /// </summary>

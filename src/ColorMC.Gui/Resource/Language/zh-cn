@@ -594,6 +594,11 @@
 	<sys:String x:Key="Error10">自定义UI加载失败</sys:String>
 	<sys:String x:Key="Error11">颜色数据读取失败</sys:String>
 
+	<sys:String x:Key="ToolTip.Text1">最小化</sys:String>
+	<sys:String x:Key="ToolTip.Text2">最大化</sys:String>
+	<sys:String x:Key="ToolTip.Text3">关闭</sys:String>
+	<sys:String x:Key="ToolTip.Text4">查看皮肤</sys:String>
+
 	<sys:String x:Key="Button.OpFile">打开文件夹</sys:String>
 	<sys:String x:Key="Button.Set">设置</sys:String>
 	<sys:String x:Key="Button.Select">选择文件</sys:String>

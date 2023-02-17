@@ -27,7 +27,7 @@ public record OAuth1Obj
     public string refresh_token { get; set; }
 }
 
-public static class OAuthAPI
+internal static class OAuthAPI
 {
     private const string OAuthCode = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
     private const string OAuthToken = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
@@ -59,6 +59,7 @@ public static class OAuthAPI
     private static string url;
     private static string device_code;
     private static int expires_in;
+    private static bool cancel;
 
     private static async Task<string> PostString(string url, Dictionary<string, string> arg)
     {
@@ -120,9 +121,14 @@ public static class OAuthAPI
         Arg2["code"] = device_code;
         long startTime = DateTime.Now.Ticks;
         int delay = 2;
+        cancel = false;
         do
         {
             await Task.Delay(delay * 1000);
+            if (cancel)
+            {
+                return (LoginState.Error, null);
+            }
             long estimatedTime = DateTime.Now.Ticks - startTime;
             long sec = estimatedTime / 10000000;
             if (sec > expires_in)
@@ -255,5 +261,10 @@ public static class OAuthAPI
         }
 
         return (LoginState.Done, accessToken);
+    }
+
+    public static void Cancel()
+    {
+        cancel = true;
     }
 }

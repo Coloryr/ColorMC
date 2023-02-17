@@ -41,11 +41,6 @@ public partial class HeadControl : UserControl
 
     private Window? BindWindow;
 
-    public void SetWindow(Window? window)
-    {
-        BindWindow = window;
-    }
-
     public HeadControl()
     {
         InitializeComponent();
@@ -62,16 +57,22 @@ public partial class HeadControl : UserControl
 
     private void ButtonClose_Click(object? sender, RoutedEventArgs e)
     {
+        BindWindow ??= this.FindWindow();
         if (BindWindow == null)
+        {
             return;
+        }
 
         BindWindow.Close();
     }
 
     private void ButtonMax_Click(object? sender, RoutedEventArgs e)
     {
+        BindWindow ??= this.FindWindow();
         if (BindWindow == null)
+        {
             return;
+        }
 
         if (BindWindow.WindowState == WindowState.Maximized)
             BindWindow.WindowState = WindowState.Normal;
@@ -81,16 +82,22 @@ public partial class HeadControl : UserControl
 
     private void ButtonMin_Click(object? sender, RoutedEventArgs e)
     {
+        BindWindow ??= this.FindWindow();
         if (BindWindow == null)
+        {
             return;
+        }
 
         BindWindow.WindowState = WindowState.Minimized;
     }
 
     private void HeadControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
+        BindWindow ??= this.FindWindow();
         if (BindWindow == null)
+        {
             return;
+        }
 
         BindWindow.BeginMoveDrag(e);
     }

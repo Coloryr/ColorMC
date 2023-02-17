@@ -1,6 +1,7 @@
 ﻿using Avalonia.Data;
 using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.MarkupExtensions;
+using ColorMC.Gui.UI.Controls;
 using System;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
@@ -49,6 +50,29 @@ public class LocalizeExtension : MarkupExtension
         };
 
         return binding.ProvideValue(serviceProvider);
+    }
+}
+
+public class InfoExtension : MarkupExtension
+{
+    public InfoExtension(string key)
+    {
+        Key = key;
+    }
+
+    public string Key { get; set; }
+
+    public override object ProvideValue(IServiceProvider serviceProvider)
+    {
+        //var keyToUse = Key;
+
+        //var binding = new ReflectionBindingExtension($"[{keyToUse}]")
+        //{
+        //    Mode = BindingMode.OneWay,
+        //    Source = Localizer.Instance,
+        //};
+
+        return new InfoFlyout(Key);
     }
 }
 

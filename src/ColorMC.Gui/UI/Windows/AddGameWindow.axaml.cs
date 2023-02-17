@@ -26,8 +26,7 @@ public partial class AddGameWindow : Window
     {
         InitializeComponent();
 
-        Head.SetWindow(this);
-        this.BindFont();
+        this.Init();
         Icon = App.Icon;
         Rectangle1.MakeResizeDrag(this);
 
@@ -217,8 +216,6 @@ public partial class AddGameWindow : Window
         CoreMain.PackUpdate = null;
         CoreMain.GameOverwirte = null;
         App.AddGameWindow = null;
-
-        Head.SetWindow(null);
     }
 
     private void Button_Add5_Click(object? sender, RoutedEventArgs e)

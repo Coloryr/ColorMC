@@ -29,8 +29,7 @@ public partial class AddResourcePackWindow : Window, IBase1Window
     {
         InitializeComponent();
 
-        Head.SetWindow(this);
-        this.BindFont();
+        this.Init();
         Icon = App.Icon;
         Rectangle1.MakeResizeDrag(this);
 
@@ -70,7 +69,7 @@ public partial class AddResourcePackWindow : Window, IBase1Window
         Obj = obj;
         Tab = tab;
 
-        Head.Title = string.Format(Localizer.Instance["AddResourcePackWindow.Title"], obj.Name);
+        Head.Title = Title= string.Format(Localizer.Instance["AddResourcePackWindow.Title"], obj.Name);
     }
 
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -137,8 +136,6 @@ public partial class AddResourcePackWindow : Window, IBase1Window
         App.PicUpdate -= Update;
 
         Tab.CloseAddResourcepack();
-
-        Head.SetWindow(null);
     }
 
     public void Install()

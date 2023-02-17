@@ -57,7 +57,6 @@ public static class BaseClient
         }
 
         DownloadClient.Timeout = TimeSpan.FromSeconds(10);
-        LoginClient.Timeout = TimeSpan.FromSeconds(10);
     }
 
     /// <summary>
