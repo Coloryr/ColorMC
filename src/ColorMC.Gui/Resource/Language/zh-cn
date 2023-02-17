@@ -598,6 +598,10 @@
 	<sys:String x:Key="ToolTip.Text2">最大化</sys:String>
 	<sys:String x:Key="ToolTip.Text3">关闭</sys:String>
 	<sys:String x:Key="ToolTip.Text4">查看皮肤</sys:String>
+	<sys:String x:Key="ToolTip.Text5">关闭侧边栏</sys:String>
+	<sys:String x:Key="ToolTip.Text6">打开侧边栏</sys:String>
+	<sys:String x:Key="ToolTip.Text7">请选中到bin文件夹内的java.exe</sys:String>
+	<sys:String x:Key="ToolTip.Text8">示例"C:\Program Files\Java\jdk1.8.0_301\bin\java.exe"</sys:String>
 
 	<sys:String x:Key="Button.OpFile">打开文件夹</sys:String>
 	<sys:String x:Key="Button.Set">设置</sys:String>
