@@ -680,7 +680,8 @@ public static class GameBinding
         return res;
     }
 
-    public static async Task<List<ScreenshotDisplayObj>> GetScreenshots(GameSettingObj obj)
+    public static async Task<List<ScreenshotDisplayObj>> 
+        GetScreenshots(GameSettingObj obj)
     {
         var list = new List<ScreenshotDisplayObj>();
         var list1 = obj.GetScreenshots();
@@ -759,5 +760,23 @@ public static class GameBinding
     public static Task<List<string>?> GetQuiltSupportVersion()
     {
         return QuiltHelper.GetSupportVersion(BaseClient.Source);
+    }
+
+    public static void DeleteConfig(GameSettingObj obj)
+    {
+        obj.JvmArg = null;
+        obj.JvmName = "";
+        obj.JvmLocal = "";
+        obj.StartServer = null;
+        obj.ProxyHost = null;
+
+        obj.Save();
+    }
+
+    public static void SetAdvanceJvmArg(GameSettingObj obj, AdvanceJvmObj obj1)
+    {
+        obj.AdvanceJvm = obj1;
+
+        obj.Save();
     }
 }

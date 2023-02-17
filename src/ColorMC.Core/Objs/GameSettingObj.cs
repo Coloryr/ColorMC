@@ -64,6 +64,18 @@ public record ProxyHostObj
     public string Password { get; set; }
 }
 
+public record AdvanceJvmObj
+{ 
+    /// <summary>
+    /// 自定义mainclass
+    /// </summary>
+    public string MainClass { get; set; }
+    /// <summary>
+    /// 附加的classpath
+    /// </summary>
+    public string ClassPath { get; set; }
+}
+
 /// <summary>
 /// 游戏实例
 /// </summary>
@@ -96,7 +108,7 @@ public record GameSettingObj
     /// <summary>
     /// Jvm参数
     /// </summary>
-    public JvmArgObj JvmArg { get; set; }
+    public JvmArgObj? JvmArg { get; set; }
     /// <summary>
     /// Jvm名字
     /// </summary>
@@ -108,15 +120,19 @@ public record GameSettingObj
     /// <summary>
     /// 窗口设置
     /// </summary>
-    public WindowSettingObj Window { get; set; }
+    public WindowSettingObj? Window { get; set; }
     /// <summary>
     /// 加入服务器设置
     /// </summary>
-    public ServerObj StartServer { get; set; }
+    public ServerObj? StartServer { get; set; }
     /// <summary>
     /// 端口代理设置
     /// </summary>
-    public ProxyHostObj ProxyHost { get; set; }
+    public ProxyHostObj? ProxyHost { get; set; }
+    /// <summary>
+    /// 高级Jvm设置
+    /// </summary>
+    public AdvanceJvmObj? AdvanceJvm { get; set; }
     /// <summary>
     /// 是否为整合包
     /// </summary>

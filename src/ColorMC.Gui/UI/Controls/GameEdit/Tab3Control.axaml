@@ -10,13 +10,9 @@
     d:DesignWidth="900"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
         <DockPanel Margin="5">
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                <ComboBox
-                    Name="ComboBox1"
-                    Width="200"
-                    Margin="5" />
+                <ComboBox Name="ComboBox1" Width="250" />
                 <TextBox
                     Name="TextBox1"
                     Width="200"

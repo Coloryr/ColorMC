@@ -5,35 +5,28 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="850"
+    d:DesignHeight="1050"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
-
         <ScrollViewer Margin="5">
-
+            <!--  指定Java  -->
             <StackPanel>
                 <Label
                     Name="Title"
-                    Margin="5"
                     HorizontalAlignment="Center"
                     Content="{setting:Localize GameEditWindow.Tab2.Text13}" />
-                <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text24}" />
+                <Label Content="{setting:Localize GameEditWindow.Tab2.Text24}" />
                 <StackPanel Orientation="Horizontal">
                     <Label
-                        Margin="5"
-                        HorizontalAlignment="Center"
+                        Width="140"
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text22}" />
-                    <ComboBox
-                        Name="ComboBox2"
-                        Width="400"
-                        Margin="5" />
+                    <ComboBox Name="ComboBox2" Width="300" />
                 </StackPanel>
                 <TextBox
                     Name="TextBox11"
-                    Margin="5"
+                    Margin="0,5,0,0"
                     Classes="input1"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
 
@@ -42,41 +35,43 @@
                     VerticalAlignment="Bottom"
                     Orientation="Horizontal">
                     <Button
-                        Name="Button_Set5"
+                        Name="Button1"
                         Width="80"
                         Height="25"
+                        Margin="0,5,0,0"
                         Content="{setting:Localize Button.Select}"
-						ToolTip.Tip="{setting:Localize ToolTip.Text7}"/>
-                    <Button
-                        Name="Button_Set4"
-                        Width="80"
-                        Height="25"
-                        Margin="10"
-                        Content="{setting:Localize Button.Set}" />
+                        ToolTip.Tip="{setting:Localize ToolTip.Text7}" />
                 </StackPanel>
 
-                <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text1}" />
+                <!--  Jvm参数  -->
+
+                <Label Content="{setting:Localize GameEditWindow.Tab2.Text1}" />
 
                 <StackPanel Orientation="Horizontal">
                     <Label
-                        Margin="5"
+                        Width="140"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text2}" />
                     <ComboBox
                         Name="ComboBox1"
-                        Width="200"
+                        Width="300"
                         Margin="5" />
                 </StackPanel>
                 <TextBox
                     Name="TextBox1"
-                    Margin="5"
+                    Margin="0,5,0,5"
                     Classes="input1"
                     IsEnabled="False"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text3}" />
 
+                <!--  Jvm内存  -->
+
                 <StackPanel Orientation="Horizontal">
-                    <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text4}" />
+                    <Label
+                        Width="100"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab2.Text4}" />
                     <NumericUpDown
                         Name="Input1"
                         Width="150"
@@ -84,7 +79,11 @@
                         Minimum="1"
                         Value="1" />
 
-                    <Label Margin="20,5,5,5" Content="{setting:Localize GameEditWindow.Tab2.Text5}" />
+                    <Label
+                        Width="100"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab2.Text5}" />
                     <NumericUpDown
                         Name="Input2"
                         Width="150"
@@ -92,34 +91,58 @@
                         Minimum="1"
                         Value="1" />
                 </StackPanel>
+
+                <!--  Jvm附加参数  -->
+
                 <TextBox
                     Name="TextBox2"
-                    Margin="5"
+                    Margin="0,5,0,0"
                     Classes="input1"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text6}" />
                 <TextBox
                     Name="TextBox3"
-                    Margin="5"
-                    Classes="input1"
-                    MaxLength="5"
+                    Height="100"
+                    Margin="0,5,0,0"
+                    AcceptsReturn="True"
+                    Classes="input"
+                    TextWrapping="Wrap"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text7}" />
                 <TextBox
                     Name="TextBox4"
-                    Margin="5"
-                    Classes="input1"
+                    Height="100"
+                    Margin="0,5,0,0"
+                    AcceptsReturn="True"
+                    Classes="input"
+                    TextWrapping="Wrap"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text8}" />
-                <Button
-                    Name="Button_Set"
-                    Width="80"
-                    Height="25"
-                    Margin="10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Content="{setting:Localize Button.Set}" />
 
-                <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text9}" />
+                <Label Content="注意：自定义附加参数会用 ;(英文分号) 进行分割" />
+
+                <TextBox
+                    Name="TextBox13"
+                    Height="100"
+                    Margin="0,5,0,0"
+                    AcceptsReturn="True"
+                    Classes="input"
+                    TextWrapping="Wrap"
+                    Watermark="附加的classpath" />
+
+                <Label Content="注意：自定义附加classpath参数会用 ;(英文分号) 进行分割，并查找文件，可以使用相对路径" />
+
+                <TextBox
+                    Name="TextBox12"
+                    Margin="0,5,0,0"
+                    Classes="input1"
+                    Watermark="自定义启动的mainclass" />
+
+                <!--  分辨率  -->
+
+                <Label Content="{setting:Localize GameEditWindow.Tab2.Text9}" />
                 <StackPanel Orientation="Horizontal">
-                    <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text10}" />
+                    <Label
+                        Width="100"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab2.Text10}" />
                     <NumericUpDown
                         Name="Input3"
                         Width="150"
@@ -127,7 +150,11 @@
                         Minimum="1"
                         Value="1" />
 
-                    <Label Margin="20,5,5,5" Content="{setting:Localize GameEditWindow.Tab2.Text11}" />
+                    <Label
+                        Width="100"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab2.Text11}" />
                     <NumericUpDown
                         Name="Input4"
                         Width="150"
@@ -141,83 +168,60 @@
                         Content="{setting:Localize GameEditWindow.Tab2.Text12}" />
                 </StackPanel>
 
-                <Button
-                    Name="Button_Set1"
-                    Width="80"
-                    Height="25"
-                    Margin="10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Content="{setting:Localize Button.Set}" />
+                <!--  自动加入  -->
 
-                <StackPanel>
-                    <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text14}" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox
-                            Name="TextBox5"
-                            Width="300"
-                            Margin="5"
-                            Classes="input1"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text15}" />
-                        <TextBox
-                            Name="TextBox6"
-                            Width="100"
-                            Margin="5"
-                            Classes="input1"
-                            MaxLength="5"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text16}" />
-                    </StackPanel>
+                <Label Content="{setting:Localize GameEditWindow.Tab2.Text14}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Name="TextBox5"
+                        Width="300"
+                        Margin="0,0,10,0"
+                        Classes="input1"
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text15}" />
+                    <TextBox
+                        Name="TextBox6"
+                        Width="100"
+                        Classes="input1"
+                        MaxLength="5"
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text16}" />
                 </StackPanel>
 
-                <Button
-                    Name="Button_Set2"
-                    Width="80"
-                    Height="25"
-                    Margin="10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Content="{setting:Localize Button.Set}" />
+                <!--  代理  -->
 
-                <StackPanel>
-                    <Label Margin="5" Content="{setting:Localize GameEditWindow.Tab2.Text17}" />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox
-                            Name="TextBox7"
-                            Width="200"
-                            Margin="5"
-                            Classes="input1"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text18}" />
-                        <TextBox
-                            Name="TextBox8"
-                            Width="80"
-                            Margin="5"
-                            Classes="input1"
-                            MaxLength="5"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text19}" />
-                        <TextBox
-                            Name="TextBox9"
-                            Width="200"
-                            Margin="5"
-                            Classes="input1"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text20}" />
-                        <TextBox
-                            Name="TextBox10"
-                            Width="200"
-                            Margin="5"
-                            Classes="input1"
-                            PasswordChar="*"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text21}" />
-                    </StackPanel>
+                <Label Content="{setting:Localize GameEditWindow.Tab2.Text17}" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBox
+                        Name="TextBox7"
+                        Width="200"
+                        Classes="input1"
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text18}" />
+                    <TextBox
+                        Name="TextBox8"
+                        Width="80"
+                        Margin="10,0,0,0"
+                        Classes="input1"
+                        MaxLength="5"
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text19}" />
+                    <TextBox
+                        Name="TextBox9"
+                        Width="200"
+                        Margin="10,0,0,0"
+                        Classes="input1"
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text20}" />
+                    <TextBox
+                        Name="TextBox10"
+                        Width="200"
+                        Margin="10,0,0,0"
+                        Classes="input1"
+                        PasswordChar="*"
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text21}" />
                 </StackPanel>
-
                 <Button
-                    Name="Button_Set3"
-                    Width="80"
+                    Name="Button2"
+                    Width="100"
                     Height="25"
-                    Margin="10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Content="{setting:Localize Button.Set}" />
+                    Margin="0,10,0,0"
+                    Content="删除所有配置" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

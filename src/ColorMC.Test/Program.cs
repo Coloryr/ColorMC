@@ -26,7 +26,7 @@ internal class Program
         CoreMain.AuthStateUpdate = AuthStateUpdate;
         CoreMain.GameLog = Log;
 
-        TestItem.Item10();
+        TestItem.Item20();
 
         Console.ReadLine();
     }

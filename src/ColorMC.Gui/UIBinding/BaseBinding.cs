@@ -90,9 +90,8 @@ public static class BaseBinding
 
     public static void Exit()
     {
+        CoreMain.Close();
         ColorSel.Instance.Stop();
-        Logs.Stop();
-        DownloadManager.Stop();
     }
 
     public static bool IsGameRun(GameSettingObj obj)

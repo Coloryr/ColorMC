@@ -9,11 +9,9 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
-
         <ScrollViewer
             Name="ScrollViewer1"
-            Margin="3"
+            Margin="5"
             VerticalScrollBarVisibility="Visible">
             <StackPanel
                 Name="ListBox_Items"

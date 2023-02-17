@@ -9,10 +9,11 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
-
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-            <WrapPanel Name="WrapPanel1" Margin="5" />
+        <ScrollViewer
+            Margin="5"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Visible">
+            <WrapPanel Name="WrapPanel1" />
         </ScrollViewer>
         <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
             <Grid>

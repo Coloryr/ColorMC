@@ -53,14 +53,18 @@
                     Name="Button_Switch"
                     Width="100"
                     Height="25"
-                    Content="{setting:Localize MainWindow.Control.Text1}" />
+                    Content="{setting:Localize MainWindow.Control.Text1}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text9}"
+                    ToolTip.VerticalOffset="-30" />
 
                 <Button
                     Name="Button_Add1"
                     Width="100"
                     Height="25"
                     Margin="0,15,0,0"
-                    Content="{setting:Localize MainWindow.Control.Text2}" />
+                    Content="{setting:Localize MainWindow.Control.Text2}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text10}"
+                    ToolTip.VerticalOffset="-30" />
 
                 <Button
                     Name="Button_Launch"
@@ -68,21 +72,27 @@
                     Height="35"
                     Margin="0,15,0,0"
                     Content="{setting:Localize MainWindow.Control.Text3}"
-                    IsEnabled="False" />
+                    IsEnabled="False"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text11}"
+                    ToolTip.VerticalOffset="-30" />
                 <Button
                     Name="Button_Edit"
                     Width="100"
                     Height="35"
                     Margin="0,5,0,0"
                     Content="{setting:Localize MainWindow.Control.Text5}"
-                    IsEnabled="False" />
+                    IsEnabled="False"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text12}"
+                    ToolTip.VerticalOffset="-30" />
 
                 <Button
                     Name="Button_Setting"
                     Width="100"
                     Height="25"
                     Margin="0,15,0,0"
-                    Content="{setting:Localize MainWindow.Control.Text7}" />
+                    Content="{setting:Localize MainWindow.Control.Text7}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text13}"
+                    ToolTip.VerticalOffset="-30" />
             </StackPanel>
         </Expander>
 
@@ -92,8 +102,9 @@
             Height="20"
             Margin="12,10,8,10"
             HorizontalAlignment="Right"
-			ToolTip.Tip="{setting:Localize ToolTip.Text5}"
             VerticalAlignment="Top"
-            Content="→" />
+            Content="→"
+            ToolTip.Tip="{setting:Localize ToolTip.Text5}"
+            ToolTip.VerticalOffset="-30" />
     </Grid>
 </UserControl>

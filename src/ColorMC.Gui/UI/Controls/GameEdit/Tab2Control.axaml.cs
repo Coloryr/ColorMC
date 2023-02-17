@@ -21,12 +21,8 @@ public partial class Tab2Control : UserControl
     {
         InitializeComponent();
 
-        Button_Set.Click += Button_Set_Click;
-        Button_Set1.Click += Button_Set1_Click;
-        Button_Set2.Click += Button_Set2_Click;
-        Button_Set3.Click += Button_Set3_Click;
-        Button_Set4.Click += Button_Set4_Click;
-        Button_Set5.Click += Button_Set5_Click;
+        Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
@@ -36,15 +32,112 @@ public partial class Tab2Control : UserControl
         ComboBox1.Items = JavaBinding.GetGCTypes();
 
         TextBox11.PropertyChanged += TextBox11_TextInput;
+
+        Input1.PropertyChanged += Input1_PropertyChanged1;
+        Input2.PropertyChanged += Input1_PropertyChanged1;
+        TextBox2.PropertyChanged += TextBox2_PropertyChanged;
+        TextBox3.PropertyChanged += TextBox2_PropertyChanged;
+        TextBox4.PropertyChanged += TextBox2_PropertyChanged;
+
+        Input3.PropertyChanged += Input3_PropertyChanged;
+        Input4.PropertyChanged += Input3_PropertyChanged;
+
+        TextBox5.PropertyChanged += TextBox5_PropertyChanged;
+        TextBox6.PropertyChanged += TextBox5_PropertyChanged;
+
+        TextBox7.PropertyChanged += TextBox7_PropertyChanged;
+        TextBox8.PropertyChanged += TextBox7_PropertyChanged;
+        TextBox9.PropertyChanged += TextBox7_PropertyChanged;
+        TextBox10.PropertyChanged += TextBox7_PropertyChanged;
+
+        TextBox12.PropertyChanged += TextBox12_PropertyChanged;
+
+        CheckBox1.Click += CheckBox1_Click;
+    }
+
+    private void TextBox12_PropertyChanged(object? sender, 
+        AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Text")
+        {
+            Save5();
+        }
+    }
+
+    private async void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        var res = await Window.Info.ShowWait("是否要删除所有配置");
+        if (res)
+        {
+            GameBinding.DeleteConfig(Obj);
+
+            Load();
+        }
+    }
+
+    private void TextBox7_PropertyChanged(object? sender, 
+        AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Text")
+        {
+            Save4();
+        }
+    }
+
+    private void TextBox5_PropertyChanged(object? sender, 
+        AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Text")
+        {
+            Save3();
+        }
+    }
+
+    private void CheckBox1_Click(object? sender, RoutedEventArgs e)
+    {
+        Save1();
+    }
+
+    private void Input3_PropertyChanged(object? sender, 
+        AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Value")
+        {
+            Save1();
+        }
+    }
+
+    //Jvm参数
+    private void TextBox2_PropertyChanged(object? sender, 
+        AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Text")
+        {
+            Save2();
+        }
+    }
+
+    //内存
+    private void Input1_PropertyChanged1(object? sender, 
+        AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Value")
+        {
+            Save2();
+        }
     }
 
     private void Input1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (e.Property.Name == "Value")
         {
-            GameBinding.SetGameJvmMemArg(Obj, (uint)Input1.Value, (uint)Input2.Value);
-            Window.Info2.Show(Localizer.Instance["Info3"]);
+            Save();
         }
+    }
+
+    private void Save()
+    {
+        GameBinding.SetGameJvmMemArg(Obj, (uint)Input1.Value, (uint)Input2.Value);
     }
 
     private void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -64,7 +157,7 @@ public partial class Tab2Control : UserControl
         Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
-    private async void Button_Set5_Click(object? sender, RoutedEventArgs e)
+    private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         var file = await BaseBinding.OpFile(Window, Localizer.Instance["SettingWindow.Tab5.Info2"],
             SystemInfo.Os == OsType.Windows ? "*.exe" : "", Localizer.Instance["SettingWindow.Tab5.Info2"]);
@@ -72,12 +165,6 @@ public partial class Tab2Control : UserControl
         {
             TextBox11.Text = file[0].GetPath();
         }
-    }
-
-    private void Button_Set4_Click(object? sender, RoutedEventArgs e)
-    {
-        GameBinding.SetJavaLocal(Obj, ComboBox2.SelectedItem as string, TextBox11.Text);
-        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void TextBox11_TextInput(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -96,10 +183,12 @@ public partial class Tab2Control : UserControl
                     ComboBox2.IsEnabled = false;
                 }
             });
+
+            Save();
         }
     }
 
-    private void Button_Set3_Click(object? sender, RoutedEventArgs e)
+    private void Save4()
     {
         if (UIUtils.CheckNotNumber(TextBox8.Text))
         {
@@ -117,11 +206,10 @@ public partial class Tab2Control : UserControl
         Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
-    private void Button_Set2_Click(object? sender, RoutedEventArgs e)
+    private void Save3()
     {
         if (UIUtils.CheckNotNumber(TextBox6.Text))
         {
-            Window.Info.Show(Localizer.Instance["Error7"]);
             return;
         }
 
@@ -130,10 +218,9 @@ public partial class Tab2Control : UserControl
             IP = TextBox5.Text,
             Port = ushort.Parse(TextBox6.Text!)
         });
-        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
-    private void Button_Set1_Click(object? sender, RoutedEventArgs e)
+    private void Save1()
     {
         GameBinding.SetGameWindow(Obj, new()
         {
@@ -141,15 +228,9 @@ public partial class Tab2Control : UserControl
             Height = (uint)Input4.Value!,
             FullScreen = CheckBox1.IsChecked == true
         });
-        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
-    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        TextBox1.IsEnabled = ComboBox1.SelectedIndex == 4;
-    }
-
-    private void Button_Set_Click(object? sender, RoutedEventArgs e)
+    private void Save2()
     {
         GameBinding.SetGameJvmArg(Obj, new()
         {
@@ -161,7 +242,22 @@ public partial class Tab2Control : UserControl
             MaxMemory = (uint)Input2.Value,
             MinMemory = (uint)Input1.Value
         });
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+    }
+
+    private void Save5()
+    {
+        GameBinding.SetAdvanceJvmArg(Obj, new()
+        { 
+            MainClass = TextBox12.Text,
+            ClassPath = TextBox13.Text
+        });
+    }
+
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        TextBox1.IsEnabled = ComboBox1.SelectedIndex == 4;
+
+        GameBinding.SetJavaLocal(Obj, ComboBox2.SelectedItem as string, TextBox11.Text);
     }
 
     private void Load()
@@ -215,6 +311,13 @@ public partial class Tab2Control : UserControl
             TextBox8.Text = config3.Port.ToString();
             TextBox9.Text = config3.User;
             TextBox10.Text = config3.Password;
+        }
+
+        var config4 = Obj.AdvanceJvm;
+        if (config4 != null)
+        {
+            TextBox12.Text = config4.MainClass;
+            TextBox13.Text = config4.ClassPath;
         }
 
         load = false;

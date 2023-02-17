@@ -82,7 +82,15 @@ public static class CoreMain
     /// </summary>
     public static Action<LanguageType>? LanguageReload { get; set; }
 
+    /// <summary>
+    /// 新运行
+    /// </summary>
     public static bool NewStart { get; set; }
+
+    /// <summary>
+    /// 停止事件
+    /// </summary>
+    internal static event Action? Stop;
 
     /// <summary>
     /// 初始化
@@ -92,6 +100,7 @@ public static class CoreMain
     {
         LanguageHelper.Load(LanguageType.zh_cn);
         Logs.Init(dir);
+        ConfigSave.Init();
         ConfigUtils.Init(dir);
         SystemInfo.Init();
         DownloadManager.Init(dir);
@@ -100,5 +109,13 @@ public static class CoreMain
         MCPath.Init(dir);
 
         Logs.Info(LanguageHelper.GetName("Core.Info1"));
+    }
+
+    /// <summary>
+    /// 执行关闭操作
+    /// </summary>
+    public static void Close()
+    {
+        Stop?.Invoke();
     }
 }

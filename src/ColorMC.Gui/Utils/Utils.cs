@@ -11,6 +11,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.Utils.LaunchSetting;
+using fNbt;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -501,7 +502,7 @@ public static partial class UIUtils
         return null;
     }
 
-    public static T? FindTop<T>(this IVisual visual)
+    public static T? FindTop<T>(this IVisual visual) where T : IVisual
     {
         var pan = visual.GetVisualParent();
         while (pan != null)
@@ -696,15 +697,12 @@ public static class GuiConfigUtils
     public static void Save()
     {
         Logs.Info(Localizer.Instance["Info2"]);
-        try
+        ConfigSave.AddItem(new()
         {
-            File.WriteAllText(Name, JsonConvert.SerializeObject(Config, Formatting.Indented));
-        }
-        catch (Exception e)
-        {
-            CoreMain.OnError?.Invoke(Localizer.Instance["Error3"], e, true);
-            Logs.Error(Localizer.Instance["Error3"], e);
-        }
+            Name = "config.json",
+            Local = Name,
+            Obj = Config
+        });
     }
 
     public static GuiConfigObj MakeDefaultConfig()

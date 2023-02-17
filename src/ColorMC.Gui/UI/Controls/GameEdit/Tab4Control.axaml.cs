@@ -51,8 +51,6 @@ public partial class Tab4Control : UserControl
         Button_R1.Click += Button_R1_Click;
         Button_I1.Click += Button_I1_Click;
 
-        Button1.Click += Button1_Click;
-
         ComboBox1.Items = BaseBinding.GetFilterName();
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox1.SelectedIndex = 0;
@@ -62,12 +60,8 @@ public partial class Tab4Control : UserControl
         LayoutUpdated += Tab5Control_LayoutUpdated;
     }
 
-    private void Button1_Click(object? sender, RoutedEventArgs e)
-    {
-        Load1();
-    }
-
-    private void TextBox1_TextInput(object? sender, AvaloniaPropertyChangedEventArgs e)
+    private void TextBox1_TextInput(object? sender, 
+        AvaloniaPropertyChangedEventArgs e)
     {
         var property = e.Property.Name;
         if (property == "Text")

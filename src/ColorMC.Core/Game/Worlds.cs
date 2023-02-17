@@ -9,7 +9,6 @@ namespace ColorMC.Core.Game;
 
 public static class Worlds
 {
-
     /// <summary>
     /// 获取世界列表
     /// </summary>
@@ -87,7 +86,7 @@ public static class Worlds
     /// <param name="world">世界实例</param>
     public static void Remove(this WorldObj world)
     {
-        string dir = Path.GetFullPath(world.Game.GetBasePath() + "/remove_worlds");
+        string dir = Path.GetFullPath(world.Game.GetRemoveWorldPath());
         Directory.CreateDirectory(dir);
         Directory.Move(world.Local, Path.GetFullPath(dir + world.LevelName));
     }

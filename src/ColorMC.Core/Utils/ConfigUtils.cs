@@ -120,7 +120,12 @@ public static class ConfigUtils
     public static void Save()
     {
         Logs.Info(LanguageHelper.GetName("Core.Config.Info2"));
-        File.WriteAllText(Name, JsonConvert.SerializeObject(Config, Formatting.Indented));
+        ConfigSave.AddItem(new()
+        {
+            Name = "config.json",
+            Local = Name,
+            Obj = Config
+        });
     }
 
     private static ConfigObj MakeDefaultConfig()
@@ -180,5 +185,73 @@ public static class ConfigUtils
             CheckLib = true,
             CheckMod = true
         };
+    }
+}
+
+public record ConfigSaveObj
+{
+    public string Name;
+    public object Obj;
+    public string Local;
+}
+
+public static class ConfigSave
+{
+    private static readonly Dictionary<string, ConfigSaveObj> SaveQue = new();
+
+    private static readonly object Lock = new();
+
+    private static Thread thread;
+    private static bool run;
+
+    public static void Init()
+    {
+        CoreMain.Stop += Stop;
+
+        thread = new(Run)
+        {
+            Name = "ColorMC-Save"
+        };
+        run = true;
+        thread.Start();
+    }
+
+    private static void Stop()
+    {
+        run = false;
+    }
+
+    private static void Run() 
+    {
+        var list = new List<ConfigSaveObj>();
+        while (run)
+        {
+            Thread.Sleep(1000);
+            if (!SaveQue.Any())
+                continue;
+
+            lock (Lock)
+            {
+                list.AddRange(SaveQue.Values);
+                SaveQue.Clear();
+            }
+
+            foreach (var item in list)
+            {
+                File.WriteAllText(item.Local,
+                    JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
+            }
+        }
+    }
+
+    public static void AddItem(ConfigSaveObj obj)
+    {
+        lock (Lock)
+        {
+            if (!SaveQue.ContainsKey(obj.Name))
+            {
+                SaveQue.Add(obj.Name, obj);
+            }
+        }
     }
 }

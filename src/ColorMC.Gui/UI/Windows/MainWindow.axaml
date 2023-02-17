@@ -31,6 +31,11 @@
                 Margin="3"
                 Stretch="UniformToFill" />
 
+            <Label
+                Margin="3,0,0,2"
+                VerticalAlignment="Bottom"
+                Content="{setting:Localize Tips.Text1}" />
+
             <DockPanel LastChildFill="True">
                 <views1:ItemControl
                     Name="ItemInfo"
@@ -52,8 +57,9 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Content="←"
-				ToolTip.Tip="{setting:Localize ToolTip.Text6}"
-                IsVisible="False" />
+                IsVisible="False"
+                ToolTip.Tip="{setting:Localize ToolTip.Text6}"
+                ToolTip.VerticalOffset="-30" />
 
             <views1:GameGroupControl Name="Group" IsVisible="False" />
             <views:Info3Control Name="Info3" IsVisible="False" />

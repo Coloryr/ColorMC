@@ -22,6 +22,8 @@ public static class DownloadManager
     /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
+        CoreMain.Stop += Stop;
+
         DownloadDir = dir + "download";
         Directory.CreateDirectory(DownloadDir);
         Logs.Info(string.Format(LanguageHelper.GetName("Core.Http.Info1"),
@@ -38,10 +40,7 @@ public static class DownloadManager
         Clear();
     }
 
-    /// <summary>
-    /// 关闭下载器
-    /// </summary>
-    public static void Stop()
+    private static void Stop()
     {
         threads.ForEach(a => a.Close());
         threads.Clear();

@@ -631,7 +631,7 @@ public static class Launch
         }
         if (!string.IsNullOrWhiteSpace(args.JvmArgs))
         {
-            jvmHead.Add(args.JvmArgs);
+            jvmHead.AddRange(args.JvmArgs.Split(";"));
         }
 
         if (v2 && obj.Loader == Loaders.Forge)
@@ -767,9 +767,9 @@ public static class Launch
             }
         }
 
-        if (obj.JvmArg?.GameArgs != null)
+        if (!string.IsNullOrWhiteSpace(obj.JvmArg?.GameArgs))
         {
-            gameArg.Add(obj.JvmArg.GameArgs);
+            gameArg.AddRange(obj.JvmArg.GameArgs.Split("\n"));
         }
 
         return gameArg;
@@ -875,16 +875,29 @@ public static class Launch
             _ => obj.Version
         };
         var libraries = GetLibs(obj, v2);
-        StringBuilder arg = new();
+        StringBuilder classpath = new();
         string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
         CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info2"));
+
+        if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.ClassPath))
+        {
+            var list = obj.AdvanceJvm.ClassPath.Split(";");
+            foreach (var item1 in list)
+            {
+                var path = Path.GetFullPath(item1);
+                if (File.Exists(path))
+                {
+                    libraries.Add(item1);
+                }
+            }
+        }
+
         foreach (var item in libraries)
         {
-            arg.Append($"{item}{sep}");
+            classpath.Append($"{item}{sep}");
             CoreMain.GameLog?.Invoke(obj, $"    {item}");
         }
-        arg.Remove(arg.Length - 1, 1);
-        string classpath = arg.ToString().Trim();
+        classpath.Remove(classpath.Length - 1, 1);
 
         Dictionary<string, string> argDic = new()
             {
@@ -904,7 +917,7 @@ public static class Launch
                 {"${classpath_separator}", sep },
                 {"${launcher_name}","ColorMC" },
                 {"${launcher_version}", CoreMain.Version },
-                {"${classpath}", classpath },
+                {"${classpath}", classpath.ToString().Trim() },
             };
 
         for (int a = 0; a < all_arg.Count; a++)
@@ -926,31 +939,38 @@ public static class Launch
         var v2 = CheckRule.GameLaunchVersion(obj.Version);
 
         list.AddRange(await JvmArg(obj, v2, login));
-        if (obj.Loader == Loaders.Normal)
-            list.Add(version.mainClass);
-        else if (obj.Loader == Loaders.Forge)
-        {
-            if (v2)
-            {
-                list.Add("io.github.zekerzhayard.forgewrapper.installer.Main");
-            }
-            else
-            {
-                var forge = VersionPath.GetForgeObj(obj)!;
-                list.Add(forge.mainClass);
-            }
-        }
-        else if (obj.Loader == Loaders.Fabric)
-        {
-            var fabric = VersionPath.GetFabricObj(obj)!;
-            list.Add(fabric.mainClass);
-        }
-        else if (obj.Loader == Loaders.Quilt)
-        {
-            var quilt = VersionPath.GetQuiltObj(obj)!;
-            list.Add(quilt.mainClass);
-        }
 
+        if (string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
+        {
+            if (obj.Loader == Loaders.Normal)
+                list.Add(version.mainClass);
+            else if (obj.Loader == Loaders.Forge)
+            {
+                if (v2)
+                {
+                    list.Add("io.github.zekerzhayard.forgewrapper.installer.Main");
+                }
+                else
+                {
+                    var forge = VersionPath.GetForgeObj(obj)!;
+                    list.Add(forge.mainClass);
+                }
+            }
+            else if (obj.Loader == Loaders.Fabric)
+            {
+                var fabric = VersionPath.GetFabricObj(obj)!;
+                list.Add(fabric.mainClass);
+            }
+            else if (obj.Loader == Loaders.Quilt)
+            {
+                var quilt = VersionPath.GetQuiltObj(obj)!;
+                list.Add(quilt.mainClass);
+            }
+        }
+        else
+        {
+            list.Add(obj.AdvanceJvm.MainClass);
+        }
         list.AddRange(GameArg(obj, v2));
 
         ReplaceAll(obj, login, list, v2);

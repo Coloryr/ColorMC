@@ -410,4 +410,11 @@ public static class TestItem
     {
         var res = OpenJ9.GetJavaList().Result;
     }
+
+    public static void Item20()
+    {
+        var game = InstancesPath.GetGame("test");
+
+        var list = game.GetSchematics().Result;
+    }
 }

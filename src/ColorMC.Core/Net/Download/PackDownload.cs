@@ -18,7 +18,6 @@ public static class PackDownload
     /// 下载整合包
     /// </summary>
     /// <param name="zip">压缩包路径</param>
-
     public static async Task<(GetDownloadState State, List<DownloadItem>? List,
         List<CurseForgeModObj.Data>? Pack, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip)
     {

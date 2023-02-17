@@ -86,7 +86,7 @@ public partial class Tab6Control : UserControl
             return;
         }
 
-        if (File.Exists(file))
+        if (!File.Exists(file))
         {
             Window.Info.Show(Localizer.Instance["Error9"]);
             return;

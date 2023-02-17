@@ -72,30 +72,38 @@
                             <Button
                                 Name="Button1"
                                 Height="25"
-                                Margin="5"
+                                Margin="5,5,5,0"
                                 HorizontalAlignment="Stretch"
-                                Content="{setting:Localize Button.Refash}" />
+                                Content="{setting:Localize Button.Refash}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text14}"
+                                ToolTip.VerticalOffset="-30" />
 
                             <Button
                                 Name="Button2"
                                 Height="25"
                                 Margin="5,0,5,0"
                                 HorizontalAlignment="Stretch"
-                                Content="{setting:Localize SkinWindow.Text1}" />
+                                Content="{setting:Localize SkinWindow.Text1}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text15}"
+                                ToolTip.VerticalOffset="-30" />
 
                             <Button
                                 Name="Button3"
                                 Height="25"
-                                Margin="5,5,5,0"
+                                Margin="5,0,5,0"
                                 HorizontalAlignment="Stretch"
-                                Content="{setting:Localize SkinWindow.Text3}" />
+                                Content="{setting:Localize SkinWindow.Text3}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text16}"
+                                ToolTip.VerticalOffset="-30" />
 
                             <Button
                                 Name="Button4"
                                 Height="25"
-                                Margin="5,5,5,0"
+                                Margin="5,0,5,0"
                                 HorizontalAlignment="Stretch"
-                                Content="{setting:Localize SkinWindow.Text4}" />
+                                Content="{setting:Localize SkinWindow.Text4}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text17}"
+                                ToolTip.VerticalOffset="-30" />
 
                             <ComboBox
                                 Name="ComboBox1"
@@ -144,9 +152,11 @@
                             <Button
                                 Name="Button5"
                                 Height="25"
-                                Margin="5"
+                                Margin="5,0,5,0"
                                 HorizontalAlignment="Stretch"
-                                Content="{setting:Localize SkinWindow.Text8}" />
+                                Content="{setting:Localize SkinWindow.Text8}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text18}"
+                                ToolTip.VerticalOffset="-30" />
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>

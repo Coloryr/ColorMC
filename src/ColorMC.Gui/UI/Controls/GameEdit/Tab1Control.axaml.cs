@@ -33,22 +33,37 @@ public partial class Tab1Control : UserControl
         CheckBox_Snapshot.Click += Other_Click;
         CheckBox_Other.Click += Other_Click;
 
-        Button_Set.Click += Button_Set_Click;
-
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+        ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
+        ComboBox3.SelectionChanged += ComboBox3_SelectionChanged;
 
         ComboBox1.Items = List;
         ComboBox2.Items = List1;
         ComboBox3.Items = List2;
     }
 
-    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void ComboBox3_SelectionChanged(object? sender,     
+        SelectionChangedEventArgs e)
+    {
+        GameBinding.MoveGameGroup(Obj, ComboBox3.SelectedItem as string);
+    }
+
+    private void ComboBox2_SelectionChanged(object? sender, 
+        SelectionChangedEventArgs e)
+    {
+        Save();
+    }
+
+    private void ComboBox1_SelectionChanged(object? sender, 
+        SelectionChangedEventArgs e)
     {
         ComboBox2.SelectedItem = null;
         List1.Clear();
         CheckBox_Forge.IsChecked = false;
         CheckBox_Fabric.IsChecked = false;
         CheckBox_Quilt.IsChecked = false;
+
+        Save();
     }
 
     public void SetWindow(IBaseWindow window)
@@ -65,10 +80,8 @@ public partial class Tab1Control : UserControl
         await GameBinding.DeleteGame(Obj);
     }
 
-    private void Button_Set_Click(object? sender, RoutedEventArgs e)
+    private void Save()
     {
-        GameBinding.MoveGameGroup(Obj, ComboBox3.SelectedItem as string);
-
         Loaders loaders = Loaders.Normal;
         if (CheckBox_Forge.IsChecked == true)
         {
