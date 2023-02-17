@@ -148,7 +148,6 @@ public partial class Tab2Control : UserControl
             Slider4.Value = config.Item2.RGBV;
             CheckBox1.IsChecked = config.Item2.WindowTran;
             ComboBox1.SelectedIndex = config.Item2.WindowTranType;
-            ComboBox2.SelectedIndex = (int)config.Item1.Language;
             ComboBox3.SelectedItem = config.Item2.FontName;
             ColorPicker1.Color = ColorSel.MainColor.ToColor();
             ColorPicker2.Color = ColorSel.BackColor.ToColor();
@@ -181,6 +180,10 @@ public partial class Tab2Control : UserControl
             {
                 ComboBox3.IsEnabled = true;
             }
+        }
+        if (config.Item1 != null)
+        {
+            ComboBox2.SelectedIndex = (int)config.Item1.Language;
         }
     }
 

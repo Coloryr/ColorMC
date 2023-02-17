@@ -10,13 +10,8 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
-
         <DockPanel LastChildFill="True">
-            <view:ServerMotdControl
-                Name="ServerMotd"
-                Margin="3"
-                DockPanel.Dock="Top" />
+            <view:ServerMotdControl Name="ServerMotd" DockPanel.Dock="Top" />
             <DataGrid
                 Name="DataGrid1"
                 Margin="3,0,3,3"
