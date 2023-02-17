@@ -92,6 +92,7 @@
             Height="20"
             Margin="12,10,8,10"
             HorizontalAlignment="Right"
+			ToolTip.Tip="{setting:Localize ToolTip.Text5}"
             VerticalAlignment="Top"
             Content="→" />
     </Grid>
