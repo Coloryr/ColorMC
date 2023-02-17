@@ -45,7 +45,8 @@
                         Name="Button_Set5"
                         Width="80"
                         Height="25"
-                        Content="{setting:Localize Button.Select}" />
+                        Content="{setting:Localize Button.Select}"
+						ToolTip.Tip="{setting:Localize ToolTip.Text7}"/>
                     <Button
                         Name="Button_Set4"
                         Width="80"

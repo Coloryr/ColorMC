@@ -52,6 +52,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Content="←"
+				ToolTip.Tip="{setting:Localize ToolTip.Text6}"
                 IsVisible="False" />
 
             <views1:GameGroupControl Name="Group" IsVisible="False" />
