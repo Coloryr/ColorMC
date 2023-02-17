@@ -63,26 +63,15 @@ public partial class Tab2Control : UserControl
 
     private async void Button_SelectFile2_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await Window.StorageProvider.OpenFilePickerAsync(new()
-        {
-            Title = Localizer.Instance["HelloWindow.Tab2.Info3"],
-            AllowMultiple = false,
-            FileTypeFilter = new List<FilePickerFileType>()
-            {
-                new(Localizer.Instance["HelloWindow.Tab2.Info7"])
-                {
-                     Patterns = new List<string>()
-                     {
-                        "*.json"
-                     }
-                }
-            }
-        });
+        var file = await BaseBinding.OpFile(Window, 
+            Localizer.Instance["HelloWindow.Tab2.Info3"], "*.json",
+            Localizer.Instance["HelloWindow.Tab2.Info7"]);
 
         if (file?.Any() == true)
         {
             var item = file[0];
             TextBox_Local2.Text = item.GetPath();
+            Button_Input2_Click(sender, e);
         }
     }
 
@@ -130,26 +119,15 @@ public partial class Tab2Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await Window.StorageProvider.OpenFilePickerAsync(new()
-        {
-            Title = Localizer.Instance["HelloWindow.Tab2.Info3"],
-            AllowMultiple = false,
-            FileTypeFilter = new List<FilePickerFileType>()
-            {
-                new(Localizer.Instance["HelloWindow.Tab2.Info7"])
-                {
-                     Patterns = new List<string>()
-                     {
-                        "*.json"
-                     }
-                }
-            }
-        });
+        var file = await BaseBinding.OpFile(Window, 
+            Localizer.Instance["HelloWindow.Tab2.Info3"], "*.json", 
+            Localizer.Instance["HelloWindow.Tab2.Info7"]); 
 
         if (file?.Any() == true)
         {
             var item = file[0];
             TextBox_Local.Text = item.GetPath();
+            Button_Input_Click(sender, e);
         }
     }
 
@@ -184,28 +162,18 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    private async void Button_SelectFile1_Click(object? sender, RoutedEventArgs e)
+    private async void Button_SelectFile1_Click(object? sender,
+        RoutedEventArgs e)
     {
-        var file = await Window.StorageProvider.OpenFilePickerAsync(new()
-        {
-            Title = Localizer.Instance["HelloWindow.Tab2.Info6"],
-            AllowMultiple = false,
-            FileTypeFilter = new List<FilePickerFileType>()
-            {
-                new(Localizer.Instance["HelloWindow.Tab2.Info8"])
-                {
-                     Patterns = new List<string>()
-                     {
-                        "*.json"
-                     }
-                }
-            }
-        });
-
+        var file = await BaseBinding.OpFile(Window,
+            Localizer.Instance["HelloWindow.Tab2.Info6"], "*.json",
+            Localizer.Instance["HelloWindow.Tab2.Info8"]);
+        
         if (file?.Any() == true)
         {
             var item = file[0];
             TextBox_Local1.Text = item.GetPath();
+            Button_Input1_Click(sender, e);
         }
     }
 }

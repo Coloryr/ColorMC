@@ -36,10 +36,14 @@
                     <TabItem Header="{setting:Localize HelloWindow.Tabs.Text6}" />
                 </TabControl>
 
-                <Grid
-                    Name="Tab1"
-                    Margin="5"
-                    ClipToBounds="True" />
+                <Grid Margin="5">
+                    <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
+                    <Grid
+                        Name="Tab1"
+                        Margin="3"
+                        ClipToBounds="True" />
+                </Grid>
+
             </DockPanel>
 
             <views:Info4Control Name="Info" IsVisible="False" />

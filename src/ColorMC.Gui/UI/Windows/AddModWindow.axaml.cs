@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.Add;
+using ColorMC.Gui.UI.Controls.AddWindow;
 using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UIBinding;

@@ -3,7 +3,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using ColorMC.Gui.UIBinding;
 
-namespace ColorMC.Gui.UI.Controls.Add;
+namespace ColorMC.Gui.UI.Controls.AddWindow;
 
 public partial class FlyoutsControl : UserControl
 {

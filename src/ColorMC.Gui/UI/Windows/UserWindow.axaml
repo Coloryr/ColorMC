@@ -30,6 +30,11 @@
                 Margin="3"
                 Stretch="UniformToFill" />
 
+            <Label
+                Margin="5"
+                VerticalAlignment="Bottom"
+                Content="{setting:Localize Tips.Text2}" />
+
             <DataGrid
                 Name="DataGrid_User"
                 Margin="3"

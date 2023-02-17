@@ -19,13 +19,15 @@ Title okl
 启动崩溃
 modrinth https://docs.modrinth.com/docs/getting-started/
 存档备份
-JProfiler
-MCEdit
-JVisualVM
-检测整合包更新
+JProfiler 不添加
+MCEdit 不添加
+JVisualVM 不添加
+检测整合包更新 后期考虑
 检测mod更新
 Tabs边框
 复制实例
 操作提示
 投影模组 https://www.mcmod.cn/class/2261.html
 Tabs滚动条
+UI调整
+设置添加classpath与mainclass设置，附加参数改成多行输入

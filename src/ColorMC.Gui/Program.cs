@@ -36,8 +36,12 @@ public class Program
                 DefaultFamilyName = Font,
             })
             .With(new Win32PlatformOptions()
+            {
+
+            })
+            .With(new X11PlatformOptions()
             { 
-        
+                UseGpu = false 
             })
             .LogToTrace()
             .UsePlatformDetect();

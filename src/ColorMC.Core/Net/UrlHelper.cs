@@ -5,7 +5,7 @@ namespace ColorMC.Core.Net;
 public static class UrlHelper
 {
     private const string BMCLAPI = "https://bmclapi2.bangbang93.com/";
-    private const string MCBBS = "https://download.mcbbs.net";
+    private const string MCBBS = "https://download.mcbbs.net/";
 
     private static readonly string[] originServers =
       { "https://launchermeta.mojang.com/", "https://launcher.mojang.com/", "https://piston-data.mojang.com" };

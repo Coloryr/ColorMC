@@ -22,7 +22,7 @@ public static class InstancesPath
     private const string Name1 = "game.json";
     private const string Name2 = ".minecraft";
     private const string Name3 = "modinfo.json";
-    private const string Name4 = "manifest.json";
+    private const string Name4 = "modpack.json";
     private const string Name5 = "options.txt";
     private const string Name6 = "servers.dat";
     private const string Name7 = "screenshots";
@@ -36,6 +36,9 @@ public static class InstancesPath
     private const string Name15 = "config";
     private const string Name16 = "cfmod.json";
     private const string Name17 = "logs/latest.log";
+    private const string Name18 = "schematics";
+    private const string Name19 = "remove";
+    private const string Name20 = "backup";
 
     /// <summary>
     /// 游戏实例列表
@@ -174,7 +177,12 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     public static void Save(this GameSettingObj obj)
     {
-        File.WriteAllText(obj.GetGameJsonFile(), JsonConvert.SerializeObject(obj));
+        ConfigSave.AddItem(new()
+        {
+            Name = $"game-{obj.Name}",
+            Local = obj.GetGameJsonFile(),
+            Obj = obj
+        });
     }
 
     /// <summary>
@@ -222,7 +230,7 @@ public static class InstancesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>文件路径</returns>
-    public static string GetModInfoJsonFile(this GameSettingObj obj)
+    public static string GetModPackJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name4}");
     }
@@ -317,6 +325,11 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}/");
     }
 
+    public static string GetSchematicsPath(this GameSettingObj obj) 
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name18}/");
+    }
+
     /// <summary>
     /// 获取游戏实例配置文件路径
     /// </summary>
@@ -345,6 +358,16 @@ public static class InstancesPath
     public static string GetLogLatestFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name17}");
+    }
+
+    /// <summary>
+    /// 获取删除世界的文件夹
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
+    public static string GetRemoveWorldPath(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name19}/{Name14}");
     }
 
     /// <summary>
@@ -470,13 +493,6 @@ public static class InstancesPath
         obj.Save();
     }
 
-    //public static void UninstallLoader(this GameSettingObj obj)
-    //{
-    //    obj.LoaderVersion = null;
-    //    obj.Loader = Loaders.Normal;
-    //    obj.Save();
-    //}
-
     /// <summary>
     /// 复制游戏实例
     /// </summary>
@@ -503,38 +519,44 @@ public static class InstancesPath
         };
     }
 
-    //public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
-    //{
-    //    var obj1 = await CreateVersion(new()
-    //    {
-    //        Name = name,
-    //        GroupName = obj.GroupName,
-    //        Version = obj.Version,
-    //        ModPack = obj.ModPack,
-    //        Loader = obj.Loader,
-    //        LoaderVersion = obj.LoaderVersion,
-    //        JvmArg = obj.JvmArg,
-    //        JvmName = obj.JvmName,
-    //        JvmLocal = obj.JvmLocal,
-    //        Window = obj.Window,
-    //        StartServer = obj.StartServer,
-    //        ProxyHost = obj.ProxyHost,
-    //        CurseForgeMods = obj.CurseForgeMods
-    //    });
-    //    if (obj1 != null)
-    //    {
-    //        await PathC.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
-    //        if (obj.ModPack)
-    //        {
-    //            File.Copy(obj.GetModJsonFile(), obj1.GetModJsonFile(), true);
-    //            File.Copy(obj.GetModInfoJsonFile(), obj1.GetModInfoJsonFile(), true);
-    //        }
+    /// <summary>
+    /// 复制实例
+    /// </summary>
+    /// <param name="obj">原始实例</param>
+    /// <param name="name">新的名字</param>
+    /// <returns>复制结果</returns>
+    public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
+    {
+        var obj1 = await CreateVersion(new()
+        {
+            Name = name,
+            GroupName = obj.GroupName,
+            Version = obj.Version,
+            ModPack = obj.ModPack,
+            Loader = obj.Loader,
+            LoaderVersion = obj.LoaderVersion,
+            JvmArg = obj.JvmArg,
+            JvmName = obj.JvmName,
+            JvmLocal = obj.JvmLocal,
+            Window = obj.Window,
+            StartServer = obj.StartServer,
+            ProxyHost = obj.ProxyHost,
+            CurseForgeMods = obj.CurseForgeMods
+        });
+        if (obj1 != null)
+        {
+            await PathC.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
+            if (obj.ModPack)
+            {
+                File.Copy(obj.GetModJsonFile(), obj1.GetModJsonFile(), true);
+                File.Copy(obj.GetCurseForgeModJsonFile(), obj1.GetCurseForgeModJsonFile(), true);
+            }
 
-    //        return obj1;
-    //    }
+            return obj1;
+        }
 
-    //    return null;
-    //}
+        return null;
+    }
 
     /// <summary>
     /// 保存游戏实例cfmod数据
@@ -651,11 +673,6 @@ public static class InstancesPath
                 return ZipFloClass.ZipFile(obj.GetBasePath(), file, filter);
         }
         return Task.CompletedTask;
-    }
-
-    public static void SetIcon(this GameSettingObj obj, string file)
-    {
-
     }
 
     /// <summary>

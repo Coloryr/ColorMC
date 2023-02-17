@@ -23,8 +23,9 @@ public static class Logs
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
-        Local = dir + "logs.log";
+        CoreMain.Stop += Stop;
 
+        Local = dir + "logs.log";
         try
         {
             Writer = File.AppendText(Local);
@@ -51,10 +52,7 @@ public static class Logs
         }
     }
 
-    /// <summary>
-    /// 关闭
-    /// </summary>
-    public static void Stop()
+    private static void Stop()
     {
         IsRun = false;
     }

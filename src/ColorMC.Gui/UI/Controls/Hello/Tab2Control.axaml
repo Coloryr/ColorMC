@@ -9,14 +9,12 @@
     d:DesignWidth="600"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
-
-        <StackPanel>
-            <StackPanel Margin="5,5,5,0">
+        <StackPanel Margin="5">
+            <StackPanel>
                 <Label Margin="5,0,0,0" Content="{setting:Localize HelloWindow.Tab2.Text1}" />
                 <TextBox
                     Name="TextBox_Local"
-                    Margin="5,0,5,5"
+                    Margin="0,0,0,5"
                     Classes="input1"
                     Watermark="{setting:Localize HelloWindow.Tab2.Text2}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
@@ -30,16 +28,15 @@
                         Name="Button_Input"
                         Width="80"
                         Height="25"
-                        Margin="0,0,5,0"
                         Content="{setting:Localize Button.Input}" />
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel Margin="5,0,5,0">
+            <StackPanel>
                 <Label Margin="5,0,0,0" Content="{setting:Localize HelloWindow.Tab2.Text3}" />
                 <TextBox
                     Name="TextBox_Local1"
-                    Margin="5,0,5,5"
+                    Margin="0,0,0,5"
                     Classes="input1"
                     Watermark="{setting:Localize HelloWindow.Tab2.Text4}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
@@ -53,16 +50,15 @@
                         Name="Button_Input1"
                         Width="80"
                         Height="25"
-                        Margin="0,0,5,0"
                         Content="{setting:Localize Button.Input}" />
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel Margin="5,0,5,0">
+            <StackPanel>
                 <Label Margin="5,0,0,0" Content="{setting:Localize HelloWindow.Tab2.Text5}" />
                 <TextBox
                     Name="TextBox_Local2"
-                    Margin="5,0,5,5"
+                    Margin="0,0,0,5"
                     Classes="input1"
                     Watermark="{setting:Localize HelloWindow.Tab2.Text6}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
@@ -76,7 +72,6 @@
                         Name="Button_Input2"
                         Width="80"
                         Height="25"
-                        Margin="0,0,5,0"
                         Content="{setting:Localize Button.Input}" />
                 </StackPanel>
             </StackPanel>
@@ -86,9 +81,11 @@
             Name="Button_Next"
             Width="80"
             Height="25"
-            Margin="0,0,10,10"
+            Margin="0,0,5,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Content="{setting:Localize Button.Next}" />
+            Content="{setting:Localize Button.Next}"
+            ToolTip.Tip="{setting:Localize ToolTip.Text19}"
+            ToolTip.VerticalOffset="-30" />
     </Grid>
 </UserControl>
