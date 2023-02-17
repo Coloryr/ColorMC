@@ -27,8 +27,7 @@ public partial class SettingWindow : Window
     {
         InitializeComponent();
 
-        Head.SetWindow(this);
-        this.BindFont();
+        this.Init();
         Icon = App.Icon;
         Rectangle1.MakeResizeDrag(this);
 
@@ -135,7 +134,6 @@ public partial class SettingWindow : Window
         tab5.SetWindow(null);
         tab6.SetWindow(null);
         tab7.SetWindow(null);
-        Head.SetWindow(null);
 
         App.PicUpdate -= Update;
 

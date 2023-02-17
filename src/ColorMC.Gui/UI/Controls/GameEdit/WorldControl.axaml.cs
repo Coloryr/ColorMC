@@ -1,9 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.GameEdit;
 
-namespace ColorMC.Gui.UI.Controls;
+namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class WorldControl : UserControl
 {
@@ -41,11 +40,8 @@ public partial class WorldControl : UserControl
         {
             Image1.Source = world.Pic;
         }
-    }
 
-    public void SetWindow(Tab5Control tab)
-    {
-        Tab = tab;
+        Tab = this.FindTop<Tab5Control>()!;
     }
 
     public void SetSelect(bool select)

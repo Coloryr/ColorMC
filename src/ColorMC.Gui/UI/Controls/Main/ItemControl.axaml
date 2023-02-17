@@ -9,13 +9,9 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle
-            Margin="0,0,-3,0"
-            Stroke="{setting:Colors Main}"
-            StrokeThickness="3" />
         <Expander
             Name="Expander1"
-            Margin="3,3,-120,3"
+            Margin="0,0,-120,0"
             VerticalAlignment="Stretch"
             BorderThickness="0"
             CornerRadius="0"
@@ -26,7 +22,9 @@
                     Name="Image1"
                     Width="80"
                     Height="80"
-                    Source="resm:ColorMC.Gui.Resource.Pic.user.png" />
+                    Source="resm:ColorMC.Gui.Resource.Pic.user.png"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text4}"
+                    ToolTip.VerticalOffset="-30" />
                 <ProgressBar
                     Name="ProgressBar1"
                     Width="100"
@@ -87,6 +85,7 @@
                     Content="{setting:Localize MainWindow.Control.Text7}" />
             </StackPanel>
         </Expander>
+
         <Button
             Name="Button1"
             Width="20"
@@ -94,6 +93,6 @@
             Margin="12,10,8,10"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Content="" />
+            Content="→" />
     </Grid>
 </UserControl>

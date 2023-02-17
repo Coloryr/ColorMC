@@ -25,15 +25,28 @@ public partial class ItemControl : UserControl
 
         Button_Switch.Click += Button_Switch_Click;
 
-        Button1.Click += Button1_Click;
         Button_Setting.Click += Button_Setting_Click;
 
         Image1.PointerPressed += Image1_PointerPressed;
 
         Expander1.ContentTransition = App.CrossFade300;
-        Button1.Content = "→";
+        Button1.Click += Button1_Click;
 
         App.SkinLoad += App_SkinLoad;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        Window.Button1.IsVisible = true;
+        Expander1.IsExpanded = false;
+        Button1.IsVisible = false;
+    }
+
+    public void Display()
+    {
+        Window.Button1.IsVisible = false;
+        Expander1.IsExpanded = true;
+        Button1.IsVisible = true;
     }
 
     private void App_SkinLoad()
@@ -56,19 +69,6 @@ public partial class ItemControl : UserControl
     private void Button_Add1_Click(object? sender, RoutedEventArgs e)
     {
         App.ShowAddGame();
-    }
-
-    private void Button1_Click(object? sender, RoutedEventArgs e)
-    {
-        if (Expander1.IsExpanded)
-        {
-            Button1.Content = "←";
-        }
-        else
-        {
-            Button1.Content = "→";
-        }
-        Expander1.IsExpanded = !Expander1.IsExpanded;
     }
 
     private void Button_Switch_Click(object? sender, RoutedEventArgs e)

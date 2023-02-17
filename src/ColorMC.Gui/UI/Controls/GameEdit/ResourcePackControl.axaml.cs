@@ -4,7 +4,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.Utils.LaunchSetting;
 
-namespace ColorMC.Gui.UI.Controls;
+namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class ResourcePackControl : UserControl
 {

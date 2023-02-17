@@ -52,10 +52,10 @@ public static class DownloadManager
     /// </summary>
     public static void DownloadStop()
     {
+        threads.ForEach(a => a.DownloadStop());
+
         Name.Clear();
         Items.Clear();
-
-        threads.ForEach(a => a.DownloadStop());
     }
 
     /// <summary>

@@ -199,7 +199,6 @@ public partial class Tab5Control : UserControl
         foreach (var item in res)
         {
             var con = new WorldControl();
-            con.SetWindow(this);
             con.Load(item);
             ListBox_Items.Children.Add(con);
             List.Add(con);

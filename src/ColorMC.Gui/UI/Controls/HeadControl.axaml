@@ -26,19 +26,25 @@
                     Width="24"
                     Height="24"
                     Margin="0,0,5,0"
-                    Content="-" />
+                    Content="-"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text1}"
+                    ToolTip.VerticalOffset="-30" />
                 <Button
                     Name="Button_Max"
                     Width="24"
                     Height="24"
                     Margin="0,0,5,0"
-                    Content="▢" />
+                    Content="▢"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text2}"
+                    ToolTip.VerticalOffset="-30" />
                 <Button
                     Name="Button_Close"
                     Width="24"
                     Height="24"
                     Margin="0,0,2,0"
-                    Content="X" />
+                    Content="X"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text3}"
+                    ToolTip.VerticalOffset="-30" />
             </StackPanel>
         </Grid>
     </Grid>

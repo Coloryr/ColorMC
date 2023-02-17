@@ -35,6 +35,10 @@ public class Program
             {
                 DefaultFamilyName = Font,
             })
+            .With(new Win32PlatformOptions()
+            { 
+        
+            })
             .LogToTrace()
             .UsePlatformDetect();
 }

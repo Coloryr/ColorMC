@@ -8,6 +8,7 @@ namespace ColorMC.Gui.UI.Controls;
 public partial class Info1Control : UserControl
 {
     private Action? call;
+    private bool Display = false;
 
     public Info1Control()
     {
@@ -26,17 +27,24 @@ public partial class Info1Control : UserControl
 
     public void Close()
     {
+        if (!Display)
+            return;
+
         Button_Cancel.IsEnabled = false;
         App.CrossFade300.Start(this, null, CancellationToken.None);
     }
 
     public void Show()
     {
+        Display = true;
+
         App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
     public void Show(string title)
     {
+        Display = true;
+
         Button_Cancel.IsEnabled = true;
         TextBlock_Text.Text = title;
         call = null;

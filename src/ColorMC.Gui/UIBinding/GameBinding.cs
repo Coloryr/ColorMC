@@ -295,14 +295,14 @@ public static class GameBinding
         var login = UserBinding.GetLastUser();
         if (login == null)
         {
-            return (false, Localizer.Instance["GameBinding.Error7"]);
+            return (false, Localizer.Instance["GameBinding.Error2"]);
         }
         if (login.AuthType == AuthType.Offline)
         {
             var have = AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
             if (!have)
             {
-                return (false, Localizer.Instance["GameBinding.Error2"]);
+                return (false, Localizer.Instance["GameBinding.Error7"]);
             }
         }
 
@@ -556,9 +556,15 @@ public static class GameBinding
         return list;
     }
 
-    public static Task<bool> AddWorld(GameSettingObj obj, string file)
+    public static async Task<bool> AddWorld(GameSettingObj obj, string file)
     {
-        return obj.ImportWorldZip(file);
+        var res = await obj.ImportWorldZip(file);
+        if (!res)
+        {
+            BaseBinding.OpFile(file);
+        }
+
+        return res;
     }
 
     public static void DeleteWorld(WorldObj world)
@@ -583,7 +589,7 @@ public static class GameBinding
             Overwrite = true
         };
 
-        var res = await DownloadManager.Download(item);
+        var res = await DownloadManager.Start(new() { item });
         if (!res)
         {
             return false;

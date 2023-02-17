@@ -29,8 +29,7 @@ public partial class DownloadWindow : Window
     {
         InitializeComponent();
 
-        Head.SetWindow(this);
-        this.BindFont();
+        this.Init();
         Icon = App.Icon;
         Rectangle1.MakeResizeDrag(this);
 
@@ -135,6 +134,8 @@ public partial class DownloadWindow : Window
 
     private void DownloadWindow_Closed(object? sender, EventArgs e)
     {
+        Timer.Dispose();
+
         App.PicUpdate -= Update;
 
         CoreMain.DownloadItemStateUpdate = null;
@@ -148,13 +149,9 @@ public partial class DownloadWindow : Window
             var res = await Info.ShowWait(Localizer.Instance["DownloadWindow.Info4"]);
             if (res)
             {
-                Timer.Dispose();
                 DownloadManager.DownloadStop();
             }
-            else
-            {
-                e.Cancel = true;
-            }
+            e.Cancel = true;
             return;
         }
     }

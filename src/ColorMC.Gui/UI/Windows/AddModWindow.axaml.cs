@@ -29,8 +29,7 @@ public partial class AddModWindow : Window
     {
         InitializeComponent();
 
-        Head.SetWindow(this);
-        this.BindFont();
+        this.Init();
         Icon = App.Icon;
         Rectangle1.MakeResizeDrag(this);
 
@@ -70,7 +69,7 @@ public partial class AddModWindow : Window
         Obj = obj;
         Tab = tab;
 
-        Head.Title = string.Format(Localizer.Instance["AddModWindow.Title"], obj.Name);
+        Head.Title = Title= string.Format(Localizer.Instance["AddModWindow.Title"], obj.Name);
     }
 
     private void ButtonDownload_Click(object? sender, RoutedEventArgs e)
@@ -140,8 +139,6 @@ public partial class AddModWindow : Window
         App.PicUpdate -= Update;
 
         Tab.CloseAddMod();
-
-        Head.SetWindow(null);
     }
 
     public void Install()

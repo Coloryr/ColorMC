@@ -28,8 +28,7 @@ public partial class SkinWindow : Window
     {
         InitializeComponent();
 
-        Head.SetWindow(this);
-        this.BindFont();
+        this.Init();
         Icon = App.Icon;
         Rectangle1.MakeResizeDrag(this);
 
@@ -232,10 +231,7 @@ public partial class SkinWindow : Window
     {
         Skin.ChangeSkin();
 
-        Dispatcher.UIThread.Post(() =>
-        {
-            Check();
-        });
+        Dispatcher.UIThread.Post(Check);
     }
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
@@ -266,6 +262,7 @@ public partial class SkinWindow : Window
 
         App.SkinWindow = null;
 
+        Skin.SetWindow(null);
         Skin.Close();
     }
 

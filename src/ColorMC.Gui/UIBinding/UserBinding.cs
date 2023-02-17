@@ -300,4 +300,18 @@ public static class UserBinding
 
         App.OnUserEdit();
     }
+
+    public static void UserLastUser()
+    {
+        if (AuthDatabase.Auths.Count == 1)
+        {
+            var item = AuthDatabase.Auths.First();
+            SetLastUser(item.Key.Item1, item.Key.Item2);
+        }
+    }
+
+    public static void OAuthCancel()
+    {
+        BaseAuth.CancelWithOAuth();      
+    }
 }

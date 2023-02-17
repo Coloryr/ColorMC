@@ -25,8 +25,7 @@ public partial class AddModPackWindow : Window, IBase1Window
     {
         InitializeComponent();
 
-        Head.SetWindow(this);
-        this.BindFont();
+        this.Init();
         Icon = App.Icon;
         Rectangle1.MakeResizeDrag(this);
 
@@ -124,8 +123,6 @@ public partial class AddModPackWindow : Window, IBase1Window
         App.PicUpdate -= Update;
 
         App.AddModPackWindow = null;
-
-        Head.SetWindow(null);
     }
 
     public void Install()

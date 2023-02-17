@@ -60,8 +60,7 @@ public partial class CustomWindow : Window
     {
         InitializeComponent();
 
-        Head.SetWindow(this);
-        this.BindFont();
+        this.Init();
         Icon = App.Icon;
         Rectangle1.MakeResizeDrag(this);
 
@@ -121,8 +120,6 @@ public partial class CustomWindow : Window
         CoreMain.GameDownload = null;
 
         App.CustomWindow = null;
-
-        Head.SetWindow(null);
     }
 
     public async void Launch()
@@ -182,7 +179,7 @@ public partial class CustomWindow : Window
 
         HeadImg = null;
 
-        Head.Title = UI.Title;
+        Head.Title = Title = UI.Title;
 
         foreach (var item in ui.Views)
         {
