@@ -31,3 +31,5 @@ Tabs边框
 Tabs滚动条
 UI调整
 设置添加classpath与mainclass设置，附加参数改成多行输入
+修复已知问题
+断网时以离线方式启动
