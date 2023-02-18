@@ -24,18 +24,18 @@ public partial class Info3Control : UserControl
 
     private void Button_Cancel_Click(object? sender, RoutedEventArgs e)
     {
-        Cancel = true;
-        semaphore.Release();
-    }
-
-    private void Button_Add_Click(object? sender, RoutedEventArgs e)
-    {
         if (CancelCall != null)
         {
             CancelCall();
             return;
         }
 
+        Cancel = true;
+        semaphore.Release();
+    }
+
+    private void Button_Add_Click(object? sender, RoutedEventArgs e)
+    {
         Cancel = false;
         semaphore.Release();
     }

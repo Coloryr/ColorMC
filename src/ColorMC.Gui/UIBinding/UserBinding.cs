@@ -87,7 +87,7 @@ public static class UserBinding
 
     public static Dictionary<(string, AuthType), LoginObj> GetAllUser()
     {
-        return AuthDatabase.Auths;
+        return new(AuthDatabase.Auths);
     }
 
     public static void Remove(string uuid, AuthType type)
