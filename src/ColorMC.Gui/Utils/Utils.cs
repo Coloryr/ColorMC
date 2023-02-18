@@ -12,7 +12,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.Utils.LaunchSetting;
-using fNbt;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -539,7 +538,7 @@ public static partial class UIUtils
         if (App.MainWindow == null)
             return;
 
-        var basewindow = App.MainWindow;
+        var basewindow = App.LastWindow;
         var pos = basewindow.Position;
         var sec = basewindow.Screens.ScreenFromWindow(basewindow.PlatformImpl);
         if (sec == null)
@@ -711,7 +710,8 @@ public static class GuiConfigUtils
 
             Save();
         }
-        else if (Config.ServerCustom == null)
+
+        if (Config.ServerCustom == null)
         {
             if (quit)
             {
@@ -721,6 +721,21 @@ public static class GuiConfigUtils
             Logs.Warn(Localizer.Instance["Warn1"]);
 
             Config.ServerCustom = MakeServerCustomConfig();
+
+            Save();
+        }
+
+        if (Config.Render == null
+            || Config.Render.Windows == null)
+        {
+            if (quit)
+            {
+                return false;
+            }
+
+            Logs.Warn(Localizer.Instance["Warn1"]);
+
+            Config.Render = MakeRenderConfig();
 
             Save();
         }
@@ -735,10 +750,24 @@ public static class GuiConfigUtils
         Logs.Info(Localizer.Instance["Info2"]);
         ConfigSave.AddItem(new()
         {
-            Name = "config.json",
+            Name = "gui.json",
             Local = Name,
             Obj = Config
         });
+    }
+
+    public static Render MakeRenderConfig()
+    {
+        return new()
+        {
+            Windows = new()
+            {
+                UseWindowsUIComposition = true,
+                UseWgl = false,
+                UseCompositor = true,
+                UseDeferredRendering = true
+            }
+        };
     }
 
     public static GuiConfigObj MakeDefaultConfig()
@@ -754,7 +783,8 @@ public static class GuiConfigUtils
             ColorFont1 = "#FFFFFFFF",
             ColorFont2 = "#FF000000",
             ServerCustom = MakeServerCustomConfig(),
-            FontDefault = true
+            FontDefault = true,
+            Render = MakeRenderConfig()
         };
     }
 

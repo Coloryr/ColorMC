@@ -42,7 +42,6 @@ public static class BaseBinding
         CoreMain.GameLog = PLog;
         CoreMain.LanguageReload = Change;
 
-        GuiConfigUtils.Init(AppContext.BaseDirectory);
         FontSel.Instance.Load();
     }
 

@@ -21,6 +21,19 @@ public record ServerCustom
     public string GameName { get; set; }
     public string UIFile { get; set; }
 }
+
+public record WindowsRender
+{
+    public bool UseWindowsUIComposition { get; set; }
+    public bool UseWgl { get; set; }
+    public bool UseCompositor { get; set; }
+    public bool UseDeferredRendering { get; set; }
+}
+
+public record Render
+{ 
+    public WindowsRender Windows { get; set; }
+}
 public record GuiConfigObj
 {
     public string Version { get; set; }
@@ -32,6 +45,7 @@ public record GuiConfigObj
     public int WindowTranType { get; set; }
 
     public ServerCustom ServerCustom { get; set; }
+    public Render Render { get; set; }
 
     public string ColorMain { get; set; }
     public string ColorBack { get; set; }

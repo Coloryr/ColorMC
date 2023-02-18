@@ -74,6 +74,12 @@ public partial class CustomWindow : Window
         App.SkinLoad += App_SkinLoad;
 
         Update();
+        Activated += Window_Activated;
+    }
+
+    private void Window_Activated(object? sender, EventArgs e)
+    {
+        App.LastWindow = this;
     }
 
     private void App_SkinLoad()
@@ -120,6 +126,16 @@ public partial class CustomWindow : Window
         CoreMain.GameDownload = null;
 
         App.CustomWindow = null;
+
+        if (App.LastWindow == this)
+        {
+            App.LastWindow = null;
+        }
+
+        if (App.MainWindow == null)
+        {
+            App.Close();
+        }
     }
 
     public async void Launch()

@@ -71,22 +71,11 @@ public partial class Tab4Control : UserControl
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var file = await window.StorageProvider.OpenFilePickerAsync(new()
-        {
-            Title = "Mod",
-            AllowMultiple = true,
-            FileTypeFilter = new List<FilePickerFileType>()
-            {
-                new FilePickerFileType("Mod")
-                {
-                    Patterns = new List<string>()
-                    {
-                        "*.jar"
-                    }
-                }
-            }
-        });
-        if (file?.Any() == true)
+        var file = await BaseBinding.OpFile(window,
+            Localizer.Instance["GameEditWindow.Tab4.Info7"], "*.jar",
+           Localizer.Instance["GameEditWindow.Tab4.Info8"]);
+
+        if (file.Any() == true)
         {
             var list = new List<string>();
             foreach (var item in file)
@@ -113,9 +102,11 @@ public partial class Tab4Control : UserControl
             if (mod == null)
                 return;
 
+            var items = DataGrid1.SelectedItems;
+
             if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
             {
-                new GameEditFlyout1(this, mod).ShowAt(this, true);
+                new GameEditFlyout1(this, items).ShowAt(this, true);
             }
         });
     }
@@ -137,6 +128,28 @@ public partial class Tab4Control : UserControl
             return;
 
         DisE(item);
+    }
+
+    public async void Delete(List<ModDisplayObj> items)
+    {
+        var window = (VisualRoot as GameEditWindow)!;
+        var res = await window.Info.ShowWait(
+            string.Format(Localizer.Instance["GameEditWindow.Tab4.Info9"], items.Count));
+        if (!res)
+        {
+            return;
+        }
+
+        items.ForEach(item =>
+        {
+            if (Dir1.Remove(item.Local, out var obj))
+            {
+                GameBinding.DeleteMod(obj);
+                List.Remove(item);
+            }
+        });
+
+        window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
     }
 
     public async void Delete(ModDisplayObj item)

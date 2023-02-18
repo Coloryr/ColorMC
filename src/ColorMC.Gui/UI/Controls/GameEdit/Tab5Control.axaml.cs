@@ -52,11 +52,12 @@ public partial class Tab5Control : UserControl
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.OpFile(window!, Localizer.Instance["GameEditWindow.Tab5.Info2"],
-            "*.zip", Localizer.Instance["GameEditWindow.Tab5.Info8"]);
+        var file = await BaseBinding.OpFile(window!, 
+            Localizer.Instance["GameEditWindow.Tab5.Info2"], "*.zip", 
+            Localizer.Instance["GameEditWindow.Tab5.Info8"]);
         if (file.Any())
         {
-            var res = await GameBinding.AddWorld(Obj!, file[0].GetPath());
+            var res = await GameBinding.AddWorld(Obj, file[0].GetPath());
             if (!res)
             {
                 window!.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);

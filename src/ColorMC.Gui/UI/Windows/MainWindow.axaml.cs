@@ -74,6 +74,13 @@ public partial class MainWindow : Window, IBaseWindow
                 Close();
             });
         }
+
+        Activated += Window_Activated;
+    }
+
+    private void Window_Activated(object? sender, EventArgs e)
+    {
+        App.LastWindow = this;
     }
 
     private Task<bool> LoginFailLaunch(LoginObj login)

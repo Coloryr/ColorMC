@@ -326,6 +326,9 @@
 	<sys:String x:Key="GameEditWindow.Tab4.Info4">是否要删除Mod {0}</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Info5">损坏的Mod</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Info6">读取到有{0}个破损的Mod文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Info7">请选择要导入的Mod文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Info8">Mod文件</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab4.Info9">是否要删除这 {0} 个Mod</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab4.Error1">Mod列表加载失败</sys:String>
 	
 	<sys:String x:Key="GameEditWindow.Tab5.Info1">是否要删除世界 {0}</sys:String>
@@ -643,6 +646,11 @@
 	<sys:String x:Key="ToolTip.Text34">刷新Mod加载器支持选择</sys:String>
 	<sys:String x:Key="ToolTip.Text35">刷新Mod加载器版本列表</sys:String>
 	<sys:String x:Key="ToolTip.Text36">删除这个游戏实例</sys:String>
+	<sys:String x:Key="ToolTip.Text37">添加一个游戏分组</sys:String>
+	<sys:String x:Key="ToolTip.Text38">清空当前实例的所有启动配置</sys:String>
+	<sys:String x:Key="ToolTip.Text39">打开配置所在的文件夹</sys:String>
+	<sys:String x:Key="ToolTip.Text40">保存当前配置文件</sys:String>
+	<sys:String x:Key="ToolTip.Text41">重新获取配置文件列表</sys:String>
 	
 	<sys:String x:Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单</sys:String>
 	<sys:String x:Key="Tips.Text2">双击可切换账户，右键可以打开账户菜单</sys:String>

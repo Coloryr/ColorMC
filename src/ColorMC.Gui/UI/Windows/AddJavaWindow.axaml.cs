@@ -13,8 +13,8 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class AddJavaWindow : Window
 {
-    private List<JavaDownloadDisplayObj> List1 = new();
-    private ObservableCollection<JavaDownloadDisplayObj> List = new();
+    private readonly List<JavaDownloadDisplayObj> List1 = new();
+    private readonly ObservableCollection<JavaDownloadDisplayObj> List = new();
     private bool load = true;
     public AddJavaWindow()
     {

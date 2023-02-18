@@ -25,10 +25,22 @@ namespace ColorMC.Gui;
 
 public partial class App : Application
 {
+    public App()
+    {
+        Name = "ColorMC";
+
+        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+    }
+
+    private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+        Logs.Error("·¢Éú´íÎó", e.ExceptionObject as Exception);
+    }
+
     public static IClassicDesktopStyleApplicationLifetime? Life { get; private set; }
     public static DownloadWindow? DownloadWindow { get; set; }
     public static UserWindow? UserWindow { get; set; }
-    public static MainWindow MainWindow { get; set; }
+    public static MainWindow? MainWindow { get; set; }
     public static AddGameWindow? AddGameWindow { get; set; }
     public static CustomWindow? CustomWindow { get; set; }
     public static AddModPackWindow? AddModPackWindow { get; set; }
@@ -48,6 +60,8 @@ public partial class App : Application
     public static event Action? PicUpdate;
     public static event Action? UserEdit;
     public static event Action? SkinLoad;
+
+    public static Window? LastWindow;
 
     public static ResourceDictionary? Language;
     public static Bitmap? BackBitmap { get; private set; }
