@@ -1,12 +1,13 @@
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Objs.Login;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Utils;
 
 public static class AuthDatabase
 {
-    public static readonly Dictionary<(string, AuthType), LoginObj> Auths = new();
+    public static readonly ConcurrentDictionary<(string, AuthType), LoginObj> Auths = new();
 
     private const string Name = "auth.json";
     private static string Dir;
@@ -29,7 +30,7 @@ public static class AuthDatabase
 
             foreach (var item in list)
             {
-                Auths.Add((item.UUID, item.AuthType), item);
+                Auths.TryAdd((item.UUID, item.AuthType), item);
             }
         }
         else
@@ -43,10 +44,11 @@ public static class AuthDatabase
     /// </summary>
     public static void Save()
     {
-        Task.Run(() =>
+        ConfigSave.AddItem(new()
         {
-            var file = JsonConvert.SerializeObject(Auths.Values);
-            File.WriteAllText(Dir, file);
+            Name = "auth.json",
+            Obj = Auths.Values,
+            Local = Dir
         });
     }
 
@@ -67,7 +69,7 @@ public static class AuthDatabase
         }
         else
         {
-            Auths.Add((obj.UUID, obj.AuthType), obj);
+            Auths.TryAdd((obj.UUID, obj.AuthType), obj);
         }
 
         Save();
@@ -91,7 +93,7 @@ public static class AuthDatabase
     /// </summary>
     public static void Delete(LoginObj obj)
     {
-        Auths.Remove((obj.UUID, obj.AuthType));
+        Auths.TryRemove((obj.UUID, obj.AuthType), out _);
         Save();
     }
 
@@ -112,7 +114,7 @@ public static class AuthDatabase
             }
             else
             {
-                Auths.Add((item.UUID, item.AuthType), item);
+                Auths.TryAdd((item.UUID, item.AuthType), item);
             }
         }
 
