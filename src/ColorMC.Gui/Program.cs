@@ -30,19 +30,28 @@ public class Program
     }
 
     public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
+    {
+        GuiConfigUtils.Init(AppContext.BaseDirectory);
+
+        var config = GuiConfigUtils.Config.Render.Windows;
+
+        return AppBuilder.Configure<App>()
             .With(new FontManagerOptions
             {
                 DefaultFamilyName = Font,
             })
             .With(new Win32PlatformOptions()
             {
-
+                UseCompositor = config.UseCompositor,
+                UseWgl = config.UseWgl,
+                UseWindowsUIComposition = config.UseWindowsUIComposition,
+                UseDeferredRendering = config.UseDeferredRendering
             })
             .With(new X11PlatformOptions()
-            { 
-                UseGpu = false 
+            {
+                UseGpu = false
             })
             .LogToTrace()
             .UsePlatformDetect();
+    }
 }

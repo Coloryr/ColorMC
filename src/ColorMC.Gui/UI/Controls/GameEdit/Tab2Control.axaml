@@ -40,7 +40,8 @@
                         Height="25"
                         Margin="0,5,0,0"
                         Content="{setting:Localize Button.Select}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text7}" />
+                        ToolTip.Tip="{setting:Localize ToolTip.Text7}"
+                        ToolTip.VerticalOffset="-30" />
                 </StackPanel>
 
                 <!--  Jvm参数  -->
@@ -218,7 +219,9 @@
                     Width="100"
                     Height="25"
                     Margin="0,10,0,0"
-                    Content="{setting:Localize GameEditWindow.Tab2.Text28}" />
+                    Content="{setting:Localize GameEditWindow.Tab2.Text28}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text38}"
+                    ToolTip.VerticalOffset="-30" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

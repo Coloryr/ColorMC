@@ -3,12 +3,17 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class Flyouts1Control : UserControl
 {
+    private List<ModDisplayObj> List;
     private ModDisplayObj Obj;
+    private bool Single;
     private FlyoutBase FlyoutBase;
     private Tab4Control Con;
     public Flyouts1Control()
@@ -43,7 +48,14 @@ public partial class Flyouts1Control : UserControl
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        Con.Delete(Obj);
+        if (Single)
+        {
+            Con.Delete(Obj);
+        }
+        else
+        {
+            Con.Delete(List);
+        }
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -52,27 +64,38 @@ public partial class Flyouts1Control : UserControl
         Con.DisE(Obj);
     }
 
-    public void Set(FlyoutBase fb, ModDisplayObj obj, Tab4Control con)
+    public void Set(FlyoutBase fb, List<ModDisplayObj> obj, Tab4Control con)
     {
-        Obj = obj;
-        Con = con;
-        FlyoutBase = fb;
-
-        if (string.IsNullOrWhiteSpace(Obj.Url))
+        List = obj;
+        if (List.Count == 1)
         {
+            Single = true;
+            Obj = List.First();
+            if (string.IsNullOrWhiteSpace(Obj.Url))
+            {
+                Button5.IsEnabled = false;
+            }
+        }
+        else
+        {
+            Button1.IsEnabled = false;
+            Button3.IsEnabled = false;
+            Button4.IsEnabled = false;
             Button5.IsEnabled = false;
         }
+        Con = con;
+        FlyoutBase = fb;
     }
 }
 
 public class GameEditFlyout1 : FlyoutBase
 {
-    private readonly ModDisplayObj Obj;
+    private readonly List<ModDisplayObj> Obj;
     private readonly Tab4Control Con;
-    public GameEditFlyout1(Tab4Control con, ModDisplayObj obj)
+    public GameEditFlyout1(Tab4Control con, IList obj)
     {
         Con = con;
-        Obj = obj;
+        Obj = obj as List<ModDisplayObj>;
     }
     protected override Control CreatePresenter()
     {

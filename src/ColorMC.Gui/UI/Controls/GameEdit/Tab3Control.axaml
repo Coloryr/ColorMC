@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
-    d:DesignWidth="900"
+    d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
         <DockPanel Margin="5">
@@ -27,21 +27,27 @@
                     Height="25"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize Button.OpFile}" />
+                    Content="{setting:Localize Button.OpFile}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
                 <Button
                     Name="Button3"
                     Width="85"
                     Height="25"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Text3}" />
+                    Content="{setting:Localize GameEditWindow.Tab3.Text3}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text40}"
+                    ToolTip.VerticalOffset="-30" />
                 <Button
                     Name="Button4"
                     Width="85"
                     Height="25"
                     Margin="5"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Text4}" />
+                    Content="{setting:Localize GameEditWindow.Tab3.Text4}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text41}"
+                    ToolTip.VerticalOffset="-30" />
             </StackPanel>
             <Grid>
                 <Label

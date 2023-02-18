@@ -68,9 +68,15 @@ public partial class UserWindow : Window
             if (user == null)
                 return;
 
-            if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+            var pro = e.PointerPressedEventArgs.GetCurrentPoint(this);
+
+            if (pro.Properties.IsRightButtonPressed)
             {
                 new UserFlyout(this, user).ShowAt(this, true);
+            }
+            else if (e.Column.DisplayIndex == 0 && pro.Properties.IsLeftButtonPressed)
+            {
+                Select(user);
             }
         });
     }
@@ -89,6 +95,11 @@ public partial class UserWindow : Window
             return;
         }
 
+        Select(item);
+    }
+
+    private void Select(UserDisplayObj item)
+    {
         UserBinding.SetLastUser(item.UUID, item.AuthType);
 
         Info2.Show(Localizer.Instance["UserWindow.Info5"]);

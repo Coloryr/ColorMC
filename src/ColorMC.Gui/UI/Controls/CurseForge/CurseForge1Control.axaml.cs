@@ -14,7 +14,6 @@ namespace ColorMC.Gui.UI.Controls.CurseForge;
 
 public partial class CurseForge1Control : UserControl
 {
-    private AddModWindow Window;
     private bool NowDownload;
     private bool haveimg;
     public CurseForgeObj.Data Data { get; private set; }
@@ -24,26 +23,18 @@ public partial class CurseForge1Control : UserControl
 
         PointerPressed += CurseForgeControl_PointerPressed;
         DoubleTapped += CurseForgeControl_DoubleTapped;
-
-        this.AttachedToLogicalTree += CurseForge1Control_AttachedToLogicalTree;
-    }
-
-    private void CurseForge1Control_AttachedToLogicalTree(object? sender, 
-        LogicalTreeAttachmentEventArgs e)
-    {
-        
     }
 
     private void CurseForgeControl_DoubleTapped(object? sender, RoutedEventArgs e)
     {
         if (NowDownload)
             return;
-        Window.Install();
+        (VisualRoot as AddModWindow)?.Install();
     }
 
     private void CurseForgeControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        Window.SetSelect(this);
+        (VisualRoot as AddModWindow)?.SetSelect(this);
     }
 
     public void SetSelect(bool select)

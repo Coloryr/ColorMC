@@ -91,7 +91,9 @@
                     Width="100"
                     Height="25"
                     Margin="10,0,0,0"
-                    Content="{setting:Localize AddGameWindow.Text14}" />
+                    Content="{setting:Localize AddGameWindow.Text14}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text37}"
+                    ToolTip.VerticalOffset="-30" />
             </StackPanel>
         </StackPanel>
         <Button

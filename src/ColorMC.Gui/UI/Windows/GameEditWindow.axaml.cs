@@ -64,6 +64,12 @@ public partial class GameEditWindow : Window, IBaseWindow
         App.PicUpdate += Update;
 
         Update();
+        Activated += Window_Activated;
+    }
+
+    private void Window_Activated(object? sender, EventArgs e)
+    {
+        App.LastWindow = this;
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -228,6 +234,11 @@ public partial class GameEditWindow : Window, IBaseWindow
         App.PicUpdate -= Update;
 
         App.GameEditWindows.Remove(Obj!);
+
+        if (App.LastWindow == this)
+        {
+            App.LastWindow = null;
+        }
     }
 
     public void Update()
