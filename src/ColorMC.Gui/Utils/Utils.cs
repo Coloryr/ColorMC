@@ -5,6 +5,7 @@ using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Core.Utils;
@@ -529,6 +530,41 @@ public static partial class UIUtils
         {
             window.SystemDecorations = SystemDecorations.BorderOnly;
         }
+
+        Dispatcher.UIThread.Post(() => window.FindGoodPos());
+    }
+
+    public static void FindGoodPos(this Window windows)
+    {
+        if (App.MainWindow == null)
+            return;
+
+        var basewindow = App.MainWindow;
+        var pos = basewindow.Position;
+        var sec = basewindow.Screens.ScreenFromWindow(basewindow.PlatformImpl);
+        if (sec == null)
+            return;
+        var area = sec.WorkingArea;
+        int x ,y;
+        if (pos.X > area.Width / 2)
+        {
+            x = pos.X - 100;
+        }
+        else
+        {
+            x = pos.X + 100;
+        }
+
+        if (pos.Y > area.Height / 2)
+        {
+            y = pos.Y - 40;
+        }
+        else
+        {
+            y = pos.Y + 40;
+        }
+
+        windows.Position = new(x, y);
     }
 }
 

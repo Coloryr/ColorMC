@@ -14,7 +14,6 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class Tab2Control : UserControl
 {
-    private GameEditWindow Window;
     private GameSettingObj Obj;
     private bool load = false;
     public Tab2Control()
@@ -66,7 +65,8 @@ public partial class Tab2Control : UserControl
 
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        var res = await Window.Info.ShowWait("是否要删除所有配置");
+        var Window = (VisualRoot as GameEditWindow)!;
+        var res = await Window.Info.ShowWait(Localizer.Instance["GameEditWindow.Tab2.Info1"]);
         if (res)
         {
             GameBinding.DeleteConfig(Obj);
@@ -78,6 +78,9 @@ public partial class Tab2Control : UserControl
     private void TextBox7_PropertyChanged(object? sender, 
         AvaloniaPropertyChangedEventArgs e)
     {
+        if (load)
+            return;
+
         if (e.Property.Name == "Text")
         {
             Save4();
@@ -87,6 +90,9 @@ public partial class Tab2Control : UserControl
     private void TextBox5_PropertyChanged(object? sender, 
         AvaloniaPropertyChangedEventArgs e)
     {
+        if (load)
+            return;
+
         if (e.Property.Name == "Text")
         {
             Save3();
@@ -101,6 +107,9 @@ public partial class Tab2Control : UserControl
     private void Input3_PropertyChanged(object? sender, 
         AvaloniaPropertyChangedEventArgs e)
     {
+        if (load)
+            return;
+
         if (e.Property.Name == "Value")
         {
             Save1();
@@ -111,6 +120,9 @@ public partial class Tab2Control : UserControl
     private void TextBox2_PropertyChanged(object? sender, 
         AvaloniaPropertyChangedEventArgs e)
     {
+        if (load)
+            return;
+
         if (e.Property.Name == "Text")
         {
             Save2();
@@ -121,14 +133,21 @@ public partial class Tab2Control : UserControl
     private void Input1_PropertyChanged1(object? sender, 
         AvaloniaPropertyChangedEventArgs e)
     {
+        if (load)
+            return;
+
         if (e.Property.Name == "Value")
         {
             Save2();
         }
     }
 
+    //选用的Java
     private void Input1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
+        if (load)
+            return;
+
         if (e.Property.Name == "Value")
         {
             Save();
@@ -142,6 +161,8 @@ public partial class Tab2Control : UserControl
 
     private void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        var Window = (VisualRoot as GameEditWindow)!;
+
         if (load)
             return;
 
@@ -159,8 +180,12 @@ public partial class Tab2Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await BaseBinding.OpFile(Window, Localizer.Instance["SettingWindow.Tab5.Info2"],
-            SystemInfo.Os == OsType.Windows ? "*.exe" : "", Localizer.Instance["SettingWindow.Tab5.Info2"]);
+        var Window = (VisualRoot as GameEditWindow)!;
+
+        var file = await BaseBinding.OpFile(Window, 
+            Localizer.Instance["SettingWindow.Tab5.Info2"],
+            SystemInfo.Os == OsType.Windows ? "*.exe" : "", 
+            Localizer.Instance["SettingWindow.Tab5.Info2"]);
         if (file.Any())
         {
             TextBox11.Text = file[0].GetPath();
@@ -169,6 +194,9 @@ public partial class Tab2Control : UserControl
 
     private void TextBox11_TextInput(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
+        if (load)
+            return;
+
         var property = e.Property.Name;
         if (property == "Text")
         {
@@ -190,9 +218,11 @@ public partial class Tab2Control : UserControl
 
     private void Save4()
     {
+        var window = (VisualRoot as GameEditWindow)!;
+
         if (UIUtils.CheckNotNumber(TextBox8.Text))
         {
-            Window.Info.Show(Localizer.Instance["Error7"]);
+            window.Info.Show(Localizer.Instance["Error7"]);
             return;
         }
 
@@ -203,7 +233,6 @@ public partial class Tab2Control : UserControl
             User = TextBox9.Text,
             Password = TextBox10.Text
         });
-        Window.Info2.Show(Localizer.Instance["Info3"]);
     }
 
     private void Save3()
@@ -321,11 +350,6 @@ public partial class Tab2Control : UserControl
         }
 
         load = false;
-    }
-
-    public void SetWindow(GameEditWindow window)
-    {
-        Window = window;
     }
 
     public void SetGame(GameSettingObj obj)

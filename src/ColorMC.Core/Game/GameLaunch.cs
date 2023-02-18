@@ -993,15 +993,32 @@ public static class Launch
         var (State, State1, Obj, Message, Ex) = await login.RefreshToken();
         if (State1 != LoginState.Done)
         {
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.LoginFail);
-            if (Ex != null)
-                throw new LaunchException(LaunchState.LoginFail, Ex);
+            if (login.AuthType == AuthType.OAuth
+                && !string.IsNullOrWhiteSpace(login.UUID)
+                && CoreMain.LoginFailLaunch != null
+                && await CoreMain.LoginFailLaunch(login) == true)
+            {
+                login = new()
+                {
+                    UserName = login.UserName,
+                    UUID = login.UUID,
+                    AuthType = AuthType.Offline
+                };
+            }
+            else
+            {
+                CoreMain.GameLaunch?.Invoke(obj, LaunchState.LoginFail);
+                if (Ex != null)
+                    throw new LaunchException(LaunchState.LoginFail, Ex);
 
-            throw new LaunchException(LaunchState.LoginFail, Message!);
+                throw new LaunchException(LaunchState.LoginFail, Message!);
+            }
         }
-
-        login = Obj!;
-        login.Save();
+        else
+        {
+            login = Obj!;
+            login.Save();
+        }
 
         //检查游戏文件
         var res = await CheckGameFile(obj, login);

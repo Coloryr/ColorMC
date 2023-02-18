@@ -9,16 +9,15 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class Tab8Control : UserControl
 {
     private readonly List<ResourcePackControl> List = new();
-    private GameEditWindow Window;
     private GameSettingObj Obj;
     private ResourcePackControl? Last;
-    private AddResourcePackWindow? AddResourcePackWindow;
 
     public Tab8Control()
     {
@@ -40,11 +39,6 @@ public partial class Tab8Control : UserControl
         LayoutUpdated += Tab8Control_LayoutUpdated;
     }
 
-    public void CloseAddResourcepack()
-    {
-        AddResourcePackWindow = null;
-    }
-
     private void Button_R1_Click(object? sender, RoutedEventArgs e)
     {
         Load();
@@ -52,46 +46,24 @@ public partial class Tab8Control : UserControl
 
     private void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        if (AddResourcePackWindow == null)
-        {
-            AddResourcePackWindow = new();
-            AddResourcePackWindow.SetTab8Control(Obj, this);
-            AddResourcePackWindow.Show();
-        }
-        else
-        {
-            AddResourcePackWindow.Activate();
-        }
+        App.ShowAddResourcePack(Obj);
     }
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        OpenFileDialog openFile = new()
+        var window = (VisualRoot as GameEditWindow)!;
+        var file = await BaseBinding.OpFile(window, 
+            Localizer.Instance["GameEditWindow.Tab8.Info2"], "*.zip", 
+            Localizer.Instance["GameEditWindow.Tab8.Info7"]);
+        if (file.Any())
         {
-            Title = Localizer.Instance["GameEditWindow.Tab8.Info2"],
-            AllowMultiple = false,
-            Filters = new()
-            {
-                new FileDialogFilter()
-                {
-                    Extensions = new()
-                    {
-                        "zip"
-                    }
-                }
-            }
-        };
-
-        var file = await openFile.ShowAsync(Window);
-        if (file?.Length > 0)
-        {
-            var res = await GameBinding.AddResourcepack(Obj, file[0]);
+            var res = await GameBinding.AddResourcepack(Obj, file[0].GetPath());
             if (!res)
             {
-                Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+                window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
                 return;
             }
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+            window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
             Load();
         }
     }
@@ -125,25 +97,10 @@ public partial class Tab8Control : UserControl
         Expander_R.IsExpanded = true;
     }
 
-    public async void AddResourcepack(CurseForgeObj.Data.LatestFiles data)
-    {
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab8.Info3"]);
-        var res = await GameBinding.DownloadResourcepack(Obj, data);
-        Window.Info1.Close();
-        if (res)
-        {
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab8.Info4"]);
-            Load();
-        }
-        else
-        {
-            Window.Info.Show(Localizer.Instance["GameEditWindow.Tab8.Error2"]);
-        }
-    }
-
     public async void Delete(ResourcepackDisplayObj obj)
     {
-        var res = await Window.Info.ShowWait(
+        var window = (VisualRoot as GameEditWindow)!;
+        var res = await window.Info.ShowWait(
             string.Format(Localizer.Instance["GameEditWindow.Tab8.Info1"], obj.Local));
         if (!res)
         {
@@ -151,13 +108,8 @@ public partial class Tab8Control : UserControl
         }
 
         GameBinding.DeleteResourcepack(obj.Pack);
-        Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
+        window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
         Load();
-    }
-
-    public void SetWindow(GameEditWindow window)
-    {
-        Window = window;
     }
 
     public void SetGame(GameSettingObj obj)
@@ -174,12 +126,13 @@ public partial class Tab8Control : UserControl
 
     private async void Load()
     {
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab8.Info5"]);
+        var window = (VisualRoot as GameEditWindow)!;
+        window.Info1.Show(Localizer.Instance["GameEditWindow.Tab8.Info5"]);
         List.Clear();
         ListBox_Items.Children.Clear();
 
         var res = await GameBinding.GetResourcepacks(Obj);
-        Window.Info1.Close();
+        window.Info1.Close();
         foreach (var item in res)
         {
             var con = new ResourcePackControl();

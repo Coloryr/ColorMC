@@ -6,6 +6,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System.Collections.ObjectModel;
+using Avalonia.LogicalTree;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -14,7 +15,6 @@ public partial class Tab1Control : UserControl
     private readonly ObservableCollection<string> List = new();
     private readonly ObservableCollection<string> List1 = new();
     private readonly ObservableCollection<string> List2 = new();
-    private IBaseWindow Window;
     private GameSettingObj Obj;
     public Tab1Control()
     {
@@ -66,13 +66,9 @@ public partial class Tab1Control : UserControl
         Save();
     }
 
-    public void SetWindow(IBaseWindow window)
-    {
-        Window = window;
-    }
-
     private async void Button5_Click(object? sender, RoutedEventArgs e)
     {
+        var Window = (VisualRoot as GameEditWindow)!;
         var res = await Window.Info.ShowWait(string.Format(Localizer.Instance["GameEditWindow.Tab1.Info1"], Obj.Name));
         if (!res)
             return;
@@ -102,6 +98,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
+        var Window = (VisualRoot as GameEditWindow)!;
         await Window.Info3.ShowOne(Localizer.Instance["AddGameWindow.Info1"], false);
         Window.Info3.Close();
         if (Window.Info3.Cancel)
@@ -134,16 +131,18 @@ public partial class Tab1Control : UserControl
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as GameEditWindow)!;
+
         ComboBox2.IsEnabled = false;
 
         if (CheckBox_Forge.IsChecked == true)
         {
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info6"]);
+            window.Info1.Show(Localizer.Instance["AddGameWindow.Info6"]);
             CheckBox_Fabric.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
             var list = await GameBinding.GetForgeVersion(Obj.Version);
-            Window.Info1.Close();
+            window.Info1.Close();
             if (list == null)
             {
                 return;
@@ -155,12 +154,12 @@ public partial class Tab1Control : UserControl
         }
         else if (CheckBox_Fabric.IsChecked == true)
         {
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info5"]);
+            window.Info1.Show(Localizer.Instance["AddGameWindow.Info5"]);
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
             var list = await GameBinding.GetFabricVersion(Obj.Version);
-            Window.Info1.Close();
+            window.Info1.Close();
             if (list == null)
             {
                 return;
@@ -172,12 +171,12 @@ public partial class Tab1Control : UserControl
         }
         else if (CheckBox_Quilt.IsChecked == true)
         {
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info4"]);
+            window.Info1.Show(Localizer.Instance["AddGameWindow.Info4"]);
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = false;
 
             var list = await GameBinding.GetQuiltVersion(Obj.Version);
-            Window.Info1.Close();
+            window.Info1.Close();
             if (list == null)
             {
                 return;
@@ -247,7 +246,8 @@ public partial class Tab1Control : UserControl
 
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
+        var window = (VisualRoot as GameEditWindow)!;
+        window.Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(Obj.Version))
         {
@@ -265,17 +265,18 @@ public partial class Tab1Control : UserControl
         {
             CheckBox_Quilt.IsEnabled = true;
         }
-        Window.Info1.Close();
+        window.Info1.Close();
     }
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Info1"]);
+        var window = (VisualRoot as GameEditWindow)!;
+        window.Info1.Show(Localizer.Instance["GameEditWindow.Info1"]);
         var res = await GameBinding.ReloadVersion();
-        Window.Info1.Close();
+        window.Info1.Close();
         if (!res)
         {
-            Window.Info.Show(Localizer.Instance["GameEditWindow.Error1"]);
+            window.Info.Show(Localizer.Instance["GameEditWindow.Error1"]);
             return;
         }
 

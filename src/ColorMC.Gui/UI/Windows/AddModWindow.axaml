@@ -195,6 +195,7 @@
 
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info4Control Name="Info" IsVisible="False" />
+            <views:Info2Control Name="Info2" />
 
             <Rectangle
                 Name="Rectangle1"

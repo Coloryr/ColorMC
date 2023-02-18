@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Timers;
@@ -12,7 +11,6 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class Tab7Control : UserControl
 {
-    private GameEditWindow Window;
     private GameSettingObj Obj;
 
     private string temp = "";
@@ -88,11 +86,6 @@ public partial class Tab7Control : UserControl
         {
             temp += data + Environment.NewLine;
         }
-    }
-
-    public void SetWindow(GameEditWindow window)
-    {
-        Window = window;
     }
 
     public void SetGame(GameSettingObj obj)

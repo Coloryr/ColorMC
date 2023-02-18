@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -17,10 +16,8 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 public partial class Tab5Control : UserControl
 {
     private readonly List<WorldControl> List = new();
-    private GameEditWindow Window;
     private GameSettingObj Obj;
     private WorldControl? Last;
-    private AddWorldWindow? AddWorldWindow;
 
     public Tab5Control()
     {
@@ -42,11 +39,6 @@ public partial class Tab5Control : UserControl
         LayoutUpdated += Tab5Control_LayoutUpdated;
     }
 
-    public void CloseAddWorld()
-    {
-        AddWorldWindow = null;
-    }
-
     private void Button_R1_Click(object? sender, RoutedEventArgs e)
     {
         Load();
@@ -54,31 +46,23 @@ public partial class Tab5Control : UserControl
 
     private void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        if (AddWorldWindow == null)
-        {
-            AddWorldWindow = new();
-            AddWorldWindow.SetTab5Control(Obj!, this);
-            AddWorldWindow.Show();
-        }
-        else
-        {
-            AddWorldWindow.Activate();
-        }
+        App.ShowAddWorld(Obj);
     }
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await BaseBinding.OpFile(Window!, Localizer.Instance["GameEditWindow.Tab5.Info2"],
+        var window = (VisualRoot as GameEditWindow)!;
+        var file = await BaseBinding.OpFile(window!, Localizer.Instance["GameEditWindow.Tab5.Info2"],
             "*.zip", Localizer.Instance["GameEditWindow.Tab5.Info8"]);
         if (file.Any())
         {
             var res = await GameBinding.AddWorld(Obj!, file[0].GetPath());
             if (!res)
             {
-                Window!.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+                window!.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
                 return;
             }
-            Window!.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+            window!.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
             Load();
         }
     }
@@ -114,6 +98,7 @@ public partial class Tab5Control : UserControl
 
     public async void Export(WorldDisplayObj obj)
     {
+        var Window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpSave(Window,
             Localizer.Instance["GameEditWindow.Tab5.Info2"], ".zip", "world.zip");
         if (file == null)
@@ -141,24 +126,9 @@ public partial class Tab5Control : UserControl
         }
     }
 
-    public async void AddWorld(CurseForgeObj.Data.LatestFiles data)
-    {
-        Window!.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info5"]);
-        var res = await GameBinding.DownloadWorld(Obj!, data);
-        Window.Info1.Close();
-        if (res)
-        {
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info6"]);
-            Load();
-        }
-        else
-        {
-            Window.Info.Show(Localizer.Instance["GameEditWindow.Tab5.Error2"]);
-        }
-    }
-
     public async void Delete(WorldDisplayObj obj)
     {
+        var Window = (VisualRoot as GameEditWindow)!;
         var res = await Window!.Info.ShowWait(
             string.Format(Localizer.Instance["GameEditWindow.Tab5.Info1"], obj.Name));
         if (!res)
@@ -169,11 +139,6 @@ public partial class Tab5Control : UserControl
         GameBinding.DeleteWorld(obj.World);
         Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
         Load();
-    }
-
-    public void SetWindow(GameEditWindow window)
-    {
-        Window = window;
     }
 
     public void SetGame(GameSettingObj obj)
@@ -190,7 +155,8 @@ public partial class Tab5Control : UserControl
 
     private async void Load()
     {
-        Window!.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info7"]);
+        var Window = (VisualRoot as GameEditWindow)!;
+        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info7"]);
         List.Clear();
         ListBox_Items.Children.Clear();
 

@@ -28,6 +28,19 @@ public static class JavaBinding
     private readonly static List<string> JavaType =
         new() { "Adoptium", "Zulu", "Dragonwell", "OpenJ9" };
 
+    private static string Remove(this string str)
+    {
+        if (str.EndsWith(".zip"))
+        {
+            str = str[..^4];
+        }
+        else if (str.EndsWith("tar.gz"))
+        {
+            str = str[..^6];
+        }
+        return str;
+    }
+
     private static JavaInfoObj MakeInfo(string name, JavaInfo item)
     {
         return new JavaInfoObj()
@@ -247,7 +260,7 @@ public static class JavaBinding
 
                 list1.Add(new()
                 {
-                    Name = item.name,
+                    Name = item.name.Remove(),
                     Arch = item.arch + '_' + item.hw_bitness,
                     Os = item.os,
                     MainVersion = item.zulu_version[0].ToString(),

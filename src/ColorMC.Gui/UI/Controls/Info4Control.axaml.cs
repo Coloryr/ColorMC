@@ -44,7 +44,7 @@ public partial class Info4Control : UserControl
         TextBlock_Text.Text = title;
         call = res;
 
-        await App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
+        await App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
     public async Task<bool> ShowWait(string title)
@@ -63,7 +63,7 @@ public partial class Info4Control : UserControl
             semaphore.Release();
         };
 
-        await App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
+        await App.CrossFade300.Start(null, this, CancellationToken.None);
 
         await Task.Run(() =>
         {
@@ -79,6 +79,32 @@ public partial class Info4Control : UserControl
         Button_Cancel.IsVisible = false;
         TextBlock_Text.Text = title;
 
-        await App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
+        await App.CrossFade300.Start(null, this, CancellationToken.None);
+    }
+
+    public async Task<bool> ShowOk(string title)
+    {
+        bool reut = false;
+        Semaphore semaphore = new(0, 2);
+        Button_Confirm.IsEnabled = true;
+        Button_Cancel.IsEnabled = false;
+        Button_Confirm.IsVisible = true;
+        Button_Cancel.IsVisible = false;
+        TextBlock_Text.Text = title;
+
+        call = (res) =>
+        {
+            reut = res;
+            semaphore.Release();
+        };
+
+        await App.CrossFade300.Start(null, this, CancellationToken.None);
+
+        await Task.Run(() =>
+        {
+            semaphore.WaitOne();
+        });
+
+        return reut;
     }
 }

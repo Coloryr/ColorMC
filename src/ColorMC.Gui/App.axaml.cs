@@ -28,7 +28,7 @@ public partial class App : Application
     public static IClassicDesktopStyleApplicationLifetime? Life { get; private set; }
     public static DownloadWindow? DownloadWindow { get; set; }
     public static UserWindow? UserWindow { get; set; }
-    public static MainWindow? MainWindow { get; set; }
+    public static MainWindow MainWindow { get; set; }
     public static AddGameWindow? AddGameWindow { get; set; }
     public static CustomWindow? CustomWindow { get; set; }
     public static AddModPackWindow? AddModPackWindow { get; set; }
@@ -36,6 +36,9 @@ public partial class App : Application
     public static SkinWindow? SkinWindow { get; set; }
     public static AddJavaWindow? AddJavaWindow { get; set; }
     public readonly static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
+    public readonly static Dictionary<GameSettingObj, AddModWindow> AddModWindows = new();
+    public readonly static Dictionary<GameSettingObj, AddWorldWindow> AddWorldWindows = new();
+    public readonly static Dictionary<GameSettingObj, AddResourcePackWindow> AddResourcePackWindows = new();
 
     public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly CrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
@@ -372,6 +375,51 @@ public partial class App : Application
         {
             AddJavaWindow = new();
             AddJavaWindow.Show();
+        }
+    }
+
+    public static void ShowAddMod(GameSettingObj obj)
+    {
+        if (AddModWindows.TryGetValue(obj, out var value))
+        {
+            value.Activate();
+        }
+        else
+        {
+            var win = new AddModWindow();
+            win.SetGame(obj);
+            win.Show();
+            AddModWindows.Add(obj, win);
+        }
+    }
+
+    public static void ShowAddWorld(GameSettingObj obj)
+    {
+        if (AddWorldWindows.TryGetValue(obj, out var value))
+        {
+            value.Activate();
+        }
+        else
+        {
+            var win = new AddWorldWindow();
+            win.SetGame(obj);
+            win.Show();
+            AddWorldWindows.Add(obj, win);
+        }
+    }
+
+    public static void ShowAddResourcePack(GameSettingObj obj)
+    {
+        if (AddResourcePackWindows.TryGetValue(obj, out var value))
+        {
+            value.Activate();
+        }
+        else
+        {
+            var win = new AddResourcePackWindow();
+            win.SetGame(obj);
+            win.Show();
+            AddResourcePackWindows.Add(obj, win);
         }
     }
 

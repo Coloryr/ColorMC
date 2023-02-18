@@ -53,10 +53,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text2}" />
-                    <ComboBox
-                        Name="ComboBox1"
-                        Width="300"
-                        Margin="5" />
+                    <ComboBox Name="ComboBox1" Width="300" />
                 </StackPanel>
                 <TextBox
                     Name="TextBox1"
@@ -116,7 +113,7 @@
                     TextWrapping="Wrap"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text8}" />
 
-                <Label Content="注意：自定义附加参数会用 ;(英文分号) 进行分割" />
+                <Label Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
 
                 <TextBox
                     Name="TextBox13"
@@ -127,13 +124,13 @@
                     TextWrapping="Wrap"
                     Watermark="附加的classpath" />
 
-                <Label Content="注意：自定义附加classpath参数会用 ;(英文分号) 进行分割，并查找文件，可以使用相对路径" />
+                <Label Content="{setting:Localize GameEditWindow.Tab2.Text26}" />
 
                 <TextBox
                     Name="TextBox12"
                     Margin="0,5,0,0"
                     Classes="input1"
-                    Watermark="自定义启动的mainclass" />
+                    Watermark="{setting:Localize GameEditWindow.Tab2.Text27}" />
 
                 <!--  分辨率  -->
 
@@ -221,7 +218,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,10,0,0"
-                    Content="删除所有配置" />
+                    Content="{setting:Localize GameEditWindow.Tab2.Text28}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

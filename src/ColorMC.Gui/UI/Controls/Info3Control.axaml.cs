@@ -9,7 +9,7 @@ namespace ColorMC.Gui.UI.Controls;
 public partial class Info3Control : UserControl
 {
     private readonly Semaphore semaphore = new(0, 2);
-    private Action CancelCall;
+    private Action? CancelCall;
     private bool Display = false;
 
     public bool Cancel { get; private set; }
@@ -27,6 +27,7 @@ public partial class Info3Control : UserControl
         if (CancelCall != null)
         {
             CancelCall();
+            CancelCall = null;
             return;
         }
 
@@ -69,7 +70,7 @@ public partial class Info3Control : UserControl
         Button_Cancel.IsVisible = true;
 
         TextBox_Text1.PasswordChar = password ? '*' : (char)0;
-        App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
+        App.CrossFade300.Start(null, this, CancellationToken.None);
 
         return Task.Run(() =>
         {
@@ -98,7 +99,7 @@ public partial class Info3Control : UserControl
 
         TextBox_Text1.PasswordChar = (char)0;
 
-        App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
+        App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
     public void Show(string title, string title1, Action cancel)
@@ -124,7 +125,7 @@ public partial class Info3Control : UserControl
 
         TextBox_Text1.PasswordChar = (char)0;
 
-        App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
+        App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
     public Task ShowOne(string title, bool lock1 = true)
@@ -161,7 +162,7 @@ public partial class Info3Control : UserControl
             Button_Cancel.IsEnabled = true;
             Button_Cancel.IsVisible = true;
         }
-        App.CrossFade300.Start(null, this, cancellationToken: CancellationToken.None);
+        App.CrossFade300.Start(null, this, CancellationToken.None);
 
         if (!lock1)
         {

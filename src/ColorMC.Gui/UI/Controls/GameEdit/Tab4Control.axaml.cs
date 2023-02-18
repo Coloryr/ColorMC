@@ -24,9 +24,7 @@ public partial class Tab4Control : UserControl
     private readonly ObservableCollection<ModDisplayObj> List = new();
     private readonly List<ModDisplayObj> Items = new();
     private readonly Dictionary<string, ModObj> Dir1 = new();
-    private AddModWindow? AddModWindow;
 
-    private GameEditWindow Window;
     private GameSettingObj Obj;
 
     public Tab4Control()
@@ -72,7 +70,8 @@ public partial class Tab4Control : UserControl
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await Window.StorageProvider.OpenFilePickerAsync(new()
+        var window = (VisualRoot as GameEditWindow)!;
+        var file = await window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = "Mod",
             AllowMultiple = true,
@@ -95,7 +94,7 @@ public partial class Tab4Control : UserControl
                 list.Add(item.GetPath());
             }
             GameBinding.AddMods(Obj, list);
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+            window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
             Load();
         }
     }
@@ -128,21 +127,7 @@ public partial class Tab4Control : UserControl
 
     private void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        if (AddModWindow == null)
-        {
-            AddModWindow = new();
-            AddModWindow.SetTab4Control(Obj, this);
-            AddModWindow.Show();
-        }
-        else
-        {
-            AddModWindow.Activate();
-        }
-    }
-
-    public void CloseAddMod()
-    {
-        AddModWindow = null;
+        App.ShowAddMod(Obj);
     }
 
     private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -156,7 +141,8 @@ public partial class Tab4Control : UserControl
 
     public async void Delete(ModDisplayObj item)
     {
-        var res = await Window.Info.ShowWait(
+        var window = (VisualRoot as GameEditWindow)!;
+        var res = await window.Info.ShowWait(
             string.Format(Localizer.Instance["GameEditWindow.Tab4.Info4"], item.Name));
         if (!res)
         {
@@ -168,7 +154,7 @@ public partial class Tab4Control : UserControl
             GameBinding.DeleteMod(obj);
             List.Remove(item);
 
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
+            window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
         }
     }
 
@@ -220,14 +206,15 @@ public partial class Tab4Control : UserControl
 
     private async void Load()
     {
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab4.Info1"]);
+        var window = (VisualRoot as GameEditWindow)!;
+        window.Info1.Show(Localizer.Instance["GameEditWindow.Tab4.Info1"]);
         Dir1.Clear();
         Items.Clear();
         var res = await GameBinding.GetGameMods(Obj);
-        Window.Info1.Close();
+        window.Info1.Close();
         if (res == null)
         {
-            Window.Info.Show(Localizer.Instance["GameEditWindow.Tab4.Error1"]);
+            window.Info.Show(Localizer.Instance["GameEditWindow.Tab4.Error1"]);
             return;
         }
 
@@ -266,7 +253,7 @@ public partial class Tab4Control : UserControl
 
         if (count != 0)
         {
-            Window.Info.Show(string.Format(Localizer
+            window.Info.Show(string.Format(Localizer
                 .Instance["GameEditWindow.Tab4.Info6"], count));
         }
 
@@ -309,11 +296,6 @@ public partial class Tab4Control : UserControl
                     break;
             }
         }
-    }
-
-    public void SetWindow(GameEditWindow window)
-    {
-        Window = window;
     }
 
     public void SetGame(GameSettingObj obj)

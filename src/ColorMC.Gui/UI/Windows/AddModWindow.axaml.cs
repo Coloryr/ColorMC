@@ -7,7 +7,6 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.AddWindow;
 using ColorMC.Gui.UI.Controls.CurseForge;
-using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
@@ -23,7 +22,6 @@ public partial class AddModWindow : Window
     private readonly List<CurseForge1Control> List = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private CurseForge1Control? Last;
-    private Tab4Control Tab;
     private GameSettingObj Obj;
     public AddModWindow()
     {
@@ -64,10 +62,9 @@ public partial class AddModWindow : Window
         Update();
     }
 
-    public void SetTab4Control(GameSettingObj obj, Tab4Control tab)
+    public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
-        Tab = tab;
 
         Head.Title = Title= string.Format(Localizer.Instance["AddModWindow.Title"], obj.Name);
     }
@@ -138,7 +135,7 @@ public partial class AddModWindow : Window
     {
         App.PicUpdate -= Update;
 
-        Tab.CloseAddMod();
+        App.AddModWindows.Remove(Obj);
     }
 
     public void Install()
@@ -149,7 +146,7 @@ public partial class AddModWindow : Window
 
     public async void Install1(CurseForgeObj.Data.LatestFiles data)
     {
-        _ = App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
+        await App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
         var con = Last;
         con?.Download();
         var res = await GameBinding.DownloadMod(Obj, data);
@@ -188,7 +185,6 @@ public partial class AddModWindow : Window
         foreach (var item in data.data)
         {
             var control = List[a];
-            control.SetWindow(this);
             control.Load(item);
             control.PointerPressed += Control_PointerPressed;
             ListBox_Items.Children.Add(control);

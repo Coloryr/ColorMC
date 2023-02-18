@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -24,6 +25,7 @@ public static class BaseBinding
 {
     public readonly static Dictionary<Process, GameSettingObj> Games = new();
     public readonly static Dictionary<string, Process> RunGames = new();
+    private static Mutex mutex1;
     public static bool ISNewStart
     {
         get
@@ -92,6 +94,8 @@ public static class BaseBinding
     {
         CoreMain.Close();
         ColorSel.Instance.Stop();
+
+        mutex1.Dispose();
     }
 
     public static bool IsGameRun(GameSettingObj obj)
@@ -389,5 +393,13 @@ public static class BaseBinding
     public static void OpenBaseDir()
     {
         OpPath(AppContext.BaseDirectory);
+    }
+
+    public static bool IsLaunch()
+    {
+        mutex1 = new Mutex(true, "ColorMC-lock" + 
+            AppContext.BaseDirectory.Replace("\\", "_").Replace("/", "_"), out var isnew);
+
+        return !isnew;
     }
 }
