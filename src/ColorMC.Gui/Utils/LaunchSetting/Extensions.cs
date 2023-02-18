@@ -69,7 +69,7 @@ public class InfoExtension : MarkupExtension
         //var binding = new ReflectionBindingExtension($"[{keyToUse}]")
         //{
         //    Mode = BindingMode.OneWay,
-        //    Source = Localizer.Instance,
+        //    Source = App.GetLanguage,
         //};
 
         return new InfoFlyout(Key);

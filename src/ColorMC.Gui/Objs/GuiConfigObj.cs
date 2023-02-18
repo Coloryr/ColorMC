@@ -24,10 +24,10 @@ public record ServerCustom
 
 public record WindowsRender
 {
-    public bool UseWindowsUIComposition { get; set; }
-    public bool UseWgl { get; set; }
-    public bool UseCompositor { get; set; }
-    public bool UseDeferredRendering { get; set; }
+    public bool? UseWindowsUIComposition { get; set; }
+    public bool? UseWgl { get; set; }
+    public bool? UseCompositor { get; set; }
+    public bool? UseDeferredRendering { get; set; }
 }
 
 public record Render

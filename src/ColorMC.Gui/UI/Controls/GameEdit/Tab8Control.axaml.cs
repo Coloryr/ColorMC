@@ -53,17 +53,17 @@ public partial class Tab8Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpFile(window, 
-            Localizer.Instance["GameEditWindow.Tab8.Info2"], "*.zip", 
-            Localizer.Instance["GameEditWindow.Tab8.Info7"]);
+            App.GetLanguage("GameEditWindow.Tab8.Info2"), "*.zip", 
+            App.GetLanguage("GameEditWindow.Tab8.Info7"));
         if (file.Any())
         {
             var res = await GameBinding.AddResourcepack(Obj, file[0].GetPath());
             if (!res)
             {
-                window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+                window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
                 return;
             }
-            window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
             Load();
         }
     }
@@ -101,14 +101,14 @@ public partial class Tab8Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var res = await window.Info.ShowWait(
-            string.Format(Localizer.Instance["GameEditWindow.Tab8.Info1"], obj.Local));
+            string.Format(App.GetLanguage("GameEditWindow.Tab8.Info1"), obj.Local));
         if (!res)
         {
             return;
         }
 
         GameBinding.DeleteResourcepack(obj.Pack);
-        window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         Load();
     }
 
@@ -127,7 +127,7 @@ public partial class Tab8Control : UserControl
     private async void Load()
     {
         var window = (VisualRoot as GameEditWindow)!;
-        window.Info1.Show(Localizer.Instance["GameEditWindow.Tab8.Info5"]);
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab8.Info5"));
         List.Clear();
         ListBox_Items.Children.Clear();
 

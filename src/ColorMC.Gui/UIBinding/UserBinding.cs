@@ -72,7 +72,7 @@ public static class UserBinding
                 if (Ex != null)
                 {
                     App.ShowError(Message!, Ex);
-                    return (false, Localizer.Instance["Error4"]);
+                    return (false, App.GetLanguage("Error4"));
                 }
                 else
                 {
@@ -82,13 +82,13 @@ public static class UserBinding
             if (string.IsNullOrWhiteSpace(Obj?.UUID))
             {
                 BaseBinding.OpUrl("https://minecraft.net");
-                return (false, Localizer.Instance["UserBinding.Info3"]);
+                return (false, App.GetLanguage("UserBinding.Info3"));
             }
             AuthDatabase.Save(Obj!);
             return (true, null);
         }
 
-        return (false, Localizer.Instance["UserBinding.Error1"]);
+        return (false, App.GetLanguage("UserBinding.Error1"));
     }
 
     public static Dictionary<(string, AuthType), LoginObj> GetAllUser()
@@ -268,8 +268,8 @@ public static class UserBinding
         {
             case AuthType.Offline:
                 var file = await BaseBinding.OpFile(window,
-                    Localizer.Instance["UserBinding.Info1"], "*.png",
-                    Localizer.Instance["UserBinding.Info2"]);
+                    App.GetLanguage("UserBinding.Info1"), "*.png",
+                    App.GetLanguage("UserBinding.Info2"));
                 if (file?.Any() == true)
                 {
                     var item = file[0];

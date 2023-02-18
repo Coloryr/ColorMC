@@ -68,7 +68,7 @@ public partial class CurseForge1Control : UserControl
             }
             catch (Exception e)
             {
-                Logs.Error(Localizer.Instance["AddCurseForgeWindow.Error5"], e);
+                Logs.Error(App.GetLanguage("AddCurseForgeWindow.Error5"), e);
             }
         }
         if (!haveimg)

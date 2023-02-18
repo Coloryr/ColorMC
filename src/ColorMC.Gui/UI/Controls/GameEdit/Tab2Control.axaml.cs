@@ -66,7 +66,7 @@ public partial class Tab2Control : UserControl
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
         var Window = (VisualRoot as GameEditWindow)!;
-        var res = await Window.Info.ShowWait(Localizer.Instance["GameEditWindow.Tab2.Info1"]);
+        var res = await Window.Info.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
         if (res)
         {
             GameBinding.DeleteConfig(Obj);
@@ -116,7 +116,7 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    //Jvm参数
+    //Jvm锟斤拷锟斤拷
     private void TextBox2_PropertyChanged(object? sender, 
         AvaloniaPropertyChangedEventArgs e)
     {
@@ -129,7 +129,7 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    //内存
+    //锟节达拷
     private void Input1_PropertyChanged1(object? sender, 
         AvaloniaPropertyChangedEventArgs e)
     {
@@ -142,7 +142,7 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    //选用的Java
+    //选锟矫碉拷Java
     private void Input1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (load)
@@ -175,7 +175,7 @@ public partial class Tab2Control : UserControl
             GameBinding.SetJavaLocal(Obj, ComboBox2.SelectedItem as string, TextBox11.Text);
         }
 
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
@@ -183,9 +183,9 @@ public partial class Tab2Control : UserControl
         var Window = (VisualRoot as GameEditWindow)!;
 
         var file = await BaseBinding.OpFile(Window, 
-            Localizer.Instance["SettingWindow.Tab5.Info2"],
+            App.GetLanguage("SettingWindow.Tab5.Info2"),
             SystemInfo.Os == OsType.Windows ? "*.exe" : "", 
-            Localizer.Instance["SettingWindow.Tab5.Info2"]);
+            App.GetLanguage("SettingWindow.Tab5.Info2"));
         if (file.Any())
         {
             TextBox11.Text = file[0].GetPath();
@@ -222,7 +222,7 @@ public partial class Tab2Control : UserControl
 
         if (UIUtils.CheckNotNumber(TextBox8.Text))
         {
-            window.Info.Show(Localizer.Instance["Error7"]);
+            window.Info.Show(App.GetLanguage("Error7"));
             return;
         }
 
@@ -356,7 +356,7 @@ public partial class Tab2Control : UserControl
     {
         Obj = obj;
 
-        Title.Content = string.Format(Localizer.Instance["GameEditWindow.Tab2.Text13"], obj.Name);
+        Title.Content = string.Format(App.GetLanguage("GameEditWindow.Tab2.Text13"), obj.Name);
     }
 
     public void Update()

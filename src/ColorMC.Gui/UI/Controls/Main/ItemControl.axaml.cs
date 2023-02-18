@@ -122,8 +122,8 @@ public partial class ItemControl : UserControl
 
         if (Obj1 == null)
         {
-            TextBlock_Type.Text = Localizer.Instance["MainWindow.Control.Info1"];
-            TextBlock_Name.Text = Localizer.Instance["MainWindow.Control.Info2"];
+            TextBlock_Type.Text = App.GetLanguage("MainWindow.Control.Info1");
+            TextBlock_Name.Text = App.GetLanguage("MainWindow.Control.Info2");
         }
         else
         {

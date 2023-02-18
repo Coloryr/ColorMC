@@ -72,8 +72,8 @@ public partial class Tab4Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpFile(window,
-            Localizer.Instance["GameEditWindow.Tab4.Info7"], "*.jar",
-           Localizer.Instance["GameEditWindow.Tab4.Info8"]);
+            App.GetLanguage("GameEditWindow.Tab4.Info7"), "*.jar",
+           App.GetLanguage("GameEditWindow.Tab4.Info8"));
 
         if (file.Any() == true)
         {
@@ -83,7 +83,7 @@ public partial class Tab4Control : UserControl
                 list.Add(item.GetPath());
             }
             GameBinding.AddMods(Obj, list);
-            window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
             Load();
         }
     }
@@ -134,7 +134,7 @@ public partial class Tab4Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var res = await window.Info.ShowWait(
-            string.Format(Localizer.Instance["GameEditWindow.Tab4.Info9"], items.Count));
+            string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count));
         if (!res)
         {
             return;
@@ -149,14 +149,14 @@ public partial class Tab4Control : UserControl
             }
         });
 
-        window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
     }
 
     public async void Delete(ModDisplayObj item)
     {
         var window = (VisualRoot as GameEditWindow)!;
         var res = await window.Info.ShowWait(
-            string.Format(Localizer.Instance["GameEditWindow.Tab4.Info4"], item.Name));
+            string.Format(App.GetLanguage("GameEditWindow.Tab4.Info4"), item.Name));
         if (!res)
         {
             return;
@@ -167,7 +167,7 @@ public partial class Tab4Control : UserControl
             GameBinding.DeleteMod(obj);
             List.Remove(item);
 
-            window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
+            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         }
     }
 
@@ -220,14 +220,14 @@ public partial class Tab4Control : UserControl
     private async void Load()
     {
         var window = (VisualRoot as GameEditWindow)!;
-        window.Info1.Show(Localizer.Instance["GameEditWindow.Tab4.Info1"]);
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
         Dir1.Clear();
         Items.Clear();
         var res = await GameBinding.GetGameMods(Obj);
         window.Info1.Close();
         if (res == null)
         {
-            window.Info.Show(Localizer.Instance["GameEditWindow.Tab4.Error1"]);
+            window.Info.Show(App.GetLanguage("GameEditWindow.Tab4.Error1"));
             return;
         }
 
@@ -240,7 +240,7 @@ public partial class Tab4Control : UserControl
             {
                 obj = new ModDisplayObj()
                 {
-                    Name = Localizer.Instance["GameEditWindow.Tab4.Info5"],
+                    Name = App.GetLanguage("GameEditWindow.Tab4.Info5"),
                     Local = item.Local,
                     Enable = item.Disable
                 };
@@ -266,8 +266,8 @@ public partial class Tab4Control : UserControl
 
         if (count != 0)
         {
-            window.Info.Show(string.Format(Localizer
-                .Instance["GameEditWindow.Tab4.Info6"], count));
+            window.Info.Show(string.Format(App
+                .GetLanguage("GameEditWindow.Tab4.Info6"), count));
         }
 
         Load1();

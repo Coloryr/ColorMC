@@ -90,7 +90,7 @@ public partial class AddModPackWindow : Window, IBase1Window
             return;
 
         var res = await Info.ShowWait(
-            string.Format(Localizer.Instance["AddCurseForgeWindow.Info1"], item.File.displayName));
+            string.Format(App.GetLanguage("AddCurseForgeWindow.Info1"), item.File.displayName));
         if (res)
         {
             Install1(item.File);
@@ -111,7 +111,7 @@ public partial class AddModPackWindow : Window, IBase1Window
     {
         if (Last == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error1"]);
+            Info.Show(App.GetLanguage("AddCurseForgeWindow.Error1"));
             return;
         }
 
@@ -148,13 +148,13 @@ public partial class AddModPackWindow : Window, IBase1Window
 
     private async void Load()
     {
-        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info2"]);
+        Info1.Show(App.GetLanguage("AddCurseForgeWindow.Info2"));
         var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
 
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error2"]);
+            Info.Show(App.GetLanguage("AddCurseForgeWindow.Error2"));
             Info1.Close();
             return;
         }
@@ -188,11 +188,11 @@ public partial class AddModPackWindow : Window, IBase1Window
     private async void Load1()
     {
         List1.Clear();
-        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info3"]);
+        Info1.Show(App.GetLanguage("AddCurseForgeWindow.Info3"));
         var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error3"]);
+            Info.Show(App.GetLanguage("AddCurseForgeWindow.Error3"));
             Info1.Close();
             return;
         }
@@ -219,12 +219,12 @@ public partial class AddModPackWindow : Window, IBase1Window
     private async void AddCurseForgeWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
-        Info1.Show(Localizer.Instance["AddCurseForgeWindow.Info4"]);
+        Info1.Show(App.GetLanguage("AddCurseForgeWindow.Info4"));
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();
         if (list == null)
         {
-            Info.Show(Localizer.Instance["AddCurseForgeWindow.Error4"]);
+            Info.Show(App.GetLanguage("AddCurseForgeWindow.Error4"));
             return;
         }
 

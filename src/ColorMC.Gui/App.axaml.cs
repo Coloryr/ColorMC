@@ -20,11 +20,14 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ColorMC.Gui;
 
 public partial class App : Application
 {
+    private static readonly Dictionary<string, string> Language = new();
+
     public App()
     {
         Name = "ColorMC";
@@ -34,7 +37,7 @@ public partial class App : Application
 
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        Logs.Error("·¢Éú´íÎó", e.ExceptionObject as Exception);
+        Logs.Error("Error", e.ExceptionObject as Exception);
     }
 
     public static IClassicDesktopStyleApplicationLifetime? Life { get; private set; }
@@ -63,7 +66,6 @@ public partial class App : Application
 
     public static Window? LastWindow;
 
-    public static ResourceDictionary? Language;
     public static Bitmap? BackBitmap { get; private set; }
     public static Bitmap GameIcon { get; private set; }
     public static WindowIcon? Icon { get; private set; }
@@ -71,6 +73,14 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+    }
+
+    public static string GetLanguage(string key)
+    {
+        if (Language.TryGetValue(key, out var res1))
+            return res1!;
+
+        return key;
     }
 
     public override async void OnFrameworkInitializationCompleted()
@@ -87,6 +97,8 @@ public partial class App : Application
                 Life.Exit += Life_Exit;
             }
 
+            LoadLanguage(ConfigUtils.Config.Language);
+
             var uri = new Uri("resm:ColorMC.Gui.Resource.Pic.game.png");
 
             var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
@@ -98,8 +110,6 @@ public partial class App : Application
             using var asset1 = assets!.Open(uri1);
 
             Icon = new(asset1);
-
-            LoadLanguage(LanguageType.zh_cn);
 
             BaseBinding.Init();
 
@@ -150,10 +160,18 @@ public partial class App : Application
         {
             return;
         }
-        using MemoryStream stream = new();
-        item.CopyTo(stream);
-        var temp = Encoding.UTF8.GetString(stream.ToArray());
-        Language = AvaloniaRuntimeXamlLoader.Load(temp) as ResourceDictionary;
+
+        Language.Clear();
+        var xmlDoc = new XmlDocument();
+        xmlDoc.Load(item);
+        foreach(XmlNode item1 in xmlDoc.DocumentElement!.ChildNodes)
+        {
+            if (item1.Name == "String")
+            {
+                Language.Add(item1.Attributes!.GetNamedItem("Key")!.Value!, 
+                    item1.FirstChild!.Value!);
+            }
+        }
     }
 
     public static byte[] GetFile(string name)
@@ -241,7 +259,7 @@ public partial class App : Application
             }
             catch (Exception e)
             {
-                CoreMain.OnError?.Invoke(Localizer.Instance["Error10"], e, true);
+                CoreMain.OnError?.Invoke(App.GetLanguage("Error10"), e, true);
                 ok = false;
             }
         }

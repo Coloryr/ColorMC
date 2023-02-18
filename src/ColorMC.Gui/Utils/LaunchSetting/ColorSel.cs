@@ -51,7 +51,7 @@ public class ColorSel : INotifyPropertyChanged
         }
         catch (Exception e)
         {
-            Logs.Error(Localizer.Instance["Error11"], e);
+            Logs.Error(App.GetLanguage("Error11"), e);
         }
     }
 

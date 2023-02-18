@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Media;
 using ColorMC.Core;
+using ColorMC.Core.Utils;
 using System;
 using System.Text;
 
@@ -24,7 +25,7 @@ public class Program
         //}
 
         CoreMain.Init(AppContext.BaseDirectory);
-
+        
         BuildAvaloniaApp()
              .StartWithClassicDesktopLifetime(args);
     }
@@ -34,19 +35,30 @@ public class Program
         GuiConfigUtils.Init(AppContext.BaseDirectory);
 
         var config = GuiConfigUtils.Config.Render.Windows;
+        var opt = new Win32PlatformOptions();
+        if (config.UseWindowsUIComposition != null)
+        {
+            opt.UseWindowsUIComposition = config.UseWindowsUIComposition == true;
+        }
+        if (config.UseWgl != null)
+        {
+            opt.UseWgl = config.UseWgl == true;
+        }
+        if (config.UseCompositor != null)
+        {
+            opt.UseCompositor = config.UseCompositor == true;
+        }
+        if (config.UseDeferredRendering != null)
+        {
+            opt.UseDeferredRendering = config.UseDeferredRendering == true;
+        }
 
         return AppBuilder.Configure<App>()
             .With(new FontManagerOptions
             {
                 DefaultFamilyName = Font,
             })
-            .With(new Win32PlatformOptions()
-            {
-                UseCompositor = config.UseCompositor,
-                UseWgl = config.UseWgl,
-                UseWindowsUIComposition = config.UseWindowsUIComposition,
-                UseDeferredRendering = config.UseDeferredRendering
-            })
+            //.With(opt)
             .With(new X11PlatformOptions()
             {
                 UseGpu = false

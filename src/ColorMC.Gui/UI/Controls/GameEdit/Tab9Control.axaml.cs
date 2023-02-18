@@ -37,14 +37,14 @@ public partial class Tab9Control : UserControl
     {
         var Window = (VisualRoot as GameEditWindow)!;
         var res = await Window.Info.ShowWait(
-            string.Format(Localizer.Instance["GameEditWindow.Tab9.Info2"], Obj.Name));
+            string.Format(App.GetLanguage("GameEditWindow.Tab9.Info2"), Obj.Name));
         if (!res)
         {
             return;
         }
 
         GameBinding.ClearScreenshots(Obj);
-        Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
+        Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         Load();
     }
 
@@ -83,21 +83,21 @@ public partial class Tab9Control : UserControl
     {
         var Window = (VisualRoot as GameEditWindow)!;
         var res = await Window.Info.ShowWait(
-            string.Format(Localizer.Instance["GameEditWindow.Tab9.Info1"], obj.Local));
+            string.Format(App.GetLanguage("GameEditWindow.Tab9.Info1"), obj.Local));
         if (!res)
         {
             return;
         }
 
         GameBinding.DeleteScreenshot(obj.Local);
-        Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
+        Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         Load();
     }
 
     private async void Load()
     {
         var window = (VisualRoot as GameEditWindow)!;
-        window.Info1.Show(Localizer.Instance["GameEditWindow.Tab9.Info3"]);
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab9.Info3"));
         List.Clear();
         WrapPanel1.Children.Clear();
 

@@ -54,13 +54,13 @@ public partial class Tab3Control : UserControl
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show(Localizer.Instance["HelloWindow.Tab3.Error1"]);
+            Window.Info.Show(App.GetLanguage("HelloWindow.Tab3.Error1"));
             return;
         }
 
         try
         {
-            Window.Info1.Show(Localizer.Instance["HelloWindow.Tab3.Info1"]);
+            Window.Info1.Show(App.GetLanguage("HelloWindow.Tab3.Info1"));
 
             var res = JavaBinding.AddJava(name, local);
             if (res.Item1 == null)
@@ -85,7 +85,7 @@ public partial class Tab3Control : UserControl
     {
         var file = await Window.StorageProvider.OpenFilePickerAsync(new()
         {
-            Title = Localizer.Instance["HelloWindow.Tab3.Info2"],
+            Title = App.GetLanguage("HelloWindow.Tab3.Info2"),
             SuggestedStartLocation = JavaBinding.GetSuggestedStartLocation(),
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()

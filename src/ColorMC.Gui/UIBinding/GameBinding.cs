@@ -144,8 +144,8 @@ public static class GameBinding
     {
         return new()
         {
-            Localizer.Instance["GameBinding.SortOrder.Item1"],
-            Localizer.Instance["GameBinding.SortOrder.Item2"]
+            App.GetLanguage("GameBinding.SortOrder.Item1"),
+            App.GetLanguage("GameBinding.SortOrder.Item2")
         };
     }
 
@@ -227,8 +227,8 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            Logs.Error(Localizer.Instance["GameBinding.Error5"], e);
-            App.ShowError(Localizer.Instance["GameBinding.Error5"], e);
+            Logs.Error(App.GetLanguage("GameBinding.Error5"), e);
+            App.ShowError(App.GetLanguage("GameBinding.Error5"), e);
             return false;
         }
     }
@@ -239,11 +239,11 @@ public static class GameBinding
         {
             var file = await win.StorageProvider.OpenFilePickerAsync(new()
             {
-                Title = Localizer.Instance["GameBinding.Info2"],
+                Title = App.GetLanguage("GameBinding.Info2"),
                 AllowMultiple = false,
                 FileTypeFilter = new List<FilePickerFileType>()
             {
-                new(Localizer.Instance["GameBinding.Info3"])
+                new(App.GetLanguage("GameBinding.Info3"))
                 {
                      Patterns = new List<string>()
                      {
@@ -261,7 +261,7 @@ public static class GameBinding
                 var info = await Image.IdentifyAsync(name);
                 if (info.Width != info.Height || info.Width > 200 || info.Height > 200)
                 {
-                    (win as IBaseWindow)?.Info.Show(Localizer.Instance["GameBinding.Error6"]);
+                    (win as IBaseWindow)?.Info.Show(App.GetLanguage("GameBinding.Error6"));
                     return;
                 }
                 var data = await File.ReadAllBytesAsync(name);
@@ -270,8 +270,8 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            Logs.Error(Localizer.Instance["GameBinding.Error5"], e);
-            App.ShowError(Localizer.Instance["GameBinding.Error5"], e);
+            Logs.Error(App.GetLanguage("GameBinding.Error5"), e);
+            App.ShowError(App.GetLanguage("GameBinding.Error5"), e);
         }
     }
 
@@ -284,33 +284,33 @@ public static class GameBinding
     {
         if (obj == null)
         {
-            return (false, Localizer.Instance["GameBinding.Error1"]);
+            return (false, App.GetLanguage("GameBinding.Error1"));
         }
 
         if (BaseBinding.Games.ContainsValue(obj))
         {
-            return (false, Localizer.Instance["GameBinding.Error4"]);
+            return (false, App.GetLanguage("GameBinding.Error4"));
         }
 
         var login = UserBinding.GetLastUser();
         if (login == null)
         {
-            return (false, Localizer.Instance["GameBinding.Error2"]);
+            return (false, App.GetLanguage("GameBinding.Error2"));
         }
         if (login.AuthType == AuthType.Offline)
         {
             var have = AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
             if (!have)
             {
-                return (false, Localizer.Instance["GameBinding.Error7"]);
+                return (false, App.GetLanguage("GameBinding.Error7"));
             }
         }
 
         if (UserBinding.IsLock(login))
         {
-            var res = await App.MainWindow!.Info.ShowWait(Localizer.Instance["GameBinding.Info1"]);
+            var res = await App.MainWindow!.Info.ShowWait(App.GetLanguage("GameBinding.Info1"));
             if (!res)
-                return (false, Localizer.Instance["GameBinding.Error3"]);
+                return (false, App.GetLanguage("GameBinding.Error3"));
         }
 
         if (debug)

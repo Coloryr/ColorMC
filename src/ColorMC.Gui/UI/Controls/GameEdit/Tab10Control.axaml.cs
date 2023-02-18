@@ -69,19 +69,19 @@ public partial class Tab10Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        await window.Info3.ShowInput(Localizer.Instance["GameEditWindow.Tab10.Info1"],
-            Localizer.Instance["GameEditWindow.Tab10.Info2"], false);
+        await window.Info3.ShowInput(App.GetLanguage("GameEditWindow.Tab10.Info1"),
+            App.GetLanguage("GameEditWindow.Tab10.Info2"), false);
         window.Info3.Close();
         var res = window.Info3.Read();
 
         if (string.IsNullOrWhiteSpace(res.Item1) || string.IsNullOrWhiteSpace(res.Item2))
         {
-            window.Info.Show(Localizer.Instance["GameEditWindow.Tab10.Error1"]);
+            window.Info.Show(App.GetLanguage("GameEditWindow.Tab10.Error1"));
             return;
         }
 
         GameBinding.AddServer(Obj, res.Item1, res.Item2);
-        window.Info2.Show(Localizer.Instance["GameEditWindow.Tab10.Info3"]);
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info3"));
         Load();
     }
 
@@ -113,7 +113,7 @@ public partial class Tab10Control : UserControl
     private void Load()
     {
         var window = (VisualRoot as GameEditWindow)!;
-        window.Info1.Show(Localizer.Instance["GameEditWindow.Tab10.Info4"]);
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
         List.AddRange(GameBinding.GetServers(Obj));
         window.Info1.Close();
@@ -139,7 +139,7 @@ public partial class Tab10Control : UserControl
         list.Remove(obj);
 
         GameBinding.SetServer(Obj, list);
-        window.Info2.Show(Localizer.Instance["GameEditWindow.Tab10.Info5"]);
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();
     }
 }

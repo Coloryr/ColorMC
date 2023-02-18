@@ -34,26 +34,26 @@ public partial class Tab2Control : UserControl
         var local = TextBox_Local2.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error1"]);
+            Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error1"));
             return;
         }
-        Window.Info1.Show(Localizer.Instance["HelloWindow.Tab2.Info1"]);
+        Window.Info1.Show(App.GetLanguage("HelloWindow.Tab2.Info1"));
 
         try
         {
             var res = ConfigBinding.LoadGuiConfig(local);
             if (!res)
             {
-                Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error2"]);
+                Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error2"));
                 return;
             }
             Window.Update();
-            Window.Info2.Show(Localizer.Instance["HelloWindow.Tab2.Info2"]);
+            Window.Info2.Show(App.GetLanguage("HelloWindow.Tab2.Info2"));
         }
         catch (Exception e1)
         {
-            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error3"]);
-            App.ShowError(Localizer.Instance["HelloWindow.Tab2.Error3"], e1);
+            Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error3"));
+            App.ShowError(App.GetLanguage("HelloWindow.Tab2.Error3"), e1);
         }
         finally
         {
@@ -64,8 +64,8 @@ public partial class Tab2Control : UserControl
     private async void Button_SelectFile2_Click(object? sender, RoutedEventArgs e)
     {
         var file = await BaseBinding.OpFile(Window, 
-            Localizer.Instance["HelloWindow.Tab2.Info3"], "*.json",
-            Localizer.Instance["HelloWindow.Tab2.Info7"]);
+            App.GetLanguage("HelloWindow.Tab2.Info3"), "*.json",
+            App.GetLanguage("HelloWindow.Tab2.Info7"));
 
         if (file?.Any() == true)
         {
@@ -90,26 +90,26 @@ public partial class Tab2Control : UserControl
         var local = TextBox_Local.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error1"]);
+            Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error1"));
             return;
         }
-        Window.Info1.Show(Localizer.Instance["HelloWindow.Tab2.Info1"]);
+        Window.Info1.Show(App.GetLanguage("HelloWindow.Tab2.Info1"));
 
         try
         {
             var res = ConfigBinding.LoadConfig(local);
             if (!res)
             {
-                Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error2"]);
+                Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error2"));
                 return;
             }
             Window.Update();
-            Window.Info2.Show(Localizer.Instance["HelloWindow.Tab2.Info2"]);
+            Window.Info2.Show(App.GetLanguage("HelloWindow.Tab2.Info2"));
         }
         catch (Exception e1)
         {
-            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error3"]);
-            App.ShowError(Localizer.Instance["HelloWindow.Tab2.Error3"], e1);
+            Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error3"));
+            App.ShowError(App.GetLanguage("HelloWindow.Tab2.Error3"), e1);
         }
         finally
         {
@@ -120,8 +120,8 @@ public partial class Tab2Control : UserControl
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
         var file = await BaseBinding.OpFile(Window, 
-            Localizer.Instance["HelloWindow.Tab2.Info3"], "*.json", 
-            Localizer.Instance["HelloWindow.Tab2.Info7"]); 
+            App.GetLanguage("HelloWindow.Tab2.Info3"), "*.json", 
+            App.GetLanguage("HelloWindow.Tab2.Info7")); 
 
         if (file?.Any() == true)
         {
@@ -136,25 +136,25 @@ public partial class Tab2Control : UserControl
         var local = TextBox_Local1.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error1"]);
+            Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error1"));
             return;
         }
-        Window.Info1.Show(Localizer.Instance["HelloWindow.Tab2.Info4"]);
+        Window.Info1.Show(App.GetLanguage("HelloWindow.Tab2.Info4"));
 
         try
         {
             var res = ConfigBinding.LoadAuthDatabase(local);
             if (!res)
             {
-                Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error4"]);
+                Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error4"));
                 return;
             }
             Window.Update();
-            Window.Info2.Show(Localizer.Instance["HelloWindow.Tab2.Info5"]);
+            Window.Info2.Show(App.GetLanguage("HelloWindow.Tab2.Info5"));
         }
         catch (Exception)
         {
-            Window.Info.Show(Localizer.Instance["HelloWindow.Tab2.Error5"]);
+            Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error5"));
         }
         finally
         {
@@ -166,8 +166,8 @@ public partial class Tab2Control : UserControl
         RoutedEventArgs e)
     {
         var file = await BaseBinding.OpFile(Window,
-            Localizer.Instance["HelloWindow.Tab2.Info6"], "*.json",
-            Localizer.Instance["HelloWindow.Tab2.Info8"]);
+            App.GetLanguage("HelloWindow.Tab2.Info6"), "*.json",
+            App.GetLanguage("HelloWindow.Tab2.Info8"));
         
         if (file?.Any() == true)
         {

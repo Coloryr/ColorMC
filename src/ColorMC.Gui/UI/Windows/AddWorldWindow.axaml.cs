@@ -66,7 +66,7 @@ public partial class AddWorldWindow : Window, IBase1Window
     {
         Obj = obj;
 
-        Head.Title = Title = string.Format(Localizer.Instance["AddWorldWindow.Title"], obj.Name);
+        Head.Title = Title = string.Format(App.GetLanguage("AddWorldWindow.Title"), obj.Name);
     }
 
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -99,7 +99,7 @@ public partial class AddWorldWindow : Window, IBase1Window
             return;
 
         var res = await Info.ShowWait(
-            string.Format(Localizer.Instance["AddWorldWindow.Info1"],
+            string.Format(App.GetLanguage("AddWorldWindow.Info1"),
             item.File.displayName));
         if (res)
         {
@@ -121,7 +121,7 @@ public partial class AddWorldWindow : Window, IBase1Window
     {
         if (Last == null)
         {
-            Info.Show(Localizer.Instance["AddWorldWindow.Error1"]);
+            Info.Show(App.GetLanguage("AddWorldWindow.Error1"));
             return;
         }
 
@@ -143,16 +143,16 @@ public partial class AddWorldWindow : Window, IBase1Window
 
     public async void Install1(CurseForgeObj.Data.LatestFiles data)
     {
-        Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info5"]);
+        Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info5"));
         var res = await GameBinding.DownloadWorld(Obj!, data);
         Info1.Close();
         if (res)
         {
-            Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info4"]);
+            Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info4"));
         }
         else
         {
-            Info.Show(Localizer.Instance["GameEditWindow.Tab5.Error2"]);
+            Info.Show(App.GetLanguage("GameEditWindow.Tab5.Error2"));
         }
     }
 
@@ -176,13 +176,13 @@ public partial class AddWorldWindow : Window, IBase1Window
 
     private async void Load()
     {
-        Info1.Show(Localizer.Instance["AddWorldWindow.Info2"]);
+        Info1.Show(App.GetLanguage("AddWorldWindow.Info2"));
         var data = await GameBinding.GetWorldList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
 
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddWorldWindow.Error2"]);
+            Info.Show(App.GetLanguage("AddWorldWindow.Error2"));
             Info1.Close();
             return;
         }
@@ -206,12 +206,12 @@ public partial class AddWorldWindow : Window, IBase1Window
     private async void Load1()
     {
         List1.Clear();
-        Info1.Show(Localizer.Instance["AddWorldWindow.Info3"]);
+        Info1.Show(App.GetLanguage("AddWorldWindow.Info3"));
         var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
 
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddWorldWindow.Error3"]);
+            Info.Show(App.GetLanguage("AddWorldWindow.Error3"));
             Info1.Close();
             return;
         }
@@ -238,12 +238,12 @@ public partial class AddWorldWindow : Window, IBase1Window
     private async void AddCurseForgeWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
-        Info1.Show(Localizer.Instance["AddWorldWindow.Info4"]);
+        Info1.Show(App.GetLanguage("AddWorldWindow.Info4"));
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();
         if (list == null)
         {
-            Info.Show(Localizer.Instance["AddWorldWindow.Error4"]);
+            Info.Show(App.GetLanguage("AddWorldWindow.Error4"));
             return;
         }
 

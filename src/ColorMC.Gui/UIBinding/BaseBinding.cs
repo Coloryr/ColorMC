@@ -43,6 +43,7 @@ public static class BaseBinding
         CoreMain.LanguageReload = Change;
 
         FontSel.Instance.Load();
+        ColorSel.Instance.Load();
     }
 
     public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title,
@@ -67,16 +68,16 @@ public static class BaseBinding
 
     public static List<string> GetFilterName() => new()
     {
-        Localizer.Instance["BaseBinding.Filter.Item1"],
-        Localizer.Instance["BaseBinding.Filter.Item2"],
-        Localizer.Instance["BaseBinding.Filter.Item3"]
+        App.GetLanguage("BaseBinding.Filter.Item1"),
+        App.GetLanguage("BaseBinding.Filter.Item2"),
+        App.GetLanguage("BaseBinding.Filter.Item3")
     };
 
     public static List<string> GetSkinRotateName() => new()
     {
-        Localizer.Instance["BaseBinding.SkinRotate.Item1"],
-        Localizer.Instance["BaseBinding.SkinRotate.Item2"],
-        Localizer.Instance["BaseBinding.SkinRotate.Item3"]
+        App.GetLanguage("BaseBinding.SkinRotate.Item1"),
+        App.GetLanguage("BaseBinding.SkinRotate.Item2"),
+        App.GetLanguage("BaseBinding.SkinRotate.Item3")
     };
 
     public static Task<IStorageFile?> OpSave(Window window, string title, string ext, string name)
@@ -124,7 +125,7 @@ public static class BaseBinding
     {
         if (Games.ContainsValue(obj))
         {
-            return (false, Localizer.Instance["GameBinding.Error4"]);
+            return (false, App.GetLanguage("GameBinding.Error4"));
         }
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
             !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
@@ -169,7 +170,7 @@ public static class BaseBinding
                 }
                 else
                 {
-                    temp = Localizer.Instance["Error6"];
+                    temp = App.GetLanguage("Error6");
                     Logs.Error(temp, e);
                     App.ShowError(temp, e, false);
                 }
@@ -203,7 +204,7 @@ public static class BaseBinding
 
                     Dispatcher.UIThread.Post(() =>
                     {
-                        App.ShowError(Localizer.Instance["UserBinding.Error2"], File.ReadAllText(file));
+                        App.ShowError(App.GetLanguage("UserBinding.Error2"), File.ReadAllText(file));
                     });
                 }
                 res.Dispose();
@@ -286,11 +287,11 @@ public static class BaseBinding
     {
         return new()
         {
-            Localizer.Instance["TranTypes.Item1"],
-            Localizer.Instance["TranTypes.Item2"],
-            Localizer.Instance["TranTypes.Item3"],
-            Localizer.Instance["TranTypes.Item4"],
-            Localizer.Instance["TranTypes.Item5"]
+            App.GetLanguage("TranTypes.Item1"),
+            App.GetLanguage("TranTypes.Item2"),
+            App.GetLanguage("TranTypes.Item3"),
+            App.GetLanguage("TranTypes.Item4"),
+            App.GetLanguage("TranTypes.Item5")
         };
     }
 
