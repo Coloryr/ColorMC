@@ -23,9 +23,11 @@ public partial class GameEditWindow : Window, IBaseWindow
     private readonly Tab8Control tab8 = new();
     private readonly Tab9Control tab9 = new();
     private readonly Tab10Control tab10 = new();
+    private readonly Tab11Control tab11 = new();
 
     private readonly ContentControl content1 = new();
     private readonly ContentControl content2 = new();
+    private CancellationTokenSource cancel = new();
 
     private int now;
 
@@ -54,17 +56,6 @@ public partial class GameEditWindow : Window, IBaseWindow
         Tab1.Children.Add(content1);
         Tab1.Children.Add(content2);
 
-        tab1.SetWindow(this);
-        tab2.SetWindow(this);
-        tab3.SetWindow(this);
-        tab4.SetWindow(this);
-        tab5.SetWindow(this);
-        tab6.SetWindow(this);
-        tab7.SetWindow(this);
-        tab8.SetWindow(this);
-        tab9.SetWindow(this);
-        tab10.SetWindow(this);
-
         content1.Content = tab1;
 
         Closed += SettingWindow_Closed;
@@ -80,9 +71,17 @@ public partial class GameEditWindow : Window, IBaseWindow
         if (e.Delta.Y > 0)
         {
             ScrollViewer1.LineLeft();
+            ScrollViewer1.LineLeft();
+            ScrollViewer1.LineLeft();
+            ScrollViewer1.LineLeft();
+            ScrollViewer1.LineLeft();
         }
         else if (e.Delta.Y < 0)
         {
+            ScrollViewer1.LineRight();
+            ScrollViewer1.LineRight();
+            ScrollViewer1.LineRight();
+            ScrollViewer1.LineRight();
             ScrollViewer1.LineRight();
         }
     }
@@ -110,11 +109,11 @@ public partial class GameEditWindow : Window, IBaseWindow
                 break;
 
             case 5:
-                Tabs.SelectedIndex = 8;
+                Tabs.SelectedIndex = 9;
                 break;
 
             case 6:
-                Tabs.SelectedIndex = 9;
+                Tabs.SelectedIndex = 10;
                 break;
         }
     }
@@ -147,6 +146,7 @@ public partial class GameEditWindow : Window, IBaseWindow
         tab8.SetGame(obj);
         tab9.SetGame(obj);
         tab10.SetGame(obj);
+        tab11.SetGame(obj);
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -154,63 +154,69 @@ public partial class GameEditWindow : Window, IBaseWindow
         switch (Tabs.SelectedIndex)
         {
             case 0:
-                tab1.Update();
                 Go(tab1);
+                tab1.Update();
                 break;
             case 1:
-                tab2.Update();
                 Go(tab2);
+                tab2.Update();
                 break;
             case 2:
-                tab3.Update();
                 Go(tab3);
+                tab3.Update();
                 break;
             case 3:
-                tab4.Update();
                 Go(tab4);
+                tab4.Update();
                 break;
             case 4:
-                tab5.Update();
                 Go(tab5);
+                tab5.Update();
                 break;
             case 5:
-                tab8.Update();
                 Go(tab8);
+                tab8.Update();
                 break;
             case 6:
-                tab9.Update();
                 Go(tab9);
+                tab9.Update();
                 break;
             case 7:
-                tab10.Update();
                 Go(tab10);
+                tab10.Update();
                 break;
             case 8:
-                tab6.Update();
-                Go(tab6);
+                Go(tab11);
+                tab11.Update();
                 break;
             case 9:
-                tab7.Update();
+                Go(tab6);
+                tab6.Update();
+                break;
+            case 10:
                 Go(tab7);
+                tab7.Update();
                 break;
         }
 
         now = Tabs.SelectedIndex;
     }
 
-    private async void Go(UserControl to)
+    private void Go(UserControl to)
     {
+        cancel.Cancel();
+        cancel = new();
         Tabs.IsEnabled = false;
 
         if (!switch1)
         {
             content2.Content = to;
-            await App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, CancellationToken.None);
+            App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, cancel.Token);
         }
         else
         {
             content1.Content = to;
-            await App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, CancellationToken.None);
+            App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, cancel.Token);
         }
 
         switch1 = !switch1;

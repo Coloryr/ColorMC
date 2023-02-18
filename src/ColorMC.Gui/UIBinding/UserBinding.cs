@@ -41,7 +41,8 @@ public static class UserBinding
         return list;
     }
 
-    public static async Task<(bool, string?)> AddUser(int type, string? input1, string? input2 = null, string? input3 = null)
+    public static async Task<(bool, string?)> AddUser(int type, string? input1, 
+        string? input2 = null, string? input3 = null)
     {
         if (type == 0)
         {
@@ -77,6 +78,11 @@ public static class UserBinding
                 {
                     return (false, Message);
                 }
+            }
+            if (string.IsNullOrWhiteSpace(Obj?.UUID))
+            {
+                BaseBinding.OpUrl("https://minecraft.net");
+                return (false, Localizer.Instance["UserBinding.Info3"]);
             }
             AuthDatabase.Save(Obj!);
             return (true, null);

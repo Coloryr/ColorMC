@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -11,15 +12,16 @@ using DynamicData;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ColorMC.Core.Game;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
-public partial class Tab10Control : UserControl
+public partial class Tab11Control : UserControl
 {
-    private readonly ObservableCollection<ServerInfoObj> List = new();
+    private readonly ObservableCollection<ShaderpackDisplayObj> List = new();
     private GameSettingObj Obj;
 
-    public Tab10Control()
+    public Tab11Control()
     {
         InitializeComponent();
 
@@ -34,7 +36,6 @@ public partial class Tab10Control : UserControl
 
         DataGrid1.Items = List;
 
-        DataGrid1.SelectionChanged += DataGrid1_SelectionChanged;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
         LayoutUpdated += Tab10Control_LayoutUpdated1;
     }
@@ -45,20 +46,12 @@ public partial class Tab10Control : UserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (DataGrid1.SelectedItem is not ServerInfoObj obj)
+                if (DataGrid1.SelectedItem is not ShaderpackDisplayObj obj)
                     return;
 
-                new GameEditFlyout5(this, obj).ShowAt(this, true);
+                new GameEditFlyout6(this, obj).ShowAt(this, true);
             });
         }
-    }
-
-    private void DataGrid1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (DataGrid1.SelectedItem is not ServerInfoObj obj)
-            return;
-
-        ServerMotd.Load(obj.IP);
     }
 
     private void Button_R1_Click(object? sender, RoutedEventArgs e)
@@ -69,19 +62,8 @@ public partial class Tab10Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        await window.Info3.ShowInput(Localizer.Instance["GameEditWindow.Tab10.Info1"],
-            Localizer.Instance["GameEditWindow.Tab10.Info2"], false);
-        window.Info3.Close();
-        var res = window.Info3.Read();
-
-        if (string.IsNullOrWhiteSpace(res.Item1) || string.IsNullOrWhiteSpace(res.Item2))
-        {
-            window.Info.Show(Localizer.Instance["GameEditWindow.Tab10.Error1"]);
-            return;
-        }
-
-        GameBinding.AddServer(Obj, res.Item1, res.Item2);
-        window.Info2.Show(Localizer.Instance["GameEditWindow.Tab10.Info3"]);
+        await BaseBinding.OpFile(window, Localizer.Instance["GameEditWindow.Tab11.Info1"], "*.zip", Localizer.Instance["GameEditWindow.Tab11.Info2"]);
+        window.Info2.Show(Localizer.Instance["GameEditWindow.Tab11.Info3"]);
         Load();
     }
 
@@ -115,7 +97,7 @@ public partial class Tab10Control : UserControl
         var window = (VisualRoot as GameEditWindow)!;
         window.Info1.Show(Localizer.Instance["GameEditWindow.Tab10.Info4"]);
         List.Clear();
-        List.AddRange(GameBinding.GetServers(Obj));
+        List.AddRange(GameBinding.GetShaderpacks(Obj));
         window.Info1.Close();
     }
 
@@ -132,13 +114,13 @@ public partial class Tab10Control : UserControl
         Obj = obj;
     }
 
-    public void Delete(ServerInfoObj obj)
+    public void Delete(ShaderpackDisplayObj obj)
     {
         var window = (VisualRoot as GameEditWindow)!;
         var list = List.ToList();
         list.Remove(obj);
 
-        GameBinding.SetServer(Obj, list);
+        obj.Shaderpack.Delete();
         window.Info2.Show(Localizer.Instance["GameEditWindow.Tab10.Info5"]);
         Load();
     }

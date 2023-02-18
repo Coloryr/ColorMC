@@ -22,11 +22,10 @@ public static class Shaderpacks
 
         Parallel.ForEach(info.GetFiles(), (item) =>
         {
-            if (item.Extension is not (".zip" or ".disable"))
+            if (item.Extension is not ".zip")
                 return;
             var obj1 = new ShaderpackObj()
             {
-                Disable = item.Extension is ".disable",
                 Local = Path.GetFullPath(item.FullName)
             };
             list.Add(obj1);
@@ -34,6 +33,20 @@ public static class Shaderpacks
 
         return list;
     }
+
+    public static void Delete(this ShaderpackObj pack)
+    {
+        File.Delete(pack.Local);
+    }
+
+    public static void AddShaderpack(this GameSettingObj obj, string file)
+    {
+        var dir = obj.GetResourcepacksPath();
+        Directory.CreateDirectory(dir);
+        var name = Path.GetFileName(file);
+        File.Copy(file, Path.GetFullPath(dir + "/" + name));
+    }
+
     //public static void Disable(this ShaderpackObj pack)
     //{
     //    if (pack.Disable)

@@ -47,6 +47,8 @@
 	<sys:String x:Key="MainWindow.Info18">启动实例找不到，请联系服务器管理员</sys:String>
 	<sys:String x:Key="MainWindow.Info19">是否删除游戏实例 {0}</sys:String>
 	<sys:String x:Key="MainWindow.Info20">默认分组</sys:String>
+	<sys:String x:Key="MainWindow.Info21">账户 {0} 登录失败，是否以离线方式运行</sys:String>
+	<sys:String x:Key="MainWindow.Info22">不能重复启动ColorMC</sys:String>
 
 	<sys:String x:Key="UserWindow.Title">ColorMC 用户列表</sys:String>
 	<sys:String x:Key="UserWindow.DataGrid.Text1">使用</sys:String>
@@ -267,6 +269,7 @@
 	<sys:String x:Key="GameEditWindow.Tabs.Text8">导出</sys:String>
 	<sys:String x:Key="GameEditWindow.Tabs.Text9">运行日志</sys:String>
 	<sys:String x:Key="GameEditWindow.Tabs.Text10">服务器列表</sys:String>
+	<sys:String x:Key="GameEditWindow.Tabs.Text11">光影包</sys:String>
 
 	<sys:String x:Key="GameEditWindow.Tab1.Text1">游戏版本</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab1.Text2">刷新版本</sys:String>
@@ -296,6 +299,11 @@
 	<sys:String x:Key="GameEditWindow.Tab2.Text22">使用的Java</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab2.Text23">指定Java路径</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab2.Text24">Java路径设置</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text25">注意：自定义附加参数会用 ;(英文分号) 进行分割</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text26">注意：自定义附加classpath参数会用 ;(英文分号) 进行分割，并查找文件，可以使用相对路径</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text27">自定义启动的mainclass</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Text28">删除所有配置</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab2.Info1">是否要删除所有配置</sys:String>
 
 	<sys:String x:Key="GameEditWindow.Tab3.Text1">过滤器</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab3.Text2">无法编辑此文件</sys:String>
@@ -345,11 +353,12 @@
 	<sys:String x:Key="GameEditWindow.Tab7.Text2">自动下拉</sys:String>
 
 	<sys:String x:Key="GameEditWindow.Tab8.Info1">是否要删除资源包 {0}</sys:String>
-	<sys:String x:Key="GameEditWindow.Tab8.Info2">资源包</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab8.Info2">选择导入的资源包</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Info3">正在下载资源包压缩包</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Info4">添加资源包完成</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Info5">正在加载资源包列表</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab8.Info6">损坏的资源包</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab8.Info7">资源包</sys:String>
 
 	<sys:String x:Key="GameEditWindow.Tab9.Info1">是否要删除截图 {0}</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab9.Info2">是否要清空实例 {0} 的截图</sys:String>
@@ -362,6 +371,10 @@
 	<sys:String x:Key="GameEditWindow.Tab10.Info4">正在获取</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab10.Info5">删除成功</sys:String>
 	<sys:String x:Key="GameEditWindow.Tab10.Error1">错误的参数</sys:String>
+
+	<sys:String x:Key="GameEditWindow.Tab11.Info1">导入光影包</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab11.Info2">光影包</sys:String>
+	<sys:String x:Key="GameEditWindow.Tab11.Info3">导入成功</sys:String>
 
 	<sys:String x:Key="GameEditWindow.Control.Text1">游戏模式</sys:String>
 	<sys:String x:Key="GameEditWindow.Control.Text2">最后游戏与</sys:String>
@@ -555,9 +568,6 @@
 	<sys:String x:Key="GameBinding.Error6">不允许的图片尺寸</sys:String>
 	<sys:String x:Key="GameBinding.Error7">需要至少登录一个微软账户才能使用离线启动</sys:String>
 
-	<sys:String x:Key="UserBinding.Error1">登录类型错误</sys:String>
-	<sys:String x:Key="UserBinding.Error2">游戏启动错误</sys:String>
-
 	<sys:String x:Key="TranTypes.Item1">普通透明</sys:String>
 	<sys:String x:Key="TranTypes.Item2">模糊</sys:String>
 	<sys:String x:Key="TranTypes.Item3">亚克力模糊</sys:String>
@@ -571,6 +581,9 @@
 
 	<sys:String x:Key="UserBinding.Info1">选择皮肤导入</sys:String>
 	<sys:String x:Key="UserBinding.Info2">皮肤文件</sys:String>
+	<sys:String x:Key="UserBinding.Info3">没有找到您的Minecraft账户，请在https://minecraft.net登录你的账户后重试</sys:String>
+	<sys:String x:Key="UserBinding.Error1">登录类型错误</sys:String>
+	<sys:String x:Key="UserBinding.Error2">游戏启动错误</sys:String>
 
 	<sys:String x:Key="SkinType.Old">旧版皮肤</sys:String>
 	<sys:String x:Key="SkinType.New">新版皮肤</sys:String>

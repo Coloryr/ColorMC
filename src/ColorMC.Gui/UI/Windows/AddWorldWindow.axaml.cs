@@ -7,7 +7,6 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.AddWindow;
 using ColorMC.Gui.UI.Controls.CurseForge;
-using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
@@ -22,7 +21,6 @@ public partial class AddWorldWindow : Window, IBase1Window
     private readonly List<CurseForgeControl> List = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private CurseForgeControl? Last;
-    private Tab5Control Tab;
     private GameSettingObj Obj;
 
     public AddWorldWindow()
@@ -64,10 +62,9 @@ public partial class AddWorldWindow : Window, IBase1Window
         Update();
     }
 
-    public void SetTab5Control(GameSettingObj obj, Tab5Control tab)
+    public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
-        Tab = tab;
 
         Head.Title = Title = string.Format(Localizer.Instance["AddWorldWindow.Title"], obj.Name);
     }
@@ -135,7 +132,7 @@ public partial class AddWorldWindow : Window, IBase1Window
     {
         App.PicUpdate -= Update;
 
-        Tab!.CloseAddWorld();
+        App.AddWorldWindows.Remove(Obj);
     }
 
     public void Install()
@@ -144,10 +141,19 @@ public partial class AddWorldWindow : Window, IBase1Window
         Load1();
     }
 
-    public void Install1(CurseForgeObj.Data.LatestFiles data)
+    public async void Install1(CurseForgeObj.Data.LatestFiles data)
     {
-        Close();
-        Tab!.AddWorld(data);
+        Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info5"]);
+        var res = await GameBinding.DownloadWorld(Obj!, data);
+        Info1.Close();
+        if (res)
+        {
+            Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info4"]);
+        }
+        else
+        {
+            Info.Show(Localizer.Instance["GameEditWindow.Tab5.Error2"]);
+        }
     }
 
     public void SetSelect(CurseForgeControl last)

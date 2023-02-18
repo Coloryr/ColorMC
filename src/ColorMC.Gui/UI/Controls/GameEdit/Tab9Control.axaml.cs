@@ -14,7 +14,6 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 public partial class Tab9Control : UserControl
 {
     private readonly List<ScreenshotControl> List = new();
-    private GameEditWindow Window;
     private GameSettingObj Obj;
     private ScreenshotControl? Last;
 
@@ -36,6 +35,7 @@ public partial class Tab9Control : UserControl
 
     private async void Button_C1_Click(object? sender, RoutedEventArgs e)
     {
+        var Window = (VisualRoot as GameEditWindow)!;
         var res = await Window.Info.ShowWait(
             string.Format(Localizer.Instance["GameEditWindow.Tab9.Info2"], Obj.Name));
         if (!res)
@@ -81,6 +81,7 @@ public partial class Tab9Control : UserControl
 
     public async void Delete(ScreenshotDisplayObj obj)
     {
+        var Window = (VisualRoot as GameEditWindow)!;
         var res = await Window.Info.ShowWait(
             string.Format(Localizer.Instance["GameEditWindow.Tab9.Info1"], obj.Local));
         if (!res)
@@ -95,12 +96,13 @@ public partial class Tab9Control : UserControl
 
     private async void Load()
     {
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab9.Info3"]);
+        var window = (VisualRoot as GameEditWindow)!;
+        window.Info1.Show(Localizer.Instance["GameEditWindow.Tab9.Info3"]);
         List.Clear();
         WrapPanel1.Children.Clear();
 
         var res = await GameBinding.GetScreenshots(Obj);
-        Window.Info1.Close();
+        window.Info1.Close();
         foreach (var item in res)
         {
             var con = new ScreenshotControl();
@@ -116,11 +118,6 @@ public partial class Tab9Control : UserControl
         Last?.SetSelect(false);
         Last = item;
         Last.SetSelect(true);
-    }
-
-    public void SetWindow(GameEditWindow window)
-    {
-        Window = window;
     }
 
     public void SetGame(GameSettingObj obj)

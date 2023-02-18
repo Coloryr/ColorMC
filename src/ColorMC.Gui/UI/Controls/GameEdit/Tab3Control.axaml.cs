@@ -20,7 +20,6 @@ public partial class Tab3Control : UserControl
 {
     private readonly ObservableCollection<string> List = new();
     private readonly List<string> Items = new();
-    private GameEditWindow Window;
     private GameSettingObj Obj;
     private TextMate.Installation textMateInstallation;
     private RegistryOptions registryOptions;
@@ -61,18 +60,15 @@ public partial class Tab3Control : UserControl
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var item = ComboBox1.SelectedItem as string;
-        if (item == null)
+        if (ComboBox1.SelectedItem is not string item)
             return;
 
         GameBinding.SaveConfigFile(Obj, item, TextEditor1.Document.Text);
-        //GameBinding.SaveConfigFile(Obj, item, TextEditor1.Text);
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        var item = ComboBox1.SelectedItem as string;
-        if (item == null)
+        if (ComboBox1.SelectedItem is not string item)
             return;
 
         var dir = Obj.GetGamePath();
@@ -86,8 +82,7 @@ public partial class Tab3Control : UserControl
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var item = ComboBox1.SelectedItem as string;
-        if (item == null)
+        if (ComboBox1.SelectedItem is not string item)
             return;
 
         var text = GameBinding.ReadConfigFile(Obj, item);
@@ -147,11 +142,6 @@ public partial class Tab3Control : UserControl
         {
             TextEditor1.Document = null;
         }
-    }
-
-    public void SetWindow(GameEditWindow window)
-    {
-        Window = window;
     }
 
     public void SetGame(GameSettingObj obj)

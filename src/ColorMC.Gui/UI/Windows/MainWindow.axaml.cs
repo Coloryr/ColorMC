@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -8,6 +7,7 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UI.Controls.Main;
@@ -15,6 +15,8 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -51,6 +53,7 @@ public partial class MainWindow : Window, IBaseWindow
 
         CoreMain.GameLaunch = GameLunch;
         CoreMain.GameDownload = GameDownload;
+        CoreMain.LoginFailLaunch = LoginFailLaunch;
 
         Button1.Click += Button1_Click;
 
@@ -61,13 +64,31 @@ public partial class MainWindow : Window, IBaseWindow
         App.PicUpdate += Update;
 
         Update();
+
+        
+        if (BaseBinding.IsLaunch())
+        {
+            Dispatcher.UIThread.Post(async () =>
+            {
+                await Info.ShowOk(Localizer.Instance["MainWindow.Info22"]);
+                Close();
+            });
+        }
+    }
+
+    private Task<bool> LoginFailLaunch(LoginObj login)
+    {
+        return Dispatcher.UIThread.InvokeAsync(() => 
+        {
+            return Info.ShowWait(string.Format(
+                Localizer.Instance["MainWindow.Info21"], login.UserName));
+        });
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
         ItemInfo.Display();
     }
-
 
     public async void Launch(bool debug)
     {
@@ -120,9 +141,9 @@ public partial class MainWindow : Window, IBaseWindow
         App.PicUpdate -= Update;
         App.UserEdit -= MainWindow_OnUserEdit;
 
-        App.MainWindow = null;
         CoreMain.GameLaunch = null;
         CoreMain.GameDownload = null;
+        CoreMain.LoginFailLaunch = null;
 
         App.Close();
     }

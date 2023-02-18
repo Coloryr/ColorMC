@@ -3,6 +3,7 @@ using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using System.Diagnostics;
 
@@ -81,6 +82,11 @@ public static class CoreMain
     /// 语言更新回调
     /// </summary>
     public static Action<LanguageType>? LanguageReload { get; set; }
+
+    /// <summary>
+    /// 登录失败是否以离线方式启动
+    /// </summary>
+    public static Func<LoginObj, Task<bool>>? LoginFailLaunch { get; set; }
 
     /// <summary>
     /// 新运行

@@ -738,6 +738,22 @@ public static class GameBinding
         return obj.GetServerInfo();
     }
 
+    public static List<ShaderpackDisplayObj> GetShaderpacks(GameSettingObj obj)
+    {
+        var list = new List<ShaderpackDisplayObj>();
+        foreach (var item in obj.GetShaderpacks())
+        {
+            list.Add(new()
+            {
+                Name = Path.GetFileName(item.Local),
+                Local = item.Local,
+                Shaderpack = item
+            });
+        }
+
+        return list;
+    }
+
     public static void AddServer(GameSettingObj obj, string name, string ip)
     {
         obj.AddServer(name, ip);
@@ -769,6 +785,7 @@ public static class GameBinding
         obj.JvmLocal = "";
         obj.StartServer = null;
         obj.ProxyHost = null;
+        obj.AdvanceJvm = null;
 
         obj.Save();
     }
@@ -778,5 +795,10 @@ public static class GameBinding
         obj.AdvanceJvm = obj1;
 
         obj.Save();
+    }
+
+    public static void AddShaderpack(GameSettingObj obj, string file)
+    {
+        obj.AddShaderpack(file);
     }
 }

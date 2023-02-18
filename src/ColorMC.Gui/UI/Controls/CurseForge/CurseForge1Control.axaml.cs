@@ -7,6 +7,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils.LaunchSetting;
+using Avalonia.LogicalTree;
 using System;
 
 namespace ColorMC.Gui.UI.Controls.CurseForge;
@@ -14,7 +15,6 @@ namespace ColorMC.Gui.UI.Controls.CurseForge;
 public partial class CurseForge1Control : UserControl
 {
     private AddModWindow Window;
-    private bool IsDownload;
     private bool NowDownload;
     private bool haveimg;
     public CurseForgeObj.Data Data { get; private set; }
@@ -24,6 +24,14 @@ public partial class CurseForge1Control : UserControl
 
         PointerPressed += CurseForgeControl_PointerPressed;
         DoubleTapped += CurseForgeControl_DoubleTapped;
+
+        this.AttachedToLogicalTree += CurseForge1Control_AttachedToLogicalTree;
+    }
+
+    private void CurseForge1Control_AttachedToLogicalTree(object? sender, 
+        LogicalTreeAttachmentEventArgs e)
+    {
+        
     }
 
     private void CurseForgeControl_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -87,13 +95,7 @@ public partial class CurseForge1Control : UserControl
     public void SetDownloadDone(bool res)
     {
         NowDownload = false;
-        IsDownload = res;
         Grid1.IsVisible = false;
         Grid2.IsVisible = res;
-    }
-
-    public void SetWindow(AddModWindow window)
-    {
-        Window = window;
     }
 }

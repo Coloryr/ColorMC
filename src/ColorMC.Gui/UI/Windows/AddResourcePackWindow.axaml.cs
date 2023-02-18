@@ -7,7 +7,6 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.AddWindow;
 using ColorMC.Gui.UI.Controls.CurseForge;
-using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
@@ -22,7 +21,6 @@ public partial class AddResourcePackWindow : Window, IBase1Window
     private readonly List<CurseForgeControl> List = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private CurseForgeControl? Last;
-    private Tab8Control Tab;
     private GameSettingObj Obj;
 
     public AddResourcePackWindow()
@@ -64,10 +62,9 @@ public partial class AddResourcePackWindow : Window, IBase1Window
         Update();
     }
 
-    public void SetTab8Control(GameSettingObj obj, Tab8Control tab)
+    public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
-        Tab = tab;
 
         Head.Title = Title= string.Format(Localizer.Instance["AddResourcePackWindow.Title"], obj.Name);
     }
@@ -135,7 +132,7 @@ public partial class AddResourcePackWindow : Window, IBase1Window
     {
         App.PicUpdate -= Update;
 
-        Tab.CloseAddResourcepack();
+        App.AddResourcePackWindows.Remove(Obj);
     }
 
     public void Install()
@@ -144,10 +141,19 @@ public partial class AddResourcePackWindow : Window, IBase1Window
         Load1();
     }
 
-    public void Install1(CurseForgeObj.Data.LatestFiles data)
+    public async void Install1(CurseForgeObj.Data.LatestFiles data)
     {
-        Close();
-        Tab.AddResourcepack(data);
+        Info1.Show(Localizer.Instance["GameEditWindow.Tab8.Info3"]);
+        var res = await GameBinding.DownloadResourcepack(Obj, data);
+        Info1.Close();
+        if (res)
+        {
+            Info2.Show(Localizer.Instance["GameEditWindow.Tab8.Info4"]);
+        }
+        else
+        {
+            Info.Show(Localizer.Instance["GameEditWindow.Tab8.Error2"]);
+        }
     }
 
     public void SetSelect(CurseForgeControl last)

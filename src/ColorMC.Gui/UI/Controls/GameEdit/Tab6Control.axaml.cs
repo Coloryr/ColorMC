@@ -27,7 +27,6 @@ public class FileTreeNodeModel : ReactiveObject
     private string _name;
     private long? _size;
     private DateTimeOffset? _modified;
-    private FileTreeNodeModel? _top;
     private ObservableCollection<FileTreeNodeModel>? _children;
     private bool _hasChildren = true;
     private bool _isExpanded;
@@ -35,11 +34,9 @@ public class FileTreeNodeModel : ReactiveObject
 
     public FileTreeNodeModel(
             string path,
-            FileTreeNodeModel? top,
             bool isDirectory,
             bool isRoot = false)
     {
-        _top = top;
         _path = path;
         _name = isRoot ? path : System.IO.Path.GetFileName(Path);
         _isExpanded = isRoot;
@@ -135,12 +132,12 @@ public class FileTreeNodeModel : ReactiveObject
 
         foreach (var d in Directory.EnumerateDirectories(Path, "*", options))
         {
-            result.Add(new FileTreeNodeModel(d, this, true));
+            result.Add(new FileTreeNodeModel(d, true));
         }
 
         foreach (var f in Directory.EnumerateFiles(Path, "*", options))
         {
-            result.Add(new FileTreeNodeModel(f, this, false));
+            result.Add(new FileTreeNodeModel(f, false));
         }
 
         if (result.Count == 0)
@@ -211,12 +208,9 @@ public class FilesPageViewModel : ReactiveObject
 {
     private static IconConverter? s_iconConverter;
     private FileTreeNodeModel _root;
-    private GameSettingObj Obj;
 
     public FilesPageViewModel(GameSettingObj obj)
     {
-        Obj = obj;
-
         Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(Array.Empty<FileTreeNodeModel>())
         {
             Columns =
@@ -266,7 +260,7 @@ public class FilesPageViewModel : ReactiveObject
 
         Source.RowSelection!.SingleSelect = false;
 
-        _root = new FileTreeNodeModel(obj.GetBasePath(), null, true, true);
+        _root = new FileTreeNodeModel(obj.GetBasePath(), true, true);
         Source.Items = new[] { _root };
     }
 
@@ -335,11 +329,7 @@ public class FilesPageViewModel : ReactiveObject
 
 public partial class Tab6Control : UserControl
 {
-    [AllowNull]
-    private GameEditWindow Window;
-    [AllowNull]
     private GameSettingObj Obj;
-    [AllowNull]
     private FilesPageViewModel FilesPageViewModel;
 
     public FilesPageViewModel Files
@@ -356,13 +346,14 @@ public partial class Tab6Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await BaseBinding.OpSave(Window,
+        var window = (VisualRoot as GameEditWindow)!;
+        var file = await BaseBinding.OpSave(window,
             Localizer.Instance["GameEditWindow.Tab6.Info1"], ".zip", "game.zip");
 
         if (file == null)
             return;
 
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab6.Info2"]);
+        window.Info1.Show(Localizer.Instance["GameEditWindow.Tab6.Info2"]);
         var list = FilesPageViewModel.GetUnSelectItems();
         bool error = false;
         try
@@ -376,14 +367,14 @@ public partial class Tab6Control : UserControl
             Logs.Error(Localizer.Instance["GameEditWindow.Tab6.Error1"], e1);
             error = true;
         }
-        Window.Info1.Close();
+        window.Info1.Close();
         if (error)
         {
-            Window.Info.Show(Localizer.Instance["GameEditWindow.Tab6.Error1"]);
+            window.Info.Show(Localizer.Instance["GameEditWindow.Tab6.Error1"]);
         }
         else
         {
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab6.Info3"]);
+            window.Info2.Show(Localizer.Instance["GameEditWindow.Tab6.Info3"]);
         }
     }
 
@@ -391,11 +382,6 @@ public partial class Tab6Control : UserControl
     {
         FilesPageViewModel = new FilesPageViewModel(Obj);
         FileViewer.Source = Files.Source;
-    }
-
-    public void SetWindow(GameEditWindow window)
-    {
-        Window = window;
     }
 
     public void SetGame(GameSettingObj obj)
