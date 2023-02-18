@@ -49,7 +49,7 @@ public partial class Tab4Control : UserControl
             CheckMod = CheckBox5.IsChecked == true,
         });
 
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private void Button_Set1_Click(object? sender, RoutedEventArgs e)
@@ -60,7 +60,7 @@ public partial class Tab4Control : UserControl
             Height = (uint)Input4.Value,
             FullScreen = CheckBox1.IsChecked == true
         });
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -80,7 +80,7 @@ public partial class Tab4Control : UserControl
             MaxMemory = (uint)Input2.Value,
             MinMemory = (uint)Input1.Value
         });
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     public void SetWindow(SettingWindow window)

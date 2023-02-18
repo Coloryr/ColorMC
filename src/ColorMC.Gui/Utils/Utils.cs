@@ -112,10 +112,10 @@ public static class OtherUtils
     {
         return type switch
         {
-            SkinType.Old => Localizer.Instance["SkinType.Old"],
-            SkinType.New => Localizer.Instance["SkinType.New"],
-            SkinType.NewSlim => Localizer.Instance["SkinType.New_Slim"],
-            _ => Localizer.Instance["SkinType.Other"]
+            SkinType.Old => App.GetLanguage("SkinType.Old"),
+            SkinType.New => App.GetLanguage("SkinType.New"),
+            SkinType.NewSlim => App.GetLanguage("SkinType.New_Slim"),
+            _ => App.GetLanguage("SkinType.Other")
         };
     }
 }
@@ -323,7 +323,7 @@ public static partial class UIUtils
     //{
     //    return new ReflectionBindingExtension
     //    {
-    //        Source = Localizer.Instance,
+    //        Source = App.GetLanguage,
     //        Path = $"[{name}]"
     //    };
     //}
@@ -662,7 +662,7 @@ public static class ImageUtils
             }
             catch (Exception e)
             {
-                Logs.Error(Localizer.Instance["Error1"], e);
+                Logs.Error(App.GetLanguage("Error1"), e);
                 return null;
             }
         });
@@ -684,7 +684,7 @@ public static class GuiConfigUtils
 
     public static bool Load(string name, bool quit = false)
     {
-        Logs.Info(Localizer.Instance["Info1"]);
+        Logs.Info("正在读取配置文件");
         if (File.Exists(name))
         {
             try
@@ -693,8 +693,8 @@ public static class GuiConfigUtils
             }
             catch (Exception e)
             {
-                CoreMain.OnError?.Invoke(Localizer.Instance["Error2"], e, true);
-                Logs.Error(Localizer.Instance["Error2"], e);
+                CoreMain.OnError?.Invoke("读取错误", e, true);
+                Logs.Error("读取错误", e);
             }
         }
 
@@ -704,7 +704,7 @@ public static class GuiConfigUtils
             {
                 return false;
             }
-            Logs.Warn(Localizer.Instance["Warn1"]);
+            Logs.Warn("配置文件为空");
 
             Config = MakeDefaultConfig();
 
@@ -718,7 +718,7 @@ public static class GuiConfigUtils
                 return false;
             }
 
-            Logs.Warn(Localizer.Instance["Warn1"]);
+            Logs.Warn("配置文件为空");
 
             Config.ServerCustom = MakeServerCustomConfig();
 
@@ -733,21 +733,19 @@ public static class GuiConfigUtils
                 return false;
             }
 
-            Logs.Warn(Localizer.Instance["Warn1"]);
+            Logs.Warn("配置文件为空");
 
             Config.Render = MakeRenderConfig();
 
             Save();
         }
 
-        ColorSel.Instance.Load();
-
         return true;
     }
 
     public static void Save()
     {
-        Logs.Info(Localizer.Instance["Info2"]);
+        Logs.Info(App.GetLanguage("Info2"));
         ConfigSave.AddItem(new()
         {
             Name = "gui.json",
@@ -762,10 +760,10 @@ public static class GuiConfigUtils
         {
             Windows = new()
             {
-                UseWindowsUIComposition = true,
-                UseWgl = false,
-                UseCompositor = true,
-                UseDeferredRendering = true
+                UseWindowsUIComposition = null,
+                UseWgl = null,
+                UseCompositor = null,
+                UseDeferredRendering = null
             }
         };
     }

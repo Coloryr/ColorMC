@@ -140,7 +140,7 @@ public partial class GameEditWindow : Window, IBaseWindow
     public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
-        Head.Title = Title = string.Format(Localizer.Instance["GameEditWindow.Title"], obj.Name);
+        Head.Title = Title = string.Format(App.GetLanguage("GameEditWindow.Title"), obj.Name);
 
         tab1.SetGame(obj);
         tab2.SetGame(obj);

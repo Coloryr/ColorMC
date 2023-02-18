@@ -67,12 +67,12 @@ public partial class AddGameWindow : Window
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        Info1.Show(Localizer.Instance["GameEditWindow.Info1"]);
+        Info1.Show(App.GetLanguage("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
         Info1.Close();
         if (!res)
         {
-            Info.Show(Localizer.Instance["GameEditWindow.Error1"]);
+            Info.Show(App.GetLanguage("GameEditWindow.Error1"));
             return;
         }
 
@@ -96,7 +96,7 @@ public partial class AddGameWindow : Window
             return;
         }
 
-        Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
+        Info1.Show(App.GetLanguage("AddGameWindow.Info3"));
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(item))
         {
@@ -129,7 +129,7 @@ public partial class AddGameWindow : Window
 
         if (CheckBox_Forge.IsChecked == true)
         {
-            Info1.Show(Localizer.Instance["AddGameWindow.Info6"]);
+            Info1.Show(App.GetLanguage("AddGameWindow.Info6"));
             CheckBox_Fabric.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
@@ -146,7 +146,7 @@ public partial class AddGameWindow : Window
         }
         else if (CheckBox_Fabric.IsChecked == true)
         {
-            Info1.Show(Localizer.Instance["AddGameWindow.Info5"]);
+            Info1.Show(App.GetLanguage("AddGameWindow.Info5"));
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
@@ -163,7 +163,7 @@ public partial class AddGameWindow : Window
         }
         else if (CheckBox_Quilt.IsChecked == true)
         {
-            Info1.Show(Localizer.Instance["AddGameWindow.Info4"]);
+            Info1.Show(App.GetLanguage("AddGameWindow.Info4"));
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = false;
 
@@ -182,7 +182,7 @@ public partial class AddGameWindow : Window
 
     private async void Button_AddGroup_Click(object? sender, RoutedEventArgs e)
     {
-        await Info3.ShowOne(Localizer.Instance["AddGameWindow.Info1"], false);
+        await Info3.ShowOne(App.GetLanguage("AddGameWindow.Info1"), false);
         Info3.Close();
         if (Info3.Cancel)
         {
@@ -192,17 +192,17 @@ public partial class AddGameWindow : Window
         var res = Info3.Read().Item1;
         if (string.IsNullOrWhiteSpace(res))
         {
-            Info1.Show(Localizer.Instance["AddGameWindow.Error6"]);
+            Info1.Show(App.GetLanguage("AddGameWindow.Error6"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(res))
         {
-            Info1.Show(Localizer.Instance["AddGameWindow.Error7"]);
+            Info1.Show(App.GetLanguage("AddGameWindow.Error7"));
             return;
         }
 
-        Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
+        Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
 
         List1.Clear();
         List1.AddRange(GameBinding.GetGameGroups().Keys);
@@ -228,14 +228,14 @@ public partial class AddGameWindow : Window
         var name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
-            Info.Show(Localizer.Instance["AddGameWindow.Error1"]);
+            Info.Show(App.GetLanguage("AddGameWindow.Error1"));
             return;
         }
 
         string? version = ComboBox_GameVersion.SelectedItem as string;
         if (string.IsNullOrWhiteSpace(version))
         {
-            Info.Show(Localizer.Instance["AddGameWindow.Error2"]);
+            Info.Show(App.GetLanguage("AddGameWindow.Error2"));
             return;
         }
 
@@ -262,11 +262,11 @@ public partial class AddGameWindow : Window
             loaderversion, ComboBox_Group.SelectedItem as string);
         if (!res)
         {
-            Info.Show(Localizer.Instance["AddGameWindow.Info5"]);
+            Info.Show(App.GetLanguage("AddGameWindow.Info5"));
         }
         else
         {
-            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
+            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
             App.MainWindow?.Load();
             Close();
         }
@@ -285,7 +285,7 @@ public partial class AddGameWindow : Window
             if (item == null)
                 return;
 
-            Info1.Show(Localizer.Instance["AddGameWindow.Info4"]);
+            Info1.Show(App.GetLanguage("AddGameWindow.Info4"));
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = false;
 
@@ -316,7 +316,7 @@ public partial class AddGameWindow : Window
             if (item == null)
                 return;
 
-            Info1.Show(Localizer.Instance["AddGameWindow.Info5"]);
+            Info1.Show(App.GetLanguage("AddGameWindow.Info5"));
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
@@ -347,7 +347,7 @@ public partial class AddGameWindow : Window
             if (item == null)
                 return;
 
-            Info1.Show(Localizer.Instance["AddGameWindow.Info6"]);
+            Info1.Show(App.GetLanguage("AddGameWindow.Info6"));
             CheckBox_Fabric.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
@@ -374,7 +374,7 @@ public partial class AddGameWindow : Window
     {
         Info1.Close();
         var test = await Info.ShowWait(
-            string.Format(Localizer.Instance["AddGameWindow.Info7"], obj.Name));
+            string.Format(App.GetLanguage("AddGameWindow.Info7"), obj.Name));
         if (!add)
         {
             Info1.Show();
@@ -391,19 +391,19 @@ public partial class AddGameWindow : Window
     {
         if (state == CoreRunState.Read)
         {
-            Info1.Show(Localizer.Instance["AddGameWindow.Info8"]);
+            Info1.Show(App.GetLanguage("AddGameWindow.Info8"));
         }
         else if (state == CoreRunState.Init)
         {
-            Info1.NextText(Localizer.Instance["AddGameWindow.Info9"]);
+            Info1.NextText(App.GetLanguage("AddGameWindow.Info9"));
         }
         else if (state == CoreRunState.GetInfo)
         {
-            Info1.NextText(Localizer.Instance["AddGameWindow.Info10"]);
+            Info1.NextText(App.GetLanguage("AddGameWindow.Info10"));
         }
         else if (state == CoreRunState.Download)
         {
-            Info1.NextText(Localizer.Instance["AddGameWindow.Info11"]);
+            Info1.NextText(App.GetLanguage("AddGameWindow.Info11"));
             Info1.Progress(-1);
         }
         else if (state == CoreRunState.End)
@@ -446,21 +446,21 @@ public partial class AddGameWindow : Window
         var res = await GameBinding.AddPack(name, type);
         if (res.Item1)
         {
-            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
+            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
             App.MainWindow?.Load();
             Close();
         }
         else
         {
-            Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
+            Info.Show(App.GetLanguage("AddGameWindow.Error3"));
         }
         EnableButton();
     }
 
     private async Task<string?> SelectPack()
     {
-        var file = await BaseBinding.OpFile(this, Localizer.Instance["AddGameWindow.Info13"],
-            "*.zip", Localizer.Instance["AddGameWindow.Info16"]);
+        var file = await BaseBinding.OpFile(this, App.GetLanguage("AddGameWindow.Info13"),
+            "*.zip", App.GetLanguage("AddGameWindow.Info16"));
         if (file.Any())
         {
             return file[0].GetPath();
@@ -502,16 +502,16 @@ public partial class AddGameWindow : Window
 
     public async void Install(CurseForgeObj.Data.LatestFiles data, CurseForgeObj.Data data1)
     {
-        Info1.Show(Localizer.Instance["AddGameWindow.Info14"]);
+        Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
         var res = await GameBinding.InstallCurseForge(data, data1);
         Info1.Close();
         if (!res)
         {
-            Info.Show(Localizer.Instance["AddGameWindow.Error4"]);
+            Info.Show(App.GetLanguage("AddGameWindow.Error4"));
         }
         else
         {
-            App.MainWindow?.Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
+            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
             App.MainWindow?.Load();
             Close();
         }

@@ -29,7 +29,7 @@ public partial class Tab3Control : UserControl
     {
         if (UIUtils.CheckNotNumber(TextBox2.Text))
         {
-            Window.Info.Show(Localizer.Instance["Error7"]);
+            Window.Info.Show(App.GetLanguage("Error7"));
             return;
         }
         ConfigBinding.SetHttpConfig(new()
@@ -45,7 +45,7 @@ public partial class Tab3Control : UserControl
             GameProxy = CheckBox3.IsChecked == true,
             CheckFile = CheckBox4.IsChecked == true
         });
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     public void SetWindow(SettingWindow window)

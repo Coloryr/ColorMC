@@ -53,11 +53,11 @@ public partial class AddJavaWindow : Window
             return;
 
         var res = await Info.ShowWait(string.Format(
-            Localizer.Instance["AddJavaWindow.Info1"], obj.Name));
+            App.GetLanguage("AddJavaWindow.Info1"), obj.Name));
         if (!res)
             return;
 
-        Info1.Show(Localizer.Instance["AddJavaWindow.Info2"]);
+        Info1.Show(App.GetLanguage("AddJavaWindow.Info2"));
         var res1 = await JavaBinding.DownloadJava(obj);
         Info1.Close();
         if (!res1.Item1)
@@ -66,7 +66,7 @@ public partial class AddJavaWindow : Window
             return;
         }
 
-        Info2.Show(Localizer.Instance["AddJavaWindow.Info3"]);
+        Info2.Show(App.GetLanguage("AddJavaWindow.Info3"));
     }
 
     private void ComboBox4_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -115,7 +115,7 @@ public partial class AddJavaWindow : Window
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        Info1.Show(Localizer.Instance["AddJavaWindow.Info4"]);
+        Info1.Show(App.GetLanguage("AddJavaWindow.Info4"));
 
         load = true;
 
@@ -139,7 +139,7 @@ public partial class AddJavaWindow : Window
         else
         {
             Info1.Close();
-            Info.Show(Localizer.Instance["AddJavaWindow.Error1"]);
+            Info.Show(App.GetLanguage("AddJavaWindow.Error1"));
         }
 
         load = false;

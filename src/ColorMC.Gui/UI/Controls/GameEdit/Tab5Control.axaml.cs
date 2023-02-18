@@ -53,17 +53,17 @@ public partial class Tab5Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpFile(window!, 
-            Localizer.Instance["GameEditWindow.Tab5.Info2"], "*.zip", 
-            Localizer.Instance["GameEditWindow.Tab5.Info8"]);
+            App.GetLanguage("GameEditWindow.Tab5.Info2"), "*.zip", 
+            App.GetLanguage("GameEditWindow.Tab5.Info8"));
         if (file.Any())
         {
             var res = await GameBinding.AddWorld(Obj, file[0].GetPath());
             if (!res)
             {
-                window!.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+                window!.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
                 return;
             }
-            window!.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info2"]);
+            window!.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
             Load();
         }
     }
@@ -101,11 +101,11 @@ public partial class Tab5Control : UserControl
     {
         var Window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpSave(Window,
-            Localizer.Instance["GameEditWindow.Tab5.Info2"], ".zip", "world.zip");
+            App.GetLanguage("GameEditWindow.Tab5.Info2"), ".zip", "world.zip");
         if (file == null)
             return;
 
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info4"]);
+        Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info4"));
         bool error = false;
         try
         {
@@ -113,17 +113,17 @@ public partial class Tab5Control : UserControl
         }
         catch (Exception e)
         {
-            Logs.Error(Localizer.Instance["GameEditWindow.Tab5.Error1"], e);
+            Logs.Error(App.GetLanguage("GameEditWindow.Tab5.Error1"), e);
             error = true;
         }
         Window.Info1.Close();
         if (error)
         {
-            Window.Info.Show(Localizer.Instance["GameEditWindow.Tab5.Error1"]);
+            Window.Info.Show(App.GetLanguage("GameEditWindow.Tab5.Error1"));
         }
         else
         {
-            Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab5.Info3"]);
+            Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info3"));
         }
     }
 
@@ -131,14 +131,14 @@ public partial class Tab5Control : UserControl
     {
         var Window = (VisualRoot as GameEditWindow)!;
         var res = await Window!.Info.ShowWait(
-            string.Format(Localizer.Instance["GameEditWindow.Tab5.Info1"], obj.Name));
+            string.Format(App.GetLanguage("GameEditWindow.Tab5.Info1"), obj.Name));
         if (!res)
         {
             return;
         }
 
         GameBinding.DeleteWorld(obj.World);
-        Window.Info2.Show(Localizer.Instance["GameEditWindow.Tab4.Info3"]);
+        Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         Load();
     }
 
@@ -157,7 +157,7 @@ public partial class Tab5Control : UserControl
     private async void Load()
     {
         var Window = (VisualRoot as GameEditWindow)!;
-        Window.Info1.Show(Localizer.Instance["GameEditWindow.Tab5.Info7"]);
+        Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
         List.Clear();
         ListBox_Items.Children.Clear();
 

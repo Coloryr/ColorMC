@@ -272,7 +272,7 @@ public partial class SkinWindow : Window
             return;
         if (ComboBox1.SelectedIndex == (int)SkinType.Unkonw)
         {
-            Info.Show(Localizer.Instance["SkinWindow.Info1"]);
+            Info.Show(App.GetLanguage("SkinWindow.Info1"));
             ComboBox1.SelectedIndex = (int)Skin.steveModelType;
             return;
         }
@@ -695,7 +695,7 @@ void main()
             Dispatcher.UIThread.Post(() =>
             {
                 Window.Label1.IsVisible = true;
-                Window.Label1.Content = Localizer.Instance["SkinWindow.Info2"];
+                Window.Label1.Content = App.GetLanguage("SkinWindow.Info2");
             });
             return;
         }
@@ -707,7 +707,7 @@ void main()
             Dispatcher.UIThread.Post(() =>
             {
                 Window.Label1.IsVisible = true;
-                Window.Label1.Content = Localizer.Instance["SkinWindow.Info3"];
+                Window.Label1.Content = App.GetLanguage("SkinWindow.Info3");
             });
             return;
         }

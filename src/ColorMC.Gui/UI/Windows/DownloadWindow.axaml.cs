@@ -76,7 +76,7 @@ public partial class DownloadWindow : Window
 
     private async void Button_S_Click(object? sender, RoutedEventArgs e)
     {
-        var res = await Info.ShowWait(Localizer.Instance["DownloadWindow.Info1"]);
+        var res = await Info.ShowWait(App.GetLanguage("DownloadWindow.Info1"));
         if (res)
         {
             List.Clear();
@@ -92,16 +92,16 @@ public partial class DownloadWindow : Window
             DownloadManager.DownloadPause();
             pause = true;
             Button_P.Content = "R";
-            Button_P1.Content = Localizer.Instance["DownloadWindow.Info5"];
-            Info2.Show(Localizer.Instance["DownloadWindow.Info2"]);
+            Button_P1.Content = App.GetLanguage("DownloadWindow.Info5");
+            Info2.Show(App.GetLanguage("DownloadWindow.Info2"));
         }
         else
         {
             DownloadManager.DownloadResume();
             Button_P.Content = "P";
-            Button_P1.Content = Localizer.Instance["DownloadWindow.Text1"];
+            Button_P1.Content = App.GetLanguage("DownloadWindow.Text1");
             pause = false;
-            Info2.Show(Localizer.Instance["DownloadWindow.Info3"]);
+            Info2.Show(App.GetLanguage("DownloadWindow.Info3"));
         }
     }
 
@@ -146,7 +146,7 @@ public partial class DownloadWindow : Window
     {
         if (BaseBinding.GetDownloadState() != CoreRunState.End)
         {
-            var res = await Info.ShowWait(Localizer.Instance["DownloadWindow.Info4"]);
+            var res = await Info.ShowWait(App.GetLanguage("DownloadWindow.Info4"));
             if (res)
             {
                 DownloadManager.DownloadStop();

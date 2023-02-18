@@ -70,7 +70,7 @@ public partial class MainWindow : Window, IBaseWindow
         {
             Dispatcher.UIThread.Post(async () =>
             {
-                await Info.ShowOk(Localizer.Instance["MainWindow.Info22"]);
+                await Info.ShowOk(App.GetLanguage("MainWindow.Info22"));
                 Close();
             });
         }
@@ -88,7 +88,7 @@ public partial class MainWindow : Window, IBaseWindow
         return Dispatcher.UIThread.InvokeAsync(() => 
         {
             return Info.ShowWait(string.Format(
-                Localizer.Instance["MainWindow.Info21"], login.UserName));
+                App.GetLanguage("MainWindow.Info21"), login.UserName));
         });
     }
 
@@ -99,7 +99,7 @@ public partial class MainWindow : Window, IBaseWindow
 
     public async void Launch(bool debug)
     {
-        Info1.Show(Localizer.Instance["MainWindow.Info3"]);
+        Info1.Show(App.GetLanguage("MainWindow.Info3"));
         var item = Obj!;
         var game = item.Obj;
         var res = await GameBinding.Launch(game, debug);
@@ -109,10 +109,10 @@ public partial class MainWindow : Window, IBaseWindow
             switch (Last)
             {
                 case LaunchState.LoginFail:
-                    Info.Show(Localizer.Instance["MainWindow.Error1"]);
+                    Info.Show(App.GetLanguage("MainWindow.Error1"));
                     break;
                 case LaunchState.JavaError:
-                    Info.Show(Localizer.Instance["MainWindow.Error2"]);
+                    Info.Show(App.GetLanguage("MainWindow.Error2"));
                     break;
                 default:
                     Info.Show(res.Item2!);
@@ -123,7 +123,7 @@ public partial class MainWindow : Window, IBaseWindow
         {
             Launchs.Add(game, item);
             item.SetLaunch(true);
-            Info2.Show(Localizer.Instance["MainWindow.Info2"]);
+            Info2.Show(App.GetLanguage("MainWindow.Info2"));
         }
     }
 
@@ -196,10 +196,10 @@ public partial class MainWindow : Window, IBaseWindow
         {
             return state switch
             {
-                LaunchState.LostLib => await Info.ShowWait(Localizer.Instance["MainWindow.Info5"]),
-                LaunchState.LostLoader => await Info.ShowWait(Localizer.Instance["MainWindow.Info6"]),
-                LaunchState.LostLoginCore => await Info.ShowWait(Localizer.Instance["MainWindow.Info7"]),
-                _ => await Info.ShowWait(Localizer.Instance["MainWindow.Info4"]),
+                LaunchState.LostLib => await Info.ShowWait(App.GetLanguage("MainWindow.Info5")),
+                LaunchState.LostLoader => await Info.ShowWait(App.GetLanguage("MainWindow.Info6")),
+                LaunchState.LostLoginCore => await Info.ShowWait(App.GetLanguage("MainWindow.Info7")),
+                _ => await Info.ShowWait(App.GetLanguage("MainWindow.Info4")),
             };
         });
     }
@@ -212,34 +212,34 @@ public partial class MainWindow : Window, IBaseWindow
             switch (state)
             {
                 case LaunchState.Login:
-                    Info1.NextText(Localizer.Instance["MainWindow.Info8"]);
+                    Info1.NextText(App.GetLanguage("MainWindow.Info8"));
                     break;
                 case LaunchState.Check:
-                    Info1.NextText(Localizer.Instance["MainWindow.Info9"]);
+                    Info1.NextText(App.GetLanguage("MainWindow.Info9"));
                     break;
                 case LaunchState.CheckVersion:
-                    Info1.NextText(Localizer.Instance["MainWindow.Info10"]);
+                    Info1.NextText(App.GetLanguage("MainWindow.Info10"));
                     break;
                 case LaunchState.CheckLib:
-                    Info1.NextText(Localizer.Instance["MainWindow.Info11"]);
+                    Info1.NextText(App.GetLanguage("MainWindow.Info11"));
                     break;
                 case LaunchState.CheckAssets:
-                    Info1.NextText(Localizer.Instance["MainWindow.Info12"]);
+                    Info1.NextText(App.GetLanguage("MainWindow.Info12"));
                     break;
                 case LaunchState.CheckLoader:
-                    Info1.NextText(Localizer.Instance["MainWindow.Info13"]);
+                    Info1.NextText(App.GetLanguage("MainWindow.Info13"));
                     break;
                 case LaunchState.CheckLoginCore:
-                    Info1.NextText(Localizer.Instance["MainWindow.Info14"]);
+                    Info1.NextText(App.GetLanguage("MainWindow.Info14"));
                     break;
                 case LaunchState.CheckMods:
-                    Info1.NextText(Localizer.Instance["MainWindow.Info17"]);
+                    Info1.NextText(App.GetLanguage("MainWindow.Info17"));
                     break;
                 case LaunchState.Download:
-                    Info1.NextText(Localizer.Instance["MainWindow.Info15"]);
+                    Info1.NextText(App.GetLanguage("MainWindow.Info15"));
                     break;
                 case LaunchState.JvmPrepare:
-                    Info1.NextText(Localizer.Instance["MainWindow.Info16"]);
+                    Info1.NextText(App.GetLanguage("MainWindow.Info16"));
                     break;
             }
         });
@@ -281,7 +281,7 @@ public partial class MainWindow : Window, IBaseWindow
                         };
                         var item1 = new Label
                         {
-                            Content = Localizer.Instance["MainWindow.Info18"]
+                            Content = App.GetLanguage("MainWindow.Info18")
                         };
 
                         item.Children.Add(item1);
@@ -331,7 +331,7 @@ public partial class MainWindow : Window, IBaseWindow
                         await Dispatcher.UIThread.InvokeAsync(() =>
                         {
                             DefaultGroup.SetItems(item.Value);
-                            DefaultGroup.SetName(Localizer.Instance["MainWindow.Info20"]);
+                            DefaultGroup.SetName(App.GetLanguage("MainWindow.Info20"));
                         });
                     }
                     else
@@ -385,7 +385,7 @@ public partial class MainWindow : Window, IBaseWindow
 
     public async Task AddGroup()
     {
-        await Info3.ShowOne(Localizer.Instance["MainWindow.Info1"], false);
+        await Info3.ShowOne(App.GetLanguage("MainWindow.Info1"), false);
         Info3.Close();
         if (Info3.Cancel)
         {
@@ -395,13 +395,13 @@ public partial class MainWindow : Window, IBaseWindow
         var res = Info3.Read().Item1;
         if (string.IsNullOrWhiteSpace(res))
         {
-            Info1.Show(Localizer.Instance["MainWindow.Error3"]);
+            Info1.Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(res))
         {
-            Info1.Show(Localizer.Instance["MainWindow.Error4"]);
+            Info1.Show(App.GetLanguage("MainWindow.Error4"));
             return;
         }
     }
@@ -409,7 +409,7 @@ public partial class MainWindow : Window, IBaseWindow
     public async void DeleteGame(GameSettingObj obj)
     {
         var res = await Info.ShowWait(
-            string.Format(Localizer.Instance["MainWindow.Info19"], obj.Name));
+            string.Format(App.GetLanguage("MainWindow.Info19"), obj.Name));
         if (!res)
             return;
 

@@ -62,8 +62,8 @@ public partial class Tab11Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        await BaseBinding.OpFile(window, Localizer.Instance["GameEditWindow.Tab11.Info1"], "*.zip", Localizer.Instance["GameEditWindow.Tab11.Info2"]);
-        window.Info2.Show(Localizer.Instance["GameEditWindow.Tab11.Info3"]);
+        await BaseBinding.OpFile(window, App.GetLanguage("GameEditWindow.Tab11.Info1"), "*.zip", App.GetLanguage("GameEditWindow.Tab11.Info2"));
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab11.Info3"));
         Load();
     }
 
@@ -95,7 +95,7 @@ public partial class Tab11Control : UserControl
     private void Load()
     {
         var window = (VisualRoot as GameEditWindow)!;
-        window.Info1.Show(Localizer.Instance["GameEditWindow.Tab10.Info4"]);
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
         List.AddRange(GameBinding.GetShaderpacks(Obj));
         window.Info1.Close();
@@ -121,7 +121,7 @@ public partial class Tab11Control : UserControl
         list.Remove(obj);
 
         obj.Shaderpack.Delete();
-        window.Info2.Show(Localizer.Instance["GameEditWindow.Tab10.Info5"]);
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();
     }
 }

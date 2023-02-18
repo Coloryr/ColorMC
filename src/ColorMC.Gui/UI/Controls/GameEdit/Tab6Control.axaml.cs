@@ -224,7 +224,7 @@ public class FilesPageViewModel : ReactiveObject
                     }),
                 new HierarchicalExpanderColumn<FileTreeNodeModel>(
                     new TemplateColumn<FileTreeNodeModel>(
-                        Localizer.Instance["GameEditWindow.Tab6.Info4"],
+                        App.GetLanguage("GameEditWindow.Tab6.Info4"),
                         "FileNameCell",
                         new GridLength(1, GridUnitType.Star),
                         new ColumnOptions<FileTreeNodeModel>
@@ -240,7 +240,7 @@ public class FilesPageViewModel : ReactiveObject
                     x => x.HasChildren,
                     x => x.IsExpanded),
                 new TextColumn<FileTreeNodeModel, long?>(
-                    Localizer.Instance["GameEditWindow.Tab6.Info5"],
+                    App.GetLanguage("GameEditWindow.Tab6.Info5"),
                     x => x.Size,
                     options: new TextColumnOptions<FileTreeNodeModel>
                     {
@@ -248,7 +248,7 @@ public class FilesPageViewModel : ReactiveObject
                         CompareDescending = FileTreeNodeModel.SortDescending(x => x.Size),
                     }),
                 new TextColumn<FileTreeNodeModel, DateTimeOffset?>(
-                    Localizer.Instance["GameEditWindow.Tab6.Info6"],
+                    App.GetLanguage("GameEditWindow.Tab6.Info6"),
                     x => x.Modified,
                     options: new TextColumnOptions<FileTreeNodeModel>
                     {
@@ -348,12 +348,12 @@ public partial class Tab6Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpSave(window,
-            Localizer.Instance["GameEditWindow.Tab6.Info1"], ".zip", "game.zip");
+            App.GetLanguage("GameEditWindow.Tab6.Info1"), ".zip", "game.zip");
 
         if (file == null)
             return;
 
-        window.Info1.Show(Localizer.Instance["GameEditWindow.Tab6.Info2"]);
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab6.Info2"));
         var list = FilesPageViewModel.GetUnSelectItems();
         bool error = false;
         try
@@ -364,17 +364,17 @@ public partial class Tab6Control : UserControl
         }
         catch (Exception e1)
         {
-            Logs.Error(Localizer.Instance["GameEditWindow.Tab6.Error1"], e1);
+            Logs.Error(App.GetLanguage("GameEditWindow.Tab6.Error1"), e1);
             error = true;
         }
         window.Info1.Close();
         if (error)
         {
-            window.Info.Show(Localizer.Instance["GameEditWindow.Tab6.Error1"]);
+            window.Info.Show(App.GetLanguage("GameEditWindow.Tab6.Error1"));
         }
         else
         {
-            window.Info2.Show(Localizer.Instance["GameEditWindow.Tab6.Info3"]);
+            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab6.Info3"));
         }
     }
 

@@ -91,7 +91,7 @@ public partial class UserWindow : Window
         var item = DataGrid_User.SelectedItem as UserDisplayObj;
         if (item == null)
         {
-            Info.Show(Localizer.Instance["UserWindow.Error1"]);
+            Info.Show(App.GetLanguage("UserWindow.Error1"));
             return;
         }
 
@@ -102,7 +102,7 @@ public partial class UserWindow : Window
     {
         UserBinding.SetLastUser(item.UUID, item.AuthType);
 
-        Info2.Show(Localizer.Instance["UserWindow.Info5"]);
+        Info2.Show(App.GetLanguage("UserWindow.Info5"));
         Load();
     }
 
@@ -116,7 +116,7 @@ public partial class UserWindow : Window
                 var name = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    Info.Show(Localizer.Instance["UserWindow.Error2"]);
+                    Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
                 var res = await UserBinding.AddUser(0, name, null);
@@ -125,14 +125,14 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["Info4"]);
+                Info2.Show(App.GetLanguage("Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
             case 1:
                 Cancel = false;
                 CoreMain.LoginOAuthCode = LoginOAuthCode;
-                Info1.Show(Localizer.Instance["UserWindow.Info1"]);
+                Info1.Show(App.GetLanguage("UserWindow.Info1"));
                 res = await UserBinding.AddUser(1, null);
                 Info1.Close();
                 Info3.Close();
@@ -143,7 +143,7 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["Info4"]);
+                Info2.Show(App.GetLanguage("Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -151,16 +151,16 @@ public partial class UserWindow : Window
                 var server = TextBox_Input1.Text;
                 if (server?.Length != 32)
                 {
-                    Info.Show(Localizer.Instance["UserWindow.Error3"]);
+                    Info.Show(App.GetLanguage("UserWindow.Error3"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                     string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    Info.Show(Localizer.Instance["UserWindow.Error2"]);
+                    Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
-                Info1.Show(Localizer.Instance["UserWindow.Info2"]);
+                Info1.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(2, server,
                     TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
@@ -169,7 +169,7 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["Info4"]);
+                Info2.Show(App.GetLanguage("Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -177,16 +177,16 @@ public partial class UserWindow : Window
                 server = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Info.Show(Localizer.Instance["UserWindow.Error4"]);
+                    Info.Show(App.GetLanguage("UserWindow.Error4"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                    string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    Info.Show(Localizer.Instance["UserWindow.Error2"]);
+                    Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
-                Info1.Show(Localizer.Instance["UserWindow.Info2"]);
+                Info1.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(3, server,
                     TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
@@ -195,7 +195,7 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["Info4"]);
+                Info2.Show(App.GetLanguage("Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -203,10 +203,10 @@ public partial class UserWindow : Window
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                    string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    Info.Show(Localizer.Instance["UserWindow.Error2"]);
+                    Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
-                Info1.Show(Localizer.Instance["UserWindow.Info2"]);
+                Info1.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(4,
                     TextBox_Input2.Text, TextBox_Input3.Text);
                 Info1.Close();
@@ -215,23 +215,23 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["Info4"]);
+                Info2.Show(App.GetLanguage("Info4"));
                 ok = true;
                 break;
             case 5:
                 server = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Info.Show(Localizer.Instance["UserWindow.Error4"]);
+                    Info.Show(App.GetLanguage("UserWindow.Error4"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                    string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    Info.Show(Localizer.Instance["UserWindow.Error2"]);
+                    Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
-                Info1.Show(Localizer.Instance["UserWindow.Info2"]);
+                Info1.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(5,
                     TextBox_Input2.Text, TextBox_Input3.Text, server);
                 Info1.Close();
@@ -240,12 +240,12 @@ public partial class UserWindow : Window
                     Info.Show(res.Item2!);
                     break;
                 }
-                Info2.Show(Localizer.Instance["Info4"]);
+                Info2.Show(App.GetLanguage("Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
             default:
-                Info.Show(Localizer.Instance["UserWindow.Error5"]);
+                Info.Show(App.GetLanguage("UserWindow.Error5"));
                 break;
         }
         if (ok)
@@ -260,8 +260,8 @@ public partial class UserWindow : Window
     private void LoginOAuthCode(string url, string code)
     {
         Info1.Close();
-        Info3.Show(string.Format(Localizer.Instance["UserWindow.Text3"], url),
-            string.Format(Localizer.Instance["UserWindow.Text4"], code), () => 
+        Info3.Show(string.Format(App.GetLanguage("UserWindow.Text3"), url),
+            string.Format(App.GetLanguage("UserWindow.Text4"), code), () => 
             {
                 Cancel = true;
                 UserBinding.OAuthCancel();
@@ -275,7 +275,7 @@ public partial class UserWindow : Window
         {
             case 0:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text5"];
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text5");
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = false;
                 TextBox_Input2.Text = "";
@@ -293,7 +293,7 @@ public partial class UserWindow : Window
                 break;
             case 2:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text6"];
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text6");
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = true;
                 TextBox_Input2.Text = "";
@@ -302,7 +302,7 @@ public partial class UserWindow : Window
                 break;
             case 3:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text7"];
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text7");
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = true;
                 TextBox_Input2.Text = "";
@@ -320,7 +320,7 @@ public partial class UserWindow : Window
                 break;
             case 5:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = Localizer.Instance["UserWindow.Text8"];
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text8");
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = true;
                 TextBox_Input2.Text = "";
@@ -340,7 +340,7 @@ public partial class UserWindow : Window
         var item = DataGrid_User.SelectedItem as UserDisplayObj;
         if (item == null)
         {
-            Info.Show(Localizer.Instance["UserWindow.Error1"]);
+            Info.Show(App.GetLanguage("UserWindow.Error1"));
             return;
         }
 
@@ -385,12 +385,12 @@ public partial class UserWindow : Window
 
     public async void ReLogin(UserDisplayObj obj)
     {
-        Info1.Show(Localizer.Instance["UserWindow.Info3"]);
+        Info1.Show(App.GetLanguage("UserWindow.Info3"));
         var res = await UserBinding.ReLogin(obj.UUID, obj.AuthType);
         Info1.Close();
         if (!res)
         {
-            Info.Show(Localizer.Instance["UserWindow.Error6"]);
+            Info.Show(App.GetLanguage("UserWindow.Error6"));
             var user = UserBinding.GetUser(obj.UUID, obj.AuthType);
             if (user == null)
                 return;
@@ -414,7 +414,7 @@ public partial class UserWindow : Window
         }
         else
         {
-            Info2.Show(Localizer.Instance["UserWindow.Info4"]);
+            Info2.Show(App.GetLanguage("UserWindow.Info4"));
         }
     }
 

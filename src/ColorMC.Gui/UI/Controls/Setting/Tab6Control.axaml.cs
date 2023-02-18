@@ -36,12 +36,12 @@ public partial class Tab6Control : UserControl
         var file = TextBox3.Text;
         if (string.IsNullOrWhiteSpace(file))
         {
-            Window.Info.Show(Localizer.Instance["Error8"]);
+            Window.Info.Show(App.GetLanguage("Error8"));
             return;
         }
         if (!File.Exists(TextBox3.Text))
         {
-            Window.Info.Show(Localizer.Instance["Error9"]);
+            Window.Info.Show(App.GetLanguage("Error9"));
             return;
         }
         try
@@ -49,7 +49,7 @@ public partial class Tab6Control : UserControl
             var obj = JsonConvert.DeserializeObject<UIObj>(File.ReadAllText(file));
             if (obj == null)
             {
-                Window.Info.Show(Localizer.Instance["SettingWindow.Tab6.Error1"]);
+                Window.Info.Show(App.GetLanguage("SettingWindow.Tab6.Error1"));
                 return;
             }
 
@@ -57,13 +57,13 @@ public partial class Tab6Control : UserControl
         }
         catch (Exception ex)
         {
-            CoreMain.OnError?.Invoke(Localizer.Instance["SettingWindow.Tab6.Error2"], ex, false);
+            CoreMain.OnError?.Invoke(App.GetLanguage("SettingWindow.Tab6.Error2"), ex, false);
         }
     }
 
     private async void Button6_Click(object? sender, RoutedEventArgs e)
     {
-        var str = await BaseBinding.OpSave(Window, Localizer.Instance["SettingWindow.Tab6.Info1"], ".json", "ui.json");
+        var str = await BaseBinding.OpSave(Window, App.GetLanguage("SettingWindow.Tab6.Info1"), ".json", "ui.json");
         if (str == null)
             return;
 
@@ -82,19 +82,19 @@ public partial class Tab6Control : UserControl
         var file = TextBox3.Text;
         if (string.IsNullOrWhiteSpace(file))
         {
-            Window.Info.Show(Localizer.Instance["Error7"]);
+            Window.Info.Show(App.GetLanguage("Error7"));
             return;
         }
 
         if (!File.Exists(file))
         {
-            Window.Info.Show(Localizer.Instance["Error9"]);
+            Window.Info.Show(App.GetLanguage("Error9"));
             return;
         }
 
         ConfigBinding.SetUIFile(file);
 
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
@@ -104,8 +104,8 @@ public partial class Tab6Control : UserControl
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var res = await BaseBinding.OpFile(Window, Localizer.Instance["SettingWindow.Tab6.Info2"],
-            "*.json", Localizer.Instance["SettingWindow.Tab6.Info3"]);
+        var res = await BaseBinding.OpFile(Window, App.GetLanguage("SettingWindow.Tab6.Info2"),
+            "*.json", App.GetLanguage("SettingWindow.Tab6.Info3"));
         if (res.Any())
         {
             TextBox3.Text = res[0].GetPath();
@@ -117,7 +117,7 @@ public partial class Tab6Control : UserControl
         ConfigBinding.SetServerCustom(CheckBox3.IsChecked == true,
             ComboBox1.SelectedItem as string);
 
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private void CheckBox3_Click(object? sender, RoutedEventArgs e)
@@ -149,7 +149,7 @@ public partial class Tab6Control : UserControl
             MotdBackColor = ColorPicker2.Color.ToString()
         });
 
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     public void SetWindow(SettingWindow window)

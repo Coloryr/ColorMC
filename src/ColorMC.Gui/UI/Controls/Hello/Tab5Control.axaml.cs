@@ -58,14 +58,14 @@ public partial class Tab5Control : UserControl
         var name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error1"]);
+            Window.Info.Show(App.GetLanguage("AddGameWindow.Error1"));
             return;
         }
 
         string? version = ComboBox_GameVersion.SelectedItem as string;
         if (string.IsNullOrWhiteSpace(version))
         {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error2"]);
+            Window.Info.Show(App.GetLanguage("AddGameWindow.Error2"));
             return;
         }
 
@@ -91,11 +91,11 @@ public partial class Tab5Control : UserControl
         var res = await GameBinding.AddGame(name, version, loader, loaderversion);
         if (!res)
         {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error5"]);
+            Window.Info.Show(App.GetLanguage("AddGameWindow.Error5"));
         }
         else
         {
-            Window.Info2.Show(Localizer.Instance["AddGameWindow.Info2"]);
+            Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
         }
     }
 
@@ -108,7 +108,7 @@ public partial class Tab5Control : UserControl
         string? item = ComboBox_GameVersion.SelectedItem as string;
         if (!string.IsNullOrWhiteSpace(item))
         {
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info3"]);
+            Window.Info1.Show(App.GetLanguage("AddGameWindow.Info3"));
             var list = await GameBinding.GetForgeSupportVersion();
             if (list != null && list.Contains(item))
             {
@@ -138,7 +138,7 @@ public partial class Tab5Control : UserControl
             if (item == null)
                 return;
 
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info4"]);
+            Window.Info1.Show(App.GetLanguage("AddGameWindow.Info4"));
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = false;
 
@@ -169,7 +169,7 @@ public partial class Tab5Control : UserControl
             if (item == null)
                 return;
 
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info5"]);
+            Window.Info1.Show(App.GetLanguage("AddGameWindow.Info5"));
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
@@ -200,7 +200,7 @@ public partial class Tab5Control : UserControl
             if (item == null)
                 return;
 
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info6"]);
+            Window.Info1.Show(App.GetLanguage("AddGameWindow.Info6"));
             CheckBox_Fabric.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
@@ -227,7 +227,7 @@ public partial class Tab5Control : UserControl
     {
         Window.Info1.Close();
         var test = await Window.Info.ShowWait(
-            string.Format(Localizer.Instance["AddGameWindow.Info7"], obj.Name));
+            string.Format(App.GetLanguage("AddGameWindow.Info7"), obj.Name));
         if (!add)
         {
             Window.Info1.Show();
@@ -244,19 +244,19 @@ public partial class Tab5Control : UserControl
     {
         if (state == CoreRunState.Read)
         {
-            Window.Info1.Show(Localizer.Instance["AddGameWindow.Info8"]);
+            Window.Info1.Show(App.GetLanguage("AddGameWindow.Info8"));
         }
         else if (state == CoreRunState.Init)
         {
-            Window.Info1.NextText(Localizer.Instance["AddGameWindow.Info9"]);
+            Window.Info1.NextText(App.GetLanguage("AddGameWindow.Info9"));
         }
         else if (state == CoreRunState.GetInfo)
         {
-            Window.Info1.NextText(Localizer.Instance["AddGameWindow.Info10"]);
+            Window.Info1.NextText(App.GetLanguage("AddGameWindow.Info10"));
         }
         else if (state == CoreRunState.Download)
         {
-            Window.Info1.NextText(Localizer.Instance["AddGameWindow.Info11"]);
+            Window.Info1.NextText(App.GetLanguage("AddGameWindow.Info11"));
             Window.Info1.Progress(-1);
         }
         else if (state == CoreRunState.End)
@@ -296,19 +296,19 @@ public partial class Tab5Control : UserControl
         var res = await GameBinding.AddPack(name, type);
         if (res.Item1)
         {
-            Window.Info2.Show(Localizer.Instance["AddGameWindow.Info12"]);
+            Window.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
         }
         else
         {
-            Window.Info.Show(Localizer.Instance["AddGameWindow.Error3"]);
+            Window.Info.Show(App.GetLanguage("AddGameWindow.Error3"));
         }
         EnableButton();
     }
 
     private async Task<string?> SelectPack()
     {
-        var file = await BaseBinding.OpFile(Window, Localizer.Instance["AddGameWindow.Info13"],
-            "*.zip", Localizer.Instance["AddGameWindow.Info15"]);
+        var file = await BaseBinding.OpFile(Window, App.GetLanguage("AddGameWindow.Info13"),
+            "*.zip", App.GetLanguage("AddGameWindow.Info15"));
         if (file.Any())
         {
             return file[0].GetPath();

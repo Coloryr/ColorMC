@@ -66,7 +66,7 @@ public partial class AddModWindow : Window
     {
         Obj = obj;
 
-        Head.Title = Title= string.Format(Localizer.Instance["AddModWindow.Title"], obj.Name);
+        Head.Title = Title= string.Format(App.GetLanguage("AddModWindow.Title"), obj.Name);
     }
 
     private void ButtonDownload_Click(object? sender, RoutedEventArgs e)
@@ -124,7 +124,7 @@ public partial class AddModWindow : Window
     {
         if (Last == null)
         {
-            Info.Show(Localizer.Instance["AddModWindow.Error1"]);
+            Info.Show(App.GetLanguage("AddModWindow.Error1"));
             return;
         }
 
@@ -152,7 +152,7 @@ public partial class AddModWindow : Window
         var res = await GameBinding.DownloadMod(Obj, data);
         if (!res)
         {
-            Info.Show(Localizer.Instance["AddModWindow.Error3"]);
+            Info.Show(App.GetLanguage("AddModWindow.Error3"));
             return;
         }
         await Task.Run(() => GameBinding.AddModInfo(Obj, data));
@@ -169,13 +169,13 @@ public partial class AddModWindow : Window
 
     private async void Load()
     {
-        Info1.Show(Localizer.Instance["AddModWindow.Info1"]);
+        Info1.Show(App.GetLanguage("AddModWindow.Info1"));
         var data = await GameBinding.GetModList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
 
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddModWindow.Error2"]);
+            Info.Show(App.GetLanguage("AddModWindow.Error2"));
             Info1.Close();
             return;
         }
@@ -206,12 +206,12 @@ public partial class AddModWindow : Window
     private async void Load1()
     {
         List1.Clear();
-        Info1.Show(Localizer.Instance["AddModWindow.Info2"]);
+        Info1.Show(App.GetLanguage("AddModWindow.Info2"));
         var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
 
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddModWindow.Error4"]);
+            Info.Show(App.GetLanguage("AddModWindow.Error4"));
             Info1.Close();
             return;
         }
@@ -253,12 +253,12 @@ public partial class AddModWindow : Window
         if (Obj == null)
             return;
 
-        Info1.Show(Localizer.Instance["AddModWindow.Info3"]);
+        Info1.Show(App.GetLanguage("AddModWindow.Info3"));
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();
         if (list == null)
         {
-            Info.Show(Localizer.Instance["AddModWindow.Error5"]);
+            Info.Show(App.GetLanguage("AddModWindow.Error5"));
             return;
         }
 

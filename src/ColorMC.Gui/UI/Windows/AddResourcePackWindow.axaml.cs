@@ -66,7 +66,7 @@ public partial class AddResourcePackWindow : Window, IBase1Window
     {
         Obj = obj;
 
-        Head.Title = Title= string.Format(Localizer.Instance["AddResourcePackWindow.Title"], obj.Name);
+        Head.Title = Title= string.Format(App.GetLanguage("AddResourcePackWindow.Title"), obj.Name);
     }
 
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -99,7 +99,7 @@ public partial class AddResourcePackWindow : Window, IBase1Window
             return;
 
         var res = await Info.ShowWait(
-            string.Format(Localizer.Instance["AddResourcePackWindow.Info1"],
+            string.Format(App.GetLanguage("AddResourcePackWindow.Info1"),
             item.File.displayName));
         if (res)
         {
@@ -121,7 +121,7 @@ public partial class AddResourcePackWindow : Window, IBase1Window
     {
         if (Last == null)
         {
-            Info.Show(Localizer.Instance["AddResourcePackWindow.Error1"]);
+            Info.Show(App.GetLanguage("AddResourcePackWindow.Error1"));
             return;
         }
 
@@ -143,16 +143,16 @@ public partial class AddResourcePackWindow : Window, IBase1Window
 
     public async void Install1(CurseForgeObj.Data.LatestFiles data)
     {
-        Info1.Show(Localizer.Instance["GameEditWindow.Tab8.Info3"]);
+        Info1.Show(App.GetLanguage("GameEditWindow.Tab8.Info3"));
         var res = await GameBinding.DownloadResourcepack(Obj, data);
         Info1.Close();
         if (res)
         {
-            Info2.Show(Localizer.Instance["GameEditWindow.Tab8.Info4"]);
+            Info2.Show(App.GetLanguage("GameEditWindow.Tab8.Info4"));
         }
         else
         {
-            Info.Show(Localizer.Instance["GameEditWindow.Tab8.Error2"]);
+            Info.Show(App.GetLanguage("GameEditWindow.Tab8.Error2"));
         }
     }
 
@@ -176,13 +176,13 @@ public partial class AddResourcePackWindow : Window, IBase1Window
 
     private async void Load()
     {
-        Info1.Show(Localizer.Instance["AddResourcePackWindow.Info2"]);
+        Info1.Show(App.GetLanguage("AddResourcePackWindow.Info2"));
         var data = await GameBinding.GetResourcepackList(ComboBox2.SelectedItem as string,
             ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value, ComboBox3.SelectedIndex);
 
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddResourcePackWindow.Error2"]);
+            Info.Show(App.GetLanguage("AddResourcePackWindow.Error2"));
             Info1.Close();
             return;
         }
@@ -206,12 +206,12 @@ public partial class AddResourcePackWindow : Window, IBase1Window
     private async void Load1()
     {
         List1.Clear();
-        Info1.Show(Localizer.Instance["AddResourcePackWindow.Info3"]);
+        Info1.Show(App.GetLanguage("AddResourcePackWindow.Info3"));
         var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
 
         if (data == null)
         {
-            Info.Show(Localizer.Instance["AddResourcePackWindow.Error3"]);
+            Info.Show(App.GetLanguage("AddResourcePackWindow.Error3"));
             Info1.Close();
             return;
         }
@@ -238,12 +238,12 @@ public partial class AddResourcePackWindow : Window, IBase1Window
     private async void AddCurseForgeWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
-        Info1.Show(Localizer.Instance["AddResourcePackWindow.Info4"]);
+        Info1.Show(App.GetLanguage("AddResourcePackWindow.Info4"));
         var list = await GameBinding.GetCurseForgeGameVersions();
         Info1.Close();
         if (list == null)
         {
-            Info.Show(Localizer.Instance["AddWorldWindow.Error4"]);
+            Info.Show(App.GetLanguage("AddWorldWindow.Error4"));
             return;
         }
 

@@ -53,7 +53,7 @@ public partial class Tab2Control : UserControl
     private void Button_Change1_Click(object? sender, RoutedEventArgs e)
     {
         ConfigBinding.SetFont(ComboBox3.SelectedItem as string, CheckBox3.IsChecked == true);
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private void Button_Set5_Click(object? sender, RoutedEventArgs e)
@@ -84,7 +84,7 @@ public partial class Tab2Control : UserControl
         ColorPicker3.Color = ColorSel.Back1Color.ToColor();
         ColorPicker4.Color = ColorSel.ButtonFont.ToColor();
         ColorPicker5.Color = ColorSel.FontColor.ToColor();
-        Window.Info2.Show(Localizer.Instance["SettingWindow.Tab2.Info4"]);
+        Window.Info2.Show(App.GetLanguage("SettingWindow.Tab2.Info4"));
     }
 
     private void Button_Set3_Click(object? sender, RoutedEventArgs e)
@@ -92,36 +92,36 @@ public partial class Tab2Control : UserControl
         ConfigBinding.SetColor(ColorPicker1.Color.ToString(),
             ColorPicker2.Color.ToString(), ColorPicker3.Color.ToString(),
             ColorPicker4.Color.ToString(), ColorPicker5.Color.ToString());
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private async void Button_Set2_Click(object? sender, RoutedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(TextBox1.Text))
         {
-            Window.Info.Show(Localizer.Instance["SettingWindow.Tab2.Error1"]);
+            Window.Info.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
             return;
         }
-        Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info2"]);
+        Window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackPic(TextBox1.Text, (int)Slider1.Value);
         Window.Info1.Close();
 
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private void Button_Set1_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info5"]);
+        Window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetBl(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
         Window.Info1.Close();
 
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private void Button_Change_Click(object? sender, RoutedEventArgs e)
     {
         var type = (LanguageType)ComboBox2.SelectedIndex;
-        Window.Info1.Show(Localizer.Instance["SettingWindow.Tab2.Info1"]);
+        Window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info1"));
         LanguageHelper.Change(type);
         Window.Info1.Close();
     }
@@ -190,18 +190,18 @@ public partial class Tab2Control : UserControl
     private void Button_Set_Click(object? sender, RoutedEventArgs e)
     {
         ConfigBinding.SetBackTran((int)Slider2.Value);
-        Window.Info2.Show(Localizer.Instance["Info3"]);
+        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
         var file = await Window.StorageProvider.OpenFilePickerAsync(new()
         {
-            Title = Localizer.Instance["SettingWindow.Tab2.Info3"],
+            Title = App.GetLanguage("SettingWindow.Tab2.Info3"),
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FilePickerFileType(Localizer.Instance["SettingWindow.Tab2.Info6"])
+                new FilePickerFileType(App.GetLanguage("SettingWindow.Tab2.Info6"))
                 {
                     Patterns = new List<string>()
                     {

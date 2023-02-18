@@ -2,6 +2,7 @@
 
 using ColorMC.Core.Utils;
 using System.Collections.Concurrent;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ColorMC.Core;
 
@@ -14,7 +15,6 @@ public static class Logs
         Name = "ColorMC-Log"
     };
     private static ConcurrentBag<string> bags = new();
-    private static Semaphore semaphore = new(0, 10);
     private static bool IsRun = false;
 
     /// <summary>
@@ -75,21 +75,18 @@ public static class Logs
     public static void Warn(string data)
     {
         string text = $"[{DateTime.Now}][Warn]{data}";
-        Console.WriteLine(text);
         AddText(text);
     }
 
     public static void Error(string data)
     {
         string text = $"[{DateTime.Now}][Error]{data}";
-        Console.WriteLine(text);
         AddText(text);
     }
 
     public static void Error(string data, Exception e)
     {
         string text = $"[{DateTime.Now}][Error]{data}{Environment.NewLine}{e}";
-        Console.WriteLine(text);
         AddText(text);
     }
 }

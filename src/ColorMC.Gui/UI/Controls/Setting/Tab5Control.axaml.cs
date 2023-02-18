@@ -83,7 +83,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
-        var res = await Window.Info.ShowWait(Localizer.Instance["SettingWindow.Tab5.Info3"]);
+        var res = await Window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
         if (!res)
             return;
 
@@ -123,13 +123,13 @@ public partial class Tab5Control : UserControl
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show(Localizer.Instance["Error8"]);
+            Window.Info.Show(App.GetLanguage("Error8"));
             return;
         }
 
         try
         {
-            Window.Info1.Show(Localizer.Instance["SettingWindow.Tab5.Info1"]);
+            Window.Info1.Show(App.GetLanguage("SettingWindow.Tab5.Info1"));
 
             var res = JavaBinding.AddJava(name, local);
             if (res.Item1 == null)
@@ -155,12 +155,12 @@ public partial class Tab5Control : UserControl
     {
         var file = await Window.StorageProvider.OpenFilePickerAsync(new()
         {
-            Title = Localizer.Instance["SettingWindow.Tab5.Info2"],
+            Title = App.GetLanguage("SettingWindow.Tab5.Info2"),
             SuggestedStartLocation = JavaBinding.GetSuggestedStartLocation(),
             AllowMultiple = false,
             FileTypeFilter = new List<FilePickerFileType>()
             {
-                new FilePickerFileType(Localizer.Instance["SettingWindow.Tab5.Info4"])
+                new FilePickerFileType(App.GetLanguage("SettingWindow.Tab5.Info4"))
                 {
                     Patterns = SystemInfo.Os == OsType.Windows ? new List<string>()
                     {
