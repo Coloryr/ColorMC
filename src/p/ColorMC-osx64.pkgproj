@@ -31,7 +31,7 @@
 								<key>CHILDREN</key>
 								<array/>
 								<key>GID</key>
-								<integer>0</integer>
+								<integer>12</integer>
 								<key>PATH</key>
 								<string>/Users/test/Desktop/ColorMC.app</string>
 								<key>PATH_TYPE</key>
@@ -41,7 +41,7 @@
 								<key>TYPE</key>
 								<integer>3</integer>
 								<key>UID</key>
-								<integer>0</integer>
+								<integer>1</integer>
 							</dict>
 						</array>
 						<key>GID</key>
@@ -62,153 +62,7 @@
 						<array>
 							<dict>
 								<key>CHILDREN</key>
-								<array>
-									<dict>
-										<key>CHILDREN</key>
-										<array>
-											<dict>
-												<key>CHILDREN</key>
-												<array/>
-												<key>GID</key>
-												<integer>80</integer>
-												<key>PATH</key>
-												<string>/Users/test/Desktop/osx64-dotnet/ColorMC.Core.pdb</string>
-												<key>PATH_TYPE</key>
-												<integer>0</integer>
-												<key>PERMISSIONS</key>
-												<integer>502</integer>
-												<key>TYPE</key>
-												<integer>3</integer>
-												<key>UID</key>
-												<integer>0</integer>
-											</dict>
-											<dict>
-												<key>CHILDREN</key>
-												<array/>
-												<key>GID</key>
-												<integer>80</integer>
-												<key>PATH</key>
-												<string>/Users/test/Desktop/osx64-dotnet/ColorMC.Gui</string>
-												<key>PATH_TYPE</key>
-												<integer>0</integer>
-												<key>PERMISSIONS</key>
-												<integer>502</integer>
-												<key>TYPE</key>
-												<integer>3</integer>
-												<key>UID</key>
-												<integer>0</integer>
-											</dict>
-											<dict>
-												<key>CHILDREN</key>
-												<array/>
-												<key>GID</key>
-												<integer>80</integer>
-												<key>PATH</key>
-												<string>/Users/test/Desktop/osx64-dotnet/ColorMC.Gui.pdb</string>
-												<key>PATH_TYPE</key>
-												<integer>0</integer>
-												<key>PERMISSIONS</key>
-												<integer>502</integer>
-												<key>TYPE</key>
-												<integer>3</integer>
-												<key>UID</key>
-												<integer>0</integer>
-											</dict>
-											<dict>
-												<key>CHILDREN</key>
-												<array/>
-												<key>GID</key>
-												<integer>80</integer>
-												<key>PATH</key>
-												<string>/Users/test/Desktop/osx64-dotnet/libAvaloniaNative.dylib</string>
-												<key>PATH_TYPE</key>
-												<integer>0</integer>
-												<key>PERMISSIONS</key>
-												<integer>502</integer>
-												<key>TYPE</key>
-												<integer>3</integer>
-												<key>UID</key>
-												<integer>0</integer>
-											</dict>
-											<dict>
-												<key>CHILDREN</key>
-												<array/>
-												<key>GID</key>
-												<integer>80</integer>
-												<key>PATH</key>
-												<string>/Users/test/Desktop/osx64-dotnet/libglfw.3.dylib</string>
-												<key>PATH_TYPE</key>
-												<integer>0</integer>
-												<key>PERMISSIONS</key>
-												<integer>502</integer>
-												<key>TYPE</key>
-												<integer>3</integer>
-												<key>UID</key>
-												<integer>0</integer>
-											</dict>
-											<dict>
-												<key>CHILDREN</key>
-												<array/>
-												<key>GID</key>
-												<integer>80</integer>
-												<key>PATH</key>
-												<string>/Users/test/Desktop/osx64-dotnet/libHarfBuzzSharp.dylib</string>
-												<key>PATH_TYPE</key>
-												<integer>0</integer>
-												<key>PERMISSIONS</key>
-												<integer>502</integer>
-												<key>TYPE</key>
-												<integer>3</integer>
-												<key>UID</key>
-												<integer>0</integer>
-											</dict>
-											<dict>
-												<key>CHILDREN</key>
-												<array/>
-												<key>GID</key>
-												<integer>80</integer>
-												<key>PATH</key>
-												<string>/Users/test/Desktop/osx64-dotnet/libonigwrap.dylib</string>
-												<key>PATH_TYPE</key>
-												<integer>0</integer>
-												<key>PERMISSIONS</key>
-												<integer>502</integer>
-												<key>TYPE</key>
-												<integer>3</integer>
-												<key>UID</key>
-												<integer>0</integer>
-											</dict>
-											<dict>
-												<key>CHILDREN</key>
-												<array/>
-												<key>GID</key>
-												<integer>80</integer>
-												<key>PATH</key>
-												<string>/Users/test/Desktop/osx64-dotnet/libSkiaSharp.dylib</string>
-												<key>PATH_TYPE</key>
-												<integer>0</integer>
-												<key>PERMISSIONS</key>
-												<integer>502</integer>
-												<key>TYPE</key>
-												<integer>3</integer>
-												<key>UID</key>
-												<integer>0</integer>
-											</dict>
-										</array>
-										<key>GID</key>
-										<integer>80</integer>
-										<key>PATH</key>
-										<string>ColorMC</string>
-										<key>PATH_TYPE</key>
-										<integer>2</integer>
-										<key>PERMISSIONS</key>
-										<integer>509</integer>
-										<key>TYPE</key>
-										<integer>2</integer>
-										<key>UID</key>
-										<integer>0</integer>
-									</dict>
-								</array>
+								<array/>
 								<key>GID</key>
 								<integer>80</integer>
 								<key>PATH</key>
@@ -561,6 +415,151 @@
 						<array>
 							<dict>
 								<key>CHILDREN</key>
+								<array>
+									<dict>
+										<key>CHILDREN</key>
+										<array/>
+										<key>GID</key>
+										<integer>12</integer>
+										<key>PATH</key>
+										<string>/Users/test/Desktop/osx64-dotnet/ColorMC.Core.pdb</string>
+										<key>PATH_TYPE</key>
+										<integer>0</integer>
+										<key>PERMISSIONS</key>
+										<integer>502</integer>
+										<key>TYPE</key>
+										<integer>3</integer>
+										<key>UID</key>
+										<integer>1</integer>
+									</dict>
+									<dict>
+										<key>CHILDREN</key>
+										<array/>
+										<key>GID</key>
+										<integer>12</integer>
+										<key>PATH</key>
+										<string>/Users/test/Desktop/osx64-dotnet/ColorMC.Gui</string>
+										<key>PATH_TYPE</key>
+										<integer>0</integer>
+										<key>PERMISSIONS</key>
+										<integer>509</integer>
+										<key>TYPE</key>
+										<integer>3</integer>
+										<key>UID</key>
+										<integer>1</integer>
+									</dict>
+									<dict>
+										<key>CHILDREN</key>
+										<array/>
+										<key>GID</key>
+										<integer>12</integer>
+										<key>PATH</key>
+										<string>/Users/test/Desktop/osx64-dotnet/ColorMC.Gui.pdb</string>
+										<key>PATH_TYPE</key>
+										<integer>0</integer>
+										<key>PERMISSIONS</key>
+										<integer>502</integer>
+										<key>TYPE</key>
+										<integer>3</integer>
+										<key>UID</key>
+										<integer>1</integer>
+									</dict>
+									<dict>
+										<key>CHILDREN</key>
+										<array/>
+										<key>GID</key>
+										<integer>12</integer>
+										<key>PATH</key>
+										<string>/Users/test/Desktop/osx64-dotnet/libAvaloniaNative.dylib</string>
+										<key>PATH_TYPE</key>
+										<integer>0</integer>
+										<key>PERMISSIONS</key>
+										<integer>502</integer>
+										<key>TYPE</key>
+										<integer>3</integer>
+										<key>UID</key>
+										<integer>1</integer>
+									</dict>
+									<dict>
+										<key>CHILDREN</key>
+										<array/>
+										<key>GID</key>
+										<integer>12</integer>
+										<key>PATH</key>
+										<string>/Users/test/Desktop/osx64-dotnet/libglfw.3.dylib</string>
+										<key>PATH_TYPE</key>
+										<integer>0</integer>
+										<key>PERMISSIONS</key>
+										<integer>502</integer>
+										<key>TYPE</key>
+										<integer>3</integer>
+										<key>UID</key>
+										<integer>1</integer>
+									</dict>
+									<dict>
+										<key>CHILDREN</key>
+										<array/>
+										<key>GID</key>
+										<integer>12</integer>
+										<key>PATH</key>
+										<string>/Users/test/Desktop/osx64-dotnet/libHarfBuzzSharp.dylib</string>
+										<key>PATH_TYPE</key>
+										<integer>0</integer>
+										<key>PERMISSIONS</key>
+										<integer>502</integer>
+										<key>TYPE</key>
+										<integer>3</integer>
+										<key>UID</key>
+										<integer>1</integer>
+									</dict>
+									<dict>
+										<key>CHILDREN</key>
+										<array/>
+										<key>GID</key>
+										<integer>12</integer>
+										<key>PATH</key>
+										<string>/Users/test/Desktop/osx64-dotnet/libonigwrap.dylib</string>
+										<key>PATH_TYPE</key>
+										<integer>0</integer>
+										<key>PERMISSIONS</key>
+										<integer>502</integer>
+										<key>TYPE</key>
+										<integer>3</integer>
+										<key>UID</key>
+										<integer>1</integer>
+									</dict>
+									<dict>
+										<key>CHILDREN</key>
+										<array/>
+										<key>GID</key>
+										<integer>12</integer>
+										<key>PATH</key>
+										<string>/Users/test/Desktop/osx64-dotnet/libSkiaSharp.dylib</string>
+										<key>PATH_TYPE</key>
+										<integer>0</integer>
+										<key>PERMISSIONS</key>
+										<integer>502</integer>
+										<key>TYPE</key>
+										<integer>3</integer>
+										<key>UID</key>
+										<integer>1</integer>
+									</dict>
+								</array>
+								<key>GID</key>
+								<integer>12</integer>
+								<key>PATH</key>
+								<string>ColorMC</string>
+								<key>PATH_TYPE</key>
+								<integer>2</integer>
+								<key>PERMISSIONS</key>
+								<integer>509</integer>
+								<key>TYPE</key>
+								<integer>2</integer>
+								<key>UID</key>
+								<integer>1</integer>
+							</dict>
+							<dict>
+								<key>CHILDREN</key>
 								<array/>
 								<key>GID</key>
 								<integer>0</integer>
@@ -640,7 +639,7 @@
 			<key>FOLLOW_SYMBOLIC_LINKS</key>
 			<false/>
 			<key>IDENTIFIER</key>
-			<string>com.colory.rpkg.ColorMC</string>
+			<string>com.coloryr.pkg.ColorMC</string>
 			<key>LOCATION</key>
 			<integer>0</integer>
 			<key>NAME</key>
