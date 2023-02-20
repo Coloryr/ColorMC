@@ -1,3 +1,9 @@
+检测整合包更新 后期考虑
+检测mod更新 后期考虑
+JProfiler 不添加
+MCEdit 不添加
+JVisualVM 不添加
+
 2023.1.16 
 把登录错误信息返回 okl
 
@@ -13,21 +19,10 @@ cf整合包启动时检查mod完整 okl
 2023.2.16
 添加登录取消 okl
 修复最小化动画 okl
-拖拽导入
 修改Title显示 okl
 添加按键悬浮提示/操作提示 okl
-启动崩溃
-modrinth https://docs.modrinth.com/docs/getting-started/
-存档备份
-JProfiler 不添加
-MCEdit 不添加
-JVisualVM 不添加
-检测整合包更新 后期考虑
-检测mod更新
-复制实例
-投影模组 https://www.mcmod.cn/class/2261.html
-UI调整 调整Tabs边框 Tabs滚动条
-修改classpath与mainclass设置，附加参数改成多行输入
+UI调整 调整Tabs边框 Tabs滚动条 okl
+修改classpath与mainclass设置，附加参数改成多行输入 okl
 添加断网时以离线方式启动 okl
 调整窗口打开的位置 okl
 修复正版用户添加问题 okl
@@ -36,5 +31,13 @@ UI调整 调整Tabs边框 Tabs滚动条
 修复皮肤站登录错误 okl
 修复快照版启动 okl
 修改native处理 arm64(1.19测试过) okl
-调整配置文件自动保存
+调整配置文件自动保存 okl
 添加自定义圆角 okl
+
+2023.2.20
+拖拽导入
+启动崩溃
+modrinth https://docs.modrinth.com/docs/getting-started/
+存档备份
+复制实例
+投影模组 https://www.mcmod.cn/class/2261.html
