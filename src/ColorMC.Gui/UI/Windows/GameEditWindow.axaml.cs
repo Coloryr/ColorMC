@@ -24,6 +24,7 @@ public partial class GameEditWindow : Window, IBaseWindow
     private readonly Tab9Control tab9 = new();
     private readonly Tab10Control tab10 = new();
     private readonly Tab11Control tab11 = new();
+    private readonly Tab12Control tab12 = new();
 
     private readonly ContentControl content1 = new();
     private readonly ContentControl content2 = new();
@@ -47,7 +48,7 @@ public partial class GameEditWindow : Window, IBaseWindow
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
@@ -115,11 +116,11 @@ public partial class GameEditWindow : Window, IBaseWindow
                 break;
 
             case 5:
-                Tabs.SelectedIndex = 9;
+                Tabs.SelectedIndex = 10;
                 break;
 
             case 6:
-                Tabs.SelectedIndex = 10;
+                Tabs.SelectedIndex = 11;
                 break;
         }
     }
@@ -153,6 +154,7 @@ public partial class GameEditWindow : Window, IBaseWindow
         tab9.SetGame(obj);
         tab10.SetGame(obj);
         tab11.SetGame(obj);
+        tab12.SetGame(obj);
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -196,10 +198,14 @@ public partial class GameEditWindow : Window, IBaseWindow
                 tab11.Update();
                 break;
             case 9:
+                Go(tab12);
+                tab12.Update();
+                break;
+            case 10:
                 Go(tab6);
                 tab6.Update();
                 break;
-            case 10:
+            case 11:
                 Go(tab7);
                 tab7.Update();
                 break;
@@ -243,6 +249,6 @@ public partial class GameEditWindow : Window, IBaseWindow
 
     public void Update()
     {
-        App.Update(this, Image_Back, Grid1);
+        App.Update(this, Image_Back, Border1, Border2);
     }
 }

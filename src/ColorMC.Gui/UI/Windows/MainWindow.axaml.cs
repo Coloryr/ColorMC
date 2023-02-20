@@ -44,7 +44,7 @@ public partial class MainWindow : Window, IBaseWindow
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         ItemInfo.SetWindow(this);
 
@@ -64,7 +64,6 @@ public partial class MainWindow : Window, IBaseWindow
         App.PicUpdate += Update;
 
         Update();
-
         
         if (BaseBinding.IsLaunch())
         {
@@ -157,8 +156,6 @@ public partial class MainWindow : Window, IBaseWindow
 
     private void MainWindow_Opened(object? sender, EventArgs e)
     {
-        ItemInfo.Expander1.MakeTran();
-
         MotdLoad();
     }
 
@@ -367,7 +364,7 @@ public partial class MainWindow : Window, IBaseWindow
 
     public void Update()
     {
-        App.Update(this, Image_Back, Grid1);
+        App.Update(this, Image_Back, Border1, Border2);
     }
 
     public async void EditGroup(GameSettingObj obj)

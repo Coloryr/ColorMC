@@ -62,7 +62,7 @@ public partial class CustomWindow : Window
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         this.Closed += CustomWindow_Closed;
 
@@ -485,6 +485,6 @@ public partial class CustomWindow : Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Grid1);
+        App.Update(this, Image_Back, Border1, Border2);
     }
 }

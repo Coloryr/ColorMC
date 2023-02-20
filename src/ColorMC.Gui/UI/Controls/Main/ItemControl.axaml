@@ -9,15 +9,17 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Expander
-            Name="Expander1"
-            Margin="0,0,-120,0"
-            VerticalAlignment="Stretch"
-            BorderThickness="0"
-            CornerRadius="0"
-            ExpandDirection="Left"
-            IsExpanded="True">
-            <StackPanel Margin="0,0,40,0" VerticalAlignment="Center">
+        <Grid
+            Name="Grid1"
+            Margin="0,3,0,0"
+            HorizontalAlignment="Left"
+            IsVisible="True">
+            <Border
+                Name="Border1"
+                Background="#88FFFFFF"
+                BorderThickness="2" />
+            <Border BorderBrush="#33000000" BorderThickness="1,1,0,0" />
+            <StackPanel Margin="10,0,10,0" VerticalAlignment="Center">
                 <Image
                     Name="Image1"
                     Width="80"
@@ -94,7 +96,7 @@
                     ToolTip.Tip="{setting:Localize ToolTip.Text13}"
                     ToolTip.VerticalOffset="-30" />
             </StackPanel>
-        </Expander>
+        </Grid>
 
         <Button
             Name="Button1"

@@ -29,18 +29,13 @@ public partial class SettingWindow : Window
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
         Tab1.Children.Add(content1);
         Tab1.Children.Add(content2);
-
-        tab4.SetWindow(this);
-        tab5.SetWindow(this);
-        tab6.SetWindow(this);
-        tab7.SetWindow(this);
 
         content1.Content = tab2;
 
@@ -124,11 +119,6 @@ public partial class SettingWindow : Window
         content1.Content = null;
         content2.Content = null;
 
-        tab4.SetWindow(null);
-        tab5.SetWindow(null);
-        tab6.SetWindow(null);
-        tab7.SetWindow(null);
-
         App.PicUpdate -= Update;
 
         App.SettingWindow = null;
@@ -136,7 +126,7 @@ public partial class SettingWindow : Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Grid1);
+        App.Update(this, Image_Back, Border1, Border2);
     }
 
     public void Tab5Load()

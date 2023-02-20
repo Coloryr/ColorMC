@@ -10,7 +10,6 @@ namespace ColorMC.Gui.UI.Controls.Setting;
 
 public partial class Tab4Control : UserControl
 {
-    private SettingWindow Window;
     private bool load = false;
     public Tab4Control()
     {
@@ -117,11 +116,6 @@ public partial class Tab4Control : UserControl
             GCArgument = TextBox1.Text,
             JavaAgent = TextBox2.Text
         });
-    }
-
-    public void SetWindow(SettingWindow window)
-    {
-        Window = window;
     }
 
     public void Load()

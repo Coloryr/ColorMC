@@ -112,8 +112,14 @@
     <Compile Update="UI\Controls\CurseForge\CurseForge1Control.axaml.cs">
       <DependentUpon>CurseForge1Control.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Controls\GameEdit\Flyouts7Control.axaml.cs">
+      <DependentUpon>Flyouts7Control.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\GameEdit\Flyouts6Control.axaml.cs">
       <DependentUpon>Flyouts6Control.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\GameEdit\Tab12Control.axaml.cs">
+      <DependentUpon>Tab12Control.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\GameEdit\Tab11Control.axaml.cs">
       <DependentUpon>Tab11Control.axaml</DependentUpon>

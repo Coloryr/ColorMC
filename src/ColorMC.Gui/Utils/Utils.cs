@@ -234,7 +234,7 @@ public static partial class UIUtils
     //    }
     //}
 
-    public static void MakeResizeDrag(this Avalonia.Controls.Shapes.Rectangle rectangle,
+    public static void MakeResizeDrag(this Border rectangle,
         Window window)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))

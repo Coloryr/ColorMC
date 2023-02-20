@@ -11,12 +11,16 @@
     <Grid>
         <ScrollViewer Margin="5" HorizontalScrollBarVisibility="Visible">
             <StackPanel>
+                <!--  语言  -->
+
                 <StackPanel Orientation="Horizontal">
                     <Label Width="120" Content="{setting:Localize SettingWindow.Tab2.Text1}" />
                     <ComboBox Name="ComboBox2" Width="200" />
                 </StackPanel>
 
                 <Label Margin="0,5,0,5" Content="{setting:Localize SettingWindow.Tab2.Text24}" />
+
+                <!--  字体  -->
 
                 <StackPanel Orientation="Horizontal">
                     <Label Width="120" Content="{setting:Localize SettingWindow.Tab2.Text22}" />
@@ -27,6 +31,8 @@
                         Margin="10,0,0,0"
                         Content="{setting:Localize SettingWindow.Tab2.Text23}" />
                 </StackPanel>
+
+                <!--  背景图  -->
 
                 <Label Content="{setting:Localize SettingWindow.Tab2.Text2}" />
                 <DockPanel>
@@ -51,15 +57,12 @@
                         Classes="input1"
                         Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
                 </DockPanel>
-
                 <StackPanel Orientation="Horizontal">
-                    <Label
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text4}" />
-					<Slider
-						Margin="5,0,0,0"
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text4}" />
+                    <Slider
                         Name="Slider1"
                         Width="200"
+                        Margin="5,0,0,0"
                         HorizontalAlignment="Left"
                         Foreground="{setting:Colors Main}"
                         IsSnapToTickEnabled="True"
@@ -77,9 +80,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize Button.Set}" />
 
-                    <Label
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text5}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text5}" />
                     <Slider
                         Name="Slider2"
                         Width="200"
@@ -103,27 +104,36 @@
                 </StackPanel>
 
                 <Label Content="{setting:Localize SettingWindow.Tab2.Text21}" />
+
+                <!--  圆角  -->
+
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        Name="CheckBox4"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize SettingWindow.Tab2.Text25}" />
+                    <NumericUpDown
+                        Name="Input1"
+                        Width="120"
+                        Margin="5,0,0,0"
+                        IsEnabled="False"
+                        Maximum="10"
+                        Minimum="1"
+                        Value="1" />
+                </StackPanel>
+
+                <!--  颜色设置  -->
                 <Label Content="{setting:Localize SettingWindow.Tab2.Text10}" />
                 <StackPanel Orientation="Horizontal">
-                    <Label
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text12}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text12}" />
                     <ColorPicker Name="ColorPicker1" />
-                    <Label
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text13}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text13}" />
                     <ColorPicker Name="ColorPicker2" />
-                    <Label
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text14}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text14}" />
                     <ColorPicker Name="ColorPicker3" />
-                    <Label
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text19}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text19}" />
                     <ColorPicker Name="ColorPicker4" />
-                    <Label
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text20}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text20}" />
                     <ColorPicker Name="ColorPicker5" />
 
                 </StackPanel>
@@ -140,15 +150,11 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <CheckBox
-                        Name="CheckBox2"
-                        Content="RGB!!!" />
+                    <CheckBox Name="CheckBox2" Content="RGB!!!" />
                     <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text16}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text17}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text17}" />
                     <Slider
                         Name="Slider3"
                         Width="200"
@@ -163,8 +169,8 @@
                         SmallChange="1"
                         TickFrequency="1"
                         Value="0" />
-					<Label
-						Margin="5,0,0,0"
+                    <Label
+                        Margin="5,0,0,0"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text18}" />
                     <Slider

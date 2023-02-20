@@ -28,7 +28,7 @@ public partial class HelloWindow : Window
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
         Tab1.Children.Add(content1);
@@ -44,6 +44,10 @@ public partial class HelloWindow : Window
         content1.Content = tab1;
 
         Closed += HelloWindow_Closed;
+
+        App.PicUpdate += Update;
+
+        Update();
     }
 
     private void HelloWindow_Closed(object? sender, EventArgs e)
@@ -51,6 +55,8 @@ public partial class HelloWindow : Window
         CoreMain.PackState = null;
         CoreMain.PackUpdate = null;
         CoreMain.GameOverwirte = null;
+
+        App.PicUpdate -= Update;
     }
 
     private async void Go(UserControl to)
@@ -108,7 +114,7 @@ public partial class HelloWindow : Window
         now = Tabs.SelectedIndex;
     }
 
-    public void Update()
+    public void Load()
     {
         tab3.Load();
         tab4.Load();
@@ -122,5 +128,10 @@ public partial class HelloWindow : Window
     public void Done()
     {
         Close();
+    }
+
+    public void Update()
+    {
+        App.Update(this, Image_Back, Border1, Border2);
     }
 }

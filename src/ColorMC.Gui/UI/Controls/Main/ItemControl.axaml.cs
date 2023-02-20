@@ -7,6 +7,8 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System.Threading;
+using Avalonia;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -29,23 +31,41 @@ public partial class ItemControl : UserControl
 
         Image1.PointerPressed += Image1_PointerPressed;
 
-        Expander1.ContentTransition = App.CrossFade300;
         Button1.Click += Button1_Click;
 
         App.SkinLoad += App_SkinLoad;
+        App.PicUpdate += Update;
+
+        Update();
+    }
+
+    private void Update()
+    {
+        var config = ConfigBinding.GetAllConfig();
+        if (config.Item2 != null)
+        {
+            if (config.Item2.CornerRadius == true)
+            {
+                Border1.CornerRadius = new CornerRadius(0, 0, config.Item2.Radius, 0);
+            }
+            else
+            {
+                Border1.CornerRadius = new CornerRadius(0);
+            }
+        }
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
         Window.Button1.IsVisible = true;
-        Expander1.IsExpanded = false;
+        App.CrossFade100.Start(Grid1, null, CancellationToken.None);
         Button1.IsVisible = false;
     }
 
     public void Display()
     {
         Window.Button1.IsVisible = false;
-        Expander1.IsExpanded = true;
+        App.CrossFade100.Start(null, Grid1, CancellationToken.None);
         Button1.IsVisible = true;
     }
 

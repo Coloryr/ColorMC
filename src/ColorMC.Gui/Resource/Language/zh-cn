@@ -123,6 +123,7 @@
 	<String Key="SettingWindow.Tab2.Text22">字体选择</String>
 	<String Key="SettingWindow.Tab2.Text23">默认字体</String>
 	<String Key="SettingWindow.Tab2.Text24">注意：切换语言后需要重启启动器才能完全生效</String>
+	<String Key="SettingWindow.Tab2.Text25">启用圆角</String>
 	<String Key="SettingWindow.Tab2.Info1">正在切换语言</String>
 	<String Key="SettingWindow.Tab2.Info2">正在设置</String>
 	<String Key="SettingWindow.Tab2.Info3">选择图片文件</String>
@@ -268,6 +269,7 @@
 	<String Key="GameEditWindow.Tabs.Text9">运行日志</String>
 	<String Key="GameEditWindow.Tabs.Text10">服务器列表</String>
 	<String Key="GameEditWindow.Tabs.Text11">光影包</String>
+	<String Key="GameEditWindow.Tabs.Text12">结构文件</String>
 
 	<String Key="GameEditWindow.Tab1.Text1">游戏版本</String>
 	<String Key="GameEditWindow.Tab1.Text2">刷新版本</String>
@@ -376,6 +378,18 @@
 	<String Key="GameEditWindow.Tab11.Info1">导入光影包</String>
 	<String Key="GameEditWindow.Tab11.Info2">光影包</String>
 	<String Key="GameEditWindow.Tab11.Info3">导入成功</String>
+
+	<String Key="GameEditWindow.Tab12.Info1">导入结构文件</String>
+	<String Key="GameEditWindow.Tab12.Info2">结构文件</String>
+	<String Key="GameEditWindow.Tab12.Info3">导入成功</String>
+
+	<String Key="GameEditWindow.Tab12.DataGrid.Text1">名字</String>
+	<String Key="GameEditWindow.Tab12.DataGrid.Text2">作者</String>
+	<String Key="GameEditWindow.Tab12.DataGrid.Text3">描述</String>
+	<String Key="GameEditWindow.Tab12.DataGrid.Text4">长</String>
+	<String Key="GameEditWindow.Tab12.DataGrid.Text5">高</String>
+	<String Key="GameEditWindow.Tab12.DataGrid.Text6">宽</String>
+	<String Key="GameEditWindow.Tab12.DataGrid.Text7">路径</String>
 
 	<String Key="GameEditWindow.Control.Text1">游戏模式</String>
 	<String Key="GameEditWindow.Control.Text2">最后游戏与</String>
@@ -607,6 +621,7 @@
 	<String Key="Error9">找不到指定的文件</String>
 	<String Key="Error10">自定义UI加载失败</String>
 	<String Key="Error11">颜色数据读取失败</String>
+	<String Key="Error12">文件已存在</String>
 
 	<String Key="ToolTip.Text1">最小化</String>
 	<String Key="ToolTip.Text2">最大化</String>

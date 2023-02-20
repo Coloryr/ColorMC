@@ -492,7 +492,33 @@ public partial class App : Application
         Environment.Exit(Environment.ExitCode);
     }
 
-    public static void Update(Window window, Image image, Grid rec)
+    public static CornerRadius GetCornerRadius()
+    {
+        if (GuiConfigUtils.Config.CornerRadius)
+        {
+            return new CornerRadius(GuiConfigUtils.Config.Radius, 
+                GuiConfigUtils.Config.Radius, 0, 0);
+        }
+        else
+        {
+            return new CornerRadius(0);
+        }
+    }
+
+    public static CornerRadius GetCornerRadius1()
+    {
+        if (GuiConfigUtils.Config.CornerRadius)
+        {
+            return new CornerRadius(0, 0, GuiConfigUtils.Config.Radius,
+                GuiConfigUtils.Config.Radius);
+        }
+        else
+        {
+            return new CornerRadius(0);
+        }
+    }
+
+    public static void Update(Window window, Image image, Border rec, Border rec1)
     {
         if (GuiConfigUtils.Config != null)
         {
@@ -517,15 +543,17 @@ public partial class App : Application
 
             if (GuiConfigUtils.Config.WindowTran)
             {
-                rec.Background = ColorSel.AppBackColor1;
+                rec1.Background = ColorSel.AppBackColor1;
                 window.TransparencyLevelHint = (WindowTransparencyLevel)
                     (GuiConfigUtils.Config.WindowTranType + 1);
             }
             else
             {
                 window.TransparencyLevelHint = WindowTransparencyLevel.None;
-                rec.Background = ColorSel.AppBackColor;
+                rec1.Background = ColorSel.AppBackColor;
             }
+
+            rec.CornerRadius = rec1.CornerRadius = GetCornerRadius1();
         }
     }
 }
