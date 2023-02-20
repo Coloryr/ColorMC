@@ -6,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;

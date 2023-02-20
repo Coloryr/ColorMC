@@ -6,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,7 +53,7 @@ public partial class Tab2Control : UserControl
         CheckBox1.Click += CheckBox1_Click;
     }
 
-    private void TextBox12_PropertyChanged(object? sender, 
+    private void TextBox12_PropertyChanged(object? sender,
         AvaloniaPropertyChangedEventArgs e)
     {
         if (e.Property.Name == "Text")
@@ -75,7 +74,7 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    private void TextBox7_PropertyChanged(object? sender, 
+    private void TextBox7_PropertyChanged(object? sender,
         AvaloniaPropertyChangedEventArgs e)
     {
         if (load)
@@ -87,7 +86,7 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    private void TextBox5_PropertyChanged(object? sender, 
+    private void TextBox5_PropertyChanged(object? sender,
         AvaloniaPropertyChangedEventArgs e)
     {
         if (load)
@@ -104,7 +103,7 @@ public partial class Tab2Control : UserControl
         Save1();
     }
 
-    private void Input3_PropertyChanged(object? sender, 
+    private void Input3_PropertyChanged(object? sender,
         AvaloniaPropertyChangedEventArgs e)
     {
         if (load)
@@ -117,7 +116,7 @@ public partial class Tab2Control : UserControl
     }
 
     //Jvm����
-    private void TextBox2_PropertyChanged(object? sender, 
+    private void TextBox2_PropertyChanged(object? sender,
         AvaloniaPropertyChangedEventArgs e)
     {
         if (load)
@@ -130,7 +129,7 @@ public partial class Tab2Control : UserControl
     }
 
     //�ڴ�
-    private void Input1_PropertyChanged1(object? sender, 
+    private void Input1_PropertyChanged1(object? sender,
         AvaloniaPropertyChangedEventArgs e)
     {
         if (load)
@@ -182,9 +181,9 @@ public partial class Tab2Control : UserControl
     {
         var Window = (VisualRoot as GameEditWindow)!;
 
-        var file = await BaseBinding.OpFile(Window, 
+        var file = await BaseBinding.OpFile(Window,
             App.GetLanguage("SettingWindow.Tab5.Info2"),
-            SystemInfo.Os == OsType.Windows ? "*.exe" : "", 
+            SystemInfo.Os == OsType.Windows ? "*.exe" : "",
             App.GetLanguage("SettingWindow.Tab5.Info2"));
         if (file.Any())
         {
@@ -276,7 +275,7 @@ public partial class Tab2Control : UserControl
     private void Save5()
     {
         GameBinding.SetAdvanceJvmArg(Obj, new()
-        { 
+        {
             MainClass = TextBox12.Text,
             ClassPath = TextBox13.Text
         });

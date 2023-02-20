@@ -2,6 +2,7 @@
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
 using ColorMC.Core.Game;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -12,7 +13,6 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ColorMC.Core.Game.Auth;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
@@ -345,7 +344,7 @@ public static class GameBinding
         {
             obj.Version = versi;
 
-            var version1 = VersionPath.Versions!.versions.FirstOrDefault(a=>a.id == versi);
+            var version1 = VersionPath.Versions!.versions.FirstOrDefault(a => a.id == versi);
             if (version1 != null)
             {
                 if (version1.type == "release")
@@ -697,7 +696,7 @@ public static class GameBinding
         return res;
     }
 
-    public static async Task<List<ScreenshotDisplayObj>> 
+    public static async Task<List<ScreenshotDisplayObj>>
         GetScreenshots(GameSettingObj obj)
     {
         var list = new List<ScreenshotDisplayObj>();

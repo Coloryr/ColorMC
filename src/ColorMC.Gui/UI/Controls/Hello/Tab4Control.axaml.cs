@@ -5,7 +5,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
@@ -214,7 +213,7 @@ public partial class Tab4Control : UserControl
     {
         Window.Info1.Close();
         Window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Text3"), url),
-            string.Format(App.GetLanguage("UserWindow.Text4"), code), () => 
+            string.Format(App.GetLanguage("UserWindow.Text4"), code), () =>
             {
                 Cancel = true;
                 UserBinding.OAuthCancel();

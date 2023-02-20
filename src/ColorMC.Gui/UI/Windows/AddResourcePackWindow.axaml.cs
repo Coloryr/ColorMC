@@ -8,7 +8,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.AddWindow;
 using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -66,7 +65,7 @@ public partial class AddResourcePackWindow : Window, IBase1Window
     {
         Obj = obj;
 
-        Head.Title = Title= string.Format(App.GetLanguage("AddResourcePackWindow.Title"), obj.Name);
+        Head.Title = Title = string.Format(App.GetLanguage("AddResourcePackWindow.Title"), obj.Name);
     }
 
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)

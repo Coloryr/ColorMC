@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -7,7 +8,6 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System.Collections.Generic;
 using System.Linq;
-using Avalonia;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 

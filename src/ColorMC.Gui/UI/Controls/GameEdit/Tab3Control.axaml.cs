@@ -6,7 +6,6 @@ using AvaloniaEdit.TextMate;
 using AvaloniaEdit.TextMate.Grammars;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.Generic;

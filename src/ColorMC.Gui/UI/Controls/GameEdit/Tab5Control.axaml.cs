@@ -6,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,8 +51,8 @@ public partial class Tab5Control : UserControl
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.OpFile(window!, 
-            App.GetLanguage("GameEditWindow.Tab5.Info2"), "*.zip", 
+        var file = await BaseBinding.OpFile(window!,
+            App.GetLanguage("GameEditWindow.Tab5.Info2"), "*.zip",
             App.GetLanguage("GameEditWindow.Tab5.Info8"));
         if (file.Any())
         {

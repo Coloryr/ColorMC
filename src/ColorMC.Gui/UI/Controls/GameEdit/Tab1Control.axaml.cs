@@ -40,19 +40,19 @@ public partial class Tab1Control : UserControl
         ComboBox3.Items = List2;
     }
 
-    private void ComboBox3_SelectionChanged(object? sender,     
+    private void ComboBox3_SelectionChanged(object? sender,
         SelectionChangedEventArgs e)
     {
         GameBinding.MoveGameGroup(Obj, ComboBox3.SelectedItem as string);
     }
 
-    private void ComboBox2_SelectionChanged(object? sender, 
+    private void ComboBox2_SelectionChanged(object? sender,
         SelectionChangedEventArgs e)
     {
         Save();
     }
 
-    private void ComboBox1_SelectionChanged(object? sender, 
+    private void ComboBox1_SelectionChanged(object? sender,
         SelectionChangedEventArgs e)
     {
         ComboBox2.SelectedItem = null;

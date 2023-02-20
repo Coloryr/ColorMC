@@ -7,11 +7,9 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading;
-using System.Threading.Channels;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -261,7 +259,7 @@ public partial class UserWindow : Window
     {
         Info1.Close();
         Info3.Show(string.Format(App.GetLanguage("UserWindow.Text3"), url),
-            string.Format(App.GetLanguage("UserWindow.Text4"), code), () => 
+            string.Format(App.GetLanguage("UserWindow.Text4"), code), () =>
             {
                 Cancel = true;
                 UserBinding.OAuthCancel();

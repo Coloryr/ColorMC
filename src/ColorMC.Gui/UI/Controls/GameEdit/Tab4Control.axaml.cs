@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
@@ -10,7 +9,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System;
 using System.Collections.Generic;
@@ -58,7 +56,7 @@ public partial class Tab4Control : UserControl
         LayoutUpdated += Tab5Control_LayoutUpdated;
     }
 
-    private void TextBox1_TextInput(object? sender, 
+    private void TextBox1_TextInput(object? sender,
         AvaloniaPropertyChangedEventArgs e)
     {
         var property = e.Property.Name;

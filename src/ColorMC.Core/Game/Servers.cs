@@ -62,7 +62,7 @@ public static class Servers
     public static void SaveServer(this GameSettingObj game, List<ServerInfoObj> list)
     {
         var nbtTag = new NbtCompoundTag();
-        
+
         NbtListTag list1 = new(NbtTagType.Compound);
         foreach (var item in list)
         {
@@ -74,7 +74,7 @@ public static class Servers
 
             if (!string.IsNullOrWhiteSpace(item.Icon))
             {
-                tag1.Add("icon",  new NbtStringTag( item.Icon));
+                tag1.Add("icon", new NbtStringTag(item.Icon));
             }
             tag1.Add("acceptTextures", new NbtByteTag(
                 item.AcceptTextures ? (sbyte)1 : (sbyte)0));
@@ -94,9 +94,9 @@ public static class Servers
         {
             Name = ((NbtStringTag)tag["name"]).Payload,
             IP = ((NbtStringTag)tag["ip"]).Payload,
-            Icon = tag.TryGetValue("icon", out var data) 
+            Icon = tag.TryGetValue("icon", out var data)
             ? ((NbtStringTag)data).Payload : null,
-            AcceptTextures = tag.TryGetValue("acceptTextures", out var data1) 
+            AcceptTextures = tag.TryGetValue("acceptTextures", out var data1)
             ? ((NbtByteTag)data1).Payload == 1 : false
         };
 

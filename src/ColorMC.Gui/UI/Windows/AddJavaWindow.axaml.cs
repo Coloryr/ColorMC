@@ -4,7 +4,6 @@ using Avalonia.Interactivity;
 using AvaloniaEdit.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;

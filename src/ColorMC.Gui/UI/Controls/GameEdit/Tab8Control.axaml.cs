@@ -2,11 +2,9 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,8 +50,8 @@ public partial class Tab8Control : UserControl
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.OpFile(window, 
-            App.GetLanguage("GameEditWindow.Tab8.Info2"), "*.zip", 
+        var file = await BaseBinding.OpFile(window,
+            App.GetLanguage("GameEditWindow.Tab8.Info2"), "*.zip",
             App.GetLanguage("GameEditWindow.Tab8.Info7"));
         if (file.Any())
         {

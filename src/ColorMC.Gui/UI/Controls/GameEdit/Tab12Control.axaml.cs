@@ -1,18 +1,18 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using ColorMC.Core.Game;
-using Avalonia.Platform.Storage;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -77,7 +77,7 @@ public partial class Tab12Control : UserControl
                      }
                 }
             }
-        }); 
+        });
         if (!res.Any())
         {
             return;

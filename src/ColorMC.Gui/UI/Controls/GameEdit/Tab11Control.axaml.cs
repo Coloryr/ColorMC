@@ -2,17 +2,15 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using ColorMC.Core.Game;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

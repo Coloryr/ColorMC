@@ -221,7 +221,7 @@ public static class ConfigSave
         run = false;
     }
 
-    private static void Run() 
+    private static void Run()
     {
         var list = new List<ConfigSaveObj>();
         while (run)

@@ -9,7 +9,6 @@ using Avalonia.Platform;
 using Avalonia.Threading;
 using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;

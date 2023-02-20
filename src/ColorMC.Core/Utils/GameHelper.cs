@@ -1,11 +1,10 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace ColorMC.Core.Utils;
 
@@ -95,7 +94,7 @@ public static class GameHelper
                         Url = UrlHelper.DownloadLibraries(lib.url, BaseClient.Source),
                         Local = $"{LibrariesPath.BaseDir}/{lib.path}",
                         SHA1 = lib.sha1,
-                        Later = (test) => ForgeHelper.UnpackNative(obj.id, test)
+                        Later = (test) => UnpackNative(obj.id, test)
                     });
 
                     list1.Add(lib.sha1);
@@ -139,6 +138,33 @@ public static class GameHelper
         }
 
         return list;
+    }
+
+    /// <summary>
+    /// 解压native
+    /// </summary>
+    /// <param name="version">游戏版本</param>
+    /// <param name="stream">文件流</param>
+    public static void UnpackNative(string version, FileStream stream)
+    {
+        stream.Seek(0, SeekOrigin.Begin);
+        using ZipFile zFile = new(stream);
+        foreach (ZipEntry e in zFile)
+        {
+            if (e.Name.StartsWith("META-INF"))
+                continue;
+            if (e.IsFile)
+            {
+                string file = LibrariesPath.GetNativeDir(version) + "/" + e.Name;
+                if (File.Exists(file))
+                    continue;
+
+                using var stream1 = new FileStream(file,
+                    FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                using var stream2 = zFile.GetInputStream(e);
+                stream2.CopyTo(stream1);
+            }
+        }
     }
 
     private static async Task<DownloadItem?> MakeItem(string name, string dir)

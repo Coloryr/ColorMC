@@ -9,8 +9,8 @@ public static class UrlHelper
 
     private static readonly string[] originServers =
     {
-        "https://launchermeta.mojang.com/", 
-        "https://launcher.mojang.com/", "https://piston-data.mojang.com" 
+        "https://launchermeta.mojang.com/",
+        "https://launcher.mojang.com/", "https://piston-data.mojang.com"
     };
 
     private const string originServers1 = "https://libraries.minecraft.net/";
@@ -19,10 +19,10 @@ public static class UrlHelper
 
     private const string originServers3 = "https://maven.fabricmc.net/";
 
-    public static readonly string[] originServers4 = 
-    { 
+    public static readonly string[] originServers4 =
+    {
         "https://repo1.maven.org/maven2/",
-        "https://maven.aliyun.com/repository/public/" 
+        "https://maven.aliyun.com/repository/public/"
     };
 
     /// <summary>

@@ -31,7 +31,7 @@ public record WindowsRender
 }
 
 public record Render
-{ 
+{
     public WindowsRender Windows { get; set; }
 }
 public record GuiConfigObj

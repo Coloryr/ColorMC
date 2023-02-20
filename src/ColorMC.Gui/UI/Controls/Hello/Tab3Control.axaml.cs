@@ -4,7 +4,6 @@ using Avalonia.Platform.Storage;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

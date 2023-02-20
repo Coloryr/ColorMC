@@ -1,11 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Platform.Storage;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
@@ -63,7 +60,7 @@ public partial class Tab2Control : UserControl
 
     private async void Button_SelectFile2_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await BaseBinding.OpFile(Window, 
+        var file = await BaseBinding.OpFile(Window,
             App.GetLanguage("HelloWindow.Tab2.Info3"), "*.json",
             App.GetLanguage("HelloWindow.Tab2.Info7"));
 
@@ -119,9 +116,9 @@ public partial class Tab2Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await BaseBinding.OpFile(Window, 
-            App.GetLanguage("HelloWindow.Tab2.Info3"), "*.json", 
-            App.GetLanguage("HelloWindow.Tab2.Info7")); 
+        var file = await BaseBinding.OpFile(Window,
+            App.GetLanguage("HelloWindow.Tab2.Info3"), "*.json",
+            App.GetLanguage("HelloWindow.Tab2.Info7"));
 
         if (file?.Any() == true)
         {
@@ -168,7 +165,7 @@ public partial class Tab2Control : UserControl
         var file = await BaseBinding.OpFile(Window,
             App.GetLanguage("HelloWindow.Tab2.Info6"), "*.json",
             App.GetLanguage("HelloWindow.Tab2.Info8"));
-        
+
         if (file?.Any() == true)
         {
             var item = file[0];
