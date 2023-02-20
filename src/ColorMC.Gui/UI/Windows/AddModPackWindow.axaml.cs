@@ -27,7 +27,7 @@ public partial class AddModPackWindow : Window, IBase1Window
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         ComboBox1.Items = GameBinding.GetCurseForgeTypes();
         ComboBox3.Items = GameBinding.GetSortOrder();
@@ -234,6 +234,6 @@ public partial class AddModPackWindow : Window, IBase1Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Grid1);
+        App.Update(this, Image_Back, Border1, Border2);
     }
 }

@@ -3,25 +3,25 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ColorMC.Core.Game;
+using Avalonia.Platform.Storage;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
-public partial class Tab11Control : UserControl
+public partial class Tab12Control : UserControl
 {
-    private readonly ObservableCollection<ShaderpackDisplayObj> List = new();
+    private readonly ObservableCollection<SchematicDisplayObj> List = new();
     private GameSettingObj Obj;
 
-    public Tab11Control()
+    public Tab12Control()
     {
         InitializeComponent();
 
@@ -46,10 +46,10 @@ public partial class Tab11Control : UserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (DataGrid1.SelectedItem is not ShaderpackDisplayObj obj)
+                if (DataGrid1.SelectedItem is not SchematicDisplayObj obj)
                     return;
 
-                new GameEditFlyout6(this, obj).ShowAt(this, true);
+                new GameEditFlyout7(this, obj).ShowAt(this, true);
             });
         }
     }
@@ -62,21 +62,35 @@ public partial class Tab11Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var res = await BaseBinding.OpFile(window, App.GetLanguage("GameEditWindow.Tab11.Info1"), "*.zip", App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
-
+        var res = await window.StorageProvider.OpenFilePickerAsync(new()
+        {
+            Title = App.GetLanguage("GameEditWindow.Tab12.Info1"),
+            AllowMultiple = true,
+            FileTypeFilter = new List<FilePickerFileType>()
+            {
+                new(App.GetLanguage("GameEditWindow.Tab12.Info2"))
+                {
+                     Patterns = new List<string>()
+                     {
+                         "*" + Schematic.Name1,
+                         "*" + Schematic.Name2
+                     }
+                }
+            }
+        }); 
         if (!res.Any())
         {
             return;
         }
 
-        var res1 = GameBinding.AddShaderpack(Obj, res);
+        var res1 = GameBinding.AddSchematic(Obj, res);
         if (!res1)
         {
             window.Info2.Show(App.GetLanguage("Error12"));
             return;
         }
 
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab11.Info3"));
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab12.Info3"));
         Load();
     }
 
@@ -105,12 +119,12 @@ public partial class Tab11Control : UserControl
         Expander_R.IsExpanded = true;
     }
 
-    private void Load()
+    private async void Load()
     {
         var window = (VisualRoot as GameEditWindow)!;
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
-        List.AddRange(GameBinding.GetShaderpacks(Obj));
+        List.AddRange(await GameBinding.GetSchematics(Obj));
         window.Info1.Close();
     }
 
@@ -127,13 +141,13 @@ public partial class Tab11Control : UserControl
         Obj = obj;
     }
 
-    public void Delete(ShaderpackDisplayObj obj)
+    public void Delete(SchematicDisplayObj obj)
     {
         var window = (VisualRoot as GameEditWindow)!;
         var list = List.ToList();
         list.Remove(obj);
 
-        obj.Shaderpack.Delete();
+        obj.Schematic.Delete();
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();
     }

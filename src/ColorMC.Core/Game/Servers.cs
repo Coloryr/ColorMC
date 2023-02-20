@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using fNbt;
+using NbtLib;
 
 namespace ColorMC.Core.Game;
 
@@ -18,18 +18,21 @@ public static class Servers
         string file = game.GetServersFile();
         if (!File.Exists(file))
             return list;
-        var myFile = new NbtFile();
-        myFile.LoadFromFile(file);
-        var myCompoundTag = myFile.RootTag as NbtCompound;
-        if (myCompoundTag == null)
-            return list;
 
-        var nbtList = myCompoundTag.Get<NbtList>("servers");
-        if (nbtList == null)
-            return list;
-        foreach (NbtCompound item in nbtList.Cast<NbtCompound>())
+        try
         {
-            list.Add(ToServerInfo(item));
+            using var inputStream = File.OpenRead(file);
+            var tag = NbtConvert.ParseNbtStream(inputStream);
+
+            var nbtList = (NbtListTag)tag["servers"]!;
+            foreach (var item in nbtList)
+            {
+                list.Add(ToServerInfo(item as NbtCompoundTag));
+            }
+        }
+        catch (Exception e)
+        {
+            Logs.Error("server load error", e);
         }
         return list;
     }
@@ -58,48 +61,44 @@ public static class Servers
     /// <param name="list">服务器列表</param>
     public static void SaveServer(this GameSettingObj game, List<ServerInfoObj> list)
     {
-        NbtCompound tag = new("");
-        NbtList list1 = new("servers");
+        var nbtTag = new NbtCompoundTag();
+        
+        NbtListTag list1 = new(NbtTagType.Compound);
         foreach (var item in list)
         {
-            NbtCompound tag1 = new()
+            NbtCompoundTag tag1 = new()
             {
-                new NbtString("name", item.Name),
-                new NbtString("ip", item.IP)
+                ["name"] = new NbtStringTag(item.Name),
+                ["ip"] = new NbtStringTag(item.IP)
             };
+
             if (!string.IsNullOrWhiteSpace(item.Icon))
             {
-                tag1.Add(new NbtString("icon", item.Icon));
+                tag1.Add("icon",  new NbtStringTag( item.Icon));
             }
-            tag1.Add(new NbtByte("acceptTextures",
-                item.AcceptTextures ? (byte)1 : (byte)0));
+            tag1.Add("acceptTextures", new NbtByteTag(
+                item.AcceptTextures ? (sbyte)1 : (sbyte)0));
             list1.Add(tag1);
         }
 
-        tag.Add(list1);
+        nbtTag.Add("servers", list1);
         string file = game.GetServersFile();
-        var myFile = new NbtFile(tag);
-        myFile.SaveToFile(file, NbtCompression.None);
+        using var outputStream = NbtConvert.CreateNbtStream(nbtTag);
+        using var stream = File.Create(file);
+        outputStream.CopyTo(stream);
     }
 
-    private static ServerInfoObj ToServerInfo(NbtCompound tag)
+    private static ServerInfoObj ToServerInfo(NbtCompoundTag tag)
     {
-        var info = new ServerInfoObj()
+        var info = new ServerInfoObj
         {
-            Name = tag.Get<NbtString>("name").Value,
-            IP = tag.Get<NbtString>("ip").Value
+            Name = ((NbtStringTag)tag["name"]).Payload,
+            IP = ((NbtStringTag)tag["ip"]).Payload,
+            Icon = tag.TryGetValue("icon", out var data) 
+            ? ((NbtStringTag)data).Payload : null,
+            AcceptTextures = tag.TryGetValue("acceptTextures", out var data1) 
+            ? ((NbtByteTag)data1).Payload == 1 : false
         };
-
-        var data = tag.Get<NbtString>("icon");
-        if (data != null)
-        {
-            info.Icon = data.Value;
-        }
-        var data1 = tag["acceptTextures"];
-        if (data1 != null)
-        {
-            info.AcceptTextures = (data1 as NbtByte).Value == 1;
-        }
 
         return info;
     }

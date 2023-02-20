@@ -28,7 +28,7 @@ public partial class AddGameWindow : Window
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         ComboBox_GameVersion.Items = List;
         ComboBox_GameVersion.SelectionChanged += GameVersion_SelectionChanged;
@@ -76,7 +76,7 @@ public partial class AddGameWindow : Window
             return;
         }
 
-        Update();
+        Load();
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
@@ -312,8 +312,7 @@ public partial class AddGameWindow : Window
     {
         if (CheckBox_Fabric.IsChecked == true)
         {
-            string? item = ComboBox_GameVersion.SelectedItem as string;
-            if (item == null)
+            if (ComboBox_GameVersion.SelectedItem is not string item)
                 return;
 
             Info1.Show(App.GetLanguage("AddGameWindow.Info5"));
@@ -529,6 +528,6 @@ public partial class AddGameWindow : Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Grid1);
+        App.Update(this, Image_Back, Border1, Border2);
     }
 }

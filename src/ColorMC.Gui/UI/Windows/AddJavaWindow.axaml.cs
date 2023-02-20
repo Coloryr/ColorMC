@@ -22,7 +22,7 @@ public partial class AddJavaWindow : Window
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         DataGrid1.Items = List;
 
@@ -45,6 +45,9 @@ public partial class AddJavaWindow : Window
         Button1.Click += Button1_Click;
 
         Button1_Click(null, null);
+
+        App.PicUpdate += Update;
+        Update();
     }
 
     private async void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
@@ -183,5 +186,10 @@ public partial class AddJavaWindow : Window
         ComboBox3.SelectedIndex = 0;
         ComboBox2.SelectedIndex = 0;
         ComboBox4.SelectedIndex = 0;
+    }
+
+    public void Update()
+    {
+        App.Update(this, Image_Back, Border1, Border2);
     }
 }

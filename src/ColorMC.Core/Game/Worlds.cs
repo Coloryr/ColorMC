@@ -2,8 +2,8 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using fNbt;
 using ICSharpCode.SharpZipLib.Zip;
+using NbtLib;
 
 namespace ColorMC.Core.Game;
 
@@ -35,15 +35,15 @@ public static class Worlds
                 {
                     WorldObj obj = new();
 
-                    var myFile = new NbtFile();
-                    myFile.LoadFromFile(item1.FullName);
-                    var myCompoundTag = myFile.RootTag as NbtCompound;
-                    var tag1 = myCompoundTag.Get<NbtCompound>("Data");
-                    obj.LastPlayed = tag1.Get<NbtLong>("LastPlayed").Value;
-                    obj.GameType = tag1.Get<NbtInt>("GameType").Value;
-                    obj.Hardcore = tag1.Get<NbtByte>("hardcore").Value;
-                    obj.Difficulty = tag1.Get<NbtByte>("Difficulty").Value;
-                    obj.LevelName = tag1.Get<NbtString>("LevelName").Value;
+                    using var inputStream = File.OpenRead(item1.FullName);
+                    var tag = NbtConvert.ParseNbtStream(inputStream);
+
+                    var tag1 = (tag["Data"] as NbtCompoundTag)!;
+                    obj.LastPlayed = ((NbtLongTag)tag1["LastPlayed"]).Payload;
+                    obj.GameType = ((NbtIntTag)tag1["GameType"]).Payload;
+                    obj.Hardcore = (byte)((NbtByteTag)tag1["hardcore"]).Payload;
+                    obj.Difficulty = (byte)((NbtByteTag)tag1["Difficulty"]).Payload;
+                    obj.LevelName = ((NbtStringTag)tag1["LevelName"]).Payload;
 
                     obj.Local = Path.GetFullPath(item.FullName);
                     obj.Game = game;

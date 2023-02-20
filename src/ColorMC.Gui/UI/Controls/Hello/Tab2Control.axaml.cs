@@ -47,7 +47,7 @@ public partial class Tab2Control : UserControl
                 Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error2"));
                 return;
             }
-            Window.Update();
+            Window.Load();
             Window.Info2.Show(App.GetLanguage("HelloWindow.Tab2.Info2"));
         }
         catch (Exception e1)
@@ -103,7 +103,7 @@ public partial class Tab2Control : UserControl
                 Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error2"));
                 return;
             }
-            Window.Update();
+            Window.Load();
             Window.Info2.Show(App.GetLanguage("HelloWindow.Tab2.Info2"));
         }
         catch (Exception e1)
@@ -149,7 +149,7 @@ public partial class Tab2Control : UserControl
                 Window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error4"));
                 return;
             }
-            Window.Update();
+            Window.Load();
             Window.Info2.Show(App.GetLanguage("HelloWindow.Tab2.Info5"));
         }
         catch (Exception)

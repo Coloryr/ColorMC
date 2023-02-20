@@ -22,6 +22,7 @@ public static class SystemInfo
     public static string SystemName { get; private set; }
     public static string System { get; private set; }
     public static int ProcessorCount { get; private set; }
+    public static bool IsArm { get; private set; }
 
     /// <summary>
     /// 初始化
@@ -37,6 +38,9 @@ public static class SystemInfo
         {
             SystemArch = ArchEnum.x32;
         }
+
+        IsArm = RuntimeInformation.OSArchitecture == Architecture.X64 ||
+            RuntimeInformation.OSArchitecture == Architecture.X86;
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {

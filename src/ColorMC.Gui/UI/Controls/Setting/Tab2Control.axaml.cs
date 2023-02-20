@@ -7,6 +7,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -31,6 +32,7 @@ public partial class Tab2Control : UserControl
         CheckBox1.Click += CheckBox1_Click;
         CheckBox2.Click += CheckBox2_Click;
         CheckBox3.Click += CheckBox3_Click;
+        CheckBox4.Click += CheckBox4_Click;
 
         ColorPicker1.ColorChanged += ColorPicker_ColorChanged;
         ColorPicker2.ColorChanged += ColorPicker_ColorChanged;
@@ -41,6 +43,38 @@ public partial class Tab2Control : UserControl
         ComboBox1.Items = BaseBinding.GetWindowTranTypes();
         ComboBox2.Items = BaseBinding.GetLanguages();
         ComboBox3.Items = BaseBinding.GetFontList();
+
+        Input1.PropertyChanged += Input1_PropertyChanged;
+    }
+
+    private void Input1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (e.Property.Name == "Value")
+        {
+            Save2();
+        }
+    }
+
+    private void CheckBox4_Click(object? sender, RoutedEventArgs e)
+    {
+        if (CheckBox4.IsChecked == true)
+        {
+            Input1.IsEnabled = true;
+        }
+        else
+        {
+            Input1.IsEnabled = false;
+        }
+
+        Save2();
+    }
+
+    private void Save2()
+    {
+        ConfigBinding.SetRadius(CheckBox4.IsChecked == true, (float)Input1.Value);
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -165,6 +199,7 @@ public partial class Tab2Control : UserControl
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2 != null)
         {
+            Input1.Value = (decimal?)config.Item2.Radius;
             TextBox1.Text = config.Item2.BackImage;
             Slider1.Value = config.Item2.BackEffect;
             Slider2.Value = config.Item2.BackTran;
@@ -180,6 +215,7 @@ public partial class Tab2Control : UserControl
             ColorPicker5.Color = ColorSel.FontColor.ToColor();
             CheckBox2.IsChecked = config.Item2.RGB;
             CheckBox3.IsChecked = config.Item2.FontDefault;
+            CheckBox4.IsChecked = config.Item2.CornerRadius;
             if (config.Item2.WindowTran)
             {
                 ComboBox1.IsEnabled = true;
@@ -203,6 +239,14 @@ public partial class Tab2Control : UserControl
             else
             {
                 ComboBox3.IsEnabled = true;
+            }
+            if (CheckBox4.IsChecked == true)
+            {
+                Input1.IsEnabled = true;
+            }
+            else
+            {
+                Input1.IsEnabled = false;
             }
         }
         if (config.Item1 != null)

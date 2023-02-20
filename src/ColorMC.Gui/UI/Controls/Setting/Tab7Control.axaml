@@ -9,8 +9,6 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
-
         <StackPanel
             HorizontalAlignment="Center"
             VerticalAlignment="Center"

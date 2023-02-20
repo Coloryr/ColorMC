@@ -1,0 +1,104 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Tab12Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <DataGrid
+                Name="DataGrid1"
+                Margin="3,0,3,3"
+                AutoGenerateColumns="False"
+                Background="#88ffffff"
+                CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text1}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Author}"
+                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text2}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Description}"
+                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text3}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Width}"
+                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text4}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Height}"
+                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text5}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Length}"
+                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text6}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Local}"
+                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text7}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+
+        <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
+            <Grid>
+                <Button
+                    Name="Button_A"
+                    Width="20"
+                    Height="30"
+                    Content="A" />
+                <Expander
+                    Name="Expander_A"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_A1"
+                        Width="100"
+                        Height="30"
+                        Margin="6,0,0,0"
+                        Content="{setting:Localize Button.Add}" />
+                </Expander>
+            </Grid>
+            <Grid>
+                <Button
+                    Name="Button_R"
+                    Width="20"
+                    Height="30"
+                    Content="R" />
+                <Expander
+                    Name="Expander_R"
+                    Height="30"
+                    Margin="-84,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_R1"
+                        Width="100"
+                        Height="30"
+                        Margin="6,0,0,0"
+                        Content="{setting:Localize Button.Refash}" />
+                </Expander>
+            </Grid>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

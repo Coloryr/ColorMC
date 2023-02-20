@@ -39,12 +39,20 @@ public static class Shaderpacks
         File.Delete(pack.Local);
     }
 
-    public static void AddShaderpack(this GameSettingObj obj, string file)
+    public static bool AddShaderpack(this GameSettingObj obj, string file)
     {
         var dir = obj.GetResourcepacksPath();
         Directory.CreateDirectory(dir);
         var name = Path.GetFileName(file);
-        File.Copy(file, Path.GetFullPath(dir + "/" + name));
+        var name1 = Path.GetFullPath(dir + "/" + name);
+
+        if (File.Exists(name1))
+        {
+            return false;
+        }
+
+        File.Copy(file, name1);
+        return true;
     }
 
     //public static void Disable(this ShaderpackObj pack)

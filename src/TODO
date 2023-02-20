@@ -11,11 +11,11 @@
 cf整合包启动时检查mod完整 okl
 
 2023.2.16
-登录取消 okl
-最小化动画 okl
+添加登录取消 okl
+修复最小化动画 okl
 拖拽导入
-Title okl
-按键悬浮提示
+修改Title显示 okl
+添加按键悬浮提示/操作提示 okl
 启动崩溃
 modrinth https://docs.modrinth.com/docs/getting-started/
 存档备份
@@ -24,19 +24,17 @@ MCEdit 不添加
 JVisualVM 不添加
 检测整合包更新 后期考虑
 检测mod更新
-Tabs边框
 复制实例
-操作提示
 投影模组 https://www.mcmod.cn/class/2261.html
-Tabs滚动条
-UI调整
-设置添加classpath与mainclass设置，附加参数改成多行输入
-断网时以离线方式启动 okl
+UI调整 调整Tabs边框 Tabs滚动条
+修改classpath与mainclass设置，附加参数改成多行输入
+添加断网时以离线方式启动 okl
 调整窗口打开的位置 okl
-正版用户添加问题 okl
+修复正版用户添加问题 okl
 阻止同目录重复开启 okl
 调整窗口渲染配置
-皮肤站登录错误 okl
+修复皮肤站登录错误 okl
 修复快照版启动 okl
-native处理
-配置文件自动保存
+修改native处理 arm64(1.19测试过) okl
+调整配置文件自动保存
+添加自定义圆角 okl

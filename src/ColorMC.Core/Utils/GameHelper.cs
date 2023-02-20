@@ -103,34 +103,37 @@ public static class GameHelper
             }
         });
 
-        foreach (var item in natives)
+        if (SystemInfo.IsArm)
         {
-            var path = item.Split(':');
-            var path1 = path[0].Split('.');
-            var basedir = "";
-            foreach (var item1 in path1)
+            foreach (var item in natives)
             {
-                basedir += $"{item1}/";
-            }
-            if (SystemInfo.Os == OsType.Linux)
-            {
-                var name = item + $":{path[1]}-{path[2]}-natives-linux-arm64";
-                var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-linux-arm64.jar";
-
-                var item3 = await MakeItem(name, dir);
-                if (item3 != null)
+                var path = item.Split(':');
+                var path1 = path[0].Split('.');
+                var basedir = "";
+                foreach (var item1 in path1)
                 {
-                    list.Add(item3);
+                    basedir += $"{item1}/";
                 }
-            }
-            else if (SystemInfo.Os == OsType.Windows)
-            {
-                var name = item + $":{path[1]}-{path[2]}-natives-windows-arm64";
-                var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-windows-arm64.jar";
-                var item3 = await MakeItem(name, dir);
-                if (item3 != null)
+                if (SystemInfo.Os == OsType.Linux)
                 {
-                    list.Add(item3);
+                    var name = item + $":{path[1]}-{path[2]}-natives-linux-arm64";
+                    var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-linux-arm64.jar";
+
+                    var item3 = await MakeItem(name, dir);
+                    if (item3 != null)
+                    {
+                        list.Add(item3);
+                    }
+                }
+                else if (SystemInfo.Os == OsType.Windows)
+                {
+                    var name = item + $":{path[1]}-{path[2]}-natives-windows-arm64";
+                    var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-windows-arm64.jar";
+                    var item3 = await MakeItem(name, dir);
+                    if (item3 != null)
+                    {
+                        list.Add(item3);
+                    }
                 }
             }
         }

@@ -18,7 +18,6 @@ namespace ColorMC.Gui.UI.Controls.Setting;
 
 public partial class Tab5Control : UserControl
 {
-    private SettingWindow Window;
     private readonly ObservableCollection<JavaDisplayObj> List = new();
     public Tab5Control()
     {
@@ -63,13 +62,14 @@ public partial class Tab5Control : UserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
+            var window = (VisualRoot as SettingWindow)!;
             var java = DataGrid1.SelectedItem as JavaDisplayObj;
             if (java == null)
                 return;
 
             if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
             {
-                new SettingFlyout(Window, java).ShowAt(this, true);
+                new SettingFlyout(window, java).ShowAt(this, true);
             }
         });
     }
@@ -83,7 +83,8 @@ public partial class Tab5Control : UserControl
 
     private async void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
-        var res = await Window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
+        var window = (VisualRoot as SettingWindow)!;
+        var res = await window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
         if (!res)
             return;
 
@@ -118,30 +119,32 @@ public partial class Tab5Control : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as SettingWindow)!;
+
         var name = TextBox1.Text;
         var local = TextBox2.Text;
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
-            Window.Info.Show(App.GetLanguage("Error8"));
+            window.Info.Show(App.GetLanguage("Error8"));
             return;
         }
 
         try
         {
-            Window.Info1.Show(App.GetLanguage("SettingWindow.Tab5.Info1"));
+            window.Info1.Show(App.GetLanguage("SettingWindow.Tab5.Info1"));
 
             var res = JavaBinding.AddJava(name, local);
             if (res.Item1 == null)
             {
-                Window.Info1.Close();
-                Window.Info.Show(res.Item2!);
+                window.Info1.Close();
+                window.Info.Show(res.Item2!);
                 return;
             }
 
             TextBox1.Text = "";
             TextBox2.Text = "";
-            Window.Info1.Close();
+            window.Info1.Close();
 
             Load();
         }
@@ -153,22 +156,9 @@ public partial class Tab5Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await Window.StorageProvider.OpenFilePickerAsync(new()
-        {
-            Title = App.GetLanguage("SettingWindow.Tab5.Info2"),
-            SuggestedStartLocation = JavaBinding.GetSuggestedStartLocation(),
-            AllowMultiple = false,
-            FileTypeFilter = new List<FilePickerFileType>()
-            {
-                new FilePickerFileType(App.GetLanguage("SettingWindow.Tab5.Info4"))
-                {
-                    Patterns = SystemInfo.Os == OsType.Windows ? new List<string>()
-                    {
-                        "*.exe"
-                    } : new List<string>()
-                }
-            }
-        });
+        var window = (VisualRoot as SettingWindow)!;
+        var file = await BaseBinding.OpFile(window, App.GetLanguage("SettingWindow.Tab5.Info2"),
+             "*.exe", App.GetLanguage("SettingWindow.Tab5.Info4"));
 
         if (file?.Any() == true)
         {
@@ -180,11 +170,6 @@ public partial class Tab5Control : UserControl
                 TextBox1.Text = info.Type + "_" + info.Version;
             }
         }
-    }
-
-    public void SetWindow(SettingWindow window)
-    {
-        Window = window;
     }
 
     public void Load()

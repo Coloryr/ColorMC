@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
@@ -14,34 +15,78 @@ namespace ColorMC.Gui.UI.Controls.Setting;
 
 public partial class Tab6Control : UserControl
 {
-    private SettingWindow Window;
+    private bool load;
 
     public Tab6Control()
     {
         InitializeComponent();
 
-        Button1.Click += Button1_Click;
-        Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
-        Button5.Click += Button5_Click;
         Button6.Click += Button6_Click;
         Button7.Click += Button7_Click;
 
         CheckBox3.Click += CheckBox3_Click;
+
+        TextBox1.PropertyChanged += TextBox_PropertyChanged;
+        TextBox2.PropertyChanged += TextBox_PropertyChanged;
+
+        TextBox3.PropertyChanged += TextBox3_PropertyChanged;
+
+        CheckBox1.Click += CheckBox_Click;
+        CheckBox2.Click += CheckBox_Click;
+
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+    }
+
+    private void TextBox3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+
+        if (load)
+            return;
+
+        if (e.Property.Name == "Text")
+        {
+            Save2();
+        }
+    }
+
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        Save1();
+    }
+
+    private void CheckBox_Click(object? sender, RoutedEventArgs e)
+    {
+        Save();
+    }
+
+    private void TextBox_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (e.Property.Name == "Text")
+        {
+            Save();
+        }
     }
 
     private void Button7_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as IBaseWindow)!;
         var file = TextBox3.Text;
         if (string.IsNullOrWhiteSpace(file))
         {
-            Window.Info.Show(App.GetLanguage("Error8"));
+            window.Info.Show(App.GetLanguage("Error8"));
             return;
         }
         if (!File.Exists(TextBox3.Text))
         {
-            Window.Info.Show(App.GetLanguage("Error9"));
+            window.Info.Show(App.GetLanguage("Error9"));
             return;
         }
         try
@@ -49,7 +94,7 @@ public partial class Tab6Control : UserControl
             var obj = JsonConvert.DeserializeObject<UIObj>(File.ReadAllText(file));
             if (obj == null)
             {
-                Window.Info.Show(App.GetLanguage("SettingWindow.Tab6.Error1"));
+                window.Info.Show(App.GetLanguage("SettingWindow.Tab6.Error1"));
                 return;
             }
 
@@ -63,7 +108,8 @@ public partial class Tab6Control : UserControl
 
     private async void Button6_Click(object? sender, RoutedEventArgs e)
     {
-        var str = await BaseBinding.OpSave(Window, App.GetLanguage("SettingWindow.Tab6.Info1"), ".json", "ui.json");
+        var window = (VisualRoot as SettingWindow)!;
+        var str = await BaseBinding.OpSave(window, App.GetLanguage("SettingWindow.Tab6.Info1"), ".json", "ui.json");
         if (str == null)
             return;
 
@@ -77,34 +123,22 @@ public partial class Tab6Control : UserControl
         File.WriteAllBytes(file, BaseBinding.GetUIJson());
     }
 
-    private void Button5_Click(object? sender, RoutedEventArgs e)
+    private void Save2()
     {
-        var file = TextBox3.Text;
-        if (string.IsNullOrWhiteSpace(file))
-        {
-            Window.Info.Show(App.GetLanguage("Error7"));
-            return;
-        }
-
-        if (!File.Exists(file))
-        {
-            Window.Info.Show(App.GetLanguage("Error9"));
-            return;
-        }
-
-        ConfigBinding.SetUIFile(file);
-
-        Window.Info2.Show(App.GetLanguage("Info3"));
+        ConfigBinding.SetUIFile(TextBox3.Text);
     }
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
     {
         TextBox3.Text = null;
+
+        Save2();
     }
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var res = await BaseBinding.OpFile(Window, App.GetLanguage("SettingWindow.Tab6.Info2"),
+        var window = (VisualRoot as SettingWindow)!;
+        var res = await BaseBinding.OpFile(window, App.GetLanguage("SettingWindow.Tab6.Info2"),
             "*.json", App.GetLanguage("SettingWindow.Tab6.Info3"));
         if (res.Any())
         {
@@ -112,12 +146,10 @@ public partial class Tab6Control : UserControl
         }
     }
 
-    private void Button2_Click(object? sender, RoutedEventArgs e)
+    private void Save1()
     {
         ConfigBinding.SetServerCustom(CheckBox3.IsChecked == true,
             ComboBox1.SelectedItem as string);
-
-        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private void CheckBox3_Click(object? sender, RoutedEventArgs e)
@@ -135,9 +167,11 @@ public partial class Tab6Control : UserControl
         {
             ComboBox1.IsEnabled = false;
         }
+
+        Save1();
     }
 
-    private void Button1_Click(object? sender, RoutedEventArgs e)
+    private void Save()
     {
         ConfigBinding.SetServerCustom(new ServerCustom()
         {
@@ -148,17 +182,12 @@ public partial class Tab6Control : UserControl
             MotdColor = ColorPicker1.Color.ToString(),
             MotdBackColor = ColorPicker2.Color.ToString()
         });
-
-        Window.Info2.Show(App.GetLanguage("Info3"));
-    }
-
-    public void SetWindow(SettingWindow window)
-    {
-        Window = window;
     }
 
     public void Load()
     {
+        load = true;
+
         ComboBox1.Items = from item in GameBinding.GetGames() select item.Name;
 
         var config = ConfigBinding.GetAllConfig().Item2?.ServerCustom;
@@ -180,5 +209,7 @@ public partial class Tab6Control : UserControl
 
             Switch();
         }
+
+        load = false;
     }
 }

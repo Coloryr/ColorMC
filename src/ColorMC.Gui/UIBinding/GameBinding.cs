@@ -814,8 +814,61 @@ public static class GameBinding
         obj.Save();
     }
 
-    public static void AddShaderpack(GameSettingObj obj, string file)
+    public static bool AddShaderpack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
-        obj.AddShaderpack(file);
+        foreach (var item in file)
+        {
+            bool ok = obj.AddShaderpack(item.GetPath());
+            if (ok == false)
+                return false;
+        }
+
+        return true;
+    }
+
+    public static async Task<List<SchematicDisplayObj>> GetSchematics(GameSettingObj obj)
+    {
+        var list = await obj.GetSchematics();
+        var list1 = new List<SchematicDisplayObj>();
+        foreach (var item in list)
+        {
+            if (item.Broken)
+            {
+                list1.Add(new()
+                {
+                    Name = "损坏的结构文件",
+                    Local = item.Local,
+                    Schematic = item
+                });
+            }
+            else
+            {
+                list1.Add(new()
+                {
+                    Name = item.Name,
+                    Local = item.Local,
+                    Width = item.Width,
+                    Height = item.Height,
+                    Length = item.Length,
+                    Author = item.Author,
+                    Description = item.Description,
+                    Schematic = item
+                });
+            }
+        }
+
+        return list1;
+    }
+
+    public static bool AddSchematic(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
+    {
+        foreach (var item in file)
+        {
+            bool ok = obj.AddSchematic(item.GetPath());
+            if (ok == false)
+                return false;
+        }
+
+        return true;
     }
 }

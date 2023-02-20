@@ -17,6 +17,7 @@
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaTitleBarHeightHint="-1"
     ExtendClientAreaToDecorationsHint="True"
+    TransparencyBackgroundFallback="Transparent"
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
@@ -24,22 +25,21 @@
             Title="{setting:Localize GameEditWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
-        <Grid Name="Grid1" Margin="0,35,0,0">
+        <Grid Margin="0,35,0,0">
+            <Border Name="Border2" CornerRadius="0,0,10,10" />
             <Image
                 Name="Image_Back"
                 Margin="3"
                 Stretch="UniformToFill" />
 
-            <DockPanel
-                Margin="3"
-                Background="{setting:Colors TranBack}"
-                LastChildFill="True">
+            <DockPanel Margin="3" LastChildFill="True">
 
                 <ScrollViewer
                     Name="ScrollViewer1"
                     Margin="5,0,5,0"
                     VerticalAlignment="Top"
                     AllowAutoHide="True"
+                    Background="{setting:Colors TranBack}"
                     DockPanel.Dock="Top"
                     HorizontalScrollBarVisibility="Auto"
                     VerticalScrollBarVisibility="Disabled">
@@ -53,6 +53,7 @@
                         <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text7}" />
                         <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text10}" />
                         <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text11}" />
+                        <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text12}" />
                         <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text8}" />
                         <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text9}" />
                     </TabControl>
@@ -63,6 +64,7 @@
                     <Grid
                         Name="Tab1"
                         Margin="3"
+                        Background="{setting:Colors TranBack}"
                         ClipToBounds="True" />
                 </Grid>
 
@@ -73,10 +75,11 @@
             <views:Info3Control Name="Info3" IsVisible="False" />
             <views:Info2Control Name="Info2" />
 
-            <Rectangle
-                Name="Rectangle1"
-                Stroke="{setting:Colors Main}"
-                StrokeThickness="3" />
+            <Border
+                Name="Border1"
+                BorderBrush="{setting:Colors Main}"
+                BorderThickness="3"
+                CornerRadius="0,0,10,10" />
         </Grid>
     </Grid>
 </Window>

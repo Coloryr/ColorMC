@@ -17,6 +17,7 @@
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaTitleBarHeightHint="-1"
     ExtendClientAreaToDecorationsHint="True"
+    TransparencyBackgroundFallback="Transparent"
     mc:Ignorable="d">
     <Grid>
         <views:HeadControl
@@ -24,7 +25,9 @@
             Title="{setting:Localize AddGameWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
-        <Grid Name="Grid1" Margin="0,35,0,0">
+        <Grid Margin="0,35,0,0">
+            <Border Name="Border2" CornerRadius="0,0,10,10" />
+
             <Image
                 Name="Image_Back"
                 Margin="3"
@@ -198,10 +201,11 @@
             <views:Info4Control Name="Info" IsVisible="False" />
             <views:Info2Control Name="Info2" />
 
-            <Rectangle
-                Name="Rectangle1"
-                Stroke="{setting:Colors Main}"
-                StrokeThickness="3" />
+            <Border
+                Name="Border1"
+                BorderBrush="{setting:Colors Main}"
+                BorderThickness="3"
+                CornerRadius="0,0,10,10" />
         </Grid>
     </Grid>
 </Window>

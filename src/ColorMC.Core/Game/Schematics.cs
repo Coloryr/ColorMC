@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using fNbt;
+using NbtLib;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -13,12 +13,12 @@ namespace ColorMC.Core.Game;
 
 public static class Schematic
 {
-    private const string Name1 = ".litematic";
-    private const string Name2 = ".schematic";
+    public const string Name1 = ".litematic";
+    public const string Name2 = ".schematic";
 
-    public static async Task<ConcurrentBag<object>> GetSchematics(this GameSettingObj obj)
+    public static async Task<ConcurrentBag<SchematicObj>> GetSchematics(this GameSettingObj obj)
     {
-        var list = new ConcurrentBag<object>();
+        var list = new ConcurrentBag<SchematicObj>();
         var path = obj.GetSchematicsPath();
         if (!Directory.Exists(path))
             return list;
@@ -42,9 +42,22 @@ public static class Schematic
 
     private static SchematicObj ReadAsSchematic(string file)
     {
-        var nbt = new NbtFile(file);
+        try
+        {
+            using var inputStream = File.OpenRead(file);
+            var tag = NbtConvert.ParseNbtStream(inputStream);
 
-        if (nbt.RootTag is not NbtCompound com)
+            return new()
+            {
+                Name = Path.GetFileName(file),
+                Height = ((NbtShortTag)tag["Height"]).Payload,
+                Length = ((NbtShortTag)tag["Length"]).Payload,
+                Width = ((NbtShortTag)tag["Width"]).Payload,
+                Broken = false,
+                Local = file
+            };
+        }
+        catch
         {
             return new()
             {
@@ -52,24 +65,37 @@ public static class Schematic
                 Broken = true
             };
         }
-
-        return new()
-        {
-            Name = Path.GetFileName(file),
-            Height = com.Get<NbtShort>("Height").ShortValue,
-            Length = com.Get<NbtShort>("Length").ShortValue,
-            Width = com.Get<NbtShort>("Width").ShortValue,
-            Broken = false,
-            Local = file
-        };
     }
 
     private static SchematicObj ReadAsLitematic(string file)
     {
-        var nbt = new NbtFile(file);
+        try
+        {
+            using var inputStream = File.OpenRead(file);
+            var nbtData = NbtConvert.ParseNbtStream(inputStream);
+            var com1 = (nbtData["Metadata"] as NbtCompoundTag)!;
 
-        if (nbt.RootTag is not NbtCompound com
-            || com.Get<NbtCompound>("Metadata") is not NbtCompound com1)
+            var item = new SchematicObj()
+            {
+                Name = ((NbtStringTag)com1["Name"]).Payload,
+                Author = ((NbtStringTag)com1["Author"]).Payload,
+                Description = ((NbtStringTag)com1["Description"]).Payload,
+                Broken = false,
+                Local = file
+            };
+
+            var pos = (com1["EnclosingSize"] as NbtCompoundTag)!;
+            if (pos != null)
+            {
+                item.Height = ((NbtIntTag)pos["y"]).Payload;
+                item.Length = ((NbtIntTag)pos["x"]).Payload;
+                item.Width = ((NbtIntTag)pos["z"]).Payload;
+            }
+
+            return item;
+
+        }
+        catch
         {
             return new()
             {
@@ -77,25 +103,6 @@ public static class Schematic
                 Broken = true
             };
         }
-
-        var item = new SchematicObj()
-        {
-            Name = com1.Get<NbtString>("Name").Value,
-            Author = com1.Get<NbtString>("Author").Value,
-            Description = com1.Get<NbtString>("Description").Value,
-            Broken = false,
-            Local = file
-        };
-
-        var pos = com1.Get<NbtCompound>("EnclosionSize");
-        if (pos != null)
-        {
-            item.Height = pos.Get<NbtInt>("y").IntValue;
-            item.Length = pos.Get<NbtInt>("x").IntValue;
-            item.Width = pos.Get<NbtInt>("z").IntValue;
-        }
-
-        return item;
     }
 
     public static void Delete(this SchematicObj obj)
@@ -103,11 +110,16 @@ public static class Schematic
         File.Delete(obj.Local);
     }
 
-    public static void AddSchematic(this GameSettingObj obj, string file)
+    public static bool AddSchematic(this GameSettingObj obj, string file)
     {
         var path = obj.GetSchematicsPath();
         Directory.CreateDirectory(path);
         var name = Path.GetFileName(file);
-        File.Copy(file, Path.GetFullPath(path + "/" + name));
+        var path1 = Path.GetFullPath(path + "/" + name);
+        if (File.Exists(path1))
+            return false;
+
+        File.Copy(file, path1);
+        return true;
     }
 }

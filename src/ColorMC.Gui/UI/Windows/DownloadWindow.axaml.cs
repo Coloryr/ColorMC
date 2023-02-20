@@ -31,7 +31,7 @@ public partial class DownloadWindow : Window
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         CoreMain.DownloadItemStateUpdate = DownloadItemStateUpdate;
 
@@ -215,6 +215,6 @@ public partial class DownloadWindow : Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Grid1);
+        App.Update(this, Image_Back, Border1, Border2);
     }
 }

@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using ColorMC.Core;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -11,7 +12,18 @@ public partial class ErrorWindow : Window
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
+
+        Closed += HelloWindow_Closed;
+
+        App.PicUpdate += Update;
+
+        Update();
+    }
+
+    private void HelloWindow_Closed(object? sender, EventArgs e)
+    {
+        App.PicUpdate -= Update;
     }
 
     public void Show(string data, Exception e, bool close)
@@ -42,5 +54,10 @@ public partial class ErrorWindow : Window
         {
             Show();
         }
+    }
+
+    public void Update()
+    {
+        App.Update(this, Image_Back, Border1, Border2);
     }
 }

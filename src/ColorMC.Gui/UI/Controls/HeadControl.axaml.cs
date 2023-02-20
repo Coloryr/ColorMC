@@ -47,12 +47,21 @@ public partial class HeadControl : UserControl
 
         DataContext = this;
 
-        Rectangle1.PointerPressed += HeadControl_PointerPressed;
+        Border1.PointerPressed += HeadControl_PointerPressed;
         TitleShow.PointerPressed += HeadControl_PointerPressed;
 
         Button_Min.Click += ButtonMin_Click;
         Button_Max.Click += ButtonMax_Click;
         Button_Close.Click += ButtonClose_Click;
+
+        App.PicUpdate += Update;
+
+        Update();
+    }
+
+    private void Update()
+    {
+        Border1.CornerRadius = App.GetCornerRadius();
     }
 
     private void ButtonClose_Click(object? sender, RoutedEventArgs e)

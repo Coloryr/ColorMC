@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -15,11 +16,11 @@ public partial class Tab7Control : UserControl
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        
+        BaseBinding.OpUrl("https://www.minecraft.net/");
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        
+        BaseBinding.OpUrl("https://www.github.com/Coloryr/ColorMC");
     }
 }

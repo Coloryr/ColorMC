@@ -26,7 +26,7 @@ public partial class UserWindow : Window
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         if (App.BackBitmap != null)
         {
@@ -83,7 +83,7 @@ public partial class UserWindow : Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Grid1);
+        App.Update(this, Image_Back, Border1, Border2);
     }
 
     private void DataGrid_User_DoubleTapped(object? sender, RoutedEventArgs e)

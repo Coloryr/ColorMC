@@ -30,7 +30,7 @@ public partial class SkinWindow : Window
 
         this.Init();
         Icon = App.Icon;
-        Rectangle1.MakeResizeDrag(this);
+        Border1.MakeResizeDrag(this);
 
         ComboBox1.Items = UserBinding.GetSkinType();
 
@@ -286,7 +286,7 @@ public partial class SkinWindow : Window
 
     public void Update()
     {
-        App.Update(this, Image_Back, Grid1);
+        App.Update(this, Image_Back, Border1, Border2);
 
         Skin.InvalidateVisual();
     }
