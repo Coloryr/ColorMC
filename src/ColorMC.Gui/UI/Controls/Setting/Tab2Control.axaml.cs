@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Controls.Setting;
 
 public partial class Tab2Control : UserControl
 {
-    private SettingWindow Window;
+    private bool load = false;
     public Tab2Control()
     {
         InitializeComponent();
@@ -20,21 +20,62 @@ public partial class Tab2Control : UserControl
         Button_Delete.Click += Button_Delete_Click;
         Button_SelectFile.Click += Button_SelectFile_Click;
         Button_Set.Click += Button_Set_Click;
-        Button_Set1.Click += Button_Set1_Click;
         Button_Set2.Click += Button_Set2_Click;
-        Button_Set3.Click += Button_Set3_Click;
         Button_Set4.Click += Button_Set4_Click;
         Button_Set5.Click += Button_Set5_Click;
-        Button_Change.Click += Button_Change_Click;
-        Button_Change1.Click += Button_Change1_Click;
+
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+        ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
+        ComboBox3.SelectionChanged += ComboBox3_SelectionChanged;
 
         CheckBox1.Click += CheckBox1_Click;
         CheckBox2.Click += CheckBox2_Click;
         CheckBox3.Click += CheckBox3_Click;
 
+        ColorPicker1.ColorChanged += ColorPicker_ColorChanged;
+        ColorPicker2.ColorChanged += ColorPicker_ColorChanged;
+        ColorPicker3.ColorChanged += ColorPicker_ColorChanged;
+        ColorPicker4.ColorChanged += ColorPicker_ColorChanged;
+        ColorPicker5.ColorChanged += ColorPicker_ColorChanged;
+
         ComboBox1.Items = BaseBinding.GetWindowTranTypes();
         ComboBox2.Items = BaseBinding.GetLanguages();
         ComboBox3.Items = BaseBinding.GetFontList();
+    }
+
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        Save1();
+    }
+
+    private void ColorPicker_ColorChanged(object? sender, ColorChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        ConfigBinding.SetColor(ColorPicker1.Color.ToString(),
+            ColorPicker2.Color.ToString(), ColorPicker3.Color.ToString(),
+            ColorPicker4.Color.ToString(), ColorPicker5.Color.ToString());
+    }
+
+    private void ComboBox3_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        ConfigBinding.SetFont(ComboBox3.SelectedItem as string, CheckBox3.IsChecked == true);
+    }
+
+    private void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        var window = (VisualRoot as SettingWindow)!;
+        var type = (LanguageType)ComboBox2.SelectedIndex;
+        window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info1"));
+        LanguageHelper.Change(type);
+        window.Info1.Close();
     }
 
     private void CheckBox3_Click(object? sender, RoutedEventArgs e)
@@ -42,19 +83,15 @@ public partial class Tab2Control : UserControl
         if (CheckBox3.IsChecked == true)
         {
             ComboBox3.IsEnabled = false;
-            ConfigBinding.SetFont(ComboBox3.SelectedItem as string, true);
         }
         else
         {
             ComboBox3.IsEnabled = true;
         }
+
+        ConfigBinding.SetFont(ComboBox3.SelectedItem as string, CheckBox3.IsChecked == true);
     }
 
-    private void Button_Change1_Click(object? sender, RoutedEventArgs e)
-    {
-        ConfigBinding.SetFont(ComboBox3.SelectedItem as string, CheckBox3.IsChecked == true);
-        Window.Info2.Show(App.GetLanguage("Info3"));
-    }
 
     private void Button_Set5_Click(object? sender, RoutedEventArgs e)
     {
@@ -78,66 +115,53 @@ public partial class Tab2Control : UserControl
 
     private void Button_Set4_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as SettingWindow)!;
         ConfigBinding.SetColor("#FF5ABED6", "#FFF4F4F5", "#88FFFFFF", "#FFFFFFFF", "#FF000000");
         ColorPicker1.Color = ColorSel.MainColor.ToColor();
         ColorPicker2.Color = ColorSel.BackColor.ToColor();
         ColorPicker3.Color = ColorSel.Back1Color.ToColor();
         ColorPicker4.Color = ColorSel.ButtonFont.ToColor();
         ColorPicker5.Color = ColorSel.FontColor.ToColor();
-        Window.Info2.Show(App.GetLanguage("SettingWindow.Tab2.Info4"));
-    }
-
-    private void Button_Set3_Click(object? sender, RoutedEventArgs e)
-    {
-        ConfigBinding.SetColor(ColorPicker1.Color.ToString(),
-            ColorPicker2.Color.ToString(), ColorPicker3.Color.ToString(),
-            ColorPicker4.Color.ToString(), ColorPicker5.Color.ToString());
-        Window.Info2.Show(App.GetLanguage("Info3"));
+        window.Info2.Show(App.GetLanguage("SettingWindow.Tab2.Info4"));
     }
 
     private async void Button_Set2_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as SettingWindow)!;
         if (string.IsNullOrWhiteSpace(TextBox1.Text))
         {
-            Window.Info.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
             return;
         }
-        Window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackPic(TextBox1.Text, (int)Slider1.Value);
-        Window.Info1.Close();
+        window.Info1.Close();
 
-        Window.Info2.Show(App.GetLanguage("Info3"));
+        window.Info2.Show(App.GetLanguage("Info3"));
     }
 
-    private void Button_Set1_Click(object? sender, RoutedEventArgs e)
+    private void Save1()
     {
-        Window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info5"));
+        if (load)
+            return;
+
+        var window = (VisualRoot as SettingWindow)!;
+        window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetBl(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
-        Window.Info1.Close();
-
-        Window.Info2.Show(App.GetLanguage("Info3"));
-    }
-
-    private void Button_Change_Click(object? sender, RoutedEventArgs e)
-    {
-        var type = (LanguageType)ComboBox2.SelectedIndex;
-        Window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info1"));
-        LanguageHelper.Change(type);
-        Window.Info1.Close();
+        window.Info1.Close();
     }
 
     private void CheckBox1_Click(object? sender, RoutedEventArgs e)
     {
         ComboBox1.IsEnabled = CheckBox1.IsChecked == true;
-    }
 
-    public void SetWindow(SettingWindow window)
-    {
-        Window = window;
+        Save1();
     }
 
     public void Load()
     {
+        load = true;
+
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2 != null)
         {
@@ -185,17 +209,21 @@ public partial class Tab2Control : UserControl
         {
             ComboBox2.SelectedIndex = (int)config.Item1.Language;
         }
+
+        load = false;
     }
 
     private void Button_Set_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as SettingWindow)!;
         ConfigBinding.SetBackTran((int)Slider2.Value);
-        Window.Info2.Show(App.GetLanguage("Info3"));
+        window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var file = await Window.StorageProvider.OpenFilePickerAsync(new()
+        var window = (VisualRoot as SettingWindow)!;
+        var file = await window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = App.GetLanguage("SettingWindow.Tab2.Info3"),
             AllowMultiple = false,

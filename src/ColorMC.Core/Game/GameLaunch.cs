@@ -796,11 +796,11 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="v2">V2模式</param>
     /// <returns></returns>
-    public static List<string> GetLibs(GameSettingObj obj, bool v2)
+    public static async Task<List<string>> GetLibs(GameSettingObj obj, bool v2)
     {
         Dictionary<LibVersionObj, string> list = new();
         var version = VersionPath.GetGame(obj.Version)!;
-        var list1 = GameHelper.MakeGameLibs(version);
+        var list1 = await GameHelper.MakeGameLibs(version);
         foreach (var item in list1)
         {
             var key = PathC.MakeVersionObj(item.Name);
@@ -853,7 +853,7 @@ public static class Launch
     /// <param name="login">登录的账户</param>
     /// <param name="all_arg">参数</param>
     /// <param name="v2">V2模式</param>
-    public static void ReplaceAll(GameSettingObj obj, LoginObj login, List<string> all_arg, bool v2)
+    public static async Task ReplaceAll(GameSettingObj obj, LoginObj login, List<string> all_arg, bool v2)
     {
         var version = VersionPath.GetGame(obj.Version)!;
         string assetsPath = AssetsPath.BaseDir;
@@ -874,7 +874,7 @@ public static class Launch
             Loaders.Quilt => $"quilt-{obj.Version}-{obj.LoaderVersion}",
             _ => obj.Version
         };
-        var libraries = GetLibs(obj, v2);
+        var libraries = await GetLibs(obj, v2);
         StringBuilder classpath = new();
         string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
         CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info2"));
@@ -936,7 +936,7 @@ public static class Launch
     {
         var list = new List<string>();
         var version = VersionPath.GetGame(obj.Version)!;
-        var v2 = CheckRule.GameLaunchVersion(obj.Version);
+        var v2 = CheckRule.GameLaunchVersion(version);
 
         list.AddRange(await JvmArg(obj, v2, login));
 
@@ -973,7 +973,7 @@ public static class Launch
         }
         list.AddRange(GameArg(obj, v2));
 
-        ReplaceAll(obj, login, list, v2);
+        await ReplaceAll(obj, login, list, v2);
 
         return list;
     }

@@ -59,7 +59,7 @@ public static class GameDownload
             SHA1 = obj1.downloads.client.sha1
         });
 
-        list.AddRange(GameHelper.MakeGameLibs(obj1));
+        list.AddRange(await GameHelper.MakeGameLibs(obj1));
 
         foreach (var item1 in obj2.objects)
         {
@@ -91,7 +91,8 @@ public static class GameDownload
     /// <param name="version"><forge版本/param>
     public static async Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadForge(string mc, string version)
     {
-        bool v2 = CheckRule.GameLaunchVersion(mc);
+        var version1 = VersionPath.GetGame(mc)!;
+        bool v2 = CheckRule.GameLaunchVersion(version1);
 
         var down = ForgeHelper.BuildForgeInster(mc, version);
         try

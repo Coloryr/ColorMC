@@ -4,20 +4,72 @@ using ColorMC.Core.Net;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using Avalonia;
+using System.Globalization;
+using ColorMC.Core;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
 public partial class Tab3Control : UserControl
 {
-
-    private SettingWindow Window;
+    private bool load;
     public Tab3Control()
     {
         InitializeComponent();
 
         ComboBox1.Items = BaseBinding.GetDownloadSources();
-        Button_Set.Click += Button_Set_Click;
+
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+
         Button2.Click += Button2_Click;
+
+        Input1.ParsingNumberStyle = NumberStyles.Integer;
+        Input1.PropertyChanged += Input1_PropertyChanged;
+
+        TextBox1.PropertyChanged += TextBox_PropertyChanged;
+        TextBox2.PropertyChanged += TextBox_PropertyChanged;
+        TextBox3.PropertyChanged += TextBox_PropertyChanged;
+        TextBox4.PropertyChanged += TextBox_PropertyChanged;
+
+        CheckBox1.Click += CheckBox1_Click;
+    }
+
+    private void CheckBox1_Click(object? sender, RoutedEventArgs e)
+    {
+        if (load)
+            return;
+
+        Save();
+    }
+
+    private void TextBox_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (e.Property.Name == "Text")
+        {
+            Save();
+        }
+    }
+
+    private void Input1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if(e.Property.Name == "Value")
+        {
+            Save();
+        }
+    }
+
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        Save();
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
@@ -25,11 +77,10 @@ public partial class Tab3Control : UserControl
         BaseBinding.OpenDownloadPath();
     }
 
-    private void Button_Set_Click(object? sender, RoutedEventArgs e)
+    private void Save()
     {
         if (UIUtils.CheckNotNumber(TextBox2.Text))
         {
-            Window.Info.Show(App.GetLanguage("Error7"));
             return;
         }
         ConfigBinding.SetHttpConfig(new()
@@ -45,16 +96,48 @@ public partial class Tab3Control : UserControl
             GameProxy = CheckBox3.IsChecked == true,
             CheckFile = CheckBox4.IsChecked == true
         });
-        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
-    public void SetWindow(SettingWindow window)
+    public void Lock()
     {
-        Window = window;
+        ComboBox1.IsEnabled = false;
+        Input1.IsEnabled = false;
+        TextBox1.IsEnabled = false;
+        TextBox2.IsEnabled = false;
+        TextBox3.IsEnabled = false;
+        TextBox4.IsEnabled = false;
+        CheckBox1.IsEnabled = false;
+        CheckBox2.IsEnabled = false;
+        CheckBox3.IsEnabled = false;
+        CheckBox4.IsEnabled = false;
+    }
+
+    public void Unlock()
+    {
+        ComboBox1.IsEnabled = true;
+        Input1.IsEnabled = true;
+        TextBox1.IsEnabled = true;
+        TextBox2.IsEnabled = true;
+        TextBox3.IsEnabled = true;
+        TextBox4.IsEnabled = true;
+        CheckBox1.IsEnabled = true;
+        CheckBox2.IsEnabled = true;
+        CheckBox3.IsEnabled = true;
+        CheckBox4.IsEnabled = true;
     }
 
     public void Load()
     {
+        load = true;
+        if (BaseBinding.GetDownloadState() != CoreRunState.End)
+        {
+            Lock();
+        }
+        else
+        {
+            Unlock();
+        }
+
         var config = ConfigBinding.GetAllConfig();
         if (config.Item1 != null)
         {
@@ -72,5 +155,6 @@ public partial class Tab3Control : UserControl
             CheckBox3.IsChecked = config.Item1.Http.GameProxy;
             CheckBox4.IsChecked = config.Item1.Http.CheckFile;
         }
+        load = false;
     }
 }

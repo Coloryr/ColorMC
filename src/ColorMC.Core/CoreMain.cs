@@ -108,6 +108,7 @@ public static class CoreMain
         Logs.Init(dir);
         ConfigSave.Init();
         ConfigUtils.Init(dir);
+        LocalMaven.Init(dir);
         SystemInfo.Init();
         DownloadManager.Init(dir);
         JvmPath.Init(dir);

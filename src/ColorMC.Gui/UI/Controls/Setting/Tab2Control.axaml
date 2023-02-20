@@ -9,43 +9,26 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
-
         <ScrollViewer Margin="5" HorizontalScrollBarVisibility="Visible">
             <StackPanel>
-                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text1}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="120" Content="{setting:Localize SettingWindow.Tab2.Text1}" />
                     <ComboBox Name="ComboBox2" Width="200" />
-                    <Button
-                        Name="Button_Change"
-                        Width="80"
-                        Height="25"
-                        Margin="20,0,0,0"
-                        HorizontalAlignment="Right"
-                        Content="{setting:Localize SettingWindow.Tab2.Text11}" />
                 </StackPanel>
 
-                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text24}" />
+                <Label Margin="0,5,0,5" Content="{setting:Localize SettingWindow.Tab2.Text24}" />
 
-                <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                    <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text22}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="120" Content="{setting:Localize SettingWindow.Tab2.Text22}" />
                     <ComboBox Name="ComboBox3" Width="200" />
 
                     <CheckBox
                         Name="CheckBox3"
                         Margin="10,0,0,0"
                         Content="{setting:Localize SettingWindow.Tab2.Text23}" />
-
-                    <Button
-                        Name="Button_Change1"
-                        Width="80"
-                        Height="25"
-                        Margin="20,0,0,0"
-                        HorizontalAlignment="Right"
-                        Content="{setting:Localize SettingWindow.Tab2.Text11}" />
                 </StackPanel>
 
-                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text2}" />
+                <Label Content="{setting:Localize SettingWindow.Tab2.Text2}" />
                 <DockPanel>
                     <Button
                         Name="Button_Delete"
@@ -64,20 +47,19 @@
 
                     <TextBox
                         Name="TextBox1"
-                        Margin="5,0,10,0"
+                        Margin="0,0,5,0"
                         Classes="input1"
                         Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
                 </DockPanel>
 
                 <StackPanel Orientation="Horizontal">
                     <Label
-                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text4}" />
-                    <Slider
+					<Slider
+						Margin="5,0,0,0"
                         Name="Slider1"
                         Width="200"
-                        Margin="5,0,0,0"
                         HorizontalAlignment="Left"
                         Foreground="{setting:Colors Main}"
                         IsSnapToTickEnabled="True"
@@ -96,7 +78,6 @@
                         Content="{setting:Localize Button.Set}" />
 
                     <Label
-                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text5}" />
                     <Slider
@@ -121,31 +102,26 @@
                         Content="{setting:Localize Button.Set}" />
                 </StackPanel>
 
-                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
-                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
-                <StackPanel Margin="5" Orientation="Horizontal">
+                <Label Content="{setting:Localize SettingWindow.Tab2.Text21}" />
+                <Label Content="{setting:Localize SettingWindow.Tab2.Text10}" />
+                <StackPanel Orientation="Horizontal">
                     <Label
-                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text12}" />
                     <ColorPicker Name="ColorPicker1" />
                     <Label
-                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text13}" />
                     <ColorPicker Name="ColorPicker2" />
                     <Label
-                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text14}" />
                     <ColorPicker Name="ColorPicker3" />
                     <Label
-                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text19}" />
                     <ColorPicker Name="ColorPicker4" />
                     <Label
-                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text20}" />
                     <ColorPicker Name="ColorPicker5" />
@@ -155,13 +131,6 @@
                     Margin="5"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
-                    <Button
-                        Name="Button_Set3"
-                        Width="80"
-                        Height="25"
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize Button.Set}" />
                     <Button
                         Name="Button_Set4"
                         Width="80"
@@ -173,13 +142,11 @@
                 <StackPanel Orientation="Horizontal">
                     <CheckBox
                         Name="CheckBox2"
-                        Margin="5"
                         Content="RGB!!!" />
                     <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text16}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label
-                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text17}" />
                     <Slider
@@ -196,8 +163,8 @@
                         SmallChange="1"
                         TickFrequency="1"
                         Value="0" />
-                    <Label
-                        Margin="5"
+					<Label
+						Margin="5,0,0,0"
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text18}" />
                     <Slider
@@ -218,13 +185,13 @@
                         Name="Button_Set5"
                         Width="80"
                         Height="25"
-                        Margin="10"
+                        Margin="5,0,0,0"
                         VerticalAlignment="Center"
                         Content="{setting:Localize Button.Set}" />
                 </StackPanel>
 
-                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab2.Text9}" />
-                <StackPanel Margin="5" Orientation="Horizontal">
+                <Label Content="{setting:Localize SettingWindow.Tab2.Text9}" />
+                <StackPanel Orientation="Horizontal">
                     <CheckBox
                         Name="CheckBox1"
                         VerticalAlignment="Center"
@@ -238,13 +205,6 @@
                         Width="200"
                         VerticalAlignment="Center"
                         IsEnabled="False" />
-                    <Button
-                        Name="Button_Set1"
-                        Width="80"
-                        Height="25"
-                        Margin="10"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize Button.Set}" />
                 </StackPanel>
                 <Label Content="{setting:Localize SettingWindow.Tab2.Text8}" />
             </StackPanel>

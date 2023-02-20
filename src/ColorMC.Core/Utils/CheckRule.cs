@@ -78,12 +78,16 @@ public static class CheckRule
     /// <summary>
     /// 是否V2版本
     /// </summary>
-    public static bool GameLaunchVersion(string version)
+    public static bool GameLaunchVersion(GameArgObj version)
     {
-        Version version1 = new(version);
-        return version1.Minor > 12;
+        return version.minimumLauncherVersion > 18;
     }
 
+    /// <summary>
+    /// 是否是1.17以上版本
+    /// </summary>
+    /// <param name="version"></param>
+    /// <returns></returns>
     public static bool GameLaunchVersion117(string version)
     {
         Version version1 = new(version);

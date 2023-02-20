@@ -75,7 +75,6 @@
 
             <Rectangle
                 Name="Rectangle1"
-                IsVisible="True"
                 Stroke="{setting:Colors Main}"
                 StrokeThickness="3" />
         </Grid>

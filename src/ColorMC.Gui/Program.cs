@@ -58,7 +58,7 @@ public class Program
             {
                 DefaultFamilyName = Font,
             })
-            //.With(opt)
+            .With(opt)
             .With(new X11PlatformOptions()
             {
                 UseGpu = false

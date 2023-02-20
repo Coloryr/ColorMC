@@ -62,8 +62,10 @@ public static class LittleSkin
         }
         else
         {
-            server = obj.Text1 + "/api/yggdrasil";
+            server = obj.Text1;
         }
+
+        server += "/api/yggdrasil";
 
         return LoginOld.Refresh(server, obj);
     }

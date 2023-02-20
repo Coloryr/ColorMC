@@ -535,7 +535,7 @@ public static partial class UIUtils
 
     public static void FindGoodPos(this Window windows)
     {
-        if (App.MainWindow == null)
+        if (App.LastWindow == null)
             return;
 
         var basewindow = App.LastWindow;
@@ -684,7 +684,7 @@ public static class GuiConfigUtils
 
     public static bool Load(string name, bool quit = false)
     {
-        Logs.Info("正在读取配置文件");
+        //Logs.Info("正在读取配置文件");
         if (File.Exists(name))
         {
             try
@@ -693,7 +693,7 @@ public static class GuiConfigUtils
             }
             catch (Exception e)
             {
-                CoreMain.OnError?.Invoke("读取错误", e, true);
+                //CoreMain.OnError?.Invoke("读取错误", e, true);
                 Logs.Error("读取错误", e);
             }
         }
@@ -704,7 +704,7 @@ public static class GuiConfigUtils
             {
                 return false;
             }
-            Logs.Warn("配置文件为空");
+            //Logs.Warn("配置文件为空");
 
             Config = MakeDefaultConfig();
 
@@ -718,7 +718,7 @@ public static class GuiConfigUtils
                 return false;
             }
 
-            Logs.Warn("配置文件为空");
+            //Logs.Warn("配置文件为空");
 
             Config.ServerCustom = MakeServerCustomConfig();
 
@@ -733,7 +733,7 @@ public static class GuiConfigUtils
                 return false;
             }
 
-            Logs.Warn("配置文件为空");
+            //Logs.Warn("配置文件为空");
 
             Config.Render = MakeRenderConfig();
 
