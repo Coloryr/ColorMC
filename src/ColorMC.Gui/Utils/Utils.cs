@@ -764,6 +764,14 @@ public static class GuiConfigUtils
                 UseWgl = null,
                 UseCompositor = null,
                 UseDeferredRendering = null
+            },
+            X11 = new()
+            {
+                UseEGL = null,
+                UseGpu = null,
+                OverlayPopups = null,
+                UseDeferredRendering = null,
+                UseCompositor = null,
             }
         };
     }

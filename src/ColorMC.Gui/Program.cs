@@ -52,16 +52,36 @@ public class Program
             opt.UseDeferredRendering = config.UseDeferredRendering == true;
         }
 
+        var config1 = GuiConfigUtils.Config.Render.X11;
+        var opt1 = new X11PlatformOptions();
+        if (config1.UseEGL != null)
+        {
+            opt1.UseEGL = config1.UseEGL == true;
+        }
+        if (config1.UseGpu != null)
+        {
+            opt1.UseGpu = config1.UseGpu == true;
+        }
+        if (config1.OverlayPopups != null)
+        {
+            opt1.OverlayPopups = config1.OverlayPopups == true;
+        }
+        if (config1.UseDeferredRendering != null)
+        {
+            opt1.UseDeferredRendering = config1.UseDeferredRendering == true;
+        }
+        if (config1.UseCompositor != null)
+        {
+            opt1.UseCompositor = config1.UseCompositor == true;
+        }
+
         return AppBuilder.Configure<App>()
             .With(new FontManagerOptions
             {
                 DefaultFamilyName = Font,
             })
             .With(opt)
-            .With(new X11PlatformOptions()
-            {
-                UseGpu = false
-            })
+            .With(opt1)
             .LogToTrace()
             .UsePlatformDetect();
     }
