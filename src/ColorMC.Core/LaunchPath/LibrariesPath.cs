@@ -1,6 +1,5 @@
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
-using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
@@ -51,7 +50,7 @@ public static class LibrariesPath
     {
         var list = new List<DownloadItem>();
 
-        var list1 = GameHelper.MakeGameLibs(obj);
+        var list1 = await GameHelper.MakeGameLibs(obj);
 
         await Parallel.ForEachAsync(list1, (item, cacenl) =>
         {
@@ -84,7 +83,8 @@ public static class LibrariesPath
     /// <returns>丢失的库</returns>
     public static List<DownloadItem>? CheckForge(GameSettingObj obj)
     {
-        var v2 = CheckRule.GameLaunchVersion(obj.Version);
+        var version1 = VersionPath.GetGame(obj.Version)!;
+        var v2 = CheckRule.GameLaunchVersion(version1);
         if (v2)
         {
             ForgeHelper.ReadyForgeWrapper();

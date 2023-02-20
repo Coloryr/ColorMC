@@ -16,16 +16,64 @@ public partial class Tab4Control : UserControl
     {
         InitializeComponent();
 
-        Button_Set.Click += Button_Set_Click;
-        Button_Set1.Click += Button_Set1_Click;
-        Button_Set2.Click += Button_Set2_Click;
+        CheckBox1.Click += CheckBox1_Click;
+        CheckBox2.Click += CheckBox2_Click;
+        CheckBox3.Click += CheckBox2_Click;
+        CheckBox4.Click += CheckBox2_Click;
+        CheckBox5.Click += CheckBox2_Click;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+
+        TextBox1.PropertyChanged += TextBox1_PropertyChanged;
+        TextBox2.PropertyChanged += TextBox1_PropertyChanged;
+        TextBox3.PropertyChanged += TextBox1_PropertyChanged;
+        TextBox4.PropertyChanged += TextBox1_PropertyChanged;
 
         Input1.PropertyChanged += Input_PropertyChanged;
         Input2.PropertyChanged += Input_PropertyChanged;
 
+        Input3.PropertyChanged += Input3_PropertyChanged;
+        Input4.PropertyChanged += Input3_PropertyChanged;
+
         ComboBox1.Items = JavaBinding.GetGCTypes();
+    }
+
+    private void CheckBox1_Click(object? sender, RoutedEventArgs e)
+    {
+        Save1();
+    }
+
+    private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (e.Property.Name == "Value")
+        {
+            Save1();
+        }
+    }
+
+    private void TextBox1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (e.Property.Name == "Text")
+        {
+            Save();
+        }
+    }
+
+    private void CheckBox2_Click(object? sender, RoutedEventArgs e)
+    {
+        ConfigBinding.SetGameCheckConfig(new()
+        {
+            CheckCore = CheckBox2.IsChecked == true,
+            CheckAssets = CheckBox3.IsChecked == true,
+            CheckLib = CheckBox4.IsChecked == true,
+            CheckMod = CheckBox5.IsChecked == true,
+        });
     }
 
     private void Input_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -39,20 +87,7 @@ public partial class Tab4Control : UserControl
         }
     }
 
-    private void Button_Set2_Click(object? sender, RoutedEventArgs e)
-    {
-        ConfigBinding.SetGameCheckConfig(new()
-        {
-            CheckCore = CheckBox2.IsChecked == true,
-            CheckAssets = CheckBox3.IsChecked == true,
-            CheckLib = CheckBox4.IsChecked == true,
-            CheckMod = CheckBox5.IsChecked == true,
-        });
-
-        Window.Info2.Show(App.GetLanguage("Info3"));
-    }
-
-    private void Button_Set1_Click(object? sender, RoutedEventArgs e)
+    private void Save1()
     {
         ConfigBinding.SetWindowSettingConfig(new()
         {
@@ -60,15 +95,19 @@ public partial class Tab4Control : UserControl
             Height = (uint)Input4.Value,
             FullScreen = CheckBox1.IsChecked == true
         });
-        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         TextBox1.IsEnabled = ComboBox1.SelectedIndex == 4;
+
+        if (load)
+            return;
+
+        Save();
     }
 
-    private void Button_Set_Click(object? sender, RoutedEventArgs e)
+    private void Save()
     {
         ConfigBinding.SetJvmArgConfig(new()
         {
@@ -76,11 +115,8 @@ public partial class Tab4Control : UserControl
             JvmArgs = TextBox3.Text,
             GameArgs = TextBox4.Text,
             GCArgument = TextBox1.Text,
-            JavaAgent = TextBox2.Text,
-            MaxMemory = (uint)Input2.Value,
-            MinMemory = (uint)Input1.Value
+            JavaAgent = TextBox2.Text
         });
-        Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     public void SetWindow(SettingWindow window)

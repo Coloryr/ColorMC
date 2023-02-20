@@ -142,7 +142,7 @@
 	<String Key="SettingWindow.Tab3.Text9">代理下载过程</String>
 	<String Key="SettingWindow.Tab3.Text10">代理游戏过程</String>
 	<String Key="SettingWindow.Tab3.Text11">下载后验证完整性</String>
-	<String Key="SettingWindow.Tab3.Text12">注意：默认使用系统代理，不可取消</String>
+	<String Key="SettingWindow.Tab3.Text12">注意：默认使用系统代理，不可取消，下载过程中不可修改设置</String>
 	<String Key="SettingWindow.Tab3.Text13">打开下载缓存文件夹</String>
 
 	<String Key="SettingWindow.Tab4.Text1">Jvm参数设置</String>
@@ -213,11 +213,11 @@
 	<String Key="HelloWindow.Tab1.Text4">语言选择：</String>
 	<String Key="HelloWindow.Tab1.Text5">跳过设置</String>
 
-	<String Key="HelloWindow.Tab2.Text1">导入配置文件</String>
+	<String Key="HelloWindow.Tab2.Text1">导入现有的配置文件</String>
 	<String Key="HelloWindow.Tab2.Text2">配置文件路径</String>
-	<String Key="HelloWindow.Tab2.Text3">导入账户储存数据库</String>
+	<String Key="HelloWindow.Tab2.Text3">导入现有的账户储存数据库</String>
 	<String Key="HelloWindow.Tab2.Text4">账户储存数据库路径</String>
-	<String Key="HelloWindow.Tab2.Text5">导入图形配置文件</String>
+	<String Key="HelloWindow.Tab2.Text5">导入现有的图形配置文件</String>
 	<String Key="HelloWindow.Tab2.Text6">图形配置文件路径</String>
 	<String Key="HelloWindow.Tab2.Info1">正在加载配置</String>
 	<String Key="HelloWindow.Tab2.Info2">配置文件已加载</String>

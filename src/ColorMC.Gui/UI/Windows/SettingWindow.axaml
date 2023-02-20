@@ -37,13 +37,13 @@
 
                 <ScrollViewer
                     Name="ScrollViewer1"
-                    Margin="5,5,5,0"
+                    Margin="5,0,5,0"
                     VerticalAlignment="Top"
                     AllowAutoHide="True"
                     DockPanel.Dock="Top"
                     HorizontalScrollBarVisibility="Hidden"
                     VerticalScrollBarVisibility="Disabled">
-                    <TabControl Name="Tabs">
+                    <TabControl Name="Tabs" Margin="0,0,0,5">
                         <TabItem Header="{setting:Localize SettingWindow.Tabs.Text2}" />
                         <TabItem Header="{setting:Localize SettingWindow.Tabs.Text3}" />
                         <TabItem Header="{setting:Localize SettingWindow.Tabs.Text4}" />
@@ -54,11 +54,14 @@
                     </TabControl>
                 </ScrollViewer>
 
-                <Grid
-                    Name="Tab1"
-                    Margin="5"
-                    ClipToBounds="True"
-                    DockPanel.Dock="Bottom" />
+				<Grid Margin="5,0,5,5">
+					<Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
+					<Grid
+                        Name="Tab1"
+                        Margin="3"
+                        ClipToBounds="True" />
+				</Grid>
+				
             </DockPanel>
 
             <views:Info4Control Name="Info" IsVisible="False" />

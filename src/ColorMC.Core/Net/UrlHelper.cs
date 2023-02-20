@@ -8,13 +8,22 @@ public static class UrlHelper
     private const string MCBBS = "https://download.mcbbs.net/";
 
     private static readonly string[] originServers =
-      { "https://launchermeta.mojang.com/", "https://launcher.mojang.com/", "https://piston-data.mojang.com" };
+    {
+        "https://launchermeta.mojang.com/", 
+        "https://launcher.mojang.com/", "https://piston-data.mojang.com" 
+    };
 
-    private static readonly string originServers1 = "https://libraries.minecraft.net/";
+    private const string originServers1 = "https://libraries.minecraft.net/";
 
-    private static readonly string originServers2 = "https://maven.minecraftforge.net/";
+    private const string originServers2 = "https://maven.minecraftforge.net/";
 
-    private static readonly string originServers3 = "https://maven.fabricmc.net/";
+    private const string originServers3 = "https://maven.fabricmc.net/";
+
+    public static readonly string[] originServers4 = 
+    { 
+        "https://repo1.maven.org/maven2/",
+        "https://maven.aliyun.com/repository/public/" 
+    };
 
     /// <summary>
     /// 游戏版本

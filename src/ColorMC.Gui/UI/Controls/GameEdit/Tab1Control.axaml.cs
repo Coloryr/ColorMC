@@ -3,10 +3,8 @@ using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using DynamicData;
 using System.Collections.ObjectModel;
-using Avalonia.LogicalTree;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -69,7 +67,8 @@ public partial class Tab1Control : UserControl
     private async void Button5_Click(object? sender, RoutedEventArgs e)
     {
         var Window = (VisualRoot as GameEditWindow)!;
-        var res = await Window.Info.ShowWait(string.Format(App.GetLanguage("GameEditWindow.Tab1.Info1"), Obj.Name));
+        var res = await Window.Info.ShowWait(string.Format(
+            App.GetLanguage("GameEditWindow.Tab1.Info1"), Obj.Name));
         if (!res)
             return;
 
@@ -306,6 +305,15 @@ public partial class Tab1Control : UserControl
     public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
+
+        if (obj.GameType == GameType.Snapshot)
+        {
+            CheckBox_Snapshot.IsChecked = true;
+        }
+        else if (obj.GameType == GameType.Other)
+        {
+            CheckBox_Other.IsChecked = true;
+        }
     }
 
     public void Update()

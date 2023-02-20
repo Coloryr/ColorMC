@@ -26,6 +26,13 @@ public enum Loaders
     Quilt
 }
 
+public enum GameType
+{
+    Release,
+    Snapshot,
+    Other
+}
+
 /// <summary>
 /// 加入服务器设置
 /// </summary>
@@ -137,6 +144,10 @@ public record GameSettingObj
     /// 是否为整合包
     /// </summary>
     public bool ModPack { get; set; }
+    /// <summary>
+    /// 游戏发布类型
+    /// </summary>
+    public GameType GameType { get; set; }
 
     /// <summary>
     /// CurseForge_Mod信息

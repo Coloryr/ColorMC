@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -97,7 +96,14 @@ public partial class App : Application
                 Life.Exit += Life_Exit;
             }
 
-            LoadLanguage(ConfigUtils.Config.Language);
+            if (ConfigUtils.Config == null)
+            {
+                LoadLanguage(LanguageType.zh_cn);
+            }
+            else
+            {
+                LoadLanguage(ConfigUtils.Config.Language);
+            }
 
             var uri = new Uri("resm:ColorMC.Gui.Resource.Pic.game.png");
 
@@ -155,7 +161,7 @@ public partial class App : Application
             _ => "ColorMC.Gui.Resource.Language.zh-cn"
         };
         var names = assm.GetManifestResourceNames();
-        var item = assm.GetManifestResourceStream(name);
+        using var item = assm.GetManifestResourceStream(name);
         if (item == null)
         {
             return;

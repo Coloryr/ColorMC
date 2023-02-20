@@ -344,6 +344,23 @@ public static class GameBinding
         if (!string.IsNullOrWhiteSpace(versi))
         {
             obj.Version = versi;
+
+            var version1 = VersionPath.Versions!.versions.FirstOrDefault(a=>a.id == versi);
+            if (version1 != null)
+            {
+                if (version1.type == "release")
+                {
+                    obj.GameType = GameType.Release;
+                }
+                else if (version1.type == "snapshot")
+                {
+                    obj.GameType = GameType.Snapshot;
+                }
+                else
+                {
+                    obj.GameType = GameType.Other;
+                }
+            }
         }
         obj.Loader = loader;
         if (!string.IsNullOrWhiteSpace(loadv))

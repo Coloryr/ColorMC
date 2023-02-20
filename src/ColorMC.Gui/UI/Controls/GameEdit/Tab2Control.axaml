@@ -67,7 +67,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <Label
-                        Width="100"
+                        Width="140"
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text4}" />
                     <NumericUpDown
@@ -78,8 +78,8 @@
                         Value="1" />
 
                     <Label
-                        Width="100"
-                        Margin="5,0,0,0"
+                        Width="140"
+                        Margin="20,0,0,0"
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text5}" />
                     <NumericUpDown
@@ -138,7 +138,7 @@
                 <Label Content="{setting:Localize GameEditWindow.Tab2.Text9}" />
                 <StackPanel Orientation="Horizontal">
                     <Label
-                        Width="100"
+                        Width="140"
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text10}" />
                     <NumericUpDown
@@ -149,8 +149,8 @@
                         Value="1" />
 
                     <Label
-                        Width="100"
-                        Margin="5,0,0,0"
+                        Width="140"
+                        Margin="20,0,0,0"
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text11}" />
                     <NumericUpDown

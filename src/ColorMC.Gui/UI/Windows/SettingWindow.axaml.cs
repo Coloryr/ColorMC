@@ -37,8 +37,6 @@ public partial class SettingWindow : Window
         Tab1.Children.Add(content1);
         Tab1.Children.Add(content2);
 
-        tab2.SetWindow(this);
-        tab3.SetWindow(this);
         tab4.SetWindow(this);
         tab5.SetWindow(this);
         tab6.SetWindow(this);
@@ -126,8 +124,6 @@ public partial class SettingWindow : Window
         content1.Content = null;
         content2.Content = null;
 
-        tab2.SetWindow(null);
-        tab3.SetWindow(null);
         tab4.SetWindow(null);
         tab5.SetWindow(null);
         tab6.SetWindow(null);

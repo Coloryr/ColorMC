@@ -111,7 +111,8 @@ public static class ForgeHelper
     /// <returns></returns>
     public static List<DownloadItem> MakeForgeLibs(ForgeLaunchObj info, string mc, string version)
     {
-        var v2 = CheckRule.GameLaunchVersion(mc);
+        var version1 = VersionPath.GetGame(mc)!;
+        var v2 = CheckRule.GameLaunchVersion(version1);
         var list = new List<DownloadItem>();
 
         if (v2)
