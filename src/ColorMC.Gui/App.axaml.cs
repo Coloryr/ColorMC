@@ -170,11 +170,11 @@ public partial class App : Application
         Language.Clear();
         var xmlDoc = new XmlDocument();
         xmlDoc.Load(item);
-        foreach(XmlNode item1 in xmlDoc.DocumentElement!.ChildNodes)
+        foreach (XmlNode item1 in xmlDoc.DocumentElement!.ChildNodes)
         {
             if (item1.Name == "String")
             {
-                Language.Add(item1.Attributes!.GetNamedItem("Key")!.Value!, 
+                Language.Add(item1.Attributes!.GetNamedItem("Key")!.Value!,
                     item1.FirstChild!.Value!);
             }
         }
@@ -496,7 +496,7 @@ public partial class App : Application
     {
         if (GuiConfigUtils.Config.CornerRadius)
         {
-            return new CornerRadius(GuiConfigUtils.Config.Radius, 
+            return new CornerRadius(GuiConfigUtils.Config.Radius,
                 GuiConfigUtils.Config.Radius, 0, 0);
         }
         else

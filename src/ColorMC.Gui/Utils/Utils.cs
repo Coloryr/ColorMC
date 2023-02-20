@@ -544,7 +544,7 @@ public static partial class UIUtils
         if (sec == null)
             return;
         var area = sec.WorkingArea;
-        int x ,y;
+        int x, y;
         if (pos.X > area.Width / 2)
         {
             x = pos.X - 100;

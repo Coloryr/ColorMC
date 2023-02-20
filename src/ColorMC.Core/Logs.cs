@@ -2,7 +2,6 @@
 
 using ColorMC.Core.Utils;
 using System.Collections.Concurrent;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ColorMC.Core;
 

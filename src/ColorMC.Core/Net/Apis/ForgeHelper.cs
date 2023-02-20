@@ -3,7 +3,6 @@ using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
 using HtmlAgilityPack;
-using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
@@ -76,29 +75,6 @@ public static class ForgeHelper
         {
             Logs.Error("获取Forge支持版本错误", e);
             return null;
-        }
-    }
-
-    /// <summary>
-    /// 解压native
-    /// </summary>
-    /// <param name="version">游戏版本</param>
-    /// <param name="stream">文件流</param>
-    public static void UnpackNative(string version, FileStream stream)
-    {
-        stream.Seek(0, SeekOrigin.Begin);
-        using ZipFile zFile = new(stream);
-        foreach (ZipEntry e in zFile)
-        {
-            if (e.Name.StartsWith("META-INF"))
-                continue;
-            if (e.IsFile)
-            {
-                using var stream1 = new FileStream(LibrariesPath.GetNativeDir(version) + "/" + e.Name,
-                    FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-                using var stream2 = zFile.GetInputStream(e);
-                stream2.CopyTo(stream1);
-            }
         }
     }
 

@@ -1,12 +1,10 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Core.Net;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
-using Avalonia;
-using System.Globalization;
 using ColorMC.Core;
+using ColorMC.Core.Net;
+using ColorMC.Gui.UIBinding;
+using System.Globalization;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -58,7 +56,7 @@ public partial class Tab3Control : UserControl
         if (load)
             return;
 
-        if(e.Property.Name == "Value")
+        if (e.Property.Name == "Value")
         {
             Save();
         }

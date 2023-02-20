@@ -12,11 +12,8 @@ using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -64,7 +61,7 @@ public partial class MainWindow : Window, IBaseWindow
         App.PicUpdate += Update;
 
         Update();
-        
+
         if (BaseBinding.IsLaunch())
         {
             Dispatcher.UIThread.Post(async () =>
@@ -84,7 +81,7 @@ public partial class MainWindow : Window, IBaseWindow
 
     private Task<bool> LoginFailLaunch(LoginObj login)
     {
-        return Dispatcher.UIThread.InvokeAsync(() => 
+        return Dispatcher.UIThread.InvokeAsync(() =>
         {
             return Info.ShowWait(string.Format(
                 App.GetLanguage("MainWindow.Info21"), login.UserName));

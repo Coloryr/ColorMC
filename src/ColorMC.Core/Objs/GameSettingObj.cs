@@ -72,7 +72,7 @@ public record ProxyHostObj
 }
 
 public record AdvanceJvmObj
-{ 
+{
     /// <summary>
     /// 自定义mainclass
     /// </summary>

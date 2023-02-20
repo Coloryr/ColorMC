@@ -397,7 +397,7 @@ public static class BaseBinding
 
     public static bool IsLaunch()
     {
-        mutex1 = new Mutex(true, "ColorMC-lock" + 
+        mutex1 = new Mutex(true, "ColorMC-lock" +
             AppContext.BaseDirectory.Replace("\\", "_").Replace("/", "_"), out var isnew);
 
         return !isnew;

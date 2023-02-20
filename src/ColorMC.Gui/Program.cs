@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Media;
 using ColorMC.Core;
-using ColorMC.Core.Utils;
 using System;
 using System.Text;
 
@@ -25,7 +24,7 @@ public class Program
         //}
 
         CoreMain.Init(AppContext.BaseDirectory);
-        
+
         BuildAvaloniaApp()
              .StartWithClassicDesktopLifetime(args);
     }

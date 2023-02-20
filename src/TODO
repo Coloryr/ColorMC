@@ -30,7 +30,7 @@ UI调整 调整Tabs边框 Tabs滚动条 okl
 调整窗口渲染配置
 修复皮肤站登录错误 okl
 修复快照版启动 okl
-修改native处理 arm64(1.19测试过) okl
+修改native处理 arm64(1.19以上) okl
 调整配置文件自动保存 okl
 添加自定义圆角 okl
 

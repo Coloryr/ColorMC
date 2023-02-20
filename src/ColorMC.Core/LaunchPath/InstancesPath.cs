@@ -325,7 +325,7 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}/");
     }
 
-    public static string GetSchematicsPath(this GameSettingObj obj) 
+    public static string GetSchematicsPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name18}/");
     }

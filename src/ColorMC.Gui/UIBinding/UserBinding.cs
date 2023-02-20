@@ -8,7 +8,6 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.SkinModel;
-using ColorMC.Gui.Utils.LaunchSetting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
@@ -41,7 +40,7 @@ public static class UserBinding
         return list;
     }
 
-    public static async Task<(bool, string?)> AddUser(int type, string? input1, 
+    public static async Task<(bool, string?)> AddUser(int type, string? input1,
         string? input2 = null, string? input3 = null)
     {
         if (type == 0)
@@ -318,6 +317,6 @@ public static class UserBinding
 
     public static void OAuthCancel()
     {
-        BaseAuth.CancelWithOAuth();      
+        BaseAuth.CancelWithOAuth();
     }
 }

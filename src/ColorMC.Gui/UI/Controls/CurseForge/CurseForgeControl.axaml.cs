@@ -6,7 +6,6 @@ using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 
 namespace ColorMC.Gui.UI.Controls.CurseForge;

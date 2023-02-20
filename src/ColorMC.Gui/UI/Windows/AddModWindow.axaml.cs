@@ -8,7 +8,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.AddWindow;
 using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -66,7 +65,7 @@ public partial class AddModWindow : Window
     {
         Obj = obj;
 
-        Head.Title = Title= string.Format(App.GetLanguage("AddModWindow.Title"), obj.Name);
+        Head.Title = Title = string.Format(App.GetLanguage("AddModWindow.Title"), obj.Name);
     }
 
     private void ButtonDownload_Click(object? sender, RoutedEventArgs e)
