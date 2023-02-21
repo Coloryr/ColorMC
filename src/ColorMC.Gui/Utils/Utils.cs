@@ -684,7 +684,6 @@ public static class GuiConfigUtils
 
     public static bool Load(string name, bool quit = false)
     {
-        //Logs.Info("正在读取配置文件");
         if (File.Exists(name))
         {
             try
@@ -693,59 +692,65 @@ public static class GuiConfigUtils
             }
             catch (Exception e)
             {
-                //CoreMain.OnError?.Invoke("读取错误", e, true);
                 Logs.Error("读取错误", e);
             }
-        }
 
-        if (Config == null)
-        {
-            if (quit)
+            if (Config == null)
             {
-                return false;
-            }
-            //Logs.Warn("配置文件为空");
+                if (quit)
+                {
+                    return false;
+                }
 
+                Config = MakeDefaultConfig();
+
+                SaveNow();
+            }
+
+            if (Config.ServerCustom == null)
+            {
+                if (quit)
+                {
+                    return false;
+                }
+
+                Config.ServerCustom = MakeServerCustomConfig();
+
+                Save();
+            }
+
+            if (Config.Render == null
+                || Config.Render.Windows == null
+                || Config.Render.X11 == null)
+            {
+                if (quit)
+                {
+                    return false;
+                }
+
+                Config.Render = MakeRenderConfig();
+
+                Save();
+            }
+        }
+        else
+        {
             Config = MakeDefaultConfig();
 
-            Save();
-        }
-
-        if (Config.ServerCustom == null)
-        {
-            if (quit)
-            {
-                return false;
-            }
-
-            //Logs.Warn("配置文件为空");
-
-            Config.ServerCustom = MakeServerCustomConfig();
-
-            Save();
-        }
-
-        if (Config.Render == null
-            || Config.Render.Windows == null)
-        {
-            if (quit)
-            {
-                return false;
-            }
-
-            //Logs.Warn("配置文件为空");
-
-            Config.Render = MakeRenderConfig();
-
-            Save();
+            SaveNow();
         }
 
         return true;
     }
 
+    public static void SaveNow()
+    {
+        File.WriteAllText(Name,
+                    JsonConvert.SerializeObject(Config, Formatting.Indented));
+    }
+
     public static void Save()
     {
-        Logs.Info(App.GetLanguage("Info2"));
         ConfigSave.AddItem(new()
         {
             Name = "gui.json",
@@ -768,10 +773,10 @@ public static class GuiConfigUtils
             X11 = new()
             {
                 UseEGL = null,
-                UseGpu = null,
+                UseGpu = false,
                 OverlayPopups = null,
                 UseDeferredRendering = null,
-                UseCompositor = null,
+                UseCompositor = false,
             }
         };
     }

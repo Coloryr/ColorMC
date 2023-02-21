@@ -609,6 +609,7 @@
 	<String Key="Info2">正在保存配置文件</String>
 	<String Key="Info3">已设置</String>
 	<String Key="Info4">添加成功</String>
+	<String Key="Info5">有新版本，是否要更新</String>
 	<String Key="Warn1">配置为空，旧版配置文件会被覆盖</String>
 	<String Key="Error1">背景图片加载失败</String>
 	<String Key="Error2">配置文件读取错误</String>
@@ -622,6 +623,7 @@
 	<String Key="Error10">自定义UI加载失败</String>
 	<String Key="Error11">颜色数据读取失败</String>
 	<String Key="Error12">文件已存在</String>
+	<String Key="Error13">检查更新错误</String>
 
 	<String Key="ToolTip.Text1">最小化</String>
 	<String Key="ToolTip.Text2">最大化</String>

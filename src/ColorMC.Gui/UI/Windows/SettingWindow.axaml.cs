@@ -14,12 +14,14 @@ public partial class SettingWindow : Window
     private readonly Tab4Control tab4 = new();
     private readonly Tab5Control tab5 = new();
     private readonly Tab6Control tab6 = new();
-    private readonly Tab6Control tab7 = new();
+    private readonly Tab7Control tab7 = new();
 
     private bool switch1 = false;
 
     private readonly ContentControl content1 = new();
     private readonly ContentControl content2 = new();
+
+    private CancellationTokenSource cancel = new();
 
     private int now;
 
@@ -42,10 +44,16 @@ public partial class SettingWindow : Window
         tab2.Load();
 
         Closed += SettingWindow_Closed;
+        Activated += SettingWindow_Activated;
 
         App.PicUpdate += Update;
 
         Update();
+    }
+
+    private void SettingWindow_Activated(object? sender, EventArgs e)
+    {
+        App.LastWindow = this;
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -95,19 +103,26 @@ public partial class SettingWindow : Window
         now = Tabs.SelectedIndex;
     }
 
-    private async void Go(UserControl to)
+    private void Go(UserControl to)
     {
+        cancel.Cancel();
+        cancel.Dispose();
+
+        cancel = new();
+
         Tabs.IsEnabled = false;
 
         if (!switch1)
         {
             content2.Content = to;
-            await App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, CancellationToken.None);
+            App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, 
+                cancel.Token);
         }
         else
         {
             content1.Content = to;
-            await App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, CancellationToken.None);
+            App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, 
+                cancel.Token);
         }
 
         switch1 = !switch1;

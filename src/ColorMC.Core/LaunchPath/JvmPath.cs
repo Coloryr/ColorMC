@@ -35,6 +35,7 @@ public static class JvmPath
         {
             return (CoreRunState.Error, LanguageHelper.GetName("Core.Jvm.Error5"));
         }
+        CoreMain.JavaUnzip?.Invoke();
         res = await UnzipJava(name, res.Item2!);
         if (!res.Item1)
         {
@@ -184,7 +185,7 @@ public static class JvmPath
         Jvms.Clear();
         list.ForEach(a =>
         {
-            var info = GetJavaInfo(Path.GetFileName(a.Local));
+            var info = GetJavaInfo(Path.GetFullPath(a.Local));
             if (info != null)
             {
                 Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info2"),

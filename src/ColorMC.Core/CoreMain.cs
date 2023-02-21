@@ -82,11 +82,14 @@ public static class CoreMain
     /// 语言更新回调
     /// </summary>
     public static Action<LanguageType>? LanguageReload { get; set; }
-
     /// <summary>
     /// 登录失败是否以离线方式启动
     /// </summary>
     public static Func<LoginObj, Task<bool>>? LoginFailLaunch { get; set; }
+    /// <summary>
+    /// 解压Java时
+    /// </summary>
+    public static Action? JavaUnzip { get; set; }
 
     /// <summary>
     /// 新运行

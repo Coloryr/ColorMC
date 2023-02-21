@@ -1,13 +1,13 @@
 # ColorMC
 
-![](/Img/pic.png)
-
 ## 支持平台
 - Linux
 - Windows
 - macOs
 
 **需要安装.NET 7环境**
+
+Linux由于发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以尝试修改`/usr/share/ColorMC/gui.json`
 
 ## 安装/启动
 
@@ -87,3 +87,5 @@ $ dotnet ColorMC.Gui.dll
 [Visual Studio Code](https://code.visualstudio.com/)
 
 [Visual Studio](https://visualstudio.microsoft.com/)
+
+![](/Img/pic.png)

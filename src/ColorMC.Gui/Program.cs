@@ -1,14 +1,18 @@
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Threading;
 using ColorMC.Core;
 using System;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
 
-public class Program
+public class ProgramGui
 {
-    public const string Font = "avares://ColorMC.Gui/Resource/Font/MiSans-Normal.ttf#MiSans";
+    public static Action InitDone;
+    public const string Font = "resm:ColorMC.Launcher.Resource.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -17,16 +21,37 @@ public class Program
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-        //Console.WriteLine("wait");
-        //while (!Debugger.IsAttached)
-        //{
-        //    Thread.Sleep(100);
-        //}
+        try
+        {
+            CoreMain.Init(AppContext.BaseDirectory);
 
-        CoreMain.Init(AppContext.BaseDirectory);
+            BuildAvaloniaApp()
+                 .StartWithClassicDesktopLifetime(args);
+        }
+        catch (Exception e)
+        {
+            Logs.Error("run fail", e);
+        }
+    }
 
-        BuildAvaloniaApp()
-             .StartWithClassicDesktopLifetime(args);
+    public static void SetInit(Action ac)
+    {
+        InitDone = ac;
+    }
+
+    public static Task<bool> HaveUpdate()
+    {
+        return App.MainWindow.Info.ShowWait(App.GetLanguage("Info5"));
+    }
+    
+    public static void CheckUpdateFail()
+    {
+        App.MainWindow.Info1.Show(App.GetLanguage("Error13"));
+    }
+
+    public static void Quit()
+    {
+        App.MainWindow.Close();
     }
 
     public static AppBuilder BuildAvaloniaApp()
