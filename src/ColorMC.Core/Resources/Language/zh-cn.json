@@ -93,7 +93,7 @@
     "AuthType.OAuth": "微软登录",
     "AuthType.Nide8": "统一通行证",
     "AuthType.AuthlibInjector": "外置登录",
-    "AuthType.LittleSkin": "皮肤站",
+    "AuthType.LittleSkin": "LittleSkin皮肤站",
     "AuthType.SelfLittleSkin": "自建皮肤站",
     "AuthType.Other": "账户",
     "AuthState.OAuth": "OAuth",

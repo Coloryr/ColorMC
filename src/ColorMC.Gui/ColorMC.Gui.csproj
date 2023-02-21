@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
@@ -9,7 +9,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Platforms>AnyCPU;x64</Platforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
     <SignAssembly>False</SignAssembly>
     <Authors>Coloryr</Authors>
     <Company>Coloryr</Company>
@@ -30,7 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
-    <None Remove="Resource\Font\MiSans-Normal.ttf" />
+    <None Remove="icon.ico" />
     <None Remove="Resource\Language\en-us" />
     <None Remove="Resource\Language\zh-cn" />
     <None Remove="Resource\Pic\file.png" />
@@ -44,9 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <AvaloniaResource Include="Resource\Font\MiSans-Normal.ttf" />
     <EmbeddedResource Include="Resource\Language\en-us" />
     <EmbeddedResource Include="Resource\Language\zh-cn">
       <Generator></Generator>

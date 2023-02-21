@@ -87,6 +87,9 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;
+
+            //var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+            //using var asset = assets!.Open(new Uri(ProgramGui.Font));
         }
 
         try
@@ -103,19 +106,14 @@ public partial class App : Application
             else
             {
                 LoadLanguage(ConfigUtils.Config.Language);
-            }
-
-            var uri = new Uri("resm:ColorMC.Gui.Resource.Pic.game.png");
+            }  
 
             var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            using var asset = assets!.Open(uri);
-
+            using var asset = assets!.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
             GameIcon = new Bitmap(asset);
 
-            var uri1 = new Uri("resm:ColorMC.Gui.icon.ico");
-            using var asset1 = assets!.Open(uri1);
-
-            Icon = new(asset1);
+            using var asset1 = assets!.Open(new Uri("resm:ColorMC.Gui.icon.ico"));
+            Icon = new(asset1!);
 
             BaseBinding.Init();
 

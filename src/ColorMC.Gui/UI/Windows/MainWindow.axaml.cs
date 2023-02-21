@@ -153,6 +153,8 @@ public partial class MainWindow : Window, IBaseWindow
 
     private void MainWindow_Opened(object? sender, EventArgs e)
     {
+        ProgramGui.InitDone();
+
         MotdLoad();
     }
 

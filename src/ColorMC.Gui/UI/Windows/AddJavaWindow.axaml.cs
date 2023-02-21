@@ -1,9 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
+using ColorMC.Core;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -43,10 +46,36 @@ public partial class AddJavaWindow : Window
 
         Button1.Click += Button1_Click;
 
+        this.Closed += AddJavaWindow_Closed;
+        Activated += AddJavaWindow_Activated;
+
         Button1_Click(null, null);
 
+        CoreMain.JavaUnzip = JavaUnzip;
+
         App.PicUpdate += Update;
+
         Update();
+    }
+
+    private void AddJavaWindow_Activated(object? sender, EventArgs e)
+    {
+        App.LastWindow = this;
+    }
+
+    private void JavaUnzip()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            Info1.NextText("ÕýÔÚ½âÑ¹");
+        });
+    }
+
+    private void AddJavaWindow_Closed(object? sender, EventArgs e)
+    {
+        App.PicUpdate -= Update;
+
+        App.AddJavaWindow = null;
     }
 
     private async void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)

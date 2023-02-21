@@ -1,4 +1,6 @@
-﻿using ColorMC.Core.Net;
+﻿using ColorMC.Core;
+using ColorMC.Core.Net;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -94,6 +96,9 @@ public static class ConfigBinding
 
     public static void SetHttpConfig(HttpObj obj)
     {
+        if (DownloadManager.State != CoreRunState.End)
+            return;
+
         ConfigUtils.Config.Http = obj;
         ConfigUtils.Save();
 

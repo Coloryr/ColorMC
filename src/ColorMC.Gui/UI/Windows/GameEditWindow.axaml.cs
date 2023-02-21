@@ -216,6 +216,8 @@ public partial class GameEditWindow : Window, IBaseWindow
     private void Go(UserControl to)
     {
         cancel.Cancel();
+        cancel.Dispose();
+
         cancel = new();
         Tabs.IsEnabled = false;
 
