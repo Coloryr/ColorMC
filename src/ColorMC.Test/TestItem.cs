@@ -43,7 +43,7 @@ public static class TestItem
 
     public static void Item3()
     {
-        var list = PackDownload.DownloadCurseForgeModPack("H:\\ColonyVenture-1.13.zip").Result;
+        var list = PackDownload.DownloadCurseForgeModPack("H:\\ColonyVenture-1.13.zip", null, null).Result;
         if (list.State != GetDownloadState.End)
         {
             Console.WriteLine("下载列表获取失败");
@@ -416,5 +416,15 @@ public static class TestItem
         var game = InstancesPath.GetGame("test");
 
         var list = game.GetSchematics().Result;
+    }
+
+    public static void Item21()
+    {
+        var list = Modrinth.GetModPackList().Result;
+        var item = list.hits.First();
+        var list1 = Modrinth.Version(item.project_id).Result;
+        var item1 = list1.First();
+
+        InstancesPath.InstallFromModrinth(item1, null, null).Wait();
     }
 }

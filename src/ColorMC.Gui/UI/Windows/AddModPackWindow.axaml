@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
-    Title="{setting:Localize AddCurseForgeWindow.Title}"
+    Title="{setting:Localize AddModPackWindow.Title}"
     Width="800"
     Height="450"
     MinWidth="800"
@@ -22,11 +22,14 @@
     <Grid>
         <views:HeadControl
             Name="Head"
-            Title="{setting:Localize AddCurseForgeWindow.Title}"
+            Title="{setting:Localize AddModPackWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Margin="0,35,0,0">
-            <Border Name="Border2" CornerRadius="0,0,10,10" />
+            <Border
+                Name="Border2"
+                BorderThickness="2"
+                CornerRadius="0,0,10,10" />
             <Image
                 Name="Image_Back"
                 Margin="3"
@@ -35,26 +38,40 @@
             <Grid VerticalAlignment="Top">
                 <StackPanel Margin="3">
                     <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                        <DockPanel Width="210">
+                            <Label
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddModPackWindow.Text11}" />
+                            <ComboBox
+                                Name="ComboBox4"
+                                Width="150"
+                                Height="30"
+                                Margin="2,2,0,0" />
+                        </DockPanel>
                         <Label
+                            Width="50"
                             Margin="5"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddCurseForgeWindow.Text1}" />
+                            Content="{setting:Localize AddModPackWindow.Text1}" />
                         <ComboBox
                             Name="ComboBox1"
-                            Width="100"
+                            Width="130"
                             Height="30"
-                            Margin="2,2,0,0" />
-
+                            Margin="0,2,0,0" />
                         <Label
+                            Width="80"
                             Margin="10,5,5,5"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddCurseForgeWindow.Text2}" />
+                            Content="{setting:Localize AddModPackWindow.Text2}" />
                         <ComboBox
                             Name="ComboBox2"
-                            Width="200"
+                            Width="130"
                             Height="30"
-                            Margin="2,2,0,0" />
+                            Margin="0,2,0,0" />
 
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <TextBox
                             Name="Input1"
                             Width="200"
@@ -62,25 +79,25 @@
                             Margin="10,0,0,0"
                             Classes="input1"
                             Foreground="Black"
-                            Watermark="{setting:Localize AddCurseForgeWindow.Text3}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                            Watermark="{setting:Localize AddModPackWindow.Text3}" />
                         <Label
+                            Width="50"
                             Margin="5"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddCurseForgeWindow.Text4}" />
+                            Content="{setting:Localize AddModPackWindow.Text4}" />
                         <ComboBox
                             Name="ComboBox3"
-                            Width="100"
+                            Width="130"
                             Height="30"
-                            Margin="2,2,0,0" />
+                            Margin="0,2,0,0" />
                         <Label
+                            Width="80"
                             Margin="10,5,5,5"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddCurseForgeWindow.Text5}" />
+                            Content="{setting:Localize AddModPackWindow.Text5}" />
                         <NumericUpDown
                             Name="Input2"
-                            Width="150"
+                            Width="130"
                             Height="30"
                             Minimum="0"
                             Value="0" />
@@ -88,12 +105,12 @@
                 </StackPanel>
                 <Button
                     Name="Button1"
-                    Width="60"
+                    Width="100"
                     Height="30"
                     Margin="5"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Content="{setting:Localize AddCurseForgeWindow.Text8}" />
+                    Content="{setting:Localize AddModPackWindow.Text8}" />
 
                 <Button
                     Name="Button2"
@@ -102,7 +119,7 @@
                     Margin="5"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Content="{setting:Localize AddCurseForgeWindow.Text9}"
+                    Content="{setting:Localize AddModPackWindow.Text9}"
                     IsEnabled="False" />
             </Grid>
 
@@ -125,11 +142,11 @@
                         <Label
                             Margin="5"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddCurseForgeWindow.Text6}" />
+                            Content="{setting:Localize AddModPackWindow.Text6}" />
                         <Label
                             Margin="20,5,5,5"
                             VerticalAlignment="Center"
-                            Content="{setting:Localize AddCurseForgeWindow.Text7}" />
+                            Content="{setting:Localize AddModPackWindow.Text7}" />
                         <NumericUpDown
                             Name="Input3"
                             Width="150"
@@ -154,7 +171,7 @@
                         Margin="2,2,110,2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Content="{setting:Localize AddCurseForgeWindow.Text10}" />
+                        Content="{setting:Localize AddModPackWindow.Text10}" />
 
                     <Button
                         Name="ButtonDownload"
@@ -163,7 +180,7 @@
                         Margin="2,2,215,2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Content="{setting:Localize AddCurseForgeWindow.Text9}" />
+                        Content="{setting:Localize AddModPackWindow.Text9}" />
 
                     <DataGrid
                         Name="DataGridFiles"
@@ -172,19 +189,19 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 Binding="{Binding Name}"
-                                Header="{setting:Localize AddCurseForgeWindow.DataGrid.Text1}"
+                                Header="{setting:Localize AddModPackWindow.DataGrid.Text1}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Size}"
-                                Header="{setting:Localize AddCurseForgeWindow.DataGrid.Text2}"
+                                Header="{setting:Localize AddModPackWindow.DataGrid.Text2}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Download}"
-                                Header="{setting:Localize AddCurseForgeWindow.DataGrid.Text3}"
+                                Header="{setting:Localize AddModPackWindow.DataGrid.Text3}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Time}"
-                                Header="{setting:Localize AddCurseForgeWindow.DataGrid.Text4}"
+                                Header="{setting:Localize AddModPackWindow.DataGrid.Text4}"
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>

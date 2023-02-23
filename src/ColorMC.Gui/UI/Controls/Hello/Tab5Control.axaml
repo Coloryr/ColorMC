@@ -82,49 +82,24 @@
                 ToolTip.Tip="{setting:Localize ToolTip.Text27}"
                 ToolTip.VerticalOffset="-30" />
 
-            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                <Button
-                    Name="Button_Add1"
-                    Width="180"
-                    Height="25"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Content="{setting:Localize AddGameWindow.Text9}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text28}"
-                    ToolTip.VerticalOffset="-30" />
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddGameWindow.Text15}" />
+
+            <StackPanel Orientation="Horizontal">
+                <ComboBox
+                    Name="ComboBox4"
+                    Width="250"
+                    Margin="5,0,0,0" />
 
                 <Button
-                    Name="Button_Add2"
-                    Width="180"
+                    Name="Button4"
+                    Width="80"
                     Height="25"
-                    Margin="5,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Content="{setting:Localize AddGameWindow.Text10}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text28}"
-                    ToolTip.VerticalOffset="-30" />
-
-                <Button
-                    Name="Button_Add3"
-                    Width="180"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Content="{setting:Localize AddGameWindow.Text11}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text28}"
-                    ToolTip.VerticalOffset="-30" />
-
-                <Button
-                    Name="Button_Add4"
-                    Width="180"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Content="{setting:Localize AddGameWindow.Text12}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text28}"
-                    ToolTip.VerticalOffset="-30" />
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddGameWindow.Text15}" />
             </StackPanel>
         </StackPanel>
 

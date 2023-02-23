@@ -70,7 +70,8 @@ public partial class Tab4Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("GameEditWindow.Tab4.Info7"), "*.jar",
+            App.GetLanguage("GameEditWindow.Tab4.Info7"), 
+            new string[] { "*.jar" },
            App.GetLanguage("GameEditWindow.Tab4.Info8"));
 
         if (file.Any() == true)
@@ -116,7 +117,7 @@ public partial class Tab4Control : UserControl
 
     private void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        App.ShowAddMod(Obj);
+        App.ShowAdd(Obj, FileType.Mod);
     }
 
     private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -128,17 +129,17 @@ public partial class Tab4Control : UserControl
         DisE(item);
     }
 
-    public async void Delete(List<ModDisplayObj> items)
+    public async void Delete(IEnumerable<ModDisplayObj> items)
     {
         var window = (VisualRoot as GameEditWindow)!;
         var res = await window.Info.ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count));
+            string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count()));
         if (!res)
         {
             return;
         }
 
-        items.ForEach(item =>
+        items.ToList().ForEach(item =>
         {
             if (Dir1.Remove(item.Local, out var obj))
             {

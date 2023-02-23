@@ -8,7 +8,14 @@ namespace ColorMC.Core.Net.Apis;
 public static class CurseForge
 {
     private const string CurseForgeKEY = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m";
-    private const string CurseForgeUrl = "https://api.curseforge.com/";
+    private const string CurseForgeUrl = "https://api.curseforge.com/v1/";
+
+    public const int GameID = 432;
+
+    public const int ClassModPack = 4471;
+    public const int ClassMod = 6;
+    public const int ClassWorld = 441771;
+    public const int ClassResourcepack = 12;
 
     /// <summary>
     /// 获取列表
@@ -22,13 +29,14 @@ public static class CurseForge
     /// <param name="sortOrder">排序</param>
     /// <returns></returns>
     private static async Task<CurseForgeObj?> GetList(int classid, string version, int page,
-        int sort, string filter, int pagesize, int sortOrder)
+        int sort, string filter, int pagesize, int sortOrder, string categoryId)
     {
         try
         {
-            string temp = CurseForgeUrl + $"v1/mods/search?gameId=432&classId={classid}&"
+            string temp = $"{CurseForgeUrl}mods/search?gameId={GameID}&classId={classid}&"
                 + $"gameVersion={version}&index={page * pagesize}&sortField={sort}&"
-                + $"searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}";
+                + $"searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}&" 
+                + $"categoryId={categoryId}";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -52,36 +60,40 @@ public static class CurseForge
     /// 获取整合包列表
     /// </summary>
     public static Task<CurseForgeObj?> GetModPackList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
+        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1, 
+        string categoryId = "")
     {
-        return GetList(4471, version, page, sort, filter, pagesize, sortOrder);
+        return GetList(ClassModPack, version, page, sort, filter, pagesize, sortOrder, categoryId);
     }
 
     /// <summary>
     /// 获取Mod列表
     /// </summary>
     public static Task<CurseForgeObj?> GetModList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
+        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1,
+        string categoryId = "")
     {
-        return GetList(6, version, page, sort, filter, pagesize, sortOrder);
+        return GetList(ClassMod, version, page, sort, filter, pagesize, sortOrder, categoryId);
     }
 
     /// <summary>
     /// 获取世界列表
     /// </summary>
     public static Task<CurseForgeObj?> GetWorldList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
+        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1,
+        string categoryId = "")
     {
-        return GetList(17, version, page, sort, filter, pagesize, sortOrder);
+        return GetList(ClassWorld, version, page, sort, filter, pagesize, sortOrder, categoryId);
     }
 
     /// <summary>
     /// 获取资源包列表
     /// </summary>
     public static Task<CurseForgeObj?> GetResourcepackList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
+        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1,
+        string categoryId = "")
     {
-        return GetList(12, version, page, sort, filter, pagesize, sortOrder);
+        return GetList(ClassResourcepack, version, page, sort, filter, pagesize, sortOrder, categoryId);
     }
 
     /// <summary>
@@ -91,7 +103,7 @@ public static class CurseForge
     {
         try
         {
-            string temp = CurseForgeUrl + $"v1/mods/{obj.projectID}/files/{obj.fileID}";
+            string temp = $"{CurseForgeUrl}mods/{obj.projectID}/files/{obj.fileID}";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -130,7 +142,7 @@ public static class CurseForge
         {
             Arg1 arg1 = new();
             obj.ForEach(a => arg1.fileIds.Add(a.fileID));
-            string temp = CurseForgeUrl + $"v1/mods/files";
+            string temp =  $"{CurseForgeUrl}mods/files";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Post,
@@ -175,6 +187,31 @@ public static class CurseForge
     //    }
     //}
 
+
+    public static async Task<CurseForgeCategoriesObj?> GetCategories()
+    {
+        try
+        {
+            string temp = $"{CurseForgeUrl}categories?gameId={GameID}";
+            HttpRequestMessage httpRequest = new()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(temp)
+            };
+            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
+            var data1 = await data.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(data1))
+                return null;
+            return JsonConvert.DeserializeObject<CurseForgeCategoriesObj>(data1);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error9"), e);
+            return null;
+        }
+    }
+
     /// <summary>
     /// 获取版本信息
     /// </summary>
@@ -182,7 +219,7 @@ public static class CurseForge
     {
         try
         {
-            string temp = CurseForgeUrl + $"v1/games/432/versions";
+            string temp = $"{CurseForgeUrl}games/{GameID}/versions";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -209,7 +246,7 @@ public static class CurseForge
     {
         try
         {
-            string temp = CurseForgeUrl + $"v1/games/432/version-types";
+            string temp = $"{CurseForgeUrl}games/{GameID}/version-types";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -232,11 +269,11 @@ public static class CurseForge
     /// <summary>
     /// 获取文件列表
     /// </summary>
-    public static async Task<CurseForgeFileObj?> GetCurseForgeFiles(long id, int page = 0)
+    public static async Task<CurseForgeFileObj?> GetCurseForgeFiles(string id, int page = 0)
     {
         try
         {
-            string temp = CurseForgeUrl + $"v1/mods/{id}/files?index={page * 50}&pageSize=50";
+            string temp = $"{CurseForgeUrl}mods/{id}/files?index={page * 50}&pageSize=50";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,

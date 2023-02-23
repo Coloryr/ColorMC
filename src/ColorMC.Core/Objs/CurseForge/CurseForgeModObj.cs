@@ -3,19 +3,6 @@ namespace ColorMC.Core.Objs.CurseForge;
 /// <summary>
 /// CF MOD信息
 /// </summary>
-public record CurseForgeModObj1
-{
-    public string Name { get; set; }
-    public string File { get; set; }
-    public string SHA1 { get; set; }
-    public long Id { get; set; }
-    public long ModId { get; set; }
-    public string Url { get; set; }
-}
-
-/// <summary>
-/// CF MOD信息
-/// </summary>
 public record CurseForgeModObj
 {
     public record Data

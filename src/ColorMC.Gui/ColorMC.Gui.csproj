@@ -14,6 +14,7 @@
     <Company>Coloryr</Company>
     <Product>ColorMC</Product>
 	<Title>ColorMC</Title>
+	<BaseOutputPath></BaseOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>portable</DebugType>
@@ -97,16 +98,13 @@
     <AvaloniaXaml Update="UI\Controls\GameEdit\Flyouts2Control.axaml">
       <SubType>Designer</SubType>
     </AvaloniaXaml>
-    <AvaloniaXaml Update="UI\Windows\AddResourcePackWindow.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaXaml>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="UI\Controls\AddWindow\FlyoutsControl.axaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="UI\Controls\Add\FileItemControl.axaml.cs">
+      <DependentUpon>FileItemControl.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Controls\CurseForge\CurseForge1Control.axaml.cs">
-      <DependentUpon>CurseForge1Control.axaml</DependentUpon>
+    <Compile Update="UI\Controls\Add\FlyoutsControl.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\GameEdit\Flyouts7Control.axaml.cs">
       <DependentUpon>Flyouts7Control.axaml</DependentUpon>
@@ -187,12 +185,8 @@
     <Compile Update="UI\Windows\AddModPackWindow.axaml.cs">
       <DependentUpon>AddModPackWindow.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Windows\AddResourcePackWindow.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>AddResourcePackWindow.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Windows\AddWorldWindow.axaml.cs">
-      <DependentUpon>AddWorldWindow.axaml</DependentUpon>
+    <Compile Update="UI\Windows\AddWindow.axaml.cs">
+      <DependentUpon>AddWindow.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Windows\CustomWindow.axaml.cs">
       <DependentUpon>CustomWindow.axaml</DependentUpon>

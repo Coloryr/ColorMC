@@ -1,10 +1,8 @@
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Threading;
 using ColorMC.Core;
 using System;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
@@ -43,7 +41,7 @@ public class ProgramGui
     {
         return App.MainWindow.Info.ShowWait(App.GetLanguage("Info5"));
     }
-    
+
     public static void CheckUpdateFail()
     {
         App.MainWindow.Info1.Show(App.GetLanguage("Error13"));

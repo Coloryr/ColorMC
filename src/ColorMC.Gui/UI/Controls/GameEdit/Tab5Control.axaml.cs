@@ -45,14 +45,15 @@ public partial class Tab5Control : UserControl
 
     private void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        App.ShowAddWorld(Obj);
+        App.ShowAdd(Obj, FileType.World);
     }
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpFile(window!,
-            App.GetLanguage("GameEditWindow.Tab5.Info2"), "*.zip",
+            App.GetLanguage("GameEditWindow.Tab5.Info2"), 
+            new string[] { "*.zip" },
             App.GetLanguage("GameEditWindow.Tab5.Info8"));
         if (file.Any())
         {

@@ -1,5 +1,6 @@
 using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
@@ -164,19 +165,19 @@ public static class LanguageHelper
         };
     }
 
-    public static string GetName(this SortField state)
+    public static string GetName(this CurseForgeSortField state)
     {
         return state switch
         {
-            SortField.Featured => GetName("SortField.Featured"),
-            SortField.Popularity => GetName("SortField.Popularity"),
-            SortField.LastUpdated => GetName("SortField.LastUpdated"),
-            SortField.Name => GetName("SortField.Name"),
-            SortField.Author => GetName("SortField.Author"),
-            SortField.TotalDownloads => GetName("SortField.TotalDownloads"),
-            SortField.Category => GetName("SortField.Category"),
-            SortField.GameVersion => GetName("SortField.GameVersion"),
-            _ => GetName("SortField.Other")
+            CurseForgeSortField.Featured => GetName("CurseForgeSortField.Featured"),
+            CurseForgeSortField.Popularity => GetName("CurseForgeSortField.Popularity"),
+            CurseForgeSortField.LastUpdated => GetName("CurseForgeSortField.LastUpdated"),
+            CurseForgeSortField.Name => GetName("CurseForgeSortField.Name"),
+            CurseForgeSortField.Author => GetName("CurseForgeSortField.Author"),
+            CurseForgeSortField.TotalDownloads => GetName("CurseForgeSortField.TotalDownloads"),
+            CurseForgeSortField.Category => GetName("CurseForgeSortField.Category"),
+            CurseForgeSortField.GameVersion => GetName("CurseForgeSortField.GameVersion"),
+            _ => GetName("CurseForgeSortField.Other")
         };
     }
 
@@ -279,6 +280,29 @@ public static class LanguageHelper
             2 => GetName("Difficulty.Normal"),
             3 => GetName("Difficulty.Hard"),
             _ => GetName("Difficulty.Other")
+        };
+    }
+
+    public static string GetName(this SourceType type)
+    {
+        return type switch
+        {
+            SourceType.CurseForge => GetName("SourceType.CurseForge"),
+            SourceType.Modrinth => GetName("SourceType.Modrinth"),
+            _ => GetName("SourceType.Other")
+        };
+    }
+
+    public static string GetName(this PackType type)
+    {
+        return type switch
+        {
+            PackType.ColorMC => GetName("PackType.ColorMC"),
+            PackType.CurseForge => GetName("PackType.CurseForge"),
+            PackType.Modrinth => GetName("PackType.Modrinth"),
+            PackType.MMC => GetName("PackType.MMC"),
+            PackType.HMCL => GetName("PackType.HMCL"),
+            _ => GetName("PackType.Other")
         };
     }
 }

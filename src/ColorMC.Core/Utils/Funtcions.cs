@@ -69,6 +69,22 @@ public static class Funtcions
             GC.Collect(2);
         });
     }
+
+    public static string GetString(string input, string start, string end) 
+    {
+        var temp = input.IndexOf(start);
+        if (temp == -1)
+        {
+            return input;
+        }
+        var temp1 = input.IndexOf(end, temp + start.Length + 1);
+        if (temp1 == -1)
+        {
+            return input;
+        }
+
+        return input[(temp + start.Length)..temp1];
+    }
 }
 
 public static class ZipFloClass

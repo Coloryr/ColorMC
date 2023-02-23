@@ -317,7 +317,7 @@ public static class Launch
             var mods = await obj.GetMods();
             ModObj? mod = null;
             int find = 0;
-            var array = obj.CurseForgeMods.Values.ToArray();
+            var array = obj.Mods.Values.ToArray();
             for (int a = 0; a < array.Length; a++)
             {
                 var item = array[a];

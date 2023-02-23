@@ -267,7 +267,8 @@ public static class UserBinding
         {
             case AuthType.Offline:
                 var file = await BaseBinding.OpFile(window,
-                    App.GetLanguage("UserBinding.Info1"), "*.png",
+                    App.GetLanguage("UserBinding.Info1"), 
+                    new string[] { "*.png" },
                     App.GetLanguage("UserBinding.Info2"));
                 if (file?.Any() == true)
                 {

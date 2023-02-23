@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.CurseForge.CurseForgeControl"
+    x:Class="ColorMC.Gui.UI.Controls.Add.FileItemControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -38,7 +38,7 @@
                     Margin="20,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddCurseForgeWindow.Control.Text1}" />
+                    Content="{setting:Localize AddModPackWindow.Control.Text1}" />
                 <Label
                     Name="Label2"
                     Margin="0,0,5,0"
@@ -59,7 +59,7 @@
                 <Label
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddCurseForgeWindow.Control.Text2}" />
+                    Content="{setting:Localize AddModPackWindow.Control.Text2}" />
                 <Label
                     Name="Label3"
                     HorizontalAlignment="Left"
@@ -69,7 +69,7 @@
                     Margin="50,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddCurseForgeWindow.Control.Text3}" />
+                    Content="{setting:Localize AddModPackWindow.Control.Text3}" />
                 <Label
                     Name="Label4"
                     Margin="0,0,5,0"
@@ -77,6 +77,28 @@
                     VerticalAlignment="Center"
                     Content="Update" />
             </StackPanel>
+        </Grid>
+        <Grid
+            Name="Grid1"
+            Background="#EEEEEE"
+            IsVisible="False">
+            <StackPanel VerticalAlignment="Center">
+                <Label HorizontalAlignment="Center" Content="{setting:Localize AddModWindow.Control.Text1}" />
+                <ProgressBar
+                    Height="20"
+                    Margin="10"
+                    IsIndeterminate="True" />
+            </StackPanel>
+        </Grid>
+        <Grid
+            Name="Grid2"
+            HorizontalAlignment="Right"
+            IsVisible="False">
+            <Label
+                Margin="0,3,5,0"
+                VerticalAlignment="Top"
+                Background="#EEEEEE"
+                Content="{setting:Localize AddModWindow.Control.Text2}" />
         </Grid>
     </Grid>
 </UserControl>

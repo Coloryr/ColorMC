@@ -62,22 +62,10 @@ public partial class Tab12Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var res = await window.StorageProvider.OpenFilePickerAsync(new()
-        {
-            Title = App.GetLanguage("GameEditWindow.Tab12.Info1"),
-            AllowMultiple = true,
-            FileTypeFilter = new List<FilePickerFileType>()
-            {
-                new(App.GetLanguage("GameEditWindow.Tab12.Info2"))
-                {
-                     Patterns = new List<string>()
-                     {
-                         "*" + Schematic.Name1,
-                         "*" + Schematic.Name2
-                     }
-                }
-            }
-        });
+        var res = await BaseBinding.OpFile(window, 
+            App.GetLanguage("GameEditWindow.Tab12.Info1"), 
+            new string[] {"*" + Schematic.Name1,  "*" + Schematic.Name2 }, 
+            App.GetLanguage("GameEditWindow.Tab12.Info2"));
         if (!res.Any())
         {
             return;
