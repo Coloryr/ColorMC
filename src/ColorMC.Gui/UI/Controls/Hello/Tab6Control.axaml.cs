@@ -7,7 +7,6 @@ namespace ColorMC.Gui.UI.Controls.Hello;
 
 public partial class Tab6Control : UserControl
 {
-    private HelloWindow Window;
     public Tab6Control()
     {
         InitializeComponent();
@@ -23,32 +22,32 @@ public partial class Tab6Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Done();
+        var window = (VisualRoot as HelloWindow)!;
+        window.Done();
     }
 
     private void LoadConfig_Click(object? sender, RoutedEventArgs e)
     {
-        Window.SwitchTab(1);
+        var window = (VisualRoot as HelloWindow)!;
+        window.SwitchTab(1);
     }
 
     private void AddUser_Click(object? sender, RoutedEventArgs e)
     {
-        Window.SwitchTab(3);
+        var window = (VisualRoot as HelloWindow)!;
+        window.SwitchTab(3);
     }
 
     private void AddJava_Click(object? sender, RoutedEventArgs e)
     {
-        Window.SwitchTab(2);
+        var window = (VisualRoot as HelloWindow)!;
+        window.SwitchTab(2);
     }
 
     private void AddGame_Click(object? sender, RoutedEventArgs e)
     {
-        Window.SwitchTab(4);
-    }
-
-    public void SetWindow(HelloWindow window)
-    {
-        Window = window;
+        var window = (VisualRoot as HelloWindow)!;
+        window.SwitchTab(4);
     }
 
     public void Load()

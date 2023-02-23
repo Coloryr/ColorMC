@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class Flyouts1Control : UserControl
 {
-    private List<ModDisplayObj> List;
+    private IEnumerable<ModDisplayObj> List;
     private ModDisplayObj Obj;
     private bool Single;
     private FlyoutBase FlyoutBase;
@@ -64,10 +64,10 @@ public partial class Flyouts1Control : UserControl
         Con.DisE(Obj);
     }
 
-    public void Set(FlyoutBase fb, List<ModDisplayObj> obj, Tab4Control con)
+    public void Set(FlyoutBase fb, IEnumerable<ModDisplayObj> obj, Tab4Control con)
     {
         List = obj;
-        if (List.Count == 1)
+        if (List.Count() == 1)
         {
             Single = true;
             Obj = List.First();
@@ -90,12 +90,12 @@ public partial class Flyouts1Control : UserControl
 
 public class GameEditFlyout1 : FlyoutBase
 {
-    private readonly List<ModDisplayObj> Obj;
+    private readonly IEnumerable<ModDisplayObj> Obj;
     private readonly Tab4Control Con;
     public GameEditFlyout1(Tab4Control con, IList obj)
     {
         Con = con;
-        Obj = obj as List<ModDisplayObj>;
+        Obj = obj.Cast<ModDisplayObj>();
     }
     protected override Control CreatePresenter()
     {

@@ -44,14 +44,15 @@ public partial class Tab8Control : UserControl
 
     private void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        App.ShowAddResourcePack(Obj);
+        App.ShowAdd(Obj, FileType.Resourcepack);
     }
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("GameEditWindow.Tab8.Info2"), "*.zip",
+            App.GetLanguage("GameEditWindow.Tab8.Info2"), 
+            new string[] { "*.zip" },
             App.GetLanguage("GameEditWindow.Tab8.Info7"));
         if (file.Any())
         {

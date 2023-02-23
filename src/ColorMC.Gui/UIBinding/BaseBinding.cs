@@ -8,8 +8,10 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
@@ -47,7 +49,7 @@ public static class BaseBinding
     }
 
     public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title,
-        string ext, string name, bool multiple = false)
+        string[] ext, string name, bool multiple = false)
     {
         return window.StorageProvider.OpenFilePickerAsync(new()
         {
@@ -57,10 +59,7 @@ public static class BaseBinding
             {
                 new(name)
                 {
-                     Patterns = new List<string>()
-                     {
-                        ext
-                     }
+                     Patterns = new List<string>(ext)
                 }
             }
         });
@@ -94,8 +93,9 @@ public static class BaseBinding
     {
         CoreMain.Close();
         ColorSel.Instance.Stop();
-
+#if !DEBUG
         mutex1.Dispose();
+#endif
     }
 
     public static bool IsGameRun(GameSettingObj obj)
@@ -397,9 +397,13 @@ public static class BaseBinding
 
     public static bool IsLaunch()
     {
+#if !DEBUG
         mutex1 = new Mutex(true, "ColorMC-lock" +
             AppContext.BaseDirectory.Replace("\\", "_").Replace("/", "_"), out var isnew);
 
         return !isnew;
+#else
+        return false;
+#endif
     }
 }

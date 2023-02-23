@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
 using System;
-using System.Reflection.Emit;
 
 namespace ColorMC.Launcher;
 

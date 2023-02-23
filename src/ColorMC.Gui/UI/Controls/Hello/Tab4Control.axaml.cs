@@ -11,7 +11,6 @@ namespace ColorMC.Gui.UI.Controls.Hello;
 
 public partial class Tab4Control : UserControl
 {
-    private HelloWindow Window;
     private bool Cancel;
 
     private readonly ObservableCollection<UserDisplayObj1> List = new();
@@ -43,11 +42,13 @@ public partial class Tab4Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Next();
+        var window = (VisualRoot as HelloWindow)!;
+        window.Next();
     }
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as HelloWindow)!;
         Button_Add.IsEnabled = false;
         switch (ComboBox_UserType.SelectedIndex)
         {
@@ -55,152 +56,152 @@ public partial class Tab4Control : UserControl
                 var name = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    Window.Info.Show(App.GetLanguage("UserWindow.Error2"));
+                    window.Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
                 var res = await UserBinding.AddUser(0, name, null);
                 if (!res.Item1)
                 {
-                    Window.Info.Show(res.Item2!);
+                    window.Info.Show(res.Item2!);
                 }
-                Window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Info4"));
                 TextBox_Input1.Text = "";
                 break;
             case 1:
                 Cancel = false;
                 CoreMain.LoginOAuthCode = LoginOAuthCode;
-                Window.Info1.Show(App.GetLanguage("UserWindow.Info1"));
+                window.Info1.Show(App.GetLanguage("UserWindow.Info1"));
                 res = await UserBinding.AddUser(1, null);
-                Window.Info3.Close();
-                Window.Info1.Close();
+                window.Info3.Close();
+                window.Info1.Close();
                 if (Cancel)
                     break;
                 if (!res.Item1)
                 {
-                    Window.Info.Show(res.Item2!);
+                    window.Info.Show(res.Item2!);
                     break;
                 }
-                Window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Info4"));
                 break;
             case 2:
                 var server = TextBox_Input1.Text;
                 if (server?.Length != 32)
                 {
-                    Window.Info.Show(App.GetLanguage("UserWindow.Error3"));
+                    window.Info.Show(App.GetLanguage("UserWindow.Error3"));
                     break;
                 }
-                await Window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
+                await window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
                     App.GetLanguage("UserWindow.Text2"), true);
-                Window.Info3.Close();
-                if (Window.Info3.Cancel)
+                window.Info3.Close();
+                if (window.Info3.Cancel)
                 {
                     break;
                 }
-                var user = Window.Info3.Read();
+                var user = window.Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
-                    Window.Info.Show(App.GetLanguage("UserWindow.Error2"));
+                    window.Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
-                Window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
+                window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(2, server, user.Item1, user.Item2);
-                Window.Info1.Close();
+                window.Info1.Close();
                 if (!res.Item1)
                 {
-                    Window.Info.Show(res.Item2!);
+                    window.Info.Show(res.Item2!);
                     break;
                 }
-                Window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Info4"));
                 TextBox_Input1.Text = "";
                 break;
             case 3:
                 server = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Window.Info.Show(App.GetLanguage("UserWindow.Error4"));
+                    window.Info.Show(App.GetLanguage("UserWindow.Error4"));
                     break;
                 }
-                await Window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
+                await window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
                     App.GetLanguage("UserWindow.Text2"), true);
-                Window.Info3.Close();
-                if (Window.Info3.Cancel)
+                window.Info3.Close();
+                if (window.Info3.Cancel)
                 {
                     break;
                 }
-                user = Window.Info3.Read();
+                user = window.Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
-                    Window.Info.Show(App.GetLanguage("UserWindow.Error2"));
+                    window.Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
-                Window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
+                window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(3, server, user.Item1, user.Item2);
-                Window.Info1.Close();
+                window.Info1.Close();
                 if (!res.Item1)
                 {
-                    Window.Info.Show(res.Item2!);
+                    window.Info.Show(res.Item2!);
                     break;
                 }
-                Window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Info4"));
                 TextBox_Input1.Text = "";
                 break;
             case 4:
-                await Window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
+                await window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
                     App.GetLanguage("UserWindow.Text2"), true);
-                Window.Info3.Close();
-                if (Window.Info3.Cancel)
+                window.Info3.Close();
+                if (window.Info3.Cancel)
                 {
                     break;
                 }
-                user = Window.Info3.Read();
+                user = window.Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
-                    Window.Info.Show(App.GetLanguage("UserWindow.Error2"));
+                    window.Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
-                Window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
+                window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(4, user.Item1, user.Item2);
-                Window.Info1.Close();
+                window.Info1.Close();
                 if (!res.Item1)
                 {
-                    Window.Info.Show(res.Item2!);
+                    window.Info.Show(res.Item2!);
                     break;
                 }
-                Window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Info4"));
                 break;
             case 5:
                 server = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Window.Info.Show(App.GetLanguage("UserWindow.Error4"));
+                    window.Info.Show(App.GetLanguage("UserWindow.Error4"));
                     break;
                 }
-                await Window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
+                await window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
                     App.GetLanguage("UserWindow.Text2"), true);
-                Window.Info3.Close();
-                if (Window.Info3.Cancel)
+                window.Info3.Close();
+                if (window.Info3.Cancel)
                 {
                     break;
                 }
-                user = Window.Info3.Read();
+                user = window.Info3.Read();
                 if (string.IsNullOrWhiteSpace(user.Item1) || string.IsNullOrWhiteSpace(user.Item2))
                 {
-                    Window.Info.Show(App.GetLanguage("UserWindow.Error2"));
+                    window.Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
-                Window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
+                window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(3, user.Item1, user.Item2, server);
-                Window.Info1.Close();
+                window.Info1.Close();
                 if (!res.Item1)
                 {
-                    Window.Info.Show(res.Item2!);
+                    window.Info.Show(res.Item2!);
                     break;
                 }
-                Window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Info4"));
                 TextBox_Input1.Text = "";
                 break;
             default:
-                Window.Info.Show(App.GetLanguage("UserWindow.Error5"));
+                window.Info.Show(App.GetLanguage("UserWindow.Error5"));
                 break;
         }
         UserBinding.UserLastUser();
@@ -211,8 +212,9 @@ public partial class Tab4Control : UserControl
 
     private void LoginOAuthCode(string url, string code)
     {
-        Window.Info1.Close();
-        Window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Text3"), url),
+        var window = (VisualRoot as HelloWindow)!;
+        window.Info1.Close();
+        window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Text3"), url),
             string.Format(App.GetLanguage("UserWindow.Text4"), code), () =>
             {
                 Cancel = true;
@@ -256,11 +258,6 @@ public partial class Tab4Control : UserControl
                 TextBox_Input1.Text = "";
                 break;
         }
-    }
-
-    public void SetWindow(HelloWindow window)
-    {
-        Window = window;
     }
 
     private void Button_Refash_Click(object? sender, RoutedEventArgs e)

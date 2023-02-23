@@ -6,6 +6,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
@@ -34,11 +35,12 @@ public partial class AddGameWindow : Window
 
         ComboBox_Group.Items = List1;
 
+        ComboBox4.Items = GameBinding.GetPackType();
+
         Button_Add.Click += Button_Add_Click;
-        Button_Add1.Click += Button_Add1_Click;
-        Button_Add2.Click += Button_Add2_Click;
-        Button_Add3.Click += Button_Add3_Click;
-        Button_Add4.Click += Button_Add4_Click;
+
+        Button4.Click += Button4_Click;
+
         Button_Add5.Click += Button_Add5_Click;
         Button_AddGroup.Click += Button_AddGroup_Click;
         Button1.Click += Button1_Click;
@@ -59,9 +61,37 @@ public partial class AddGameWindow : Window
         App.PicUpdate += Update;
 
         Closed += AddGameWindow_Closed;
+        Activated += AddGameWindow_Activated;
 
         Load();
         Update();
+    }
+
+    private void Button4_Click(object? sender, RoutedEventArgs e)
+    {
+        switch (ComboBox4.SelectedIndex)
+        {
+            case 0:
+                AddPack(PackType.ColorMC);
+                break;
+            case 1:
+                AddPack(PackType.CurseForge);
+                break;
+            case 2:
+                AddPack(PackType.Modrinth);
+                break;
+            case 3:
+                AddPack(PackType.MMC);
+                break;
+            case 4:
+                AddPack(PackType.HMCL);
+                break;
+        }
+    }
+
+    private void AddGameWindow_Activated(object? sender, EventArgs e)
+    {
+        App.LastWindow = this;
     }
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
@@ -408,40 +438,19 @@ public partial class AddGameWindow : Window
         {
             TextBox_Input1.Text = "";
             ComboBox_GameVersion.SelectedItem = null;
-            App.MainWindow?.Load();
-            Info1.Close();
         }
-    }
-
-    private void Button_Add4_Click(object? sender, RoutedEventArgs e)
-    {
-        AddPack(PackType.HMCL);
-    }
-
-    private void Button_Add3_Click(object? sender, RoutedEventArgs e)
-    {
-        AddPack(PackType.MMC);
-    }
-
-    private void Button_Add2_Click(object? sender, RoutedEventArgs e)
-    {
-        AddPack(PackType.CurseForge);
-    }
-
-    private void Button_Add1_Click(object? sender, RoutedEventArgs e)
-    {
-        AddPack(PackType.ColorMC);
     }
 
     private async void AddPack(PackType type)
     {
         add = false;
-        var name = await SelectPack();
-        if (name == null)
+        var file = await SelectPack();
+        if (file == null)
             return;
 
-        DisableButton();
-        var res = await GameBinding.AddPack(name, type);
+        Info1.Show(App.GetLanguage("AddGameWindow.Info17"));
+        var res = await GameBinding.AddPack(file, type, TextBox_Input1.Text, ComboBox_Group.SelectedItem as string);
+        Info1.Close();
         if (res.Item1)
         {
             App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
@@ -452,35 +461,18 @@ public partial class AddGameWindow : Window
         {
             Info.Show(App.GetLanguage("AddGameWindow.Error3"));
         }
-        EnableButton();
     }
 
     private async Task<string?> SelectPack()
     {
         var file = await BaseBinding.OpFile(this, App.GetLanguage("AddGameWindow.Info13"),
-            "*.zip", App.GetLanguage("AddGameWindow.Info16"));
+            new string[] { "*.zip", "*.mrpack" }, App.GetLanguage("AddGameWindow.Info16"));
         if (file.Any())
         {
             return file[0].GetPath();
         }
 
         return null;
-    }
-
-    private void EnableButton()
-    {
-        Button_Add1.IsEnabled = true;
-        Button_Add2.IsEnabled = true;
-        Button_Add3.IsEnabled = true;
-        Button_Add4.IsEnabled = true;
-    }
-
-    private void DisableButton()
-    {
-        Button_Add1.IsEnabled = false;
-        Button_Add2.IsEnabled = false;
-        Button_Add3.IsEnabled = false;
-        Button_Add4.IsEnabled = false;
     }
 
     private void Other_Click(object? sender, RoutedEventArgs e)
@@ -501,7 +493,24 @@ public partial class AddGameWindow : Window
     public async void Install(CurseForgeObj.Data.LatestFiles data, CurseForgeObj.Data data1)
     {
         Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
-        var res = await GameBinding.InstallCurseForge(data, data1);
+        var res = await GameBinding.InstallCurseForge(data, data1, TextBox_Input1.Text, ComboBox_Group.SelectedItem as string);
+        Info1.Close();
+        if (!res)
+        {
+            Info.Show(App.GetLanguage("AddGameWindow.Error4"));
+        }
+        else
+        {
+            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
+            App.MainWindow?.Load();
+            Close();
+        }
+    }
+
+    public async void Install(ModrinthVersionObj data, ModrinthSearchObj.Hit data1)
+    {
+        Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
+        var res = await GameBinding.InstallModrinth(data, data1, TextBox_Input1.Text, ComboBox_Group.SelectedItem as string);
         Info1.Close();
         if (!res)
         {

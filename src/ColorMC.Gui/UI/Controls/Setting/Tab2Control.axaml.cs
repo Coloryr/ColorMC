@@ -267,23 +267,9 @@ public partial class Tab2Control : UserControl
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        var file = await window.StorageProvider.OpenFilePickerAsync(new()
-        {
-            Title = App.GetLanguage("SettingWindow.Tab2.Info3"),
-            AllowMultiple = false,
-            FileTypeFilter = new List<FilePickerFileType>()
-            {
-                new FilePickerFileType(App.GetLanguage("SettingWindow.Tab2.Info6"))
-                {
-                    Patterns = new List<string>()
-                    {
-                        "*.png",
-                        "*.jpg",
-                        "*.bmp"
-                    }
-                }
-            }
-        });
+        var file = await BaseBinding.OpFile(window, App.GetLanguage("SettingWindow.Tab2.Info3"),
+            new string[] { "*.png", "*.jpg", "*.bmp" },
+            App.GetLanguage("SettingWindow.Tab2.Info6")); 
 
         if (file?.Any() == true)
         {

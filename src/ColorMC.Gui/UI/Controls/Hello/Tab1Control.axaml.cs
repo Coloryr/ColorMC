@@ -8,7 +8,6 @@ namespace ColorMC.Gui.UI.Controls.Hello;
 
 public partial class Tab1Control : UserControl
 {
-    private HelloWindow Window;
     public Tab1Control()
     {
         InitializeComponent();
@@ -23,7 +22,8 @@ public partial class Tab1Control : UserControl
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Done();
+        var window = (VisualRoot as HelloWindow)!;
+        window.Done();
     }
 
     private void Lang_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -32,13 +32,9 @@ public partial class Tab1Control : UserControl
         LanguageHelper.Change(type);
     }
 
-    public void SetWindow(HelloWindow window)
-    {
-        Window = window;
-    }
-
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Next();
+        var window = (VisualRoot as HelloWindow)!;
+        window.Next();
     }
 }

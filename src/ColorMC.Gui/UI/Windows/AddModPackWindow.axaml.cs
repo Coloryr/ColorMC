@@ -1,24 +1,28 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
+using AvaloniaEdit.Utils;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.AddWindow;
-using ColorMC.Gui.UI.Controls.CurseForge;
+using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
+using static ColorMC.Core.Objs.Modrinth.ModrinthSearchObj;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class AddModPackWindow : Window, IBase1Window
+public partial class AddModPackWindow : Window, IAddWindow
 {
-    private readonly List<CurseForgeControl> List = new();
+    private readonly List<FileItemControl> List = new();
+    private readonly Dictionary<int, string> Categories = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
-    private CurseForgeControl? Last;
+    private FileItemControl? Last;
+    private bool load = false;
 
     public AddModPackWindow()
     {
@@ -28,11 +32,12 @@ public partial class AddModPackWindow : Window, IBase1Window
         Icon = App.Icon;
         Border1.MakeResizeDrag(this);
 
-        ComboBox1.Items = GameBinding.GetCurseForgeTypes();
-        ComboBox3.Items = GameBinding.GetSortOrder();
+        ComboBox4.Items = GameBinding.GetSourceList();
 
-        ComboBox1.SelectedIndex = 1;
-        ComboBox3.SelectedIndex = 1;
+        ComboBox1.SelectionChanged += ComboBox_SelectionChanged;
+        ComboBox2.SelectionChanged += ComboBox_SelectionChanged;
+        ComboBox3.SelectionChanged += ComboBox_SelectionChanged;
+        ComboBox4.SelectionChanged += ComboBox4_SelectionChanged;
 
         DataGridFiles.Items = List1;
         DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
@@ -46,8 +51,8 @@ public partial class AddModPackWindow : Window, IBase1Window
         Input2.PropertyChanged += Input2_PropertyChanged;
         Input3.PropertyChanged += Input3_PropertyChanged;
 
-        Opened += AddCurseForgeWindow_Opened;
-        Closed += AddCurseForgeWindow_Closed;
+        Opened += AddModPackWindow_Opened;
+        Closed += AddModPackWindow_Closed;
 
         for (int a = 0; a < 50; a++)
         {
@@ -57,6 +62,107 @@ public partial class AddModPackWindow : Window, IBase1Window
         App.PicUpdate += Update;
 
         Update();
+    }
+
+    private void ComboBox_SelectionChanged(object? sender,
+        SelectionChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        Load();
+    }
+
+    private async void ComboBox4_SelectionChanged(object? sender,
+        SelectionChangedEventArgs e)
+    {
+        load = true;
+        ComboBox1.Items = null;
+        ComboBox2.Items = null;
+        ComboBox3.Items = null;
+        ListBox_Items.Children.Clear();
+
+        if (ComboBox4.SelectedIndex == 0)
+        {
+            ComboBox3.Items = GameBinding.GetCurseForgeSortTypes();
+
+            Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
+            var list = await GameBinding.GetCurseForgeGameVersions();
+            var list1 = await GameBinding.GetCurseForgeCategories();
+            Info1.Close();
+            if (list == null || list1 == null)
+            {
+#if !DEBUG
+            Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+#endif
+                return;
+            }
+
+            Categories.Clear();
+            Categories.Add(0, "");
+            int a = 1;
+            foreach (var item in list1)
+            {
+                Categories.Add(a++, item.Key);
+            }
+
+            var list2 = new List<string>()
+            {
+                ""
+            };
+
+            list2.AddRange(list1.Values);
+
+            ComboBox2.Items = list;
+            ComboBox1.Items = list2;
+
+            ComboBox1.SelectedIndex = 0;
+            ComboBox2.SelectedIndex = 0;
+            ComboBox3.SelectedIndex = 1;
+
+            Load();
+        }
+        else if (ComboBox4.SelectedIndex == 1)
+        {
+            ComboBox3.Items = GameBinding.GetModrinthSortTypes();
+
+            Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
+            var list = await GameBinding.GetModrinthGameVersions();
+            var list1 = await GameBinding.GetModrinthCategories();
+            Info1.Close();
+            if (list == null || list1 == null)
+            {
+#if !DEBUG
+            Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+#endif
+                return;
+            }
+
+            Categories.Clear();
+            Categories.Add(0, "");
+            int a = 1;
+            foreach (var item in list1)
+            {
+                Categories.Add(a++, item.Key);
+            }
+
+            var list2 = new List<string>()
+            {
+                ""
+            };
+
+            list2.AddRange(list1.Values);
+
+            ComboBox2.Items = list;
+            ComboBox1.Items = list2;
+
+            ComboBox1.SelectedIndex = 0;
+            ComboBox2.SelectedIndex = 0;
+            ComboBox3.SelectedIndex = 0;
+
+            Load();
+        }
+        load = false;
     }
 
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -89,10 +195,10 @@ public partial class AddModPackWindow : Window, IBase1Window
             return;
 
         var res = await Info.ShowWait(
-            string.Format(App.GetLanguage("AddCurseForgeWindow.Info1"), item.File.displayName));
+            string.Format(App.GetLanguage("AddModPackWindow.Info1"), item.Name));
         if (res)
         {
-            Install1(item.File);
+            Install1(item);
         }
     }
 
@@ -110,14 +216,14 @@ public partial class AddModPackWindow : Window, IBase1Window
     {
         if (Last == null)
         {
-            Info.Show(App.GetLanguage("AddCurseForgeWindow.Error1"));
+            Info.Show(App.GetLanguage("AddModPackWindow.Error1"));
             return;
         }
 
         Install();
     }
 
-    private void AddCurseForgeWindow_Closed(object? sender, EventArgs e)
+    private void AddModPackWindow_Closed(object? sender, EventArgs e)
     {
         App.PicUpdate -= Update;
 
@@ -130,14 +236,25 @@ public partial class AddModPackWindow : Window, IBase1Window
         Load1();
     }
 
-    public void Install1(CurseForgeObj.Data.LatestFiles data)
+    public void Install1(FileDisplayObj data)
     {
         App.ShowAddGame();
-        App.AddGameWindow!.Install(data, Last!.Data);
+        if (data.SourceType == SourceType.CurseForge)
+        {
+            App.AddGameWindow!.Install(
+                (data.Data as CurseForgeObj.Data.LatestFiles)!,
+                (Last!.Data.Data as CurseForgeObj.Data)!);
+        }
+        else if (data.SourceType == SourceType.Modrinth)
+        {
+            App.AddGameWindow!.Install(
+                (data.Data as ModrinthVersionObj)!,
+                (Last!.Data.Data as ModrinthSearchObj.Hit)!);
+        }
         Close();
     }
 
-    public void SetSelect(CurseForgeControl last)
+    public void SetSelect(FileItemControl last)
     {
         Button2.IsEnabled = true;
         Last?.SetSelect(false);
@@ -147,25 +264,26 @@ public partial class AddModPackWindow : Window, IBase1Window
 
     private async void Load()
     {
-        Info1.Show(App.GetLanguage("AddCurseForgeWindow.Info2"));
-        var data = await GameBinding.GetPackList(ComboBox2.SelectedItem as string,
-            ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
+        Info1.Show(App.GetLanguage("AddModPackWindow.Info2"));
+        var data = await GameBinding.GetPackList(
+            (SourceType)ComboBox4.SelectedIndex, ComboBox2.SelectedItem as string,
+            Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex,
+            ComboBox1.SelectedIndex < 0 ? "" : 
+                Categories[ComboBox1.SelectedIndex]);
 
         if (data == null)
         {
-            Info.Show(App.GetLanguage("AddCurseForgeWindow.Error2"));
+            Info.Show(App.GetLanguage("AddModPackWindow.Error2"));
             Info1.Close();
             return;
         }
 
         ListBox_Items.Children.Clear();
         int a = 0;
-        foreach (var item in data.data)
+        foreach (var item in data)
         {
             var control = List[a];
-            control.SetWindow(this);
             control.Load(item);
-            control.PointerPressed += Control_PointerPressed;
             ListBox_Items.Children.Add(control);
             a++;
         }
@@ -174,39 +292,29 @@ public partial class AddModPackWindow : Window, IBase1Window
         Info1.Close();
     }
 
-    private void Control_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-        {
-            if (sender is not CurseForgeControl item)
-                return;
-            new UrlFlyout(item.Data.links.websiteUrl).ShowAt(item, true);
-        }
-    }
-
     private async void Load1()
     {
         List1.Clear();
-        Info1.Show(App.GetLanguage("AddCurseForgeWindow.Info3"));
-        var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
-        if (data == null)
+        Info1.Show(App.GetLanguage("AddModPackWindow.Info3"));
+        List<FileDisplayObj>? list = null;
+        if (ComboBox4.SelectedIndex == 0)
         {
-            Info.Show(App.GetLanguage("AddCurseForgeWindow.Error3"));
+            Input3.IsEnabled = true;
+            list = await GameBinding.GetPackFile((SourceType)ComboBox4.SelectedIndex, (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!);
+        }
+        else if (ComboBox4.SelectedIndex == 1)
+        {
+            Input3.IsEnabled = false;
+            list = await GameBinding.GetPackFile((SourceType)ComboBox4.SelectedIndex, (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!);
+        }
+        if (list == null)
+        {
+            Info.Show(App.GetLanguage("AddModPackWindow.Error3"));
             Info1.Close();
             return;
         }
+        List1.AddRange(list);
 
-        foreach (var item in data.data)
-        {
-            List1.Add(new()
-            {
-                Name = item.displayName,
-                Size = UIUtils.MakeFileSize1(item.fileLength),
-                Download = item.downloadCount,
-                Time = DateTime.Parse(item.fileDate).ToString(),
-                File = item
-            });
-        }
         Info1.Close();
     }
 
@@ -215,20 +323,11 @@ public partial class AddModPackWindow : Window, IBase1Window
         Load();
     }
 
-    private async void AddCurseForgeWindow_Opened(object? sender, EventArgs e)
+    private void AddModPackWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
-        Info1.Show(App.GetLanguage("AddCurseForgeWindow.Info4"));
-        var list = await GameBinding.GetCurseForgeGameVersions();
-        Info1.Close();
-        if (list == null)
-        {
-            Info.Show(App.GetLanguage("AddCurseForgeWindow.Error4"));
-            return;
-        }
 
-        ComboBox2.Items = list;
-        Load();
+        ComboBox4.SelectedIndex = 0;
     }
 
     public void Update()

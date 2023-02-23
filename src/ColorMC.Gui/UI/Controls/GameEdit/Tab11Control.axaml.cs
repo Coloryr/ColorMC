@@ -60,7 +60,10 @@ public partial class Tab11Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var res = await BaseBinding.OpFile(window, App.GetLanguage("GameEditWindow.Tab11.Info1"), "*.zip", App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
+        var res = await BaseBinding.OpFile(window, 
+            App.GetLanguage("GameEditWindow.Tab11.Info1"), 
+            new string[] { "*.zip" }, 
+            App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
 
         if (!res.Any())
         {

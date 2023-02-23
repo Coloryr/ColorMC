@@ -115,13 +115,13 @@ public partial class SettingWindow : Window
         if (!switch1)
         {
             content2.Content = to;
-            App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, 
+            App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex,
                 cancel.Token);
         }
         else
         {
             content1.Content = to;
-            App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, 
+            App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex,
                 cancel.Token);
         }
 

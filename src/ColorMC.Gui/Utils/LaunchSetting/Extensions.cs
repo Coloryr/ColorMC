@@ -52,27 +52,3 @@ public class LocalizeExtension : MarkupExtension
         return binding.ProvideValue(serviceProvider);
     }
 }
-
-public class InfoExtension : MarkupExtension
-{
-    public InfoExtension(string key)
-    {
-        Key = key;
-    }
-
-    public string Key { get; set; }
-
-    public override object ProvideValue(IServiceProvider serviceProvider)
-    {
-        //var keyToUse = Key;
-
-        //var binding = new ReflectionBindingExtension($"[{keyToUse}]")
-        //{
-        //    Mode = BindingMode.OneWay,
-        //    Source = App.GetLanguage,
-        //};
-
-        return new InfoFlyout(Key);
-    }
-}
-

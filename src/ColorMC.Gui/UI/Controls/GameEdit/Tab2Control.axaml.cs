@@ -183,7 +183,7 @@ public partial class Tab2Control : UserControl
 
         var file = await BaseBinding.OpFile(Window,
             App.GetLanguage("SettingWindow.Tab5.Info2"),
-            SystemInfo.Os == OsType.Windows ? "*.exe" : "",
+            new string[] { SystemInfo.Os == OsType.Windows ? "*.exe" : "" },
             App.GetLanguage("SettingWindow.Tab5.Info2"));
         if (file.Any())
         {

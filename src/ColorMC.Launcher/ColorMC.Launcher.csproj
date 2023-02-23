@@ -9,23 +9,24 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <BaseOutputPath></BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resource\MiSans-Normal.ttf;" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="Resource\MiSans-Normal.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Gui\ColorMC.Gui.csproj">
-      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <!--<CopyToPublishDirectory>Always</CopyToPublishDirectory>-->
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </ProjectReference>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj">
-      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <!--<CopyToPublishDirectory>Always</CopyToPublishDirectory>-->
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </ProjectReference>
   </ItemGroup>

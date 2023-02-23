@@ -26,7 +26,10 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Margin="0,35,0,0">
-            <Border Name="Border2" CornerRadius="0,0,10,10" />
+            <Border
+                Name="Border2"
+                BorderThickness="2"
+                CornerRadius="0,0,10,10" />
             <Image
                 Name="Image_Back"
                 Margin="3"

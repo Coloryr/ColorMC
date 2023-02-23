@@ -21,6 +21,7 @@ public partial class HelloWindow : Window
     private readonly ContentControl content2 = new();
 
     private int now;
+    private CancellationTokenSource cancel = new();
 
     public HelloWindow()
     {
@@ -33,13 +34,6 @@ public partial class HelloWindow : Window
         Tabs.SelectionChanged += Tabs_SelectionChanged;
         Tab1.Children.Add(content1);
         Tab1.Children.Add(content2);
-
-        tab1.SetWindow(this);
-        tab2.SetWindow(this);
-        tab3.SetWindow(this);
-        tab4.SetWindow(this);
-        tab5.SetWindow(this);
-        tab6.SetWindow(this);
 
         content1.Content = tab1;
 
@@ -59,19 +53,22 @@ public partial class HelloWindow : Window
         App.PicUpdate -= Update;
     }
 
-    private async void Go(UserControl to)
+    private void Go(UserControl to)
     {
+        cancel.Cancel();
+        cancel.Dispose();
+        cancel = new();
         Tabs.IsEnabled = false;
 
         if (!switch1)
         {
             content2.Content = to;
-            await App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, CancellationToken.None);
+            App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, cancel.Token);
         }
         else
         {
             content1.Content = to;
-            await App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, CancellationToken.None);
+            App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, cancel.Token);
         }
 
         switch1 = !switch1;

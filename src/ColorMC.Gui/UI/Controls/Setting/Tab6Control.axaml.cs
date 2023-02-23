@@ -138,8 +138,10 @@ public partial class Tab6Control : UserControl
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        var res = await BaseBinding.OpFile(window, App.GetLanguage("SettingWindow.Tab6.Info2"),
-            "*.json", App.GetLanguage("SettingWindow.Tab6.Info3"));
+        var res = await BaseBinding.OpFile(window, 
+            App.GetLanguage("SettingWindow.Tab6.Info2"),
+            new string[] { "*.json" }, 
+            App.GetLanguage("SettingWindow.Tab6.Info3"));
         if (res.Any())
         {
             TextBox3.Text = res[0].GetPath();

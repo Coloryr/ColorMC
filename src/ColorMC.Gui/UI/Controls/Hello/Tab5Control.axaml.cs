@@ -19,9 +19,6 @@ public partial class Tab5Control : UserControl
 {
     private readonly ObservableCollection<string> List = new();
 
-    [AllowNull]
-    private HelloWindow Window;
-
     private bool add;
 
     public Tab5Control()
@@ -31,12 +28,12 @@ public partial class Tab5Control : UserControl
         ComboBox_GameVersion.Items = List;
         ComboBox_GameVersion.SelectionChanged += GameVersion_SelectionChanged;
 
+        ComboBox4.Items = GameBinding.GetPackType();
+
         Button_Next.Click += Button_Next_Click;
         Button_Add.Click += Button_Add_Click;
-        Button_Add1.Click += Button_Add1_Click;
-        Button_Add2.Click += Button_Add2_Click;
-        Button_Add3.Click += Button_Add3_Click;
-        Button_Add4.Click += Button_Add4_Click;
+
+        Button4.Click += Button4_Click;
 
         CheckBox_Forge.Click += Forge_Click;
         CheckBox_Fabric.Click += Fabric_Click;
@@ -52,19 +49,42 @@ public partial class Tab5Control : UserControl
         Load();
     }
 
+    private void Button4_Click(object? sender, RoutedEventArgs e)
+    {
+        switch (ComboBox4.SelectedIndex)
+        {
+            case 0:
+                AddPack(PackType.ColorMC);
+                break;
+            case 1:
+                AddPack(PackType.CurseForge);
+                break;
+            case 2:
+                AddPack(PackType.Modrinth);
+                break;
+            case 3:
+                AddPack(PackType.MMC);
+                break;
+            case 4:
+                AddPack(PackType.HMCL);
+                break;
+        }
+    }
+
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as HelloWindow)!;
         var name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
-            Window.Info.Show(App.GetLanguage("AddGameWindow.Error1"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Error1"));
             return;
         }
 
         string? version = ComboBox_GameVersion.SelectedItem as string;
         if (string.IsNullOrWhiteSpace(version))
         {
-            Window.Info.Show(App.GetLanguage("AddGameWindow.Error2"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Error2"));
             return;
         }
 
@@ -90,16 +110,18 @@ public partial class Tab5Control : UserControl
         var res = await GameBinding.AddGame(name, version, loader, loaderversion);
         if (!res)
         {
-            Window.Info.Show(App.GetLanguage("AddGameWindow.Error5"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Error5"));
         }
         else
         {
-            Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
+            window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
         }
     }
 
     private async void GameVersion_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        var window = (VisualRoot as HelloWindow)!;
+
         CheckBox_Forge.IsEnabled = false;
         CheckBox_Fabric.IsEnabled = false;
         CheckBox_Quilt.IsEnabled = false;
@@ -107,7 +129,7 @@ public partial class Tab5Control : UserControl
         string? item = ComboBox_GameVersion.SelectedItem as string;
         if (!string.IsNullOrWhiteSpace(item))
         {
-            Window.Info1.Show(App.GetLanguage("AddGameWindow.Info3"));
+            window.Info1.Show(App.GetLanguage("AddGameWindow.Info3"));
             var list = await GameBinding.GetForgeSupportVersion();
             if (list != null && list.Contains(item))
             {
@@ -125,24 +147,25 @@ public partial class Tab5Control : UserControl
             {
                 CheckBox_Quilt.IsEnabled = true;
             }
-            Window.Info1.Close();
+            window.Info1.Close();
         }
     }
 
     private async void Quilt_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as HelloWindow)!;
         if (CheckBox_Quilt.IsChecked == true)
         {
             string? item = ComboBox_GameVersion.SelectedItem as string;
             if (item == null)
                 return;
 
-            Window.Info1.Show(App.GetLanguage("AddGameWindow.Info4"));
+            window.Info1.Show(App.GetLanguage("AddGameWindow.Info4"));
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = false;
 
             var list = await QuiltHelper.GetLoaders(item, BaseClient.Source);
-            Window.Info1.Close();
+            window.Info1.Close();
             if (list == null)
             {
                 return;
@@ -162,18 +185,19 @@ public partial class Tab5Control : UserControl
 
     private async void Fabric_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as HelloWindow)!;
         if (CheckBox_Fabric.IsChecked == true)
         {
             string? item = ComboBox_GameVersion.SelectedItem as string;
             if (item == null)
                 return;
 
-            Window.Info1.Show(App.GetLanguage("AddGameWindow.Info5"));
+            window.Info1.Show(App.GetLanguage("AddGameWindow.Info5"));
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
             var list = await FabricHelper.GetLoaders(item, BaseClient.Source);
-            Window.Info1.Close();
+            window.Info1.Close();
             if (list == null)
             {
                 return;
@@ -193,18 +217,19 @@ public partial class Tab5Control : UserControl
 
     private async void Forge_Click(object? sender, RoutedEventArgs e)
     {
+        var window = (VisualRoot as HelloWindow)!;
         if (CheckBox_Forge.IsChecked == true)
         {
             string? item = ComboBox_GameVersion.SelectedItem as string;
             if (item == null)
                 return;
 
-            Window.Info1.Show(App.GetLanguage("AddGameWindow.Info6"));
+            window.Info1.Show(App.GetLanguage("AddGameWindow.Info6"));
             CheckBox_Fabric.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
             var list = await ForgeHelper.GetVersionList(item, BaseClient.Source);
-            Window.Info1.Close();
+            window.Info1.Close();
             if (list == null)
             {
                 return;
@@ -224,43 +249,46 @@ public partial class Tab5Control : UserControl
 
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
-        Window.Info1.Close();
-        var test = await Window.Info.ShowWait(
+        var window = (VisualRoot as HelloWindow)!;
+        window.Info1.Close();
+        var test = await window.Info.ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info7"), obj.Name));
         if (!add)
         {
-            Window.Info1.Show();
+            window.Info1.Show();
         }
         return test;
     }
 
     private void PackUpdate(int size, int now)
     {
-        Window.Info1.Progress((double)now / size);
+        var window = (VisualRoot as HelloWindow)!;
+        window.Info1.Progress((double)now / size);
     }
 
     private void PackState(CoreRunState state)
     {
+        var window = (VisualRoot as HelloWindow)!;
         if (state == CoreRunState.Read)
         {
-            Window.Info1.Show(App.GetLanguage("AddGameWindow.Info8"));
+            window.Info1.Show(App.GetLanguage("AddGameWindow.Info8"));
         }
         else if (state == CoreRunState.Init)
         {
-            Window.Info1.NextText(App.GetLanguage("AddGameWindow.Info9"));
+            window.Info1.NextText(App.GetLanguage("AddGameWindow.Info9"));
         }
         else if (state == CoreRunState.GetInfo)
         {
-            Window.Info1.NextText(App.GetLanguage("AddGameWindow.Info10"));
+            window.Info1.NextText(App.GetLanguage("AddGameWindow.Info10"));
         }
         else if (state == CoreRunState.Download)
         {
-            Window.Info1.NextText(App.GetLanguage("AddGameWindow.Info11"));
-            Window.Info1.Progress(-1);
+            window.Info1.NextText(App.GetLanguage("AddGameWindow.Info11"));
+            window.Info1.Progress(-1);
         }
         else if (state == CoreRunState.End)
         {
-            Window.Info1.Close();
+            window.Info1.Close();
         }
     }
 
@@ -286,50 +314,38 @@ public partial class Tab5Control : UserControl
 
     private async void AddPack(PackType type)
     {
+        var window = (VisualRoot as HelloWindow)!;
         add = false;
         var name = await SelectPack();
         if (name == null)
             return;
 
-        DisableButton();
-        var res = await GameBinding.AddPack(name, type);
+        window.Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
+        var res = await GameBinding.AddPack(name, type, TextBox_Input1.Text, null);
+        window.Info1.Close();
         if (res.Item1)
         {
-            Window.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
+            window.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
         }
         else
         {
-            Window.Info.Show(App.GetLanguage("AddGameWindow.Error3"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Error3"));
         }
-        EnableButton();
     }
 
     private async Task<string?> SelectPack()
     {
-        var file = await BaseBinding.OpFile(Window, App.GetLanguage("AddGameWindow.Info13"),
-            "*.zip", App.GetLanguage("AddGameWindow.Info15"));
+        var window = (VisualRoot as HelloWindow)!;
+        var file = await BaseBinding.OpFile(window, 
+            App.GetLanguage("AddGameWindow.Info13"),
+            new string[]{ "*.zip", "*.mrpack" }, 
+            App.GetLanguage("AddGameWindow.Info15"));
         if (file.Any())
         {
             return file[0].GetPath();
         }
 
         return null;
-    }
-
-    private void EnableButton()
-    {
-        Button_Add1.IsEnabled = true;
-        Button_Add2.IsEnabled = true;
-        Button_Add3.IsEnabled = true;
-        Button_Add4.IsEnabled = true;
-    }
-
-    private void DisableButton()
-    {
-        Button_Add1.IsEnabled = false;
-        Button_Add2.IsEnabled = false;
-        Button_Add3.IsEnabled = false;
-        Button_Add4.IsEnabled = false;
     }
 
     private void Other_Click(object? sender, RoutedEventArgs e)
@@ -356,11 +372,7 @@ public partial class Tab5Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Next();
-    }
-
-    public void SetWindow(HelloWindow window)
-    {
-        Window = window;
+        var window = (VisualRoot as HelloWindow)!;
+        window.Next();
     }
 }

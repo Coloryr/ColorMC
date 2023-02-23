@@ -3,6 +3,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
@@ -18,11 +19,9 @@ public static class PackDownload
     /// 下载整合包
     /// </summary>
     /// <param name="zip">压缩包路径</param>
-    public static async Task<(GetDownloadState State, List<DownloadItem>? List,
-        List<CurseForgeModObj.Data>? Pack, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip)
+    public static async Task<(GetDownloadState State, List<DownloadItem>? List, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip, string? name, string? group)
     {
         var list = new List<DownloadItem>();
-        var list2 = new List<CurseForgeModObj.Data>();
 
         CoreMain.PackState?.Invoke(CoreRunState.Init);
         using ZipFile zFile = new(zip);
@@ -42,7 +41,7 @@ public static class PackDownload
 
         if (!find)
         {
-            return (GetDownloadState.Init, null, null, null);
+            return (GetDownloadState.Init, null, null);
         }
         CurseForgePackObj info;
         byte[] array1 = stream1.ToArray();
@@ -54,10 +53,10 @@ public static class PackDownload
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
-            return (GetDownloadState.Init, null, null, null);
+            return (GetDownloadState.Init, null, null);
         }
         if (info == null)
-            return (GetDownloadState.Init, null, null, null);
+            return (GetDownloadState.Init, null, null);
 
         //获取版本数据
         Loaders loaders = Loaders.Normal;
@@ -75,22 +74,23 @@ public static class PackDownload
                 loaderversion = item.id.Replace("fabric-", "");
             }
         }
-        string name = $"{info.name}-{info.version}";
+        name ??= $"{info.name}-{info.version}";
 
         //创建游戏实例
         var game = await InstancesPath.CreateVersion(new()
         {
+            GroupName = group,
             Name = name,
             Version = info.minecraft.version,
             ModPack = true,
             Loader = loaders,
             LoaderVersion = loaderversion,
-            CurseForgeMods = new()
+            Mods = new()
         });
 
         if (game == null)
         {
-            return (GetDownloadState.GetInfo, null, null, game);
+            return (GetDownloadState.GetInfo, null, game);
         }
 
         //解压文件
@@ -135,13 +135,14 @@ public static class PackDownload
 
                 list.Add(item11);
 
-                game.CurseForgeMods.Add(item.modId, new()
+                game.Mods.Add(item.modId.ToString(), new()
                 {
+                    Path = "mods",
                     Name = item.displayName,
                     File = item.fileName,
                     SHA1 = item11.SHA1!,
-                    Id = item.id,
-                    ModId = item.modId,
+                    ModId = item.modId.ToString(),
+                    FileId = item.id.ToString(),
                     Url = item.downloadUrl
                 });
 
@@ -149,7 +150,6 @@ public static class PackDownload
 
                 CoreMain.PackUpdate?.Invoke(Size, Now);
             }
-            list2.AddRange(res);
         }
         else
         {
@@ -176,17 +176,16 @@ public static class PackDownload
 
                 list.Add(item11);
 
-                game.CurseForgeMods.Add(res.data.modId, new()
+                game.Mods.Add(res.data.modId.ToString(), new()
                 {
+                    Path = "mods",
                     Name = res.data.displayName,
                     File = res.data.fileName,
                     SHA1 = item11.SHA1!,
-                    Id = res.data.id,
-                    ModId = res.data.modId,
+                    ModId = res.data.modId.ToString(),
+                    FileId = res.data.id.ToString(),
                     Url = res.data.downloadUrl
                 });
-
-                list2.Add(res.data);
 
                 Now++;
 
@@ -194,12 +193,160 @@ public static class PackDownload
             });
             if (!done)
             {
-                return (GetDownloadState.GetInfo, list, list2, game);
+                return (GetDownloadState.GetInfo, list, game);
             }
         }
 
         game.SaveCurseForgeMod();
 
-        return (GetDownloadState.End, list, list2, game);
+        return (GetDownloadState.End, list, game);
+    }
+
+    public static async Task<(GetDownloadState State, List<DownloadItem>? List, GameSettingObj? Game)> DownloadModrinthModPack(string zip, string? name, string? group)
+    {
+        var list = new List<DownloadItem>();
+
+        CoreMain.PackState?.Invoke(CoreRunState.Init);
+        using ZipFile zFile = new(zip);
+        using MemoryStream stream1 = new();
+        bool find = false;
+        //获取主信息
+        foreach (ZipEntry e in zFile)
+        {
+            if (e.IsFile && e.Name == "modrinth.index.json")
+            {
+                using var stream = zFile.GetInputStream(e);
+                await stream.CopyToAsync(stream1);
+                find = true;
+                break;
+            }
+        }
+
+        if (!find)
+        {
+            return (GetDownloadState.Init, null, null);
+        }
+        ModrinthPackObj info;
+        byte[] array1 = stream1.ToArray();
+        try
+        {
+            var data = Encoding.UTF8.GetString(array1);
+            info = JsonConvert.DeserializeObject<ModrinthPackObj>(data)!;
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
+            return (GetDownloadState.Init, null, null);
+        }
+        if (info == null)
+            return (GetDownloadState.Init, null, null);
+
+        //获取版本数据
+        Loaders loaders = Loaders.Normal;
+        string loaderversion = "";
+        if (!string.IsNullOrWhiteSpace(info.dependencies.forge))
+        {
+            loaders = Loaders.Forge;
+            loaderversion = info.dependencies.forge;
+        }
+        else if (!string.IsNullOrWhiteSpace(info.dependencies.fabric_loader))
+        {
+            loaders = Loaders.Fabric;
+            loaderversion = info.dependencies.fabric_loader;
+        }
+        else if (!string.IsNullOrWhiteSpace(info.dependencies.quilt_loader))
+        {
+            loaders = Loaders.Quilt;
+            loaderversion = info.dependencies.quilt_loader;
+        }
+        name ??= $"{info.name}-{info.versionId}";
+
+        //创建游戏实例
+        var game = await InstancesPath.CreateVersion(new()
+        {
+            GroupName = group,
+            Name = name,
+            Version = info.dependencies.minecraft,
+            ModPack = true,
+            Loader = loaders,
+            LoaderVersion = loaderversion,
+            Mods = new()
+        });
+
+        if (game == null)
+        {
+            return (GetDownloadState.GetInfo, null, game);
+        }
+
+        int length = "overrides".Length;
+
+        //解压文件
+        foreach (ZipEntry e in zFile)
+        {
+            if (e.IsFile && e.Name.StartsWith("overrides/"))
+            {
+                using var stream = zFile.GetInputStream(e);
+                string file = Path.GetFullPath(game.GetGamePath() +
+                    e.Name[length..]);
+                FileInfo info2 = new(file);
+                info2.Directory?.Create();
+                using FileStream stream2 = new(file, FileMode.Create,
+                    FileAccess.ReadWrite, FileShare.ReadWrite);
+                await stream.CopyToAsync(stream2);
+            }
+        }
+
+        File.WriteAllBytes(game.GetModJsonFile(), array1);
+
+        CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
+
+        //获取Mod信息
+        Size = info.files.Count;
+        Now = 0;
+        foreach (var item in info.files)
+        {
+            string? modid, fileid;
+            var url = item.downloads.FirstOrDefault(a => a.StartsWith("https://cdn.modrinth.com/data/"));
+            if (url == null)
+            {
+                url = item.downloads[0];
+                modid = item.path;
+                fileid = "";
+            }
+            else
+            {
+                modid = Funtcions.GetString(url, "data/", "/ver");
+                fileid = Funtcions.GetString(url, "versions/", "/");
+            }
+
+            var item11 = new DownloadItem()
+            {
+                Url = item.downloads[0],
+                Name = item.path,
+                Local = game.GetGamePath() + "/" + item.path,
+                SHA1 = item.hashes.sha1
+            };
+
+            list.Add(item11);
+
+            game.Mods.Add(modid, new()
+            {
+                Path = item.path[..item.path.IndexOf('/')],
+                Name = item.path,
+                File = item.path,
+                SHA1 = item11.SHA1!,
+                ModId = modid,
+                FileId = fileid,
+                Url = url
+            });
+
+            Now++;
+
+            CoreMain.PackUpdate?.Invoke(Size, Now);
+        }
+
+        game.SaveCurseForgeMod();
+
+        return (GetDownloadState.End, list, game);
     }
 }

@@ -3,6 +3,7 @@ using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
@@ -13,7 +14,7 @@ namespace ColorMC.Core.LaunchPath;
 
 public enum PackType
 {
-    ColorMC, CurseForge, MMC, HMCL
+    ColorMC, CurseForge, Modrinth, MMC, HMCL
 }
 
 public static class InstancesPath
@@ -34,7 +35,7 @@ public static class InstancesPath
     private const string Name13 = "mods";
     private const string Name14 = "saves";
     private const string Name15 = "config";
-    private const string Name16 = "cfmod.json";
+    private const string Name16 = "modfileinfo.json";
     private const string Name17 = "logs/latest.log";
     private const string Name18 = "schematics";
     private const string Name19 = "remove";
@@ -345,7 +346,7 @@ public static class InstancesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>文件路径</returns>
-    public static string GetCurseForgeModJsonFile(this GameSettingObj obj)
+    public static string GetModInfoJsonFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name16}");
     }
@@ -392,7 +393,7 @@ public static class InstancesPath
         }
 
         game.DirName = game.Name;
-        game.CurseForgeMods ??= new();
+        game.Mods ??= new();
 
         var dir = game.GetBasePath();
         if (Directory.Exists(dir))
@@ -515,7 +516,7 @@ public static class InstancesPath
             Window = obj.Window,
             StartServer = obj.StartServer,
             ProxyHost = obj.ProxyHost,
-            CurseForgeMods = obj.CurseForgeMods
+            Mods = obj.Mods
         };
     }
 
@@ -541,7 +542,7 @@ public static class InstancesPath
             Window = obj.Window,
             StartServer = obj.StartServer,
             ProxyHost = obj.ProxyHost,
-            CurseForgeMods = obj.CurseForgeMods
+            Mods = obj.Mods
         });
         if (obj1 != null)
         {
@@ -549,7 +550,7 @@ public static class InstancesPath
             if (obj.ModPack)
             {
                 File.Copy(obj.GetModJsonFile(), obj1.GetModJsonFile(), true);
-                File.Copy(obj.GetCurseForgeModJsonFile(), obj1.GetCurseForgeModJsonFile(), true);
+                File.Copy(obj.GetModInfoJsonFile(), obj1.GetModInfoJsonFile(), true);
             }
 
             return obj1;
@@ -564,10 +565,10 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     public static void SaveCurseForgeMod(this GameSettingObj obj)
     {
-        if (obj.CurseForgeMods == null)
+        if (obj.Mods == null)
             return;
 
-        File.WriteAllText(obj.GetCurseForgeModJsonFile(), JsonConvert.SerializeObject(obj.CurseForgeMods));
+        File.WriteAllText(obj.GetModInfoJsonFile(), JsonConvert.SerializeObject(obj.Mods));
     }
 
     /// <summary>
@@ -576,22 +577,22 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     public static void ReadCurseForgeMod(this GameSettingObj obj)
     {
-        string file = obj.GetCurseForgeModJsonFile();
+        string file = obj.GetModInfoJsonFile();
         if (!File.Exists(file))
         {
-            obj.CurseForgeMods = new();
+            obj.Mods = new();
             return;
         }
 
-        var res = JsonConvert.DeserializeObject<Dictionary<long, CurseForgeModObj1>>(
+        var res = JsonConvert.DeserializeObject<Dictionary<string, ModPackInfoObj>>(
             File.ReadAllText(file));
         if (res == null)
         {
-            obj.CurseForgeMods = new();
+            obj.Mods = new();
         }
         else
         {
-            obj.CurseForgeMods = res;
+            obj.Mods = res;
         }
 
         if (obj.ModPack)
@@ -600,8 +601,8 @@ public static class InstancesPath
         }
 
         var list = PathC.GetAllFile(obj.GetModsPath());
-        var remove = new List<long>();
-        foreach (var item in obj.CurseForgeMods)
+        var remove = new List<string>();
+        foreach (var item in obj.Mods)
         {
             bool find = false;
             foreach (var item1 in list)
@@ -621,7 +622,7 @@ public static class InstancesPath
 
         if (remove.Count != 0)
         {
-            remove.ForEach(item => obj.CurseForgeMods.Remove(item));
+            remove.ForEach(item => obj.Mods.Remove(item));
             obj.SaveCurseForgeMod();
         }
     }
@@ -634,27 +635,6 @@ public static class InstancesPath
     {
         RemoveFromGroup(obj);
         return PathC.DeleteFiles(obj.GetBasePath());
-    }
-
-    /// <summary>
-    /// 安装curseforge整合包
-    /// </summary>
-    /// <param name="data">整合包信息</param>
-    /// <returns>结果</returns>
-    public static async Task<(bool, GameSettingObj?)> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data)
-    {
-        var item = new DownloadItem()
-        {
-            Url = data.downloadUrl,
-            Name = data.fileName,
-            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.fileName),
-        };
-
-        var res1 = await DownloadManager.Start(new() { item });
-        if (!res1)
-            return (false, null);
-
-        return await InstallFromZip(item.Local, PackType.CurseForge);
     }
 
     /// <summary>
@@ -680,7 +660,7 @@ public static class InstancesPath
     /// </summary>
     /// <param name="dir">压缩包路径</param>
     /// <param name="type">类型</param>
-    public static async Task<(bool, GameSettingObj?)> InstallFromZip(string dir, PackType type)
+    public static async Task<(bool, GameSettingObj?)> InstallFromZip(string dir, PackType type, string? name, string? group)
     {
         GameSettingObj? game = null;
         bool res1111 = false;
@@ -715,6 +695,16 @@ public static class InstancesPath
                         if (game == null)
                             break;
 
+                        if (!string.IsNullOrWhiteSpace(name))
+                        {
+                            game.Name = name;
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(group))
+                        {
+                            game.GroupName = group;
+                        }
+
                         if (InstallGames.ContainsKey(game.Name))
                         {
                             break;
@@ -744,7 +734,22 @@ public static class InstancesPath
                 //Curseforge压缩包
                 case PackType.CurseForge:
                     CoreMain.PackState?.Invoke(CoreRunState.Read);
-                    var res = await PackDownload.DownloadCurseForgeModPack(dir);
+                    var res = await PackDownload.DownloadCurseForgeModPack(dir, name, group);
+                    game = res.Game;
+                    if (res.State != GetDownloadState.End)
+                    {
+                        break;
+                    }
+
+                    CoreMain.PackState?.Invoke(CoreRunState.Download);
+                    res1111 = await DownloadManager.Start(res.List!);
+
+                    CoreMain.PackState?.Invoke(CoreRunState.End);
+                    break;
+                //Curseforge压缩包
+                case PackType.Modrinth:
+                    CoreMain.PackState?.Invoke(CoreRunState.Read);
+                    res = await PackDownload.DownloadModrinthModPack(dir, name, group);
                     game = res.Game;
                     if (res.State != GetDownloadState.End)
                     {
@@ -800,6 +805,17 @@ public static class InstancesPath
                             Name = list["name"],
                             Loader = Loaders.Normal
                         };
+
+                        if (!string.IsNullOrWhiteSpace(name))
+                        {
+                            game.Name = name;
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(group))
+                        {
+                            game.GroupName = group;
+                        }
+
                         foreach (var item in mmc.components)
                         {
                             if (item.uid == "net.minecraft")
@@ -931,6 +947,16 @@ public static class InstancesPath
                             Loader = Loaders.Normal
                         };
 
+                        if (!string.IsNullOrWhiteSpace(name))
+                        {
+                            game.Name = name;
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(group))
+                        {
+                            game.GroupName = group;
+                        }
+
                         foreach (var item in obj.addons)
                         {
                             if (item.id == "game")
@@ -1034,5 +1060,48 @@ public static class InstancesPath
         }
         CoreMain.PackState?.Invoke(CoreRunState.End);
         return (res1111, game);
+    }
+
+    public static async Task<(bool, GameSettingObj?)> InstallFromModrinth(ModrinthVersionObj data, string? name, string? group)
+    {
+        var file = data.files.FirstOrDefault(a => a.primary);
+        if (file == null)
+        {
+            file = data.files[0];
+        }
+        var item = new DownloadItem()
+        {
+            Url = file.url,
+            Name = file.filename,
+            SHA1 = file.hashes.sha1,
+            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.filename),
+        };
+
+        var res1 = await DownloadManager.Start(new() { item });
+        if (!res1)
+            return (false, null);
+
+        return await InstallFromZip(item.Local, PackType.Modrinth, name, group);
+    }
+
+    /// <summary>
+    /// 安装curseforge整合包
+    /// </summary>
+    /// <param name="data">整合包信息</param>
+    /// <returns>结果</returns>
+    public static async Task<(bool, GameSettingObj?)> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data, string? name, string? group)
+    {
+        var item = new DownloadItem()
+        {
+            Url = data.downloadUrl,
+            Name = data.fileName,
+            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.fileName),
+        };
+
+        var res1 = await DownloadManager.Start(new() { item });
+        if (!res1)
+            return (false, null);
+
+        return await InstallFromZip(item.Local, PackType.CurseForge, name, group);
     }
 }

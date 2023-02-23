@@ -27,15 +27,18 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
         <Grid Margin="0,35,0,0">
-            <Border Name="Border2" CornerRadius="0,0,10,10" />
+            <Border
+                Name="Border2"
+                BorderThickness="2"
+                CornerRadius="0,0,10,10" />
             <Image
                 Name="Image_Back"
                 Margin="3"
                 Stretch="UniformToFill" />
 
-            <Grid Margin="5" ColumnDefinitions="4*,1.5*">
+            <Grid Margin="3" ColumnDefinitions="4*,1.5*">
 
-                <Grid Grid.Column="0">
+                <Grid Grid.Column="0" Margin="5,5,0,5">
                     <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
                     <Grid Margin="3">
                         <view2:SkinRender x:Name="Skin" />
@@ -67,7 +70,7 @@
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Column="1" Margin="2,0,0,0">
+                <Grid Grid.Column="1" Margin="5">
                     <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
                     <ScrollViewer>
                         <StackPanel Margin="3" Background="{setting:Colors TranBack}">

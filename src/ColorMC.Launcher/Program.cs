@@ -1,14 +1,8 @@
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using ColorMC.Core.Utils;
-using ColorMC.Gui;
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,11 +21,14 @@ internal class Program
     public delegate void IN1();
     public delegate Task<bool> IN2();
     public delegate void IN3(Action action);
+    public delegate AppBuilder IN4();
 
     public static IN1 CheckFailCall;
     public static IN1 Quit;
     public static IN3 SetInit;
     public static IN2 HaveUpdate;
+    public static IN4 BuildApp;
+    public static IN MainCall;
 
     public static Semaphore semaphore = new(0, 2);
 
@@ -49,6 +46,7 @@ internal class Program
 
         try
         {
+#if !DEBUG
             bool temp;
             do
             {
@@ -59,63 +57,79 @@ internal class Program
                 mutex1.WaitOne();
             }
             while (!temp);
+#endif
         }
         catch
-        { 
-        
+        {
+
         }
 
         if (!File.Exists("ColorMC.Gui.dll"))
         {
-            var app = BuildAvaloniaApp()
+            var app = AppBuilder.Configure<App>()
+                 .With(new FontManagerOptions
+                 {
+                     DefaultFamilyName = Font,
+                 })
+                .UsePlatformDetect()
+                .LogToTrace()
                 .StartWithClassicDesktopLifetime(args);
             return;
         }
-
         try
         {
-            AssemblyLoadContext context = new("ColorMC");
-            {
-                using var file = File.OpenRead("ColorMC.Gui.dll");
-                var temp = context.LoadFromStream(file);
-            }
-            {
-                using var file = File.OpenRead("ColorMC.Core.dll");
-                var temp = context.LoadFromStream(file);
-            }
-            var item = context.Assemblies
-                           .Where(x => x.GetName().Name == "ColorMC.Gui")
-                           .First();
-
-            var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ProgramGui").First();
-
-            var temp1 = Delegate.CreateDelegate(typeof(IN), 
-                mis.GetMethod("Main")!) as IN;
-
-            CheckFailCall = (Delegate.CreateDelegate(typeof(IN1),
-                mis.GetMethod("CheckUpdateFail")!) as IN1)!;
-
-            Quit = (Delegate.CreateDelegate(typeof(IN1),
-                mis.GetMethod("Quit")!) as IN1)!;
-
-            SetInit = (Delegate.CreateDelegate(typeof(IN3),
-                mis.GetMethod("SetInit")!) as IN3)!;
-
-            HaveUpdate = (Delegate.CreateDelegate(typeof(IN2),
-                mis.GetMethod("HaveUpdate")!) as IN2)!;
+            Load();
 
             SetInit(Init);
-
+#if !DEBUG
             updater.Check();
-
-            temp1!(args);
-
+#endif
+            MainCall(args);
+#if !DEBUG
             mutex1.ReleaseMutex();
+#endif
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
         }
+    }
+
+    private static void Load()
+    {
+
+        AssemblyLoadContext context = new("ColorMC");
+        {
+            using var file = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Gui.dll");
+            var temp = context.LoadFromStream(file);
+        }
+        {
+            using var file = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Core.dll");
+            var temp = context.LoadFromStream(file);
+        }
+        var item = context.Assemblies
+                       .Where(x => x.GetName().Name == "ColorMC.Gui")
+                       .First();
+
+        var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ProgramGui").First();
+
+        MainCall = (Delegate.CreateDelegate(typeof(IN),
+                mis.GetMethod("Main")!) as IN)!;
+
+        CheckFailCall = (Delegate.CreateDelegate(typeof(IN1),
+            mis.GetMethod("CheckUpdateFail")!) as IN1)!;
+
+        Quit = (Delegate.CreateDelegate(typeof(IN1),
+            mis.GetMethod("Quit")!) as IN1)!;
+
+        SetInit = (Delegate.CreateDelegate(typeof(IN3),
+            mis.GetMethod("SetInit")!) as IN3)!;
+
+        HaveUpdate = (Delegate.CreateDelegate(typeof(IN2),
+            mis.GetMethod("HaveUpdate")!) as IN2)!;
+
+        BuildApp = (Delegate.CreateDelegate(typeof(IN4),
+            mis.GetMethod("BuildAvaloniaApp")!) as IN4)!;
     }
 
     private static void Init()
@@ -125,11 +139,8 @@ internal class Program
 
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-             .With(new FontManagerOptions
-             {
-                 DefaultFamilyName = Font,
-             })
-            .UsePlatformDetect()
-            .LogToTrace();
+    {
+        Load();
+        return BuildApp();
+    }
 }

@@ -1,6 +1,6 @@
 namespace ColorMC.Core.Objs.CurseForge;
 
-public enum SortField
+public enum CurseForgeSortField
 {
     Featured = 1,
     Popularity = 2,

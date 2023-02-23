@@ -9,7 +9,6 @@ using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.UI.Controls;
-using ColorMC.Gui.UI.Controls.CurseForge;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -410,15 +409,5 @@ public partial class MainWindow : Window, IBaseWindow
             return;
 
         await GameBinding.DeleteGame(obj);
-    }
-
-    public void SetSelect(CurseForgeControl control)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Install()
-    {
-        throw new NotImplementedException();
     }
 }

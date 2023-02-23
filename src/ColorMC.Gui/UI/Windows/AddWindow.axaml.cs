@@ -4,9 +4,9 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.AddWindow;
-using ColorMC.Gui.UI.Controls.CurseForge;
+using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
@@ -15,14 +15,14 @@ using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class AddWorldWindow : Window, IBase1Window
+public partial class AddWindow : Window
 {
-    private readonly List<CurseForgeControl> List = new();
+    private readonly List<FileItemControl> List = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
-    private CurseForgeControl? Last;
+    private FileItemControl? Last;
     private GameSettingObj Obj;
 
-    public AddWorldWindow()
+    public AddWindow()
     {
         InitializeComponent();
 
@@ -30,7 +30,7 @@ public partial class AddWorldWindow : Window, IBase1Window
         Icon = App.Icon;
         Border1.MakeResizeDrag(this);
 
-        ComboBox1.Items = GameBinding.GetCurseForgeTypes();
+        ComboBox1.Items = GameBinding.GetCurseForgeSortTypes();
         ComboBox3.Items = GameBinding.GetSortOrder();
 
         ComboBox1.SelectedIndex = 1;
@@ -48,8 +48,8 @@ public partial class AddWorldWindow : Window, IBase1Window
         Input2.PropertyChanged += Input2_PropertyChanged;
         Input3.PropertyChanged += Input3_PropertyChanged;
 
-        Opened += AddCurseForgeWindow_Opened;
-        Closed += AddCurseForgeWindow_Closed;
+        Opened += AddModPackWindow_Opened;
+        Closed += AddModPackWindow_Closed;
 
         for (int a = 0; a < 50; a++)
         {
@@ -61,11 +61,16 @@ public partial class AddWorldWindow : Window, IBase1Window
         Update();
     }
 
+    public void Go(FileType file)
+    { 
+        
+    }
+
     public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
 
-        Head.Title = Title = string.Format(App.GetLanguage("AddWorldWindow.Title"), obj.Name);
+        Head.Title = Title = string.Format(App.GetLanguage("AddWindow.Title"), obj.Name);
     }
 
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -93,17 +98,17 @@ public partial class AddWorldWindow : Window, IBase1Window
 
     private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        var item = DataGridFiles.SelectedItem as FileDisplayObj;
-        if (item == null)
-            return;
+        //var item = DataGridFiles.SelectedItem as FileDisplayObj;
+        //if (item == null)
+        //    return;
 
-        var res = await Info.ShowWait(
-            string.Format(App.GetLanguage("AddWorldWindow.Info1"),
-            item.File.displayName));
-        if (res)
-        {
-            Install1(item.File);
-        }
+        //var res = await Info.ShowWait(
+        //    string.Format(App.GetLanguage("AddWorldWindow.Info1"),
+        //    item.Data.displayName));
+        //if (res)
+        //{
+        //    Install1(item.Data);
+        //}
     }
 
     private void ButtonCancel_Click(object? sender, RoutedEventArgs e)
@@ -127,11 +132,11 @@ public partial class AddWorldWindow : Window, IBase1Window
         Install();
     }
 
-    private void AddCurseForgeWindow_Closed(object? sender, EventArgs e)
+    private void AddModPackWindow_Closed(object? sender, EventArgs e)
     {
         App.PicUpdate -= Update;
 
-        App.AddWorldWindows.Remove(Obj);
+        App.AddWindows.Remove(Obj);
     }
 
     public void Install()
@@ -155,7 +160,7 @@ public partial class AddWorldWindow : Window, IBase1Window
         }
     }
 
-    public void SetSelect(CurseForgeControl last)
+    public void SetSelect(FileItemControl last)
     {
         Button2.IsEnabled = true;
         Last?.SetSelect(false);
@@ -163,70 +168,58 @@ public partial class AddWorldWindow : Window, IBase1Window
         Last.SetSelect(true);
     }
 
-    private void Control_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-        {
-            if (sender is not CurseForgeControl item)
-                return;
-            new UrlFlyout(item.Data.links.websiteUrl).ShowAt(item, true);
-        }
-    }
-
     private async void Load()
     {
-        Info1.Show(App.GetLanguage("AddWorldWindow.Info2"));
-        var data = await GameBinding.GetWorldList(ComboBox2.SelectedItem as string,
-            ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
+        //Info1.Show(App.GetLanguage("AddWorldWindow.Info2"));
+        //var data = await GameBinding.GetWorldList(ComboBox2.SelectedItem as string,
+        //    ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
 
-        if (data == null)
-        {
-            Info.Show(App.GetLanguage("AddWorldWindow.Error2"));
-            Info1.Close();
-            return;
-        }
+        //if (data == null)
+        //{
+        //    Info.Show(App.GetLanguage("AddWorldWindow.Error2"));
+        //    Info1.Close();
+        //    return;
+        //}
 
-        ListBox_Items.Children.Clear();
-        int a = 0;
-        foreach (var item in data.data)
-        {
-            var control = List[a];
-            control.SetWindow(this);
-            control.Load(item);
-            control.PointerPressed += Control_PointerPressed;
-            ListBox_Items.Children.Add(control);
-            a++;
-        }
+        //ListBox_Items.Children.Clear();
+        //int a = 0;
+        //foreach (var item in data.data)
+        //{
+        //    var control = List[a];
+        //    control.Load(item);
+        //    ListBox_Items.Children.Add(control);
+        //    a++;
+        //}
 
-        ScrollViewer1.ScrollToHome();
-        Info1.Close();
+        //ScrollViewer1.ScrollToHome();
+        //Info1.Close();
     }
 
     private async void Load1()
     {
-        List1.Clear();
-        Info1.Show(App.GetLanguage("AddWorldWindow.Info3"));
-        var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
+        //List1.Clear();
+        //Info1.Show(App.GetLanguage("AddWorldWindow.Info3"));
+        //var data = await GameBinding.GetPackFile(Last!.Data.id, (int)Input3.Value!);
 
-        if (data == null)
-        {
-            Info.Show(App.GetLanguage("AddWorldWindow.Error3"));
-            Info1.Close();
-            return;
-        }
+        //if (data == null)
+        //{
+        //    Info.Show(App.GetLanguage("AddWorldWindow.Error3"));
+        //    Info1.Close();
+        //    return;
+        //}
 
-        foreach (var item in data.data)
-        {
-            List1.Add(new()
-            {
-                Name = item.displayName,
-                Size = UIUtils.MakeFileSize1(item.fileLength),
-                Download = item.downloadCount,
-                Time = DateTime.Parse(item.fileDate).ToString(),
-                File = item
-            });
-        }
-        Info1.Close();
+        //foreach (var item in data.data)
+        //{
+        //    List1.Add(new()
+        //    {
+        //        Name = item.displayName,
+        //        Size = UIUtils.MakeFileSize1(item.fileLength),
+        //        Download = item.downloadCount,
+        //        Time = DateTime.Parse(item.fileDate).ToString(),
+        //        Data = item
+        //    });
+        //}
+        //Info1.Close();
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -234,7 +227,7 @@ public partial class AddWorldWindow : Window, IBase1Window
         Load();
     }
 
-    private async void AddCurseForgeWindow_Opened(object? sender, EventArgs e)
+    private async void AddModPackWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
         Info1.Show(App.GetLanguage("AddWorldWindow.Info4"));
@@ -242,7 +235,9 @@ public partial class AddWorldWindow : Window, IBase1Window
         Info1.Close();
         if (list == null)
         {
+#if !DEBUG
             Info.Show(App.GetLanguage("AddWorldWindow.Error4"));
+#endif
             return;
         }
 

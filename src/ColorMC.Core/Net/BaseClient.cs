@@ -1,5 +1,6 @@
 using ColorMC.Core.Utils;
 using System.Net;
+using System.Threading;
 
 namespace ColorMC.Core.Net;
 
@@ -12,6 +13,7 @@ public enum SourceLocal
 
 public static class BaseClient
 {
+    private static Semaphore semaphore = new(10, 10);
     public static SourceLocal Source { get; set; }
 
     public static HttpClient DownloadClient { get; private set; }
@@ -77,5 +79,25 @@ public static class BaseClient
     public static async Task<byte[]> GetBytes(string url)
     {
         return await DownloadClient.GetByteArrayAsync(url);
+    }
+
+    public static void Poll(string url, Action<Stream> action) 
+    {
+        Task.Run(async () =>
+        {
+            try 
+            {
+                semaphore.WaitOne();
+                var data1 = await DownloadClient.GetAsync(url);
+                if (data1.IsSuccessStatusCode)
+                {
+                    action(data1.Content.ReadAsStream());
+                }
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+        });
     }
 }

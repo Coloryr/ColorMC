@@ -170,7 +170,9 @@ public partial class AddJavaWindow : Window
         else
         {
             Info1.Close();
+#if !DEBUG
             Info.Show(App.GetLanguage("AddJavaWindow.Error1"));
+#endif
         }
 
         load = false;
