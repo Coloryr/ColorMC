@@ -144,8 +144,6 @@ public static class PathC
         Logs.Info("seach file");
         foreach (var item in list)
         {
-            Logs.Info(item.FullName);
-
             if (item.Name == name)
                 return item.FullName;
         }

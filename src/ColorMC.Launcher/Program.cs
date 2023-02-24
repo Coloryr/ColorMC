@@ -44,28 +44,26 @@ internal class Program
         //    Thread.Sleep(100);
         //}
 
-        try
-        {
-#if !DEBUG
-            bool temp;
-            do
-            {
-                mutex1 = new Mutex(true, "ColorMC-Launcher", out temp);
-                if (temp)
-                    break;
-
-                mutex1.WaitOne();
-            }
-            while (!temp);
-#endif
-        }
-        catch
-        {
-
-        }
-
         if (!File.Exists("ColorMC.Gui.dll"))
         {
+            try
+            {
+                bool temp;
+                do
+                {
+                    mutex1 = new Mutex(true, "ColorMC-Launcher", out temp);
+                    if (temp)
+                        break;
+
+                    mutex1.WaitOne();
+                }
+                while (!temp);
+            }
+            catch
+            {
+
+            }
+
             var app = AppBuilder.Configure<App>()
                  .With(new FontManagerOptions
                  {
@@ -81,13 +79,10 @@ internal class Program
             Load();
 
             SetInit(Init);
-#if !DEBUG
-            updater.Check();
-#endif
+
+            //updater.Check();
+
             MainCall(args);
-#if !DEBUG
-            mutex1.ReleaseMutex();
-#endif
         }
         catch (Exception e)
         {

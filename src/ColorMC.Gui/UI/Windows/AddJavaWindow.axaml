@@ -37,6 +37,11 @@
                 Margin="3"
                 Stretch="UniformToFill" />
 
+            <Label
+                Margin="2,0,0,0"
+                VerticalAlignment="Bottom"
+                Content="arm64应该下载aarch64，苹果的M系列芯片也是arm64芯片" />
+
             <DockPanel Margin="3">
 
                 <StackPanel

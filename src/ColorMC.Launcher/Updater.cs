@@ -76,6 +76,8 @@ public class Updater
 
                         File.Delete($"{AppContext.BaseDirectory}ColorMC.Gui.dll");
 
+                        new Mutex(true, "ColorMC-Launcher");
+
                         Process process = Process.Start("ColorMC.Launcher.exe");
 
                         Program.Quit();
