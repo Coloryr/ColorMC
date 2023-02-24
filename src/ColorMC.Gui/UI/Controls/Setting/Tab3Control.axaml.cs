@@ -30,6 +30,9 @@ public partial class Tab3Control : UserControl
         TextBox4.PropertyChanged += TextBox_PropertyChanged;
 
         CheckBox1.Click += CheckBox1_Click;
+        CheckBox2.Click += CheckBox1_Click;
+        CheckBox3.Click += CheckBox1_Click;
+        CheckBox4.Click += CheckBox1_Click;
     }
 
     private void CheckBox1_Click(object? sender, RoutedEventArgs e)

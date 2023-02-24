@@ -90,6 +90,10 @@ public static class JvmPath
         var java = Find(path);
         if (java == null)
             return (false, LanguageHelper.GetName("Core.Jvm.Error6"));
+        else
+        {
+            Logs.Info($"find java {java}, check it");
+        }
 
         if (SystemInfo.Os == OsType.Linux)
         {
@@ -107,6 +111,8 @@ public static class JvmPath
     /// <returns>结果</returns>
     public static (bool Res, string Msg) AddItem(string name, string local)
     {
+        Logs.Info($"check java {local}");
+
         Jvms.Remove(name);
         var info = GetJavaInfo(local);
         if (info != null)
@@ -119,6 +125,10 @@ public static class JvmPath
             });
             ConfigUtils.Save();
             return (true, name);
+        }
+        else
+        {
+            Logs.Info($"java info error");
         }
 
         return (false, LanguageHelper.GetName("Core.Jvm.Error1"));
@@ -298,6 +308,7 @@ public static class JvmPath
         }
         catch (Exception e)
         {
+            Logs.Error("java check fail", e);
             return null;
         }
     }
