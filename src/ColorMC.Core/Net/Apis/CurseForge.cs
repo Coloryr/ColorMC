@@ -36,7 +36,7 @@ public static class CurseForge
         {
             string temp = $"{CurseForgeUrl}mods/search?gameId={GameID}&classId={classid}&"
                 + $"gameVersion={version}&index={page * pagesize}&sortField={sort}&"
-                + $"searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}&" 
+                + $"searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}&"
                 + $"categoryId={categoryId}";
             HttpRequestMessage httpRequest = new()
             {
@@ -61,7 +61,7 @@ public static class CurseForge
     /// 获取整合包列表
     /// </summary>
     public static Task<CurseForgeObj?> GetModPackList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1, 
+        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1,
         string categoryId = "")
     {
         return GetList(ClassModPack, version, page, sort, filter, pagesize, sortOrder, categoryId);
@@ -153,7 +153,7 @@ public static class CurseForge
         {
             Arg1 arg1 = new();
             obj.ForEach(a => arg1.fileIds.Add(a.fileID));
-            string temp =  $"{CurseForgeUrl}mods/files";
+            string temp = $"{CurseForgeUrl}mods/files";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Post,

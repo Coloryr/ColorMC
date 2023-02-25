@@ -41,7 +41,7 @@ public partial class Tab8Control : UserControl
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        
+
     }
 
     private void Button_R1_Click(object? sender, RoutedEventArgs e)
@@ -58,7 +58,7 @@ public partial class Tab8Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("GameEditWindow.Tab8.Info2"), 
+            App.GetLanguage("GameEditWindow.Tab8.Info2"),
             new string[] { "*.zip" },
             App.GetLanguage("GameEditWindow.Tab8.Info7"));
         if (file.Any())

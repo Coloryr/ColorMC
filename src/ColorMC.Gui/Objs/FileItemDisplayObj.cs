@@ -1,15 +1,10 @@
 ﻿using ColorMC.Core.Objs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Objs;
 
 public enum FileType
 {
-    ModPack=0, Mod, World, Shaderpack, Resourcepack, DataPacks
+    ModPack = 0, Mod, World, Shaderpack, Resourcepack, DataPacks
 }
 
 public record FileItemDisplayObj

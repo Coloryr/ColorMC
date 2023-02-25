@@ -62,7 +62,7 @@ public partial class Tab2Control : UserControl
     {
         var window = (VisualRoot as HelloWindow)!;
         var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("HelloWindow.Tab2.Info3"), 
+            App.GetLanguage("HelloWindow.Tab2.Info3"),
             new string[] { "*.json" },
             App.GetLanguage("HelloWindow.Tab2.Info7"));
 
@@ -117,7 +117,7 @@ public partial class Tab2Control : UserControl
     {
         var window = (VisualRoot as HelloWindow)!;
         var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("HelloWindow.Tab2.Info3"), 
+            App.GetLanguage("HelloWindow.Tab2.Info3"),
             new string[] { "*.json" },
             App.GetLanguage("HelloWindow.Tab2.Info7"));
 
@@ -166,7 +166,7 @@ public partial class Tab2Control : UserControl
     {
         var window = (VisualRoot as HelloWindow)!;
         var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("HelloWindow.Tab2.Info6"), 
+            App.GetLanguage("HelloWindow.Tab2.Info6"),
             new string[] { "*.json" },
             App.GetLanguage("HelloWindow.Tab2.Info8"));
 

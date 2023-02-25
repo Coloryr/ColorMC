@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -11,7 +10,6 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using System;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -29,7 +27,7 @@ public partial class FileItemControl : UserControl
         Image_Logo.Source = App.GameIcon;
     }
 
-    private void FileItemControl_PointerPressed(object? sender, 
+    private void FileItemControl_PointerPressed(object? sender,
         PointerPressedEventArgs e)
     {
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
@@ -59,7 +57,7 @@ public partial class FileItemControl : UserControl
         window.Install();
     }
 
-    private void CurseForgeControl_PointerPressed(object? sender, 
+    private void CurseForgeControl_PointerPressed(object? sender,
         PointerPressedEventArgs e)
     {
         var window = (VisualRoot as IAddWindow)!;

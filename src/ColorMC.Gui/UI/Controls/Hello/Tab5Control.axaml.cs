@@ -9,7 +9,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -336,9 +335,9 @@ public partial class Tab5Control : UserControl
     private async Task<string?> SelectPack()
     {
         var window = (VisualRoot as HelloWindow)!;
-        var file = await BaseBinding.OpFile(window, 
+        var file = await BaseBinding.OpFile(window,
             App.GetLanguage("AddGameWindow.Info13"),
-            new string[]{ "*.zip", "*.mrpack" }, 
+            new string[] { "*.zip", "*.mrpack" },
             App.GetLanguage("AddGameWindow.Info15"));
         if (file.Any())
         {

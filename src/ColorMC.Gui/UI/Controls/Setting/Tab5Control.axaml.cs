@@ -154,7 +154,7 @@ public partial class Tab5Control : UserControl
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        var file = await BaseBinding.OpFile(window, 
+        var file = await BaseBinding.OpFile(window,
              App.GetLanguage("SettingWindow.Tab5.Info2"),
              new string[] { SystemInfo.Os == OsType.Windows ? "*.exe" : "" },
              App.GetLanguage("SettingWindow.Tab5.Info4"));

@@ -78,7 +78,7 @@ public partial class Tab4Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("GameEditWindow.Tab4.Info7"), 
+            App.GetLanguage("GameEditWindow.Tab4.Info7"),
             new string[] { "*.jar" },
            App.GetLanguage("GameEditWindow.Tab4.Info8"));
 

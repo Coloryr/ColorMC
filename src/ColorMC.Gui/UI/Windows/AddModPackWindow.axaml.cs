@@ -276,7 +276,7 @@ public partial class AddModPackWindow : Window, IAddWindow
         var data = await GameBinding.GetPackList(
             (SourceType)ComboBox4.SelectedIndex, ComboBox2.SelectedItem as string,
             Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex,
-            ComboBox1.SelectedIndex < 0 ? "" : 
+            ComboBox1.SelectedIndex < 0 ? "" :
                 Categories[ComboBox1.SelectedIndex]);
 
         if (data == null)
