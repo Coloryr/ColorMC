@@ -95,6 +95,8 @@
                     ToolTip.Tip="{setting:Localize ToolTip.Text37}"
                     ToolTip.VerticalOffset="-30" />
             </StackPanel>
+
+            <CheckBox Name="CheckBox1" Content="{setting:Localize GameEditWindow.Tab1.Text3}" />
         </StackPanel>
         <Button
             Name="Button5"
@@ -105,6 +107,17 @@
             VerticalAlignment="Bottom"
             Content="{setting:Localize Button.Delete}"
             ToolTip.Tip="{setting:Localize ToolTip.Text36}"
+            ToolTip.VerticalOffset="-30" />
+
+        <Button
+            Name="Button6"
+            Width="120"
+            Height="25"
+            Margin="5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Content="{setting:Localize Button.OpFile}"
+            ToolTip.Tip="{setting:Localize ToolTip.Text39}"
             ToolTip.VerticalOffset="-30" />
     </Grid>
 </UserControl>

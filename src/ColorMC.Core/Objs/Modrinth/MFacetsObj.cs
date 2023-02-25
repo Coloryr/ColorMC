@@ -27,8 +27,8 @@ public record MFacetsObj
                 builder.Append($"[\"{item.Data}:{item1}\"],");
             }
 
-            builder.Remove(builder.Length - 1, 1);
         }
+        builder.Remove(builder.Length - 1, 1);
         builder.Append("]");
         return builder.ToString();
     }

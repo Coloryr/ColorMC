@@ -13,6 +13,7 @@
 	<String Key="MainWindow.Flyouts.Text4">修改分组</String>
 	<String Key="MainWindow.Flyouts.Text5">删除实例</String>
 	<String Key="MainWindow.Flyouts.Text6">强行停止</String>
+	<String Key="MainWindow.Flyouts.Text7">添加资源</String>
 	<String Key="MainWindow.Control.Text1">用户列表</String>
 	<String Key="MainWindow.Control.Text2">添加实例</String>
 	<String Key="MainWindow.Control.Text3">启动实例</String>
@@ -273,6 +274,7 @@
 
 	<String Key="GameEditWindow.Tab1.Text1">游戏版本</String>
 	<String Key="GameEditWindow.Tab1.Text2">刷新版本</String>
+	<String Key="GameEditWindow.Tab1.Text3">整合包</String>
 	<String Key="GameEditWindow.Tab1.Info1">是否要删除实例 {0}</String>
 
 	<String Key="GameEditWindow.Tab2.Text1">Jvm参数设置</String>
@@ -498,14 +500,17 @@
 	<String Key="AddModPackWindow.Control.Text3">上次更新：</String>
 
 	<String Key="AddWindow.Title">ColorMC 实例 {0} 添加资源</String>
-	<String Key="AddWindow.Info1">是否下载世界 {0}</String>
-	<String Key="AddWindow.Info2">正在搜索世界中</String>
-	<String Key="AddWindow.Info3">正在获取世界版本中</String>
+	<String Key="AddWindow.Info1">是否下载资源 {0}</String>
+	<String Key="AddWindow.Info2">正在搜索资源中</String>
+	<String Key="AddWindow.Info3">正在获取资源版本中</String>
 	<String Key="AddWindow.Info4">正在加载版本数据中</String>
-	<String Key="AddWindow.Error1">你还没有选择世界</String>
-	<String Key="AddWindow.Error2">世界数据加载失败</String>
-	<String Key="AddWindow.Error3">世界版本数据加载失败</String>
+	<String Key="AddWindow.Info5">正在下载资源</String>
+	<String Key="AddWindow.Info6">已下载</String>
+	<String Key="AddWindow.Error1">你还没有选择资源</String>
+	<String Key="AddWindow.Error2">资源数据加载失败</String>
+	<String Key="AddWindow.Error3">资源版本数据加载失败</String>
 	<String Key="AddWindow.Error4">游戏版本加载失败</String>
+	<String Key="AddWindow.Error5">资源下载失败</String>
 	<String Key="AddWindow.Control.Text1">正在下载中</String>
 	<String Key="AddWindow.Control.Text2">已下载</String>
 	<String Key="AddWindow.Control.Text3">打开网页</String>

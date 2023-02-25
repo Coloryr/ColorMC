@@ -4,6 +4,8 @@ JProfiler 不添加
 MCEdit 不添加
 JVisualVM 不添加
 
+启动崩溃 不知道为何
+
 2023.1.16 
 把登录错误信息返回 okl
 
@@ -36,8 +38,8 @@ UI调整 调整Tabs边框 Tabs滚动条 okl
 投影模组 https://www.mcmod.cn/class/2261.html okl
 
 2023.2.20
-拖拽导入
-启动崩溃
-modrinth https://docs.modrinth.com/docs/getting-started/
-存档备份
-复制实例
+调整GUI okl
+添加拖拽导入
+添加modrinth https://docs.modrinth.com/docs/getting-started/ okl
+添加存档备份
+添加复制实例

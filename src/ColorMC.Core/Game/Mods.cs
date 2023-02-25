@@ -26,6 +26,7 @@ public static class Mods
         DirectoryInfo info = new(dir);
         if (!info.Exists)
         {
+            info.Create();
             return list.ToList();
         }
         var files = info.GetFiles();

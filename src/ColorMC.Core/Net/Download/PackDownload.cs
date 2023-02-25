@@ -197,7 +197,7 @@ public static class PackDownload
             }
         }
 
-        game.SaveCurseForgeMod();
+        game.SaveModInfo();
 
         return (GetDownloadState.End, list, game);
     }
@@ -345,7 +345,7 @@ public static class PackDownload
             ColorMCCore.PackUpdate?.Invoke(Size, Now);
         }
 
-        game.SaveCurseForgeMod();
+        game.SaveModInfo();
 
         return (GetDownloadState.End, list, game);
     }

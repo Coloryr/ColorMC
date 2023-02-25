@@ -88,6 +88,11 @@ public partial class AddModPackWindow : Window, IAddWindow
         ComboBox1.Items = null;
         ComboBox2.Items = null;
         ComboBox3.Items = null;
+
+        foreach (var item in ListBox_Items.Children)
+        {
+            (item as FileItemControl)?.Cancel();
+        }
         ListBox_Items.Children.Clear();
 
         if (ComboBox4.SelectedIndex == 0)
@@ -233,6 +238,15 @@ public partial class AddModPackWindow : Window, IAddWindow
 
     private void AddModPackWindow_Closed(object? sender, EventArgs e)
     {
+        foreach (var item in ListBox_Items.Children)
+        {
+            if (item is not FileItemControl control)
+                return;
+
+            control.Close();
+        }
+        ListBox_Items.Children.Clear();
+
         App.PicUpdate -= Update;
 
         App.AddModPackWindow = null;

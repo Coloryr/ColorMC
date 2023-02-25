@@ -18,7 +18,10 @@ public static class Shaderpacks
 
         DirectoryInfo info = new(dir);
         if (!info.Exists)
+        {
+            info.Create();
             return list;
+        }
 
         Parallel.ForEach(info.GetFiles(), (item) =>
         {

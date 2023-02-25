@@ -1,5 +1,8 @@
 using ColorMC.Core.Utils;
+using System;
+using System.Collections.Concurrent;
 using System.Net;
+using System.Threading.Channels;
 
 namespace ColorMC.Core.Net;
 
@@ -12,11 +15,14 @@ public enum SourceLocal
 
 public static class BaseClient
 {
-    private static Semaphore semaphore = new(10, 10);
     public static SourceLocal Source { get; set; }
 
     public static HttpClient DownloadClient { get; private set; }
     public static HttpClient LoginClient { get; private set; }
+
+    private static Thread[] threads = new Thread[5];
+    private static ConcurrentBag<(string, CancellationToken, Action<Stream>)> tasks = new();
+    private static bool run;
 
     /// <summary>
     /// 初始化
@@ -31,6 +37,22 @@ public static class BaseClient
             Logs.Info(string.Format(LanguageHelper.GetName("Core.Http.Info6"),
                ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort));
         }
+
+        for (int a = 0; a < 5; a++)
+        {
+            run = true;
+            threads[a] = new(Run)
+            {
+                Name = $"ColorMC-Http_{a}"
+            };
+            threads[a].Start();
+        }
+
+        DownloadClient?.CancelPendingRequests();
+        DownloadClient?.Dispose();
+
+        LoginClient?.CancelPendingRequests();
+        LoginClient?.Dispose();
 
         if (ConfigUtils.Config.Http.DownloadProxy)
         {
@@ -58,6 +80,13 @@ public static class BaseClient
         }
 
         DownloadClient.Timeout = TimeSpan.FromSeconds(10);
+
+        ColorMCCore.Stop += ColorMCCore_Stop;
+    }
+
+    private static void ColorMCCore_Stop()
+    {
+        run = false;
     }
 
     /// <summary>
@@ -80,23 +109,41 @@ public static class BaseClient
         return await DownloadClient.GetByteArrayAsync(url);
     }
 
-    public static void Poll(string url, Action<Stream> action)
+    private static void Run()
     {
-        Task.Run(async () =>
+        while (run)
         {
-            try
+            while (tasks.TryTake(out var item))
             {
-                semaphore.WaitOne();
-                var data1 = await DownloadClient.GetAsync(url);
-                if (data1.IsSuccessStatusCode)
+                try
                 {
-                    action(data1.Content.ReadAsStream());
+                    if (item.Item2.IsCancellationRequested)
+                        continue;
+
+                    using var data1 = DownloadClient.GetAsync(item.Item1, item.Item2).Result;
+                    if (item.Item2.IsCancellationRequested)
+                        continue;
+
+                    using var data2 = data1.Content.ReadAsStream(item.Item2);
+                    if (data1.IsSuccessStatusCode)
+                    {
+                        item.Item3(data2);
+                    }
+                }
+                catch (Exception e)
+                {
+                    if (item.Item2.IsCancellationRequested)
+                        continue;
+
+                    Logs.Error("http error", e);
                 }
             }
-            finally
-            {
-                semaphore.Release();
-            }
-        });
+            Thread.Sleep(1000);
+        }
+    }
+
+    public static void Poll(string url, CancellationToken token, Action<Stream> action)
+    {
+        tasks.Add((url, token, action));
     }
 }

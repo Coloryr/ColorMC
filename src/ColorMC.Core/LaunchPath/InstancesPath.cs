@@ -563,7 +563,7 @@ public static class InstancesPath
     /// 保存游戏实例cfmod数据
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static void SaveCurseForgeMod(this GameSettingObj obj)
+    public static void SaveModInfo(this GameSettingObj obj)
     {
         if (obj.Mods == null)
             return;
@@ -623,7 +623,7 @@ public static class InstancesPath
         if (remove.Count != 0)
         {
             remove.ForEach(item => obj.Mods.Remove(item));
-            obj.SaveCurseForgeMod();
+            obj.SaveModInfo();
         }
     }
 

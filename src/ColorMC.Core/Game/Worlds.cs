@@ -21,7 +21,10 @@ public static class Worlds
 
         DirectoryInfo info = new(dir);
         if (!info.Exists)
+        {
+            info.Create();
             return list;
+        }
 
         await Parallel.ForEachAsync(info.GetDirectories(), (item, cacenl) =>
         {

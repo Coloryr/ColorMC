@@ -38,5 +38,12 @@ public record FileDisplayObj
     public FileType FileType;
     public SourceType SourceType;
 
+    /// <summary>
+    /// Mod用
+    /// </summary>
+    public string ID;
+    public string ID1;
+
+
     public object Data;
 }

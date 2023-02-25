@@ -15,8 +15,12 @@ public static class Schematic
     {
         var list = new ConcurrentBag<SchematicObj>();
         var path = obj.GetSchematicsPath();
+
         if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
             return list;
+        }
 
         var items = Directory.GetFiles(path);
         await Parallel.ForEachAsync(items, async (item, cancel) =>
