@@ -6,12 +6,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="AvaloniaApplication1"
     Width="400"
-    Height="250"
+    Height="150"
     MinWidth="400"
-    MinHeight="250"
+    MinHeight="150"
     MaxWidth="400"
-    MaxHeight="250"
-    d:DesignHeight="250"
+    MaxHeight="150"
+    d:DesignHeight="150"
     d:DesignWidth="400"
     mc:Ignorable="d">
     <Grid>
@@ -27,8 +27,11 @@
 
         <ProgressBar
             Name="ProgressBar1"
-            Width="180"
-            Height="20" />
+            Width="260"
+            Height="20"
+            BorderBrush="White"
+            BorderThickness="1"
+            Foreground="#FF5ABED6" />
 
         <Label
             Name="Label1"

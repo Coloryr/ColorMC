@@ -92,7 +92,6 @@ internal class Program
 
     private static void Load()
     {
-
         AssemblyLoadContext context = new("ColorMC");
         {
             using var file = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Gui.dll");
@@ -106,7 +105,7 @@ internal class Program
                        .Where(x => x.GetName().Name == "ColorMC.Gui")
                        .First();
 
-        var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ProgramGui").First();
+        var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ColorMCGui").First();
 
         MainCall = (Delegate.CreateDelegate(typeof(IN),
                 mis.GetMethod("Main")!) as IN)!;
