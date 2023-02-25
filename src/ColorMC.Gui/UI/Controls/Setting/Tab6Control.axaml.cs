@@ -102,7 +102,7 @@ public partial class Tab6Control : UserControl
         }
         catch (Exception ex)
         {
-            CoreMain.OnError?.Invoke(App.GetLanguage("SettingWindow.Tab6.Error2"), ex, false);
+            ColorMCCore.OnError?.Invoke(App.GetLanguage("SettingWindow.Tab6.Error2"), ex, false);
         }
     }
 

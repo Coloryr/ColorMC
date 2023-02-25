@@ -80,13 +80,13 @@ public static class BaseAuth
         AuthState now = AuthState.OAuth;
         try
         {
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.OAuth);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.OAuth);
             var oauth = await OAuthAPI.GetCode();
             if (oauth.Done != LoginState.Done)
             {
                 return (AuthState.OAuth, oauth.Done, null, oauth.Url!, null);
             }
-            CoreMain.LoginOAuthCode?.Invoke(oauth.Url!, oauth.Code!);
+            ColorMCCore.LoginOAuthCode?.Invoke(oauth.Url!, oauth.Code!);
             var oauth1 = await OAuthAPI.RunGetCode();
             if (oauth1.Done != LoginState.Done)
             {
@@ -94,7 +94,7 @@ public static class BaseAuth
                     LanguageHelper.GetName("Core.Login.Error1"), null);
             }
             now = AuthState.XBox;
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.XBox);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XBox);
             var xbox = await OAuthAPI.GetXBLAsync(oauth1.Obj!.access_token);
             if (xbox.Done != LoginState.Done)
             {
@@ -102,7 +102,7 @@ public static class BaseAuth
                     LanguageHelper.GetName("Core.Login.Error2"), null);
             }
             now = AuthState.XSTS;
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.XSTS);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XSTS);
             var xsts = await OAuthAPI.GetXSTSAsync(xbox.XNLToken!);
             if (xsts.Done != LoginState.Done)
             {
@@ -110,7 +110,7 @@ public static class BaseAuth
                     LanguageHelper.GetName("Core.Login.Error3"), null);
             }
             now = AuthState.Token;
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
             var auth = await OAuthAPI.GetMinecraftAsync(xsts.XSTSUhs!, xsts.XSTSToken!);
             if (auth.Done != LoginState.Done)
             {
@@ -158,28 +158,28 @@ public static class BaseAuth
         AuthState now = AuthState.OAuth;
         try
         {
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.OAuth);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.OAuth);
             var oauth = await OAuthAPI.RefreshTokenAsync(obj.Text1);
             if (oauth.Done != LoginState.Done)
             {
                 return (AuthState.OAuth, oauth.Done, null,
                     LanguageHelper.GetName("Core.Login.Error1"), null);
             }
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.XBox);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XBox);
             var xbox = await OAuthAPI.GetXBLAsync(oauth.Auth!.access_token);
             if (xbox.Done != LoginState.Done)
             {
                 return (AuthState.XBox, xbox.Done, null,
                     LanguageHelper.GetName("Core.Login.Error2"), null);
             }
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.XSTS);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XSTS);
             var xsts = await OAuthAPI.GetXSTSAsync(xbox.XNLToken!);
             if (xsts.Done != LoginState.Done)
             {
                 return (AuthState.XSTS, xsts.Done, null,
                     LanguageHelper.GetName("Core.Login.Error3"), null);
             }
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
             var auth = await OAuthAPI.GetMinecraftAsync(xsts.XSTSUhs!, xsts.XSTSToken!);
             if (auth.Done != LoginState.Done)
             {
@@ -221,7 +221,7 @@ public static class BaseAuth
     {
         try
         {
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
             var (State, Obj, Msg) = await Nide8.Authenticate(server, Funtcions.NewUUID(), user, pass);
             if (State != LoginState.Done)
             {
@@ -277,7 +277,7 @@ public static class BaseAuth
     {
         try
         {
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
             var (State, Obj, Msg) = await AuthlibInjector.Authenticate(Funtcions.NewUUID(), user, pass, server);
             if (State != LoginState.Done)
             {
@@ -333,7 +333,7 @@ public static class BaseAuth
     {
         try
         {
-            CoreMain.AuthStateUpdate?.Invoke(AuthState.Token);
+            ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
             var (State, Obj, Msg) = await LittleSkin.Authenticate(Funtcions.NewUUID(), user, pass, server);
             if (State != LoginState.Done)
             {

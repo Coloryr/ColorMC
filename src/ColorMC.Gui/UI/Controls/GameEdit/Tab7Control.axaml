@@ -9,40 +9,38 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <DockPanel>
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                <CheckBox
-                    Name="CheckBox1"
-                    Margin="5,0,0,0"
-                    Content="{setting:Localize GameEditWindow.Tab7.Text1}"
-                    IsChecked="True" />
-                <CheckBox
-                    Name="CheckBox2"
-                    Margin="5,0,0,0"
-                    Content="{setting:Localize GameEditWindow.Tab7.Text2}"
-                    IsChecked="True" />
-                <Button
-                    Name="Button1"
-                    Width="80"
-                    Height="25"
-                    Margin="10,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize MainWindow.Flyouts.Text6}" />
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <CheckBox
+                Name="CheckBox1"
+                Margin="5,0,0,0"
+                Content="{setting:Localize GameEditWindow.Tab7.Text1}"
+                IsChecked="True" />
+            <CheckBox
+                Name="CheckBox2"
+                Margin="5,0,0,0"
+                Content="{setting:Localize GameEditWindow.Tab7.Text2}"
+                IsChecked="True" />
+            <Button
+                Name="Button1"
+                Width="80"
+                Height="25"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                Content="{setting:Localize MainWindow.Flyouts.Text6}" />
 
-            </StackPanel>
-            <ae:TextEditor
-                Name="TextEditor1"
-                Margin="5"
-                Background="{setting:Colors TranBack}"
-                FontSize="14"
-                FontWeight="Normal"
-                Foreground="Black"
-                HorizontalScrollBarVisibility="Auto"
-                IsReadOnly="True"
-                ShowLineNumbers="True"
-                VerticalScrollBarVisibility="Visible"
-                WordWrap="True" />
-        </DockPanel>
-    </Grid>
+        </StackPanel>
+        <ae:TextEditor
+            Name="TextEditor1"
+            Margin="5"
+            Background="{setting:Colors TranBack}"
+            FontSize="14"
+            FontWeight="Normal"
+            Foreground="Black"
+            HorizontalScrollBarVisibility="Auto"
+            IsReadOnly="True"
+            ShowLineNumbers="True"
+            VerticalScrollBarVisibility="Visible"
+            WordWrap="True" />
+    </DockPanel>
 </UserControl>

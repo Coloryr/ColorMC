@@ -32,17 +32,17 @@ public static class BaseBinding
     {
         get
         {
-            return CoreMain.NewStart;
+            return ColorMCCore.NewStart;
         }
     }
 
     public static void Init()
     {
-        CoreMain.OnError = ShowError;
-        CoreMain.DownloaderUpdate = DownloaderUpdate;
-        CoreMain.ProcessLog = PLog;
-        CoreMain.GameLog = PLog;
-        CoreMain.LanguageReload = Change;
+        ColorMCCore.OnError = ShowError;
+        ColorMCCore.DownloaderUpdate = DownloaderUpdate;
+        ColorMCCore.ProcessLog = PLog;
+        ColorMCCore.GameLog = PLog;
+        ColorMCCore.LanguageReload = Change;
 
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
@@ -91,7 +91,7 @@ public static class BaseBinding
 
     public static void Exit()
     {
-        CoreMain.Close();
+        ColorMCCore.Close();
         ColorSel.Instance.Stop();
 #if !DEBUG
         mutex1.Dispose();
@@ -142,7 +142,7 @@ public static class BaseBinding
             win.ClearLog();
         }
 
-        CoreMain.DownloaderUpdate = DownloaderUpdateOnThread;
+        ColorMCCore.DownloaderUpdate = DownloaderUpdateOnThread;
 
         string? temp = null;
 
@@ -213,7 +213,7 @@ public static class BaseBinding
             RunGames.Add(obj.Name, res);
         }
 
-        CoreMain.DownloaderUpdate = DownloaderUpdate;
+        ColorMCCore.DownloaderUpdate = DownloaderUpdate;
 
         return (res != null, temp);
     }

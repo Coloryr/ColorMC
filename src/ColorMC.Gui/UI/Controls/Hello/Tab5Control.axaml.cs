@@ -42,9 +42,9 @@ public partial class Tab5Control : UserControl
         CheckBox_Snapshot.Click += Snapshot_Click;
         CheckBox_Other.Click += Other_Click;
 
-        CoreMain.PackState = PackState;
-        CoreMain.PackUpdate = PackUpdate;
-        CoreMain.GameOverwirte = GameOverwirte;
+        ColorMCCore.PackState = PackState;
+        ColorMCCore.PackUpdate = PackUpdate;
+        ColorMCCore.GameOverwirte = GameOverwirte;
 
         Load();
     }

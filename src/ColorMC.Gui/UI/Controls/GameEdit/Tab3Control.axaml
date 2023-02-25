@@ -6,68 +6,66 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    Margin="5"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <DockPanel Margin="5">
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                <ComboBox Name="ComboBox1" Width="250" />
-                <TextBox
-                    Name="TextBox1"
-                    Width="200"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Classes="input1"
-                    Watermark="{setting:Localize GameEditWindow.Tab3.Text1}" />
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <ComboBox Name="ComboBox1" Width="250" />
+            <TextBox
+                Name="TextBox1"
+                Width="200"
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                Classes="input1"
+                Watermark="{setting:Localize GameEditWindow.Tab3.Text1}" />
 
-                <Button
-                    Name="Button2"
-                    Width="85"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize Button.OpFile}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Name="Button3"
-                    Width="85"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Text3}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text40}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Name="Button4"
-                    Width="85"
-                    Height="25"
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Text4}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text41}"
-                    ToolTip.VerticalOffset="-30" />
-            </StackPanel>
-            <Grid>
-                <Label
-                    Name="Label1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab3.Text2}"
-                    IsVisible="False" />
-                <ae:TextEditor
-                    Name="TextEditor1"
-                    Background="{setting:Colors TranBack}"
-                    FontSize="14"
-                    FontWeight="Normal"
-                    Foreground="Black"
-                    HorizontalScrollBarVisibility="Auto"
-                    ShowLineNumbers="True"
-                    VerticalScrollBarVisibility="Visible"
-                    WordWrap="True" />
-            </Grid>
-        </DockPanel>
-
-    </Grid>
+            <Button
+                Name="Button2"
+                Width="85"
+                Height="25"
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                Content="{setting:Localize Button.OpFile}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                ToolTip.VerticalOffset="-30" />
+            <Button
+                Name="Button3"
+                Width="85"
+                Height="25"
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                Content="{setting:Localize GameEditWindow.Tab3.Text3}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text40}"
+                ToolTip.VerticalOffset="-30" />
+            <Button
+                Name="Button4"
+                Width="85"
+                Height="25"
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize GameEditWindow.Tab3.Text4}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text41}"
+                ToolTip.VerticalOffset="-30" />
+        </StackPanel>
+        <Grid>
+            <Label
+                Name="Label1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{setting:Localize GameEditWindow.Tab3.Text2}"
+                IsVisible="False" />
+            <ae:TextEditor
+                Name="TextEditor1"
+                Background="{setting:Colors TranBack}"
+                FontSize="14"
+                FontWeight="Normal"
+                Foreground="Black"
+                HorizontalScrollBarVisibility="Auto"
+                ShowLineNumbers="True"
+                VerticalScrollBarVisibility="Visible"
+                WordWrap="True" />
+        </Grid>
+    </DockPanel>
 </UserControl>

@@ -105,7 +105,7 @@ public static class GameDownload
         }
         catch (Exception e)
         {
-            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error5"), e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error5"), e, false);
             return (GetDownloadState.Init, null);
         }
 

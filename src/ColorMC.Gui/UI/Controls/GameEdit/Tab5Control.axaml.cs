@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -35,7 +36,14 @@ public partial class Tab5Control : UserControl
         Button_A1.Click += Button_A1_Click;
         Button_I1.Click += Button_I1_Click;
 
+        Button1.Click += Button1_Click;
+
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpPath(Obj.GetSavesPath());
     }
 
     private void Button_R1_Click(object? sender, RoutedEventArgs e)

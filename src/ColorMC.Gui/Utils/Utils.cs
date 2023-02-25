@@ -118,6 +118,20 @@ public static class OtherUtils
             _ => App.GetLanguage("SkinType.Other")
         };
     }
+
+    public static string GetName(this FileType type)
+    {
+        return type switch
+        {
+            FileType.ModPack => App.GetLanguage("FileType.ModPack"),
+            FileType.Mod => App.GetLanguage("FileType.Mod"),
+            FileType.World => App.GetLanguage("FileType.World"),
+            FileType.Shaderpack => App.GetLanguage("FileType.Shaderpack"),
+            FileType.Resourcepack => App.GetLanguage("FileType.Resourcepack"),
+            FileType.DataPacks => App.GetLanguage("FileType.DataPacks"),
+            _ => App.GetLanguage("FileType.Other")
+        };
+    }
 }
 
 public static class SkinUtil
@@ -785,7 +799,7 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            Version = CoreMain.Version,
+            Version = ColorMCCore.Version,
             ColorMain = "#FF5ABED6",
             ColorBack = "#FFF4F4F5",
             ColorTranBack = "#88FFFFFF",

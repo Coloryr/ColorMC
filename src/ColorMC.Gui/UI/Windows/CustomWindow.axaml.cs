@@ -65,8 +65,8 @@ public partial class CustomWindow : Window
 
         this.Closed += CustomWindow_Closed;
 
-        CoreMain.GameLaunch = GameLunch;
-        CoreMain.GameDownload = GameDownload;
+        ColorMCCore.GameLaunch = GameLunch;
+        ColorMCCore.GameDownload = GameDownload;
 
         App.PicUpdate += Update;
         App.UserEdit += App_UserEdit;
@@ -121,8 +121,8 @@ public partial class CustomWindow : Window
     {
         App.PicUpdate -= Update;
 
-        CoreMain.GameLaunch = null;
-        CoreMain.GameDownload = null;
+        ColorMCCore.GameLaunch = null;
+        ColorMCCore.GameDownload = null;
 
         App.CustomWindow = null;
 

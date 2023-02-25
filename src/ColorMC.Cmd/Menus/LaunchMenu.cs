@@ -65,9 +65,9 @@ public static class LaunchMenu
         ConsoleUtils.Reset();
         ConsoleUtils.ShowTitle("启动游戏");
         ConsoleUtils.ShowTitle1(game.Name);
-        CoreMain.GameLaunch = GameLaunch;
-        CoreMain.GameDownload = GameDownload;
-        CoreMain.ProcessLog = ProcessLog;
+        ColorMCCore.GameLaunch = GameLaunch;
+        ColorMCCore.GameDownload = GameDownload;
+        ColorMCCore.ProcessLog = ProcessLog;
 
         if (obj.AuthType != AuthType.Offline)
         {

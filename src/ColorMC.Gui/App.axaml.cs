@@ -261,7 +261,7 @@ public partial class App : Application
             }
             catch (Exception e)
             {
-                CoreMain.OnError?.Invoke(App.GetLanguage("Error10"), e, true);
+                ColorMCCore.OnError?.Invoke(App.GetLanguage("Error10"), e, true);
                 ok = false;
             }
         }

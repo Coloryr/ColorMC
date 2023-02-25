@@ -40,13 +40,13 @@ public static class ConfigUtils
             catch (Exception e)
             {
                 string text = LanguageHelper.GetName("Core.Config.Error1");
-                CoreMain.OnError?.Invoke(text, e, true);
+                ColorMCCore.OnError?.Invoke(text, e, true);
                 Logs.Error(text, e);
             }
         }
         else
         {
-            CoreMain.NewStart = true;
+            ColorMCCore.NewStart = true;
         }
 
         if (Config == null)
@@ -132,7 +132,7 @@ public static class ConfigUtils
     {
         return new()
         {
-            Version = CoreMain.Version,
+            Version = ColorMCCore.Version,
             JavaList = new(),
             Http = MakeHttpConfig(),
             DefaultJvmArg = MakeJvmArgConfig(),
@@ -206,7 +206,7 @@ public static class ConfigSave
 
     public static void Init()
     {
-        CoreMain.Stop += Stop;
+        ColorMCCore.Stop += Stop;
 
         thread = new(Run)
         {

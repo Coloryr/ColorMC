@@ -71,9 +71,22 @@ public partial class FileItemControl : UserControl
         Rectangle1.IsVisible = select;
     }
 
+    public void SetNowDownload(bool data)
+    {
+        Grid1.IsVisible = data;
+    }
+
+    public void SetDownload()
+    {
+        Grid1.IsVisible = false;
+        Grid2.IsVisible = true;
+    }
+
     public async void Load(FileItemDisplayObj data)
     {
         Data = data;
+
+        Grid2.IsVisible = data.IsDownload;
 
         Label1.Content = data.Name;
         TextBlock1.Text = data.Summary;

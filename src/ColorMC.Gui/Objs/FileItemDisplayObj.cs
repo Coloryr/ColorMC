@@ -9,7 +9,7 @@ namespace ColorMC.Gui.Objs;
 
 public enum FileType
 {
-    ModPack, Mod, World, Shaderpack, Resourcepack, DataPacks
+    ModPack=0, Mod, World, Shaderpack, Resourcepack, DataPacks
 }
 
 public record FileItemDisplayObj
@@ -20,10 +20,15 @@ public record FileItemDisplayObj
     public long DownloadCount { get; set; }
     public string ModifiedDate { get; set; }
     public string? Logo { get; set; }
+    public bool IsDownload { get; set; }
 
     public FileType FileType;
     public SourceType SourceType;
 
+    /// <summary>
+    /// Mod用
+    /// </summary>
+    public string ID;
     public object Data;
 }
 

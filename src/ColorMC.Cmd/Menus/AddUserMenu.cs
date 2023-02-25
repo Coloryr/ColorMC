@@ -55,8 +55,8 @@ public static class AddUserMenu
             case 1:
                 ConsoleUtils.ToEnd();
                 ConsoleUtils.Info("添加微软账户");
-                CoreMain.AuthStateUpdate = StateUp;
-                CoreMain.LoginOAuthCode = Code;
+                ColorMCCore.AuthStateUpdate = StateUp;
+                ColorMCCore.LoginOAuthCode = Code;
                 var (State, State1, Obj, Message, Ex) = BaseAuth.LoginWithOAuth().Result;
                 if (State1 != LoginState.Done)
                 {
@@ -74,7 +74,7 @@ public static class AddUserMenu
             case 2:
                 ConsoleUtils.ToEnd();
                 ConsoleUtils.Info("添加统一通行证账户");
-                CoreMain.AuthStateUpdate = StateUp;
+                ColorMCCore.AuthStateUpdate = StateUp;
                 var server = ConsoleUtils.ReadLine("服务器UUID");
                 if (string.IsNullOrWhiteSpace(server))
                 {
@@ -119,7 +119,7 @@ public static class AddUserMenu
             case 3:
                 ConsoleUtils.ToEnd();
                 ConsoleUtils.Info("添加皮肤站账户");
-                CoreMain.AuthStateUpdate = StateUp;
+                ColorMCCore.AuthStateUpdate = StateUp;
                 name = ConsoleUtils.ReadLine("邮箱或用户名");
                 if (string.IsNullOrWhiteSpace(name))
                 {
@@ -151,7 +151,7 @@ public static class AddUserMenu
             case 4:
                 ConsoleUtils.ToEnd();
                 ConsoleUtils.Info("添加自定义皮肤站账户");
-                CoreMain.AuthStateUpdate = StateUp;
+                ColorMCCore.AuthStateUpdate = StateUp;
                 server = ConsoleUtils.ReadLine("皮肤站网址");
                 if (string.IsNullOrWhiteSpace(server))
                 {
@@ -190,7 +190,7 @@ public static class AddUserMenu
             case 5:
                 ConsoleUtils.ToEnd();
                 ConsoleUtils.Info("添加外置登录账户");
-                CoreMain.AuthStateUpdate = StateUp;
+                ColorMCCore.AuthStateUpdate = StateUp;
                 server = ConsoleUtils.ReadLine("验证网址");
                 if (string.IsNullOrWhiteSpace(server))
                 {

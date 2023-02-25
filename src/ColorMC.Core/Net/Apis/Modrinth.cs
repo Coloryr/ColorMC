@@ -2,11 +2,6 @@
 using ColorMC.Core.Objs.Modrinth;
 using Esprima.Ast;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -14,15 +9,52 @@ public static class Modrinth
 {
     public const string Url = "https://api.modrinth.com/v2/";
 
-    public static async Task<ModrinthSearchObj?> Search(string query, MSortingObj type, List<MFacetsObj>? type1, int offset, int limit)
+    public const string ClassModPack = "modpack";
+    public const string ClassMod = "mod";
+    public const string ClassResourcepack = "resourcepack";
+    public const string ClassShaderpack = "shader";
+
+    public const string CategoriesDataPack = "datapack";
+
+    public static async Task<ModrinthSearchObj?> Search(string version, string query, int sortOrder, int offset, int limit, string categoryId, string type2, string? type3)
     {
         try
         {
-            string url = $"{Url}search?query={query}&index={type.Data}&offset={offset}&limit={limit}";
-            if (type1 != null && type1.Count > 0)
+            var list = new List<MFacetsObj>
             {
-                url += $"&facets={MFacetsObj.Build(type1)}";
+                MFacetsObj.BuildProjectType(new() { type2 })
+            };
+
+            if (!string.IsNullOrWhiteSpace(version))
+            {
+                list.Add(MFacetsObj.BuildVersions(new() { version }));
             }
+
+            var list1 = new List<string>();
+            if (!string.IsNullOrWhiteSpace(categoryId))
+            {
+                list1.Add(categoryId);
+            }
+            if (!string.IsNullOrWhiteSpace(type3))
+            {
+                list1.Add(type3);
+            }
+            if (list1.Count != 0)
+            {
+                list.Add(MFacetsObj.BuildCategories(list1));
+            }
+
+            var type = sortOrder switch
+            {
+                1 => MSortingObj.Downloads,
+                2 => MSortingObj.Follows,
+                3 => MSortingObj.Newest,
+                4 => MSortingObj.Updated,
+                _ => MSortingObj.Relevance
+            };
+
+            var url = $"{Url}search?query={query}&index={type.Data}&offset={offset}" +
+                $"&limit={limit}&facets={MFacetsObj.Build(list)}";
             var res = await BaseClient.DownloadClient.GetStringAsync(url);
             return JsonConvert.DeserializeObject<ModrinthSearchObj>(res);
         }
@@ -40,29 +72,8 @@ public static class Modrinth
         int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
         string categoryId = "")
     {
-        var list = new List<MFacetsObj>
-        {
-            MFacetsObj.BuildProjectType(new() { "modpack" })
-        };
-        if (!string.IsNullOrWhiteSpace(version))
-        {
-            list.Add(MFacetsObj.BuildVersions(new() { version }));
-        }
-        if (!string.IsNullOrWhiteSpace(categoryId))
-        {
-            list.Add(MFacetsObj.BuildCategories(new() { categoryId }));
-        }
-        MSortingObj type = sortOrder switch
-        { 
-            1 => MSortingObj.Downloads,
-            2 => MSortingObj.Follows,
-            3 => MSortingObj.Newest,
-            4 => MSortingObj.Updated,
-            _ => MSortingObj.Relevance
-        };
-
-
-        return Search(filter, type, list, page * pagesize, pagesize);
+        return Search(filter, version, sortOrder, page * pagesize, 
+            pagesize, categoryId, ClassModPack, null);
     }
 
     /// <summary>
@@ -72,28 +83,8 @@ public static class Modrinth
         int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
         string categoryId = "")
     {
-        var list = new List<MFacetsObj>
-        {
-            MFacetsObj.BuildProjectType(new() { "mod" })
-        };
-        if (!string.IsNullOrWhiteSpace(version))
-        {
-            list.Add(MFacetsObj.BuildVersions(new() { version }));
-        }
-        if (!string.IsNullOrWhiteSpace(categoryId))
-        {
-            list.Add(MFacetsObj.BuildCategories(new() { categoryId }));
-        }
-        MSortingObj type = sortOrder switch
-        {
-            1 => MSortingObj.Downloads,
-            2 => MSortingObj.Follows,
-            3 => MSortingObj.Newest,
-            4 => MSortingObj.Updated,
-            _ => MSortingObj.Relevance
-        };
-
-        return Search(filter, type, list, page * pagesize, pagesize);
+        return Search(filter, version, sortOrder, page * pagesize,
+            pagesize, categoryId, ClassMod, null);
     }
 
     /// <summary>
@@ -103,28 +94,30 @@ public static class Modrinth
         int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
         string categoryId = "")
     {
-        var list = new List<MFacetsObj>
-        {
-            MFacetsObj.BuildProjectType(new() { "resourcepack" })
-        };
-        if (!string.IsNullOrWhiteSpace(version))
-        {
-            list.Add(MFacetsObj.BuildVersions(new() { version }));
-        }
-        if (!string.IsNullOrWhiteSpace(categoryId))
-        {
-            list.Add(MFacetsObj.BuildCategories(new() { categoryId }));
-        }
-        MSortingObj type = sortOrder switch
-        {
-            1 => MSortingObj.Downloads,
-            2 => MSortingObj.Follows,
-            3 => MSortingObj.Newest,
-            4 => MSortingObj.Updated,
-            _ => MSortingObj.Relevance
-        };
+        return Search(filter, version, sortOrder, page * pagesize,
+            pagesize, categoryId, ClassResourcepack, null);
+    }
 
-        return Search(filter, type, list, page * pagesize, pagesize);
+    /// <summary>
+    /// 获取光影包列表
+    /// </summary>
+    public static Task<ModrinthSearchObj?> GetShaderpackList(string version = "",
+        int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
+        string categoryId = "")
+    {
+        return Search(filter, version, sortOrder, page * pagesize,
+            pagesize, categoryId, ClassShaderpack, null);
+    }
+
+    /// <summary>
+    /// 获取数据包列表
+    /// </summary>
+    public static Task<ModrinthSearchObj?> GetDataPackList(string version = "",
+        int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
+        string categoryId = "")
+    {
+        return Search(filter, version, sortOrder, page * pagesize,
+            pagesize, categoryId, ClassMod, CategoriesDataPack);
     }
 
     public static async Task<ModrinthProjectObj?> Project(string id)

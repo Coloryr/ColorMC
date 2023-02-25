@@ -37,11 +37,6 @@
                 Margin="3"
                 Stretch="UniformToFill" />
 
-            <Label
-                Margin="2,0,0,0"
-                VerticalAlignment="Bottom"
-                Content="arm64应该下载aarch64，苹果的M系列芯片也是arm64芯片" />
-
             <DockPanel Margin="3">
 
                 <StackPanel
@@ -80,6 +75,12 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize Button.Refash}" />
                 </StackPanel>
+
+                <Label
+                    Margin="2,0,0,0"
+                    VerticalAlignment="Bottom"
+                    Content="arm64应该下载aarch64，苹果的M系列芯片也是arm64芯片，需要下载jdk或者jre"
+                    DockPanel.Dock="Bottom" />
 
                 <DataGrid
                     Name="DataGrid1"

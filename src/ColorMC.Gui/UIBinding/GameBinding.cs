@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
 using ColorMC.Core.Game;
@@ -153,38 +153,6 @@ public static class GameBinding
         return null;
     }
 
-    public static string GetString(this List<CurseForgeObj.Data.Authors> authors)
-    {
-        var builder = new StringBuilder();
-        foreach (var item in authors)
-        {
-            builder.Append(item.name).Append(',');
-        }
-
-        return builder.ToString()[..^1];
-    }
-
-    public static Task<CurseForgeObj?> GetModList(string? version, int sort, string? filter, int page, int sortOrder)
-    {
-        version ??= "";
-        filter ??= "";
-        return CurseForge.GetModList(version, page, sort, filter, sortOrder: sortOrder);
-    }
-
-    public static Task<CurseForgeObj?> GetWorldList(string? version, int sort, string? filter, int page, int sortOrder)
-    {
-        version ??= "";
-        filter ??= "";
-        return CurseForge.GetWorldList(version, page, sort, filter, sortOrder: sortOrder);
-    }
-
-    public static Task<CurseForgeObj?> GetResourcepackList(string? version, int sort, string? filter, int page, int sortOrder)
-    {
-        version ??= "";
-        filter ??= "";
-        return CurseForge.GetResourcepackList(version, page, sort, filter, sortOrder: sortOrder);
-    }
-
     public static List<string> GetCurseForgeSortTypes()
     {
         return new List<string>()
@@ -296,7 +264,8 @@ public static class GameBinding
         return list1;
     }
 
-    public static async Task<Dictionary<string, string>?> GetCurseForgeCategories()
+    public static async Task<Dictionary<string, string>?> GetCurseForgeCategories(
+        FileType type = FileType.ModPack)
     {
         var list6 = await CurseForge.GetCategories();
         if (list6 == null)
@@ -305,13 +274,20 @@ public static class GameBinding
         }
 
         var list7 = from item2 in list6.data
-                    where item2.classId == CurseForge.ClassModPack
+                    where item2.classId == type switch
+                    {
+                        FileType.Mod => CurseForge.ClassMod,
+                        FileType.World => CurseForge.ClassWorld,
+                        FileType.Resourcepack => CurseForge.ClassResourcepack,
+                        _ => CurseForge.ClassModPack
+                    }
                     select (item2.name, item2.id);
 
         return list7.ToDictionary(a => a.id.ToString(), a => a.name);
     }
 
-    public static async Task<Dictionary<string, string>?> GetModrinthCategories()
+    public static async Task<Dictionary<string, string>?> GetModrinthCategories(
+        FileType type = FileType.ModPack)
     {
         var list6 = await Modrinth.GetCategories();
         if (list6 == null)
@@ -320,19 +296,25 @@ public static class GameBinding
         }
 
         var list7 = from item2 in list6
-                    where item2.project_type == "modpack"
+                    where item2.project_type == type switch
+                    {
+                        FileType.Shaderpack => Modrinth.ClassShaderpack,
+                        FileType.Resourcepack => Modrinth.ClassResourcepack,
+                        FileType.ModPack => Modrinth.ClassModPack,
+                        _ => Modrinth.ClassMod
+                    }
                     && item2.header == "categories"
                     select item2.name;
 
         return list7.ToDictionary(a => a);
     }
-    
+
     public static async Task<bool> InstallCurseForge(CurseForgeObj.Data.LatestFiles data,
         CurseForgeObj.Data data1, string? name, string? group)
     {
         var res = await InstancesPath.InstallFromCurseForge(data, name, group);
         if (!res.Item1)
-        { 
+        {
             return false;
         }
         if (data1.logo != null)
@@ -387,9 +369,9 @@ public static class GameBinding
     {
         try
         {
-            var file = await BaseBinding.OpFile(win, 
-                App.GetLanguage("GameBinding.Info2"), 
-                new string[] { "*.png", "*.jpg", "*.bmp" }, 
+            var file = await BaseBinding.OpFile(win,
+                App.GetLanguage("GameBinding.Info2"),
+                new string[] { "*.png", "*.jpg", "*.bmp" },
                 App.GetLanguage("GameBinding.Info3"));
             if (file?.Any() == true)
             {
@@ -412,7 +394,7 @@ public static class GameBinding
         }
     }
 
-    public static async Task<List<FileDisplayObj>?> GetPackFile(SourceType type,string id, int page)
+    public static async Task<List<FileDisplayObj>?> GetPackFile(SourceType type, string id, int page)
     {
         if (type == SourceType.CurseForge)
         {
@@ -438,7 +420,7 @@ public static class GameBinding
             return list1;
         }
         else if (type == SourceType.Modrinth)
-        { 
+        {
             var list = await Modrinth.Version(id);
             if (list == null)
                 return null;
@@ -1071,5 +1053,127 @@ public static class GameBinding
             PackType.MMC.GetName(),
             PackType.HMCL.GetName(),
         };
+    }
+
+    public static List<string> GetAddType()
+    {
+        return new()
+        {
+            FileType.Mod.GetName(),
+            FileType.World.GetName(),
+            FileType.Shaderpack.GetName(),
+            FileType.Resourcepack.GetName(),
+            FileType.DataPacks.GetName(),
+        };
+    }
+
+    public static List<SourceType> GetSourceList(FileType type)
+    {
+        switch (type)
+        {
+            case FileType.Mod:
+            case FileType.DataPacks:
+            case FileType.Resourcepack:
+                return new()
+                {
+                    SourceType.CurseForge,
+                    SourceType.Modrinth,
+                };
+            case FileType.Shaderpack:
+                return new()
+                {
+                    SourceType.Modrinth,
+                };
+            case FileType.World:
+                return new()
+                {
+                    SourceType.CurseForge,
+                };
+            default:
+                return new();
+        }
+    }
+
+    public static async Task<List<FileItemDisplayObj>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sortOrder, string categoryId)
+    {
+        version ??= "";
+        filter ??= "";
+        if (type == SourceType.CurseForge)
+        {
+            var list = now switch
+            {
+                FileType.Mod => await CurseForge.GetModList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
+                FileType.World => await CurseForge.GetWorldList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
+                FileType.Resourcepack => await CurseForge.GetResourcepackList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
+                FileType.DataPacks => await CurseForge.GetDataPacksList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
+                _ => null
+            };
+            if (list == null)
+                return null;
+            var list1 = new List<FileItemDisplayObj>();
+            list.data.ForEach(item =>
+            {
+                list1.Add(new()
+                {
+                    ID = item.id.ToString(),
+                    Name = item.name,
+                    Summary = item.summary,
+                    Author = item.authors.GetString(),
+                    DownloadCount = item.downloadCount,
+                    ModifiedDate = item.dateModified,
+                    Logo = item.logo?.url,
+                    FileType = now,
+                    SourceType = SourceType.CurseForge,
+                    Data = item
+                });
+            });
+
+            return list1;
+        }
+        else if (type == SourceType.Modrinth)
+        {
+            var list = now switch
+            {
+                FileType.Mod => await Modrinth.GetModList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
+                FileType.Resourcepack => await Modrinth.GetResourcepackList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
+                FileType.DataPacks => await Modrinth.GetDataPackList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
+                FileType.Shaderpack => await Modrinth.GetShaderpackList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
+                _ => null
+            };
+            if (list == null)
+                return null;
+            var list1 = new List<FileItemDisplayObj>();
+            list.hits.ForEach(item =>
+            {
+                list1.Add(new()
+                {
+                    ID = item.project_id,
+                    Name = item.title,
+                    Summary = item.description,
+                    Author = item.author,
+                    DownloadCount = item.downloads,
+                    ModifiedDate = item.date_modified,
+                    Logo = item.icon_url,
+                    FileType = FileType.ModPack,
+                    SourceType = SourceType.Modrinth,
+                    Data = item
+                });
+            });
+
+            return list1;
+        }
+
+        return null;
+    }
+
+    private static string GetString(this List<CurseForgeObj.Data.Authors> authors)
+    {
+        var builder = new StringBuilder();
+        foreach (var item in authors)
+        {
+            builder.Append(item.name).Append(',');
+        }
+
+        return builder.ToString()[..^1];
     }
 }

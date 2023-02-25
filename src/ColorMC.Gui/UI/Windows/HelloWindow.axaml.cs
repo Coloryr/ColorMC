@@ -46,9 +46,9 @@ public partial class HelloWindow : Window
 
     private void HelloWindow_Closed(object? sender, EventArgs e)
     {
-        CoreMain.PackState = null;
-        CoreMain.PackUpdate = null;
-        CoreMain.GameOverwirte = null;
+        ColorMCCore.PackState = null;
+        ColorMCCore.PackUpdate = null;
+        ColorMCCore.GameOverwirte = null;
 
         App.PicUpdate -= Update;
     }

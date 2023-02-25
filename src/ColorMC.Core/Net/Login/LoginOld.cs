@@ -23,7 +23,7 @@ public static class LoginOld
             agent = new()
             {
                 name = "ColorMC",
-                version = CoreMain.Version
+                version = ColorMCCore.Version
             },
             username = user,
             password = pass,
@@ -34,7 +34,7 @@ public static class LoginOld
             Method = HttpMethod.Post,
             RequestUri = new(server + "/authserver/authenticate")
         };
-        message.Headers.UserAgent.Add(ProductInfoHeaderValue.Parse($"ColorMC/{CoreMain.Version}"));
+        message.Headers.UserAgent.Add(ProductInfoHeaderValue.Parse($"ColorMC/{ColorMCCore.Version}"));
         message.Content = new StringContent(JsonConvert.SerializeObject(obj),
             MediaTypeHeaderValue.Parse("application/json"));
 
@@ -80,7 +80,7 @@ public static class LoginOld
             RequestUri = new(server + "/authserver/refresh")
         };
         message.Headers.UserAgent.Append(
-            new("ColorMC", CoreMain.Version));
+            new("ColorMC", ColorMCCore.Version));
         message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
             MediaTypeHeaderValue.Parse("application/json"));
 

@@ -24,6 +24,21 @@
                 <Label Content="ColorMC" FontSize="60" />
                 <Label Content="一个全平台Minecraft启动器" FontSize="30" />
                 <Label Content="作者：Coloryr" FontSize="30" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Core:" FontSize="20" />
+                    <Label
+                        Name="Label1"
+                        Content="1.0.0"
+                        FontSize="20" />
+                    <Label
+                        Margin="20,0,0,0"
+                        Content="Gui:"
+                        FontSize="20" />
+                    <Label
+                        Name="Label2"
+                        Content="A1"
+                        FontSize="20" />
+                </StackPanel>
 
                 <Button
                     Name="Button1"

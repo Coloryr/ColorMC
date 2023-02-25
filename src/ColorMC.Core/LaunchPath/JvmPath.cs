@@ -35,7 +35,7 @@ public static class JvmPath
         {
             return (CoreRunState.Error, LanguageHelper.GetName("Core.Jvm.Error5"));
         }
-        CoreMain.JavaUnzip?.Invoke();
+        ColorMCCore.JavaUnzip?.Invoke();
         res = await UnzipJava(name, res.Item2!);
         if (!res.Item1)
         {
@@ -257,7 +257,7 @@ public static class JvmPath
         }
         catch (Exception e)
         {
-
+            Logs.Error("java chmod fail", e);
         }
     }
 

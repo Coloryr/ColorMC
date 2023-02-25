@@ -587,6 +587,14 @@
 	<String Key="SkinType.New_Slim">新版纤细皮肤</String>
 	<String Key="SkinType.Other">未知的皮肤类型</String>
 
+	<String Key="FileType.ModPack">整合包</String>
+	<String Key="FileType.Mod">模组</String>
+	<String Key="FileType.World">世界</String>
+	<String Key="FileType.Shaderpack">光影包</String>
+	<String Key="FileType.Resourcepack">资源包</String>
+	<String Key="FileType.DataPacks">数据包</String>
+	<String Key="FileType.Other">未知的资源类型</String>
+
 	<String Key="Info1">正在读取配置文件</String>
 	<String Key="Info2">正在保存配置文件</String>
 	<String Key="Info3">已设置</String>
@@ -645,7 +653,7 @@
 	<String Key="ToolTip.Text36">删除这个游戏实例</String>
 	<String Key="ToolTip.Text37">添加一个游戏分组</String>
 	<String Key="ToolTip.Text38">清空当前实例的所有启动配置</String>
-	<String Key="ToolTip.Text39">打开配置所在的文件夹</String>
+	<String Key="ToolTip.Text39">打开所在的文件夹</String>
 	<String Key="ToolTip.Text40">保存当前配置文件</String>
 	<String Key="ToolTip.Text41">重新获取配置文件列表</String>
 	

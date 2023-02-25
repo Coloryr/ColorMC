@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -29,7 +30,14 @@ public partial class Tab9Control : UserControl
         Button_R1.Click += Button_R1_Click;
         Button_C1.Click += Button_C1_Click;
 
+        Button1.Click += Button1_Click;
+
         LayoutUpdated += Tab9Control_LayoutUpdated;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpPath(Obj.GetScreenshotsPath());
     }
 
     private async void Button_C1_Click(object? sender, RoutedEventArgs e)
