@@ -1,9 +1,4 @@
 ﻿using ColorMC.Core.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Objs.Modrinth;
 
@@ -23,10 +18,10 @@ public record MSortingObj
 
     public static List<string> NameList() => new()
     {
-        Relevance.GetName(), 
-        Downloads.GetName(), 
-        Follows.GetName(), 
-        Newest.GetName(), 
+        Relevance.GetName(),
+        Downloads.GetName(),
+        Follows.GetName(),
+        Newest.GetName(),
         Updated.GetName()
     };
 }

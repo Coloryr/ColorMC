@@ -1,9 +1,5 @@
 ﻿using ColorMC.Core.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Objs.Modrinth;
 
@@ -26,7 +22,7 @@ public record MFacetsObj
             if (item.Values.Count == 0)
                 continue;
 
-            foreach(var item1 in item.Values)
+            foreach (var item1 in item.Values)
             {
                 builder.Append($"[\"{item.Data}:{item1}\"],");
             }
@@ -37,7 +33,7 @@ public record MFacetsObj
         return builder.ToString();
     }
 
-    public static MFacetsObj BuildCategories(List<string> values) => new() 
+    public static MFacetsObj BuildCategories(List<string> values) => new()
     {
         Data = Categories.Data,
         Values = values

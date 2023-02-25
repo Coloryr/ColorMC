@@ -1,12 +1,10 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Platform.Storage;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
@@ -269,7 +267,7 @@ public partial class Tab2Control : UserControl
         var window = (VisualRoot as SettingWindow)!;
         var file = await BaseBinding.OpFile(window, App.GetLanguage("SettingWindow.Tab2.Info3"),
             new string[] { "*.png", "*.jpg", "*.bmp" },
-            App.GetLanguage("SettingWindow.Tab2.Info6")); 
+            App.GetLanguage("SettingWindow.Tab2.Info6"));
 
         if (file?.Any() == true)
         {

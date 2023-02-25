@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Modrinth;
+﻿namespace ColorMC.Core.Objs.Modrinth;
 
 public record ModrinthProjectObj
 {
@@ -20,7 +14,7 @@ public record ModrinthProjectObj
     public string status { get; set; }
     public string client_side { get; set; }
     public string server_side { get; set; }
-    public int downloads { get;set;}
+    public int downloads { get; set; }
     public int followers { get; set; }
     public List<string> game_versions { get; set; }
     public List<string> loaders { get; set; }

@@ -1,6 +1,4 @@
-﻿using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
-using Esprima.Ast;
+﻿using ColorMC.Core.Objs.Modrinth;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
@@ -68,11 +66,11 @@ public static class Modrinth
     /// <summary>
     /// 获取整合包列表
     /// </summary>
-    public static Task<ModrinthSearchObj?> GetModPackList(string version = "", 
+    public static Task<ModrinthSearchObj?> GetModPackList(string version = "",
         int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
         string categoryId = "")
     {
-        return Search(filter, version, sortOrder, page * pagesize, 
+        return Search(filter, version, sortOrder, page * pagesize,
             pagesize, categoryId, ClassModPack, null);
     }
 

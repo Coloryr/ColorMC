@@ -1,5 +1,4 @@
-﻿using ColorMC.Core.Objs.CurseForge;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace ColorMC.Core.Objs;
 

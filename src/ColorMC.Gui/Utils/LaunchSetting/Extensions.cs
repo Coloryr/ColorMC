@@ -1,7 +1,6 @@
 ﻿using Avalonia.Data;
 using Avalonia.Markup.Xaml;
 using Avalonia.Markup.Xaml.MarkupExtensions;
-using ColorMC.Gui.UI.Controls;
 using System;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;

@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Objs.Modrinth;
 
@@ -12,7 +7,7 @@ public record ModrinthPackObj
     public record File
     {
         public record Hash
-        { 
+        {
             public string sha1 { get; set; }
             public string sha256 { get; set; }
         }

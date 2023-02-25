@@ -60,7 +60,7 @@ public partial class Tab5Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var file = await BaseBinding.OpFile(window!,
-            App.GetLanguage("GameEditWindow.Tab5.Info2"), 
+            App.GetLanguage("GameEditWindow.Tab5.Info2"),
             new string[] { "*.zip" },
             App.GetLanguage("GameEditWindow.Tab5.Info8"));
         if (file.Any())

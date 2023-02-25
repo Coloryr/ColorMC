@@ -1,6 +1,5 @@
 using ColorMC.Core.Utils;
 using System.Net;
-using System.Threading;
 
 namespace ColorMC.Core.Net;
 
@@ -81,11 +80,11 @@ public static class BaseClient
         return await DownloadClient.GetByteArrayAsync(url);
     }
 
-    public static void Poll(string url, Action<Stream> action) 
+    public static void Poll(string url, Action<Stream> action)
     {
         Task.Run(async () =>
         {
-            try 
+            try
             {
                 semaphore.WaitOne();
                 var data1 = await DownloadClient.GetAsync(url);

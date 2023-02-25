@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
@@ -11,7 +10,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -70,9 +68,9 @@ public partial class Tab12Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var res = await BaseBinding.OpFile(window, 
-            App.GetLanguage("GameEditWindow.Tab12.Info1"), 
-            new string[] {"*" + Schematic.Name1,  "*" + Schematic.Name2 }, 
+        var res = await BaseBinding.OpFile(window,
+            App.GetLanguage("GameEditWindow.Tab12.Info1"),
+            new string[] { "*" + Schematic.Name1, "*" + Schematic.Name2 },
             App.GetLanguage("GameEditWindow.Tab12.Info2"));
         if (!res.Any())
         {

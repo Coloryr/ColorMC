@@ -70,7 +70,7 @@ public static class Funtcions
         });
     }
 
-    public static string GetString(string input, string start, string end) 
+    public static string GetString(string input, string start, string end)
     {
         var temp = input.IndexOf(start);
         if (temp == -1)
