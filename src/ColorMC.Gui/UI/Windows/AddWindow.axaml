@@ -205,6 +205,10 @@
                                 Binding="{Binding Name}"
                                 Header="{setting:Localize AddModPackWindow.DataGrid.Text1}"
                                 IsReadOnly="True" />
+                            <DataGridCheckBoxColumn
+                                Binding="{Binding IsDownload}"
+                                Header="{setting:Localize AddModPackWindow.DataGrid.Text5}"
+                                IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Size}"
                                 Header="{setting:Localize AddModPackWindow.DataGrid.Text2}"

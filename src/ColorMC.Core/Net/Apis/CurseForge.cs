@@ -14,9 +14,10 @@ public static class CurseForge
 
     public const int ClassModPack = 4471;
     public const int ClassMod = 6;
-    public const int ClassWorld = 441771;
+    public const int ClassWorld = 17;
     public const int ClassResourcepack = 12;
-    public const int ClassDataPacks = 5193;
+
+    public const int CategoryIdDataPacks = 5193;
 
     /// <summary>
     /// 获取列表
@@ -101,10 +102,9 @@ public static class CurseForge
     /// 获取数据包列表
     /// </summary>
     public static Task<CurseForgeObj?> GetDataPacksList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1,
-        string categoryId = "")
+        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
     {
-        return GetList(ClassDataPacks, version, page, sort, filter, pagesize, sortOrder, categoryId);
+        return GetList(ClassResourcepack, version, page, sort, filter, pagesize, sortOrder, CategoryIdDataPacks.ToString());
     }
 
     /// <summary>

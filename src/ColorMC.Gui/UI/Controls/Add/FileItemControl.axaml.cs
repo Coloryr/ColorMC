@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -10,11 +11,14 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using System;
+using System.IO;
+using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class FileItemControl : UserControl
 {
+    private CancellationTokenSource cancel = new();
     public FileItemDisplayObj Data { get; private set; }
     public FileItemControl()
     {
@@ -69,19 +73,28 @@ public partial class FileItemControl : UserControl
         Rectangle1.IsVisible = select;
     }
 
-    public void SetNowDownload(bool data)
+    public void SetNowDownload()
     {
-        Grid1.IsVisible = data;
+        Grid1.IsVisible = true;
+        Grid2.IsVisible = false;
     }
 
-    public void SetDownload()
+    public void SetDownloaded()
     {
         Grid1.IsVisible = false;
         Grid2.IsVisible = true;
     }
 
-    public async void Load(FileItemDisplayObj data)
+    public void Cancel()
     {
+        cancel.Cancel();
+    }
+
+    public void Load(FileItemDisplayObj data)
+    {
+        cancel.Dispose();
+        cancel = new();
+
         Data = data;
 
         Grid2.IsVisible = data.IsDownload;
@@ -103,14 +116,39 @@ public partial class FileItemControl : UserControl
         {
             try
             {
-                using var data1 = await BaseClient.DownloadClient.GetAsync(data.Logo);
-                var bitmap = new Bitmap(data1.Content.ReadAsStream());
-                Image_Logo.Source = bitmap;
+                BaseClient.Poll(data.Logo, cancel.Token, (data1) =>
+                {
+                    if (cancel.IsCancellationRequested)
+                        return;
+
+                    var bitmap = new Bitmap(data1);
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        Image_Logo.Source = bitmap;
+                    });
+                });
             }
             catch (Exception e)
             {
+                if (cancel.IsCancellationRequested)
+                    return;
+
                 Logs.Error(App.GetLanguage("AddModPackWindow.Error5"), e);
             }
         }
+    }
+
+    public void Close()
+    {
+        cancel.Cancel();
+
+        if (Image_Logo.Source != App.GameIcon)
+        {
+            (Image_Logo.Source as Bitmap)?.Dispose();
+
+            Image_Logo.Source = App.GameIcon;
+        }
+
+        cancel.Dispose();
     }
 }

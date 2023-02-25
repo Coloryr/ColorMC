@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -23,6 +24,7 @@ public partial class Tab1Control : UserControl
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
         Button5.Click += Button5_Click;
+        Button6.Click += Button6_Click;
 
         CheckBox_Forge.Click += Forge_Click;
         CheckBox_Fabric.Click += Fabric_Click;
@@ -31,6 +33,8 @@ public partial class Tab1Control : UserControl
         CheckBox_Snapshot.Click += Other_Click;
         CheckBox_Other.Click += Other_Click;
 
+        CheckBox1.Click += CheckBox1_Click;
+
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
         ComboBox3.SelectionChanged += ComboBox3_SelectionChanged;
@@ -38,6 +42,18 @@ public partial class Tab1Control : UserControl
         ComboBox1.Items = List;
         ComboBox2.Items = List1;
         ComboBox3.Items = List2;
+    }
+
+    private void Button6_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpPath(Obj.GetBasePath());
+    }
+
+    private void CheckBox1_Click(object? sender, RoutedEventArgs e)
+    {
+        Obj.ModPack = CheckBox1.IsChecked == true;
+
+        Save();
     }
 
     private void ComboBox3_SelectionChanged(object? sender,
@@ -289,6 +305,8 @@ public partial class Tab1Control : UserControl
             CheckBox_Snapshot.IsChecked, CheckBox_Other.IsChecked));
 
         ComboBox1.SelectedItem = Obj.Version;
+
+        CheckBox1.IsChecked = Obj.ModPack;
     }
 
     private void Load2()

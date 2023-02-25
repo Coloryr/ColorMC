@@ -22,7 +22,10 @@ public static class Resourcepacks
 
         DirectoryInfo info = new(dir);
         if (!info.Exists)
+        {
+            info.Create();
             return list;
+        }
 
         await Parallel.ForEachAsync(info.GetFiles(), async (item, cancel) =>
         {

@@ -39,6 +39,8 @@ public partial class Info1Control : UserControl
         if (!Display)
             return;
 
+        Display = false;
+
         Button_Cancel.IsEnabled = false;
         App.CrossFade300.Start(this, null, CancellationToken.None);
     }
@@ -52,6 +54,11 @@ public partial class Info1Control : UserControl
 
     public void Show(string title)
     {
+        if (Display)
+        {
+            NextText(title);
+            return;
+        }
         Display = true;
 
         Button_Cancel.IsEnabled = true;
