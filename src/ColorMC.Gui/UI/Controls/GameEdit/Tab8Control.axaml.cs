@@ -34,7 +34,14 @@ public partial class Tab8Control : UserControl
         Button_A1.Click += Button_A1_Click;
         Button_I1.Click += Button_I1_Click;
 
+        Button1.Click += Button1_Click;
+
         LayoutUpdated += Tab8Control_LayoutUpdated;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        
     }
 
     private void Button_R1_Click(object? sender, RoutedEventArgs e)

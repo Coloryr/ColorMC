@@ -32,7 +32,7 @@ public partial class DownloadWindow : Window
         Icon = App.Icon;
         Border1.MakeResizeDrag(this);
 
-        CoreMain.DownloadItemStateUpdate = DownloadItemStateUpdate;
+        ColorMCCore.DownloadItemStateUpdate = DownloadItemStateUpdate;
 
         DataGrid_Download.Items = List;
 
@@ -137,7 +137,7 @@ public partial class DownloadWindow : Window
 
         App.PicUpdate -= Update;
 
-        CoreMain.DownloadItemStateUpdate = null;
+        ColorMCCore.DownloadItemStateUpdate = null;
         App.DownloadWindow = null;
     }
 

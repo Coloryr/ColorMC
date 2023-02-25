@@ -55,90 +55,90 @@
                 <Label Content="{setting:Localize SettingWindow.Tab5.Text4}" />
             </StackPanel>
 
-            <DataGrid
-                Name="DataGrid1"
-                AutoGenerateColumns="False"
-                Background="#88ffffff"
-                CanUserSortColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="30" IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text1}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding MajorVersion}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text3}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Version}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text4}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Type}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text5}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Arch}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text6}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Path}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text2}"
-                        IsReadOnly="True" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <Grid>
+                <DataGrid
+                    Name="DataGrid1"
+                    AutoGenerateColumns="False"
+                    Background="#88ffffff"
+                    CanUserSortColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="30" IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text1}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding MajorVersion}"
+                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text3}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Version}"
+                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text4}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Type}"
+                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text5}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Arch}"
+                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text6}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Path}"
+                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text2}"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel VerticalAlignment="Center">
+                    <Grid>
+                        <Button
+                            Name="Button_R"
+                            Width="20"
+                            Height="30"
+                            Content="R" />
+                        <Expander
+                            Name="Expander_R"
+                            Height="30"
+                            Margin="-94,0,0,0"
+                            HorizontalAlignment="Left"
+                            Background="Transparent"
+                            CornerRadius="0"
+                            ExpandDirection="Right"
+                            IsExpanded="False">
+                            <Button
+                                Name="Button_R1"
+                                Width="100"
+                                Height="30"
+                                Margin="16,0,0,0"
+                                Content="{setting:Localize Button.Refash}" />
+                        </Expander>
+                    </Grid>
 
-
+                    <Grid>
+                        <Button
+                            Name="Button_D"
+                            Width="20"
+                            Height="30"
+                            Content="D" />
+                        <Expander
+                            Name="Expander_D"
+                            Height="30"
+                            Margin="-94,0,0,0"
+                            HorizontalAlignment="Left"
+                            Background="Transparent"
+                            CornerRadius="0"
+                            ExpandDirection="Right"
+                            IsExpanded="False">
+                            <Button
+                                Name="Button_D1"
+                                Width="100"
+                                Height="30"
+                                Margin="16,0,0,0"
+                                Content="{setting:Localize SettingWindow.Tab5.Text6}" />
+                        </Expander>
+                    </Grid>
+                </StackPanel>
+            </Grid>
         </DockPanel>
-        <StackPanel Margin="4,180,0,0" VerticalAlignment="Center">
-            <Grid>
-                <Button
-                    Name="Button_R"
-                    Width="20"
-                    Height="30"
-                    Content="R" />
-                <Expander
-                    Name="Expander_R"
-                    Height="30"
-                    Margin="-84,0,0,0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    CornerRadius="0"
-                    ExpandDirection="Right"
-                    IsExpanded="False">
-                    <Button
-                        Name="Button_R1"
-                        Width="100"
-                        Height="30"
-                        Margin="6,0,0,0"
-                        Content="{setting:Localize Button.Refash}" />
-                </Expander>
-            </Grid>
-
-            <Grid>
-                <Button
-                    Name="Button_D"
-                    Width="20"
-                    Height="30"
-                    Content="D" />
-                <Expander
-                    Name="Expander_D"
-                    Height="30"
-                    Margin="-84,0,0,0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    CornerRadius="0"
-                    ExpandDirection="Right"
-                    IsExpanded="False">
-                    <Button
-                        Name="Button_D1"
-                        Width="100"
-                        Height="30"
-                        Margin="6,0,0,0"
-                        Content="{setting:Localize SettingWindow.Tab5.Text6}" />
-                </Expander>
-            </Grid>
-        </StackPanel>
     </Grid>
 </UserControl>

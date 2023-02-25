@@ -69,7 +69,7 @@ public partial class Tab4Control : UserControl
                 break;
             case 1:
                 Cancel = false;
-                CoreMain.LoginOAuthCode = LoginOAuthCode;
+                ColorMCCore.LoginOAuthCode = LoginOAuthCode;
                 window.Info1.Show(App.GetLanguage("UserWindow.Info1"));
                 res = await UserBinding.AddUser(1, null);
                 window.Info3.Close();

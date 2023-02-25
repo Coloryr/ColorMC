@@ -9,7 +9,7 @@ public class FontSel : INotifyPropertyChanged
 {
     public static FontSel Instance { get; set; } = new FontSel();
 
-    public static FontFamily Font = new(ProgramGui.Font);
+    public static FontFamily Font = new(ColorMCGui.Font);
 
     private const string IndexerName = "Item";
     private const string IndexerArrayName = "Item[]";
@@ -41,7 +41,7 @@ public class FontSel : INotifyPropertyChanged
         }
         else
         {
-            Font = new(ProgramGui.Font);
+            Font = new(ColorMCGui.Font);
             Reload();
         }
     }

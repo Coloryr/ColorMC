@@ -22,7 +22,7 @@ public static class Logs
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
-        CoreMain.Stop += Stop;
+        ColorMCCore.Stop += Stop;
 
         Local = dir + "logs.log";
         try
@@ -34,7 +34,7 @@ public static class Logs
         }
         catch (Exception e)
         {
-            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Core.Log.Error1"), e, true);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Log.Error1"), e, true);
         }
     }
 

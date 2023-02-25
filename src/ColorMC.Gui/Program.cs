@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
 
-public class ProgramGui
+public class ColorMCGui
 {
+    public const string Version = "A14";
+
     public static Action InitDone;
     public const string Font = "resm:ColorMC.Launcher.Resource.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
     // Initialization code. Don't use any Avalonia, third-party APIs or any
@@ -21,7 +23,7 @@ public class ProgramGui
 
         try
         {
-            CoreMain.Init(AppContext.BaseDirectory);
+            ColorMCCore.Init(AppContext.BaseDirectory);
 
             BuildAvaloniaApp()
                  .StartWithClassicDesktopLifetime(args);

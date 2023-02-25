@@ -380,10 +380,10 @@ public static class InstancesPath
     {
         if (InstallGames.ContainsKey(game.Name))
         {
-            if (CoreMain.GameOverwirte == null)
+            if (ColorMCCore.GameOverwirte == null)
                 return null;
 
-            if (await CoreMain.GameOverwirte.Invoke(game) == false)
+            if (await ColorMCCore.GameOverwirte.Invoke(game) == false)
                 return null;
 
             if (InstallGames.Remove(game.Name, out var temp))
@@ -671,7 +671,7 @@ public static class InstancesPath
                 //ColorMC格式
                 case PackType.ColorMC:
                     {
-                        CoreMain.PackState?.Invoke(CoreRunState.Read);
+                        ColorMCCore.PackState?.Invoke(CoreRunState.Read);
                         using ZipFile zFile = new(dir);
                         using var stream1 = new MemoryStream();
                         bool find = false;
@@ -727,13 +727,13 @@ public static class InstancesPath
 
                         AddToGroup(game);
 
-                        CoreMain.PackState?.Invoke(CoreRunState.End);
+                        ColorMCCore.PackState?.Invoke(CoreRunState.End);
                         res1111 = true;
                         break;
                     }
                 //Curseforge压缩包
                 case PackType.CurseForge:
-                    CoreMain.PackState?.Invoke(CoreRunState.Read);
+                    ColorMCCore.PackState?.Invoke(CoreRunState.Read);
                     var res = await PackDownload.DownloadCurseForgeModPack(dir, name, group);
                     game = res.Game;
                     if (res.State != GetDownloadState.End)
@@ -741,14 +741,14 @@ public static class InstancesPath
                         break;
                     }
 
-                    CoreMain.PackState?.Invoke(CoreRunState.Download);
+                    ColorMCCore.PackState?.Invoke(CoreRunState.Download);
                     res1111 = await DownloadManager.Start(res.List!);
 
-                    CoreMain.PackState?.Invoke(CoreRunState.End);
+                    ColorMCCore.PackState?.Invoke(CoreRunState.End);
                     break;
                 //Curseforge压缩包
                 case PackType.Modrinth:
-                    CoreMain.PackState?.Invoke(CoreRunState.Read);
+                    ColorMCCore.PackState?.Invoke(CoreRunState.Read);
                     res = await PackDownload.DownloadModrinthModPack(dir, name, group);
                     game = res.Game;
                     if (res.State != GetDownloadState.End)
@@ -756,15 +756,15 @@ public static class InstancesPath
                         break;
                     }
 
-                    CoreMain.PackState?.Invoke(CoreRunState.Download);
+                    ColorMCCore.PackState?.Invoke(CoreRunState.Download);
                     res1111 = await DownloadManager.Start(res.List!);
 
-                    CoreMain.PackState?.Invoke(CoreRunState.End);
+                    ColorMCCore.PackState?.Invoke(CoreRunState.End);
                     break;
                 //MMC压缩包
                 case PackType.MMC:
                     {
-                        CoreMain.PackState?.Invoke(CoreRunState.Read);
+                        ColorMCCore.PackState?.Invoke(CoreRunState.Read);
                         using ZipFile zFile = new(dir);
                         using var stream1 = new MemoryStream();
                         using var stream2 = new MemoryStream();
@@ -899,14 +899,14 @@ public static class InstancesPath
                             }
                         }
 
-                        CoreMain.PackState?.Invoke(CoreRunState.End);
+                        ColorMCCore.PackState?.Invoke(CoreRunState.End);
                         res1111 = true;
                         break;
                     }
                 //HMCL压缩包
                 case PackType.HMCL:
                     {
-                        CoreMain.PackState?.Invoke(CoreRunState.Read);
+                        ColorMCCore.PackState?.Invoke(CoreRunState.Read);
                         using ZipFile zFile = new(dir);
                         using var stream1 = new MemoryStream();
                         using var stream2 = new MemoryStream();
@@ -1043,7 +1043,7 @@ public static class InstancesPath
                             }
                         }
 
-                        CoreMain.PackState?.Invoke(CoreRunState.End);
+                        ColorMCCore.PackState?.Invoke(CoreRunState.End);
                         res1111 = true;
                         break;
                     }
@@ -1051,14 +1051,14 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            CoreMain.OnError?.Invoke(LanguageHelper.GetName("Core.Pack.Error2"), e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Pack.Error2"), e, false);
             Logs.Error(LanguageHelper.GetName("Core.Pack.Error2"), e);
         }
         if (!res1111 && game != null)
         {
             await game.Remove();
         }
-        CoreMain.PackState?.Invoke(CoreRunState.End);
+        ColorMCCore.PackState?.Invoke(CoreRunState.End);
         return (res1111, game);
     }
 

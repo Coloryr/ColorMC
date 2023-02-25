@@ -13,18 +13,18 @@ internal class Program
     {
         Console.WriteLine("Hello, World!");
 
-        CoreMain.Init(AppContext.BaseDirectory);
+        ColorMCCore.Init(AppContext.BaseDirectory);
 
-        CoreMain.DownloaderUpdate = Update;
-        CoreMain.DownloadItemStateUpdate = Update;
-        CoreMain.GameDownload = Download;
-        CoreMain.GameOverwirte = Overwirte;
-        CoreMain.PackState = Update;
-        CoreMain.PackUpdate = PackUpdate;
-        CoreMain.ProcessLog = Log;
-        CoreMain.LoginOAuthCode = Login;
-        CoreMain.AuthStateUpdate = AuthStateUpdate;
-        CoreMain.GameLog = Log;
+        ColorMCCore.DownloaderUpdate = Update;
+        ColorMCCore.DownloadItemStateUpdate = Update;
+        ColorMCCore.GameDownload = Download;
+        ColorMCCore.GameOverwirte = Overwirte;
+        ColorMCCore.PackState = Update;
+        ColorMCCore.PackUpdate = PackUpdate;
+        ColorMCCore.ProcessLog = Log;
+        ColorMCCore.LoginOAuthCode = Login;
+        ColorMCCore.AuthStateUpdate = AuthStateUpdate;
+        ColorMCCore.GameLog = Log;
 
         TestItem.Item21();
 

@@ -47,9 +47,9 @@ public partial class MainWindow : Window, IBaseWindow
         Load();
         Load1();
 
-        CoreMain.GameLaunch = GameLunch;
-        CoreMain.GameDownload = GameDownload;
-        CoreMain.LoginFailLaunch = LoginFailLaunch;
+        ColorMCCore.GameLaunch = GameLunch;
+        ColorMCCore.GameDownload = GameDownload;
+        ColorMCCore.LoginFailLaunch = LoginFailLaunch;
 
         Button1.Click += Button1_Click;
 
@@ -143,16 +143,16 @@ public partial class MainWindow : Window, IBaseWindow
         App.PicUpdate -= Update;
         App.UserEdit -= MainWindow_OnUserEdit;
 
-        CoreMain.GameLaunch = null;
-        CoreMain.GameDownload = null;
-        CoreMain.LoginFailLaunch = null;
+        ColorMCCore.GameLaunch = null;
+        ColorMCCore.GameDownload = null;
+        ColorMCCore.LoginFailLaunch = null;
 
         App.Close();
     }
 
     private void MainWindow_Opened(object? sender, EventArgs e)
     {
-        ProgramGui.InitDone();
+        ColorMCGui.InitDone();
 
         MotdLoad();
     }

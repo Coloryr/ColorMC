@@ -10,10 +10,22 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <DockPanel LastChildFill="True">
+        <DockPanel>
+            <Button
+                Name="Button1"
+                Width="85"
+                Height="25"
+                Margin="0,5,5,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Content="{setting:Localize Button.OpFile}"
+                DockPanel.Dock="Top"
+                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                ToolTip.VerticalOffset="-30" />
+
             <DataGrid
                 Name="DataGrid1"
-                Margin="3,0,3,3"
+                Margin="5"
                 AutoGenerateColumns="False"
                 Background="#88ffffff"
                 CanUserSortColumns="False">
@@ -61,7 +73,7 @@
                 <Expander
                     Name="Expander_A"
                     Height="30"
-                    Margin="-84,0,0,0"
+                    Margin="-94,0,0,0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
                     CornerRadius="0"
@@ -71,7 +83,7 @@
                         Name="Button_A1"
                         Width="100"
                         Height="30"
-                        Margin="6,0,0,0"
+                        Margin="16,0,0,0"
                         Content="{setting:Localize Button.Add}" />
                 </Expander>
             </Grid>
@@ -84,7 +96,7 @@
                 <Expander
                     Name="Expander_R"
                     Height="30"
-                    Margin="-84,0,0,0"
+                    Margin="-94,0,0,0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
                     CornerRadius="0"
@@ -94,7 +106,7 @@
                         Name="Button_R1"
                         Width="100"
                         Height="30"
-                        Margin="6,0,0,0"
+                        Margin="16,0,0,0"
                         Content="{setting:Localize Button.Refash}" />
                 </Expander>
             </Grid>

@@ -51,7 +51,7 @@ public partial class AddJavaWindow : Window
 
         Button1_Click(null, null);
 
-        CoreMain.JavaUnzip = JavaUnzip;
+        ColorMCCore.JavaUnzip = JavaUnzip;
 
         App.PicUpdate += Update;
 

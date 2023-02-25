@@ -54,9 +54,9 @@ public partial class AddGameWindow : Window
         CheckBox_Snapshot.Click += Snapshot_Click;
         CheckBox_Other.Click += Other_Click;
 
-        CoreMain.PackState = PackState;
-        CoreMain.PackUpdate = PackUpdate;
-        CoreMain.GameOverwirte = GameOverwirte;
+        ColorMCCore.PackState = PackState;
+        ColorMCCore.PackUpdate = PackUpdate;
+        ColorMCCore.GameOverwirte = GameOverwirte;
 
         App.PicUpdate += Update;
 
@@ -241,9 +241,9 @@ public partial class AddGameWindow : Window
     {
         App.PicUpdate -= Update;
 
-        CoreMain.PackState = null;
-        CoreMain.PackUpdate = null;
-        CoreMain.GameOverwirte = null;
+        ColorMCCore.PackState = null;
+        ColorMCCore.PackUpdate = null;
+        ColorMCCore.GameOverwirte = null;
         App.AddGameWindow = null;
     }
 

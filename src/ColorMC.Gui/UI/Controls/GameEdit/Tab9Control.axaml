@@ -9,12 +9,25 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <ScrollViewer
-            Margin="5"
-            HorizontalScrollBarVisibility="Disabled"
-            VerticalScrollBarVisibility="Visible">
-            <WrapPanel Name="WrapPanel1" />
-        </ScrollViewer>
+        <DockPanel>
+            <Button
+                Name="Button1"
+                Width="85"
+                Height="25"
+                Margin="0,5,5,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Content="{setting:Localize Button.OpFile}"
+                DockPanel.Dock="Top"
+                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                ToolTip.VerticalOffset="-30" />
+            <ScrollViewer
+                Margin="5"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Visible">
+                <WrapPanel Name="WrapPanel1" />
+            </ScrollViewer>
+        </DockPanel>
         <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
             <Grid>
                 <Button
@@ -25,7 +38,7 @@
                 <Expander
                     Name="Expander_R"
                     Height="30"
-                    Margin="-84,0,0,0"
+                    Margin="-94,0,0,0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
                     CornerRadius="0"
@@ -35,7 +48,7 @@
                         Name="Button_R1"
                         Width="100"
                         Height="30"
-                        Margin="6,0,0,0"
+                        Margin="16,0,0,0"
                         Content="{setting:Localize Button.Refash}" />
                 </Expander>
             </Grid>
@@ -48,7 +61,7 @@
                 <Expander
                     Name="Expander_C"
                     Height="30"
-                    Margin="-84,0,0,0"
+                    Margin="-94,0,0,0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
                     CornerRadius="0"
@@ -58,7 +71,7 @@
                         Name="Button_C1"
                         Width="100"
                         Height="30"
-                        Margin="6,0,0,0"
+                        Margin="16,0,0,0"
                         Content="{setting:Localize GameEditWindow.Flyouts4.Text1}" />
                 </Expander>
             </Grid>

@@ -23,7 +23,7 @@ public static class PackDownload
     {
         var list = new List<DownloadItem>();
 
-        CoreMain.PackState?.Invoke(CoreRunState.Init);
+        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
         using ZipFile zFile = new(zip);
         using MemoryStream stream1 = new();
         bool find = false;
@@ -111,7 +111,7 @@ public static class PackDownload
 
         File.WriteAllBytes(game.GetModJsonFile(), array1);
 
-        CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
+        ColorMCCore.PackState?.Invoke(CoreRunState.GetInfo);
 
         //获取Mod信息
         Size = info.files.Count;
@@ -148,7 +148,7 @@ public static class PackDownload
 
                 Now++;
 
-                CoreMain.PackUpdate?.Invoke(Size, Now);
+                ColorMCCore.PackUpdate?.Invoke(Size, Now);
             }
         }
         else
@@ -189,7 +189,7 @@ public static class PackDownload
 
                 Now++;
 
-                CoreMain.PackUpdate?.Invoke(Size, Now);
+                ColorMCCore.PackUpdate?.Invoke(Size, Now);
             });
             if (!done)
             {
@@ -206,7 +206,7 @@ public static class PackDownload
     {
         var list = new List<DownloadItem>();
 
-        CoreMain.PackState?.Invoke(CoreRunState.Init);
+        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
         using ZipFile zFile = new(zip);
         using MemoryStream stream1 = new();
         bool find = false;
@@ -298,7 +298,7 @@ public static class PackDownload
 
         File.WriteAllBytes(game.GetModJsonFile(), array1);
 
-        CoreMain.PackState?.Invoke(CoreRunState.GetInfo);
+        ColorMCCore.PackState?.Invoke(CoreRunState.GetInfo);
 
         //获取Mod信息
         Size = info.files.Count;
@@ -342,7 +342,7 @@ public static class PackDownload
 
             Now++;
 
-            CoreMain.PackUpdate?.Invoke(Size, Now);
+            ColorMCCore.PackUpdate?.Invoke(Size, Now);
         }
 
         game.SaveCurseForgeMod();

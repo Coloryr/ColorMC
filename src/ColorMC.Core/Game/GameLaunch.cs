@@ -123,16 +123,16 @@ public static class Launch
         var list = new List<DownloadItem>();
 
         //检查游戏启动json
-        CoreMain.GameLaunch?.Invoke(obj, LaunchState.Check);
+        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Check);
         var game = VersionPath.GetGame(obj.Version);
         if (game == null)
         {
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostVersion);
+            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostVersion);
 
             var version = VersionPath.Versions?.versions.Where(a => a.id == obj.Version).FirstOrDefault();
             if (version == null)
             {
-                CoreMain.GameLaunch?.Invoke(obj, LaunchState.VersionError);
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.VersionError);
                 throw new LaunchException(LaunchState.VersionError,
                     LanguageHelper.GetName("Core.Launch.Error1"));
             }
@@ -155,7 +155,7 @@ public static class Launch
         //检查游戏核心文件
         if (ConfigUtils.Config.GameCheck.CheckCore)
         {
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckVersion);
+            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckVersion);
             string file = LibrariesPath.GetGameFile(game.id);
             if (!File.Exists(file))
             {
@@ -189,14 +189,14 @@ public static class Launch
         //检查游戏资源文件
         if (ConfigUtils.Config.GameCheck.CheckAssets)
         {
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckAssets);
+            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckAssets);
             var assets = AssetsPath.GetIndex(game);
             if (assets == null)
             {
                 assets = await GetHelper.GetAssets(game.assetIndex.url);
                 if (assets == null)
                 {
-                    CoreMain.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
                     throw new LaunchException(LaunchState.AssetsError,
                         LanguageHelper.GetName("Core.Launch.Error2"));
                 }
@@ -220,21 +220,21 @@ public static class Launch
         //检查运行库
         if (ConfigUtils.Config.GameCheck.CheckLib)
         {
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
+            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
             var list2 = await LibrariesPath.CheckGame(game);
             if (list2.Count != 0)
             {
-                CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLib);
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
                 list.AddRange(list2);
             }
 
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
+            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
             if (obj.Loader == Loaders.Forge)
             {
                 var list3 = LibrariesPath.CheckForge(obj);
                 if (list3 == null)
                 {
-                    CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
                     var list4 = await GameDownload.DownloadForge(obj);
                     if (list4.State != GetDownloadState.End)
@@ -253,7 +253,7 @@ public static class Launch
                 var list3 = LibrariesPath.CheckFabric(obj);
                 if (list3 == null)
                 {
-                    CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
                     var list4 = await GameDownload.DownloadFabric(obj);
                     if (list4.State != GetDownloadState.End)
@@ -272,7 +272,7 @@ public static class Launch
                 var list3 = LibrariesPath.CheckQuilt(obj);
                 if (list3 == null)
                 {
-                    CoreMain.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
                     var list4 = await GameDownload.DownloadQuilt(obj);
                     if (list4.State != GetDownloadState.End)
@@ -288,7 +288,7 @@ public static class Launch
             }
 
             //检查外置登录器
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckLoginCore);
+            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoginCore);
 
             if (login.AuthType == AuthType.Nide8)
             {
@@ -312,7 +312,7 @@ public static class Launch
         //检查整合包mod
         if (obj.ModPack && ConfigUtils.Config.GameCheck.CheckMod)
         {
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.CheckMods);
+            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckMods);
 
             var mods = await obj.GetMods();
             ModObj? mod = null;
@@ -877,7 +877,7 @@ public static class Launch
         var libraries = await GetLibs(obj, v2);
         StringBuilder classpath = new();
         string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
-        CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info2"));
+        ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info2"));
 
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.ClassPath))
         {
@@ -895,7 +895,7 @@ public static class Launch
         foreach (var item in libraries)
         {
             classpath.Append($"{item}{sep}");
-            CoreMain.GameLog?.Invoke(obj, $"    {item}");
+            ColorMCCore.GameLog?.Invoke(obj, $"    {item}");
         }
         classpath.Remove(classpath.Length - 1, 1);
 
@@ -916,7 +916,7 @@ public static class Launch
                 {"${library_directory}",LibrariesPath.BaseDir },
                 {"${classpath_separator}", sep },
                 {"${launcher_name}","ColorMC" },
-                {"${launcher_version}", CoreMain.Version },
+                {"${launcher_version}", ColorMCCore.Version },
                 {"${classpath}", classpath.ToString().Trim() },
             };
 
@@ -989,14 +989,14 @@ public static class Launch
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login)
     {
         //登录账户
-        CoreMain.GameLaunch?.Invoke(obj, LaunchState.Login);
+        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Login);
         var (State, State1, Obj, Message, Ex) = await login.RefreshToken();
         if (State1 != LoginState.Done)
         {
             if (login.AuthType == AuthType.OAuth
                 && !string.IsNullOrWhiteSpace(login.UUID)
-                && CoreMain.LoginFailLaunch != null
-                && await CoreMain.LoginFailLaunch(login) == true)
+                && ColorMCCore.LoginFailLaunch != null
+                && await ColorMCCore.LoginFailLaunch(login) == true)
             {
                 login = new()
                 {
@@ -1007,7 +1007,7 @@ public static class Launch
             }
             else
             {
-                CoreMain.GameLaunch?.Invoke(obj, LaunchState.LoginFail);
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LoginFail);
                 if (Ex != null)
                     throw new LaunchException(LaunchState.LoginFail, Ex);
 
@@ -1025,16 +1025,16 @@ public static class Launch
         //下载缺失的文件
         if (res.Count != 0)
         {
-            if (CoreMain.GameDownload == null)
+            if (ColorMCCore.GameDownload == null)
                 throw new LaunchException(LaunchState.LostGame,
                     LanguageHelper.GetName("Core.Launch.Error4"));
 
-            var res1 = await CoreMain.GameDownload.Invoke(LaunchState.LostFile, obj);
+            var res1 = await ColorMCCore.GameDownload.Invoke(LaunchState.LostFile, obj);
             if (res1 != true)
                 throw new LaunchException(LaunchState.LostFile,
                     LanguageHelper.GetName("Core.Launch.Error4"));
 
-            CoreMain.GameLaunch?.Invoke(obj, LaunchState.Download);
+            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Download);
             var ok = await DownloadManager.Start(res);
             if (!ok)
             {
@@ -1044,13 +1044,13 @@ public static class Launch
         }
 
         //准备Jvm参数
-        CoreMain.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
+        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
 
         var arg = await MakeArg(obj, login);
-        CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info1"));
+        ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info1"));
         foreach (var item in arg)
         {
-            CoreMain.GameLog?.Invoke(obj, item);
+            ColorMCCore.GameLog?.Invoke(obj, item);
         }
 
         string path = obj.JvmLocal;
@@ -1059,15 +1059,15 @@ public static class Launch
             JavaInfo? jvm = JvmPath.GetInfo(obj.JvmName) ?? FindJava(obj);
             if (jvm == null)
             {
-                CoreMain.GameLaunch?.Invoke(obj, LaunchState.JavaError);
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
                 return null;
             }
 
             path = jvm.Path;
         }
 
-        CoreMain.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info3"));
-        CoreMain.GameLog?.Invoke(obj, path);
+        ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info3"));
+        ColorMCCore.GameLog?.Invoke(obj, path);
 
         //启动进程
         Process process = new()
@@ -1097,11 +1097,11 @@ public static class Launch
 
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
-        CoreMain.ProcessLog?.Invoke(sender as Process, e.Data);
+        ColorMCCore.ProcessLog?.Invoke(sender as Process, e.Data);
     }
 
     private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
-        CoreMain.ProcessLog?.Invoke(sender as Process, e.Data);
+        ColorMCCore.ProcessLog?.Invoke(sender as Process, e.Data);
     }
 }

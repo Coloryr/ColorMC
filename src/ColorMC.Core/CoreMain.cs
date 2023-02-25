@@ -16,7 +16,7 @@ public enum CoreRunState
     Error,
 }
 
-public static class CoreMain
+public static class ColorMCCore
 {
     public const string Version = "1.0.0";
 

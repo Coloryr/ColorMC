@@ -11,8 +11,8 @@ public static class DownloadBar
 
     public static void Init()
     {
-        CoreMain.DownloadItemStateUpdate = DownloadUpdate;
-        CoreMain.DownloaderUpdate = DownloaderUpdate;
+        ColorMCCore.DownloadItemStateUpdate = DownloadUpdate;
+        ColorMCCore.DownloaderUpdate = DownloaderUpdate;
 
         Items1 = new DownloadItem[ConfigUtils.Config.Http.DownloadThread];
     }

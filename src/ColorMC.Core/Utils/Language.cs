@@ -60,7 +60,7 @@ public static class LanguageHelper
 
         Type = type;
         Load(type);
-        CoreMain.LanguageReload?.Invoke(type);
+        ColorMCCore.LanguageReload?.Invoke(type);
     }
 
     public static string GetName(string input)

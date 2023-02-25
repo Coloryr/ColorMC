@@ -22,7 +22,7 @@ public static class DownloadManager
     /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
-        CoreMain.Stop += Stop;
+        ColorMCCore.Stop += Stop;
 
         DownloadDir = dir + "download";
         Directory.CreateDirectory(DownloadDir);
@@ -97,15 +97,15 @@ public static class DownloadManager
     {
         Clear();
         Logs.Info(LanguageHelper.GetName("Core.Http.Info4"));
-        CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
+        ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
         foreach (var item in list)
         {
             if (Name.Contains(item.Name) || string.IsNullOrWhiteSpace(item.Url))
                 continue;
-            CoreMain.DownloadItemStateUpdate?.Invoke(-1, item);
+            ColorMCCore.DownloadItemStateUpdate?.Invoke(-1, item);
             item.Update = (index) =>
             {
-                CoreMain.DownloadItemStateUpdate?.Invoke(index, item);
+                ColorMCCore.DownloadItemStateUpdate?.Invoke(index, item);
             };
             Items.Enqueue(item);
             Name.Add(item.Name);
@@ -114,7 +114,7 @@ public static class DownloadManager
         Logs.Info(LanguageHelper.GetName("Core.Http.Info3"));
         DoneSize = 0;
         AllSize = Items.Count;
-        CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.Start);
+        ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Start);
         foreach (var item in threads)
         {
             item.Start();
@@ -127,7 +127,7 @@ public static class DownloadManager
             }
         });
 
-        CoreMain.DownloaderUpdate?.Invoke(State = CoreRunState.End);
+        ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.End);
 
         return AllSize == DoneSize;
     }
@@ -172,7 +172,7 @@ public static class DownloadManager
     {
         Logs.Error(string.Format(LanguageHelper.GetName("Core.Http.Error1"),
             item.Name), e);
-        CoreMain.DownloadItemError?.Invoke(index, item, e);
+        ColorMCCore.DownloadItemError?.Invoke(index, item, e);
     }
 
     /// <summary>

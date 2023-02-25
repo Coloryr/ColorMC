@@ -12,14 +12,22 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
-using static ColorMC.Core.Objs.Modrinth.ModrinthSearchObj;
 
 namespace ColorMC.Gui.UI.Windows;
 
 public partial class AddModPackWindow : Window, IAddWindow
 {
+    /// <summary>
+    /// 控件
+    /// </summary>
     private readonly List<FileItemControl> List = new();
+    /// <summary>
+    /// 类型
+    /// </summary>
     private readonly Dictionary<int, string> Categories = new();
+    /// <summary>
+    /// 数据
+    /// </summary>
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private FileItemControl? Last;
     private bool load = false;

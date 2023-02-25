@@ -129,7 +129,7 @@ public partial class UserWindow : Window
                 break;
             case 1:
                 Cancel = false;
-                CoreMain.LoginOAuthCode = LoginOAuthCode;
+                ColorMCCore.LoginOAuthCode = LoginOAuthCode;
                 Info1.Show(App.GetLanguage("UserWindow.Info1"));
                 res = await UserBinding.AddUser(1, null);
                 Info1.Close();
@@ -378,7 +378,7 @@ public partial class UserWindow : Window
         App.PicUpdate -= Update;
 
         App.UserWindow = null;
-        CoreMain.LoginOAuthCode = null;
+        ColorMCCore.LoginOAuthCode = null;
     }
 
     public async void ReLogin(UserDisplayObj obj)

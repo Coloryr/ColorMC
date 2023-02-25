@@ -1,10 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UIBinding;
@@ -15,12 +14,31 @@ using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class AddWindow : Window
+public partial class AddWindow : Window, IAddWindow
 {
+    /// <summary>
+    /// 控件
+    /// </summary>
     private readonly List<FileItemControl> List = new();
+    /// <summary>
+    /// 下载源
+    /// </summary>
+    private List<SourceType> List2 = new();
+    private readonly ObservableCollection<string> List3 = new();
+    /// <summary>
+    /// 类型
+    /// </summary>
+    private readonly Dictionary<int, string> Categories = new();
+    /// <summary>
+    /// 数据
+    /// </summary>
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
+
     private FileItemControl? Last;
     private GameSettingObj Obj;
+    private bool load = false;
+    private bool display = false;
+    private FileType now;
 
     public AddWindow()
     {
@@ -30,11 +48,14 @@ public partial class AddWindow : Window
         Icon = App.Icon;
         Border1.MakeResizeDrag(this);
 
-        ComboBox1.Items = GameBinding.GetCurseForgeSortTypes();
-        ComboBox3.Items = GameBinding.GetSortOrder();
+        ComboBox1.Items = GameBinding.GetAddType();
+        ComboBox2.Items = List3;
 
-        ComboBox1.SelectedIndex = 1;
-        ComboBox3.SelectedIndex = 1;
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+        ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
+        ComboBox3.SelectionChanged += ComboBox_SelectionChanged;
+        ComboBox4.SelectionChanged += ComboBox_SelectionChanged;
+        ComboBox5.SelectionChanged += ComboBox_SelectionChanged;
 
         DataGridFiles.Items = List1;
         DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
@@ -61,9 +82,128 @@ public partial class AddWindow : Window
         Update();
     }
 
+    private void ComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (!display || load)
+            return;
+
+        Load();
+    }
+
+    private async void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (!display)
+            return;
+
+        load = true;
+        if (ComboBox2.SelectedIndex == 0)
+        {
+            ComboBox4.Items = GameBinding.GetCurseForgeSortTypes();
+
+            Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
+            var list = await GameBinding.GetCurseForgeGameVersions();
+            var list1 = await GameBinding.GetCurseForgeCategories(now);
+            Info1.Close();
+            if (list == null || list1 == null)
+            {
+#if !DEBUG
+            Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+#endif
+                return;
+            }
+
+            Categories.Clear();
+            Categories.Add(0, "");
+            int a = 1;
+            foreach (var item in list1)
+            {
+                Categories.Add(a++, item.Key);
+            }
+
+            var list2 = new List<string>()
+            {
+                ""
+            };
+
+            list2.AddRange(list1.Values);
+
+            ComboBox3.Items = list;
+            ComboBox5.Items = list2;
+
+            ComboBox3.SelectedIndex = 0;
+            ComboBox5.SelectedIndex = 0;
+            ComboBox4.SelectedIndex = 1;
+
+            Load();
+        }
+        else if (ComboBox2.SelectedIndex == 1)
+        {
+            ComboBox4.Items = GameBinding.GetModrinthSortTypes();
+
+            Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
+            var list = await GameBinding.GetModrinthGameVersions();
+            var list1 = await GameBinding.GetModrinthCategories(now);
+            Info1.Close();
+            if (list == null || list1 == null)
+            {
+#if !DEBUG
+            Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+#endif
+                return;
+            }
+
+            Categories.Clear();
+            Categories.Add(0, "");
+            int a = 1;
+            foreach (var item in list1)
+            {
+                Categories.Add(a++, item.Key);
+            }
+
+            var list2 = new List<string>()
+            {
+                ""
+            };
+
+            list2.AddRange(list1.Values);
+
+            ComboBox3.Items = list;
+            ComboBox5.Items = list2;
+
+            ComboBox3.SelectedIndex = 0;
+            ComboBox5.SelectedIndex = 0;
+            ComboBox4.SelectedIndex = 1;
+
+            Load();
+        }
+
+        load = false;
+    }
+
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (!display)
+            return;
+
+        now = (FileType)(ComboBox1.SelectedIndex + 1);
+        ComboBox3.Items = null;
+        ComboBox4.Items = null;
+        ComboBox5.Items = null;
+
+        Input2.Value = 0;
+
+        List1.Clear();
+        List3.Clear();
+
+        List2 = GameBinding.GetSourceList(now);
+        List2.ForEach(item => List3.Add(item.GetName()));
+
+        ComboBox2.SelectedIndex = 0;
+    }
+
     public void Go(FileType file)
-    { 
-        
+    {
+        ComboBox1.SelectedIndex = (int)file - 1;
     }
 
     public void SetGame(GameSettingObj obj)
@@ -75,6 +215,9 @@ public partial class AddWindow : Window
 
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
+        if (!display || load)
+            return;
+
         var property = e.Property.Name;
         if (property == "Value")
         {
@@ -84,6 +227,9 @@ public partial class AddWindow : Window
 
     private void Input2_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
+        if (!display || load)
+            return;
+
         var property = e.Property.Name;
         if (property == "Value")
         {
@@ -170,29 +316,48 @@ public partial class AddWindow : Window
 
     private async void Load()
     {
-        //Info1.Show(App.GetLanguage("AddWorldWindow.Info2"));
-        //var data = await GameBinding.GetWorldList(ComboBox2.SelectedItem as string,
-        //    ComboBox1.SelectedIndex + 1, Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex);
+        Info1.Show(App.GetLanguage("AddWorldWindow.Info2"));
+        var data = await GameBinding.GetList(now, (SourceType)ComboBox2.SelectedIndex, ComboBox3.SelectedItem as string,
+            Input1.Text, (int)Input2.Value!, ComboBox4.SelectedIndex,
+            ComboBox5.SelectedIndex < 0 ? "" :
+                Categories[ComboBox5.SelectedIndex]);
 
-        //if (data == null)
-        //{
-        //    Info.Show(App.GetLanguage("AddWorldWindow.Error2"));
-        //    Info1.Close();
-        //    return;
-        //}
+        if (data == null)
+        {
+            Info.Show(App.GetLanguage("AddWorldWindow.Error2"));
+            Info1.Close();
+            return;
+        }
 
-        //ListBox_Items.Children.Clear();
-        //int a = 0;
-        //foreach (var item in data.data)
-        //{
-        //    var control = List[a];
-        //    control.Load(item);
-        //    ListBox_Items.Children.Add(control);
-        //    a++;
-        //}
+        ListBox_Items.Children.Clear();
+        int a = 0;
+        if (now == FileType.Mod)
+        {
+            foreach (var item in data)
+            {
+                if (Obj.Mods.ContainsKey(item.ID))
+                {
+                    item.IsDownload = true;
+                }
+                var control = List[a];
+                control.Load(item);
+                ListBox_Items.Children.Add(control);
+                a++;
+            }
+        }
+        else
+        {
+            foreach (var item in data)
+            {
+                var control = List[a];
+                control.Load(item);
+                ListBox_Items.Children.Add(control);
+                a++;
+            }
+        }
 
-        //ScrollViewer1.ScrollToHome();
-        //Info1.Close();
+        ScrollViewer1.ScrollToHome();
+        Info1.Close();
     }
 
     private async void Load1()
@@ -227,26 +392,11 @@ public partial class AddWindow : Window
         Load();
     }
 
-    private async void AddModPackWindow_Opened(object? sender, EventArgs e)
+    private void AddModPackWindow_Opened(object? sender, EventArgs e)
     {
         DataGridFiles.MakeTran();
-        Info1.Show(App.GetLanguage("AddWorldWindow.Info4"));
-        var list = await GameBinding.GetCurseForgeGameVersions();
-        Info1.Close();
-        if (list == null)
-        {
-#if !DEBUG
-            Info.Show(App.GetLanguage("AddWorldWindow.Error4"));
-#endif
-            return;
-        }
 
-        ComboBox2.Items = list;
-        if (list.Contains(Obj!.Version))
-        {
-            ComboBox2.SelectedItem = Obj.Version;
-        }
-        Load();
+        display = true;
     }
 
     public void Update()

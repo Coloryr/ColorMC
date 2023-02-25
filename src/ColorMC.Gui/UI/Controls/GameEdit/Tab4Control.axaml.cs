@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -47,6 +48,8 @@ public partial class Tab4Control : UserControl
         Button_R1.Click += Button_R1_Click;
         Button_I1.Click += Button_I1_Click;
 
+        Button1.Click += Button1_Click;
+
         ComboBox1.Items = BaseBinding.GetFilterName();
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox1.SelectedIndex = 0;
@@ -54,6 +57,11 @@ public partial class Tab4Control : UserControl
         TextBox1.PropertyChanged += TextBox1_TextInput;
 
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpPath(Obj.GetModsPath());
     }
 
     private void TextBox1_TextInput(object? sender,

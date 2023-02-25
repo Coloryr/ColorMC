@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core.Game;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -34,10 +35,17 @@ public partial class Tab12Control : UserControl
         Button_R1.Click += Button_R1_Click;
         Button_A1.Click += Button_A1_Click;
 
+        Button1.Click += Button1_Click;
+
         DataGrid1.Items = List;
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
         LayoutUpdated += Tab10Control_LayoutUpdated1;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpPath(Obj.GetSchematicsPath());
     }
 
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
