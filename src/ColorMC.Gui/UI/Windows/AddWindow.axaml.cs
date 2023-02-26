@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
@@ -322,11 +323,38 @@ public partial class AddWindow : Window, IAddWindow
         last.SetNowDownload();
         await App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
         var type = List2[ComboBox2.SelectedIndex];
-        var res = type switch
+        bool res = false;
+        if (now == FileType.DataPacks)
         {
-            SourceType.CurseForge => await GameBinding.Download(now, Obj!, data.Data as CurseForgeObj.Data.LatestFiles),
-            SourceType.Modrinth => await GameBinding.Download(now, Obj!, data.Data as ModrinthVersionObj)
-        };
+            var list = await Obj.GetWorlds();
+            if (list.Count == 0)
+            {
+                Info.Show(App.GetLanguage("AddWindow.Error6"));
+                return;
+            }
+
+            var world = new List<string>();
+            list.ForEach(item => world.Add(item.LevelName));
+            await Info5.Show(App.GetLanguage("AddWindow.Info7"), world);
+            if (Info5.Cancel)
+                return;
+            var item = list[Info5.Read().Item1];
+            res = type switch
+            {
+                SourceType.CurseForge => await GameBinding.Download(item, 
+                    data.Data as CurseForgeObj.Data.LatestFiles),
+                SourceType.Modrinth => await GameBinding.Download(item, 
+                    data.Data as ModrinthVersionObj)
+            };
+        }
+        else
+        {
+            res = type switch
+            {
+                SourceType.CurseForge => await GameBinding.Download(now, Obj!, data.Data as CurseForgeObj.Data.LatestFiles),
+                SourceType.Modrinth => await GameBinding.Download(now, Obj!, data.Data as ModrinthVersionObj)
+            };
+        }
         if (res)
         {
             Info2.Show(App.GetLanguage("AddWindow.Info6"));

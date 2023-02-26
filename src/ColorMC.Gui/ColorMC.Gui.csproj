@@ -118,6 +118,9 @@
     <Compile Update="UI\Controls\GameEdit\Tab11Control.axaml.cs">
       <DependentUpon>Tab11Control.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Controls\Info5Control.axaml.cs">
+      <DependentUpon>Info5Control.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\InfoFlyoutsControl.axaml.cs">
       <DependentUpon>InfoFlyoutsControl.axaml</DependentUpon>
     </Compile>

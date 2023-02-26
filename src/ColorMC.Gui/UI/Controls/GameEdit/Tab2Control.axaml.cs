@@ -115,7 +115,6 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    //Jvm����
     private void TextBox2_PropertyChanged(object? sender,
         AvaloniaPropertyChangedEventArgs e)
     {
@@ -127,8 +126,6 @@ public partial class Tab2Control : UserControl
             Save2();
         }
     }
-
-    //�ڴ�
     private void Input1_PropertyChanged1(object? sender,
         AvaloniaPropertyChangedEventArgs e)
     {
@@ -141,7 +138,6 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    //ѡ�õ�Java
     private void Input1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (load)
@@ -184,7 +180,8 @@ public partial class Tab2Control : UserControl
         var file = await BaseBinding.OpFile(Window,
             App.GetLanguage("SettingWindow.Tab5.Info2"),
             new string[] { SystemInfo.Os == OsType.Windows ? "*.exe" : "" },
-            App.GetLanguage("SettingWindow.Tab5.Info2"));
+            App.GetLanguage("SettingWindow.Tab5.Info2"),
+            storage: JavaBinding.GetSuggestedStartLocation());
         if (file.Any())
         {
             TextBox11.Text = file[0].GetPath();

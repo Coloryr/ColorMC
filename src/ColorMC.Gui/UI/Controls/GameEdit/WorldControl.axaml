@@ -26,22 +26,13 @@
                 VerticalAlignment="Center"
                 Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
             <StackPanel Margin="100,0,0,0">
-                <StackPanel
-                    Margin="0,0,0,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal">
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
                     <TextBlock
                         Name="Label1"
+                        Margin="0,0,20,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Text="Name" />
-                </StackPanel>
-                <StackPanel
-                    Margin="0,0,0,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal">
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
@@ -49,7 +40,7 @@
                         Text="{setting:Localize GameEditWindow.Control.Text1}" />
                     <TextBlock
                         Name="Label2"
-                        Margin="0,0,20,0"
+                        Margin="0,0,10,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Text="GameType" />
@@ -65,11 +56,7 @@
                         VerticalAlignment="Center"
                         Text="GameType" />
                 </StackPanel>
-                <StackPanel
-                    Margin="0,0,0,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal">
+                <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
@@ -77,7 +64,7 @@
                         Text="{setting:Localize GameEditWindow.Control.Text4}" />
                     <TextBlock
                         Name="Label6"
-                        Margin="0,0,20,0"
+                        Margin="0,0,10,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Text="GameType" />
@@ -93,42 +80,14 @@
                         VerticalAlignment="Center"
                         Text="Time" />
                 </StackPanel>
-                <StackPanel
-                    Margin="0,0,0,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        Name="Label4"
-                        Margin="0,0,5,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="Local"
-                        TextWrapping="Wrap" />
-                </StackPanel>
+                <TextBlock
+                    Name="Label4"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="Local"
+                    TextWrapping="Wrap" />
             </StackPanel>
-        </Grid>
-        <Grid
-            Name="Grid1"
-            Background="#EEEEEE"
-            IsVisible="False">
-            <StackPanel VerticalAlignment="Center">
-                <Label HorizontalAlignment="Center" Content="{setting:Localize AddModWindow.Control.Text1}" />
-                <ProgressBar
-                    Height="20"
-                    Margin="10"
-                    IsIndeterminate="True" />
-            </StackPanel>
-        </Grid>
-        <Grid
-            Name="Grid2"
-            HorizontalAlignment="Right"
-            IsVisible="False">
-            <Label
-                Margin="0,3,5,0"
-                VerticalAlignment="Top"
-                Background="#EEEEEE"
-                Content="{setting:Localize AddModWindow.Control.Text2}" />
         </Grid>
     </Grid>
 </UserControl>

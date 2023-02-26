@@ -24,6 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ColorMC.Core.Net.Download;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
@@ -204,7 +205,7 @@ public static class GameBinding
         if (CurseForgeGameVersions != null)
         {
             return CurseForgeGameVersions;
-        }    
+        }
         var list = await CurseForge.GetCurseForgeVersionType();
         if (list == null)
         {
@@ -257,7 +258,7 @@ public static class GameBinding
 
     public static async Task<List<string>?> GetModrinthGameVersions()
     {
-        if(ModrinthGameVersions!=null)
+        if (ModrinthGameVersions != null)
         {
             return ModrinthGameVersions;
         }
@@ -304,6 +305,7 @@ public static class GameBinding
                         FileType.Resourcepack => CurseForge.ClassResourcepack,
                         _ => CurseForge.ClassModPack
                     }
+                    orderby item2.name descending
                     select (item2.name, item2.id);
 
         return list7.ToDictionary(a => a.id.ToString(), a => a.name);
@@ -334,6 +336,7 @@ public static class GameBinding
                         _ => Modrinth.ClassMod
                     }
                     && item2.header == "categories"
+                    orderby item2.name descending
                     select item2.name;
 
         return list7.ToDictionary(a => a);
@@ -1132,6 +1135,8 @@ public static class GameBinding
         if (data == null)
             return false;
 
+        data.FixDownloadUrl();
+
         switch (type)
         {
             case FileType.Mod:
@@ -1266,23 +1271,6 @@ public static class GameBinding
                     obj.SaveModInfo();
                 }
                 return res;
-            case FileType.World:
-                item = new DownloadItem()
-                {
-                    Name = data.name,
-                    Url = file.url,
-                    Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.filename),
-                    SHA1 = file.hashes.sha1,
-                    Overwrite = true
-                };
-
-                res = await DownloadManager.Download(item);
-                if (!res)
-                {
-                    return false;
-                }
-
-                return await AddWorld(obj, item.Local);
             case FileType.Resourcepack:
                 item = new DownloadItem()
                 {
@@ -1294,8 +1282,62 @@ public static class GameBinding
                 };
 
                 return await DownloadManager.Download(item);
+            case FileType.Shaderpack:
+                item = new DownloadItem()
+                {
+                    Name = data.name,
+                    Url = file.url,
+                    Local = Path.GetFullPath(obj.GetShaderpacksPath() + "/" + file.filename),
+                    SHA1 = file.hashes.sha1,
+                    Overwrite = true
+                };
+
+                return await DownloadManager.Download(item);
             default:
                 return false;
         }
+    }
+
+    public static async Task<bool> Download(WorldObj obj1, CurseForgeObj.Data.LatestFiles? data)
+    {
+        if (data == null)
+            return false;
+
+        data.FixDownloadUrl();
+
+        var item = new DownloadItem()
+        {
+            Name = data.displayName,
+            Url = data.downloadUrl,
+            Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + data.fileName),
+            SHA1 = data.hashes.Where(a => a.algo == 1)
+                .Select(a => a.value).FirstOrDefault(),
+            Overwrite = true
+        };
+
+        return await DownloadManager.Download(item);
+    }
+
+    public static async Task<bool> Download(WorldObj obj1, ModrinthVersionObj? data)
+    {
+        if (data == null)
+            return false;
+
+        var file = data.files.FirstOrDefault(a => a.primary);
+        if (file == null)
+        {
+            file = data.files[0];
+        }
+
+        var item = new DownloadItem()
+        {
+            Name = data.name,
+            Url = file.url,
+            Local = Path.GetFullPath(obj1.GetWorldDataPacksPath() + "/" + file.filename),
+            SHA1 = file.hashes.sha1,
+            Overwrite = true
+        };
+
+        return await DownloadManager.Download(item);
     }
 }

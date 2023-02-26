@@ -142,7 +142,7 @@ public static class BaseClient
         }
     }
 
-    public static void Poll(string url, CancellationToken token, Action<Stream> action)
+    public static void Poll(string url, Action<Stream> action, CancellationToken token)
     {
         tasks.Add((url, token, action));
     }

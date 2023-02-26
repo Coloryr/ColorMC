@@ -1091,6 +1091,8 @@ public static class InstancesPath
     /// <returns>结果</returns>
     public static async Task<(bool, GameSettingObj?)> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data, string? name, string? group)
     {
+        data.FixDownloadUrl();
+
         var item = new DownloadItem()
         {
             Url = data.downloadUrl,

@@ -76,13 +76,16 @@ public partial class FileItemControl : UserControl
     public void SetNowDownload()
     {
         Grid1.IsVisible = true;
-        Grid2.IsVisible = false;
+        Label5.IsVisible = false;
     }
 
     public void SetDownloaded()
     {
         Grid1.IsVisible = false;
-        Grid2.IsVisible = true;
+        Dispatcher.UIThread.Post(() =>
+        {
+            Label5.IsVisible = true;
+        });
     }
 
     public void Cancel()
@@ -97,7 +100,7 @@ public partial class FileItemControl : UserControl
 
         Data = data;
 
-        Grid2.IsVisible = data.IsDownload;
+        Label5.IsVisible = data.IsDownload;
 
         Label1.Content = data.Name;
         TextBlock1.Text = data.Summary;
@@ -116,7 +119,7 @@ public partial class FileItemControl : UserControl
         {
             try
             {
-                BaseClient.Poll(data.Logo, cancel.Token, (data1) =>
+                BaseClient.Poll(data.Logo, (data1) =>
                 {
                     if (cancel.IsCancellationRequested)
                         return;
@@ -126,7 +129,7 @@ public partial class FileItemControl : UserControl
                     {
                         Image_Logo.Source = bitmap;
                     });
-                });
+                }, cancel.Token);
             }
             catch (Exception e)
             {
