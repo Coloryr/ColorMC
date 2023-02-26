@@ -326,9 +326,24 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name14}/");
     }
 
+    /// <summary>
+    /// 获取结构文件路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
     public static string GetSchematicsPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name18}/");
+    }
+
+    /// <summary>
+    /// 世界备份
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>路径</returns>
+    public static string GetWorldBackupPath(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name20}/");
     }
 
     /// <summary>
@@ -409,33 +424,6 @@ public static class InstancesPath
 
         return game;
     }
-
-    //public static Task InstallForge(this GameSettingObj obj, string version)
-    //{
-    //    obj.LoaderVersion = version;
-    //    obj.Loader = Loaders.Forge;
-    //    obj.Save();
-
-    //    return GameDownload.DownloadForge(obj.Version, version);
-    //}
-
-    //public static Task InstallFabric(this GameSettingObj obj, string version)
-    //{
-    //    obj.LoaderVersion = version;
-    //    obj.Loader = Loaders.Fabric;
-    //    obj.Save();
-
-    //    return GameDownload.DownloadFabric(obj.Version, version);
-    //}
-
-    //public static Task InstallQuilt(this GameSettingObj obj, string version)
-    //{
-    //    obj.LoaderVersion = version;
-    //    obj.Loader = Loaders.Quilt;
-    //    obj.Save();
-
-    //    return GameDownload.DownloadQuilt(obj.Version, version);
-    //}
 
     /// <summary>
     /// 新建游戏组
@@ -650,7 +638,7 @@ public static class InstancesPath
         switch (type)
         {
             case PackType.ColorMC:
-                return ZipFloClass.ZipFile(obj.GetBasePath(), file, filter);
+                return ZipUtils.ZipFile(obj.GetBasePath(), file, filter);
         }
         return Task.CompletedTask;
     }

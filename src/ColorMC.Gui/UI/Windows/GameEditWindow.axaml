@@ -76,6 +76,7 @@
             <views:Info4Control Name="Info" IsVisible="False" />
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info3Control Name="Info3" IsVisible="False" />
+            <views:Info5Control Name="Info5" IsVisible="False" />
             <views:Info2Control Name="Info2" />
 
             <Border

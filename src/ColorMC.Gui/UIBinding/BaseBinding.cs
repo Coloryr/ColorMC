@@ -171,7 +171,7 @@ public static class BaseBinding
                 {
                     temp = App.GetLanguage("Error6");
                     Logs.Error(temp, e);
-                    App.ShowError(temp, e, false);
+                    App.ShowError(temp, e);
                 }
                 return null;
             }

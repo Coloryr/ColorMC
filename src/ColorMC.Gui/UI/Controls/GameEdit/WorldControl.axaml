@@ -17,7 +17,7 @@
             Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
 
-        <Grid Margin="5">
+        <Grid Margin="4">
             <Image
                 Name="Image1"
                 Width="90"

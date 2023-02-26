@@ -1340,4 +1340,24 @@ public static class GameBinding
 
         return await DownloadManager.Download(item);
     }
+
+    public static async Task<bool> BackupWorld(WorldObj world)
+    {
+        try
+        {
+            await world.Backup();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("backup world error", e);
+            App.ShowError("backup world error", e);
+            return false;
+        }
+    }
+
+    public static Task<bool> BackupWorld(GameSettingObj obj, FileInfo item1)
+    {
+        return obj.UnzipBackupWorld(item1);
+    }
 }

@@ -25,6 +25,11 @@
                 Height="25"
                 Content="{setting:Localize GameEditWindow.Flyouts2.Text1}" />
             <Button
+                Name="Button4"
+                Width="80"
+                Height="25"
+                Content="{setting:Localize GameEditWindow.Flyouts2.Text3}" />
+            <Button
                 Name="Button3"
                 Width="80"
                 Height="25"
