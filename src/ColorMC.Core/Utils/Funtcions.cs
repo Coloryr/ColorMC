@@ -87,7 +87,7 @@ public static class Funtcions
     }
 }
 
-public static class ZipFloClass
+public static class ZipUtils
 {
     /// <summary>
     /// 压缩文件
@@ -99,7 +99,7 @@ public static class ZipFloClass
         if (strFile[^1] != Path.DirectorySeparatorChar)
             strFile += Path.DirectorySeparatorChar;
         using var s = new ZipOutputStream(File.Create(strZip));
-        s.SetLevel(6); // 0 - store only to 9 - means best compression
+        s.SetLevel(9); // 0 - store only to 9 - means best compression
         await Zip(strFile, s, strFile);
         await s.FinishAsync(CancellationToken.None);
         s.Close();
@@ -150,7 +150,7 @@ public static class ZipFloClass
         if (strFile[^1] != Path.DirectorySeparatorChar)
             strFile += Path.DirectorySeparatorChar;
         using var s = new ZipOutputStream(File.Create(strZip));
-        s.SetLevel(6); // 0 - store only to 9 - means best compression
+        s.SetLevel(9); // 0 - store only to 9 - means best compression
         await Zip(strFile, s, strFile, filter);
         await s.FinishAsync(CancellationToken.None);
         s.Close();
@@ -210,7 +210,7 @@ public static class ZipFloClass
         }
         else
         {
-            ZipInputStream s = new(File.OpenRead(local));
+            using ZipInputStream s = new(File.OpenRead(local));
             ZipEntry theEntry;
             while ((theEntry = s.GetNextEntry()) != null)
             {

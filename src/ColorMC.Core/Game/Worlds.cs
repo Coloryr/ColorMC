@@ -2,8 +2,14 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
 using NbtLib;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
+using System.Text;
 
 namespace ColorMC.Core.Game;
 
@@ -160,11 +166,116 @@ public static class Worlds
     /// <returns></returns>
     public static Task ExportWorldZip(this WorldObj world, string file)
     {
-        return ZipFloClass.ZipFile(world.Local, file);
+        return ZipUtils.ZipFile(world.Local, file);
     }
 
     public static string GetWorldDataPacksPath(this WorldObj world)
     {
         return Path.GetFullPath($"{world.Local}/{Name1}");
+    }
+
+    private class ZipFileStream : IStaticDataSource, IDisposable
+    {
+        private MemoryStream Memory;
+        public ZipFileStream(byte[] data)
+        {
+            Memory = new(data);
+            Memory.Seek(0, SeekOrigin.Begin);
+        }
+
+        public void Dispose()
+        {
+            Memory.Dispose();
+        }
+
+        public Stream GetSource()
+        {
+            return Memory;
+        }
+    }
+
+    /// <summary>
+    /// 备份世界
+    /// </summary>
+    /// <returns></returns>
+    public static async Task Backup(this WorldObj world)
+    {
+        var game = world.Game;
+
+        var path = game.GetWorldBackupPath();
+        Directory.CreateDirectory(path);
+
+        var file = Path.GetFullPath(path + "/" + world.LevelName + "_" + DateTime.Now
+            .ToString("yyyy_MM_dd_HH_mm_ss") + ".zip");
+
+        await ZipUtils.ZipFile(world.Local, file);
+        using var s = new ZipFile(File.Open(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite));
+        var info = new { name = world.LevelName };
+        var info1 = JsonConvert.SerializeObject(info);
+        var data = Encoding.UTF8.GetBytes(info1);
+        using var stream = new ZipFileStream(data);
+        var crc = new Crc32();
+        var entry = new ZipEntry("info.json")
+        {
+            DateTime = DateTime.Now,
+            Size = data.Length
+        };
+        crc.Reset();
+        crc.Update(data);
+        entry.Crc = crc.Value;
+        s.BeginUpdate();
+        s.Add(stream, entry);
+        s.CommitUpdate();
+        s.Close();
+    }
+
+    public static async Task<bool> UnzipBackupWorld(this GameSettingObj obj, FileInfo item1)
+    {
+        ZipInputStream s = new(File.OpenRead(item1.FullName));
+        ZipEntry theEntry;
+        bool res = false;
+        using var stream1 = new MemoryStream();
+        while ((theEntry = s.GetNextEntry()) != null)
+        {
+            if (theEntry.Name == "info.json")
+            {
+                await s.CopyToAsync(stream1);
+                res = true;
+                break;
+            }
+        }
+        s.Dispose();
+        if (!res)
+            return false;
+        var data = stream1.ToArray();
+        var data1 = Encoding.UTF8.GetString(data);
+        var info = JObject.Parse(data1);
+        var name = info["name"]?.ToString();
+        if (name == null)
+            return false;
+
+        var list1 = await obj.GetWorlds();
+        var item = list1.FirstOrDefault(a => a.LevelName == name);
+        var local = "";
+        if (item != null)
+        {
+            local = item.Local;
+            await PathC.DeleteFiles(item.Local);
+        }
+        else
+        {
+            local = Path.GetFullPath(obj.GetSavesPath() + "/" + name);
+        }
+
+        try
+        {
+            ZipUtils.Unzip(local, item1.FullName);
+            return true;
+        }
+        catch (Exception e)
+        {
+            ColorMCCore.OnError?.Invoke("restore world error", e, false);
+            return false;
+        }
     }
 }

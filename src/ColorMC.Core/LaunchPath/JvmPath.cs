@@ -85,7 +85,7 @@ public static class JvmPath
         string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
 
-        await Task.Run(() => ZipFloClass.Unzip(path, file));
+        await Task.Run(() => ZipUtils.Unzip(path, file));
 
         var java = Find(path);
         if (java == null)

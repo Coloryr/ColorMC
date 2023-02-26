@@ -332,7 +332,9 @@
 	<String Key="GameEditWindow.Tab4.Info8">Mod文件</String>
 	<String Key="GameEditWindow.Tab4.Info9">是否要删除这 {0} 个Mod</String>
 	<String Key="GameEditWindow.Tab4.Error1">Mod列表加载失败</String>
-	
+
+	<String Key="GameEditWindow.Tab5.Text1">打开备份文件夹</String>
+	<String Key="GameEditWindow.Tab5.Text2">还原世界备份</String>
 	<String Key="GameEditWindow.Tab5.Info1">是否要删除世界 {0}</String>
 	<String Key="GameEditWindow.Tab5.Info2">选择地图压缩包</String>
 	<String Key="GameEditWindow.Tab5.Info3">地图导出成功</String>
@@ -341,8 +343,16 @@
 	<String Key="GameEditWindow.Tab5.Info6">添加世界完成</String>
 	<String Key="GameEditWindow.Tab5.Info7">正在加载地图列表</String>
 	<String Key="GameEditWindow.Tab5.Info8">地图压缩包</String>
+	<String Key="GameEditWindow.Tab5.Info9">正在备份世界</String>
+	<String Key="GameEditWindow.Tab5.Info10">世界已备份</String>
+	<String Key="GameEditWindow.Tab5.Info11">选择备份世界压缩包</String>
+	<String Key="GameEditWindow.Tab5.Info12">该操作会删除旧的世界，是否继续执行</String>
+	<String Key="GameEditWindow.Tab5.Info13">正在还原世界</String>
+	<String Key="GameEditWindow.Tab5.Info14">备份已还原</String>
 	<String Key="GameEditWindow.Tab5.Error1">地图导出错误</String>
 	<String Key="GameEditWindow.Tab5.Error2">添加世界失败</String>
+	<String Key="GameEditWindow.Tab5.Error3">世界备份失败</String>
+	<String Key="GameEditWindow.Tab5.Error4">备份还原失败</String>
 
 	<String Key="GameEditWindow.Tab6.Text1">选择导出的文件</String>
 	<String Key="GameEditWindow.Tab6.Text2">导出ColorMC压缩包</String>
@@ -404,6 +414,7 @@
 	<String Key="GameEditWindow.Flyouts1.Text4">打开链接</String>
 	<String Key="GameEditWindow.Flyouts2.Text1">导出世界</String>
 	<String Key="GameEditWindow.Flyouts2.Text2">删除世界</String>
+	<String Key="GameEditWindow.Flyouts2.Text3">备份世界</String>
 	<String Key="GameEditWindow.Flyouts3.Text1">删除资源包</String>
 	<String Key="GameEditWindow.Flyouts4.Text1">清空截图</String>
 	<String Key="GameEditWindow.Info1">正在读取游戏版本</String>
@@ -663,6 +674,7 @@
 	<String Key="ToolTip.Text39">打开所在的文件夹</String>
 	<String Key="ToolTip.Text40">保存当前配置文件</String>
 	<String Key="ToolTip.Text41">重新获取配置文件列表</String>
+	<String Key="ToolTip.Text42">从备份的世界中还原</String>
 	
 	<String Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单</String>
 	<String Key="Tips.Text2">双击可切换账户，右键可以打开账户菜单</String>

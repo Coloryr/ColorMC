@@ -10,17 +10,37 @@
     mc:Ignorable="d">
     <Grid>
         <DockPanel>
-            <Button
-                Name="Button1"
-                Width="85"
-                Height="25"
-                Margin="0,5,5,0"
+            <StackPanel
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                Content="{setting:Localize Button.OpFile}"
                 DockPanel.Dock="Top"
-                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                ToolTip.VerticalOffset="-30" />
+                Orientation="Horizontal">
+
+                <Button
+                    Name="Button3"
+                    Width="120"
+                    Height="25"
+                    Margin="0,5,5,0"
+                    Content="{setting:Localize GameEditWindow.Tab5.Text2}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text42}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Name="Button2"
+                    Width="120"
+                    Height="25"
+                    Margin="0,5,5,0"
+                    Content="{setting:Localize GameEditWindow.Tab5.Text1}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Name="Button1"
+                    Width="85"
+                    Height="25"
+                    Margin="0,5,5,0"
+                    Content="{setting:Localize Button.OpFile}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
+            </StackPanel>
 
             <ScrollViewer
                 Name="ScrollViewer1"

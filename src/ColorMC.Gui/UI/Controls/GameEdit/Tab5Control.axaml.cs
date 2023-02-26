@@ -9,6 +9,7 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
@@ -37,8 +38,52 @@ public partial class Tab5Control : UserControl
         Button_I1.Click += Button_I1_Click;
 
         Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
+        Button3.Click += Button3_Click;
 
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private async void Button3_Click(object? sender, RoutedEventArgs e)
+    {
+        var window = (VisualRoot as GameEditWindow)!;
+        var info = new DirectoryInfo(Obj.GetWorldBackupPath());
+        if(!info.Exists)
+        {
+            info.Create();
+        }
+
+        var list = info.GetFiles();
+        var names = new List<string>();
+        foreach (var item in list)
+        {
+            names.Add(item.Name);
+        }
+        await window.Info5.Show(App.GetLanguage("GameEditWindow.Tab5.Info11"), names);
+        if (window.Info5.Cancel)
+            return;
+        var item1 = list[window.Info5.Read().Item1];
+        var res = await window.Info.ShowWait(App.GetLanguage("GameEditWindow.Tab5.Info12"));
+        if (!res)
+            return;
+
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info13"));
+        res = await GameBinding.BackupWorld(Obj, item1);
+        window.Info1.Close();
+        if (!res)
+        {
+            window.Info.Show(App.GetLanguage("GameEditWindow.Tab5.Error4"));
+        }
+        else
+        {
+            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info14"));
+            Load();
+        }
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpPath(Obj.GetWorldBackupPath());
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -68,10 +113,10 @@ public partial class Tab5Control : UserControl
             var res = await GameBinding.AddWorld(Obj, file[0].GetPath());
             if (!res)
             {
-                window!.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+                window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
                 return;
             }
-            window!.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
             Load();
         }
     }
@@ -193,5 +238,21 @@ public partial class Tab5Control : UserControl
             return;
 
         Load();
+    }
+
+    public async void Backup(WorldDisplayObj obj)
+    {
+        var Window = (VisualRoot as GameEditWindow)!;
+        Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info9"));
+        var res =await GameBinding.BackupWorld(obj.World);
+        Window.Info1.Close();
+        if (res)
+        {
+            Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info10"));
+        }
+        else
+        {
+            Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Error3"));
+        }
     }
 }
