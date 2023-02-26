@@ -349,4 +349,9 @@ public static class PackDownload
 
         return (GetDownloadState.End, list, game);
     }
+
+    public static void FixDownloadUrl(this CurseForgeObj.Data.LatestFiles item)
+    {
+        item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
+    }
 }

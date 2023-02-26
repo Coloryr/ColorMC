@@ -47,12 +47,13 @@ public static class BaseBinding
     }
 
     public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title,
-        string[] ext, string name, bool multiple = false)
+        string[] ext, string name, bool multiple = false, IStorageFolder? storage = null)
     {
         return window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = title,
             AllowMultiple = multiple,
+            SuggestedStartLocation = storage,
             FileTypeFilter = new List<FilePickerFileType>()
             {
                 new(name)

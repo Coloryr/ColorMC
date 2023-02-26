@@ -90,15 +90,14 @@
                     IsIndeterminate="True" />
             </StackPanel>
         </Grid>
-        <Grid
-            Name="Grid2"
+        <Label
+            Name="Label5"
+            Margin="0,5,5,0"
             HorizontalAlignment="Right"
-            IsVisible="False">
-            <Label
-                Margin="0,3,5,0"
-                VerticalAlignment="Top"
-                Background="#EEEEEE"
-                Content="{setting:Localize AddWindow.Control.Text2}" />
-        </Grid>
+            VerticalAlignment="Top"
+            Background="#EEEEEE"
+            Content="{setting:Localize AddWindow.Control.Text2}"
+            Foreground="Black"
+            IsVisible="True" />
     </Grid>
 </UserControl>

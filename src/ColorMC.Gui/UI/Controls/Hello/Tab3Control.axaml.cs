@@ -83,7 +83,8 @@ public partial class Tab3Control : UserControl
         var file = await BaseBinding.OpFile(window,
             App.GetLanguage("SettingWindow.Tab5.Info2"),
             new string[] { SystemInfo.Os == OsType.Windows ? "*.exe" : "" },
-            App.GetLanguage("SettingWindow.Tab5.Info2"));
+            App.GetLanguage("SettingWindow.Tab5.Info2"),
+            storage: JavaBinding.GetSuggestedStartLocation());
 
         if (file?.Any() == true)
         {

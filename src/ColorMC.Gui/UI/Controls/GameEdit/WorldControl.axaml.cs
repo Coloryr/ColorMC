@@ -6,7 +6,6 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class WorldControl : UserControl
 {
-    private Tab5Control Tab;
     public WorldDisplayObj World { get; private set; }
     public WorldControl()
     {
@@ -17,11 +16,12 @@ public partial class WorldControl : UserControl
 
     private void WorldControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        Tab.SetSelect(this);
+        var tab = this.FindTop<Tab5Control>()!;
+        tab.SetSelect(this);
 
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            new GameEditFlyout2(Tab, World).ShowAt(this, true);
+            new GameEditFlyout2(tab, World).ShowAt(this, true);
         }
     }
 
@@ -40,8 +40,6 @@ public partial class WorldControl : UserControl
         {
             Image1.Source = world.Pic;
         }
-
-        Tab = this.FindTop<Tab5Control>()!;
     }
 
     public void SetSelect(bool select)

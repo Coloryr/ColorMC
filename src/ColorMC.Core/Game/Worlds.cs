@@ -9,6 +9,7 @@ namespace ColorMC.Core.Game;
 
 public static class Worlds
 {
+    private const string Name1 = "datapacks";
     /// <summary>
     /// 获取世界列表
     /// </summary>
@@ -160,5 +161,10 @@ public static class Worlds
     public static Task ExportWorldZip(this WorldObj world, string file)
     {
         return ZipFloClass.ZipFile(world.Local, file);
+    }
+
+    public static string GetWorldDataPacksPath(this WorldObj world)
+    {
+        return Path.GetFullPath($"{world.Local}/{Name1}");
     }
 }

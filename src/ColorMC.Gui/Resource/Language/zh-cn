@@ -258,7 +258,7 @@
 	<String Key="HelloWindow.Tab6.Text8">添加游戏</String>
 	<String Key="HelloWindow.Tab6.Text9">完成</String>
 
-	<String Key="GameEditWindow.Title">ColorMC 游戏实例 {0} 设置</String>
+	<String Key="GameEditWindow.Title">游戏实例设置 {0}</String>
 	<String Key="GameEditWindow.Tabs.Text1">版本设置</String>
 	<String Key="GameEditWindow.Tabs.Text2">启动参数</String>
 	<String Key="GameEditWindow.Tabs.Text3">配置文件</String>
@@ -393,11 +393,11 @@
 	<String Key="GameEditWindow.Tab12.DataGrid.Text6">宽</String>
 	<String Key="GameEditWindow.Tab12.DataGrid.Text7">路径</String>
 
-	<String Key="GameEditWindow.Control.Text1">游戏模式</String>
-	<String Key="GameEditWindow.Control.Text2">最后游戏与</String>
-	<String Key="GameEditWindow.Control.Text3">游戏难度</String>
-	<String Key="GameEditWindow.Control.Text4">极限模式</String>
-	<String Key="GameEditWindow.Control.Text5">整合包格式</String>
+	<String Key="GameEditWindow.Control.Text1">游戏模式：</String>
+	<String Key="GameEditWindow.Control.Text2">最后游戏于：</String>
+	<String Key="GameEditWindow.Control.Text3">游戏难度：</String>
+	<String Key="GameEditWindow.Control.Text4">是否极限模式：</String>
+	<String Key="GameEditWindow.Control.Text5">整合包格式：</String>
 	<String Key="GameEditWindow.Flyouts1.Text1">启用/禁用</String>
 	<String Key="GameEditWindow.Flyouts1.Text2">删除Mod</String>
 	<String Key="GameEditWindow.Flyouts1.Text3">mcmod搜索</String>
@@ -482,7 +482,7 @@
 	<String Key="AddModPackWindow.Text10">获取版本</String>
 	<String Key="AddModPackWindow.Text11">下载源</String>
 	<String Key="AddModPackWindow.DataGrid.Text1">名字</String>
-	<String Key="AddModPackWindow.DataGrid.Text2">大小(Mb)</String>
+	<String Key="AddModPackWindow.DataGrid.Text2">大小</String>
 	<String Key="AddModPackWindow.DataGrid.Text3">下载次数</String>
 	<String Key="AddModPackWindow.DataGrid.Text4">发布时间</String>
 	<String Key="AddModPackWindow.DataGrid.Text5">已下载</String>
@@ -499,18 +499,20 @@
 	<String Key="AddModPackWindow.Control.Text2">下载次数：</String>
 	<String Key="AddModPackWindow.Control.Text3">上次更新：</String>
 
-	<String Key="AddWindow.Title">ColorMC 实例 {0} 添加资源</String>
+	<String Key="AddWindow.Title">游戏实例添加资源 {0}</String>
 	<String Key="AddWindow.Info1">是否下载资源 {0}</String>
 	<String Key="AddWindow.Info2">正在搜索资源中</String>
 	<String Key="AddWindow.Info3">正在获取资源版本中</String>
 	<String Key="AddWindow.Info4">正在加载版本数据中</String>
 	<String Key="AddWindow.Info5">正在下载资源</String>
 	<String Key="AddWindow.Info6">已下载</String>
+	<String Key="AddWindow.Info7">请选择要添加的世界</String>
 	<String Key="AddWindow.Error1">你还没有选择资源</String>
 	<String Key="AddWindow.Error2">资源数据加载失败</String>
 	<String Key="AddWindow.Error3">资源版本数据加载失败</String>
 	<String Key="AddWindow.Error4">游戏版本加载失败</String>
 	<String Key="AddWindow.Error5">资源下载失败</String>
+	<String Key="AddWindow.Error6">没有可以添加的世界</String>
 	<String Key="AddWindow.Control.Text1">正在下载中</String>
 	<String Key="AddWindow.Control.Text2">已下载</String>
 	<String Key="AddWindow.Control.Text3">打开网页</String>

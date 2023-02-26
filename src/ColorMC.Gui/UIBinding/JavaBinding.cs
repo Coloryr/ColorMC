@@ -150,12 +150,12 @@ public static class JavaBinding
             case OsType.Windows:
                 if (Directory.Exists("C:\\Program Files\\java"))
                     return new BclStorageFolder(new DirectoryInfo("C:\\Program Files\\java"));
-
+                else if (Directory.Exists("C:\\Program Files\\Java"))
+                    return new BclStorageFolder(new DirectoryInfo("C:\\Program Files\\Java"));
                 break;
             case OsType.MacOS:
                 if (Directory.Exists("/Library/Java/JavaVirtualMachines/"))
                     return new BclStorageFolder(new DirectoryInfo("/Library/Java/JavaVirtualMachines/"));
-
                 break;
         }
 
