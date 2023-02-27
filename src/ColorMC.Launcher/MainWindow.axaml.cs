@@ -27,7 +27,7 @@ public partial class MainWindow : Window
 
             Label1.IsVisible = true;
             Program.Launch();
-            Environment.Exit(0);
+            App.Exit();
         }
         catch
         {
