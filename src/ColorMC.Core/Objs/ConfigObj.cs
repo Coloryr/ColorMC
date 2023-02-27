@@ -23,6 +23,7 @@ public record HttpObj
     public bool GameProxy { get; set; }
 
     public bool CheckFile { get; set; }
+    public bool CheckUpdate { get; set; }
 }
 
 public record WindowSettingObj

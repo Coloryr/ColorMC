@@ -16,7 +16,7 @@ public record VersionObj
 
 public class Updater
 {
-    private const string url = "http://127.0.0.1:80/colormc/";
+    private const string url = "https://coloryr.github.io/colormc/A14/";
 
     private readonly HttpClient Client;
     private readonly VersionObj version;
@@ -72,11 +72,14 @@ public class Updater
                         if (!res)
                             return;
 
+                        File.Delete($"{AppContext.BaseDirectory}ColorMC.Core.dll");
+                        File.Delete($"{AppContext.BaseDirectory}ColorMC.Core.pdb");
                         File.Delete($"{AppContext.BaseDirectory}ColorMC.Gui.dll");
+                        File.Delete($"{AppContext.BaseDirectory}ColorMC.Gui.pdb");
 
                         new Mutex(true, "ColorMC-Launcher");
 
-                        Process process = Process.Start("ColorMC.Launcher.exe");
+                        Program.Launch();
 
                         Program.Quit();
                     }
@@ -114,8 +117,10 @@ public class Updater
         if (res.IsSuccessStatusCode)
         {
             using var stream = res.Content.ReadAsStream();
-            using var stream1 = File.Create($"{AppContext.BaseDirectory}{name}");
+            using var stream1 = File.Create($"{AppContext.BaseDirectory}{name}.temp");
             await stream.CopyToAsync(stream1);
         }
+
+        File.Move($"{AppContext.BaseDirectory}{name}.temp", $"{AppContext.BaseDirectory}{name}");
     }
 }

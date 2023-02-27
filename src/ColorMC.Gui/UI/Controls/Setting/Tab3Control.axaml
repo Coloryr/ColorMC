@@ -15,13 +15,13 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab3.Text1}" />
-				<ComboBox
-					Margin="5,0,0,0"
+                <ComboBox
                     Name="ComboBox1"
-                    Width="200" />
+                    Width="200"
+                    Margin="5,0,0,0" />
 
                 <Label
-					Margin="5,0,5,0"
+                    Margin="5,0,5,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab3.Text2}" />
@@ -39,20 +39,20 @@
                     <TextBox
                         Name="TextBox1"
                         Width="200"
-						Margin="0,0,5,0"
+                        Margin="0,0,5,0"
                         Classes="input1"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
                     <TextBox
                         Name="TextBox2"
                         Width="80"
+                        Margin="0,0,5,0"
                         Classes="input1"
-						Margin="0,0,5,0"
                         MaxLength="5"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
                     <TextBox
                         Name="TextBox3"
                         Width="200"
-						Margin="0,0,5,0"
+                        Margin="0,0,5,0"
                         Classes="input1"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
                     <TextBox
@@ -65,25 +65,25 @@
                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                     <CheckBox
                         Name="CheckBox1"
-						Width="160"
+                        Width="160"
                         Content="{setting:Localize SettingWindow.Tab3.Text8}" />
                     <CheckBox
                         Name="CheckBox2"
-						Width="160"
+                        Width="160"
                         Content="{setting:Localize SettingWindow.Tab3.Text9}" />
                     <CheckBox
                         Name="CheckBox3"
-						Width="160"
+                        Width="160"
                         Content="{setting:Localize SettingWindow.Tab3.Text10}" />
 
                 </StackPanel>
-                <CheckBox
-                    Name="CheckBox4"
-                    Content="{setting:Localize SettingWindow.Tab3.Text11}" />
+                <CheckBox Name="CheckBox4" Content="{setting:Localize SettingWindow.Tab3.Text11}" />
 
             </StackPanel>
 
             <Label Content="{setting:Localize SettingWindow.Tab3.Text12}" />
+
+            <CheckBox Name="CheckBox5" Content="检查自动更新" />
         </StackPanel>
 
         <Button

@@ -212,7 +212,10 @@ public partial class MainWindow : Window, IBaseWindow
 
     private void MainWindow_Opened(object? sender, EventArgs e)
     {
-        ColorMCGui.InitDone();
+        if (ConfigBinding.GetAllConfig().Item1?.Http?.CheckUpdate == true)
+        {
+            ColorMCGui.InitDone();
+        }
 
         MotdLoad();
     }
