@@ -15,6 +15,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     Background="Transparent"
+    DragDrop.AllowDrop="True"
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaTitleBarHeightHint="-1"
     ExtendClientAreaToDecorationsHint="True"
@@ -26,7 +27,7 @@
             Title="{setting:Localize MainWindow.Title}"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top" />
-        <Grid Margin="0,35,0,0">
+        <Grid Name="Grid1" Margin="0,35,0,0">
             <Border
                 Name="Border2"
                 BorderThickness="2"
@@ -74,6 +75,18 @@
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info4Control Name="Info" IsVisible="False" />
             <views:Info2Control Name="Info2" />
+
+            <Grid
+                Name="Grid2"
+                Background="#EEEEEEEE"
+                IsVisible="False">
+                <Label
+                    Name="Label1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="test"
+                    FontSize="30" />
+            </Grid>
 
             <Border
                 Name="Border1"

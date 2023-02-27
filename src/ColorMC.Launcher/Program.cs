@@ -30,8 +30,6 @@ internal class Program
     public static IN4 BuildApp;
     public static IN MainCall;
 
-    public static Semaphore semaphore = new(0, 2);
-
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -80,8 +78,6 @@ internal class Program
 
             SetInit(Init);
 
-            //updater.Check();
-
             MainCall(args);
         }
         catch (Exception e)
@@ -128,7 +124,7 @@ internal class Program
 
     private static void Init()
     {
-        semaphore.Release();
+        updater.Check();
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

@@ -28,11 +28,11 @@ public class ModComparer : IComparer<ModObj>
         {
             return 0;
         }
-        else if (x == null)
+        else if (x == null || x.name == null)
         {
             return -1;
         }
-        else if (y == null)
+        else if (y == null || y.name == null)
         {
             return 1;
         }

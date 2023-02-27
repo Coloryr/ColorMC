@@ -15,6 +15,7 @@ public partial class Tab1Control : UserControl
     private readonly ObservableCollection<string> List1 = new();
     private readonly ObservableCollection<string> List2 = new();
     private GameSettingObj Obj;
+    private bool load = false;
     public Tab1Control()
     {
         InitializeComponent();
@@ -59,18 +60,27 @@ public partial class Tab1Control : UserControl
     private void ComboBox3_SelectionChanged(object? sender,
         SelectionChangedEventArgs e)
     {
+        if (load)
+            return;
+
         GameBinding.MoveGameGroup(Obj, ComboBox3.SelectedItem as string);
     }
 
     private void ComboBox2_SelectionChanged(object? sender,
         SelectionChangedEventArgs e)
     {
+        if (load)
+            return;
+
         Save();
     }
 
     private void ComboBox1_SelectionChanged(object? sender,
         SelectionChangedEventArgs e)
     {
+        if (load)
+            return;
+
         ComboBox2.SelectedItem = null;
         List1.Clear();
         CheckBox_Forge.IsChecked = false;
@@ -339,6 +349,8 @@ public partial class Tab1Control : UserControl
         if (Obj == null)
             return;
 
+        load = true;
+
         Load1();
         Load2();
         if (Obj.Loader != Loaders.Normal)
@@ -371,5 +383,7 @@ public partial class Tab1Control : UserControl
         {
             Button5.IsEnabled = true;
         }
+
+        load = false;
     }
 }

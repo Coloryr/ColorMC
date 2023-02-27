@@ -58,8 +58,6 @@ public class Updater
                 var data = await Client.GetStringAsync(url + "version.json");
                 var obj = JsonConvert.DeserializeObject<VersionObj>(data)!;
 
-                Program.semaphore.WaitOne();
-
                 Dispatcher.UIThread.Post(async () =>
                 {
                     if (obj == null)
@@ -86,8 +84,7 @@ public class Updater
             }
             catch
             {
-                Program.CheckFailCall();
-                return;
+                
             }
         }).Start();
     }
