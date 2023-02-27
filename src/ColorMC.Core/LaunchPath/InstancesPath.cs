@@ -79,7 +79,13 @@ public static class InstancesPath
 
     private static void AddToGroup(GameSettingObj obj)
     {
-        InstallGames.Add(obj.Name, obj);
+        while (string.IsNullOrWhiteSpace(obj.UUID)
+            || InstallGames.ContainsKey(obj.UUID))
+        {
+            obj.UUID = Guid.NewGuid().ToString();
+            obj.Save();
+        }
+        InstallGames.Add(obj.UUID, obj);
 
         if (string.IsNullOrWhiteSpace(obj.GroupName))
         {
@@ -137,19 +143,16 @@ public static class InstancesPath
         var list = Directory.GetDirectories(BaseDir);
         foreach (var item in list)
         {
-            var data = new DirectoryInfo(item);
-            var list1 = data.GetFiles();
-            var list2 = list1.Where(a => a.Name == Name1).ToList();
-            if (list2.Any())
+            var file = Path.GetFullPath(item + "/" + Name1);
+            if (!File.Exists(file))
+                continue;
+
+            var data1 = File.ReadAllText(file);
+            var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
+            if (game != null)
             {
-                var item1 = list2.First();
-                var data1 = File.ReadAllText(item1.FullName);
-                var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
-                if (game != null)
-                {
-                    game.ReadCurseForgeMod();
-                    AddToGroup(game);
-                }
+                game.ReadCurseForgeMod();
+                AddToGroup(game);
             }
         }
     }

@@ -852,8 +852,8 @@ public static class GameBinding
 
     public static async Task DeleteGame(GameSettingObj obj)
     {
+        App.CloseGameWindow(obj);
         await obj.Remove();
-        App.CloseGameEdit(obj);
 
         App.MainWindow?.IsDelete();
         App.MainWindow?.Load();

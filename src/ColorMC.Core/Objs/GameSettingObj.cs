@@ -87,6 +87,7 @@ public record AdvanceJvmObj
 /// </summary>
 public record GameSettingObj
 {
+    public string UUID { get; set; }
     /// <summary>
     /// 游戏名
     /// </summary>

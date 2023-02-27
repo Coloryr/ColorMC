@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
@@ -13,6 +14,7 @@ using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -57,9 +59,13 @@ public partial class MainWindow : Window, IBaseWindow
         Opened += MainWindow_Opened;
         Closed += MainWindow_Closed;
 
-        App.PicUpdate += Update;
+        App.PicUpdate += Update; 
 
         Update();
+
+        Grid1.AddHandler(DragDrop.DragEnterEvent, DragEnter);
+        Grid1.AddHandler(DragDrop.DragLeaveEvent, DragLeave);
+        Grid1.AddHandler(DragDrop.DropEvent, Drop);
 
         if (BaseBinding.IsLaunch())
         {
@@ -71,6 +77,51 @@ public partial class MainWindow : Window, IBaseWindow
         }
 
         Activated += Window_Activated;
+    }
+
+    private void DragEnter(object? sender, DragEventArgs e)
+    {
+        // Only allow if the dragged data contains text or filenames.
+        if (e.Data.Contains(DataFormats.Text))
+        {
+            Grid2.IsVisible = true;
+            Label1.Content = App.GetLanguage("Gui.Info6");
+        }
+        else if (e.Data.Contains(DataFormats.FileNames))
+        {
+            Grid2.IsVisible = true;
+            Label1.Content = App.GetLanguage("Gui.Info7");
+        }
+    }
+
+    private void DragLeave(object? sender, DragEventArgs e)
+    {
+        Grid2.IsVisible = false;
+    }
+
+    private void Drop(object? sender, DragEventArgs e)
+    {
+        Grid2.IsVisible = false;
+        if (e.Data.Contains(DataFormats.Text))
+        {
+            var str = e.Data.GetText();
+            if (str?.StartsWith("authlib-injector:yggdrasil-server:") == true)
+            {
+                App.ShowUser(str);
+            }
+        }
+        else if (e.Data.Contains(DataFormats.FileNames))
+        {
+            var files = e.Data.GetFileNames();
+            if (files == null || files.Count() > 1)
+                return;
+
+            var item = files.First();
+            if (item.EndsWith(".zip") || item.EndsWith(".mrpack"))
+            {
+                App.ShowAddGame(item);
+            }
+        }
     }
 
     private void Window_Activated(object? sender, EventArgs e)

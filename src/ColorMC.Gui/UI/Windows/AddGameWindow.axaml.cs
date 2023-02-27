@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
@@ -12,6 +13,7 @@ using DynamicData;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -60,11 +62,45 @@ public partial class AddGameWindow : Window
 
         App.PicUpdate += Update;
 
+        Grid1.AddHandler(DragDrop.DragEnterEvent, DragEnter);
+        Grid1.AddHandler(DragDrop.DragLeaveEvent, DragLeave);
+        Grid1.AddHandler(DragDrop.DropEvent, Drop);
+
         Closed += AddGameWindow_Closed;
         Activated += AddGameWindow_Activated;
 
         Load();
         Update();
+    }
+
+    private void DragEnter(object? sender, DragEventArgs e)
+    {
+        if (e.Data.Contains(DataFormats.FileNames))
+        {
+            Grid2.IsVisible = true;
+        }
+    }
+
+    private void DragLeave(object? sender, DragEventArgs e)
+    {
+        Grid2.IsVisible = false;
+    }
+
+    private void Drop(object? sender, DragEventArgs e)
+    {
+        Grid2.IsVisible = false;
+        if (e.Data.Contains(DataFormats.FileNames))
+        {
+            var files = e.Data.GetFileNames();
+            if (files == null || files.Count() > 1)
+                return;
+
+            var item = files.First();
+            if (item.EndsWith(".zip") || item.EndsWith(".mrpack"))
+            {
+                AddFile(item);
+            }
+        }
     }
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
@@ -537,5 +573,38 @@ public partial class AddGameWindow : Window
     public void Update()
     {
         App.Update(this, Image_Back, Border1, Border2);
+    }
+
+    public async void AddFile(string file)
+    {
+        add = false;
+        var list = GameBinding.GetPackType();
+        await Info5.Show(App.GetLanguage("AddGameWindow.Info18"), list);
+        if (Info5.Cancel)
+        {
+            Close();
+            return;
+        }
+        var type = Info5.Read().Item1 switch
+        {
+            0 => PackType.ColorMC,
+            1 => PackType.CurseForge,
+            2 => PackType.Modrinth,
+            3 => PackType.MMC,
+            4 => PackType.HMCL
+        };
+        Info1.Show(App.GetLanguage("AddGameWindow.Info17"));
+        var res = await GameBinding.AddPack(file, type, TextBox_Input1.Text, ComboBox_Group.SelectedItem as string);
+        Info1.Close();
+        if (res.Item1)
+        {
+            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
+            App.MainWindow?.Load();
+            Close();
+        }
+        else
+        {
+            Info.Show(App.GetLanguage("AddGameWindow.Error3"));
+        }
     }
 }

@@ -31,7 +31,7 @@ public partial class GameEditWindow : Window, IBaseWindow
 
     private int now;
 
-    private GameSettingObj? Obj;
+    private GameSettingObj Obj;
 
     Info3Control IBaseWindow.Info3 => Info3;
 
@@ -240,7 +240,7 @@ public partial class GameEditWindow : Window, IBaseWindow
     {
         App.PicUpdate -= Update;
 
-        App.GameEditWindows.Remove(Obj!);
+        App.GameEditWindows.Remove(Obj.UUID);
 
         if (App.LastWindow == this)
         {

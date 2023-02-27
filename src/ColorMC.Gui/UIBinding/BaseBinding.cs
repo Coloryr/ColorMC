@@ -136,7 +136,7 @@ public static class BaseBinding
             obj.StartServer.IP = server.ServerAddress;
             obj.StartServer.Port = server.ServerPort;
         }
-        if (App.GameEditWindows.TryGetValue(obj, out var win))
+        if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
             win.ClearLog();
         }
@@ -235,7 +235,7 @@ public static class BaseBinding
         if (p == null)
             return;
         if (Games.TryGetValue(p, out var obj)
-            && App.GameEditWindows.TryGetValue(obj, out var win))
+            && App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
             win.Log(d);
         }
@@ -243,7 +243,7 @@ public static class BaseBinding
 
     public static void PLog(GameSettingObj obj, string? d)
     {
-        if (App.GameEditWindows.TryGetValue(obj, out var win))
+        if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
             win.Log(d);
         }

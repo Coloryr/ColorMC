@@ -9,7 +9,9 @@ using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.ObjectModel;
+using System.Text.Encodings.Web;
 using System.Threading;
+using System.Web;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -51,10 +53,45 @@ public partial class UserWindow : Window
         ComboBox_UserType.SelectionChanged += UserType_SelectionChanged;
         ComboBox_UserType.Items = UserBinding.GetUserTypes();
 
+        Grid1.AddHandler(DragDrop.DragEnterEvent, DragEnter);
+        Grid1.AddHandler(DragDrop.DragLeaveEvent, DragLeave);
+        Grid1.AddHandler(DragDrop.DropEvent, Drop);
+
         App.PicUpdate += Update;
 
         Update();
         Load();
+    }
+
+    private void DragEnter(object? sender, DragEventArgs e)
+    {
+        // Only allow if the dragged data contains text or filenames.
+        if (e.Data.Contains(DataFormats.Text))
+        {
+            Grid2.IsVisible = true;
+        }
+        else if (e.Data.Contains(DataFormats.FileNames))
+        {
+
+        }
+    }
+
+    private void DragLeave(object? sender, DragEventArgs e)
+    {
+        Grid2.IsVisible = false;
+    }
+
+    private void Drop(object? sender, DragEventArgs e)
+    {
+        Grid2.IsVisible = false;
+        if (e.Data.Contains(DataFormats.Text))
+        {
+            var str = e.Data.GetText();
+            if (str?.StartsWith("authlib-injector:yggdrasil-server:") == true)
+            {
+                AddUrl(str);
+            }
+        }
     }
 
     private void DataGrid_User_PointerPressed(object? sender,
@@ -438,5 +475,12 @@ public partial class UserWindow : Window
                 Use = item1 == item.Value
             });
         }
+    }
+
+    public void AddUrl(string url)
+    {
+        SetAdd();
+        ComboBox_UserType.SelectedIndex = 3;
+        TextBox_Input1.Text = HttpUtility.UrlDecode(url.Replace("authlib-injector:yggdrasil-server:", ""));
     }
 }

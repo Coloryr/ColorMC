@@ -308,7 +308,7 @@ public partial class AddWindow : Window, IAddWindow
 
         App.PicUpdate -= Update;
 
-        App.AddWindows.Remove(Obj);
+        App.AddWindows.Remove(Obj.UUID);
     }
 
     public void Install()

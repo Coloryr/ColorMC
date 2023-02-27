@@ -477,6 +477,7 @@
 	<String Key="AddGameWindow.Info15">压缩包</String>
 	<String Key="AddGameWindow.Info16">游戏压缩包</String>
 	<String Key="AddGameWindow.Info17">正在导入压缩包</String>
+	<String Key="AddGameWindow.Info18">请选择游戏压缩包类型</String>
 	<String Key="AddGameWindow.Tab1.Text1">刷新加载器</String>
 	<String Key="AddGameWindow.Tab1.Text2">刷新版本</String>
 
@@ -618,6 +619,8 @@
 	<String Key="Info3">已设置</String>
 	<String Key="Info4">添加成功</String>
 	<String Key="Info5">有新版本，是否要更新</String>
+	<String Key="Gui.Info6">添加外置登录</String>
+	<String Key="Gui.Info7">导入游戏压缩包</String>
 	<String Key="Warn1">配置为空，旧版配置文件会被覆盖</String>
 	<String Key="Error1">背景图片加载失败</String>
 	<String Key="Error2">配置文件读取错误</String>

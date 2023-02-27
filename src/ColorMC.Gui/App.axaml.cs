@@ -49,8 +49,9 @@ public partial class App : Application
     public static SettingWindow? SettingWindow { get; set; }
     public static SkinWindow? SkinWindow { get; set; }
     public static AddJavaWindow? AddJavaWindow { get; set; }
-    public readonly static Dictionary<GameSettingObj, GameEditWindow> GameEditWindows = new();
-    public readonly static Dictionary<GameSettingObj, AddWindow> AddWindows = new();
+
+    public readonly static Dictionary<string, GameEditWindow> GameEditWindows = new();
+    public readonly static Dictionary<string, AddWindow> AddWindows = new();
 
     public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly CrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
@@ -289,7 +290,7 @@ public partial class App : Application
         CustomWindow.Load(obj);
     }
 
-    public static void ShowAddGame()
+    public static void ShowAddGame(string? file = null)
     {
         if (AddGameWindow != null)
         {
@@ -299,6 +300,10 @@ public partial class App : Application
         {
             AddGameWindow = new();
             AddGameWindow.Show();
+        }
+        if (!string.IsNullOrWhiteSpace(file))
+        {
+            AddGameWindow.AddFile(file);
         }
     }
 
@@ -315,7 +320,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowUser()
+    public static void ShowUser(string? url = null)
     {
         if (UserWindow != null)
         {
@@ -325,6 +330,11 @@ public partial class App : Application
         {
             UserWindow = new();
             UserWindow.Show();
+        }
+
+        if (!string.IsNullOrWhiteSpace(url))
+        {
+            UserWindow.AddUrl(url);
         }
     }
 
@@ -387,7 +397,7 @@ public partial class App : Application
 
     public static void ShowGameEdit(GameSettingObj obj, int type = 0)
     {
-        if (GameEditWindows.TryGetValue(obj, out var win))
+        if (GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
             win.Activate();
         }
@@ -397,7 +407,7 @@ public partial class App : Application
             window.SetGame(obj);
             window.Show();
             window.SetType(type);
-            GameEditWindows.Add(obj, window);
+            GameEditWindows.Add(obj.UUID, window);
         }
     }
 
@@ -416,7 +426,7 @@ public partial class App : Application
 
     public static void ShowAdd(GameSettingObj obj, FileType type)
     {
-        if (AddWindows.TryGetValue(obj, out var value))
+        if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
             value.Activate();
         }
@@ -426,7 +436,7 @@ public partial class App : Application
             win.SetGame(obj);
             win.Show();
             win.Go(type);
-            AddWindows.Add(obj, win);
+            AddWindows.Add(obj.UUID, win);
         }
     }
 
@@ -446,11 +456,15 @@ public partial class App : Application
         });
     }
 
-    public static void CloseGameEdit(GameSettingObj obj)
+    public static void CloseGameWindow(GameSettingObj obj)
     {
-        if (GameEditWindows.TryGetValue(obj, out var win))
+        if (GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
             Dispatcher.UIThread.Post(win.Close);
+        }
+        if (AddWindows.TryGetValue(obj.UUID, out var win1))
+        {
+            Dispatcher.UIThread.Post(win1.Close);
         }
     }
 

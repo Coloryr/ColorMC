@@ -81,6 +81,7 @@
     "Core.Game.Error3": "Resourcepack导入失败",
     "Core.Game.Error4": "地图读取失败",
     "Core.Game.Error5": "获取Forge版本错误",
+    "Core.Game.Error6": "没有名字的mod",
     "Core.Launch.Info1": "游戏启动参数",
     "Core.Launch.Info2": "游戏使用的运行库",
     "Core.Launch.Info3": "游戏使用的Java",

@@ -242,6 +242,20 @@ public static class ConfigSave
                     JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
             }
         }
+
+        if (!run)
+        {
+            lock (Lock)
+            {
+                list.AddRange(SaveQue.Values);
+                SaveQue.Clear();
+            }
+            foreach (var item in list)
+            {
+                File.WriteAllText(item.Local,
+                    JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
+            }
+        }
     }
 
     public static void AddItem(ConfigSaveObj obj)
