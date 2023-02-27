@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using System;
 
 namespace ColorMC.Launcher;
 
@@ -22,5 +23,11 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    public static void Exit()
+    {
+        Life.Shutdown();
+        Environment.Exit(0);
     }
 }
