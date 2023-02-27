@@ -32,6 +32,7 @@ public class ColorMCGui
         catch (Exception e)
         {
             Logs.Error("run fail", e);
+            App.Close();
         }
     }
 

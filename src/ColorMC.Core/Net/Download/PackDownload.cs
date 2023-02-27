@@ -74,7 +74,10 @@ public static class PackDownload
                 loaderversion = item.id.Replace("fabric-", "");
             }
         }
-        name ??= $"{info.name}-{info.version}";
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            name = $"{info.name}-{info.version}";
+        }
 
         //创建游戏实例
         var game = await InstancesPath.CreateVersion(new()
@@ -259,7 +262,10 @@ public static class PackDownload
             loaders = Loaders.Quilt;
             loaderversion = info.dependencies.quilt_loader;
         }
-        name ??= $"{info.name}-{info.versionId}";
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            name = $"{info.name}-{info.versionId}";
+        }
 
         //创建游戏实例
         var game = await InstancesPath.CreateVersion(new()
