@@ -1,8 +1,10 @@
 using Avalonia;
 using Avalonia.Media;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,7 +44,10 @@ internal class Program
         //    Thread.Sleep(100);
         //}
 
-        if (!File.Exists("ColorMC.Gui.dll"))
+        if (!File.Exists($"{AppContext.BaseDirectory}ColorMC.Core.dll")
+            || !File.Exists($"{AppContext.BaseDirectory}ColorMC.Core.pdb")
+            || !File.Exists($"{AppContext.BaseDirectory}ColorMC.Gui.dll")
+            || !File.Exists($"{AppContext.BaseDirectory}ColorMC.Gui.pdb"))
         {
             try
             {
@@ -132,5 +137,18 @@ internal class Program
     {
         Load();
         return BuildApp();
+    }
+
+    public static void Launch()
+    {
+        try
+        {
+            Process.Start($"{(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
+            "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 }

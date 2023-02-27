@@ -12,7 +12,7 @@ public class ColorMCGui
 {
     public const string Version = "A14";
 
-    public static Action InitDone;
+    public static Action InitDone { get; set; }
     public const string Font = "resm:ColorMC.Launcher.Resource.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized

@@ -26,6 +26,7 @@ public partial class GameControl : UserControl
         {
             var dragData = new DataObject();
             dragData.Set(App.DrapType, this);
+            dragData.Set(DataFormats.FileNames, new string[] { Obj.GetBasePath() });
 
             Dispatcher.UIThread.Post(() =>
             {

@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
 using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace ColorMC.Launcher;
 
@@ -24,6 +26,8 @@ public partial class MainWindow : Window
             await Program.updater.Download(State);
 
             Label1.IsVisible = true;
+            Program.Launch();
+            Environment.Exit(0);
         }
         catch
         {
