@@ -1,0 +1,9 @@
+pkgname = colormc
+pkgver = 1-1
+pkgdesc = ColorMC .
+url = https://www.github.com/Coloryr/ColorMC
+builddate = 1677483497
+packager = colormc
+arch = x86_64
+size = 140800
+license =

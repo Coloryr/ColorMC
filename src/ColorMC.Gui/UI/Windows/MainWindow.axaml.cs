@@ -82,7 +82,7 @@ public partial class MainWindow : Window, IBaseWindow
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
-        if (e.Source is Control)
+        if (e.Data.Contains(App.DrapType))
         {
             return;
         }
@@ -106,7 +106,7 @@ public partial class MainWindow : Window, IBaseWindow
 
     private void Drop(object? sender, DragEventArgs e)
     {
-        if (e.Source is Control)
+        if (e.Data.Contains(App.DrapType))
         {
             return;
         }
