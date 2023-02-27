@@ -10,13 +10,28 @@
     mc:Ignorable="d">
     <Expander
         Name="Expander_Head"
+        HorizontalAlignment="Stretch"
         VerticalAlignment="Top"
         CornerRadius="0"
-		HorizontalAlignment="Stretch"
         IsExpanded="True">
-        <WrapPanel
-            Name="WrapPanel_Items"
-            VerticalAlignment="Top"
-            Background="Transparent" />
+        <Grid>
+            <WrapPanel
+                Name="WrapPanel_Items"
+                VerticalAlignment="Top"
+                Background="Transparent" />
+            <Grid
+                Name="Grid1"
+                Margin="-15"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="#EEEEEEEE"
+                IsVisible="False">
+                <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="移动到此游戏分组"
+                    FontSize="20" />
+            </Grid>
+        </Grid>
     </Expander>
 </UserControl>

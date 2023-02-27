@@ -25,6 +25,7 @@ namespace ColorMC.Gui;
 
 public partial class App : Application
 {
+    public const string DrapType = "Game";
     private static readonly Dictionary<string, string> Language = new();
 
     public App()

@@ -1,7 +1,11 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using System;
 using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -12,6 +16,22 @@ public partial class GameControl : UserControl
     public GameControl()
     {
         InitializeComponent();
+
+        this.PointerMoved += GameControl_PointerMoved;
+    }
+
+    private void GameControl_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            var dragData = new DataObject();
+            dragData.Set(App.DrapType, this);
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
+            });
+        }
     }
 
     public void SetItem(GameSettingObj obj)
@@ -41,6 +61,14 @@ public partial class GameControl : UserControl
         else
         {
             Image1.Source = App.GameIcon;
+        }
+    }
+
+    public void Close()
+    {
+        if (Image1.Source != App.GameIcon)
+        {
+            (Image1.Source as Bitmap)?.Dispose();
         }
     }
 }
