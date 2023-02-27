@@ -442,7 +442,6 @@ public partial class MainWindow : Window, IBaseWindow
                     }
                     foreach (var item in remove)
                     {
-                        item.Close();
                         Groups.Remove(item);
                     }
                     foreach (var item in list)

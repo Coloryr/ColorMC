@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -18,7 +19,7 @@ public partial class GamesControl : UserControl
     private List<GameSettingObj> List;
     private GameControl? Last;
     private bool Init;
-    private bool Check;
+    private bool check = false;
     public string Group { get; private set; }
 
     public GamesControl()
@@ -26,8 +27,7 @@ public partial class GamesControl : UserControl
         InitializeComponent();
 
         LayoutUpdated += GamesControl_LayoutUpdated;
-        Expander_Head.PointerPressed += WrapPanel_Items_PointerPressed;
-        WrapPanel_Items.DoubleTapped += WrapPanel_Items_DoubleTapped;
+        Expander_Head.PointerPressed += Expander_Head_PointerPressed;
         Expander_Head.ContentTransition = App.CrossFade300;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
@@ -64,24 +64,17 @@ public partial class GamesControl : UserControl
         GameBinding.MoveGameGroup(c.Obj, Group);
     }
 
-    private void WrapPanel_Items_DoubleTapped(object? sender, RoutedEventArgs e)
+    private void Expander_Head_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (Last != null)
+        if (check)
         {
-            Window.Launch(false);
-        }
-    }
-
-    private void WrapPanel_Items_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (Check == false)
-        {
-            Last?.SetSelect(false);
-            Last = null;
-            Window.GameItemSelect(null);
+            check = false;
+            return;
         }
 
-        Check = false;
+        Last?.SetSelect(false);
+        Last = null;
+        Window.GameItemSelect(null);
     }
 
     private void GamesControl_LayoutUpdated(object? sender, EventArgs e)
@@ -109,48 +102,63 @@ public partial class GamesControl : UserControl
         Expander_Head.Header = display;
     }
 
-    public void Close()
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            foreach (var item in WrapPanel_Items.Children)
-            {
-                if (item is not GameControl c)
-                    return;
-                c.Close();
-            }
-        });
-    }
-
     public void Reload()
     {
-        Close();
         WrapPanel_Items.Children.Clear();
         Items.Clear();
         foreach (var item in List)
         {
             var game = new GameControl();
-            game.PointerPressed += Game_PointerPressed;
+            game.PointerPressed += GameControl_PointerPressed;
+            game.PointerMoved += GameControl_PointerMoved;
+            game.DoubleTapped += Game_DoubleTapped;
             game.SetItem(item);
             Items.Add(item.UUID, game);
             WrapPanel_Items.Children.Add(game);
         }
     }
 
-    private void Game_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private void Game_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        Check = true;
-        var game = sender as GameControl;
-        Last?.SetSelect(false);
-        Last = game;
-        Last?.SetSelect(true);
-        Window.GameItemSelect(Last);
+        if (Last != null)
+        {
+            Window.Launch(false);
+        }
+    }
+
+    private void GameControl_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        var game = (sender as GameControl)!;
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            var dragData = new DataObject();
+            dragData.Set(App.DrapType, this);
+            dragData.Set(DataFormats.FileNames, new string[] { game.Obj.GetBasePath() });
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
+            });
+        }
+    }
+
+    private void GameControl_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        check = true;
+        if (Last != sender)
+        {
+            var game = (sender as GameControl)!;
+            Last?.SetSelect(false);
+            Last = game;
+            game.SetSelect(true);
+            Window.GameItemSelect(game);
+        }
 
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
             if (Last?.Obj != null)
             {
-                new MainFlyout(Window, game!).ShowAt(this, true);
+                new MainFlyout(Window, Last!).ShowAt(this, true);
             }
         }
     }
