@@ -38,13 +38,6 @@
                 Margin="3"
                 Stretch="UniformToFill" />
 
-            <Label
-                Margin="3,0,0,2"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Background="#88FFFFFF"
-                Content="{setting:Localize Tips.Text1}" />
-
             <DockPanel LastChildFill="True">
                 <views1:ItemControl
                     Name="ItemInfo"
@@ -52,6 +45,13 @@
                     DockPanel.Dock="Right" />
                 <DockPanel Margin="3,3,0,3" LastChildFill="True">
                     <views:ServerMotdControl Name="ServerMotdControl1" DockPanel.Dock="Top" />
+                    <Label
+                        Margin="3,0,0,2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Background="#88FFFFFF"
+                        Content="{setting:Localize Tips.Text1}"
+                        DockPanel.Dock="Bottom" />
                     <ScrollViewer>
                         <StackPanel Name="GameGroups" />
                     </ScrollViewer>

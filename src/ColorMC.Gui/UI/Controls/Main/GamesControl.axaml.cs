@@ -1,8 +1,10 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
 
@@ -17,6 +19,7 @@ public partial class GamesControl : UserControl
     private GameControl? Last;
     private bool Init;
     private bool Check;
+    public string Group { get; private set; }
 
     public GamesControl()
     {
@@ -26,6 +29,39 @@ public partial class GamesControl : UserControl
         Expander_Head.PointerPressed += WrapPanel_Items_PointerPressed;
         WrapPanel_Items.DoubleTapped += WrapPanel_Items_DoubleTapped;
         Expander_Head.ContentTransition = App.CrossFade300;
+
+        AddHandler(DragDrop.DragEnterEvent, DragEnter);
+        AddHandler(DragDrop.DragLeaveEvent, DragLeave);
+        AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    private void DragEnter(object? sender, DragEventArgs e)
+    {
+        if (e.Source is Control)
+        {
+            if (e.Data.Get(App.DrapType) is not GameControl c)
+                return;
+            if (Items.ContainsValue(c))
+                return;
+
+            Grid1.IsVisible = true;
+        }
+    }
+
+    private void DragLeave(object? sender, DragEventArgs e)
+    {
+        Grid1.IsVisible = false;
+    }
+
+    private void Drop(object? sender, DragEventArgs e)
+    {
+        Grid1.IsVisible = false;
+        if (e.Data.Get(App.DrapType) is not GameControl c)
+            return;
+        if (Items.ContainsValue(c))
+            return;
+
+        GameBinding.MoveGameGroup(c.Obj, Group);
     }
 
     private void WrapPanel_Items_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -67,13 +103,28 @@ public partial class GamesControl : UserControl
         Reload();
     }
 
-    public void SetName(string name)
+    public void SetName(string name, string display)
     {
-        Expander_Head.Header = name;
+        Group = name;
+        Expander_Head.Header = display;
+    }
+
+    public void Close()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            foreach (var item in WrapPanel_Items.Children)
+            {
+                if (item is not GameControl c)
+                    return;
+                c.Close();
+            }
+        });
     }
 
     public void Reload()
     {
+        Close();
         WrapPanel_Items.Children.Clear();
         Items.Clear();
         foreach (var item in List)
@@ -81,7 +132,7 @@ public partial class GamesControl : UserControl
             var game = new GameControl();
             game.PointerPressed += Game_PointerPressed;
             game.SetItem(item);
-            Items.Add(item.Name, game);
+            Items.Add(item.UUID, game);
             WrapPanel_Items.Children.Add(game);
         }
     }

@@ -23,9 +23,10 @@ public partial class MainWindow : Window, IBaseWindow
 {
     private readonly List<GamesControl> Groups = new();
     private readonly Dictionary<GameSettingObj, GameControl> Launchs = new();
-    private GamesControl? DefaultGroup;
+    private GamesControl DefaultGroup;
     private GameControl? Obj;
 
+    private bool first = true;
     private LaunchState Last;
 
     Info3Control IBaseWindow.Info3 => Info3;
@@ -81,6 +82,10 @@ public partial class MainWindow : Window, IBaseWindow
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
+        if (e.Source is Control)
+        {
+            return;
+        }
         // Only allow if the dragged data contains text or filenames.
         if (e.Data.Contains(DataFormats.Text))
         {
@@ -101,6 +106,10 @@ public partial class MainWindow : Window, IBaseWindow
 
     private void Drop(object? sender, DragEventArgs e)
     {
+        if (e.Source is Control)
+        {
+            return;
+        }
         Grid2.IsVisible = false;
         if (e.Data.Contains(DataFormats.Text))
         {
@@ -225,6 +234,7 @@ public partial class MainWindow : Window, IBaseWindow
 
     public void GameItemSelect(GameControl? obj)
     {
+        Obj?.SetSelect(false);
         Obj = obj;
         if (obj != null)
         {
@@ -308,12 +318,11 @@ public partial class MainWindow : Window, IBaseWindow
 
         Task.Run(async () =>
         {
-            Groups.Clear();
-
             var config = ConfigBinding.GetAllConfig();
 
             if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)
             {
+                first = true;
                 var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
                 if (game == null)
                 {
@@ -361,47 +370,100 @@ public partial class MainWindow : Window, IBaseWindow
             else
             {
                 var list = GameBinding.GetGameGroups();
-
-                await Dispatcher.UIThread.InvokeAsync(() =>
+                if (first)
                 {
-                    GameGroups.VerticalAlignment = VerticalAlignment.Top;
-                    GameGroups.HorizontalAlignment = HorizontalAlignment.Stretch;
-
-                    DefaultGroup = new();
-                });
-                DefaultGroup!.SetWindow(this);
-                foreach (var item in list)
-                {
-                    if (item.Key == " ")
+                    first = false;
+                    await Dispatcher.UIThread.InvokeAsync(() =>
                     {
-                        await Dispatcher.UIThread.InvokeAsync(() =>
+                        GameGroups.VerticalAlignment = VerticalAlignment.Top;
+                        GameGroups.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+                        DefaultGroup = new();
+                    });
+                    DefaultGroup.SetWindow(this);
+                    foreach (var item in list)
+                    {
+                        if (item.Key == " ")
                         {
-                            DefaultGroup.SetItems(item.Value);
-                            DefaultGroup.SetName(App.GetLanguage("MainWindow.Info20"));
-                        });
+                            await Dispatcher.UIThread.InvokeAsync(() =>
+                            {
+                                DefaultGroup.SetItems(item.Value);
+                                DefaultGroup.SetName(" ", App.GetLanguage("MainWindow.Info20"));
+                            });
+                        }
+                        else
+                        {
+                            await Dispatcher.UIThread.InvokeAsync(() =>
+                            {
+                                var group = new GamesControl();
+                                group.SetItems(item.Value);
+                                group.SetName(item.Key, item.Key);
+                                group.SetWindow(this);
+                                Groups.Add(group);
+                            });
+                        }
                     }
-                    else
+
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        GameGroups.Children.Clear();
+                        foreach (var item in Groups)
+                        {
+                            GameGroups.Children.Add(item);
+                        }
+                        GameGroups.Children.Add(DefaultGroup);
+                    });
+                }
+                else
+                {
+                    var remove = new List<GamesControl>();
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        DefaultGroup.SetItems(list[DefaultGroup.Group]);
+                    });
+                    list.Remove(DefaultGroup.Group);
+                    foreach (var item in Groups)
+                    {
+                        if (!list.TryGetValue(item.Group, out var value))
+                        {
+                            remove.Add(item);
+                        }
+                        else
+                        {
+                            await Dispatcher.UIThread.InvokeAsync(() =>
+                            {
+                                item.SetItems(value);
+                            });
+                            list.Remove(item.Group);
+                        }
+                    }
+                    foreach (var item in remove)
+                    {
+                        item.Close();
+                        Groups.Remove(item);
+                    }
+                    foreach (var item in list)
                     {
                         await Dispatcher.UIThread.InvokeAsync(() =>
                         {
                             var group = new GamesControl();
                             group.SetItems(item.Value);
-                            group.SetName(item.Key);
+                            group.SetName(item.Key, item.Key);
                             group.SetWindow(this);
                             Groups.Add(group);
                         });
                     }
-                }
 
-                Dispatcher.UIThread.Post(() =>
-                {
-                    GameGroups.Children.Clear();
-                    foreach (var item in Groups)
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        GameGroups.Children.Add(item);
-                    }
-                    GameGroups.Children.Add(DefaultGroup);
-                });
+                        GameGroups.Children.Clear();
+                        foreach (var item in Groups)
+                        {
+                            GameGroups.Children.Add(item);
+                        }
+                        GameGroups.Children.Add(DefaultGroup);
+                    });
+                }
             }
         });
     }

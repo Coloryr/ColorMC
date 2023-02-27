@@ -65,14 +65,14 @@ public partial class UserWindow : Window
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
+        if (e.Source is Control)
+        {
+            return;
+        }
         // Only allow if the dragged data contains text or filenames.
         if (e.Data.Contains(DataFormats.Text))
         {
             Grid2.IsVisible = true;
-        }
-        else if (e.Data.Contains(DataFormats.FileNames))
-        {
-
         }
     }
 
@@ -83,6 +83,10 @@ public partial class UserWindow : Window
 
     private void Drop(object? sender, DragEventArgs e)
     {
+        if (e.Source is Control)
+        {
+            return;
+        }
         Grid2.IsVisible = false;
         if (e.Data.Contains(DataFormats.Text))
         {
