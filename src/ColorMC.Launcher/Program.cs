@@ -100,11 +100,13 @@ internal class Program
         AssemblyLoadContext context = new("ColorMC");
         {
             using var file = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Gui.dll");
-            var temp = context.LoadFromStream(file);
+            using var file1 = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Gui.pdb");
+            var temp = context.LoadFromStream(file, file1);
         }
         {
             using var file = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Core.dll");
-            var temp = context.LoadFromStream(file);
+            using var file1 = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Core.pdb");
+            var temp = context.LoadFromStream(file, file1);
         }
         var item = context.Assemblies
                        .Where(x => x.GetName().Name == "ColorMC.Gui")

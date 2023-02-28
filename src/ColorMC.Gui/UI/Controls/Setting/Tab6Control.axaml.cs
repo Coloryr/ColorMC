@@ -152,6 +152,15 @@ public partial class Tab6Control : UserControl
 
     private void Save1()
     {
+        if (load)
+            return;
+
+        if (ComboBox1.SelectedIndex == -1)
+        {
+            ConfigBinding.SetServerCustom(CheckBox3.IsChecked == true, null);
+            return;
+        }
+
         ConfigBinding.SetServerCustom(CheckBox3.IsChecked == true,
             uuids[ComboBox1.SelectedIndex]);
     }

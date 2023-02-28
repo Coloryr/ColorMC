@@ -49,6 +49,12 @@ public static class Logs
 
             Thread.Sleep(100);
         }
+
+        while (bags.TryTake(out var item))
+        {
+            Writer.WriteLine(item);
+        }
+        Writer.Dispose();
     }
 
     private static void Stop()
