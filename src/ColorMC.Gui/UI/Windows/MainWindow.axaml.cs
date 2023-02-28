@@ -504,13 +504,13 @@ public partial class MainWindow : Window, IBaseWindow
         var res = Info3.Read().Item1;
         if (string.IsNullOrWhiteSpace(res))
         {
-            Info1.Show(App.GetLanguage("MainWindow.Error3"));
+            Info.Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(res))
         {
-            Info1.Show(App.GetLanguage("MainWindow.Error4"));
+            Info.Show(App.GetLanguage("MainWindow.Error4"));
             return;
         }
     }
@@ -533,7 +533,7 @@ public partial class MainWindow : Window, IBaseWindow
         var data = Info3.Read().Item1;
         if (string.IsNullOrWhiteSpace(data))
         {
-            Info1.Show(App.GetLanguage("MainWindow.Error3"));
+            Info.Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
@@ -549,14 +549,14 @@ public partial class MainWindow : Window, IBaseWindow
         var data = Info3.Read().Item1;
         if (string.IsNullOrWhiteSpace(data))
         {
-            Info1.Show(App.GetLanguage("MainWindow.Error3"));
+            Info.Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
         var res = await BaseBinding.CopyGame(obj, data);
         if (!res)
         {
-            Info1.Show(App.GetLanguage("MainWindow.Error5"));
+            Info.Show(App.GetLanguage("MainWindow.Error5"));
             return;
         }
         else

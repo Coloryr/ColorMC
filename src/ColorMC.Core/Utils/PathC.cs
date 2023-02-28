@@ -91,19 +91,19 @@ public static class PathC
     /// </summary>
     private static void Copys(string dir, string dir1)
     {
-        var di = Directory.CreateDirectory(dir1);
+        Directory.CreateDirectory(dir1);
         var files = Directory.GetFileSystemEntries(dir);
 
         foreach (string file in files)
         {
             if (Directory.Exists(file))
             {
-                CopyFiles(file, di.FullName);
+                var floderName = Path.GetFileName(file);
+                Copys(file, Path.GetFullPath(dir1 + "/" + floderName));
             }
             else
             {
-                File.Copy(file, Path.Combine(di.FullName,
-                    Path.GetFileName(file)), true);
+                File.Copy(file, Path.GetFullPath(dir1 + "/" + Path.GetFileName(file)), true);
             }
         }
     }
