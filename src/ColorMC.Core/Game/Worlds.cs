@@ -7,8 +7,6 @@ using ICSharpCode.SharpZipLib.Zip;
 using NbtLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.IO;
 using System.Text;
 
 namespace ColorMC.Core.Game;

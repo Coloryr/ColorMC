@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Game;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -11,7 +10,6 @@ using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

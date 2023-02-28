@@ -5,7 +5,6 @@ using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;
-using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Core.Utils;
@@ -19,7 +18,6 @@ using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -191,10 +189,10 @@ public static partial class UIUtils
         {
             var item1 = expander.FindToEnd<Border>();
             item1?.Bind(Border.BackgroundProperty, new Binding
-                {
-                    Source = ColorSel.Instance,
-                    Path = "[TranBack]"
-                });
+            {
+                Source = ColorSel.Instance,
+                Path = "[TranBack]"
+            });
         }
         catch
         {
@@ -398,7 +396,7 @@ public static partial class UIUtils
 
         if (basewindow == null || basewindow.PlatformImpl == null)
             return;
-        
+
         var pos = basewindow.Position;
         var sec = basewindow.Screens.ScreenFromWindow(basewindow.PlatformImpl);
         if (sec == null)

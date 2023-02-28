@@ -6,6 +6,7 @@ using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
+using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -24,7 +25,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ColorMC.Core.Net.Download;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
@@ -742,7 +742,7 @@ public static class GameBinding
     public static Task<bool> AddResourcepack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
-        foreach(var item in file)
+        foreach (var item in file)
         {
             list.Add(item.GetPath());
         }

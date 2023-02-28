@@ -1,14 +1,11 @@
 using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using Newtonsoft.Json;
 using System.Reflection;
-using System.Text;
 
 namespace ColorMC.Core.Utils;
 

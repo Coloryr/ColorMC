@@ -4,15 +4,10 @@ using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core;
-using ColorMC.Core.Net;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
-using System.IO;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Add;

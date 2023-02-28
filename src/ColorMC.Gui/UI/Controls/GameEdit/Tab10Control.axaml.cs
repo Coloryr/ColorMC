@@ -9,7 +9,6 @@ using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -133,7 +132,7 @@ public partial class Tab10Control : UserControl
 
     public void Delete(ServerInfoObj obj)
     {
-        var window = (VisualRoot as GameEditWindow)!; 
+        var window = (VisualRoot as GameEditWindow)!;
         GameBinding.DeleteServer(Obj, obj);
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();

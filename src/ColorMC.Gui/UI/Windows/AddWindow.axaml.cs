@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -13,7 +12,6 @@ using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -341,9 +339,9 @@ public partial class AddWindow : Window, IAddWindow
             var item = list[Info5.Read().Item1];
             res = type switch
             {
-                SourceType.CurseForge => await GameBinding.Download(item, 
+                SourceType.CurseForge => await GameBinding.Download(item,
                     data.Data as CurseForgeObj.Data.LatestFiles),
-                SourceType.Modrinth => await GameBinding.Download(item, 
+                SourceType.Modrinth => await GameBinding.Download(item,
                     data.Data as ModrinthVersionObj)
             };
         }
@@ -385,7 +383,7 @@ public partial class AddWindow : Window, IAddWindow
         if (data == null)
         {
             Info1.Close();
-            Info.Show(App.GetLanguage("AddWindow.Error2"));  
+            Info.Show(App.GetLanguage("AddWindow.Error2"));
             return;
         }
 
@@ -447,7 +445,7 @@ public partial class AddWindow : Window, IAddWindow
         {
             foreach (var item in list)
             {
-                if (Obj.Mods.TryGetValue(item.ID, out var value) 
+                if (Obj.Mods.TryGetValue(item.ID, out var value)
                     && value.FileId == item.ID1)
                 {
                     item.IsDownload = true;

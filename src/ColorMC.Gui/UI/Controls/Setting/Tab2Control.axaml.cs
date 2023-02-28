@@ -6,7 +6,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 

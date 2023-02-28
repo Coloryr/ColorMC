@@ -7,7 +7,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
