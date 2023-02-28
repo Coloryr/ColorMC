@@ -85,27 +85,32 @@ public static class Resourcepacks
     /// <param name="obj"></param>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static async Task<bool> ImportResourcepack(this GameSettingObj obj, string file)
+    public static async Task<bool> ImportResourcepack(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetResourcepacksPath();
-        var name = Path.GetFileName(file);
-        var local = Path.GetFullPath(path + "/" + name);
-        if (File.Exists(local))
-            return false;
-
         bool ok = true;
-        await Task.Run(() =>
+        foreach (var item in file)
         {
-            try
+            var name = Path.GetFileName(item);
+            var local = Path.GetFullPath(path + "/" + name);
+            if (File.Exists(local))
+                return false;
+
+            await Task.Run(() =>
             {
-                File.Copy(file, local);
-            }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
-                ok = false;
-            }
-        });
+                try
+                {
+                    File.Copy(item, local);
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                    ok = false;
+                }
+            });
+            if (!ok)
+                return false;
+        };
         return ok;
     }
 

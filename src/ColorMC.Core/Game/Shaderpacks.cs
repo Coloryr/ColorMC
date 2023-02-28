@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Game;
 
@@ -42,19 +43,35 @@ public static class Shaderpacks
         File.Delete(pack.Local);
     }
 
-    public static bool AddShaderpack(this GameSettingObj obj, string file)
+    public static async Task<bool> AddShaderpack(this GameSettingObj obj, List<string> file)
     {
         var dir = obj.GetResourcepacksPath();
         Directory.CreateDirectory(dir);
-        var name = Path.GetFileName(file);
-        var name1 = Path.GetFullPath(dir + "/" + name);
+        bool ok = true;
 
-        if (File.Exists(name1))
+        foreach (var item in file)
         {
-            return false;
-        }
+            var name = Path.GetFileName(item);
+            var name1 = Path.GetFullPath(dir + "/" + name);
 
-        File.Copy(file, name1);
+            if (File.Exists(name1))
+                return false;
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    File.Copy(item, name1);
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                    ok = false;
+                }
+            });
+            if (!ok)
+                return false;
+        }
         return true;
     }
 

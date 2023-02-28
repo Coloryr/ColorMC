@@ -133,11 +133,8 @@ public partial class Tab10Control : UserControl
 
     public void Delete(ServerInfoObj obj)
     {
-        var window = (VisualRoot as GameEditWindow)!;
-        var list = List.ToList();
-        list.Remove(obj);
-
-        GameBinding.SetServer(Obj, list);
+        var window = (VisualRoot as GameEditWindow)!; 
+        GameBinding.DeleteServer(Obj, obj);
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();
     }

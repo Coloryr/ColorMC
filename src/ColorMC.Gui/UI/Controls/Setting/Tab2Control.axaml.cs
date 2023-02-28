@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -148,7 +149,7 @@ public partial class Tab2Control : UserControl
     private void Button_Set4_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        ConfigBinding.SetColor("#FF5ABED6", "#FFF4F4F5", "#88FFFFFF", "#FFFFFFFF", "#FF000000");
+        ConfigBinding.ResetColor();
         ColorPicker1.Color = ColorSel.MainColor.ToColor();
         ColorPicker2.Color = ColorSel.BackColor.ToColor();
         ColorPicker3.Color = ColorSel.Back1Color.ToColor();
@@ -265,14 +266,11 @@ public partial class Tab2Control : UserControl
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        var file = await BaseBinding.OpFile(window, App.GetLanguage("SettingWindow.Tab2.Info3"),
-            new string[] { "*.png", "*.jpg", "*.bmp" },
-            App.GetLanguage("SettingWindow.Tab2.Info6"));
+        var file = await BaseBinding.OpFile(window, FileType.Pic);
 
-        if (file?.Any() == true)
+        if (file != null)
         {
-            var item = file[0];
-            TextBox1.Text = item.GetPath();
+            TextBox1.Text = file;
 
             Button_Set2_Click(sender, e);
         }

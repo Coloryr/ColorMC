@@ -25,79 +25,6 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
 
-//public static class XLib
-//{
-//    public enum PropertyMode
-//    {
-//        Replace = 0,
-//        Prepend = 1,
-//        Append = 2
-//    }
-
-//    [Flags]
-//    public enum MotifFlags
-//    {
-//        Functions = 1,
-//        Decorations = 2,
-//        InputMode = 4,
-//        Status = 8
-//    }
-
-//    [Flags]
-//    public enum MotifFunctions
-//    {
-//        All = 0x01,
-//        Resize = 0x02,
-//        Move = 0x04,
-//        Minimize = 0x08,
-//        Maximize = 0x10,
-//        Close = 0x20
-//    }
-
-//    [Flags]
-//    public enum MotifDecorations
-//    {
-//        All = 0x01,
-//        Border = 0x02,
-//        ResizeH = 0x04,
-//        Title = 0x08,
-//        Menu = 0x10,
-//        Minimize = 0x20,
-//        Maximize = 0x40,
-//    }
-
-//    [Flags]
-//    public enum MotifInputMode
-//    {
-//        Modeless = 0,
-//        ApplicationModal = 1,
-//        SystemModal = 2,
-//        FullApplicationModal = 3
-//    }
-
-//    [StructLayout(LayoutKind.Sequential)]
-//    public struct MotifWmHints
-//    {
-//        internal IntPtr flags;
-//        internal IntPtr functions;
-//        internal IntPtr decorations;
-//        internal IntPtr input_mode;
-//        internal IntPtr status;
-//    }
-
-//    const string libX11 = "libX11.so.6";
-
-//    [DllImport(libX11)]
-//    public static extern IntPtr XInternAtom(IntPtr display, string atom_name, bool only_if_exists);
-
-//    [DllImport(libX11)]
-//    public static extern IntPtr XOpenDisplay(IntPtr display);
-
-//    [DllImport(libX11)]
-//    public static extern int XChangeProperty(IntPtr display, IntPtr window, IntPtr property, IntPtr type,
-//            int format, PropertyMode mode, ref MotifWmHints data, int nelements);
-//}
-
 public static class OtherUtils
 {
     public static DateTime TimestampToDataTime(long unixTimeStamp)
@@ -116,20 +43,6 @@ public static class OtherUtils
             SkinType.New => App.GetLanguage("SkinType.New"),
             SkinType.NewSlim => App.GetLanguage("SkinType.New_Slim"),
             _ => App.GetLanguage("SkinType.Other")
-        };
-    }
-
-    public static string GetName(this FileType type)
-    {
-        return type switch
-        {
-            FileType.ModPack => App.GetLanguage("FileType.ModPack"),
-            FileType.Mod => App.GetLanguage("FileType.Mod"),
-            FileType.World => App.GetLanguage("FileType.World"),
-            FileType.Shaderpack => App.GetLanguage("FileType.Shaderpack"),
-            FileType.Resourcepack => App.GetLanguage("FileType.Resourcepack"),
-            FileType.DataPacks => App.GetLanguage("FileType.DataPacks"),
-            _ => App.GetLanguage("FileType.Other")
         };
     }
 }
@@ -159,7 +72,7 @@ public static class SkinUtil
         }
     }
 
-    public static bool IsSlimSkin(Image<Rgba32> image)
+    private static bool IsSlimSkin(Image<Rgba32> image)
     {
         var scale = image.Width / 64;
         return (Check(image, 50 * scale, 16 * scale, 2 * scale, 4 * scale,
@@ -188,7 +101,7 @@ public static class SkinUtil
                         SixLabors.ImageSharp.Color.Black));
     }
 
-    public static bool Check(Image<Rgba32> image, int x, int y, int w, int h, Rgba32 color)
+    private static bool Check(Image<Rgba32> image, int x, int y, int w, int h, Rgba32 color)
     {
         for (int wi = 0; wi < w; wi++)
         {
@@ -207,51 +120,10 @@ public static class SkinUtil
 
 public static partial class UIUtils
 {
-    //public static void MakeItNoChrome(this Window window)
-    //{
-    //    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-    //    {
-    //        var type = window.PlatformImpl.GetType();
-    //        if (type == null)
-    //            return;
-    //        if (type.FullName != "Avalonia.X11.X11Window")
-    //            return;
-    //        var field1 = type.GetField("_platform", BindingFlags.Instance | BindingFlags.NonPublic);
-    //        if (field1 == null)
-    //            return;
-    //        var data1 = field1.GetValue(window.PlatformImpl);
-    //        if (data1 == null)
-    //            return;
-    //        var type1 = data1.GetType();
-    //        if (type1 == null)
-    //            return;
-    //        var property1 = type1.GetProperty("Display", BindingFlags.Instance | BindingFlags.Public);
-    //        if (property1 == null)
-    //            return;
-    //        var temp = (IntPtr)property1.GetValue(data1);
-
-    //        var temp1 = XLib.XInternAtom(temp, "_MOTIF_WM_HINTS", false);
-
-    //        var hints = new XLib.MotifWmHints
-    //        {
-    //            flags = 2,
-    //            decorations = 0,
-    //            functions = 0,
-    //            input_mode = 0,
-    //            status = 0
-    //        };
-
-    //        _ = XLib.XChangeProperty(temp, window.PlatformImpl.Handle.Handle, 
-    //            temp1, temp1, 32, XLib.PropertyMode.Replace, ref hints, 5);
-
-    //        window.CanResize = true;
-    //    }
-    //}
-
     public static void MakeResizeDrag(this Border rectangle,
         Window window)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        if (SystemInfo.Os == OsType.Linux)
         {
             rectangle.PointerPressed += (a, e) =>
             {
@@ -318,29 +190,17 @@ public static partial class UIUtils
         try
         {
             var item1 = expander.FindToEnd<Border>();
-            if (item1 != null)
-            {
-                item1.Bind(Border.BackgroundProperty, new Binding
+            item1?.Bind(Border.BackgroundProperty, new Binding
                 {
                     Source = ColorSel.Instance,
                     Path = "[TranBack]"
                 });
-            }
         }
         catch
         {
 
         }
     }
-
-    //public static ReflectionBindingExtension BindLang(string name)
-    //{
-    //    return new ReflectionBindingExtension
-    //    {
-    //        Source = App.GetLanguage,
-    //        Path = $"[{name}]"
-    //    };
-    //}
 
     public static void MakeTran(this DataGrid grid)
     {
@@ -426,7 +286,7 @@ public static partial class UIUtils
     [GeneratedRegex("[^0-9]+")]
     private static partial Regex Regex1();
 
-    public static string Make(this List<string>? strings)
+    public static string MakeString(this List<string>? strings)
     {
         if (strings == null)
             return "";
@@ -472,7 +332,7 @@ public static partial class UIUtils
         }
         else
         {
-            return $"{size}N";
+            return $"{size}";
         }
     }
 
@@ -501,29 +361,14 @@ public static partial class UIUtils
         return temp;
     }
 
-    public static Window? FindWindow(this IVisual visual)
-    {
-        var pan = visual.GetVisualParent();
-        while (pan != null)
-        {
-            if (pan is Window)
-            {
-                return pan as Window;
-            }
-            pan = pan.GetVisualParent();
-        }
-
-        return null;
-    }
-
     public static T? FindTop<T>(this IVisual visual) where T : IVisual
     {
         var pan = visual.GetVisualParent();
         while (pan != null)
         {
-            if (pan is T)
+            if (pan is T t)
             {
-                return (T)pan;
+                return t;
             }
             pan = pan.GetVisualParent();
         }
@@ -544,15 +389,16 @@ public static partial class UIUtils
             window.SystemDecorations = SystemDecorations.BorderOnly;
         }
 
-        Dispatcher.UIThread.Post(() => window.FindGoodPos());
+        window.FindGoodPos();
     }
 
     public static void FindGoodPos(this Window windows)
     {
-        if (App.LastWindow == null)
-            return;
-
         var basewindow = App.LastWindow;
+
+        if (basewindow == null || basewindow.PlatformImpl == null)
+            return;
+        
         var pos = basewindow.Position;
         var sec = basewindow.Screens.ScreenFromWindow(basewindow.PlatformImpl);
         if (sec == null)
@@ -618,7 +464,7 @@ public static class ImageUtils
         return stream;
     }
 
-    public static Rgba32 Mix(Rgba32 rgba, Rgba32 mix)
+    private static Rgba32 Mix(Rgba32 rgba, Rgba32 mix)
     {
         double ap = (double)(mix.A / 255);
         double dp = 1 - ap;
@@ -630,7 +476,7 @@ public static class ImageUtils
         return rgba;
     }
 
-    public static (int X, int Y) GetMaxSize()
+    private static (int X, int Y) GetMaxSize()
     {
         int x = 0, y = 0;
         foreach (var item in App.MainWindow!.Screens.All)

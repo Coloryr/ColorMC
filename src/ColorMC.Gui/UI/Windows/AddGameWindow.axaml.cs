@@ -501,14 +501,7 @@ public partial class AddGameWindow : Window
 
     private async Task<string?> SelectPack()
     {
-        var file = await BaseBinding.OpFile(this, App.GetLanguage("AddGameWindow.Info13"),
-            new string[] { "*.zip", "*.mrpack" }, App.GetLanguage("AddGameWindow.Info16"));
-        if (file.Any())
-        {
-            return file[0].GetPath();
-        }
-
-        return null;
+        return await BaseBinding.OpFile(this, FileType.ModPack);
     }
 
     private void Other_Click(object? sender, RoutedEventArgs e)
@@ -587,11 +580,11 @@ public partial class AddGameWindow : Window
         }
         var type = Info5.Read().Item1 switch
         {
-            0 => PackType.ColorMC,
             1 => PackType.CurseForge,
             2 => PackType.Modrinth,
             3 => PackType.MMC,
-            4 => PackType.HMCL
+            4 => PackType.HMCL,
+            _ => PackType.ColorMC,
         };
         Info1.Show(App.GetLanguage("AddGameWindow.Info17"));
         var res = await GameBinding.AddPack(file, type, TextBox_Input1.Text, ComboBox_Group.SelectedItem as string);

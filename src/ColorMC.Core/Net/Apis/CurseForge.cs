@@ -303,4 +303,64 @@ public static class CurseForge
             return null;
         }
     }
+
+    private static List<string>? CurseForgeGameVersions;
+
+    /// <summary>
+    /// 获取CurseForge支持的游戏版本
+    /// </summary>
+    /// <returns>游戏版本</returns>
+    public static async Task<List<string>?> GetGameVersions()
+    {
+        if (CurseForgeGameVersions != null)
+        {
+            return CurseForgeGameVersions;
+        }
+        var list = await GetCurseForgeVersionType();
+        if (list == null)
+        {
+            return null;
+        }
+
+        list.data.RemoveAll(a =>
+        {
+            return a.id is 68441 or 615 or 1 or 3 or 2 or 73247 or 75208;
+        });
+
+        var list111 = new List<CurseForgeVersionType.Item>();
+        list111.AddRange(from item in list.data
+                         where item.id > 17
+                         orderby item.id descending
+                         select item);
+        list111.AddRange(from item in list.data
+                         where item.id < 18
+                         orderby item.id ascending
+                         select item);
+
+        var list2 = await GetCurseForgeVersion();
+        if (list2 == null)
+        {
+            return null;
+        }
+
+        var list3 = new List<string>
+        {
+            ""
+        };
+        foreach (var item in list111)
+        {
+            var list4 = from item1 in list2.data
+                        where item1.type == item.id
+                        select item1.versions;
+            var list5 = list4.FirstOrDefault();
+            if (list5 != null)
+            {
+                list3.AddRange(list5);
+            }
+        }
+
+        CurseForgeGameVersions = list3;
+
+        return list3;
+    }
 }

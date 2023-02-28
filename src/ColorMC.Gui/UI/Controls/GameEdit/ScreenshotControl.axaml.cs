@@ -13,7 +13,7 @@ public partial class ScreenshotControl : UserControl
     {
         InitializeComponent();
 
-        PointerPressed += ScreenshotControl_PointerPressed; ;
+        PointerPressed += ScreenshotControl_PointerPressed;
     }
 
     private void ScreenshotControl_PointerPressed(object? sender, PointerPressedEventArgs e)

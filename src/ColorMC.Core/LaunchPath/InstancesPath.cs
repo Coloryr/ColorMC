@@ -12,11 +12,6 @@ using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
 
-public enum PackType
-{
-    ColorMC, CurseForge, Modrinth, MMC, HMCL
-}
-
 public static class InstancesPath
 {
     private const string Name = "instances";
@@ -114,7 +109,7 @@ public static class InstancesPath
     /// <param name="obj"></param>
     private static void RemoveFromGroup(GameSettingObj obj)
     {
-        InstallGames.Remove(obj.Name);
+        InstallGames.Remove(obj.UUID);
 
         if (string.IsNullOrEmpty(obj.GroupName))
         {
@@ -160,14 +155,14 @@ public static class InstancesPath
     /// <summary>
     /// 获取游戏实例
     /// </summary>
-    /// <param name="name">实例名</param>
+    /// <param name="uuid">实例UUID</param>
     /// <returns>游戏实例</returns>
-    public static GameSettingObj? GetGame(string? name)
+    public static GameSettingObj? GetGame(string? uuid)
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(uuid))
             return null;
 
-        if (InstallGames.TryGetValue(name, out var item))
+        if (InstallGames.TryGetValue(uuid, out var item))
         {
             return item;
         }
@@ -538,10 +533,20 @@ public static class InstancesPath
         if (obj1 != null)
         {
             await PathC.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
-            if (obj.ModPack)
+            string file = obj.GetIconFile();
+            if (File.Exists(file))
             {
-                File.Copy(obj.GetModJsonFile(), obj1.GetModJsonFile(), true);
-                File.Copy(obj.GetModInfoJsonFile(), obj1.GetModInfoJsonFile(), true);
+                File.Copy(file, obj1.GetIconFile(), true);
+            }
+            file = obj.GetModJsonFile();
+            if (File.Exists(file))
+            {
+                File.Copy(file, obj1.GetModJsonFile(), true);
+            }
+            file = obj.GetModInfoJsonFile();
+            if (File.Exists(file))
+            {
+                File.Copy(file, obj1.GetModInfoJsonFile(), true);
             }
 
             return obj1;

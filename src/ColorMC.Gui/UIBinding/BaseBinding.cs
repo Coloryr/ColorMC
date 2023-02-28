@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
@@ -10,6 +11,7 @@ using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
@@ -18,13 +20,16 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class BaseBinding
 {
-    public readonly static Dictionary<Process, GameSettingObj> Games = new();
-    public readonly static Dictionary<string, Process> RunGames = new();
+    public const string DrapType = "Game";
+
+    private readonly static Dictionary<Process, GameSettingObj> Games = new();
+    private readonly static Dictionary<string, Process> RunGames = new();
     private static Mutex mutex1;
     public static bool ISNewStart
     {
@@ -99,12 +104,12 @@ public static class BaseBinding
 
     public static bool IsGameRun(GameSettingObj obj)
     {
-        return RunGames.ContainsKey(obj.Name);
+        return RunGames.ContainsKey(obj.UUID);
     }
 
     public static void StopGame(GameSettingObj obj)
     {
-        if (RunGames.TryGetValue(obj.Name, out var item))
+        if (RunGames.TryGetValue(obj.UUID, out var item))
         {
             Task.Run(item.Kill);
         }
@@ -182,7 +187,7 @@ public static class BaseBinding
             UserBinding.AddLockUser(obj1);
             res.Exited += (a, b) =>
             {
-                RunGames.Remove(obj.Name);
+                RunGames.Remove(obj.UUID);
                 UserBinding.RemoveLockUser(obj1);
                 if (Games.Remove(res, out var obj2))
                 {
@@ -209,7 +214,7 @@ public static class BaseBinding
                 res.Dispose();
             };
             Games.Add(res, obj);
-            RunGames.Add(obj.Name, res);
+            RunGames.Add(obj.UUID, res);
         }
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdate;
@@ -350,7 +355,6 @@ public static class BaseBinding
 
     public static void OpUrl(string url)
     {
-        //url = UrlEncoder.Default.Encode(url);
         url = url.Replace(" ", "%20");
         switch (SystemInfo.Os)
         {
@@ -404,5 +408,236 @@ public static class BaseBinding
 #else
         return false;
 #endif
+    }
+
+    public static void HttpPoll(string url, Action<Stream> action, CancellationToken cancel)
+    {
+        BaseClient.Poll(url, action, cancel);
+    }
+
+    public static async Task<bool?> AddFile(Window window, GameSettingObj obj, FileType type)
+    {
+        switch (type)
+        {
+            case FileType.Schematic:
+                var res = await OpFile(window,
+                      App.GetLanguage("GameEditWindow.Tab12.Info1"),
+                      new string[] { "*" + Schematic.Name1, "*" + Schematic.Name2 },
+                      App.GetLanguage("GameEditWindow.Tab12.Info2"), true);
+                if (!res.Any())
+                {
+                    return null;
+                }
+                return await GameBinding.AddSchematic(obj, res);
+            case FileType.Shaderpack:
+                res = await OpFile(window,
+                    App.GetLanguage("GameEditWindow.Tab11.Info1"),
+                    new string[] { "*.zip" },
+                    App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
+                if (!res.Any())
+                {
+                    return null;
+                }
+                return await GameBinding.AddShaderpack(obj, res);
+            case FileType.Mod:
+                res = await OpFile(window,
+                    App.GetLanguage("GameEditWindow.Tab4.Info7"),
+                    new string[] { "*.jar" },
+                    App.GetLanguage("GameEditWindow.Tab4.Info8"), true);
+                if (!res.Any())
+                {
+                    return null;
+                }
+                return await GameBinding.AddMods(obj, res);
+            case FileType.World:
+                res = await OpFile(window!,
+                    App.GetLanguage("GameEditWindow.Tab5.Info2"),
+                    new string[] { "*.zip" },
+                    App.GetLanguage("GameEditWindow.Tab5.Info8"));
+                if (!res.Any())
+                {
+                    return null;
+                }
+                return await GameBinding.AddWorld(obj, res[0].GetPath());
+            case FileType.Resourcepack:
+                res = await OpFile(window,
+                    App.GetLanguage("GameEditWindow.Tab8.Info2"),
+                    new string[] { "*.zip" },
+                    App.GetLanguage("GameEditWindow.Tab8.Info7"), true);
+                if (!res.Any())
+                {
+                    return null;
+                }
+                return await GameBinding.AddResourcepack(obj, res);
+        }
+
+        return null;
+    }
+
+    public static async Task<bool?> SaveFile(Window window, FileType type, object[] arg)
+    {
+        switch (type)
+        {
+            case FileType.World:
+                var file = await OpSave(window,
+                    App.GetLanguage("GameEditWindow.Tab5.Info2"), ".zip", "world.zip");
+                if (file == null)
+                    break;
+
+                try
+                {
+                    await GameBinding.ExportWorld((arg[0] as WorldDisplayObj)!.World, file.GetPath());
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.GetLanguage("GameEditWindow.Tab5.Error1"), e);
+                    return false;
+                }
+            case FileType.Game:
+                file = await OpSave(window,
+                    App.GetLanguage("GameEditWindow.Tab6.Info1"), ".zip", "game.zip");
+                if (file == null)
+                    break;
+
+                try
+                {
+                    var name = file.GetPath();
+                    await GameBinding.ExportGame((arg[0] as GameSettingObj)!, name,
+                        (arg[1] as List<string>)!, (PackType)arg[2]);
+                    OpFile(name);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.GetLanguage("GameEditWindow.Tab6.Error1"), e);
+                    return false;
+                }
+            case FileType.UI:
+                file = await OpSave(window,
+                    App.GetLanguage("SettingWindow.Tab6.Info1"), ".json", "ui.json");
+                if (file == null)
+                    break;
+
+                try
+                {
+                    var name = file.GetPath();
+                    if (File.Exists(name))
+                    {
+                        File.Delete(name);
+                    }
+
+                    File.WriteAllBytes(name, GetUIJson());
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.GetLanguage("SettingWindow.Tab6.Error3"), e);
+                    return false;
+                }
+        }
+
+        return null;
+    }
+
+    public static async Task<string?> OpFile(Window window, FileType type)
+    {
+        switch (type)
+        {
+            case FileType.Java:
+                var res = await OpFile(window,
+                    App.GetLanguage("SettingWindow.Tab5.Info2"),
+                    new string[] { SystemInfo.Os == OsType.Windows ? "*.exe" : "" },
+                    App.GetLanguage("SettingWindow.Tab5.Info2"),
+                    storage: JavaBinding.GetSuggestedStartLocation());
+                if (res.Any())
+                {
+                    return res[0].GetPath();
+                }
+                break;
+            case FileType.Config:
+                res = await OpFile(window,
+                    App.GetLanguage("HelloWindow.Tab2.Info3"),
+                    new string[] { "*.json" },
+                    App.GetLanguage("HelloWindow.Tab2.Info7"));
+                if (res.Any())
+                {
+                    return res[0].GetPath();
+                }
+                break;
+            case FileType.AuthConfig:
+                res = await OpFile(window,
+                    App.GetLanguage("HelloWindow.Tab2.Info6"),
+                    new string[] { "*.json" },
+                    App.GetLanguage("HelloWindow.Tab2.Info8"));
+                if (res.Any())
+                {
+                    return res[0].GetPath();
+                }
+                break;
+            case FileType.ModPack:
+                res = await OpFile(window,
+                    App.GetLanguage("AddGameWindow.Info13"),
+                    new string[] { "*.zip", "*.mrpack" },
+                    App.GetLanguage("AddGameWindow.Info15"));
+                if (res.Any())
+                {
+                    return res[0].GetPath();
+                }
+                break;
+            case FileType.Pic:
+                res = await OpFile(window, App.GetLanguage("SettingWindow.Tab2.Info3"),
+                    new string[] { "*.png", "*.jpg", "*.bmp" },
+                    App.GetLanguage("SettingWindow.Tab2.Info6"));
+                if (res.Any())
+                {
+                    return res[0].GetPath();
+                }
+                break;
+            case FileType.UI:
+                res = await OpFile(window,
+                    App.GetLanguage("SettingWindow.Tab6.Info2"),
+                    new string[] { "*.json" },
+                    App.GetLanguage("SettingWindow.Tab6.Info3"));
+                if (res.Any())
+                {
+                    return res[0].GetPath();
+                }
+                break;
+        }
+
+        return null;
+    }
+
+    public static void OpPath(GameSettingObj obj, PathType type)
+    {
+        switch (type)
+        {
+            case PathType.ShaderpacksPath:
+                OpPath(obj.GetShaderpacksPath());
+                break;
+            case PathType.ResourcepackPath:
+                OpPath(obj.GetResourcepacksPath());
+                break;
+        }
+    }
+
+    public static void SetGameName(GameSettingObj obj, string data)
+    {
+        obj.Name = data;
+        obj.Save();
+
+        App.MainWindow?.Load();
+    }
+
+    public static async Task<bool> CopyGame(GameSettingObj obj, string data)
+    {
+        var res = await obj.Copy(data);
+        if (res == null)
+            return false;
+
+        App.MainWindow?.Load();
+
+        return true;
     }
 }

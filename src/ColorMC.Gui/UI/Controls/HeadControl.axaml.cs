@@ -39,8 +39,6 @@ public partial class HeadControl : UserControl
         }
     }
 
-    private Window? BindWindow;
-
     public HeadControl()
     {
         InitializeComponent();
@@ -66,48 +64,34 @@ public partial class HeadControl : UserControl
 
     private void ButtonClose_Click(object? sender, RoutedEventArgs e)
     {
-        BindWindow ??= this.FindWindow();
-        if (BindWindow == null)
-        {
-            return;
-        }
-
-        BindWindow.Close();
+        (VisualRoot as Window)?.Close();
     }
 
     private void ButtonMax_Click(object? sender, RoutedEventArgs e)
     {
-        BindWindow ??= this.FindWindow();
-        if (BindWindow == null)
+        if (VisualRoot is not Window window)
         {
             return;
         }
 
-        if (BindWindow.WindowState == WindowState.Maximized)
-            BindWindow.WindowState = WindowState.Normal;
+        if (window.WindowState == WindowState.Maximized)
+            window.WindowState = WindowState.Normal;
         else
-            BindWindow.WindowState = WindowState.Maximized;
+            window.WindowState = WindowState.Maximized;
     }
 
     private void ButtonMin_Click(object? sender, RoutedEventArgs e)
     {
-        BindWindow ??= this.FindWindow();
-        if (BindWindow == null)
+        if (VisualRoot is not Window window)
         {
             return;
         }
 
-        BindWindow.WindowState = WindowState.Minimized;
+        window.WindowState = WindowState.Minimized;
     }
 
     private void HeadControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        BindWindow ??= this.FindWindow();
-        if (BindWindow == null)
-        {
-            return;
-        }
-
-        BindWindow.BeginMoveDrag(e);
+        (VisualRoot as Window)?.BeginMoveDrag(e);
     }
 }

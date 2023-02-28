@@ -169,7 +169,7 @@
                 <Label
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="添加皮肤站"
+                    Content="{setting:Localize Gui.Info6}"
                     FontSize="30" />
             </Grid>
 

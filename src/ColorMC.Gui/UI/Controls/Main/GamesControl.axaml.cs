@@ -39,7 +39,7 @@ public partial class GamesControl : UserControl
     {
         if (e.Source is Control)
         {
-            if (e.Data.Get(App.DrapType) is not GameControl c)
+            if (e.Data.Get(BaseBinding.DrapType) is not GameControl c)
                 return;
             if (Items.ContainsValue(c))
                 return;
@@ -56,7 +56,7 @@ public partial class GamesControl : UserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid1.IsVisible = false;
-        if (e.Data.Get(App.DrapType) is not GameControl c)
+        if (e.Data.Get(BaseBinding.DrapType) is not GameControl c)
             return;
         if (Items.ContainsValue(c))
             return;
@@ -132,7 +132,7 @@ public partial class GamesControl : UserControl
         if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
             var dragData = new DataObject();
-            dragData.Set(App.DrapType, this);
+            dragData.Set(BaseBinding.DrapType, this);
             dragData.Set(DataFormats.FileNames, new string[] { game.Obj.GetBasePath() });
 
             Dispatcher.UIThread.Post(() =>

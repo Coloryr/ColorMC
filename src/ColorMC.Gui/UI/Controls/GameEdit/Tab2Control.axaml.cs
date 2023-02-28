@@ -175,16 +175,12 @@ public partial class Tab2Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var Window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as GameEditWindow)!;
 
-        var file = await BaseBinding.OpFile(Window,
-            App.GetLanguage("SettingWindow.Tab5.Info2"),
-            new string[] { SystemInfo.Os == OsType.Windows ? "*.exe" : "" },
-            App.GetLanguage("SettingWindow.Tab5.Info2"),
-            storage: JavaBinding.GetSuggestedStartLocation());
-        if (file.Any())
+        var file = await BaseBinding.OpFile(window, FileType.Java);
+        if (file != null)
         {
-            TextBox11.Text = file[0].GetPath();
+            TextBox11.Text = file;
         }
     }
 

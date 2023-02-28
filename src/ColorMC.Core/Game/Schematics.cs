@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 using NbtLib;
 using System.Collections.Concurrent;
 
@@ -109,16 +110,35 @@ public static class Schematic
         File.Delete(obj.Local);
     }
 
-    public static bool AddSchematic(this GameSettingObj obj, string file)
+    public static async Task<bool> AddSchematic(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetSchematicsPath();
         Directory.CreateDirectory(path);
-        var name = Path.GetFileName(file);
-        var path1 = Path.GetFullPath(path + "/" + name);
-        if (File.Exists(path1))
-            return false;
+        bool ok = true;
 
-        File.Copy(file, path1);
+        foreach (var item in file)
+        {
+            var name = Path.GetFileName(item);
+            var path1 = Path.GetFullPath(path + "/" + name);
+            if (File.Exists(path1))
+                return false;
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    File.Copy(item, path1);
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                    ok = false;
+                }
+            });
+            if (!ok)
+                return false;
+        }
+
         return true;
     }
 }

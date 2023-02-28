@@ -7,6 +7,7 @@
 	<String Key="MainWindow.Error2">没有合适的Java</String>
 	<String Key="MainWindow.Error3">请输入名字</String>
 	<String Key="MainWindow.Error4">游戏分组添加失败</String>
+	<String Key="MainWindow.Error5">游戏实例复制失败</String>
 	<String Key="MainWindow.Flyouts.Text1">查看Mod</String>
 	<String Key="MainWindow.Flyouts.Text2">查看配置</String>
 	<String Key="MainWindow.Flyouts.Text3">查看地图</String>
@@ -24,6 +25,9 @@
 	<String Key="MainWindow.Control.Text8">设置图标</String>
 	<String Key="MainWindow.Control.Text9">切换游戏分组</String>
 	<String Key="MainWindow.Control.Text10">添加分组</String>
+	<String Key="MainWindow.Control.Text11">移动到此游戏分组</String>
+	<String Key="MainWindow.Control.Text12">重命名</String>
+	<String Key="MainWindow.Control.Text13">复制实例</String>
 	<String Key="MainWindow.Control.Info1">空账户</String>
 	<String Key="MainWindow.Control.Info2">没有用户</String>
 	<String Key="MainWindow.Info1">组名</String>
@@ -48,6 +52,9 @@
 	<String Key="MainWindow.Info20">默认分组</String>
 	<String Key="MainWindow.Info21">账户 {0} 登录失败，是否以离线方式运行</String>
 	<String Key="MainWindow.Info22">不能重复启动ColorMC</String>
+	<String Key="MainWindow.Info23">修改实例名字</String>
+	<String Key="MainWindow.Info24">的副本</String>
+	<String Key="MainWindow.Info25">复制完成</String>
 
 	<String Key="UserWindow.Title">ColorMC 用户列表</String>
 	<String Key="UserWindow.DataGrid.Text1">使用</String>
@@ -197,9 +204,16 @@
 	<String Key="SettingWindow.Tab6.Text12">注意：重启后自定义UI才会生效</String>
 	<String Key="SettingWindow.Tab6.Error1">UI文件错误</String>
 	<String Key="SettingWindow.Tab6.Error2">自定义UI窗口启动错误</String>
+	<String Key="SettingWindow.Tab6.Error3">导出UI文件错误</String>
 	<String Key="SettingWindow.Tab6.Info1">保存UI文件</String>
 	<String Key="SettingWindow.Tab6.Info2">选择UI文件</String>
 	<String Key="SettingWindow.Tab6.Info3">UI文件</String>
+	<String Key="SettingWindow.Tab6.Info4">UI文件已导出</String>
+
+	<String Key="SettingWindow.Tab7.Text1">一个全平台Minecraft启动器</String>
+	<String Key="SettingWindow.Tab7.Text2">作者：Coloryr</String>
+	<String Key="SettingWindow.Tab7.Text3">开源地址</String>
+	<String Key="SettingWindow.Tab7.Text4">Minecraft官网</String>
 
 	<String Key="HelloWindow.Title">ColorMC 初始设置</String>
 	<String Key="HelloWindow.Tabs.Text1">开始</String>
@@ -276,6 +290,7 @@
 	<String Key="GameEditWindow.Tab1.Text2">刷新版本</String>
 	<String Key="GameEditWindow.Tab1.Text3">整合包</String>
 	<String Key="GameEditWindow.Tab1.Info1">是否要删除实例 {0}</String>
+	<String Key="GameEditWindow.Tab1.Error1">游戏运行中，无法删除</String>
 
 	<String Key="GameEditWindow.Tab2.Text1">Jvm参数设置</String>
 	<String Key="GameEditWindow.Tab2.Text2">垃圾回收器设置</String>
@@ -332,6 +347,7 @@
 	<String Key="GameEditWindow.Tab4.Info8">Mod文件</String>
 	<String Key="GameEditWindow.Tab4.Info9">是否要删除这 {0} 个Mod</String>
 	<String Key="GameEditWindow.Tab4.Error1">Mod列表加载失败</String>
+	<String Key="GameEditWindow.Tab4.Error2">Mod导入失败</String>
 
 	<String Key="GameEditWindow.Tab5.Text1">打开备份文件夹</String>
 	<String Key="GameEditWindow.Tab5.Text2">还原世界备份</String>
@@ -350,7 +366,7 @@
 	<String Key="GameEditWindow.Tab5.Info13">正在还原世界</String>
 	<String Key="GameEditWindow.Tab5.Info14">备份已还原</String>
 	<String Key="GameEditWindow.Tab5.Error1">地图导出错误</String>
-	<String Key="GameEditWindow.Tab5.Error2">添加世界失败</String>
+	<String Key="GameEditWindow.Tab5.Error2">导入世界失败</String>
 	<String Key="GameEditWindow.Tab5.Error3">世界备份失败</String>
 	<String Key="GameEditWindow.Tab5.Error4">备份还原失败</String>
 
@@ -374,6 +390,7 @@
 	<String Key="GameEditWindow.Tab8.Info5">正在加载资源包列表</String>
 	<String Key="GameEditWindow.Tab8.Info6">损坏的资源包</String>
 	<String Key="GameEditWindow.Tab8.Info7">资源包</String>
+	<String Key="GameEditWindow.Tab8.Error1">资源包导入是被</String>
 
 	<String Key="GameEditWindow.Tab9.Info1">是否要删除截图 {0}</String>
 	<String Key="GameEditWindow.Tab9.Info2">是否要清空实例 {0} 的截图</String>
@@ -512,6 +529,11 @@
 	<String Key="AddModPackWindow.Control.Text3">上次更新：</String>
 
 	<String Key="AddWindow.Title">游戏实例添加资源 {0}</String>
+	<String Key="AddWindow.Text1">资源类型</String>
+	<String Key="AddWindow.Text2">下载源</String>
+	<String Key="AddWindow.Text3">游戏版本</String>
+	<String Key="AddWindow.Text4">排序</String>
+	<String Key="AddWindow.Text5">分类</String>
 	<String Key="AddWindow.Info1">是否下载资源 {0}</String>
 	<String Key="AddWindow.Info2">正在搜索资源中</String>
 	<String Key="AddWindow.Info3">正在获取资源版本中</String>
@@ -534,10 +556,12 @@
 	<String Key="AddJavaWindow.Text2">系统</String>
 	<String Key="AddJavaWindow.Text3">版本</String>
 	<String Key="AddJavaWindow.Text4">构建</String>
+	<String Key="AddJavaWindow.Text5">arm64应该下载aarch64，苹果的M系列芯片也是arm64，下载应选择jdk或者jre</String>
 	<String Key="AddJavaWindow.Info1">是否要下载 {0}</String>
 	<String Key="AddJavaWindow.Info2">正在下载Java</String>
 	<String Key="AddJavaWindow.Info3">下载Java成功</String>
 	<String Key="AddJavaWindow.Info4">正在获取版本</String>
+	<String Key="AddJavaWindow.Info5">正在解压</String>
 	<String Key="AddJavaWindow.Error1">获取失败</String>
 	<String Key="AddJavaWindow.DataGrid.Text1">名字</String>
 	<String Key="AddJavaWindow.DataGrid.Text2">构建</String>
@@ -558,6 +582,8 @@
 	<String Key="SkinWindow.Info1">你不能选择该类型</String>
 	<String Key="SkinWindow.Info2">没有皮肤</String>
 	<String Key="SkinWindow.Info3">未知的皮肤类型</String>
+	<String Key="SkinWindow.Error1">着色程序错误</String>
+	<String Key="SkinWindow.Error2">着色程序编译错误</String>
 
 	<String Key="ServerMotdControl.Text1">玩家数量：</String>	
 	<String Key="ServerMotdControl.Text2">服务器版本：</String>
@@ -606,14 +632,6 @@
 	<String Key="SkinType.New_Slim">新版纤细皮肤</String>
 	<String Key="SkinType.Other">未知的皮肤类型</String>
 
-	<String Key="FileType.ModPack">整合包</String>
-	<String Key="FileType.Mod">模组</String>
-	<String Key="FileType.World">世界</String>
-	<String Key="FileType.Shaderpack">光影包</String>
-	<String Key="FileType.Resourcepack">资源包</String>
-	<String Key="FileType.DataPacks">数据包</String>
-	<String Key="FileType.Other">未知的资源类型</String>
-
 	<String Key="Info1">正在读取配置文件</String>
 	<String Key="Info2">正在保存配置文件</String>
 	<String Key="Info3">已设置</String>
@@ -635,6 +653,7 @@
 	<String Key="Error11">颜色数据读取失败</String>
 	<String Key="Error12">文件已存在</String>
 	<String Key="Error13">检查更新错误</String>
+	<String Key="Gui.Error14">损坏的结构文件</String>
 
 	<String Key="ToolTip.Text1">最小化</String>
 	<String Key="ToolTip.Text2">最大化</String>

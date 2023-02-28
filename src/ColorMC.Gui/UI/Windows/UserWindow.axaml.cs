@@ -69,7 +69,6 @@ public partial class UserWindow : Window
         {
             return;
         }
-        // Only allow if the dragged data contains text or filenames.
         if (e.Data.Contains(DataFormats.Text))
         {
             Grid2.IsVisible = true;

@@ -345,28 +345,14 @@ public partial class Tab6Control : UserControl
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.OpSave(window,
-            App.GetLanguage("GameEditWindow.Tab6.Info1"), ".zip", "game.zip");
-
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab6.Info2"));
+        var file = await BaseBinding.SaveFile(window, FileType.Game, new object[] 
+            { Obj, FilesPageViewModel.GetUnSelectItems(), PackType.ColorMC });
+        window.Info1.Close();
         if (file == null)
             return;
 
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab6.Info2"));
-        var list = FilesPageViewModel.GetUnSelectItems();
-        bool error = false;
-        try
-        {
-            var name = file.GetPath();
-            await GameBinding.ExportGame(Obj, name, list, PackType.ColorMC);
-            BaseBinding.OpFile(name);
-        }
-        catch (Exception e1)
-        {
-            Logs.Error(App.GetLanguage("GameEditWindow.Tab6.Error1"), e1);
-            error = true;
-        }
-        window.Info1.Close();
-        if (error)
+        if (file == false)
         {
             window.Info.Show(App.GetLanguage("GameEditWindow.Tab6.Error1"));
         }

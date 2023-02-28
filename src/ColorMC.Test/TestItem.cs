@@ -338,7 +338,7 @@ public static class TestItem
     public static void Item13()
     {
         var games = InstancesPath.Games;
-        var list = Servers.GetServerInfo(games[0]);
+        var list = Servers.GetServerInfos(games[0]);
 
         foreach (var item in list)
         {

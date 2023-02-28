@@ -37,10 +37,10 @@ public partial class Info2Control : UserControl
         };
         grid.Children.Add(text);
 
-        Grid_List.Children.Add(grid);
+        Grid1.Children.Add(grid);
         await App.CrossFade200.Start(null, grid, CancellationToken.None);
         await Task.Delay(TimeSpan.FromSeconds(2));
         await App.CrossFade200.Start(grid, null, CancellationToken.None);
-        Grid_List.Children.Remove(grid);
+        Grid1.Children.Remove(grid);
     }
 }

@@ -60,7 +60,7 @@ public partial class MainWindow : Window, IBaseWindow
         Opened += MainWindow_Opened;
         Closed += MainWindow_Closed;
 
-        App.PicUpdate += Update; 
+        App.PicUpdate += Update;
 
         Update();
 
@@ -82,11 +82,10 @@ public partial class MainWindow : Window, IBaseWindow
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
-        if (e.Data.Contains(App.DrapType))
+        if (e.Data.Contains(BaseBinding.DrapType))
         {
             return;
         }
-        // Only allow if the dragged data contains text or filenames.
         if (e.Data.Contains(DataFormats.Text))
         {
             Grid2.IsVisible = true;
@@ -106,7 +105,7 @@ public partial class MainWindow : Window, IBaseWindow
 
     private void Drop(object? sender, DragEventArgs e)
     {
-        if (e.Data.Contains(App.DrapType))
+        if (e.Data.Contains(BaseBinding.DrapType))
         {
             return;
         }
@@ -212,10 +211,12 @@ public partial class MainWindow : Window, IBaseWindow
 
     private void MainWindow_Opened(object? sender, EventArgs e)
     {
+#if !DEBUG
         if (ConfigBinding.GetAllConfig().Item1?.Http?.CheckUpdate == true)
         {
             ColorMCGui.InitDone();
         }
+#endif
 
         MotdLoad();
     }
@@ -524,5 +525,45 @@ public partial class MainWindow : Window, IBaseWindow
             return;
 
         await GameBinding.DeleteGame(obj);
+    }
+
+    public async void Rename(GameSettingObj obj)
+    {
+        await Info3.ShowEdit(App.GetLanguage("MainWindow.Info23"), obj.Name);
+        if (Info3.Cancel)
+            return;
+        var data = Info3.Read().Item1;
+        if (string.IsNullOrWhiteSpace(data))
+        {
+            Info1.Show(App.GetLanguage("MainWindow.Error3"));
+            return;
+        }
+
+        BaseBinding.SetGameName(obj, data);
+    }
+
+    public async void Copy(GameSettingObj obj)
+    {
+        await Info3.ShowEdit(App.GetLanguage("MainWindow.Info23"), 
+            obj.Name + App.GetLanguage("MainWindow.Info24"));
+        if (Info3.Cancel)
+            return;
+        var data = Info3.Read().Item1;
+        if (string.IsNullOrWhiteSpace(data))
+        {
+            Info1.Show(App.GetLanguage("MainWindow.Error3"));
+            return;
+        }
+
+        var res = await BaseBinding.CopyGame(obj, data);
+        if (!res)
+        {
+            Info1.Show(App.GetLanguage("MainWindow.Error5"));
+            return;
+        }
+        else
+        {
+            Info2.Show(App.GetLanguage("MainWindow.Info25"));
+        }
     }
 }

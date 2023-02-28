@@ -18,7 +18,7 @@
             StrokeThickness="3" />
         <Grid Margin="5">
             <Image
-                Name="Image_Logo"
+                Name="Image1"
                 Width="90"
                 Height="90"
                 HorizontalAlignment="Left"

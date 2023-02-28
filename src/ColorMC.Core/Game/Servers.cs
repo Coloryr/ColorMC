@@ -12,7 +12,7 @@ public static class Servers
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>服务器列表</returns>
-    public static List<ServerInfoObj> GetServerInfo(this GameSettingObj game)
+    public static List<ServerInfoObj> GetServerInfos(this GameSettingObj game)
     {
         List<ServerInfoObj> list = new();
         string file = game.GetServersFile();
@@ -45,7 +45,7 @@ public static class Servers
     /// <param name="ip">地址</param>
     public static void AddServer(this GameSettingObj game, string name, string ip)
     {
-        var list = game.GetServerInfo();
+        var list = game.GetServerInfos();
         list.Add(new ServerInfoObj()
         {
             Name = name,

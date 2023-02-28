@@ -42,7 +42,7 @@
                             Width="65"
                             Margin="5"
                             VerticalAlignment="Center"
-                            Content="资源类型" />
+                            Content="{setting:Localize AddWindow.Text1}" />
                         <ComboBox
                             Name="ComboBox1"
                             Width="120"
@@ -52,7 +52,7 @@
                             Width="65"
                             Margin="5"
                             VerticalAlignment="Center"
-                            Content="下载源" />
+                            Content="{setting:Localize AddWindow.Text2}" />
                         <ComboBox
                             Name="ComboBox2"
                             Width="120"
@@ -62,7 +62,7 @@
                         <Label
                             Margin="5"
                             VerticalAlignment="Center"
-                            Content="游戏版本" />
+                            Content="{setting:Localize AddWindow.Text3}" />
                         <ComboBox
                             Name="ComboBox3"
                             Width="120"
@@ -87,7 +87,7 @@
                             Width="65"
                             Margin="5"
                             VerticalAlignment="Center"
-                            Content="排序" />
+                            Content="{setting:Localize AddWindow.Text4}" />
                         <ComboBox
                             Name="ComboBox4"
                             Width="120"
@@ -98,7 +98,7 @@
                             Width="65"
                             Margin="5"
                             VerticalAlignment="Center"
-                            Content="分类" />
+                            Content="{setting:Localize AddWindow.Text5}" />
                         <ComboBox
                             Name="ComboBox5"
                             Width="120"
