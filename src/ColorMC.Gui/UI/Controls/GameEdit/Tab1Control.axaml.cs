@@ -131,7 +131,6 @@ public partial class Tab1Control : UserControl
     {
         var Window = (VisualRoot as GameEditWindow)!;
         await Window.Info3.ShowOne(App.GetLanguage("AddGameWindow.Info1"), false);
-        Window.Info3.Close();
         if (Window.Info3.Cancel)
         {
             return;

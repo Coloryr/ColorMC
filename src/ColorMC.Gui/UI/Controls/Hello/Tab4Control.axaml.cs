@@ -92,7 +92,6 @@ public partial class Tab4Control : UserControl
                 }
                 await window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
                     App.GetLanguage("UserWindow.Text2"), true);
-                window.Info3.Close();
                 if (window.Info3.Cancel)
                 {
                     break;
@@ -123,7 +122,6 @@ public partial class Tab4Control : UserControl
                 }
                 await window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
                     App.GetLanguage("UserWindow.Text2"), true);
-                window.Info3.Close();
                 if (window.Info3.Cancel)
                 {
                     break;
@@ -148,7 +146,6 @@ public partial class Tab4Control : UserControl
             case 4:
                 await window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
                     App.GetLanguage("UserWindow.Text2"), true);
-                window.Info3.Close();
                 if (window.Info3.Cancel)
                 {
                     break;
@@ -178,7 +175,6 @@ public partial class Tab4Control : UserControl
                 }
                 await window.Info3.ShowInput(App.GetLanguage("UserWindow.Text1"),
                     App.GetLanguage("UserWindow.Text2"), true);
-                window.Info3.Close();
                 if (window.Info3.Cancel)
                 {
                     break;

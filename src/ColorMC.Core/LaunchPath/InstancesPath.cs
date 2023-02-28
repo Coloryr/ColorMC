@@ -146,6 +146,12 @@ public static class InstancesPath
             var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
             if (game != null)
             {
+                var path = Path.GetFileName(item);
+                if (path != game.DirName)
+                {
+                    game.DirName = path;
+                    game.Save();
+                }
                 game.ReadCurseForgeMod();
                 AddToGroup(game);
             }
