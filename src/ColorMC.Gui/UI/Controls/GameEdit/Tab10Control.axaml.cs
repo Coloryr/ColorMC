@@ -69,7 +69,6 @@ public partial class Tab10Control : UserControl
         var window = (VisualRoot as GameEditWindow)!;
         await window.Info3.ShowInput(App.GetLanguage("GameEditWindow.Tab10.Info1"),
             App.GetLanguage("GameEditWindow.Tab10.Info2"), false);
-        window.Info3.Close();
         var res = window.Info3.Read();
 
         if (string.IsNullOrWhiteSpace(res.Item1) || string.IsNullOrWhiteSpace(res.Item2))

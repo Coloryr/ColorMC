@@ -496,7 +496,6 @@ public partial class MainWindow : Window, IBaseWindow
     public async Task AddGroup()
     {
         await Info3.ShowOne(App.GetLanguage("MainWindow.Info1"), false);
-        Info3.Close();
         if (Info3.Cancel)
         {
             return;

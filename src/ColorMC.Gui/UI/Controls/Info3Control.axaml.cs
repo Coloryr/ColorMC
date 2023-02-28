@@ -42,18 +42,24 @@ public partial class Info3Control : UserControl
 
         Cancel = true;
         semaphore.Release();
+
+        Close(); 
     }
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
         Cancel = false;
         semaphore.Release();
+
+        Close();
     }
 
     public void Close()
     {
         if (!Display)
             return;
+
+        Display = false;
 
         App.CrossFade300.Start(this, null, CancellationToken.None);
     }
@@ -190,10 +196,11 @@ public partial class Info3Control : UserControl
 
         TextBox_Text1.IsVisible = false;
         TextBox_Text.IsReadOnly = false;
-        ProgressBar_Value.IsVisible = true;
+        ProgressBar_Value.IsVisible = false;
 
         TextBox_Text.Text = data;
         TextBox_Text.Watermark = title;
+        App.CrossFade300.Start(null, this, CancellationToken.None);
 
         return Task.Run(() =>
         {

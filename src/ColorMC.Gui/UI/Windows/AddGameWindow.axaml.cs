@@ -246,7 +246,6 @@ public partial class AddGameWindow : Window
     private async void Button_AddGroup_Click(object? sender, RoutedEventArgs e)
     {
         await Info3.ShowOne(App.GetLanguage("AddGameWindow.Info1"), false);
-        Info3.Close();
         if (Info3.Cancel)
         {
             return;

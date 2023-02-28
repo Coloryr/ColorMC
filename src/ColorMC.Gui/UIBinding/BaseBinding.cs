@@ -630,6 +630,9 @@ public static class BaseBinding
 
     public static async Task<bool> CopyGame(GameSettingObj obj, string data)
     {
+        if (IsGameRun(obj))
+            return false;
+
         var res = await obj.Copy(data);
         if (res == null)
             return false;

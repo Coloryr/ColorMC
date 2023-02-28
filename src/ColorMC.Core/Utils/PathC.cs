@@ -91,8 +91,7 @@ public static class PathC
     /// </summary>
     private static void Copys(string dir, string dir1)
     {
-        var floderName = Path.GetFileName(dir);
-        var di = Directory.CreateDirectory(Path.Combine(dir1, floderName));
+        var di = Directory.CreateDirectory(dir1);
         var files = Directory.GetFileSystemEntries(dir);
 
         foreach (string file in files)
