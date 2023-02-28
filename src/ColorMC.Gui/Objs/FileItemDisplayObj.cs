@@ -1,11 +1,7 @@
-﻿using ColorMC.Core.Objs;
+﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
-
-public enum FileType
-{
-    ModPack = 0, Mod, World, Shaderpack, Resourcepack, DataPacks
-}
 
 public record FileItemDisplayObj
 {

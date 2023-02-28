@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -90,15 +91,11 @@ public partial class Tab1Control : UserControl
     private async void Button_SelectFile2_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("HelloWindow.Tab2.Info3"),
-            new string[] { "*.json" },
-            App.GetLanguage("HelloWindow.Tab2.Info7"));
+        var file = await BaseBinding.OpFile(window, FileType.Config);
 
-        if (file?.Any() == true)
+        if (file != null)
         {
-            var item = file[0];
-            TextBox_Local2.Text = item.GetPath();
+            TextBox_Local2.Text = file;
         }
     }
 
@@ -138,15 +135,11 @@ public partial class Tab1Control : UserControl
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("HelloWindow.Tab2.Info3"),
-            new string[] { "*.json" },
-            App.GetLanguage("HelloWindow.Tab2.Info7"));
+        var file = await BaseBinding.OpFile(window, FileType.Config);
 
-        if (file?.Any() == true)
+        if (file != null)
         {
-            var item = file[0];
-            TextBox_Local.Text = item.GetPath();
+            TextBox_Local.Text = file;
         }
     }
 
@@ -185,15 +178,11 @@ public partial class Tab1Control : UserControl
     private async void Button_SelectFile1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("HelloWindow.Tab2.Info6"),
-            new string[] { "*.json" },
-            App.GetLanguage("HelloWindow.Tab2.Info8"));
+        var file = await BaseBinding.OpFile(window, FileType.AuthConfig);
 
-        if (file?.Any() == true)
+        if (file != null)
         {
-            var item = file[0];
-            TextBox_Local1.Text = item.GetPath();
+            TextBox_Local1.Text = file;
         }
     }
 }

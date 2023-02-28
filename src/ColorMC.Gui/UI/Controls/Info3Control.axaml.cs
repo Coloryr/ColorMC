@@ -1,3 +1,4 @@
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System;
@@ -182,6 +183,23 @@ public partial class Info3Control : UserControl
         }
 
         return Task.CompletedTask;
+    }
+
+    public Task ShowEdit(string title, string data)
+    {
+        Display = true;
+
+        TextBox_Text1.IsVisible = false;
+        TextBox_Text.IsReadOnly = false;
+        ProgressBar_Value.IsVisible = true;
+
+        TextBox_Text.Text = data;
+        TextBox_Text.Watermark = title;
+
+        return Task.Run(() =>
+        {
+            semaphore.WaitOne();
+        });
     }
 
     public (string?, string?) Read()

@@ -60,10 +60,20 @@
                 Height="25"
                 Content="{setting:Localize MainWindow.Control.Text6}" />
             <Button
+                Name="Button12"
+                Width="100"
+                Height="25"
+                Content="{setting:Localize MainWindow.Control.Text12}" />
+            <Button
                 Name="Button6"
                 Width="100"
                 Height="25"
                 Content="{setting:Localize MainWindow.Flyouts.Text5}" />
+            <Button
+                Name="Button13"
+                Width="100"
+                Height="25"
+                Content="{setting:Localize MainWindow.Control.Text13}" />
             <Button
                 Name="Button10"
                 Width="100"

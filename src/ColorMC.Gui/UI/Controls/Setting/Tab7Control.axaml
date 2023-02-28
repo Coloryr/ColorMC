@@ -22,8 +22,8 @@
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label Content="ColorMC" FontSize="60" />
-                <Label Content="一个全平台Minecraft启动器" FontSize="30" />
-                <Label Content="作者：Coloryr" FontSize="30" />
+                <Label Content="{setting:Localize SettingWindow.Tab7.Text1}" FontSize="30" />
+                <Label Content="{setting:Localize SettingWindow.Tab7.Text2}" FontSize="30" />
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Core:" FontSize="20" />
                     <Label
@@ -45,13 +45,13 @@
                     Height="30"
                     Margin="0,5,0,5"
                     HorizontalAlignment="Stretch"
-                    Content="开源地址" />
+                    Content="{setting:Localize SettingWindow.Tab7.Text3}" />
                 <Button
                     Name="Button2"
                     Height="30"
                     Margin="0,0,0,5"
                     HorizontalAlignment="Stretch"
-                    Content="Minecraft官网" />
+                    Content="{setting:Localize SettingWindow.Tab7.Text4}" />
             </StackPanel>
         </StackPanel>
     </Grid>

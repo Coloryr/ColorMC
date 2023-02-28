@@ -277,20 +277,39 @@ public static class Mods
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
-    public static void AddMods(this GameSettingObj obj, List<string> file)
+    public static async Task<bool> AddMods(this GameSettingObj obj, List<string> file)
     {
         string path = obj.GetModsPath();
+        bool ok = true;
         foreach (var item in file)
         {
             var info = new FileInfo(item);
+            if (!info.Exists)
+                return false;
+
             var info1 = new FileInfo(Path.GetFullPath(path + "/" + info.Name));
             if (info1.Exists)
             {
                 info1.Delete();
             }
 
-            File.Copy(info.FullName, info1.FullName);
+            await Task.Run(() =>
+            {
+                try
+                {
+                    File.Copy(info.FullName, info1.FullName);
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                    ok = false;
+                }
+            });
+            if (!ok)
+                return false;
         }
+
+        return true;
     }
 
     private static List<string> ToStringList(this string obj)

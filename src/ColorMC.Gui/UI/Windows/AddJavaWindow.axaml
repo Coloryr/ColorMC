@@ -79,7 +79,7 @@
                 <Label
                     Margin="2,0,0,0"
                     VerticalAlignment="Bottom"
-                    Content="arm64应该下载aarch64，苹果的M系列芯片也是arm64芯片，需要下载jdk或者jre"
+                    Content="{setting:Localize AddJavaWindow.Text5}"
                     DockPanel.Dock="Bottom" />
 
                 <DataGrid

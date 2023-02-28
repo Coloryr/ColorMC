@@ -13,11 +13,17 @@ public class ColorSel : INotifyPropertyChanged
     public static readonly IBrush AppBackColor = Brush.Parse("#FFFFFFFF");
     public static readonly IBrush AppBackColor1 = Brush.Parse("#11FFFFFF");
 
-    public static IBrush MainColor { get; private set; } = Brush.Parse("#FF5ABED6");
-    public static IBrush BackColor { get; private set; } = Brush.Parse("#FFF4F4F5");
-    public static IBrush Back1Color { get; private set; } = Brush.Parse("#88FFFFFF");
-    public static IBrush ButtonFont { get; private set; } = Brush.Parse("#FFFFFFFF");
-    public static IBrush FontColor { get; private set; } = Brush.Parse("#FF000000");
+    public const string MainColorStr = "#FF5ABED6";
+    public const string BackColorStr = "#FFF4F4F5";
+    public const string Back1ColorStr = "#88FFFFFF";
+    public const string ButtonFontStr = "#FFFFFFFF";
+    public const string FontColorStr = "#FF000000";
+
+    public static IBrush MainColor { get; private set; } = Brush.Parse(MainColorStr);
+    public static IBrush BackColor { get; private set; } = Brush.Parse(BackColorStr);
+    public static IBrush Back1Color { get; private set; } = Brush.Parse(Back1ColorStr);
+    public static IBrush ButtonFont { get; private set; } = Brush.Parse(ButtonFontStr);
+    public static IBrush FontColor { get; private set; } = Brush.Parse(FontColorStr);
     public static IBrush MotdColor { get; private set; } = Brush.Parse("#FFFFFFFF");
     public static IBrush MotdBackColor { get; private set; } = Brush.Parse("#FF000000");
 

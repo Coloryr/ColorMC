@@ -198,87 +198,14 @@ public static class GameBinding
         };
     }
 
-    private static List<string>? CurseForgeGameVersions;
-
-    public static async Task<List<string>?> GetCurseForgeGameVersions()
+    public static Task<List<string>?> GetCurseForgeGameVersions()
     {
-        if (CurseForgeGameVersions != null)
-        {
-            return CurseForgeGameVersions;
-        }
-        var list = await CurseForge.GetCurseForgeVersionType();
-        if (list == null)
-        {
-            return null;
-        }
-
-        list.data.RemoveAll(a =>
-        {
-            return a.id is 68441 or 615 or 1 or 3 or 2 or 73247 or 75208;
-        });
-
-        var list111 = new List<CurseForgeVersionType.Item>();
-        list111.AddRange(from item in list.data
-                         where item.id > 17
-                         orderby item.id descending
-                         select item);
-        list111.AddRange(from item in list.data
-                         where item.id < 18
-                         orderby item.id ascending
-                         select item);
-
-        var list2 = await CurseForge.GetCurseForgeVersion();
-        if (list2 == null)
-        {
-            return null;
-        }
-
-        var list3 = new List<string>
-        {
-            ""
-        };
-        foreach (var item in list111)
-        {
-            var list4 = from item1 in list2.data
-                        where item1.type == item.id
-                        select item1.versions;
-            var list5 = list4.FirstOrDefault();
-            if (list5 != null)
-            {
-                list3.AddRange(list5);
-            }
-        }
-
-        CurseForgeGameVersions = list3;
-
-        return list3;
+        return CurseForge.GetGameVersions();
     }
 
-    private static List<string>? ModrinthGameVersions;
-
-    public static async Task<List<string>?> GetModrinthGameVersions()
+    public static Task<List<string>?> GetModrinthGameVersions()
     {
-        if (ModrinthGameVersions != null)
-        {
-            return ModrinthGameVersions;
-        }
-
-        var list = await Modrinth.GetGameVersion();
-        if (list == null)
-        {
-            return null;
-        }
-
-        var list1 = new List<string>
-        {
-            ""
-        };
-
-        list1.AddRange(from item in list select item.version);
-
-        ModrinthGameVersions = list1;
-
-        return list1;
+        return Modrinth.GetGameVersion();
     }
 
     private static CurseForgeCategoriesObj? CurseForgeCategories;
@@ -495,7 +422,7 @@ public static class GameBinding
             return (false, App.GetLanguage("GameBinding.Error1"));
         }
 
-        if (BaseBinding.Games.ContainsValue(obj))
+        if (BaseBinding.IsGameRun(obj))
         {
             return (false, App.GetLanguage("GameBinding.Error4"));
         }
@@ -510,6 +437,7 @@ public static class GameBinding
             var have = AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
             if (!have)
             {
+                BaseBinding.OpUrl("https://www.minecraft.net/");
                 return (false, App.GetLanguage("GameBinding.Error7"));
             }
         }
@@ -649,9 +577,14 @@ public static class GameBinding
         mod.Delete();
     }
 
-    public static void AddMods(GameSettingObj obj, List<string> file)
+    public static Task<bool> AddMods(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
-        obj.AddMods(file);
+        var list = new List<string>();
+        foreach (var item in file)
+        {
+            list.Add(item.GetPath());
+        }
+        return obj.AddMods(list);
     }
 
     public static List<string> GetAllConfig(GameSettingObj obj)
@@ -806,9 +739,14 @@ public static class GameBinding
         File.Delete(obj.Local);
     }
 
-    public static Task<bool> AddResourcepack(GameSettingObj obj, string file)
+    public static Task<bool> AddResourcepack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
-        return obj.ImportResourcepack(file);
+        var list = new List<string>();
+        foreach(var item in file)
+        {
+            list.Add(item.GetPath());
+        }
+        return obj.ImportResourcepack(list);
     }
 
     public static void DeleteScreenshot(string file)
@@ -876,7 +814,7 @@ public static class GameBinding
 
     public static List<ServerInfoObj> GetServers(GameSettingObj obj)
     {
-        return obj.GetServerInfo();
+        return obj.GetServerInfos();
     }
 
     public static List<ShaderpackDisplayObj> GetShaderpacks(GameSettingObj obj)
@@ -900,8 +838,11 @@ public static class GameBinding
         obj.AddServer(name, ip);
     }
 
-    public static void SetServer(GameSettingObj obj, List<ServerInfoObj> list)
+    public static void DeleteServer(GameSettingObj obj, ServerInfoObj server)
     {
+        var list = obj.GetServerInfos();
+        var item = list.First(a => a.Name == server.Name && a.IP == server.IP);
+        list.Remove(item);
         obj.SaveServer(list);
     }
 
@@ -938,16 +879,15 @@ public static class GameBinding
         obj.Save();
     }
 
-    public static bool AddShaderpack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
+    public static Task<bool> AddShaderpack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
+        var list = new List<string>();
         foreach (var item in file)
         {
-            bool ok = obj.AddShaderpack(item.GetPath());
-            if (ok == false)
-                return false;
+            list.Add(item.GetPath());
         }
 
-        return true;
+        return obj.AddShaderpack(list);
     }
 
     public static async Task<List<SchematicDisplayObj>> GetSchematics(GameSettingObj obj)
@@ -960,7 +900,7 @@ public static class GameBinding
             {
                 list1.Add(new()
                 {
-                    Name = "损坏的结构文件",
+                    Name = App.GetLanguage("Gui.Error14"),
                     Local = item.Local,
                     Schematic = item
                 });
@@ -984,16 +924,15 @@ public static class GameBinding
         return list1;
     }
 
-    public static bool AddSchematic(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
+    public static Task<bool> AddSchematic(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
+        var list = new List<string>();
         foreach (var item in file)
         {
-            bool ok = obj.AddSchematic(item.GetPath());
-            if (ok == false)
-                return false;
+            list.Add(item.GetPath());
         }
 
-        return true;
+        return obj.AddSchematic(list);
     }
 
     public static List<string> GetPackType()
@@ -1359,5 +1298,27 @@ public static class GameBinding
     public static Task<bool> BackupWorld(GameSettingObj obj, FileInfo item1)
     {
         return obj.UnzipBackupWorld(item1);
+    }
+
+    public static string? GetUrl(this FileItemDisplayObj obj)
+    {
+        if (obj.SourceType == SourceType.CurseForge)
+        {
+            return (obj.Data as CurseForgeObj.Data)!.links.websiteUrl;
+        }
+        else if (obj.SourceType == SourceType.Modrinth)
+        {
+            var obj1 = (obj.Data as ModrinthSearchObj.Hit)!;
+            return obj.FileType switch
+            {
+                FileType.ModPack => "https://modrinth.com/modpack/",
+                FileType.Shaderpack => "https://modrinth.com/shaders/",
+                FileType.Resourcepack => "https://modrinth.com/resourcepacks/",
+                FileType.DataPacks => "https://modrinth.com/datapacks/",
+                _ => "https://modrinth.com/mod/"
+            } + obj1.project_id;
+        }
+
+        return null;
     }
 }

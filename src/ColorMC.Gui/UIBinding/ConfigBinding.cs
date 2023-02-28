@@ -5,6 +5,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -56,6 +57,12 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ColorFont2 = font2;
         GuiConfigUtils.Save();
         ColorSel.Instance.Load();
+    }
+
+    public static void ResetColor()
+    {
+        SetColor(ColorSel.MainColorStr, ColorSel.BackColorStr, ColorSel.Back1ColorStr,
+            ColorSel.ButtonFontStr, ColorSel.FontColorStr);
     }
 
     public static void DeleteGuiImageConfig()

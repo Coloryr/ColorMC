@@ -27,12 +27,12 @@ public partial class Tab1Control : UserControl
         Button5.Click += Button5_Click;
         Button6.Click += Button6_Click;
 
-        CheckBox_Forge.Click += Forge_Click;
-        CheckBox_Fabric.Click += Fabric_Click;
-        CheckBox_Quilt.Click += Quilt_Click;
-        CheckBox_Release.Click += Other_Click;
-        CheckBox_Snapshot.Click += Other_Click;
-        CheckBox_Other.Click += Other_Click;
+        CheckBox5.Click += Forge_Click;
+        CheckBox6.Click += Fabric_Click;
+        CheckBox7.Click += Quilt_Click;
+        CheckBox2.Click += Other_Click;
+        CheckBox3.Click += Other_Click;
+        CheckBox4.Click += Other_Click;
 
         CheckBox1.Click += CheckBox1_Click;
 
@@ -83,17 +83,23 @@ public partial class Tab1Control : UserControl
 
         ComboBox2.SelectedItem = null;
         List1.Clear();
-        CheckBox_Forge.IsChecked = false;
-        CheckBox_Fabric.IsChecked = false;
-        CheckBox_Quilt.IsChecked = false;
+        CheckBox5.IsChecked = false;
+        CheckBox6.IsChecked = false;
+        CheckBox7.IsChecked = false;
 
         Save();
     }
 
     private async void Button5_Click(object? sender, RoutedEventArgs e)
     {
-        var Window = (VisualRoot as GameEditWindow)!;
-        var res = await Window.Info.ShowWait(string.Format(
+        var window = (VisualRoot as GameEditWindow)!;
+        if (BaseBinding.IsGameRun(Obj))
+        {
+            window.Info1.Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));
+            return;
+        }
+
+        var res = await window.Info.ShowWait(string.Format(
             App.GetLanguage("GameEditWindow.Tab1.Info1"), Obj.Name));
         if (!res)
             return;
@@ -104,15 +110,15 @@ public partial class Tab1Control : UserControl
     private void Save()
     {
         Loaders loaders = Loaders.Normal;
-        if (CheckBox_Forge.IsChecked == true)
+        if (CheckBox5.IsChecked == true)
         {
             loaders = Loaders.Forge;
         }
-        else if (CheckBox_Fabric.IsChecked == true)
+        else if (CheckBox6.IsChecked == true)
         {
             loaders = Loaders.Fabric;
         }
-        else if (CheckBox_Quilt.IsChecked == true)
+        else if (CheckBox7.IsChecked == true)
         {
             loaders = Loaders.Quilt;
         }
@@ -160,11 +166,11 @@ public partial class Tab1Control : UserControl
 
         ComboBox2.IsEnabled = false;
 
-        if (CheckBox_Forge.IsChecked == true)
+        if (CheckBox5.IsChecked == true)
         {
             window.Info1.Show(App.GetLanguage("AddGameWindow.Info6"));
-            CheckBox_Fabric.IsEnabled = false;
-            CheckBox_Quilt.IsEnabled = false;
+            CheckBox6.IsEnabled = false;
+            CheckBox7.IsEnabled = false;
 
             var list = await GameBinding.GetForgeVersion(Obj.Version);
             window.Info1.Close();
@@ -177,11 +183,11 @@ public partial class Tab1Control : UserControl
             List1.Clear();
             List1.AddRange(list);
         }
-        else if (CheckBox_Fabric.IsChecked == true)
+        else if (CheckBox6.IsChecked == true)
         {
             window.Info1.Show(App.GetLanguage("AddGameWindow.Info5"));
-            CheckBox_Forge.IsEnabled = false;
-            CheckBox_Quilt.IsEnabled = false;
+            CheckBox5.IsEnabled = false;
+            CheckBox7.IsEnabled = false;
 
             var list = await GameBinding.GetFabricVersion(Obj.Version);
             window.Info1.Close();
@@ -194,11 +200,11 @@ public partial class Tab1Control : UserControl
             List1.Clear();
             List1.AddRange(list);
         }
-        else if (CheckBox_Quilt.IsChecked == true)
+        else if (CheckBox7.IsChecked == true)
         {
             window.Info1.Show(App.GetLanguage("AddGameWindow.Info4"));
-            CheckBox_Forge.IsEnabled = false;
-            CheckBox_Fabric.IsEnabled = false;
+            CheckBox5.IsEnabled = false;
+            CheckBox6.IsEnabled = false;
 
             var list = await GameBinding.GetQuiltVersion(Obj.Version);
             window.Info1.Close();
@@ -215,56 +221,56 @@ public partial class Tab1Control : UserControl
 
     private void Quilt_Click(object? sender, RoutedEventArgs e)
     {
-        if (CheckBox_Quilt.IsChecked == true)
+        if (CheckBox7.IsChecked == true)
         {
-            CheckBox_Forge.IsEnabled = false;
-            CheckBox_Forge.IsChecked = false;
-            CheckBox_Fabric.IsEnabled = false;
-            CheckBox_Fabric.IsChecked = false;
+            CheckBox5.IsEnabled = false;
+            CheckBox5.IsChecked = false;
+            CheckBox6.IsEnabled = false;
+            CheckBox6.IsChecked = false;
             Button3_Click(sender, e);
         }
         else
         {
             ComboBox2.IsEnabled = false;
-            CheckBox_Forge.IsEnabled = true;
-            CheckBox_Fabric.IsEnabled = true;
+            CheckBox5.IsEnabled = true;
+            CheckBox6.IsEnabled = true;
             List1.Clear();
         }
     }
     private void Fabric_Click(object? sender, RoutedEventArgs e)
     {
-        if (CheckBox_Fabric.IsChecked == true)
+        if (CheckBox6.IsChecked == true)
         {
-            CheckBox_Forge.IsEnabled = false;
-            CheckBox_Forge.IsChecked = false;
-            CheckBox_Quilt.IsEnabled = false;
-            CheckBox_Quilt.IsChecked = false;
+            CheckBox5.IsEnabled = false;
+            CheckBox5.IsChecked = false;
+            CheckBox7.IsEnabled = false;
+            CheckBox7.IsChecked = false;
             Button3_Click(sender, e);
         }
         else
         {
             ComboBox2.IsEnabled = false;
-            CheckBox_Forge.IsEnabled = true;
-            CheckBox_Quilt.IsEnabled = true;
+            CheckBox5.IsEnabled = true;
+            CheckBox7.IsEnabled = true;
             List1.Clear();
         }
     }
 
     private void Forge_Click(object? sender, RoutedEventArgs e)
     {
-        if (CheckBox_Forge.IsChecked == true)
+        if (CheckBox5.IsChecked == true)
         {
-            CheckBox_Fabric.IsEnabled = false;
-            CheckBox_Fabric.IsChecked = false;
-            CheckBox_Quilt.IsEnabled = false;
-            CheckBox_Quilt.IsChecked = false;
+            CheckBox6.IsEnabled = false;
+            CheckBox6.IsChecked = false;
+            CheckBox7.IsEnabled = false;
+            CheckBox7.IsChecked = false;
             Button3_Click(sender, e);
         }
         else
         {
             ComboBox2.IsEnabled = false;
-            CheckBox_Fabric.IsEnabled = true;
-            CheckBox_Quilt.IsEnabled = true;
+            CheckBox6.IsEnabled = true;
+            CheckBox7.IsEnabled = true;
             List1.Clear();
         }
     }
@@ -276,19 +282,19 @@ public partial class Tab1Control : UserControl
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(Obj.Version))
         {
-            CheckBox_Forge.IsEnabled = true;
+            CheckBox5.IsEnabled = true;
         }
 
         list = await GameBinding.GetFabricSupportVersion();
         if (list != null && list.Contains(Obj.Version))
         {
-            CheckBox_Fabric.IsEnabled = true;
+            CheckBox6.IsEnabled = true;
         }
 
         list = await GameBinding.GetQuiltSupportVersion();
         if (list != null && list.Contains(Obj.Version))
         {
-            CheckBox_Quilt.IsEnabled = true;
+            CheckBox7.IsEnabled = true;
         }
         window.Info1.Close();
     }
@@ -311,8 +317,8 @@ public partial class Tab1Control : UserControl
     private void Load1()
     {
         List.Clear();
-        List.AddRange(GameBinding.GetGameVersion(CheckBox_Release.IsChecked,
-            CheckBox_Snapshot.IsChecked, CheckBox_Other.IsChecked));
+        List.AddRange(GameBinding.GetGameVersion(CheckBox2.IsChecked,
+            CheckBox3.IsChecked, CheckBox4.IsChecked));
 
         ComboBox1.SelectedItem = Obj.Version;
 
@@ -336,11 +342,11 @@ public partial class Tab1Control : UserControl
 
         if (obj.GameType == GameType.Snapshot)
         {
-            CheckBox_Snapshot.IsChecked = true;
+            CheckBox3.IsChecked = true;
         }
         else if (obj.GameType == GameType.Other)
         {
-            CheckBox_Other.IsChecked = true;
+            CheckBox4.IsChecked = true;
         }
     }
 
@@ -358,16 +364,16 @@ public partial class Tab1Control : UserControl
             switch (Obj.Loader)
             {
                 case Loaders.Forge:
-                    CheckBox_Forge.IsEnabled = true;
-                    CheckBox_Forge.IsChecked = true;
+                    CheckBox5.IsEnabled = true;
+                    CheckBox5.IsChecked = true;
                     break;
                 case Loaders.Fabric:
-                    CheckBox_Fabric.IsEnabled = true;
-                    CheckBox_Fabric.IsChecked = true;
+                    CheckBox6.IsEnabled = true;
+                    CheckBox6.IsChecked = true;
                     break;
                 case Loaders.Quilt:
-                    CheckBox_Quilt.IsEnabled = true;
-                    CheckBox_Quilt.IsChecked = true;
+                    CheckBox7.IsEnabled = true;
+                    CheckBox7.IsChecked = true;
                     break;
             }
 

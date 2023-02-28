@@ -2,12 +2,14 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -16,6 +18,7 @@ namespace ColorMC.Gui.UI.Controls.Setting;
 public partial class Tab6Control : UserControl
 {
     private bool load;
+    private List<string> uuids = new();
 
     public Tab6Control()
     {
@@ -111,18 +114,18 @@ public partial class Tab6Control : UserControl
     private async void Button6_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        var str = await BaseBinding.OpSave(window, App.GetLanguage("SettingWindow.Tab6.Info1"), ".json", "ui.json");
+        var str = await BaseBinding.SaveFile(window, FileType.UI, null);
         if (str == null)
             return;
 
-        var file = str.GetPath();
-
-        if (File.Exists(file))
+        if (str == false)
         {
-            File.Delete(file);
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab6.Error3"));
+            return;
         }
 
-        File.WriteAllBytes(file, BaseBinding.GetUIJson());
+        window.Info2.Show(App.GetLanguage("SettingWindow.Tab6.Info4"));
+        return;
     }
 
     private void Save2()
@@ -140,20 +143,17 @@ public partial class Tab6Control : UserControl
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        var res = await BaseBinding.OpFile(window,
-            App.GetLanguage("SettingWindow.Tab6.Info2"),
-            new string[] { "*.json" },
-            App.GetLanguage("SettingWindow.Tab6.Info3"));
-        if (res.Any())
+        var res = await BaseBinding.OpFile(window, FileType.UI);
+        if (res != null)
         {
-            TextBox3.Text = res[0].GetPath();
+            TextBox3.Text = res;
         }
     }
 
     private void Save1()
     {
         ConfigBinding.SetServerCustom(CheckBox3.IsChecked == true,
-            ComboBox1.SelectedItem as string);
+            uuids[ComboBox1.SelectedIndex]);
     }
 
     private void CheckBox3_Click(object? sender, RoutedEventArgs e)
@@ -192,7 +192,17 @@ public partial class Tab6Control : UserControl
     {
         load = true;
 
-        ComboBox1.Items = from item in GameBinding.GetGames() select item.Name;
+        var list = from item in GameBinding.GetGames() select (item.UUID, item.Name);
+        var list1 = new List<string>();
+
+        uuids.Clear();
+        foreach (var item in list)
+        {
+            list1.Add(item.Name);
+            uuids.Add(item.UUID);
+        }
+
+        ComboBox1.Items = list1;
 
         var config = ConfigBinding.GetAllConfig().Item2?.ServerCustom;
 
@@ -209,7 +219,7 @@ public partial class Tab6Control : UserControl
             ColorPicker1.Color = ColorSel.MotdColor.ToColor();
             ColorPicker2.Color = ColorSel.MotdBackColor.ToColor();
 
-            ComboBox1.SelectedItem = config.GameName;
+            ComboBox1.SelectedIndex = uuids.IndexOf(config.GameName);
 
             Switch();
         }

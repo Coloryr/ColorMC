@@ -291,35 +291,18 @@ public partial class Tab5Control : UserControl
         }
     }
 
-    private void Button_Add4_Click(object? sender, RoutedEventArgs e)
-    {
-        AddPack(PackType.HMCL);
-    }
-
-    private void Button_Add3_Click(object? sender, RoutedEventArgs e)
-    {
-        AddPack(PackType.MMC);
-    }
-
-    private void Button_Add2_Click(object? sender, RoutedEventArgs e)
-    {
-        AddPack(PackType.CurseForge);
-    }
-
-    private void Button_Add1_Click(object? sender, RoutedEventArgs e)
-    {
-        AddPack(PackType.ColorMC);
-    }
-
     private async void AddPack(PackType type)
     {
         var window = (VisualRoot as HelloWindow)!;
         add = false;
-        var name = await SelectPack();
-        if (name == null)
-            return;
 
         window.Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
+        var name = await SelectPack();
+        if (name == null)
+        {
+            window.Info1.Close();
+            return;
+        }
         var res = await GameBinding.AddPack(name, type, TextBox_Input1.Text, null);
         window.Info1.Close();
         if (res.Item1)
@@ -335,16 +318,7 @@ public partial class Tab5Control : UserControl
     private async Task<string?> SelectPack()
     {
         var window = (VisualRoot as HelloWindow)!;
-        var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("AddGameWindow.Info13"),
-            new string[] { "*.zip", "*.mrpack" },
-            App.GetLanguage("AddGameWindow.Info15"));
-        if (file.Any())
-        {
-            return file[0].GetPath();
-        }
-
-        return null;
+        return await BaseBinding.OpFile(window, FileType.ModPack);
     }
 
     private void Other_Click(object? sender, RoutedEventArgs e)

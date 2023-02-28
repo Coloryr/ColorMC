@@ -118,7 +118,7 @@ public partial class ItemControl : UserControl
         }
         else
         {
-            if (BaseBinding.Games.ContainsValue(obj))
+            if (BaseBinding.IsGameRun(obj))
             {
                 Button_Launch.IsEnabled = false;
             }

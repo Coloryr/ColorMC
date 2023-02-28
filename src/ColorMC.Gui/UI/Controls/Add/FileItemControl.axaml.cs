@@ -10,6 +10,7 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using System;
 using System.IO;
 using System.Threading;
@@ -28,7 +29,7 @@ public partial class FileItemControl : UserControl
         DoubleTapped += CurseForgeControl_DoubleTapped;
         PointerPressed += FileItemControl_PointerPressed;
 
-        Image_Logo.Source = App.GameIcon;
+        Image1.Source = App.GameIcon;
     }
 
     private void FileItemControl_PointerPressed(object? sender,
@@ -36,22 +37,11 @@ public partial class FileItemControl : UserControl
     {
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            if (Data.SourceType == SourceType.CurseForge)
-            {
-                new UrlFlyout((Data.Data as CurseForgeObj.Data)!.links.websiteUrl).ShowAt(this, true);
-            }
-            else if (Data.SourceType == SourceType.Modrinth)
-            {
-                var obj = (Data.Data as ModrinthSearchObj.Hit)!;
-                new UrlFlyout(Data.FileType switch
-                {
-                    FileType.ModPack => "https://modrinth.com/modpack/",
-                    FileType.Shaderpack => "https://modrinth.com/shaders/",
-                    FileType.Resourcepack => "https://modrinth.com/resourcepacks/",
-                    FileType.DataPacks => "https://modrinth.com/datapacks/",
-                    _ => "https://modrinth.com/mod/"
-                } + obj.project_id).ShowAt(this, true);
-            }
+            var url = Data.GetUrl();
+            if (url == null)
+                return;
+
+            new UrlFlyout(url).ShowAt(this, true);
         }
     }
 
@@ -108,18 +98,18 @@ public partial class FileItemControl : UserControl
         Label3.Content = data.DownloadCount;
         Label4.Content = DateTime.Parse(data.ModifiedDate);
 
-        if (Image_Logo.Source != App.GameIcon)
+        if (Image1.Source != App.GameIcon)
         {
-            (Image_Logo.Source as Bitmap)?.Dispose();
+            (Image1.Source as Bitmap)?.Dispose();
 
-            Image_Logo.Source = App.GameIcon;
+            Image1.Source = App.GameIcon;
         }
 
         if (data.Logo != null)
         {
             try
             {
-                BaseClient.Poll(data.Logo, (data1) =>
+                BaseBinding.HttpPoll(data.Logo, (data1) =>
                 {
                     if (cancel.IsCancellationRequested)
                         return;
@@ -127,7 +117,7 @@ public partial class FileItemControl : UserControl
                     var bitmap = new Bitmap(data1);
                     Dispatcher.UIThread.Post(() =>
                     {
-                        Image_Logo.Source = bitmap;
+                        Image1.Source = bitmap;
                     });
                 }, cancel.Token);
             }
@@ -145,11 +135,11 @@ public partial class FileItemControl : UserControl
     {
         cancel.Cancel();
 
-        if (Image_Logo.Source != App.GameIcon)
+        if (Image1.Source != App.GameIcon)
         {
-            (Image_Logo.Source as Bitmap)?.Dispose();
+            (Image1.Source as Bitmap)?.Dispose();
 
-            Image_Logo.Source = App.GameIcon;
+            Image1.Source = App.GameIcon;
         }
 
         cancel.Dispose();

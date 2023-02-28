@@ -77,22 +77,19 @@ public partial class Tab4Control : UserControl
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("GameEditWindow.Tab4.Info7"),
-            new string[] { "*.jar" },
-           App.GetLanguage("GameEditWindow.Tab4.Info8"));
+        var file = await BaseBinding.AddFile(window, Obj, FileType.Mod);
 
-        if (file.Any() == true)
+        if (file == null)
+            return;
+
+        if (file == false)
         {
-            var list = new List<string>();
-            foreach (var item in file)
-            {
-                list.Add(item.GetPath());
-            }
-            GameBinding.AddMods(Obj, list);
-            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
-            Load();
+            window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Error2"));
+            return;
         }
+
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        Load();
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -260,7 +257,7 @@ public partial class Tab4Control : UserControl
                     Name = item.name,
                     Version = item.version,
                     Local = item.Local,
-                    Author = item.authorList.Make(),
+                    Author = item.authorList.MakeString(),
                     Url = item.url,
                     Loader = item.Loader.GetName(),
                     Enable = item.Disable

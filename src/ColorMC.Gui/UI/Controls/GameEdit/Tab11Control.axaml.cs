@@ -43,7 +43,7 @@ public partial class Tab11Control : UserControl
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        BaseBinding.OpUrl(Obj.GetShaderpacksPath());
+        BaseBinding.OpPath(Obj, PathType.ShaderpacksPath);
     }
 
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
@@ -68,18 +68,11 @@ public partial class Tab11Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var res = await BaseBinding.OpFile(window,
-            App.GetLanguage("GameEditWindow.Tab11.Info1"),
-            new string[] { "*.zip" },
-            App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
-
-        if (!res.Any())
-        {
+        var res = await BaseBinding.AddFile(window, Obj, FileType.Shaderpack);
+        if (res == null)
             return;
-        }
 
-        var res1 = GameBinding.AddShaderpack(Obj, res);
-        if (!res1)
+        if (res == false)
         {
             window.Info2.Show(App.GetLanguage("Error12"));
             return;
@@ -139,9 +132,6 @@ public partial class Tab11Control : UserControl
     public void Delete(ShaderpackDisplayObj obj)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var list = List.ToList();
-        list.Remove(obj);
-
         obj.Shaderpack.Delete();
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();

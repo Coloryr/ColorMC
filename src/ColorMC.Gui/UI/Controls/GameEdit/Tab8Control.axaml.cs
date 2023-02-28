@@ -41,7 +41,7 @@ public partial class Tab8Control : UserControl
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-
+        BaseBinding.OpPath(Obj, PathType.ResourcepackPath);
     }
 
     private void Button_R1_Click(object? sender, RoutedEventArgs e)
@@ -57,21 +57,18 @@ public partial class Tab8Control : UserControl
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.OpFile(window,
-            App.GetLanguage("GameEditWindow.Tab8.Info2"),
-            new string[] { "*.zip" },
-            App.GetLanguage("GameEditWindow.Tab8.Info7"));
-        if (file.Any())
+        var file = await BaseBinding.AddFile(window, Obj, FileType.Resourcepack);
+        if (file == null)
+            return;
+
+        if (file == false)
         {
-            var res = await GameBinding.AddResourcepack(Obj, file[0].GetPath());
-            if (!res)
-            {
-                window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
-                return;
-            }
-            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
-            Load();
+            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab8.Error1"));
+            return;
         }
+
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        Load();
     }
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)

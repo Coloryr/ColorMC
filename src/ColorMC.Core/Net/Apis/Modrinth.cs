@@ -146,7 +146,9 @@ public static class Modrinth
         }
     }
 
-    public static async Task<List<ModrinthGameVersionObj>?> GetGameVersion()
+    private static List<string>? ModrinthGameVersions;
+
+    public static async Task<List<ModrinthGameVersionObj>?> GetGameVersions()
     {
         try
         {
@@ -172,5 +174,30 @@ public static class Modrinth
             Logs.Error("get fail", e);
             return null;
         }
+    }
+
+    public static async Task<List<string>?> GetGameVersion()
+    {
+        if (ModrinthGameVersions != null)
+        {
+            return ModrinthGameVersions;
+        }
+
+        var list = await GetGameVersions();
+        if (list == null)
+        {
+            return null;
+        }
+
+        var list1 = new List<string>
+        {
+            ""
+        };
+
+        list1.AddRange(from item in list select item.version);
+
+        ModrinthGameVersions = list1;
+
+        return list1;
     }
 }

@@ -16,13 +16,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Language\en-us.json" />
-    <None Remove="Resources\Language\zh-cn.json" />
+    <None Remove="Resources\Language\en-us" />
+    <None Remove="Resources\Language\zh-cn" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Language\en-us.json" />
-    <EmbeddedResource Include="Resources\Language\zh-cn.json" />
+    <EmbeddedResource Include="Resources\Language\zh-cn" />
+    <EmbeddedResource Include="Resources\Language\en-us" />
   </ItemGroup>
 
   <ItemGroup>

@@ -104,21 +104,18 @@ public partial class Tab5Control : UserControl
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.OpFile(window!,
-            App.GetLanguage("GameEditWindow.Tab5.Info2"),
-            new string[] { "*.zip" },
-            App.GetLanguage("GameEditWindow.Tab5.Info8"));
-        if (file.Any())
+        var file = await BaseBinding.AddFile(window, Obj, FileType.World);
+        if (file == null)
+            return;
+
+        if (file == false)
         {
-            var res = await GameBinding.AddWorld(Obj, file[0].GetPath());
-            if (!res)
-            {
-                window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
-                return;
-            }
-            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
-            Load();
+            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Error2"));
+            return;
         }
+
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        Load();
     }
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
@@ -152,38 +149,28 @@ public partial class Tab5Control : UserControl
 
     public async void Export(WorldDisplayObj obj)
     {
-        var Window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.OpSave(Window,
-            App.GetLanguage("GameEditWindow.Tab5.Info2"), ".zip", "world.zip");
+        var window = (VisualRoot as GameEditWindow)!;
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info4"));
+        var file = await BaseBinding.SaveFile(window, FileType.World, new object[]
+            { obj });
+        window.Info1.Close();
         if (file == null)
             return;
-
-        Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info4"));
-        bool error = false;
-        try
+        
+        if (file == false)
         {
-            await GameBinding.ExportWorld(obj.World, file.GetPath());
-        }
-        catch (Exception e)
-        {
-            Logs.Error(App.GetLanguage("GameEditWindow.Tab5.Error1"), e);
-            error = true;
-        }
-        Window.Info1.Close();
-        if (error)
-        {
-            Window.Info.Show(App.GetLanguage("GameEditWindow.Tab5.Error1"));
+            window.Info.Show(App.GetLanguage("GameEditWindow.Tab5.Error1"));
         }
         else
         {
-            Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info3"));
+            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info3"));
         }
     }
 
     public async void Delete(WorldDisplayObj obj)
     {
-        var Window = (VisualRoot as GameEditWindow)!;
-        var res = await Window!.Info.ShowWait(
+        var window = (VisualRoot as GameEditWindow)!;
+        var res = await window!.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab5.Info1"), obj.Name));
         if (!res)
         {
@@ -191,7 +178,7 @@ public partial class Tab5Control : UserControl
         }
 
         GameBinding.DeleteWorld(obj.World);
-        Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         Load();
     }
 
@@ -209,13 +196,13 @@ public partial class Tab5Control : UserControl
 
     private async void Load()
     {
-        var Window = (VisualRoot as GameEditWindow)!;
-        Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
+        var window = (VisualRoot as GameEditWindow)!;
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
         List.Clear();
         ListBox_Items.Children.Clear();
 
         var res = await GameBinding.GetWorlds(Obj!);
-        Window.Info1.Close();
+        window.Info1.Close();
         foreach (var item in res)
         {
             var con = new WorldControl();

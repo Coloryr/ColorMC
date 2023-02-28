@@ -18,17 +18,17 @@
                     Width="250"
                     HorizontalAlignment="Center" />
                 <CheckBox
-                    Name="CheckBox_Release"
+                    Name="CheckBox2"
                     Width="80"
                     Margin="10,0,0,0"
                     Content="{setting:Localize AddGameWindow.Text6}"
                     IsChecked="True" />
                 <CheckBox
-                    Name="CheckBox_Snapshot"
+                    Name="CheckBox3"
                     Width="80"
                     Content="{setting:Localize AddGameWindow.Text7}" />
                 <CheckBox
-                    Name="CheckBox_Other"
+                    Name="CheckBox4"
                     Width="80"
                     Content="{setting:Localize AddGameWindow.Text8}" />
                 <Button
@@ -49,18 +49,18 @@
                     Width="250"
                     IsEnabled="False" />
                 <CheckBox
-                    Name="CheckBox_Forge"
+                    Name="CheckBox5"
                     Width="80"
                     Margin="10,0,0,0"
                     Content="Forge"
                     IsEnabled="False" />
                 <CheckBox
-                    Name="CheckBox_Fabric"
+                    Name="CheckBox6"
                     Width="80"
                     Content="Fabric"
                     IsEnabled="False" />
                 <CheckBox
-                    Name="CheckBox_Quilt"
+                    Name="CheckBox7"
                     Width="80"
                     Content="Quilt"
                     IsEnabled="False" />

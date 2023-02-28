@@ -68,17 +68,12 @@ public partial class Tab12Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var res = await BaseBinding.OpFile(window,
-            App.GetLanguage("GameEditWindow.Tab12.Info1"),
-            new string[] { "*" + Schematic.Name1, "*" + Schematic.Name2 },
-            App.GetLanguage("GameEditWindow.Tab12.Info2"));
-        if (!res.Any())
-        {
-            return;
-        }
+        var res = await BaseBinding.AddFile(window, Obj, FileType.Schematic);
 
-        var res1 = GameBinding.AddSchematic(Obj, res);
-        if (!res1)
+        if (res == null)
+            return;
+
+        if (res == false)
         {
             window.Info2.Show(App.GetLanguage("Error12"));
             return;
@@ -138,8 +133,6 @@ public partial class Tab12Control : UserControl
     public void Delete(SchematicDisplayObj obj)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        var list = List.ToList();
-        list.Remove(obj);
 
         obj.Schematic.Delete();
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));

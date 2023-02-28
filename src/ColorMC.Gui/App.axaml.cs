@@ -25,9 +25,6 @@ namespace ColorMC.Gui;
 
 public partial class App : Application
 {
-    public const string DrapType = "Game";
-    private static readonly Dictionary<string, string> Language = new();
-
     public App()
     {
         Name = "ColorMC";
@@ -69,18 +66,15 @@ public partial class App : Application
     public static Bitmap GameIcon { get; private set; }
     public static WindowIcon? Icon { get; private set; }
 
+    private static readonly Language Language = new();
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
     public static string GetLanguage(string key)
-    {
-        if (Language.TryGetValue(key, out var res1))
-            return res1!;
-
-        return key;
-    }
+        => Language.GetLanguage(key);
 
     public override async void OnFrameworkInitializationCompleted()
     {
@@ -158,24 +152,9 @@ public partial class App : Application
             LanguageType.en_us => "ColorMC.Gui.Resource.Language.en-us",
             _ => "ColorMC.Gui.Resource.Language.zh-cn"
         };
-        var names = assm.GetManifestResourceNames();
-        using var item = assm.GetManifestResourceStream(name);
-        if (item == null)
-        {
-            return;
-        }
+        using var item = assm.GetManifestResourceStream(name)!;
 
-        Language.Clear();
-        var xmlDoc = new XmlDocument();
-        xmlDoc.Load(item);
-        foreach (XmlNode item1 in xmlDoc.DocumentElement!.ChildNodes)
-        {
-            if (item1.Name == "String")
-            {
-                Language.Add(item1.Attributes!.GetNamedItem("Key")!.Value!,
-                    item1.FirstChild!.Value!);
-            }
-        }
+        Language.Load(item);
     }
 
     public static byte[] GetFile(string name)

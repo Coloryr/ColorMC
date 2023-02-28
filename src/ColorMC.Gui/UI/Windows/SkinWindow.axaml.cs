@@ -1255,7 +1255,8 @@ void main()
         {
             // We can use `GL.GetShaderInfoLog(shader)` to get information about the error.
             var infoLog = GL.GetShaderInfoLog(shader);
-            Console.WriteLine($"Error occurred whilst compiling Shader({shader}).\n\n{infoLog}");
+            App.ShowError(App.GetLanguage("SkinWindow.Error2"),
+                new Exception($"({shader}).\n{infoLog}"));
         }
     }
 
@@ -1270,7 +1271,7 @@ void main()
         {
             // We can use `GL.GetProgramInfoLog(program)` to get information about the error.
             GL.GetProgramInfoLog(program, out var error);
-            App.ShowError("着色程序错误", new Exception(error));
+            App.ShowError(App.GetLanguage("SkinWindow.Error1"), new Exception(error));
         }
     }
 

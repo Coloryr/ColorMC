@@ -67,7 +67,7 @@ public partial class AddJavaWindow : Window
     {
         Dispatcher.UIThread.Post(() =>
         {
-            Info1.NextText("ÕýÔÚ½âÑ¹");
+            Info1.NextText(App.GetLanguage("AddJavaWindow.Info5"));
         });
     }
 

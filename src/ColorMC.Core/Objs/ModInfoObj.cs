@@ -1,9 +1,6 @@
-﻿namespace ColorMC.Core.Objs;
+﻿using ColorMC.Core.LaunchPath;
 
-public enum SourceType
-{
-    CurseForge, Modrinth
-}
+namespace ColorMC.Core.Objs;
 
 /// <summary>
 /// ModPack信息
