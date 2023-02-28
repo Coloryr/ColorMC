@@ -9,7 +9,6 @@ using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.ObjectModel;
-using System.Text.Encodings.Web;
 using System.Threading;
 using System.Web;
 

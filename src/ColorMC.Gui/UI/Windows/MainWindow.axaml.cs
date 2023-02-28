@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
-using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
@@ -544,7 +543,7 @@ public partial class MainWindow : Window, IBaseWindow
 
     public async void Copy(GameSettingObj obj)
     {
-        await Info3.ShowEdit(App.GetLanguage("MainWindow.Info23"), 
+        await Info3.ShowEdit(App.GetLanguage("MainWindow.Info23"),
             obj.Name + App.GetLanguage("MainWindow.Info24"));
         if (Info3.Cancel)
             return;

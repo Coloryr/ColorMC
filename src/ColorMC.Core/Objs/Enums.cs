@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs;
+﻿namespace ColorMC.Core.Objs;
 
 public enum SourceType
 {
@@ -18,7 +12,7 @@ public enum PathType
 
 public enum FileType
 {
-    ModPack = 0, Mod, World, Shaderpack, Resourcepack, DataPacks, Schematic, 
+    ModPack = 0, Mod, World, Shaderpack, Resourcepack, DataPacks, Schematic,
     Java, Game, Config, AuthConfig, Pic, UI
 }
 

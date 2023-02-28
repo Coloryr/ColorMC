@@ -1,6 +1,5 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using System.IO;
 
 namespace ColorMC.Core.Game;
 
@@ -20,7 +19,7 @@ public static class Screenshots
             Directory.CreateDirectory(dir);
             return list;
         }
-            
+
         list.AddRange(Directory.GetFiles(dir));
         return list;
     }

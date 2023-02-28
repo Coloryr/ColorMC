@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace ColorMC.Gui;
 

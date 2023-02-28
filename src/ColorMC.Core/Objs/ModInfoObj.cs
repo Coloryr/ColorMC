@@ -1,6 +1,4 @@
-﻿using ColorMC.Core.LaunchPath;
-
-namespace ColorMC.Core.Objs;
+﻿namespace ColorMC.Core.Objs;
 
 /// <summary>
 /// ModPack信息

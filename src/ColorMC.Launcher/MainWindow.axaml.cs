@@ -1,8 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
 using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace ColorMC.Launcher;
 

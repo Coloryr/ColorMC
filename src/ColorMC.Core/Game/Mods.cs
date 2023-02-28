@@ -166,7 +166,7 @@ public static class Mods
                         Loader = Loaders.Fabric,
                         V2 = true,
                         modid = obj1["id"]?.ToString(),
-                        name = obj1["name"]?.ToString() ?? 
+                        name = obj1["name"]?.ToString() ??
                             LanguageHelper.GetName("Core.Game.Error6"),
                         description = obj1["description"]?.ToString(),
                         version = obj1["version"]?.ToString(),

@@ -5,7 +5,6 @@ using Avalonia.Data.Converters;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -346,7 +345,7 @@ public partial class Tab6Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab6.Info2"));
-        var file = await BaseBinding.SaveFile(window, FileType.Game, new object[] 
+        var file = await BaseBinding.SaveFile(window, FileType.Game, new object[]
             { Obj, FilesPageViewModel.GetUnSelectItems(), PackType.ColorMC });
         window.Info1.Close();
         if (file == null)

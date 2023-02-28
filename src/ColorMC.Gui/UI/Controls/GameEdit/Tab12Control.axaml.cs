@@ -11,7 +11,6 @@ using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

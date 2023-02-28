@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
@@ -10,7 +9,6 @@ using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -48,7 +46,7 @@ public partial class Tab5Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         var info = new DirectoryInfo(Obj.GetWorldBackupPath());
-        if(!info.Exists)
+        if (!info.Exists)
         {
             info.Create();
         }
@@ -156,7 +154,7 @@ public partial class Tab5Control : UserControl
         window.Info1.Close();
         if (file == null)
             return;
-        
+
         if (file == false)
         {
             window.Info.Show(App.GetLanguage("GameEditWindow.Tab5.Error1"));
@@ -231,7 +229,7 @@ public partial class Tab5Control : UserControl
     {
         var Window = (VisualRoot as GameEditWindow)!;
         Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info9"));
-        var res =await GameBinding.BackupWorld(obj.World);
+        var res = await GameBinding.BackupWorld(obj.World);
         Window.Info1.Close();
         if (res)
         {
