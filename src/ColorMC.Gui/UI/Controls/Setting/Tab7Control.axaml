@@ -14,8 +14,8 @@
             VerticalAlignment="Center"
             Orientation="Horizontal">
             <Image
-                Width="120"
-                Height="120"
+                Width="160"
+                Height="160"
                 Margin="0,0,20,0"
                 HorizontalAlignment="Left"
                 Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
@@ -31,7 +31,7 @@
                         Content="1.0.0"
                         FontSize="20" />
                     <Label
-                        Margin="20,0,0,0"
+                        Margin="10,0,0,0"
                         Content="Gui:"
                         FontSize="20" />
                     <Label

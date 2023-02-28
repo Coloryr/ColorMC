@@ -18,7 +18,7 @@ public enum CoreRunState
 
 public static class ColorMCCore
 {
-    public const string Version = "1.0.0";
+    public const string Version = "A14:2023.02.28";
 
     /// <summary>
     /// 错误显示回调
