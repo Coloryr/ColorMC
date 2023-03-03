@@ -18,7 +18,7 @@ public enum CoreRunState
 
 public static class ColorMCCore
 {
-    public const string Version = "A14:2023.02.28";
+    public const string Version = "A14:230303";
 
     /// <summary>
     /// 错误显示回调
@@ -90,6 +90,10 @@ public static class ColorMCCore
     /// 解压Java时
     /// </summary>
     public static Action? JavaUnzip { internal get; set; }
+    /// <summary>
+    /// 没有Java时
+    /// </summary>
+    public static Action? NoJava { internal get; set; }
 
     /// <summary>
     /// 新运行

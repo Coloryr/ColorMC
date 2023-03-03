@@ -1060,6 +1060,7 @@ public static class Launch
             if (jvm == null)
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
+                ColorMCCore.NoJava?.Invoke();
                 return null;
             }
 

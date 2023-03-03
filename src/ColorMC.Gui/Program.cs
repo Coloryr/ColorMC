@@ -9,7 +9,7 @@ namespace ColorMC.Gui;
 
 public class ColorMCGui
 {
-    public const string Version = "A14:2023.02.28";
+    public const string Version = "A14:230303";
 
     public static Action InitDone { get; set; }
 

@@ -18,6 +18,7 @@ public partial class Tab4Control : UserControl
         CheckBox3.Click += CheckBox2_Click;
         CheckBox4.Click += CheckBox2_Click;
         CheckBox5.Click += CheckBox2_Click;
+        CheckBox6.Click += CheckBox6_Click;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
@@ -33,6 +34,11 @@ public partial class Tab4Control : UserControl
         Input4.PropertyChanged += Input3_PropertyChanged;
 
         ComboBox1.Items = JavaBinding.GetGCTypes();
+    }
+
+    private void CheckBox6_Click(object? sender, RoutedEventArgs e)
+    {
+        ConfigBinding.SetLaunchCloseConfig(CheckBox6.IsChecked == true);
     }
 
     private void CheckBox1_Click(object? sender, RoutedEventArgs e)
@@ -139,6 +145,11 @@ public partial class Tab4Control : UserControl
             CheckBox3.IsChecked = config.Item1.GameCheck.CheckAssets;
             CheckBox4.IsChecked = config.Item1.GameCheck.CheckLib;
             CheckBox5.IsChecked = config.Item1.GameCheck.CheckMod;
+        }
+
+        if (config.Item2 != null)
+        {
+            CheckBox6.IsChecked = config.Item2.CloseBeforeLaunch;
         }
 
         load = false;

@@ -178,6 +178,11 @@ public partial class MainWindow : Window, IBaseWindow
             item.SetLaunch(true);
             Info2.Show(App.GetLanguage("MainWindow.Info2"));
         }
+
+        if (GuiConfigUtils.Config.CloseBeforeLaunch)
+        {
+            Info1.Show(App.GetLanguage("MainWindow.Info26"));
+        }
     }
 
     public void GameClose(GameSettingObj obj)

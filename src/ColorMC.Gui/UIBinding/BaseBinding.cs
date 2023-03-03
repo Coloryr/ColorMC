@@ -44,9 +44,18 @@ public static class BaseBinding
         ColorMCCore.ProcessLog = PLog;
         ColorMCCore.GameLog = PLog;
         ColorMCCore.LanguageReload = Change;
+        ColorMCCore.NoJava = NoJava;
 
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
+    }
+
+    public static void NoJava()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            App.ShowSetting(SettingWindowType.SetJava);
+        });
     }
 
     public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title,
@@ -183,6 +192,20 @@ public static class BaseBinding
         if (res != null)
         {
             UserBinding.AddLockUser(obj1);
+
+            if (GuiConfigUtils.Config.CloseBeforeLaunch)
+            {
+                _ = Task.Run(() =>
+                {
+                    res.WaitForInputIdle();
+
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        App.Close();
+                    });
+                });
+            }
+
             res.Exited += (a, b) =>
             {
                 RunGames.Remove(obj.UUID);

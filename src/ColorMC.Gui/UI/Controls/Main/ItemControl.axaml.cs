@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.Threading;
@@ -82,7 +83,7 @@ public partial class ItemControl : UserControl
 
     private void Button_Setting_Click(object? sender, RoutedEventArgs e)
     {
-        App.ShowSetting();
+        App.ShowSetting(SettingWindowType.Normal);
     }
 
     private void Button_Add1_Click(object? sender, RoutedEventArgs e)

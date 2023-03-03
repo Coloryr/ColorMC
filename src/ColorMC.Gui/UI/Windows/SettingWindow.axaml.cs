@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Setting;
 using System;
 using System.Threading;
@@ -147,5 +148,15 @@ public partial class SettingWindow : Window
     public void Tab5Load()
     {
         tab5.Load();
+    }
+
+    public void GoTo(SettingWindowType type)
+    {
+        switch(type)
+        {
+            case SettingWindowType.SetJava:
+                Tabs.SelectedIndex = 2;
+                break;
+        }
     }
 }

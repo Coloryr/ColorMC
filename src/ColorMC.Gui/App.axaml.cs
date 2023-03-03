@@ -348,7 +348,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowSetting()
+    public static void ShowSetting(SettingWindowType type)
     {
         if (SettingWindow != null)
         {
@@ -359,6 +359,8 @@ public partial class App : Application
             SettingWindow = new();
             SettingWindow.Show();
         }
+
+        SettingWindow.GoTo(type);
     }
 
     public static void ShowSkin()

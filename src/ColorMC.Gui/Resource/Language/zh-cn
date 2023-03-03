@@ -55,6 +55,7 @@
 	<String Key="MainWindow.Info23">修改实例名字</String>
 	<String Key="MainWindow.Info24">的副本</String>
 	<String Key="MainWindow.Info25">复制完成</String>
+	<String Key="MainWindow.Info26">正在等待窗口启动</String>
 
 	<String Key="UserWindow.Title">ColorMC 用户列表</String>
 	<String Key="UserWindow.DataGrid.Text1">使用</String>
@@ -171,6 +172,7 @@
 	<String Key="SettingWindow.Tab4.Text15">检查资源文件</String>
 	<String Key="SettingWindow.Tab4.Text16">检查运行库文件</String>
 	<String Key="SettingWindow.Tab4.Text17">检查Mod文件</String>
+	<String Key="SettingWindow.Tab4.Text18">游戏启动后关闭启动器</String>
 
 	<String Key="SettingWindow.Tab5.Text1">添加Java路径</String>
 	<String Key="SettingWindow.Tab5.Text2">Java名字</String>
