@@ -71,4 +71,6 @@ public record GuiConfigObj
 
     public string FontName { get; set; }
     public bool FontDefault { get; set; }
+
+    public bool CloseBeforeLaunch { get; set; }
 }

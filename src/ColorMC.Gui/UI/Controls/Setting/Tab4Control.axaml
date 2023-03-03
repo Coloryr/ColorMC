@@ -34,6 +34,8 @@
                         Content="{setting:Localize SettingWindow.Tab4.Text17}" />
                 </StackPanel>
 
+                <CheckBox Name="CheckBox6" Content="{setting:Localize SettingWindow.Tab4.Text18}" />
+
                 <!--  Jvm参数  -->
 
                 <Label Content="{setting:Localize SettingWindow.Tab4.Text1}" />

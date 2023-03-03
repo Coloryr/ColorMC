@@ -478,7 +478,7 @@ public partial class CustomWindow : Window
         }
         else if (name == "Setting")
         {
-            App.ShowSetting();
+            App.ShowSetting(SettingWindowType.Normal);
         }
     }
 

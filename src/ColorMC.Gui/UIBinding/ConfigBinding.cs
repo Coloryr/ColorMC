@@ -194,4 +194,11 @@ public static class ConfigBinding
 
         App.OnPicUpdate();
     }
+
+    public static void SetLaunchCloseConfig(bool value) 
+    {
+        GuiConfigUtils.Config.CloseBeforeLaunch = value;
+
+        GuiConfigUtils.Save();
+    }
 }
