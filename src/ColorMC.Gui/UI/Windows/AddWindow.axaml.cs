@@ -210,6 +210,12 @@ public partial class AddWindow : Window, IAddWindow
         List1.Clear();
         List3.Clear();
 
+        if(now == FileType.Optifne)
+        {
+            OptifineOpen();
+            return;
+        }
+
         List2 = GameBinding.GetSourceList(now);
         List2.ForEach(item => List3.Add(item.GetName()));
 
@@ -218,7 +224,21 @@ public partial class AddWindow : Window, IAddWindow
 
     public void Go(FileType file)
     {
-        ComboBox1.SelectedIndex = (int)file - 1;
+        if (file == FileType.Optifne)
+        {
+            OptifineOpen();
+        }
+        else
+        {
+            ComboBox1.SelectedIndex = (int)file - 1;
+        }
+    }
+
+    private void OptifineOpen()
+    {
+        App.CrossFade300.Start(null, Optifine, CancellationToken.None);
+
+        Optifine.Load();
     }
 
     public void SetGame(GameSettingObj obj)
@@ -226,6 +246,8 @@ public partial class AddWindow : Window, IAddWindow
         Obj = obj;
 
         Head.Title = Title = string.Format(App.GetLanguage("AddWindow.Title"), obj.Name);
+
+        Optifine.SetGame(obj);
     }
 
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -416,6 +438,13 @@ public partial class AddWindow : Window, IAddWindow
 
         ScrollViewer1.ScrollToHome();
         Info1.Close();
+    }
+
+    public void OptifineClsoe()
+    {
+        App.CrossFade300.Start(Optifine, null, CancellationToken.None);
+
+        ComboBox1.SelectedIndex = 0;
     }
 
     private async void Load1()

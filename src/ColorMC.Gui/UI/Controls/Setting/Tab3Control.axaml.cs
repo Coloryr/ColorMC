@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
 using ColorMC.Core.Net;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using System.Globalization;
 

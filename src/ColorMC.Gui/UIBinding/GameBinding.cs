@@ -956,6 +956,7 @@ public static class GameBinding
             FileType.Shaderpack.GetName(),
             FileType.Resourcepack.GetName(),
             FileType.DataPacks.GetName(),
+            FileType.Optifne.GetName()
         };
     }
 
@@ -1320,5 +1321,71 @@ public static class GameBinding
         }
 
         return null;
+    }
+
+    public static async Task<List<OptifineDisplayObj>?> GetOptifine()
+    {
+        var res = await OptifineHelper.GetOptifineVersion();
+        if (res.Item1 == null)
+            return null;
+
+        var list = new List<OptifineDisplayObj>();
+        res.Item2!.ForEach(item =>
+        {
+            list.Add(new()
+            {
+                MC = item.MCVersion,
+                Version = item.Version,
+                Forge = item.Forge,
+                Date = item.Date,
+                Local = (SourceLocal)res.Item1,
+                Data = item
+            });
+        });
+
+        return list;
+    }
+
+    public static Task<string?> GetOptifineDownload(OptifineDisplayObj obj) 
+    {
+        return OptifineHelper.GetOptifineDownloadUrl(obj.Data);
+    }
+
+    public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineDisplayObj item) 
+    {
+        DownloadItem item1;
+        if (item.Local == SourceLocal.Offical)
+        {
+            var data = await GetOptifineDownload(item);
+            if (data == null)
+            {
+                return (false, "获取Optifine下载信息失败");
+            }
+
+            item1 = new()
+            {
+                Name = item.Version,
+                Local = obj.GetModsPath() + "/" + item.Data.FileName,
+                Overwrite = true,
+                Url = data
+            };
+        }
+        else
+        {
+            item1 = new()
+            {
+                Name = item.Version,
+                Local = obj.GetModsPath() + "/" + item.Data.FileName,
+                Overwrite = true,
+                Url = item.Data.Url1
+            };
+        }
+
+        var res = await DownloadManager.Start(new() { item1 });
+        if (!res) 
+        {
+            return (false, "下载失败");
+        }
+        return (true, null);
     }
 }

@@ -13,7 +13,7 @@ public enum PathType
 public enum FileType
 {
     ModPack = 0, Mod, World, Shaderpack, Resourcepack, DataPacks, Schematic,
-    Java, Game, Config, AuthConfig, Pic, UI
+    Java, Game, Config, AuthConfig, Pic, UI, Optifne
 }
 
 public enum PackType
@@ -24,4 +24,11 @@ public enum PackType
 public enum LanguageType
 {
     zh_cn, en_us
+}
+
+public enum SourceLocal
+{
+    Offical = 0,
+    BMCLAPI = 1,
+    MCBBS = 2
 }
