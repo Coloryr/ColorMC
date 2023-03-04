@@ -30,6 +30,11 @@ public partial class GameControl : UserControl
         Image2.IsVisible = state;
     }
 
+    public void SetLoad(bool state)
+    {
+        Image3.IsVisible = state;
+    }
+
     public void Reload()
     {
         TextBlock1.Text = Obj.Name;

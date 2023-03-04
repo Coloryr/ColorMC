@@ -39,6 +39,16 @@
             IsVisible="False"
             Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
             Stretch="UniformToFill" />
+        <Image
+            Name="Image3"
+            Width="32"
+            Height="32"
+            Margin="0,40,0,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            IsVisible="False"
+            Source="resm:ColorMC.Gui.Resource.Pic.load.png"
+            Stretch="UniformToFill" />
     </Grid>
 
 </UserControl>
