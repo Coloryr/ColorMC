@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
@@ -17,6 +18,7 @@ public partial class ItemControl : UserControl
     private MainWindow Window;
     private LoginObj? Obj1;
     private GameSettingObj? Obj;
+    private bool Launch;
     public ItemControl()
     {
         InitializeComponent();
@@ -119,7 +121,7 @@ public partial class ItemControl : UserControl
         }
         else
         {
-            if (BaseBinding.IsGameRun(obj))
+            if (BaseBinding.IsGameRun(obj) || Launch)
             {
                 Button_Launch.IsEnabled = false;
             }
@@ -129,6 +131,11 @@ public partial class ItemControl : UserControl
             }
             Button_Edit.IsEnabled = true;
         }
+    }
+
+    public void SetLaunch(bool launch)
+    {
+        Launch = launch;
     }
 
     public void SetWindow(MainWindow window)

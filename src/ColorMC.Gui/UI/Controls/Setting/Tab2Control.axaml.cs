@@ -197,7 +197,7 @@ public partial class Tab2Control : UserControl
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2 != null)
         {
-            Input1.Value = (decimal?)config.Item2.Radius;
+            Input1.Value = config.Item2.Radius;
             TextBox1.Text = config.Item2.BackImage;
             Slider1.Value = config.Item2.BackEffect;
             Slider2.Value = config.Item2.BackTran;

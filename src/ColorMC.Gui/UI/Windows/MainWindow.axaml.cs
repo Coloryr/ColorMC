@@ -157,15 +157,19 @@ public partial class MainWindow : Window, IBaseWindow
             return;
 
         launch = true;
+        ItemInfo.SetLaunch(true);
         //Info1.Show(App.GetLanguage("MainWindow.Info3"));
         var item = Obj!;
         var game = item.Obj;
+        item.SetLaunch(false);
+        item.SetLoad(true);
         Info2.Show(App.GetLanguage(string.Format("开始启动实例 {0}", game.Name)));
         var res = await GameBinding.Launch(game, debug);
         Head.Title1 = null;
         //await Info1.Close();
         if (res.Item1 == false)
         {
+            item.SetLoad(false);
             item.SetLaunch(false);
             switch (Last)
             {
@@ -191,6 +195,7 @@ public partial class MainWindow : Window, IBaseWindow
             }
         }
         launch = false;
+        ItemInfo.SetLaunch(false);
     }
 
     public void GameClose(GameSettingObj obj)
