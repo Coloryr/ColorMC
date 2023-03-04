@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Objs.Loader;
+﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 

@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Add"
     Title="{setting:Localize AddWindow.Title}"
     Width="800"
     Height="450"
@@ -225,6 +226,8 @@
                     </DataGrid>
                 </Grid>
             </Grid>
+
+            <views1:OptifineControl Name="Optifine" IsVisible="False" />
 
             <views:Info1Control Name="Info1" IsVisible="False" />
             <views:Info4Control Name="Info" IsVisible="False" />

@@ -26,6 +26,7 @@ public partial class Tab1Control : UserControl
         Button4.Click += Button4_Click;
         Button5.Click += Button5_Click;
         Button6.Click += Button6_Click;
+        Button7.Click += Button7_Click;
 
         CheckBox5.Click += Forge_Click;
         CheckBox6.Click += Fabric_Click;
@@ -43,6 +44,11 @@ public partial class Tab1Control : UserControl
         ComboBox1.Items = List;
         ComboBox2.Items = List1;
         ComboBox3.Items = List2;
+    }
+
+    private void Button7_Click(object? sender, RoutedEventArgs e)
+    {
+        App.ShowAdd(Obj, FileType.Optifne);
     }
 
     private void Button6_Click(object? sender, RoutedEventArgs e)

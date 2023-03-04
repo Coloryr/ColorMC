@@ -1,15 +1,9 @@
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System.Collections.Concurrent;
 using System.Net;
 
 namespace ColorMC.Core.Net;
-
-public enum SourceLocal
-{
-    Offical = 0,
-    BMCLAPI = 1,
-    MCBBS = 2
-}
 
 public static class BaseClient
 {
@@ -18,8 +12,8 @@ public static class BaseClient
     public static HttpClient DownloadClient { get; private set; }
     public static HttpClient LoginClient { get; private set; }
 
-    private static Thread[] threads = new Thread[5];
-    private static ConcurrentBag<(string, CancellationToken, Action<Stream>)> tasks = new();
+    private static readonly Thread[] threads = new Thread[5];
+    private static readonly ConcurrentBag<(string, CancellationToken, Action<Stream>)> tasks = new();
     private static bool run;
 
     /// <summary>

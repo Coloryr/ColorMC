@@ -55,3 +55,9 @@ UI调整 调整Tabs边框 Tabs滚动条 okl
 添加找不到Java打开Java设置界面 okl
 修复bug okl
 添加macos的快捷键 okl
+
+2023.3.4(A15)
+添加optifine安装
+修改linux用户运行位置
+添加服务器文件同步
+添加更新说明文件

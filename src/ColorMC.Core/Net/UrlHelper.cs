@@ -1,4 +1,6 @@
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Objs.Optifine;
 
 namespace ColorMC.Core.Net;
 
@@ -288,5 +290,24 @@ public static class UrlHelper
         }
 
         return (false, null);
+    }
+
+    public static string Optifine(SourceLocal? local) 
+    {
+        return local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}/optifine/versionList",
+            SourceLocal.MCBBS => $"{MCBBS}/optifine/versionList",
+            _ => "https://optifine.net/downloads"
+        };
+    }
+
+    public static string OptifineDownload(OptifineListObj obj, SourceLocal? local) 
+    {
+        return local switch
+        {
+            SourceLocal.MCBBS => $"{MCBBS}/optifine/{obj.mcversion}/HD_U/{obj.patch}",
+            _ => $"{BMCLAPI}/optifine/{obj.mcversion}/HD_U/{obj.patch}"
+        };
     }
 }

@@ -472,6 +472,7 @@
 	<String Key="AddGameWindow.Text13">在线搜索整合包</String>
 	<String Key="AddGameWindow.Text14">添加分组</String>
 	<String Key="AddGameWindow.Text15">导入压缩包</String>
+	<String Key="AddGameWindow.Text16">下载Optifine</String>
 	<String Key="AddGameWindow.Error1">没有实例名字</String>
 	<String Key="AddGameWindow.Error2">没有选择版本</String>
 	<String Key="AddGameWindow.Error3">导入错误</String>
@@ -699,6 +700,7 @@
 	<String Key="ToolTip.Text40">保存当前配置文件</String>
 	<String Key="ToolTip.Text41">重新获取配置文件列表</String>
 	<String Key="ToolTip.Text42">从备份的世界中还原</String>
+	<String Key="ToolTip.Text43">从在线下载Optifine的Mod</String>
 	
 	<String Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单</String>
 	<String Key="Tips.Text2">双击可切换账户，右键可以打开账户菜单</String>

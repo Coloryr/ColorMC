@@ -231,6 +231,7 @@
 	<String Key="FileType.Shaderpack">光影包</String>
 	<String Key="FileType.Resourcepack">资源包</String>
 	<String Key="FileType.DataPacks">数据包</String>
+	<String Key="FileType.Optifne">Optifne高清优化</String>
 	<String Key="FileType.Other">未知的资源类型</String>
 	
 	<String Key="AuthlibInjector.Error1">AuthlibInjector信息获取失败</String>
