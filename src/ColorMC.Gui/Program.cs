@@ -11,7 +11,9 @@ public class ColorMCGui
 {
     public const string Version = "A14:230303";
 
-    public static Action InitDone { get; set; }
+    public static Action InitDone { get; private set; }
+    public static Func<Task<bool?>> Check { get; private set; }
+    public static Action Update { get; private set; }
 
     public const string Font = "resm:ColorMC.Launcher.Resource.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 
@@ -61,6 +63,16 @@ public class ColorMCGui
     public static void Quit()
     {
         App.Close();
+    }
+
+    public static void SetCheck(Func<Task<bool?>> action) 
+    {
+        Check = action;
+    }
+
+    public static void SetUpdate(Action action)
+    {
+        Update = action;
     }
 
     public static AppBuilder BuildAvaloniaApp()

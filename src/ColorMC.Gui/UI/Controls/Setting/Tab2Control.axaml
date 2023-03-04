@@ -18,7 +18,7 @@
                     <ComboBox Name="ComboBox2" Width="200" />
                 </StackPanel>
 
-                <Label Margin="0,5,0,5" Content="{setting:Localize SettingWindow.Tab2.Text24}" />
+                <Label Margin="5,5,0,5" Content="{setting:Localize SettingWindow.Tab2.Text24}" />
 
                 <!--  字体  -->
 
@@ -103,7 +103,7 @@
                         Content="{setting:Localize Button.Set}" />
                 </StackPanel>
 
-                <Label Content="{setting:Localize SettingWindow.Tab2.Text21}" />
+                <Label Margin="5,5,0,5" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
 
                 <!--  圆角  -->
 
@@ -212,7 +212,7 @@
                         VerticalAlignment="Center"
                         IsEnabled="False" />
                 </StackPanel>
-                <Label Content="{setting:Localize SettingWindow.Tab2.Text8}" />
+                <Label Margin="5,5,0,5" Content="{setting:Localize SettingWindow.Tab2.Text8}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

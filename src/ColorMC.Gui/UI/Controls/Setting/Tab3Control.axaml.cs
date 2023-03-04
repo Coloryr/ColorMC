@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.Globalization;
 
@@ -20,7 +21,9 @@ public partial class Tab3Control : UserControl
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
+        Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
+        Button3.Click += Button3_Click;
 
         Input1.ParsingNumberStyle = NumberStyles.Integer;
         Input1.PropertyChanged += Input1_PropertyChanged;
@@ -35,6 +38,47 @@ public partial class Tab3Control : UserControl
         CheckBox3.Click += CheckBox1_Click;
         CheckBox4.Click += CheckBox1_Click;
         CheckBox5.Click += CheckBox1_Click;
+    }
+
+    private void Button3_Click(object? sender, RoutedEventArgs e)
+    {
+        var window = (VisualRoot as SettingWindow)!;
+        if (ColorMCGui.Update == null)
+        {
+            window.Info.Show("无法进行更新");
+            return;
+        }
+
+        ColorMCGui.Update();
+    }
+
+    private async void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        var window = (VisualRoot as SettingWindow)!;
+        if (ColorMCGui.Update == null || ColorMCGui.Check == null)
+        {
+            window.Info.Show("无法进行检查");
+            return;
+        }
+        window.Info1.Show("正在进行更新检查");
+        var res = await ColorMCGui.Check();
+        if (res == null)
+        {
+            window.Info.Show("检查更新失败");
+            return;
+        }
+        if (res == true)
+        {
+            var res1 = await window.Info.ShowWait("检测到新版本，是否要更新");
+            if (res1)
+            {
+                ColorMCGui.Update();
+            }
+        }
+        else
+        {
+            window.Info.Show("已经是最新版了");
+        }
     }
 
     private void CheckBox1_Click(object? sender, RoutedEventArgs e)

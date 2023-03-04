@@ -71,16 +71,7 @@ public class Updater
                         if (!res)
                             return;
 
-                        File.Delete($"{AppContext.BaseDirectory}ColorMC.Core.dll");
-                        File.Delete($"{AppContext.BaseDirectory}ColorMC.Core.pdb");
-                        File.Delete($"{AppContext.BaseDirectory}ColorMC.Gui.dll");
-                        File.Delete($"{AppContext.BaseDirectory}ColorMC.Gui.pdb");
-
-                        new Mutex(true, "ColorMC-Launcher");
-
-                        Program.Launch();
-
-                        Program.Quit();
+                        StartUpdate();
                     }
                 });
             }
@@ -89,6 +80,42 @@ public class Updater
 
             }
         }).Start();
+    }
+
+    public void StartUpdate()
+    {
+        File.Delete($"{AppContext.BaseDirectory}ColorMC.Core.dll");
+        File.Delete($"{AppContext.BaseDirectory}ColorMC.Core.pdb");
+        File.Delete($"{AppContext.BaseDirectory}ColorMC.Gui.dll");
+        File.Delete($"{AppContext.BaseDirectory}ColorMC.Gui.pdb");
+
+        new Mutex(true, "ColorMC-Launcher");
+
+        Program.Launch();
+
+        Program.Quit();
+    }
+
+    public async Task<bool?> CheckOne()
+    {
+        try
+        {
+            var data = await Client.GetStringAsync(url + "version.json");
+            var obj = JsonConvert.DeserializeObject<VersionObj>(data)!;
+
+            if (obj == null)
+            {
+                return null;
+            }
+
+            return obj.Version != version.Version;
+        }
+        catch
+        {
+
+        }
+
+        return null;
     }
 
     public async Task Download(Action<int> state)

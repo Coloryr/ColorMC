@@ -24,6 +24,7 @@ internal class Program
     public delegate Task<bool> IN2();
     public delegate void IN3(Action action);
     public delegate AppBuilder IN4();
+    public delegate void IN5(Func<Task<bool?>> action);
 
     public static IN1 CheckFailCall;
     public static IN1 Quit;
@@ -31,6 +32,8 @@ internal class Program
     public static IN2 HaveUpdate;
     public static IN4 BuildApp;
     public static IN MainCall;
+    public static IN5 SetCheck;
+    public static IN3 SetUpdate;
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -131,10 +134,18 @@ internal class Program
 
         BuildApp = (Delegate.CreateDelegate(typeof(IN4),
             mis.GetMethod("BuildAvaloniaApp")!) as IN4)!;
+
+        SetCheck = (Delegate.CreateDelegate(typeof(IN5),
+            mis.GetMethod("SetCheck")!) as IN5)!;
+
+        SetUpdate = (Delegate.CreateDelegate(typeof(IN3),
+            mis.GetMethod("SetUpdate")!) as IN3)!;
     }
 
     private static void Init()
     {
+        SetCheck(updater.CheckOne);
+        SetUpdate(updater.StartUpdate);
         updater.Check();
     }
 
