@@ -81,9 +81,25 @@
 
             </StackPanel>
 
-            <Label Content="{setting:Localize SettingWindow.Tab3.Text12}" />
+            <Label Margin="5,5,0,5" Content="{setting:Localize SettingWindow.Tab3.Text12}" />
 
-            <CheckBox Name="CheckBox5" Content="检查自动更新" />
+            <Label Content="启动器更新设置" />
+
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Name="CheckBox5" Content="检查自动更新" />
+                <Button
+                    Name="Button1"
+                    Width="120"
+                    Height="25"
+                    Margin="5"
+                    Content="手动检查更新" />
+                <Button
+                    Name="Button3"
+                    Width="120"
+                    Height="25"
+                    Margin="5"
+                    Content="强制下载更新" />
+            </StackPanel>
         </StackPanel>
 
         <Button
