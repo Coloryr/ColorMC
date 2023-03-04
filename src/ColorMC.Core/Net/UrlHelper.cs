@@ -209,8 +209,8 @@ public static class UrlHelper
     {
         return local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}/mirrors/authlib-injector/artifacts.json",
-            SourceLocal.MCBBS => $"{MCBBS}/mirrors/authlib-injector/artifacts.json",
+            SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifacts.json",
+            SourceLocal.MCBBS => $"{MCBBS}mirrors/authlib-injector/artifacts.json",
             _ => $"https://authlib-injector.yushi.moe/artifacts.json"
         };
     }
@@ -222,8 +222,8 @@ public static class UrlHelper
     {
         return local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}/mirrors/authlib-injector/artifact/{obj.build_number}.json",
-            SourceLocal.MCBBS => $"{MCBBS}/mirrors/authlib-injector/artifact/{obj.build_number}.json",
+            SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifact/{obj.build_number}.json",
+            SourceLocal.MCBBS => $"{MCBBS}mirrors/authlib-injector/artifact/{obj.build_number}.json",
             _ => $"https://authlib-injector.yushi.moe/artifact/{obj.build_number}.json"
         };
     }
@@ -235,8 +235,8 @@ public static class UrlHelper
     {
         return local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}/mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
-            SourceLocal.MCBBS => $"{MCBBS}/mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
+            SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
+            SourceLocal.MCBBS => $"{MCBBS}mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
             _ => $"https://authlib-injector.yushi.moe/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar"
         };
     }
@@ -248,8 +248,8 @@ public static class UrlHelper
     {
         return local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}/forge/minecraft",
-            SourceLocal.MCBBS => $"{MCBBS}/forge/minecraft",
+            SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft",
+            SourceLocal.MCBBS => $"{MCBBS}forge/minecraft",
             _ => "https://files.minecraftforge.net/net/minecraftforge/forge/"
         };
     }
@@ -261,9 +261,9 @@ public static class UrlHelper
     {
         return local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}/forge/minecraft/",
-            SourceLocal.MCBBS => $"{MCBBS}/forge/minecraft/",
-            _ => "https://files.minecraftforge.net/net/minecraftforge/forge/index_"
+            SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
+            SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
+            _ => $"https://files.minecraftforge.net/net/minecraftforge/forge/index_{version}.html"
         };
     }
 
@@ -275,17 +275,17 @@ public static class UrlHelper
             if (old.StartsWith(originServers2))
             {
                 return (true, old.Replace(originServers2,
-                    random.Next() % 2 == 0 ? $"{BMCLAPI}/maven" : $"{MCBBS}/maven"));
+                    random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
             else if (old.StartsWith(originServers1))
             {
                 return (true, old.Replace(originServers1,
-                   random.Next() % 2 == 0 ? $"{BMCLAPI}/maven" : $"{MCBBS}/maven"));
+                   random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
             else if (old.StartsWith(originServers3))
             {
                 return (true, old.Replace(originServers3,
-                   random.Next() % 2 == 0 ? $"{BMCLAPI}/maven" : $"{MCBBS}/maven"));
+                   random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
         }
 
@@ -296,8 +296,8 @@ public static class UrlHelper
     {
         return local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}/optifine/versionList",
-            SourceLocal.MCBBS => $"{MCBBS}/optifine/versionList",
+            SourceLocal.BMCLAPI => $"{BMCLAPI}optifine/versionList",
+            SourceLocal.MCBBS => $"{MCBBS}optifine/versionList",
             _ => "https://optifine.net/downloads"
         };
     }
@@ -306,7 +306,7 @@ public static class UrlHelper
     {
         return local switch
         {
-            SourceLocal.MCBBS => $"{MCBBS}/optifine/{obj.mcversion}/HD_U/{obj.patch}",
+            SourceLocal.MCBBS => $"{MCBBS}optifine/{obj.mcversion}/HD_U/{obj.patch}",
             _ => $"{BMCLAPI}/optifine/{obj.mcversion}/HD_U/{obj.patch}"
         };
     }

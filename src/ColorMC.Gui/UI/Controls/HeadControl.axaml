@@ -16,11 +16,18 @@
             Background="{setting:Colors Main}"
             CornerRadius="10,10,0,0" />
         <Grid Margin="5,5,5,0">
-            <Label
-                Name="TitleShow"
-                Margin="10,0,0,0"
-                Content="{Binding Title}"
-                Foreground="{setting:Colors ButtonFont}" />
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Name="TitleShow"
+                    Margin="10,0,0,0"
+                    Content="{Binding Title}"
+                    Foreground="{setting:Colors ButtonFont}" />
+                <Label
+                    Name="TitleShow1"
+                    Margin="10,0,0,0"
+                    Content="{Binding Title1}"
+                    Foreground="{setting:Colors ButtonFont}" />
+            </StackPanel>
             <StackPanel
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"

@@ -103,7 +103,7 @@
                     Height="25"
                     Margin="0,0,0,0"
                     Content="{setting:Localize AddGameWindow.Text16}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text37}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text43}"
                     ToolTip.VerticalOffset="-30" />
                 <CheckBox
                     Name="CheckBox1"

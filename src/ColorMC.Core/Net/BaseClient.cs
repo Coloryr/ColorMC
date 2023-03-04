@@ -7,7 +7,7 @@ namespace ColorMC.Core.Net;
 
 public static class BaseClient
 {
-    public static SourceLocal Source { get; set; }
+    public static SourceLocal Source { get; private set; }
 
     public static HttpClient DownloadClient { get; private set; }
     public static HttpClient LoginClient { get; private set; }
@@ -29,6 +29,8 @@ public static class BaseClient
             Logs.Info(string.Format(LanguageHelper.GetName("Core.Http.Info6"),
                ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort));
         }
+
+        Source = ConfigUtils.Config.Http.Source;
 
         for (int a = 0; a < 5; a++)
         {

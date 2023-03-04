@@ -508,7 +508,7 @@
 	<String Key="AddModPackWindow.Text4">排序</String>
 	<String Key="AddModPackWindow.Text5">页数</String>
 	<String Key="AddModPackWindow.Text6">选择版本文件</String>
-	<String Key="AddModPackWindow.Text7">页数：</String>
+	<String Key="AddModPackWindow.Text7">页数</String>
 	<String Key="AddModPackWindow.Text8">搜索</String>
 	<String Key="AddModPackWindow.Text9">安装所选</String>
 	<String Key="AddModPackWindow.Text10">获取版本</String>

@@ -107,7 +107,6 @@ public static class ConfigUtils
         BaseClient.Init();
         JvmPath.AddList(Config.JavaList);
         LanguageHelper.Change(Config.Language);
-        BaseClient.Source = Config.Http.Source;
 
         Save();
 
