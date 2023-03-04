@@ -149,7 +149,9 @@ public partial class Tab2Control : UserControl
 
     private void Save()
     {
-        GameBinding.SetGameJvmMemArg(Obj, (uint)Input1.Value, (uint)Input2.Value);
+        GameBinding.SetGameJvmMemArg(Obj, 
+            Input1.Value == null ? null : (uint)Input1.Value, 
+            Input2.Value == null ? null : (uint)Input2.Value);
     }
 
     private void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -253,13 +255,13 @@ public partial class Tab2Control : UserControl
     {
         GameBinding.SetGameJvmArg(Obj, new()
         {
-            GC = (GCType)ComboBox1.SelectedIndex,
+            GC = ComboBox1.SelectedIndex == -1 ? null : (GCType)ComboBox1.SelectedIndex,
             JvmArgs = TextBox3.Text,
             GameArgs = TextBox4.Text,
             GCArgument = TextBox1.Text,
             JavaAgent = TextBox2.Text,
-            MaxMemory = (uint)Input2.Value,
-            MinMemory = (uint)Input1.Value
+            MaxMemory = (Input2.Value == null ? null : (uint)Input2.Value),
+            MinMemory = (Input1.Value == null ? null : (uint)Input1.Value),
         });
     }
 
@@ -297,7 +299,7 @@ public partial class Tab2Control : UserControl
         var config = Obj.JvmArg;
         if (config != null)
         {
-            ComboBox1.SelectedIndex = (int)config.GC;
+            ComboBox1.SelectedIndex = config.GC == null ? -1 : (int)config.GC;
 
             Input1.Value = config.MinMemory;
             Input2.Value = config.MaxMemory;

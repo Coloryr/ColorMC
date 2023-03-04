@@ -80,9 +80,6 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;
-
-            //var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            //using var asset = assets!.Open(new Uri(ProgramGui.Font));
         }
 
         try

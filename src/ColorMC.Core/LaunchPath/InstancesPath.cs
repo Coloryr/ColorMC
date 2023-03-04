@@ -772,12 +772,14 @@ public static class InstancesPath
                         using var stream2 = new MemoryStream();
                         bool find = false;
                         bool find1 = false;
+                        string path = "";
                         foreach (ZipEntry e in zFile)
                         {
                             if (e.IsFile && !find && e.Name.EndsWith("mmc-pack.json"))
                             {
                                 using var stream = zFile.GetInputStream(e);
                                 await stream.CopyToAsync(stream1);
+                                path = e.Name[..^Path.GetFileName(e.Name).Length];
                                 find = true;
                             }
 
@@ -891,8 +893,8 @@ public static class InstancesPath
                             if (e.IsFile)
                             {
                                 using var stream = zFile.GetInputStream(e);
-                                string file = Path.GetFullPath(game.GetBasePath() +
-                    e.Name.Substring(game.Name.Length));
+                                string file = Path.GetFullPath(game.GetBasePath() + "/" +
+                    e.Name[path.Length..]);
                                 FileInfo info2 = new(file);
                                 info2.Directory?.Create();
                                 using FileStream stream3 = new(file, FileMode.Create,

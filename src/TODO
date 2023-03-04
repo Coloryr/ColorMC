@@ -47,4 +47,11 @@ UI调整 调整Tabs边框 Tabs滚动条 okl
 添加存档备份 okl
 
 2023.2.27
-添加复制实例
+添加复制实例 okl
+
+2023.3.4
+修复HMCL和MMC导出包不一致的bug okl
+添加启动游戏后退出启动器 okl
+添加找不到Java打开Java设置界面 okl
+修复bug okl
+添加macos的快捷键 okl
