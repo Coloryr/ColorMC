@@ -155,7 +155,7 @@ public partial class SettingWindow : Window
         switch(type)
         {
             case SettingWindowType.SetJava:
-                Tabs.SelectedIndex = 2;
+                Tabs.SelectedIndex = 3;
                 break;
         }
     }

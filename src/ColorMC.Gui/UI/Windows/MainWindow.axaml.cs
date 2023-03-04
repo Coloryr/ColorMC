@@ -156,9 +156,10 @@ public partial class MainWindow : Window, IBaseWindow
         var item = Obj!;
         var game = item.Obj;
         var res = await GameBinding.Launch(game, debug);
-        Info1.Close();
+        await Info1.Close();
         if (res.Item1 == false)
         {
+            item.SetLaunch(false);
             switch (Last)
             {
                 case LaunchState.LoginFail:
@@ -177,11 +178,10 @@ public partial class MainWindow : Window, IBaseWindow
             Launchs.Add(game, item);
             item.SetLaunch(true);
             Info2.Show(App.GetLanguage("MainWindow.Info2"));
-        }
-
-        if (GuiConfigUtils.Config.CloseBeforeLaunch)
-        {
-            Info1.Show(App.GetLanguage("MainWindow.Info26"));
+            if (GuiConfigUtils.Config.CloseBeforeLaunch)
+            {
+                Info1.Show(App.GetLanguage("MainWindow.Info26"));
+            }
         }
     }
 

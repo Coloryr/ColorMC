@@ -168,7 +168,8 @@ public static class BaseBinding
                 UserBinding.RemoveLockUser(obj1);
                 if (e.InnerException is LaunchException launch)
                 {
-                    temp = launch.Message;
+                    temp = string.IsNullOrWhiteSpace(launch.Message) 
+                        ? App.GetLanguage("Error6"): launch.Message;
                     if (launch.Ex != null)
                     {
                         Logs.Error(temp, launch.Ex);
@@ -197,12 +198,23 @@ public static class BaseBinding
             {
                 _ = Task.Run(() =>
                 {
-                    res.WaitForInputIdle();
-
-                    Dispatcher.UIThread.Post(() =>
+                    Task.Delay(1000);
+                    try
                     {
-                        App.Close();
-                    });
+                        res.WaitForInputIdle();
+
+                        if (res.HasExited)
+                            return;
+
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            App.Close();
+                        });
+                    }
+                    catch
+                    { 
+                        
+                    }
                 });
             }
 
@@ -224,6 +236,7 @@ public static class BaseBinding
                     string file = obj.GetLogLatestFile();
                     if (!File.Exists(file))
                     {
+                        App.ShowError(App.GetLanguage("UserBinding.Error2"), "找不到日志文件");
                         return;
                     }
 

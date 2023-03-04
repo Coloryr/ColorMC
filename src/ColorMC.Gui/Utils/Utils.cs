@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Avalonia.Input;
 
 namespace ColorMC.Gui;
 
@@ -388,6 +389,34 @@ public static partial class UIUtils
         }
 
         window.FindGoodPos();
+
+        if (SystemInfo.Os == OsType.MacOS)
+        {
+            window.KeyDown += Window_KeyDown;
+        }
+    }
+
+    private static void Window_KeyDown(object? sender, KeyEventArgs e)
+    {
+        var window = (sender as Window)!;
+        if (e.KeyModifiers == KeyModifiers.Control)
+        {
+            switch (e.Key)
+            {
+                case Key.OemComma:
+                    App.ShowSetting( SettingWindowType.Normal);
+                    break;
+                case Key.Q:
+                    App.Close();
+                    break;
+                case Key.M:
+                    window.WindowState = WindowState.Minimized;
+                    break;
+                case Key.W:
+                    window.Close();
+                    break;
+            }
+        }
     }
 
     public static void FindGoodPos(this Window windows)

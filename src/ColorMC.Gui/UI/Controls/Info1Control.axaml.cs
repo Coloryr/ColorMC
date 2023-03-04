@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -28,21 +29,20 @@ public partial class Info1Control : UserControl
 
     private void Cancel_Click(object? sender, RoutedEventArgs e)
     {
+        Display = false;
+
         Button_Cancel.IsEnabled = false;
         App.CrossFade300.Start(this, null, CancellationToken.None);
 
         call?.Invoke();
     }
 
-    public void Close()
+    public Task Close()
     {
-        if (!Display)
-            return;
-
         Display = false;
 
         Button_Cancel.IsEnabled = false;
-        App.CrossFade300.Start(this, null, CancellationToken.None);
+        return App.CrossFade300.Start(this, null, CancellationToken.None);
     }
 
     public void Show()
