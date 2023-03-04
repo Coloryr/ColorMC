@@ -15,6 +15,15 @@
                     Margin="5"
                     VerticalAlignment="Center"
                     Content="下载Optifine" />
+
+                <Label
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="游戏版本" />
+                <ComboBox
+                    Name="ComboBox6"
+                    Width="140"
+                    VerticalAlignment="Center" />
             </StackPanel>
 
             <Button

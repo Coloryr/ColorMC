@@ -199,7 +199,14 @@ public partial class AddWindow : Window, IAddWindow
         if (!display)
             return;
 
+        if (ComboBox1.SelectedIndex == 5)
+        {
+            OptifineOpen();
+            return;
+        }
+
         load = true;
+
         now = (FileType)(ComboBox1.SelectedIndex + 1);
         ComboBox3.Items = null;
         ComboBox4.Items = null;
@@ -209,12 +216,6 @@ public partial class AddWindow : Window, IAddWindow
 
         List1.Clear();
         List3.Clear();
-
-        if(now == FileType.Optifne)
-        {
-            OptifineOpen();
-            return;
-        }
 
         List2 = GameBinding.GetSourceList(now);
         List2.ForEach(item => List3.Add(item.GetName()));

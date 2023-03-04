@@ -424,7 +424,7 @@ public static class ForgeHelper
             if (local == SourceLocal.BMCLAPI
                 || local == SourceLocal.MCBBS)
             {
-                string url = UrlHelper.ForgeVersions(version, local) + version;
+                string url = UrlHelper.ForgeVersions(version, local);
                 var data = await BaseClient.GetString(url);
                 var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data);
                 if (obj == null)
@@ -438,7 +438,7 @@ public static class ForgeHelper
             }
             else
             {
-                string url = UrlHelper.ForgeVersions(version, SourceLocal.Offical) + version + ".html";
+                string url = UrlHelper.ForgeVersions(version, SourceLocal.Offical);
                 var data = await BaseClient.DownloadClient.GetAsync(url);
 
                 string? html = null;

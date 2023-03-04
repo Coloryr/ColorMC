@@ -151,7 +151,7 @@
             <Grid
                 Name="GridVersion"
                 Background="#EEEEEEEE"
-                IsVisible="False">
+                IsVisible="True">
                 <Grid Margin="0,5,0,0">
                     <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
                         <Label
@@ -159,15 +159,24 @@
                             VerticalAlignment="Center"
                             Content="{setting:Localize AddModPackWindow.Text6}" />
                         <Label
-                            Margin="20,5,5,5"
+                            Margin="5,0,0,0"
                             VerticalAlignment="Center"
                             Content="{setting:Localize AddModPackWindow.Text7}" />
                         <NumericUpDown
                             Name="Input3"
-                            Width="150"
+                            Width="120"
                             Height="30"
+                            VerticalAlignment="Center"
                             Minimum="0"
                             Value="0" />
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="游戏版本" />
+                        <ComboBox
+                            Name="ComboBox6"
+                            Width="140"
+                            VerticalAlignment="Center" />
                     </StackPanel>
 
                     <Button
