@@ -120,6 +120,9 @@
     <Compile Update="UI\Controls\GameEdit\Tab11Control.axaml.cs">
       <DependentUpon>Tab11Control.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Controls\Info6Control.axaml.cs">
+      <DependentUpon>Info6Control.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\Info5Control.axaml.cs">
       <DependentUpon>Info5Control.axaml</DependentUpon>
     </Compile>

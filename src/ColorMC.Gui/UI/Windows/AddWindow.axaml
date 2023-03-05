@@ -151,11 +151,11 @@
             <Grid
                 Name="GridVersion"
                 Background="#EEEEEEEE"
-                IsVisible="True">
+                IsVisible="False">
                 <Grid Margin="0,5,0,0">
                     <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
                         <Label
-                            Margin="5"
+                            Margin="5,0,0,0"
                             VerticalAlignment="Center"
                             Content="{setting:Localize AddModPackWindow.Text6}" />
                         <Label

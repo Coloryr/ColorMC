@@ -1,8 +1,10 @@
 using Avalonia;
 using Avalonia.Media;
 using ColorMC.Core;
+using ColorMC.Core.Utils;
 using System;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
@@ -11,8 +13,9 @@ public class ColorMCGui
 {
     public const string Version = "A14:230303";
 
+    public static string BaseDir { get; private set; }
     public static Action InitDone { get; private set; }
-    public static Func<Task<bool?>> Check { get; private set; }
+    public static Func<Task<(bool?, string?)>> Check { get; private set; }
     public static Action Update { get; private set; }
 
     public const string Font = "resm:ColorMC.Launcher.Resource.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
@@ -27,7 +30,13 @@ public class ColorMCGui
 
         try
         {
-            ColorMCCore.Init(AppContext.BaseDirectory);
+            SystemInfo.Init();
+
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+            BaseDir = SystemInfo.Os == OsType.Linux ? $"{path}/ColorMC/" : AppContext.BaseDirectory;
+
+            ColorMCCore.Init(BaseDir);
 
             BuildAvaloniaApp()
                  .StartWithClassicDesktopLifetime(args);
@@ -44,12 +53,12 @@ public class ColorMCGui
         InitDone = ac;
     }
 
-    public static Task<bool> HaveUpdate()
+    public static Task<bool> HaveUpdate(string data)
     {
         if (App.MainWindow == null)
             return Task.FromResult(false);
 
-        return App.MainWindow.Info.ShowWait(App.GetLanguage("Info5"));
+        return App.MainWindow.Info6.ShowWait(App.GetLanguage("Info5"), data);
     }
 
     public static void CheckUpdateFail()
@@ -65,7 +74,7 @@ public class ColorMCGui
         App.Close();
     }
 
-    public static void SetCheck(Func<Task<bool?>> action) 
+    public static void SetCheck(Func<Task<(bool?, string?)>> action) 
     {
         Check = action;
     }
@@ -77,7 +86,7 @@ public class ColorMCGui
 
     public static AppBuilder BuildAvaloniaApp()
     {
-        GuiConfigUtils.Init(AppContext.BaseDirectory);
+        GuiConfigUtils.Init(BaseDir);
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();

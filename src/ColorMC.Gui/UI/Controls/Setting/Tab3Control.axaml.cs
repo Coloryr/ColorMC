@@ -62,14 +62,14 @@ public partial class Tab3Control : UserControl
         }
         window.Info1.Show("正在进行更新检查");
         var res = await ColorMCGui.Check();
-        if (res == null)
+        if (res.Item1 == null)
         {
             window.Info.Show("检查更新失败");
             return;
         }
-        if (res == true)
+        if (res.Item1 == true)
         {
-            var res1 = await window.Info.ShowWait("检测到新版本，是否要更新");
+            var res1 = await window.Info6.ShowWait("检测到新版本，是否要更新", res.Item2!);
             if (res1)
             {
                 ColorMCGui.Update();

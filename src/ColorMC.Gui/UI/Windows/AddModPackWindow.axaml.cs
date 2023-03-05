@@ -29,6 +29,11 @@ public partial class AddModPackWindow : Window, IAddWindow
     /// 数据
     /// </summary>
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
+    /// <summary>
+    /// 游戏版本
+    /// </summary>
+    private readonly ObservableCollection<string> List4 = new();
+
     private FileItemControl? Last;
     private bool load = false;
 
@@ -41,11 +46,14 @@ public partial class AddModPackWindow : Window, IAddWindow
         Border1.MakeResizeDrag(this);
 
         ComboBox4.Items = GameBinding.GetSourceList();
+        ComboBox2.Items = List4;
+        ComboBox6.Items = List4;
 
         ComboBox1.SelectionChanged += ComboBox_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox_SelectionChanged;
         ComboBox3.SelectionChanged += ComboBox_SelectionChanged;
         ComboBox4.SelectionChanged += ComboBox4_SelectionChanged;
+        ComboBox6.SelectionChanged += ComboBox6_SelectionChanged;
 
         DataGridFiles.Items = List1;
         DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
@@ -72,22 +80,28 @@ public partial class AddModPackWindow : Window, IAddWindow
         Update();
     }
 
-    private void ComboBox_SelectionChanged(object? sender,
-        SelectionChangedEventArgs e)
+    private void ComboBox6_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        Load1();
+    }
+
+    private void ComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (load)
             return;
 
+        ComboBox6.SelectedItem = ComboBox4.SelectedItem;
+
         Load();
     }
 
-    private async void ComboBox4_SelectionChanged(object? sender,
-        SelectionChangedEventArgs e)
+    private async void ComboBox4_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         load = true;
         ComboBox1.Items = null;
-        ComboBox2.Items = null;
         ComboBox3.Items = null;
+
+        List4.Clear();
 
         foreach (var item in ListBox_Items.Children)
         {
@@ -110,6 +124,7 @@ public partial class AddModPackWindow : Window, IAddWindow
 #endif
                 return;
             }
+            List4.AddRange(list);
 
             Categories.Clear();
             Categories.Add(0, "");
@@ -126,7 +141,6 @@ public partial class AddModPackWindow : Window, IAddWindow
 
             list2.AddRange(list1.Values);
 
-            ComboBox2.Items = list;
             ComboBox1.Items = list2;
 
             ComboBox1.SelectedIndex = 0;
@@ -150,6 +164,7 @@ public partial class AddModPackWindow : Window, IAddWindow
 #endif
                 return;
             }
+            List4.AddRange(list);
 
             Categories.Clear();
             Categories.Add(0, "");
@@ -166,7 +181,6 @@ public partial class AddModPackWindow : Window, IAddWindow
 
             list2.AddRange(list1.Values);
 
-            ComboBox2.Items = list;
             ComboBox1.Items = list2;
 
             ComboBox1.SelectedIndex = 0;
@@ -322,12 +336,16 @@ public partial class AddModPackWindow : Window, IAddWindow
         if (ComboBox4.SelectedIndex == 0)
         {
             Input3.IsEnabled = true;
-            list = await GameBinding.GetPackFile((SourceType)ComboBox4.SelectedIndex, (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!);
+            list = await GameBinding.GetPackFile((SourceType)ComboBox4.SelectedIndex, 
+                (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!,
+                ComboBox6.SelectedItem as string);
         }
         else if (ComboBox4.SelectedIndex == 1)
         {
             Input3.IsEnabled = false;
-            list = await GameBinding.GetPackFile((SourceType)ComboBox4.SelectedIndex, (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!);
+            list = await GameBinding.GetPackFile((SourceType)ComboBox4.SelectedIndex, 
+                (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
+                ComboBox6.SelectedItem as string);
         }
         if (list == null)
         {

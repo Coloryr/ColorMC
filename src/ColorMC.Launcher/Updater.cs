@@ -1,4 +1,5 @@
 ﻿using Avalonia.Threading;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -11,11 +12,12 @@ namespace ColorMC.Launcher;
 public record VersionObj
 {
     public string Version { get; set; }
+    public string Data { get; set; }
 }
 
 public class Updater
 {
-    private const string url = "https://coloryr.github.io/colormc/A14/";
+    private const string url = "https://coloryr.github.io/colormc/A15/";
 
     private readonly HttpClient Client;
     private readonly VersionObj version;
@@ -23,7 +25,8 @@ public class Updater
     public Updater()
     {
         Client = new();
-        Local = $"{AppContext.BaseDirectory}version.json";
+
+        Local = $"{Program.BaseDir}version.json";
         try
         {
             if (File.Exists(Local))
@@ -67,7 +70,7 @@ public class Updater
 
                     if (obj.Version != version.Version)
                     {
-                        var res = await Program.HaveUpdate();
+                        var res = await Program.HaveUpdate(obj.Data);
                         if (!res)
                             return;
 
@@ -96,7 +99,7 @@ public class Updater
         Program.Quit();
     }
 
-    public async Task<bool?> CheckOne()
+    public async Task<(bool?, string?)> CheckOne()
     {
         try
         {
@@ -105,17 +108,17 @@ public class Updater
 
             if (obj == null)
             {
-                return null;
+                return (null, null);
             }
 
-            return obj.Version != version.Version;
+            return (obj.Version != version.Version, obj.Data);
         }
         catch
         {
 
         }
 
-        return null;
+        return (null, null);
     }
 
     public async Task Download(Action<int> state)

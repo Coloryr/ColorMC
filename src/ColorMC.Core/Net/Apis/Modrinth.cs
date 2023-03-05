@@ -132,11 +132,12 @@ public static class Modrinth
         }
     }
 
-    public static async Task<List<ModrinthVersionObj>?> Version(string id)
+    public static async Task<List<ModrinthVersionObj>?> Version(string id, string? mc)
     {
         try
         {
-            var res = await BaseClient.DownloadClient.GetStringAsync($"{Url}project/{id}/version");
+            var res = await BaseClient.DownloadClient.GetStringAsync($"{Url}project/{id}/version?game_versions=[" +
+                $"{(string.IsNullOrWhiteSpace(mc) ? "" : ('"' + mc + '"'))}]");
             return JsonConvert.DeserializeObject<List<ModrinthVersionObj>>(res);
         }
         catch (Exception e)

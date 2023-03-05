@@ -354,11 +354,11 @@ public static class GameBinding
         }
     }
 
-    public static async Task<List<FileDisplayObj>?> GetPackFile(SourceType type, string id, int page, FileType type1 = FileType.ModPack)
+    public static async Task<List<FileDisplayObj>?> GetPackFile(SourceType type, string id, int page, string? mc, FileType type1 = FileType.ModPack)
     {
         if (type == SourceType.CurseForge)
         {
-            var list = await CurseForge.GetCurseForgeFiles(id, page);
+            var list = await CurseForge.GetCurseForgeFiles(id, mc, page);
             if (list == null)
                 return null;
 
@@ -383,7 +383,7 @@ public static class GameBinding
         }
         else if (type == SourceType.Modrinth)
         {
-            var list = await Modrinth.Version(id);
+            var list = await Modrinth.Version(id, mc);
             if (list == null)
                 return null;
 

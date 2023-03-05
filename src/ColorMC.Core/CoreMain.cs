@@ -111,12 +111,12 @@ public static class ColorMCCore
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
+        Directory.CreateDirectory(dir);
         LanguageHelper.Load(LanguageType.zh_cn);
         Logs.Init(dir);
         ConfigSave.Init();
         ConfigUtils.Init(dir);
         LocalMaven.Init(dir);
-        SystemInfo.Init();
         DownloadManager.Init(dir);
         JvmPath.Init(dir);
         AuthDatabase.Init(dir);

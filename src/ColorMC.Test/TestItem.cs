@@ -422,7 +422,7 @@ public static class TestItem
     {
         var list = Modrinth.GetModPackList().Result;
         var item = list.hits.First();
-        var list1 = Modrinth.Version(item.project_id).Result;
+        var list1 = Modrinth.Version(item.project_id, "").Result;
         var item1 = list1.First();
 
         InstancesPath.InstallFromModrinth(item1, null, null).Wait();

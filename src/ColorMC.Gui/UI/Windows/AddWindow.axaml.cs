@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -35,6 +36,10 @@ public partial class AddWindow : Window, IAddWindow
     /// 数据
     /// </summary>
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
+    /// <summary>
+    /// 游戏版本
+    /// </summary>
+    private readonly ObservableCollection<string> List4 = new();
 
     private FileItemControl? Last;
     private GameSettingObj Obj;
@@ -53,11 +58,15 @@ public partial class AddWindow : Window, IAddWindow
         ComboBox1.Items = GameBinding.GetAddType();
         ComboBox2.Items = List3;
 
+        ComboBox3.Items = List4;
+        ComboBox6.Items = List4;
+
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
         ComboBox3.SelectionChanged += ComboBox_SelectionChanged;
         ComboBox4.SelectionChanged += ComboBox_SelectionChanged;
         ComboBox5.SelectionChanged += ComboBox_SelectionChanged;
+        ComboBox6.SelectionChanged += ComboBox6_SelectionChanged;
 
         DataGridFiles.Items = List1;
         DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
@@ -84,6 +93,14 @@ public partial class AddWindow : Window, IAddWindow
         Update();
     }
 
+    private void ComboBox6_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (!display || load)
+            return;
+
+        Load1();
+    }
+
     private void ComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (!display || load)
@@ -99,7 +116,7 @@ public partial class AddWindow : Window, IAddWindow
 
         load = true;
 
-        ComboBox3.Items = null;
+        List4.Clear();
         ComboBox4.Items = null;
         ComboBox5.Items = null;
 
@@ -125,6 +142,7 @@ public partial class AddWindow : Window, IAddWindow
                 Info1.Close();
                 return;
             }
+            List4.AddRange(list);
 
             Categories.Clear();
             Categories.Add(0, "");
@@ -144,7 +162,15 @@ public partial class AddWindow : Window, IAddWindow
             ComboBox3.Items = list;
             ComboBox5.Items = list2;
 
-            ComboBox3.SelectedIndex = 0;
+            if (List4.Contains(Obj.Version))
+            {
+                ComboBox6.SelectedItem = ComboBox3.SelectedItem = Obj.Version;
+            }
+            else
+            {
+                ComboBox3.SelectedIndex = 0;
+            }
+
             ComboBox4.SelectedIndex = 1;
             ComboBox5.SelectedIndex = 0;
 
@@ -165,6 +191,7 @@ public partial class AddWindow : Window, IAddWindow
                 Info1.Close();
                 return;
             }
+            List4.AddRange(list);
 
             Categories.Clear();
             Categories.Add(0, "");
@@ -184,7 +211,15 @@ public partial class AddWindow : Window, IAddWindow
             ComboBox3.Items = list;
             ComboBox5.Items = list2;
 
-            ComboBox3.SelectedIndex = 0;
+            if (List4.Contains(Obj.Version))
+            {
+                ComboBox6.SelectedItem = ComboBox3.SelectedItem = Obj.Version;
+            }
+            else
+            {
+                ComboBox3.SelectedIndex = 0;
+            }
+            
             ComboBox4.SelectedIndex = 0;
             ComboBox5.SelectedIndex = 0;
 
@@ -372,8 +407,10 @@ public partial class AddWindow : Window, IAddWindow
         {
             res = type switch
             {
-                SourceType.CurseForge => await GameBinding.Download(now, Obj!, data.Data as CurseForgeObj.Data.LatestFiles),
-                SourceType.Modrinth => await GameBinding.Download(now, Obj!, data.Data as ModrinthVersionObj)
+                SourceType.CurseForge => await GameBinding.Download(now, Obj!, 
+                data.Data as CurseForgeObj.Data.LatestFiles),
+                SourceType.Modrinth => await GameBinding.Download(now, Obj!, 
+                data.Data as ModrinthVersionObj)
             };
         }
         if (res)
@@ -398,9 +435,9 @@ public partial class AddWindow : Window, IAddWindow
     private async void Load()
     {
         Info1.Show(App.GetLanguage("AddWindow.Info2"));
-        var data = await GameBinding.GetList(now, List2[ComboBox2.SelectedIndex], ComboBox3.SelectedItem as string,
-            Input1.Text, (int)Input2.Value!, ComboBox4.SelectedIndex,
-            ComboBox5.SelectedIndex < 0 ? "" :
+        var data = await GameBinding.GetList(now, List2[ComboBox2.SelectedIndex], 
+            ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!, 
+            ComboBox4.SelectedIndex, ComboBox5.SelectedIndex < 0 ? "" :
                 Categories[ComboBox5.SelectedIndex]);
 
         if (data == null)
@@ -451,18 +488,23 @@ public partial class AddWindow : Window, IAddWindow
     private async void Load1()
     {
         List1.Clear();
+
         Info1.Show(App.GetLanguage("AddWindow.Info3"));
         List<FileDisplayObj>? list = null;
         var type = List2[ComboBox2.SelectedIndex];
         if (type == SourceType.CurseForge)
         {
             Input3.IsEnabled = true;
-            list = await GameBinding.GetPackFile(type, (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!, now);
+            list = await GameBinding.GetPackFile(type, 
+                (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!, 
+                ComboBox6.SelectedItem as string ,now);
         }
         else if (type == SourceType.Modrinth)
         {
             Input3.IsEnabled = false;
-            list = await GameBinding.GetPackFile(type, (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!, now);
+            list = await GameBinding.GetPackFile(type, 
+                (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!, 
+                ComboBox6.SelectedItem as string, now);
         }
         if (list == null)
         {
