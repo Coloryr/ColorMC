@@ -428,8 +428,7 @@ public class SkinRender : Control
     }
 
     private string VertexShaderSource =>
-@"
-#version 330 core
+@"#version 330 core
 
 layout (location = 0) in vec3 a_position;
 layout (location = 1) in vec2 a_texCoord;
@@ -458,8 +457,7 @@ void main()
 ";
 
     private string FragmentShaderSource =>
-@"
-#version 330 core
+@"#version 330 core
 uniform sampler2D texture0;
 
 uniform vec3 lightColor;

@@ -51,7 +51,7 @@
 
                         <TextBlock
                             Name="Text1"
-                            Margin="2,0,0,0"
+                            Margin="2"
                             VerticalAlignment="Bottom"
                             Background="#EEEEEE"
                             Foreground="Black"

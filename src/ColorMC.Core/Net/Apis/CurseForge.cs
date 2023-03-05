@@ -280,11 +280,12 @@ public static class CurseForge
     /// <summary>
     /// 获取文件列表
     /// </summary>
-    public static async Task<CurseForgeFileObj?> GetCurseForgeFiles(string id, int page = 0)
+    public static async Task<CurseForgeFileObj?> GetCurseForgeFiles(string id, string? mc, int page = 0)
     {
         try
         {
-            string temp = $"{CurseForgeUrl}mods/{id}/files?index={page * 50}&pageSize=50";
+            mc ??= "";
+            string temp = $"{CurseForgeUrl}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,

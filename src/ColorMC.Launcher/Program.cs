@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Media;
+using ColorMC.Core.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -18,13 +19,14 @@ internal class Program
     private static Mutex mutex1;
 
     public static Updater updater = new();
+    public static string BaseDir { get; private set; }
 
     public delegate void IN(string[] args);
     public delegate void IN1();
-    public delegate Task<bool> IN2();
+    public delegate Task<bool> IN2(string data);
     public delegate void IN3(Action action);
     public delegate AppBuilder IN4();
-    public delegate void IN5(Func<Task<bool?>> action);
+    public delegate void IN5(Func<Task<(bool?, string?)>> action);
 
     public static IN1 CheckFailCall;
     public static IN1 Quit;
@@ -46,6 +48,9 @@ internal class Program
         //{
         //    Thread.Sleep(100);
         //}
+
+        var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        BaseDir = SystemInfo.Os == OsType.Linux ? $"{path}/ColorMC/" : AppContext.BaseDirectory;
 
         if (!File.Exists($"{AppContext.BaseDirectory}ColorMC.Core.dll")
             || !File.Exists($"{AppContext.BaseDirectory}ColorMC.Core.pdb")
