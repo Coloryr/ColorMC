@@ -39,6 +39,11 @@
                 Width="100"
                 Height="25"
                 Content="{setting:Localize GameEditWindow.Flyouts1.Text4}" />
+            <Button
+                Name="Button6"
+                Width="100"
+                Height="25"
+                Content="更换版本" />
         </StackPanel>
     </Grid>
 </UserControl>

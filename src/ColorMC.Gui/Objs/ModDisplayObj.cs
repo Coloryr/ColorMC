@@ -9,8 +9,15 @@ namespace ColorMC.Gui.Objs;
 public record ModDisplayObj : INotifyPropertyChanged
 {
     private bool disable { get; set; }
+    private bool _new { get; set; } = false;
     public string Name { get; set; }
-    public string Version => Obj.version;
+    public string Version
+    {
+        get
+        {
+            return Obj.version + (New ? " " + "有新版本" : "");
+        }
+    }
     public string Local => Obj.Local;
     public string Author => Obj.authorList.MakeString();
     public string Url => Obj.url;
@@ -28,6 +35,15 @@ public record ModDisplayObj : INotifyPropertyChanged
     public string PID { get; set; }
     public string FID { get; set; }
 
+    public bool New
+    {
+        get { return _new; }
+        set
+        {
+            _new = value;
+            NotifyPropertyChanged(nameof(Version));
+        }
+    }
     public ModObj Obj;
     public bool Enable
     {

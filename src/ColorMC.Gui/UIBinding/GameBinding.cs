@@ -31,6 +31,7 @@ using ColorMC.Core.Net.Apis;
 using Image = SixLabors.ImageSharp.Image;
 using Heijden.DNS;
 using System.Threading;
+using Avalonia.Threading;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -494,7 +495,7 @@ public static class GameBinding
         return list;
     }
 
-    public static async Task<List<FileDisplayObj>?> GetPackFile(SourceType type, string id, 
+    public static async Task<List<FileDisplayObj>?> GetPackFile(SourceType type, string id,
         int page, string? mc, Loaders loader, FileType type1 = FileType.ModPack)
     {
         if (type == SourceType.CurseForge)
@@ -1172,7 +1173,7 @@ public static class GameBinding
         {
             var list = now switch
             {
-                FileType.Mod => await CurseForge.GetModList(version, page, filter: filter, 
+                FileType.Mod => await CurseForge.GetModList(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -1565,8 +1566,8 @@ public static class GameBinding
             } + obj1.project_id;
         }
         else if (obj.SourceType == SourceType.FTB)
-        { 
-            
+        {
+
         }
 
         return null;
@@ -1595,12 +1596,12 @@ public static class GameBinding
         return list;
     }
 
-    public static Task<string?> GetOptifineDownload(OptifineDisplayObj obj) 
+    public static Task<string?> GetOptifineDownload(OptifineDisplayObj obj)
     {
         return OptifineHelper.GetOptifineDownloadUrl(obj.Data);
     }
 
-    public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineDisplayObj item) 
+    public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineDisplayObj item)
     {
         DownloadItem item1;
         if (item.Local == SourceLocal.Offical)
@@ -1631,7 +1632,7 @@ public static class GameBinding
         }
 
         var res = await DownloadManager.Start(new() { item1 });
-        if (!res) 
+        if (!res)
         {
             return (false, "下载失败");
         }
@@ -1648,5 +1649,58 @@ public static class GameBinding
             FTBType.Installs.GetName(),
             FTBType.Search.GetName()
         };
+    }
+
+    public static async Task<List<(SourceType, ModDisplayObj, object)>> CheckModUpdate(GameSettingObj game, List<ModDisplayObj> mods)
+    {
+        var list = new ConcurrentBag<(SourceType, ModDisplayObj, object)>();
+        await Parallel.ForEachAsync(mods, async (item, cancel) =>
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(item.PID) || string.IsNullOrWhiteSpace(item.FID))
+                    return;
+
+                var type1 = UIUtils.CheckNotNumber(item.PID) || UIUtils.CheckNotNumber(item.FID) ?
+                   SourceType.Modrinth : SourceType.CurseForge;
+
+                var list1 = await GetPackFile(type1, item.PID, 0,
+                   game.Version, game.Loader, FileType.Mod);
+                if (list1 == null || list1.Count == 0)
+                    return;
+                var item1 = list1.First();
+                if (item1.ID1 != item.FID)
+                {
+                    list.Add((type1, item, item1.Data));
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        item.New = true;
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Logs.Error("Mod更新检查失败", e);
+            }
+        });
+
+        return list.ToList();
+    }
+
+    public static async Task<bool> StartUpdate(List<(SourceType, ModDisplayObj, object)> list)
+    {
+        bool ok = true;
+        await Parallel.ForEachAsync(list, async (item, cancel) =>
+        {
+            ok &= item.Item1 switch
+            {
+                SourceType.CurseForge => await GameBinding.Download(FileType.Mod, item.Item2.Obj.Game,
+                item.Item3 as CurseForgeObj.Data.LatestFiles),
+                SourceType.Modrinth => await GameBinding.Download(FileType.Mod, item.Item2.Obj.Game,
+                item.Item3 as ModrinthVersionObj)
+            };
+        });
+
+        return ok;
     }
 }

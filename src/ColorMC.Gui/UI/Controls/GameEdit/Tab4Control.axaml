@@ -102,7 +102,7 @@
                     <Expander
                         Name="Expander_I"
                         Height="30"
-                        Margin="-94,0,0,0"
+                        Margin="-94,-5,0,-5"
                         HorizontalAlignment="Left"
                         Background="Transparent"
                         CornerRadius="0"
@@ -125,7 +125,7 @@
                     <Expander
                         Name="Expander_A"
                         Height="30"
-                        Margin="-94,0,0,0"
+                        Margin="-94,-5,0,-5"
                         HorizontalAlignment="Left"
                         Background="Transparent"
                         CornerRadius="0"
@@ -148,7 +148,7 @@
                     <Expander
                         Name="Expander_R"
                         Height="30"
-                        Margin="-94,0,0,0"
+                        Margin="-94,-5,0,-5"
                         HorizontalAlignment="Left"
                         Background="Transparent"
                         CornerRadius="0"
@@ -160,6 +160,29 @@
                             Height="30"
                             Margin="16,0,0,0"
                             Content="{setting:Localize Button.Refash}" />
+                    </Expander>
+                </Grid>
+                <Grid>
+                    <Button
+                        Name="Button_C"
+                        Width="20"
+                        Height="30"
+                        Content="C" />
+                    <Expander
+                        Name="Expander_C"
+                        Height="30"
+                        Margin="-94,-5,0,-5"
+                        HorizontalAlignment="Left"
+                        Background="Transparent"
+                        CornerRadius="0"
+                        ExpandDirection="Right"
+                        IsExpanded="False">
+                        <Button
+                            Name="Button_C1"
+                            Width="100"
+                            Height="30"
+                            Margin="16,0,0,0"
+                            Content="检查更新" />
                     </Expander>
                 </Grid>
 

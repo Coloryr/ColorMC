@@ -672,4 +672,9 @@ public static class BaseBinding
 
         return true;
     }
+
+    public static void GotoModFile(ModDisplayObj obj)
+    {
+        App.ShowAdd(obj.Obj.Game, FileType.Mod, obj);
+    }
 }
