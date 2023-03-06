@@ -1,18 +1,14 @@
 using Avalonia.Controls;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
-using System;
-using System.Collections.ObjectModel;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Net.Downloader;
-using ColorMC.Core.LaunchPath;
-using Avalonia.Input;
-using System.Linq;
+using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -47,7 +43,7 @@ public partial class OptifineControl : UserControl
         Button3_Click(null, null);
     }
 
-    public void SetGame(GameSettingObj obj) 
+    public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
     }
@@ -81,7 +77,7 @@ public partial class OptifineControl : UserControl
         Load();
     }
 
-    private  void Button1_Click(object? sender, RoutedEventArgs e)
+    private void Button1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as AddWindow)!;
 
@@ -106,8 +102,8 @@ public partial class OptifineControl : UserControl
         List2.AddRange(list);
 
         List1.Add("");
-        List1.AddRange(from item in list 
-                       group item by item.MC into newgroup 
+        List1.AddRange(from item in list
+                       group item by item.MC into newgroup
                        select newgroup.Key);
 
         Load1();

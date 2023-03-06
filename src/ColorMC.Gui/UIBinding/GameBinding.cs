@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
@@ -26,12 +27,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using ColorMC.Core.Net.Apis;
-using Image = SixLabors.ImageSharp.Image;
-using Heijden.DNS;
 using System.Threading;
-using Avalonia.Threading;
+using System.Threading.Tasks;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -1525,6 +1523,65 @@ public static class GameBinding
         };
 
         return await DownloadManager.Download(item);
+    }
+
+    public static void SetModInfo(GameSettingObj obj, CurseForgeObj.Data.LatestFiles? data)
+    {
+        if (data == null)
+            return;
+
+        data.FixDownloadUrl();
+
+        var obj1 = new ModPackInfoObj()
+        {
+            FileId = data.id.ToString(),
+            ModId = data.modId.ToString(),
+            File = data.fileName,
+            Name = data.displayName,
+            Url = data.downloadUrl,
+            SHA1 = data.hashes.Where(a => a.algo == 1)
+                .Select(a => a.value).FirstOrDefault()
+        };
+        if (obj.Mods.ContainsKey(obj1.ModId))
+        {
+            obj.Mods[obj1.ModId] = obj1;
+        }
+        else
+        {
+            obj.Mods.Add(obj1.ModId, obj1);
+        }
+        obj.SaveModInfo();
+    }
+
+    public static void SetModInfo(GameSettingObj obj, ModrinthVersionObj? data)
+    {
+        if (data == null)
+            return;
+
+        var file = data.files.FirstOrDefault(a => a.primary);
+        if (file == null)
+        {
+            file = data.files[0];
+        }
+
+        var obj1 = new ModPackInfoObj()
+        {
+            FileId = data.id.ToString(),
+            ModId = data.project_id,
+            File = file.filename,
+            Name = data.name,
+            Url = file.url,
+            SHA1 = file.hashes.sha1
+        };
+        if (obj.Mods.ContainsKey(obj1.ModId))
+        {
+            obj.Mods[obj1.ModId] = obj1;
+        }
+        else
+        {
+            obj.Mods.Add(obj1.ModId, obj1);
+        }
+        obj.SaveModInfo();
     }
 
     public static async Task<bool> BackupWorld(WorldObj world)

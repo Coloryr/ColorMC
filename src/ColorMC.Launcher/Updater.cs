@@ -1,5 +1,4 @@
 ﻿using Avalonia.Threading;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;

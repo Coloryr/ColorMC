@@ -104,6 +104,12 @@ public partial class AddGameWindow : Window
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
     {
+        if (BaseBinding.IsDownload)
+        {
+            Info.Show("正在下载资源中，无法添加实例");
+            return;
+        }
+
         switch (ComboBox4.SelectedIndex)
         {
             case 0:
@@ -288,6 +294,12 @@ public partial class AddGameWindow : Window
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
+        if (BaseBinding.IsDownload)
+        {
+            Info.Show("正在下载资源中，无法添加实例");
+            return;
+        }
+
         var name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -519,6 +531,12 @@ public partial class AddGameWindow : Window
 
     public async void Install(CurseForgeObj.Data.LatestFiles data, CurseForgeObj.Data data1)
     {
+        if (BaseBinding.IsDownload)
+        {
+            Info.Show("正在下载资源中，无法添加实例");
+            return;
+        }
+
         Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
         var res = await GameBinding.InstallCurseForge(data, data1, TextBox_Input1.Text, ComboBox_Group.SelectedItem as string);
         Info1.Close();
@@ -536,6 +554,12 @@ public partial class AddGameWindow : Window
 
     public async void Install(ModrinthVersionObj data, ModrinthSearchObj.Hit data1)
     {
+        if (BaseBinding.IsDownload)
+        {
+            Info.Show("正在下载资源中，无法添加实例");
+            return;
+        }
+
         Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
         var res = await GameBinding.InstallModrinth(data, data1, TextBox_Input1.Text, ComboBox_Group.SelectedItem as string);
         Info1.Close();
@@ -553,6 +577,12 @@ public partial class AddGameWindow : Window
 
     public async void Install(FTBModpackObj.Versions data, FTBModpackObj data1)
     {
+        if (BaseBinding.IsDownload)
+        {
+            Info.Show("正在下载资源中，无法添加实例");
+            return;
+        }
+
         Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
         var res = await GameBinding.InstallFTB(data, data1, TextBox_Input1.Text, ComboBox_Group.SelectedItem as string);
         Info1.Close();

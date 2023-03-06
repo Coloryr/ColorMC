@@ -9,7 +9,6 @@ using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Text;
 
 namespace ColorMC.Core.Net.Download;

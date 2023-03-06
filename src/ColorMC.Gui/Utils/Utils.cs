@@ -2,11 +2,13 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using ColorMC.Core;
+using ColorMC.Core.Net;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.SkinModel;
@@ -19,10 +21,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Avalonia.Input;
-using ColorMC.Core.Net;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
 
@@ -427,7 +427,7 @@ public static partial class UIUtils
             switch (e.Key)
             {
                 case Key.OemComma:
-                    App.ShowSetting( SettingWindowType.Normal);
+                    App.ShowSetting(SettingWindowType.Normal);
                     break;
                 case Key.Q:
                     App.Close();

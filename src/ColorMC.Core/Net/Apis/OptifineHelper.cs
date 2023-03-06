@@ -1,13 +1,7 @@
-﻿using ColorMC.Core.Net;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Optifine;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -33,11 +27,11 @@ public static class OptifineHelper
                 foreach (var item in list1)
                 {
                     var temp = item.Descendants("td")
-                        .FirstOrDefault(a=>a.Attributes.Contains("class") 
+                        .FirstOrDefault(a => a.Attributes.Contains("class")
                         && a.Attributes["class"].Value == "colDownload")?.FirstChild.Attributes["href"].Value;
                     var temp1 = item.Descendants("td")
                         .FirstOrDefault(a => a.Attributes.Contains("class")
-                        && a.Attributes["class"].Value == "colMirror" )?.FirstChild.Attributes["href"].Value;
+                        && a.Attributes["class"].Value == "colMirror")?.FirstChild.Attributes["href"].Value;
                     var temp2 = item.Descendants("td")
                         .FirstOrDefault(a => a.Attributes.Contains("class")
                         && a.Attributes["class"].Value == "colForge")?.InnerText;
@@ -48,7 +42,7 @@ public static class OptifineHelper
                         .FirstOrDefault(a => a.Attributes.Contains("class")
                         && a.Attributes["class"].Value == "colFile")?.InnerText;
 
-                    if (temp == null || temp1 == null || temp2 == null 
+                    if (temp == null || temp1 == null || temp2 == null
                         || temp3 == null || temp4 == null)
                         continue;
 

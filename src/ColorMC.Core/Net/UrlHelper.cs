@@ -292,7 +292,7 @@ public static class UrlHelper
         return (false, null);
     }
 
-    public static string Optifine(SourceLocal? local) 
+    public static string Optifine(SourceLocal? local)
     {
         return local switch
         {
@@ -302,7 +302,7 @@ public static class UrlHelper
         };
     }
 
-    public static string OptifineDownload(OptifineListObj obj, SourceLocal? local) 
+    public static string OptifineDownload(OptifineListObj obj, SourceLocal? local)
     {
         return local switch
         {

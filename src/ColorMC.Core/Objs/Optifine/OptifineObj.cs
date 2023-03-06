@@ -1,11 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Optifine;
+﻿namespace ColorMC.Core.Objs.Optifine;
 
 public record OptifineObj
 {

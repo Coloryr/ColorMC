@@ -152,7 +152,7 @@ public partial class SettingWindow : Window
 
     public void GoTo(SettingWindowType type)
     {
-        switch(type)
+        switch (type)
         {
             case SettingWindowType.SetJava:
                 Tabs.SelectedIndex = 3;

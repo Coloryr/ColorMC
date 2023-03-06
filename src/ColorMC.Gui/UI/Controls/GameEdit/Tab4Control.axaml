@@ -185,7 +185,29 @@
                             Content="检查更新" />
                     </Expander>
                 </Grid>
-
+                <Grid>
+                    <Button
+                        Name="Button_B"
+                        Width="20"
+                        Height="30"
+                        Content="B" />
+                    <Expander
+                        Name="Expander_B"
+                        Height="30"
+                        Margin="-94,-5,0,-5"
+                        HorizontalAlignment="Left"
+                        Background="Transparent"
+                        CornerRadius="0"
+                        ExpandDirection="Right"
+                        IsExpanded="False">
+                        <Button
+                            Name="Button_B1"
+                            Width="100"
+                            Height="30"
+                            Margin="16,0,0,0"
+                            Content="添加标记" />
+                    </Expander>
+                </Grid>
             </StackPanel>
         </Grid>
 

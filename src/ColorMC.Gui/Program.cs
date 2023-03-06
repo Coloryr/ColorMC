@@ -4,7 +4,6 @@ using ColorMC.Core;
 using ColorMC.Core.Utils;
 using System;
 using System.Text;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
@@ -74,7 +73,7 @@ public class ColorMCGui
         App.Close();
     }
 
-    public static void SetCheck(Func<Task<(bool?, string?)>> action) 
+    public static void SetCheck(Func<Task<(bool?, string?)>> action)
     {
         Check = action;
     }

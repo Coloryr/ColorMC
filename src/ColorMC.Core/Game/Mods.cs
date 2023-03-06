@@ -40,8 +40,10 @@ public static class Mods
             bool find = false;
             try
             {
-                var data1 = File.ReadAllBytes(item.FullName);
-                sha1 = Funtcions.GenSha1(data1);
+                {
+                    using var stream = File.OpenRead(item.FullName);
+                    sha1 = Funtcions.GenSha1(stream);
+                }
 
                 //Mod 资源包
                 if (item.Extension is ".zip")

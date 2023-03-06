@@ -43,7 +43,7 @@ public partial class Info3Control : UserControl
         Cancel = true;
         semaphore.Release();
 
-        Close(); 
+        Close();
     }
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)

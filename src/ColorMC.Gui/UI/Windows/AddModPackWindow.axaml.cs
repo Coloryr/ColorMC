@@ -157,16 +157,16 @@ public partial class AddModPackWindow : Window, IAddWindow
         {
             case 0:
             case 1:
-                ComboBox4.Items = ComboBox1.SelectedIndex == 0 ? 
-                    GameBinding.GetCurseForgeSortTypes() : 
+                ComboBox4.Items = ComboBox1.SelectedIndex == 0 ?
+                    GameBinding.GetCurseForgeSortTypes() :
                     GameBinding.GetModrinthSortTypes();
 
                 Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
-                var list = ComboBox1.SelectedIndex == 0 ? 
-                    await GameBinding.GetCurseForgeGameVersions() : 
+                var list = ComboBox1.SelectedIndex == 0 ?
+                    await GameBinding.GetCurseForgeGameVersions() :
                     await GameBinding.GetModrinthGameVersions();
-                var list1 = ComboBox1.SelectedIndex == 0 ? 
-                    await GameBinding.GetCurseForgeCategories() : 
+                var list1 = ComboBox1.SelectedIndex == 0 ?
+                    await GameBinding.GetCurseForgeCategories() :
                     await GameBinding.GetModrinthCategories();
                 Info1.Close();
                 if (list == null || list1 == null)
@@ -337,10 +337,10 @@ public partial class AddModPackWindow : Window, IAddWindow
         }
 
         Info1.Show(App.GetLanguage("AddModPackWindow.Info2"));
-        var data = await GameBinding.GetPackList((SourceType)ComboBox1.SelectedIndex, 
-            ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!, 
-            ComboBox1.SelectedIndex == 2 ?  ComboBox2.SelectedIndex : ComboBox4.SelectedIndex,
-            ComboBox1.SelectedIndex == 2 ? "" : 
+        var data = await GameBinding.GetPackList((SourceType)ComboBox1.SelectedIndex,
+            ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!,
+            ComboBox1.SelectedIndex == 2 ? ComboBox2.SelectedIndex : ComboBox4.SelectedIndex,
+            ComboBox1.SelectedIndex == 2 ? "" :
                 ComboBox2.SelectedIndex < 0 ? "" : Categories[ComboBox2.SelectedIndex]);
 
         if (data == null)
@@ -376,14 +376,14 @@ public partial class AddModPackWindow : Window, IAddWindow
         if (ComboBox1.SelectedIndex == 0)
         {
             Input3.IsEnabled = true;
-            list = await GameBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex, 
+            list = await GameBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex,
                 (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Loaders.Normal);
         }
         else if (ComboBox1.SelectedIndex == 1)
         {
             Input3.IsEnabled = false;
-            list = await GameBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex, 
+            list = await GameBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex,
                 (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Loaders.Normal);
         }

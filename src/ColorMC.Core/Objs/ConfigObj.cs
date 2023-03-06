@@ -1,6 +1,4 @@
-﻿using ColorMC.Core.Net;
-
-namespace ColorMC.Core.Objs;
+﻿namespace ColorMC.Core.Objs;
 
 public record JvmConfigObj
 {

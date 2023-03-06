@@ -428,10 +428,10 @@ public static class TestItem
         InstancesPath.InstallFromModrinth(item1, null, null).Wait();
     }
 
-    public static void Item22() 
+    public static void Item22()
     {
         var list = OptifineHelper.GetOptifineVersion().Result;
-        var data = OptifineHelper.GetOptifineDownloadUrl(new() 
+        var data = OptifineHelper.GetOptifineDownloadUrl(new()
         {
             Url1 = "http://optifine.net/adloadx?f=preview_OptiFine_1.19.3_HD_U_I2_pre5.jar",
             Url2 = "http://optifine.net/adloadx?f=preview_OptiFine_1.19.3_HD_U_I2_pre5.jar"

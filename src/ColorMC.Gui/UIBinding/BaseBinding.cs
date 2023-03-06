@@ -168,8 +168,8 @@ public static class BaseBinding
                 UserBinding.RemoveLockUser(obj1);
                 if (e.InnerException is LaunchException launch)
                 {
-                    temp = string.IsNullOrWhiteSpace(launch.Message) 
-                        ? App.GetLanguage("Error6"): launch.Message;
+                    temp = string.IsNullOrWhiteSpace(launch.Message)
+                        ? App.GetLanguage("Error6") : launch.Message;
                     if (launch.Ex != null)
                     {
                         Logs.Error(temp, launch.Ex);
@@ -212,8 +212,8 @@ public static class BaseBinding
                         });
                     }
                     catch
-                    { 
-                        
+                    {
+
                     }
                 });
             }
@@ -304,10 +304,11 @@ public static class BaseBinding
         return (DownloadManager.AllSize, DownloadManager.DoneSize);
     }
 
-    public static CoreRunState GetDownloadState()
-    {
-        return DownloadManager.State;
-    }
+    public static CoreRunState DownloadState
+        => DownloadManager.State;
+
+    public static bool IsDownload
+        => DownloadManager.State != CoreRunState.End;
 
     public static List<string> GetDownloadSources()
     {
@@ -675,6 +676,11 @@ public static class BaseBinding
 
     public static void GotoModFile(ModDisplayObj obj)
     {
-        App.ShowAdd(obj.Obj.Game, FileType.Mod, obj);
+        App.ShowAdd(obj.Obj.Game, obj);
+    }
+
+    public static void GotoSetModFile(ModDisplayObj obj)
+    {
+        App.ShowAdd(obj.Obj.Game, obj);
     }
 }
