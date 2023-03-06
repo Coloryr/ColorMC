@@ -41,7 +41,7 @@ public partial class MainWindow : Window
         }
         catch
         {
-            Label1.Content = "¸üÐÂÊ§°Ü";
+            Label1.Content = "æ›´æ–°å¤±è´¥";
             Label1.IsVisible = true;
         }
     }

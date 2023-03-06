@@ -106,7 +106,7 @@ public partial class AddGameWindow : Window
     {
         if (BaseBinding.IsDownload)
         {
-            Info.Show("正在下载资源中，无法添加实例");
+            Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
             return;
         }
 
@@ -296,7 +296,7 @@ public partial class AddGameWindow : Window
     {
         if (BaseBinding.IsDownload)
         {
-            Info.Show("正在下载资源中，无法添加实例");
+            Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
             return;
         }
 
@@ -533,7 +533,7 @@ public partial class AddGameWindow : Window
     {
         if (BaseBinding.IsDownload)
         {
-            Info.Show("正在下载资源中，无法添加实例");
+            Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
             return;
         }
 
@@ -556,7 +556,7 @@ public partial class AddGameWindow : Window
     {
         if (BaseBinding.IsDownload)
         {
-            Info.Show("正在下载资源中，无法添加实例");
+            Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
             return;
         }
 
@@ -579,7 +579,7 @@ public partial class AddGameWindow : Window
     {
         if (BaseBinding.IsDownload)
         {
-            Info.Show("正在下载资源中，无法添加实例");
+            Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
             return;
         }
 

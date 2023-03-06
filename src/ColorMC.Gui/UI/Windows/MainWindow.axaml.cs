@@ -78,6 +78,11 @@ public partial class MainWindow : Window, IBaseWindow
         }
 
         Activated += Window_Activated;
+
+        if (BaseBinding.CheckOldDir())
+        {
+            Info.Show(App.GetLanguage("MainWindow.Info27"));
+        }
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -166,7 +171,7 @@ public partial class MainWindow : Window, IBaseWindow
         var game = item.Obj;
         item.SetLaunch(false);
         item.SetLoad(true);
-        Info2.Show(App.GetLanguage(string.Format("开始启动实例 {0}", game.Name)));
+        Info2.Show(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
         var res = await GameBinding.Launch(game, debug);
         Head.Title1 = null;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)

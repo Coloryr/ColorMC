@@ -145,8 +145,8 @@ public partial class App : Application
         }
         string name = type switch
         {
-            LanguageType.en_us => "ColorMC.Gui.Resource.Language.en-us",
-            _ => "ColorMC.Gui.Resource.Language.zh-cn"
+            LanguageType.en_us => "ColorMC.Gui.Resource.Language.en-us.xml",
+            _ => "ColorMC.Gui.Resource.Language.zh-cn.xml"
         };
         using var item = assm.GetManifestResourceStream(name)!;
 

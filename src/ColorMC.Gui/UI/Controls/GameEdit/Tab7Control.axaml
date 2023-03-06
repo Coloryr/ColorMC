@@ -23,11 +23,13 @@
                 IsChecked="True" />
             <Button
                 Name="Button1"
-                Width="80"
+                Width="100"
                 Height="25"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"
-                Content="{setting:Localize MainWindow.Flyouts.Text6}" />
+                Content="{setting:Localize MainWindow.Flyouts.Text6}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text44}"
+                ToolTip.VerticalOffset="-30" />
 
         </StackPanel>
         <ae:TextEditor

@@ -55,10 +55,11 @@ public partial class OptifineControl : UserControl
 
         var window = (VisualRoot as AddWindow)!;
 
-        var res = await window.Info.ShowWait(string.Format("是否要安装 {0}", item.Version));
+        var res = await window.Info.ShowWait(string.Format(
+            App.GetLanguage("AddGameWindow.Control1.Info1"), item.Version));
         if (!res)
             return;
-        window.Info1.Show("正在下载");
+        window.Info1.Show(App.GetLanguage("AddGameWindow.Control1.Info2"));
         var res1 = await GameBinding.DownloadOptifine(Obj, item);
         window.Info1.Close();
         if (res1.Item1 == false)
@@ -67,7 +68,7 @@ public partial class OptifineControl : UserControl
         }
         else
         {
-            window.Info2.Show("已下载");
+            window.Info2.Show(App.GetLanguage("AddGameWindow.Control1.Info3"));
             window.OptifineClsoe();
         }
     }
@@ -90,12 +91,12 @@ public partial class OptifineControl : UserControl
         List.Clear();
         List1.Clear();
         List2.Clear();
-        window.Info1.Show("正在加载Optifine列表");
+        window.Info1.Show(App.GetLanguage("AddGameWindow.Control1.Info4"));
         var list = await GameBinding.GetOptifine();
         window.Info1.Close();
         if (list == null)
         {
-            window.Info.Show("Optifine版本加载失败");
+            window.Info.Show(App.GetLanguage("AddGameWindow.Control1.Error1"));
             return;
         }
 

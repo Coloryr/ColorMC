@@ -78,16 +78,16 @@ public partial class Tab4Control : UserControl
     private async void Button_C1_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as GameEditWindow)!;
-        window.Info1.Show("正在检测Mod版本更新");
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info10"));
         var res = await GameBinding.CheckModUpdate(Obj, Items);
         window.Info1.Close();
         if (res.Count > 0)
         {
             var res1 = await window.Info.ShowWait(string.Format(
-                "检测到 {0} 个Mod有新版本，是否要更新", res.Count));
+                App.GetLanguage("GameEditWindow.Tab4.Info11"), res.Count));
             if (res1)
             {
-                window.Info1.Show("正在更新Mod");
+                window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info12"));
                 await GameBinding.StartUpdate(res);
                 window.Info1.Close();
 

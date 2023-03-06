@@ -21,24 +21,24 @@ namespace ColorMC.Gui.UI.Windows;
 public partial class AddWindow : Window, IAddWindow
 {
     /// <summary>
-    /// ¿Ø¼ş
+    /// æ§ä»¶
     /// </summary>
     private readonly List<FileItemControl> List = new();
     /// <summary>
-    /// ÏÂÔØÔ´
+    /// ä¸‹è½½æº
     /// </summary>
     private List<SourceType> List2 = new();
     private readonly ObservableCollection<string> List3 = new();
     /// <summary>
-    /// ÀàĞÍ
+    /// ç±»å‹
     /// </summary>
     private readonly Dictionary<int, string> Categories = new();
     /// <summary>
-    /// Êı¾İ
+    /// æ•°æ®
     /// </summary>
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     /// <summary>
-    /// ÓÎÏ·°æ±¾
+    /// æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     private readonly ObservableCollection<string> List4 = new();
 
@@ -324,7 +324,7 @@ public partial class AddWindow : Window, IAddWindow
             return;
 
         var res = await Info.ShowWait(
-            string.Format(set ? "ÊÇ·ñ±ê¼ÇMod {0}" : App.GetLanguage("AddWindow.Info1"),
+            string.Format(set ? "æ˜¯å¦æ ‡è®°Mod {0}" : App.GetLanguage("AddWindow.Info1"),
             item.Name));
         if (res)
         {

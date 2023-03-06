@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -154,17 +155,12 @@ public partial class Tab5Control : UserControl
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
-        var file = await BaseBinding.OpFile(window,
-             App.GetLanguage("SettingWindow.Tab5.Info2"),
-             new string[] { SystemInfo.Os == OsType.Windows ? "*.exe" : "" },
-             App.GetLanguage("SettingWindow.Tab5.Info4"),
-             storage: JavaBinding.GetSuggestedStartLocation());
+        var file = await BaseBinding.OpFile(window, FileType.Java);
 
-        if (file?.Any() == true)
+        if (file != null)
         {
-            var item = file[0];
-            TextBox2.Text = item.GetPath();
-            var info = JavaBinding.GetJavaInfo(item.GetPath());
+            TextBox2.Text = file;
+            var info = JavaBinding.GetJavaInfo(file);
             if (info != null)
             {
                 TextBox1.Text = info.Type + "_" + info.Version;

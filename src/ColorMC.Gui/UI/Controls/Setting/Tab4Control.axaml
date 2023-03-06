@@ -34,6 +34,8 @@
                         Content="{setting:Localize SettingWindow.Tab4.Text17}" />
                 </StackPanel>
 
+                <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />
+
                 <CheckBox Name="CheckBox6" Content="{setting:Localize SettingWindow.Tab4.Text18}" />
 
                 <!--  Jvm参数  -->
@@ -105,7 +107,7 @@
                     Classes="input"
                     Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
 
-                <Label Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
+                <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
 
                 <!--  分辨率  -->
 

@@ -15,7 +15,7 @@ public record ModDisplayObj : INotifyPropertyChanged
     {
         get
         {
-            return Obj.version + (New ? " " + "有新版本" : "");
+            return Obj.version + (New ? " " + App.GetLanguage("Gui.Info8") : ""); 
         }
     }
     public string Local => Obj.Local;

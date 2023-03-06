@@ -96,7 +96,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Content="{setting:Localize HelloWindow.Tab6.Text9}"
-            ToolTip.Tip="{setting:Localize ToolTip.Text28}"
+            ToolTip.Tip="{setting:Localize ToolTip.Text46}"
             ToolTip.VerticalOffset="-30" />
     </Grid>
 </UserControl>

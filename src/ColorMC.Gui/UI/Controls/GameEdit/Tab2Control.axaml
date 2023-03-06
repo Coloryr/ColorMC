@@ -114,7 +114,7 @@
                     TextWrapping="Wrap"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text8}" />
 
-                <Label Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
+                <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
 
                 <TextBox
                     Name="TextBox13"
@@ -125,7 +125,7 @@
                     TextWrapping="Wrap"
                     Watermark="附加的classpath" />
 
-                <Label Content="{setting:Localize GameEditWindow.Tab2.Text26}" />
+                <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text26}" />
 
                 <TextBox
                     Name="TextBox12"

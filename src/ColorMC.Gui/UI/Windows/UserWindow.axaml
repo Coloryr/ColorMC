@@ -77,7 +77,7 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
+            <StackPanel Margin="5,0,0,0" VerticalAlignment="Center">
                 <Grid>
                     <Button
                         Name="Button_A"
@@ -87,7 +87,7 @@
                     <Expander
                         Name="Expander_A"
                         Height="30"
-                        Margin="-84,0,0,0"
+                        Margin="-94,0,0,0"
                         HorizontalAlignment="Left"
                         Background="Transparent"
                         CornerRadius="0"
@@ -97,7 +97,7 @@
                             Name="Button_A1"
                             Width="100"
                             Height="30"
-                            Margin="6,0,0,0"
+                            Margin="16,0,0,0"
                             Content="{setting:Localize UserWindow.Text10}" />
                     </Expander>
                 </Grid>

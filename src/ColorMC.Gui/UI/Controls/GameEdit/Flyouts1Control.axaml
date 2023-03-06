@@ -43,7 +43,7 @@
                 Name="Button6"
                 Width="100"
                 Height="25"
-                Content="更换版本" />
+                Content="{setting:Localize GameEditWindow.Flyouts1.Text5}" />
         </StackPanel>
     </Grid>
 </UserControl>

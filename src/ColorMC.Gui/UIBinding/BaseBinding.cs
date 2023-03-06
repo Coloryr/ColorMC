@@ -12,6 +12,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
+using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -565,6 +566,23 @@ public static class BaseBinding
                     Logs.Error(App.GetLanguage("SettingWindow.Tab6.Error3"), e);
                     return false;
                 }
+            case FileType.Skin:
+                file = await OpSave(window,
+                    App.GetLanguage("Gui.Info9"), ".png", "skin.png");
+                if (file == null)
+                    break;
+
+                try
+                {
+                    var name = file.GetPath();
+                    await UserBinding.SkinImage.SaveAsPngAsync(name);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.GetLanguage("SettingWindow.Tab6.Error3"), e);
+                    return false;
+                }
         }
 
         return null;
@@ -682,5 +700,28 @@ public static class BaseBinding
     public static void GotoSetModFile(ModDisplayObj obj)
     {
         App.ShowAdd(obj.Obj.Game, obj);
+    }
+
+    /// <summary>
+    /// A14到A15路径处理
+    /// </summary>
+    public static bool CheckOldDir()
+    {
+        if (SystemInfo.Os == OsType.Linux)
+        {
+            if (Directory.Exists($"{AppContext.BaseDirectory}minecraft/"))
+            {
+                OpPath($"{AppContext.BaseDirectory}minecraft/");
+                OpPath(InstancesPath.BaseDir);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void OpenPicPath()
+    {
+        OpPath(ImageTemp.Local);
     }
 }

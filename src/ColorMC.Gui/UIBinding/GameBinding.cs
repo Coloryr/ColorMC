@@ -241,7 +241,7 @@ public static class GameBinding
 
                     fail = true;
                     topcancel.Cancel();
-                    Logs.Error("获取出错", e);
+                    Logs.Error(App.GetLanguage("Gui.Error15"), e);
                 }
             });
 
@@ -1737,7 +1737,7 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                Logs.Error("Mod更新检查失败", e);
+                Logs.Error(App.GetLanguage("Gui.Error16"), e);
             }
         });
 
