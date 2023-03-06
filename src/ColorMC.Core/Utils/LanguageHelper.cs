@@ -1,6 +1,5 @@
 using ColorMC.Core.Game;
 using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Net;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;

@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
-using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -177,7 +176,7 @@ public partial class Tab3Control : UserControl
     public void Load()
     {
         load = true;
-        if (BaseBinding.GetDownloadState() != CoreRunState.End)
+        if (BaseBinding.IsDownload)
         {
             Lock();
         }

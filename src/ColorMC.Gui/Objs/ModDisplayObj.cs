@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 

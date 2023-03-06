@@ -47,6 +47,7 @@ public partial class AddWindow : Window, IAddWindow
     private bool load = false;
     private bool display = false;
     private FileType now;
+    private bool set;
 
     public AddWindow()
     {
@@ -220,7 +221,7 @@ public partial class AddWindow : Window, IAddWindow
             {
                 ComboBox3.SelectedIndex = 0;
             }
-            
+
             ComboBox4.SelectedIndex = 0;
             ComboBox5.SelectedIndex = 0;
 
@@ -323,7 +324,7 @@ public partial class AddWindow : Window, IAddWindow
             return;
 
         var res = await Info.ShowWait(
-            string.Format(App.GetLanguage("AddWindow.Info1"),
+            string.Format(set ? "ÊÇ·ñ±ê¼ÇMod {0}" : App.GetLanguage("AddWindow.Info1"),
             item.Name));
         if (res)
         {
@@ -366,6 +367,9 @@ public partial class AddWindow : Window, IAddWindow
         App.PicUpdate -= Update;
 
         App.AddWindows.Remove(Obj.UUID);
+
+        if (set)
+            set = false;
     }
 
     public void Install()
@@ -376,11 +380,27 @@ public partial class AddWindow : Window, IAddWindow
 
     public async void Install1(FileDisplayObj data)
     {
+        var type = List2[ComboBox2.SelectedIndex];
+        if (set)
+        {
+            if (type == SourceType.CurseForge)
+            {
+                GameBinding.SetModInfo(Obj,
+                    data.Data as CurseForgeObj.Data.LatestFiles);
+            }
+            else if (type == SourceType.Modrinth)
+            {
+                GameBinding.SetModInfo(Obj,
+                    data.Data as ModrinthVersionObj);
+            }
+            Close();
+            return;
+        }
         var last = Last!;
         last?.SetNowDownload();
         await App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
-        var type = List2[ComboBox2.SelectedIndex];
         bool res = false;
+
         if (now == FileType.DataPacks)
         {
             var list = await Obj.GetWorlds();
@@ -396,21 +416,15 @@ public partial class AddWindow : Window, IAddWindow
             if (Info5.Cancel)
                 return;
             var item = list[Info5.Read().Item1];
-            res = type switch
-            {
-                SourceType.CurseForge => await GameBinding.Download(item,
-                    data.Data as CurseForgeObj.Data.LatestFiles),
-                SourceType.Modrinth => await GameBinding.Download(item,
-                    data.Data as ModrinthVersionObj)
-            };
+            
         }
         else
         {
             res = type switch
             {
-                SourceType.CurseForge => await GameBinding.Download(now, Obj!, 
+                SourceType.CurseForge => await GameBinding.Download(now, Obj!,
                 data.Data as CurseForgeObj.Data.LatestFiles),
-                SourceType.Modrinth => await GameBinding.Download(now, Obj!, 
+                SourceType.Modrinth => await GameBinding.Download(now, Obj!,
                 data.Data as ModrinthVersionObj)
             };
         }
@@ -441,8 +455,8 @@ public partial class AddWindow : Window, IAddWindow
     private async void Load()
     {
         Info1.Show(App.GetLanguage("AddWindow.Info2"));
-        var data = await GameBinding.GetList(now, List2[ComboBox2.SelectedIndex], 
-            ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!, 
+        var data = await GameBinding.GetList(now, List2[ComboBox2.SelectedIndex],
+            ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!,
             ComboBox4.SelectedIndex, ComboBox5.SelectedIndex < 0 ? "" :
                 Categories[ComboBox5.SelectedIndex], Obj.Loader);
 
@@ -571,5 +585,18 @@ public partial class AddWindow : Window, IAddWindow
     public void Update()
     {
         App.Update(this, Image_Back, Border1, Border2);
+    }
+
+    public async Task GoSet()
+    {
+        set = true;
+
+        ComboBox1.SelectedIndex = (int)FileType.Mod - 1;
+        ComboBox2.SelectedIndex = 0;
+        await Task.Run(() =>
+        {
+            while (set)
+                Thread.Sleep(1000);
+        });
     }
 }

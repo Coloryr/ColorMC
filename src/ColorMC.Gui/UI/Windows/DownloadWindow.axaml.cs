@@ -143,7 +143,7 @@ public partial class DownloadWindow : Window
 
     private async void DownloadWindow_Closing(object? sender, CancelEventArgs e)
     {
-        if (BaseBinding.GetDownloadState() != CoreRunState.End)
+        if (BaseBinding.IsDownload)
         {
             var res = await Info.ShowWait(App.GetLanguage("DownloadWindow.Info4"));
             if (res)

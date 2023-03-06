@@ -149,8 +149,8 @@ public partial class Tab2Control : UserControl
 
     private void Save()
     {
-        GameBinding.SetGameJvmMemArg(Obj, 
-            Input1.Value == null ? null : (uint)Input1.Value, 
+        GameBinding.SetGameJvmMemArg(Obj,
+            Input1.Value == null ? null : (uint)Input1.Value,
             Input2.Value == null ? null : (uint)Input2.Value);
     }
 

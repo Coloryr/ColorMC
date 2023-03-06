@@ -402,7 +402,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowAdd(GameSettingObj obj, FileType type, ModDisplayObj obj1)
+    public static void ShowAdd(GameSettingObj obj, ModDisplayObj obj1)
     {
         var type1 = UIUtils.CheckNotNumber(obj1.PID) || UIUtils.CheckNotNumber(obj1.FID) ?
             SourceType.Modrinth : SourceType.CurseForge;
@@ -419,6 +419,23 @@ public partial class App : Application
             win.Show();
             win.GoFile(type1, obj1.PID);
             AddWindows.Add(obj.UUID, win);
+        }
+    }
+
+    public static Task ShowAddSet(GameSettingObj obj)
+    {
+        if (AddWindows.TryGetValue(obj.UUID, out var value))
+        {
+            value.Activate();
+            return value.GoSet();
+        }
+        else
+        {
+            var win = new AddWindow();
+            win.SetGame(obj);
+            win.Show();
+            AddWindows.Add(obj.UUID, win);
+            return win.GoSet();
         }
     }
 

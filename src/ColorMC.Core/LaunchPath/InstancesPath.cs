@@ -1,19 +1,13 @@
 using ColorMC.Core.Game;
-using ColorMC.Core.Net;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 
 namespace ColorMC.Core.LaunchPath;

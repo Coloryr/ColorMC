@@ -32,7 +32,7 @@ public static class CurseForge
     /// <param name="sortOrder">排序</param>
     /// <returns></returns>
     private static async Task<CurseForgeObj?> GetList(int classid, string version, int page,
-        int sortField, string filter, int pagesize, int sortOrder, string categoryId, 
+        int sortField, string filter, int pagesize, int sortOrder, string categoryId,
         int modLoaderType)
     {
         try

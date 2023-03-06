@@ -1,13 +1,6 @@
-﻿using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.FTB;
-using Microsoft.VisualBasic;
+﻿using ColorMC.Core.Objs.FTB;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Net.Apis;
 

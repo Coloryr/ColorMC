@@ -5,13 +5,10 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,6 +20,7 @@ public partial class Tab4Control : UserControl
 {
     private readonly ObservableCollection<ModDisplayObj> List = new();
     private readonly List<ModDisplayObj> Items = new();
+    private bool isSet;
 
     private GameSettingObj Obj;
 
@@ -44,6 +42,9 @@ public partial class Tab4Control : UserControl
         Button_C1.PointerExited += Button_C1_PointerLeave;
         Button_C.PointerEntered += Button_C_PointerEnter;
 
+        Button_B1.PointerExited += Button_B1_PointerLeave;
+        Button_B.PointerEntered += Button_B_PointerEnter;
+
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
@@ -51,6 +52,7 @@ public partial class Tab4Control : UserControl
         Button_R1.Click += Button_R1_Click;
         Button_I1.Click += Button_I1_Click;
         Button_C1.Click += Button_C1_Click;
+        Button_B1.Click += Button_B1_Click;
 
         Button1.Click += Button1_Click;
 
@@ -61,6 +63,16 @@ public partial class Tab4Control : UserControl
         TextBox1.PropertyChanged += TextBox1_TextInput;
 
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private async void Button_B1_Click(object? sender, RoutedEventArgs e)
+    {
+        if (isSet) 
+            return;
+
+        isSet = true;
+        await App.ShowAddSet(Obj);
+        isSet = false;
     }
 
     private async void Button_C1_Click(object? sender, RoutedEventArgs e)
@@ -200,6 +212,16 @@ public partial class Tab4Control : UserControl
         item.Enable = item.Obj.Disable;
     }
 
+    private void Button_B1_PointerLeave(object? sender, PointerEventArgs e)
+    {
+        Expander_B.IsExpanded = false;
+    }
+
+    private void Button_B_PointerEnter(object? sender, PointerEventArgs e)
+    {
+        Expander_B.IsExpanded = true;
+    }
+
     private void Button_C1_PointerLeave(object? sender, PointerEventArgs e)
     {
         Expander_C.IsExpanded = false;
@@ -246,6 +268,7 @@ public partial class Tab4Control : UserControl
         Expander_A.MakePadingNull();
         Expander_R.MakePadingNull();
         Expander_C.MakePadingNull();
+        Expander_B.MakePadingNull();
     }
 
     private async void Load()
@@ -276,7 +299,6 @@ public partial class Tab4Control : UserControl
 
     private void Load1()
     {
-
         if (string.IsNullOrWhiteSpace(TextBox1.Text))
         {
             List.Clear();

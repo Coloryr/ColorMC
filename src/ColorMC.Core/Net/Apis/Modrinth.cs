@@ -83,7 +83,7 @@ public static class Modrinth
         int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
         string categoryId = "", Loaders loader = Loaders.Normal)
     {
-        return Search(version, filter,  sortOrder, page * pagesize,
+        return Search(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassMod, loader.GetName().ToLower());
     }
 

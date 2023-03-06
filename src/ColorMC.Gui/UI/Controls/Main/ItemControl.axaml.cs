@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
@@ -90,6 +89,11 @@ public partial class ItemControl : UserControl
 
     private void Button_Add1_Click(object? sender, RoutedEventArgs e)
     {
+        if (BaseBinding.IsDownload)
+        {
+            Window.Info.Show("正在下载资源中，无法添加实例");
+            return;
+        }
         App.ShowAddGame();
     }
 
