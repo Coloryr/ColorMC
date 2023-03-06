@@ -3,10 +3,13 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Text;
 
 namespace ColorMC.Core.Net.Download;
@@ -21,8 +24,6 @@ public static class PackDownload
     /// <param name="zip">压缩包路径</param>
     public static async Task<(GetDownloadState State, List<DownloadItem>? List, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip, string? name, string? group)
     {
-        var list = new List<DownloadItem>();
-
         ColorMCCore.PackState?.Invoke(CoreRunState.Init);
         using ZipFile zFile = new(zip);
         using MemoryStream stream1 = new();
@@ -119,6 +120,7 @@ public static class PackDownload
         //获取Mod信息
         Size = info.files.Count;
         Now = 0;
+        var list = new ConcurrentBag<DownloadItem>();
         var res = await CurseForge.GetMods(info.files);
         if (res != null)
         {
@@ -196,19 +198,17 @@ public static class PackDownload
             });
             if (!done)
             {
-                return (GetDownloadState.GetInfo, list, game);
+                return (GetDownloadState.GetInfo, null, game);
             }
         }
 
         game.SaveModInfo();
 
-        return (GetDownloadState.End, list, game);
+        return (GetDownloadState.End, list.ToList(), game);
     }
 
     public static async Task<(GetDownloadState State, List<DownloadItem>? List, GameSettingObj? Game)> DownloadModrinthModPack(string zip, string? name, string? group)
     {
-        var list = new List<DownloadItem>();
-
         ColorMCCore.PackState?.Invoke(CoreRunState.Init);
         using ZipFile zFile = new(zip);
         using MemoryStream stream1 = new();
@@ -306,6 +306,8 @@ public static class PackDownload
 
         ColorMCCore.PackState?.Invoke(CoreRunState.GetInfo);
 
+        var list = new List<DownloadItem>();
+
         //获取Mod信息
         Size = info.files.Count;
         Now = 0;
@@ -359,5 +361,136 @@ public static class PackDownload
     public static void FixDownloadUrl(this CurseForgeObj.Data.LatestFiles item)
     {
         item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
+    }
+
+    public static async Task<(bool, GameSettingObj?)> InstallFTB(FTBModpackObj obj, FTBModpackObj.Versions file, string? name, string? group)
+    {
+        ColorMCCore.PackState?.Invoke(CoreRunState.Read);
+
+        var data = await FTBHelper.GetFiles(obj.id, file.id);
+        if (data == null)
+            return (false, null);
+
+        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
+
+        //获取版本数据
+        string mc = "";
+        Loaders loaders = Loaders.Normal;
+        string loaderversion = "";
+        foreach (var item in file.targets)
+        {
+            if (item.type == "modloader")
+            {
+                if (item.name == "forge")
+                {
+                    loaders = Loaders.Forge;
+                    loaderversion = item.version;
+                }
+                else if (item.name == "fabric")
+                {
+                    loaders = Loaders.Fabric;
+                    loaderversion = item.version;
+                }
+            }
+            else if (item.type == "game")
+            {
+                mc = item.version;
+            }
+        }
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            name = $"{obj.name}-{file.name}-{file.type}";
+        }
+
+        //创建游戏实例
+        var game = await InstancesPath.CreateVersion(new()
+        {
+            GroupName = group,
+            Name = name,
+            Version = mc,
+            ModPack = true,
+            Loader = loaders,
+            LoaderVersion = loaderversion,
+            Mods = new()
+        });
+
+        if (game == null)
+        {
+            return (false, game);
+        }
+
+        var list = new ConcurrentBag<DownloadItem>();
+        bool error = false;
+        await Parallel.ForEachAsync(data.files, async (item, cancel) =>
+        {
+            if (error)
+                return;
+            if (item.type == "mod")
+            {
+                var res1 = await CurseForge.GetMod(new()
+                {
+                    projectID = item.curseforge.project,
+                    fileID = item.curseforge.file
+                });
+                if (res1 == null)
+                {
+                    error = true;
+                    return;
+                }
+
+                res1.data.downloadUrl ??= $"https://edge.forgecdn.net/files/{res1.data.id / 1000}/{res1.data.id % 1000}/{res1.data.fileName}";
+
+                var item11 = new DownloadItem()
+                {
+                    Url = res1.data.downloadUrl,
+                    Name = item.name,
+                    Local = game.GetGamePath() + item.path[1..] + item.name,
+                    SHA1 = item.sha1
+                };
+
+                game.Mods.Add(item.curseforge.project.ToString(), new()
+                {
+                    Path = item.path[2..^1],
+                    Name = res1.data.displayName,
+                    File = item.name,
+                    SHA1 = item.sha1!,
+                    ModId = item.curseforge.project.ToString(),
+                    FileId = item.curseforge.file.ToString(),
+                    Url = res1.data.downloadUrl
+                });
+
+                list.Add(item11);
+            }
+            else
+            {
+                var item11 = new DownloadItem()
+                {
+                    Url = item.url,
+                    Name = item.name,
+                    Local = game.GetGamePath() + item.path[1..] + item.name,
+                    SHA1 = item.sha1
+                };
+
+                list.Add(item11);
+            }
+        });
+        if (error)
+        {
+            return (false, game);
+        }
+
+        game.SaveModInfo();
+
+        ColorMCCore.PackState?.Invoke(CoreRunState.Download);
+
+        var res = await DownloadManager.Start(list.ToList());
+        if (!res)
+        {
+            return (false, game);
+        }
+
+        ColorMCCore.PackState?.Invoke(CoreRunState.End);
+
+        return (true, game);
     }
 }

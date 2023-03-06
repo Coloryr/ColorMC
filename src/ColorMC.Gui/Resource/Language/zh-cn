@@ -456,7 +456,7 @@
 	<String Key="DownloadWindow.Info4">下载还未完成，是否要取消</String>
 	<String Key="DownloadWindow.Info5">继续下载</String>
 
-	<String Key="AddGameWindow.Title">ColorMC 添加游戏</String>
+	<String Key="AddGameWindow.Title">ColorMC 添加游戏实例</String>
 	<String Key="AddGameWindow.Text1">添加实例</String>
 	<String Key="AddGameWindow.Text2">实例名字</String>
 	<String Key="AddGameWindow.Text3">游戏版本</String>
@@ -634,6 +634,13 @@
 	<String Key="SkinType.New">新版皮肤</String>
 	<String Key="SkinType.New_Slim">新版纤细皮肤</String>
 	<String Key="SkinType.Other">未知的皮肤类型</String>
+
+	<String Key="FTBType.All">全部</String>
+	<String Key="FTBType.Featured">特色</String>
+	<String Key="FTBType.Popular">热门</String>
+	<String Key="FTBType.Installs">安装数</String>
+	<String Key="FTBType.Search">搜索</String>
+	<String Key="FTBType.Other">未知的排序类型</String>
 
 	<String Key="Info1">正在读取配置文件</String>
 	<String Key="Info2">正在保存配置文件</String>

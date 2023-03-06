@@ -67,6 +67,18 @@
                         Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text7}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
+                        Binding="{Binding Source}"
+                        Header="下载源"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding PID}"
+                        Header="项目ID"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding FID}"
+                        Header="文件ID"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
                         Binding="{Binding Local}"
                         Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text4}"
                         IsReadOnly="True" />

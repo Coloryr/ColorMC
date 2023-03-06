@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Objs.CurseForge;
+﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -31,14 +32,15 @@ public static class CurseForge
     /// <param name="sortOrder">排序</param>
     /// <returns></returns>
     private static async Task<CurseForgeObj?> GetList(int classid, string version, int page,
-        int sort, string filter, int pagesize, int sortOrder, string categoryId)
+        int sortField, string filter, int pagesize, int sortOrder, string categoryId, 
+        int modLoaderType)
     {
         try
         {
             string temp = $"{CurseForgeUrl}mods/search?gameId={GameID}&classId={classid}&"
-                + $"gameVersion={version}&index={page * pagesize}&sortField={sort}&"
+                + $"gameVersion={version}&index={page * pagesize}&sortField={sortField}&"
                 + $"searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}&"
-                + $"categoryId={categoryId}";
+                + $"categoryId={categoryId}&modLoaderType={modLoaderType}";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -62,49 +64,60 @@ public static class CurseForge
     /// 获取整合包列表
     /// </summary>
     public static Task<CurseForgeObj?> GetModPackList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1,
+        int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
-        return GetList(ClassModPack, version, page, sort, filter, pagesize, sortOrder, categoryId);
+        return GetList(ClassModPack, version, page, sortField, filter, pagesize, sortOrder, categoryId, 0);
     }
 
     /// <summary>
     /// 获取Mod列表
     /// </summary>
     public static Task<CurseForgeObj?> GetModList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1,
-        string categoryId = "")
+        int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
+        string categoryId = "", Loaders loader = Loaders.Normal)
     {
-        return GetList(ClassMod, version, page, sort, filter, pagesize, sortOrder, categoryId);
+        return GetList(ClassMod, version, page, sortField, filter, pagesize, sortOrder, categoryId, Loader(loader));
+    }
+
+    private static int Loader(Loaders loader)
+    {
+        return loader switch
+        {
+            Loaders.Forge => 1,
+            Loaders.Fabric => 4,
+            Loaders.Quilt => 5,
+            _ => 0
+        };
     }
 
     /// <summary>
     /// 获取世界列表
     /// </summary>
     public static Task<CurseForgeObj?> GetWorldList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1,
+        int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
-        return GetList(ClassWorld, version, page, sort, filter, pagesize, sortOrder, categoryId);
+        return GetList(ClassWorld, version, page, sortField, filter, pagesize, sortOrder, categoryId, 0);
     }
 
     /// <summary>
     /// 获取资源包列表
     /// </summary>
     public static Task<CurseForgeObj?> GetResourcepackList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1,
+        int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
-        return GetList(ClassResourcepack, version, page, sort, filter, pagesize, sortOrder, categoryId);
+        return GetList(ClassResourcepack, version, page, sortField, filter, pagesize, sortOrder, categoryId, 0);
     }
 
     /// <summary>
     /// 获取数据包列表
     /// </summary>
     public static Task<CurseForgeObj?> GetDataPacksList(string version = "", int page = 0,
-        int sort = 2, string filter = "", int pagesize = 50, int sortOrder = 1)
+        int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
     {
-        return GetList(ClassResourcepack, version, page, sort, filter, pagesize, sortOrder, CategoryIdDataPacks.ToString());
+        return GetList(ClassResourcepack, version, page, sortField, filter, pagesize, sortOrder, CategoryIdDataPacks.ToString(), 0);
     }
 
     /// <summary>
@@ -280,12 +293,12 @@ public static class CurseForge
     /// <summary>
     /// 获取文件列表
     /// </summary>
-    public static async Task<CurseForgeFileObj?> GetCurseForgeFiles(string id, string? mc, int page = 0)
+    public static async Task<CurseForgeFileObj?> GetCurseForgeFiles(string id, string? mc, int page = 0, Loaders loader = Loaders.Normal)
     {
         try
         {
             mc ??= "";
-            string temp = $"{CurseForgeUrl}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}";
+            string temp = $"{CurseForgeUrl}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}&modLoaderType={Loader(loader)}";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,

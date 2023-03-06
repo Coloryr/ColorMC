@@ -21,16 +21,26 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Input;
+using ColorMC.Core.Net;
+using System.Threading;
 
 namespace ColorMC.Gui;
 
 public static class OtherUtils
 {
-    public static DateTime TimestampToDataTime(long unixTimeStamp)
+    public static DateTime MillisecondsToDataTime(long unixTimeStamp)
     {
         DateTime start = new DateTime(1970, 1, 1) +
             TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
         DateTime dt = start.AddMilliseconds(unixTimeStamp);
+        return dt;
+    }
+
+    public static DateTime SecondsToDataTime(long unixTimeStamp)
+    {
+        DateTime start = new DateTime(1970, 1, 1) +
+            TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
+        DateTime dt = start.AddSeconds(unixTimeStamp);
         return dt;
     }
 
@@ -42,6 +52,19 @@ public static class OtherUtils
             SkinType.New => App.GetLanguage("SkinType.New"),
             SkinType.NewSlim => App.GetLanguage("SkinType.New_Slim"),
             _ => App.GetLanguage("SkinType.Other")
+        };
+    }
+
+    public static string GetName(this FTBType type)
+    {
+        return type switch
+        {
+            FTBType.All => App.GetLanguage("FTBType.All"),
+            FTBType.Featured => App.GetLanguage("FTBType.Featured"),
+            FTBType.Popular => App.GetLanguage("FTBType.Popular"),
+            FTBType.Installs => App.GetLanguage("FTBType.Installs"),
+            FTBType.Search => App.GetLanguage("FTBType.Search"),
+            _ => App.GetLanguage("FTBType.Other")
         };
     }
 }
@@ -553,6 +576,62 @@ public static class ImageUtils
                 return null;
             }
         });
+    }
+}
+
+public static class ImageTemp
+{
+    private static string Local;
+
+    public static void Init(string dir)
+    {
+        Local = dir + "image/";
+
+        Directory.CreateDirectory(Local);
+    }
+
+    public static async Task<Bitmap?> Load(string url, CancellationToken token)
+    {
+        if (!Directory.Exists(Local))
+        {
+            Directory.CreateDirectory(Local);
+        }
+        var sha1 = Funtcions.GenSha256(url);
+        if (File.Exists(Local + sha1))
+        {
+            if (token.IsCancellationRequested)
+                return null;
+
+            return new Bitmap(Local + sha1);
+        }
+        else
+        {
+            Bitmap? bitmap = null;
+            Semaphore semaphore = new(0, 2);
+            BaseClient.Poll(url, (res, stream) =>
+            {
+                if (res)
+                {
+                    using var temp = File.Create(Local + sha1);
+                    stream!.CopyTo(temp);
+                }
+                semaphore.Release();
+            }, token);
+            await Task.Run(semaphore.WaitOne);
+
+            if (token.IsCancellationRequested)
+                return null;
+
+            if (File.Exists(Local + sha1))
+            {
+                if (token.IsCancellationRequested)
+                    return null;
+
+                return new Bitmap(Local + sha1);
+            }
+
+            return null;
+        }
     }
 }
 

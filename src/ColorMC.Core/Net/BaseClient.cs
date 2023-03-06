@@ -13,7 +13,7 @@ public static class BaseClient
     public static HttpClient LoginClient { get; private set; }
 
     private static readonly Thread[] threads = new Thread[5];
-    private static readonly ConcurrentBag<(string, CancellationToken, Action<Stream>)> tasks = new();
+    private static readonly ConcurrentBag<(string, CancellationToken, Action<bool, Stream?>)> tasks = new();
     private static bool run;
 
     /// <summary>
@@ -112,22 +112,29 @@ public static class BaseClient
                 try
                 {
                     if (item.Item2.IsCancellationRequested)
-                        continue;
+                        item.Item3(false, null);
 
                     using var data1 = DownloadClient.GetAsync(item.Item1, item.Item2).Result;
                     if (item.Item2.IsCancellationRequested)
-                        continue;
+                        item.Item3(false, null);
 
                     using var data2 = data1.Content.ReadAsStream(item.Item2);
-                    if (data1.IsSuccessStatusCode)
-                    {
-                        item.Item3(data2);
-                    }
+                    if (item.Item2.IsCancellationRequested)
+                        item.Item3(false, null);
+
+                    item.Item3(data1.IsSuccessStatusCode, data2);
+                }
+                catch (AggregateException e)
+                {
+                    if (item.Item2.IsCancellationRequested)
+                        item.Item3(false, null);
+
+                    Logs.Error("http error", e);
                 }
                 catch (Exception e)
                 {
                     if (item.Item2.IsCancellationRequested)
-                        continue;
+                        item.Item3(false, null);
 
                     Logs.Error("http error", e);
                 }
@@ -136,8 +143,14 @@ public static class BaseClient
         }
     }
 
-    public static void Poll(string url, Action<Stream> action, CancellationToken token)
+    public static void Poll(string url, Action<bool, Stream?> action, CancellationToken token)
     {
         tasks.Add((url, token, action));
+    }
+
+    public static void WaitTask()
+    {
+        while (!tasks.IsEmpty)
+            Thread.Sleep(100);
     }
 }

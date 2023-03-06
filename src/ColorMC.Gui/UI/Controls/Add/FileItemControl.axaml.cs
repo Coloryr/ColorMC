@@ -78,7 +78,7 @@ public partial class FileItemControl : UserControl
         cancel.Cancel();
     }
 
-    public void Load(FileItemDisplayObj data)
+    public async void Load(FileItemDisplayObj data)
     {
         cancel.Dispose();
         cancel = new();
@@ -104,17 +104,11 @@ public partial class FileItemControl : UserControl
         {
             try
             {
-                BaseBinding.HttpPoll(data.Logo, (data1) =>
+                var img = await ImageTemp.Load(data.Logo, cancel.Token);
+                if (img != null)
                 {
-                    if (cancel.IsCancellationRequested)
-                        return;
-
-                    var bitmap = new Bitmap(data1);
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        Image1.Source = bitmap;
-                    });
-                }, cancel.Token);
+                    Image1.Source = img;
+                }
             }
             catch (Exception e)
             {

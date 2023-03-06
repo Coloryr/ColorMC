@@ -22,7 +22,6 @@ public partial class Tab4Control : UserControl
 {
     private readonly ObservableCollection<ModDisplayObj> List = new();
     private readonly List<ModDisplayObj> Items = new();
-    private readonly Dictionary<string, ModObj> Dir1 = new();
 
     private GameSettingObj Obj;
 
@@ -146,11 +145,8 @@ public partial class Tab4Control : UserControl
 
         items.ToList().ForEach(item =>
         {
-            if (Dir1.Remove(item.Local, out var obj))
-            {
-                GameBinding.DeleteMod(obj);
-                List.Remove(item);
-            }
+            GameBinding.DeleteMod(item.Obj);
+            List.Remove(item);
         });
 
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
@@ -166,22 +162,16 @@ public partial class Tab4Control : UserControl
             return;
         }
 
-        if (Dir1.Remove(item.Local, out var obj))
-        {
-            GameBinding.DeleteMod(obj);
-            List.Remove(item);
+        GameBinding.DeleteMod(item.Obj);
+        List.Remove(item);
 
-            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        }
+        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
     }
 
     public void DisE(ModDisplayObj item)
     {
-        if (Dir1.TryGetValue(item.Local, out var obj))
-        {
-            GameBinding.ModEnDi(obj);
-            item.Enable = obj.Disable;
-        }
+        GameBinding.ModEnDi(item.Obj);
+        item.Enable = item.Obj.Disable;
     }
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
@@ -225,7 +215,6 @@ public partial class Tab4Control : UserControl
     {
         var window = (VisualRoot as GameEditWindow)!;
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
-        Dir1.Clear();
         Items.Clear();
         var res = await GameBinding.GetGameMods(Obj);
         window.Info1.Close();
@@ -237,36 +226,7 @@ public partial class Tab4Control : UserControl
 
         int count = 0;
 
-        foreach (var item in res)
-        {
-            ModDisplayObj obj;
-            if (item.Broken)
-            {
-                obj = new ModDisplayObj()
-                {
-                    Name = App.GetLanguage("GameEditWindow.Tab4.Info5"),
-                    Local = item.Local,
-                    Enable = item.Disable
-                };
-                count++;
-            }
-            else
-            {
-                obj = new ModDisplayObj()
-                {
-                    Name = item.name,
-                    Version = item.version,
-                    Local = item.Local,
-                    Author = item.authorList.MakeString(),
-                    Url = item.url,
-                    Loader = item.Loader.GetName(),
-                    Enable = item.Disable
-                };
-            }
-
-            Items.Add(obj);
-            Dir1.Add(obj.Local, item);
-        }
+        Items.AddRange(res);
 
         if (count != 0)
         {

@@ -1,5 +1,4 @@
 检测整合包更新 后期考虑
-检测mod更新 后期考虑
 JProfiler 不添加
 MCEdit 不添加
 JVisualVM 不添加
@@ -61,7 +60,9 @@ UI调整 调整Tabs边框 Tabs滚动条 okl
 修改linux用户运行位置 okl
 添加服务器文件同步
 添加更新说明文件 okl
-添加下载版本选择
+添加下载版本选择 okl
 修改主界面启动游戏时可以进行操作
 添加强制更新 okl
-提示有Mod新版本
+添加FTB整合包安装 okl
+修改Mod列表
+添加Mod新版本检测

@@ -87,6 +87,7 @@ public class ColorMCGui
     public static AppBuilder BuildAvaloniaApp()
     {
         GuiConfigUtils.Init(BaseDir);
+        ImageTemp.Init(BaseDir);
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();

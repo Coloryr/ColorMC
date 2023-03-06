@@ -83,7 +83,7 @@ public partial class AddWindow : Window, IAddWindow
         Opened += AddModPackWindow_Opened;
         Closed += AddModPackWindow_Closed;
 
-        for (int a = 0; a < 50; a++)
+        for (int a = 0; a < 20; a++)
         {
             List.Add(new());
         }
@@ -438,7 +438,7 @@ public partial class AddWindow : Window, IAddWindow
         var data = await GameBinding.GetList(now, List2[ComboBox2.SelectedIndex], 
             ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!, 
             ComboBox4.SelectedIndex, ComboBox5.SelectedIndex < 0 ? "" :
-                Categories[ComboBox5.SelectedIndex]);
+                Categories[ComboBox5.SelectedIndex], Obj.Loader);
 
         if (data == null)
         {
@@ -495,16 +495,16 @@ public partial class AddWindow : Window, IAddWindow
         if (type == SourceType.CurseForge)
         {
             Input3.IsEnabled = true;
-            list = await GameBinding.GetPackFile(type, 
-                (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!, 
-                ComboBox6.SelectedItem as string ,now);
+            list = await GameBinding.GetPackFile(type,
+                (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!,
+                ComboBox6.SelectedItem as string, Obj.Loader, now);
         }
         else if (type == SourceType.Modrinth)
         {
             Input3.IsEnabled = false;
-            list = await GameBinding.GetPackFile(type, 
-                (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!, 
-                ComboBox6.SelectedItem as string, now);
+            list = await GameBinding.GetPackFile(type,
+                (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
+                ComboBox6.SelectedItem as string, Obj.Loader, now);
         }
         if (list == null)
         {
