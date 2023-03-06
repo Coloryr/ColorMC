@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -254,8 +255,6 @@ public partial class AddWindow : Window, IAddWindow
 
         List2 = GameBinding.GetSourceList(now);
         List2.ForEach(item => List3.Add(item.GetName()));
-
-        ComboBox2.SelectedIndex = 0;
     }
 
     public void Go(FileType file)
@@ -267,6 +266,8 @@ public partial class AddWindow : Window, IAddWindow
         else
         {
             ComboBox1.SelectedIndex = (int)file - 1;
+
+            ComboBox2.SelectedIndex = 0;
         }
     }
 
@@ -376,7 +377,7 @@ public partial class AddWindow : Window, IAddWindow
     public async void Install1(FileDisplayObj data)
     {
         var last = Last!;
-        last.SetNowDownload();
+        last?.SetNowDownload();
         await App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
         var type = List2[ComboBox2.SelectedIndex];
         bool res = false;
@@ -416,6 +417,11 @@ public partial class AddWindow : Window, IAddWindow
         if (res)
         {
             Info2.Show(App.GetLanguage("AddWindow.Info6"));
+            if (last == null)
+            {
+                Close();
+                return;
+            }
             last.SetDownloaded();
         }
         else
@@ -485,7 +491,7 @@ public partial class AddWindow : Window, IAddWindow
         ComboBox1.SelectedIndex = 0;
     }
 
-    private async void Load1()
+    private async void Load1(string? id = null)
     {
         List1.Clear();
 
@@ -495,14 +501,14 @@ public partial class AddWindow : Window, IAddWindow
         if (type == SourceType.CurseForge)
         {
             Input3.IsEnabled = true;
-            list = await GameBinding.GetPackFile(type,
+            list = await GameBinding.GetPackFile(type, id ??
                 (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Obj.Loader, now);
         }
         else if (type == SourceType.Modrinth)
         {
             Input3.IsEnabled = false;
-            list = await GameBinding.GetPackFile(type,
+            list = await GameBinding.GetPackFile(type, id ??
                 (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Obj.Loader, now);
         }
@@ -534,6 +540,20 @@ public partial class AddWindow : Window, IAddWindow
         }
 
         Info1.Close();
+    }
+
+    public async void GoFile(SourceType type, string pid)
+    {
+        ComboBox1.SelectedIndex = (int)FileType.Mod - 1;
+        ComboBox2.SelectedIndex = (int)type;
+        await Task.Run(() =>
+        {
+            while (!display || load)
+                Thread.Sleep(1000);
+        });
+
+        App.CrossFade300.Start(null, GridVersion, CancellationToken.None);
+        Load1(pid);
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

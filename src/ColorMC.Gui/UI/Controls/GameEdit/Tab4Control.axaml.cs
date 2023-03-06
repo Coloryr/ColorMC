@@ -11,6 +11,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,12 +41,16 @@ public partial class Tab4Control : UserControl
         Button_R1.PointerExited += Button_R1_PointerLeave;
         Button_R.PointerEntered += Button_R_PointerEnter;
 
+        Button_C1.PointerExited += Button_C1_PointerLeave;
+        Button_C.PointerEntered += Button_C_PointerEnter;
+
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
         Button_A1.Click += Button_A1_Click;
         Button_R1.Click += Button_R1_Click;
         Button_I1.Click += Button_I1_Click;
+        Button_C1.Click += Button_C1_Click;
 
         Button1.Click += Button1_Click;
 
@@ -56,6 +61,27 @@ public partial class Tab4Control : UserControl
         TextBox1.PropertyChanged += TextBox1_TextInput;
 
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private async void Button_C1_Click(object? sender, RoutedEventArgs e)
+    {
+        var window = (VisualRoot as GameEditWindow)!;
+        window.Info1.Show("正在检测Mod版本更新");
+        var res = await GameBinding.CheckModUpdate(Obj, Items);
+        window.Info1.Close();
+        if (res.Count > 0)
+        {
+            var res1 = await window.Info.ShowWait(string.Format(
+                "检测到 {0} 个Mod有新版本，是否要更新", res.Count));
+            if (res1)
+            {
+                window.Info1.Show("正在更新Mod");
+                await GameBinding.StartUpdate(res);
+                window.Info1.Close();
+
+                Load();
+            }
+        }
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -174,6 +200,16 @@ public partial class Tab4Control : UserControl
         item.Enable = item.Obj.Disable;
     }
 
+    private void Button_C1_PointerLeave(object? sender, PointerEventArgs e)
+    {
+        Expander_C.IsExpanded = false;
+    }
+
+    private void Button_C_PointerEnter(object? sender, PointerEventArgs e)
+    {
+        Expander_C.IsExpanded = true;
+    }
+
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
     {
         Expander_I.IsExpanded = false;
@@ -209,6 +245,7 @@ public partial class Tab4Control : UserControl
         Expander_I.MakePadingNull();
         Expander_A.MakePadingNull();
         Expander_R.MakePadingNull();
+        Expander_C.MakePadingNull();
     }
 
     private async void Load()

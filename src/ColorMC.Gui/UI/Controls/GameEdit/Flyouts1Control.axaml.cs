@@ -25,6 +25,13 @@ public partial class Flyouts1Control : UserControl
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
         Button5.Click += Button5_Click;
+        Button6.Click += Button6_Click;
+    }
+
+    private void Button6_Click(object? sender, RoutedEventArgs e)
+    {
+        FlyoutBase.Hide();
+        BaseBinding.GotoModFile(Obj);
     }
 
     private void Button5_Click(object? sender, RoutedEventArgs e)
@@ -75,6 +82,10 @@ public partial class Flyouts1Control : UserControl
             {
                 Button5.IsEnabled = false;
             }
+            if (string.IsNullOrWhiteSpace(Obj.PID) || string.IsNullOrWhiteSpace(Obj.FID))
+            {
+                Button6.IsEnabled = false;
+            }
         }
         else
         {
@@ -82,6 +93,7 @@ public partial class Flyouts1Control : UserControl
             Button3.IsEnabled = false;
             Button4.IsEnabled = false;
             Button5.IsEnabled = false;
+            Button6.IsEnabled = false;
         }
         Con = con;
         FlyoutBase = fb;

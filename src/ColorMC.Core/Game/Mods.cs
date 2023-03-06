@@ -83,6 +83,7 @@ public static class Mods
                             obj3.Disable = item.Extension is ".disable";
                             obj3.Loader = Loaders.Forge;
                             obj3.Sha1 = sha1;
+                            obj3.Game = obj;
                             list.Add(obj3);
                             find = true;
                             return;
@@ -100,6 +101,7 @@ public static class Mods
                             obj3.Disable = item.Extension is ".disable";
                             obj3.Loader = Loaders.Forge;
                             obj3.Sha1 = sha1;
+                            obj3.Game = obj;
                             list.Add(obj3);
                             find = true;
                             return;
@@ -172,6 +174,7 @@ public static class Mods
                         version = obj1["version"]?.ToString(),
                         authorList = (obj1["authors"] as JArray)?.ToStringList(),
                         url = obj1["contact"]?["homepage"]?.ToString(),
+                        Game = obj,
                         Sha1 = sha1
                     };
                     list.Add(obj3);
@@ -201,7 +204,8 @@ public static class Mods
                         version = obj1["quilt_loader"]?["version"]?.ToString(),
                         authorList = (obj1["quilt_loader"]?["metadata"]?["contributors"] as JObject)?.ToStringList(),
                         url = obj1["quilt_loader"]?["contact"]?["homepage"]?.ToString(),
-                        Sha1 = sha1
+                        Sha1 = sha1,
+                        Game = obj
                     };
                     list.Add(obj3);
                     find = true;
