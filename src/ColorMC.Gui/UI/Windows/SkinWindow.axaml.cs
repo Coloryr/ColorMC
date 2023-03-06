@@ -212,11 +212,10 @@ public partial class SkinWindow : Window
 
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
-        var res = await BaseBinding.OpSave(this, "保存皮肤", ".png", "skin.png");
-        if (res != null)
+        var res = await BaseBinding.SaveFile(this, Core.Objs.FileType.Skin, null);
+        if (res == true)
         {
-            await UserBinding.SkinImage.SaveAsPngAsync(res.GetPath());
-            Info2.Show("已保存");
+            Info2.Show(App.GetLanguage("Gui.Info10"));
         }
     }
 

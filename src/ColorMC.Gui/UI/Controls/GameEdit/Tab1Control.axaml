@@ -96,14 +96,19 @@
                     ToolTip.VerticalOffset="-30" />
             </StackPanel>
 
-            <Button
-                Name="Button7"
-                Width="150"
-                Height="25"
-                Margin="0,5,0,0"
-                Content="{setting:Localize AddGameWindow.Text16}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text43}"
-                ToolTip.VerticalOffset="-30" />
+            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                <Button
+                    Name="Button7"
+                    Width="150"
+                    Height="25"
+                    Content="{setting:Localize AddGameWindow.Text16}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text43}"
+                    ToolTip.VerticalOffset="-30" />
+                <Label
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize GameEditWindow.Tab1.Text4}" />
+            </StackPanel>
             <CheckBox Name="CheckBox1" Content="{setting:Localize GameEditWindow.Tab1.Text3}" />
         </StackPanel>
         <Button

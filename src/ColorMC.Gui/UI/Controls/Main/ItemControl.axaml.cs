@@ -91,7 +91,7 @@ public partial class ItemControl : UserControl
     {
         if (BaseBinding.IsDownload)
         {
-            Window.Info.Show("正在下载资源中，无法添加实例");
+            Window.Info.Show(App.GetLanguage("ainWindow.Control.Info3"));
             return;
         }
         App.ShowAddGame();

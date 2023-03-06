@@ -172,7 +172,7 @@
                         <Label
                             Margin="5,0,0,0"
                             VerticalAlignment="Center"
-                            Content="游戏版本" />
+                            Content="{setting:Localize AddModPackWindow.Text2}" />
                         <ComboBox
                             Name="ComboBox6"
                             Width="140"

@@ -88,7 +88,10 @@
                         Margin="5,0,0,0"
                         Content="{setting:Localize SettingWindow.Tab6.Text11}" />
                 </StackPanel>
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab6.Text12}" />
+                <Label
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab6.Text12}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

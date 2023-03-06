@@ -182,7 +182,7 @@
                             Width="100"
                             Height="30"
                             Margin="16,0,0,0"
-                            Content="检查更新" />
+                            Content="{setting:Localize GameEditWindow.Tab4.Text4}" />
                     </Expander>
                 </Grid>
                 <Grid>
@@ -205,7 +205,7 @@
                             Width="100"
                             Height="30"
                             Margin="16,0,0,0"
-                            Content="添加标记" />
+                            Content="{setting:Localize GameEditWindow.Tab4.Text5}" />
                     </Expander>
                 </Grid>
             </StackPanel>

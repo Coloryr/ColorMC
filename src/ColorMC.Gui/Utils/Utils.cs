@@ -581,7 +581,7 @@ public static class ImageUtils
 
 public static class ImageTemp
 {
-    private static string Local;
+    public static string Local { get; private set; }
 
     public static void Init(string dir)
     {
@@ -658,7 +658,7 @@ public static class GuiConfigUtils
             }
             catch (Exception e)
             {
-                Logs.Error("读取错误", e);
+                Logs.Error(App.GetLanguage("Gui.Error17"), e);
             }
 
             if (Config == null)

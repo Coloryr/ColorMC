@@ -95,11 +95,13 @@
 
                 <Button
                     Name="Button4"
-                    Width="80"
+                    Width="120"
                     Height="25"
                     Margin="10,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddGameWindow.Text15}" />
+                    Content="{setting:Localize AddGameWindow.Text15}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text45}"
+                    ToolTip.VerticalOffset="-30" />
             </StackPanel>
         </StackPanel>
 

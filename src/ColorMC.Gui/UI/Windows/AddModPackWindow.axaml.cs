@@ -19,19 +19,19 @@ namespace ColorMC.Gui.UI.Windows;
 public partial class AddModPackWindow : Window, IAddWindow
 {
     /// <summary>
-    /// 控件
+    /// 鎺т欢
     /// </summary>
     private readonly List<FileItemControl> List = new();
     /// <summary>
-    /// 类型
+    /// 绫诲瀷
     /// </summary>
     private readonly Dictionary<int, string> Categories = new();
     /// <summary>
-    /// 数据
+    /// 鏁版嵁
     /// </summary>
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     /// <summary>
-    /// 游戏版本
+    /// 娓告垙鐗堟湰
     /// </summary>
     private readonly ObservableCollection<string> List4 = new();
 
@@ -331,7 +331,7 @@ public partial class AddModPackWindow : Window, IAddWindow
         if (ComboBox1.SelectedIndex == 2 && ComboBox2.SelectedIndex == 4
             && Input1.Text?.Length < 3)
         {
-            Info.Show("请输入足够的搜索信息");
+            Info.Show(App.GetLanguage("AddModPackWindow.Error6"));
             Unlock();
             return;
         }

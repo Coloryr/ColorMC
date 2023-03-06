@@ -12,6 +12,8 @@ public partial class GameControl : UserControl
     public GameControl()
     {
         InitializeComponent();
+
+        Image1.Source = App.GameIcon;
     }
 
     public void SetItem(GameSettingObj obj)

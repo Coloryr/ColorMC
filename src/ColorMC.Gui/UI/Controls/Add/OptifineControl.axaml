@@ -14,12 +14,12 @@
                 <Label
                     Margin="5"
                     VerticalAlignment="Center"
-                    Content="下载Optifine" />
+                    Content="{setting:Localize AddGameWindow.Control1.Text1}" />
 
                 <Label
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="游戏版本" />
+                    Content="{setting:Localize AddGameWindow.Control1.Text2}" />
                 <ComboBox
                     Name="ComboBox6"
                     Width="140"
@@ -60,15 +60,15 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding MC}"
-                        Header="游戏版本"
+                        Header="{setting:Localize AddGameWindow.Control1.DataGrid.Text1}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Version}"
-                        Header="版本"
+                        Header="{setting:Localize AddGameWindow.Control1.DataGrid.Text2}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Forge}"
-                        Header="Forge版本"
+                        Header="{setting:Localize AddGameWindow.Control1.DataGrid.Text3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Date}"

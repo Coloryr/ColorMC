@@ -73,7 +73,7 @@
                 <Expander
                     Name="Expander_A"
                     Height="30"
-                    Margin="-94,0,0,0"
+                    Margin="-94,-5,0,-5"
                     HorizontalAlignment="Left"
                     Background="Transparent"
                     CornerRadius="0"
@@ -96,7 +96,7 @@
                 <Expander
                     Name="Expander_R"
                     Height="30"
-                    Margin="-94,0,0,0"
+                    Margin="-94,-5,0,-5"
                     HorizontalAlignment="Left"
                     Background="Transparent"
                     CornerRadius="0"

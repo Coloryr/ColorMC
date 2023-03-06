@@ -23,6 +23,7 @@ public partial class Tab3Control : UserControl
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
+        Button4.Click += Button4_Click;
 
         Input1.ParsingNumberStyle = NumberStyles.Integer;
         Input1.PropertyChanged += Input1_PropertyChanged;
@@ -39,12 +40,17 @@ public partial class Tab3Control : UserControl
         CheckBox5.Click += CheckBox1_Click;
     }
 
+    private void Button4_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpenPicPath();
+    }
+
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as SettingWindow)!;
         if (ColorMCGui.Update == null)
         {
-            window.Info.Show("无法进行更新");
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error1"));
             return;
         }
 
@@ -56,19 +62,19 @@ public partial class Tab3Control : UserControl
         var window = (VisualRoot as SettingWindow)!;
         if (ColorMCGui.Update == null || ColorMCGui.Check == null)
         {
-            window.Info.Show("无法进行检查");
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error2"));
             return;
         }
-        window.Info1.Show("正在进行更新检查");
+        window.Info1.Show(App.GetLanguage("SettingWindow.Tab3.Info1"));
         var res = await ColorMCGui.Check();
         if (res.Item1 == null)
         {
-            window.Info.Show("检查更新失败");
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error3"));
             return;
         }
         if (res.Item1 == true)
         {
-            var res1 = await window.Info6.ShowWait("检测到新版本，是否要更新", res.Item2!);
+            var res1 = await window.Info6.ShowWait(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
             if (res1)
             {
                 ColorMCGui.Update();
@@ -76,7 +82,7 @@ public partial class Tab3Control : UserControl
         }
         else
         {
-            window.Info.Show("已经是最新版了");
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Info3"));
         }
     }
 
