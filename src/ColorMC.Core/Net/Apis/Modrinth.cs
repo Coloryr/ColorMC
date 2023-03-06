@@ -1,4 +1,6 @@
-﻿using ColorMC.Core.Objs.Modrinth;
+﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
@@ -67,10 +69,10 @@ public static class Modrinth
     /// 获取整合包列表
     /// </summary>
     public static Task<ModrinthSearchObj?> GetModPackList(string version = "",
-        int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
+        int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
         string categoryId = "")
     {
-        return Search(filter, version, sortOrder, page * pagesize,
+        return Search(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassModPack, null);
     }
 
@@ -78,21 +80,21 @@ public static class Modrinth
     /// 获取Mod列表
     /// </summary>
     public static Task<ModrinthSearchObj?> GetModList(string version = "",
-        int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
-        string categoryId = "")
+        int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
+        string categoryId = "", Loaders loader = Loaders.Normal)
     {
-        return Search(filter, version, sortOrder, page * pagesize,
-            pagesize, categoryId, ClassMod, null);
+        return Search(version, filter,  sortOrder, page * pagesize,
+            pagesize, categoryId, ClassMod, loader.GetName().ToLower());
     }
 
     /// <summary>
     /// 获取资源包列表
     /// </summary>
     public static Task<ModrinthSearchObj?> GetResourcepackList(string version = "",
-        int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
+        int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
         string categoryId = "")
     {
-        return Search(filter, version, sortOrder, page * pagesize,
+        return Search(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassResourcepack, null);
     }
 
@@ -100,10 +102,10 @@ public static class Modrinth
     /// 获取光影包列表
     /// </summary>
     public static Task<ModrinthSearchObj?> GetShaderpackList(string version = "",
-        int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
+        int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
         string categoryId = "")
     {
-        return Search(filter, version, sortOrder, page * pagesize,
+        return Search(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassShaderpack, null);
     }
 
@@ -111,10 +113,10 @@ public static class Modrinth
     /// 获取数据包列表
     /// </summary>
     public static Task<ModrinthSearchObj?> GetDataPackList(string version = "",
-        int page = 0, string filter = "", int pagesize = 50, int sortOrder = 0,
+        int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
         string categoryId = "")
     {
-        return Search(filter, version, sortOrder, page * pagesize,
+        return Search(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassMod, CategoriesDataPack);
     }
 
@@ -132,12 +134,14 @@ public static class Modrinth
         }
     }
 
-    public static async Task<List<ModrinthVersionObj>?> Version(string id, string? mc)
+    public static async Task<List<ModrinthVersionObj>?> Version(string id, string? mc, Loaders loader)
     {
         try
         {
-            var res = await BaseClient.DownloadClient.GetStringAsync($"{Url}project/{id}/version?game_versions=[" +
-                $"{(string.IsNullOrWhiteSpace(mc) ? "" : ('"' + mc + '"'))}]");
+            string url = $"{Url}project/{id}/version?game_versions=[" +
+                $"{(string.IsNullOrWhiteSpace(mc) ? "" : ('"' + mc + '"'))}]"
+                + (loader != Loaders.Normal ? $"&loaders=[\"{loader.GetName().ToLower()}\"]" : "");
+            var res = await BaseClient.DownloadClient.GetStringAsync(url);
             return JsonConvert.DeserializeObject<List<ModrinthVersionObj>>(res);
         }
         catch (Exception e)

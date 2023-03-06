@@ -28,6 +28,16 @@ public static class Funtcions
         return EnText.ToString().ToLower();
     }
 
+    public static string GenSha1(string input)
+    {
+        return GenSha1(Encoding.UTF8.GetBytes(input));
+    }
+
+    public static string GenSha256(string input)
+    {
+        return GenSha256(Encoding.UTF8.GetBytes(input));
+    }
+
     public static string GenSha1(Stream stream)
     {
         SHA1 sha1 = SHA1.Create();
@@ -39,11 +49,20 @@ public static class Funtcions
         return EnText.ToString().ToLower();
     }
 
+    public static string GenSha256(byte[] data)
+    {
+        StringBuilder EnText = new();
+        foreach (byte iByte in SHA256.HashData(data))
+        {
+            EnText.AppendFormat("{0:x2}", iByte);
+        }
+        return EnText.ToString().ToLower();
+    }
+
     public static string GenSha256(Stream stream)
     {
-        SHA256 sha1 = SHA256.Create();
         StringBuilder EnText = new();
-        foreach (byte iByte in sha1.ComputeHash(stream))
+        foreach (byte iByte in SHA256.HashData(stream))
         {
             EnText.AppendFormat("{0:x2}", iByte);
         }

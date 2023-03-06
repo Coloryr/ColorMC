@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Add;
@@ -45,14 +46,16 @@ public partial class AddModPackWindow : Window, IAddWindow
         Icon = App.Icon;
         Border1.MakeResizeDrag(this);
 
-        ComboBox4.Items = GameBinding.GetSourceList();
-        ComboBox2.Items = List4;
+        ComboBox1.Items = GameBinding.GetSourceList();
+        ComboBox3.Items = List4;
+
         ComboBox6.Items = List4;
 
-        ComboBox1.SelectionChanged += ComboBox_SelectionChanged;
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox_SelectionChanged;
         ComboBox3.SelectionChanged += ComboBox_SelectionChanged;
-        ComboBox4.SelectionChanged += ComboBox4_SelectionChanged;
+        ComboBox4.SelectionChanged += ComboBox_SelectionChanged;
+
         ComboBox6.SelectionChanged += ComboBox6_SelectionChanged;
 
         DataGridFiles.Items = List1;
@@ -70,7 +73,7 @@ public partial class AddModPackWindow : Window, IAddWindow
         Opened += AddModPackWindow_Opened;
         Closed += AddModPackWindow_Closed;
 
-        for (int a = 0; a < 50; a++)
+        for (int a = 0; a < 20; a++)
         {
             List.Add(new());
         }
@@ -90,105 +93,124 @@ public partial class AddModPackWindow : Window, IAddWindow
         if (load)
             return;
 
-        ComboBox6.SelectedItem = ComboBox4.SelectedItem;
+        ComboBox6.SelectedItem = ComboBox1.SelectedItem;
 
         Load();
     }
 
-    private async void ComboBox4_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void Lock()
+    {
+        ComboBox1.IsEnabled = false;
+        ComboBox2.IsEnabled = false;
+        ComboBox3.IsEnabled = false;
+        Input1.IsEnabled = false;
+        ComboBox4.IsEnabled = false;
+        Input2.IsEnabled = false;
+
+        Button2.IsEnabled = false;
+    }
+
+    private void Unlock()
+    {
+        ComboBox1.IsEnabled = true;
+        ComboBox2.IsEnabled = true;
+        ComboBox3.IsEnabled = true;
+        Input1.IsEnabled = true;
+        ComboBox4.IsEnabled = true;
+        Input2.IsEnabled = true;
+
+        if (ComboBox1.SelectedIndex == 2)
+        {
+            ComboBox3.IsEnabled = false;
+            ComboBox4.IsEnabled = false;
+            Input2.IsEnabled = false;
+
+            if (ComboBox4.SelectedIndex == 4)
+            {
+                Input1.IsEnabled = true;
+            }
+            else
+            {
+                Input1.IsEnabled = false;
+            }
+        }
+    }
+
+    private async void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         load = true;
-        ComboBox1.Items = null;
-        ComboBox3.Items = null;
+
+        Lock();
+
+        ComboBox2.Items = null;
+        ComboBox4.Items = null;
 
         List4.Clear();
-
+        Categories.Clear();
         foreach (var item in ListBox_Items.Children)
         {
             (item as FileItemControl)?.Cancel();
         }
         ListBox_Items.Children.Clear();
 
-        if (ComboBox4.SelectedIndex == 0)
+        switch (ComboBox1.SelectedIndex)
         {
-            ComboBox3.Items = GameBinding.GetCurseForgeSortTypes();
+            case 0:
+            case 1:
+                ComboBox4.Items = ComboBox1.SelectedIndex == 0 ? 
+                    GameBinding.GetCurseForgeSortTypes() : 
+                    GameBinding.GetModrinthSortTypes();
 
-            Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
-            var list = await GameBinding.GetCurseForgeGameVersions();
-            var list1 = await GameBinding.GetCurseForgeCategories();
-            Info1.Close();
-            if (list == null || list1 == null)
-            {
+                Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
+                var list = ComboBox1.SelectedIndex == 0 ? 
+                    await GameBinding.GetCurseForgeGameVersions() : 
+                    await GameBinding.GetModrinthGameVersions();
+                var list1 = ComboBox1.SelectedIndex == 0 ? 
+                    await GameBinding.GetCurseForgeCategories() : 
+                    await GameBinding.GetModrinthCategories();
+                Info1.Close();
+                if (list == null || list1 == null)
+                {
 #if !DEBUG
             Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
 #endif
-                return;
-            }
-            List4.AddRange(list);
+                    Unlock();
+                    return;
+                }
+                List4.AddRange(list);
 
-            Categories.Clear();
-            Categories.Add(0, "");
-            int a = 1;
-            foreach (var item in list1)
-            {
-                Categories.Add(a++, item.Key);
-            }
+                Categories.Add(0, "");
+                var a = 1;
+                foreach (var item in list1)
+                {
+                    Categories.Add(a++, item.Key);
+                }
 
-            var list2 = new List<string>()
-            {
-                ""
-            };
+                var list2 = new List<string>()
+                {
+                    ""
+                };
 
-            list2.AddRange(list1.Values);
+                list2.AddRange(list1.Values);
 
-            ComboBox1.Items = list2;
+                ComboBox2.Items = list2;
 
-            ComboBox1.SelectedIndex = 0;
-            ComboBox2.SelectedIndex = 0;
-            ComboBox3.SelectedIndex = 1;
+                ComboBox2.SelectedIndex = 0;
+                ComboBox3.SelectedIndex = 0;
+                ComboBox4.SelectedIndex = ComboBox1.SelectedIndex == 0 ? 1 : 0;
 
-            Load();
+                Load();
+                break;
+            case 2:
+                list = GameBinding.GetFTBTypeList();
+
+                ComboBox2.Items = list;
+                ComboBox2.SelectedIndex = 0;
+
+                Load();
+                break;
         }
-        else if (ComboBox4.SelectedIndex == 1)
-        {
-            ComboBox3.Items = GameBinding.GetModrinthSortTypes();
 
-            Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
-            var list = await GameBinding.GetModrinthGameVersions();
-            var list1 = await GameBinding.GetModrinthCategories();
-            Info1.Close();
-            if (list == null || list1 == null)
-            {
-#if !DEBUG
-            Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
-#endif
-                return;
-            }
-            List4.AddRange(list);
-
-            Categories.Clear();
-            Categories.Add(0, "");
-            int a = 1;
-            foreach (var item in list1)
-            {
-                Categories.Add(a++, item.Key);
-            }
-
-            var list2 = new List<string>()
-            {
-                ""
-            };
-
-            list2.AddRange(list1.Values);
-
-            ComboBox1.Items = list2;
-
-            ComboBox1.SelectedIndex = 0;
-            ComboBox2.SelectedIndex = 0;
-            ComboBox3.SelectedIndex = 0;
-
-            Load();
-        }
         load = false;
     }
 
@@ -287,6 +309,12 @@ public partial class AddModPackWindow : Window, IAddWindow
                 (data.Data as ModrinthVersionObj)!,
                 (Last!.Data.Data as ModrinthSearchObj.Hit)!);
         }
+        else if (data.SourceType == SourceType.FTB)
+        {
+            App.AddGameWindow!.Install(
+                (data.Data as FTBModpackObj.Versions)!,
+                (Last!.Data.Data as FTBModpackObj)!);
+        }
         Close();
     }
 
@@ -300,17 +328,26 @@ public partial class AddModPackWindow : Window, IAddWindow
 
     private async void Load()
     {
+        if (ComboBox1.SelectedIndex == 2 && ComboBox2.SelectedIndex == 4
+            && Input1.Text?.Length < 3)
+        {
+            Info.Show("请输入足够的搜索信息");
+            Unlock();
+            return;
+        }
+
         Info1.Show(App.GetLanguage("AddModPackWindow.Info2"));
-        var data = await GameBinding.GetPackList(
-            (SourceType)ComboBox4.SelectedIndex, ComboBox2.SelectedItem as string,
-            Input1.Text, (int)Input2.Value!, ComboBox3.SelectedIndex,
-            ComboBox1.SelectedIndex < 0 ? "" :
-                Categories[ComboBox1.SelectedIndex]);
+        var data = await GameBinding.GetPackList((SourceType)ComboBox1.SelectedIndex, 
+            ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!, 
+            ComboBox1.SelectedIndex == 2 ?  ComboBox2.SelectedIndex : ComboBox4.SelectedIndex,
+            ComboBox1.SelectedIndex == 2 ? "" : 
+                ComboBox2.SelectedIndex < 0 ? "" : Categories[ComboBox2.SelectedIndex]);
 
         if (data == null)
         {
             Info.Show(App.GetLanguage("AddModPackWindow.Error2"));
             Info1.Close();
+            Unlock();
             return;
         }
 
@@ -318,6 +355,8 @@ public partial class AddModPackWindow : Window, IAddWindow
         int a = 0;
         foreach (var item in data)
         {
+            if (a >= 50)
+                break;
             var control = List[a];
             control.Load(item);
             ListBox_Items.Children.Add(control);
@@ -326,6 +365,7 @@ public partial class AddModPackWindow : Window, IAddWindow
 
         ScrollViewer1.ScrollToHome();
         Info1.Close();
+        Unlock();
     }
 
     private async void Load1()
@@ -333,19 +373,24 @@ public partial class AddModPackWindow : Window, IAddWindow
         List1.Clear();
         Info1.Show(App.GetLanguage("AddModPackWindow.Info3"));
         List<FileDisplayObj>? list = null;
-        if (ComboBox4.SelectedIndex == 0)
+        if (ComboBox1.SelectedIndex == 0)
         {
             Input3.IsEnabled = true;
-            list = await GameBinding.GetPackFile((SourceType)ComboBox4.SelectedIndex, 
+            list = await GameBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex, 
                 (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!,
-                ComboBox6.SelectedItem as string);
+                ComboBox6.SelectedItem as string, Loaders.Normal);
         }
-        else if (ComboBox4.SelectedIndex == 1)
+        else if (ComboBox1.SelectedIndex == 1)
         {
             Input3.IsEnabled = false;
-            list = await GameBinding.GetPackFile((SourceType)ComboBox4.SelectedIndex, 
+            list = await GameBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex, 
                 (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
-                ComboBox6.SelectedItem as string);
+                ComboBox6.SelectedItem as string, Loaders.Normal);
+        }
+        else if (ComboBox1.SelectedIndex == 2)
+        {
+            Input3.IsEnabled = false;
+            list = GameBinding.GetFTBPackFile(Last!.Data.Data as FTBModpackObj);
         }
         if (list == null)
         {
@@ -367,7 +412,7 @@ public partial class AddModPackWindow : Window, IAddWindow
     {
         DataGridFiles.MakeTran();
 
-        ComboBox4.SelectedIndex = 0;
+        ComboBox1.SelectedIndex = 0;
     }
 
     public void Update()

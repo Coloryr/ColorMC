@@ -2,7 +2,7 @@
 
 public enum SourceType
 {
-    CurseForge, Modrinth
+    CurseForge, Modrinth, FTB
 }
 
 public enum PathType

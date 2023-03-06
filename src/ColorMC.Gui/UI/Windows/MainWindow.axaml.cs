@@ -158,7 +158,10 @@ public partial class MainWindow : Window, IBaseWindow
 
         launch = true;
         ItemInfo.SetLaunch(true);
-        //Info1.Show(App.GetLanguage("MainWindow.Info3"));
+        if (GuiConfigUtils.Config.CloseBeforeLaunch)
+        {
+            Info1.Show(App.GetLanguage("MainWindow.Info3"));
+        }
         var item = Obj!;
         var game = item.Obj;
         item.SetLaunch(false);
@@ -166,7 +169,10 @@ public partial class MainWindow : Window, IBaseWindow
         Info2.Show(App.GetLanguage(string.Format("开始启动实例 {0}", game.Name)));
         var res = await GameBinding.Launch(game, debug);
         Head.Title1 = null;
-        //await Info1.Close();
+        if (GuiConfigUtils.Config.CloseBeforeLaunch)
+        {
+            await Info1.Close();
+        }
         if (res.Item1 == false)
         {
             item.SetLoad(false);
@@ -188,7 +194,7 @@ public partial class MainWindow : Window, IBaseWindow
         {
             Launchs.Add(game, item);
             item.SetLaunch(true);
-            
+
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
                 Info1.Show(App.GetLanguage("MainWindow.Info26"));
@@ -286,38 +292,77 @@ public partial class MainWindow : Window, IBaseWindow
         Dispatcher.UIThread.Post(() =>
         {
             Last = state;
-            switch (state)
+            if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
-                case LaunchState.Login:
-                    Head.Title1 = App.GetLanguage("MainWindow.Info8");
-                    break;
-                case LaunchState.Check:
-                    Head.Title1 = App.GetLanguage("MainWindow.Info9");
-                    break;
-                case LaunchState.CheckVersion:
-                    Head.Title1 = App.GetLanguage("MainWindow.Info10");
-                    break;
-                case LaunchState.CheckLib:
-                    Head.Title1 = App.GetLanguage("MainWindow.Info11");
-                    break;
-                case LaunchState.CheckAssets:
-                    Head.Title1 = App.GetLanguage("MainWindow.Info12");
-                    break;
-                case LaunchState.CheckLoader:
-                    Head.Title1 = App.GetLanguage("MainWindow.Info13");
-                    break;
-                case LaunchState.CheckLoginCore:
-                    Head.Title1 = App.GetLanguage("MainWindow.Info14");
-                    break;
-                case LaunchState.CheckMods:
-                    Head.Title1 = App.GetLanguage("MainWindow.Info17");
-                    break;
-                case LaunchState.Download:
-                    Head.Title1 = App.GetLanguage("MainWindow.Info15");
-                    break;
-                case LaunchState.JvmPrepare:
-                    Head.Title1 = App.GetLanguage("MainWindow.Info16");
-                    break;
+                switch (state)
+                {
+                    case LaunchState.Login:
+                        Info1.NextText(App.GetLanguage("MainWindow.Info8"));
+                        break;
+                    case LaunchState.Check:
+                        Info1.NextText(App.GetLanguage("MainWindow.Info9"));
+                        break;
+                    case LaunchState.CheckVersion:
+                        Info1.NextText(App.GetLanguage("MainWindow.Info10"));
+                        break;
+                    case LaunchState.CheckLib:
+                        Info1.NextText(App.GetLanguage("MainWindow.Info11"));
+                        break;
+                    case LaunchState.CheckAssets:
+                        Info1.NextText(App.GetLanguage("MainWindow.Info12"));
+                        break;
+                    case LaunchState.CheckLoader:
+                        Info1.NextText(App.GetLanguage("MainWindow.Info13"));
+                        break;
+                    case LaunchState.CheckLoginCore:
+                        Info1.NextText(App.GetLanguage("MainWindow.Info14"));
+                        break;
+                    case LaunchState.CheckMods:
+                        Info1.NextText(App.GetLanguage("MainWindow.Info17"));
+                        break;
+                    case LaunchState.Download:
+                        Info1.NextText(App.GetLanguage("MainWindow.Info15"));
+                        break;
+                    case LaunchState.JvmPrepare:
+                        Info1.NextText(App.GetLanguage("MainWindow.Info16"));
+                        break;
+                }
+            }
+            else
+            {
+                switch (state)
+                {
+                    case LaunchState.Login:
+                        Head.Title1 = App.GetLanguage("MainWindow.Info8");
+                        break;
+                    case LaunchState.Check:
+                        Head.Title1 = App.GetLanguage("MainWindow.Info9");
+                        break;
+                    case LaunchState.CheckVersion:
+                        Head.Title1 = App.GetLanguage("MainWindow.Info10");
+                        break;
+                    case LaunchState.CheckLib:
+                        Head.Title1 = App.GetLanguage("MainWindow.Info11");
+                        break;
+                    case LaunchState.CheckAssets:
+                        Head.Title1 = App.GetLanguage("MainWindow.Info12");
+                        break;
+                    case LaunchState.CheckLoader:
+                        Head.Title1 = App.GetLanguage("MainWindow.Info13");
+                        break;
+                    case LaunchState.CheckLoginCore:
+                        Head.Title1 = App.GetLanguage("MainWindow.Info14");
+                        break;
+                    case LaunchState.CheckMods:
+                        Head.Title1 = App.GetLanguage("MainWindow.Info17");
+                        break;
+                    case LaunchState.Download:
+                        Head.Title1 = App.GetLanguage("MainWindow.Info15");
+                        break;
+                    case LaunchState.JvmPrepare:
+                        Head.Title1 = App.GetLanguage("MainWindow.Info16");
+                        break;
+                }
             }
         });
     }

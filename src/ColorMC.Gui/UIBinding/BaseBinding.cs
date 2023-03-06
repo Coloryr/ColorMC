@@ -444,11 +444,6 @@ public static class BaseBinding
 #endif
     }
 
-    public static void HttpPoll(string url, Action<Stream> action, CancellationToken cancel)
-    {
-        BaseClient.Poll(url, action, cancel);
-    }
-
     public static async Task<bool?> AddFile(Window window, GameSettingObj obj, FileType type)
     {
         switch (type)

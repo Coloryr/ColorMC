@@ -10,6 +10,7 @@ using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
@@ -20,12 +21,16 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ColorMC.Core.Net.Apis;
 using Image = SixLabors.ImageSharp.Image;
+using Heijden.DNS;
+using System.Threading;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -97,13 +102,30 @@ public static class GameBinding
         return InstancesPath.Groups;
     }
 
-    public static async Task<List<FileItemDisplayObj>?> GetPackList(SourceType type, string? version, string? filter, int page, int sortOrder, string categoryId)
+    public static async Task<List<FileItemDisplayObj>?> GetPackList(SourceType type, string? version, string? filter, int page, int sort, string categoryId)
     {
         version ??= "";
         filter ??= "";
         if (type == SourceType.CurseForge)
         {
-            var list = await CurseForge.GetModPackList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId);
+            var list = await CurseForge.GetModPackList(version, page, filter: filter,
+                sortField: sort switch
+                {
+                    0 => 1,
+                    1 => 2,
+                    2 => 3,
+                    3 => 4,
+                    4 => 6,
+                    _ => 2
+                }, sortOrder: sort switch
+                {
+                    0 => 1,
+                    1 => 1,
+                    2 => 1,
+                    3 => 0,
+                    4 => 1,
+                    _ => 1
+                }, categoryId: categoryId);
             if (list == null)
                 return null;
             var list1 = new List<FileItemDisplayObj>();
@@ -127,7 +149,7 @@ public static class GameBinding
         }
         else if (type == SourceType.Modrinth)
         {
-            var list = await Modrinth.GetModPackList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId);
+            var list = await Modrinth.GetModPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId);
             if (list == null)
                 return null;
             var list1 = new List<FileItemDisplayObj>();
@@ -149,6 +171,86 @@ public static class GameBinding
 
             return list1;
         }
+        else if (type == SourceType.FTB)
+        {
+            var list = (FTBType)sort switch
+            {
+                FTBType.All => await FTBHelper.GetAll(),
+                FTBType.Featured => await FTBHelper.GetFeatured(),
+                FTBType.Popular => await FTBHelper.GetPopular(),
+                FTBType.Installs => await FTBHelper.GetInstalls(),
+                FTBType.Search => await FTBHelper.GetSearch(filter)
+            };
+
+            if (list == null)
+            {
+                return null;
+            }
+
+            Dictionary<int, FileItemDisplayObj> bag = new();
+
+            int a = 0;
+            foreach (var item in list.packs)
+            {
+                if (a >= 20)
+                    break;
+                bag.Add(item, null);
+
+                a++;
+            }
+
+            CancellationTokenSource topcancel = new();
+
+            bool fail = false;
+
+            await Parallel.ForEachAsync(bag.Keys, async (item, cancel) =>
+            {
+                try
+                {
+                    if (topcancel.IsCancellationRequested)
+                        return;
+
+                    var data = await FTBHelper.GetModpack(item);
+                    if (data == null)
+                    {
+                        fail = true;
+                        topcancel.Cancel();
+                        Logs.Error($"FTBËé∑ÂèñÂá∫Èîô{item}");
+                        Thread.Sleep(100);
+                        return;
+                    }
+
+                    var logo = data.art?.FirstOrDefault(a => a.type == "square")?.url;
+
+                    bag[item] = new()
+                    {
+                        Name = data.name,
+                        Summary = data.synopsis,
+                        Author = data.authors.GetString(),
+                        DownloadCount = data.installs,
+                        ModifiedDate = OtherUtils.SecondsToDataTime(data.updated).ToString(),
+                        Logo = logo,
+                        FileType = FileType.ModPack,
+                        SourceType = SourceType.Modrinth,
+                        Data = data
+                    };
+                }
+                catch (Exception e)
+                {
+                    if (topcancel.IsCancellationRequested)
+                        return;
+
+                    fail = true;
+                    topcancel.Cancel();
+                    Logs.Error("Ëé∑ÂèñÂá∫Èîô", e);
+                }
+            });
+
+            if (fail)
+                return null;
+
+            return bag.Values.ToList();
+        }
 
         return null;
     }
@@ -161,10 +263,7 @@ public static class GameBinding
             CurseForgeSortField.Popularity.GetName(),
             CurseForgeSortField.LastUpdated.GetName(),
             CurseForgeSortField.Name.GetName(),
-            CurseForgeSortField.Author.GetName(),
-            CurseForgeSortField.TotalDownloads.GetName(),
-            CurseForgeSortField.Category.GetName(),
-            CurseForgeSortField.GameVersion.GetName()
+            CurseForgeSortField.TotalDownloads.GetName()
         };
     }
 
@@ -195,6 +294,7 @@ public static class GameBinding
         {
             SourceType.CurseForge.GetName(),
             SourceType.Modrinth.GetName(),
+            SourceType.FTB.GetName(),
         };
     }
 
@@ -309,6 +409,26 @@ public static class GameBinding
         return true;
     }
 
+    public static async Task<bool> InstallFTB(FTBModpackObj.Versions file, FTBModpackObj obj, string? name, string? group)
+    {
+        var res = await PackDownload.InstallFTB(obj, file, name, group);
+        if (!res.Item1)
+        {
+            return false;
+        }
+        var item = obj.art.FirstOrDefault(a => a.type == "square");
+        if (item != null)
+        {
+            var res1 = await SetGameIconFromUrl(res.Item2!, item.url);
+            if (!res1)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static async Task<bool> SetGameIconFromUrl(GameSettingObj obj, string url)
     {
         try
@@ -354,11 +474,32 @@ public static class GameBinding
         }
     }
 
-    public static async Task<List<FileDisplayObj>?> GetPackFile(SourceType type, string id, int page, string? mc, FileType type1 = FileType.ModPack)
+    public static List<FileDisplayObj> GetFTBPackFile(FTBModpackObj pack)
+    {
+        var list = new List<FileDisplayObj>();
+
+        pack.versions.ForEach(item =>
+        {
+            list.Add(new()
+            {
+                Name = item.name + "_" + item.type,
+                Download = 0,
+                Time = OtherUtils.SecondsToDataTime(item.updated).ToString(),
+                FileType = FileType.ModPack,
+                SourceType = SourceType.FTB,
+                Data = item
+            });
+        });
+        list.Reverse();
+        return list;
+    }
+
+    public static async Task<List<FileDisplayObj>?> GetPackFile(SourceType type, string id, 
+        int page, string? mc, Loaders loader, FileType type1 = FileType.ModPack)
     {
         if (type == SourceType.CurseForge)
         {
-            var list = await CurseForge.GetCurseForgeFiles(id, mc, page);
+            var list = await CurseForge.GetCurseForgeFiles(id, mc, page, loader);
             if (list == null)
                 return null;
 
@@ -383,7 +524,7 @@ public static class GameBinding
         }
         else if (type == SourceType.Modrinth)
         {
-            var list = await Modrinth.Version(id, mc);
+            var list = await Modrinth.Version(id, mc, loader);
             if (list == null)
                 return null;
 
@@ -545,9 +686,45 @@ public static class GameBinding
         obj.Save();
     }
 
-    public static Task<List<ModObj>> GetGameMods(GameSettingObj obj)
+    public static async Task<List<ModDisplayObj>> GetGameMods(GameSettingObj obj)
     {
-        return obj.GetMods();
+        var list = new List<ModDisplayObj>();
+        var list1 = await obj.GetMods();
+        if (list1 == null)
+            return list;
+
+        list1.ForEach(item =>
+        {
+            ModDisplayObj obj1;
+            if (item.Broken)
+            {
+                obj1 = new ModDisplayObj()
+                {
+                    Name = App.GetLanguage("GameEditWindow.Tab4.Info5"),
+                    Enable = item.Disable,
+                    Obj = item
+                };
+            }
+            else
+            {
+                obj1 = new ModDisplayObj()
+                {
+                    Name = item.name,
+                    Enable = item.Disable,
+                    Obj = item
+                };
+
+                var item1 = obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
+                if (item1 != null)
+                {
+                    obj1.PID = item1.ModId;
+                    obj1.FID = item1.FileId;
+                }
+            }
+
+            list.Add(obj1);
+        });
+        return list;
     }
 
     public static void ModEnDi(ModObj obj)
@@ -649,7 +826,7 @@ public static class GameBinding
             {
                 Name = item.LevelName,
                 Mode = LanguageHelper.GetNameWithGameType(item.GameType),
-                Time = OtherUtils.TimestampToDataTime(item.LastPlayed).ToString(),
+                Time = OtherUtils.MillisecondsToDataTime(item.LastPlayed).ToString(),
                 Local = item.Local,
                 Difficulty = LanguageHelper.GetNameWithDifficulty(item.Difficulty),
                 Hardcore = item.Hardcore == 1,
@@ -987,7 +1164,7 @@ public static class GameBinding
         }
     }
 
-    public static async Task<List<FileItemDisplayObj>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sortOrder, string categoryId)
+    public static async Task<List<FileItemDisplayObj>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
     {
         version ??= "";
         filter ??= "";
@@ -995,10 +1172,78 @@ public static class GameBinding
         {
             var list = now switch
             {
-                FileType.Mod => await CurseForge.GetModList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
-                FileType.World => await CurseForge.GetWorldList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
-                FileType.Resourcepack => await CurseForge.GetResourcepackList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
-                FileType.DataPacks => await CurseForge.GetDataPacksList(version, page, filter: filter, sortOrder: sortOrder),
+                FileType.Mod => await CurseForge.GetModList(version, page, filter: filter, 
+                    sortField: sort switch
+                    {
+                        0 => 1,
+                        1 => 2,
+                        2 => 3,
+                        3 => 4,
+                        4 => 6,
+                        _ => 2
+                    }, sortOrder: sort switch
+                    {
+                        0 => 1,
+                        1 => 1,
+                        2 => 1,
+                        3 => 0,
+                        4 => 1,
+                        _ => 1
+                    }, categoryId: categoryId, loader: loader),
+                FileType.World => await CurseForge.GetWorldList(version, page, filter: filter,
+                    sortField: sort switch
+                    {
+                        0 => 1,
+                        1 => 2,
+                        2 => 3,
+                        3 => 4,
+                        4 => 6,
+                        _ => 2
+                    }, sortOrder: sort switch
+                    {
+                        0 => 1,
+                        1 => 1,
+                        2 => 1,
+                        3 => 0,
+                        4 => 1,
+                        _ => 1
+                    }, categoryId: categoryId),
+                FileType.Resourcepack => await CurseForge.GetResourcepackList(version, page, filter: filter,
+                    sortField: sort switch
+                    {
+                        0 => 1,
+                        1 => 2,
+                        2 => 3,
+                        3 => 4,
+                        4 => 6,
+                        _ => 2
+                    }, sortOrder: sort switch
+                    {
+                        0 => 1,
+                        1 => 1,
+                        2 => 1,
+                        3 => 0,
+                        4 => 1,
+                        _ => 1
+                    }, categoryId: categoryId),
+                FileType.DataPacks => await CurseForge.GetDataPacksList(version, page, filter: filter,
+                    sortField: sort switch
+                    {
+                        0 => 1,
+                        1 => 2,
+                        2 => 3,
+                        3 => 4,
+                        4 => 6,
+                        _ => 2
+                    }, sortOrder: sort switch
+                    {
+                        0 => 1,
+                        1 => 1,
+                        2 => 1,
+                        3 => 0,
+                        4 => 1,
+                        _ => 1
+                    }),
                 _ => null
             };
             if (list == null)
@@ -1027,10 +1272,10 @@ public static class GameBinding
         {
             var list = now switch
             {
-                FileType.Mod => await Modrinth.GetModList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
-                FileType.Resourcepack => await Modrinth.GetResourcepackList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
-                FileType.DataPacks => await Modrinth.GetDataPackList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
-                FileType.Shaderpack => await Modrinth.GetShaderpackList(version, page, filter: filter, sortOrder: sortOrder, categoryId: categoryId),
+                FileType.Mod => await Modrinth.GetModList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId, loader: loader),
+                FileType.Resourcepack => await Modrinth.GetResourcepackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
+                FileType.DataPacks => await Modrinth.GetDataPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
+                FileType.Shaderpack => await Modrinth.GetShaderpackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
                 _ => null
             };
             if (list == null)
@@ -1319,6 +1564,10 @@ public static class GameBinding
                 _ => "https://modrinth.com/mod/"
             } + obj1.project_id;
         }
+        else if (obj.SourceType == SourceType.FTB)
+        { 
+            
+        }
 
         return null;
     }
@@ -1359,7 +1608,7 @@ public static class GameBinding
             var data = await GetOptifineDownload(item);
             if (data == null)
             {
-                return (false, "ªÒ»°Optifineœ¬‘ÿ–≈œ¢ ß∞‹");
+                return (false, "Ëé∑ÂèñOptifine‰∏ãËΩΩ‰ø°ÊÅØÂ§±Ë¥•");
             }
 
             item1 = new()
@@ -1384,8 +1633,20 @@ public static class GameBinding
         var res = await DownloadManager.Start(new() { item1 });
         if (!res) 
         {
-            return (false, "œ¬‘ÿ ß∞‹");
+            return (false, "‰∏ãËΩΩÂ§±Ë¥•");
         }
         return (true, null);
+    }
+
+    public static List<string> GetFTBTypeList()
+    {
+        return new()
+        {
+            FTBType.All.GetName(),
+            FTBType.Featured.GetName(),
+            FTBType.Popular.GetName(),
+            FTBType.Installs.GetName(),
+            FTBType.Search.GetName()
+        };
     }
 }

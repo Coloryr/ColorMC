@@ -15,3 +15,8 @@ public enum GameEditWindowType
 {
     Normal, 
 }
+
+public enum FTBType
+{ 
+    All, Featured, Popular, Installs, Search
+}
