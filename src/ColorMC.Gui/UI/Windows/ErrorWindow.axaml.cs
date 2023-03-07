@@ -11,10 +11,4 @@ public partial class ErrorWindow : SelfBaseWindow
         MainControl.Children.Add(Main.Con);
         SetTitle("ErrorWindow.Title");
     }
-
-    public void Show(string data, Exception e, bool close)
-        => (Main as ErrorControl)?.Show(data, e, close);
-
-    public void Show(string data, string e, bool close)
-        => (Main as ErrorControl)?.Show(data, e, close);
 }

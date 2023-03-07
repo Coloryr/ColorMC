@@ -13,6 +13,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Download;
+using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Windows;
@@ -475,7 +476,9 @@ public partial class App : Application
     {
         Dispatcher.UIThread.Post(() =>
         {
-            new ErrorWindow().Show(data, e, close);
+            var win = new ErrorWindow();
+            (win.Main as ErrorControl)?.Show(data, e, close);
+            win.Show();
         });
     }
 
@@ -483,7 +486,9 @@ public partial class App : Application
     {
         Dispatcher.UIThread.Post(() =>
         {
-            new ErrorWindow().Show(data, e, close);
+            var win = new ErrorWindow();
+            (win.Main as ErrorControl)?.Show(data, e, close);
+            win.Show();
         });
     }
 
