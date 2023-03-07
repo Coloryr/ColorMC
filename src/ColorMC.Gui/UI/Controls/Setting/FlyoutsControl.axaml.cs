@@ -11,7 +11,7 @@ public partial class FlyoutsControl : UserControl
 {
     private JavaDisplayObj Obj;
     private FlyoutBase FlyoutBase;
-    private SettingWindow Win;
+    private Tab5Control Win;
     public FlyoutsControl()
     {
         InitializeComponent();
@@ -24,10 +24,10 @@ public partial class FlyoutsControl : UserControl
         FlyoutBase.Hide();
 
         JavaBinding.RemoveJava(Obj.Name);
-        Win.Tab5Load();
+        Win.Load();
     }
 
-    public void Set(FlyoutBase fb, JavaDisplayObj obj, SettingWindow win)
+    public void Set(FlyoutBase fb, JavaDisplayObj obj, Tab5Control win)
     {
         Win = win;
         Obj = obj;
@@ -38,8 +38,8 @@ public partial class FlyoutsControl : UserControl
 public class SettingFlyout : FlyoutBase
 {
     private JavaDisplayObj Obj;
-    private SettingWindow Win;
-    public SettingFlyout(SettingWindow win, JavaDisplayObj obj)
+    private Tab5Control Win;
+    public SettingFlyout(Tab5Control win, JavaDisplayObj obj)
     {
         Win = win;
         Obj = obj;

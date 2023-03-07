@@ -187,11 +187,17 @@
     <Compile Update="UI\Controls\Setting\HelloWindow.Tab2.axaml.cs">
       <DependentUpon>HelloWindow.Tab2.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Controls\User\UsersControl.axaml.cs">
+      <DependentUpon>UsersControl.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Windows\AddModPackWindow.axaml.cs">
       <DependentUpon>AddModPackWindow.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Windows\AddWindow.axaml.cs">
       <DependentUpon>AddWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Windows\SelfBaseWindow.axaml.cs">
+      <DependentUpon>SelfBaseWindow.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Windows\CustomWindow.axaml.cs">
       <DependentUpon>CustomWindow.axaml</DependentUpon>

@@ -54,7 +54,7 @@
                 <Button
                     Name="Button_Switch"
                     Width="100"
-                    Height="25"
+                    Height="35"
                     Content="{setting:Localize MainWindow.Control.Text1}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text9}"
                     ToolTip.VerticalOffset="-30" />
@@ -62,8 +62,8 @@
                 <Button
                     Name="Button_Add1"
                     Width="100"
-                    Height="25"
-                    Margin="0,15,0,0"
+                    Height="35"
+                    Margin="0,5,0,0"
                     Content="{setting:Localize MainWindow.Control.Text2}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text10}"
                     ToolTip.VerticalOffset="-30" />
@@ -72,7 +72,7 @@
                     Name="Button_Launch"
                     Width="100"
                     Height="35"
-                    Margin="0,15,0,0"
+                    Margin="0,5,0,0"
                     Content="{setting:Localize MainWindow.Control.Text3}"
                     IsEnabled="False"
                     ToolTip.Tip="{setting:Localize ToolTip.Text11}"
@@ -90,8 +90,8 @@
                 <Button
                     Name="Button_Setting"
                     Width="100"
-                    Height="25"
-                    Margin="0,15,0,0"
+                    Height="35"
+                    Margin="0,5,0,0"
                     Content="{setting:Localize MainWindow.Control.Text7}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text13}"
                     ToolTip.VerticalOffset="-30" />

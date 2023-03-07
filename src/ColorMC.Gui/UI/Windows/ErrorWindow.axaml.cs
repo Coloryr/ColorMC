@@ -1,62 +1,20 @@
-using Avalonia.Controls;
+using ColorMC.Gui.UI.Controls.Error;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class ErrorWindow : Window
+public partial class ErrorWindow : SelfBaseWindow
 {
     public ErrorWindow()
     {
-        InitializeComponent();
-
-        this.Init();
-        Icon = App.Icon;
-        Border1.MakeResizeDrag(this);
-
-        Closed += HelloWindow_Closed;
-
-        App.PicUpdate += Update;
-
-        Update();
-    }
-
-    private void HelloWindow_Closed(object? sender, EventArgs e)
-    {
-        App.PicUpdate -= Update;
+        Main = new ErrorControl();
+        MainControl.Children.Add(Main.Con);
+        SetTitle("ErrorWindow.Title");
     }
 
     public void Show(string data, Exception e, bool close)
-    {
-        Data.Text = $"{data}{Environment.NewLine}{e}";
-
-        if (close)
-        {
-            Show();
-            App.Close();
-        }
-        else
-        {
-            Show();
-        }
-    }
+        => (Main as ErrorControl)?.Show(data, e, close);
 
     public void Show(string data, string e, bool close)
-    {
-        Data.Text = $"{data}{Environment.NewLine}{e}";
-
-        if (close)
-        {
-            Show();
-            App.Close();
-        }
-        else
-        {
-            Show();
-        }
-    }
-
-    public void Update()
-    {
-        App.Update(this, Image_Back, Border1, Border2);
-    }
+        => (Main as ErrorControl)?.Show(data, e, close);
 }

@@ -13,5 +13,5 @@ public record WorldDisplayObj
     public bool Hardcore { get; set; }
     public Bitmap? Pic { get; set; }
 
-    public WorldObj World { get; set; }
+    public WorldObj World;
 }

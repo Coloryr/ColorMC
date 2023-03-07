@@ -142,49 +142,6 @@ public static class SkinUtil
 
 public static partial class UIUtils
 {
-    public static void MakeResizeDrag(this Border rectangle,
-        Window window)
-    {
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            rectangle.PointerPressed += (a, e) =>
-            {
-                if (e.GetCurrentPoint(rectangle).Properties.IsLeftButtonPressed)
-                {
-                    var point = e.GetPosition(rectangle);
-                    var arg1 = point.X / rectangle.Bounds.Width;
-                    var arg2 = point.Y / rectangle.Bounds.Height;
-                    if (arg1 > 0.95)
-                    {
-                        if (arg2 > 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.SouthEast, e);
-                        }
-                        else if (arg2 <= 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.East, e);
-                        }
-                    }
-                    else if (arg1 < 0.05)
-                    {
-                        if (arg2 <= 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.West, e);
-                        }
-                        else if (arg2 > 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.SouthWest, e);
-                        }
-                    }
-                    else if (arg2 > 0.95)
-                    {
-                        window.BeginResizeDrag(WindowEdge.South, e);
-                    }
-                }
-            };
-        }
-    }
-
     public static T? FindToEnd<T>(this IVisual visual)
     {
         foreach (var item in visual.GetVisualChildren())
@@ -397,84 +354,6 @@ public static partial class UIUtils
 
         return default;
     }
-
-    public static void Init(this Window window)
-    {
-        window.Bind(TemplatedControl.FontFamilyProperty, new Binding
-        {
-            Source = FontSel.Instance,
-            Path = "[Font]"
-        });
-
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            window.SystemDecorations = SystemDecorations.BorderOnly;
-        }
-
-        window.FindGoodPos();
-
-        if (SystemInfo.Os == OsType.MacOS)
-        {
-            window.KeyDown += Window_KeyDown;
-        }
-    }
-
-    private static void Window_KeyDown(object? sender, KeyEventArgs e)
-    {
-        var window = (sender as Window)!;
-        if (e.KeyModifiers == KeyModifiers.Control)
-        {
-            switch (e.Key)
-            {
-                case Key.OemComma:
-                    App.ShowSetting(SettingWindowType.Normal);
-                    break;
-                case Key.Q:
-                    App.Close();
-                    break;
-                case Key.M:
-                    window.WindowState = WindowState.Minimized;
-                    break;
-                case Key.W:
-                    window.Close();
-                    break;
-            }
-        }
-    }
-
-    public static void FindGoodPos(this Window windows)
-    {
-        var basewindow = App.LastWindow;
-
-        if (basewindow == null || basewindow.PlatformImpl == null)
-            return;
-
-        var pos = basewindow.Position;
-        var sec = basewindow.Screens.ScreenFromWindow(basewindow.PlatformImpl);
-        if (sec == null)
-            return;
-        var area = sec.WorkingArea;
-        int x, y;
-        if (pos.X > area.Width / 2)
-        {
-            x = pos.X - 100;
-        }
-        else
-        {
-            x = pos.X + 100;
-        }
-
-        if (pos.Y > area.Height / 2)
-        {
-            y = pos.Y - 40;
-        }
-        else
-        {
-            y = pos.Y + 40;
-        }
-
-        windows.Position = new(x, y);
-    }
 }
 
 public static class ImageUtils
@@ -529,7 +408,7 @@ public static class ImageUtils
     private static (int X, int Y) GetMaxSize()
     {
         int x = 0, y = 0;
-        foreach (var item in App.MainWindow!.Screens.All)
+        foreach (var item in App.Life!.Windows[0].Screens.All)
         {
             x = x < item.Bounds.Width ? item.Bounds.Width : x;
             y = y < item.Bounds.Height ? item.Bounds.Height : y;

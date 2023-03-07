@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -47,7 +46,7 @@ public partial class Tab3Control : UserControl
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         if (ColorMCGui.Update == null)
         {
             window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error1"));
@@ -59,7 +58,7 @@ public partial class Tab3Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         if (ColorMCGui.Update == null || ColorMCGui.Check == null)
         {
             window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error2"));

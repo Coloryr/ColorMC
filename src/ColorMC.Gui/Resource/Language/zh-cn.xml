@@ -577,6 +577,7 @@
 	<String Key="AddWindow.Info5">正在下载资源</String>
 	<String Key="AddWindow.Info6">已下载</String>
 	<String Key="AddWindow.Info7">请选择要添加的世界</String>
+	<String Key="AddWindow.Info8">是否标记Mod {0}</String>
 	<String Key="AddWindow.Error1">你还没有选择资源</String>
 	<String Key="AddWindow.Error2">资源数据加载失败</String>
 	<String Key="AddWindow.Error3">资源版本数据加载失败</String>

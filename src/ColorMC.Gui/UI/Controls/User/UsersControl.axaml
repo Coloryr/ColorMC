@@ -1,0 +1,157 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.User.UsersControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    DragDrop.AllowDrop="True"
+    mc:Ignorable="d">
+    <Grid Name="Grid1">
+        <Border
+            Name="Border2"
+            BorderThickness="2"
+            CornerRadius="0,0,10,10" />
+        <Image
+            Name="Image_Back"
+            Margin="3"
+            Stretch="UniformToFill" />
+
+        <Label
+            Margin="5"
+            VerticalAlignment="Bottom"
+            Content="{setting:Localize Tips.Text2}" />
+
+        <DataGrid
+            Name="DataGrid_User"
+            Margin="3"
+            AutoGenerateColumns="False"
+            Background="{setting:Colors TranBack}"
+            CanUserResizeColumns="True"
+            CanUserSortColumns="False"
+            HorizontalScrollBarVisibility="Visible"
+            VerticalScrollBarVisibility="Visible">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn
+                    Binding="{Binding Use}"
+                    Header="{setting:Localize UserWindow.DataGrid.Text1}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Name}"
+                    Header="{setting:Localize UserWindow.DataGrid.Text2}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Type}"
+                    Header="{setting:Localize UserWindow.DataGrid.Text3}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding UUID}"
+                    Header="{setting:Localize UserWindow.DataGrid.Text4}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Text1}"
+                    Header="{setting:Localize UserWindow.DataGrid.Text5}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Text2}"
+                    Header="{setting:Localize UserWindow.DataGrid.Text6}"
+                    IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Margin="5,0,0,0" VerticalAlignment="Center">
+            <Grid>
+                <Button
+                    Name="Button_A"
+                    Width="20"
+                    Height="30"
+                    Content="A" />
+                <Expander
+                    Name="Expander_A"
+                    Height="30"
+                    Margin="-94,0,0,0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    CornerRadius="0"
+                    ExpandDirection="Right"
+                    IsExpanded="False">
+                    <Button
+                        Name="Button_A1"
+                        Width="100"
+                        Height="30"
+                        Margin="16,0,0,0"
+                        Content="{setting:Localize UserWindow.Text10}" />
+                </Expander>
+            </Grid>
+        </StackPanel>
+
+        <Grid
+            Name="Grid_Add"
+            Margin="3"
+            Background="#EEEEEEEE"
+            IsVisible="False">
+            <StackPanel Margin="5">
+                <Label Content="{setting:Localize UserWindow.Text11}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="{setting:Localize UserWindow.Text9}" />
+                    <ComboBox
+                        Name="ComboBox_UserType"
+                        Width="200"
+                        Margin="5,0,0,0" />
+                </StackPanel>
+                <TextBox
+                    Name="TextBox_Input1"
+                    Margin="5"
+                    Classes="input1"
+                    IsEnabled="False"
+                    Watermark="" />
+                <TextBox
+                    Name="TextBox_Input2"
+                    Margin="5"
+                    Classes="input1"
+                    IsEnabled="False"
+                    Watermark="{setting:Localize UserWindow.Text1}" />
+                <TextBox
+                    Name="TextBox_Input3"
+                    Margin="5"
+                    Classes="input1"
+                    IsEnabled="False"
+                    PasswordChar="*"
+                    Watermark="{setting:Localize UserWindow.Text2}" />
+            </StackPanel>
+
+            <Button
+                Name="Button_Cancel"
+                Width="80"
+                Height="25"
+                Margin="7"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Content="{setting:Localize Button.Cancel}" />
+
+            <Button
+                Name="Button_Add"
+                Width="80"
+                Height="25"
+                Margin="7"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Content="{setting:Localize Button.Add}" />
+        </Grid>
+
+        <Grid
+            Name="Grid2"
+            Background="#EEEEEEEE"
+            IsVisible="False">
+            <Label
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{setting:Localize Gui.Info6}"
+                FontSize="30" />
+        </Grid>
+
+    </Grid>
+
+</UserControl>

@@ -14,7 +14,7 @@ public partial class GamesControl : UserControl
 {
     private readonly Dictionary<string, GameControl> Items = new();
 
-    private MainWindow Window;
+    private MainControl Window;
     private List<GameSettingObj> List;
     private GameControl? Last;
     private bool Init;
@@ -84,7 +84,7 @@ public partial class GamesControl : UserControl
         Init = true;
     }
 
-    public void SetWindow(MainWindow window)
+    public void SetWindow(MainControl window)
     {
         Window = window;
     }

@@ -1,0 +1,142 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Skin.SkinControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:view2="clr-namespace:ColorMC.Gui.UI.Controls.Skin"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Margin="3" ColumnDefinitions="4*,1.5*">
+        <Grid Grid.Column="0" Margin="5,5,0,5">
+            <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
+            <Grid Margin="3">
+                <view2:SkinRender x:Name="Skin" />
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Top"
+                    Background="#EEEEEE"
+                    Content="{setting:Localize SkinWindow.Text2}"
+                    Foreground="Black" />
+
+                <TextBlock
+                    Name="Text1"
+                    Margin="2"
+                    VerticalAlignment="Bottom"
+                    Background="#EEEEEE"
+                    Foreground="Black"
+                    TextWrapping="Wrap" />
+
+                <Label
+                    Name="Label1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="#EEEEEE"
+                    Content=""
+                    FontSize="20"
+                    IsVisible="False" />
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1" Margin="5">
+            <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
+            <ScrollViewer>
+                <StackPanel Margin="3" Background="{setting:Colors TranBack}">
+                    <Button
+                        Name="Button1"
+                        Height="25"
+                        Margin="5,5,5,0"
+                        HorizontalAlignment="Stretch"
+                        Content="{setting:Localize Button.Refash}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text14}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <Button
+                        Name="Button2"
+                        Height="25"
+                        Margin="5,0,5,0"
+                        HorizontalAlignment="Stretch"
+                        Content="{setting:Localize SkinWindow.Text1}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text15}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <Button
+                        Name="Button3"
+                        Height="25"
+                        Margin="5,0,5,0"
+                        HorizontalAlignment="Stretch"
+                        Content="{setting:Localize SkinWindow.Text3}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text16}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <Button
+                        Name="Button4"
+                        Height="25"
+                        Margin="5,0,5,0"
+                        HorizontalAlignment="Stretch"
+                        Content="{setting:Localize SkinWindow.Text4}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text17}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <ComboBox
+                        Name="ComboBox1"
+                        Margin="5,5,5,0"
+                        HorizontalAlignment="Stretch" />
+
+                    <CheckBox
+                        Name="CheckBox1"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize SkinWindow.Text5}"
+                        IsChecked="True" />
+
+                    <CheckBox
+                        Name="CheckBox2"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize SkinWindow.Text6}"
+                        IsChecked="True" />
+
+                    <CheckBox
+                        Name="CheckBox3"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize SkinWindow.Text7}"
+                        IsChecked="True" />
+
+                    <ComboBox
+                        Name="ComboBox2"
+                        Margin="5,5,5,0"
+                        HorizontalAlignment="Stretch" />
+
+                    <Slider
+                        Name="Slider1"
+                        Margin="5,-10,5,-10"
+                        Maximum="360"
+                        Minimum="0" />
+                    <Slider
+                        Name="Slider2"
+                        Margin="5,-10,5,-10"
+                        Maximum="360"
+                        Minimum="0" />
+                    <Slider
+                        Name="Slider3"
+                        Margin="5,-10,5,-10"
+                        Maximum="360"
+                        Minimum="0" />
+
+                    <Button
+                        Name="Button5"
+                        Height="25"
+                        Margin="5,0,5,0"
+                        HorizontalAlignment="Stretch"
+                        Content="{setting:Localize SkinWindow.Text8}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text18}"
+                        ToolTip.VerticalOffset="-30" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+    </Grid>
+</UserControl>

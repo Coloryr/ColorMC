@@ -53,7 +53,7 @@ public partial class OptifineControl : UserControl
         if (DataGrid1.SelectedItem is not OptifineDisplayObj item)
             return;
 
-        var window = (VisualRoot as AddWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
 
         var res = await window.Info.ShowWait(string.Format(
             App.GetLanguage("AddGameWindow.Control1.Info1"), item.Version));
@@ -69,7 +69,7 @@ public partial class OptifineControl : UserControl
         else
         {
             window.Info2.Show(App.GetLanguage("AddGameWindow.Control1.Info3"));
-            window.OptifineClsoe();
+            (window.Con as AddControl)?.OptifineClsoe();
         }
     }
 
@@ -80,14 +80,13 @@ public partial class OptifineControl : UserControl
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as AddWindow)!;
-
-        window.OptifineClsoe();
+        var window = (VisualRoot as IBaseWindow)!;
+        (window.Con as AddControl)?.OptifineClsoe();
     }
 
     public async void Load()
     {
-        var window = (VisualRoot as AddWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         List.Clear();
         List1.Clear();
         List2.Clear();

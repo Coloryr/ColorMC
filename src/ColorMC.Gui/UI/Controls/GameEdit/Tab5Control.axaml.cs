@@ -44,7 +44,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         var info = new DirectoryInfo(Obj.GetWorldBackupPath());
         if (!info.Exists)
         {

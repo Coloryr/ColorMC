@@ -42,13 +42,13 @@ public partial class Tab4Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
-        window.Next();
+        var window = (VisualRoot as IBaseWindow)!;
+        (window.Con as HelloControl)?.Next();
     }
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         Button_Add.IsEnabled = false;
         switch (ComboBox_UserType.SelectedIndex)
         {
@@ -208,7 +208,7 @@ public partial class Tab4Control : UserControl
 
     private void LoginOAuthCode(string url, string code)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         window.Info1.Close();
         window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Text3"), url),
             string.Format(App.GetLanguage("UserWindow.Text4"), code), () =>

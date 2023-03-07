@@ -113,8 +113,8 @@ public partial class Tab6Control : UserControl
 
     private async void Button6_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
-        var str = await BaseBinding.SaveFile(window, FileType.UI, null);
+        var window = (VisualRoot as IBaseWindow)!;
+        var str = await BaseBinding.SaveFile((VisualRoot as Window)!, FileType.UI, null);
         if (str == null)
             return;
 
@@ -142,7 +142,7 @@ public partial class Tab6Control : UserControl
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as Window)!;
         var res = await BaseBinding.OpFile(window, FileType.UI);
         if (res != null)
         {

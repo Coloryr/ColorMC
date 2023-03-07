@@ -16,6 +16,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Windows;
 using DynamicData;
 using SixLabors.ImageSharp;
@@ -35,6 +36,8 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class GameBinding
 {
+    public static bool IsNotGame
+        => InstancesPath.IsNotGame;
     public static List<GameSettingObj> GetGames()
     {
         return InstancesPath.Games;
@@ -591,7 +594,7 @@ public static class GameBinding
 
         if (debug)
         {
-            App.ShowGameEdit(obj, 6);
+            App.ShowGameEdit(obj, GameEditWindowType.Log);
         }
 
         return await BaseBinding.Launch(obj, login);
@@ -605,7 +608,7 @@ public static class GameBinding
     public static void MoveGameGroup(GameSettingObj obj, string? now)
     {
         obj.MoveGameGroup(now);
-        App.MainWindow?.Load();
+        (App.MainWindow?.Con as MainControl)?.Load();
     }
 
     public static async Task<bool> ReloadVersion()
@@ -969,8 +972,8 @@ public static class GameBinding
         App.CloseGameWindow(obj);
         await obj.Remove();
 
-        App.MainWindow?.IsDelete();
-        App.MainWindow?.Load();
+        (App.MainWindow?.Con as MainControl)?.IsDelete();
+        (App.MainWindow?.Con as MainControl)?.Load();
     }
 
     public static GameSettingObj? GetGame(string? name)

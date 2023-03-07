@@ -3,14 +3,12 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -60,14 +58,13 @@ public partial class Tab5Control : UserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var window = (VisualRoot as SettingWindow)!;
             var java = DataGrid1.SelectedItem as JavaDisplayObj;
             if (java == null)
                 return;
 
             if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
             {
-                new SettingFlyout(window, java).ShowAt(this, true);
+                new SettingFlyout(this, java).ShowAt(this, true);
             }
         });
     }
@@ -81,7 +78,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         var res = await window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
         if (!res)
             return;
@@ -117,7 +114,7 @@ public partial class Tab5Control : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
 
         var name = TextBox1.Text;
         var local = TextBox2.Text;
@@ -154,7 +151,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as Window)!;
         var file = await BaseBinding.OpFile(window, FileType.Java);
 
         if (file != null)
