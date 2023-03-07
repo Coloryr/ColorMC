@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
@@ -117,6 +118,15 @@ public partial class App : Application
             if (GuiConfigUtils.Config != null)
                 await LoadImage(GuiConfigUtils.Config.BackImage,
                     GuiConfigUtils.Config.BackEffect);
+
+            new Thread(() => 
+            {
+                while (true)
+                {
+                    Thread.Sleep(1000);
+                    GC.Collect();
+                }
+            }).Start();
         }
         catch (Exception e)
         {

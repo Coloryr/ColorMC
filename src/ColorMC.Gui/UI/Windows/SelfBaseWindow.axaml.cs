@@ -1,5 +1,7 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Platform;
 using Avalonia.VisualTree;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -32,7 +34,43 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         if (SystemInfo.Os == OsType.Linux)
         {
             SystemDecorations = SystemDecorations.BorderOnly;
-            Border1.PointerPressed += Border1_PointerPressed;
+            var rectangle = Border1;
+            var window = this;
+            Border1.PointerPressed += (sender, e)=> 
+            {
+                if (e.GetCurrentPoint(rectangle).Properties.IsLeftButtonPressed)
+                {
+                    var point = e.GetPosition(rectangle);
+                    var arg1 = point.X / rectangle.Bounds.Width;
+                    var arg2 = point.Y / rectangle.Bounds.Height;
+                    if (arg1 > 0.95)
+                    {
+                        if (arg2 > 0.95)
+                        {
+                            window.BeginResizeDrag(WindowEdge.SouthEast, e);
+                        }
+                        else if (arg2 <= 0.95)
+                        {
+                            window.BeginResizeDrag(WindowEdge.East, e);
+                        }
+                    }
+                    else if (arg1 < 0.05)
+                    {
+                        if (arg2 <= 0.95)
+                        {
+                            window.BeginResizeDrag(WindowEdge.West, e);
+                        }
+                        else if (arg2 > 0.95)
+                        {
+                            window.BeginResizeDrag(WindowEdge.SouthWest, e);
+                        }
+                    }
+                    else if (arg2 > 0.95)
+                    {
+                        window.BeginResizeDrag(WindowEdge.South, e);
+                    }
+                }
+            };
         }
 
         if (SystemInfo.Os == OsType.MacOS)
@@ -40,7 +78,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             KeyDown += Window_KeyDown;
         }
 
-        Icon = App.Icon;
+        //Icon = App.Icon;
 
         if (App.BackBitmap != null)
         {
@@ -60,45 +98,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     public void SetTitle(string temp)
     {
-        Head.Title = App.GetLanguage(temp);
-    }
-
-    private void Border1_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        Border rectangle = (sender as Border)!;
-        var window = (rectangle.GetVisualRoot() as Window)!;
-        if (e.GetCurrentPoint(rectangle).Properties.IsLeftButtonPressed)
-        {
-            var point = e.GetPosition(rectangle);
-            var arg1 = point.X / rectangle.Bounds.Width;
-            var arg2 = point.Y / rectangle.Bounds.Height;
-            if (arg1 > 0.95)
-            {
-                if (arg2 > 0.95)
-                {
-                    window.BeginResizeDrag(WindowEdge.SouthEast, e);
-                }
-                else if (arg2 <= 0.95)
-                {
-                    window.BeginResizeDrag(WindowEdge.East, e);
-                }
-            }
-            else if (arg1 < 0.05)
-            {
-                if (arg2 <= 0.95)
-                {
-                    window.BeginResizeDrag(WindowEdge.West, e);
-                }
-                else if (arg2 > 0.95)
-                {
-                    window.BeginResizeDrag(WindowEdge.SouthWest, e);
-                }
-            }
-            else if (arg2 > 0.95)
-            {
-                window.BeginResizeDrag(WindowEdge.South, e);
-            }
-        }
+        Head.Title = Title = App.GetLanguage(temp);
     }
 
     private void FindGoodPos()
@@ -169,6 +169,9 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         Main.Closed();
         OnClosed?.Invoke();
+
+        Main = null;
+        MainControl.Children.Clear();
 
         if (App.LastWindow == this)
         {
