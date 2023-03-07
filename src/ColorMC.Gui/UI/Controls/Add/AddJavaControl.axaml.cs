@@ -7,7 +7,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -203,21 +202,21 @@ public partial class AddJavaControl : UserControl, IUserControl
 
     public void Opened()
     {
-        
+
     }
 
     public void Closed()
     {
-        
+
     }
 
     public void Update()
     {
-        
+
     }
 
     public void Closing()
     {
-        
+
     }
 }

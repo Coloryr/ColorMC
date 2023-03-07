@@ -2,12 +2,8 @@
 using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.UI.Controls.Skin;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Animations;
 

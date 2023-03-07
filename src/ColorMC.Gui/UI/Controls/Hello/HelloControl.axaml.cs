@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using ColorMC.Core;
 using ColorMC.Gui.UI.Windows;
-using System;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
@@ -108,21 +107,21 @@ public partial class HelloControl : UserControl, IUserControl
 
     public void Opened()
     {
-        
+
     }
 
     public void Update()
     {
-        
+
     }
 
     public void Closing()
     {
-        
+
     }
 
     public void Done()
-    { 
+    {
         var window = (VisualRoot as IBaseWindow)!;
         window.Window.Close();
     }

@@ -1,10 +1,4 @@
-using Avalonia.Controls;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.User;
-using DynamicData;
-using System;
-using System.Web;
 
 namespace ColorMC.Gui.UI.Windows;
 

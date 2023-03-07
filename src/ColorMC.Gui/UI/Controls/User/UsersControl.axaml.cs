@@ -473,11 +473,11 @@ public partial class UsersControl : UserControl, IUserControl
 
     public void Update()
     {
-        
+
     }
 
     public void Closing()
     {
-        
+
     }
 }

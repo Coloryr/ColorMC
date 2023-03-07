@@ -13,7 +13,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.Main;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils.LaunchSetting;
 using SixLabors.ImageSharp;
 using System;

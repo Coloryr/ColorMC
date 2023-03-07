@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
-using System;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
@@ -134,16 +133,16 @@ public partial class SettingControl : UserControl, IUserControl
 
     public void Opened()
     {
-        
+
     }
 
     public void Update()
     {
-        
+
     }
 
     public void Closing()
     {
-        
+
     }
 }

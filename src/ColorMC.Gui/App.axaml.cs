@@ -13,10 +13,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Download;
-using ColorMC.Gui.UI.Controls.GameEdit;
-using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.Setting;
-using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -381,7 +378,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowGameEdit(GameSettingObj obj, GameEditWindowType type 
+    public static void ShowGameEdit(GameSettingObj obj, GameEditWindowType type
         = GameEditWindowType.Normal)
     {
         if (GameEditWindows.TryGetValue(obj.UUID, out var win))
