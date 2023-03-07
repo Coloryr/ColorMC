@@ -7,6 +7,7 @@ using Avalonia.Platform;
 using Avalonia.Threading;
 using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.UI.Animations;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
@@ -153,7 +154,6 @@ void main()
     private readonly ModelVAO NormalVAO = new();
     private readonly ModelVAO TopVAO = new();
 
-    private SkinControl Window;
     private Win Window1;
     private SkinAnimation skina;
 
@@ -163,13 +163,6 @@ void main()
 
         skina = new(this);
         skina.Start();
-
-        Init();
-    }
-
-    public void SetWindow(SkinControl window)
-    {
-        Window = window;
     }
 
     public void Init()
@@ -309,13 +302,14 @@ void main()
 
     private void LoadSkin()
     {
+        var window = (VisualRoot as IBaseWindow)!;
         if (UserBinding.SkinImage == null)
         {
             HaveSkin = false;
             Dispatcher.UIThread.Post(() =>
             {
-                Window.Label1.IsVisible = true;
-                Window.Label1.Content = App.GetLanguage("SkinWindow.Info2");
+                (window.Con as SkinControl)!.Label1.IsVisible = true;
+                (window.Con as SkinControl)!.Label1.Content = App.GetLanguage("SkinWindow.Info2");
             });
             return;
         }
@@ -326,8 +320,8 @@ void main()
             HaveSkin = false;
             Dispatcher.UIThread.Post(() =>
             {
-                Window.Label1.IsVisible = true;
-                Window.Label1.Content = App.GetLanguage("SkinWindow.Info3");
+                (window.Con as SkinControl)!.Label1.IsVisible = true;
+                (window.Con as SkinControl)!.Label1.Content = App.GetLanguage("SkinWindow.Info3");
             });
             return;
         }
@@ -349,8 +343,8 @@ void main()
         HaveSkin = true;
         Dispatcher.UIThread.Post(() =>
         {
-            Window.ComboBox1.SelectedIndex = (int)steveModelType;
-            Window.Label1.IsVisible = false;
+            (window.Con as SkinControl)!.ComboBox1.SelectedIndex = (int)steveModelType;
+            (window.Con as SkinControl)!.Label1.IsVisible = false;
         });
     }
 

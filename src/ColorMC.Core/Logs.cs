@@ -94,4 +94,10 @@ public static class Logs
         string text = $"[{DateTime.Now}][Error]{data}{Environment.NewLine}{e}";
         AddText(text);
     }
+
+    public static void Wait()
+    {
+        while (!bags.IsEmpty)
+            Task.Delay(100);
+    }
 }

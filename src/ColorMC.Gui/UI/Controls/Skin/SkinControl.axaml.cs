@@ -21,11 +21,6 @@ public partial class SkinControl : UserControl, IUserControl
         InitializeComponent();
 
         ComboBox1.Items = UserBinding.GetSkinType();
-
-        Skin.SetWindow(this);
-
-        Text1.Text = Skin.Info;
-
         ComboBox2.Items = BaseBinding.GetSkinRotateName();
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
@@ -53,6 +48,9 @@ public partial class SkinControl : UserControl, IUserControl
     {
         var temp = Matrix.CreateRotation(Math.PI);
         Skin.RenderTransform = new ImmutableTransform(temp);
+
+        Skin.Init();
+        Text1.Text = Skin.Info;
     }
 
     public void Update()
@@ -62,7 +60,8 @@ public partial class SkinControl : UserControl, IUserControl
 
     public void Closed()
     {
-        Skin.SetWindow(null);
+        App.SkinLoad -= App_SkinLoad;
+
         Skin.Close();
     }
 
