@@ -1,20 +1,18 @@
 using Avalonia.Controls;
-using ColorMC.Core.Net.Java;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
-using System.Timers;
-using Avalonia.Threading;
-using Avalonia.Interactivity;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Core.Net.Downloader;
-using ColorMC.Gui.UIBinding;
-using Avalonia.Input;
 using System.ComponentModel;
-using ColorMC.Core.Utils;
+using System.Timers;
 
 namespace ColorMC.Gui.UI.Controls.Download;
 
@@ -208,11 +206,11 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public void Update()
     {
-        
+
     }
 
     public void Closing()
     {
-        
+
     }
 }

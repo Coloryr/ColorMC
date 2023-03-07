@@ -227,7 +227,7 @@ public partial class SkinControl : UserControl, IUserControl
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
         var window = (VisualRoot as IBaseWindow)!;
-        var res = await BaseBinding.SaveFile((VisualRoot as Window)!, 
+        var res = await BaseBinding.SaveFile((VisualRoot as Window)!,
             FileType.Skin, null);
         if (res == true)
         {
@@ -271,6 +271,6 @@ public partial class SkinControl : UserControl, IUserControl
 
     public void Closing()
     {
-        
+
     }
 }

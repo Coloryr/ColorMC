@@ -15,17 +15,17 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Closed()
     {
-        
+
     }
 
     public void Closing()
     {
-        
+
     }
 
     public void Opened()
     {
-        
+
     }
 
     public void Show(string data, Exception e, bool close)
@@ -62,6 +62,6 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Update()
     {
-        
+
     }
 }

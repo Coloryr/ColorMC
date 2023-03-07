@@ -1,8 +1,4 @@
-using Avalonia.Controls;
-using ColorMC.Core;
 using ColorMC.Gui.UI.Controls.Hello;
-using System;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
 

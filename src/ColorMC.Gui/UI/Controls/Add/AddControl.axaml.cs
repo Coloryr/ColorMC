@@ -4,15 +4,15 @@ using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using DynamicData;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
-using ColorMC.Core.Utils;
-using System.Collections.ObjectModel;
-using DynamicData;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -594,11 +594,11 @@ public partial class AddControl : UserControl, IUserControl
 
     public void Update()
     {
-        
+
     }
 
     public void Closing()
     {
-        
+
     }
 }

@@ -1,19 +1,18 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using DynamicData;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using DynamicData;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -77,22 +76,22 @@ public partial class AddModPackControl : UserControl, IUserControl
 
     public void Closed()
     {
-        
+
     }
 
     public void Closing()
     {
-        
+
     }
 
     public void Opened()
     {
-        
+
     }
 
     public void Update()
     {
-        
+
     }
 
     private void ComboBox6_SelectionChanged(object? sender, SelectionChangedEventArgs e)

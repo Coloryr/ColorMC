@@ -1,12 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Threading;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
@@ -222,11 +218,11 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Update()
     {
-        
+
     }
 
     public void Closing()
     {
-        
+
     }
 }

@@ -2,7 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
-using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Media.Immutable;

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
@@ -9,12 +10,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Layout;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -630,11 +628,11 @@ public partial class MainControl : UserControl, IUserControl
 
     public void Update()
     {
-        
+
     }
 
     public void Closing()
     {
-        
+
     }
 }
