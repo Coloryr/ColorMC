@@ -6,6 +6,7 @@ namespace ColorMC.Gui.UI.Controls.Error;
 
 public partial class ErrorControl : UserControl, IUserControl
 {
+    private bool Close;
     public ErrorControl()
     {
         InitializeComponent();
@@ -15,7 +16,10 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Closed()
     {
-
+        if (Close)
+        {
+            App.Close();
+        }
     }
 
     public void Closing()
@@ -30,34 +34,13 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Show(string data, Exception e, bool close)
     {
-        var window = (VisualRoot as Window)!;
         TextEditor1.Text = $"{data}{Environment.NewLine}{e}";
-
-        if (close)
-        {
-            window.Show();
-            App.Close();
-        }
-        else
-        {
-            window.Show();
-        }
+        Close = close;
     }
 
     public void Show(string data, string e, bool close)
     {
-        var window = (VisualRoot as Window)!;
         TextEditor1.Text = $"{data}{Environment.NewLine}{e}";
-
-        if (close)
-        {
-            window.Show();
-            App.Close();
-        }
-        else
-        {
-            window.Show();
-        }
     }
 
     public void Update()
