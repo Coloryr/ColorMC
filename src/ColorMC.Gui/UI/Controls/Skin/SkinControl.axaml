@@ -58,7 +58,7 @@
                     <Button
                         Name="Button2"
                         Height="25"
-                        Margin="5,0,5,0"
+                        Margin="5,5,5,0"
                         HorizontalAlignment="Stretch"
                         Content="{setting:Localize SkinWindow.Text1}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text15}"
@@ -67,7 +67,7 @@
                     <Button
                         Name="Button3"
                         Height="25"
-                        Margin="5,0,5,0"
+                        Margin="5,5,5,0"
                         HorizontalAlignment="Stretch"
                         Content="{setting:Localize SkinWindow.Text3}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text16}"
@@ -76,7 +76,7 @@
                     <Button
                         Name="Button4"
                         Height="25"
-                        Margin="5,0,5,0"
+                        Margin="5,5,5,0"
                         HorizontalAlignment="Stretch"
                         Content="{setting:Localize SkinWindow.Text4}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text17}"

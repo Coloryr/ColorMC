@@ -119,14 +119,14 @@ public partial class App : Application
                 await LoadImage(GuiConfigUtils.Config.BackImage,
                     GuiConfigUtils.Config.BackEffect);
 
-            new Thread(() => 
-            {
-                while (true)
-                {
-                    Thread.Sleep(1000);
-                    GC.Collect();
-                }
-            }).Start();
+            //new Thread(() => 
+            //{
+            //    while (true)
+            //    {
+            //        Thread.Sleep(1000);
+            //        GC.Collect();
+            //    }
+            //}).Start();
         }
         catch (Exception e)
         {

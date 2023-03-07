@@ -129,7 +129,7 @@ public partial class AddControl : UserControl, IUserControl
             if (list == null || list1 == null)
             {
 #if !DEBUG
-            Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+                window.Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
 #endif
                 window.Info1.Close();
                 return;
@@ -178,7 +178,7 @@ public partial class AddControl : UserControl, IUserControl
             if (list == null || list1 == null)
             {
 #if !DEBUG
-            Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+                window.Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
 #endif
                 window.Info1.Close();
                 return;

@@ -78,7 +78,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             KeyDown += Window_KeyDown;
         }
 
-        //Icon = App.Icon;
+        Icon = App.Icon;
 
         if (App.BackBitmap != null)
         {
@@ -160,14 +160,14 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private void UserWindow_Opened(object? sender, EventArgs e)
     {
-        Main.Opened();
+        Main?.Opened();
         OnOpened?.Invoke();
     }
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
         App.PicUpdate -= Update;
 
-        Main.Closed();
+        Main?.Closed();
         OnClosed?.Invoke();
 
         Main = null;
