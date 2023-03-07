@@ -159,13 +159,13 @@ public partial class MainControl : UserControl, IUserControl
         window.Info2.Show(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
         var res = await GameBinding.Launch(game, debug);
         window.Head.Title1 = null;
+        item.SetLoad(false);
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
             await window.Info1.Close();
         }
         if (res.Item1 == false)
         {
-            item.SetLoad(false);
             item.SetLaunch(false);
             switch (Last)
             {
