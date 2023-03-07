@@ -103,7 +103,7 @@ public partial class Tab2Control : UserControl
         if (load)
             return;
 
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         var type = (LanguageType)ComboBox2.SelectedIndex;
         window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info1"));
         LanguageHelper.Change(type);
@@ -147,7 +147,7 @@ public partial class Tab2Control : UserControl
 
     private void Button_Set4_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         ConfigBinding.ResetColor();
         ColorPicker1.Color = ColorSel.MainColor.ToColor();
         ColorPicker2.Color = ColorSel.BackColor.ToColor();
@@ -159,7 +159,7 @@ public partial class Tab2Control : UserControl
 
     private async void Button_Set2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         if (string.IsNullOrWhiteSpace(TextBox1.Text))
         {
             window.Info.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
@@ -177,7 +177,7 @@ public partial class Tab2Control : UserControl
         if (load)
             return;
 
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetBl(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
         window.Info1.Close();
@@ -257,14 +257,14 @@ public partial class Tab2Control : UserControl
 
     private void Button_Set_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         ConfigBinding.SetBackTran((int)Slider2.Value);
         window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as SettingWindow)!;
+        var window = (VisualRoot as Window)!;
         var file = await BaseBinding.OpFile(window, FileType.Pic);
 
         if (file != null)

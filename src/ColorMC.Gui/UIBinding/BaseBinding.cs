@@ -11,6 +11,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils.LaunchSetting;
 using SixLabors.ImageSharp;
 using System;
@@ -55,7 +58,7 @@ public static class BaseBinding
     {
         Dispatcher.UIThread.Post(() =>
         {
-            App.ShowSetting(SettingWindowType.SetJava);
+            App.ShowSetting(SettingType.SetJava);
         });
     }
 
@@ -151,7 +154,7 @@ public static class BaseBinding
         }
         if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            win.ClearLog();
+            (win.Con as GameEditControl)?.ClearLog();
         }
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdateOnThread;
@@ -225,7 +228,7 @@ public static class BaseBinding
                 UserBinding.RemoveLockUser(obj1);
                 if (Games.Remove(res, out var obj2))
                 {
-                    App.MainWindow?.GameClose(obj2);
+                    (App.MainWindow?.Con as MainControl)?.GameClose(obj2);
                 }
                 if (a is Process)
                 {
@@ -277,7 +280,7 @@ public static class BaseBinding
         if (Games.TryGetValue(p, out var obj)
             && App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            win.Log(d);
+            (win.Con as GameEditControl)?.Log(d);
         }
     }
 
@@ -285,7 +288,7 @@ public static class BaseBinding
     {
         if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            win.Log(d);
+            (win.Con as GameEditControl)?.Log(d);
         }
     }
 
@@ -505,7 +508,7 @@ public static class BaseBinding
         return null;
     }
 
-    public static async Task<bool?> SaveFile(Window window, FileType type, object[] arg)
+    public static async Task<bool?> SaveFile(Window window, FileType type, object[]? arg)
     {
         switch (type)
         {
@@ -517,7 +520,7 @@ public static class BaseBinding
 
                 try
                 {
-                    await GameBinding.ExportWorld((arg[0] as WorldDisplayObj)!.World, file.GetPath());
+                    await GameBinding.ExportWorld((arg![0] as WorldDisplayObj)!.World, file.GetPath());
                     return true;
                 }
                 catch (Exception e)
@@ -534,7 +537,7 @@ public static class BaseBinding
                 try
                 {
                     var name = file.GetPath();
-                    await GameBinding.ExportGame((arg[0] as GameSettingObj)!, name,
+                    await GameBinding.ExportGame((arg![0] as GameSettingObj)!, name,
                         (arg[1] as List<string>)!, (PackType)arg[2]);
                     OpFile(name);
                     return true;
@@ -675,7 +678,7 @@ public static class BaseBinding
         obj.Name = data;
         obj.Save();
 
-        App.MainWindow?.Load();
+        (App.MainWindow?.Con as MainControl)?.Load();
     }
 
     public static async Task<bool> CopyGame(GameSettingObj obj, string data)
@@ -687,7 +690,7 @@ public static class BaseBinding
         if (res == null)
             return false;
 
-        App.MainWindow?.Load();
+        (App.MainWindow?.Con as MainControl)?.Load();
 
         return true;
     }
@@ -723,5 +726,15 @@ public static class BaseBinding
     public static void OpenPicPath()
     {
         OpPath(ImageTemp.Local);
+    }
+
+    public static void DownloadStop()
+    {
+        DownloadManager.DownloadStop();
+    }
+
+    public static void DownloadPause()
+    {
+        DownloadManager.DownloadPause();
     }
 }

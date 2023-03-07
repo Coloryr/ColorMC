@@ -4,6 +4,7 @@ using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System.Threading.Tasks;
 
@@ -23,7 +24,14 @@ public static class ConfigBinding
 
     public static bool LoadGuiConfig(string dir)
     {
-        return GuiConfigUtils.Load(dir, true);
+        var res = GuiConfigUtils.Load(dir, true);
+        if (res)
+        {
+            ColorSel.Instance.Load();
+            FontSel.Instance.Load();
+        }
+
+        return res;
     }
 
     public static (ConfigObj, GuiConfigObj) GetAllConfig()
@@ -141,7 +149,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom = obj;
         GuiConfigUtils.Save();
 
-        App.MainWindow?.MotdLoad();
+        (App.MainWindow?.Con as MainControl)?.MotdLoad();
 
         ColorSel.Instance.Load();
     }
@@ -153,7 +161,7 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
 
-        App.MainWindow?.Load();
+        (App.MainWindow?.Con as MainControl)?.Load();
     }
 
     public static void SetUIFile(string text)

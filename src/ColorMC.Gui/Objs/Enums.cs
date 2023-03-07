@@ -1,13 +1,13 @@
 ﻿namespace ColorMC.Gui.Objs;
 
-public enum SettingWindowType
+public enum SettingType
 {
     Normal, SetJava
 }
 
 public enum GameEditWindowType
 {
-    Normal,
+    Normal, Mod, Config, World, Export, Log
 }
 
 public enum FTBType

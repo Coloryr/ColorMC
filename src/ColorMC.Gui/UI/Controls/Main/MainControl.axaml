@@ -1,0 +1,78 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Main.MainControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Main"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    DragDrop.AllowDrop="True"
+    mc:Ignorable="d">
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <views1:ItemControl
+                Name="ItemInfo"
+                Margin="0,0,3,0"
+                DockPanel.Dock="Right" />
+            <views:ServerMotdControl
+                Name="ServerMotdControl1"
+                Margin="3,3,0,0"
+                DockPanel.Dock="Top" />
+            <Label
+                Name="Label2"
+                Margin="3,0,0,3"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Background="#88FFFFFF"
+                Content="{setting:Localize Tips.Text1}"
+                DockPanel.Dock="Bottom"
+                IsVisible="False" />
+            <Grid>
+                <ScrollViewer Margin="3,0,0,0">
+                    <StackPanel Name="GameGroups" />
+                </ScrollViewer>
+                <Grid Name="Grid3" Background="#EEEEEE">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="没有游戏实例"
+                            FontSize="30" />
+                        <Label
+                            HorizontalAlignment="Center"
+                            Content="点击添加一个游戏实例"
+                            FontSize="30" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </DockPanel>
+
+        <Button
+            Name="Button1"
+            Width="20"
+            Height="20"
+            Margin="0,0,8,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Content="←"
+            IsVisible="False"
+            ToolTip.Tip="{setting:Localize ToolTip.Text6}"
+            ToolTip.VerticalOffset="-30" />
+
+        <views1:GameGroupControl Name="Group" IsVisible="False" />
+
+        <Grid
+            Name="Grid2"
+            Background="#EEEEEEEE"
+            IsVisible="False">
+            <Label
+                Name="Label1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="test"
+                FontSize="30" />
+        </Grid>
+    </Grid>
+</UserControl>

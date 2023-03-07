@@ -23,8 +23,8 @@ public partial class Tab1Control : UserControl
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
-        window.Done();
+        var window = (VisualRoot as IBaseWindow)!;
+        (window.Con as HelloControl)?.Done();
     }
 
     private void Lang_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -35,7 +35,7 @@ public partial class Tab1Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
-        window.Next();
+        var window = (VisualRoot as IBaseWindow)!;
+        (window.Con as HelloControl)?.Next();
     }
 }

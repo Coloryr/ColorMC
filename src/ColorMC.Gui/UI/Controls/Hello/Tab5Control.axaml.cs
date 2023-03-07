@@ -70,7 +70,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         var name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -117,7 +117,7 @@ public partial class Tab5Control : UserControl
 
     private async void GameVersion_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
 
         CheckBox_Forge.IsEnabled = false;
         CheckBox_Fabric.IsEnabled = false;
@@ -150,7 +150,7 @@ public partial class Tab5Control : UserControl
 
     private async void Quilt_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         if (CheckBox_Quilt.IsChecked == true)
         {
             string? item = ComboBox_GameVersion.SelectedItem as string;
@@ -182,7 +182,7 @@ public partial class Tab5Control : UserControl
 
     private async void Fabric_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         if (CheckBox_Fabric.IsChecked == true)
         {
             string? item = ComboBox_GameVersion.SelectedItem as string;
@@ -214,7 +214,7 @@ public partial class Tab5Control : UserControl
 
     private async void Forge_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         if (CheckBox_Forge.IsChecked == true)
         {
             string? item = ComboBox_GameVersion.SelectedItem as string;
@@ -246,7 +246,7 @@ public partial class Tab5Control : UserControl
 
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         window.Info1.Close();
         var test = await window.Info.ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info7"), obj.Name));
@@ -259,13 +259,13 @@ public partial class Tab5Control : UserControl
 
     private void PackUpdate(int size, int now)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         window.Info1.Progress((double)now / size);
     }
 
     private void PackState(CoreRunState state)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         if (state == CoreRunState.Read)
         {
             window.Info1.Show(App.GetLanguage("AddGameWindow.Info8"));
@@ -291,7 +291,7 @@ public partial class Tab5Control : UserControl
 
     private async void AddPack(PackType type)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         add = false;
 
         window.Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
@@ -315,7 +315,7 @@ public partial class Tab5Control : UserControl
 
     private async Task<string?> SelectPack()
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as Window)!;
         return await BaseBinding.OpFile(window, FileType.ModPack);
     }
 
@@ -343,7 +343,7 @@ public partial class Tab5Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
-        window.Next();
+        var window = (VisualRoot as IBaseWindow)!;
+        (window.Con as HelloControl)?.Next();
     }
 }

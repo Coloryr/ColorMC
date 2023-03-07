@@ -51,3 +51,17 @@ public class LocalizeExtension : MarkupExtension
         return binding.ProvideValue(serviceProvider);
     }
 }
+
+public class FontExtension : MarkupExtension
+{
+    public override object ProvideValue(IServiceProvider serviceProvider)
+    {
+        var binding = new ReflectionBindingExtension("[Font]")
+        {
+            Mode = BindingMode.OneWay,
+            Source = FontSel.Instance,
+        };
+
+        return binding.ProvideValue(serviceProvider);
+    }
+}

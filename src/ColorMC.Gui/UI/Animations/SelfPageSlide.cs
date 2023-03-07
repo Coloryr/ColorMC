@@ -14,15 +14,14 @@ namespace ColorMC.Gui.UI.Animations;
 /// <summary>
 /// Transitions between two pages by sliding them horizontally or vertically.
 /// </summary>
-public class PageSlide : IPageTransition
+public class SelfPageSlide : IPageTransition
 {
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="PageSlide"/> class.
+    /// Initializes a new instance of the <see cref="SelfPageSlide"/> class.
     /// </summary>
     /// <param name="duration">The duration of the animation.</param>
     /// <param name="orientation">The axis on which the animation should occur</param>
-    public PageSlide(TimeSpan duration)
+    public SelfPageSlide(TimeSpan duration)
     {
         Duration = duration;
     }
@@ -35,12 +34,7 @@ public class PageSlide : IPageTransition
     /// <summary>
     /// Gets or sets element entrance easing.
     /// </summary>
-    public Easing SlideInEasing { get; set; } = new CircularEaseInOut();
-
-    /// <summary>
-    /// Gets or sets element exit easing.
-    /// </summary>
-    public Easing SlideOutEasing { get; set; } = new CircularEaseInOut();
+    public Easing SlideEasing { get; set; } = new CircularEaseInOut();
 
     /// <inheritdoc />
     public virtual async Task Start(Visual? from, Visual? to, bool forward, CancellationToken cancellationToken)
@@ -60,7 +54,7 @@ public class PageSlide : IPageTransition
             double end = forward ? -distance : distance;
             var animation = new Animation
             {
-                Easing = SlideOutEasing,
+                Easing = SlideEasing,
                 FillMode = FillMode.Forward,
                 Children =
                     {
@@ -69,18 +63,6 @@ public class PageSlide : IPageTransition
                             Setters = { new Setter { Property = translateProperty, Value = 0d } },
                             Cue = new Cue(0d)
                         },
-                        //new KeyFrame
-                        //{
-                        //    Setters =
-                        //    {
-                        //        new Setter
-                        //        {
-                        //            Property = translateProperty,
-                        //            Value = end * 0.9
-                        //        }
-                        //    },
-                        //    Cue = new Cue(0.8d)
-                        //},
                         new KeyFrame
                         {
                             Setters =
@@ -106,7 +88,7 @@ public class PageSlide : IPageTransition
             var animation = new Animation
             {
                 FillMode = FillMode.Forward,
-                Easing = SlideInEasing,
+                Easing = SlideEasing,
                 Children =
                     {
                         new KeyFrame
@@ -121,18 +103,6 @@ public class PageSlide : IPageTransition
                             },
                             Cue = new Cue(0d)
                         },
-                        //new KeyFrame
-                        //{
-                        //    Setters =
-                        //    {
-                        //        new Setter
-                        //        {
-                        //            Property = translateProperty,
-                        //            Value = end * 0.1
-                        //        }
-                        //    },
-                        //    Cue = new Cue(0.2d)
-                        //},
                         new KeyFrame
                         {
                             Setters = { new Setter { Property = translateProperty, Value = 0d } },

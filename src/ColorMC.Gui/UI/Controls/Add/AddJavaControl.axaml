@@ -1,0 +1,89 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Add.AddJavaControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <DockPanel Margin="3">
+
+        <StackPanel
+            Margin="0,3,0,0"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddJavaWindow.Text1}" />
+            <ComboBox Name="ComboBox1" Width="120" />
+
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddJavaWindow.Text2}" />
+            <ComboBox Name="ComboBox2" Width="120" />
+
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddJavaWindow.Text3}" />
+            <ComboBox Name="ComboBox3" Width="70" />
+
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddJavaWindow.Text4}" />
+            <ComboBox Name="ComboBox4" Width="100" />
+
+            <Button
+                Name="Button1"
+                Width="80"
+                Height="25"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                Content="{setting:Localize Button.Refash}" />
+        </StackPanel>
+
+        <Label
+            Margin="2,0,0,0"
+            VerticalAlignment="Bottom"
+            Content="{setting:Localize AddJavaWindow.Text5}"
+            DockPanel.Dock="Bottom" />
+
+        <DataGrid
+            Name="DataGrid1"
+            AutoGenerateColumns="False"
+            Background="#88ffffff"
+            CanUserSortColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Binding="{Binding Name}"
+                    Header="{setting:Localize AddJavaWindow.DataGrid.Text1}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Arch}"
+                    Header="{setting:Localize AddJavaWindow.DataGrid.Text2}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Os}"
+                    Header="{setting:Localize AddJavaWindow.DataGrid.Text3}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding MainVersion}"
+                    Header="{setting:Localize AddJavaWindow.DataGrid.Text4}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Version}"
+                    Header="{setting:Localize AddJavaWindow.DataGrid.Text5}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Size}"
+                    Header="{setting:Localize AddJavaWindow.DataGrid.Text6}"
+                    IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

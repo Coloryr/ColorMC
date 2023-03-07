@@ -44,7 +44,7 @@ public class CustomWindowModel : INotifyPropertyChanged
     }
 }
 
-public partial class CustomWindow : Window
+public partial class CustomWindow : SelfBaseWindow
 {
     private UIObj? UI;
     private GameSettingObj? Obj;
@@ -57,28 +57,13 @@ public partial class CustomWindow : Window
 
     public CustomWindow()
     {
-        InitializeComponent();
-
-        this.Init();
-        Icon = App.Icon;
-        Border1.MakeResizeDrag(this);
-
-        this.Closed += CustomWindow_Closed;
-
         ColorMCCore.GameLaunch = GameLunch;
         ColorMCCore.GameDownload = GameDownload;
 
-        App.PicUpdate += Update;
         App.UserEdit += App_UserEdit;
         App.SkinLoad += App_SkinLoad;
 
-        Update();
-        Activated += Window_Activated;
-    }
-
-    private void Window_Activated(object? sender, EventArgs e)
-    {
-        App.LastWindow = this;
+        OnClosed = Closed;
     }
 
     private void App_SkinLoad()
@@ -117,19 +102,12 @@ public partial class CustomWindow : Window
         await UserBinding.LoadSkin();
     }
 
-    private void CustomWindow_Closed(object? sender, EventArgs e)
+    private new void Closed()
     {
-        App.PicUpdate -= Update;
-
         ColorMCCore.GameLaunch = null;
         ColorMCCore.GameDownload = null;
 
         App.CustomWindow = null;
-
-        if (App.LastWindow == this)
-        {
-            App.LastWindow = null;
-        }
 
         if (App.MainWindow == null)
         {
@@ -478,7 +456,7 @@ public partial class CustomWindow : Window
         }
         else if (name == "Setting")
         {
-            App.ShowSetting(SettingWindowType.Normal);
+            App.ShowSetting(SettingType.Normal);
         }
     }
 

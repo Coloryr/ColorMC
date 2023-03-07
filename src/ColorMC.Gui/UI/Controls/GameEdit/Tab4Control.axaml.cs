@@ -67,7 +67,7 @@ public partial class Tab4Control : UserControl
 
     private async void Button_B1_Click(object? sender, RoutedEventArgs e)
     {
-        if (isSet) 
+        if (isSet)
             return;
 
         isSet = true;

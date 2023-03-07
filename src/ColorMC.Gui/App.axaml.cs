@@ -10,6 +10,14 @@ using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Animations;
+using ColorMC.Gui.UI.Controls.Add;
+using ColorMC.Gui.UI.Controls.Download;
+using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Controls.Setting;
+using ColorMC.Gui.UI.Controls.Skin;
+using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -37,23 +45,23 @@ public partial class App : Application
     }
 
     public static IClassicDesktopStyleApplicationLifetime? Life { get; private set; }
-    public static DownloadWindow? DownloadWindow { get; set; }
-    public static UserWindow? UserWindow { get; set; }
-    public static MainWindow? MainWindow { get; set; }
-    public static AddGameWindow? AddGameWindow { get; set; }
-    public static CustomWindow? CustomWindow { get; set; }
-    public static AddModPackWindow? AddModPackWindow { get; set; }
-    public static SettingWindow? SettingWindow { get; set; }
-    public static SkinWindow? SkinWindow { get; set; }
-    public static AddJavaWindow? AddJavaWindow { get; set; }
+    public static IBaseWindow? DownloadWindow { get; set; }
+    public static IBaseWindow? UserWindow { get; set; }
+    public static IBaseWindow? MainWindow { get; set; }
+    public static IBaseWindow? AddGameWindow { get; set; }
+    public static IBaseWindow? CustomWindow { get; set; }
+    public static IBaseWindow? AddModPackWindow { get; set; }
+    public static IBaseWindow? SettingWindow { get; set; }
+    public static IBaseWindow? SkinWindow { get; set; }
+    public static IBaseWindow? AddJavaWindow { get; set; }
 
-    public readonly static Dictionary<string, GameEditWindow> GameEditWindows = new();
-    public readonly static Dictionary<string, AddWindow> AddWindows = new();
+    public readonly static Dictionary<string, IBaseWindow> GameEditWindows = new();
+    public readonly static Dictionary<string, IBaseWindow> AddWindows = new();
 
     public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly CrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
     public static readonly CrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));
-    public static readonly PageSlide PageSlide500 = new(TimeSpan.FromMilliseconds(500));
+    public static readonly SelfPageSlide PageSlide500 = new(TimeSpan.FromMilliseconds(500));
 
     public static event Action? PicUpdate;
     public static event Action? UserEdit;
@@ -192,11 +200,11 @@ public partial class App : Application
         }
         else if (state == CoreRunState.Start)
         {
-            DownloadWindow?.Load();
+            (DownloadWindow?.Con as DownloadControl)?.Load();
         }
         else if (state == CoreRunState.End)
         {
-            DownloadWindow?.Close();
+            DownloadWindow?.Window?.Close();
         }
     }
 
@@ -255,31 +263,31 @@ public partial class App : Application
     {
         if (CustomWindow != null)
         {
-            CustomWindow.Activate();
+            CustomWindow.Window.Activate();
         }
         else
         {
-            CustomWindow = new();
-            CustomWindow.Show();
+            CustomWindow = new CustomWindow();
+            CustomWindow.Window.Show();
         }
 
-        CustomWindow.Load(obj);
+        (CustomWindow as CustomWindow)?.Load(obj);
     }
 
     public static void ShowAddGame(string? file = null)
     {
         if (AddGameWindow != null)
         {
-            AddGameWindow.Activate();
+            AddGameWindow.Window.Activate();
         }
         else
         {
-            AddGameWindow = new();
-            AddGameWindow.Show();
+            AddGameWindow = new AddGameWindow();
+            AddGameWindow.Window.Show();
         }
         if (!string.IsNullOrWhiteSpace(file))
         {
-            AddGameWindow.AddFile(file);
+            (AddGameWindow.Con as AddGameControl)?.AddFile(file);
         }
     }
 
@@ -287,12 +295,12 @@ public partial class App : Application
     {
         if (DownloadWindow != null)
         {
-            DownloadWindow.Activate();
+            DownloadWindow.Window.Activate();
         }
         else
         {
-            DownloadWindow = new();
-            DownloadWindow.Show();
+            DownloadWindow = new DownloadWindow();
+            DownloadWindow.Window.Show();
         }
     }
 
@@ -300,17 +308,17 @@ public partial class App : Application
     {
         if (UserWindow != null)
         {
-            UserWindow.Activate();
+            UserWindow.Window.Activate();
         }
         else
         {
-            UserWindow = new();
-            UserWindow.Show();
+            UserWindow = new UserWindow();
+            UserWindow.Window.Show();
         }
 
         if (!string.IsNullOrWhiteSpace(url))
         {
-            UserWindow.AddUrl(url);
+            (UserWindow.Con as UsersControl)?.AddUrl(url);
         }
     }
 
@@ -318,17 +326,17 @@ public partial class App : Application
     {
         if (MainWindow != null)
         {
-            MainWindow.Activate();
+            MainWindow.Window.Activate();
         }
         else
         {
-            MainWindow = new();
-            MainWindow.Show();
+            MainWindow = new MainWindow();
+            MainWindow.Window.Show();
         }
 
         if (BaseBinding.ISNewStart)
         {
-            new HelloWindow().ShowDialog(MainWindow);
+            new HelloWindow().ShowDialog(MainWindow.Window);
         }
     }
 
@@ -336,48 +344,49 @@ public partial class App : Application
     {
         if (AddModPackWindow != null)
         {
-            AddModPackWindow.Activate();
+            AddModPackWindow.Window.Activate();
         }
         else
         {
-            AddModPackWindow = new();
-            AddModPackWindow.Show();
+            AddModPackWindow = new AddModPackWindow();
+            AddModPackWindow.Window.Show();
         }
     }
 
-    public static void ShowSetting(SettingWindowType type)
+    public static void ShowSetting(SettingType type)
     {
         if (SettingWindow != null)
         {
-            SettingWindow.Activate();
+            SettingWindow.Window.Activate();
         }
         else
         {
-            SettingWindow = new();
-            SettingWindow.Show();
+            SettingWindow = new SettingWindow();
+            SettingWindow.Window.Show();
         }
 
-        SettingWindow.GoTo(type);
+        (SettingWindow.Con as SettingControl)?.GoTo(type);
     }
 
     public static void ShowSkin()
     {
         if (SkinWindow != null)
         {
-            SkinWindow.Activate();
+            SkinWindow.Window.Activate();
         }
         else
         {
-            SkinWindow = new();
-            SkinWindow.Show();
+            SkinWindow = new SkinWindow();
+            SkinWindow.Window.Show();
         }
     }
 
-    public static void ShowGameEdit(GameSettingObj obj, int type = 0)
+    public static void ShowGameEdit(GameSettingObj obj, GameEditWindowType type 
+        = GameEditWindowType.Normal)
     {
         if (GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            win.Activate();
+            win.Window.Activate();
         }
         else
         {
@@ -393,12 +402,12 @@ public partial class App : Application
     {
         if (AddJavaWindow != null)
         {
-            AddJavaWindow.Activate();
+            AddJavaWindow.Window.Activate();
         }
         else
         {
-            AddJavaWindow = new();
-            AddJavaWindow.Show();
+            AddJavaWindow = new AddJavaWindow();
+            AddJavaWindow.Window.Show();
         }
     }
 
@@ -409,15 +418,15 @@ public partial class App : Application
 
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Activate();
-            value.GoFile(type1, obj1.PID);
+            value.Window.Activate();
+            (value.Con as AddControl)?.GoFile(type1, obj1.PID);
         }
         else
         {
             var win = new AddWindow();
-            win.SetGame(obj);
+            (win.Main as AddControl)?.SetGame(obj);
             win.Show();
-            win.GoFile(type1, obj1.PID);
+            (win.Main as AddControl)?.GoFile(type1, obj1.PID);
             AddWindows.Add(obj.UUID, win);
         }
     }
@@ -426,16 +435,16 @@ public partial class App : Application
     {
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Activate();
-            return value.GoSet();
+            value.Window.Activate();
+            return (value.Con as AddControl)!.GoSet();
         }
         else
         {
             var win = new AddWindow();
-            win.SetGame(obj);
+            (win.Main as AddControl)?.SetGame(obj);
             win.Show();
             AddWindows.Add(obj.UUID, win);
-            return win.GoSet();
+            return (win.Main as AddControl)!.GoSet();
         }
     }
 
@@ -443,15 +452,15 @@ public partial class App : Application
     {
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Activate();
-            value.Go(type);
+            value.Window.Activate();
+            (value.Con as AddControl)?.Go(type);
         }
         else
         {
             var win = new AddWindow();
-            win.SetGame(obj);
+            (win.Main as AddControl)?.SetGame(obj);
             win.Show();
-            win.Go(type);
+            (win.Main as AddControl)?.Go(type);
             AddWindows.Add(obj.UUID, win);
         }
     }
@@ -476,11 +485,11 @@ public partial class App : Application
     {
         if (GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            Dispatcher.UIThread.Post(win.Close);
+            Dispatcher.UIThread.Post(win.Window.Close);
         }
         if (AddWindows.TryGetValue(obj.UUID, out var win1))
         {
-            Dispatcher.UIThread.Post(win1.Close);
+            Dispatcher.UIThread.Post(win1.Window.Close);
         }
     }
 

@@ -5,111 +5,90 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    VerticalAlignment="Top"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid VerticalAlignment="Top">
-        <Rectangle
-            Name="Rectangle1"
-            Margin="-2,-3,-2,0"
-            Stroke="{setting:Colors Main}"
-            StrokeThickness="3" />
-        <Expander
-            Name="Expander1"
-            Margin="0,-78,0,0"
-            HorizontalAlignment="Stretch"
-            IsExpanded="True">
-            <Grid Margin="-1,30,-1,2" Background="{setting:Colors MotdBack}">
-                <Grid Margin="2">
-                    <Image
-                        Name="Image1"
-                        Width="64"
-                        Height="64"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
-                    <StackPanel Margin="64,0,0,0" VerticalAlignment="Center">
-                        <StackPanel
-                            Name="StackPanel1"
-                            Margin="3,0,0,0"
-                            Orientation="Horizontal" />
-                        <StackPanel
-                            Name="StackPanel2"
-                            Margin="3,0,0,0"
-                            Orientation="Horizontal" />
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="{setting:Localize ServerMotdControl.Text1}" Foreground="{setting:Colors Motd}" />
-                            <Label
-                                Name="Label2"
-                                Content="0"
-                                Foreground="{setting:Colors Motd}" />
-                            <Label Content="/" Foreground="{setting:Colors Motd}" />
-                            <Label
-                                Name="Label3"
-                                Content="0"
-                                Foreground="{setting:Colors Motd}" />
-                            <Label
-                                Margin="10,0,0,0"
-                                Content="{setting:Localize ServerMotdControl.Text2}"
-                                Foreground="{setting:Colors Motd}" />
-                            <Label
-                                Name="Label4"
-                                Content="ServerType"
-                                Foreground="{setting:Colors Motd}" />
-                            <Label
-                                Margin="10,0,0,0"
-                                Content="{setting:Localize ServerMotdControl.Text3}"
-                                Foreground="{setting:Colors Motd}" />
-                            <Label
-                                Name="Label5"
-                                Content="ServerType"
-                                Foreground="{setting:Colors Motd}" />
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
-                <Grid
-                    Name="Grid1"
-                    Background="#EEEEEE"
-                    IsVisible="False">
-                    <StackPanel VerticalAlignment="Center">
-                        <Label
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize ServerMotdControl.Text4}" />
-                        <ProgressBar
-                            Height="10"
-                            Margin="10,0,10,0"
-                            IsIndeterminate="True" />
-                    </StackPanel>
-                </Grid>
-                <Grid
-                    Name="Grid2"
-                    Background="#EEEEEE"
-                    IsVisible="False">
+    <Grid Background="{setting:Colors MotdBack}">
+        <Grid Margin="2">
+            <Image
+                Name="Image1"
+                Width="64"
+                Height="64"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
+            <StackPanel Margin="64,0,0,0" VerticalAlignment="Center">
+                <StackPanel
+                    Name="StackPanel1"
+                    Margin="3,0,0,0"
+                    Orientation="Horizontal" />
+                <StackPanel
+                    Name="StackPanel2"
+                    Margin="3,0,0,0"
+                    Orientation="Horizontal" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{setting:Localize ServerMotdControl.Text1}" Foreground="{setting:Colors Motd}" />
                     <Label
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize ServerMotdControl.Text5}" />
-                </Grid>
-
-                <Button
-                    Name="Button2"
-                    Width="80"
-                    Height="20"
-                    Margin="10"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Content="{setting:Localize Button.Refash}" />
-            </Grid>
-        </Expander>
+                        Name="Label2"
+                        Content="0"
+                        Foreground="{setting:Colors Motd}" />
+                    <Label Content="/" Foreground="{setting:Colors Motd}" />
+                    <Label
+                        Name="Label3"
+                        Content="0"
+                        Foreground="{setting:Colors Motd}" />
+                    <Label
+                        Margin="10,0,0,0"
+                        Content="{setting:Localize ServerMotdControl.Text2}"
+                        Foreground="{setting:Colors Motd}" />
+                    <Label
+                        Name="Label4"
+                        Content="ServerType"
+                        Foreground="{setting:Colors Motd}" />
+                    <Label
+                        Margin="10,0,0,0"
+                        Content="{setting:Localize ServerMotdControl.Text3}"
+                        Foreground="{setting:Colors Motd}" />
+                    <Label
+                        Name="Label5"
+                        Content="ServerType"
+                        Foreground="{setting:Colors Motd}" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid
+            Name="Grid1"
+            Background="#EEEEEE"
+            IsVisible="False">
+            <StackPanel VerticalAlignment="Center">
+                <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize ServerMotdControl.Text4}" />
+                <ProgressBar
+                    Height="10"
+                    Margin="10,0,10,0"
+                    IsIndeterminate="True" />
+            </StackPanel>
+        </Grid>
+        <Grid
+            Name="Grid2"
+            Background="#EEEEEE"
+            IsVisible="False">
+            <Label
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{setting:Localize ServerMotdControl.Text5}" />
+        </Grid>
 
         <Button
-            Name="Button1"
-            Width="20"
+            Name="Button2"
+            Width="80"
             Height="20"
-            Margin="12,10,8,10"
+            Margin="10"
             HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Content="" />
+            VerticalAlignment="Bottom"
+            Content="{setting:Localize Button.Refash}" />
     </Grid>
 </UserControl>

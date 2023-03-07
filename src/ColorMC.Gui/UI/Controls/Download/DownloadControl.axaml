@@ -1,80 +1,55 @@
-<Window
-    x:Class="ColorMC.Gui.UI.Windows.DownloadWindow"
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Download.DownloadControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
-    Title="{setting:Localize DownloadWindow.Title}"
-    Width="800"
-    Height="450"
-    MinWidth="800"
-    MinHeight="450"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    Background="Transparent"
-    ExtendClientAreaChromeHints="NoChrome"
-    ExtendClientAreaTitleBarHeightHint="-1"
-    ExtendClientAreaToDecorationsHint="True"
-    TransparencyBackgroundFallback="Transparent"
     mc:Ignorable="d">
     <Grid>
-        <views:HeadControl
-            Name="Head"
-            Title="{setting:Localize DownloadWindow.Title}"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top" />
-        <Grid Margin="0,35,0,0">
-            <Border
-                Name="Border2"
-                BorderThickness="2"
-                CornerRadius="0,0,10,10" />
-            <Image
-                Name="Image_Back"
-                Margin="3"
-                Stretch="UniformToFill" />
+        <Grid VerticalAlignment="Top">
+            <Rectangle
+                Margin="0,0,0,0"
+                Fill="{setting:Colors TranBack}"
+                StrokeThickness="3" />
+            <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                <Label Margin="5" Content="{setting:Localize DownloadWindow.Text3}" />
+                <ProgressBar
+                    Name="ProgressBar1"
+                    Width="500"
+                    Height="20"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    BorderBrush="White"
+                    BorderThickness="1"
+                    Foreground="#FF5EBDD3"
+                    ShowProgressText="True" />
+                <Label
+                    Name="Label1"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="0" />
+                <Label VerticalAlignment="Center" Content="/" />
+                <Label
+                    Name="Label2"
+                    VerticalAlignment="Center"
+                    Content="0" />
+                <Label
+                    Name="Label3"
+                    Margin="20,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="0Mb/s" />
+            </StackPanel>
+        </Grid>
 
-            <Grid VerticalAlignment="Top">
-                <Rectangle
-                    Margin="0,0,0,0"
-                    Fill="{setting:Colors TranBack}"
-                    StrokeThickness="3" />
-                <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                    <Label Margin="5" Content="{setting:Localize DownloadWindow.Text3}" />
-                    <ProgressBar
-                        Name="ProgressBar1"
-                        Width="500"
-                        Height="20"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        BorderBrush="White"
-                        BorderThickness="1"
-                        Foreground="#FF5EBDD3"
-                        ShowProgressText="True" />
-                    <Label
-                        Name="Label1"
-                        Margin="10,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="0" />
-                    <Label VerticalAlignment="Center" Content="/" />
-                    <Label
-                        Name="Label2"
-                        VerticalAlignment="Center"
-                        Content="0" />
-                    <Label
-                        Name="Label3"
-                        Margin="20,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="0Mb/s" />
-                </StackPanel>
-            </Grid>
-
+        <Grid Margin="3,30,3,3">
             <DataGrid
                 Name="DataGrid_Download"
-                Margin="3,30,3,3"
                 AutoGenerateColumns="False"
                 Background="#88ffffff"
+                CanUserResizeColumns="True"
                 CanUserSortColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn
@@ -99,7 +74,6 @@
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-
             <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
                 <Grid>
                     <Button
@@ -110,7 +84,7 @@
                     <Expander
                         Name="Expander_P"
                         Height="30"
-                        Margin="-84,0,0,0"
+                        Margin="-94,-5,0,-5"
                         HorizontalAlignment="Left"
                         Background="Transparent"
                         CornerRadius="0"
@@ -120,7 +94,7 @@
                             Name="Button_P1"
                             Width="100"
                             Height="30"
-                            Margin="6,0,0,0"
+                            Margin="16,0,0,0"
                             Content="{setting:Localize DownloadWindow.Text1}" />
                     </Expander>
                 </Grid>
@@ -133,7 +107,7 @@
                     <Expander
                         Name="Expander_S"
                         Height="30"
-                        Margin="-84,0,0,0"
+                        Margin="-94,-5,0,-5"
                         HorizontalAlignment="Left"
                         Background="Transparent"
                         CornerRadius="0"
@@ -148,15 +122,6 @@
                     </Expander>
                 </Grid>
             </StackPanel>
-
-            <views:Info4Control Name="Info" IsVisible="False" />
-            <views:Info2Control Name="Info2" IsVisible="False" />
-
-            <Border
-                Name="Border1"
-                BorderBrush="{setting:Colors Main}"
-                BorderThickness="3"
-                CornerRadius="0,0,10,10" />
         </Grid>
     </Grid>
-</Window>
+</UserControl>

@@ -43,7 +43,7 @@ public partial class Tab3Control : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         var name = TextBox_Name.Text;
         var local = TextBox_Local.Text;
 
@@ -78,7 +78,7 @@ public partial class Tab3Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
+        var window = (VisualRoot as Window)!;
         var file = await BaseBinding.OpFile(window, FileType.Java);
 
         if (file != null)
@@ -94,8 +94,8 @@ public partial class Tab3Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as HelloWindow)!;
-        window.Next();
+        var window = (VisualRoot as IBaseWindow)!;
+        (window.Con as HelloControl)?.Next();
     }
 
     private void Button_Refash_Click(object? sender, RoutedEventArgs e)

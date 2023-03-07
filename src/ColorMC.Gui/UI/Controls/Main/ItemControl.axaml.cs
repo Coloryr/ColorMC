@@ -14,7 +14,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class ItemControl : UserControl
 {
-    private MainWindow Window;
+    private MainControl Window;
     private LoginObj? Obj1;
     private GameSettingObj? Obj;
     private bool Launch;
@@ -84,14 +84,15 @@ public partial class ItemControl : UserControl
 
     private void Button_Setting_Click(object? sender, RoutedEventArgs e)
     {
-        App.ShowSetting(SettingWindowType.Normal);
+        App.ShowSetting(SettingType.Normal);
     }
 
     private void Button_Add1_Click(object? sender, RoutedEventArgs e)
     {
         if (BaseBinding.IsDownload)
         {
-            Window.Info.Show(App.GetLanguage("ainWindow.Control.Info3"));
+            var window = (VisualRoot as IBaseWindow)!;
+            window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
             return;
         }
         App.ShowAddGame();
@@ -142,7 +143,7 @@ public partial class ItemControl : UserControl
         Launch = launch;
     }
 
-    public void SetWindow(MainWindow window)
+    public void SetWindow(MainControl window)
     {
         Window = window;
     }

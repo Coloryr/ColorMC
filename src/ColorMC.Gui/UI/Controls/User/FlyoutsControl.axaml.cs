@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.User;
@@ -11,7 +10,7 @@ public partial class FlyoutsControl : UserControl
 {
     private UserDisplayObj Obj;
     private FlyoutBase FlyoutBase;
-    private UserWindow Win;
+    private UsersControl Win;
     public FlyoutsControl()
     {
         InitializeComponent();
@@ -41,7 +40,7 @@ public partial class FlyoutsControl : UserControl
         Win.Load();
     }
 
-    public void Set(FlyoutBase fb, UserDisplayObj obj, UserWindow win)
+    public void Set(FlyoutBase fb, UserDisplayObj obj, UsersControl win)
     {
         Win = win;
         Obj = obj;
@@ -52,8 +51,8 @@ public partial class FlyoutsControl : UserControl
 public class UserFlyout : FlyoutBase
 {
     private UserDisplayObj Obj;
-    private UserWindow Win;
-    public UserFlyout(UserWindow win, UserDisplayObj obj)
+    private UsersControl Win;
+    public UserFlyout(UsersControl win, UserDisplayObj obj)
     {
         Win = win;
         Obj = obj;

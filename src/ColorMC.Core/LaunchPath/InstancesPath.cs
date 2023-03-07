@@ -72,6 +72,9 @@ public static class InstancesPath
         }
     }
 
+    public static bool IsNotGame
+        => InstallGames.Count == 0;
+
     private static void AddToGroup(GameSettingObj obj)
     {
         while (string.IsNullOrWhiteSpace(obj.UUID)

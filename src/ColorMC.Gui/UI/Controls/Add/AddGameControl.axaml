@@ -1,0 +1,178 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Add.AddGameControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    DragDrop.AllowDrop="True"
+    mc:Ignorable="d">
+    <Grid>
+        <StackPanel
+            Margin="3"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Background="#88ffffff">
+            <Label Margin="5" Content="{setting:Localize AddGameWindow.Text1}" />
+            <TextBox
+                Name="TextBox_Input1"
+                Margin="5"
+                Classes="input1"
+                Watermark="{setting:Localize AddGameWindow.Text2}" />
+
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddGameWindow.Text3}" />
+
+            <StackPanel Orientation="Horizontal">
+
+                <ComboBox
+                    Name="ComboBox_GameVersion"
+                    Width="250"
+                    Margin="5,0,0,0" />
+                <CheckBox
+                    Name="CheckBox_Release"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Content="{setting:Localize AddGameWindow.Text6}"
+                    IsChecked="True" />
+                <CheckBox
+                    Name="CheckBox_Snapshot"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Content="{setting:Localize AddGameWindow.Text7}" />
+                <CheckBox
+                    Name="CheckBox_Other"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Content="{setting:Localize AddGameWindow.Text8}" />
+
+                <Button
+                    Name="Button1"
+                    Width="100"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    Content="{setting:Localize GameEditWindow.Tab1.Text2}" />
+            </StackPanel>
+
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddGameWindow.Text4}" />
+
+            <StackPanel Orientation="Horizontal">
+                <ComboBox
+                    Name="ComboBox_LoaderVersion"
+                    Width="250"
+                    Margin="5,0,0,0"
+                    IsEnabled="False" />
+                <CheckBox
+                    Name="CheckBox_Forge"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Content="Forge"
+                    IsEnabled="False" />
+                <CheckBox
+                    Name="CheckBox_Fabric"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Content="Fabric"
+                    IsEnabled="False" />
+                <CheckBox
+                    Name="CheckBox_Quilt"
+                    Width="80"
+                    Margin="10,0,0,0"
+                    Content="Quilt"
+                    IsEnabled="False" />
+
+                <Button
+                    Name="Button2"
+                    Width="100"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    Content="{setting:Localize AddGameWindow.Tab1.Text1}" />
+                <Button
+                    Name="Button3"
+                    Width="100"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    Content="{setting:Localize AddGameWindow.Tab1.Text2}" />
+            </StackPanel>
+
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddGameWindow.Text5}" />
+
+            <StackPanel Orientation="Horizontal">
+
+                <ComboBox
+                    Name="ComboBox_Group"
+                    Width="250"
+                    Margin="5,0,0,0" />
+
+                <Button
+                    Name="Button_AddGroup"
+                    Width="100"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddGameWindow.Text14}" />
+            </StackPanel>
+
+            <Label
+                Margin="5"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddGameWindow.Text15}" />
+
+            <StackPanel Orientation="Horizontal">
+                <ComboBox
+                    Name="ComboBox4"
+                    Width="250"
+                    Margin="5,0,0,0" />
+
+                <Button
+                    Name="Button4"
+                    Width="100"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddGameWindow.Text15}" />
+            </StackPanel>
+
+        </StackPanel>
+
+        <Button
+            Name="Button_Add5"
+            Width="190"
+            Height="25"
+            Margin="7"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Content="{setting:Localize AddGameWindow.Text13}" />
+
+        <Button
+            Name="Button_Add"
+            Width="80"
+            Height="25"
+            Margin="7"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Content="{setting:Localize Button.Add}" />
+
+        <Grid
+            Name="Grid2"
+            Background="#EEEEEEEE"
+            IsVisible="False">
+            <Label
+                Name="Label1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="test"
+                FontSize="30" />
+        </Grid>
+    </Grid>
+</UserControl>

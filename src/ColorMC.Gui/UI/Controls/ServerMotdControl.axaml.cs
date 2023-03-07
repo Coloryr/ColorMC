@@ -24,36 +24,12 @@ public partial class ServerMotdControl : UserControl
     {
         InitializeComponent();
 
-        this.LayoutUpdated += ServerMotdControl_LayoutUpdated;
-
-        Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
-
-        Expander1.ContentTransition = App.CrossFade300;
-        Button1.Content = "↑";
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
         Update();
-    }
-
-    private void Button1_Click(object? sender, RoutedEventArgs e)
-    {
-        if (Expander1.IsExpanded)
-        {
-            Button1.Content = "↓";
-        }
-        else
-        {
-            Button1.Content = "↑";
-        }
-        Expander1.IsExpanded = !Expander1.IsExpanded;
-    }
-
-    private void ServerMotdControl_LayoutUpdated(object? sender, EventArgs e)
-    {
-        Expander1.MakePadingNull();
     }
 
     public void Load(string ip)
