@@ -90,6 +90,7 @@ public class ColorMCGui
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();
+        //opt.UseWindowsUIComposition = false;
         if (config.UseWindowsUIComposition != null)
         {
             opt.UseWindowsUIComposition = config.UseWindowsUIComposition == true;

@@ -1,8 +1,5 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Platform;
-using Avalonia.VisualTree;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
@@ -36,7 +33,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             SystemDecorations = SystemDecorations.BorderOnly;
             var rectangle = Border1;
             var window = this;
-            Border1.PointerPressed += (sender, e)=> 
+            Border1.PointerPressed += (sender, e) =>
             {
                 if (e.GetCurrentPoint(rectangle).Properties.IsLeftButtonPressed)
                 {
