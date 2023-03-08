@@ -25,7 +25,7 @@ public partial class DownloadControl : UserControl, IUserControl
     private long Count;
     private Timer Timer;
 
-    public UserControl Con => this;
+    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
     public DownloadControl()
     {
@@ -123,6 +123,8 @@ public partial class DownloadControl : UserControl, IUserControl
         DataGrid_Download.MakeTran();
         Expander_P.MakePadingNull();
         Expander_S.MakePadingNull();
+
+        Window.SetTitle(App.GetLanguage("DownloadWindow.Title"));
     }
 
     public void Closed()
@@ -130,6 +132,8 @@ public partial class DownloadControl : UserControl, IUserControl
         Timer.Dispose();
 
         ColorMCCore.DownloadItemStateUpdate = null;
+
+        App.DownloadWindow = null;
     }
 
     public async void Closing(CancelEventArgs e)
@@ -202,15 +206,5 @@ public partial class DownloadControl : UserControl, IUserControl
         ProgressBar1.Value = (double)data.Item2 / data.Item1 * 100;
         Label2.Content = data.Item1;
         Label1.Content = data.Item2;
-    }
-
-    public void Update()
-    {
-
-    }
-
-    public void Closing()
-    {
-
     }
 }

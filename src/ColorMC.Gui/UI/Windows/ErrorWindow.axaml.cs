@@ -7,8 +7,8 @@ public partial class ErrorWindow : SelfBaseWindow
 {
     public ErrorWindow()
     {
-        Main = new ErrorControl();
-        MainControl.Children.Add(Main.Con);
-        SetTitle("ErrorWindow.Title");
+        var con = new ErrorControl();
+        Main = con;
+        MainControl.Children.Add(con);
     }
 }

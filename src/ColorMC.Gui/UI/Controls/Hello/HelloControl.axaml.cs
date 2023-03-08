@@ -22,7 +22,7 @@ public partial class HelloControl : UserControl, IUserControl
     private int now;
     private CancellationTokenSource cancel = new();
 
-    public UserControl Con => this;
+    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
     public HelloControl()
     {
@@ -33,6 +33,11 @@ public partial class HelloControl : UserControl, IUserControl
         Tab1.Children.Add(content2);
 
         content1.Content = tab1;
+    }
+
+    public void Opened()
+    {
+        Window.SetTitle(App.GetLanguage("HelloWindow.Title"));
     }
 
     public void Closed()
@@ -103,21 +108,6 @@ public partial class HelloControl : UserControl, IUserControl
     public void Next()
     {
         Tabs.SelectedIndex++;
-    }
-
-    public void Opened()
-    {
-
-    }
-
-    public void Update()
-    {
-
-    }
-
-    public void Closing()
-    {
-
     }
 
     public void Done()

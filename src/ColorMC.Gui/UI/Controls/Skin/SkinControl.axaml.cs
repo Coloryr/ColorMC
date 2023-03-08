@@ -14,8 +14,7 @@ namespace ColorMC.Gui.UI.Controls.Skin;
 
 public partial class SkinControl : UserControl, IUserControl
 {
-    public UserControl Con => this;
-
+    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
     public SkinControl()
     {
         InitializeComponent();
@@ -51,6 +50,8 @@ public partial class SkinControl : UserControl, IUserControl
 
         Skin.Init();
         Text1.Text = Skin.Info;
+
+        Window.SetTitle(App.GetLanguage("SkinWindow.Title"));
     }
 
     public void Update()
@@ -63,6 +64,8 @@ public partial class SkinControl : UserControl, IUserControl
         App.SkinLoad -= App_SkinLoad;
 
         Skin.Close();
+
+        App.SkinWindow = null;
     }
 
     private void CheckBox3_Click(object? sender, RoutedEventArgs e)
@@ -266,10 +269,5 @@ public partial class SkinControl : UserControl, IUserControl
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         await UserBinding.LoadSkin();
-    }
-
-    public void Closing()
-    {
-
     }
 }

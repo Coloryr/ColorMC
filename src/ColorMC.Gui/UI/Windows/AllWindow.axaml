@@ -1,0 +1,96 @@
+<Window
+    x:Class="ColorMC.Gui.UI.Windows.AllWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.User"
+    Title="Title"
+    Width="800"
+    Height="450"
+    MinWidth="800"
+    MinHeight="450"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="Transparent"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    ExtendClientAreaToDecorationsHint="True"
+    FontFamily="{setting:Font}"
+    TransparencyBackgroundFallback="Transparent"
+    mc:Ignorable="d">
+    <Grid>
+        <views:HeadControl
+            Name="Head"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top" />
+        <Grid Margin="0,35,0,0">
+            <Border
+                Name="Border2"
+                BorderThickness="2"
+                CornerRadius="0,0,10,10" />
+            <Image
+                Name="Image_Back"
+                Margin="3"
+                Stretch="UniformToFill" />
+
+            <Grid Name="MainControl" />
+
+            <Button
+                Name="Button1"
+                Width="25"
+                Height="25"
+                Margin="0,-30,160,5"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Content="↑" />
+
+            <Grid Name="MainDialog" />
+
+            <Button
+                Name="Button2"
+                Width="25"
+                Height="25"
+                Margin="0,-30,120,5"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Content="↓" />
+
+            <Expander
+                Name="Expander1"
+                Margin="0,0,0,-50"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom"
+                ExpandDirection="Up">
+                <WrapPanel Name="WrapPanel1" Margin="0,0,0,50" />
+            </Expander>
+
+            <views:Info3Control Name="Info3" IsVisible="False" />
+            <views:Info1Control Name="Info1" IsVisible="False" />
+            <views:Info4Control Name="Info" IsVisible="False" />
+            <views:Info6Control Name="Info6" IsVisible="False" />
+            <views:Info5Control Name="Info5" IsVisible="False" />
+            <views:Info2Control Name="Info2" />
+
+            <Grid
+                Name="Grid2"
+                Background="#EEEEEEEE"
+                IsVisible="False">
+                <Label
+                    Name="Label1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="test"
+                    FontSize="30" />
+            </Grid>
+
+            <Border
+                Name="Border1"
+                BorderBrush="{setting:Colors Main}"
+                BorderThickness="3"
+                CornerRadius="0,0,10,10" />
+        </Grid>
+    </Grid>
+</Window>

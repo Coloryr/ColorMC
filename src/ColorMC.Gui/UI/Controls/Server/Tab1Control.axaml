@@ -1,0 +1,57 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Server.Tab1Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <StackPanel Margin="5">
+            <Label Content="基础网址" />
+            <TextBox
+                Name="TextBox1"
+                Margin="0,0,0,5"
+                Classes="input1"
+                Watermark="自动更新拉取资源的网址" />
+            <Label Content="版本号" />
+            <TextBox
+                Name="TextBox2"
+                Margin="0,0,0,5"
+                Classes="input1"
+                Watermark="版本号" />
+            <Label Content="UI文件" />
+            <Label Content="更新说明" />
+            <TextBox
+                Name="TextBox3"
+                Height="60"
+                Margin="0,0,0,5"
+                AcceptsReturn="True"
+                Classes="input2"
+                Watermark="更新说明" />
+            <Label Content="UI文件" />
+            <TextBox
+                Name="TextBox4"
+                Margin="0,0,0,5"
+                Classes="input1"
+                Watermark="自定义UI的文件" />
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button
+                    Name="Button1"
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize Button.Select}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox
+                    Name="CheckBox1"
+                    Margin="0,0,5,0"
+                    Content="锁定Mod" />
+                <CheckBox Name="CheckBox2" Content="强制更新" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

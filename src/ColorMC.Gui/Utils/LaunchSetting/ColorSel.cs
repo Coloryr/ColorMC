@@ -12,6 +12,7 @@ public class ColorSel : INotifyPropertyChanged
 {
     public static readonly IBrush AppBackColor = Brush.Parse("#FFFFFFFF");
     public static readonly IBrush AppBackColor1 = Brush.Parse("#11FFFFFF");
+    public static readonly IBrush AppBackColor2 = Brush.Parse("#EEEEEEEE");
 
     public const string MainColorStr = "#FF5ABED6";
     public const string BackColorStr = "#FFF4F4F5";

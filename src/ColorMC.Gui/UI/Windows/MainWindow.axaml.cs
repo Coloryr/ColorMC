@@ -6,8 +6,8 @@ public class MainWindow : SelfBaseWindow
 {
     public MainWindow()
     {
-        Main = new MainControl();
-        MainControl.Children.Add(Main.Con);
-        SetTitle("MainWindow.Title");
+        var con = new MainControl();
+        Main = con;
+        MainControl.Children.Add(con);
     }
 }

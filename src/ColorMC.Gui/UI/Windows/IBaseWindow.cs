@@ -14,4 +14,5 @@ public interface IBaseWindow
     public HeadControl Head { get; }
     public Window Window { get; }
     public UserControl Con { get; }
+    public void SetTitle(string data);
 }

@@ -11,6 +11,17 @@
     <Grid>
         <ScrollViewer Margin="5" HorizontalScrollBarVisibility="Visible">
             <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        Name="CheckBox5"
+                        VerticalAlignment="Center"
+                        Content="单窗口模式" />
+                    <Label
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="切换后需要重启" />
+                </StackPanel>
+
                 <!--  语言  -->
 
                 <StackPanel Orientation="Horizontal">

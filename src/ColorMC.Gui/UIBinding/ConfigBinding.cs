@@ -6,6 +6,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -149,7 +150,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom = obj;
         GuiConfigUtils.Save();
 
-        (App.MainWindow?.Con as MainControl)?.MotdLoad();
+        (App.MainWindow as MainControl)?.MotdLoad();
 
         ColorSel.Instance.Load();
     }
@@ -161,7 +162,7 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
 
-        (App.MainWindow?.Con as MainControl)?.Load();
+        (App.MainWindow as MainControl)?.Load();
     }
 
     public static void SetUIFile(string text)
@@ -206,6 +207,13 @@ public static class ConfigBinding
     public static void SetLaunchCloseConfig(bool value)
     {
         GuiConfigUtils.Config.CloseBeforeLaunch = value;
+
+        GuiConfigUtils.Save();
+    }
+
+    public static void SetWindowMode(bool value)
+    {
+        GuiConfigUtils.Config.WindowMode = value;
 
         GuiConfigUtils.Save();
     }

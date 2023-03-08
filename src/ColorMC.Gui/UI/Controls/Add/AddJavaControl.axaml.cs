@@ -19,7 +19,7 @@ public partial class AddJavaControl : UserControl, IUserControl
     private readonly ObservableCollection<JavaDownloadDisplayObj> List = new();
     private bool load = true;
 
-    public UserControl Con => this;
+    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
     public AddJavaControl()
     {
@@ -47,6 +47,16 @@ public partial class AddJavaControl : UserControl, IUserControl
 
         Switch();
         Button1_Click(null, null);
+    }
+
+    public void Opened()
+    {
+        Window.SetTitle(App.GetLanguage("AddJavaWindow.Title"));
+    }
+
+    public void Closed()
+    {
+        App.AddJavaWindow = null;
     }
 
     private void JavaUnzip()
@@ -198,25 +208,5 @@ public partial class AddJavaControl : UserControl, IUserControl
         ComboBox3.SelectedIndex = 0;
         ComboBox2.SelectedIndex = 0;
         ComboBox4.SelectedIndex = 0;
-    }
-
-    public void Opened()
-    {
-
-    }
-
-    public void Closed()
-    {
-
-    }
-
-    public void Update()
-    {
-
-    }
-
-    public void Closing()
-    {
-
     }
 }

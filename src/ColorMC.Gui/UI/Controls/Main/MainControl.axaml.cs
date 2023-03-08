@@ -27,7 +27,7 @@ public partial class MainControl : UserControl, IUserControl
     private bool first = true;
     private LaunchState Last;
 
-    public UserControl Con => this;
+    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
     public MainControl()
     {
@@ -225,6 +225,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public void Opened()
     {
+        Window.SetTitle(App.GetLanguage("MainWindow.Title"));
 #if !DEBUG
         if (ConfigBinding.GetAllConfig().Item1?.Http?.CheckUpdate == true)
         {
@@ -233,6 +234,8 @@ public partial class MainControl : UserControl, IUserControl
 #endif
 
         MotdLoad();
+
+
     }
 
     public void MotdLoad()
@@ -624,15 +627,5 @@ public partial class MainControl : UserControl, IUserControl
         {
             window.Info2.Show(App.GetLanguage("MainWindow.Info25"));
         }
-    }
-
-    public void Update()
-    {
-
-    }
-
-    public void Closing()
-    {
-
     }
 }

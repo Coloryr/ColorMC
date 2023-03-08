@@ -6,7 +6,8 @@ public partial class AddModPackWindow : SelfBaseWindow
 {
     public AddModPackWindow()
     {
-        Main = new AddModPackControl();
-        SetTitle("AddModPackWindow.Title");
+        var con = new AddModPackControl();
+        Main = con;
+        MainControl.Children.Add(con);
     }
 }

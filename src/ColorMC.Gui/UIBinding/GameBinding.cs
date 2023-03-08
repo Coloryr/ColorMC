@@ -14,11 +14,13 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Windows;
 using DynamicData;
+using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -587,7 +589,7 @@ public static class GameBinding
 
         if (UserBinding.IsLock(login))
         {
-            var res = await App.MainWindow!.Info.ShowWait(App.GetLanguage("GameBinding.Info1"));
+            var res = await App.MainWindow!.Window.Info.ShowWait(App.GetLanguage("GameBinding.Info1"));
             if (!res)
                 return (false, App.GetLanguage("GameBinding.Error3"));
         }
@@ -608,7 +610,7 @@ public static class GameBinding
     public static void MoveGameGroup(GameSettingObj obj, string? now)
     {
         obj.MoveGameGroup(now);
-        (App.MainWindow?.Con as MainControl)?.Load();
+        (App.MainWindow as MainControl)?.Load();
     }
 
     public static async Task<bool> ReloadVersion()
@@ -972,8 +974,8 @@ public static class GameBinding
         App.CloseGameWindow(obj);
         await obj.Remove();
 
-        (App.MainWindow?.Con as MainControl)?.IsDelete();
-        (App.MainWindow?.Con as MainControl)?.Load();
+        (App.MainWindow as MainControl)?.IsDelete();
+        (App.MainWindow as MainControl)?.Load();
     }
 
     public static GameSettingObj? GetGame(string? name)
@@ -1762,5 +1764,21 @@ public static class GameBinding
         });
 
         return ok;
+    }
+
+    public static ServerPackObj? GetServerPack(GameSettingObj obj)
+    {
+        var file = obj.GetServerPackFile();
+        if (!File.Exists(file))
+        {
+            return null;
+        }
+        var data = File.ReadAllText(file);
+        return JsonConvert.DeserializeObject<ServerPackObj>(data);
+    }
+
+    public static void SaveServerPack(GameSettingObj obj, ServerPackObj obj1)
+    {
+        obj.SaveServerPack(obj1);
     }
 }

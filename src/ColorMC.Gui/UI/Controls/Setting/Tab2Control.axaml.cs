@@ -31,6 +31,7 @@ public partial class Tab2Control : UserControl
         CheckBox2.Click += CheckBox2_Click;
         CheckBox3.Click += CheckBox3_Click;
         CheckBox4.Click += CheckBox4_Click;
+        CheckBox5.Click += CheckBox5_Click;
 
         ColorPicker1.ColorChanged += ColorPicker_ColorChanged;
         ColorPicker2.ColorChanged += ColorPicker_ColorChanged;
@@ -43,6 +44,11 @@ public partial class Tab2Control : UserControl
         ComboBox3.Items = BaseBinding.GetFontList();
 
         Input1.PropertyChanged += Input1_PropertyChanged;
+    }
+
+    private void CheckBox5_Click(object? sender, RoutedEventArgs e)
+    {
+        ConfigBinding.SetWindowMode(CheckBox5.IsChecked == true);
     }
 
     private void Input1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -214,6 +220,7 @@ public partial class Tab2Control : UserControl
             CheckBox2.IsChecked = config.Item2.RGB;
             CheckBox3.IsChecked = config.Item2.FontDefault;
             CheckBox4.IsChecked = config.Item2.CornerRadius;
+            CheckBox5.IsChecked = config.Item2.WindowMode;
             if (config.Item2.WindowTran)
             {
                 ComboBox1.IsEnabled = true;
