@@ -6,7 +6,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -217,7 +216,7 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
     }
-    
+
     public static bool WindowMode()
     {
         return GuiConfigUtils.Config.WindowMode;

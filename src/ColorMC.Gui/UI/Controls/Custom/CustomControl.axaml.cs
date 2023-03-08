@@ -1,21 +1,21 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
+using Avalonia.Layout;
+using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using Avalonia.Layout;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using ColorMC.Core.Utils;
 using System.Threading.Tasks;
-using Avalonia.Media;
-using ColorMC.Gui.UI.Controls.Main;
-using System;
-using Avalonia;
-using Avalonia.Data;
 
 namespace ColorMC.Gui.UI.Controls.Custom;
 
@@ -66,15 +66,6 @@ public partial class CustomControl : UserControl, IUserControl
 
         App.UserEdit += App_UserEdit;
         App.SkinLoad += App_SkinLoad;
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.Add(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).Show();
-        }
     }
 
     private void App_SkinLoad()

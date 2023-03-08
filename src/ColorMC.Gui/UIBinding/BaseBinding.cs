@@ -11,7 +11,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.Utils.LaunchSetting;
 using SixLabors.ImageSharp;

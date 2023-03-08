@@ -2,42 +2,26 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
-using Avalonia.Input;
 using Avalonia.Interactivity;
-using ColorMC.Core;
+using Avalonia.Threading;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Download;
-using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
-using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class AllWindow : Window, IBaseWindow
+public partial class AllControl : UserControl, IUserControl, IBaseWindow
 {
-    Info3Control IBaseWindow.Info3 => Info3;
-    Info1Control IBaseWindow.Info1 => Info1;
-    Info4Control IBaseWindow.Info => Info;
-    Info2Control IBaseWindow.Info2 => Info2;
-    Info6Control IBaseWindow.Info6 => Info6;
-    HeadControl IBaseWindow.Head => Head;
-    Info5Control IBaseWindow.Info5 => Info5;
-    UserControl IBaseWindow.Con => Now;
-
     private UserControl BaseControl;
     private UserControl Now;
     private AllFlyout AllFlyout1;
@@ -48,58 +32,29 @@ public partial class AllWindow : Window, IBaseWindow
     private readonly Dictionary<Grid, Button> Switchs = new();
     private readonly List<Button> List = new();
 
-    public AllWindow()
+    public IBaseWindow Window => this;
+
+    Info3Control IBaseWindow.Info3 => Info3;
+
+    Info1Control IBaseWindow.Info1 => Info1;
+
+    Info4Control IBaseWindow.Info => Info;
+
+    Info2Control IBaseWindow.Info2 => Info2;
+
+    Info5Control IBaseWindow.Info5 => Info5;
+
+    Info6Control IBaseWindow.Info6 => Info6;
+
+    HeadControl IBaseWindow.Head => (VisualRoot as IBaseWindow)?.Head;
+
+    public UserControl Con => Now;
+
+    public AllControl()
     {
         InitializeComponent();
 
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            SystemDecorations = SystemDecorations.BorderOnly;
-            var rectangle = Border1;
-            var window = this;
-            Border1.PointerPressed += (sender, e) =>
-            {
-                if (e.GetCurrentPoint(rectangle).Properties.IsLeftButtonPressed)
-                {
-                    var point = e.GetPosition(rectangle);
-                    var arg1 = point.X / rectangle.Bounds.Width;
-                    var arg2 = point.Y / rectangle.Bounds.Height;
-                    if (arg1 > 0.95)
-                    {
-                        if (arg2 > 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.SouthEast, e);
-                        }
-                        else if (arg2 <= 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.East, e);
-                        }
-                    }
-                    else if (arg1 < 0.05)
-                    {
-                        if (arg2 <= 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.West, e);
-                        }
-                        else if (arg2 > 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.SouthWest, e);
-                        }
-                    }
-                    else if (arg2 > 0.95)
-                    {
-                        window.BeginResizeDrag(WindowEdge.South, e);
-                    }
-                }
-            };
-        }
-
-        if (SystemInfo.Os == OsType.MacOS)
-        {
-            KeyDown += Window_KeyDown;
-        }
-
-        Icon = App.Icon;
+        AllFlyout1 = new(List);
 
         if (App.BackBitmap != null)
         {
@@ -108,11 +63,23 @@ public partial class AllWindow : Window, IBaseWindow
 
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
-        Closed += UserWindow_Closed;
-        Opened += UserWindow_Opened;
+
+        if (SystemInfo.Os != OsType.Android)
+        {
+            new SingleWindow(this).Show();
+            Head.Max = false;
+        }
 
         App.PicUpdate += Update;
+    }
 
+    public void Closed()
+    {
+        MainControl.Children.Clear();
+    }
+
+    public void Opened()
+    {
         Update();
     }
 
@@ -182,35 +149,16 @@ public partial class AllWindow : Window, IBaseWindow
         }
     }
 
-    private void Window_KeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.KeyModifiers == KeyModifiers.Control)
-        {
-            switch (e.Key)
-            {
-                case Key.OemComma:
-                    App.ShowSetting(SettingType.Normal);
-                    break;
-                case Key.Q:
-                    App.Close();
-                    break;
-                case Key.M:
-                    WindowState = WindowState.Minimized;
-                    break;
-                case Key.W:
-                    Close();
-                    break;
-            }
-        }
-    }
-
     public void Add(UserControl con)
     {
         if (BaseControl == null)
         {
             BaseControl = con;
             MainControl.Children.Add(BaseControl);
-            (BaseControl as IUserControl)?.Opened();
+            Dispatcher.UIThread.Post(() =>
+            {
+                (BaseControl as IUserControl)?.Opened();
+            });
         }
         else
         {
@@ -220,7 +168,7 @@ public partial class AllWindow : Window, IBaseWindow
                 Height = 25,
                 Width = 100
             };
-            button.Click += (a, e)=> 
+            button.Click += (a, e) =>
             {
                 AllFlyout1.Hide();
                 Active(con);
@@ -237,7 +185,10 @@ public partial class AllWindow : Window, IBaseWindow
             Cons1.Add(grid, con);
             MainControl.Children.Add(grid);
             App.CrossFade300.Start(null, grid, CancellationToken.None);
-            (con as IUserControl)?.Opened();
+            Dispatcher.UIThread.Post(() =>
+            {
+                (con as IUserControl)?.Opened();
+            });
         }
 
         Up();
@@ -328,9 +279,9 @@ public partial class AllWindow : Window, IBaseWindow
         {
             Cons1.Remove(item);
             MainControl.Children.Remove(item);
-            if(Switchs.Remove(item, out var item1))
+            if (Switchs.Remove(item, out var item1))
             {
-                List.Remove(item1);    
+                List.Remove(item1);
             }
         }
 
@@ -356,25 +307,18 @@ public partial class AllWindow : Window, IBaseWindow
         IsDialog = true;
     }
 
-    public void SetTitle(string temp)
-    {
-        Head.Title = Title = temp;
-    }
-
-    private void UserWindow_Opened(object? sender, EventArgs e)
-    {
-        AllFlyout1 = new(List);
-    }
-
-    private void UserWindow_Closed(object? sender, EventArgs e)
-    { 
-        MainControl.Children.Clear();
-
-        App.Close();
-    }
-
     private void Update()
     {
-        App.Update(this, Image_Back, Border1, Border2);
+        App.Update(null, Image_Back, Border1, Border2);
+    }
+
+    public void SetTitle(string data)
+    {
+        if (SystemInfo.Os != OsType.Android)
+        {
+            (VisualRoot as SingleWindow)?.SetTitle(data);
+        }
+
+        Head.Title = data;
     }
 }

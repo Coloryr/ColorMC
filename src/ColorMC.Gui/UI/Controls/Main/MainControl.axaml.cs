@@ -47,15 +47,6 @@ public partial class MainControl : UserControl, IUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         ItemInfo.SetWindow(this);
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.Add(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).Show();
-        }
     }
 
     private void Grid3_PointerPressed(object? sender, PointerEventArgs e)

@@ -46,15 +46,6 @@ public partial class AddJavaControl : UserControl, IUserControl
         Button1.Click += Button1_Click;
 
         Switch();
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.Add(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).Show();
-        }
     }
 
     public void Opened()

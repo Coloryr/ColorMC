@@ -1,0 +1,25 @@
+<Window
+    x:Class="ColorMC.Gui.UI.Windows.SingleWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Windows"
+    Title="Title"
+    Width="800"
+    Height="450"
+    MinWidth="800"
+    MinHeight="450"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="Transparent"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    ExtendClientAreaToDecorationsHint="True"
+    FontFamily="{setting:Font}"
+    TransparencyBackgroundFallback="Transparent"
+    mc:Ignorable="d">
+    <Grid Name="Main" />
+</Window>

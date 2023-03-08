@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
@@ -39,15 +38,6 @@ public partial class SettingControl : UserControl, IUserControl
         Tab1.Children.Add(content2);
 
         content1.Content = tab2;
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.Add(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).Show();
-        }
     }
 
     public void Closed()

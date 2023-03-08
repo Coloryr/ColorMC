@@ -1,10 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
-using System;
 
 namespace ColorMC.Gui.UI.Controls.Server;
 
@@ -26,8 +23,8 @@ public partial class Tab1Control : UserControl
             return;
 
         if (e.Property.Name == "Text")
-        { 
-            
+        {
+
         }
     }
 

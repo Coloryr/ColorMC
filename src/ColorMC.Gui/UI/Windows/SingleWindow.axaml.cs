@@ -6,37 +6,49 @@ using ColorMC.Gui.UI.Controls;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;
-
-public partial class SelfBaseWindow : Window, IBaseWindow
+public partial class SingleWindow : Window, IBaseWindow
 {
-    Info3Control IBaseWindow.Info3 => Info3;
-    Info1Control IBaseWindow.Info1 => Info1;
-    Info4Control IBaseWindow.Info => Info;
-    Info2Control IBaseWindow.Info2 => Info2;
-    Info6Control IBaseWindow.Info6 => Info6;
-    HeadControl IBaseWindow.Head => Head;
-    Info5Control IBaseWindow.Info5 => Info5;
-    UserControl IBaseWindow.Con => (Main as UserControl)!;
+    public AllControl window1;
 
-    public IUserControl? Main;
+    public Info3Control Info3 => window1.Info3;
 
-    public SelfBaseWindow() : this(null)
+    public Info1Control Info1 => window1.Info1;
+
+    public Info4Control Info => window1.Info;
+
+    public Info2Control Info2 => window1.Info2;
+
+    public Info5Control Info5 => window1.Info5;
+
+    public Info6Control Info6 => window1.Info6;
+
+    HeadControl IBaseWindow.Head => window1.Head;
+
+    public UserControl Con => window1.Con;
+
+    public SingleWindow(AllControl window) : this()
     {
+        window1 = window;
 
+        Main.Children.Add(window);
     }
-
-    public SelfBaseWindow(IUserControl? con)
+    public SingleWindow()
     {
-        Main = con;
-
         InitializeComponent();
 
-        if (SystemInfo.Os == OsType.Linux)
+        Icon = App.Icon;
+
+        if (SystemInfo.Os == OsType.MacOS)
+        {
+            KeyDown += Window_KeyDown;
+        }
+
+        if (window1 != null && SystemInfo.Os == OsType.Linux)
         {
             SystemDecorations = SystemDecorations.BorderOnly;
-            var rectangle = Border1;
+            var rectangle = window1.Border1;
             var window = this;
-            Border1.PointerPressed += (sender, e) =>
+            window1.Border1.PointerPressed += (sender, e) =>
             {
                 if (e.GetCurrentPoint(rectangle).Properties.IsLeftButtonPressed)
                 {
@@ -73,76 +85,16 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             };
         }
 
-        if (SystemInfo.Os == OsType.MacOS)
-        {
-            KeyDown += Window_KeyDown;
-        }
-
-        Icon = App.Icon;
-
-        if (App.BackBitmap != null)
-        {
-            Image_Back.Source = App.BackBitmap;
-        }
-
-        if (Main is UserControl con1)
-        {
-            MainControl.Children.Add(con1);
-        }
-
         Closed += UserWindow_Closed;
         Opened += UserWindow_Opened;
-        Activated += Window_Activated;
 
         App.PicUpdate += Update;
-
-        FindGoodPos();
 
         Update();
     }
 
-    public void SetTitle(string temp)
-    {
-        Head.Title = Title = temp;
-    }
-
-    private void FindGoodPos()
-    {
-        var basewindow = App.LastWindow;
-
-        if (basewindow == null || basewindow.PlatformImpl == null)
-            return;
-
-        var pos = basewindow.Position;
-        var sec = basewindow.Screens.ScreenFromWindow(basewindow.PlatformImpl);
-        if (sec == null)
-            return;
-        var area = sec.WorkingArea;
-        int x, y;
-        if (pos.X > area.Width / 2)
-        {
-            x = pos.X - 100;
-        }
-        else
-        {
-            x = pos.X + 100;
-        }
-
-        if (pos.Y > area.Height / 2)
-        {
-            y = pos.Y - 40;
-        }
-        else
-        {
-            y = pos.Y + 40;
-        }
-
-        Position = new(x, y);
-    }
-
     private void Window_KeyDown(object? sender, KeyEventArgs e)
     {
-        var window = (sender as Window)!;
         if (e.KeyModifiers == KeyModifiers.Control)
         {
             switch (e.Key)
@@ -154,43 +106,34 @@ public partial class SelfBaseWindow : Window, IBaseWindow
                     App.Close();
                     break;
                 case Key.M:
-                    window.WindowState = WindowState.Minimized;
+                    WindowState = WindowState.Minimized;
                     break;
                 case Key.W:
-                    window.Close();
+                    Close();
                     break;
             }
         }
     }
 
+    public void SetTitle(string temp)
+    {
+        Title = temp;
+    }
+
     private void UserWindow_Opened(object? sender, EventArgs e)
     {
-        Main?.Opened();
+        window1?.Opened();
     }
+
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
-        App.PicUpdate -= Update;
+        window1?.Closed();
 
-        Main?.Closed();
-
-        Main = null;
-        MainControl.Children.Clear();
-
-        if (App.LastWindow == this)
-        {
-            App.LastWindow = null;
-        }
-
-        Funtcions.RunGC();
+        App.Close();
     }
-    private void Window_Activated(object? sender, EventArgs e)
-    {
-        App.LastWindow = this;
-    }
+
     private void Update()
     {
-        App.Update(this, Image_Back, Border1, Border2);
-
-        Main?.Update();
+        App.Update(this, null, null, null);
     }
 }

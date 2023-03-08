@@ -4,7 +4,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using System;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Server;
@@ -60,7 +59,7 @@ public partial class ServerPackControl : UserControl, IUserControl
         {
             case 0:
                 tab1.Load();
-                
+
                 break;
         }
 
@@ -103,7 +102,7 @@ public partial class ServerPackControl : UserControl, IUserControl
             Obj1 = new();
             GameBinding.SaveServerPack(obj, Obj1);
         }
-        
+
         tab1.SetObj(Obj1);
     }
 

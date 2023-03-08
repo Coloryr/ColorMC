@@ -3,7 +3,6 @@ using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
@@ -35,7 +34,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
-    public GameEditControl(GameSettingObj? obj) 
+    public GameEditControl(GameSettingObj? obj)
     {
         Obj = obj;
 
@@ -62,20 +61,11 @@ public partial class GameEditControl : UserControl, IUserControl
         Tab1.Children.Add(content2);
 
         content1.Content = tab1;
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.Add(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).Show();
-        }
     }
 
     public GameEditControl() : this(null)
     {
-        
+
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
