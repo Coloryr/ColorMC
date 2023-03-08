@@ -55,8 +55,8 @@ public partial class Tab8Control : UserControl
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.AddFile(window, Obj, FileType.Resourcepack);
+        var window = (VisualRoot as IBaseWindow)!;
+        var file = await BaseBinding.AddFile(window as Window, Obj, FileType.Resourcepack);
         if (file == null)
             return;
 
@@ -101,7 +101,7 @@ public partial class Tab8Control : UserControl
 
     public async void Delete(ResourcepackDisplayObj obj)
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         var res = await window.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab8.Info1"), obj.Local));
         if (!res)
@@ -128,7 +128,7 @@ public partial class Tab8Control : UserControl
 
     private async void Load()
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab8.Info5"));
         List.Clear();
         ListBox_Items.Children.Clear();

@@ -46,12 +46,22 @@ public partial class AddJavaControl : UserControl, IUserControl
         Button1.Click += Button1_Click;
 
         Switch();
-        Button1_Click(null, null);
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
     }
 
     public void Opened()
     {
         Window.SetTitle(App.GetLanguage("AddJavaWindow.Title"));
+
+        Button1_Click(null, null);
     }
 
     public void Closed()

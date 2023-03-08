@@ -3,6 +3,7 @@ using Avalonia.Input;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
+using DynamicData;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -16,13 +17,19 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     Info6Control IBaseWindow.Info6 => Info6;
     HeadControl IBaseWindow.Head => Head;
     Info5Control IBaseWindow.Info5 => Info5;
-    Window IBaseWindow.Window => this;
     UserControl IBaseWindow.Con => (Main as UserControl)!;
 
-    public IUserControl Main;
+    public IUserControl? Main;
 
-    public SelfBaseWindow()
+    public SelfBaseWindow() : this(null) 
     {
+        
+    }
+
+    public SelfBaseWindow(IUserControl? con)
+    {
+        Main = con;
+
         InitializeComponent();
 
         if (SystemInfo.Os == OsType.Linux)
@@ -77,6 +84,11 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         if (App.BackBitmap != null)
         {
             Image_Back.Source = App.BackBitmap;
+        }
+
+        if (Main is UserControl con1)
+        {
+            MainControl.Children.Add(con1);
         }
 
         Closed += UserWindow_Closed;

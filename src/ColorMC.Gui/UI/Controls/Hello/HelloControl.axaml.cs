@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using ColorMC.Core;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
@@ -33,6 +34,15 @@ public partial class HelloControl : UserControl, IUserControl
         Tab1.Children.Add(content2);
 
         content1.Content = tab1;
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.ShowDialog(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).ShowDialog((App.MainWindow!.Window as Window)!);
+        }
     }
 
     public void Opened()
@@ -113,6 +123,6 @@ public partial class HelloControl : UserControl, IUserControl
     public void Done()
     {
         var window = (VisualRoot as IBaseWindow)!;
-        window.Window.Close();
+        window.Close();
     }
 }

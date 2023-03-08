@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using System;
 
 namespace ColorMC.Gui.UI.Controls.Error;
@@ -10,6 +11,15 @@ public partial class ErrorControl : UserControl, IUserControl
     public ErrorControl()
     {
         InitializeComponent();
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
     }
 
     public IBaseWindow Window => (VisualRoot as IBaseWindow)!;

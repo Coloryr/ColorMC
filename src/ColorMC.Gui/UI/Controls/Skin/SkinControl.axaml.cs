@@ -40,7 +40,15 @@ public partial class SkinControl : UserControl, IUserControl
         ComboBox2.SelectedIndex = 0;
 
         App.SkinLoad += App_SkinLoad;
-        Check();
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
     }
 
     public void Opened()
@@ -52,6 +60,8 @@ public partial class SkinControl : UserControl, IUserControl
         Text1.Text = Skin.Info;
 
         Window.SetTitle(App.GetLanguage("SkinWindow.Title"));
+
+        Check();
     }
 
     public void Update()

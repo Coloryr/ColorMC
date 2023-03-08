@@ -53,6 +53,15 @@ public partial class DownloadControl : UserControl, IUserControl
             AutoReset = true
         };
         Timer.Elapsed += Timer_Elapsed;
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
     }
 
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)

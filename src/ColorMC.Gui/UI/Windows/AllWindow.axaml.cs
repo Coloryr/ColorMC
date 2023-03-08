@@ -1,17 +1,28 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Controls.Add;
+using ColorMC.Gui.UI.Controls.Download;
+using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.Setting;
+using ColorMC.Gui.UI.Controls.Skin;
+using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -25,15 +36,17 @@ public partial class AllWindow : Window, IBaseWindow
     Info6Control IBaseWindow.Info6 => Info6;
     HeadControl IBaseWindow.Head => Head;
     Info5Control IBaseWindow.Info5 => Info5;
-    Window IBaseWindow.Window => this;
-    UserControl IBaseWindow.Con => null;
+    UserControl IBaseWindow.Con => Now;
 
     private UserControl BaseControl;
     private UserControl Now;
+    private AllFlyout AllFlyout1;
     private bool IsDialog;
 
-    private Dictionary<UserControl, Grid> Cons = new();
-    private Dictionary<Grid, Button> Switchs = new();
+    private readonly Dictionary<UserControl, Grid> Cons = new();
+    private readonly Dictionary<Grid, UserControl> Cons1 = new();
+    private readonly Dictionary<Grid, Button> Switchs = new();
+    private readonly List<Button> List = new();
 
     public AllWindow()
     {
@@ -93,9 +106,8 @@ public partial class AllWindow : Window, IBaseWindow
             Image_Back.Source = App.BackBitmap;
         }
 
-        Button1.PointerEntered += Button1_PointerEntered;
+        Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
-        Expander1.PointerExited += Expander1_PointerExited;
         Closed += UserWindow_Closed;
         Opened += UserWindow_Opened;
 
@@ -104,12 +116,61 @@ public partial class AllWindow : Window, IBaseWindow
         Update();
     }
 
+    public class AllFlyout : FlyoutBase
+    {
+        private readonly List<Button> Obj;
+        private StackPanel panel;
+        private Grid control;
+        public AllFlyout(List<Button> list)
+        {
+            Obj = list;
+
+            Closing += AllFlyout_Closing;
+            Opening += AllFlyout_Opening;
+
+            control = new Grid();
+            control.Children.Add(new Rectangle()
+            {
+                Fill = ColorSel.BackColor,
+                Stroke = ColorSel.MainColor,
+                StrokeThickness = 3
+            });
+            panel = new StackPanel()
+            {
+                Margin = new Thickness(5)
+            };
+            control.Children.Add(panel);
+        }
+
+        private void AllFlyout_Opening(object? sender, EventArgs e)
+        {
+            foreach (var item in Obj)
+            {
+                panel.Children.Add(item);
+            }
+        }
+
+        private void AllFlyout_Closing(object? sender, CancelEventArgs e)
+        {
+            panel.Children.Clear();
+        }
+
+        protected override Control CreatePresenter()
+        {
+            return control;
+        }
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        AllFlyout1.ShowAt(this, true);
+    }
+
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
         if (Now == null)
             return;
 
-        Expander1.IsExpanded = false;
         if (IsDialog)
         {
             MainDialog.Children.Clear();
@@ -119,16 +180,6 @@ public partial class AllWindow : Window, IBaseWindow
         {
             Close(Now);
         }
-    }
-
-    private void Expander1_PointerExited(object? sender, PointerEventArgs e)
-    {
-        Expander1.IsExpanded = false;
-    }
-
-    private void Button1_PointerEntered(object? sender, PointerEventArgs e)
-    {
-        Expander1.IsExpanded = true;
     }
 
     private void Window_KeyDown(object? sender, KeyEventArgs e)
@@ -165,22 +216,25 @@ public partial class AllWindow : Window, IBaseWindow
         {
             var button = new Button
             {
-                Content = GetName(con)
+                Content = GetName(con),
+                Height = 25,
+                Width = 100
             };
             button.Click += (a, e)=> 
             {
-                Expander1.IsExpanded = false;
+                AllFlyout1.Hide();
                 Active(con);
             };
-            WrapPanel1.Children.Add(button);
             var grid = new Grid
             {
                 IsVisible = false,
                 Background = ColorSel.AppBackColor2
             };
+            List.Add(button);
             grid.Children.Add(con);
             Switchs.Add(grid, button);
             Cons.Add(con, grid);
+            Cons1.Add(grid, con);
             MainControl.Children.Add(grid);
             App.CrossFade300.Start(null, grid, CancellationToken.None);
             (con as IUserControl)?.Opened();
@@ -197,9 +251,33 @@ public partial class AllWindow : Window, IBaseWindow
         {
             return "设置界面";
         }
-        else if (con is UserControl)
+        else if (con is UsersControl)
         {
-            return "用户界面";
+            return "用户列表";
+        }
+        else if (con is AddControl)
+        {
+            return "添加资源";
+        }
+        else if (con is AddGameControl)
+        {
+            return "添加实例";
+        }
+        else if (con is AddJavaControl)
+        {
+            return "添加Java";
+        }
+        else if (con is DownloadControl)
+        {
+            return "下载界面";
+        }
+        else if (con is SkinControl)
+        {
+            return "皮肤显示";
+        }
+        else if (con is AddModPackControl)
+        {
+            return "添加整合包";
         }
 
         return "";
@@ -209,8 +287,15 @@ public partial class AllWindow : Window, IBaseWindow
     {
         if (Cons.Count > 0)
         {
-            Button1.IsVisible = true;
             Button2.IsVisible = true;
+            if (Cons.Count > 1)
+            {
+                Button1.IsVisible = true;
+            }
+            else
+            {
+                Button1.IsVisible = false;
+            }
         }
         else
         {
@@ -221,6 +306,19 @@ public partial class AllWindow : Window, IBaseWindow
 
     public void Active(UserControl con)
     {
+        foreach (Control item1 in MainControl.Children)
+        {
+            if (item1 == BaseControl)
+                continue;
+
+            item1.ZIndex = 0;
+        }
+
+        if (Cons.TryGetValue(con, out var item))
+        {
+            item.ZIndex = 1;
+        }
+
         Now = con;
     }
 
@@ -228,11 +326,22 @@ public partial class AllWindow : Window, IBaseWindow
     {
         if (Cons.Remove(con, out var item))
         {
+            Cons1.Remove(item);
             MainControl.Children.Remove(item);
-            if (Switchs.Remove(item, out var item1))
+            if(Switchs.Remove(item, out var item1))
             {
-                WrapPanel1.Children.Remove(item1);
+                List.Remove(item1);    
             }
+        }
+
+        var item2 = MainControl.Children.Last();
+        if (item2 is Grid grid)
+        {
+            Now = Cons1[grid];
+        }
+        else
+        {
+            Now = BaseControl;
         }
 
         Up();
@@ -254,7 +363,7 @@ public partial class AllWindow : Window, IBaseWindow
 
     private void UserWindow_Opened(object? sender, EventArgs e)
     {
-        
+        AllFlyout1 = new(List);
     }
 
     private void UserWindow_Closed(object? sender, EventArgs e)

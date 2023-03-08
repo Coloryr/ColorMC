@@ -46,6 +46,15 @@ public partial class UsersControl : UserControl, IUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         Load();
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
     }
 
     public void Opened()

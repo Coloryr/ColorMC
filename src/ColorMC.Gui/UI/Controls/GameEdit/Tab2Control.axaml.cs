@@ -62,7 +62,7 @@ public partial class Tab2Control : UserControl
 
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        var Window = (VisualRoot as GameEditWindow)!;
+        var Window = (VisualRoot as IBaseWindow)!;
         var res = await Window.Info.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
         if (res)
         {
@@ -156,8 +156,6 @@ public partial class Tab2Control : UserControl
 
     private void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var Window = (VisualRoot as GameEditWindow)!;
-
         if (load)
             return;
 
@@ -170,12 +168,13 @@ public partial class Tab2Control : UserControl
             GameBinding.SetJavaLocal(Obj, ComboBox2.SelectedItem as string, TextBox11.Text);
         }
 
+        var Window = (VisualRoot as IBaseWindow)!;
         Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as Window)!;
 
         var file = await BaseBinding.OpFile(window, FileType.Java);
         if (file != null)
@@ -210,7 +209,7 @@ public partial class Tab2Control : UserControl
 
     private void Save4()
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
 
         if (UIUtils.CheckNotNumber(TextBox8.Text))
         {

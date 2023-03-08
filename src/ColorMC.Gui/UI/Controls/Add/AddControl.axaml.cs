@@ -49,7 +49,7 @@ public partial class AddControl : UserControl, IUserControl
     public readonly ObservableCollection<OptifineDisplayObj> List6 = new();
 
     private FileItemControl? Last;
-    private GameSettingObj Obj;
+    private GameSettingObj? Obj;
     private bool load = false;
     private bool display = false;
     private FileType now;
@@ -57,8 +57,15 @@ public partial class AddControl : UserControl, IUserControl
 
     public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
-    public AddControl()
+    public AddControl() : this(null)
     {
+
+    }
+
+    public AddControl(GameSettingObj? obj) 
+    {
+        Obj = obj;
+
         InitializeComponent();
 
         ComboBox1.Items = GameBinding.GetAddType();
@@ -97,7 +104,16 @@ public partial class AddControl : UserControl, IUserControl
         {
             List.Add(new());
         }
-    }
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
+    } 
 
     private void DataGrid1_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
     {
@@ -364,11 +380,6 @@ public partial class AddControl : UserControl, IUserControl
         Load2();
     }
 
-    public void SetGame(GameSettingObj obj)
-    {
-        Obj = obj;
-    }
-
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (!display || load)
@@ -475,7 +486,7 @@ public partial class AddControl : UserControl, IUserControl
                 GameBinding.SetModInfo(Obj,
                     data.Data as ModrinthVersionObj);
             }
-            window.Window.Close();
+            window.Close();
             return;
         }
         var last = Last!;
@@ -515,7 +526,7 @@ public partial class AddControl : UserControl, IUserControl
             window.Info2.Show(App.GetLanguage("AddWindow.Info6"));
             if (last == null)
             {
-                window.Window.Close();
+                window.Close();
                 return;
             }
             last.SetDownloaded();

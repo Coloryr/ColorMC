@@ -101,8 +101,8 @@ public partial class Tab5Control : UserControl
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.AddFile(window, Obj, FileType.World);
+        var window = (VisualRoot as IBaseWindow)!;
+        var file = await BaseBinding.AddFile(window as Window, Obj, FileType.World);
         if (file == null)
             return;
 
@@ -147,9 +147,9 @@ public partial class Tab5Control : UserControl
 
     public async void Export(WorldDisplayObj obj)
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info4"));
-        var file = await BaseBinding.SaveFile(window, FileType.World, new object[]
+        var file = await BaseBinding.SaveFile(window as Window, FileType.World, new object[]
             { obj });
         window.Info1.Close();
         if (file == null)
@@ -167,7 +167,7 @@ public partial class Tab5Control : UserControl
 
     public async void Delete(WorldDisplayObj obj)
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         var res = await window!.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab5.Info1"), obj.Name));
         if (!res)
@@ -194,7 +194,7 @@ public partial class Tab5Control : UserControl
 
     private async void Load()
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
         List.Clear();
         ListBox_Items.Children.Clear();
@@ -227,7 +227,7 @@ public partial class Tab5Control : UserControl
 
     public async void Backup(WorldDisplayObj obj)
     {
-        var Window = (VisualRoot as GameEditWindow)!;
+        var Window = (VisualRoot as IBaseWindow)!;
         Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info9"));
         var res = await GameBinding.BackupWorld(obj.World);
         Window.Info1.Close();

@@ -153,7 +153,7 @@ public static class BaseBinding
         }
         if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            (win as GameEditControl)?.ClearLog();
+            win?.ClearLog();
         }
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdateOnThread;
@@ -227,7 +227,7 @@ public static class BaseBinding
                 UserBinding.RemoveLockUser(obj1);
                 if (Games.Remove(res, out var obj2))
                 {
-                    (App.MainWindow as MainControl)?.GameClose(obj2);
+                    App.MainWindow?.GameClose(obj2);
                 }
                 if (a is Process)
                 {
@@ -279,7 +279,7 @@ public static class BaseBinding
         if (Games.TryGetValue(p, out var obj)
             && App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            (win as GameEditControl)?.Log(d);
+            win?.Log(d);
         }
     }
 
@@ -287,7 +287,7 @@ public static class BaseBinding
     {
         if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            (win as GameEditControl)?.Log(d);
+            win?.Log(d);
         }
     }
 
@@ -448,8 +448,10 @@ public static class BaseBinding
 #endif
     }
 
-    public static async Task<bool?> AddFile(Window window, GameSettingObj obj, FileType type)
+    public static async Task<bool?> AddFile(Window? window, GameSettingObj obj, FileType type)
     {
+        if (window == null)
+            return false;
         switch (type)
         {
             case FileType.Schematic:
@@ -507,8 +509,11 @@ public static class BaseBinding
         return null;
     }
 
-    public static async Task<bool?> SaveFile(Window window, FileType type, object[]? arg)
+    public static async Task<bool?> SaveFile(Window? window, FileType type, object[]? arg)
     {
+        if (window == null)
+            return false;
+
         switch (type)
         {
             case FileType.World:

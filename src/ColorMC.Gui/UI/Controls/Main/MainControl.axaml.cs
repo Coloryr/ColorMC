@@ -48,23 +48,13 @@ public partial class MainControl : UserControl, IUserControl
 
         ItemInfo.SetWindow(this);
 
-        if (BaseBinding.IsLaunch())
+        if (ConfigBinding.WindowMode())
         {
-            Dispatcher.UIThread.Post(async () =>
-            {
-                var window = (VisualRoot as IBaseWindow)!;
-                await window.Info.ShowOk(App.GetLanguage("MainWindow.Info22"));
-                App.Close();
-            });
+            App.AllWindow?.Add(this);
         }
-
-        Load();
-        Load1();
-
-        if (BaseBinding.CheckOldDir())
+        else
         {
-            var window = (VisualRoot as IBaseWindow)!;
-            window.Info.Show(App.GetLanguage("MainWindow.Info27"));
+            new SelfBaseWindow(this).Show();
         }
     }
 
@@ -226,6 +216,26 @@ public partial class MainControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(App.GetLanguage("MainWindow.Title"));
+
+        if (BaseBinding.IsLaunch())
+        {
+            Dispatcher.UIThread.Post(async () =>
+            {
+                var window = (VisualRoot as IBaseWindow)!;
+                await window.Info.ShowOk(App.GetLanguage("MainWindow.Info22"));
+                App.Close();
+            });
+        }
+
+        Load();
+        Load1();
+
+        if (BaseBinding.CheckOldDir())
+        {
+            var window = (VisualRoot as IBaseWindow)!;
+            window.Info.Show(App.GetLanguage("MainWindow.Info27"));
+        }
+
 #if !DEBUG
         if (ConfigBinding.GetAllConfig().Item1?.Http?.CheckUpdate == true)
         {
@@ -234,8 +244,6 @@ public partial class MainControl : UserControl, IUserControl
 #endif
 
         MotdLoad();
-
-
     }
 
     public void MotdLoad()

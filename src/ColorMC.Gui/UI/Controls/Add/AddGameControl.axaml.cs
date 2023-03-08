@@ -62,6 +62,15 @@ public partial class AddGameControl : UserControl, IUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         Load();
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -347,7 +356,7 @@ public partial class AddGameControl : UserControl, IUserControl
         {
             App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
             App.MainWindow?.Load();
-            window.Window.Close();
+            window.Close();
         }
     }
 
@@ -512,7 +521,7 @@ public partial class AddGameControl : UserControl, IUserControl
         {
             App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
             App.MainWindow?.Load();
-            window.Window.Close();
+            window.Close();
         }
         else
         {
@@ -561,7 +570,7 @@ public partial class AddGameControl : UserControl, IUserControl
         {
             App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
             App.MainWindow?.Load();
-            window.Window.Close();
+            window.Close();
         }
     }
 
@@ -585,7 +594,7 @@ public partial class AddGameControl : UserControl, IUserControl
         {
             App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
             App.MainWindow?.Load();
-            window.Window.Close();
+            window.Close();
         }
     }
 
@@ -610,7 +619,7 @@ public partial class AddGameControl : UserControl, IUserControl
             FTBHelper.PostIntall(data1.id, data.id);
             App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
             App.MainWindow?.Load();
-            window.Window.Close();
+            window.Close();
         }
     }
 
@@ -632,7 +641,7 @@ public partial class AddGameControl : UserControl, IUserControl
         await window.Info5.Show(App.GetLanguage("AddGameWindow.Info18"), list);
         if (window.Info5.Cancel)
         {
-            window.Window.Close();
+            window.Close();
             return;
         }
         var type = window.Info5.Read().Item1 switch
@@ -650,7 +659,7 @@ public partial class AddGameControl : UserControl, IUserControl
         {
             App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
             App.MainWindow?.Load();
-            window.Window.Close();
+            window.Close();
         }
         else
         {
