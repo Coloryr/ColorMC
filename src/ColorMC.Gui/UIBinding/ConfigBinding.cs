@@ -217,4 +217,9 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
     }
+    
+    public static bool WindowMode()
+    {
+        return GuiConfigUtils.Config.WindowMode;
+    }
 }

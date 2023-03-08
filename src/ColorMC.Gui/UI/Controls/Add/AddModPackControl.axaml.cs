@@ -70,6 +70,15 @@ public partial class AddModPackControl : UserControl, IUserControl
         {
             List.Add(new());
         }
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
     }
 
     public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
@@ -308,7 +317,7 @@ public partial class AddModPackControl : UserControl, IUserControl
                 (Last!.Data.Data as FTBModpackObj)!);
         }
         var window = (VisualRoot as IBaseWindow)!;
-        window.Window.Close();
+        window.Close();
     }
 
     public void SetSelect(FileItemControl last)

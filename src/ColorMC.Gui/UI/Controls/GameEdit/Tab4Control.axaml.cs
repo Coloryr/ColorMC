@@ -77,7 +77,7 @@ public partial class Tab4Control : UserControl
 
     private async void Button_C1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info10"));
         var res = await GameBinding.CheckModUpdate(Obj, Items);
         window.Info1.Close();
@@ -113,8 +113,8 @@ public partial class Tab4Control : UserControl
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as GameEditWindow)!;
-        var file = await BaseBinding.AddFile(window, Obj, FileType.Mod);
+        var window = (VisualRoot as IBaseWindow)!;
+        var file = await BaseBinding.AddFile(window as Window, Obj, FileType.Mod);
 
         if (file == null)
             return;
@@ -173,7 +173,7 @@ public partial class Tab4Control : UserControl
 
     public async void Delete(IEnumerable<ModDisplayObj> items)
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         var res = await window.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count()));
         if (!res)
@@ -192,7 +192,7 @@ public partial class Tab4Control : UserControl
 
     public async void Delete(ModDisplayObj item)
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         var res = await window.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info4"), item.Name));
         if (!res)
@@ -273,7 +273,7 @@ public partial class Tab4Control : UserControl
 
     private async void Load()
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
         Items.Clear();
         var res = await GameBinding.GetGameMods(Obj);

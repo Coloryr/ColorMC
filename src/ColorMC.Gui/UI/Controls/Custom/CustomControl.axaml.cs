@@ -66,6 +66,15 @@ public partial class CustomControl : UserControl, IUserControl
 
         App.UserEdit += App_UserEdit;
         App.SkinLoad += App_SkinLoad;
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
     }
 
     private void App_SkinLoad()

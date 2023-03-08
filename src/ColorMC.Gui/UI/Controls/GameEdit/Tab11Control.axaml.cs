@@ -65,8 +65,8 @@ public partial class Tab11Control : UserControl
 
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as GameEditWindow)!;
-        var res = await BaseBinding.AddFile(window, Obj, FileType.Shaderpack);
+        var window = (VisualRoot as IBaseWindow)!;
+        var res = await BaseBinding.AddFile(window as Window, Obj, FileType.Shaderpack);
         if (res == null)
             return;
 
@@ -107,7 +107,7 @@ public partial class Tab11Control : UserControl
 
     private void Load()
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
         List.AddRange(GameBinding.GetShaderpacks(Obj));
@@ -129,7 +129,7 @@ public partial class Tab11Control : UserControl
 
     public void Delete(ShaderpackDisplayObj obj)
     {
-        var window = (VisualRoot as GameEditWindow)!;
+        var window = (VisualRoot as IBaseWindow)!;
         obj.Shaderpack.Delete();
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();

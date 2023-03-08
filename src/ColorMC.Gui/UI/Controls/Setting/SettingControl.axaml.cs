@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
@@ -39,7 +40,14 @@ public partial class SettingControl : UserControl, IUserControl
 
         content1.Content = tab2;
 
-        tab2.Load();
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
     }
 
     public void Closed()
@@ -136,5 +144,7 @@ public partial class SettingControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(App.GetLanguage("SettingWindow.Title"));
+
+        tab2.Load();
     }
 }

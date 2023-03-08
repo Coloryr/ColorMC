@@ -3,6 +3,7 @@ using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
@@ -30,12 +31,27 @@ public partial class GameEditControl : UserControl, IUserControl
 
     private int now;
 
-    private GameSettingObj Obj;
+    private GameSettingObj? Obj;
 
     public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
-    public GameEditControl()
+    public GameEditControl(GameSettingObj? obj) 
     {
+        Obj = obj;
+
+        tab1.SetGame(obj);
+        tab2.SetGame(obj);
+        tab3.SetGame(obj);
+        tab4.SetGame(obj);
+        tab5.SetGame(obj);
+        tab6.SetGame(obj);
+        tab7.SetGame(obj);
+        tab8.SetGame(obj);
+        tab9.SetGame(obj);
+        tab10.SetGame(obj);
+        tab11.SetGame(obj);
+        tab12.SetGame(obj);
+
         InitializeComponent();
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
@@ -46,6 +62,20 @@ public partial class GameEditControl : UserControl, IUserControl
         Tab1.Children.Add(content2);
 
         content1.Content = tab1;
+
+        if (ConfigBinding.WindowMode())
+        {
+            App.AllWindow?.Add(this);
+        }
+        else
+        {
+            new SelfBaseWindow(this).Show();
+        }
+    }
+
+    public GameEditControl() : this(null)
+    {
+        
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -108,24 +138,6 @@ public partial class GameEditControl : UserControl, IUserControl
             return;
 
         tab7.Log(data);
-    }
-
-    public void SetGame(GameSettingObj obj)
-    {
-        Obj = obj;
-
-        tab1.SetGame(obj);
-        tab2.SetGame(obj);
-        tab3.SetGame(obj);
-        tab4.SetGame(obj);
-        tab5.SetGame(obj);
-        tab6.SetGame(obj);
-        tab7.SetGame(obj);
-        tab8.SetGame(obj);
-        tab9.SetGame(obj);
-        tab10.SetGame(obj);
-        tab11.SetGame(obj);
-        tab12.SetGame(obj);
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
