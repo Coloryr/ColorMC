@@ -42,14 +42,14 @@ public partial class FileItemControl : UserControl
 
     private void CurseForgeControl_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as IAddWindow)?.Install();
     }
 
     private void CurseForgeControl_PointerPressed(object? sender,
         PointerPressedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as IAddWindow)?.SetSelect(this);
     }
 

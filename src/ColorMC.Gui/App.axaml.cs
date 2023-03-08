@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -47,7 +48,7 @@ public partial class App : Application
         Logs.Error("Error", e.ExceptionObject as Exception);
     }
 
-    public static IClassicDesktopStyleApplicationLifetime? Life { get; private set; }
+    public static IApplicationLifetime? Life { get; private set; }
 
     public static AllControl? AllWindow { get; set; }
     public static DownloadControl? DownloadWindow { get; set; }
@@ -93,15 +94,16 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             Life = desktop;
+
+            desktop.Exit += Life_Exit;
+        }
+        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
+        {
+            Life = singleViewPlatform;
         }
 
         try
         {
-            if (Life != null)
-            {
-                Life.Exit += Life_Exit;
-            }
-
             if (ConfigUtils.Config == null)
             {
                 LoadLanguage(LanguageType.zh_cn);
@@ -123,6 +125,20 @@ public partial class App : Application
             if (ConfigBinding.WindowMode())
             {
                 AllWindow = new();
+
+                if (SystemInfo.Os == OsType.Android)
+                {
+                    (Life as ISingleViewApplicationLifetime)!.MainView = AllWindow;
+                    AllWindow.Head.Max = false;
+                    AllWindow.Head.Min = false;
+                    AllWindow.Head.Clo = false;
+                    AllWindow.Opened();
+                }
+
+                else if (SystemInfo.Os != OsType.Android)
+                {
+                    new SingleWindow(AllWindow).Show();
+                }
             }
 
             ShowCustom();
@@ -146,6 +162,19 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    public static IBaseWindow FindRoot(Control con)
+    {
+        if (con.GetVisualRoot() is IBaseWindow win)
+            return win;
+
+        return AllWindow!;
+    }
+
+    private void Life_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        
     }
 
     public static void OnUserEdit()
@@ -225,11 +254,6 @@ public partial class App : Application
         {
             DownloadWindow?.Window.Close();
         }
-    }
-
-    private void Life_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
-    {
-        BaseBinding.Exit();
     }
 
     public static void ShowCustom()
@@ -539,8 +563,7 @@ public partial class App : Application
 
     public static void Close()
     {
-        Life?.Shutdown();
-
+        BaseBinding.Exit();
         Environment.Exit(Environment.ExitCode);
     }
 

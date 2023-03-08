@@ -18,7 +18,7 @@ public partial class UsersControl : UserControl, IUserControl
     private readonly ObservableCollection<UserDisplayObj> List = new();
     private bool Cancel;
 
-    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
+    public IBaseWindow Window => App.FindRoot(this);
 
     public UsersControl()
     {
@@ -31,6 +31,7 @@ public partial class UsersControl : UserControl, IUserControl
         Button_A1.PointerExited += Button_A1_PointerLeave;
         Button_A.PointerEntered += Button_A_PointerEnter;
 
+        Button_A.Click += Button_A1_Click;
         Button_A1.Click += Button_A1_Click;
 
         Button_Cancel.Click += Button_Cancel_Click;
@@ -124,7 +125,7 @@ public partial class UsersControl : UserControl, IUserControl
 
     private void DataGrid_User_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var item = DataGrid_User.SelectedItem as UserDisplayObj;
         if (item == null)
         {
@@ -137,7 +138,7 @@ public partial class UsersControl : UserControl, IUserControl
 
     private void Select(UserDisplayObj item)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         UserBinding.SetLastUser(item.UUID, item.AuthType);
 
         window.Info2.Show(App.GetLanguage("UserWindow.Info5"));
@@ -146,7 +147,7 @@ public partial class UsersControl : UserControl, IUserControl
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         bool ok = false;
         Button_Add.IsEnabled = false;
         switch (ComboBox_UserType.SelectedIndex)
@@ -298,7 +299,7 @@ public partial class UsersControl : UserControl, IUserControl
 
     private void LoginOAuthCode(string url, string code)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Close();
         window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Text3"), url),
             string.Format(App.GetLanguage("UserWindow.Text4"), code), () =>
@@ -377,7 +378,7 @@ public partial class UsersControl : UserControl, IUserControl
 
     private void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var item = DataGrid_User.SelectedItem as UserDisplayObj;
         if (item == null)
         {
@@ -407,7 +408,7 @@ public partial class UsersControl : UserControl, IUserControl
 
     public async void ReLogin(UserDisplayObj obj)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("UserWindow.Info3"));
         var res = await UserBinding.ReLogin(obj.UUID, obj.AuthType);
         window.Info1.Close();

@@ -91,7 +91,7 @@ public partial class ItemControl : UserControl
     {
         if (BaseBinding.IsDownload)
         {
-            var window = (VisualRoot as IBaseWindow)!;
+            var window = App.FindRoot(this);
             window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
             return;
         }

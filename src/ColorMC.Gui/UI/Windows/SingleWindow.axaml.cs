@@ -118,6 +118,7 @@ public partial class SingleWindow : Window, IBaseWindow
     public void SetTitle(string temp)
     {
         Title = temp;
+        window1.Head.Title = temp;
     }
 
     private void UserWindow_Opened(object? sender, EventArgs e)

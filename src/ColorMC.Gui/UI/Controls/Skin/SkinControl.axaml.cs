@@ -14,7 +14,7 @@ namespace ColorMC.Gui.UI.Controls.Skin;
 
 public partial class SkinControl : UserControl, IUserControl
 {
-    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
+    public IBaseWindow Window => App.FindRoot(this);
     public SkinControl()
     {
         InitializeComponent();
@@ -175,7 +175,7 @@ public partial class SkinControl : UserControl, IUserControl
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         if (ComboBox1.SelectedIndex == (int)Skin.steveModelType)
             return;
         if (ComboBox1.SelectedIndex == (int)SkinType.Unkonw)
@@ -229,7 +229,7 @@ public partial class SkinControl : UserControl, IUserControl
 
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var res = await BaseBinding.SaveFile((VisualRoot as Window)!,
             FileType.Skin, null);
         if (res == true)

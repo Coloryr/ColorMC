@@ -19,7 +19,7 @@ public partial class AddJavaControl : UserControl, IUserControl
     private readonly ObservableCollection<JavaDownloadDisplayObj> List = new();
     private bool load = true;
 
-    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
+    public IBaseWindow Window => App.FindRoot(this);
 
     public AddJavaControl()
     {
@@ -64,7 +64,7 @@ public partial class AddJavaControl : UserControl, IUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var window = (VisualRoot as IBaseWindow)!;
+            var window = App.FindRoot(this);
             window.Info1.NextText(App.GetLanguage("AddJavaWindow.Info5"));
         });
     }
@@ -74,7 +74,7 @@ public partial class AddJavaControl : UserControl, IUserControl
         if (DataGrid1.SelectedItem is not JavaDownloadDisplayObj obj)
             return;
 
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var res = await window.Info.ShowWait(string.Format(
             App.GetLanguage("AddJavaWindow.Info1"), obj.Name));
         if (!res)
@@ -138,7 +138,7 @@ public partial class AddJavaControl : UserControl, IUserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("AddJavaWindow.Info4"));
 
         load = true;

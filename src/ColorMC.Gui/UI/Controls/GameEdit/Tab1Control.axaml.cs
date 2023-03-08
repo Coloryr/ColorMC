@@ -98,7 +98,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button5_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         if (BaseBinding.IsGameRun(Obj))
         {
             window.Info1.Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));
@@ -135,7 +135,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
-        var Window = (VisualRoot as IBaseWindow)!;
+        var Window = App.FindRoot(this);
         await Window.Info3.ShowOne(App.GetLanguage("AddGameWindow.Info1"), false);
         if (Window.Info3.Cancel)
         {
@@ -167,7 +167,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
 
         ComboBox2.IsEnabled = false;
 
@@ -282,7 +282,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("AddGameWindow.Info3"));
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(Obj.Version))
@@ -306,7 +306,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
         window.Info1.Close();

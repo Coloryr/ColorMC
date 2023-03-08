@@ -21,24 +21,24 @@ namespace ColorMC.Gui.UI.Controls.Add;
 public partial class AddControl : UserControl, IUserControl
 {
     /// <summary>
-    /// ¿Ø¼þ
+    /// ï¿½Ø¼ï¿½
     /// </summary>
     private readonly List<FileItemControl> List = new();
     /// <summary>
-    /// ÏÂÔØÔ´
+    /// ï¿½ï¿½ï¿½ï¿½Ô´
     /// </summary>
     private List<SourceType> List2 = new();
     private readonly ObservableCollection<string> List3 = new();
     /// <summary>
-    /// ÀàÐÍ
+    /// ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     private readonly Dictionary<int, string> Categories = new();
     /// <summary>
-    /// Êý¾Ý
+    /// ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     /// <summary>
-    /// ÓÎÏ·°æ±¾
+    /// ï¿½ï¿½Ï·ï¿½æ±¾
     /// </summary>
     private readonly ObservableCollection<string> List4 = new();
 
@@ -55,7 +55,7 @@ public partial class AddControl : UserControl, IUserControl
     private FileType now;
     private bool set;
 
-    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
+    public IBaseWindow Window => App.FindRoot(this);
 
     public AddControl() : this(null)
     {
@@ -116,7 +116,7 @@ public partial class AddControl : UserControl, IUserControl
         if (DataGrid1.SelectedItem is not OptifineDisplayObj item)
             return;
 
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var res = await window.Info.ShowWait(string.Format(
             App.GetLanguage("AddGameWindow.Control1.Info1"), item.Version));
         if (!res)
@@ -137,7 +137,7 @@ public partial class AddControl : UserControl, IUserControl
 
     public async void Load2()
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         List4.Clear();
         List5.Clear();
         List6.Clear();
@@ -207,7 +207,7 @@ public partial class AddControl : UserControl, IUserControl
         if (!display)
             return;
 
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         load = true;
 
         List4.Clear();
@@ -402,7 +402,7 @@ public partial class AddControl : UserControl, IUserControl
 
     private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var item = DataGridFiles.SelectedItem as FileDisplayObj;
         if (item == null)
             return;
@@ -428,7 +428,7 @@ public partial class AddControl : UserControl, IUserControl
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         if (Last == null)
         {
             window.Info.Show(App.GetLanguage("AddWindow.Error1"));
@@ -463,7 +463,7 @@ public partial class AddControl : UserControl, IUserControl
 
     public async void Install1(FileDisplayObj data)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var type = List2[ComboBox2.SelectedIndex];
         if (set)
         {
@@ -538,7 +538,7 @@ public partial class AddControl : UserControl, IUserControl
 
     private async void Load()
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("AddWindow.Info2"));
         var data = await GameBinding.GetList(now, List2[ComboBox2.SelectedIndex],
             ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!,
@@ -594,7 +594,7 @@ public partial class AddControl : UserControl, IUserControl
     {
         List1.Clear();
 
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("AddWindow.Info3"));
         List<FileDisplayObj>? list = null;
         var type = List2[ComboBox2.SelectedIndex];

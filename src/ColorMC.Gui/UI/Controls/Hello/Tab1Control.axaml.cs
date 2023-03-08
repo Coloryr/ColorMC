@@ -23,7 +23,7 @@ public partial class Tab1Control : UserControl
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as HelloControl)?.Done();
     }
 
@@ -35,7 +35,7 @@ public partial class Tab1Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as HelloControl)?.Next();
     }
 }

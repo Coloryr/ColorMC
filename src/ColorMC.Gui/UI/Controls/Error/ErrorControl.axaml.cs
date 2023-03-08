@@ -12,7 +12,7 @@ public partial class ErrorControl : UserControl, IUserControl
         InitializeComponent();
     }
 
-    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
+    public IBaseWindow Window => App.FindRoot(this);
 
     public void Opened()
     {

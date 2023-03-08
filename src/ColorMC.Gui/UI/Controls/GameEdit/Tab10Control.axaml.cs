@@ -27,7 +27,9 @@ public partial class Tab10Control : UserControl
         Button_R1.PointerExited += Button_R1_PointerLeave;
         Button_R.PointerEntered += Button_R_PointerEnter;
 
+        Button_R.Click += Button_R1_Click;
         Button_R1.Click += Button_R1_Click;
+        Button_A.Click += Button_A1_Click;
         Button_A1.Click += Button_A1_Click;
 
         DataGrid1.Items = List;
@@ -66,7 +68,7 @@ public partial class Tab10Control : UserControl
 
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         await window.Info3.ShowInput(App.GetLanguage("GameEditWindow.Tab10.Info1"),
             App.GetLanguage("GameEditWindow.Tab10.Info2"), false);
         var res = window.Info3.Read();
@@ -109,7 +111,7 @@ public partial class Tab10Control : UserControl
 
     private void Load()
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
         List.AddRange(GameBinding.GetServers(Obj));
@@ -131,7 +133,7 @@ public partial class Tab10Control : UserControl
 
     public void Delete(ServerInfoObj obj)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         GameBinding.DeleteServer(Obj, obj);
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();

@@ -53,6 +53,11 @@ public partial class Tab4Control : UserControl
         Button_I1.Click += Button_I1_Click;
         Button_C1.Click += Button_C1_Click;
         Button_B1.Click += Button_B1_Click;
+        Button_A.Click += Button_A1_Click;
+        Button_R.Click += Button_R1_Click;
+        Button_I.Click += Button_I1_Click;
+        Button_C.Click += Button_C1_Click;
+        Button_B.Click += Button_B1_Click;
 
         Button1.Click += Button1_Click;
 
@@ -77,7 +82,7 @@ public partial class Tab4Control : UserControl
 
     private async void Button_C1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info10"));
         var res = await GameBinding.CheckModUpdate(Obj, Items);
         window.Info1.Close();
@@ -113,7 +118,7 @@ public partial class Tab4Control : UserControl
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var file = await BaseBinding.AddFile(window as Window, Obj, FileType.Mod);
 
         if (file == null)
@@ -173,7 +178,7 @@ public partial class Tab4Control : UserControl
 
     public async void Delete(IEnumerable<ModDisplayObj> items)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var res = await window.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count()));
         if (!res)
@@ -192,7 +197,7 @@ public partial class Tab4Control : UserControl
 
     public async void Delete(ModDisplayObj item)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var res = await window.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info4"), item.Name));
         if (!res)
@@ -273,7 +278,7 @@ public partial class Tab4Control : UserControl
 
     private async void Load()
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
         Items.Clear();
         var res = await GameBinding.GetGameMods(Obj);

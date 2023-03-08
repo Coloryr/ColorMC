@@ -27,7 +27,7 @@ public partial class Tab2Control : UserControl
 
     private void Button_Input2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var local = TextBox_Local2.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -71,13 +71,13 @@ public partial class Tab2Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as HelloControl)?.Next();
     }
 
     private void Button_Input_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var local = TextBox_Local.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -121,7 +121,7 @@ public partial class Tab2Control : UserControl
 
     private void Button_Input1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var local = TextBox_Local1.Text;
         if (string.IsNullOrWhiteSpace(local))
         {

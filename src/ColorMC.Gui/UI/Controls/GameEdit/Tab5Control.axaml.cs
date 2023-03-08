@@ -34,6 +34,9 @@ public partial class Tab5Control : UserControl
         Button_R1.Click += Button_R1_Click;
         Button_A1.Click += Button_A1_Click;
         Button_I1.Click += Button_I1_Click;
+        Button_R.Click += Button_R1_Click;
+        Button_A.Click += Button_A1_Click;
+        Button_I.Click += Button_I1_Click;
 
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
@@ -44,7 +47,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var info = new DirectoryInfo(Obj.GetWorldBackupPath());
         if (!info.Exists)
         {
@@ -101,7 +104,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var file = await BaseBinding.AddFile(window as Window, Obj, FileType.World);
         if (file == null)
             return;
@@ -147,7 +150,7 @@ public partial class Tab5Control : UserControl
 
     public async void Export(WorldDisplayObj obj)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info4"));
         var file = await BaseBinding.SaveFile(window as Window, FileType.World, new object[]
             { obj });
@@ -167,7 +170,7 @@ public partial class Tab5Control : UserControl
 
     public async void Delete(WorldDisplayObj obj)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var res = await window!.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab5.Info1"), obj.Name));
         if (!res)
@@ -194,7 +197,7 @@ public partial class Tab5Control : UserControl
 
     private async void Load()
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
         List.Clear();
         ListBox_Items.Children.Clear();
@@ -227,7 +230,7 @@ public partial class Tab5Control : UserControl
 
     public async void Backup(WorldDisplayObj obj)
     {
-        var Window = (VisualRoot as IBaseWindow)!;
+        var Window = App.FindRoot(this);
         Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info9"));
         var res = await GameBinding.BackupWorld(obj.World);
         Window.Info1.Close();
