@@ -49,7 +49,7 @@ public partial class App : Application
 
     public static IClassicDesktopStyleApplicationLifetime? Life { get; private set; }
 
-    public static AllWindow? AllWindow { get; set; }
+    public static AllControl? AllWindow { get; set; }
     public static DownloadControl? DownloadWindow { get; set; }
     public static UsersControl? UserWindow { get; set; }
     public static MainControl? MainWindow { get; set; }
@@ -123,7 +123,6 @@ public partial class App : Application
             if (ConfigBinding.WindowMode())
             {
                 AllWindow = new();
-                AllWindow.Show();
             }
 
             ShowCustom();
@@ -279,6 +278,30 @@ public partial class App : Application
         }
     }
 
+    public static void AWindow(IUserControl con)
+    {
+        if (ConfigBinding.WindowMode())
+        {
+            AllWindow?.Add((con as UserControl)!);
+        }
+        else
+        {
+            new SelfBaseWindow(con).Show();
+        }
+    }
+
+    public static void AWindow1(IUserControl con)
+    {
+        if (ConfigBinding.WindowMode())
+        {
+            AllWindow?.Add((con as UserControl)!);
+        }
+        else
+        {
+            new SelfBaseWindow(con).ShowDialog(LastWindow!);
+        }
+    }
+
     public static void ShowCustom(UIObj obj)
     {
         if (CustomWindow != null)
@@ -288,6 +311,7 @@ public partial class App : Application
         else
         {
             CustomWindow = new();
+            AWindow(CustomWindow);
         }
 
         CustomWindow?.Load(obj);
@@ -302,6 +326,7 @@ public partial class App : Application
         else
         {
             AddGameWindow = new();
+            AWindow(AddGameWindow);
         }
         if (!string.IsNullOrWhiteSpace(file))
         {
@@ -318,6 +343,7 @@ public partial class App : Application
         else
         {
             DownloadWindow = new();
+            AWindow(DownloadWindow);
         }
     }
 
@@ -330,6 +356,7 @@ public partial class App : Application
         else
         {
             UserWindow = new();
+            AWindow(UserWindow);
         }
 
         if (!string.IsNullOrWhiteSpace(url))
@@ -347,10 +374,12 @@ public partial class App : Application
         else
         {
             MainWindow = new();
+            AWindow(MainWindow);
 
             if (BaseBinding.ISNewStart)
             {
-                new HelloControl();
+                var con = new HelloControl();
+                AWindow1(con);
             }
         }
     }
@@ -364,6 +393,7 @@ public partial class App : Application
         else
         {
             AddModPackWindow = new();
+            AWindow(AddModPackWindow);
         }
     }
 
@@ -376,6 +406,7 @@ public partial class App : Application
         else
         {
             SettingWindow = new();
+            AWindow(SettingWindow);
         }
 
         SettingWindow?.GoTo(type);
@@ -390,6 +421,7 @@ public partial class App : Application
         else
         {
             SkinWindow = new();
+            AWindow(SkinWindow);
         }
     }
 
@@ -405,6 +437,7 @@ public partial class App : Application
             var con = new GameEditControl(obj);
             con.SetType(type);
             GameEditWindows.Add(obj.UUID, con);
+            AWindow(con);
         }
     }
 
@@ -417,6 +450,7 @@ public partial class App : Application
         else
         {
             AddJavaWindow = new();
+            AWindow(AddJavaWindow);
         }
     }
 
@@ -435,6 +469,7 @@ public partial class App : Application
             var con = new AddControl(obj);
             con.GoFile(type1, obj1.PID);
             AddWindows.Add(obj.UUID, con);
+            AWindow(con);
         }
     }
 
@@ -449,6 +484,7 @@ public partial class App : Application
         {
             var con = new AddControl(obj);
             AddWindows.Add(obj.UUID, con);
+            AWindow(con);
             return con.GoSet();
         }
     }
@@ -465,6 +501,7 @@ public partial class App : Application
             var con = new AddControl(obj);
             con.Go(type);
             AddWindows.Add(obj.UUID, con);
+            AWindow(con);
         }
     }
 
@@ -472,7 +509,9 @@ public partial class App : Application
     {
         Dispatcher.UIThread.Post(() =>
         {
-            new ErrorControl().Show(data, e, close);
+            var con = new ErrorControl();
+            con.Show(data, e, close);
+            AWindow1(con);
         });
     }
 
@@ -480,7 +519,9 @@ public partial class App : Application
     {
         Dispatcher.UIThread.Post(() =>
         {
-            new ErrorControl().Show(data, e, close);
+            var con = new ErrorControl();
+            con.Show(data, e, close);
+            AWindow1(con);
         });
     }
 
@@ -529,42 +570,60 @@ public partial class App : Application
         }
     }
 
-    public static void Update(Window window, Image image, Border rec, Border rec1)
+    public static void Update(Window? window, Image? image, Border? rec, Border? rec1)
     {
         if (GuiConfigUtils.Config != null)
         {
-            if (BackBitmap != null)
+            if (image != null)
             {
-                image.Source = BackBitmap;
-                if (GuiConfigUtils.Config.BackTran != 0)
+                if (BackBitmap != null)
                 {
-                    image.Opacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
+                    image.Source = BackBitmap;
+                    if (GuiConfigUtils.Config.BackTran != 0)
+                    {
+                        image.Opacity = (double)(100 - GuiConfigUtils.Config.BackTran) / 100;
+                    }
+                    else
+                    {
+                        image.Opacity = 100;
+                    }
+                    image.IsVisible = true;
                 }
                 else
                 {
-                    image.Opacity = 100;
+                    image.IsVisible = false;
+                    image.Source = null;
                 }
-                image.IsVisible = true;
-            }
-            else
-            {
-                image.IsVisible = false;
-                image.Source = null;
             }
 
             if (GuiConfigUtils.Config.WindowTran)
             {
-                rec1.Background = ColorSel.AppBackColor1;
-                window.TransparencyLevelHint = (WindowTransparencyLevel)
-                    (GuiConfigUtils.Config.WindowTranType + 1);
+                if (rec1 != null)
+                {
+                    rec1.Background = ColorSel.AppBackColor1;
+                }
+                if (window != null)
+                {
+                    window.TransparencyLevelHint = (WindowTransparencyLevel)
+                        (GuiConfigUtils.Config.WindowTranType + 1);
+                }
             }
             else
             {
-                window.TransparencyLevelHint = WindowTransparencyLevel.None;
-                rec1.Background = ColorSel.AppBackColor;
+                if (window != null)
+                {
+                    window.TransparencyLevelHint = WindowTransparencyLevel.None;
+                }
+                if (rec1 != null)
+                {
+                    rec1.Background = ColorSel.AppBackColor;
+                }
             }
 
-            rec.CornerRadius = rec1.CornerRadius = GetCornerRadius1();
+            if (rec != null && rec1 != null)
+            {
+                rec.CornerRadius = rec1.CornerRadius = GetCornerRadius1();
+            }
         }
     }
 }

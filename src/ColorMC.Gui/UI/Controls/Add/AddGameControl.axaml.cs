@@ -7,7 +7,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
@@ -60,17 +59,6 @@ public partial class AddGameControl : UserControl, IUserControl
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
-
-        Load();
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.Add(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).Show();
-        }
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -669,6 +657,8 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public void Opened()
     {
+        Load();
+
         Window.SetTitle(App.GetLanguage("AddGameWindow.Title"));
     }
 }

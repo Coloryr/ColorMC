@@ -44,21 +44,12 @@ public partial class UsersControl : UserControl, IUserControl
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
-
-        Load();
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.Add(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).Show();
-        }
     }
 
     public void Opened()
     {
+        Load();
+
         Dispatcher.UIThread.Post(() =>
         {
             DataGrid_User.MakeTran();

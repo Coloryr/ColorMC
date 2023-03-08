@@ -1,6 +1,4 @@
-﻿using Avalonia.Controls;
-
-namespace ColorMC.Gui.UI.Windows;
+﻿namespace ColorMC.Gui.UI.Windows;
 
 public interface IUserControl
 {

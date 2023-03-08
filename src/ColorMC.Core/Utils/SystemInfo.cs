@@ -12,7 +12,8 @@ public enum OsType
 {
     Windows,
     Linux,
-    MacOS
+    MacOS,
+    Android
 }
 
 public static class SystemInfo
@@ -42,17 +43,21 @@ public static class SystemInfo
         IsArm = RuntimeInformation.OSArchitecture == Architecture.X64 ||
             RuntimeInformation.OSArchitecture == Architecture.X86;
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        if (OperatingSystem.IsWindows())
         {
             Os = OsType.Windows;
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        else if (OperatingSystem.IsLinux())
         {
             Os = OsType.Linux;
         }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        else if (OperatingSystem.IsMacCatalyst())
         {
             Os = OsType.MacOS;
+        }
+        else if (OperatingSystem.IsAndroid())
+        {
+            Os = OsType.Android;
         }
 
         SystemName = RuntimeInformation.OSDescription;

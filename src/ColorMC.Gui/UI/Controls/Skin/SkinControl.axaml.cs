@@ -40,15 +40,6 @@ public partial class SkinControl : UserControl, IUserControl
         ComboBox2.SelectedIndex = 0;
 
         App.SkinLoad += App_SkinLoad;
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.Add(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).Show();
-        }
     }
 
     public void Opened()

@@ -62,7 +62,7 @@ public partial class AddControl : UserControl, IUserControl
 
     }
 
-    public AddControl(GameSettingObj? obj) 
+    public AddControl(GameSettingObj? obj)
     {
         Obj = obj;
 
@@ -104,16 +104,7 @@ public partial class AddControl : UserControl, IUserControl
         {
             List.Add(new());
         }
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.Add(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).Show();
-        }
-    } 
+    }
 
     private void DataGrid1_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
     {
@@ -180,8 +171,8 @@ public partial class AddControl : UserControl, IUserControl
         else
         {
             List6.AddRange(from item1 in List5
-                          where item1.MC == item
-                          select item1);
+                           where item1.MC == item
+                           select item1);
         }
     }
 

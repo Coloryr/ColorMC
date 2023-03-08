@@ -190,8 +190,14 @@
     <Compile Update="UI\Controls\User\UsersControl.axaml.cs">
       <DependentUpon>UsersControl.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Windows\AllControl.axaml.cs">
+      <DependentUpon>AllControl.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Windows\SelfBaseWindow.axaml.cs">
       <DependentUpon>SelfBaseWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Windows\SingleWindow.axaml.cs">
+      <DependentUpon>SingleWindow.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

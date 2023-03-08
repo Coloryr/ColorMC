@@ -9,7 +9,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -69,15 +68,6 @@ public partial class AddModPackControl : UserControl, IUserControl
         for (int a = 0; a < 20; a++)
         {
             List.Add(new());
-        }
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.Add(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).Show();
         }
     }
 
