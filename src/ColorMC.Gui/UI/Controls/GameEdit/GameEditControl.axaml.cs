@@ -32,7 +32,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
     private GameSettingObj Obj;
 
-    public UserControl Con => this;
+    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
     public GameEditControl()
     {
@@ -72,10 +72,7 @@ public partial class GameEditControl : UserControl, IUserControl
     {
         tab1.Update();
 
-        var window = (VisualRoot as GameEditWindow)!;
-        string name = string.Format(App.GetLanguage("GameEditWindow.Title"), Obj.Name);
-        window.Head.Title = name;
-        window.Title = name;
+        Window.SetTitle(string.Format(App.GetLanguage("GameEditWindow.Title"), Obj.Name));
     }
 
     public void SetType(GameEditWindowType type)
@@ -214,15 +211,5 @@ public partial class GameEditControl : UserControl, IUserControl
     public void Closed()
     {
         App.GameEditWindows.Remove(Obj.UUID);
-    }
-
-    public void Update()
-    {
-
-    }
-
-    public void Closing()
-    {
-
     }
 }

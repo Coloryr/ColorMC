@@ -17,11 +17,8 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     HeadControl IBaseWindow.Head => Head;
     Info5Control IBaseWindow.Info5 => Info5;
     Window IBaseWindow.Window => this;
-    UserControl IBaseWindow.Con => Main.Con;
+    UserControl IBaseWindow.Con => (Main as UserControl)!;
 
-    protected new Action? OnOpened;
-    protected new Action? OnClosed;
-    protected Action? OnUpdate;
     public IUserControl Main;
 
     public SelfBaseWindow()
@@ -95,7 +92,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     public void SetTitle(string temp)
     {
-        Head.Title = Title = App.GetLanguage(temp);
+        Head.Title = Title = temp;
     }
 
     private void FindGoodPos()
@@ -158,14 +155,12 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     private void UserWindow_Opened(object? sender, EventArgs e)
     {
         Main?.Opened();
-        OnOpened?.Invoke();
     }
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
         App.PicUpdate -= Update;
 
         Main?.Closed();
-        OnClosed?.Invoke();
 
         Main = null;
         MainControl.Children.Clear();
@@ -186,6 +181,5 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         App.Update(this, Image_Back, Border1, Border2);
 
         Main?.Update();
-        OnUpdate?.Invoke();
     }
 }

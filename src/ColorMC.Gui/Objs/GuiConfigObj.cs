@@ -73,4 +73,6 @@ public record GuiConfigObj
     public bool FontDefault { get; set; }
 
     public bool CloseBeforeLaunch { get; set; }
+
+    public bool WindowMode { get; set; }
 }

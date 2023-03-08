@@ -18,7 +18,7 @@ public partial class UsersControl : UserControl, IUserControl
     private readonly ObservableCollection<UserDisplayObj> List = new();
     private bool Cancel;
 
-    public UserControl Con => this;
+    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
     public UsersControl()
     {
@@ -50,13 +50,20 @@ public partial class UsersControl : UserControl, IUserControl
 
     public void Opened()
     {
-        DataGrid_User.MakeTran();
-        Expander_A.MakePadingNull();
+        Dispatcher.UIThread.Post(() =>
+        {
+            DataGrid_User.MakeTran();
+            Expander_A.MakePadingNull();
+        });
+
+        Window.SetTitle(App.GetLanguage("UserWindow.Title"));
     }
 
     public void Closed()
     {
         ColorMCCore.LoginOAuthCode = null;
+
+        App.UserWindow = null;
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -469,15 +476,5 @@ public partial class UsersControl : UserControl, IUserControl
         SetAdd();
         ComboBox_UserType.SelectedIndex = 3;
         TextBox_Input1.Text = HttpUtility.UrlDecode(url.Replace("authlib-injector:yggdrasil-server:", ""));
-    }
-
-    public void Update()
-    {
-
-    }
-
-    public void Closing()
-    {
-
     }
 }

@@ -1,0 +1,39 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Server.ServerPackControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <DockPanel Margin="3" LastChildFill="True">
+        <ScrollViewer
+            Name="ScrollViewer1"
+            Margin="5,0,5,0"
+            VerticalAlignment="Top"
+            AllowAutoHide="True"
+            Background="{setting:Colors TranBack}"
+            DockPanel.Dock="Top"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Disabled">
+            <TabControl Name="Tabs" Margin="0,0,0,5">
+                <TabItem Header="总体设定" />
+                <TabItem Header="Mod选择" />
+                <TabItem Header="资源包选择" />
+                <TabItem Header="配置文件打包" />
+            </TabControl>
+        </ScrollViewer>
+
+        <Grid Margin="5,0,5,5">
+            <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
+            <Grid
+                Name="Tab1"
+                Margin="3"
+                Background="{setting:Colors TranBack}"
+                ClipToBounds="True" />
+        </Grid>
+
+    </DockPanel>
+</UserControl>

@@ -4,9 +4,9 @@ namespace ColorMC.Gui.UI.Windows;
 
 public interface IUserControl
 {
-    public UserControl Con { get; }
-    public void Opened();
-    public void Closed();
-    public void Update();
-    public void Closing();
+    public IBaseWindow Window { get; }
+    virtual public void Opened() { }
+    virtual public void Closed() { }
+    virtual public void Update() { }
+    virtual public void Closing() { }
 }

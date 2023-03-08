@@ -5,6 +5,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OtherLaunch;
+using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
@@ -35,6 +36,7 @@ public static class InstancesPath
     private const string Name18 = "schematics";
     private const string Name19 = "remove";
     private const string Name20 = "backup";
+    private const string Name21 = "server.json";
 
     /// <summary>
     /// 游戏实例列表
@@ -393,6 +395,21 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name19}/{Name14}");
     }
 
+    public static string GetServerPackFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name21}");
+    }
+
+    public static void SaveServerPack(this GameSettingObj obj, ServerPackObj obj1)
+    {
+        ConfigSave.AddItem(new()
+        {
+            Name = $"game-server-{obj.Name}",
+            Local = obj.GetServerPackFile(),
+            Obj = obj1
+        });
+    }
+
     /// <summary>
     /// 新建游戏版本
     /// </summary>
@@ -573,7 +590,12 @@ public static class InstancesPath
         if (obj.Mods == null)
             return;
 
-        File.WriteAllText(obj.GetModInfoJsonFile(), JsonConvert.SerializeObject(obj.Mods));
+        ConfigSave.AddItem(new()
+        {
+            Name = $"game-mod-{obj.Name}",
+            Local = obj.GetModInfoJsonFile(),
+            Obj = obj.Mods
+        });
     }
 
     /// <summary>

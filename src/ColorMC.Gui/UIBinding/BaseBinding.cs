@@ -153,7 +153,7 @@ public static class BaseBinding
         }
         if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            (win.Con as GameEditControl)?.ClearLog();
+            (win as GameEditControl)?.ClearLog();
         }
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdateOnThread;
@@ -227,7 +227,7 @@ public static class BaseBinding
                 UserBinding.RemoveLockUser(obj1);
                 if (Games.Remove(res, out var obj2))
                 {
-                    (App.MainWindow?.Con as MainControl)?.GameClose(obj2);
+                    (App.MainWindow as MainControl)?.GameClose(obj2);
                 }
                 if (a is Process)
                 {
@@ -279,7 +279,7 @@ public static class BaseBinding
         if (Games.TryGetValue(p, out var obj)
             && App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            (win.Con as GameEditControl)?.Log(d);
+            (win as GameEditControl)?.Log(d);
         }
     }
 
@@ -287,7 +287,7 @@ public static class BaseBinding
     {
         if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            (win.Con as GameEditControl)?.Log(d);
+            (win as GameEditControl)?.Log(d);
         }
     }
 
@@ -677,7 +677,7 @@ public static class BaseBinding
         obj.Name = data;
         obj.Save();
 
-        (App.MainWindow?.Con as MainControl)?.Load();
+        (App.MainWindow as MainControl)?.Load();
     }
 
     public static async Task<bool> CopyGame(GameSettingObj obj, string data)
@@ -689,7 +689,7 @@ public static class BaseBinding
         if (res == null)
             return false;
 
-        (App.MainWindow?.Con as MainControl)?.Load();
+        (App.MainWindow as MainControl)?.Load();
 
         return true;
     }

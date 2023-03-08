@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
@@ -11,6 +12,7 @@ using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,6 +42,12 @@ public partial class AddControl : UserControl, IUserControl
     /// </summary>
     private readonly ObservableCollection<string> List4 = new();
 
+    /// <summary>
+    /// Optifine
+    /// </summary>
+    public readonly List<OptifineDisplayObj> List5 = new();
+    public readonly ObservableCollection<OptifineDisplayObj> List6 = new();
+
     private FileItemControl? Last;
     private GameSettingObj Obj;
     private bool load = false;
@@ -47,7 +55,7 @@ public partial class AddControl : UserControl, IUserControl
     private FileType now;
     private bool set;
 
-    public UserControl Con => this;
+    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
     public AddControl()
     {
@@ -58,6 +66,7 @@ public partial class AddControl : UserControl, IUserControl
 
         ComboBox3.Items = List4;
         ComboBox6.Items = List4;
+        ComboBox7.Items = List4;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
@@ -69,11 +78,17 @@ public partial class AddControl : UserControl, IUserControl
         DataGridFiles.Items = List1;
         DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
 
+        DataGrid1.Items = List6;
+        DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
+
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
         ButtonSearch.Click += ButtonSearch_Click;
         ButtonCancel.Click += ButtonCancel_Click;
         ButtonDownload.Click += ButtonDownload_Click;
+        Button3.Click += Button3_Click;
+        Button4.Click += Button4_Click;
+        Button5.Click += Button5_Click;
 
         Input2.PropertyChanged += Input2_PropertyChanged;
         Input3.PropertyChanged += Input3_PropertyChanged;
@@ -82,6 +97,86 @@ public partial class AddControl : UserControl, IUserControl
         {
             List.Add(new());
         }
+    }
+
+    private void DataGrid1_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        Button5_Click(null, null);
+    }
+
+    private async void Button5_Click(object? sender, RoutedEventArgs e)
+    {
+        if (DataGrid1.SelectedItem is not OptifineDisplayObj item)
+            return;
+
+        var window = (VisualRoot as IBaseWindow)!;
+        var res = await window.Info.ShowWait(string.Format(
+            App.GetLanguage("AddGameWindow.Control1.Info1"), item.Version));
+        if (!res)
+            return;
+        window.Info1.Show(App.GetLanguage("AddGameWindow.Control1.Info2"));
+        var res1 = await GameBinding.DownloadOptifine(Obj, item);
+        window.Info1.Close();
+        if (res1.Item1 == false)
+        {
+            window.Info.Show(res1.Item2!);
+        }
+        else
+        {
+            window.Info2.Show(App.GetLanguage("AddGameWindow.Control1.Info3"));
+            (window as AddControl)?.OptifineClsoe();
+        }
+    }
+
+    public async void Load2()
+    {
+        var window = (VisualRoot as IBaseWindow)!;
+        List4.Clear();
+        List5.Clear();
+        List6.Clear();
+        window.Info1.Show(App.GetLanguage("AddGameWindow.Control1.Info4"));
+        var list = await GameBinding.GetOptifine();
+        window.Info1.Close();
+        if (list == null)
+        {
+            window.Info.Show(App.GetLanguage("AddGameWindow.Control1.Error1"));
+            return;
+        }
+
+        List5.AddRange(list);
+
+        List4.Add("");
+        List4.AddRange(from item in list
+                       group item by item.MC into newgroup
+                       select newgroup.Key);
+
+        Load3();
+    }
+
+    public void Load3()
+    {
+        List6.Clear();
+        if (ComboBox7.SelectedItem is not string item
+            || string.IsNullOrWhiteSpace(item))
+        {
+            List6.AddRange(List5);
+        }
+        else
+        {
+            List6.AddRange(from item1 in List5
+                          where item1.MC == item
+                          select item1);
+        }
+    }
+
+    private void Button4_Click(object? sender, RoutedEventArgs e)
+    {
+        Load2();
+    }
+
+    private void Button3_Click(object? sender, RoutedEventArgs e)
+    {
+        OptifineClsoe();
     }
 
     private void ComboBox6_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -264,16 +359,14 @@ public partial class AddControl : UserControl, IUserControl
 
     private void OptifineOpen()
     {
-        App.CrossFade300.Start(null, Optifine, CancellationToken.None);
+        App.CrossFade300.Start(null, Grid2, CancellationToken.None);
 
-        Optifine.Load();
+        Load2();
     }
 
     public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
-
-        Optifine.SetGame(obj);
     }
 
     private void Input3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -490,7 +583,7 @@ public partial class AddControl : UserControl, IUserControl
 
     public void OptifineClsoe()
     {
-        App.CrossFade300.Start(Optifine, null, CancellationToken.None);
+        App.CrossFade300.Start(Grid2, null, CancellationToken.None);
 
         ComboBox1.SelectedIndex = 0;
     }
@@ -570,11 +663,7 @@ public partial class AddControl : UserControl, IUserControl
     {
         DataGridFiles.MakeTran();
 
-        var window = (VisualRoot as IBaseWindow)!;
-        string name = string.Format(App.GetLanguage("AddWindow.Title"), Obj.Name);
-
-        window.Head.Title = name;
-        window.Window.Title = name;
+        Window.SetTitle(string.Format(App.GetLanguage("AddWindow.Title"), Obj.Name));
 
         display = true;
     }
@@ -590,15 +679,5 @@ public partial class AddControl : UserControl, IUserControl
             while (set)
                 Thread.Sleep(1000);
         });
-    }
-
-    public void Update()
-    {
-
-    }
-
-    public void Closing()
-    {
-
     }
 }

@@ -12,9 +12,14 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Controls.Add;
+using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
+using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Controls.Hello;
+using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.Setting;
+using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -43,18 +48,20 @@ public partial class App : Application
     }
 
     public static IClassicDesktopStyleApplicationLifetime? Life { get; private set; }
-    public static IBaseWindow? DownloadWindow { get; set; }
-    public static IBaseWindow? UserWindow { get; set; }
-    public static IBaseWindow? MainWindow { get; set; }
-    public static IBaseWindow? AddGameWindow { get; set; }
-    public static IBaseWindow? CustomWindow { get; set; }
-    public static IBaseWindow? AddModPackWindow { get; set; }
-    public static IBaseWindow? SettingWindow { get; set; }
-    public static IBaseWindow? SkinWindow { get; set; }
-    public static IBaseWindow? AddJavaWindow { get; set; }
 
-    public readonly static Dictionary<string, IBaseWindow> GameEditWindows = new();
-    public readonly static Dictionary<string, IBaseWindow> AddWindows = new();
+    public static AllWindow? AllWindow { get; set; }
+    public static DownloadControl? DownloadWindow { get; set; }
+    public static UsersControl? UserWindow { get; set; }
+    public static MainControl? MainWindow { get; set; }
+    public static AddGameControl? AddGameWindow { get; set; }
+    public static CustomControl? CustomWindow { get; set; }
+    public static AddModPackControl? AddModPackWindow { get; set; }
+    public static SettingControl? SettingWindow { get; set; }
+    public static SkinControl? SkinWindow { get; set; }
+    public static AddJavaControl? AddJavaWindow { get; set; }
+
+    public readonly static Dictionary<string, GameEditControl> GameEditWindows = new();
+    public readonly static Dictionary<string, AddControl> AddWindows = new();
 
     public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly CrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
@@ -112,6 +119,12 @@ public partial class App : Application
             Icon = new(asset1!);
 
             BaseBinding.Init();
+
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow = new();
+                AllWindow.Show();
+            }
 
             ShowCustom();
 
@@ -207,11 +220,11 @@ public partial class App : Application
         }
         else if (state == CoreRunState.Start)
         {
-            (DownloadWindow?.Con as DownloadControl)?.Load();
+            DownloadWindow?.Load();
         }
         else if (state == CoreRunState.End)
         {
-            DownloadWindow?.Window?.Close();
+            DownloadWindow?.Window.Window.Close();
         }
     }
 
@@ -255,7 +268,7 @@ public partial class App : Application
             {
                 var data = GetLanguage("Error10");
                 Logs.Error(data, e);
-                App.ShowError(data, e, true);
+                ShowError(data, e, true);
                 ok = false;
             }
         }
@@ -270,31 +283,65 @@ public partial class App : Application
     {
         if (CustomWindow != null)
         {
-            CustomWindow.Window.Activate();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Active(CustomWindow);
+            }
+            else
+            {
+                CustomWindow.Window.Window.Activate();
+            }
         }
         else
         {
-            CustomWindow = new CustomWindow();
-            CustomWindow.Window.Show();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new CustomControl();
+                CustomWindow = con;
+                AllWindow?.Add(con);
+            }
+            else
+            {
+                var win = new CustomWindow();
+                CustomWindow = win.Main as CustomControl;
+                win.Show();
+            }
         }
 
-        (CustomWindow as CustomWindow)?.Load(obj);
+        CustomWindow?.Load(obj);
     }
 
     public static void ShowAddGame(string? file = null)
     {
         if (AddGameWindow != null)
         {
-            AddGameWindow.Window.Activate();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Active(AddGameWindow);
+            }
+            else
+            {
+                AddGameWindow.Window.Window.Activate();
+            }
         }
         else
         {
-            AddGameWindow = new AddGameWindow();
-            AddGameWindow.Window.Show();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new AddGameControl();
+                AddGameWindow = con;
+                AllWindow?.Add(con);
+            }
+            else
+            {
+                var win = new AddGameWindow();
+                AddGameWindow = win.Main as AddGameControl;
+                win.Show();
+            }
         }
         if (!string.IsNullOrWhiteSpace(file))
         {
-            (AddGameWindow.Con as AddGameControl)?.AddFile(file);
+            AddGameWindow?.AddFile(file);
         }
     }
 
@@ -302,12 +349,29 @@ public partial class App : Application
     {
         if (DownloadWindow != null)
         {
-            DownloadWindow.Window.Activate();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Active(DownloadWindow);
+            }
+            else
+            {
+                DownloadWindow.Window.Window.Activate();
+            }
         }
         else
         {
-            DownloadWindow = new DownloadWindow();
-            DownloadWindow.Window.Show();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new DownloadControl();
+                DownloadWindow = con;
+                AllWindow?.Add(con);
+            }
+            else
+            {
+                var win = new DownloadWindow();
+                DownloadWindow = win.Main as DownloadControl;
+                win.Show();
+            }
         }
     }
 
@@ -315,17 +379,34 @@ public partial class App : Application
     {
         if (UserWindow != null)
         {
-            UserWindow.Window.Activate();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Active(UserWindow);
+            }
+            else
+            {
+                UserWindow.Window.Window.Activate();
+            }
         }
         else
         {
-            UserWindow = new UserWindow();
-            UserWindow.Window.Show();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new UsersControl();
+                UserWindow = con;
+                AllWindow?.Add(con);
+            }
+            else
+            {
+                var win = new UserWindow();
+                UserWindow = win.Main as UsersControl;
+                win.Show();
+            }
         }
 
         if (!string.IsNullOrWhiteSpace(url))
         {
-            (UserWindow.Con as UsersControl)?.AddUrl(url);
+            UserWindow?.AddUrl(url);
         }
     }
 
@@ -333,17 +414,41 @@ public partial class App : Application
     {
         if (MainWindow != null)
         {
-            MainWindow.Window.Activate();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Active(MainWindow);
+            }
+            else
+            {
+                MainWindow.Window.Window.Activate();
+            }
         }
         else
         {
-            MainWindow = new MainWindow();
-            MainWindow.Window.Show();
-        }
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new MainControl();
+                MainWindow = con;
+                AllWindow?.Add(con);
+            }
+            else
+            {
+                var win = new MainWindow();
+                MainWindow = win.Main as MainControl;
+                win.Show();
+            }
 
-        if (BaseBinding.ISNewStart)
-        {
-            new HelloWindow().ShowDialog(MainWindow.Window);
+            if (BaseBinding.ISNewStart)
+            {
+                if (GuiConfigUtils.Config.WindowMode)
+                {
+                    AllWindow?.ShowDialog(new HelloControl());
+                }
+                else
+                {
+                    new HelloWindow().ShowDialog(MainWindow!.Window.Window);
+                }
+            }
         }
     }
 
@@ -351,12 +456,29 @@ public partial class App : Application
     {
         if (AddModPackWindow != null)
         {
-            AddModPackWindow.Window.Activate();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Active(AddModPackWindow);
+            }
+            else
+            {
+                AddModPackWindow.Window.Window.Activate();
+            }
         }
         else
         {
-            AddModPackWindow = new AddModPackWindow();
-            AddModPackWindow.Window.Show();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new AddModPackControl();
+                AddModPackWindow = con;
+                AllWindow?.Add(con);
+            }
+            else
+            {
+                var win = new AddModPackWindow();
+                AddModPackWindow = win.Main as AddModPackControl;
+                win.Show();
+            }
         }
     }
 
@@ -364,44 +486,79 @@ public partial class App : Application
     {
         if (SettingWindow != null)
         {
-            SettingWindow.Window.Activate();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Active(SettingWindow);
+            }
+            else
+            {
+                SettingWindow.Window.Window.Activate();
+            }
         }
         else
         {
-            SettingWindow = new SettingWindow();
-            SettingWindow.Window.Show();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new SettingControl();
+                SettingWindow = con;
+                AllWindow?.Add(con);
+            }
+            else
+            {
+                var win = new SettingWindow();
+                SettingWindow = win.Main as SettingControl;
+                win.Show();
+            }
         }
 
-        (SettingWindow.Con as SettingControl)?.GoTo(type);
+        SettingWindow?.GoTo(type);
     }
 
     public static void ShowSkin()
     {
         if (SkinWindow != null)
         {
-            SkinWindow.Window.Activate();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Active(SkinWindow);
+            }
+            else
+            {
+                SkinWindow.Window.Window.Activate();
+            }
         }
         else
         {
-            SkinWindow = new SkinWindow();
-            SkinWindow.Window.Show();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new SkinControl();
+                SkinWindow = con;
+                AllWindow?.Add(con);
+            }
+            else
+            {
+                var win = new SkinWindow();
+                SkinWindow = win.Main as SkinControl;
+                win.Show();
+            }
         }
     }
 
     public static void ShowGameEdit(GameSettingObj obj, GameEditWindowType type
         = GameEditWindowType.Normal)
     {
-        if (GameEditWindows.TryGetValue(obj.UUID, out var win))
+        if (GameEditWindows.TryGetValue(obj.UUID, out var win1))
         {
-            win.Window.Activate();
+            win1.Window.Window.Activate();
         }
         else
         {
-            GameEditWindow window = new();
-            window.SetGame(obj);
-            window.Show();
-            window.SetType(type);
-            GameEditWindows.Add(obj.UUID, window);
+            var win = new GameEditWindow();
+            var con = (win.Main as GameEditControl)!;
+            con.SetGame(obj);
+            win.Show();
+            con.SetType(type);
+            GameEditWindows.Add(obj.UUID, con);
         }
     }
 
@@ -409,12 +566,29 @@ public partial class App : Application
     {
         if (AddJavaWindow != null)
         {
-            AddJavaWindow.Window.Activate();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Active(AddJavaWindow);
+            }
+            else
+            {
+                AddJavaWindow.Window.Window.Activate();
+            }
         }
         else
         {
-            AddJavaWindow = new AddJavaWindow();
-            AddJavaWindow.Window.Show();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new AddJavaControl();
+                AddJavaWindow = con;
+                AllWindow?.Add(con);
+            }
+            else
+            {
+                var win = new AddJavaWindow();
+                AddJavaWindow = win.Main as AddJavaControl;
+                win.Show();
+            }
         }
     }
 
@@ -425,16 +599,17 @@ public partial class App : Application
 
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.Activate();
-            (value.Con as AddControl)?.GoFile(type1, obj1.PID);
+            value.Window.Window.Activate();
+            value.GoFile(type1, obj1.PID);
         }
         else
         {
             var win = new AddWindow();
-            (win.Main as AddControl)?.SetGame(obj);
+            var con = (win.Main as AddControl)!;
+            con.SetGame(obj);
             win.Show();
-            (win.Main as AddControl)?.GoFile(type1, obj1.PID);
-            AddWindows.Add(obj.UUID, win);
+            con.GoFile(type1, obj1.PID);
+            AddWindows.Add(obj.UUID, con);
         }
     }
 
@@ -442,16 +617,17 @@ public partial class App : Application
     {
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.Activate();
-            return (value.Con as AddControl)!.GoSet();
+            value.Window.Window.Activate();
+            return value.GoSet();
         }
         else
         {
             var win = new AddWindow();
-            (win.Main as AddControl)?.SetGame(obj);
+            var con = (win.Main as AddControl)!;
+            con.SetGame(obj);
             win.Show();
-            AddWindows.Add(obj.UUID, win);
-            return (win.Main as AddControl)!.GoSet();
+            AddWindows.Add(obj.UUID, con);
+            return con.GoSet();
         }
     }
 
@@ -459,16 +635,20 @@ public partial class App : Application
     {
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.Activate();
-            (value.Con as AddControl)?.Go(type);
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                value.Window.Window.Activate();
+            }
+            value.Go(type);
         }
         else
         {
             var win = new AddWindow();
-            (win.Main as AddControl)?.SetGame(obj);
+            var con = (win.Main as AddControl)!;
+            con.SetGame(obj);
             win.Show();
-            (win.Main as AddControl)?.Go(type);
-            AddWindows.Add(obj.UUID, win);
+            con.Go(type);
+            AddWindows.Add(obj.UUID, con);
         }
     }
 
@@ -476,9 +656,18 @@ public partial class App : Application
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var win = new ErrorWindow();
-            (win.Main as ErrorControl)?.Show(data, e, close);
-            win.Show();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new ErrorControl();
+                con.Show(data, e, close);
+                AllWindow?.ShowDialog(con);
+            }
+            else
+            {
+                var win = new ErrorWindow();
+                (win.Main as ErrorControl)?.Show(data, e, close);
+                win.Show();
+            }
         });
     }
 
@@ -486,9 +675,18 @@ public partial class App : Application
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var win = new ErrorWindow();
-            (win.Main as ErrorControl)?.Show(data, e, close);
-            win.Show();
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                var con = new ErrorControl();
+                con.Show(data, e, close);
+                AllWindow?.ShowDialog(con);
+            }
+            else
+            {
+                var win = new ErrorWindow();
+                (win.Main as ErrorControl)?.Show(data, e, close);
+                win.Show();
+            }
         });
     }
 
@@ -496,11 +694,25 @@ public partial class App : Application
     {
         if (GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            Dispatcher.UIThread.Post(win.Window.Close);
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Close(win);
+            }
+            else
+            {
+                Dispatcher.UIThread.Post(win.Window.Window.Close);
+            }
         }
         if (AddWindows.TryGetValue(obj.UUID, out var win1))
         {
-            Dispatcher.UIThread.Post(win1.Window.Close);
+            if (GuiConfigUtils.Config.WindowMode)
+            {
+                AllWindow?.Close(win1);
+            }
+            else
+            {
+                Dispatcher.UIThread.Post(win1.Window.Window.Close);
+            }
         }
     }
 

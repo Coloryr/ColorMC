@@ -6,8 +6,8 @@ public partial class HelloWindow : SelfBaseWindow
 {
     public HelloWindow()
     {
-        Main = new HelloControl();
-        MainControl.Children.Add(Main.Con);
-        SetTitle("MainWindow.Title");
+        var con = new HelloControl();
+        Main = con;
+        MainControl.Children.Add(con);
     }
 }

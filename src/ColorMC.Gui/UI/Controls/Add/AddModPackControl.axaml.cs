@@ -72,27 +72,7 @@ public partial class AddModPackControl : UserControl, IUserControl
         }
     }
 
-    public UserControl Con => this;
-
-    public void Closed()
-    {
-
-    }
-
-    public void Closing()
-    {
-
-    }
-
-    public void Opened()
-    {
-
-    }
-
-    public void Update()
-    {
-
-    }
+    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
     private void ComboBox6_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -286,7 +266,7 @@ public partial class AddModPackControl : UserControl, IUserControl
         Install();
     }
 
-    private void AddModPackWindow_Closed(object? sender, EventArgs e)
+    public void Closed()
     {
         foreach (var item in ListBox_Items.Children)
         {
@@ -296,8 +276,6 @@ public partial class AddModPackControl : UserControl, IUserControl
             control.Close();
         }
         ListBox_Items.Children.Clear();
-
-        App.PicUpdate -= Update;
 
         App.AddModPackWindow = null;
     }
@@ -313,19 +291,19 @@ public partial class AddModPackControl : UserControl, IUserControl
         App.ShowAddGame();
         if (data.SourceType == SourceType.CurseForge)
         {
-            (App.AddGameWindow?.Con as AddGameControl)?.Install(
+            App.AddGameWindow?.Install(
                 (data.Data as CurseForgeObj.Data.LatestFiles)!,
                 (Last!.Data.Data as CurseForgeObj.Data)!);
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
-            (App.AddGameWindow?.Con as AddGameControl)?.Install(
+            App.AddGameWindow?.Install(
                 (data.Data as ModrinthVersionObj)!,
                 (Last!.Data.Data as ModrinthSearchObj.Hit)!);
         }
         else if (data.SourceType == SourceType.FTB)
         {
-            (App.AddGameWindow?.Con as AddGameControl)?.Install(
+            App.AddGameWindow?.Install(
                 (data.Data as FTBModpackObj.Versions)!,
                 (Last!.Data.Data as FTBModpackObj)!);
         }
@@ -425,10 +403,12 @@ public partial class AddModPackControl : UserControl, IUserControl
         Load();
     }
 
-    private void AddModPackWindow_Opened(object? sender, EventArgs e)
+    public void Opened()
     {
         DataGridFiles.MakeTran();
 
         ComboBox1.SelectedIndex = 0;
+
+        Window.SetTitle(App.GetLanguage("AddModPackWindow.Title"));
     }
 }

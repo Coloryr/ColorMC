@@ -57,7 +57,7 @@ public class ColorMCGui
         if (App.MainWindow == null)
             return Task.FromResult(false);
 
-        return App.MainWindow.Info6.ShowWait(App.GetLanguage("Info5"), data);
+        return App.MainWindow.Window.Info6.ShowWait(App.GetLanguage("Info5"), data);
     }
 
     public static void CheckUpdateFail()
@@ -65,7 +65,7 @@ public class ColorMCGui
         if (App.MainWindow == null)
             return;
 
-        App.MainWindow.Info1.Show(App.GetLanguage("Error13"));
+        App.MainWindow.Window.Info1.Show(App.GetLanguage("Error13"));
     }
 
     public static void Quit()

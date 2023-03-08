@@ -6,16 +6,10 @@ public partial class SkinWindow : SelfBaseWindow
 {
     public SkinWindow()
     {
-        Main = new SkinControl();
-        MainControl.Children.Add(Main.Con);
-        OnClosed = Closed;
-        SetTitle("SkinWindow.Title");
+        var con = new SkinControl();
+        Main = con;
+        MainControl.Children.Add(con);
         Main.Update();
-    }
-
-    private new void Closed()
-    {
-        App.SkinWindow = null;
     }
 }
 

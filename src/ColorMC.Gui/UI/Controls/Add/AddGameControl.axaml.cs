@@ -23,7 +23,7 @@ public partial class AddGameControl : UserControl, IUserControl
     private readonly ObservableCollection<string> List1 = new();
     private bool add;
 
-    public UserControl Con => this;
+    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
 
     public AddGameControl()
     {
@@ -286,6 +286,8 @@ public partial class AddGameControl : UserControl, IUserControl
         ColorMCCore.PackState = null;
         ColorMCCore.PackUpdate = null;
         ColorMCCore.GameOverwirte = null;
+
+        App.AddGameWindow = null;
     }
 
     private void Button_Add5_Click(object? sender, RoutedEventArgs e)
@@ -343,8 +345,8 @@ public partial class AddGameControl : UserControl, IUserControl
         }
         else
         {
-            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
-            (App.MainWindow?.Con as MainControl)?.Load();
+            App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
+            App.MainWindow?.Load();
             window.Window.Close();
         }
     }
@@ -508,8 +510,8 @@ public partial class AddGameControl : UserControl, IUserControl
         window.Info1.Close();
         if (res.Item1)
         {
-            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
-            (App.MainWindow?.Con as MainControl)?.Load();
+            App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
+            App.MainWindow?.Load();
             window.Window.Close();
         }
         else
@@ -557,8 +559,8 @@ public partial class AddGameControl : UserControl, IUserControl
         }
         else
         {
-            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
-            (App.MainWindow?.Con as MainControl)?.Load();
+            App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
+            App.MainWindow?.Load();
             window.Window.Close();
         }
     }
@@ -581,8 +583,8 @@ public partial class AddGameControl : UserControl, IUserControl
         }
         else
         {
-            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
-            (App.MainWindow?.Con as MainControl)?.Load();
+            App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
+            App.MainWindow?.Load();
             window.Window.Close();
         }
     }
@@ -606,8 +608,8 @@ public partial class AddGameControl : UserControl, IUserControl
         else
         {
             FTBHelper.PostIntall(data1.id, data.id);
-            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
-            (App.MainWindow?.Con as MainControl)?.Load();
+            App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
+            App.MainWindow?.Load();
             window.Window.Close();
         }
     }
@@ -646,8 +648,8 @@ public partial class AddGameControl : UserControl, IUserControl
         window.Info1.Close();
         if (res.Item1)
         {
-            App.MainWindow?.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
-            (App.MainWindow?.Con as MainControl)?.Load();
+            App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info12"));
+            App.MainWindow?.Load();
             window.Window.Close();
         }
         else
@@ -658,16 +660,6 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public void Opened()
     {
-
-    }
-
-    public void Closing()
-    {
-
-    }
-
-    public void Update()
-    {
-
+        Window.SetTitle(App.GetLanguage("AddGameWindow.Title"));
     }
 }
