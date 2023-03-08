@@ -23,7 +23,7 @@ public partial class HelloControl : UserControl, IUserControl
     private int now;
     private CancellationTokenSource cancel = new();
 
-    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
+    public IBaseWindow Window => App.FindRoot(this);
 
     public HelloControl()
     {
@@ -122,7 +122,7 @@ public partial class HelloControl : UserControl, IUserControl
 
     public void Done()
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Close();
     }
 }

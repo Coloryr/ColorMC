@@ -31,7 +31,7 @@
                 Name="Button1"
                 Width="25"
                 Height="25"
-                Margin="0,5,120,5"
+                Margin="0,-30,160,5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="←" />
@@ -42,7 +42,7 @@
                 Name="Button2"
                 Width="25"
                 Height="25"
-                Margin="0,5,80,5"
+                Margin="0,-30,120,5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="↓" />

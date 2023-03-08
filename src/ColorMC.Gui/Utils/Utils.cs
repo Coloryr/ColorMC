@@ -407,11 +407,11 @@ public static class ImageUtils
     private static (int X, int Y) GetMaxSize()
     {
         int x = 0, y = 0;
-        foreach (var item in App.Life!.Windows[0].Screens.All)
-        {
-            x = x < item.Bounds.Width ? item.Bounds.Width : x;
-            y = y < item.Bounds.Height ? item.Bounds.Height : y;
-        }
+        //foreach (var item in App.Life!.Windows[0].Screens.All)
+        //{
+        //    x = x < item.Bounds.Width ? item.Bounds.Width : x;
+        //    y = y < item.Bounds.Height ? item.Bounds.Height : y;
+        //}
 
         return (x, y);
     }

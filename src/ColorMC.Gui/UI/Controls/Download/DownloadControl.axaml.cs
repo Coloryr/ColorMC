@@ -25,7 +25,7 @@ public partial class DownloadControl : UserControl, IUserControl
     private long Count;
     private Timer Timer;
 
-    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
+    public IBaseWindow Window => App.FindRoot(this);
 
     public DownloadControl()
     {
@@ -44,7 +44,9 @@ public partial class DownloadControl : UserControl, IUserControl
         Button_S1.PointerExited += Button_S1_PointerLeave;
         Button_S.PointerEntered += Button_S_PointerEnter;
 
+        Button_P.Click += Button_P_Click;
         Button_P1.Click += Button_P_Click;
+        Button_S.Click += Button_S_Click;
         Button_S1.Click += Button_S_Click;
 
         ProgressBar1.Value = 0;
@@ -67,7 +69,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     private async void Button_S_Click(object? sender, RoutedEventArgs e)
     {
-        var windows = (VisualRoot as IBaseWindow)!;
+        var windows = App.FindRoot(this);
         var res = await windows.Info.ShowWait(App.GetLanguage("DownloadWindow.Info1"));
         if (res)
         {
@@ -79,7 +81,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     private void Button_P_Click(object? sender, RoutedEventArgs e)
     {
-        var windows = (VisualRoot as IBaseWindow)!;
+        var windows = App.FindRoot(this);
         if (!pause)
         {
             BaseBinding.DownloadPause();
@@ -138,7 +140,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public async void Closing(CancelEventArgs e)
     {
-        var windows = (VisualRoot as IBaseWindow)!;
+        var windows = App.FindRoot(this);
         if (BaseBinding.IsDownload)
         {
             var res = await windows.Info.ShowWait(App.GetLanguage("DownloadWindow.Info4"));

@@ -343,7 +343,7 @@ public partial class Tab6Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab6.Info2"));
         var file = await BaseBinding.SaveFile(window as Window, FileType.Game, new object[]
             { Obj, FilesPageViewModel.GetUnSelectItems(), PackType.ColorMC });

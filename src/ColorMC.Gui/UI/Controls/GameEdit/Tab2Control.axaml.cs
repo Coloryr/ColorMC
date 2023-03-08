@@ -62,7 +62,7 @@ public partial class Tab2Control : UserControl
 
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        var Window = (VisualRoot as IBaseWindow)!;
+        var Window = App.FindRoot(this);
         var res = await Window.Info.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
         if (res)
         {
@@ -168,7 +168,7 @@ public partial class Tab2Control : UserControl
             GameBinding.SetJavaLocal(Obj, ComboBox2.SelectedItem as string, TextBox11.Text);
         }
 
-        var Window = (VisualRoot as IBaseWindow)!;
+        var Window = App.FindRoot(this);
         Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
@@ -209,7 +209,7 @@ public partial class Tab2Control : UserControl
 
     private void Save4()
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
 
         if (UIUtils.CheckNotNumber(TextBox8.Text))
         {

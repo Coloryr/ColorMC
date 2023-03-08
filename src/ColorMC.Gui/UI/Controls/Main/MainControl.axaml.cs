@@ -27,7 +27,17 @@ public partial class MainControl : UserControl, IUserControl
     private bool first = true;
     private LaunchState Last;
 
-    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
+    public IBaseWindow Window
+    {
+        get
+        {
+            if (VisualRoot is IBaseWindow win)
+            {
+                return win;
+            }
+            return App.AllWindow;
+        }
+    }
 
     public MainControl()
     {
@@ -110,7 +120,7 @@ public partial class MainControl : UserControl, IUserControl
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            var window = (VisualRoot as IBaseWindow)!;
+            var window = App.FindRoot(this);
             return window.Info.ShowWait(string.Format(
                 App.GetLanguage("MainWindow.Info21"), login.UserName));
         });
@@ -126,7 +136,7 @@ public partial class MainControl : UserControl, IUserControl
         if (launch)
             return;
 
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         launch = true;
         ItemInfo.SetLaunch(true);
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
@@ -212,7 +222,7 @@ public partial class MainControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(async () =>
             {
-                var window = (VisualRoot as IBaseWindow)!;
+                var window = App.FindRoot(this);
                 await window.Info.ShowOk(App.GetLanguage("MainWindow.Info22"));
                 App.Close();
             });
@@ -223,7 +233,7 @@ public partial class MainControl : UserControl, IUserControl
 
         if (BaseBinding.CheckOldDir())
         {
-            var window = (VisualRoot as IBaseWindow)!;
+            var window = App.FindRoot(this);
             window.Info.Show(App.GetLanguage("MainWindow.Info27"));
         }
 
@@ -270,7 +280,7 @@ public partial class MainControl : UserControl, IUserControl
     {
         return Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var window = (VisualRoot as IBaseWindow)!;
+            var window = App.FindRoot(this);
 
             return state switch
             {
@@ -286,7 +296,7 @@ public partial class MainControl : UserControl, IUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var window = (VisualRoot as IBaseWindow)!;
+            var window = App.FindRoot(this);
             Last = state;
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
@@ -554,7 +564,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public async Task AddGroup()
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         await window.Info3.ShowOne(App.GetLanguage("MainWindow.Info1"), false);
         if (window.Info3.Cancel)
         {
@@ -577,7 +587,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public async void DeleteGame(GameSettingObj obj)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var res = await window.Info.ShowWait(
             string.Format(App.GetLanguage("MainWindow.Info19"), obj.Name));
         if (!res)
@@ -588,7 +598,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public async void Rename(GameSettingObj obj)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         await window.Info3.ShowEdit(App.GetLanguage("MainWindow.Info23"), obj.Name);
         if (window.Info3.Cancel)
             return;
@@ -604,7 +614,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public async void Copy(GameSettingObj obj)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         await window.Info3.ShowEdit(App.GetLanguage("MainWindow.Info23"),
             obj.Name + App.GetLanguage("MainWindow.Info24"));
         if (window.Info3.Cancel)

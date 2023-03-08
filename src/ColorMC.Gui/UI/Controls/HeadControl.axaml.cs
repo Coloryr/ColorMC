@@ -15,6 +15,7 @@ public partial class HeadControl : UserControl
             AvaloniaProperty.Register<Label, object>(nameof(Title1), defaultBindingMode: BindingMode.TwoWay);
 
     private bool min;
+    private bool clo;
     private bool max;
     public object Title
     {
@@ -45,6 +46,16 @@ public partial class HeadControl : UserControl
         {
             min = value;
             Button_Min.IsVisible = min;
+        }
+    }
+
+    public bool Clo
+    {
+        get { return clo; }
+        set
+        {
+            clo = value;
+            Button_Close.IsVisible = clo;
         }
     }
 

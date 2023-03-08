@@ -43,7 +43,7 @@ public partial class Tab3Control : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var name = TextBox_Name.Text;
         var local = TextBox_Local.Text;
 
@@ -94,7 +94,7 @@ public partial class Tab3Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as HelloControl)?.Next();
     }
 

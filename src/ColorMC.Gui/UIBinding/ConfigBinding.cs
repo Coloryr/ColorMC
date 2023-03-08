@@ -219,6 +219,6 @@ public static class ConfigBinding
 
     public static bool WindowMode()
     {
-        return GuiConfigUtils.Config.WindowMode;
+        return GuiConfigUtils.Config.WindowMode || SystemInfo.Os == OsType.Android;
     }
 }

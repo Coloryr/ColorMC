@@ -34,7 +34,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var res = await window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info3"));
         if (!res)
             return;
@@ -45,7 +45,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var res = await window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info1"));
         if (!res)
             return;
@@ -56,7 +56,7 @@ public partial class Tab1Control : UserControl
 
     private void Button_Input2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var local = TextBox_Local2.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -99,7 +99,7 @@ public partial class Tab1Control : UserControl
 
     private void Button_Input_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var local = TextBox_Local.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -142,7 +142,7 @@ public partial class Tab1Control : UserControl
 
     private void Button_Input1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var local = TextBox_Local1.Text;
         if (string.IsNullOrWhiteSpace(local))
         {

@@ -64,12 +64,6 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
 
-        if (SystemInfo.Os != OsType.Android)
-        {
-            new SingleWindow(this).Show();
-            Head.Max = false;
-        }
-
         App.PicUpdate += Update;
     }
 
@@ -314,9 +308,9 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     public void SetTitle(string data)
     {
-        if (SystemInfo.Os != OsType.Android)
+        if (VisualRoot is SingleWindow win)
         {
-            (VisualRoot as SingleWindow)?.SetTitle(data);
+            win.Title = data;
         }
 
         Head.Title = data;

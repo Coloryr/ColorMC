@@ -50,7 +50,7 @@ public partial class Tab1Control : UserControl
         Obj1.Text = TextBox3.Text;
         Obj1.UI = TextBox4.Text;
 
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
 
         (window.Con as ServerPackControl)?.Save();
     }

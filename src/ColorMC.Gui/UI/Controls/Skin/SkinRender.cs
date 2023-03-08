@@ -302,7 +302,7 @@ void main()
 
     private void LoadSkin()
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         if (UserBinding.SkinImage == null)
         {
             HaveSkin = false;

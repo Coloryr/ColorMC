@@ -21,7 +21,7 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     private int now;
 
-    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
+    public IBaseWindow Window => App.FindRoot(this);
 
     private GameSettingObj Obj;
     private ServerPackObj Obj1;

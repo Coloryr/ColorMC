@@ -46,7 +46,7 @@ public partial class Tab3Control : UserControl
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         if (ColorMCGui.Update == null)
         {
             window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error1"));
@@ -58,7 +58,7 @@ public partial class Tab3Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         if (ColorMCGui.Update == null || ColorMCGui.Check == null)
         {
             window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error2"));

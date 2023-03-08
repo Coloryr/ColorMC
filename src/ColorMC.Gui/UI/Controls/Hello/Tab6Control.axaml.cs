@@ -22,31 +22,31 @@ public partial class Tab6Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as HelloControl)?.Done();
     }
 
     private void LoadConfig_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as HelloControl)?.SwitchTab(1);
     }
 
     private void AddUser_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as HelloControl)?.SwitchTab(3);
     }
 
     private void AddJava_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as HelloControl)?.SwitchTab(2);
     }
 
     private void AddGame_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         (window.Con as HelloControl)?.SwitchTab(4);
     }
 

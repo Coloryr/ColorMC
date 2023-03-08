@@ -25,12 +25,13 @@ public partial class Tab5Control : UserControl
         Button_R1.PointerExited += Button_R1_PointerLeave;
         Button_R.PointerEntered += Button_R_PointerEnter;
 
-        Button_R1.Click += Button_R1_Click;
-
         Button_D1.PointerExited += Button_D1_PointerLeave;
         Button_D.PointerEntered += Button_D_PointerEnter;
 
+        Button_R1.Click += Button_R1_Click;
         Button_D1.Click += Button_D1_Click;
+        Button_R.Click += Button_R1_Click;
+        Button_D.Click += Button_D1_Click;
 
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
@@ -78,7 +79,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         var res = await window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
         if (!res)
             return;
@@ -114,7 +115,7 @@ public partial class Tab5Control : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
 
         var name = TextBox1.Text;
         var local = TextBox2.Text;

@@ -55,7 +55,7 @@ public partial class CustomControl : UserControl, IUserControl
     private Image? HeadImg;
     private ServerMotdControl? Motd;
 
-    public IBaseWindow Window => (VisualRoot as IBaseWindow)!;
+    public IBaseWindow Window => App.FindRoot(this);
 
     public CustomControl()
     {
@@ -111,7 +111,7 @@ public partial class CustomControl : UserControl, IUserControl
 
     public async void Launch()
     {
-        var window = (VisualRoot as IBaseWindow)!;
+        var window = App.FindRoot(this);
         window.Info1.Show(App.GetLanguage("MainWindow.Launch"));
         var res = await GameBinding.Launch(Obj, false);
         window.Info1.Close();
@@ -378,7 +378,7 @@ public partial class CustomControl : UserControl, IUserControl
     {
         return Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var window = (VisualRoot as IBaseWindow)!;
+            var window = App.FindRoot(this);
             return state switch
             {
                 LaunchState.LostLib => await window.Info.ShowWait(App.GetLanguage("MainWindow.Info5")),
@@ -393,7 +393,7 @@ public partial class CustomControl : UserControl, IUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var window = (VisualRoot as IBaseWindow)!;
+            var window = App.FindRoot(this);
             Last = state;
             switch (state)
             {
