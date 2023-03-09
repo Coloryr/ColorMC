@@ -317,7 +317,7 @@ public static class PackDownload
             if (url == null)
             {
                 url = item.downloads[0];
-                modid = item.path;
+                modid = "";
                 fileid = "";
             }
             else

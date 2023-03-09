@@ -705,7 +705,6 @@ public static class GameBinding
                 obj1 = new ModDisplayObj()
                 {
                     Name = App.GetLanguage("GameEditWindow.Tab4.Info5"),
-                    Enable = item.Disable,
                     Obj = item
                 };
             }
@@ -714,17 +713,17 @@ public static class GameBinding
                 obj1 = new ModDisplayObj()
                 {
                     Name = item.name,
-                    Enable = item.Disable,
                     Obj = item
                 };
 
                 var item1 = obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
                 if (item1 != null)
                 {
-                    obj1.PID = item1.ModId;
-                    obj1.FID = item1.FileId;
+                    obj1.Obj1 = item1;
                 }
             }
+
+            obj1.Enable = item.Disable;
 
             list.Add(obj1);
         });
@@ -1769,16 +1768,34 @@ public static class GameBinding
     public static ServerPackObj? GetServerPack(GameSettingObj obj)
     {
         var file = obj.GetServerPackFile();
-        if (!File.Exists(file))
+        ServerPackObj? obj1 = null;
+        if (File.Exists(file))
         {
-            return null;
+            var data = File.ReadAllText(file);
+            obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
         }
-        var data = File.ReadAllText(file);
-        return JsonConvert.DeserializeObject<ServerPackObj>(data);
+
+        if (obj1 != null)
+        {
+            obj1.Game = obj;
+        }
+        else
+        {
+            obj1 = new()
+            {
+                Game = obj,
+                Mod = new(),
+                Resourcepack = new(),
+                Config = new()
+            };
+            SaveServerPack(obj1);
+        }
+
+        return obj1;
     }
 
-    public static void SaveServerPack(GameSettingObj obj, ServerPackObj obj1)
+    public static void SaveServerPack(ServerPackObj obj1)
     {
-        obj.SaveServerPack(obj1);
+        obj1.Game.SaveServerPack(obj1);
     }
 }
