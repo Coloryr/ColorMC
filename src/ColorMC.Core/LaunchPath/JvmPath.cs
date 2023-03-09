@@ -29,17 +29,25 @@ public static class JvmPath
     /// <returns>结果</returns>
     public static async Task<(CoreRunState, string?)> Install(string file, string name, string sha256, string url)
     {
-        Jvms.Remove(name);
-        var res = await Download(file, sha256, url);
-        if (!res.Item1)
+        try
         {
-            return (CoreRunState.Error, LanguageHelper.GetName("Core.Jvm.Error5"));
+            Jvms.Remove(name);
+            var res = await Download(file, sha256, url);
+            if (!res.Item1)
+            {
+                return (CoreRunState.Error, LanguageHelper.GetName("Core.Jvm.Error5"));
+            }
+            ColorMCCore.JavaUnzip?.Invoke();
+            res = await UnzipJava(name, res.Item2!);
+            if (!res.Item1)
+            {
+                return (CoreRunState.Error, res.Item2);
+            }
         }
-        ColorMCCore.JavaUnzip?.Invoke();
-        res = await UnzipJava(name, res.Item2!);
-        if (!res.Item1)
+        catch (Exception e)
         {
-            return (CoreRunState.Error, res.Item2);
+            Logs.Error("Java下载错误", e);
+            return (CoreRunState.Error, "Java下载错误");
         }
 
         return (CoreRunState.Init, null);
@@ -75,6 +83,7 @@ public static class JvmPath
         {
             OsType.Windows => PathC.GetFile(path, "javaw.exe"),
             OsType.Linux => PathC.GetFile(path, "java"),
+            OsType.Android => PathC.GetFile(path, "java"),
             OsType.MacOS => PathC.GetFile(path, "java"),
             _ => null,
         };
@@ -100,7 +109,12 @@ public static class JvmPath
             Per(java);
         }
 
-        return AddItem(name, Path.GetRelativePath(AppContext.BaseDirectory, java));
+        if (java.StartsWith(ColorMCCore.BaseDir))
+        {
+            return AddItem(name, Path.GetRelativePath(ColorMCCore.BaseDir, java));
+        }
+
+        return AddItem(name, java);
     }
 
     /// <summary>
@@ -282,6 +296,7 @@ public static class JvmPath
                 p.StartInfo.RedirectStandardError = true;
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.WorkingDirectory = BaseDir;
                 p.Start();
                 string result = p.StandardError.ReadToEnd();
                 string[] lines = result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);

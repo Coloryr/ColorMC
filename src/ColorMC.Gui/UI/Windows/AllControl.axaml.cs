@@ -46,7 +46,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     Info6Control IBaseWindow.Info6 => Info6;
 
-    HeadControl IBaseWindow.Head => (VisualRoot as IBaseWindow)?.Head;
+    HeadControl IBaseWindow.Head => Head;
 
     public UserControl Con => Now;
 

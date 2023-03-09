@@ -27,17 +27,7 @@ public partial class MainControl : UserControl, IUserControl
     private bool first = true;
     private LaunchState Last;
 
-    public IBaseWindow Window
-    {
-        get
-        {
-            if (VisualRoot is IBaseWindow win)
-            {
-                return win;
-            }
-            return App.AllWindow;
-        }
-    }
+    public IBaseWindow Window => App.FindRoot(this);
 
     public MainControl()
     {

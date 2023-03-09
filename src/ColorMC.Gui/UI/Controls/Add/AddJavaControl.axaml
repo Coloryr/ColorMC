@@ -53,37 +53,49 @@
             Content="{setting:Localize AddJavaWindow.Text5}"
             DockPanel.Dock="Bottom" />
 
-        <DataGrid
-            Name="DataGrid1"
-            AutoGenerateColumns="False"
-            Background="#88ffffff"
-            CanUserSortColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Binding="{Binding Name}"
-                    Header="{setting:Localize AddJavaWindow.DataGrid.Text1}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Arch}"
-                    Header="{setting:Localize AddJavaWindow.DataGrid.Text2}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Os}"
-                    Header="{setting:Localize AddJavaWindow.DataGrid.Text3}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding MainVersion}"
-                    Header="{setting:Localize AddJavaWindow.DataGrid.Text4}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Version}"
-                    Header="{setting:Localize AddJavaWindow.DataGrid.Text5}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Size}"
-                    Header="{setting:Localize AddJavaWindow.DataGrid.Text6}"
-                    IsReadOnly="True" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid>
+            <DataGrid
+                Name="DataGrid1"
+                AutoGenerateColumns="False"
+                Background="#88ffffff"
+                CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="{setting:Localize AddJavaWindow.DataGrid.Text1}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Arch}"
+                        Header="{setting:Localize AddJavaWindow.DataGrid.Text2}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Os}"
+                        Header="{setting:Localize AddJavaWindow.DataGrid.Text3}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding MainVersion}"
+                        Header="{setting:Localize AddJavaWindow.DataGrid.Text4}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Version}"
+                        Header="{setting:Localize AddJavaWindow.DataGrid.Text5}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Size}"
+                        Header="{setting:Localize AddJavaWindow.DataGrid.Text6}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Grid
+                Name="Grid1"
+                Background="#EEEEEE"
+                IsVisible="False">
+                <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="版本数量过多，请细分选择" />
+            </Grid>
+        </Grid>
     </DockPanel>
 </UserControl>

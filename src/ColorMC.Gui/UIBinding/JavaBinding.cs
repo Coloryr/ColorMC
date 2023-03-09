@@ -31,11 +31,11 @@ public static class JavaBinding
     {
         if (str.EndsWith(".zip"))
         {
-            str = str[..^4];
+            str = str[..^5];
         }
         else if (str.EndsWith("tar.gz"))
         {
-            str = str[..^6];
+            str = str[..^7];
         }
         return str;
     }
@@ -158,6 +158,9 @@ public static class JavaBinding
                     return new BclStorageFolder(new DirectoryInfo("/Library/Java/JavaVirtualMachines/"));
                 break;
         }
+
+        if (Directory.Exists(JvmPath.BaseDir))
+            return new BclStorageFolder(new DirectoryInfo(JvmPath.BaseDir));
 
         return null;
     }

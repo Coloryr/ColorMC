@@ -23,7 +23,7 @@
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
             <StackPanel
-                Margin="0,100,0,0"
+                Margin="0,50,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">

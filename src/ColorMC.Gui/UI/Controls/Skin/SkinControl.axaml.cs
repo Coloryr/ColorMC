@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media.Immutable;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -44,6 +45,13 @@ public partial class SkinControl : UserControl, IUserControl
 
     public void Opened()
     {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            Window.Info.Show("≤ª÷ß≥÷∆§∑Ù‘§¿¿");
+
+            return;
+        }
+
         var temp = Matrix.CreateRotation(Math.PI);
         Skin.RenderTransform = new ImmutableTransform(temp);
 
@@ -63,8 +71,10 @@ public partial class SkinControl : UserControl, IUserControl
     public void Closed()
     {
         App.SkinLoad -= App_SkinLoad;
-
-        Skin.Close();
+        if (SystemInfo.Os != OsType.Android)
+        {
+            Skin.Close();
+        }
 
         App.SkinWindow = null;
     }
