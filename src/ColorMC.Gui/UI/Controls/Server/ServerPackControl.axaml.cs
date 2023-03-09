@@ -11,6 +11,7 @@ namespace ColorMC.Gui.UI.Controls.Server;
 public partial class ServerPackControl : UserControl, IUserControl
 {
     private Tab1Control tab1 = new();
+    private Tab2Control tab2 = new();
 
     private bool switch1 = false;
 
@@ -26,8 +27,10 @@ public partial class ServerPackControl : UserControl, IUserControl
     private GameSettingObj Obj;
     private ServerPackObj Obj1;
 
-    public ServerPackControl()
+    public ServerPackControl(GameSettingObj obj)
     {
+        Obj = obj;
+
         InitializeComponent();
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
@@ -38,7 +41,20 @@ public partial class ServerPackControl : UserControl, IUserControl
 
         content1.Content = tab1;
 
-        tab1.Load();
+        if (obj != null)
+        {
+            Obj1 = GameBinding.GetServerPack(obj);
+
+            tab1.SetObj(Obj1);
+            tab2.SetObj(Obj1);
+
+            tab1.Load();
+        }
+    }
+
+    public ServerPackControl() : this(null)
+    {
+        
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -59,7 +75,11 @@ public partial class ServerPackControl : UserControl, IUserControl
         {
             case 0:
                 tab1.Load();
-
+                Go(tab1);
+                break;
+            case 1:
+                tab2.Load();
+                Go(tab2);
                 break;
         }
 
@@ -92,20 +112,6 @@ public partial class ServerPackControl : UserControl, IUserControl
         Tabs.IsEnabled = true;
     }
 
-    public void SetGame(GameSettingObj obj)
-    {
-        Obj = obj;
-
-        Obj1 = GameBinding.GetServerPack(obj);
-        if (Obj1 == null)
-        {
-            Obj1 = new();
-            GameBinding.SaveServerPack(obj, Obj1);
-        }
-
-        tab1.SetObj(Obj1);
-    }
-
     public void Closed()
     {
         content1.Content = null;
@@ -114,6 +120,6 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public void Save()
     {
-        GameBinding.SaveServerPack(Obj, Obj1);
+        GameBinding.SaveServerPack(Obj1);
     }
 }

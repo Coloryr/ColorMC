@@ -52,6 +52,14 @@
                     Content="锁定Mod" />
                 <CheckBox Name="CheckBox2" Content="强制更新" />
             </StackPanel>
+
         </StackPanel>
+        <Button
+            Name="Button2"
+            Width="120"
+            Height="25"
+            Margin="5"
+            VerticalAlignment="Bottom"
+            Content="生成服务器包" />
     </Grid>
 </UserControl>

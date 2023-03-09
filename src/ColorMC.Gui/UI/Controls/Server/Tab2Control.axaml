@@ -1,0 +1,46 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Server.Tab2Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <DockPanel Margin="3">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Label VerticalAlignment="Center" Content="选择要同步的Mod" />
+            <Button
+                Name="Button1"
+                Width="80"
+                Height="25"
+                Content="全选" />
+            <Button
+                Name="Button2"
+                Width="80"
+                Height="25"
+                Margin="5,0,0,0"
+                Content="清除选择" />
+        </StackPanel>
+        <DataGrid
+            Name="DataGrid1"
+            AutoGenerateColumns="False"
+            Background="#88ffffff"
+            CanUserResizeColumns="True"
+            CanUserSortColumns="False">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding Check}" Header="同步" />
+                <DataGridTextColumn
+                    Binding="{Binding FileName}"
+                    Header="文件名"
+                    IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding PID}" Header="项目ID" />
+                <DataGridTextColumn Binding="{Binding FID}" Header="文件ID" />
+                <DataGridTextColumn Binding="{Binding Source}" Header="下载源" />
+                <DataGridTextColumn Binding="{Binding Url}" Header="下载地址" />
+                <DataGridTextColumn Binding="{Binding Sha1}" Header="SHA1" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

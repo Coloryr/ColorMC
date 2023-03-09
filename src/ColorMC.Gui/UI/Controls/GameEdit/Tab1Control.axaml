@@ -111,16 +111,27 @@
             </StackPanel>
             <CheckBox Name="CheckBox1" Content="{setting:Localize GameEditWindow.Tab1.Text3}" />
         </StackPanel>
-        <Button
-            Name="Button5"
-            Width="120"
-            Height="25"
-            Margin="5"
+        <StackPanel
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Content="{setting:Localize Button.Delete}"
-            ToolTip.Tip="{setting:Localize ToolTip.Text36}"
-            ToolTip.VerticalOffset="-30" />
+            Orientation="Horizontal">
+            <Button
+                Name="Button5"
+                Width="120"
+                Height="25"
+                Margin="5"
+                Content="{setting:Localize Button.Delete}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text36}"
+                ToolTip.VerticalOffset="-30" />
+            <Button
+                Name="Button8"
+                Width="120"
+                Height="25"
+                Margin="0,5,5,5"
+                Content="生成服务器包"
+                ToolTip.Tip="{setting:Localize ToolTip.Text36}"
+                ToolTip.VerticalOffset="-30" />
+        </StackPanel>
 
         <Button
             Name="Button6"
