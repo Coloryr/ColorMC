@@ -13,22 +13,18 @@
             Name="Border1"
             Background="#EEEEEEEE"
             CornerRadius="0,0,10,10" />
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <DockPanel
+            Margin="20"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            LastChildFill="True">
             <Label
                 Name="Label1"
                 HorizontalAlignment="Left"
                 Content="123"
+                DockPanel.Dock="Top"
                 FontSize="20" />
-            <TextBox
-                Name="TextBox1"
-                Width="700"
-                Height="300"
-                Margin="0,5,0,0"
-                HorizontalAlignment="Stretch"
-                AcceptsReturn="True"
-                CornerRadius="0"
-                IsReadOnly="True" />
-            <StackPanel Margin="0,5,0,0">
+            <StackPanel Margin="0,5,0,0" DockPanel.Dock="Bottom">
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <Button
                         Name="Button_Confirm"
@@ -45,6 +41,13 @@
                         Content="{setting:Localize Button.Cancel}" />
                 </StackPanel>
             </StackPanel>
-        </StackPanel>
+            <TextBox
+                Name="TextBox1"
+                Margin="0,5,0,0"
+                AcceptsReturn="True"
+                CornerRadius="0"
+                IsReadOnly="True" />
+
+        </DockPanel>
     </Grid>
 </UserControl>

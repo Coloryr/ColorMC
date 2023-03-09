@@ -5,6 +5,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Windows;
@@ -159,10 +160,13 @@ void main()
 
     public SkinRender()
     {
-        Window1 = new();
+        if (SystemInfo.Os != OsType.Android)
+        {
+            Window1 = new();
 
-        skina = new(this);
-        skina.Start();
+            skina = new(this);
+            skina.Start();
+        }
     }
 
     public void Init()

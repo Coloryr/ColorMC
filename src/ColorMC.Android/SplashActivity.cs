@@ -5,7 +5,6 @@ using Application = Android.App.Application;
 using Avalonia;
 using Avalonia.Android;
 using ColorMC.Gui;
-using System;
 using ColorMC.Core.Utils;
 using ColorMC.Core;
 
@@ -20,13 +19,37 @@ public class SplashActivity : AvaloniaSplashActivity<App>
         {
             SystemInfo.Init();
 
-            var data = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal) + "/ColorMC/";
+            var temp = GetExternalFilesDir(null) + "/";
 
-            ColorMCCore.Init(data);
-            GuiConfigUtils.Init(data);
-            ImageTemp.Init(data);
+            try
+            {
+                System.Diagnostics.Process p = new();
+                p.StartInfo.FileName = "sh";
+                p.StartInfo.RedirectStandardInput = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.Start();
+
+                p.StandardInput.WriteLine("chmod -R 777 " + temp);
+                p.StandardInput.WriteLine("exit");
+                p.WaitForExit();
+
+                string temp1 = p.StandardOutput.ReadToEnd();
+
+                p.Dispose();
+            }
+            catch (System.Exception e)
+            {
+                Logs.Error("java chmod fail", e);
+            }
+
+            ColorMCCore.Init(temp);
+            GuiConfigUtils.Init(temp);
+            ImageTemp.Init(temp);
         }
-        catch (Exception e)
+        catch (System.Exception e)
         { 
             
         }

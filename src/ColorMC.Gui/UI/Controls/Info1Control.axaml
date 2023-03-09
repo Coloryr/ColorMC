@@ -21,11 +21,11 @@
                 Text="测试"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
-            <StackPanel Margin="0,100,0,0">
+            <StackPanel Margin="0,50,0,0">
                 <ProgressBar
                     Name="ProgressBar_Value"
                     Height="20"
-                    Margin="20,0,20,50"
+                    Margin="20,0,20,20"
                     IsIndeterminate="True"
                     Value="20" />
                 <Button

@@ -194,11 +194,21 @@ public partial class AddJavaControl : UserControl, IUserControl
         bool version1 = !string.IsNullOrWhiteSpace(version);
         bool os1 = !string.IsNullOrWhiteSpace(os);
 
-        List.AddRange(from item in List1
-                      where (!arch1 || (item.Arch == arch))
-                      && (!version1 || (item.MainVersion == version))
-                      && (ComboBox1.SelectedIndex == 0 || !os1 || (item.Os == os))
-                      select item);
+        var list1 = from item in List1
+                    where (!arch1 || (item.Arch == arch))
+                    && (!version1 || (item.MainVersion == version))
+                    && (ComboBox1.SelectedIndex == 0 || !os1 || (item.Os == os))
+                    select item;
+
+        if (list1.Count() > 100)
+        {
+            Grid1.IsVisible = true;
+        }
+        else
+        {
+            Grid1.IsVisible = false;
+            List.AddRange(list1);
+        }
     }
 
     private void Switch()

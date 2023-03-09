@@ -34,15 +34,6 @@ public partial class HelloControl : UserControl, IUserControl
         Tab1.Children.Add(content2);
 
         content1.Content = tab1;
-
-        if (ConfigBinding.WindowMode())
-        {
-            App.AllWindow?.ShowDialog(this);
-        }
-        else
-        {
-            new SelfBaseWindow(this).ShowDialog((App.MainWindow!.Window as Window)!);
-        }
     }
 
     public void Opened()

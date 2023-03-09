@@ -1,8 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto">
+	<uses-feature android:glEsVersion="0x00033000" />
+	<uses-feature
+        android:name="android.hardware.type.pc"
+        android:required="false" />
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="test111" 
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<application android:label="ColorMC" 
 				 android:icon="@drawable/Icon" 
+				 android:requestLegacyExternalStorage="true"
 				 android:usesCleartextTraffic="true"/>
 	<uses-sdk />
 </manifest>

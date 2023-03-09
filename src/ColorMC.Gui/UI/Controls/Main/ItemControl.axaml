@@ -8,105 +8,107 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <Grid
-            Name="Grid1"
-            Margin="0,3,0,0"
-            HorizontalAlignment="Left"
-            IsVisible="True">
-            <Border
-                Name="Border1"
-                Background="#88FFFFFF"
-                BorderThickness="2" />
-            <Border BorderBrush="#33000000" BorderThickness="1,1,0,0" />
-            <StackPanel Margin="10,0,10,0" VerticalAlignment="Center">
-                <Image
-                    Name="Image1"
-                    Width="80"
-                    Height="80"
-                    Source="resm:ColorMC.Gui.Resource.Pic.user.png"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text4}"
-                    ToolTip.VerticalOffset="-30" />
-                <ProgressBar
-                    Name="ProgressBar1"
-                    Width="100"
-                    Height="10"
-                    MinWidth="100"
-                    Margin="0,5,0,0"
-                    IsIndeterminate="True"
-                    IsVisible="False" />
-                <TextBlock
-                    Name="TextBlock_Name"
-                    Width="100"
-                    Margin="0,5,0,0"
-                    VerticalAlignment="Center"
-                    Text="Name"
-                    TextAlignment="Center"
-                    TextWrapping="Wrap" />
-                <TextBlock
-                    Name="TextBlock_Type"
-                    Width="100"
-                    Margin="0,0,0,5"
-                    VerticalAlignment="Center"
-                    Text="Type"
-                    TextAlignment="Center"
-                    TextWrapping="Wrap" />
-                <Button
-                    Name="Button_Switch"
-                    Width="100"
-                    Height="35"
-                    Content="{setting:Localize MainWindow.Control.Text1}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                    ToolTip.VerticalOffset="-30" />
+    <ScrollViewer>
+        <Grid>
+            <Grid
+                Name="Grid1"
+                HorizontalAlignment="Left"
+                IsVisible="True">
+                <Border
+                    Name="Border1"
+                    Background="#88FFFFFF"
+                    BorderThickness="2" />
+                <Border BorderBrush="#33000000" BorderThickness="1,1,0,0" />
+                <StackPanel Margin="10,0,10,0" VerticalAlignment="Center">
+                    <Image
+                        Name="Image1"
+                        Width="80"
+                        Height="80"
+                        Margin="0,20,0,0"
+                        Source="resm:ColorMC.Gui.Resource.Pic.user.png"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text4}"
+                        ToolTip.VerticalOffset="-30" />
+                    <ProgressBar
+                        Name="ProgressBar1"
+                        Width="100"
+                        Height="10"
+                        MinWidth="100"
+                        Margin="0,5,0,0"
+                        IsIndeterminate="True"
+                        IsVisible="False" />
+                    <TextBlock
+                        Name="TextBlock_Name"
+                        Width="100"
+                        Margin="0,5,0,0"
+                        VerticalAlignment="Center"
+                        Text="Name"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Name="TextBlock_Type"
+                        Width="100"
+                        Margin="0,0,0,5"
+                        VerticalAlignment="Center"
+                        Text="Type"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
+                    <Button
+                        Name="Button_Switch"
+                        Width="100"
+                        Height="35"
+                        Content="{setting:Localize MainWindow.Control.Text1}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text9}"
+                        ToolTip.VerticalOffset="-30" />
 
-                <Button
-                    Name="Button_Add1"
-                    Width="100"
-                    Height="35"
-                    Margin="0,5,0,0"
-                    Content="{setting:Localize MainWindow.Control.Text2}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text10}"
-                    ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Name="Button_Add1"
+                        Width="100"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Content="{setting:Localize MainWindow.Control.Text2}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text10}"
+                        ToolTip.VerticalOffset="-30" />
 
-                <Button
-                    Name="Button_Launch"
-                    Width="100"
-                    Height="35"
-                    Margin="0,5,0,0"
-                    Content="{setting:Localize MainWindow.Control.Text3}"
-                    IsEnabled="False"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text11}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Name="Button_Edit"
-                    Width="100"
-                    Height="35"
-                    Margin="0,5,0,0"
-                    Content="{setting:Localize MainWindow.Control.Text5}"
-                    IsEnabled="False"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text12}"
-                    ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Name="Button_Launch"
+                        Width="100"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Content="{setting:Localize MainWindow.Control.Text3}"
+                        IsEnabled="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text11}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Name="Button_Edit"
+                        Width="100"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Content="{setting:Localize MainWindow.Control.Text5}"
+                        IsEnabled="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text12}"
+                        ToolTip.VerticalOffset="-30" />
 
-                <Button
-                    Name="Button_Setting"
-                    Width="100"
-                    Height="35"
-                    Margin="0,5,0,0"
-                    Content="{setting:Localize MainWindow.Control.Text7}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text13}"
-                    ToolTip.VerticalOffset="-30" />
-            </StackPanel>
+                    <Button
+                        Name="Button_Setting"
+                        Width="100"
+                        Height="35"
+                        Margin="0,5,0,20"
+                        Content="{setting:Localize MainWindow.Control.Text7}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text13}"
+                        ToolTip.VerticalOffset="-30" />
+                </StackPanel>
+            </Grid>
+
+            <Button
+                Name="Button1"
+                Width="20"
+                Height="20"
+                Margin="12,10,8,10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Content="→"
+                ToolTip.Tip="{setting:Localize ToolTip.Text5}"
+                ToolTip.VerticalOffset="-30" />
         </Grid>
-
-        <Button
-            Name="Button1"
-            Width="20"
-            Height="20"
-            Margin="12,10,8,10"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Content="→"
-            ToolTip.Tip="{setting:Localize ToolTip.Text5}"
-            ToolTip.VerticalOffset="-30" />
-    </Grid>
+    </ScrollViewer>
 </UserControl>

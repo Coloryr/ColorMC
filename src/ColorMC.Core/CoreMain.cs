@@ -105,12 +105,15 @@ public static class ColorMCCore
     /// </summary>
     internal static event Action? Stop;
 
+    public static string BaseDir { get; private set; }
+
     /// <summary>
     /// 初始化
     /// </summary>
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
+        BaseDir = dir;
         Directory.CreateDirectory(dir);
         LanguageHelper.Load(LanguageType.zh_cn);
         Logs.Init(dir);

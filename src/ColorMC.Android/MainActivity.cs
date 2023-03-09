@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content.PM;
+using Android.OS;
 using Avalonia.Android;
 
 namespace ColorMC.Android;
@@ -9,7 +10,12 @@ namespace ColorMC.Android;
     Icon = "@drawable/icon", 
     LaunchMode = LaunchMode.SingleTop, 
     ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize, 
-    ScreenOrientation = ScreenOrientation.Landscape)]
+    ScreenOrientation = ScreenOrientation.SensorLandscape)]
 public class MainActivity : AvaloniaMainActivity
 {
+    protected void OnCreate(Bundle savedInstanceState)
+    {
+
+        base.OnCreate(savedInstanceState);
+    }
 }
