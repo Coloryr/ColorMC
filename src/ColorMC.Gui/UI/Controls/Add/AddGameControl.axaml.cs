@@ -22,7 +22,7 @@ public partial class AddGameControl : UserControl, IUserControl
     private readonly ObservableCollection<string> List1 = new();
     private bool add;
 
-    public IBaseWindow Window => App.FindRoot(this);
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public AddGameControl()
     {
@@ -93,7 +93,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
             window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
@@ -122,7 +122,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
         window.Info1.Close();
@@ -164,7 +164,7 @@ public partial class AddGameControl : UserControl, IUserControl
             TextBox_Input1.Text = item;
         }
 
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("AddGameWindow.Info3"));
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(item))
@@ -196,7 +196,7 @@ public partial class AddGameControl : UserControl, IUserControl
             return;
         }
 
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (CheckBox_Forge.IsChecked == true)
         {
             window.Info1.Show(App.GetLanguage("AddGameWindow.Info6"));
@@ -252,7 +252,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private async void Button_AddGroup_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         await window.Info3.ShowOne(App.GetLanguage("AddGameWindow.Info1"), false);
         if (window.Info3.Cancel)
         {
@@ -294,7 +294,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
             window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
@@ -355,7 +355,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private async void Quilt_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (CheckBox_Quilt.IsChecked == true)
         {
             var item = ComboBox_GameVersion.SelectedItem as string;
@@ -387,7 +387,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private async void Fabric_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (CheckBox_Fabric.IsChecked == true)
         {
             if (ComboBox_GameVersion.SelectedItem is not string item)
@@ -418,7 +418,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private async void Forge_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (CheckBox_Forge.IsChecked == true)
         {
             string? item = ComboBox_GameVersion.SelectedItem as string;
@@ -450,7 +450,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Close();
         var test = await window.Info.ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info7"), obj.Name));
@@ -463,13 +463,13 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private void PackUpdate(int size, int now)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Progress((double)now / size);
     }
 
     private void PackState(CoreRunState state)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (state == CoreRunState.Read)
         {
             window.Info1.Show(App.GetLanguage("AddGameWindow.Info8"));
@@ -501,7 +501,7 @@ public partial class AddGameControl : UserControl, IUserControl
         if (file == null)
             return;
 
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("AddGameWindow.Info17"));
         var res = await GameBinding.AddPack(file, type, TextBox_Input1.Text, ComboBox_Group.SelectedItem as string);
         window.Info1.Close();
@@ -519,7 +519,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private async Task<string?> SelectPack()
     {
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot);
         return await BaseBinding.OpFile(window, FileType.ModPack);
     }
 
@@ -540,7 +540,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public async void Install(CurseForgeObj.Data.LatestFiles data, CurseForgeObj.Data data1)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
             window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
@@ -564,7 +564,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public async void Install(ModrinthVersionObj data, ModrinthSearchObj.Hit data1)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
             window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
@@ -588,7 +588,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public async void Install(FTBModpackObj.Versions data, FTBModpackObj data1)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
             window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
@@ -625,7 +625,7 @@ public partial class AddGameControl : UserControl, IUserControl
     {
         add = false;
         var list = GameBinding.GetPackType();
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         await window.Info5.Show(App.GetLanguage("AddGameWindow.Info18"), list);
         if (window.Info5.Cancel)
         {

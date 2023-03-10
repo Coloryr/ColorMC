@@ -21,11 +21,15 @@ public class Language
         }
     }
 
-    public string GetLanguage(string key)
+    public string GetLanguage(string key, out bool have)
     {
         if (LanguageList.TryGetValue(key, out var res1))
+        {
+            have = true;
             return res1!;
+        }
 
+        have = false;
         return key;
     }
 }

@@ -32,14 +32,9 @@ public record ModDisplayObj : INotifyPropertyChanged
                 SourceType.Modrinth.GetName() : SourceType.CurseForge.GetName();
         }
     }
-    public SourceType Source1()
-    {
-        return UIUtils.CheckNotNumber(PID) || UIUtils.CheckNotNumber(FID) ?
-                SourceType.Modrinth : SourceType.CurseForge;
-    }
 
-    public string PID => Obj1.ModId;
-    public string FID => Obj1.FileId;
+    public string? PID => Obj1?.ModId;
+    public string? FID => Obj1?.FileId;
 
     public bool New
     {
@@ -51,7 +46,7 @@ public record ModDisplayObj : INotifyPropertyChanged
         }
     }
 
-    public ModPackInfoObj Obj1;
+    public ModPackInfoObj? Obj1;
     public ModObj Obj;
     public bool Enable
     {

@@ -32,7 +32,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
     private GameSettingObj? Obj;
 
-    public IBaseWindow Window => App.FindRoot(this);
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public GameEditControl(GameSettingObj? obj)
     {

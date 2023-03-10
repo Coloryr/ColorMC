@@ -8,7 +8,6 @@ using Avalonia.Threading;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.UI.Animations;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
@@ -306,7 +305,7 @@ void main()
 
     private void LoadSkin()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (UserBinding.SkinImage == null)
         {
             HaveSkin = false;
@@ -772,7 +771,9 @@ void main()
         int x = (int)Bounds.Width;
         int y = (int)Bounds.Height;
 
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot) as Window;
+        if (window == null)
+            return;
         var screen = window.PlatformImpl?.Screen.ScreenFromWindow(window.PlatformImpl);
         if (screen != null)
         {

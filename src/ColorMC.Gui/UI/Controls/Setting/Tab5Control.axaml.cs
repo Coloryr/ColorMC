@@ -4,7 +4,6 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
@@ -79,7 +78,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var res = await window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
         if (!res)
             return;
@@ -115,7 +114,7 @@ public partial class Tab5Control : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
 
         var name = TextBox1.Text;
         var local = TextBox2.Text;
@@ -152,7 +151,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot);
         var file = await BaseBinding.OpFile(window, FileType.Java);
 
         if (file != null)

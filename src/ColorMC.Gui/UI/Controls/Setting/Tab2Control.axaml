@@ -124,6 +124,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text25}" />
                     <NumericUpDown
+                        FormatString="N0"
                         Name="Input1"
                         Width="120"
                         Margin="5,0,0,0"

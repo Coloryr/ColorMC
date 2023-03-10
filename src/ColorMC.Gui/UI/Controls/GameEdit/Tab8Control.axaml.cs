@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
@@ -58,7 +57,7 @@ public partial class Tab8Control : UserControl
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var file = await BaseBinding.AddFile(window as Window, Obj, FileType.Resourcepack);
         if (file == null)
             return;
@@ -104,7 +103,7 @@ public partial class Tab8Control : UserControl
 
     public async void Delete(ResourcepackDisplayObj obj)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var res = await window.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab8.Info1"), obj.Local));
         if (!res)
@@ -131,7 +130,7 @@ public partial class Tab8Control : UserControl
 
     private async void Load()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab8.Info5"));
         List.Clear();
         ListBox_Items.Children.Clear();

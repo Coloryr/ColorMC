@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.ObjectModel;
@@ -104,7 +103,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button5_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsGameRun(Obj))
         {
             window.Info1.Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));
@@ -141,7 +140,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
-        var Window = App.FindRoot(this);
+        var Window = App.FindRoot(VisualRoot);
         await Window.Info3.ShowOne(App.GetLanguage("AddGameWindow.Info1"), false);
         if (Window.Info3.Cancel)
         {
@@ -173,7 +172,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
 
         ComboBox2.IsEnabled = false;
 
@@ -288,7 +287,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("AddGameWindow.Info3"));
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(Obj.Version))
@@ -312,7 +311,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
         window.Info1.Close();

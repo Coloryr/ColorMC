@@ -59,7 +59,7 @@ public partial class FlyoutsControl : UserControl
     private async void Button9_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        await GameBinding.SetGameIconFromFile((Win.GetVisualRoot() as Window)!, Obj.Obj);
+        await GameBinding.SetGameIconFromFile(App.FindRoot(Win.GetVisualRoot()), Obj.Obj);
         Obj.Reload();
     }
 

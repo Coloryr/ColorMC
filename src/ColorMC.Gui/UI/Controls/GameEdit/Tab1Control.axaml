@@ -15,7 +15,7 @@
             <StackPanel Orientation="Horizontal">
                 <ComboBox
                     Name="ComboBox1"
-                    Width="250"
+                    Width="200"
                     HorizontalAlignment="Center" />
                 <CheckBox
                     Name="CheckBox2"
@@ -46,7 +46,7 @@
 
                 <ComboBox
                     Name="ComboBox2"
-                    Width="250"
+                    Width="200"
                     IsEnabled="False" />
                 <CheckBox
                     Name="CheckBox5"
@@ -85,7 +85,7 @@
 
             <StackPanel Orientation="Horizontal">
 
-                <ComboBox Name="ComboBox3" Width="250" />
+                <ComboBox Name="ComboBox3" Width="200" />
                 <Button
                     Name="Button4"
                     Width="100"

@@ -12,6 +12,8 @@ public record ResourcepackObj
     public Pack pack { get; set; }
 
     [JsonIgnore]
+    public string Sha1 { get; set; }
+    [JsonIgnore]
     public string Local { get; set; }
     [JsonIgnore]
     public byte[] Icon { get; set; }

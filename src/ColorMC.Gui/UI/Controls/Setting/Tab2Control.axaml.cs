@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 
@@ -109,7 +108,7 @@ public partial class Tab2Control : UserControl
         if (load)
             return;
 
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var type = (LanguageType)ComboBox2.SelectedIndex;
         window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info1"));
         LanguageHelper.Change(type);
@@ -153,7 +152,7 @@ public partial class Tab2Control : UserControl
 
     private void Button_Set4_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         ConfigBinding.ResetColor();
         ColorPicker1.Color = ColorSel.MainColor.ToColor();
         ColorPicker2.Color = ColorSel.BackColor.ToColor();
@@ -165,7 +164,7 @@ public partial class Tab2Control : UserControl
 
     private async void Button_Set2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (string.IsNullOrWhiteSpace(TextBox1.Text))
         {
             window.Info.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
@@ -183,7 +182,7 @@ public partial class Tab2Control : UserControl
         if (load)
             return;
 
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetBl(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
         window.Info1.Close();
@@ -264,14 +263,14 @@ public partial class Tab2Control : UserControl
 
     private void Button_Set_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         ConfigBinding.SetBackTran((int)Slider2.Value);
         window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot);
         var file = await BaseBinding.OpFile(window, FileType.Pic);
 
         if (file != null)

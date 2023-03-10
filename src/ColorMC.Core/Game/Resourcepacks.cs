@@ -29,6 +29,11 @@ public static class Resourcepacks
 
         await Parallel.ForEachAsync(info.GetFiles(), async (item, cancel) =>
         {
+            string sha1;
+            {
+                using var stream = File.OpenRead(item.FullName);
+                sha1 = Funtcions.GenSha1(stream);
+            }
             bool find = false;
             if (item.Extension is not (".zip" or ".disable"))
                 return;
@@ -45,8 +50,8 @@ public static class Resourcepacks
                     var obj1 = JsonConvert.DeserializeObject<ResourcepackObj>(data);
                     if (obj1 != null)
                     {
-                        //obj1.Disable = item.Extension is ".disable";
                         obj1.Local = Path.GetFullPath(item.FullName);
+                        obj1.Sha1 = sha1;
                         item1 = zFile.GetEntry("pack.png");
                         if (item1 != null)
                         {
@@ -69,7 +74,7 @@ public static class Resourcepacks
             {
                 list.Add(new()
                 {
-                    //Disable = item.Extension is ".disable",
+                    Sha1 = sha1,
                     Local = Path.GetFullPath(item.FullName),
                     Broken = true
                 });

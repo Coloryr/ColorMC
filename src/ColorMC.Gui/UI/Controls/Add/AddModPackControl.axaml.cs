@@ -71,7 +71,7 @@ public partial class AddModPackControl : UserControl, IUserControl
         }
     }
 
-    public IBaseWindow Window => App.FindRoot(this);
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     private void ComboBox6_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -143,7 +143,7 @@ public partial class AddModPackControl : UserControl, IUserControl
         }
         ListBox_Items.Children.Clear();
 
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         switch (ComboBox1.SelectedIndex)
         {
             case 0:
@@ -230,7 +230,7 @@ public partial class AddModPackControl : UserControl, IUserControl
 
     private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var item = DataGridFiles.SelectedItem as FileDisplayObj;
         if (item == null)
             return;
@@ -257,7 +257,7 @@ public partial class AddModPackControl : UserControl, IUserControl
     {
         if (Last == null)
         {
-            var window = App.FindRoot(this);
+            var window = App.FindRoot(VisualRoot);
             window.Info.Show(App.GetLanguage("AddModPackWindow.Error1"));
             return;
         }
@@ -306,7 +306,7 @@ public partial class AddModPackControl : UserControl, IUserControl
                 (data.Data as FTBModpackObj.Versions)!,
                 (Last!.Data.Data as FTBModpackObj)!);
         }
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Close();
     }
 
@@ -320,7 +320,7 @@ public partial class AddModPackControl : UserControl, IUserControl
 
     private async void Load()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (ComboBox1.SelectedIndex == 2 && ComboBox2.SelectedIndex == 4
             && Input1.Text?.Length < 3)
         {
@@ -363,7 +363,7 @@ public partial class AddModPackControl : UserControl, IUserControl
 
     private async void Load1()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         List1.Clear();
         window.Info1.Show(App.GetLanguage("AddModPackWindow.Info3"));
         List<FileDisplayObj>? list = null;

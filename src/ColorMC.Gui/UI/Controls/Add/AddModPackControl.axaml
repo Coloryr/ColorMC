@@ -70,6 +70,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddModPackWindow.Text5}" />
                     <NumericUpDown
+                        FormatString="N0"
                         Name="Input2"
                         Width="130"
                         Height="30"
@@ -122,6 +123,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddModPackWindow.Text7}" />
                     <NumericUpDown
+                        FormatString="N0"
                         Name="Input3"
                         Width="120"
                         Height="30"

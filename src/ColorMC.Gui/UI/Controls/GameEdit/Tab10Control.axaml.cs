@@ -4,7 +4,6 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
@@ -68,7 +67,7 @@ public partial class Tab10Control : UserControl
 
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         await window.Info3.ShowInput(App.GetLanguage("GameEditWindow.Tab10.Info1"),
             App.GetLanguage("GameEditWindow.Tab10.Info2"), false);
         var res = window.Info3.Read();
@@ -111,7 +110,7 @@ public partial class Tab10Control : UserControl
 
     private void Load()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
         List.AddRange(GameBinding.GetServers(Obj));
@@ -133,7 +132,7 @@ public partial class Tab10Control : UserControl
 
     public void Delete(ServerInfoObj obj)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         GameBinding.DeleteServer(Obj, obj);
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();

@@ -66,6 +66,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab4.Text4}" />
                     <NumericUpDown
+                        FormatString="N0"
                         Name="Input1"
                         Width="150"
                         Height="30"
@@ -78,6 +79,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab4.Text5}" />
                     <NumericUpDown
+                        FormatString="N0"
                         Name="Input2"
                         Width="150"
                         Height="30"
@@ -118,6 +120,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab4.Text10}" />
                     <NumericUpDown
+                        FormatString="N0"
                         Name="Input3"
                         Width="150"
                         Height="30"
@@ -130,6 +133,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab4.Text11}" />
                     <NumericUpDown
+                        FormatString="N0"
                         Name="Input4"
                         Width="150"
                         Height="30"

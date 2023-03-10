@@ -25,7 +25,7 @@ public partial class SettingControl : UserControl, IUserControl
 
     private int now;
 
-    public IBaseWindow Window => App.FindRoot(this);
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public SettingControl()
     {

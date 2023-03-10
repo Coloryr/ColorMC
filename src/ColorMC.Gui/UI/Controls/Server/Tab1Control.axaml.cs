@@ -1,8 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
-using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Gui.UI.Windows;
 using Avalonia.Interactivity;
+using ColorMC.Core.Objs.ServerPack;
+using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Server;
 
@@ -20,18 +20,47 @@ public partial class Tab1Control : UserControl
         TextBox3.PropertyChanged += TextBox1_PropertyChanged;
         TextBox4.PropertyChanged += TextBox1_PropertyChanged;
 
+        TextBox1.LostFocus += TextBox1_LostFocus;
+
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
     }
 
-    private void Button2_Click(object? sender, RoutedEventArgs e)
+    private void TextBox1_LostFocus(object? sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        if (string.IsNullOrWhiteSpace(TextBox1.Text))
+            return;
+
+        if (TextBox1.Text.EndsWith("/"))
+            return;
+
+        TextBox1.Text += "/";
     }
 
-    private void Button1_Click(object? sender, RoutedEventArgs e)
+    private void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        throw new System.NotImplementedException();
+        var window = App.FindRoot(VisualRoot);
+        if (string.IsNullOrWhiteSpace(Obj1.Url))
+        {
+            window.Info.Show("基础网址为空");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Obj1.Version))
+        {
+            window.Info.Show("版本号为空");
+            return;
+        }
+    }
+
+    private async void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        var window = App.FindRoot(VisualRoot);
+        var file = await BaseBinding.OpFile(window, Core.Objs.FileType.UI);
+        if (file == null)
+            return;
+
+        TextBox4.Text = file;
     }
 
     private void TextBox1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -74,7 +103,7 @@ public partial class Tab1Control : UserControl
         Obj1.LockMod = CheckBox1.IsChecked == true;
         Obj1.ForceUpdate = CheckBox2.IsChecked == true;
 
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as ServerPackControl)?.Save();
     }
 }

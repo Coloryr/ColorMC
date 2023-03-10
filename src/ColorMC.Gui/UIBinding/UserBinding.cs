@@ -8,6 +8,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.SkinModel;
+using ColorMC.Gui.UI.Windows;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
@@ -257,7 +258,15 @@ public static class UserBinding
         return list;
     }
 
-    public static async void EditSkin(Window window)
+    public static void EditSkin(IBaseWindow window)
+    {
+        if(window is TopLevel top)
+        {
+            EditSkin(top);
+        }
+    }
+
+    public static async void EditSkin(TopLevel window)
     {
         var obj = GetLastUser();
         if (obj == null)

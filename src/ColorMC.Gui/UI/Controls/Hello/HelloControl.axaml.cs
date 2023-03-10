@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using ColorMC.Core;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
@@ -23,7 +22,7 @@ public partial class HelloControl : UserControl, IUserControl
     private int now;
     private CancellationTokenSource cancel = new();
 
-    public IBaseWindow Window => App.FindRoot(this);
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public HelloControl()
     {
@@ -113,7 +112,7 @@ public partial class HelloControl : UserControl, IUserControl
 
     public void Done()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Close();
     }
 }

@@ -6,7 +6,6 @@ using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
@@ -68,7 +67,7 @@ public partial class Tab12Control : UserControl
 
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var res = await BaseBinding.AddFile(window as Window, Obj, FileType.Schematic);
 
         if (res == null)
@@ -111,7 +110,7 @@ public partial class Tab12Control : UserControl
 
     private async void Load()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
         List.AddRange(await GameBinding.GetSchematics(Obj));
@@ -133,7 +132,7 @@ public partial class Tab12Control : UserControl
 
     public void Delete(SchematicDisplayObj obj)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
 
         obj.Schematic.Delete();
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));

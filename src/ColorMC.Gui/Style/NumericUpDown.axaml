@@ -4,7 +4,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
         <Border Padding="20">
-            <NumericUpDown Width="150" Height="30" />
+            <NumericUpDown Width="150" Height="30" FormatString="N0" />
         </Border>
     </Design.PreviewWith>
 

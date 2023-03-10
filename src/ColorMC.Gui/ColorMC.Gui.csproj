@@ -181,6 +181,12 @@
     <Compile Update="UI\Controls\Info4Control.axaml.cs">
       <DependentUpon>Info4Control.axaml</DependentUpon>
     </Compile>
+    <Compile Update="UI\Controls\Server\Flyouts1Control.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\Server\Tab3Control.axaml.cs">
+      <DependentUpon>Tab3Control.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\Setting\FlyoutsControl.axaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>

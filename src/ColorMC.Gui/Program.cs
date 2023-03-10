@@ -33,7 +33,12 @@ public class ColorMCGui
 
             var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
-            BaseDir = SystemInfo.Os == OsType.Linux ? $"{path}/ColorMC/" : AppContext.BaseDirectory;
+            BaseDir = SystemInfo.Os switch
+            {
+                OsType.Linux => $"{path}/ColorMC/",
+                OsType.MacOS => "/Users/shared/ColorMC/",
+                _ => AppContext.BaseDirectory
+            };
 
             ColorMCCore.Init(BaseDir);
 
