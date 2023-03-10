@@ -15,7 +15,7 @@ namespace ColorMC.Gui.UI.Controls.Skin;
 
 public partial class SkinControl : UserControl, IUserControl
 {
-    public IBaseWindow Window => App.FindRoot(this);
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
     public SkinControl()
     {
         InitializeComponent();
@@ -47,7 +47,7 @@ public partial class SkinControl : UserControl, IUserControl
     {
         if (SystemInfo.Os == OsType.Android)
         {
-            Window.Info.Show("²»Ö§³ÖÆ¤·ôÔ¤ÀÀ");
+            Window.Info.Show("ï¿½ï¿½Ö§ï¿½ï¿½Æ¤ï¿½ï¿½Ô¤ï¿½ï¿½");
 
             return;
         }
@@ -185,7 +185,7 @@ public partial class SkinControl : UserControl, IUserControl
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (ComboBox1.SelectedIndex == (int)Skin.steveModelType)
             return;
         if (ComboBox1.SelectedIndex == (int)SkinType.Unkonw)
@@ -239,9 +239,8 @@ public partial class SkinControl : UserControl, IUserControl
 
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
-        var res = await BaseBinding.SaveFile((VisualRoot as Window)!,
-            FileType.Skin, null);
+        var window = App.FindRoot(VisualRoot);
+        var res = await BaseBinding.SaveFile(window, FileType.Skin, null);
         if (res == true)
         {
             window.Info2.Show(App.GetLanguage("Gui.Info10"));
@@ -257,7 +256,7 @@ public partial class SkinControl : UserControl, IUserControl
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        UserBinding.EditSkin((VisualRoot as Window)!);
+        UserBinding.EditSkin(App.FindRoot(this));
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)

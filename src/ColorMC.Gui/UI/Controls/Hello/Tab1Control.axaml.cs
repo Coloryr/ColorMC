@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
@@ -23,7 +22,7 @@ public partial class Tab1Control : UserControl
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as HelloControl)?.Done();
     }
 
@@ -35,7 +34,7 @@ public partial class Tab1Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as HelloControl)?.Next();
     }
 }

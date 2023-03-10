@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Hello;
@@ -22,31 +21,31 @@ public partial class Tab6Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as HelloControl)?.Done();
     }
 
     private void LoadConfig_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as HelloControl)?.SwitchTab(1);
     }
 
     private void AddUser_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as HelloControl)?.SwitchTab(3);
     }
 
     private void AddJava_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as HelloControl)?.SwitchTab(2);
     }
 
     private void AddGame_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as HelloControl)?.SwitchTab(4);
     }
 

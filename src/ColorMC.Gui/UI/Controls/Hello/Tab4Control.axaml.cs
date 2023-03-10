@@ -3,7 +3,6 @@ using Avalonia.Interactivity;
 using ColorMC.Core;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.Collections.ObjectModel;
 
@@ -42,13 +41,13 @@ public partial class Tab4Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as HelloControl)?.Next();
     }
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         Button_Add.IsEnabled = false;
         switch (ComboBox_UserType.SelectedIndex)
         {
@@ -208,7 +207,7 @@ public partial class Tab4Control : UserControl
 
     private void LoginOAuthCode(string url, string code)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Close();
         window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Text3"), url),
             string.Format(App.GetLanguage("UserWindow.Text4"), code), () =>

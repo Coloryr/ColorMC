@@ -449,7 +449,15 @@ public static class GameBinding
         }
     }
 
-    public static async Task SetGameIconFromFile(Window win, GameSettingObj obj)
+    public static async Task SetGameIconFromFile(IBaseWindow win, GameSettingObj obj)
+    {
+        if(win is TopLevel top)
+        {
+            await SetGameIconFromFile(top, obj);
+        }
+    }
+
+    public static async Task SetGameIconFromFile(TopLevel win, GameSettingObj obj)
     {
         try
         {
@@ -785,6 +793,29 @@ public static class GameBinding
         foreach (var item in list1)
         {
             list.Add(item.FullName[dir..]);
+        }
+
+        return list;
+    }
+
+    public static List<string> GetAllTopConfig(GameSettingObj obj)
+    {
+        var list = new List<string>();
+        var dir = obj.GetGamePath();
+
+        var dir1 = new DirectoryInfo(dir);
+        var list1 = dir1.GetFileSystemInfos();
+        foreach (var item in list1)
+        {
+            string name = item.Name;
+            if (item.Attributes == FileAttributes.Directory)
+            {
+                if (name == "mods" || name == "resourcepacks")
+                    continue;
+                name += "/";
+            }
+            
+            list.Add(name);
         }
 
         return list;

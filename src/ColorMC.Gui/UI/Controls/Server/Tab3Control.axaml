@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Server.Tab2Control"
+    x:Class="ColorMC.Gui.UI.Controls.Server.Tab3Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     <DockPanel Margin="3">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Label VerticalAlignment="Center" Content="选择要同步的Mod" />
+            <Label VerticalAlignment="Center" Content="选择要同步的材质包" />
             <Button
                 Name="Button1"
                 Width="80"
@@ -34,12 +34,6 @@
                 <DataGridTextColumn
                     Binding="{Binding FileName}"
                     Header="文件名"
-                    IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding PID}" Header="项目ID" />
-                <DataGridTextColumn Binding="{Binding FID}" Header="文件ID" />
-                <DataGridTextColumn
-                    Binding="{Binding Source}"
-                    Header="下载源"
                     IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Url}" Header="下载地址" />
                 <DataGridTextColumn

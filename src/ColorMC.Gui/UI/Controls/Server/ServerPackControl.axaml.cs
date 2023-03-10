@@ -12,6 +12,8 @@ public partial class ServerPackControl : UserControl, IUserControl
 {
     private Tab1Control tab1 = new();
     private Tab2Control tab2 = new();
+    private Tab3Control tab3 = new();
+    private Tab4Control tab4 = new();
 
     private bool switch1 = false;
 
@@ -22,7 +24,7 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     private int now;
 
-    public IBaseWindow Window => App.FindRoot(this);
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     private GameSettingObj Obj;
     private ServerPackObj Obj1;
@@ -47,6 +49,8 @@ public partial class ServerPackControl : UserControl, IUserControl
 
             tab1.SetObj(Obj1);
             tab2.SetObj(Obj1);
+            tab3.SetObj(Obj1);
+            tab4.SetObj(Obj1);
 
             tab1.Load();
         }
@@ -54,7 +58,12 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public ServerPackControl() : this(null)
     {
-        
+
+    }
+
+    public void Opened()
+    {
+        Window.SetTitle("生成服务器包");
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -80,6 +89,14 @@ public partial class ServerPackControl : UserControl, IUserControl
             case 1:
                 tab2.Load();
                 Go(tab2);
+                break;
+            case 2:
+                tab3.Load();
+                Go(tab3);
+                break;
+            case 3:
+                tab4.Load();
+                Go(tab4);
                 break;
         }
 
@@ -116,6 +133,8 @@ public partial class ServerPackControl : UserControl, IUserControl
     {
         content1.Content = null;
         content2.Content = null;
+
+        App.ServerPackWindows.Remove(Obj.UUID);
     }
 
     public void Save()

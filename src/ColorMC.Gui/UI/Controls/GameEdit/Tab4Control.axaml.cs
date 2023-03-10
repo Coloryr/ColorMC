@@ -6,7 +6,6 @@ using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
@@ -82,7 +81,7 @@ public partial class Tab4Control : UserControl
 
     private async void Button_C1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info10"));
         var res = await GameBinding.CheckModUpdate(Obj, Items);
         window.Info1.Close();
@@ -118,7 +117,7 @@ public partial class Tab4Control : UserControl
 
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var file = await BaseBinding.AddFile(window as Window, Obj, FileType.Mod);
 
         if (file == null)
@@ -178,7 +177,7 @@ public partial class Tab4Control : UserControl
 
     public async void Delete(IEnumerable<ModDisplayObj> items)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var res = await window.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count()));
         if (!res)
@@ -197,7 +196,7 @@ public partial class Tab4Control : UserControl
 
     public async void Delete(ModDisplayObj item)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var res = await window.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info4"), item.Name));
         if (!res)
@@ -278,7 +277,7 @@ public partial class Tab4Control : UserControl
 
     private async void Load()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
         Items.Clear();
         var res = await GameBinding.GetGameMods(Obj);

@@ -8,8 +8,6 @@ using System.Reflection;
 
 namespace ColorMC.Core.Utils;
 
-
-
 public static class LanguageHelper
 {
     private static readonly Language Language = new();
@@ -44,7 +42,9 @@ public static class LanguageHelper
     }
 
     public static string GetName(string input)
-        => Language.GetLanguage(input);
+    {
+        return Language.GetLanguage(input, out _);
+    }
 
     public static string GetName(this AuthType type)
     {

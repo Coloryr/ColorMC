@@ -25,7 +25,7 @@ public partial class DownloadControl : UserControl, IUserControl
     private long Count;
     private Timer Timer;
 
-    public IBaseWindow Window => App.FindRoot(this);
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public DownloadControl()
     {
@@ -69,7 +69,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     private async void Button_S_Click(object? sender, RoutedEventArgs e)
     {
-        var windows = App.FindRoot(this);
+        var windows = App.FindRoot(VisualRoot);
         var res = await windows.Info.ShowWait(App.GetLanguage("DownloadWindow.Info1"));
         if (res)
         {
@@ -81,7 +81,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     private void Button_P_Click(object? sender, RoutedEventArgs e)
     {
-        var windows = App.FindRoot(this);
+        var windows = App.FindRoot(VisualRoot);
         if (!pause)
         {
             BaseBinding.DownloadPause();
@@ -140,7 +140,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public async void Closing(CancelEventArgs e)
     {
-        var windows = App.FindRoot(this);
+        var windows = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
             var res = await windows.Info.ShowWait(App.GetLanguage("DownloadWindow.Info4"));

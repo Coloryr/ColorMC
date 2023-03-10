@@ -4,7 +4,6 @@ using Avalonia.Interactivity;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
@@ -44,7 +43,7 @@ public partial class Tab9Control : UserControl
 
     private async void Button_C1_Click(object? sender, RoutedEventArgs e)
     {
-        var Window = App.FindRoot(this);
+        var Window = App.FindRoot(VisualRoot);
         var res = await Window.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab9.Info2"), Obj.Name));
         if (!res)
@@ -90,7 +89,7 @@ public partial class Tab9Control : UserControl
 
     public async void Delete(ScreenshotDisplayObj obj)
     {
-        var Window = App.FindRoot(this);
+        var Window = App.FindRoot(VisualRoot);
         var res = await Window.Info.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab9.Info1"), obj.Local));
         if (!res)
@@ -105,7 +104,7 @@ public partial class Tab9Control : UserControl
 
     private async void Load()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab9.Info3"));
         List.Clear();
         WrapPanel1.Children.Clear();

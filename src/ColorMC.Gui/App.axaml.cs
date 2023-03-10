@@ -5,6 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Rendering;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ColorMC.Core;
@@ -88,8 +89,14 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public static string GetLanguage(string key)
-        => Language.GetLanguage(key);
+    public static string GetLanguage(string input)
+    {
+        var data = Language.GetLanguage(input, out bool have);
+        if (have)
+            return data;
+
+        return LanguageHelper.GetName(input);
+    }
 
     public override async void OnFrameworkInitializationCompleted()
     {
@@ -166,9 +173,9 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    public static IBaseWindow FindRoot(Control con)
+    public static IBaseWindow FindRoot(object? con)
     {
-        if (con.GetVisualRoot() is IBaseWindow win)
+        if (con is IBaseWindow win)
             return win;
 
         return AllWindow!;
@@ -176,7 +183,7 @@ public partial class App : Application
 
     private void Life_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
     {
-        
+
     }
 
     public static void OnUserEdit()

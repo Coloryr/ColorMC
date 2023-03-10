@@ -1,8 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using System.Collections.ObjectModel;
@@ -11,13 +9,13 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Server;
 
-public partial class Tab2Control : UserControl
+public partial class Tab3Control : UserControl
 {
     private bool load = false;
     private ServerPackObj Obj1;
     private ObservableCollection<ServerPackModDisplayObj> List = new();
 
-    public Tab2Control()
+    public Tab3Control()
     {
         InitializeComponent();
 
@@ -50,70 +48,42 @@ public partial class Tab2Control : UserControl
 
     private string GetUrl(ServerPackModDisplayObj item)
     {
-        if (string.IsNullOrWhiteSpace(item.PID) || string.IsNullOrWhiteSpace(item.FID))
+        if (!string.IsNullOrWhiteSpace(item.Url))
         {
-            if (!string.IsNullOrWhiteSpace(item.Url))
-            {
-                return item.Url;
-            }
-            else if (!string.IsNullOrWhiteSpace(Obj1.Url))
-            {
-                return Obj1.Url + "mods/" + item.FileName;
-            }
-            else
-            {
-                return "";
-            }
+            return item.Url;
         }
-        else if (UIUtils.CheckNotNumber(item.PID) || UIUtils.CheckNotNumber(item.FID))
+        else if (!string.IsNullOrWhiteSpace(Obj1.Url))
         {
-            return $"https://cdn.modrinth.com/data/{item.PID}/versions/{item.FID}/{item.FileName}";
+            return Obj1.Url + "resourcepacks/" + item.FileName;
         }
         else
         {
-            var fid = long.Parse(item.FID);
-            return $"https://edge.forgecdn.net/files/{fid / 1000}/{fid % 1000}/{item.FileName}";
+            return "";
         }
     }
 
     private void ItemEdit(ServerPackModDisplayObj obj)
     {
-        var item = Obj1.Mod?.FirstOrDefault(a => a.Sha1 == obj.Sha1
+        var item = Obj1.Resourcepack?.FirstOrDefault(a => a.Sha1 == obj.Sha1
                         && a.File == obj.FileName);
         if (obj.Check)
         {
-            SourceType? source = null;
-            if (obj.Source == SourceType.CurseForge.GetName())
-            {
-                source = SourceType.CurseForge;
-            }
-            else if (obj.Source == SourceType.Modrinth.GetName())
-            {
-                source = SourceType.Modrinth;
-            }
-
             if (item != null)
             {
-                item.Projcet = obj.PID;
-                item.FileId = obj.FID;
-                item.Source = source;
                 item.Sha1 = obj.Sha1;
                 item.Url = GetUrl(obj);
                 item.File = obj.FileName;
             }
             else
             {
-                Obj1.Mod ??= new();
+                Obj1.Resourcepack ??= new();
                 item = new()
                 {
-                    Projcet = obj.PID,
-                    FileId = obj.FID,
-                    Source = source,
                     Sha1 = obj.Sha1,
                     Url = GetUrl(obj),
                     File = obj.FileName
                 };
-                Obj1.Mod.Add(item);
+                Obj1.Resourcepack.Add(item);
             }
 
             obj.Url = item.Url;
@@ -123,7 +93,7 @@ public partial class Tab2Control : UserControl
             if (item != null)
             {
                 obj.Url = "";
-                Obj1.Mod?.Remove(item);
+                Obj1.Resourcepack?.Remove(item);
             }
         }
 
@@ -145,39 +115,34 @@ public partial class Tab2Control : UserControl
 
         load = true;
         List.Clear();
-        var mods = await GameBinding.GetGameMods(Obj1.Game);
+        var mods = await GameBinding.GetResourcepacks(Obj1.Game);
 
-        Obj1.Mod?.RemoveAll(a => mods.Find(b => a.Sha1 == b.Obj.Sha1) == null);
+        Obj1.Resourcepack?.RemoveAll(a => mods.Find(b => a.Sha1 == b.Pack.Sha1) == null);
 
         mods.ForEach(item =>
         {
-            if (item.Obj.Broken)
+            if (item.Pack.Broken)
                 return;
 
-            string file = Path.GetFileName(item.Obj.Local);
+            string file = Path.GetFileName(item.Pack.Local);
 
-            var item1 = Obj1.Mod?.FirstOrDefault(a => a.Sha1 == item.Obj.Sha1
+            var item1 = Obj1.Resourcepack?.FirstOrDefault(a => a.Sha1 == item.Pack.Sha1
                         && a.File == file);
 
             var item2 = new ServerPackModDisplayObj()
             {
                 FileName = file,
                 Check = item1 != null,
-                PID = item.PID,
-                FID = item.FID,
-                Sha1 = item.Obj.Sha1,
-                Obj = item
+                Sha1 = item.Pack.Sha1,
+                Obj1 = item
             };
-            if (item2.Check)
+            if (item1 != null && !string.IsNullOrWhiteSpace(item1.Url))
             {
-                if (item1 != null && !string.IsNullOrWhiteSpace(item1.Url))
-                {
-                    item2.Url = item1.Url;
-                }
-                else
-                {
-                    item2.Url = GetUrl(item2);
-                }
+                item2.Url = item1.Url;
+            }
+            else
+            {
+                item2.Url = GetUrl(item2);
             }
 
             List.Add(item2);

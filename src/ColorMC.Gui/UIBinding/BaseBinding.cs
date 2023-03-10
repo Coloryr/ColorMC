@@ -12,6 +12,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils.LaunchSetting;
 using SixLabors.ImageSharp;
 using System;
@@ -60,9 +61,18 @@ public static class BaseBinding
         });
     }
 
-    public static Task<IReadOnlyList<IStorageFile>> OpFile(Window window, string title,
+    public static Task<IReadOnlyList<IStorageFile>?> OpFile(IBaseWindow? window, string title,
         string[] ext, string name, bool multiple = false, IStorageFolder? storage = null)
     {
+        return OpFile(window as TopLevel, title, ext, name, multiple, storage);
+    }
+
+        public static Task<IReadOnlyList<IStorageFile>?> OpFile(TopLevel? window, string title,
+        string[] ext, string name, bool multiple = false, IStorageFolder? storage = null)
+    {
+        if (window == null)
+            return null;
+
         return window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = title,
@@ -92,7 +102,7 @@ public static class BaseBinding
         App.GetLanguage("BaseBinding.SkinRotate.Item3")
     };
 
-    public static Task<IStorageFile?> OpSave(Window window, string title, string ext, string name)
+    public static Task<IStorageFile?> OpSave(TopLevel window, string title, string ext, string name)
     {
         return window.StorageProvider.SaveFilePickerAsync(new()
         {
@@ -508,7 +518,12 @@ public static class BaseBinding
         return null;
     }
 
-    public static async Task<bool?> SaveFile(Window? window, FileType type, object[]? arg)
+    public static Task<bool?> SaveFile(IBaseWindow? window, FileType type, object[]? arg)
+    {
+        return SaveFile(window as TopLevel, type, arg);
+    }
+
+    public static async Task<bool?> SaveFile(TopLevel? window, FileType type, object[]? arg)
     {
         if (window == null)
             return false;
@@ -594,7 +609,17 @@ public static class BaseBinding
         return null;
     }
 
-    public static async Task<string?> OpFile(Window window, FileType type)
+    public static async Task<string?> OpFile(IBaseWindow window, FileType type)
+    {
+        if (window is TopLevel top)
+        {
+            return await OpFile(top, type);
+        }
+
+        return null;
+    }
+
+    public static async Task<string?> OpFile(TopLevel? window, FileType type)
     {
         switch (type)
         {
@@ -604,7 +629,7 @@ public static class BaseBinding
                     new string[] { SystemInfo.Os == OsType.Windows ? "*.exe" : "" },
                     App.GetLanguage("SettingWindow.Tab5.Info2"),
                     storage: JavaBinding.GetSuggestedStartLocation());
-                if (res.Any())
+                if (res?.Any() == true)
                 {
                     return res[0].GetPath();
                 }
@@ -614,7 +639,7 @@ public static class BaseBinding
                     App.GetLanguage("HelloWindow.Tab2.Info3"),
                     new string[] { "*.json" },
                     App.GetLanguage("HelloWindow.Tab2.Info7"));
-                if (res.Any())
+                if (res?.Any() == true)
                 {
                     return res[0].GetPath();
                 }
@@ -624,7 +649,7 @@ public static class BaseBinding
                     App.GetLanguage("HelloWindow.Tab2.Info6"),
                     new string[] { "*.json" },
                     App.GetLanguage("HelloWindow.Tab2.Info8"));
-                if (res.Any())
+                if (res?.Any() == true)
                 {
                     return res[0].GetPath();
                 }
@@ -634,7 +659,7 @@ public static class BaseBinding
                     App.GetLanguage("AddGameWindow.Info13"),
                     new string[] { "*.zip", "*.mrpack" },
                     App.GetLanguage("AddGameWindow.Info15"));
-                if (res.Any())
+                if (res?.Any() == true)
                 {
                     return res[0].GetPath();
                 }
@@ -643,7 +668,7 @@ public static class BaseBinding
                 res = await OpFile(window, App.GetLanguage("SettingWindow.Tab2.Info3"),
                     new string[] { "*.png", "*.jpg", "*.bmp" },
                     App.GetLanguage("SettingWindow.Tab2.Info6"));
-                if (res.Any())
+                if (res?.Any() == true)
                 {
                     return res[0].GetPath();
                 }
@@ -653,7 +678,7 @@ public static class BaseBinding
                     App.GetLanguage("SettingWindow.Tab6.Info2"),
                     new string[] { "*.json" },
                     App.GetLanguage("SettingWindow.Tab6.Info3"));
-                if (res.Any())
+                if (res?.Any() == true)
                 {
                     return res[0].GetPath();
                 }
@@ -693,7 +718,7 @@ public static class BaseBinding
         if (res == null)
             return false;
 
-        (App.MainWindow as MainControl)?.Load();
+        App.MainWindow?.Load();
 
         return true;
     }

@@ -5,7 +5,6 @@ using Avalonia.Threading;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
@@ -67,7 +66,7 @@ public partial class Tab11Control : UserControl
 
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var res = await BaseBinding.AddFile(window as Window, Obj, FileType.Shaderpack);
         if (res == null)
             return;
@@ -109,7 +108,7 @@ public partial class Tab11Control : UserControl
 
     private void Load()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
         List.AddRange(GameBinding.GetShaderpacks(Obj));
@@ -131,7 +130,7 @@ public partial class Tab11Control : UserControl
 
     public void Delete(ShaderpackDisplayObj obj)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         obj.Shaderpack.Delete();
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();

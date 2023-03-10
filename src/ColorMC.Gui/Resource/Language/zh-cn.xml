@@ -593,7 +593,7 @@
 	<String Key="AddJavaWindow.Text2">系统</String>
 	<String Key="AddJavaWindow.Text3">版本</String>
 	<String Key="AddJavaWindow.Text4">构建</String>
-	<String Key="AddJavaWindow.Text5">arm64应该下载aarch64，苹果的M系列芯片也是arm64，下载应选择jdk或者jre</String>
+	<String Key="AddJavaWindow.Text5">苹果的M系列、Arm64系统应该下载aarch64；下载应选择jdk或者jre；双击可以选择下载</String>
 	<String Key="AddJavaWindow.Info1">是否要下载 {0}</String>
 	<String Key="AddJavaWindow.Info2">正在下载Java</String>
 	<String Key="AddJavaWindow.Info3">下载Java成功</String>

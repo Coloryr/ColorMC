@@ -4,7 +4,6 @@ using Avalonia.Interactivity;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
@@ -80,7 +79,7 @@ public partial class Tab6Control : UserControl
 
     private void Button7_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var file = TextBox3.Text;
         if (string.IsNullOrWhiteSpace(file))
         {
@@ -113,8 +112,8 @@ public partial class Tab6Control : UserControl
 
     private async void Button6_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
-        var str = await BaseBinding.SaveFile((VisualRoot as Window)!, FileType.UI, null);
+        var window = App.FindRoot(VisualRoot);
+        var str = await BaseBinding.SaveFile(window, FileType.UI, null);
         if (str == null)
             return;
 
@@ -142,7 +141,7 @@ public partial class Tab6Control : UserControl
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot);
         var res = await BaseBinding.OpFile(window, FileType.UI);
         if (res != null)
         {

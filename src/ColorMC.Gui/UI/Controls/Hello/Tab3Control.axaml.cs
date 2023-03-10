@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.ObjectModel;
@@ -43,7 +42,7 @@ public partial class Tab3Control : UserControl
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var name = TextBox_Name.Text;
         var local = TextBox_Local.Text;
 
@@ -78,7 +77,7 @@ public partial class Tab3Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot);
         var file = await BaseBinding.OpFile(window, FileType.Java);
 
         if (file != null)
@@ -94,7 +93,7 @@ public partial class Tab3Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as HelloControl)?.Next();
     }
 

@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
 
@@ -34,7 +33,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var res = await window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info3"));
         if (!res)
             return;
@@ -45,7 +44,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var res = await window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info1"));
         if (!res)
             return;
@@ -56,7 +55,7 @@ public partial class Tab1Control : UserControl
 
     private void Button_Input2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var local = TextBox_Local2.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -88,7 +87,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button_SelectFile2_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot);
         var file = await BaseBinding.OpFile(window, FileType.Config);
 
         if (file != null)
@@ -99,7 +98,7 @@ public partial class Tab1Control : UserControl
 
     private void Button_Input_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var local = TextBox_Local.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -131,7 +130,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot);
         var file = await BaseBinding.OpFile(window, FileType.Config);
 
         if (file != null)
@@ -142,7 +141,7 @@ public partial class Tab1Control : UserControl
 
     private void Button_Input1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var local = TextBox_Local1.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -173,7 +172,7 @@ public partial class Tab1Control : UserControl
 
     private async void Button_SelectFile1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot);
         var file = await BaseBinding.OpFile(window, FileType.AuthConfig);
 
         if (file != null)

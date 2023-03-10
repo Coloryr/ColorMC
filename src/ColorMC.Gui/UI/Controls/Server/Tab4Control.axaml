@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Server.Tab2Control"
+    x:Class="ColorMC.Gui.UI.Controls.Server.Tab4Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,20 +9,34 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <DockPanel Margin="3">
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Label VerticalAlignment="Center" Content="选择要同步的Mod" />
+        <DockPanel DockPanel.Dock="Top">
+            <Label
+                VerticalAlignment="Center"
+                Content="选择要同步的配置文件"
+                DockPanel.Dock="Left" />
             <Button
                 Name="Button1"
                 Width="80"
                 Height="25"
-                Content="全选" />
-            <Button
-                Name="Button2"
-                Width="80"
-                Height="25"
-                Margin="5,0,0,0"
-                Content="清除选择" />
-        </StackPanel>
+                Margin="5"
+                Content="添加"
+                DockPanel.Dock="Right" />
+
+            <ComboBox
+                Name="ComboBox2"
+                Width="120"
+                HorizontalAlignment="Stretch"
+                DockPanel.Dock="Right" />
+            <Label
+                VerticalAlignment="Center"
+                Content="同步方式"
+                DockPanel.Dock="Right" />
+
+            <ComboBox Name="ComboBox1" HorizontalAlignment="Stretch" />
+        </DockPanel>
+
+        <Label Content="完整同步不允许玩家修改文件，压缩包同步会允许玩家修改" DockPanel.Dock="Bottom" />
+
         <DataGrid
             Name="DataGrid1"
             AutoGenerateColumns="False"
@@ -30,22 +44,15 @@
             CanUserResizeColumns="True"
             CanUserSortColumns="False">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding Check}" Header="同步" />
                 <DataGridTextColumn
-                    Binding="{Binding FileName}"
-                    Header="文件名"
+                    Binding="{Binding Group}"
+                    Header="名字"
                     IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding PID}" Header="项目ID" />
-                <DataGridTextColumn Binding="{Binding FID}" Header="文件ID" />
                 <DataGridTextColumn
-                    Binding="{Binding Source}"
-                    Header="下载源"
+                    Binding="{Binding Type}"
+                    Header="同步方式"
                     IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Url}" Header="下载地址" />
-                <DataGridTextColumn
-                    Binding="{Binding Sha1}"
-                    Header="SHA1"
-                    IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

@@ -6,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.Threading;
 
@@ -91,7 +90,7 @@ public partial class ItemControl : UserControl
     {
         if (BaseBinding.IsDownload)
         {
-            var window = App.FindRoot(this);
+            var window = App.FindRoot(VisualRoot);
             window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
             return;
         }

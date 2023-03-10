@@ -4,7 +4,6 @@ using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.ObjectModel;
@@ -70,7 +69,7 @@ public partial class Tab5Control : UserControl
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         var name = TextBox_Input1.Text;
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -117,7 +116,7 @@ public partial class Tab5Control : UserControl
 
     private async void GameVersion_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
 
         CheckBox_Forge.IsEnabled = false;
         CheckBox_Fabric.IsEnabled = false;
@@ -150,7 +149,7 @@ public partial class Tab5Control : UserControl
 
     private async void Quilt_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (CheckBox_Quilt.IsChecked == true)
         {
             string? item = ComboBox_GameVersion.SelectedItem as string;
@@ -182,7 +181,7 @@ public partial class Tab5Control : UserControl
 
     private async void Fabric_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (CheckBox_Fabric.IsChecked == true)
         {
             string? item = ComboBox_GameVersion.SelectedItem as string;
@@ -214,7 +213,7 @@ public partial class Tab5Control : UserControl
 
     private async void Forge_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (CheckBox_Forge.IsChecked == true)
         {
             string? item = ComboBox_GameVersion.SelectedItem as string;
@@ -246,7 +245,7 @@ public partial class Tab5Control : UserControl
 
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Close();
         var test = await window.Info.ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info7"), obj.Name));
@@ -259,13 +258,13 @@ public partial class Tab5Control : UserControl
 
     private void PackUpdate(int size, int now)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         window.Info1.Progress((double)now / size);
     }
 
     private void PackState(CoreRunState state)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         if (state == CoreRunState.Read)
         {
             window.Info1.Show(App.GetLanguage("AddGameWindow.Info8"));
@@ -291,7 +290,7 @@ public partial class Tab5Control : UserControl
 
     private async void AddPack(PackType type)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         add = false;
 
         window.Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
@@ -315,7 +314,7 @@ public partial class Tab5Control : UserControl
 
     private async Task<string?> SelectPack()
     {
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot);
         return await BaseBinding.OpFile(window, FileType.ModPack);
     }
 
@@ -343,7 +342,7 @@ public partial class Tab5Control : UserControl
 
     private void Button_Next_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
         (window.Con as HelloControl)?.Next();
     }
 }

@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.Collections.Generic;
 
@@ -62,7 +61,7 @@ public partial class Tab2Control : UserControl
 
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        var Window = App.FindRoot(this);
+        var Window = App.FindRoot(VisualRoot);
         var res = await Window.Info.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
         if (res)
         {
@@ -168,13 +167,13 @@ public partial class Tab2Control : UserControl
             GameBinding.SetJavaLocal(Obj, ComboBox2.SelectedItem as string, TextBox11.Text);
         }
 
-        var Window = App.FindRoot(this);
+        var Window = App.FindRoot(VisualRoot);
         Window.Info2.Show(App.GetLanguage("Info3"));
     }
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        var window = (VisualRoot as Window)!;
+        var window = App.FindRoot(VisualRoot);
 
         var file = await BaseBinding.OpFile(window, FileType.Java);
         if (file != null)
@@ -209,7 +208,7 @@ public partial class Tab2Control : UserControl
 
     private void Save4()
     {
-        var window = App.FindRoot(this);
+        var window = App.FindRoot(VisualRoot);
 
         if (UIUtils.CheckNotNumber(TextBox8.Text))
         {
