@@ -491,7 +491,7 @@ public partial class App : Application
 
     public static void ShowAdd(GameSettingObj obj, ModDisplayObj obj1)
     {
-        var type1 = UIUtils.CheckNotNumber(obj1.PID) || UIUtils.CheckNotNumber(obj1.FID) ?
+        var type1 = Funtcions.CheckNotNumber(obj1.PID) || Funtcions.CheckNotNumber(obj1.FID) ?
             SourceType.Modrinth : SourceType.CurseForge;
 
         if (AddWindows.TryGetValue(obj.UUID, out var value))

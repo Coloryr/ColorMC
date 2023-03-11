@@ -69,7 +69,7 @@ public partial class Tab3Control : UserControl
                 Obj1.Resourcepack.Add(item);
             }
 
-            obj.Url = item.Url = BaseBinding.MakeUrl(obj, FileType.Resourcepack, Obj1.Url);
+            obj.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Resourcepack, Obj1.Url);
         }
         else
         {
@@ -119,15 +119,18 @@ public partial class Tab3Control : UserControl
                 Sha1 = item.Pack.Sha1,
                 Obj1 = item
             };
-            if (item1 != null && !string.IsNullOrWhiteSpace(item1.Url))
+            if (item1 != null)
             {
-                item2.Url = item1.Url;
+                if (!string.IsNullOrWhiteSpace(item1.Url))
+                {
+                    item2.Url = item1.Url;
+                }
+                else
+                {
+                    item2.Url = BaseBinding.MakeUrl(item1, FileType.Resourcepack, Obj1.Url);
+                }
             }
-            else
-            {
-                item2.Url = BaseBinding.MakeUrl(item2, FileType.Resourcepack, Obj1.Url);
-            }
-
+           
             List.Add(item2);
         });
 
