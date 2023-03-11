@@ -31,7 +31,7 @@ public record ModDisplayObj : INotifyPropertyChanged
         {
             if (string.IsNullOrWhiteSpace(PID) || string.IsNullOrWhiteSpace(FID))
                 return "";
-            return UIUtils.CheckNotNumber(PID) || UIUtils.CheckNotNumber(FID) ?
+            return Funtcions.CheckNotNumber(PID) || Funtcions.CheckNotNumber(FID) ?
                 SourceType.Modrinth.GetName() : SourceType.CurseForge.GetName();
         }
     }

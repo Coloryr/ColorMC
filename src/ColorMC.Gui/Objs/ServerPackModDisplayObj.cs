@@ -30,7 +30,7 @@ public record ServerPackModDisplayObj : INotifyPropertyChanged
             {
                 return "";
             }
-            else if (UIUtils.CheckNotNumber(PID) || UIUtils.CheckNotNumber(FID))
+            else if (Funtcions.CheckNotNumber(PID) || Funtcions.CheckNotNumber(FID))
             {
                 return SourceType.Modrinth.GetName();
             }

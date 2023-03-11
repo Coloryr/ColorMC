@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using System.Globalization;
 
@@ -129,7 +130,7 @@ public partial class Tab3Control : UserControl
 
     private void Save()
     {
-        if (UIUtils.CheckNotNumber(TextBox2.Text))
+        if (Funtcions.CheckNotNumber(TextBox2.Text))
         {
             return;
         }
