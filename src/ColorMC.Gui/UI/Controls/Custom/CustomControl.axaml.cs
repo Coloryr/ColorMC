@@ -16,6 +16,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Controls.Custom;
 
@@ -73,6 +74,16 @@ public partial class CustomControl : UserControl, IUserControl
         if (HeadImg != null)
         {
             HeadImg.Source = UserBinding.HeadBitmap!;
+
+            HeadImg.PointerPressed += HeadImg_PointerPressed;
+        }
+    }
+
+    private void HeadImg_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            App.ShowSkin();
         }
     }
 
@@ -181,6 +192,8 @@ public partial class CustomControl : UserControl, IUserControl
         App_UserEdit();
 
         Motd?.Load(config.Item2.ServerCustom!.IP, config.Item2.ServerCustom.Port);
+
+        Task.Run(() => BaseBinding.ServerPackCheck(Obj));
     }
 
     private void MakeItems(Panel? panel, ViewObj ui)

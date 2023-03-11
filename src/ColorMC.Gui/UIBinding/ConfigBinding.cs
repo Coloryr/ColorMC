@@ -149,25 +149,10 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom = obj;
         GuiConfigUtils.Save();
 
-        (App.MainWindow as MainControl)?.MotdLoad();
+        App.MainWindow?.Load();
+        App.MainWindow?.MotdLoad();
 
         ColorSel.Instance.Load();
-    }
-
-    public static void SetServerCustom(bool enable, string? name)
-    {
-        GuiConfigUtils.Config.ServerCustom.LockGame = enable;
-        GuiConfigUtils.Config.ServerCustom.GameName = name;
-
-        GuiConfigUtils.Save();
-
-        (App.MainWindow as MainControl)?.Load();
-    }
-
-    public static void SetUIFile(string text)
-    {
-        GuiConfigUtils.Config.ServerCustom.UIFile = text;
-        GuiConfigUtils.Save();
     }
 
     public static void SetGameCheckConfig(GameCheckObj obj)

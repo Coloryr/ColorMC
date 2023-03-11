@@ -64,6 +64,7 @@ public partial class Tab4Control : UserControl
                 {
                     Group = group ,
                     Zip = true,
+                    Dir = true
                 };
 
                 item.Url = GetUrl(item)[..^1] + ".zip";
@@ -75,6 +76,7 @@ public partial class Tab4Control : UserControl
                 {
                     Group = group,
                     Zip = false,
+                    Dir = true
                 };
 
                 item.Url = GetUrl(item);
@@ -87,6 +89,7 @@ public partial class Tab4Control : UserControl
             {
                 Group = group,
                 Zip = type == 0,
+                Dir = false
             };
 
             item.Url = GetUrl(item);

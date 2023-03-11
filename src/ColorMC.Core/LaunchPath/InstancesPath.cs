@@ -37,6 +37,7 @@ public static class InstancesPath
     private const string Name19 = "remove";
     private const string Name20 = "backup";
     private const string Name21 = "server.json";
+    private const string Name22 = "server.old.json";
 
     /// <summary>
     /// 游戏实例列表
@@ -400,14 +401,9 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name21}");
     }
 
-    public static void SaveServerPack(this GameSettingObj obj, ServerPackObj obj1)
+    public static string GetServerPackOldFile(this GameSettingObj obj)
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = $"game-server-{obj.Name}",
-            Local = obj.GetServerPackFile(),
-            Obj = obj1
-        });
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name22}");
     }
 
     /// <summary>

@@ -20,6 +20,9 @@ public record ServerCustom
     public bool LockGame { get; set; }
     public string GameName { get; set; }
     public string UIFile { get; set; }
+
+    public bool ServerPack { get; set; }
+    public string ServerUrl { get; set; }
 }
 
 public record WindowsRender

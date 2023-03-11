@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UIBinding;
 
@@ -37,7 +38,7 @@ public partial class Tab1Control : UserControl
         TextBox1.Text += "/";
     }
 
-    private void Button2_Click(object? sender, RoutedEventArgs e)
+    private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
         if (string.IsNullOrWhiteSpace(Obj1.Url))
@@ -50,6 +51,22 @@ public partial class Tab1Control : UserControl
         {
             window.Info.Show("版本号为空");
             return;
+        }
+
+        var local = await BaseBinding.OpPath(window, FileType.ServerPack);
+        if (local == null)
+            return;
+
+        window.Info1.Show("正在生成服务器包");
+        var res = await GameBinding.GenServerPack(Obj1, local);
+        window.Info1.Close();
+        if (res)
+        {
+            window.Info2.Show("已生成");
+        }
+        else
+        {
+            window.Info.Show("生成失败");
         }
     }
 

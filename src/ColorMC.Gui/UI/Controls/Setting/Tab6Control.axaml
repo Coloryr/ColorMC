@@ -92,6 +92,21 @@
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab6.Text12}" />
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        Name="CheckBox4"
+                        Content="启动服务器同步"
+                        IsEnabled="False" />
+                </StackPanel>
+                <TextBox
+                    Name="TextBox4"
+                    Classes="input1"
+                    IsEnabled="False"
+                    Watermark="同步基础网址" />
+                <Label
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="注意：只有锁定实例才能使用服务器同步" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -680,7 +680,7 @@
 	<String Key="Info2">正在保存配置文件</String>
 	<String Key="Info3">已设置</String>
 	<String Key="Info4">添加成功</String>
-	<String Key="Info5">有新版本，是否要更新</String>
+	<String Key="Gui.Info5">有新版本，是否要更新</String>
 	<String Key="Gui.Info6">添加外置登录</String>
 	<String Key="Gui.Info7">导入游戏压缩包</String>
 	<String Key="Gui.Info8">有新版本</String>

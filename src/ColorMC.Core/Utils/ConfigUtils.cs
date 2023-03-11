@@ -219,6 +219,8 @@ public static class ConfigSave
     private static void Stop()
     {
         run = false;
+
+        thread.Join();
     }
 
     private static void Run()

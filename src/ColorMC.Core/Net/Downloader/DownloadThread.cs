@@ -1,5 +1,6 @@
 using ColorMC.Core.Utils;
 using System.Buffers;
+using System.IO;
 
 namespace ColorMC.Core.Net.Downloader;
 
@@ -121,6 +122,7 @@ public class DownloadThread
                             {
                                 item.State = DownloadItemState.Action;
                                 item.Update?.Invoke(index);
+                                stream2.Seek(0, SeekOrigin.Begin);
                                 item.Later?.Invoke(stream2);
 
                                 item.State = DownloadItemState.Done;
@@ -140,6 +142,7 @@ public class DownloadThread
                             {
                                 item.State = DownloadItemState.Action;
                                 item.Update?.Invoke(index);
+                                stream2.Seek(0, SeekOrigin.Begin);
                                 item.Later?.Invoke(stream2);
 
                                 item.State = DownloadItemState.Done;
@@ -259,6 +262,7 @@ public class DownloadThread
                             break;
 
                         //后续操作
+                        stream.Seek(0, SeekOrigin.Begin);
                         item.Later?.Invoke(stream);
 
                         stream.Dispose();

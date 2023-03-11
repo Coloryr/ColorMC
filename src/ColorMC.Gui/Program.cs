@@ -59,10 +59,7 @@ public class ColorMCGui
 
     public static Task<bool> HaveUpdate(string data)
     {
-        if (App.MainWindow == null)
-            return Task.FromResult(false);
-
-        return App.MainWindow.Window.Info6.ShowWait(App.GetLanguage("Info5"), data);
+        return App.HaveUpdate(data);
     }
 
     public static void CheckUpdateFail()

@@ -147,7 +147,6 @@ public static class GameHelper
     /// <param name="stream">文件流</param>
     public static void UnpackNative(string version, FileStream stream)
     {
-        stream.Seek(0, SeekOrigin.Begin);
         using ZipFile zFile = new(stream);
         foreach (ZipEntry e in zFile)
         {

@@ -310,4 +310,19 @@ public static class UrlHelper
             _ => $"{BMCLAPI}/optifine/{obj.mcversion}/HD_U/{obj.patch}"
         };
     }
+
+    public static string MakeDownloadUrl(SourceType? type, string pid, string fid, string file)
+    {
+        if (type == SourceType.CurseForge)
+        {
+            var fid1 = long.Parse(fid);
+            return $"https://edge.forgecdn.net/files/{fid1 / 1000}/{fid1 % 1000}/{file}";
+        }
+        else if (type == SourceType.Modrinth)
+        {
+            return $"https://cdn.modrinth.com/data/{pid}/versions/{fid}/{file}";
+        }
+
+        return "";
+    }
 }

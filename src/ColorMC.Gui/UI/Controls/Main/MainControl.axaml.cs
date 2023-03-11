@@ -235,6 +235,17 @@ public partial class MainControl : UserControl, IUserControl
 #endif
 
         MotdLoad();
+
+        var config = ConfigBinding.GetAllConfig();
+        if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)
+        {
+            first = true;
+            var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
+            if (game != null)
+            {
+                BaseBinding.ServerPackCheck(game);
+            }
+        }
     }
 
     public void MotdLoad()
