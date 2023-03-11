@@ -1,7 +1,7 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.Objs;
 
@@ -22,9 +22,9 @@ public record ServerPackModDisplayObj : INotifyPropertyChanged
         get { return fid; }
         set { fid = value; NotifyPropertyChanged(); NotifyPropertyChanged(nameof(Source)); }
     }
-    public string Source 
-    { 
-        get 
+    public string Source
+    {
+        get
         {
             if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
             {
@@ -38,7 +38,7 @@ public record ServerPackModDisplayObj : INotifyPropertyChanged
             {
                 return SourceType.CurseForge.GetName();
             }
-        } 
+        }
     }
     public string Sha1 { get; set; }
     public string Url { get { return url; } set { url = value; NotifyPropertyChanged(); } }

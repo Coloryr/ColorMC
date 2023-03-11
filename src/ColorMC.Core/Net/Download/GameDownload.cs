@@ -11,35 +11,16 @@ using System.Text;
 
 namespace ColorMC.Core.Net.Download;
 
-/// <summary>
-/// 下载状态
-/// </summary>
-public enum GetDownloadState
-{
-    /// <summary>
-    /// 初始化
-    /// </summary>
-    Init,
-    /// <summary>
-    /// 获取数据中
-    /// </summary>
-    GetInfo,
-    /// <summary>
-    /// 结束
-    /// </summary>
-    End
-}
-
 public static class GameDownload
 {
     /// <summary>
-    /// 下载哟游戏
+    /// 下载游戏
     /// </summary>
     /// <param name="obj">版本数据</param>
     /// <returns></returns>
-    public static async Task<(GetDownloadState State, List<DownloadItem>? List)> Download(VersionObj.Versions obj)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> Download(VersionObj.Versions obj)
     {
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
 
         var obj1 = await GetHelper.GetGame(obj.url);
         if (obj1 == null)
@@ -79,7 +60,7 @@ public static class GameDownload
     /// 获取Forge下载项目
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadForge(GameSettingObj obj)
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(GameSettingObj obj)
     {
         return DownloadForge(obj.Version, obj.LoaderVersion);
     }
@@ -89,7 +70,7 @@ public static class GameDownload
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version"><forge版本/param>
-    public static async Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadForge(string mc, string version)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(string mc, string version)
     {
         var version1 = VersionPath.GetGame(mc)!;
         bool v2 = CheckRule.GameLaunchVersion(version1);
@@ -105,7 +86,7 @@ public static class GameDownload
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error5"), e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Forge.Error4"), e, false);
             return (GetDownloadState.Init, null);
         }
 
@@ -131,7 +112,7 @@ public static class GameDownload
             }
         }
 
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
         //1.12.2以上
         if (find1 && find2)
         {
@@ -145,7 +126,7 @@ public static class GameDownload
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Http.Error2"), e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Forge.Error1"), e);
                 return (GetDownloadState.GetInfo, null);
             }
 
@@ -161,7 +142,7 @@ public static class GameDownload
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Http.Error3"), e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Forge.Error2"), e);
                 return (GetDownloadState.GetInfo, null);
             }
 
@@ -233,7 +214,7 @@ public static class GameDownload
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Http.Error4"), e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Forge.Error3"), e);
                 return (GetDownloadState.GetInfo, null);
             }
         }
@@ -245,7 +226,7 @@ public static class GameDownload
     /// 获取Fabric下载项目
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadFabric(GameSettingObj obj)
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadFabric(GameSettingObj obj)
     {
         return DownloadFabric(obj.Version, obj.LoaderVersion);
     }
@@ -255,9 +236,9 @@ public static class GameDownload
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
-    public static async Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadFabric(string mc, string? version = null)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadFabric(string mc, string? version = null)
     {
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
         var meta = await FabricHelper.GetMeta(BaseClient.Source);
         if (meta == null)
         {
@@ -309,7 +290,7 @@ public static class GameDownload
     /// 获取Quilt下载项目
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadQuilt(GameSettingObj obj)
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadQuilt(GameSettingObj obj)
     {
         return DownloadQuilt(obj.Version, obj.LoaderVersion);
     }
@@ -319,9 +300,9 @@ public static class GameDownload
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">quilt版本</param>
-    public static async Task<(GetDownloadState State, List<DownloadItem>? List)> DownloadQuilt(string mc, string? version = null)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadQuilt(string mc, string? version = null)
     {
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
         var meta = await QuiltHelper.GetMeta(BaseClient.Source);
         if (meta == null)
         {

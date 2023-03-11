@@ -63,7 +63,7 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle("生成服务器包");
+        Window.SetTitle(string.Format(App.GetLanguage("ServerPackWindow.Title"), Obj?.Name));
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)

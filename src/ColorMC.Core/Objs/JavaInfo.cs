@@ -1,5 +1,4 @@
 ﻿using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Objs;
 

@@ -38,11 +38,11 @@
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Label
                             HorizontalAlignment="Center"
-                            Content="没有游戏实例"
+                            Content="{setting:Localize MainWindow.Text1}"
                             FontSize="30" />
                         <Label
                             HorizontalAlignment="Center"
-                            Content="点击添加一个游戏实例"
+                            Content="{setting:Localize MainWindow.Text2}"
                             FontSize="30" />
                     </StackPanel>
                 </Grid>

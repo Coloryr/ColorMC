@@ -1,4 +1,4 @@
-﻿<ResourceDictionary>
+<ResourceDictionary>
 	
 	<String Key="Language">简体中文</String>
 	<String Key="Core.Info1">ColorMC核心已初始化</String>
@@ -16,32 +16,43 @@
 	<String Key="Core.Http.Info2">下载器清空</String>
 	<String Key="Core.Http.Info3">下载器启动</String>
 	<String Key="Core.Http.Info4">下载器装填内容</String>
-	<String Key="Core.Http.Error1">下载{0}错误</String>
-	<String Key="Core.Http.Error2">读取Forge信息错误</String>
-	<String Key="Core.Http.Error3">读取Forge安装信息错误</String>
-	<String Key="Core.Http.Error4">读取Forge信息错误</String>
-	<String Key="Core.Http.Error5">Forge核心下载失败</String>
-	<String Key="Core.Http.Error6">获取CurseForge_Pack信息发生错误</String>
-	<String Key="Core.Http.Error7">获取CurseForge_Mod信息发生错误</String>
-	<String Key="Core.Http.Error8">获取CurseForge整合包Mod文件发生错误</String>
-	<String Key="Core.Http.Error9">获取CurseForge_Version信息发生错误</String>
-	<String Key="Core.Http.Error10">获取CurseForge_VersionType信息发生错误</String>
-	<String Key="Core.Http.Error11">获取CurseForge_File信息发生错误</String>
-	<String Key="Core.Http.Error12">获取Fabric版本信息发生错误</String>
-	<String Key="Core.Http.Error13">获取Fabric_Loader信息发生错误</String>
-	<String Key="Core.Http.Error14">获取Fabric_Loader版本信息发生错误</String>
-	<String Key="Core.Http.Error15">获取Fabric支持版本信息发生错误</String>
-	<String Key="Core.Http.Error16">获取Quilt支持版本信息发生错误</String>
-	<String Key="Core.Http.Error17">获取Quilt版本信息发生错误</String>
-	<String Key="Core.Http.Error18">获取Quilt_Loader版本信息发生错误</String>
-	<String Key="Core.Http.Error19">获取Loader信息发生错误</String>
-	<String Key="Core.Http.Error20">获取头像错误</String>
-	<String Key="Core.Http.Error21">皮肤读取失败</String>
-	<String Key="Core.Http.Error22">获取游戏资源信息发生错误</String>
-	<String Key="Core.Http.Error23">获取游戏信息发生错误</String>
-	<String Key="Core.Http.Error24">获取版本信息发生错误</String>
 	<String Key="Core.Http.Info5">Http客户端初始化</String>
 	<String Key="Core.Http.Info6">使用代理服务器{0}:{1}</String>
+	<String Key="Core.Http.Error1">下载{0}错误</String>
+	<String Key="Core.Http.Error2">获取头像错误</String>
+	<String Key="Core.Http.Error3">皮肤读取失败</String>
+	<String Key="Core.Http.Error4">获取游戏资源信息发生错误</String>
+	<String Key="Core.Http.Error5">获取游戏信息发生错误</String>
+	<String Key="Core.Http.Error6">获取版本信息发生错误</String>
+
+	<String Key="Core.Http.Forge.Error1">读取Forge信息错误</String>
+	<String Key="Core.Http.Forge.Error2">读取Forge安装信息错误</String>
+	<String Key="Core.Http.Forge.Error3">读取Forge信息错误</String>
+	<String Key="Core.Http.Forge.Error4">Forge核心下载失败</String>
+
+	<String Key="Core.Http.CurseForge.Error1">获取CurseForge_Pack信息发生错误</String>
+	<String Key="Core.Http.CurseForge.Error2">获取CurseForge_Mod信息发生错误</String>
+	<String Key="Core.Http.CurseForge.Error3">获取CurseForge整合包Mod文件发生错误</String>
+	<String Key="Core.Http.CurseForge.Error4">获取CurseForge_Version信息发生错误</String>
+	<String Key="Core.Http.CurseForge.Error5">获取CurseForge_VersionType信息发生错误</String>
+	<String Key="Core.Http.CurseForge.Error6">获取CurseForge_File信息发生错误</String>
+
+	<String Key="Core.Http.Fabric.Error1">获取Fabric_Loader信息发生错误</String>
+	<String Key="Core.Http.Fabric.Error2">获取Fabric_Loader版本信息发生错误</String>
+	<String Key="Core.Http.Fabric.Error3">获取Fabric支持版本信息发生错误</String>
+
+	<String Key="Core.Http.Quilt.Error1">获取Quilt支持版本信息发生错误</String>
+	<String Key="Core.Http.Quilt.Error2">获取Quilt版本信息发生错误</String>
+	<String Key="Core.Http.Quilt.Error3">获取Quilt_Loader版本信息发生错误</String>
+	<String Key="Core.Http.Quilt.Error4">获取Quilt_Loader信息发生错误</String>
+
+	<String Key="Core.Http.FTB.Error1">获取FTB列表错误</String>
+	<String Key="Core.Http.FTB.Error2">获取FTB信息错误</String>
+	<String Key="Core.Http.FTB.Error3">获取FTB文件列表错误</String>
+	<String Key="Core.Http.FTB.Error4">FTB POST错误</String>
+
+	<String Key="Core.Http.Optifine.Error1">Optifine数据加载失败</String>
+	<String Key="Core.Http.Optifine.Error2">Optifine下载地址获取失败</String>
 	
 	<String Key="Core.Pack.Error1">读取压缩包错误</String>
 	<String Key="Core.Pack.Error2">导入压缩包错误</String>
@@ -52,10 +63,11 @@
 	<String Key="Core.Jvm.Error2">Java旧名字不存在</String>
 	<String Key="Core.Jvm.Error3">Java新名字已存在</String>
 	<String Key="Core.Jvm.Error4">Java检查失败</String>
-	<String Key="Core.Jvm.Info1">正在读取Java信息</String>
-	<String Key="Core.Jvm.Info2">Java:{0} {1}</String>
 	<String Key="Core.Jvm.Error5">Java下载失败</String>
 	<String Key="Core.Jvm.Error6">没有找到Java</String>
+	<String Key="Core.Jvm.Error7">Java下载错误</String>
+	<String Key="Core.Jvm.Info1">正在读取Java信息</String>
+	<String Key="Core.Jvm.Info2">Java:{0} {1}</String>
 	
 	<String Key="Core.Path.Info1">启动器Minecraft文件夹在{0}</String>
 	<String Key="Core.Path.Info2">正在读取版本信息</String>
@@ -91,6 +103,9 @@
 	<String Key="Core.Game.Error4">地图读取失败</String>
 	<String Key="Core.Game.Error5">获取Forge版本错误</String>
 	<String Key="Core.Game.Error6">没有名字的mod</String>
+
+	<String Key="Core.ServerPack.Info1">正在下载更新</String>
+	<String Key="Core.ServerPack.Error1">服务器包生成失败</String>
 	
 	<String Key="Core.Launch.Info1">游戏启动参数</String>
 	<String Key="Core.Launch.Info2">游戏使用的运行库</String>

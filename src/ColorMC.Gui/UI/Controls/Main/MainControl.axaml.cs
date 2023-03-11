@@ -5,7 +5,6 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
-using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.UI.Windows;
@@ -610,7 +609,7 @@ public partial class MainControl : UserControl, IUserControl
             return;
         }
 
-        BaseBinding.SetGameName(obj, data);
+        GameBinding.SetGameName(obj, data);
     }
 
     public async void Copy(GameSettingObj obj)
@@ -627,7 +626,7 @@ public partial class MainControl : UserControl, IUserControl
             return;
         }
 
-        var res = await BaseBinding.CopyGame(obj, data);
+        var res = await GameBinding.CopyGame(obj, data);
         if (!res)
         {
             window.Info.Show(App.GetLanguage("MainWindow.Error5"));

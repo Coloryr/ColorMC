@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Objs.FTB;
+using ColorMC.Core.Objs.FTB;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -24,7 +25,7 @@ public static class FTBHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("获取FTB列表错误", e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.FTB.Error1"), e, false);
         }
         return null;
     }
@@ -40,7 +41,7 @@ public static class FTBHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("获取FTB列表错误", e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.FTB.Error1"), e, false);
         }
         return null;
     }
@@ -56,7 +57,7 @@ public static class FTBHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("获取FTB列表错误", e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.FTB.Error1"), e, false);
         }
         return null;
     }
@@ -72,7 +73,7 @@ public static class FTBHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("获取FTB列表错误", e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.FTB.Error1"), e, false);
         }
         return null;
     }
@@ -91,7 +92,7 @@ public static class FTBHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("获取FTB列表错误", e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.FTB.Error1"), e, false);
         }
         return null;
     }
@@ -107,7 +108,7 @@ public static class FTBHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("获取FTB列表错误", e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.FTB.Error2"), e, false);
         }
         return null;
     }
@@ -123,7 +124,7 @@ public static class FTBHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("获取FTB列表错误", e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.FTB.Error3"), e, false);
         }
         return null;
     }
@@ -149,7 +150,21 @@ public static class FTBHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("FTB POST错误", e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.FTB.Error4"), e, false);
+        }
+    }
+
+    public static async void GetPostLaunch(int id, int file)
+    {
+        var analytics = ModPack + id + "/" + file + "/play";
+
+        try
+        {
+            var data = await BaseClient.GetString(analytics);
+        }
+        catch (Exception e)
+        {
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.FTB.Error4"), e, false);
         }
     }
 }

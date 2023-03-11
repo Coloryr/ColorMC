@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -11,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using static ColorMC.Core.Objs.Minecraft.PlayerAttributesObj.Privileges;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -175,7 +175,7 @@ public partial class Tab6Control : UserControl
         var obj = new ServerCustom()
         {
             IP = TextBox1.Text,
-            Port = UIUtils.CheckNotNumber(TextBox2.Text) ? 0 : int.Parse(TextBox2.Text!),
+            Port = Funtcions.CheckNotNumber(TextBox2.Text) ? 0 : int.Parse(TextBox2.Text!),
             Motd = CheckBox1.IsChecked == true,
             JoinServer = CheckBox2.IsChecked == true,
             MotdColor = ColorPicker1.Color.ToString(),

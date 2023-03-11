@@ -1,6 +1,5 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ICSharpCode.SharpZipLib.Zip;
@@ -14,9 +13,9 @@ public static class GameHelper
     /// 创建游戏运行库项目
     /// </summary>
     /// <param name="obj">游戏数据</param>
-    public static async Task<ConcurrentBag<DownloadItem>> MakeGameLibs(GameArgObj obj)
+    public static async Task<ConcurrentBag<DownloadItemObj>> MakeGameLibs(GameArgObj obj)
     {
-        var list = new ConcurrentBag<DownloadItem>();
+        var list = new ConcurrentBag<DownloadItemObj>();
         var list1 = new HashSet<string>();
         var natives = new HashSet<string>();
         await Parallel.ForEachAsync(obj.libraries, async (item1, cancel) =>
@@ -166,7 +165,7 @@ public static class GameHelper
         }
     }
 
-    private static async Task<DownloadItem?> MakeItem(string name, string dir)
+    private static async Task<DownloadItemObj?> MakeItem(string name, string dir)
     {
         var item2 = LocalMaven.GetItem(name);
         if (item2 != null)
@@ -186,7 +185,7 @@ public static class GameHelper
         {
             try
             {
-                DownloadItem? item3 = null;
+                DownloadItemObj? item3 = null;
                 var maven = new MavenItemObj()
                 {
                     Name = name
@@ -199,7 +198,7 @@ public static class GameHelper
                     HttpCompletionOption.ResponseHeadersRead);
                 if (res.IsSuccessStatusCode)
                 {
-                    item3 = new DownloadItem()
+                    item3 = new DownloadItemObj()
                     {
                         Name = name,
                         Url = url,

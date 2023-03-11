@@ -3,6 +3,8 @@
 	<String Key="Name">ColorMC</String>
 
 	<String Key="MainWindow.Title">ColorMC 主界面</String>
+	<String Key="MainWindow.Text1">没有游戏实例</String>
+	<String Key="MainWindow.Text2">点击添加一个游戏实例</String>
 	<String Key="MainWindow.Error1">账户登录失败，请重新登录</String>
 	<String Key="MainWindow.Error2">没有合适的Java</String>
 	<String Key="MainWindow.Error3">请输入名字</String>
@@ -136,6 +138,8 @@
 	<String Key="SettingWindow.Tab2.Text23">默认字体</String>
 	<String Key="SettingWindow.Tab2.Text24">注意：切换语言后需要重启启动器才能完全生效</String>
 	<String Key="SettingWindow.Tab2.Text25">启用窗口圆角</String>
+	<String Key="SettingWindow.Tab2.Text26">单窗口模式</String>
+	<String Key="SettingWindow.Tab2.Text27">切换后需要重启</String>
 	<String Key="SettingWindow.Tab2.Info1">正在切换语言</String>
 	<String Key="SettingWindow.Tab2.Info2">正在设置</String>
 	<String Key="SettingWindow.Tab2.Info3">选择图片文件</String>
@@ -219,6 +223,9 @@
 	<String Key="SettingWindow.Tab6.Text10">导出模板</String>
 	<String Key="SettingWindow.Tab6.Text11">测试启动</String>
 	<String Key="SettingWindow.Tab6.Text12">注意：重启后自定义UI才会生效</String>
+	<String Key="SettingWindow.Tab6.Text13">服务器同步</String>
+	<String Key="SettingWindow.Tab6.Text14">同步基础网址</String>
+	<String Key="SettingWindow.Tab6.Text15">注意：只有锁定实例才能使用服务器同步</String>
 	<String Key="SettingWindow.Tab6.Error1">UI文件错误</String>
 	<String Key="SettingWindow.Tab6.Error2">自定义UI窗口启动错误</String>
 	<String Key="SettingWindow.Tab6.Error3">导出UI文件错误</String>
@@ -307,6 +314,7 @@
 	<String Key="GameEditWindow.Tab1.Text2">刷新版本</String>
 	<String Key="GameEditWindow.Tab1.Text3">标记为整合包</String>
 	<String Key="GameEditWindow.Tab1.Text4">注意：Optifine只会下载到mods文件夹</String>
+	<String Key="GameEditWindow.Tab1.Text5">生成服务器包</String>
 	<String Key="GameEditWindow.Tab1.Info1">是否要删除实例 {0}</String>
 	<String Key="GameEditWindow.Tab1.Error1">游戏运行中，无法删除</String>
 
@@ -622,6 +630,54 @@
 	<String Key="SkinWindow.Error1">着色程序错误</String>
 	<String Key="SkinWindow.Error2">着色程序编译错误</String>
 
+	<String Key="ServerPackWindow.Title">ColorMC 生成服务器包 {0}</String>
+	<String Key="ServerPackWindow.Tabs.Text1">总体设定</String>
+	<String Key="ServerPackWindow.Tabs.Text2">Mod选择</String>
+	<String Key="ServerPackWindow.Tabs.Text3">资源包选择</String>
+	<String Key="ServerPackWindow.Tabs.Text4">配置文件选择</String>
+
+	<String Key="ServerPackWindow.Tab1.Text1">基础网址</String>
+	<String Key="ServerPackWindow.Tab1.Text2">自动更新拉取资源的网址</String>
+	<String Key="ServerPackWindow.Tab1.Text3">版本号</String>
+	<String Key="ServerPackWindow.Tab1.Text4">服务器包的版本号</String>
+	<String Key="ServerPackWindow.Tab1.Text5">更新说明</String>
+	<String Key="ServerPackWindow.Tab1.Text6">展示给用户的更新说明</String>
+	<String Key="ServerPackWindow.Tab1.Text7">UI文件</String>
+	<String Key="ServerPackWindow.Tab1.Text8">自定义UI的文件</String>
+	<String Key="ServerPackWindow.Tab1.Text9">强制更新</String>
+	<String Key="ServerPackWindow.Tab1.Text10">生成服务器包</String>
+	<String Key="ServerPackWindow.Tab1.Error1">基础网址为空</String>
+	<String Key="ServerPackWindow.Tab1.Error2">版本号为空</String>
+	<String Key="ServerPackWindow.Tab1.Error3">生成失败</String>
+	<String Key="ServerPackWindow.Tab1.Info1">正在生成服务器包</String>
+	<String Key="ServerPackWindow.Tab1.Info2">已生成</String>
+
+	<String Key="ServerPackWindow.Tab2.Text1">选择要同步的Mod</String>
+	<String Key="ServerPackWindow.Tab2.Text2">全选</String>
+	<String Key="ServerPackWindow.Tab2.Text3">清除选择</String>
+	<String Key="ServerPackWindow.Tab2.DataGrid.Text1">同步</String>
+	<String Key="ServerPackWindow.Tab2.DataGrid.Text2">文件名</String>
+	<String Key="ServerPackWindow.Tab2.DataGrid.Text3">项目ID</String>
+	<String Key="ServerPackWindow.Tab2.DataGrid.Text4">文件ID</String>
+	<String Key="ServerPackWindow.Tab2.DataGrid.Text5">下载源</String>
+	<String Key="ServerPackWindow.Tab2.DataGrid.Text6">下载地址</String>
+	<String Key="ServerPackWindow.Tab2.DataGrid.Text7">SHA1</String>
+
+	<String Key="ServerPackWindow.Tab3.Text1">选择要同步的材质包</String>
+	<String Key="ServerPackWindow.Tab3.DataGrid.Text1">同步</String>
+	<String Key="ServerPackWindow.Tab3.DataGrid.Text2">文件名</String>
+	<String Key="ServerPackWindow.Tab3.DataGrid.Text3">下载地址</String>
+	<String Key="ServerPackWindow.Tab3.DataGrid.Text4">SHA1</String>
+
+	<String Key="ServerPackWindow.Tab4.Text1">选择要同步的配置文件</String>
+	<String Key="ServerPackWindow.Tab4.Text2">同步方式</String>
+	<String Key="ServerPackWindow.Tab4.Text3">压缩包同步：下载压缩包后解压，完整同步：一个文件一个文件下载</String>
+	<String Key="ServerPackWindow.Tab4.DataGrid.Text1">名字</String>
+	<String Key="ServerPackWindow.Tab4.DataGrid.Text2">同步方式</String>
+	<String Key="ServerPackWindow.Tab4.DataGrid.Text3">下载地址</String>
+	<String Key="ServerPackWindow.Tab4.Item1">压缩包同步</String>
+	<String Key="ServerPackWindow.Tab4.Item2">完整同步</String>
+
 	<String Key="ServerMotdControl.Text1">玩家数量：</String>	
 	<String Key="ServerMotdControl.Text2">服务器版本：</String>
 	<String Key="ServerMotdControl.Text3">延迟：</String>
@@ -686,6 +742,9 @@
 	<String Key="Gui.Info8">有新版本</String>
 	<String Key="Gui.Info9">保存皮肤</String>
 	<String Key="Gui.Info10">已保存</String>
+	<String Key="Gui.Info11">选择服务器包储存文件夹</String>
+	<String Key="Gui.Info13">更新服务器文件完成，请重新启动</String>
+	
 	<String Key="Warn1">配置为空，旧版配置文件会被覆盖</String>
 	<String Key="Error1">背景图片加载失败</String>
 	<String Key="Error2">配置文件读取错误</String>
@@ -704,6 +763,9 @@
 	<String Key="Gui.Error15">获取出错</String>
 	<String Key="Gui.Error16">Mod更新检查失败</String>
 	<String Key="Gui.Error17">读取Gui配置文件错误</String>
+	<String Key="Gui.Error18">更新服务器文件失败</String>
+	<String Key="Gui.Error19">更新服务器文件错误</String>
+	<String Key="Gui.Error20">世界备份错误</String>
 
 	<String Key="ToolTip.Text1">最小化</String>
 	<String Key="ToolTip.Text2">最大化</String>
@@ -751,6 +813,7 @@
 	<String Key="ToolTip.Text44">强行关闭游戏</String>
 	<String Key="ToolTip.Text45">选择一个游戏压缩包并导入</String>
 	<String Key="ToolTip.Text46">结束初始设置</String>
+	<String Key="ToolTip.Text47">生成一个可供自动更新的文件夹</String>
 	
 	<String Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单</String>
 	<String Key="Tips.Text2">双击可切换账户，右键可以打开账户菜单</String>

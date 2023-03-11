@@ -1,12 +1,12 @@
 ﻿using ColorMC.Core;
-using ColorMC.Core.Net.Downloader;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Cmd;
 
 public static class DownloadBar
 {
-    private static DownloadItem[] Items1;
+    private static DownloadItemObj[] Items1;
     private static ProgressBar Bar;
 
     public static void Init()
@@ -14,7 +14,7 @@ public static class DownloadBar
         ColorMCCore.DownloadItemStateUpdate = DownloadUpdate;
         ColorMCCore.DownloaderUpdate = DownloaderUpdate;
 
-        Items1 = new DownloadItem[ConfigUtils.Config.Http.DownloadThread];
+        Items1 = new DownloadItemObj[ConfigUtils.Config.Http.DownloadThread];
     }
 
     public static void DownloaderUpdate(CoreRunState state)
@@ -31,7 +31,7 @@ public static class DownloadBar
         }
     }
 
-    public static void DownloadUpdate(int index, DownloadItem item)
+    public static void DownloadUpdate(int index, DownloadItemObj item)
     {
         if (item.State == DownloadItemState.Done)
         {

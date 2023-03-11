@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
 
@@ -47,6 +47,10 @@ public record Render
     public WindowsRender Windows { get; set; }
     public X11Render X11 { get; set; }
 }
+
+/// <summary>
+/// Gui配置文件
+/// </summary>
 public record GuiConfigObj
 {
     public string Version { get; set; }

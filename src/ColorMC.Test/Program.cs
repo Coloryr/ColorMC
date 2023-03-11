@@ -1,6 +1,4 @@
 ﻿using ColorMC.Core;
-using ColorMC.Core.Game;
-using ColorMC.Core.Game.Auth;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using System.Diagnostics;
@@ -66,7 +64,7 @@ internal class Program
         Console.WriteLine($"下载器{index} 下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize}");
     }
 
-    public static void Update(int index, DownloadItem item)
+    public static void Update(int index, DownloadItemObj item)
     {
         if (item.State == DownloadItemState.Error)
         {

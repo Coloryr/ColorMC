@@ -43,13 +43,13 @@ public partial class Tab1Control : UserControl
         var window = App.FindRoot(VisualRoot);
         if (string.IsNullOrWhiteSpace(Obj1.Url))
         {
-            window.Info.Show("基础网址为空");
+            window.Info.Show(App.GetLanguage("ServerPackWindow.Tab1.Error1"));
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Obj1.Version))
         {
-            window.Info.Show("版本号为空");
+            window.Info.Show(App.GetLanguage("ServerPackWindow.Tab1.Error2"));
             return;
         }
 
@@ -57,16 +57,16 @@ public partial class Tab1Control : UserControl
         if (local == null)
             return;
 
-        window.Info1.Show("正在生成服务器包");
+        window.Info1.Show(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
         var res = await GameBinding.GenServerPack(Obj1, local);
         window.Info1.Close();
         if (res)
         {
-            window.Info2.Show("已生成");
+            window.Info2.Show(App.GetLanguage("ServerPackWindow.Tab1.Info2"));
         }
         else
         {
-            window.Info.Show("生成失败");
+            window.Info.Show(App.GetLanguage("ServerPackWindow.Tab1.Error3"));
         }
     }
 
@@ -101,7 +101,6 @@ public partial class Tab1Control : UserControl
         TextBox2.Text = Obj1.Version;
         TextBox3.Text = Obj1.Text;
         TextBox4.Text = Obj1.UI;
-        CheckBox1.IsChecked = Obj1.LockMod;
         CheckBox2.IsChecked = Obj1.ForceUpdate;
         load = false;
     }
@@ -117,7 +116,6 @@ public partial class Tab1Control : UserControl
         Obj1.Version = TextBox2.Text;
         Obj1.Text = TextBox3.Text;
         Obj1.UI = TextBox4.Text;
-        Obj1.LockMod = CheckBox1.IsChecked == true;
         Obj1.ForceUpdate = CheckBox2.IsChecked == true;
 
         var window = App.FindRoot(VisualRoot);

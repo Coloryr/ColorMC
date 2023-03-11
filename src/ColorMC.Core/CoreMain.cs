@@ -1,5 +1,3 @@
-using ColorMC.Core.Game;
-using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
@@ -9,16 +7,9 @@ using System.Diagnostics;
 
 namespace ColorMC.Core;
 
-public enum CoreRunState
-{
-    Read, Init, GetInfo, Start, End,
-    Download,
-    Error,
-}
-
 public static class ColorMCCore
 {
-    public const string Version = "A15.230306";
+    public const string Version = "A15.230311";
 
     /// <summary>
     /// 错误显示回调
@@ -32,11 +23,11 @@ public static class ColorMCCore
     /// <summary>
     /// 下载项目更新回调
     /// </summary>
-    public static Action<int, DownloadItem>? DownloadItemStateUpdate { internal get; set; }
+    public static Action<int, DownloadItemObj>? DownloadItemStateUpdate { internal get; set; }
     /// <summary>
     /// 下载项目错误回调
     /// </summary>
-    public static Action<int, DownloadItem, Exception>? DownloadItemError { internal get; set; }
+    public static Action<int, DownloadItemObj, Exception>? DownloadItemError { internal get; set; }
 
     /// <summary>
     /// 游戏实例覆盖回调
@@ -94,6 +85,14 @@ public static class ColorMCCore
     /// 没有Java时
     /// </summary>
     public static Action? NoJava { internal get; set; }
+    /// <summary>
+    /// 需要更新时
+    /// </summary>
+    public static Func<string, Task<bool>>? UpdateSelect { internal get; set; }
+    /// <summary>
+    /// 更新状态
+    /// </summary>
+    public static Action<string>? UpdateState { internal get; set; }
 
     /// <summary>
     /// 新运行

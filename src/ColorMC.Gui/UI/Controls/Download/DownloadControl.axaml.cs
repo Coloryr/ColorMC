@@ -153,7 +153,7 @@ public partial class DownloadControl : UserControl, IUserControl
         }
     }
 
-    public void DownloadItemStateUpdate(int index, DownloadItem item)
+    public void DownloadItemStateUpdate(int index, DownloadItemObj item)
     {
         Dispatcher.UIThread.Post(() =>
         {

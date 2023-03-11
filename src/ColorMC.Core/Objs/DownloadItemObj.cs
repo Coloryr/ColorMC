@@ -1,48 +1,9 @@
-namespace ColorMC.Core.Net.Downloader;
-
-/// <summary>
-/// 下载状态
-/// </summary>
-public enum DownloadItemState
-{
-    /// <summary>
-    /// 等待中
-    /// </summary>
-    Wait,
-    /// <summary>
-    /// 下载中
-    /// </summary>
-    Download,
-    /// <summary>
-    /// 获取信息
-    /// </summary>
-    GetInfo,
-    /// <summary>
-    /// 暂停
-    /// </summary>
-    Pause,
-    /// <summary>
-    /// 初始化中
-    /// </summary>
-    Init,
-    /// <summary>
-    /// 执行后续操作
-    /// </summary>
-    Action,
-    /// <summary>
-    /// 完成
-    /// </summary>
-    Done,
-    /// <summary>
-    /// 错误
-    /// </summary>
-    Error
-}
+namespace ColorMC.Core.Objs;
 
 /// <summary>
 /// 下载项目
 /// </summary>
-public record DownloadItem
+public record DownloadItemObj
 {
     /// <summary>
     /// 项目名

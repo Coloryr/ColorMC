@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Media;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System;
 using System.Diagnostics;
@@ -50,7 +51,13 @@ internal class Program
         //}
 
         var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        BaseDir = SystemInfo.Os == OsType.Linux ? $"{path}/ColorMC/" : AppContext.BaseDirectory;
+
+        BaseDir = SystemInfo.Os switch
+        {
+            OsType.Linux => $"{path}/ColorMC/",
+            OsType.MacOS => "/Users/shared/ColorMC/",
+            _ => AppContext.BaseDirectory
+        };
 
         if (!File.Exists($"{AppContext.BaseDirectory}ColorMC.Core.dll")
             || !File.Exists($"{AppContext.BaseDirectory}ColorMC.Core.pdb")

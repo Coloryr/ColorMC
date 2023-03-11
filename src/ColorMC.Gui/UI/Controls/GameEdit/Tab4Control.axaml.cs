@@ -92,7 +92,7 @@ public partial class Tab4Control : UserControl
             if (res1)
             {
                 window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info12"));
-                await GameBinding.StartUpdate(res);
+                await GameBinding.StartModUpdate(res);
                 window.Info1.Close();
 
                 Load();

@@ -139,7 +139,7 @@ public static class AddGameMenu
 
         ConsoleUtils.Info("正在安装游戏");
 
-        var items = new List<DownloadItem>();
+        var items = new List<DownloadItemObj>();
 
         var list = GameDownload.Download(VersionPath.Versions!
             .versions.Where(a => a.id == Game.Version).First()).Result;
@@ -196,7 +196,7 @@ public static class AddGameMenu
 
         ConsoleUtils.Info("正在安装游戏");
 
-        var items = new List<DownloadItem>();
+        var items = new List<DownloadItemObj>();
 
         var list = GameDownload.Download(VersionPath.Versions!
             .versions.Where(a => a.id == Game.Version).First()).Result;
@@ -265,7 +265,7 @@ public static class AddGameMenu
 
         ConsoleUtils.Info("正在安装游戏");
 
-        var items = new List<DownloadItem>();
+        var items = new List<DownloadItemObj>();
 
         var list = GameDownload.Download(VersionPath.Versions!
             .versions.Where(a => a.id == Game.Version).First()).Result;

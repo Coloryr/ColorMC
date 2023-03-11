@@ -17,12 +17,14 @@
 
   <ItemGroup>
     <None Remove="Resources\Language\en-us" />
+    <None Remove="Resources\Language\en-us.xml" />
     <None Remove="Resources\Language\zh-cn" />
+    <None Remove="Resources\Language\zh-cn.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Language\zh-cn" />
-    <EmbeddedResource Include="Resources\Language\en-us" />
+    <EmbeddedResource Include="Resources\Language\en-us.xml" />
+    <EmbeddedResource Include="Resources\Language\zh-cn.xml" />
   </ItemGroup>
 
   <ItemGroup>

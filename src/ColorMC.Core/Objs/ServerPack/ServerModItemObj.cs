@@ -1,6 +1,6 @@
 ﻿namespace ColorMC.Core.Objs.ServerPack;
 
-public record ModItem
+public record ServerModItemObj
 {
     public string File { get; set; }
     public SourceType? Source { get; set; }

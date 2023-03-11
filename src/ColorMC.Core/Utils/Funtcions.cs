@@ -4,11 +4,37 @@ using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ColorMC.Core.Utils;
 
-public static class Funtcions
+public static partial class Funtcions
 {
+    public static bool CheckNotNumber(string? input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            return true;
+        return Regex1().IsMatch(input);
+    }
+
+    [GeneratedRegex("[^0-9]+")]
+    private static partial Regex Regex1();
+
+    public static DateTime MillisecondsToDataTime(long unixTimeStamp)
+    {
+        DateTime start = new DateTime(1970, 1, 1) +
+            TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
+        DateTime dt = start.AddMilliseconds(unixTimeStamp);
+        return dt;
+    }
+
+    public static DateTime SecondsToDataTime(long unixTimeStamp)
+    {
+        DateTime start = new DateTime(1970, 1, 1) +
+            TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
+        DateTime dt = start.AddSeconds(unixTimeStamp);
+        return dt;
+    }
     public static string GenMd5(byte[] data)
     {
         StringBuilder EnText = new();

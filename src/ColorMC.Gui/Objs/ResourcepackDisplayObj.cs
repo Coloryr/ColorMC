@@ -1,4 +1,4 @@
-﻿using Avalonia.Media.Imaging;
+using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs.Minecraft;
 
 namespace ColorMC.Gui.Objs;

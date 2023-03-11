@@ -145,6 +145,10 @@ public record GameSettingObj
     /// </summary>
     public bool ModPack { get; set; }
     /// <summary>
+    /// 整合包类型
+    /// </summary>
+    public SourceType ModPackType { get; set; }
+    /// <summary>
     /// 游戏发布类型
     /// </summary>
     public GameType GameType { get; set; }

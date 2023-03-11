@@ -1,7 +1,10 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
 
+/// <summary>
+/// 文件显示
+/// </summary>
 public record FileItemDisplayObj
 {
     public string Name { get; set; }
@@ -22,6 +25,9 @@ public record FileItemDisplayObj
     public object Data;
 }
 
+/// <summary>
+/// 项目显示
+/// </summary>
 public record FileDisplayObj
 {
     public string Name { get; set; }

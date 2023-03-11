@@ -46,8 +46,9 @@ public static class JvmPath
         }
         catch (Exception e)
         {
-            Logs.Error("Java下载错误", e);
-            return (CoreRunState.Error, "Java下载错误");
+            string text = LanguageHelper.GetName("Core.Jvm.Error7");
+            Logs.Error(text, e);
+            return (CoreRunState.Error, text);
         }
 
         return (CoreRunState.Init, null);
@@ -55,7 +56,7 @@ public static class JvmPath
 
     private static async Task<(bool, string?)> Download(string name, string sha256, string url)
     {
-        var item = new DownloadItem()
+        var item = new DownloadItemObj()
         {
             Name = name,
             SHA256 = sha256,
@@ -63,7 +64,7 @@ public static class JvmPath
             Url = url
         };
 
-        var res = await DownloadManager.Start(new List<DownloadItem>()
+        var res = await DownloadManager.Start(new List<DownloadItemObj>()
         {
             item
         });

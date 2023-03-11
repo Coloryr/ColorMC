@@ -1,4 +1,4 @@
-using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;

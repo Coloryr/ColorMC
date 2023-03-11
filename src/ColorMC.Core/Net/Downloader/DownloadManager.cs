@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Utils;
+﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using System.Buffers;
 using System.Collections.Concurrent;
 
@@ -6,7 +7,7 @@ namespace ColorMC.Core.Net.Downloader;
 
 public static class DownloadManager
 {
-    private readonly static ConcurrentQueue<DownloadItem> Items = new();
+    private readonly static ConcurrentQueue<DownloadItemObj> Items = new();
     private readonly static List<string> Name = new();
     private static List<DownloadThread> threads = new();
     private static Semaphore semaphore = new(0, 10);
@@ -93,7 +94,7 @@ public static class DownloadManager
     /// </summary>
     /// <param name="list">下载列表</param>
     /// <returns>结果</returns>
-    public static async Task<bool> Start(List<DownloadItem> list)
+    public static async Task<bool> Start(List<DownloadItemObj> list)
     {
         Clear();
         Logs.Info(LanguageHelper.GetName("Core.Http.Info4"));
@@ -136,7 +137,7 @@ public static class DownloadManager
     /// 获取下载项目
     /// </summary>
     /// <returns></returns>
-    public static DownloadItem? GetItem()
+    public static DownloadItemObj? GetItem()
     {
         if (Items.TryDequeue(out var item))
         {
@@ -168,7 +169,7 @@ public static class DownloadManager
     /// <param name="index">下载器号</param>
     /// <param name="item">下载项目</param>
     /// <param name="e">错误内容</param>
-    public static void Error(int index, DownloadItem item, Exception e)
+    public static void Error(int index, DownloadItemObj item, Exception e)
     {
         Logs.Error(string.Format(LanguageHelper.GetName("Core.Http.Error1"),
             item.Name), e);
@@ -211,7 +212,7 @@ public static class DownloadManager
     /// </summary>
     /// <param name="item">下载项目</param>
     /// <returns>结果</returns>
-    public static async Task<bool> Download(DownloadItem item)
+    public static async Task<bool> Download(DownloadItemObj item)
     {
         string file = Path.GetFullPath(DownloadDir + "/" + Guid.NewGuid().ToString());
         FileInfo info = new(file);

@@ -1,15 +1,6 @@
-﻿namespace ColorMC.Gui.SkinModel;
+using ColorMC.Gui.Objs;
 
-public record SteveTexture
-{
-    public float[] Head;
-    public float[] Body;
-    public float[] LeftArm;
-    public float[] RightArm;
-    public float[] LeftLeg;
-    public float[] RightLeg;
-    public float[] Cape;
-}
+namespace ColorMC.Gui.SkinModel;
 
 public class Steve3DTexture
 {

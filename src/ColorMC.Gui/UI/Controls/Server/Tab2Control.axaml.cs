@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
@@ -87,7 +86,7 @@ public partial class Tab2Control : UserControl
                 Obj1.Mod.Add(item);
             }
 
-            obj.Url = item.Url = BaseBinding.MakeUrl(obj, FileType.Mod, Obj1.Url);
+            obj.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Mod, Obj1.Url);
         }
         else
         {
@@ -139,21 +138,21 @@ public partial class Tab2Control : UserControl
                 Sha1 = item.Obj.Sha1,
                 Obj = item
             };
-            
+
             if (item2.Check)
             {
                 if (item1 != null)
                 {
                     item2.PID = item1.Projcet;
                     item2.FID = item1.FileId;
-                }
-                if (item1 != null && !string.IsNullOrWhiteSpace(item1.Url))
-                {
-                    item2.Url = item1.Url;
-                }
-                else
-                {
-                    item2.Url = BaseBinding.MakeUrl(item2, FileType.Mod, Obj1.Url);
+                    if (!string.IsNullOrWhiteSpace(item1.Url))
+                    {
+                        item2.Url = item1.Url;
+                    }
+                    else
+                    {
+                        item2.Url = BaseBinding.MakeUrl(item1, FileType.Mod, Obj1.Url);
+                    }
                 }
             }
 

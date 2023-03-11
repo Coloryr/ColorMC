@@ -5,7 +5,7 @@ using Avalonia.Media.Immutable;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.SkinModel;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using OpenTK.Mathematics;
@@ -47,7 +47,7 @@ public partial class SkinControl : UserControl, IUserControl
     {
         if (SystemInfo.Os == OsType.Android)
         {
-            Window.Info.Show("��֧��Ƥ��Ԥ��");
+            Window.Info.Show("");
 
             return;
         }

@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using System.ComponentModel;
@@ -6,6 +6,9 @@ using System.Runtime.CompilerServices;
 
 namespace ColorMC.Gui.Objs;
 
+/// <summary>
+/// Mod项目
+/// </summary>
 public record ModDisplayObj : INotifyPropertyChanged
 {
     private bool disable { get; set; }

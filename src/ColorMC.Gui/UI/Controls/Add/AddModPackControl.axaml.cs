@@ -17,21 +17,9 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddModPackControl : UserControl, IUserControl
 {
-    /// <summary>
-    /// �ؼ�
-    /// </summary>
     private readonly List<FileItemControl> List = new();
-    /// <summary>
-    /// ����
-    /// </summary>
     private readonly Dictionary<int, string> Categories = new();
-    /// <summary>
-    /// ����
-    /// </summary>
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
-    /// <summary>
-    /// ��Ϸ�汾
-    /// </summary>
     private readonly ObservableCollection<string> List4 = new();
 
     private FileItemControl? Last;

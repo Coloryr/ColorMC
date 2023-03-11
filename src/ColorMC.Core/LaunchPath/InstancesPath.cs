@@ -5,7 +5,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OtherLaunch;
-using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
@@ -237,7 +236,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取游戏实例mod列表文件
+    /// 获取游戏实例整合包文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>文件路径</returns>
@@ -367,7 +366,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取游戏实例cfmod数据文件
+    /// 获取游戏实例mod数据文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>文件路径</returns>
@@ -1094,7 +1093,7 @@ public static class InstancesPath
         {
             file = data.files[0];
         }
-        var item = new DownloadItem()
+        var item = new DownloadItemObj()
         {
             Url = file.url,
             Name = file.filename,
@@ -1118,7 +1117,7 @@ public static class InstancesPath
     {
         data.FixDownloadUrl();
 
-        var item = new DownloadItem()
+        var item = new DownloadItemObj()
         {
             Url = data.downloadUrl,
             Name = data.fileName,

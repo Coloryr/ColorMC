@@ -1,5 +1,8 @@
-﻿namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs;
 
+/// <summary>
+/// Java下载项目
+/// </summary>
 public record JavaDownloadDisplayObj
 {
     public string Name { get; set; }

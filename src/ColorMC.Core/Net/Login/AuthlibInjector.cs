@@ -1,4 +1,4 @@
-using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 
 namespace ColorMC.Core.Net.Login;

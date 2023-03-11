@@ -45,7 +45,7 @@ public static class FabricHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error13"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Fabric.Error1"), e);
             return null;
         }
     }
@@ -76,7 +76,7 @@ public static class FabricHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error14"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Fabric.Error2"), e);
             return null;
         }
     }
@@ -112,7 +112,7 @@ public static class FabricHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error15"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Fabric.Error3"), e);
             return null;
         }
     }

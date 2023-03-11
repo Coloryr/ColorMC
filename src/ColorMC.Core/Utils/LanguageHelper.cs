@@ -1,7 +1,3 @@
-using ColorMC.Core.Game;
-using ColorMC.Core.Game.Auth;
-using ColorMC.Core.Net.Download;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using System.Reflection;
@@ -20,8 +16,8 @@ public static class LanguageHelper
     {
         string name = type switch
         {
-            LanguageType.en_us => "ColorMC.Core.Resources.Language.en-us",
-            _ => "ColorMC.Core.Resources.Language.zh-cn"
+            LanguageType.en_us => "ColorMC.Core.Resources.Language.en-us.xml",
+            _ => "ColorMC.Core.Resources.Language.zh-cn.xml"
         };
         Assembly assm = Assembly.GetExecutingAssembly();
         using var istr = assm.GetManifestResourceStream(name)!;

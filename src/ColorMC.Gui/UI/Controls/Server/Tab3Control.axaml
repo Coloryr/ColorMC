@@ -10,18 +10,18 @@
     mc:Ignorable="d">
     <DockPanel Margin="3">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Label VerticalAlignment="Center" Content="选择要同步的材质包" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize ServerPackWindow.Tab3.Text1}" />
             <Button
                 Name="Button1"
                 Width="80"
                 Height="25"
-                Content="全选" />
+                Content="{setting:Localize ServerPackWindow.Tab2.Text2}" />
             <Button
                 Name="Button2"
                 Width="80"
                 Height="25"
                 Margin="5,0,0,0"
-                Content="清除选择" />
+                Content="{setting:Localize ServerPackWindow.Tab2.Text3}" />
         </StackPanel>
         <DataGrid
             Name="DataGrid1"
@@ -30,15 +30,15 @@
             CanUserResizeColumns="True"
             CanUserSortColumns="False">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding Check}" Header="同步" />
+                <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text1}" />
                 <DataGridTextColumn
                     Binding="{Binding FileName}"
-                    Header="文件名"
+                    Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text2}"
                     IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Url}" Header="下载地址" />
+                <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text3}" />
                 <DataGridTextColumn
                     Binding="{Binding Sha1}"
-                    Header="SHA1"
+                    Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text4}"
                     IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>

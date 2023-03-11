@@ -3,7 +3,6 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
-using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -17,10 +16,8 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Windows;
 using DynamicData;
-using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -232,7 +229,7 @@ public static class GameBinding
                         Summary = data.synopsis,
                         Author = data.authors.GetString(),
                         DownloadCount = data.installs,
-                        ModifiedDate = OtherUtils.SecondsToDataTime(data.updated).ToString(),
+                        ModifiedDate = Funtcions.SecondsToDataTime(data.updated).ToString(),
                         Logo = logo,
                         FileType = FileType.ModPack,
                         SourceType = SourceType.Modrinth,
@@ -451,7 +448,7 @@ public static class GameBinding
 
     public static async Task SetGameIconFromFile(IBaseWindow win, GameSettingObj obj)
     {
-        if(win is TopLevel top)
+        if (win is TopLevel top)
         {
             await SetGameIconFromFile(top, obj);
         }
@@ -496,7 +493,7 @@ public static class GameBinding
             {
                 Name = item.name + "_" + item.type,
                 Download = 0,
-                Time = OtherUtils.SecondsToDataTime(item.updated).ToString(),
+                Time = Funtcions.SecondsToDataTime(item.updated).ToString(),
                 FileType = FileType.ModPack,
                 SourceType = SourceType.FTB,
                 Data = item
@@ -618,7 +615,7 @@ public static class GameBinding
     public static void MoveGameGroup(GameSettingObj obj, string? now)
     {
         obj.MoveGameGroup(now);
-        (App.MainWindow as MainControl)?.Load();
+        App.MainWindow?.Load();
     }
 
     public static async Task<bool> ReloadVersion()
@@ -814,7 +811,7 @@ public static class GameBinding
                     continue;
                 name += "/";
             }
-            
+
             list.Add(name);
         }
 
@@ -860,7 +857,7 @@ public static class GameBinding
             {
                 Name = item.LevelName,
                 Mode = LanguageHelper.GetNameWithGameType(item.GameType),
-                Time = OtherUtils.MillisecondsToDataTime(item.LastPlayed).ToString(),
+                Time = Funtcions.MillisecondsToDataTime(item.LastPlayed).ToString(),
                 Local = item.Local,
                 Difficulty = LanguageHelper.GetNameWithDifficulty(item.Difficulty),
                 Hardcore = item.Hardcore == 1,
@@ -1004,8 +1001,8 @@ public static class GameBinding
         App.CloseGameWindow(obj);
         await obj.Remove();
 
-        (App.MainWindow as MainControl)?.IsDelete();
-        (App.MainWindow as MainControl)?.Load();
+        App.MainWindow?.IsDelete();
+        App.MainWindow?.Load();
     }
 
     public static GameSettingObj? GetGame(string? name)
@@ -1367,7 +1364,7 @@ public static class GameBinding
                     }
                 }
 
-                var item = new DownloadItem()
+                var item = new DownloadItemObj()
                 {
                     Name = data.displayName,
                     Url = data.downloadUrl,
@@ -1402,7 +1399,7 @@ public static class GameBinding
                 }
                 return res;
             case FileType.World:
-                item = new DownloadItem()
+                item = new DownloadItemObj()
                 {
                     Name = data.displayName,
                     Url = data.downloadUrl,
@@ -1420,7 +1417,7 @@ public static class GameBinding
 
                 return await AddWorld(obj, item.Local);
             case FileType.Resourcepack:
-                item = new DownloadItem()
+                item = new DownloadItemObj()
                 {
                     Name = data.displayName,
                     Url = data.downloadUrl,
@@ -1458,7 +1455,7 @@ public static class GameBinding
                     }
                 }
 
-                var item = new DownloadItem()
+                var item = new DownloadItemObj()
                 {
                     Name = data.name,
                     Url = file.url,
@@ -1491,7 +1488,7 @@ public static class GameBinding
                 }
                 return res;
             case FileType.Resourcepack:
-                item = new DownloadItem()
+                item = new DownloadItemObj()
                 {
                     Name = data.name,
                     Url = file.url,
@@ -1502,7 +1499,7 @@ public static class GameBinding
 
                 return await DownloadManager.Download(item);
             case FileType.Shaderpack:
-                item = new DownloadItem()
+                item = new DownloadItemObj()
                 {
                     Name = data.name,
                     Url = file.url,
@@ -1524,7 +1521,7 @@ public static class GameBinding
 
         data.FixDownloadUrl();
 
-        var item = new DownloadItem()
+        var item = new DownloadItemObj()
         {
             Name = data.displayName,
             Url = data.downloadUrl,
@@ -1548,7 +1545,7 @@ public static class GameBinding
             file = data.files[0];
         }
 
-        var item = new DownloadItem()
+        var item = new DownloadItemObj()
         {
             Name = data.name,
             Url = file.url,
@@ -1628,8 +1625,9 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            Logs.Error("backup world error", e);
-            App.ShowError("backup world error", e);
+            string text = App.GetLanguage("Gui.Error20");
+            Logs.Error(text, e);
+            App.ShowError(text, e);
             return false;
         }
     }
@@ -1659,7 +1657,7 @@ public static class GameBinding
         }
         else if (obj.SourceType == SourceType.FTB)
         {
-
+            return $"https://feed-the-beast.com/modpacks/{(obj.Data as FTBModpackObj).id}";
         }
 
         return null;
@@ -1680,7 +1678,6 @@ public static class GameBinding
                 Version = item.Version,
                 Forge = item.Forge,
                 Date = item.Date,
-                Local = (SourceLocal)res.Item1,
                 Data = item
             });
         });
@@ -1688,47 +1685,9 @@ public static class GameBinding
         return list;
     }
 
-    public static Task<string?> GetOptifineDownload(OptifineDisplayObj obj)
+    public static Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineDisplayObj item)
     {
-        return OptifineHelper.GetOptifineDownloadUrl(obj.Data);
-    }
-
-    public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineDisplayObj item)
-    {
-        DownloadItem item1;
-        if (item.Local == SourceLocal.Offical)
-        {
-            var data = await GetOptifineDownload(item);
-            if (data == null)
-            {
-                return (false, "获取Optifine下载信息失败");
-            }
-
-            item1 = new()
-            {
-                Name = item.Version,
-                Local = obj.GetModsPath() + "/" + item.Data.FileName,
-                Overwrite = true,
-                Url = data
-            };
-        }
-        else
-        {
-            item1 = new()
-            {
-                Name = item.Version,
-                Local = obj.GetModsPath() + "/" + item.Data.FileName,
-                Overwrite = true,
-                Url = item.Data.Url1
-            };
-        }
-
-        var res = await DownloadManager.Start(new() { item1 });
-        if (!res)
-        {
-            return (false, "下载失败");
-        }
-        return (true, null);
+        return OptifineHelper.DownloadOptifine(obj, item.Data);
     }
 
     public static List<string> GetFTBTypeList()
@@ -1753,7 +1712,7 @@ public static class GameBinding
                 if (string.IsNullOrWhiteSpace(item.PID) || string.IsNullOrWhiteSpace(item.FID))
                     return;
 
-                var type1 = UIUtils.CheckNotNumber(item.PID) || UIUtils.CheckNotNumber(item.FID) ?
+                var type1 = Funtcions.CheckNotNumber(item.PID) || Funtcions.CheckNotNumber(item.FID) ?
                    SourceType.Modrinth : SourceType.CurseForge;
 
                 var list1 = await GetPackFile(type1, item.PID, 0,
@@ -1779,21 +1738,43 @@ public static class GameBinding
         return list.ToList();
     }
 
-    public static async Task<bool> StartUpdate(List<(SourceType, ModDisplayObj, object)> list)
+    public static async Task<bool> StartModUpdate(List<(SourceType, ModDisplayObj, object)> list)
     {
         bool ok = true;
         await Parallel.ForEachAsync(list, async (item, cancel) =>
         {
             ok &= item.Item1 switch
             {
-                SourceType.CurseForge => await GameBinding.Download(FileType.Mod, item.Item2.Obj.Game,
+                SourceType.CurseForge => await Download(FileType.Mod, item.Item2.Obj.Game,
                 item.Item3 as CurseForgeObj.Data.LatestFiles),
-                SourceType.Modrinth => await GameBinding.Download(FileType.Mod, item.Item2.Obj.Game,
+                SourceType.Modrinth => await Download(FileType.Mod, item.Item2.Obj.Game,
                 item.Item3 as ModrinthVersionObj)
             };
         });
 
         return ok;
+    }
+
+    public static void SetGameName(GameSettingObj obj, string data)
+    {
+        obj.Name = data;
+        obj.Save();
+
+        App.MainWindow?.Load();
+    }
+
+    public static async Task<bool> CopyGame(GameSettingObj obj, string data)
+    {
+        if (BaseBinding.IsGameRun(obj))
+            return false;
+
+        var res = await obj.Copy(data);
+        if (res == null)
+            return false;
+
+        App.MainWindow?.Load();
+
+        return true;
     }
 
     public static void SaveServerPack(ServerPackObj obj1)
@@ -1806,196 +1787,8 @@ public static class GameBinding
         return obj.GetServerPack();
     }
 
-    public static async Task<bool> GenServerPack(ServerPackObj obj, string local)
+    public static Task<bool> GenServerPack(ServerPackObj obj, string local)
     {
-        var obj1 = new ServerPackObj()
-        {
-            MCVersion = obj.Game.Version,
-            Loader = obj.Game.Loader,
-            LoaderVersion = obj.Game.LoaderVersion,
-            Url = obj.Url,
-            Version = obj.Version,
-            Text = obj.Text,
-            LockMod = obj.LockMod,
-            ForceUpdate = obj.ForceUpdate,
-            Mod = new(),
-            Resourcepack = new(),
-            Config = new()
-        };
-
-        if (!local.EndsWith("/"))
-        {
-            local += "/";
-        }
-
-        bool fail = false ;
-
-        var task1 = Task.Run(() =>
-        {
-            try
-            {
-                var local1 = local + "mods/";
-                Directory.CreateDirectory(local1);
-                var local2 = obj.Game.GetModsPath();
-
-                foreach (var item in obj.Mod)
-                {
-                    if (item.Source == null)
-                    {
-                        var name = Path.GetFullPath(local1 + item.File);
-                        var name1 = Path.GetFullPath(local2 + item.File);
-                        if (File.Exists(name))
-                        {
-                            File.Delete(name);
-                        }
-                        File.Copy(name1, name);
-                    }
-
-                    obj1.Mod.Add(item);
-                }
-            }
-            catch (Exception e)
-            {
-                fail = true;
-                Logs.Error("服务器包生成失败", e);
-            }
-        });
-
-        var task2 = Task.Run(() =>
-        {
-            try
-            {
-                var local1 = local + "resourcepacks/";
-                Directory.CreateDirectory(local1);
-                var local2 = obj.Game.GetResourcepacksPath();
-
-                foreach (var item in obj.Resourcepack)
-                {
-                    var name = Path.GetFullPath(local1 + item.File);
-                    var name1 = Path.GetFullPath(local2 + item.File);
-                    if (File.Exists(name))
-                    {
-                        File.Delete(name);
-                    }
-                    File.Copy(name1, name);
-
-                    obj1.Resourcepack.Add(item);
-                }
-            }
-            catch (Exception e)
-            {
-                fail = true;
-                Logs.Error("服务器包生成失败", e);
-            }
-        });
-
-        var task3 = Task.Run(async () =>
-        {
-            try
-            {
-                var local1 = local + "config/";
-                Directory.CreateDirectory(local1);
-                var local2 = obj.Game.GetGamePath();
-
-                foreach (var item in obj.Config)
-                {
-                    string path1 = Path.GetFullPath(local2 + "/" + item.Group);
-                    string path2 = Path.GetFullPath(local1 + item.Group);
-                    if (item.Dir)
-                    {
-                        if (item.Zip)
-                        {
-                            var file = new FileInfo(path2[..^1] + ".zip");
-                            await ZipUtils.ZipFile(path1, file.FullName);
-                            using var stream = File.OpenRead(file.FullName);
-
-                            var item1 = new ConfigPackObj()
-                            {
-                                FileName = file.Name,
-                                Group = item.Group,
-                                Sha1 = Funtcions.GenSha1(stream),
-                                Zip = item.Zip,
-                                Url = item.Url,
-                                Dir = true
-                            };
-
-                            obj1.Config.Add(item1);
-                        }
-                        else
-                        {
-                            var files = PathC.GetAllFile(path1);
-                            foreach (var item1 in files)
-                            {
-                                var name = item1.FullName.Replace(path1, "").Replace("\\", "/");
-                                var file1 = new FileInfo(path2 + name);
-                                file1.Directory?.Create();
-                                if (File.Exists(file1.FullName))
-                                {
-                                    File.Delete(file1.FullName);
-                                }
-                                File.Copy(item1.FullName, file1.FullName);
-                                using var stream = File.OpenRead(file1.FullName);
-
-                                var item2 = new ConfigPackObj()
-                                {
-                                    Group = item.Group,
-                                    FileName = name,
-                                    Sha1 = Funtcions.GenSha1(stream),
-                                    Url = item.Url + name,
-                                    Zip = false,
-                                    Dir = false
-                                };
-
-                                obj1.Config.Add(item2);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (File.Exists(path2))
-                        {
-                            File.Delete(path2);
-                        }
-                        File.Copy(path1, path2);
-                        using var stream = File.OpenRead(path2);
-
-                        var item2 = new ConfigPackObj()
-                        {
-                            Group = "",
-                            FileName = item.Group,
-                            Sha1 = Funtcions.GenSha1(stream),
-                            Url = item.Url,
-                            Zip = item.Zip,
-                            Dir = false
-                        };
-
-                        obj1.Config.Add(item2);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                fail = true;
-                Logs.Error("服务器包生成失败", e);
-            }
-        });
-
-        await Task.WhenAll(task1, task2, task3);
-
-        if (!string.IsNullOrWhiteSpace(obj.UI) && File.Exists(obj.UI))
-        {
-            obj1.UI = Path.GetFileName(obj.UI);
-            var file = local + obj1.UI;
-            if (File.Exists(file))
-            {
-                File.Delete(file);
-            }
-            File.Copy(obj.UI, file);
-        }
-
-        File.WriteAllText(Path.GetFullPath(local + "server.json"),
-            JsonConvert.SerializeObject(obj1));
-
-        return !fail;
+        return obj.GenServerPack(local);
     }
 }

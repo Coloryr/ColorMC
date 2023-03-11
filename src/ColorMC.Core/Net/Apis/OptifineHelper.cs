@@ -1,5 +1,8 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Downloader;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Optifine;
+using ColorMC.Core.Utils;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 
@@ -59,7 +62,8 @@ public static class OptifineHelper
                         Forge = temp2,
                         Date = temp3,
                         Url1 = temp,
-                        Url2 = temp1
+                        Url2 = temp1,
+                        Local = SourceLocal.Offical
                     });
                 }
             }
@@ -78,7 +82,8 @@ public static class OptifineHelper
                         Version = $"Optifine {item.mcversion} {item.patch}",
                         MCVersion = item.mcversion,
                         Forge = item.forge,
-                        Url1 = UrlHelper.OptifineDownload(item, type)
+                        Url1 = UrlHelper.OptifineDownload(item, type),
+                        Local = BaseClient.Source
                     });
                 });
             }
@@ -87,7 +92,7 @@ public static class OptifineHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("Optifine数据加载失败", e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Optifine.Error1"), e, false);
         }
 
         return (null, null);
@@ -105,13 +110,51 @@ public static class OptifineHelper
             var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
             if (list1 == null)
                 return null;
-            return "https://optifine.net/" + list1.FirstOrDefault().Attributes["href"].Value;
+            return "https://optifine.net/" + list1.First().Attributes["href"].Value;
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("Optifine下载地址获取失败", e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Optifine.Error2"), e, false);
         }
 
         return null;
+    }
+
+    public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item)
+    {
+        DownloadItemObj item1;
+        if (item.Local == SourceLocal.Offical)
+        {
+            var data = await OptifineHelper.GetOptifineDownloadUrl(item);
+            if (data == null)
+            {
+                return (false, "获取Optifine下载信息失败");
+            }
+
+            item1 = new()
+            {
+                Name = item.Version,
+                Local = obj.GetModsPath() + "/" + item.FileName,
+                Overwrite = true,
+                Url = data
+            };
+        }
+        else
+        {
+            item1 = new()
+            {
+                Name = item.Version,
+                Local = obj.GetModsPath() + "/" + item.FileName,
+                Overwrite = true,
+                Url = item.Url1
+            };
+        }
+
+        var res = await DownloadManager.Start(new() { item1 });
+        if (!res)
+        {
+            return (false, "Optifine下载失败");
+        }
+        return (true, null);
     }
 }

@@ -1,6 +1,4 @@
-﻿using ColorMC.Core.Game.Auth;
-
-namespace ColorMC.Core.Objs.Login;
+﻿namespace ColorMC.Core.Objs.Login;
 
 /// <summary>
 /// 保存的账户

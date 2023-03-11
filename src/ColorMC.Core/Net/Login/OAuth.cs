@@ -1,4 +1,5 @@
-using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -6,28 +7,7 @@ using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net.Login;
 
-public record OAuthObj
-{
-    public string user_code { get; set; }
-    public string device_code { get; set; }
-    public string verification_uri { get; set; }
-    public int expires_in { get; set; }
-    public int interval { get; set; }
-    public string message { get; set; }
-}
-
-public record OAuth1Obj
-{
-    public string token_type { get; set; }
-    public string scope { get; set; }
-    public string access_token { get; set; }
-    public int expires_in { get; set; }
-    public int ext_expires_in { get; set; }
-    public string id_token { get; set; }
-    public string refresh_token { get; set; }
-}
-
-internal static class OAuthAPI
+public static class OAuthAPI
 {
     private const string OAuthCode = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
     private const string OAuthToken = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";

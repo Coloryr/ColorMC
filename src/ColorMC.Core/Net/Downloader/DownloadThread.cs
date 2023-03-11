@@ -1,6 +1,6 @@
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System.Buffers;
-using System.IO;
 
 namespace ColorMC.Core.Net.Downloader;
 
@@ -80,7 +80,7 @@ public class DownloadThread
         semaphore1.Release();
     }
 
-    private void ChckPause(DownloadItem item)
+    private void ChckPause(DownloadItemObj item)
     {
         if (pause)
         {
@@ -97,7 +97,7 @@ public class DownloadThread
             semaphore.WaitOne();
             if (!run)
                 return;
-            DownloadItem? item;
+            DownloadItemObj? item;
             while ((item = DownloadManager.GetItem()) != null)
             {
                 ChckPause(item);

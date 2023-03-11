@@ -1,5 +1,5 @@
 ﻿using Avalonia.Threading;
-using ColorMC.Gui.SkinModel;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Skin;
 using System;
 using System.Numerics;
