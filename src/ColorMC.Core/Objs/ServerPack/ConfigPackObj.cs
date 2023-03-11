@@ -7,4 +7,5 @@ public record ConfigPackObj
     public string Sha1 { get; set; }
     public bool Zip { get; set; }
     public string Url { get; set; }
+    public bool Dir { get; set; }
 }

@@ -60,6 +60,8 @@ public static class Logs
     private static void Stop()
     {
         IsRun = false;
+
+        ThreadLog.Join();
     }
 
     private static void AddText(string text)

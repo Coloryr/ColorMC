@@ -9,11 +9,13 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils.LaunchSetting;
+using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
@@ -400,6 +402,36 @@ public static class BaseBinding
         }
     }
 
+    public static async Task<string?> OpPath(IBaseWindow window, FileType type)
+    {
+        if (window is TopLevel top)
+        {
+            return await OpPath(top, type);
+        }
+
+        return null;
+    }
+
+    public static async Task<string?> OpPath(TopLevel window, FileType type)
+    {
+        switch (type)
+        {
+            case FileType.ServerPack:
+                var res = await window.StorageProvider.OpenFolderPickerAsync(new()
+                {
+                    Title = "选择服务器包储存文件夹"
+                });
+                if (res.Any())
+                {
+                    return res.First().GetPath();
+                }
+
+                break;
+        }
+
+        return null;
+    }
+
     public static void OpUrl(string url)
     {
         url = url.Replace(" ", "%20");
@@ -427,6 +459,12 @@ public static class BaseBinding
                     '"' + url + '"');
                 break;
         }
+    }
+
+    public static string GetPath(this IStorageFolder file)
+    {
+        file.TryGetUri(out var uri);
+        return uri!.LocalPath;
     }
 
     public static string GetPath(this IStorageFile file)
@@ -764,5 +802,129 @@ public static class BaseBinding
     public static void DownloadPause()
     {
         DownloadManager.DownloadPause();
+    }
+
+    public static async void ServerPackCheck(GameSettingObj obj)
+    {
+        var config = GuiConfigUtils.Config.ServerCustom;
+        if (config.ServerPack)
+        {
+            if (string.IsNullOrWhiteSpace(config.ServerUrl))
+                return;
+
+            try
+            {
+                var data = await BaseClient.GetString(config.ServerUrl + "server.json");
+                var obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
+                if (obj1 == null)
+                    return;
+
+                var obj2 = obj.GetServerPack();
+                if (obj2 == null || obj1.Version != obj2.Version)
+                {
+                    if (!obj1.ForceUpdate)
+                    {
+                        var res = await Dispatcher.UIThread.InvokeAsync(() => App.HaveUpdate(obj1.Text));
+                        if (res)
+                            return;
+                    }
+
+                    obj2?.MoveToOld();
+                    obj1.Game = obj;
+                    var window = App.GetMainWindow();
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        if (window == null)
+                        {
+                            return;
+                        }
+                        window.Info1.Show("正在下载更新");
+                    });
+
+                    try
+                    {
+                        var res = await obj1.Update();
+                        if (window == null)
+                        {
+                            return;
+                        }
+                        Dispatcher.UIThread.Post(async () =>
+                        {
+                            window.Info1.Close();
+                            if (!res)
+                            {
+                                window.Info.Show("更新服务器文件失败");
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrWhiteSpace(obj1.UI))
+                                {
+                                    GuiConfigUtils.Config.ServerCustom.UIFile = obj1.UI;
+                                    GuiConfigUtils.Save();
+                                }
+                                await window.Info.ShowOk("更新服务器文件完成，请重新启动");
+                                App.Close();
+                            }
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        Logs.Error("更新服务器文件失败", e);
+                        if (window == null)
+                        {
+                            return;
+                        }
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            window.Info1.Close();
+                            window.Info.Show("更新服务器文件失败");
+                        });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logs.Error("获取服务器更新文件失败", e);
+            }
+        }
+    }
+
+    public static string MakeUrl(ServerPackModDisplayObj item, FileType type, string url)
+    {
+        if (string.IsNullOrWhiteSpace(item.PID) || string.IsNullOrWhiteSpace(item.FID))
+        {
+            if (!string.IsNullOrWhiteSpace(item.Url))
+            {
+                return item.Url;
+            }
+            else if (!string.IsNullOrWhiteSpace(url))
+            {
+                return url + type switch
+                { 
+                    FileType.Mod => "resourcepacks/",
+                    FileType.Resourcepack => "",
+                    _ => "/"
+                }  + item.FileName;
+            }
+            else
+            {
+                return "";
+            }
+        }
+        else if (UIUtils.CheckNotNumber(item.PID) || UIUtils.CheckNotNumber(item.FID))
+        {
+            return UrlHelper.MakeDownloadUrl(SourceType.Modrinth, item.PID, 
+                item.FID, item.FileName);
+        }
+        else
+        {
+            return UrlHelper.MakeDownloadUrl(SourceType.CurseForge, item.PID, 
+                item.FID, item.FileName);
+        }
+    }
+
+    public static string GetRunDir()
+    {
+        return ColorMCCore.BaseDir;
     }
 }

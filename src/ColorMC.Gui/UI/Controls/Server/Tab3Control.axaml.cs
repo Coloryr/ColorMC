@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
@@ -46,22 +47,6 @@ public partial class Tab3Control : UserControl
         }
     }
 
-    private string GetUrl(ServerPackModDisplayObj item)
-    {
-        if (!string.IsNullOrWhiteSpace(item.Url))
-        {
-            return item.Url;
-        }
-        else if (!string.IsNullOrWhiteSpace(Obj1.Url))
-        {
-            return Obj1.Url + "resourcepacks/" + item.FileName;
-        }
-        else
-        {
-            return "";
-        }
-    }
-
     private void ItemEdit(ServerPackModDisplayObj obj)
     {
         var item = Obj1.Resourcepack?.FirstOrDefault(a => a.Sha1 == obj.Sha1
@@ -71,7 +56,6 @@ public partial class Tab3Control : UserControl
             if (item != null)
             {
                 item.Sha1 = obj.Sha1;
-                item.Url = GetUrl(obj);
                 item.File = obj.FileName;
             }
             else
@@ -80,13 +64,12 @@ public partial class Tab3Control : UserControl
                 item = new()
                 {
                     Sha1 = obj.Sha1,
-                    Url = GetUrl(obj),
                     File = obj.FileName
                 };
                 Obj1.Resourcepack.Add(item);
             }
 
-            obj.Url = item.Url;
+            obj.Url = item.Url = BaseBinding.MakeUrl(obj, FileType.Resourcepack, Obj1.Url);
         }
         else
         {
@@ -142,7 +125,7 @@ public partial class Tab3Control : UserControl
             }
             else
             {
-                item2.Url = GetUrl(item2);
+                item2.Url = BaseBinding.MakeUrl(item2, FileType.Resourcepack, Obj1.Url);
             }
 
             List.Add(item2);

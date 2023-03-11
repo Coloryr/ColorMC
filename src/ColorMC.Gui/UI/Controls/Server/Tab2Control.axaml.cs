@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
@@ -48,34 +49,6 @@ public partial class Tab2Control : UserControl
         }
     }
 
-    private string GetUrl(ServerPackModDisplayObj item)
-    {
-        if (string.IsNullOrWhiteSpace(item.PID) || string.IsNullOrWhiteSpace(item.FID))
-        {
-            if (!string.IsNullOrWhiteSpace(item.Url))
-            {
-                return item.Url;
-            }
-            else if (!string.IsNullOrWhiteSpace(Obj1.Url))
-            {
-                return Obj1.Url + "mods/" + item.FileName;
-            }
-            else
-            {
-                return "";
-            }
-        }
-        else if (UIUtils.CheckNotNumber(item.PID) || UIUtils.CheckNotNumber(item.FID))
-        {
-            return $"https://cdn.modrinth.com/data/{item.PID}/versions/{item.FID}/{item.FileName}";
-        }
-        else
-        {
-            var fid = long.Parse(item.FID);
-            return $"https://edge.forgecdn.net/files/{fid / 1000}/{fid % 1000}/{item.FileName}";
-        }
-    }
-
     private void ItemEdit(ServerPackModDisplayObj obj)
     {
         var item = Obj1.Mod?.FirstOrDefault(a => a.Sha1 == obj.Sha1
@@ -98,7 +71,6 @@ public partial class Tab2Control : UserControl
                 item.FileId = obj.FID;
                 item.Source = source;
                 item.Sha1 = obj.Sha1;
-                item.Url = GetUrl(obj);
                 item.File = obj.FileName;
             }
             else
@@ -110,13 +82,12 @@ public partial class Tab2Control : UserControl
                     FileId = obj.FID,
                     Source = source,
                     Sha1 = obj.Sha1,
-                    Url = GetUrl(obj),
                     File = obj.FileName
                 };
                 Obj1.Mod.Add(item);
             }
 
-            obj.Url = item.Url;
+            obj.Url = item.Url = BaseBinding.MakeUrl(obj, FileType.Mod, Obj1.Url);
         }
         else
         {
@@ -168,15 +139,21 @@ public partial class Tab2Control : UserControl
                 Sha1 = item.Obj.Sha1,
                 Obj = item
             };
+            
             if (item2.Check)
             {
+                if (item1 != null)
+                {
+                    item2.PID = item1.Projcet;
+                    item2.FID = item1.FileId;
+                }
                 if (item1 != null && !string.IsNullOrWhiteSpace(item1.Url))
                 {
                     item2.Url = item1.Url;
                 }
                 else
                 {
-                    item2.Url = GetUrl(item2);
+                    item2.Url = BaseBinding.MakeUrl(item2, FileType.Mod, Obj1.Url);
                 }
             }
 

@@ -267,7 +267,7 @@ public partial class App : Application
 
     public static void ShowCustom()
     {
-        bool ok;
+        bool ok = true;
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2 == null || string.IsNullOrWhiteSpace(config.Item2.ServerCustom.UIFile))
         {
@@ -278,7 +278,16 @@ public partial class App : Application
             try
             {
                 string file = config.Item2.ServerCustom.UIFile;
-                if (File.Exists(file))
+                if (!File.Exists(file))
+                {
+                    file = BaseBinding.GetRunDir() + config.Item2.ServerCustom.UIFile;
+                    if (!File.Exists(file))
+                    {
+                        ok = false;
+                    }
+                }
+
+                if (ok)
                 {
                     var obj = JsonConvert.DeserializeObject<UIObj>(File.ReadAllText(file));
                     if (obj == null)
@@ -288,12 +297,7 @@ public partial class App : Application
                     else
                     {
                         ShowCustom(obj);
-                        ok = true;
                     }
-                }
-                else
-                {
-                    ok = false;
                 }
             }
             catch (Exception e)
@@ -671,5 +675,33 @@ public partial class App : Application
                 rec.CornerRadius = rec1.CornerRadius = GetCornerRadius1();
             }
         }
+    }
+
+    public static Task<bool> HaveUpdate(string data)
+    {
+        var window = GetMainWindow();
+        if (window == null)
+        {
+            return Task.FromResult(false);
+        }
+
+        return window.Info6.ShowWait(GetLanguage("Gui.Info5"), data);
+    }
+
+    public static IBaseWindow? GetMainWindow()
+    {
+        if (MainWindow == null)
+        {
+            if (CustomWindow == null)
+            {
+                return null;
+            }
+            else
+            {
+                return CustomWindow.Window;
+            }
+        }
+
+        return MainWindow.Window;
     }
 }

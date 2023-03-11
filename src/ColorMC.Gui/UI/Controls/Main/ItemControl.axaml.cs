@@ -78,7 +78,10 @@ public partial class ItemControl : UserControl
 
     private void Image1_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        App.ShowSkin();
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            App.ShowSkin();
+        }
     }
 
     private void Button_Setting_Click(object? sender, RoutedEventArgs e)

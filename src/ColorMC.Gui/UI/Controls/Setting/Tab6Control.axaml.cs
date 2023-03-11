@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using static ColorMC.Core.Objs.Minecraft.PlayerAttributesObj.Privileges;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -29,11 +30,14 @@ public partial class Tab6Control : UserControl
         Button7.Click += Button7_Click;
 
         CheckBox3.Click += CheckBox3_Click;
+        CheckBox4.Click += CheckBox3_Click;
 
         TextBox1.PropertyChanged += TextBox_PropertyChanged;
         TextBox2.PropertyChanged += TextBox_PropertyChanged;
+        TextBox3.PropertyChanged += TextBox_PropertyChanged;
+        TextBox4.PropertyChanged += TextBox_PropertyChanged;
 
-        TextBox3.PropertyChanged += TextBox3_PropertyChanged;
+        TextBox4.LostFocus += TextBox4_LostFocus;
 
         CheckBox1.Click += CheckBox_Click;
         CheckBox2.Click += CheckBox_Click;
@@ -41,16 +45,15 @@ public partial class Tab6Control : UserControl
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
     }
 
-    private void TextBox3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    private void TextBox4_LostFocus(object? sender, RoutedEventArgs e)
     {
-
-        if (load)
+        if (string.IsNullOrWhiteSpace(TextBox4.Text))
             return;
 
-        if (e.Property.Name == "Text")
-        {
-            Save2();
-        }
+        if (TextBox4.Text.EndsWith("/"))
+            return;
+
+        TextBox4.Text += "/";
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -58,7 +61,7 @@ public partial class Tab6Control : UserControl
         if (load)
             return;
 
-        Save1();
+        Save();
     }
 
     private void CheckBox_Click(object? sender, RoutedEventArgs e)
@@ -80,13 +83,13 @@ public partial class Tab6Control : UserControl
     private void Button7_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        var file = TextBox3.Text;
-        if (string.IsNullOrWhiteSpace(file))
+        if (string.IsNullOrWhiteSpace(TextBox3.Text))
         {
             window.Info.Show(App.GetLanguage("Error8"));
             return;
         }
-        if (!File.Exists(TextBox3.Text))
+        var file = BaseBinding.GetRunDir() + TextBox3.Text;
+        if (!File.Exists(file))
         {
             window.Info.Show(App.GetLanguage("Error9"));
             return;
@@ -127,16 +130,11 @@ public partial class Tab6Control : UserControl
         return;
     }
 
-    private void Save2()
-    {
-        ConfigBinding.SetUIFile(TextBox3.Text);
-    }
-
     private void Button4_Click(object? sender, RoutedEventArgs e)
     {
         TextBox3.Text = null;
 
-        Save2();
+        Save();
     }
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
@@ -149,24 +147,11 @@ public partial class Tab6Control : UserControl
         }
     }
 
-    private void Save1()
-    {
-        if (load)
-            return;
-
-        if (ComboBox1.SelectedIndex == -1)
-        {
-            ConfigBinding.SetServerCustom(CheckBox3.IsChecked == true, null);
-            return;
-        }
-
-        ConfigBinding.SetServerCustom(CheckBox3.IsChecked == true,
-            uuids[ComboBox1.SelectedIndex]);
-    }
-
     private void CheckBox3_Click(object? sender, RoutedEventArgs e)
     {
         Switch();
+
+        Save();
     }
 
     private void Switch()
@@ -174,26 +159,44 @@ public partial class Tab6Control : UserControl
         if (CheckBox3.IsChecked == true)
         {
             ComboBox1.IsEnabled = true;
+            CheckBox4.IsEnabled = true;
+            TextBox4.IsEnabled = true;
         }
         else
         {
             ComboBox1.IsEnabled = false;
+            CheckBox4.IsEnabled = false;
+            TextBox4.IsEnabled = false;
         }
-
-        Save1();
     }
 
     private void Save()
     {
-        ConfigBinding.SetServerCustom(new ServerCustom()
+        var obj = new ServerCustom()
         {
-            IP = TextBox1.Text!,
+            IP = TextBox1.Text,
             Port = UIUtils.CheckNotNumber(TextBox2.Text) ? 0 : int.Parse(TextBox2.Text!),
             Motd = CheckBox1.IsChecked == true,
             JoinServer = CheckBox2.IsChecked == true,
             MotdColor = ColorPicker1.Color.ToString(),
-            MotdBackColor = ColorPicker2.Color.ToString()
-        });
+            MotdBackColor = ColorPicker2.Color.ToString(),
+            ServerPack = CheckBox4.IsChecked == true,
+            ServerUrl = TextBox4.Text,
+            LockGame = CheckBox3.IsChecked == true,
+            UIFile = TextBox3.Text
+        };
+
+        if (ComboBox1.SelectedIndex == -1)
+        {
+            obj.GameName = null;
+            return;
+        }
+        else
+        {
+            obj.GameName = uuids[ComboBox1.SelectedIndex];
+        }
+
+        ConfigBinding.SetServerCustom(obj);
     }
 
     public void Load()
@@ -219,10 +222,12 @@ public partial class Tab6Control : UserControl
             TextBox1.Text = config.IP;
             TextBox2.Text = config.Port.ToString();
             TextBox3.Text = config.UIFile;
+            TextBox4.Text = config.ServerUrl;
 
             CheckBox1.IsChecked = config.Motd;
             CheckBox2.IsChecked = config.JoinServer;
             CheckBox3.IsChecked = config.LockGame;
+            CheckBox4.IsChecked = config.ServerPack;
 
             ColorPicker1.Color = ColorSel.MotdColor.ToColor();
             ColorPicker2.Color = ColorSel.MotdBackColor.ToColor();

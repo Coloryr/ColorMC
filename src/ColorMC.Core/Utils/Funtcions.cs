@@ -254,4 +254,40 @@ public static class ZipUtils
             }
         }
     }
+
+    public static void Unzip(string path, Stream stream, bool tar)
+    {
+        if (tar)
+        {
+            using var gzipStream = new GZipInputStream(stream);
+            var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
+            tarArchive.ExtractContents(path);
+            tarArchive.Close();
+        }
+        else
+        {
+            using ZipInputStream s = new(stream);
+            ZipEntry theEntry;
+            while ((theEntry = s.GetNextEntry()) != null)
+            {
+                string filename = $"{path}/{theEntry.Name}";
+
+                var directoryName = Path.GetDirectoryName(filename);
+                string fileName = Path.GetFileName(theEntry.Name);
+
+                // create directory
+                if (directoryName?.Length > 0)
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
+
+                if (fileName != string.Empty)
+                {
+                    using FileStream streamWriter = File.Create(filename);
+
+                    s.CopyTo(streamWriter);
+                }
+            }
+        }
+    }
 }
