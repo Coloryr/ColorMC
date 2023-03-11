@@ -1,5 +1,8 @@
-﻿namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs;
 
+/// <summary>
+/// Java项目
+/// </summary>
 public record JavaDisplayObj
 {
     public string Name { get; set; }

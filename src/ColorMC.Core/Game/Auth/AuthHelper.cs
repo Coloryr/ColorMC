@@ -1,6 +1,6 @@
-﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
-using ColorMC.Core.Net.Downloader;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
@@ -22,7 +22,7 @@ public static class AuthHelper
     /// 创建Nide8Injector下载实例
     /// </summary>
     /// <returns>下载实例</returns>
-    private static DownloadItem BuildNide8Item()
+    private static DownloadItemObj BuildNide8Item()
     {
         return new()
         {
@@ -36,7 +36,7 @@ public static class AuthHelper
     /// </summary>
     /// <param name="obj">AuthlibInjector信息</param>
     /// <returns>下载实例</returns>
-    private static DownloadItem BuildAuthlibInjectorItem(AuthlibInjectorObj obj)
+    private static DownloadItemObj BuildAuthlibInjectorItem(AuthlibInjectorObj obj)
     {
         return new()
         {
@@ -52,7 +52,7 @@ public static class AuthHelper
     /// 初始化Nide8Injector，存在不下载
     /// </summary>
     /// <returns>Nide8Injector下载实例</returns>
-    public static DownloadItem? ReadyNide8()
+    public static DownloadItemObj? ReadyNide8()
     {
         var item = BuildNide8Item();
         NowNide8Injector = item.Local;
@@ -70,7 +70,7 @@ public static class AuthHelper
     /// 初始化AuthlibInjector，存在不下载
     /// </summary>
     /// <returns>AuthlibInjector下载实例</returns>
-    public static async Task<DownloadItem?> ReadyAuthlibInjector()
+    public static async Task<DownloadItemObj?> ReadyAuthlibInjector()
     {
         var meta = await BaseClient.GetString(UrlHelper.AuthlibInjectorMeta(BaseClient.Source));
         var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta)

@@ -11,4 +11,6 @@ public record OptifineObj
 
     public string Url1 { get; set; }
     public string Url2 { get; set; }
+
+    public SourceLocal Local { get; set; }
 }

@@ -19,10 +19,10 @@
             HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Disabled">
             <TabControl Name="Tabs" Margin="0,0,0,5">
-                <TabItem Header="总体设定" />
-                <TabItem Header="Mod选择" />
-                <TabItem Header="资源包选择" />
-                <TabItem Header="配置文件打包" />
+                <TabItem Header="{setting:Localize ServerPackWindow.Tabs.Text1}" />
+                <TabItem Header="{setting:Localize ServerPackWindow.Tabs.Text2}" />
+                <TabItem Header="{setting:Localize ServerPackWindow.Tabs.Text3}" />
+                <TabItem Header="{setting:Localize ServerPackWindow.Tabs.Text4}" />
             </TabControl>
         </ScrollViewer>
 

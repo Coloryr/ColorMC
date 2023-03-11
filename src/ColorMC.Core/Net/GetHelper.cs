@@ -22,7 +22,7 @@ public static class GetHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error22"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error4"), e);
             return null;
         }
     }
@@ -42,7 +42,7 @@ public static class GetHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error23"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error5"), e);
             return null;
         }
     }
@@ -61,7 +61,7 @@ public static class GetHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error24"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error6"), e);
             return null;
         }
     }

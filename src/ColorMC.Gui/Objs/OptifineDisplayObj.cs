@@ -1,5 +1,4 @@
-﻿using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Optifine;
+﻿using ColorMC.Core.Objs.Optifine;
 
 namespace ColorMC.Gui.Objs;
 
@@ -11,5 +10,4 @@ public record OptifineDisplayObj
     public string Forge { get; set; }
 
     public OptifineObj Data;
-    public SourceLocal Local;
 }

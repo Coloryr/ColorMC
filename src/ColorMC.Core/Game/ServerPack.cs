@@ -1,16 +1,10 @@
-﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Game;
 
@@ -34,7 +28,7 @@ public static class ServerPack
         File.Delete(obj.Game.GetServerPackFile());
         var old = obj.Game.GetOldServerPack();
 
-        var list5 = new List<DownloadItem>();
+        var list5 = new List<DownloadItemObj>();
 
         var path = obj.Game.GetModsPath();
 
@@ -154,7 +148,7 @@ public static class ServerPack
             list5.Add(new()
             {
                 Name = obj.UI,
-                Local = Path.GetFullPath(ColorMCCore.BaseDir +  obj.UI),
+                Local = Path.GetFullPath(ColorMCCore.BaseDir + obj.UI),
                 Url = obj.Url + obj.UI
             });
         }
@@ -228,5 +222,228 @@ public static class ServerPack
             Local = obj1.Game.GetServerPackFile(),
             Obj = obj1
         });
+    }
+
+    public static async Task<bool> GenServerPack(this ServerPackObj obj, string local)
+    {
+        var obj1 = new ServerPackObj()
+        {
+            MCVersion = obj.Game.Version,
+            Loader = obj.Game.Loader,
+            LoaderVersion = obj.Game.LoaderVersion,
+            Url = obj.Url,
+            Version = obj.Version,
+            Text = obj.Text,
+            ForceUpdate = obj.ForceUpdate,
+            Mod = new(),
+            Resourcepack = new(),
+            Config = new()
+        };
+
+        if (!local.EndsWith("/"))
+        {
+            local += "/";
+        }
+
+        bool fail = false;
+
+        var task1 = Task.Run(() =>
+        {
+            try
+            {
+                var local1 = local + "mods/";
+                Directory.CreateDirectory(local1);
+                var local2 = obj.Game.GetModsPath();
+
+                foreach (var item in obj.Mod)
+                {
+                    if (item.Source == null)
+                    {
+                        var name = Path.GetFullPath(local1 + item.File);
+                        var name1 = Path.GetFullPath(local2 + item.File);
+                        if (File.Exists(name))
+                        {
+                            File.Delete(name);
+                        }
+                        File.Copy(name1, name);
+                    }
+
+                    obj1.Mod.Add(item);
+                }
+            }
+            catch (Exception e)
+            {
+                fail = true;
+                Logs.Error(LanguageHelper.GetName("Core.ServerPack.Error1"), e);
+            }
+        });
+
+        var task2 = Task.Run(() =>
+        {
+            try
+            {
+                var local1 = local + "resourcepacks/";
+                Directory.CreateDirectory(local1);
+                var local2 = obj.Game.GetResourcepacksPath();
+
+                foreach (var item in obj.Resourcepack)
+                {
+                    var name = Path.GetFullPath(local1 + item.File);
+                    var name1 = Path.GetFullPath(local2 + item.File);
+                    if (File.Exists(name))
+                    {
+                        File.Delete(name);
+                    }
+                    File.Copy(name1, name);
+
+                    obj1.Resourcepack.Add(item);
+                }
+            }
+            catch (Exception e)
+            {
+                fail = true;
+                Logs.Error(LanguageHelper.GetName("Core.ServerPack.Error1"), e);
+            }
+        });
+
+        var task3 = Task.Run(async () =>
+        {
+            try
+            {
+                var local1 = local + "config/";
+                Directory.CreateDirectory(local1);
+                var local2 = obj.Game.GetGamePath();
+
+                foreach (var item in obj.Config)
+                {
+                    string path1 = Path.GetFullPath(local2 + "/" + item.Group);
+                    string path2 = Path.GetFullPath(local1 + item.Group);
+                    if (item.Dir)
+                    {
+                        if (item.Zip)
+                        {
+                            var file = new FileInfo(path2[..^1] + ".zip");
+                            await ZipUtils.ZipFile(path1, file.FullName);
+                            using var stream = File.OpenRead(file.FullName);
+
+                            var item1 = new ConfigPackObj()
+                            {
+                                FileName = file.Name,
+                                Group = item.Group,
+                                Sha1 = Funtcions.GenSha1(stream),
+                                Zip = item.Zip,
+                                Url = item.Url,
+                                Dir = true
+                            };
+
+                            obj1.Config.Add(item1);
+                        }
+                        else
+                        {
+                            var files = PathC.GetAllFile(path1);
+                            foreach (var item1 in files)
+                            {
+                                var name = item1.FullName.Replace(path1, "").Replace("\\", "/");
+                                var file1 = new FileInfo(path2 + name);
+                                file1.Directory?.Create();
+                                if (File.Exists(file1.FullName))
+                                {
+                                    File.Delete(file1.FullName);
+                                }
+                                File.Copy(item1.FullName, file1.FullName);
+                                using var stream = File.OpenRead(file1.FullName);
+
+                                var item2 = new ConfigPackObj()
+                                {
+                                    Group = item.Group,
+                                    FileName = name,
+                                    Sha1 = Funtcions.GenSha1(stream),
+                                    Url = item.Url + name,
+                                    Zip = false,
+                                    Dir = false
+                                };
+
+                                obj1.Config.Add(item2);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (File.Exists(path2))
+                        {
+                            File.Delete(path2);
+                        }
+                        File.Copy(path1, path2);
+                        using var stream = File.OpenRead(path2);
+
+                        var item2 = new ConfigPackObj()
+                        {
+                            Group = "",
+                            FileName = item.Group,
+                            Sha1 = Funtcions.GenSha1(stream),
+                            Url = item.Url,
+                            Zip = item.Zip,
+                            Dir = false
+                        };
+
+                        obj1.Config.Add(item2);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                fail = true;
+                Logs.Error(LanguageHelper.GetName("Core.ServerPack.Error1"), e);
+            }
+        });
+
+        await Task.WhenAll(task1, task2, task3);
+
+        if (!string.IsNullOrWhiteSpace(obj.UI) && File.Exists(obj.UI))
+        {
+            obj1.UI = Path.GetFileName(obj.UI);
+            var file = local + obj1.UI;
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+            File.Copy(obj.UI, file);
+        }
+
+        File.WriteAllText(Path.GetFullPath(local + "server.json"),
+            JsonConvert.SerializeObject(obj1));
+
+        return !fail;
+    }
+
+    public static async Task<(bool, ServerPackObj?)> ServerPackCheck(this GameSettingObj obj, string url)
+    {
+        var data = await BaseClient.GetString(url + "server.json");
+        var obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
+        if (obj1 == null)
+            return (false, null);
+
+        var obj2 = obj.GetServerPack();
+        if (obj2 == null || obj1.Version != obj2.Version)
+        {
+            if (ColorMCCore.UpdateSelect == null)
+                return (false, null);
+            if (!obj1.ForceUpdate)
+            {
+                var res1 = await ColorMCCore.UpdateSelect(obj1.Text);
+                if (!res1)
+                    return (false, null);
+            }
+
+            obj2?.MoveToOld();
+            obj1.Game = obj;
+
+            ColorMCCore.UpdateState?.Invoke(LanguageHelper.GetName("Core.ServerPack.Info1"));
+
+            var res = await obj1.Update();
+            return (res, obj1);
+        }
+
+        return (false, null);
     }
 }

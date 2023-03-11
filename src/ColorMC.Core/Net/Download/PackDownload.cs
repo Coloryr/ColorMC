@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
@@ -21,7 +21,7 @@ public static class PackDownload
     /// 下载整合包
     /// </summary>
     /// <param name="zip">压缩包路径</param>
-    public static async Task<(GetDownloadState State, List<DownloadItem>? List, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip, string? name, string? group)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip, string? name, string? group)
     {
         ColorMCCore.PackState?.Invoke(CoreRunState.Init);
         using ZipFile zFile = new(zip);
@@ -87,6 +87,7 @@ public static class PackDownload
             Version = info.minecraft.version,
             ModPack = true,
             Loader = loaders,
+            ModPackType = SourceType.CurseForge,
             LoaderVersion = loaderversion,
             Mods = new()
         });
@@ -119,7 +120,7 @@ public static class PackDownload
         //获取Mod信息
         Size = info.files.Count;
         Now = 0;
-        var list = new ConcurrentBag<DownloadItem>();
+        var list = new ConcurrentBag<DownloadItemObj>();
         var res = await CurseForge.GetMods(info.files);
         if (res != null)
         {
@@ -128,7 +129,7 @@ public static class PackDownload
             {
                 item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
 
-                var item11 = new DownloadItem()
+                var item11 = new DownloadItemObj()
                 {
                     Url = item.downloadUrl,
                     Name = item.fileName,
@@ -169,7 +170,7 @@ public static class PackDownload
 
                 res.data.downloadUrl ??= $"https://edge.forgecdn.net/files/{res.data.id / 1000}/{res.data.id % 1000}/{res.data.fileName}";
 
-                var item11 = new DownloadItem()
+                var item11 = new DownloadItemObj()
                 {
                     Url = res.data.downloadUrl,
                     Name = res.data.displayName,
@@ -206,7 +207,7 @@ public static class PackDownload
         return (GetDownloadState.End, list.ToList(), game);
     }
 
-    public static async Task<(GetDownloadState State, List<DownloadItem>? List, GameSettingObj? Game)> DownloadModrinthModPack(string zip, string? name, string? group)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List, GameSettingObj? Game)> DownloadModrinthModPack(string zip, string? name, string? group)
     {
         ColorMCCore.PackState?.Invoke(CoreRunState.Init);
         using ZipFile zFile = new(zip);
@@ -273,6 +274,7 @@ public static class PackDownload
             Name = name,
             Version = info.dependencies.minecraft,
             ModPack = true,
+            ModPackType = SourceType.Modrinth,
             Loader = loaders,
             LoaderVersion = loaderversion,
             Mods = new()
@@ -305,7 +307,7 @@ public static class PackDownload
 
         ColorMCCore.PackState?.Invoke(CoreRunState.GetInfo);
 
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
 
         //获取Mod信息
         Size = info.files.Count;
@@ -326,7 +328,7 @@ public static class PackDownload
                 fileid = Funtcions.GetString(url, "versions/", "/");
             }
 
-            var item11 = new DownloadItem()
+            var item11 = new DownloadItemObj()
             {
                 Url = item.downloads[0],
                 Name = item.path,
@@ -410,6 +412,7 @@ public static class PackDownload
             ModPack = true,
             Loader = loaders,
             LoaderVersion = loaderversion,
+            ModPackType = SourceType.FTB,
             Mods = new()
         });
 
@@ -418,7 +421,7 @@ public static class PackDownload
             return (false, game);
         }
 
-        var list = new ConcurrentBag<DownloadItem>();
+        var list = new ConcurrentBag<DownloadItemObj>();
         bool error = false;
         await Parallel.ForEachAsync(data.files, async (item, cancel) =>
         {
@@ -439,7 +442,7 @@ public static class PackDownload
 
                 res1.data.downloadUrl ??= $"https://edge.forgecdn.net/files/{res1.data.id / 1000}/{res1.data.id % 1000}/{res1.data.fileName}";
 
-                var item11 = new DownloadItem()
+                var item11 = new DownloadItemObj()
                 {
                     Url = res1.data.downloadUrl,
                     Name = item.name,
@@ -462,7 +465,7 @@ public static class PackDownload
             }
             else
             {
-                var item11 = new DownloadItem()
+                var item11 = new DownloadItemObj()
                 {
                     Url = item.url,
                     Name = item.name,
@@ -477,6 +480,9 @@ public static class PackDownload
         {
             return (false, game);
         }
+
+        var file1 = game.GetModPackJsonFile();
+        File.WriteAllText(file1, JsonConvert.SerializeObject(data));
 
         game.SaveModInfo();
 

@@ -1,6 +1,8 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Optifine;
+using ColorMC.Core.Objs.ServerPack;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net;
 
@@ -324,5 +326,39 @@ public static class UrlHelper
         }
 
         return "";
+    }
+
+    public static string MakeUrl(ServerModItemObj item, FileType type, string url)
+    {
+        if (string.IsNullOrWhiteSpace(item.Projcet) || string.IsNullOrWhiteSpace(item.FileId))
+        {
+            if (!string.IsNullOrWhiteSpace(item.Url))
+            {
+                return item.Url;
+            }
+            else if (!string.IsNullOrWhiteSpace(url))
+            {
+                return url + type switch
+                {
+                    FileType.Mod => "resourcepacks/",
+                    FileType.Resourcepack => "",
+                    _ => "/"
+                } + item.File;
+            }
+            else
+            {
+                return "";
+            }
+        }
+        else if (Funtcions.CheckNotNumber(item.Projcet) || Funtcions.CheckNotNumber(item.FileId))
+        {
+            return MakeDownloadUrl(SourceType.Modrinth, item.Projcet,
+                item.FileId, item.File);
+        }
+        else
+        {
+            return MakeDownloadUrl(SourceType.CurseForge, item.Projcet,
+                item.FileId, item.File);
+        }
     }
 }

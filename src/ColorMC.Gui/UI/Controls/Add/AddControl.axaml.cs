@@ -20,9 +20,6 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddControl : UserControl, IUserControl
 {
-    /// <summary>
-    /// �ؼ�
-    /// </summary>
     private readonly List<FileItemControl> List = new();
     private List<SourceType> List2 = new();
     private readonly ObservableCollection<string> List3 = new();

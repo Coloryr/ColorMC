@@ -1,72 +1,10 @@
-﻿using ColorMC.Core.Net.Apis;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Login;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Game.Auth;
-
-public enum AuthType
-{
-    /// <summary>
-    /// 离线账户
-    /// </summary>
-    Offline,
-    /// <summary>
-    /// 正版登录
-    /// </summary>
-    OAuth,
-    /// <summary>
-    /// 统一通行证
-    /// </summary>
-    Nide8,
-    /// <summary>
-    /// 外置登录
-    /// </summary>
-    AuthlibInjector,
-    /// <summary>
-    /// 皮肤站
-    /// </summary>
-    LittleSkin,
-    /// <summary>
-    /// 自建皮肤站
-    /// </summary>
-    SelfLittleSkin
-}
-
-/// <summary>
-/// 目前登录状态
-/// </summary>
-public enum AuthState
-{
-    OAuth, XBox, XSTS, Token, Profile
-}
-
-/// <summary>
-/// 登录结果
-/// </summary>
-public enum LoginState
-{
-    /// <summary>
-    /// 完成
-    /// </summary>
-    Done,
-    /// <summary>
-    /// 请求超时
-    /// </summary>
-    TimeOut,
-    /// <summary>
-    /// 数据错误
-    /// </summary>
-    JsonError,
-    /// <summary>
-    /// 错误
-    /// </summary>
-    Error,
-    /// <summary>
-    /// 发送崩溃
-    /// </summary>
-    Crash
-}
 
 public static class BaseAuth
 {

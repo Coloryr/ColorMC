@@ -1,6 +1,4 @@
-﻿using ColorMC.Core.Game;
-
-namespace ColorMC.Core.Objs;
+﻿namespace ColorMC.Core.Objs;
 
 public class LaunchException : Exception
 {

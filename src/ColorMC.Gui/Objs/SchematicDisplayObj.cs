@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.Minecraft;
 
 namespace ColorMC.Gui.Objs;
 

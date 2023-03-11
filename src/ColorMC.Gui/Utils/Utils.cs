@@ -8,9 +8,9 @@ using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Core.Net;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp;
@@ -19,7 +19,6 @@ using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,22 +26,6 @@ namespace ColorMC.Gui;
 
 public static class OtherUtils
 {
-    public static DateTime MillisecondsToDataTime(long unixTimeStamp)
-    {
-        DateTime start = new DateTime(1970, 1, 1) +
-            TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
-        DateTime dt = start.AddMilliseconds(unixTimeStamp);
-        return dt;
-    }
-
-    public static DateTime SecondsToDataTime(long unixTimeStamp)
-    {
-        DateTime start = new DateTime(1970, 1, 1) +
-            TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
-        DateTime dt = start.AddSeconds(unixTimeStamp);
-        return dt;
-    }
-
     public static string GetName(this SkinType type)
     {
         return type switch
@@ -253,16 +236,6 @@ public static partial class UIUtils
 
         }
     }
-
-    public static bool CheckNotNumber(string? input)
-    {
-        if (string.IsNullOrWhiteSpace(input))
-            return true;
-        return Regex1().IsMatch(input);
-    }
-
-    [GeneratedRegex("[^0-9]+")]
-    private static partial Regex Regex1();
 
     public static string MakeString(this List<string>? strings)
     {

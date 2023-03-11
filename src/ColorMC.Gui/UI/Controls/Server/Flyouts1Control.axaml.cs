@@ -2,10 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UIBinding;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Server;
 

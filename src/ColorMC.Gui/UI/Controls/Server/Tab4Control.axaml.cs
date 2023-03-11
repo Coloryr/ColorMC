@@ -1,16 +1,13 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Avalonia.Threading;
-using Avalonia.Interactivity;
-using System.Collections.Generic;
-using System;
-using ColorMC.Core.Utils;
-using ColorMC.Core.LaunchPath;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Server;
 
@@ -33,7 +30,11 @@ public partial class Tab4Control : UserControl
 
         ComboBox1.Items = List1;
 
-        ComboBox2.Items = new List<string>() { "压缩包同步", "完整同步" };
+        ComboBox2.Items = new List<string>()
+        {
+            App.GetLanguage("ServerPackWindow.Tab4.Item1"),
+            App.GetLanguage("ServerPackWindow.Tab4.Item2")
+        };
         ComboBox2.SelectedIndex = 0;
     }
 
@@ -62,7 +63,7 @@ public partial class Tab4Control : UserControl
             {
                 var item = new ConfigPackObj()
                 {
-                    Group = group ,
+                    Group = group,
                     Zip = true,
                     Dir = true
                 };
@@ -116,9 +117,9 @@ public partial class Tab4Control : UserControl
     private string GetType(ConfigPackObj obj)
     {
         if (obj.Zip)
-            return "压缩包同步";
+            return App.GetLanguage("ServerPackWindow.Tab4.Item1");
         else
-            return "完整同步";
+            return App.GetLanguage("ServerPackWindow.Tab4.Item2");
     }
 
     public void Load()

@@ -1,5 +1,4 @@
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
@@ -86,11 +85,11 @@ public static class ForgeHelper
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
     /// <returns></returns>
-    public static List<DownloadItem> MakeForgeLibs(ForgeLaunchObj info, string mc, string version)
+    public static List<DownloadItemObj> MakeForgeLibs(ForgeLaunchObj info, string mc, string version)
     {
         var version1 = VersionPath.GetGame(mc)!;
         var v2 = CheckRule.GameLaunchVersion(version1);
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
 
         if (v2)
         {
@@ -169,7 +168,7 @@ public static class ForgeHelper
         return string.Empty;
     }
 
-    private static DownloadItem BuildForgeItem(string mc, string version, string type)
+    private static DownloadItemObj BuildForgeItem(string mc, string version, string type)
     {
         version += FixForgeUrl(mc);
         string name = $"forge-{mc}-{version}-{type}";
@@ -188,7 +187,7 @@ public static class ForgeHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
-    public static DownloadItem BuildForgeInster(string mc, string version)
+    public static DownloadItemObj BuildForgeInster(string mc, string version)
     {
         return BuildForgeItem(mc, version, "installer");
     }
@@ -198,17 +197,17 @@ public static class ForgeHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
-    public static DownloadItem BuildForgeUniversal(string mc, string version)
+    public static DownloadItemObj BuildForgeUniversal(string mc, string version)
     {
         return BuildForgeItem(mc, version, "universal");
     }
 
-    public static DownloadItem BuildForgeLauncher(string mc, string version)
+    public static DownloadItemObj BuildForgeLauncher(string mc, string version)
     {
         return BuildForgeItem(mc, version, "launcher");
     }
 
-    public static DownloadItem BuildForgeClient(string mc, string version)
+    public static DownloadItemObj BuildForgeClient(string mc, string version)
     {
         return BuildForgeItem(mc, version, "client");
     }

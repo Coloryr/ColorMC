@@ -1,6 +1,5 @@
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -46,9 +45,9 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏数据</param>
     /// <returns>丢失的库</returns>
-    public static async Task<List<DownloadItem>> CheckGame(GameArgObj obj)
+    public static async Task<List<DownloadItemObj>> CheckGame(GameArgObj obj)
     {
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
 
         var list1 = await GameHelper.MakeGameLibs(obj);
 
@@ -81,7 +80,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static List<DownloadItem>? CheckForge(GameSettingObj obj)
+    public static List<DownloadItemObj>? CheckForge(GameSettingObj obj)
     {
         var version1 = VersionPath.GetGame(obj.Version)!;
         var v2 = CheckRule.GameLaunchVersion(version1);
@@ -94,7 +93,7 @@ public static class LibrariesPath
         if (forge == null)
             return null;
 
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
         var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
 
         Parallel.ForEach(list1, (item) =>
@@ -169,13 +168,13 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static List<DownloadItem>? CheckFabric(GameSettingObj obj)
+    public static List<DownloadItemObj>? CheckFabric(GameSettingObj obj)
     {
         var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion);
         if (fabric == null)
             return null;
 
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
 
         foreach (var item in fabric.libraries)
         {
@@ -201,13 +200,13 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static List<DownloadItem>? CheckQuilt(GameSettingObj obj)
+    public static List<DownloadItemObj>? CheckQuilt(GameSettingObj obj)
     {
         var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion);
         if (quilt == null)
             return null;
 
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
 
         foreach (var item in quilt.libraries)
         {

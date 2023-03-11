@@ -1,113 +1,20 @@
-﻿using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Text;
 
 namespace ColorMC.Core.Game;
-
-/// <summary>
-/// 登录状态
-/// </summary>
-public enum LaunchState
-{
-    /// <summary>
-    /// 登陆中
-    /// </summary>
-    Login,
-    /// <summary>
-    /// 检查中
-    /// </summary>
-    Check,
-    /// <summary>
-    /// 检查版本文件中
-    /// </summary>
-    CheckVersion,
-    /// <summary>
-    /// 检查运行库中
-    /// </summary>
-    CheckLib,
-    /// <summary>
-    /// 检查资源文件中
-    /// </summary>
-    CheckAssets,
-    /// <summary>
-    /// 检查Mod加载器
-    /// </summary>
-    CheckLoader,
-    /// <summary>
-    /// 检查登录核心
-    /// </summary>
-    CheckLoginCore,
-    /// <summary>
-    /// 检查Mod
-    /// </summary>
-    CheckMods,
-    /// <summary>
-    /// 缺失版本文件
-    /// </summary>
-    LostVersion,
-    /// <summary>
-    /// 缺失运行库
-    /// </summary>
-    LostLib,
-    /// <summary>
-    /// 缺失加载器
-    /// </summary>
-    LostLoader,
-    /// <summary>
-    /// 缺失登陆核心
-    /// </summary>
-    LostLoginCore,
-    /// <summary>
-    /// 缺失游戏
-    /// </summary>
-    LostGame,
-    /// <summary>
-    /// 缺失文件
-    /// </summary>
-    LostFile,
-    /// <summary>
-    /// 下载文件
-    /// </summary>
-    Download,
-    /// <summary>
-    /// 下载失败
-    /// </summary>
-    DownloadFail,
-    /// <summary>
-    /// 准备Jvm参数
-    /// </summary>
-    JvmPrepare,
-    /// <summary>
-    /// 版本错误
-    /// </summary>
-    VersionError,
-    /// <summary>
-    /// 资源文件错误
-    /// </summary>
-    AssetsError,
-    /// <summary>
-    /// 加载器错误
-    /// </summary>
-    LoaderError,
-    /// <summary>
-    /// Java错误
-    /// </summary>
-    JavaError,
-    /// <summary>
-    /// 登录失败
-    /// </summary>
-    LoginFail
-}
 
 public static class Launch
 {
@@ -118,9 +25,9 @@ public static class Launch
     /// <param name="login">登录的账户</param>
     /// <exception cref="LaunchException">抛出的错误</exception>
     /// <returns>下载列表</returns>
-    public static async Task<List<DownloadItem>> CheckGameFile(GameSettingObj obj, LoginObj login)
+    public static async Task<List<DownloadItemObj>> CheckGameFile(GameSettingObj obj, LoginObj login)
     {
-        var list = new List<DownloadItem>();
+        var list = new List<DownloadItemObj>();
 
         //检查游戏启动json
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Check);
@@ -1092,6 +999,21 @@ public static class Launch
         process.Start();
         process.BeginOutputReadLine();
         process.BeginErrorReadLine();
+
+        if (process != null)
+        {
+            if (obj.ModPack && obj.ModPackType == SourceType.FTB)
+            {
+                _ = Task.Run(() =>
+                {
+                    var file = obj.GetModPackJsonFile();
+                    var obj1 = JsonConvert.DeserializeObject<FTBFilesObj>(File.ReadAllText(file));
+                    if (obj1 == null)
+                        return;
+                    FTBHelper.GetPostLaunch(obj1.parent, obj1.id);
+                });
+            }
+        }
 
         return process;
     }

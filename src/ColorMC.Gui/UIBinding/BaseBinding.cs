@@ -12,10 +12,8 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils.LaunchSetting;
-using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
@@ -50,9 +48,29 @@ public static class BaseBinding
         ColorMCCore.GameLog = PLog;
         ColorMCCore.LanguageReload = Change;
         ColorMCCore.NoJava = NoJava;
+        ColorMCCore.UpdateSelect = PackUpdate;
+        ColorMCCore.UpdateState = UpdateState;
 
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
+    }
+
+    public static void UpdateState(string info)
+    {
+        var window = App.GetMainWindow();
+        if (window == null)
+        {
+            return;
+        }
+        Dispatcher.UIThread.Post(() =>
+        {
+            window.Info1.Show(info);
+        });
+    }
+
+    public static Task<bool> PackUpdate(string info)
+    {
+        return Dispatcher.UIThread.InvokeAsync(() => App.HaveUpdate(info));
     }
 
     public static void NoJava()
@@ -63,13 +81,13 @@ public static class BaseBinding
         });
     }
 
-    public static Task<IReadOnlyList<IStorageFile>?> OpFile(IBaseWindow? window, string title,
+    public static Task<IReadOnlyList<IStorageFile>> OpFile(IBaseWindow? window, string title,
         string[] ext, string name, bool multiple = false, IStorageFolder? storage = null)
     {
         return OpFile(window as TopLevel, title, ext, name, multiple, storage);
     }
 
-        public static Task<IReadOnlyList<IStorageFile>?> OpFile(TopLevel? window, string title,
+    public static Task<IReadOnlyList<IStorageFile>> OpFile(TopLevel? window, string title,
         string[] ext, string name, bool multiple = false, IStorageFolder? storage = null)
     {
         if (window == null)
@@ -419,7 +437,7 @@ public static class BaseBinding
             case FileType.ServerPack:
                 var res = await window.StorageProvider.OpenFolderPickerAsync(new()
                 {
-                    Title = "选择服务器包储存文件夹"
+                    Title = App.GetLanguage("Gui.Info11")
                 });
                 if (res.Any())
                 {
@@ -739,38 +757,6 @@ public static class BaseBinding
         }
     }
 
-    public static void SetGameName(GameSettingObj obj, string data)
-    {
-        obj.Name = data;
-        obj.Save();
-
-        (App.MainWindow as MainControl)?.Load();
-    }
-
-    public static async Task<bool> CopyGame(GameSettingObj obj, string data)
-    {
-        if (IsGameRun(obj))
-            return false;
-
-        var res = await obj.Copy(data);
-        if (res == null)
-            return false;
-
-        App.MainWindow?.Load();
-
-        return true;
-    }
-
-    public static void GotoModFile(ModDisplayObj obj)
-    {
-        App.ShowAdd(obj.Obj.Game, obj);
-    }
-
-    public static void GotoSetModFile(ModDisplayObj obj)
-    {
-        App.ShowAdd(obj.Obj.Game, obj);
-    }
-
     /// <summary>
     /// A14到A15路径处理
     /// </summary>
@@ -812,115 +798,54 @@ public static class BaseBinding
             if (string.IsNullOrWhiteSpace(config.ServerUrl))
                 return;
 
+            var window = App.GetMainWindow();
+            if (window == null)
+            {
+                return;
+            }
+
             try
             {
-                var data = await BaseClient.GetString(config.ServerUrl + "server.json");
-                var obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
-                if (obj1 == null)
-                    return;
-
-                var obj2 = obj.GetServerPack();
-                if (obj2 == null || obj1.Version != obj2.Version)
+                var res = await obj.ServerPackCheck(config.ServerUrl);
+                if (res.Item1 && !string.IsNullOrWhiteSpace(res.Item2?.UI))
                 {
-                    if (!obj1.ForceUpdate)
-                    {
-                        var res = await Dispatcher.UIThread.InvokeAsync(() => App.HaveUpdate(obj1.Text));
-                        if (res)
-                            return;
-                    }
+                    GuiConfigUtils.Config.ServerCustom.UIFile = res.Item2.UI;
+                    GuiConfigUtils.Save();
+                }
 
-                    obj2?.MoveToOld();
-                    obj1.Game = obj;
-                    var window = App.GetMainWindow();
+                if (res.Item1)
+                {
+                    Dispatcher.UIThread.Post(async () =>
+                    {
+                        await window.Info.ShowOk(App.GetLanguage("Gui.Info13"));
+                        App.Close();
+                    });
+                }
+                else if (res.Item2 != null)
+                {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        if (window == null)
-                        {
-                            return;
-                        }
-                        window.Info1.Show("正在下载更新");
+                        window.Info.Show(App.GetLanguage("Gui.Error18"));
                     });
-
-                    try
-                    {
-                        var res = await obj1.Update();
-                        if (window == null)
-                        {
-                            return;
-                        }
-                        Dispatcher.UIThread.Post(async () =>
-                        {
-                            window.Info1.Close();
-                            if (!res)
-                            {
-                                window.Info.Show("更新服务器文件失败");
-                            }
-                            else
-                            {
-                                if (!string.IsNullOrWhiteSpace(obj1.UI))
-                                {
-                                    GuiConfigUtils.Config.ServerCustom.UIFile = obj1.UI;
-                                    GuiConfigUtils.Save();
-                                }
-                                await window.Info.ShowOk("更新服务器文件完成，请重新启动");
-                                App.Close();
-                            }
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        Logs.Error("更新服务器文件失败", e);
-                        if (window == null)
-                        {
-                            return;
-                        }
-                        Dispatcher.UIThread.Post(() =>
-                        {
-                            window.Info1.Close();
-                            window.Info.Show("更新服务器文件失败");
-                        });
-                    }
                 }
+
             }
             catch (Exception e)
             {
-                Logs.Error("获取服务器更新文件失败", e);
+                string text = App.GetLanguage("Gui.Error19");
+                Logs.Error(text, e);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    window.Info1.Close();
+                    window.Info.Show(text);
+                });
             }
         }
     }
 
-    public static string MakeUrl(ServerPackModDisplayObj item, FileType type, string url)
+    public static string MakeUrl(ServerModItemObj item, FileType type, string url)
     {
-        if (string.IsNullOrWhiteSpace(item.PID) || string.IsNullOrWhiteSpace(item.FID))
-        {
-            if (!string.IsNullOrWhiteSpace(item.Url))
-            {
-                return item.Url;
-            }
-            else if (!string.IsNullOrWhiteSpace(url))
-            {
-                return url + type switch
-                { 
-                    FileType.Mod => "resourcepacks/",
-                    FileType.Resourcepack => "",
-                    _ => "/"
-                }  + item.FileName;
-            }
-            else
-            {
-                return "";
-            }
-        }
-        else if (UIUtils.CheckNotNumber(item.PID) || UIUtils.CheckNotNumber(item.FID))
-        {
-            return UrlHelper.MakeDownloadUrl(SourceType.Modrinth, item.PID, 
-                item.FID, item.FileName);
-        }
-        else
-        {
-            return UrlHelper.MakeDownloadUrl(SourceType.CurseForge, item.PID, 
-                item.FID, item.FileName);
-        }
+        return UrlHelper.MakeUrl(item, type, url);
     }
 
     public static string GetRunDir()

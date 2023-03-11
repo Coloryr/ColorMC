@@ -1,20 +1,7 @@
+using ColorMC.Core.Objs;
 using System.Runtime.InteropServices;
 
 namespace ColorMC.Core.Utils;
-
-public enum ArchEnum
-{
-    x32,
-    x64
-}
-
-public enum OsType
-{
-    Windows,
-    Linux,
-    MacOS,
-    Android
-}
 
 public static class SystemInfo
 {

@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
 

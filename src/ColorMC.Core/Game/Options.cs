@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Game;
+namespace ColorMC.Core.Game;
 
 public static class Options
 {

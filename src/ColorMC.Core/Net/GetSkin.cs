@@ -1,6 +1,6 @@
-using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Utils;
@@ -48,7 +48,7 @@ public static class GetSkin
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Http.Error20"), e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Error2"), e);
             }
         }
 
@@ -65,7 +65,7 @@ public static class GetSkin
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Http.Error20"), e);
+                Logs.Error(LanguageHelper.GetName("Core.Http.Error2"), e);
             }
         }
 
@@ -87,7 +87,7 @@ public static class GetSkin
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error21"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error3"), e);
             return null;
         }
     }

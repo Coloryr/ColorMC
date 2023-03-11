@@ -12,14 +12,14 @@
         <DockPanel DockPanel.Dock="Top">
             <Label
                 VerticalAlignment="Center"
-                Content="选择要同步的配置文件"
+                Content="{setting:Localize ServerPackWindow.Tab4.Text1}"
                 DockPanel.Dock="Left" />
             <Button
                 Name="Button1"
                 Width="80"
                 Height="25"
                 Margin="5"
-                Content="添加"
+                Content="{setting:Localize Button.Add}"
                 DockPanel.Dock="Right" />
 
             <ComboBox
@@ -29,13 +29,13 @@
                 DockPanel.Dock="Right" />
             <Label
                 VerticalAlignment="Center"
-                Content="同步方式"
+                Content=""
                 DockPanel.Dock="Right" />
 
             <ComboBox Name="ComboBox1" HorizontalAlignment="Stretch" />
         </DockPanel>
 
-        <Label Content="完整同步不允许玩家修改文件，压缩包同步会允许玩家修改" DockPanel.Dock="Bottom" />
+        <Label Content="{setting:Localize ServerPackWindow.Tab4.Text3}" DockPanel.Dock="Bottom" />
 
         <DataGrid
             Name="DataGrid1"
@@ -46,13 +46,13 @@
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Binding="{Binding Group}"
-                    Header="名字"
+                    Header="{setting:Localize ServerPackWindow.Tab4.DataGrid.Text1}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Type}"
-                    Header="同步方式"
+                    Header="{setting:Localize ServerPackWindow.Tab4.DataGrid.Text2}"
                     IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Url}" Header="下载地址" />
+                <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab4.DataGrid.Text3}" />
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

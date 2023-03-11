@@ -15,11 +15,11 @@
                     <CheckBox
                         Name="CheckBox5"
                         VerticalAlignment="Center"
-                        Content="单窗口模式" />
+                        Content="{setting:Localize SettingWindow.Tab2.Text26}" />
                     <Label
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
-                        Content="切换后需要重启" />
+                        Content="{setting:Localize SettingWindow.Tab2.Text27}" />
                 </StackPanel>
 
                 <!--  语言  -->

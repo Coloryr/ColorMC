@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Media;
 using ColorMC.Core;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System;
 using System.Text;

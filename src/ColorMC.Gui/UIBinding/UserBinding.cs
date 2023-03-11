@@ -5,9 +5,10 @@ using Avalonia.Platform;
 using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.SkinModel;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -260,7 +261,7 @@ public static class UserBinding
 
     public static void EditSkin(IBaseWindow window)
     {
-        if(window is TopLevel top)
+        if (window is TopLevel top)
         {
             EditSkin(top);
         }

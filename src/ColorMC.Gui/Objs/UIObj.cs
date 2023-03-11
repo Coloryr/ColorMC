@@ -1,12 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.Objs;
-
-public enum ViewType
-{
-    Button, Label, ServerMotd,
-    GameItem, UsearHead, StackPanel, Grid
-}
 
 public record ViewObj
 {

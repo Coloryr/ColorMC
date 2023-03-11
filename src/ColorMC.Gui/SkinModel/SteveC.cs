@@ -1,42 +1,6 @@
-﻿namespace ColorMC.Gui.SkinModel;
+﻿using ColorMC.Gui.Objs;
 
-public enum SkinType
-{
-    /// <summary>
-    /// 1.7旧版
-    /// </summary>
-    Old,
-    /// <summary>
-    /// 1.8新版
-    /// </summary>
-    New,
-    /// <summary>
-    /// 1.8新版纤细
-    /// </summary>
-    NewSlim,
-    /// <summary>
-    /// 未知的类型
-    /// </summary>
-    Unkonw
-}
-
-
-public record ModelItem
-{
-    public float[] Model;
-    public ushort[] Point;
-}
-
-public record SteveModel
-{
-    public ModelItem Head;
-    public ModelItem Body;
-    public ModelItem LeftArm;
-    public ModelItem RightArm;
-    public ModelItem LeftLeg;
-    public ModelItem RightLeg;
-    public ModelItem Cape;
-}
+namespace ColorMC.Gui.SkinModel;
 
 public class Steve3DModel
 {
