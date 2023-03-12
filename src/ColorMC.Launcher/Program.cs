@@ -1,7 +1,5 @@
 using Avalonia;
 using Avalonia.Media;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -19,8 +17,9 @@ internal class Program
 
     private static Mutex mutex1;
 
-    public static Updater updater = new();
+    public static Updater updater;
     public static string BaseDir { get; private set; }
+    public static string VersionBaseDir { get; private set; }
 
     public delegate void IN(string[] args);
     public delegate void IN1();
@@ -52,17 +51,31 @@ internal class Program
 
         var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
-        BaseDir = SystemInfo.Os switch
+        if (OperatingSystem.IsLinux())
         {
-            OsType.Linux => $"{path}/ColorMC/",
-            OsType.MacOS => "/Users/shared/ColorMC/",
-            _ => AppContext.BaseDirectory
-        };
+            VersionBaseDir = $"{path}/ColorMC/";
+            BaseDir = AppContext.BaseDirectory;
+        }
+        else if (OperatingSystem.IsMacCatalyst())
+        {
+            VersionBaseDir = "/Users/shared/ColorMC/";
+            BaseDir = $"{AppContext.BaseDirectory}Contents/MacOS";
+        }
+        else
+        {
+            VersionBaseDir = AppContext.BaseDirectory;
+            BaseDir = AppContext.BaseDirectory;
+        }
 
-        if (!File.Exists($"{AppContext.BaseDirectory}ColorMC.Core.dll")
-            || !File.Exists($"{AppContext.BaseDirectory}ColorMC.Core.pdb")
-            || !File.Exists($"{AppContext.BaseDirectory}ColorMC.Gui.dll")
-            || !File.Exists($"{AppContext.BaseDirectory}ColorMC.Gui.pdb"))
+        Console.WriteLine($"BaseDir:{BaseDir}");
+        Console.WriteLine($"VersionBaseDir:{VersionBaseDir}");
+
+        updater = new();
+
+        if (!File.Exists($"{BaseDir}ColorMC.Core.dll")
+            || !File.Exists($"{BaseDir}ColorMC.Core.pdb")
+            || !File.Exists($"{BaseDir}ColorMC.Gui.dll")
+            || !File.Exists($"{BaseDir}ColorMC.Gui.pdb"))
         {
             try
             {
@@ -101,6 +114,8 @@ internal class Program
             Load();
 
             SetInit(Init);
+            SetCheck(updater.CheckOne);
+            SetUpdate(updater.StartUpdate);
 
             MainCall(args);
         }
@@ -112,16 +127,21 @@ internal class Program
 
     private static void Load()
     {
+#if DEBUG
+        VersionBaseDir = AppContext.BaseDirectory;
+        BaseDir = AppContext.BaseDirectory;
+#endif
+
         AssemblyLoadContext context = new("ColorMC");
         {
-            using var file = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Gui.dll");
-            using var file1 = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Gui.pdb");
-            var temp = context.LoadFromStream(file, file1);
+            using var file = File.OpenRead($"{BaseDir}ColorMC.Gui.dll");
+            using var file1 = File.OpenRead($"{BaseDir}ColorMC.Gui.pdb");
+            context.LoadFromStream(file, file1);
         }
         {
-            using var file = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Core.dll");
-            using var file1 = File.OpenRead($"{AppContext.BaseDirectory}ColorMC.Core.pdb");
-            var temp = context.LoadFromStream(file, file1);
+            using var file = File.OpenRead($"{BaseDir}ColorMC.Core.dll");
+            using var file1 = File.OpenRead($"{BaseDir}ColorMC.Core.pdb");
+            context.LoadFromStream(file, file1);
         }
         var item = context.Assemblies
                        .Where(x => x.GetName().Name == "ColorMC.Gui")
@@ -156,8 +176,6 @@ internal class Program
 
     private static void Init()
     {
-        SetCheck(updater.CheckOne);
-        SetUpdate(updater.StartUpdate);
         updater.Check();
     }
 

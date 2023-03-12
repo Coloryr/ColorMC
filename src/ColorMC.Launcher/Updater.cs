@@ -11,7 +11,7 @@ namespace ColorMC.Launcher;
 public record VersionObj
 {
     public string Version { get; set; }
-    public string Data { get; set; }
+    public string Text { get; set; }
 }
 
 public class Updater
@@ -25,7 +25,7 @@ public class Updater
     {
         Client = new();
 
-        Local = $"{Program.BaseDir}version.json";
+        Local = $"{Program.VersionBaseDir}version.json";
         try
         {
             if (File.Exists(Local))
@@ -69,8 +69,8 @@ public class Updater
 
                     if (obj.Version != version.Version)
                     {
-                        var res = await Program.HaveUpdate(obj.Data);
-                        if (!res)
+                        var res = await Program.HaveUpdate(obj.Text);
+                        if (res)
                             return;
 
                         StartUpdate();
@@ -86,10 +86,10 @@ public class Updater
 
     public void StartUpdate()
     {
-        File.Delete($"{AppContext.BaseDirectory}ColorMC.Core.dll");
-        File.Delete($"{AppContext.BaseDirectory}ColorMC.Core.pdb");
-        File.Delete($"{AppContext.BaseDirectory}ColorMC.Gui.dll");
-        File.Delete($"{AppContext.BaseDirectory}ColorMC.Gui.pdb");
+        File.Delete($"{Program.BaseDir}ColorMC.Core.dll");
+        File.Delete($"{Program.BaseDir}ColorMC.Core.pdb");
+        File.Delete($"{Program.BaseDir}ColorMC.Gui.dll");
+        File.Delete($"{Program.BaseDir}ColorMC.Gui.pdb");
 
         new Mutex(true, "ColorMC-Launcher");
 
@@ -110,7 +110,7 @@ public class Updater
                 return (null, null);
             }
 
-            return (obj.Version != version.Version, obj.Data);
+            return (obj.Version != version.Version, obj.Text);
         }
         catch
         {
@@ -145,10 +145,10 @@ public class Updater
         if (res.IsSuccessStatusCode)
         {
             using var stream = res.Content.ReadAsStream();
-            using var stream1 = File.Create($"{AppContext.BaseDirectory}{name}.temp");
+            using var stream1 = File.Create($"{Program.BaseDir}{name}.temp");
             await stream.CopyToAsync(stream1);
         }
 
-        File.Move($"{AppContext.BaseDirectory}{name}.temp", $"{AppContext.BaseDirectory}{name}");
+        File.Move($"{Program.BaseDir}{name}.temp", $"{Program.BaseDir}{name}");
     }
 }

@@ -74,7 +74,7 @@ public partial class Tab3Control : UserControl
         if (res.Item1 == true)
         {
             var res1 = await window.Info6.ShowWait(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
-            if (res1)
+            if (!res1)
             {
                 ColorMCGui.Update();
             }
