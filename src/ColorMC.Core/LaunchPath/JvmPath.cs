@@ -105,7 +105,7 @@ public static class JvmPath
             Logs.Info($"find java {java}, check it");
         }
 
-        if (SystemInfo.Os == OsType.Linux)
+        if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
         {
             Per(java);
         }

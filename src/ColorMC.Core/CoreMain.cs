@@ -121,7 +121,7 @@ public static class ColorMCCore
         LocalMaven.Init(dir);
         DownloadManager.Init(dir);
         JvmPath.Init(dir);
-        AuthDatabase.Init(dir);
+        AuthDatabase.Init();
         MCPath.Init(dir);
 
         Logs.Info(LanguageHelper.GetName("Core.Info1"));

@@ -161,7 +161,7 @@ public static class BaseBinding
 
     public static void OpenDownloadJavaPath()
     {
-        OpPath(Path.GetFullPath(JvmPath.BaseDir));
+        OpPath(Path.GetFullPath(JvmPath.BaseDir + JvmPath.Name1));
     }
 
     public static async Task<(bool, string?)> Launch(GameSettingObj obj, LoginObj obj1)
@@ -386,8 +386,16 @@ public static class BaseBinding
                     $@"/select,{item}");
                 break;
             case OsType.Linux:
-                Process.Start("nautilus",
-                    '"' + item + '"');
+                try
+                {
+                    Process.Start("nautilus",
+                        '"' + item + '"');
+                }
+                catch
+                {
+                    Process.Start("dolphin",
+                        '"' + item + '"');
+                }
                 break;
             case OsType.MacOS:
                 var file1 = new FileInfo(item);
@@ -410,12 +418,12 @@ public static class BaseBinding
                     $"{item}");
                 break;
             case OsType.Linux:
-                Process.Start("nautilus",
+                Process.Start("xdg-open",
                     '"' + item + '"');
                 break;
             case OsType.MacOS:
                 Process.Start("open",
-                        '"' + item + '"');
+                    '"' + item + '"');
                 break;
         }
     }
@@ -498,14 +506,14 @@ public static class BaseBinding
 
     public static void OpenBaseDir()
     {
-        OpPath(AppContext.BaseDirectory);
+        OpPath(ColorMCCore.BaseDir);
     }
 
     public static bool IsLaunch()
     {
 #if !DEBUG
         mutex1 = new Mutex(true, "ColorMC-lock" +
-            AppContext.BaseDirectory.Replace("\\", "_").Replace("/", "_"), out var isnew);
+            ColorMCCore.BaseDir.Replace("\\", "_").Replace("/", "_"), out var isnew);
 
         return !isnew;
 #else
@@ -766,7 +774,7 @@ public static class BaseBinding
         {
             if (Directory.Exists($"{AppContext.BaseDirectory}minecraft/"))
             {
-                OpPath($"{AppContext.BaseDirectory}minecraft/");
+                OpPath(AppContext.BaseDirectory);
                 OpPath(InstancesPath.BaseDir);
                 return true;
             }

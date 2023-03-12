@@ -13,11 +13,17 @@ public partial class Tab7Control : UserControl
 
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
+        Button3.Click += Button3_Click;
 
         Label1.Content = ColorMCCore.Version;
         Label2.Content = ColorMCGui.Version;
 
         Image1.Source = App.GameIcon;
+    }
+
+    private void Button3_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpUrl("https://coloryr.github.io/sponsor.html");
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)

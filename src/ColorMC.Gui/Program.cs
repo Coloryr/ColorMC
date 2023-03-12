@@ -88,6 +88,10 @@ public class ColorMCGui
 
     public static AppBuilder BuildAvaloniaApp()
     {
+#if DEBUG
+        BaseDir = AppContext.BaseDirectory;
+#endif
+
         GuiConfigUtils.Init(BaseDir);
         ImageTemp.Init(BaseDir);
 

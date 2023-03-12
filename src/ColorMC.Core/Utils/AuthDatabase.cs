@@ -16,11 +16,17 @@ public static class AuthDatabase
     /// 初始化
     /// </summary>
     /// <param name="dir">运行的路径</param>
-    public static void Init(string dir)
+    public static void Init()
     {
         Logs.Info(LanguageHelper.GetName("Core.Auth.Info1"));
 
-        Dir = Path.GetFullPath(dir + Name);
+        var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/ColorMC/";
+
+        Logs.Info(path);
+
+        Directory.CreateDirectory(path);
+
+        Dir = Path.GetFullPath(path  + Name);
         if (File.Exists(Dir))
         {
             var data = File.ReadAllText(Dir);
