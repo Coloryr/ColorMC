@@ -22,22 +22,8 @@ public partial class FileItemControl : UserControl
 
         PointerPressed += CurseForgeControl_PointerPressed;
         DoubleTapped += CurseForgeControl_DoubleTapped;
-        PointerPressed += FileItemControl_PointerPressed;
 
         Image1.Source = App.GameIcon;
-    }
-
-    private void FileItemControl_PointerPressed(object? sender,
-        PointerPressedEventArgs e)
-    {
-        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-        {
-            var url = Data.GetUrl();
-            if (url == null)
-                return;
-
-            new UrlFlyout(url).ShowAt(this, true);
-        }
     }
 
     private void CurseForgeControl_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -51,6 +37,15 @@ public partial class FileItemControl : UserControl
     {
         var window = App.FindRoot(VisualRoot);
         (window.Con as IAddWindow)?.SetSelect(this);
+
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        {
+            var url = Data.GetUrl();
+            if (url == null)
+                return;
+
+            new UrlFlyout(url).ShowAt(this, true);
+        }
     }
 
     public void SetSelect(bool select)

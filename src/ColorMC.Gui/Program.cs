@@ -13,7 +13,7 @@ public class ColorMCGui
 {
     public const string Version = "A15.230311";
 
-    public static string BaseDir { get; private set; }
+    public static string RunDir { get; private set; }
     public static Action InitDone { get; private set; }
     public static Func<Task<(bool?, string?)>> Check { get; private set; }
     public static Action Update { get; private set; }
@@ -34,14 +34,16 @@ public class ColorMCGui
 
             var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
-            BaseDir = SystemInfo.Os switch
+            RunDir = SystemInfo.Os switch
             {
                 OsType.Linux => $"{path}/ColorMC/",
                 OsType.MacOS => "/Users/shared/ColorMC/",
                 _ => AppContext.BaseDirectory
             };
 
-            ColorMCCore.Init(BaseDir);
+            Console.WriteLine($"RunDir:{RunDir}");
+
+            ColorMCCore.Init(RunDir);
 
             BuildAvaloniaApp()
                  .StartWithClassicDesktopLifetime(args);
@@ -89,11 +91,11 @@ public class ColorMCGui
     public static AppBuilder BuildAvaloniaApp()
     {
 #if DEBUG
-        BaseDir = AppContext.BaseDirectory;
+        RunDir = AppContext.BaseDirectory;
 #endif
 
-        GuiConfigUtils.Init(BaseDir);
-        ImageTemp.Init(BaseDir);
+        GuiConfigUtils.Init(RunDir);
+        ImageTemp.Init(RunDir);
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();

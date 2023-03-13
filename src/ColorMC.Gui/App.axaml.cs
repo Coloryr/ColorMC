@@ -466,13 +466,14 @@ public partial class App : Application
         if (GameEditWindows.TryGetValue(obj.UUID, out var win1))
         {
             win1.Window.Activate();
+            win1.SetType(type);
         }
         else
         {
             var con = new GameEditControl(obj);
-            con.SetType(type);
             GameEditWindows.Add(obj.UUID, con);
-            AWindow(con);
+            AWindow(con); 
+            con.SetType(type);
         }
     }
 
@@ -502,9 +503,9 @@ public partial class App : Application
         else
         {
             var con = new AddControl(obj);
-            con.GoFile(type1, obj1.PID);
             AddWindows.Add(obj.UUID, con);
             AWindow(con);
+            con.GoFile(type1, obj1.PID);
         }
     }
 
@@ -534,9 +535,9 @@ public partial class App : Application
         else
         {
             var con = new AddControl(obj);
-            con.Go(type);
             AddWindows.Add(obj.UUID, con);
             AWindow(con);
+            con.Go(type);
         }
     }
 

@@ -96,13 +96,13 @@ public partial class FlyoutsControl : UserControl
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        App.ShowGameEdit(Obj.Obj, GameEditWindowType.Mod);
+        App.ShowGameEdit(Obj.Obj, GameEditWindowType.Config);
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
         FlyoutBase.Hide();
-        App.ShowGameEdit(Obj.Obj, GameEditWindowType.Config);
+        App.ShowGameEdit(Obj.Obj, GameEditWindowType.Mod);
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

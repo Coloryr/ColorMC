@@ -96,6 +96,9 @@ public static class DownloadManager
     /// <returns>结果</returns>
     public static async Task<bool> Start(List<DownloadItemObj> list)
     {
+        if (State != CoreRunState.End)
+            return false;
+
         Clear();
         Logs.Info(LanguageHelper.GetName("Core.Http.Info4"));
         ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Init);

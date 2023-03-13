@@ -40,7 +40,11 @@ public static class CurseForge
             string temp = $"{CurseForgeUrl}mods/search?gameId={GameID}&classId={classid}&"
                 + $"gameVersion={version}&index={page * pagesize}&sortField={sortField}&"
                 + $"searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}&"
-                + $"categoryId={categoryId}&modLoaderType={modLoaderType}";
+                + $"categoryId={categoryId}";
+            if (modLoaderType != 0)
+            {
+                temp += $"&modLoaderType={modLoaderType}";
+            }
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -298,7 +302,11 @@ public static class CurseForge
         try
         {
             mc ??= "";
-            string temp = $"{CurseForgeUrl}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}&modLoaderType={Loader(loader)}";
+            string temp = $"{CurseForgeUrl}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}";
+            if (loader != Loaders.Normal)
+            {
+                temp += $"&modLoaderType={Loader(loader)}";
+            }
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
