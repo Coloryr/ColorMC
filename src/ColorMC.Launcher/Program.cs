@@ -51,15 +51,20 @@ internal class Program
 
         var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
-        if (OperatingSystem.IsLinux())
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             VersionBaseDir = $"{path}/ColorMC/";
             BaseDir = AppContext.BaseDirectory;
         }
-        else if (OperatingSystem.IsMacCatalyst())
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            VersionBaseDir = "/Users/shared/ColorMC/";
+            VersionBaseDir = "/Users/Shared/ColorMC/";
             BaseDir = $"{AppContext.BaseDirectory}Contents/MacOS";
+
+            if (!Directory.Exists(BaseDir))
+            {
+                BaseDir = AppContext.BaseDirectory;
+            }
         }
         else
         {
@@ -69,6 +74,8 @@ internal class Program
 
         Console.WriteLine($"BaseDir:{BaseDir}");
         Console.WriteLine($"VersionBaseDir:{VersionBaseDir}");
+
+        Directory.CreateDirectory(VersionBaseDir);
 
         updater = new();
 

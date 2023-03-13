@@ -20,7 +20,10 @@ public static class AuthDatabase
     {
         Logs.Info(LanguageHelper.GetName("Core.Auth.Info1"));
 
-        var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/ColorMC/";
+        var path = (SystemInfo.Os == OsType.MacOS ?
+            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) :
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)) 
+            + "/ColorMC/";
 
         Logs.Info(path);
 
@@ -28,6 +31,26 @@ public static class AuthDatabase
 
         Dir = Path.GetFullPath(path  + Name);
         if (File.Exists(Dir))
+        {
+            Load();
+        }
+        else
+        {
+            string file1 = AppContext.BaseDirectory + Name;
+            if (File.Exists(file1))
+            {
+                File.Move(file1, Dir);
+            }
+            else
+            {
+                Save();
+            }
+        }
+    }
+
+    private static void Load()
+    {
+        try
         {
             var data = File.ReadAllText(Dir);
             var list = JsonConvert.DeserializeObject<List<LoginObj>>(data);
@@ -39,7 +62,7 @@ public static class AuthDatabase
                 Auths.TryAdd((item.UUID, item.AuthType), item);
             }
         }
-        else
+        catch
         {
             Save();
         }

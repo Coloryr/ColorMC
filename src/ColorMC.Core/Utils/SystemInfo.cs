@@ -30,19 +30,20 @@ public static class SystemInfo
         IsArm = RuntimeInformation.OSArchitecture == Architecture.X64 ||
             RuntimeInformation.OSArchitecture == Architecture.X86;
 
-        if (OperatingSystem.IsWindows())
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             Os = OsType.Windows;
         }
-        else if (OperatingSystem.IsLinux())
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             Os = OsType.Linux;
         }
-        else if (OperatingSystem.IsMacCatalyst())
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
             Os = OsType.MacOS;
         }
-        else if (OperatingSystem.IsAndroid())
+
+        if (OperatingSystem.IsAndroid())
         {
             Os = OsType.Android;
         }

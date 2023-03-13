@@ -200,7 +200,7 @@ public partial class AddJavaControl : UserControl, IUserControl
                     && (ComboBox1.SelectedIndex == 0 || !os1 || (item.Os == os))
                     select item;
 
-        if (list1.Count() > 100)
+        if (list1.Count() > 100 && !(arch1 && version1 && os1))
         {
             Grid1.IsVisible = true;
         }

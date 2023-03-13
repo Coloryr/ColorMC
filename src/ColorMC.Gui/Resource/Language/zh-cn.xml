@@ -593,6 +593,8 @@
 	<String Key="AddWindow.Error4">游戏版本加载失败</String>
 	<String Key="AddWindow.Error5">资源下载失败</String>
 	<String Key="AddWindow.Error6">没有可以添加的世界</String>
+	<String Key="AddWindow.Error7">数据包下载错误</String>
+	<String Key="AddWindow.Error8">资源下载错误</String>
 	<String Key="AddWindow.Control.Text1">正在下载中</String>
 	<String Key="AddWindow.Control.Text2">已下载</String>
 	<String Key="AddWindow.Control.Text3">打开网页</String>

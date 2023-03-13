@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using AvaloniaEdit.Utils;
+using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
@@ -10,6 +11,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -18,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
-public partial class AddControl : UserControl, IUserControl
+public partial class AddControl : UserControl, IUserControl, IAddWindow
 {
     private readonly List<FileItemControl> List = new();
     private List<SourceType> List2 = new();
@@ -486,16 +488,39 @@ public partial class AddControl : UserControl, IUserControl
                 return;
             var item = list[window.Info5.Read().Item1];
 
+            try
+            {
+                res = type switch
+                {
+                    SourceType.CurseForge => await GameBinding.Download(item.World, 
+                    data.Data as CurseForgeObj.Data.LatestFiles),
+                    SourceType.Modrinth => await GameBinding.Download(item.World, 
+                    data.Data as ModrinthVersionObj)
+                };
+            }
+            catch (Exception e)
+            {
+                Logs.Error(App.GetLanguage("AddWindow.Error7"), e);
+                res = false;
+            }
         }
         else
         {
-            res = type switch
+            try
             {
-                SourceType.CurseForge => await GameBinding.Download(now, Obj!,
-                data.Data as CurseForgeObj.Data.LatestFiles),
-                SourceType.Modrinth => await GameBinding.Download(now, Obj!,
-                data.Data as ModrinthVersionObj)
-            };
+                res = type switch
+                {
+                    SourceType.CurseForge => await GameBinding.Download(now, Obj!,
+                    data.Data as CurseForgeObj.Data.LatestFiles),
+                    SourceType.Modrinth => await GameBinding.Download(now, Obj!,
+                    data.Data as ModrinthVersionObj)
+                };
+            }
+            catch (Exception e)
+            {
+                Logs.Error(App.GetLanguage("AddWindow.Error8"), e);
+                res = false;
+            }
         }
         if (res)
         {

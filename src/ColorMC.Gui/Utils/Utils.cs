@@ -590,10 +590,10 @@ public static class GuiConfigUtils
             X11 = new()
             {
                 UseEGL = null,
-                UseGpu = false,
+                UseGpu = null,
                 OverlayPopups = null,
                 UseDeferredRendering = null,
-                UseCompositor = false,
+                UseCompositor = null,
             }
         };
     }

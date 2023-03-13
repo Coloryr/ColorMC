@@ -15,7 +15,7 @@ using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
-public partial class AddModPackControl : UserControl, IUserControl
+public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 {
     private readonly List<FileItemControl> List = new();
     private readonly Dictionary<int, string> Categories = new();
