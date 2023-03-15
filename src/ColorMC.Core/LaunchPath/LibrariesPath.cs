@@ -234,6 +234,6 @@ public static class LibrariesPath
     /// <returns>游戏路径</returns>
     public static string GetGameFile(string version)
     {
-        return $"{BaseDir}/net/minecraft/client/{version}/client-{version}.jar";
+        return Path.GetFullPath($"{BaseDir}/net/minecraft/client/{version}/client-{version}.jar");
     }
 }

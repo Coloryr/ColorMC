@@ -117,7 +117,7 @@
                             Name="Button_S1"
                             Width="100"
                             Height="30"
-                            Margin="6,0,0,0"
+                            Margin="16,0,0,0"
                             Content="{setting:Localize DownloadWindow.Text2}" />
                     </Expander>
                 </Grid>
