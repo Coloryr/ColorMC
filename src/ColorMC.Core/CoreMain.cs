@@ -9,7 +9,7 @@ namespace ColorMC.Core;
 
 public static class ColorMCCore
 {
-    public const string Version = "A15.230311";
+    public const string Version = "A15.230313";
 
     /// <summary>
     /// 错误显示回调

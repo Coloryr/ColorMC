@@ -162,6 +162,7 @@ public partial class MainControl : UserControl, IUserControl
         }
         else
         {
+            window.Info2.Show(App.GetLanguage("MainWindow.Info2"));
             Launchs.Add(game, item);
             item.SetLaunch(true);
 

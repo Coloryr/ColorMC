@@ -189,7 +189,6 @@ public partial class Tab6Control : UserControl
         if (ComboBox1.SelectedIndex == -1)
         {
             obj.GameName = null;
-            return;
         }
         else
         {

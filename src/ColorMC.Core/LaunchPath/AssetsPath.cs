@@ -52,7 +52,8 @@ public static class AssetsPath
     {
         if (obj == null)
             return;
-        string file = $"{BaseDir}/{Name1}/{game.assets}.json";
+
+        string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.assets}.json");
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
     }
 
@@ -63,9 +64,11 @@ public static class AssetsPath
     /// <returns></returns>
     public static AssetsObj? GetIndex(GameArgObj game)
     {
-        string file = $"{BaseDir}/{Name1}/{game.assets}.json";
-        var data = File.ReadAllText(file);
+        string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.assets}.json");
+        if (!File.Exists(file))
+            return null;
 
+        var data = File.ReadAllText(file);
         return JsonConvert.DeserializeObject<AssetsObj>(data);
     }
 
