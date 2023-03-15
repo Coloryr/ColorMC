@@ -49,19 +49,18 @@ public static class Logs
 
             Thread.Sleep(100);
         }
+    }
+
+    private static void Stop()
+    {
+        IsRun = false;
+        ThreadLog.Join();
 
         while (bags.TryTake(out var item))
         {
             Writer.WriteLine(item);
         }
         Writer.Dispose();
-    }
-
-    private static void Stop()
-    {
-        IsRun = false;
-
-        ThreadLog.Join();
     }
 
     private static void AddText(string text)

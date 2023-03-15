@@ -88,11 +88,15 @@ public partial class Tab6Control : UserControl
             window.Info.Show(App.GetLanguage("Error8"));
             return;
         }
-        var file = BaseBinding.GetRunDir() + TextBox3.Text;
+        var file = TextBox3.Text;
         if (!File.Exists(file))
         {
-            window.Info.Show(App.GetLanguage("Error9"));
-            return;
+            file = BaseBinding.GetRunDir() + TextBox3.Text;
+            if (!File.Exists(file))
+            {
+                window.Info.Show(App.GetLanguage("Error9"));
+                return;
+            }
         }
         try
         {

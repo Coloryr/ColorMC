@@ -219,13 +219,22 @@ public static class ConfigSave
     private static void Stop()
     {
         run = false;
-
         thread.Join();
+
+        lock (Lock)
+        {
+            foreach (var item in SaveQue.Values)
+            {
+                File.WriteAllText(item.Local,
+                    JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
+            }
+
+            SaveQue.Clear();
+        }
     }
 
     private static void Run()
     {
-        var list = new List<ConfigSaveObj>();
         while (run)
         {
             Thread.Sleep(1000);
@@ -234,28 +243,22 @@ public static class ConfigSave
 
             lock (Lock)
             {
-                list.AddRange(SaveQue.Values);
+                foreach (var item in SaveQue.Values)
+                {
+                    if (new FileInfo(item.Local)?.Directory?.Exists == true)
+                    {
+                        try
+                        {
+                            File.WriteAllText(item.Local,
+                                JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
+                        }
+                        catch (Exception e)
+                        {
+                            Logs.Error("Save Error", e);
+                        }
+                    }
+                }
                 SaveQue.Clear();
-            }
-
-            foreach (var item in list)
-            {
-                File.WriteAllText(item.Local,
-                    JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
-            }
-        }
-
-        if (!run)
-        {
-            lock (Lock)
-            {
-                list.AddRange(SaveQue.Values);
-                SaveQue.Clear();
-            }
-            foreach (var item in list)
-            {
-                File.WriteAllText(item.Local,
-                    JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
             }
         }
     }
