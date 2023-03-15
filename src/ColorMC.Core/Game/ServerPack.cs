@@ -163,7 +163,7 @@ public static class ServerPack
         return true;
     }
 
-    public static ServerPackObj GetServerPack(this GameSettingObj obj)
+    public static ServerPackObj? GetServerPack(this GameSettingObj obj)
     {
         var file = obj.GetServerPackFile();
         ServerPackObj? obj1 = null;
@@ -176,17 +176,6 @@ public static class ServerPack
         if (obj1 != null)
         {
             obj1.Game = obj;
-        }
-        else
-        {
-            obj1 = new()
-            {
-                Game = obj,
-                Mod = new(),
-                Resourcepack = new(),
-                Config = new()
-            };
-            obj1.Save();
         }
 
         return obj1;
@@ -431,7 +420,7 @@ public static class ServerPack
             if (!obj1.ForceUpdate)
             {
                 var res1 = await ColorMCCore.UpdateSelect(obj1.Text);
-                if (!res1)
+                if (res1)
                     return (false, null);
             }
 

@@ -46,6 +46,18 @@ public partial class ServerPackControl : UserControl, IUserControl
         if (obj != null)
         {
             Obj1 = GameBinding.GetServerPack(obj);
+            if (Obj1 == null)
+            {
+                Obj1 = new()
+                {
+                    Game = obj,
+                    Mod = new(),
+                    Resourcepack = new(),
+                    Config = new()
+                };
+
+                GameBinding.SaveServerPack(Obj1);
+            }
 
             tab1.SetObj(Obj1);
             tab2.SetObj(Obj1);
