@@ -72,22 +72,33 @@ public static class AuthHelper
     /// <returns>AuthlibInjector下载实例</returns>
     public static async Task<DownloadItemObj?> ReadyAuthlibInjector()
     {
-        var meta = await BaseClient.GetString(UrlHelper.AuthlibInjectorMeta(BaseClient.Source));
-        var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta)
-            ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
-        var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
+        var b1 = File.Exists(NowAuthlibInjector);
+        var b2 = string.IsNullOrWhiteSpace(NowAuthlibInjector);
+        if (b2 || !b1)
+        {
+            var meta = await BaseClient.GetString(UrlHelper.AuthlibInjectorMeta(BaseClient.Source));
+            var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta)
+                ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+            var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
 
-        var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
-        var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(info)
-            ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
-        var item1 = BuildAuthlibInjectorItem(obj1);
+            var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
+            var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(info)
+                ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+            var item1 = BuildAuthlibInjectorItem(obj1);
 
-        NowAuthlibInjector = item1.Local;
+            NowAuthlibInjector = item1.Local;
+            if (b2)
+            {
+                b1 = File.Exists(NowAuthlibInjector);
+            }
+            if (!b1)
+            {
+                return item1;
+            }
 
-        if (!string.IsNullOrWhiteSpace(NowAuthlibInjector)
-            && File.Exists(NowAuthlibInjector))
             return null;
+        }
 
-        return item1;
+        return null;
     }
 }

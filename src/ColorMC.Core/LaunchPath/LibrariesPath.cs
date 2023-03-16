@@ -3,6 +3,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using System.Collections.Concurrent;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -80,7 +81,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static List<DownloadItemObj>? CheckForge(GameSettingObj obj)
+    public static ConcurrentBag<DownloadItemObj>? CheckForge(GameSettingObj obj)
     {
         var version1 = VersionPath.GetGame(obj.Version)!;
         var v2 = CheckRule.GameLaunchVersion(version1);
@@ -93,7 +94,7 @@ public static class LibrariesPath
         if (forge == null)
             return null;
 
-        var list = new List<DownloadItemObj>();
+        var list = new ConcurrentBag<DownloadItemObj>();
         var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
 
         Parallel.ForEach(list1, (item) =>

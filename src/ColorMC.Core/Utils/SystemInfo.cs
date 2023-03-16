@@ -27,8 +27,8 @@ public static class SystemInfo
             SystemArch = ArchEnum.x32;
         }
 
-        IsArm = RuntimeInformation.OSArchitecture == Architecture.X64 ||
-            RuntimeInformation.OSArchitecture == Architecture.X86;
+        IsArm = RuntimeInformation.OSArchitecture == Architecture.Arm ||
+            RuntimeInformation.OSArchitecture == Architecture.Arm64;
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {

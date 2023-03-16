@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
@@ -58,7 +59,7 @@ public partial class Tab4Control : UserControl
                     window.Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
-                var res = await UserBinding.AddUser(0, name, null);
+                var res = await UserBinding.AddUser(AuthType.Offline, name, null);
                 if (!res.Item1)
                 {
                     window.Info.Show(res.Item2!);
@@ -70,7 +71,7 @@ public partial class Tab4Control : UserControl
                 Cancel = false;
                 ColorMCCore.LoginOAuthCode = LoginOAuthCode;
                 window.Info1.Show(App.GetLanguage("UserWindow.Info1"));
-                res = await UserBinding.AddUser(1, null);
+                res = await UserBinding.AddUser(AuthType.OAuth, null);
                 window.Info3.Close();
                 window.Info1.Close();
                 if (Cancel)
@@ -102,7 +103,7 @@ public partial class Tab4Control : UserControl
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
-                res = await UserBinding.AddUser(2, server, user.Item1, user.Item2);
+                res = await UserBinding.AddUser(AuthType.Nide8, server, user.Item1, user.Item2);
                 window.Info1.Close();
                 if (!res.Item1)
                 {
@@ -132,7 +133,7 @@ public partial class Tab4Control : UserControl
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
-                res = await UserBinding.AddUser(3, server, user.Item1, user.Item2);
+                res = await UserBinding.AddUser(AuthType.AuthlibInjector, server, user.Item1, user.Item2);
                 window.Info1.Close();
                 if (!res.Item1)
                 {
@@ -156,7 +157,7 @@ public partial class Tab4Control : UserControl
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
-                res = await UserBinding.AddUser(4, user.Item1, user.Item2);
+                res = await UserBinding.AddUser(AuthType.LittleSkin, user.Item1, user.Item2);
                 window.Info1.Close();
                 if (!res.Item1)
                 {
@@ -185,7 +186,7 @@ public partial class Tab4Control : UserControl
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
-                res = await UserBinding.AddUser(3, user.Item1, user.Item2, server);
+                res = await UserBinding.AddUser(AuthType.SelfLittleSkin, user.Item1, user.Item2, server);
                 window.Info1.Close();
                 if (!res.Item1)
                 {

@@ -31,14 +31,9 @@ public static class BaseBinding
 
     private readonly static Dictionary<Process, GameSettingObj> Games = new();
     private readonly static Dictionary<string, Process> RunGames = new();
+    private readonly static Dictionary<string, string> GameLogs = new();
     private static Mutex mutex1;
-    public static bool ISNewStart
-    {
-        get
-        {
-            return ColorMCCore.NewStart;
-        }
-    }
+    public static bool ISNewStart => ColorMCCore.NewStart;
 
     public static void Init()
     {
@@ -189,6 +184,15 @@ public static class BaseBinding
 
         string? temp = null;
 
+        if (GameLogs.ContainsKey(obj.UUID))
+        {
+            GameLogs[obj.UUID] = "";
+        }
+        else
+        {
+            GameLogs.Add(obj.UUID, "");
+        }
+
         var res = await Task.Run(() =>
         {
             try
@@ -258,23 +262,17 @@ public static class BaseBinding
                 {
                     App.MainWindow?.GameClose(obj2);
                 }
-                if (a is Process)
+                GameLogs.Remove(obj.UUID, out var log);
+                if (a is Process p)
                 {
-                    var p = a as Process;
-                    if (p?.ExitCode == 0)
+                    if (p.ExitCode == 0)
                     {
-                        return;
-                    }
-                    string file = obj.GetLogLatestFile();
-                    if (!File.Exists(file))
-                    {
-                        App.ShowError(App.GetLanguage("UserBinding.Error2"), "找不到日志文件");
                         return;
                     }
 
                     Dispatcher.UIThread.Post(() =>
                     {
-                        App.ShowError(App.GetLanguage("UserBinding.Error2"), File.ReadAllText(file));
+                        App.ShowError(App.GetLanguage("UserBinding.Error2"), log ?? "");
                     });
                 }
                 res.Dispose();
@@ -305,15 +303,19 @@ public static class BaseBinding
     {
         if (p == null)
             return;
-        if (Games.TryGetValue(p, out var obj)
-            && App.GameEditWindows.TryGetValue(obj.UUID, out var win))
+        if (Games.TryGetValue(p, out var obj))
         {
-            win?.Log(d);
+            GameLogs[obj.UUID] += d + Environment.NewLine;
+            if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
+            {
+                win?.Log(d);
+            }
         }
     }
 
     public static void PLog(GameSettingObj obj, string? d)
     {
+        GameLogs[obj.UUID] += d + Environment.NewLine;
         if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
             win?.Log(d);

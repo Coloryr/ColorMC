@@ -205,7 +205,7 @@ public static class VersionPath
     /// <returns>启动数据</returns>
     public static ForgeLaunchObj? GetForgeObj(string mc, string version)
     {
-        string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}.json";
+        string file = Path.GetFullPath($"{BaseDir}/{Name1}/forge-{mc}-{version}.json");
 
         if (!File.Exists(file))
             return null;

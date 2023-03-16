@@ -9,8 +9,11 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Grid VerticalAlignment="Top">
-            <StackPanel Margin="3">
+        <DockPanel>
+            <StackPanel
+                Margin="3,3,3,0"
+                Background="{setting:Colors TranBack}"
+                DockPanel.Dock="Top">
                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
                     <DockPanel Width="210">
                         <Label
@@ -43,7 +46,12 @@
                         Width="130"
                         Height="30"
                         Margin="0,2,0,0" />
-
+                    <Button
+                        Name="Button1"
+                        Width="100"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        Content="{setting:Localize AddModPackWindow.Text8}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBox
@@ -70,43 +78,32 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddModPackWindow.Text5}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input2"
                         Width="130"
                         Height="30"
+                        FormatString="N0"
                         Minimum="0"
                         Value="0" />
+                    <Button
+                        Name="Button2"
+                        Width="100"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        Content="{setting:Localize AddModPackWindow.Text9}"
+                        IsEnabled="False" />
                 </StackPanel>
             </StackPanel>
-            <Button
-                Name="Button1"
-                Width="100"
-                Height="30"
-                Margin="5"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Content="{setting:Localize AddModPackWindow.Text8}" />
 
-            <Button
-                Name="Button2"
-                Width="100"
-                Height="30"
-                Margin="5"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Content="{setting:Localize AddModPackWindow.Text9}"
-                IsEnabled="False" />
-        </Grid>
-
-        <ScrollViewer
-            Name="ScrollViewer1"
-            Margin="3,75,3,3"
-            VerticalScrollBarVisibility="Visible">
-            <StackPanel
-                Name="ListBox_Items"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" />
-        </ScrollViewer>
+            <ScrollViewer
+                Name="ScrollViewer1"
+                Margin="3,0,3,3"
+                VerticalScrollBarVisibility="Visible">
+                <StackPanel
+                    Name="ListBox_Items"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" />
+            </ScrollViewer>
+        </DockPanel>
 
         <Grid
             Name="GridVersion"
@@ -123,10 +120,10 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddModPackWindow.Text7}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input3"
                         Width="120"
                         Height="30"
+                        FormatString="N0"
                         Minimum="0"
                         Value="0" />
                     <Label

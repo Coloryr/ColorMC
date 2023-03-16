@@ -346,14 +346,14 @@ public partial class Tab2Control : UserControl
     public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
-
-        Title.Content = string.Format(App.GetLanguage("GameEditWindow.Tab2.Text13"), obj.Name);
     }
 
     public void Update()
     {
         if (Obj == null)
             return;
+
+        Title.Content = string.Format(App.GetLanguage("GameEditWindow.Tab2.Text13"), Obj.Name);
 
         Load();
     }

@@ -21,17 +21,16 @@
                 Name="ServerMotdControl1"
                 Margin="3,3,0,0"
                 DockPanel.Dock="Top" />
-            <Label
-                Name="Label2"
-                Margin="3,0,0,3"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Background="#88FFFFFF"
-                Content="{setting:Localize Tips.Text1}"
-                DockPanel.Dock="Bottom"
-                IsVisible="False" />
             <Grid>
-                <ScrollViewer Margin="3,0,0,0">
+                <Label
+                    Name="Label2"
+                    Margin="3,0,0,3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Background="{setting:Colors TranBack}"
+                    Content="{setting:Localize Tips.Text1}"
+                    IsVisible="False" />
+                <ScrollViewer Name="ScrollViewer1" Margin="3,0,0,0">
                     <StackPanel Name="GameGroups" />
                 </ScrollViewer>
                 <Grid Name="Grid3" Background="#EEEEEE">

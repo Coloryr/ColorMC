@@ -42,10 +42,10 @@ public static class UserBinding
         return list;
     }
 
-    public static async Task<(bool, string?)> AddUser(int type, string? input1,
+    public static async Task<(bool, string?)> AddUser(AuthType type, string? input1,
         string? input2 = null, string? input3 = null)
     {
-        if (type == 0)
+        if (type == AuthType.Offline)
         {
             AuthDatabase.Save(new()
             {
@@ -56,40 +56,35 @@ public static class UserBinding
             });
             return (true, null);
         }
-        else if (type <= 5)
+        var (State, State1, Obj, Message, Ex) = type switch
         {
-            var (State, State1, Obj, Message, Ex) = type switch
-            {
-                1 => await BaseAuth.LoginWithOAuth(),
-                2 => await BaseAuth.LoginWithNide8(input1!, input2!, input3!),
-                3 => await BaseAuth.LoginWithAuthlibInjector(input1!, input2!, input3!),
-                4 => await BaseAuth.LoginWithLittleSkin(input1!, input2!),
-                5 => await BaseAuth.LoginWithLittleSkin(input1!, input2!, input3!),
-                _ => (AuthState.Profile, LoginState.Error, null, null, null)
-            };
+            AuthType.OAuth => await BaseAuth.LoginWithOAuth(),
+            AuthType.Nide8 => await BaseAuth.LoginWithNide8(input1!, input2!, input3!),
+            AuthType.AuthlibInjector => await BaseAuth.LoginWithAuthlibInjector(input1!, input2!, input3!),
+            AuthType.LittleSkin => await BaseAuth.LoginWithLittleSkin(input1!, input2!),
+            AuthType.SelfLittleSkin => await BaseAuth.LoginWithLittleSkin(input1!, input2!, input3!),
+            _ => (AuthState.Profile, LoginState.Error, null, null, null)
+        };
 
-            if (State1 != LoginState.Done)
+        if (State1 != LoginState.Done)
+        {
+            if (Ex != null)
             {
-                if (Ex != null)
-                {
-                    App.ShowError(Message!, Ex);
-                    return (false, App.GetLanguage("Error4"));
-                }
-                else
-                {
-                    return (false, Message);
-                }
+                App.ShowError(Message!, Ex);
+                return (false, App.GetLanguage("Error4"));
             }
-            if (string.IsNullOrWhiteSpace(Obj?.UUID))
+            else
             {
-                BaseBinding.OpUrl("https://minecraft.net");
-                return (false, App.GetLanguage("UserBinding.Info3"));
+                return (false, Message);
             }
-            AuthDatabase.Save(Obj!);
-            return (true, null);
         }
-
-        return (false, App.GetLanguage("UserBinding.Error1"));
+        if (string.IsNullOrWhiteSpace(Obj?.UUID))
+        {
+            BaseBinding.OpUrl("https://minecraft.net");
+            return (false, App.GetLanguage("UserBinding.Info3"));
+        }
+        AuthDatabase.Save(Obj!);
+        return (true, null);
     }
 
     public static Dictionary<(string, AuthType), LoginObj> GetAllUser()

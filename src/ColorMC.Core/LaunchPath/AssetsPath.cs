@@ -77,20 +77,20 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">资源数据</param>
     /// <returns>丢失列表</returns>
-    public static async Task<ConcurrentBag<(string Name, string Hash)>> Check(AssetsObj obj)
+    public static ConcurrentBag<(string Name, string Hash)> Check(AssetsObj obj)
     {
         var list1 = new ConcurrentBag<string>();
         var list = new ConcurrentBag<(string, string)>();
-        await Parallel.ForEachAsync(obj.objects, (item, cancel) =>
+        Parallel.ForEach(obj.objects, (item) =>
         {
             if (list1.Contains(item.Value.hash))
-                return ValueTask.CompletedTask;
+                return;
 
             string file = $"{ObjectsDir}/{item.Value.hash[..2]}/{item.Value.hash}";
             if (!File.Exists(file))
             {
                 list.Add((item.Key, item.Value.hash));
-                return ValueTask.CompletedTask;
+                return;
             }
             using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
             var sha1 = Funtcions.GenSha1(stream);
@@ -100,7 +100,7 @@ public static class AssetsPath
                 list1.Add(item.Value.hash);
             }
 
-            return ValueTask.CompletedTask;
+            return;
         });
 
         return list;

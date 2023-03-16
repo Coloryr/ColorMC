@@ -349,15 +349,6 @@ public partial class Tab1Control : UserControl
     public void SetGame(GameSettingObj obj)
     {
         Obj = obj;
-
-        if (obj.GameType == GameType.Snapshot)
-        {
-            CheckBox3.IsChecked = true;
-        }
-        else if (obj.GameType == GameType.Other)
-        {
-            CheckBox4.IsChecked = true;
-        }
     }
 
     public void Update()
@@ -366,6 +357,15 @@ public partial class Tab1Control : UserControl
             return;
 
         load = true;
+
+        if (Obj.GameType == GameType.Snapshot)
+        {
+            CheckBox3.IsChecked = true;
+        }
+        else if (Obj.GameType == GameType.Other)
+        {
+            CheckBox4.IsChecked = true;
+        }
 
         Load1();
         Load2();

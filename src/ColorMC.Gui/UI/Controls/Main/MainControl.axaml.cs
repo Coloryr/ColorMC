@@ -20,7 +20,8 @@ public partial class MainControl : UserControl, IUserControl
     private readonly List<GamesControl> Groups = new();
     private readonly Dictionary<GameSettingObj, GameControl> Launchs = new();
     private GamesControl DefaultGroup;
-    private GameControl? Obj;
+
+    public GameControl? Obj { get; private set; }
 
     private bool launch = false;
     private bool first = true;
@@ -38,6 +39,7 @@ public partial class MainControl : UserControl, IUserControl
 
         Button1.Click += Button1_Click;
         Grid3.PointerPressed += Grid3_PointerPressed;
+        ScrollViewer1.PointerPressed += ScrollViewer1_PointerPressed;
 
         App.UserEdit += OnUserEdit;
 
@@ -46,6 +48,14 @@ public partial class MainControl : UserControl, IUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         ItemInfo.SetWindow(this);
+    }
+
+    private void ScrollViewer1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(ScrollViewer1).Properties.IsLeftButtonPressed)
+        {
+            GameItemSelect(null);
+        }
     }
 
     private void Grid3_PointerPressed(object? sender, PointerEventArgs e)

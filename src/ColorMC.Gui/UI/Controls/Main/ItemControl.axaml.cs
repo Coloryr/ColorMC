@@ -80,7 +80,7 @@ public partial class ItemControl : UserControl
     {
         if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            App.ShowSkin();
+            App.ShowUser();
         }
     }
 
@@ -102,7 +102,7 @@ public partial class ItemControl : UserControl
 
     private void Button_Switch_Click(object? sender, RoutedEventArgs e)
     {
-        App.ShowUser();
+        App.ShowSkin();
     }
 
     private void Button_Edit_Click(object? sender, RoutedEventArgs e)

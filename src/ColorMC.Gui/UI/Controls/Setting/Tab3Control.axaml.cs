@@ -66,12 +66,13 @@ public partial class Tab3Control : UserControl
         }
         window.Info1.Show(App.GetLanguage("SettingWindow.Tab3.Info1"));
         var res = await ColorMCGui.Check();
+        window.Info1.Close();
         if (res.Item1 == null)
         {
             window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error3"));
             return;
         }
-        if (res.Item1 == true)
+        else if (res.Item1 == true)
         {
             var res1 = await window.Info6.ShowWait(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
             if (!res1)
