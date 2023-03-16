@@ -268,7 +268,7 @@ public static class GameDownload
             return (GetDownloadState.GetInfo, null);
         }
 
-        File.WriteAllText($"{VersionPath.FabricDir}/{meta1.id}.json",
+        File.WriteAllText(Path.GetFullPath($"{VersionPath.FabricDir}/{meta1.id}.json"),
             JsonConvert.SerializeObject(meta1));
 
         foreach (var item in meta1.libraries)
@@ -332,7 +332,7 @@ public static class GameDownload
             return (GetDownloadState.GetInfo, null);
         }
 
-        File.WriteAllText($"{VersionPath.QuiltDir}/{meta1.id}.json",
+        File.WriteAllText(Path.GetFullPath($"{VersionPath.QuiltDir}/{meta1.id}.json"),
             JsonConvert.SerializeObject(meta1));
 
         foreach (var item in meta1.libraries)

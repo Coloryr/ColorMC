@@ -15,9 +15,7 @@ public partial class GamesControl : UserControl
 
     private MainControl Window;
     private List<GameSettingObj> List;
-    private GameControl? Last;
     private bool Init;
-    private bool check = false;
     public string Group { get; private set; }
 
     public GamesControl()
@@ -64,14 +62,7 @@ public partial class GamesControl : UserControl
 
     private void Expander_Head_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (check)
-        {
-            check = false;
-            return;
-        }
-
-        Last?.SetSelect(false);
-        Last = null;
+        Window.Obj?.SetSelect(false);
         Window.GameItemSelect(null);
     }
 
@@ -118,7 +109,8 @@ public partial class GamesControl : UserControl
 
     private void Game_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        if (Last != null)
+        e.Handled = true;
+        if (Window.Obj != null)
         {
             Window.Launch(false);
         }
@@ -126,11 +118,12 @@ public partial class GamesControl : UserControl
 
     private void GameControl_PointerMoved(object? sender, PointerEventArgs e)
     {
+        e.Handled = true;
         var game = (sender as GameControl)!;
         if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
             var dragData = new DataObject();
-            dragData.Set(BaseBinding.DrapType, this);
+            dragData.Set(BaseBinding.DrapType, game);
             dragData.Set(DataFormats.FileNames, new string[] { game.Obj.GetBasePath() });
 
             Dispatcher.UIThread.Post(() =>
@@ -142,21 +135,20 @@ public partial class GamesControl : UserControl
 
     private void GameControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        check = true;
-        if (Last != sender)
+        e.Handled = true;
+        if (Window.Obj != sender)
         {
             var game = (sender as GameControl)!;
-            Last?.SetSelect(false);
-            Last = game;
+            Window.Obj?.SetSelect(false);
             game.SetSelect(true);
             Window.GameItemSelect(game);
         }
 
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            if (Last?.Obj != null)
+            if (Window.Obj?.Obj != null)
             {
-                new MainFlyout(Window, Last!).ShowAt(this, true);
+                new MainFlyout(Window, Window.Obj!).ShowAt(this, true);
             }
         }
     }

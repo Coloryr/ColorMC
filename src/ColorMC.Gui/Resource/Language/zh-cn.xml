@@ -17,7 +17,7 @@
 	<String Key="MainWindow.Flyouts.Text5">删除实例</String>
 	<String Key="MainWindow.Flyouts.Text6">强行停止</String>
 	<String Key="MainWindow.Flyouts.Text7">添加资源</String>
-	<String Key="MainWindow.Control.Text1">用户列表</String>
+	<String Key="MainWindow.Control.Text1">查看皮肤</String>
 	<String Key="MainWindow.Control.Text2">添加实例</String>
 	<String Key="MainWindow.Control.Text3">启动实例</String>
 	<String Key="MainWindow.Control.Text4">测试启动</String>
@@ -72,7 +72,7 @@
 	<String Key="UserWindow.Flyouts.Text1">切换用户</String>
 	<String Key="UserWindow.Flyouts.Text2">重新登录</String>
 	<String Key="UserWindow.Flyouts.Text3">删除用户</String>
-	<String Key="UserWindow.Text1">账户</String>
+	<String Key="UserWindow.Text1">用户名</String>
 	<String Key="UserWindow.Text2">密码</String>
 	<String Key="UserWindow.Text3">打开网址：{0}</String>
 	<String Key="UserWindow.Text4">输入代码：{0} 继续登录</String>
@@ -605,6 +605,7 @@
 	<String Key="AddJavaWindow.Text3">版本</String>
 	<String Key="AddJavaWindow.Text4">构建</String>
 	<String Key="AddJavaWindow.Text5">苹果的M系列、Arm64系统应该下载aarch64；下载应选择jdk或者jre；双击可以选择下载</String>
+	<String Key="AddJavaWindow.Text6">版本数量过多，请细分选择</String>
 	<String Key="AddJavaWindow.Info1">是否要下载 {0}</String>
 	<String Key="AddJavaWindow.Info2">正在下载Java</String>
 	<String Key="AddJavaWindow.Info3">下载Java成功</String>
@@ -778,7 +779,7 @@
 	<String Key="ToolTip.Text6">打开侧边栏</String>
 	<String Key="ToolTip.Text7">请选中到bin文件夹内的java</String>
 	<String Key="ToolTip.Text8">示例"C:\Program Files\Java\jdk1.8.0_301\bin\java.exe"</String>
-	<String Key="ToolTip.Text9">打开用户管理窗口</String>
+	<String Key="ToolTip.Text9">打开皮肤查看窗口</String>
 	<String Key="ToolTip.Text10">新建一个游戏实例</String>
 	<String Key="ToolTip.Text11">登录并启动游戏</String>
 	<String Key="ToolTip.Text12">打开修改游戏窗口</String>

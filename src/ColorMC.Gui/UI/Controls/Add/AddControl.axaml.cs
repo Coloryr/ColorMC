@@ -598,6 +598,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         App.CrossFade300.Start(Grid2, null, CancellationToken.None);
 
         ComboBox1.SelectedIndex = 0;
+        ComboBox2.SelectedIndex = 0;
     }
 
     private async void Load1(string? id = null)
@@ -686,6 +687,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
         ComboBox1.SelectedIndex = (int)FileType.Mod - 1;
         ComboBox2.SelectedIndex = 0;
+        ComboBox1.IsEnabled = false;
         await Task.Run(() =>
         {
             while (set)

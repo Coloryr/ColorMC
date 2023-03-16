@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -159,7 +160,7 @@ public partial class UsersControl : UserControl, IUserControl
                     window.Info.Show(App.GetLanguage("UserWindow.Error2"));
                     break;
                 }
-                var res = await UserBinding.AddUser(0, name, null);
+                var res = await UserBinding.AddUser(AuthType.Offline, name, null);
                 if (!res.Item1)
                 {
                     window.Info.Show(res.Item2!);
@@ -173,7 +174,7 @@ public partial class UsersControl : UserControl, IUserControl
                 Cancel = false;
                 ColorMCCore.LoginOAuthCode = LoginOAuthCode;
                 window.Info1.Show(App.GetLanguage("UserWindow.Info1"));
-                res = await UserBinding.AddUser(1, null);
+                res = await UserBinding.AddUser(AuthType.OAuth, null);
                 window.Info1.Close();
                 window.Info3.Close();
                 if (Cancel)
@@ -201,7 +202,7 @@ public partial class UsersControl : UserControl, IUserControl
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
-                res = await UserBinding.AddUser(2, server,
+                res = await UserBinding.AddUser(AuthType.Nide8, server,
                     TextBox_Input2.Text, TextBox_Input3.Text);
                 window.Info1.Close();
                 if (!res.Item1)
@@ -227,7 +228,7 @@ public partial class UsersControl : UserControl, IUserControl
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
-                res = await UserBinding.AddUser(3, server,
+                res = await UserBinding.AddUser(AuthType.AuthlibInjector, server,
                     TextBox_Input2.Text, TextBox_Input3.Text);
                 window.Info1.Close();
                 if (!res.Item1)
@@ -247,7 +248,7 @@ public partial class UsersControl : UserControl, IUserControl
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
-                res = await UserBinding.AddUser(4,
+                res = await UserBinding.AddUser(AuthType.LittleSkin,
                     TextBox_Input2.Text, TextBox_Input3.Text);
                 window.Info1.Close();
                 if (!res.Item1)
@@ -272,7 +273,7 @@ public partial class UsersControl : UserControl, IUserControl
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
-                res = await UserBinding.AddUser(5,
+                res = await UserBinding.AddUser(AuthType.SelfLittleSkin,
                     TextBox_Input2.Text, TextBox_Input3.Text, server);
                 window.Info1.Close();
                 if (!res.Item1)

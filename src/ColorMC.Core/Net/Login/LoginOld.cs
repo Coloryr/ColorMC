@@ -1,5 +1,6 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
@@ -52,6 +53,9 @@ public static class LoginOld
         var obj2 = obj1.ToObject<AuthenticateResObj>();
         if (obj2 == null)
             return (LoginState.JsonError, null, null);
+
+        if(obj2.selectedProfile == null)
+            return (LoginState.Error, null, LanguageHelper.GetName("Core.Login.Error23"));
 
         return (LoginState.Done, new()
         {

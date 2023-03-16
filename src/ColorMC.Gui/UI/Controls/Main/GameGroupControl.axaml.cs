@@ -27,7 +27,7 @@ public partial class GameGroupControl : UserControl
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
-        await (App.MainWindow as MainControl)!.AddGroup();
+        await App.MainWindow!.AddGroup();
         List.Clear();
         List.AddRange(GameBinding.GetGameGroups().Keys);
     }

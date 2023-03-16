@@ -96,6 +96,7 @@
 	<String Key="Core.Login.Error20">LittleSkin刷新登录发生错误</String>
 	<String Key="Core.Login.Error21">登录码获取失败</String>
 	<String Key="Core.Login.Error22">Json解析错误</String>
+	<String Key="Core.Login.Error23">没有账户数据</String>
 	
 	<String Key="Core.Game.Error1">Mod解析失败</String>
 	<String Key="Core.Game.Error2">Resourcepack解析失败</String>
@@ -110,6 +111,10 @@
 	<String Key="Core.Launch.Info1">游戏启动参数</String>
 	<String Key="Core.Launch.Info2">游戏使用的运行库</String>
 	<String Key="Core.Launch.Info3">游戏使用的Java</String>
+	<String Key="Core.Launch.Info4">游戏实例 {0} 登录用时 {1}</String>
+	<String Key="Core.Launch.Info5">游戏实例 {0} 检查用时 {1}</String>
+	<String Key="Core.Launch.Info6">游戏实例 {0} 启动用时 {1}</String>
+	<String Key="Core.Launch.Info7">游戏实例 {0} 下载用时 {1}</String>
 	<String Key="Core.Launch.Error1">游戏版本信息读取失败</String>
 	<String Key="Core.Launch.Error2">Assets信息获取失败</String>
 	<String Key="Core.Launch.Error3">Mod加载器信息读取错误</String>

@@ -8,8 +8,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <DockPanel Margin="3">
-
+    <DockPanel Margin="3" Background="{setting:Colors TranBack}">
         <StackPanel
             Margin="0,3,0,0"
             DockPanel.Dock="Top"
@@ -41,7 +40,7 @@
             <Button
                 Name="Button1"
                 Width="80"
-                Height="25"
+                Height="30"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"
                 Content="{setting:Localize Button.Refash}" />
@@ -57,7 +56,6 @@
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
-                Background="#88ffffff"
                 CanUserSortColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn
@@ -89,12 +87,12 @@
 
             <Grid
                 Name="Grid1"
-                Background="#EEEEEE"
+                Background="#EEEEEEEE"
                 IsVisible="False">
                 <Label
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="版本数量过多，请细分选择" />
+                    Content="{setting:Localize AddJavaWindow.Text6}" />
             </Grid>
         </Grid>
     </DockPanel>

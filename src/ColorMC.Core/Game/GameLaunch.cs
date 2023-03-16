@@ -110,7 +110,7 @@ public static class Launch
                 AssetsPath.AddIndex(assets, game);
             }
 
-            var list1 = await AssetsPath.Check(assets);
+            var list1 = AssetsPath.Check(assets);
             foreach (var (Name, Hash) in list1)
             {
                 list.Add(new()
@@ -896,6 +896,8 @@ public static class Launch
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login)
     {
         //登录账户
+        Stopwatch stopwatch = new();
+        stopwatch.Start();
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Login);
         var (State, State1, Obj, Message, Ex) = await login.RefreshToken();
         if (State1 != LoginState.Done)
@@ -927,8 +929,25 @@ public static class Launch
             login.Save();
         }
 
+        stopwatch.Stop();
+        string temp = string.Format(LanguageHelper.GetName("Core.Launch.Info4"), 
+            obj.Name, stopwatch.Elapsed.ToString());
+        ColorMCCore.GameLog?.Invoke(obj, temp);
+        Logs.Info(temp);
+
+        stopwatch.Restart();
+        stopwatch.Start();
         //检查游戏文件
         var res = await CheckGameFile(obj, login);
+        stopwatch.Stop();
+        temp = string.Format(LanguageHelper.GetName("Core.Launch.Info5"),
+            obj.Name, stopwatch.Elapsed.ToString());
+        ColorMCCore.GameLog?.Invoke(obj, temp);
+        Logs.Info(temp);
+
+        stopwatch.Restart();
+        stopwatch.Start();
+
         //下载缺失的文件
         if (res.Count != 0)
         {
@@ -942,13 +961,25 @@ public static class Launch
                     LanguageHelper.GetName("Core.Launch.Error4"));
 
             ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Download);
+
+            stopwatch.Restart();
+            stopwatch.Start();
+
             var ok = await DownloadManager.Start(res);
             if (!ok)
             {
                 throw new LaunchException(LaunchState.LostFile,
                     LanguageHelper.GetName("Core.Launch.Error5"));
             }
+            stopwatch.Stop();
+            temp = string.Format(LanguageHelper.GetName("Core.Launch.Info7"),
+                obj.Name, stopwatch.Elapsed.ToString());
+            ColorMCCore.GameLog?.Invoke(obj, temp);
+            Logs.Info(temp);
         }
+
+        stopwatch.Restart();
+        stopwatch.Start();
 
         //准备Jvm参数
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
@@ -1014,6 +1045,12 @@ public static class Launch
                 });
             }
         }
+
+        stopwatch.Stop();
+        temp = string.Format(LanguageHelper.GetName("Core.Launch.Info6"),
+            obj.Name, stopwatch.Elapsed.ToString());
+        ColorMCCore.GameLog?.Invoke(obj, temp);
+        Logs.Info(temp);
 
         return process;
     }

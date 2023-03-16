@@ -12,7 +12,7 @@
     <Grid>
         <ScrollViewer>
             <StackPanel
-                Margin="0,0,0,30"
+                Margin="0,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Background="#88ffffff">
@@ -143,7 +143,7 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddGameWindow.Text15}" />
                 </StackPanel>
-
+                <Grid Margin="0,0,0,40" />
             </StackPanel>
         </ScrollViewer>
 
