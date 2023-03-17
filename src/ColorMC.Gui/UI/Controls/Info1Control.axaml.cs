@@ -52,12 +52,12 @@ public partial class Info1Control : UserControl
         App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
-    public void Show(string title)
+    public Task Show(string title)
     {
         if (Display)
         {
             NextText(title);
-            return;
+            return Task.CompletedTask;
         }
         Display = true;
 
@@ -67,7 +67,7 @@ public partial class Info1Control : UserControl
 
         Button_Cancel.IsVisible = false;
 
-        App.CrossFade300.Start(null, this, CancellationToken.None);
+        return App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
     public void Show(string title, Action cancel)

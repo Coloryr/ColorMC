@@ -94,8 +94,8 @@ public static class UrlHelper
     {
         string? url = local switch
         {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}assets/{uuid}",
-            SourceLocal.MCBBS => $"{MCBBS}assets/{uuid}",
+            SourceLocal.BMCLAPI => $"{BMCLAPI}assets/{uuid[..2]}/{uuid}",
+            SourceLocal.MCBBS => $"{MCBBS}assets/{uuid[..2]}/{uuid}",
             _ => $"https://resources.download.minecraft.net/{uuid[..2]}/{uuid}"
         };
 
@@ -309,7 +309,7 @@ public static class UrlHelper
         return local switch
         {
             SourceLocal.MCBBS => $"{MCBBS}optifine/{obj.mcversion}/HD_U/{obj.patch}",
-            _ => $"{BMCLAPI}/optifine/{obj.mcversion}/HD_U/{obj.patch}"
+            _ => $"{BMCLAPI}optifine/{obj.mcversion}/HD_U/{obj.patch}"
         };
     }
 
