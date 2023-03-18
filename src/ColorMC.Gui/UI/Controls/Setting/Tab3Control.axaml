@@ -26,10 +26,10 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab3.Text2}" />
                 <NumericUpDown
-                    FormatString="N0"
                     Name="Input1"
                     Width="150"
                     Height="30"
+                    FormatString="N0"
                     Minimum="1"
                     Value="1" />
             </StackPanel>
@@ -78,7 +78,13 @@
                         Content="{setting:Localize SettingWindow.Tab3.Text10}" />
 
                 </StackPanel>
-                <CheckBox Name="CheckBox4" Content="{setting:Localize SettingWindow.Tab3.Text11}" />
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        Name="CheckBox4"
+                        Width="160"
+                        Content="{setting:Localize SettingWindow.Tab3.Text11}" />
+                    <CheckBox Name="CheckBox6" Content="{setting:Localize SettingWindow.Tab3.Text19}" />
+                </StackPanel>
 
             </StackPanel>
 

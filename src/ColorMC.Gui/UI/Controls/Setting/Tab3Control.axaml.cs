@@ -37,6 +37,7 @@ public partial class Tab3Control : UserControl
         CheckBox3.Click += CheckBox1_Click;
         CheckBox4.Click += CheckBox1_Click;
         CheckBox5.Click += CheckBox1_Click;
+        CheckBox6.Click += CheckBox1_Click;
     }
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
@@ -147,7 +148,8 @@ public partial class Tab3Control : UserControl
             DownloadProxy = CheckBox2.IsChecked == true,
             GameProxy = CheckBox3.IsChecked == true,
             CheckFile = CheckBox4.IsChecked == true,
-            CheckUpdate = CheckBox5.IsChecked == true
+            CheckUpdate = CheckBox5.IsChecked == true,
+            AutoDownload = CheckBox6.IsChecked == true
         });
     }
 
@@ -208,6 +210,7 @@ public partial class Tab3Control : UserControl
             CheckBox3.IsChecked = config.Item1.Http.GameProxy;
             CheckBox4.IsChecked = config.Item1.Http.CheckFile;
             CheckBox5.IsChecked = config.Item1.Http.CheckUpdate;
+            CheckBox6.IsChecked = config.Item1.Http.AutoDownload;
         }
         load = false;
     }

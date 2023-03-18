@@ -21,6 +21,8 @@ public record HttpObj
 
     public bool CheckFile { get; set; }
     public bool CheckUpdate { get; set; }
+
+    public bool AutoDownload { get; set; }
 }
 
 public record WindowSettingObj
