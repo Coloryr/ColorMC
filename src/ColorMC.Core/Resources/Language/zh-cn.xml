@@ -24,6 +24,7 @@
 	<String Key="Core.Http.Error4">获取游戏资源信息发生错误</String>
 	<String Key="Core.Http.Error5">获取游戏信息发生错误</String>
 	<String Key="Core.Http.Error6">获取版本信息发生错误</String>
+	<String Key="Core.Http.Error7">没有资源</String>
 
 	<String Key="Core.Http.Forge.Error1">读取Forge信息错误</String>
 	<String Key="Core.Http.Forge.Error2">读取Forge安装信息错误</String>

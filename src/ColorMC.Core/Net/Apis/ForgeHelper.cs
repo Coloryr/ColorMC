@@ -26,7 +26,13 @@ public static class ForgeHelper
             {
                 string url = UrlHelper.ForgeVersion(local);
                 var data = await BaseClient.GetString(url);
-                var obj = JsonConvert.DeserializeObject<List<string>>(data);
+                if (data.Item1 == false)
+                {
+                    ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                        new Exception(url), false);
+                    return null;
+                }
+                var obj = JsonConvert.DeserializeObject<List<string>>(data.Item2!);
                 if (obj == null)
                     return null;
 
@@ -38,8 +44,14 @@ public static class ForgeHelper
             {
                 string url = UrlHelper.ForgeVersion(SourceLocal.Offical);
                 var html = await BaseClient.GetString(url);
+                if (html.Item1 == false)
+                {
+                    ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                        new Exception(url), false);
+                    return null;
+                }
                 var doc = new HtmlDocument();
-                doc.LoadHtml(html);
+                doc.LoadHtml(html.Item2!);
                 var nodes = doc.DocumentNode.Descendants("li")
                     .Where(x => x.Attributes["class"]?.Value == "li-version-list");
                 if (nodes == null)
@@ -425,7 +437,13 @@ public static class ForgeHelper
             {
                 string url = UrlHelper.ForgeVersions(version, local);
                 var data = await BaseClient.GetString(url);
-                var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data);
+                if (data.Item1 == false)
+                {
+                    ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                        new Exception(url), false);
+                    return null;
+                }
+                var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data.Item2!);
                 if (obj == null)
                     return null;
 

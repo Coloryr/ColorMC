@@ -789,6 +789,15 @@ public static class BaseBinding
                 return true;
             }
         }
+        else if (SystemInfo.Os == OsType.MacOS)
+        {
+            if (Directory.Exists("/Users/ColorMC/"))
+            {
+                OpPath("/Users/ColorMC/");
+                OpPath(InstancesPath.BaseDir);
+                return true;
+            }
+        }
 
         return false;
     }

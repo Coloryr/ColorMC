@@ -5,6 +5,7 @@ using ColorMC.Core.Objs.Optifine;
 using ColorMC.Core.Utils;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using System;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -17,12 +18,17 @@ public static class OptifineHelper
         {
             var type = BaseClient.Source;
             var list = new List<OptifineObj>();
-            string data = await BaseClient.GetString(url);
-
+            var data = await BaseClient.GetString(url);
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
+                return (null,null);
+            }
             if (BaseClient.Source == SourceLocal.Offical)
             {
                 HtmlDocument html = new();
-                html.LoadHtml(data);
+                html.LoadHtml(data.Item2!);
                 var list1 = html.DocumentNode.SelectNodes("//table/tr/td/span/div/table/tr");
                 if (list1 == null)
                     return (null, null);
@@ -69,7 +75,7 @@ public static class OptifineHelper
             }
             else
             {
-                var list1 = JsonConvert.DeserializeObject<List<OptifineListObj>>(data);
+                var list1 = JsonConvert.DeserializeObject<List<OptifineListObj>>(data.Item2!);
 
                 if (list1 == null)
                     return (null, null);
@@ -104,9 +110,14 @@ public static class OptifineHelper
         {
             _ = BaseClient.GetString(obj.Url1);
             var data = await BaseClient.GetString(obj.Url2);
-
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(obj.Url2), false);
+                return null;
+            }
             HtmlDocument html = new();
-            html.LoadHtml(data);
+            html.LoadHtml(data.Item2!);
             var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
             if (list1 == null)
                 return null;
