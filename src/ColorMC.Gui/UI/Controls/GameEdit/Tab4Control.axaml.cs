@@ -212,8 +212,20 @@ public partial class Tab4Control : UserControl
 
     public void DisE(ModDisplayObj item)
     {
-        GameBinding.ModEnDi(item.Obj);
-        item.Enable = item.Obj.Disable;
+        if (BaseBinding.IsGameRun(Obj))
+        {
+            return;
+        }
+        var res = GameBinding.ModEnDi(item.Obj);
+        if (!res)
+        {
+            var window = App.FindRoot(VisualRoot);
+            window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Error3"));
+        }
+        else
+        {
+            item.Enable = item.Obj.Disable;
+        }
     }
 
     private void Button_B1_PointerLeave(object? sender, PointerEventArgs e)

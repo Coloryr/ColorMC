@@ -380,6 +380,7 @@
 	<String Key="GameEditWindow.Tab4.Info12">正在更新Mod</String>
 	<String Key="GameEditWindow.Tab4.Error1">Mod列表加载失败</String>
 	<String Key="GameEditWindow.Tab4.Error2">Mod导入失败</String>
+	<String Key="GameEditWindow.Tab4.Error3">Mod启用/禁用失败</String>
 
 	<String Key="GameEditWindow.Tab5.Text1">打开备份文件夹</String>
 	<String Key="GameEditWindow.Tab5.Text2">还原世界备份</String>
