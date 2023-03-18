@@ -22,14 +22,6 @@
                 Margin="3,3,0,0"
                 DockPanel.Dock="Top" />
             <Grid>
-                <Label
-                    Name="Label2"
-                    Margin="3,0,0,3"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Background="{setting:Colors TranBack}"
-                    Content="{setting:Localize Tips.Text1}"
-                    IsVisible="False" />
                 <ScrollViewer Name="ScrollViewer1" Margin="3,0,0,0">
                     <StackPanel Name="GameGroups" />
                 </ScrollViewer>
