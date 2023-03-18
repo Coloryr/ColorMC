@@ -110,7 +110,7 @@ public static class Launch
                 AssetsPath.AddIndex(assets, game);
             }
 
-            var list1 = AssetsPath.Check(assets);
+            var list1 = await AssetsPath.Check(assets);
             foreach (var (Name, Hash) in list1)
             {
                 list.Add(new()
@@ -138,7 +138,7 @@ public static class Launch
             ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
             if (obj.Loader == Loaders.Forge)
             {
-                var list3 = LibrariesPath.CheckForge(obj);
+                var list3 = await LibrariesPath.CheckForge(obj);
                 if (list3 == null)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);

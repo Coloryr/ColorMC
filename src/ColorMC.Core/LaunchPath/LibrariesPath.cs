@@ -52,12 +52,12 @@ public static class LibrariesPath
 
         var list1 = await GameHelper.MakeGameLibs(obj);
 
-        await Parallel.ForEachAsync(list1, (item, cacenl) =>
+        await Parallel.ForEachAsync(list1, async (item, cancel) =>
         {
             if (!File.Exists(item.Local))
             {
                 list.Add(item);
-                return ValueTask.CompletedTask;
+                return;
             }
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
                 FileShare.Read);
@@ -70,7 +70,7 @@ public static class LibrariesPath
 
             item.Later?.Invoke(stream);
 
-            return ValueTask.CompletedTask;
+            return;
         });
 
         return list;
@@ -81,7 +81,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static ConcurrentBag<DownloadItemObj>? CheckForge(GameSettingObj obj)
+    public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForge(GameSettingObj obj)
     {
         var version1 = VersionPath.GetGame(obj.Version)!;
         var v2 = CheckRule.GameLaunchVersion(version1);
@@ -97,7 +97,7 @@ public static class LibrariesPath
         var list = new ConcurrentBag<DownloadItemObj>();
         var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
 
-        Parallel.ForEach(list1, (item) =>
+        await Parallel.ForEachAsync(list1, async (item, cancel) =>
         {
             if (!File.Exists(item.Local))
             {
@@ -122,14 +122,28 @@ public static class LibrariesPath
 
         if (forgeinstall != null)
         {
-            Parallel.ForEach(forgeinstall.libraries, (item, cacenl) =>
+            await Parallel.ForEachAsync(forgeinstall.libraries, async (item, cacenl) =>
             {
                 if (item.name.StartsWith("net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
                 {
                     var item1 = ForgeHelper.BuildForgeUniversal(obj.Version, obj.LoaderVersion);
                     item1.SHA1 = item.downloads.artifact.sha1;
-                    list.Add(item1);
+                    if (!File.Exists(item1.Local))
+                    {
+                        list.Add(item1);
+                    }
+                    if (!string.IsNullOrWhiteSpace(item1.SHA1))
+                    {
+                        using var stream1 = new FileStream(item1.Local, FileMode.Open, FileAccess.ReadWrite,
+                       FileShare.ReadWrite);
+                        var sha11 = Funtcions.GenSha1(stream1);
+                        if (sha11 != item1.SHA1)
+                        {
+                            list.Add(item1);
+                        }
+                    }
+
                     return;
                 }
 

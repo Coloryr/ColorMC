@@ -91,3 +91,5 @@ UI调整 调整Tabs边框 Tabs滚动条 okl
 2023.3.18
 调整UI okl
 支持MMC实例直接导入 okl
+调整Java导入 okl
+修复forge启动问题

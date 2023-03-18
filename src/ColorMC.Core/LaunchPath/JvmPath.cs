@@ -211,6 +211,7 @@ public static class JvmPath
         list.ForEach(a =>
         {
             var info = GetJavaInfo(Path.GetFullPath(a.Local));
+            Jvms.Remove(a.Name);
             if (info != null)
             {
                 Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info2"),

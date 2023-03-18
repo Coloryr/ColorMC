@@ -12,7 +12,7 @@ public static class Shaderpacks
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>资源包列表</returns>
-    public static List<ShaderpackObj> GetShaderpacks(this GameSettingObj game)
+    public static async Task<List<ShaderpackObj>> GetShaderpacks(this GameSettingObj game)
     {
         var list = new List<ShaderpackObj>();
         var dir = game.GetResourcepacksPath();
@@ -24,7 +24,7 @@ public static class Shaderpacks
             return list;
         }
 
-        Parallel.ForEach(info.GetFiles(), (item) =>
+        await Parallel.ForEachAsync(info.GetFiles(), async (item, cancel) =>
         {
             if (item.Extension is not ".zip")
                 return;

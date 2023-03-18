@@ -97,11 +97,11 @@ public static class ForgeHelper
             list.Add(BuildForgeInster(mc, version));
             if (CheckRule.GameLaunchVersion117(mc))
             {
-                list.Add(BuildForgeClient(mc, version));
+                //list.Add(BuildForgeClient(mc, version));
             }
             else
             {
-                list.Add(BuildForgeClient(mc, version));
+                //list.Add(BuildForgeClient(mc, version));
                 list.Add(BuildForgeLauncher(mc, version));
             }
         }

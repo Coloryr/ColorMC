@@ -28,7 +28,7 @@ public static class AuthHelper
         {
             Url = "https://login.mc-user.com:233/download/nide8auth.jar",
             Name = "com.nide8.login2:nide8auth:2.3",
-            Local = $"{LibrariesPath.BaseDir}/com/nide8/login2/nide8auth/2.3/nide8auth.2.3.jar",
+            Local = $"{LibrariesPath.BaseDir}/com/nide8/login2/nide8auth/2.4/nide8auth.2.4.jar",
         };
     }
     /// <summary>

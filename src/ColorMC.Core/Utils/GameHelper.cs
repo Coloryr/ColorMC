@@ -6,6 +6,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OtherLaunch;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
@@ -22,8 +23,11 @@ public static class GameHelper
     {
         var list = new ConcurrentBag<DownloadItemObj>();
         var list1 = new HashSet<string>();
-        var natives = new HashSet<string>();
-        await Parallel.ForEachAsync(obj.libraries, async (item1, cancel) =>
+        var natives = new ConcurrentDictionary<string, string>();
+        await Parallel.ForEachAsync(obj.libraries, new ParallelOptions() 
+        {
+            MaxDegreeOfParallelism = 1
+        }, async(item1, cancel) =>
         {
             bool download = CheckRule.CheckAllow(item1.rules);
             if (!download)
@@ -33,7 +37,8 @@ public static class GameHelper
             {
                 lock (list1)
                 {
-                    if (list1.Contains(item1.downloads.artifact.sha1))
+                    if (list1.Contains(item1.downloads.artifact.sha1) 
+                        && item1.downloads.classifiers == null)
                     {
                         return;
                     }
@@ -42,10 +47,8 @@ public static class GameHelper
                 if (item1.name.Contains("natives"))
                 {
                     var index = item1.name.LastIndexOf(':');
-                    lock (natives)
-                    {
-                        natives.Add(item1.name[..index]);
-                    }
+                    string key = item1.name[..index];
+                    natives.TryAdd(key, key);
                 }
 
                 list.Add(new()
@@ -92,6 +95,8 @@ public static class GameHelper
                     if (list1.Contains(lib.sha1))
                         return;
 
+                    natives.TryAdd(item1.name, item1.name);
+
                     list.Add(new()
                     {
                         Name = item1.name + "-native" + SystemInfo.Os,
@@ -108,7 +113,7 @@ public static class GameHelper
 
         if (SystemInfo.IsArm)
         {
-            foreach (var item in natives)
+            foreach (var item in natives.Keys)
             {
                 var path = item.Split(':');
                 var path1 = path[0].Split('.');

@@ -697,7 +697,15 @@ public static class BaseBinding
                     storage: JavaBinding.GetSuggestedStartLocation());
                 if (res?.Any() == true)
                 {
-                    return res[0].GetPath();
+                    var file = res[0].GetPath();
+                    if (file.EndsWith("java.exe"))
+                    {
+                        var file1 = file[..^4] + "w.exe";
+                        if (File.Exists(file1))
+                            return file1;
+                    }
+
+                    return file;
                 }
                 break;
             case FileType.Config:
