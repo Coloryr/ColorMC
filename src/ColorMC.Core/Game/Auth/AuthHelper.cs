@@ -76,13 +76,25 @@ public static class AuthHelper
         var b2 = string.IsNullOrWhiteSpace(NowAuthlibInjector);
         if (b2 || !b1)
         {
-            var meta = await BaseClient.GetString(UrlHelper.AuthlibInjectorMeta(BaseClient.Source));
-            var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta)
+            string url = UrlHelper.AuthlibInjectorMeta(BaseClient.Source);
+            var meta = await BaseClient.GetString(url);
+            if (meta.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"), 
+                    new Exception(url), false);
+                return null;
+            }
+            var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!)
                 ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
             var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
 
             var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
-            var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(info)
+            if (info.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"), new Exception(url), false);
+                return null;
+            }
+            var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!)
                 ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
             var item1 = BuildAuthlibInjectorItem(obj1);
 

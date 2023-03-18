@@ -132,6 +132,7 @@ public static class LibrariesPath
                     if (!File.Exists(item1.Local))
                     {
                         list.Add(item1);
+                        return;
                     }
                     if (!string.IsNullOrWhiteSpace(item1.SHA1))
                     {

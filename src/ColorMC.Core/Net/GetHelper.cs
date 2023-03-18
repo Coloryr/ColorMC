@@ -2,6 +2,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using System;
 
 namespace ColorMC.Core.Net;
 
@@ -16,9 +17,13 @@ public static class GetHelper
         try
         {
             var data = await BaseClient.GetString(url);
-            if (string.IsNullOrWhiteSpace(data))
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
-            return JsonConvert.DeserializeObject<AssetsObj>(data);
+            }
+            return JsonConvert.DeserializeObject<AssetsObj>(data.Item2!);
         }
         catch (Exception e)
         {
@@ -36,9 +41,13 @@ public static class GetHelper
         try
         {
             var data = await BaseClient.GetString(url);
-            if (string.IsNullOrWhiteSpace(data))
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
-            return JsonConvert.DeserializeObject<GameArgObj>(data);
+            }
+            return JsonConvert.DeserializeObject<GameArgObj>(data.Item2!);
         }
         catch (Exception e)
         {
@@ -54,10 +63,15 @@ public static class GetHelper
     {
         try
         {
-            var data = await BaseClient.GetString(UrlHelper.GameVersion(local));
-            if (string.IsNullOrWhiteSpace(data))
+            string url = UrlHelper.GameVersion(local);
+            var data = await BaseClient.GetString(url);
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
-            return JsonConvert.DeserializeObject<VersionObj>(data);
+            }
+            return JsonConvert.DeserializeObject<VersionObj>(data.Item2!);
         }
         catch (Exception e)
         {

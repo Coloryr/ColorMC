@@ -16,10 +16,15 @@ public static class FabricHelper
     {
         try
         {
-            var data = await BaseClient.GetString(UrlHelper.FabricMeta(local));
-            if (string.IsNullOrWhiteSpace(data))
+            string url = UrlHelper.FabricMeta(local);
+            var data = await BaseClient.GetString(url);
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
-            return JsonConvert.DeserializeObject<FabricMetaObj>(data);
+            }
+            return JsonConvert.DeserializeObject<FabricMetaObj>(data.Item2!);
         }
         catch (Exception e)
         {
@@ -39,9 +44,13 @@ public static class FabricHelper
         {
             string url = $"{UrlHelper.FabricMeta(local)}/loader/{mc}/{version}/profile/json";
             var data = await BaseClient.GetString(url);
-            if (string.IsNullOrWhiteSpace(data))
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
-            return JsonConvert.DeserializeObject<FabricLoaderObj>(data);
+            }
+            return JsonConvert.DeserializeObject<FabricLoaderObj>(data.Item2!);
         }
         catch (Exception e)
         {
@@ -60,10 +69,14 @@ public static class FabricHelper
         {
             string url = $"{UrlHelper.FabricMeta(local)}/loader/{mc}";
             var data = await BaseClient.GetString(url);
-            if (string.IsNullOrWhiteSpace(data))
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
+            }
 
-            var list = JsonConvert.DeserializeObject<List<FabricLoaderObj1>>(data);
+            var list = JsonConvert.DeserializeObject<List<FabricLoaderObj1>>(data.Item2!);
             if (list == null)
                 return null;
 
@@ -93,10 +106,13 @@ public static class FabricHelper
 
             string url = $"{UrlHelper.FabricMeta(local)}/game";
             var data = await BaseClient.GetString(url);
-            if (string.IsNullOrWhiteSpace(data))
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
-
-            var list = JsonConvert.DeserializeObject<List<FabricMetaObj.Game>>(data);
+            }
+            var list = JsonConvert.DeserializeObject<List<FabricMetaObj.Game>>(data.Item2!);
             if (list == null)
                 return null;
 

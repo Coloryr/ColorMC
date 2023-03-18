@@ -128,10 +128,10 @@ public partial class Tab4Control : UserControl
         var config = ConfigBinding.GetAllConfig();
         if (config.Item1 != null)
         {
-            ComboBox1.SelectedIndex = (int)config.Item1.DefaultJvmArg.GC;
+            ComboBox1.SelectedIndex = (int)(config.Item1.DefaultJvmArg.GC ?? 0);
 
-            Input1.Value = (uint)config.Item1.DefaultJvmArg.MinMemory;
-            Input2.Value = (uint)config.Item1.DefaultJvmArg.MaxMemory;
+            Input1.Value = config.Item1.DefaultJvmArg.MinMemory ?? 0;
+            Input2.Value = config.Item1.DefaultJvmArg.MaxMemory ?? 0;
             Input3.Value = config.Item1.Window.Width;
             Input4.Value = config.Item1.Window.Height;
 

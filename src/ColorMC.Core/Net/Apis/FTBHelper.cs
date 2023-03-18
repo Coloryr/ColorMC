@@ -19,7 +19,7 @@ public static class FTBHelper
         try
         {
             var data = await BaseClient.GetString(All);
-            var obj = JsonConvert.DeserializeObject<FTBPackListObj>(data)!;
+            var obj = JsonConvert.DeserializeObject<FTBPackListObj>(data.Item2!);
 
             return obj;
         }
@@ -35,7 +35,7 @@ public static class FTBHelper
         try
         {
             var data = await BaseClient.GetString(Featured);
-            var obj = JsonConvert.DeserializeObject<FTBPackListObj>(data)!;
+            var obj = JsonConvert.DeserializeObject<FTBPackListObj>(data.Item2!);
 
             return obj;
         }
@@ -51,7 +51,7 @@ public static class FTBHelper
         try
         {
             var data = await BaseClient.GetString(Popular);
-            var obj = JsonConvert.DeserializeObject<FTBPackListObj>(data)!;
+            var obj = JsonConvert.DeserializeObject<FTBPackListObj>(data.Item2!);
 
             return obj;
         }
@@ -67,7 +67,7 @@ public static class FTBHelper
         try
         {
             var data = await BaseClient.GetString(Installs);
-            var obj = JsonConvert.DeserializeObject<FTBPackListObj>(data)!;
+            var obj = JsonConvert.DeserializeObject<FTBPackListObj>(data.Item2!);
 
             return obj;
         }
@@ -86,7 +86,7 @@ public static class FTBHelper
                 return null;
 
             var data = await BaseClient.GetString(Search + temp);
-            var obj = JsonConvert.DeserializeObject<FTBPackListObj>(data)!;
+            var obj = JsonConvert.DeserializeObject<FTBPackListObj>(data.Item2!);
 
             return obj;
         }
@@ -102,7 +102,7 @@ public static class FTBHelper
         try
         {
             var data = await BaseClient.GetString(ModPack + id);
-            var obj = JsonConvert.DeserializeObject<FTBModpackObj>(data)!;
+            var obj = JsonConvert.DeserializeObject<FTBModpackObj>(data.Item2!);
 
             return obj;
         }
@@ -118,7 +118,7 @@ public static class FTBHelper
         try
         {
             var data = await BaseClient.GetString(ModPack + id + "/" + fid);
-            var obj = JsonConvert.DeserializeObject<FTBFilesObj>(data)!;
+            var obj = JsonConvert.DeserializeObject<FTBFilesObj>(data.Item2!);
 
             return obj;
         }

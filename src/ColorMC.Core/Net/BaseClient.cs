@@ -88,9 +88,16 @@ public static class BaseClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<string> GetString(string url)
+    public static async Task<(bool, string?)> GetString(string url)
     {
-        return await DownloadClient.GetStringAsync(url);
+        var data = await DownloadClient.GetAsync(url);
+        if (data.StatusCode == HttpStatusCode.NotFound)
+        {
+            return (false, null);
+        }
+
+        var data1 = await data.Content.ReadAsStringAsync();
+        return (true, data1);
     }
 
     /// <summary>

@@ -408,7 +408,13 @@ public static class ServerPack
     public static async Task<(bool, ServerPackObj?)> ServerPackCheck(this GameSettingObj obj, string url)
     {
         var data = await BaseClient.GetString(url + "server.json");
-        var obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
+        if (data.Item1 == false)
+        {
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
+            return (false, null);
+        }
+        var obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data.Item2!);
         if (obj1 == null)
             return (false, null);
 

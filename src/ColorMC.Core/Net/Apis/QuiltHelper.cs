@@ -2,6 +2,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using System;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -21,10 +22,14 @@ public static class QuiltHelper
 
             string url = $"{UrlHelper.QuiltMeta(local)}/game";
             var data = await BaseClient.GetString(url);
-            if (string.IsNullOrWhiteSpace(data))
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
+            }
 
-            var list = JsonConvert.DeserializeObject<List<QuiltMetaObj.Game>>(data);
+            var list = JsonConvert.DeserializeObject<List<QuiltMetaObj.Game>>(data.Item2!);
             if (list == null)
                 return null;
 
@@ -52,10 +57,15 @@ public static class QuiltHelper
     {
         try
         {
-            var data = await BaseClient.GetString(UrlHelper.QuiltMeta(local));
-            if (string.IsNullOrWhiteSpace(data))
+            string url = UrlHelper.QuiltMeta(local);
+            var data = await BaseClient.GetString(url);
+            if(data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
-            return JsonConvert.DeserializeObject<QuiltMetaObj>(data);
+            }
+            return JsonConvert.DeserializeObject<QuiltMetaObj>(data.Item2!);
         }
         catch (Exception e)
         {
@@ -74,10 +84,14 @@ public static class QuiltHelper
         {
             string url = $"{UrlHelper.FabricMeta(local)}/loader/{mc}";
             var data = await BaseClient.GetString(url);
-            if (string.IsNullOrWhiteSpace(data))
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
+            }
 
-            var list = JsonConvert.DeserializeObject<List<FabricLoaderObj1>>(data);
+            var list = JsonConvert.DeserializeObject<List<FabricLoaderObj1>>(data.Item2!);
             if (list == null)
                 return null;
 
@@ -106,9 +120,13 @@ public static class QuiltHelper
         {
             string url = $"{UrlHelper.QuiltMeta(local)}/loader/{mc}/{version}/profile/json";
             var data = await BaseClient.GetString(url);
-            if (string.IsNullOrWhiteSpace(data))
+            if (data.Item1 == false)
+            {
+                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                    new Exception(url), false);
                 return null;
-            return JsonConvert.DeserializeObject<QuiltLoaderObj>(data);
+            }
+            return JsonConvert.DeserializeObject<QuiltLoaderObj>(data.Item2!);
         }
         catch (Exception e)
         {
