@@ -735,15 +735,25 @@ public static class GameBinding
         return list;
     }
 
-    public static void ModEnDi(ModObj obj)
+    public static bool ModEnDi(ModObj obj)
     {
-        if (obj.Disable)
+        try
         {
-            obj.Enable();
+            if (obj.Disable)
+            {
+                obj.Enable();
+            }
+            else
+            {
+                obj.Disable();
+            }
+
+            return true;
         }
-        else
+        catch (Exception e)
         {
-            obj.Disable();
+            Logs.Error("Mod error", e);
+            return false;
         }
     }
 

@@ -364,6 +364,15 @@ public partial class Tab6Control : UserControl
     {
         FilesPageViewModel = new FilesPageViewModel(Obj);
         FileViewer.Source = Files.Source;
+
+        if (BaseBinding.IsGameRun(Obj))
+        {
+            Button1.IsEnabled = false;
+        }
+        else
+        {
+            Button1.IsEnabled = true;
+        }
     }
 
     public void SetGame(GameSettingObj obj)
