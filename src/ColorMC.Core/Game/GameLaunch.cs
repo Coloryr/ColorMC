@@ -951,14 +951,17 @@ public static class Launch
         //下载缺失的文件
         if (res.Count != 0)
         {
-            if (ColorMCCore.GameDownload == null)
-                throw new LaunchException(LaunchState.LostGame,
-                    LanguageHelper.GetName("Core.Launch.Error4"));
+            if (!ConfigUtils.Config.Http.AutoDownload)
+            {
+                if (ColorMCCore.GameDownload == null)
+                    throw new LaunchException(LaunchState.LostGame,
+                        LanguageHelper.GetName("Core.Launch.Error4"));
 
-            var res1 = await ColorMCCore.GameDownload.Invoke(LaunchState.LostFile, obj);
-            if (res1 != true)
-                throw new LaunchException(LaunchState.LostFile,
-                    LanguageHelper.GetName("Core.Launch.Error4"));
+                var res1 = await ColorMCCore.GameDownload.Invoke(LaunchState.LostFile, obj);
+                if (res1 != true)
+                    throw new LaunchException(LaunchState.LostFile,
+                        LanguageHelper.GetName("Core.Launch.Error4"));
+            }
 
             ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Download);
 

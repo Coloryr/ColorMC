@@ -166,6 +166,7 @@
 	<String Key="SettingWindow.Tab3.Text16">手动检查更新</String>
 	<String Key="SettingWindow.Tab3.Text17">强制下载更新</String>
 	<String Key="SettingWindow.Tab3.Text18">打开图片缓存文件夹</String>
+	<String Key="SettingWindow.Tab3.Text19">自动补全</String>
 	<String Key="SettingWindow.Tab3.Info1">正在进行更新检查</String>
 	<String Key="SettingWindow.Tab3.Info2">检测到新版本，是否要更新</String>
 	<String Key="SettingWindow.Tab3.Info3">已经是最新版了</String>
