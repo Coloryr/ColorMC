@@ -149,6 +149,9 @@ public class Updater
             await stream.CopyToAsync(stream1);
         }
 
+        if (File.Exists($"{Program.BaseDir}{name}"))
+            File.Delete($"{Program.BaseDir}{name}");
+
         File.Move($"{Program.BaseDir}{name}.temp", $"{Program.BaseDir}{name}");
     }
 }
