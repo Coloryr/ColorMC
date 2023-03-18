@@ -5,9 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    Width="100"
-    d:DesignHeight="150"
-    d:DesignWidth="100"
+    Width="80"
+    d:DesignHeight="100"
+    d:DesignWidth="80"
+    ToolTip.Tip="{setting:Localize Tips.Text1}"
+    ToolTip.VerticalOffset="-30"
     mc:Ignorable="d">
     <Grid>
         <Rectangle
@@ -21,6 +23,7 @@
             <TextBlock
                 Name="TextBlock1"
                 HorizontalAlignment="Center"
+                FontSize="13"
                 Text="Name"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />

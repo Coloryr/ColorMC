@@ -401,7 +401,6 @@ public partial class MainControl : UserControl, IUserControl
 
         var nogame = GameBinding.IsNotGame;
 
-        Label2.IsVisible = !nogame;
         Grid3.IsVisible = nogame;
 
         Task.Run(async () =>

@@ -8,6 +8,7 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using System.IO;
 using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
@@ -144,11 +145,26 @@ public static class InstancesPath
         foreach (var item in list)
         {
             var file = Path.GetFullPath(item + "/" + Name1);
+            GameSettingObj? game = null;
             if (!File.Exists(file))
-                continue;
+            {
+                var file1 = Path.GetFullPath(item + "/" + "mmc-pack.json");
+                var file2 = Path.GetFullPath(item + "/" + "instance.cfg");
+                if (File.Exists(file1) && File.Exists(file2))
+                {
+                    var mmc = JsonConvert.DeserializeObject<MMCObj>(File.ReadAllText(file1));
+                    if (mmc == null)
+                        break;
 
-            var data1 = File.ReadAllText(file);
-            var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
+                    var mmc1 = File.ReadAllText(file2);
+                    game = GameHelper.MMCToColorMC(mmc, mmc1);
+                }
+            }
+            else
+            {
+                var data1 = File.ReadAllText(file);
+                game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
+            }
             if (game != null)
             {
                 var path = Path.GetFileName(item);
@@ -823,86 +839,8 @@ public static class InstancesPath
                             break;
 
                         var mmc1 = Encoding.UTF8.GetString(stream2.ToArray());
-                        var list = Options.ReadOptions(mmc1, "=");
-                        game = new GameSettingObj
-                        {
-                            Name = list["name"],
-                            Loader = Loaders.Normal
-                        };
-
-                        if (!string.IsNullOrWhiteSpace(name))
-                        {
-                            game.Name = name;
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(group))
-                        {
-                            game.GroupName = group;
-                        }
-
-                        foreach (var item in mmc.components)
-                        {
-                            if (item.uid == "net.minecraft")
-                            {
-                                game.Version = item.version;
-                            }
-                            else if (item.uid == "net.minecraftforge")
-                            {
-                                game.Loader = Loaders.Forge;
-                                game.LoaderVersion = item.version;
-                            }
-                            else if (item.uid == "net.fabricmc.fabric-loader")
-                            {
-                                game.Loader = Loaders.Fabric;
-                                game.LoaderVersion = item.version;
-                            }
-                            else if (item.uid == "org.quiltmc.quilt-loader")
-                            {
-                                game.Loader = Loaders.Quilt;
-                                game.LoaderVersion = item.version;
-                            }
-                        }
-                        game.JvmArg = new();
-                        game.Window = new();
-                        if (list.TryGetValue("JvmArgs", out var item1))
-                        {
-                            game.JvmArg.JvmArgs = item1;
-                        }
-                        if (list.TryGetValue("MaxMemAlloc", out item1)
-                            && uint.TryParse(item1, out var item2))
-                        {
-                            game.JvmArg.MaxMemory = item2;
-                        }
-                        if (list.TryGetValue("MinMemAlloc", out item1)
-                             && uint.TryParse(item1, out item2))
-                        {
-                            game.JvmArg.MaxMemory = item2;
-                        }
-                        if (list.TryGetValue("MinecraftWinHeight", out item1)
-                            && uint.TryParse(item1, out item2))
-                        {
-                            game.Window.Height = item2;
-                        }
-                        if (list.TryGetValue("MinecraftWinWidth", out item1)
-                            && uint.TryParse(item1, out item2))
-                        {
-                            game.Window.Width = item2;
-                        }
-                        if (list.TryGetValue("LaunchMaximized", out item1))
-                        {
-                            game.Window.FullScreen = item1 == "true";
-                        }
-                        if (list.TryGetValue("JoinServerOnLaunch", out item1)
-                            && item1 == "true")
-                        {
-                            game.StartServer = new();
-                            if (list.TryGetValue("JoinServerOnLaunchAddress", out item1))
-                            {
-                                game.StartServer.IP = item1;
-                                game.StartServer.Port = 0;
-                            }
-                        }
-
+                        
+                        game = GameHelper.MMCToColorMC(mmc, mmc1);
                         game = await CreateVersion(game);
 
                         if (game == null)
