@@ -106,12 +106,12 @@ public partial class Tab11Control : UserControl
         Expander_R.IsExpanded = true;
     }
 
-    private void Load()
+    private async void Load()
     {
         var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
-        List.AddRange(GameBinding.GetShaderpacks(Obj));
+        List.AddRange(await GameBinding.GetShaderpacks(Obj));
         window.Info1.Close();
     }
 

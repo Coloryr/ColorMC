@@ -124,6 +124,7 @@ public partial class FlyoutsControl : UserControl
             Button6.IsEnabled = false;
             Button8.IsEnabled = false;
             Button10.IsEnabled = true;
+            Button13.IsEnabled = false;
         }
         else
         {

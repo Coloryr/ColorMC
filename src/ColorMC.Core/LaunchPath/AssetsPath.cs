@@ -77,11 +77,11 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">资源数据</param>
     /// <returns>丢失列表</returns>
-    public static ConcurrentBag<(string Name, string Hash)> Check(AssetsObj obj)
+    public static async Task<ConcurrentBag<(string Name, string Hash)>> Check(AssetsObj obj)
     {
         var list1 = new ConcurrentBag<string>();
         var list = new ConcurrentBag<(string, string)>();
-        Parallel.ForEach(obj.objects, (item) =>
+        await Parallel.ForEachAsync(obj.objects, async (item, cancel) =>
         {
             if (list1.Contains(item.Value.hash))
                 return;

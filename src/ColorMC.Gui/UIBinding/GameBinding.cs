@@ -1035,10 +1035,10 @@ public static class GameBinding
         return obj.GetServerInfos();
     }
 
-    public static List<ShaderpackDisplayObj> GetShaderpacks(GameSettingObj obj)
+    public static async Task<List<ShaderpackDisplayObj>> GetShaderpacks(GameSettingObj obj)
     {
         var list = new List<ShaderpackDisplayObj>();
-        foreach (var item in obj.GetShaderpacks())
+        foreach (var item in await obj.GetShaderpacks())
         {
             list.Add(new()
             {

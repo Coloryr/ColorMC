@@ -59,7 +59,7 @@ public partial class Info4Control : UserControl
     public async Task<bool> ShowWait(string title)
     {
         bool reut = false;
-        Semaphore semaphore = new(0, 2);
+        using Semaphore semaphore = new(0, 2);
         Button_Confirm.IsEnabled = true;
         Button_Cancel.IsEnabled = true;
         Button_Confirm.IsVisible = true;
@@ -79,6 +79,8 @@ public partial class Info4Control : UserControl
             semaphore.WaitOne();
         });
 
+        call = null;
+
         return reut;
     }
 
@@ -94,7 +96,7 @@ public partial class Info4Control : UserControl
     public async Task<bool> ShowOk(string title)
     {
         bool reut = false;
-        Semaphore semaphore = new(0, 2);
+        using Semaphore semaphore = new(0, 2);
         Button_Confirm.IsEnabled = true;
         Button_Cancel.IsEnabled = false;
         Button_Confirm.IsVisible = true;
@@ -113,6 +115,8 @@ public partial class Info4Control : UserControl
         {
             semaphore.WaitOne();
         });
+
+        call = null;
 
         return reut;
     }

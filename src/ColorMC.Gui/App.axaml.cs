@@ -48,7 +48,7 @@ public partial class App : Application
         Logs.Error("Error", e.ExceptionObject as Exception);
     }
 
-    public static IApplicationLifetime? Life { get; private set; }
+    public static IClassicDesktopStyleApplicationLifetime? Life { get; private set; }
 
     public static AllControl? AllWindow { get; set; }
     public static DownloadControl? DownloadWindow { get; set; }
@@ -106,7 +106,7 @@ public partial class App : Application
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            Life = singleViewPlatform;
+            
         }
 
         try
@@ -333,7 +333,24 @@ public partial class App : Application
         }
         else
         {
-            new SelfBaseWindow(con).ShowDialog(LastWindow!);
+            Window? temp = LastWindow;
+            if (temp == null)
+            {
+                if (MainWindow != null && MainWindow?.Window is Window win)
+                {
+                    temp = win;
+                }
+                else if (CustomWindow != null && CustomWindow?.Window is Window win1)
+                {
+                    temp = win1;
+                }
+                else
+                {
+                    temp = AllWindow?.Window as Window;
+                }
+            }
+            if (temp != null)
+                new SelfBaseWindow(con).ShowDialog(temp);
         }
     }
 
@@ -561,7 +578,7 @@ public partial class App : Application
         {
             var con = new ErrorControl();
             con.Show(data, e, close);
-            AWindow1(con);
+            AWindow(con);
         });
     }
 
@@ -571,7 +588,7 @@ public partial class App : Application
         {
             var con = new ErrorControl();
             con.Show(data, e, close);
-            AWindow1(con);
+            AWindow(con);
         });
     }
 
@@ -589,6 +606,7 @@ public partial class App : Application
 
     public static void Close()
     {
+        Life?.Shutdown();
         BaseBinding.Exit();
         Environment.Exit(Environment.ExitCode);
     }
