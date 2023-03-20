@@ -897,6 +897,69 @@ public static class Launch
     {
         //登录账户
         Stopwatch stopwatch = new();
+
+        if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
+            || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
+        {
+            string? start = obj.JvmArg?.LaunchPreData;
+            if (string.IsNullOrWhiteSpace(start))
+                start = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
+            if (!string.IsNullOrWhiteSpace(start))
+            {
+                var res1 = await ColorMCCore.LaunchP.Invoke(true);
+                if (res1)
+                {
+                    stopwatch.Start();
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
+                    var args = start.Split(' ');
+                    var file = args[0];
+                    file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
+                    var arglist = new List<string>();
+
+                    var info = new ProcessStartInfo(file)
+                    {
+                        WorkingDirectory = obj.GetBasePath(),
+                        RedirectStandardError = true,
+                        RedirectStandardOutput = true
+                    };
+                    for (int a = 1; a < args.Length; a++)
+                    {
+                        info.ArgumentList.Add(args[a]);
+                    }
+                    var p = new Process()
+                    {
+                        EnableRaisingEvents = true,
+                        StartInfo = info
+                    };
+                    p.OutputDataReceived += (a, b) =>
+                    {
+                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
+                    };
+                    p.ErrorDataReceived += (a, b) =>
+                    {
+                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
+                    };
+
+                    p.Start();
+                    p.BeginOutputReadLine();
+                    p.BeginErrorReadLine();
+                    p?.WaitForExit();
+
+                    stopwatch.Stop();
+                    string temp1 = string.Format(LanguageHelper.GetName("Core.Launch.Info8"),
+                        obj.Name, stopwatch.Elapsed.ToString());
+                    ColorMCCore.GameLog?.Invoke(obj, temp1);
+                    Logs.Info(temp1);
+                }
+            }
+            else
+            {
+                string temp2 = string.Format(LanguageHelper.GetName("Core.Launch.Info10"),
+                obj.Name);
+                ColorMCCore.GameLog?.Invoke(obj, temp2);
+                Logs.Info(temp2);
+            }
+        }
         stopwatch.Start();
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Login);
         var (State, State1, Obj, Message, Ex) = await login.RefreshToken();
@@ -930,7 +993,7 @@ public static class Launch
         }
 
         stopwatch.Stop();
-        string temp = string.Format(LanguageHelper.GetName("Core.Launch.Info4"), 
+        string temp = string.Format(LanguageHelper.GetName("Core.Launch.Info4"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
@@ -1034,19 +1097,16 @@ public static class Launch
         process.BeginOutputReadLine();
         process.BeginErrorReadLine();
 
-        if (process != null)
+        if (obj.ModPack && obj.ModPackType == SourceType.FTB)
         {
-            if (obj.ModPack && obj.ModPackType == SourceType.FTB)
+            _ = Task.Run(() =>
             {
-                _ = Task.Run(() =>
-                {
-                    var file = obj.GetModPackJsonFile();
-                    var obj1 = JsonConvert.DeserializeObject<FTBFilesObj>(File.ReadAllText(file));
-                    if (obj1 == null)
-                        return;
-                    FTBHelper.GetPostLaunch(obj1.parent, obj1.id);
-                });
-            }
+                var file = obj.GetModPackJsonFile();
+                var obj1 = JsonConvert.DeserializeObject<FTBFilesObj>(File.ReadAllText(file));
+                if (obj1 == null)
+                    return;
+                FTBHelper.GetPostLaunch(obj1.parent, obj1.id);
+            });
         }
 
         stopwatch.Stop();
@@ -1054,6 +1114,69 @@ public static class Launch
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
+
+        if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPost == true
+            || ConfigUtils.Config.DefaultJvmArg.LaunchPost))
+        {
+            string? start = obj.JvmArg?.LaunchPostData;
+            if (string.IsNullOrWhiteSpace(start))
+                start = ConfigUtils.Config.DefaultJvmArg.LaunchPostData;
+            if (!string.IsNullOrWhiteSpace(start))
+            {
+                var res1 = await ColorMCCore.LaunchP.Invoke(false);
+                if (res1)
+                {
+                    stopwatch.Start();
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPost);
+                    var args = start.Split(' ');
+                    var file = args[0];
+                    file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
+                    var arglist = new List<string>();
+
+                    var info = new ProcessStartInfo(file)
+                    {
+                        WorkingDirectory = obj.GetBasePath(),
+                        RedirectStandardError = true,
+                        RedirectStandardOutput = true
+                    };
+                    for (int a = 1; a < args.Length; a++)
+                    {
+                        info.ArgumentList.Add(args[a]);
+                    }
+                    var p = new Process()
+                    {
+                        EnableRaisingEvents = true,
+                        StartInfo = info
+                    };
+                    p.OutputDataReceived += (a, b) =>
+                    {
+                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
+                    };
+                    p.ErrorDataReceived += (a, b) =>
+                    {
+                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
+                    };
+
+                    p.Start();
+                    p.BeginOutputReadLine();
+                    p.BeginErrorReadLine();
+                    p?.WaitForExit();
+                }
+
+                stopwatch.Stop();
+                string temp1 = string.Format(LanguageHelper.GetName("Core.Launch.Info9"),
+                    obj.Name, stopwatch.Elapsed.ToString());
+                ColorMCCore.GameLog?.Invoke(obj, temp1);
+                Logs.Info(temp1);
+            }
+            else
+            {
+                string temp2 = string.Format(LanguageHelper.GetName("Core.Launch.Info11"),
+                obj.Name);
+                ColorMCCore.GameLog?.Invoke(obj, temp2);
+                Logs.Info(temp2);
+            }
+        }
 
         return process;
     }

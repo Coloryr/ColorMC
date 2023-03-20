@@ -93,6 +93,10 @@ public static class ColorMCCore
     /// 更新状态
     /// </summary>
     public static Action<string>? UpdateState { internal get; set; }
+    /// <summary>
+    /// 执行命令
+    /// </summary>
+    public static Func<bool, Task<bool>>? LaunchP { internal get; set; }
 
     /// <summary>
     /// 新运行

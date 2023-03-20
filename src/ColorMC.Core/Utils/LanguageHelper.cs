@@ -104,6 +104,8 @@ public static class LanguageHelper
             LaunchState.LostFile => GetName("LaunchState.LostFile"),
             LaunchState.DownloadFail => GetName("LaunchState.DownloadFail"),
             LaunchState.JavaError => GetName("LaunchState.JvmError"),
+            LaunchState.LaunchPre => GetName("LaunchState.LaunchPre"),
+            LaunchState.LaunchPost => GetName("LaunchState.LaunchPost"),
             _ => GetName("LaunchState.Other")
         };
     }

@@ -13,7 +13,6 @@
         <Grid Grid.Column="0" Margin="5,5,0,5">
             <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
             <Grid Margin="3">
-                <view2:SkinRender x:Name="Skin" />
                 <Label
                     Margin="5"
                     VerticalAlignment="Top"

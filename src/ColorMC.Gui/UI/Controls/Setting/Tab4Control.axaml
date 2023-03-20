@@ -34,9 +34,30 @@
                         Content="{setting:Localize SettingWindow.Tab4.Text17}" />
                 </StackPanel>
 
+                <CheckBox
+                    Name="CheckBox8"
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize SettingWindow.Tab4.Text22}" />
+                <TextBox
+                    Name="TextBox6"
+                    Margin="0,5,0,0"
+                    Classes="input1"
+                    Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
+
                 <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />
 
-                <CheckBox Name="CheckBox6" Content="{setting:Localize SettingWindow.Tab4.Text18}" />
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        Name="CheckBox6"
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize SettingWindow.Tab4.Text18}" />
+                    <CheckBox Name="CheckBox7" Content="{setting:Localize SettingWindow.Tab4.Text20}" />
+                </StackPanel>
+                <TextBox
+                    Name="TextBox5"
+                    Margin="0,5,0,0"
+                    Classes="input1"
+                    Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
 
                 <!--  Jvm参数  -->
 
@@ -66,10 +87,10 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab4.Text4}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input1"
                         Width="150"
                         Height="30"
+                        FormatString="N0"
                         Minimum="1"
                         Value="1" />
 
@@ -79,10 +100,10 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab4.Text5}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input2"
                         Width="150"
                         Height="30"
+                        FormatString="N0"
                         Minimum="1"
                         Value="1" />
                 </StackPanel>
@@ -120,10 +141,10 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab4.Text10}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input3"
                         Width="150"
                         Height="30"
+                        FormatString="N0"
                         Minimum="1"
                         Value="1" />
 
@@ -133,10 +154,10 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab4.Text11}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input4"
                         Width="150"
                         Height="30"
+                        FormatString="N0"
                         Minimum="1"
                         Value="1" />
 

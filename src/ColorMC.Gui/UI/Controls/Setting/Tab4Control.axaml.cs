@@ -19,6 +19,8 @@ public partial class Tab4Control : UserControl
         CheckBox4.Click += CheckBox2_Click;
         CheckBox5.Click += CheckBox2_Click;
         CheckBox6.Click += CheckBox6_Click;
+        CheckBox7.Click += CheckBox7_Click;
+        CheckBox8.Click += CheckBox8_Click;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
@@ -34,6 +36,20 @@ public partial class Tab4Control : UserControl
         Input4.PropertyChanged += Input3_PropertyChanged;
 
         ComboBox1.Items = JavaBinding.GetGCTypes();
+    }
+
+    private void CheckBox8_Click(object? sender, RoutedEventArgs e)
+    {
+        TextBox6.IsEnabled = CheckBox8.IsChecked == true;
+
+        Save();
+    }
+
+    private void CheckBox7_Click(object? sender, RoutedEventArgs e)
+    {
+        TextBox5.IsEnabled = CheckBox7.IsChecked == true;
+
+        Save();
     }
 
     private void CheckBox6_Click(object? sender, RoutedEventArgs e)
@@ -86,7 +102,7 @@ public partial class Tab4Control : UserControl
 
         if (e.Property.Name == "Value")
         {
-            ConfigBinding.SetJvmArgMemConfig((uint)Input1.Value, (uint)Input2.Value);
+            Save();
         }
     }
 
@@ -118,7 +134,13 @@ public partial class Tab4Control : UserControl
             JvmArgs = TextBox3.Text,
             GameArgs = TextBox4.Text,
             GCArgument = TextBox1.Text,
-            JavaAgent = TextBox2.Text
+            JavaAgent = TextBox2.Text,
+            MinMemory = Input1.Value == null ? null : (uint)Input1.Value,
+            MaxMemory = Input2.Value == null ? null : (uint)Input2.Value,
+            LaunchPre =  CheckBox7.IsChecked == true,
+            LaunchPreData = TextBox6.Text,
+            LaunchPost = CheckBox8.IsChecked == true,
+            LaunchPostData = TextBox5.Text,
         });
     }
 
@@ -139,18 +161,24 @@ public partial class Tab4Control : UserControl
             TextBox2.Text = config.Item1.DefaultJvmArg.JavaAgent;
             TextBox3.Text = config.Item1.DefaultJvmArg.JvmArgs;
             TextBox4.Text = config.Item1.DefaultJvmArg.GameArgs;
+            TextBox5.Text = config.Item1.DefaultJvmArg.LaunchPostData;
+            TextBox6.Text = config.Item1.DefaultJvmArg.LaunchPreData;
 
             CheckBox1.IsChecked = config.Item1.Window.FullScreen;
             CheckBox2.IsChecked = config.Item1.GameCheck.CheckCore;
             CheckBox3.IsChecked = config.Item1.GameCheck.CheckAssets;
             CheckBox4.IsChecked = config.Item1.GameCheck.CheckLib;
             CheckBox5.IsChecked = config.Item1.GameCheck.CheckMod;
+            CheckBox7.IsChecked = config.Item1.DefaultJvmArg.LaunchPost;
+            CheckBox8.IsChecked = config.Item1.DefaultJvmArg.LaunchPre;
         }
 
         if (config.Item2 != null)
         {
             CheckBox6.IsChecked = config.Item2.CloseBeforeLaunch;
         }
+        TextBox5.IsEnabled = CheckBox7.IsChecked == true;
+        TextBox6.IsEnabled = CheckBox8.IsChecked == true;
 
         load = false;
     }

@@ -116,6 +116,10 @@
 	<String Key="Core.Launch.Info5">游戏实例 {0} 检查用时 {1}</String>
 	<String Key="Core.Launch.Info6">游戏实例 {0} 启动用时 {1}</String>
 	<String Key="Core.Launch.Info7">游戏实例 {0} 下载用时 {1}</String>
+	<String Key="Core.Launch.Info8">游戏实例 {0} 启动前执行用时 {1}</String>
+	<String Key="Core.Launch.Info9">游戏实例 {0} 启动后执行用时 {1}</String>
+	<String Key="Core.Launch.Info10">游戏实例 {0} 启动前执行信息错误</String>
+	<String Key="Core.Launch.Info11">游戏实例 {0} 启动后执行信息错误</String>
 	<String Key="Core.Launch.Error1">游戏版本信息读取失败</String>
 	<String Key="Core.Launch.Error2">Assets信息获取失败</String>
 	<String Key="Core.Launch.Error3">Mod加载器信息读取错误</String>
@@ -162,6 +166,8 @@
 	<String Key="LaunchState.AssetsError">游戏资源文件错误</String>
 	<String Key="LaunchState.LoaderError">Mod加载器错误</String>
 	<String Key="LaunchState.JvmError">没有合适的Java</String>
+	<String Key="LaunchState.LaunchPre">执行运行前程序</String>
+	<String Key="LaunchState.LaunchPost">执行运行后程序</String>
 	<String Key="LaunchState.Other">启动状态未知</String>
 	
 	<String Key="DownloadState.Init">初始化</String>

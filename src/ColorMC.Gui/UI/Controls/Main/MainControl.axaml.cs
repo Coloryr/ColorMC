@@ -36,6 +36,7 @@ public partial class MainControl : UserControl, IUserControl
         ColorMCCore.GameLaunch = GameLunch;
         ColorMCCore.GameDownload = GameDownload;
         ColorMCCore.LoginFailLaunch = LoginFailLaunch;
+        ColorMCCore.LaunchP = LaunchP;
 
         Button1.Click += Button1_Click;
         Grid3.PointerPressed += Grid3_PointerPressed;
@@ -48,6 +49,13 @@ public partial class MainControl : UserControl, IUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         ItemInfo.SetWindow(this);
+    }
+
+    private Task<bool> LaunchP(bool pre)
+    {
+        return Dispatcher.UIThread.InvokeAsync(() => 
+            Window.Info.ShowWait(pre ? App.GetLanguage("MainWindow.Info29") 
+            : App.GetLanguage("MainWindow.Info30")));
     }
 
     private void ScrollViewer1_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -342,6 +350,12 @@ public partial class MainControl : UserControl, IUserControl
                         break;
                     case LaunchState.JvmPrepare:
                         window.Info1.NextText(App.GetLanguage("MainWindow.Info16"));
+                        break;
+                    case LaunchState.LaunchPre:
+                        window.Info1.NextText(App.GetLanguage("MainWindow.Info31"));
+                        break;
+                    case LaunchState.LaunchPost:
+                        window.Info1.NextText(App.GetLanguage("MainWindow.Info32"));
                         break;
                 }
             }

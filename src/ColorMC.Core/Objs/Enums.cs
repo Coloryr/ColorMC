@@ -225,7 +225,15 @@ public enum LaunchState
     /// <summary>
     /// 登录失败
     /// </summary>
-    LoginFail
+    LoginFail,
+    /// <summary>
+    /// 运行前执行程序
+    /// </summary>
+    LaunchPre,
+    /// <summary>
+    /// 运行后执行程序
+    /// </summary>
+    LaunchPost
 }
 
 /// <summary>

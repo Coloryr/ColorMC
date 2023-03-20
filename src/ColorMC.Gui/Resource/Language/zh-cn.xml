@@ -61,6 +61,10 @@
 	<String Key="MainWindow.Info26">正在等待窗口启动</String>
 	<String Key="MainWindow.Info27">启动器工作的游戏路径已经转移，需要手动搬运文件</String>
 	<String Key="MainWindow.Info28">开始启动实例 {0}</String>
+	<String Key="MainWindow.Info29">是否执行运行前程序</String>
+	<String Key="MainWindow.Info30">是否执行运行后程序</String>
+	<String Key="MainWindow.Info31">正在执行运行前程序</String>
+	<String Key="MainWindow.Info32">正在执行运行后程序</String>
 
 	<String Key="UserWindow.Title">ColorMC 用户列表</String>
 	<String Key="UserWindow.DataGrid.Text1">使用</String>
@@ -193,6 +197,9 @@
 	<String Key="SettingWindow.Tab4.Text17">检查Mod文件</String>
 	<String Key="SettingWindow.Tab4.Text18">关闭启动器</String>
 	<String Key="SettingWindow.Tab4.Text19">启动后设置</String>
+	<String Key="SettingWindow.Tab4.Text20">执行程序</String>
+	<String Key="SettingWindow.Tab4.Text21">执行的程序命令</String>
+	<String Key="SettingWindow.Tab4.Text22">启动前执行程序</String>
 
 	<String Key="SettingWindow.Tab5.Text1">添加Java路径</String>
 	<String Key="SettingWindow.Tab5.Text2">Java名字</String>
@@ -348,6 +355,9 @@
 	<String Key="GameEditWindow.Tab2.Text26">注意：自定义附加classpath参数会用 ;(英文分号) 进行分割，并查找文件，可以使用相对路径</String>
 	<String Key="GameEditWindow.Tab2.Text27">自定义启动的mainclass</String>
 	<String Key="GameEditWindow.Tab2.Text28">删除所有配置</String>
+	<String Key="GameEditWindow.Tab2.Text29">启动后执行程序</String>
+	<String Key="GameEditWindow.Tab2.Text30">执行的程序命令</String>
+	<String Key="GameEditWindow.Tab2.Text31">启动前执行程序</String>
 	<String Key="GameEditWindow.Tab2.Info1">是否要删除所有配置</String>
 
 	<String Key="GameEditWindow.Tab3.Text1">过滤器</String>
