@@ -44,6 +44,20 @@
                         ToolTip.VerticalOffset="-30" />
                 </StackPanel>
 
+                <CheckBox Name="CheckBox3" Content="{setting:Localize GameEditWindow.Tab2.Text31}" />
+                <TextBox
+                    Name="TextBox15"
+                    Margin="0,5,0,0"
+                    Classes="input1"
+                    Watermark="{setting:Localize GameEditWindow.Tab2.Text30}" />
+
+                <CheckBox Name="CheckBox2" Content="{setting:Localize GameEditWindow.Tab2.Text29}" />
+                <TextBox
+                    Name="TextBox14"
+                    Margin="0,5,0,0"
+                    Classes="input1"
+                    Watermark="{setting:Localize GameEditWindow.Tab2.Text30}" />
+
                 <!--  Jvm参数  -->
 
                 <Label Content="{setting:Localize GameEditWindow.Tab2.Text1}" />
@@ -71,10 +85,10 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text4}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input1"
                         Width="150"
                         Height="30"
+                        FormatString="N0"
                         Minimum="1"
                         Value="1" />
 
@@ -84,10 +98,10 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text5}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input2"
                         Width="150"
                         Height="30"
+                        FormatString="N0"
                         Minimum="1"
                         Value="1" />
                 </StackPanel>
@@ -144,10 +158,10 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text10}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input3"
                         Width="150"
                         Height="30"
+                        FormatString="N0"
                         Minimum="1"
                         Value="1" />
 
@@ -157,10 +171,10 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize GameEditWindow.Tab2.Text11}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input4"
                         Width="150"
                         Height="30"
+                        FormatString="N0"
                         Minimum="1"
                         Value="1" />
 

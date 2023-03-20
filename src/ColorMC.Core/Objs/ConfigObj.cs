@@ -80,6 +80,11 @@ public record JvmArgObj
     public string? JavaAgent { get; set; }
     public uint? MaxMemory { get; set; }
     public uint? MinMemory { get; set; }
+
+    public bool LaunchPre { get; set; }
+    public string? LaunchPreData { get; set; }
+    public bool LaunchPost { get; set; }
+    public string? LaunchPostData { get; set; }
 }
 
 public record GameCheckObj

@@ -48,7 +48,26 @@ public partial class Tab2Control : UserControl
 
         TextBox12.PropertyChanged += TextBox12_PropertyChanged;
 
+        TextBox14.PropertyChanged += TextBox2_PropertyChanged;
+        TextBox15.PropertyChanged += TextBox2_PropertyChanged;
+
         CheckBox1.Click += CheckBox1_Click;
+        CheckBox2.Click += CheckBox2_Click;
+        CheckBox3.Click += CheckBox3_Click;
+    }
+
+    private void CheckBox3_Click(object? sender, RoutedEventArgs e)
+    {
+        TextBox15.IsEnabled = CheckBox3.IsChecked == true;
+
+        Save2();
+    }
+
+    private void CheckBox2_Click(object? sender, RoutedEventArgs e)
+    {
+        TextBox14.IsEnabled = CheckBox2.IsChecked == true;
+
+        Save2();
     }
 
     private void TextBox12_PropertyChanged(object? sender,
@@ -259,8 +278,12 @@ public partial class Tab2Control : UserControl
             GameArgs = TextBox4.Text,
             GCArgument = TextBox1.Text,
             JavaAgent = TextBox2.Text,
-            MaxMemory = (Input2.Value == null ? null : (uint)Input2.Value),
-            MinMemory = (Input1.Value == null ? null : (uint)Input1.Value),
+            MaxMemory = Input2.Value == null ? null : (uint)Input2.Value,
+            MinMemory = Input1.Value == null ? null : (uint)Input1.Value,
+            LaunchPre = CheckBox3.IsChecked == true,
+            LaunchPreData = TextBox15.Text,
+            LaunchPost = CheckBox2.IsChecked == true,
+            LaunchPostData = TextBox14.Text,
         });
     }
 
@@ -307,6 +330,30 @@ public partial class Tab2Control : UserControl
             TextBox2.Text = config.JavaAgent;
             TextBox3.Text = config.JvmArgs;
             TextBox4.Text = config.GameArgs;
+            TextBox14.Text = config.LaunchPostData;
+            TextBox15.Text = config.LaunchPreData;
+
+            CheckBox3.IsChecked = config.LaunchPre;
+            CheckBox2.IsChecked = config.LaunchPost;
+
+            TextBox15.IsEnabled = CheckBox3.IsChecked == true;
+            TextBox14.IsEnabled = CheckBox2.IsChecked == true;
+        }
+        else
+        {
+            ComboBox1.SelectedIndex = -1;
+            Input1.Value = null;
+            Input2.Value = null;
+            TextBox3.Text = null;
+            TextBox4.Text = null;
+            TextBox14.Text = null;
+            TextBox15.Text = null;
+
+            CheckBox3.IsChecked = false;
+            CheckBox2.IsChecked = false;
+
+            TextBox15.IsEnabled = false;
+            TextBox14.IsEnabled = false;
         }
 
         var config1 = Obj.Window;
@@ -316,12 +363,23 @@ public partial class Tab2Control : UserControl
             Input4.Value = config1.Height;
             CheckBox1.IsChecked = config1.FullScreen;
         }
+        else
+        {
+            Input3.Value = null;
+            Input4.Value = null;
+            CheckBox1.IsChecked = false;
+        }
 
         var config2 = Obj.StartServer;
         if (config2 != null)
         {
             TextBox5.Text = config2.IP;
             TextBox6.Text = config2.Port.ToString();
+        }
+        else
+        {
+            TextBox5.Text = null;
+            TextBox6.Text = null;
         }
 
         var config3 = Obj.ProxyHost;
@@ -332,12 +390,24 @@ public partial class Tab2Control : UserControl
             TextBox9.Text = config3.User;
             TextBox10.Text = config3.Password;
         }
+        else
+        {
+            TextBox7.Text = null;
+            TextBox8.Text = null;
+            TextBox9.Text = null;
+            TextBox10.Text = null;
+        }
 
         var config4 = Obj.AdvanceJvm;
         if (config4 != null)
         {
             TextBox12.Text = config4.MainClass;
             TextBox13.Text = config4.ClassPath;
+        }
+        else
+        {
+            TextBox12.Text = null;
+            TextBox13.Text = null;
         }
 
         load = false;
