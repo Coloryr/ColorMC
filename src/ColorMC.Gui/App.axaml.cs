@@ -7,6 +7,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -151,8 +152,10 @@ public partial class App : Application
             ShowCustom();
 
             if (GuiConfigUtils.Config != null)
-                await LoadImage(GuiConfigUtils.Config.BackImage,
-                    GuiConfigUtils.Config.BackEffect);
+                await LoadImage();
+
+            Media.Init();
+            await Media.PlayUrl("http://music.163.com/song/media/outer/url?id=4966662.mp3");
 
             //new Thread(() => 
             //{
@@ -233,13 +236,16 @@ public partial class App : Application
         image?.Dispose();
     }
 
-    public static async Task LoadImage(string file, int eff)
+    public static async Task LoadImage()
     {
         RemoveImage();
-
+        string file = GuiConfigUtils.Config.BackImage;
         if (!string.IsNullOrWhiteSpace(file) && File.Exists(file))
         {
-            BackBitmap = await ImageUtils.MakeBackImage(file, eff);
+            BackBitmap = await ImageUtils.MakeBackImage(
+                file, GuiConfigUtils.Config.BackEffect,
+                GuiConfigUtils.Config.BackLimit ? GuiConfigUtils.Config.BackLimitValue
+                : 100);
         }
 
         OnPicUpdate();
@@ -606,6 +612,7 @@ public partial class App : Application
 
     public static void Close()
     {
+        Media.Close();
         Life?.Shutdown();
         BaseBinding.Exit();
         Environment.Exit(Environment.ExitCode);

@@ -114,6 +114,38 @@
                         Content="{setting:Localize Button.Set}" />
                 </StackPanel>
 
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox
+                        Name="CheckBox7"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize SettingWindow.Tab2.Text28}" />
+                    <Slider
+                        Name="Slider5"
+                        Width="200"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Left"
+                        Foreground="{setting:Colors Main}"
+                        IsSnapToTickEnabled="True"
+                        LargeChange="1"
+                        Maximum="100"
+                        Minimum="0"
+                        SmallChange="1"
+                        TickFrequency="1"
+                        Value="0" />
+                    <Label
+                        Name="Label1"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="100%" />
+                    <Button
+                        Name="Button_Set3"
+                        Width="80"
+                        Height="25"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize Button.Set}" />
+                </StackPanel>
+
                 <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
 
                 <!--  圆角  -->
@@ -124,10 +156,10 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize SettingWindow.Tab2.Text25}" />
                     <NumericUpDown
-                        FormatString="N0"
                         Name="Input1"
                         Width="120"
                         Margin="5,0,0,0"
+                        FormatString="N0"
                         IsEnabled="False"
                         Maximum="10"
                         Minimum="1"

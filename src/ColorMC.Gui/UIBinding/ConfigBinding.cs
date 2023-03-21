@@ -84,7 +84,18 @@ public static class ConfigBinding
         GuiConfigUtils.Config.BackImage = dir;
         GuiConfigUtils.Save();
 
-        await App.LoadImage(dir, data);
+        await App.LoadImage();
+
+        App.OnPicUpdate();
+    }
+
+    public static async Task SetBackLimit(bool enable, int pix)
+    {
+        GuiConfigUtils.Config.BackLimitValue = pix;
+        GuiConfigUtils.Config.BackLimit = enable;
+        GuiConfigUtils.Save();
+
+        await App.LoadImage();
 
         App.OnPicUpdate();
     }

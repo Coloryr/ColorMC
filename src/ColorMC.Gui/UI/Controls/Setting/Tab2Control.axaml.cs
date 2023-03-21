@@ -19,6 +19,7 @@ public partial class Tab2Control : UserControl
         Button_SelectFile.Click += Button_SelectFile_Click;
         Button_Set.Click += Button_Set_Click;
         Button_Set2.Click += Button_Set2_Click;
+        Button_Set3.Click += Button_Set3_Click;
         Button_Set4.Click += Button_Set4_Click;
         Button_Set5.Click += Button_Set5_Click;
 
@@ -31,6 +32,7 @@ public partial class Tab2Control : UserControl
         CheckBox3.Click += CheckBox3_Click;
         CheckBox4.Click += CheckBox4_Click;
         CheckBox5.Click += CheckBox5_Click;
+        CheckBox7.Click += CheckBox7_Click;
 
         ColorPicker1.ColorChanged += ColorPicker_ColorChanged;
         ColorPicker2.ColorChanged += ColorPicker_ColorChanged;
@@ -43,6 +45,33 @@ public partial class Tab2Control : UserControl
         ComboBox3.Items = BaseBinding.GetFontList();
 
         Input1.PropertyChanged += Input1_PropertyChanged;
+
+        Slider5.PropertyChanged += Slider5_PropertyChanged;
+    }
+
+    private async void CheckBox7_Click(object? sender, RoutedEventArgs e)
+    {
+        Slider5.IsEnabled = Button_Set3.IsEnabled = CheckBox7.IsChecked == true;
+
+        await ConfigBinding.SetBackLimit(CheckBox7.IsChecked == true, (int)Slider5.Value);
+    }
+
+    private async void Button_Set3_Click(object? sender, RoutedEventArgs e)
+    {
+        var window = App.FindRoot(VisualRoot);
+        window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        await ConfigBinding.SetBackLimit(CheckBox7.IsChecked == true, (int)Slider5.Value);
+        window.Info1.Close();
+
+        window.Info2.Show(App.GetLanguage("Info3"));
+    }
+
+    private void Slider5_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Value")
+        {
+            Label1.Content = $"{Slider5.Value:0}%";
+        }
     }
 
     private void CheckBox5_Click(object? sender, RoutedEventArgs e)
@@ -153,12 +182,14 @@ public partial class Tab2Control : UserControl
     private void Button_Set4_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
+        load = true;
         ConfigBinding.ResetColor();
         ColorPicker1.Color = ColorSel.MainColor.ToColor();
         ColorPicker2.Color = ColorSel.BackColor.ToColor();
         ColorPicker3.Color = ColorSel.Back1Color.ToColor();
         ColorPicker4.Color = ColorSel.ButtonFont.ToColor();
         ColorPicker5.Color = ColorSel.FontColor.ToColor();
+        load = false;
         window.Info2.Show(App.GetLanguage("SettingWindow.Tab2.Info4"));
     }
 
@@ -208,6 +239,7 @@ public partial class Tab2Control : UserControl
             Slider2.Value = config.Item2.BackTran;
             Slider3.Value = config.Item2.RGBS;
             Slider4.Value = config.Item2.RGBV;
+            Slider5.Value = config.Item2.BackLimitValue;
             CheckBox1.IsChecked = config.Item2.WindowTran;
             ComboBox1.SelectedIndex = config.Item2.WindowTranType;
             ComboBox3.SelectedItem = config.Item2.FontName;
@@ -220,38 +252,13 @@ public partial class Tab2Control : UserControl
             CheckBox3.IsChecked = config.Item2.FontDefault;
             CheckBox4.IsChecked = config.Item2.CornerRadius;
             CheckBox5.IsChecked = config.Item2.WindowMode;
-            if (config.Item2.WindowTran)
-            {
-                ComboBox1.IsEnabled = true;
-            }
-            else
-            {
-                ComboBox1.IsEnabled = false;
-            }
-            if (config.Item2.RGB)
-            {
-                Slider3.IsEnabled = Slider4.IsEnabled = true;
-            }
-            else
-            {
-                Slider3.IsEnabled = Slider4.IsEnabled = false;
-            }
-            if (CheckBox3.IsChecked == true)
-            {
-                ComboBox3.IsEnabled = false;
-            }
-            else
-            {
-                ComboBox3.IsEnabled = true;
-            }
-            if (CheckBox4.IsChecked == true)
-            {
-                Input1.IsEnabled = true;
-            }
-            else
-            {
-                Input1.IsEnabled = false;
-            }
+            CheckBox7.IsChecked = config.Item2.BackLimit;
+
+            ComboBox1.IsEnabled = config.Item2.WindowTran;
+            ComboBox3.IsEnabled = !(CheckBox3.IsChecked == true);
+            Slider3.IsEnabled = Slider4.IsEnabled = config.Item2.RGB;
+            Slider5.IsEnabled = Button_Set3.IsEnabled = CheckBox7.IsChecked == true;
+            Input1.IsEnabled = CheckBox4.IsChecked == true;
         }
         if (config.Item1 != null)
         {

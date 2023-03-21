@@ -124,7 +124,7 @@
 	<String Key="SettingWindow.Tab2.Text5">透明度</String>
 	<String Key="SettingWindow.Tab2.Text6">启用</String>
 	<String Key="SettingWindow.Tab2.Text7">效果器</String>
-	<String Key="SettingWindow.Tab2.Text8">注意：不是所有系统都支持半透明效果</String>
+	<String Key="SettingWindow.Tab2.Text8">注意：不是所有系统都支持半透明效果，Windows系统需要在系统中开启透明效果才能使用模糊效果</String>
 	<String Key="SettingWindow.Tab2.Text9">窗口透明效果</String>
 	<String Key="SettingWindow.Tab2.Text10">颜色设置</String>
 	<String Key="SettingWindow.Tab2.Text11">切换</String>
@@ -144,6 +144,7 @@
 	<String Key="SettingWindow.Tab2.Text25">启用窗口圆角</String>
 	<String Key="SettingWindow.Tab2.Text26">单窗口模式</String>
 	<String Key="SettingWindow.Tab2.Text27">切换后需要重启</String>
+	<String Key="SettingWindow.Tab2.Text28">调整背景图大小为原始分辨率的</String>
 	<String Key="SettingWindow.Tab2.Info1">正在切换语言</String>
 	<String Key="SettingWindow.Tab2.Info2">正在设置</String>
 	<String Key="SettingWindow.Tab2.Info3">选择图片文件</String>
