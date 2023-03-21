@@ -254,6 +254,8 @@ public partial class MainControl : UserControl, IUserControl
 
         MotdLoad();
 
+        App.LoadMusic();
+
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)
         {

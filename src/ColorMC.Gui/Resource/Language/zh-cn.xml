@@ -65,6 +65,7 @@
 	<String Key="MainWindow.Info30">是否执行运行后程序</String>
 	<String Key="MainWindow.Info31">正在执行运行前程序</String>
 	<String Key="MainWindow.Info32">正在执行运行后程序</String>
+	<String Key="MainWindow.Info33">背景音乐播放中...</String>
 
 	<String Key="UserWindow.Title">ColorMC 用户列表</String>
 	<String Key="UserWindow.DataGrid.Text1">使用</String>
@@ -235,6 +236,14 @@
 	<String Key="SettingWindow.Tab6.Text13">服务器同步</String>
 	<String Key="SettingWindow.Tab6.Text14">同步基础网址</String>
 	<String Key="SettingWindow.Tab6.Text15">注意：只有锁定实例才能使用服务器同步</String>
+	<String Key="SettingWindow.Tab6.Text16">自定义音乐</String>
+	<String Key="SettingWindow.Tab6.Text17">自定义文件地址</String>
+	<String Key="SettingWindow.Tab6.Text18">音量大小</String>
+	<String Key="SettingWindow.Tab6.Text19">播放</String>
+	<String Key="SettingWindow.Tab6.Text20">停止</String>
+	<String Key="SettingWindow.Tab6.Text21">暂停</String>
+	<String Key="SettingWindow.Tab6.Text22">渐变音量</String>
+	<String Key="SettingWindow.Tab6.Text23">继续</String>
 	<String Key="SettingWindow.Tab6.Error1">UI文件错误</String>
 	<String Key="SettingWindow.Tab6.Error2">自定义UI窗口启动错误</String>
 	<String Key="SettingWindow.Tab6.Error3">导出UI文件错误</String>
@@ -831,6 +840,7 @@
 	<String Key="ToolTip.Text45">选择一个游戏压缩包并导入</String>
 	<String Key="ToolTip.Text46">结束初始设置</String>
 	<String Key="ToolTip.Text47">生成一个可供自动更新的文件夹</String>
+	<String Key="ToolTip.Text48">暂停/播放音乐</String>
 	
 	<String Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单</String>
 	<String Key="Tips.Text2">双击可切换账户，右键可以打开账户菜单</String>

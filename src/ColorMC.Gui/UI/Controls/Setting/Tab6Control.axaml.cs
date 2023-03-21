@@ -24,6 +24,11 @@ public partial class Tab6Control : UserControl
     {
         InitializeComponent();
 
+        Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
+        Button8.Click += Button8_Click;
+        Button9.Click += Button9_Click;
+
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
         Button6.Click += Button6_Click;
@@ -31,11 +36,14 @@ public partial class Tab6Control : UserControl
 
         CheckBox3.Click += CheckBox3_Click;
         CheckBox4.Click += CheckBox3_Click;
+        CheckBox5.Click += CheckBox3_Click;
+        CheckBox6.Click += CheckBox3_Click;
 
         TextBox1.PropertyChanged += TextBox_PropertyChanged;
         TextBox2.PropertyChanged += TextBox_PropertyChanged;
         TextBox3.PropertyChanged += TextBox_PropertyChanged;
         TextBox4.PropertyChanged += TextBox_PropertyChanged;
+        TextBox5.PropertyChanged += TextBox_PropertyChanged;
 
         TextBox4.LostFocus += TextBox4_LostFocus;
 
@@ -43,6 +51,43 @@ public partial class Tab6Control : UserControl
         CheckBox2.Click += CheckBox_Click;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+
+        Slider1.PropertyChanged += Slider1_PropertyChanged;
+    }
+
+    private void Button9_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.MusicPlay();
+    }
+
+    private void Button8_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.MusicPause();
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.MusicStart();
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.MusicStop();
+    }
+
+    private void Slider1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property.Name == "Value")
+        {
+            Label1.Content = $"{Slider1.Value:0}%";
+
+            if (!load)
+            {
+                Save();
+            }
+
+            BaseBinding.SetVolume((int)Slider1.Value);
+        }
     }
 
     private void TextBox4_LostFocus(object? sender, RoutedEventArgs e)
@@ -172,6 +217,10 @@ public partial class Tab6Control : UserControl
             CheckBox4.IsEnabled = false;
             TextBox4.IsEnabled = false;
         }
+
+        Button1.IsEnabled = Button8.IsEnabled = Button9.IsEnabled = Button2.IsEnabled =
+        CheckBox6.IsEnabled = TextBox5.IsEnabled = Slider1.IsEnabled = 
+            CheckBox5.IsChecked == true;
     }
 
     private void Save()
@@ -187,7 +236,11 @@ public partial class Tab6Control : UserControl
             ServerPack = CheckBox4.IsChecked == true,
             ServerUrl = TextBox4.Text,
             LockGame = CheckBox3.IsChecked == true,
-            UIFile = TextBox3.Text
+            UIFile = TextBox3.Text,
+            PlayMusic = CheckBox5.IsChecked == true,
+            Music = TextBox5.Text,
+            Volume = (int)Slider1.Value,
+            SlowVolume = CheckBox6.IsChecked == true,
         };
 
         if (ComboBox1.SelectedIndex == -1)
@@ -226,16 +279,26 @@ public partial class Tab6Control : UserControl
             TextBox2.Text = config.Port.ToString();
             TextBox3.Text = config.UIFile;
             TextBox4.Text = config.ServerUrl;
+            TextBox5.Text = config.Music;
 
             CheckBox1.IsChecked = config.Motd;
             CheckBox2.IsChecked = config.JoinServer;
             CheckBox3.IsChecked = config.LockGame;
             CheckBox4.IsChecked = config.ServerPack;
+            CheckBox5.IsChecked = config.PlayMusic;
+            CheckBox6.IsChecked = config.SlowVolume;
 
             ColorPicker1.Color = ColorSel.MotdColor.ToColor();
             ColorPicker2.Color = ColorSel.MotdBackColor.ToColor();
 
             ComboBox1.SelectedIndex = uuids.IndexOf(config.GameName);
+
+            Slider1.Value = config.Volume;
+
+            if (config.Volume == 0)
+            {
+                Label1.Content = "0%";
+            }
 
             Switch();
         }

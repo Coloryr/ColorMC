@@ -622,17 +622,26 @@ public static class GuiConfigUtils
         return new()
         {
             MotdColor = "#FFFFFFFF",
-            MotdBackColor = "#FF000000"
+            MotdBackColor = "#FF000000",
+            Volume = 30
         };
     }
 }
 
 public static class Media
 {
+    private static float volume = 0.1f;
     private static int alSource;
     private static ALDevice device;
     private static ALContext context;
-    public static float Volume = 1f;
+    public static float Volume 
+    { 
+        set 
+        {
+            volume = value;
+            AL.Source(alSource, ALSourcef.Gain, volume);
+        } 
+    }
 
     public static unsafe void Init()
     {
@@ -668,10 +677,20 @@ public static class Media
         }
     }
 
+    public static void Pause()
+    {
+        AL.SourcePause(alSource);
+    }
+
+    public static void Play()
+    {
+        AL.SourcePlay(alSource);
+    }
+
     public static void Stop()
     {
-        while (AL.GetSourceState(alSource) == ALSourceState.Playing)
-        { AL.SourceStop(alSource); }
+        AL.Source(alSource, ALSourcef.Gain, 0);
+        AL.SourceStop(alSource);
 
         AL.GetSource(alSource, ALGetSourcei.BuffersQueued, out int value);
         while (value > 0)
@@ -682,7 +701,7 @@ public static class Media
         }
     }
 
-    public static unsafe (bool, string?) PlayWAV(string filePath = "F:\\FFOutput\\Da Capo - HOYO-MiX.wav")
+    public static unsafe (bool, string?) PlayWAV(string filePath)
     {
         Stop();
 
@@ -785,15 +804,12 @@ public static class Media
                 {
                     AL.SourcePlay(alSource);
                 }
-                AL.Source(alSource, ALSourcef.Gain, Volume);
             }
             else
             {
                 index += size;
             }
         }
-
-        CheckALError();
 
         return (true, null);
     }
@@ -804,7 +820,7 @@ public static class Media
         return await PlayMp3(reader);
     }
 
-    public static async Task<(bool, string?)> PlayMp3(string file = "F:\\music\\倚水\\おやすみモノクローム - 倚水.mp3")
+    public static async Task<(bool, string?)> PlayMp3(string file)
     {
         using var reader = new Mp3FileReader(file);
         return await PlayMp3(reader);
@@ -873,7 +889,6 @@ public static class Media
                 {
                     AL.SourcePlay(alSource);
                 }
-                AL.Source(alSource, ALSourcef.Gain, Volume);
             }
         });
 

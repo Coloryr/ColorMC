@@ -23,6 +23,11 @@ public record ServerCustom
 
     public bool ServerPack { get; set; }
     public string ServerUrl { get; set; }
+
+    public bool PlayMusic { get; set; }
+    public string Music { get; set; }
+    public int Volume { get; set; }
+    public bool SlowVolume { get; set; }
 }
 
 public record WindowsRender
