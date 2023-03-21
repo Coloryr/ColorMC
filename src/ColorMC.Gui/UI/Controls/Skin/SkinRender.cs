@@ -13,6 +13,7 @@ using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UIBinding;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -26,7 +27,10 @@ internal class Win : GameWindow
 {
     public Win() : base(new(), new()
     {
-        StartVisible = false
+        StartVisible = false,
+        APIVersion = new Version(3, 3),
+        Flags = ContextFlags.Offscreen | ContextFlags.ForwardCompatible,
+        Profile = ContextProfile.Core
     })
     {
 
