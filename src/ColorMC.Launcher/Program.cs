@@ -59,7 +59,7 @@ internal class Program
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
             VersionBaseDir = "/Users/Shared/ColorMC/";
-            BaseDir = $"{AppContext.BaseDirectory}Contents/MacOS";
+            BaseDir = $"{AppContext.BaseDirectory}Contents/MacOS/";
 
             if (!Directory.Exists(BaseDir))
             {
@@ -70,6 +70,15 @@ internal class Program
         {
             VersionBaseDir = AppContext.BaseDirectory;
             BaseDir = AppContext.BaseDirectory;
+        }
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            var dll = BaseDir + "OpenAL32.dll";
+            if (!File.Exists(dll))
+            {
+                File.WriteAllBytes(dll, Resource1.OpenAL32);
+            }
         }
 
         Console.WriteLine($"BaseDir:{BaseDir}");

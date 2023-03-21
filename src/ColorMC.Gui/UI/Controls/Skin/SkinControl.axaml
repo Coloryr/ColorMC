@@ -10,42 +10,38 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid Margin="3" ColumnDefinitions="4*,1.5*">
-        <Grid Grid.Column="0" Margin="5,5,0,5">
-            <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
-            <Grid Margin="3">
-                <view2:SkinRender x:Name="Skin" />
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Top"
-                    Background="#EEEEEE"
-                    Content="{setting:Localize SkinWindow.Text2}"
-                    Foreground="Black" />
+        <Grid Grid.Column="0">
+            <view2:SkinRender x:Name="Skin" />
+            <Label
+                Margin="5"
+                VerticalAlignment="Top"
+                Background="#EEEEEE"
+                Content="{setting:Localize SkinWindow.Text2}"
+                Foreground="Black" />
 
-                <TextBlock
-                    Name="Text1"
-                    Margin="2"
-                    VerticalAlignment="Bottom"
-                    Background="#EEEEEE"
-                    Foreground="Black"
-                    TextWrapping="Wrap" />
+            <TextBlock
+                Name="Text1"
+                Margin="2"
+                VerticalAlignment="Bottom"
+                Background="#EEEEEE"
+                Foreground="Black"
+                TextWrapping="Wrap" />
 
-                <Label
-                    Name="Label1"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Background="#EEEEEE"
-                    Content=""
-                    FontSize="20"
-                    IsVisible="False" />
-            </Grid>
+            <Label
+                Name="Label1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#EEEEEE"
+                Content=""
+                FontSize="20"
+                IsVisible="False" />
         </Grid>
 
-        <Grid Grid.Column="1" Margin="5">
-            <Rectangle Stroke="{setting:Colors Main}" StrokeThickness="3" />
+        <Grid Grid.Column="1">
             <ScrollViewer>
-                <StackPanel Margin="3" Background="{setting:Colors TranBack}">
+                <StackPanel Background="{setting:Colors TranBack}">
                     <Button
                         Name="Button1"
                         Height="25"

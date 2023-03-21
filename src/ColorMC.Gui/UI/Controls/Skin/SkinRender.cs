@@ -28,9 +28,7 @@ internal class Win : GameWindow
     public Win() : base(new(), new()
     {
         StartVisible = false,
-        APIVersion = new Version(3, 3),
-        Flags = ContextFlags.Offscreen | ContextFlags.ForwardCompatible,
-        Profile = ContextProfile.Core
+        Flags = ContextFlags.ForwardCompatible
     })
     {
 
@@ -191,7 +189,7 @@ void main()
 
         _fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
         GL.ShaderSource(_fragmentShader, FragmentShaderSource);
-        CompileShader(_vertexShader);
+        CompileShader(_fragmentShader);
 
         _shaderProgram = GL.CreateProgram();
         GL.AttachShader(_shaderProgram, _vertexShader);
