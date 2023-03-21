@@ -151,11 +151,7 @@ public partial class App : Application
 
             ShowCustom();
 
-            if (GuiConfigUtils.Config != null)
-                await LoadImage();
-
-            Media.Init();
-            await Media.PlayUrl("http://music.163.com/song/media/outer/url?id=4966662.mp3");
+            await LoadImage();
 
             //new Thread(() => 
             //{
@@ -234,6 +230,14 @@ public partial class App : Application
         BackBitmap = null;
         OnPicUpdate();
         image?.Dispose();
+    }
+
+    public static void LoadMusic()
+    {
+        if (GuiConfigUtils.Config.ServerCustom.PlayMusic)
+        {
+            BaseBinding.MusicStart();
+        }
     }
 
     public static async Task LoadImage()

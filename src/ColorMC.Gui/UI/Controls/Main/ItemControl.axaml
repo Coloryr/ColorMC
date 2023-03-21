@@ -101,13 +101,24 @@
 
             <Button
                 Name="Button1"
-                Width="20"
-                Height="20"
+                Width="25"
+                Height="25"
                 Margin="12,10,8,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="→"
                 ToolTip.Tip="{setting:Localize ToolTip.Text5}"
+                ToolTip.VerticalOffset="-30" />
+
+            <Button
+                Name="Button2"
+                Width="25"
+                Height="25"
+                Margin="12,10,8,10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Content="▶️"
+                ToolTip.Tip="{setting:Localize ToolTip.Text48}"
                 ToolTip.VerticalOffset="-30" />
         </Grid>
     </ScrollViewer>

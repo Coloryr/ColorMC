@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="450"
+    d:DesignHeight="550"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
@@ -92,12 +92,10 @@
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab6.Text12}" />
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox
-                        Name="CheckBox4"
-                        Content="{setting:Localize SettingWindow.Tab6.Text13}"
-                        IsEnabled="False" />
-                </StackPanel>
+                <CheckBox
+                    Name="CheckBox4"
+                    Content="{setting:Localize SettingWindow.Tab6.Text13}"
+                    IsEnabled="False" />
                 <TextBox
                     Name="TextBox4"
                     Classes="input1"
@@ -107,6 +105,69 @@
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab6.Text15}" />
+
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Name="CheckBox5" Content="{setting:Localize SettingWindow.Tab6.Text16}" />
+                    <CheckBox
+                        Name="CheckBox6"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize SettingWindow.Tab6.Text22}"
+                        IsEnabled="False" />
+                </StackPanel>
+                <TextBox
+                    Name="TextBox5"
+                    Classes="input1"
+                    IsEnabled="False"
+                    Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize SettingWindow.Tab6.Text18}" />
+                    <Slider
+                        Name="Slider1"
+                        Width="200"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Left"
+                        Foreground="{setting:Colors Main}"
+                        IsEnabled="False"
+                        IsSnapToTickEnabled="True"
+                        LargeChange="1"
+                        Maximum="100"
+                        Minimum="0"
+                        SmallChange="1"
+                        TickFrequency="1"
+                        Value="0" />
+                    <Label
+                        Name="Label1"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="100%" />
+                    <Button
+                        Name="Button1"
+                        Width="80"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize SettingWindow.Tab6.Text19}" />
+                    <Button
+                        Name="Button8"
+                        Width="80"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize SettingWindow.Tab6.Text21}" />
+                    <Button
+                        Name="Button9"
+                        Width="80"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize SettingWindow.Tab6.Text23}" />
+                    <Button
+                        Name="Button2"
+                        Width="80"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize SettingWindow.Tab6.Text20}" />
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>

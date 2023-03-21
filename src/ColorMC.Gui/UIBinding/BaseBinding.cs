@@ -46,6 +46,7 @@ public static class BaseBinding
         ColorMCCore.UpdateSelect = PackUpdate;
         ColorMCCore.UpdateState = UpdateState;
 
+        Media.Init();
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
     }
@@ -878,5 +879,75 @@ public static class BaseBinding
     public static string GetRunDir()
     {
         return ColorMCCore.BaseDir;
+    }
+
+    public static void SetVolume(int value)
+    {
+        if (value > 100 || value < 0)
+            return;
+
+        Media.Volume = (float)value / 100;
+    }
+
+    public static void MusicStart()
+    {
+        bool play = false;
+        Media.Volume = 0;
+        string file = GuiConfigUtils.Config.ServerCustom.Music;
+        if (file.StartsWith("http://") || file.StartsWith("https://"))
+        {
+            Media.PlayUrl(file);
+            play = true;
+        }
+        else
+        {
+            file = Path.GetFullPath(file);
+            if (File.Exists(file))
+            {
+                if (file.EndsWith(".mp3"))
+                {
+                    Media.PlayMp3(file);
+                    play = true;
+                }
+                else if (file.EndsWith(".wav"))
+                {
+                    Media.PlayWAV(file);
+                    play = true;
+                }
+            }
+        }
+        if (play)
+        {
+            if (GuiConfigUtils.Config.ServerCustom.SlowVolume)
+            {
+                Task.Run(() =>
+                {
+                    for (int a = 0; a < GuiConfigUtils.Config.ServerCustom.Volume; a++)
+                    {
+                        Media.Volume = (float)a / 100;
+                        Thread.Sleep(50);
+                    }
+                });
+            }
+            else
+            {
+                Media.Volume = (float)GuiConfigUtils.Config.ServerCustom.Volume / 100;
+            }
+        }
+    }
+
+    public static void MusicStop()
+    {
+        Media.Stop();
+    }
+
+    public static void MusicPlay()
+    {
+        Media.Play();
+    }
+
+    public static void MusicPause()
+    {
+        Media.Pause();
     }
 }

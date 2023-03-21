@@ -1,4 +1,4 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -7,6 +7,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -17,6 +18,7 @@ public partial class ItemControl : UserControl
     private LoginObj? Obj1;
     private GameSettingObj? Obj;
     private bool Launch;
+    private bool isplay = true;
     public ItemControl()
     {
         InitializeComponent();
@@ -32,11 +34,31 @@ public partial class ItemControl : UserControl
         Image1.PointerPressed += Image1_PointerPressed;
 
         Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
 
         App.SkinLoad += App_SkinLoad;
         App.PicUpdate += Update;
 
         Update();
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        var window = App.FindRoot(VisualRoot);
+        if (isplay)
+        {
+            BaseBinding.MusicPause();
+
+            window.SetTitle(App.GetLanguage("MainWindow.Title"));
+        }
+        else
+        {
+            BaseBinding.MusicPlay();
+
+            window.SetTitle(App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33"));
+        }
+
+        isplay = !isplay;
     }
 
     private void Update()
@@ -173,14 +195,24 @@ public partial class ItemControl : UserControl
     public void Load()
     {
         var config = ConfigBinding.GetAllConfig();
-        if (config.Item2 != null &&
-            config.Item2.ServerCustom?.LockGame == true)
+        if (config.Item2?.ServerCustom?.LockGame == true)
         {
             Button_Add1.IsVisible = false;
         }
         else
         {
             Button_Add1.IsVisible = true;
+        }
+
+        if (config.Item2?.ServerCustom?.PlayMusic == true)
+        {
+            var window = App.FindRoot(VisualRoot);
+            window.SetTitle(App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33")) ;
+            Button2.IsVisible = true;
+        }
+        else
+        {
+            Button2.IsVisible = false;
         }
     }
 }
