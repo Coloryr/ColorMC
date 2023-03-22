@@ -43,11 +43,11 @@ internal class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        //Console.WriteLine("wait");
-        //while (!Debugger.IsAttached)
-        //{
-        //    Thread.Sleep(100);
-        //}
+        Console.WriteLine("wait");
+        while (!Debugger.IsAttached)
+        {
+            Thread.Sleep(100);
+        }
 
         var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 

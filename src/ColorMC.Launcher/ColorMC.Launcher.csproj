@@ -20,6 +20,10 @@
     <None Remove=".gitignore" />
     <None Remove="Resource\MiSans-Normal.ttf" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="NLayer.NAudioSupport" Version="1.3.0" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Gui\ColorMC.Gui.csproj">
       <!--<CopyToPublishDirectory>Always</CopyToPublishDirectory>-->

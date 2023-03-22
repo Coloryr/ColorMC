@@ -15,10 +15,10 @@ using ColorMC.Gui.Utils.LaunchSetting;
 using NAudio.Wave;
 using Newtonsoft.Json;
 using OpenTK.Audio.OpenAL;
-using OpenTK.Graphics.OpenGL;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using SkiaSharp;
 using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
@@ -634,6 +634,7 @@ public static class Media
     private static int alSource;
     private static ALDevice device;
     private static ALContext context;
+    private static bool ok  =false;
     public static float Volume 
     { 
         set 
@@ -655,10 +656,14 @@ public static class Media
         AL.GenSource(out alSource);
 
         CheckALError();
+        ok = true;
     }
 
     public static void Close()
     {
+        if (!ok)
+            return;
+
         Stop();
 
         AL.DeleteSource(alSource);
@@ -679,16 +684,25 @@ public static class Media
 
     public static void Pause()
     {
+        if (!ok)
+            return;
+
         AL.SourcePause(alSource);
     }
 
     public static void Play()
     {
+        if (!ok)
+            return;
+
         AL.SourcePlay(alSource);
     }
 
     public static void Stop()
     {
+        if (!ok)
+            return;
+
         AL.Source(alSource, ALSourcef.Gain, 0);
         AL.SourceStop(alSource);
 
@@ -703,6 +717,9 @@ public static class Media
 
     public static unsafe (bool, string?) PlayWAV(string filePath)
     {
+        if (!ok)
+            return (false, null); 
+
         Stop();
 
         ReadOnlySpan<byte> file = File.ReadAllBytes(filePath);
@@ -816,20 +833,26 @@ public static class Media
 
     public static async Task<(bool, string?)> PlayMp3(Stream stream)
     {
+        if (!ok)
+            return (false, null);
+
         using var reader = new Mp3FileReader(stream);
         return await PlayMp3(reader);
     }
 
     public static async Task<(bool, string?)> PlayMp3(string file)
     {
+        if (!ok)
+            return (false, null);
+
         using var reader = new Mp3FileReader(file);
         return await PlayMp3(reader);
     }
 
     private static async Task<(bool, string?)> PlayMp3(Mp3FileReader reader)
     {
-        var format = reader.WaveFormat;
         using var decoder = new AcmMp3FrameDecompressor(reader.Mp3WaveFormat);
+        var format = reader.WaveFormat;
 
         byte[] buffer = new byte[16384 * 4];
 
@@ -880,8 +903,8 @@ public static class Media
 
                 AL.GenBuffer(out int alBuffer);
 
-                AL.BufferData(alBuffer, format1, 
-                    new ReadOnlySpan<byte>(buffer, 0, decompressed), frame.SampleRate);
+                AL.BufferData(alBuffer, ALFormat.Stereo16, 
+                    new ReadOnlySpan<byte>(buffer, 0, decompressed), format.SampleRate);
 
                 AL.SourceQueueBuffer(alSource, alBuffer);
 
@@ -897,6 +920,9 @@ public static class Media
 
     public static async Task<(bool, string?)> PlayUrl(string url)
     {
+        if (!ok)
+            return (false, null);
+
         var res = await BaseClient.DownloadClient.GetAsync(url);
         if (res.StatusCode == System.Net.HttpStatusCode.Redirect)
         {

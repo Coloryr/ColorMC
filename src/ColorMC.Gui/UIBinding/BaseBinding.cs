@@ -46,7 +46,14 @@ public static class BaseBinding
         ColorMCCore.UpdateSelect = PackUpdate;
         ColorMCCore.UpdateState = UpdateState;
 
-        Media.Init();
+        try
+        {
+            Media.Init();
+        }
+        catch (Exception e)
+        {
+            Logs.Error("openal error", e);
+        }
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
     }

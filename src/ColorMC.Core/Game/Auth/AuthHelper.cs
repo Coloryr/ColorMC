@@ -4,6 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Game.Auth;
 
@@ -27,7 +28,7 @@ public static class AuthHelper
         return new()
         {
             Url = "https://login.mc-user.com:233/download/nide8auth.jar",
-            Name = "com.nide8.login2:nide8auth:2.3",
+            Name = "com.nide8.login2:nide8auth:2.4",
             Local = $"{LibrariesPath.BaseDir}/com/nide8/login2/nide8auth/2.4/nide8auth.2.4.jar",
         };
     }
@@ -52,18 +53,41 @@ public static class AuthHelper
     /// 初始化Nide8Injector，存在不下载
     /// </summary>
     /// <returns>Nide8Injector下载实例</returns>
-    public static DownloadItemObj? ReadyNide8()
+    public static async Task<DownloadItemObj?> ReadyNide8()
     {
         var item = BuildNide8Item();
         NowNide8Injector = item.Local;
 
-        if (!string.IsNullOrWhiteSpace(NowNide8Injector)
-            && File.Exists(NowNide8Injector))
+        var data = await BaseClient.GetString("https://auth.mc-user.com:233/00000000000000000000000000000000/");
+        if (data.Item1 == false)
+            return null;
+        try
         {
+            var obj = JObject.Parse(data.Item2!);
+            var sha1 = obj["jarHash"]!.ToString().ToLower();
+            item.SHA1 = sha1;
+            if (!File.Exists(NowNide8Injector))
+            {
+                return item;
+            }
+
+            if (!string.IsNullOrWhiteSpace(sha1))
+            {
+                using var stream = File.OpenRead(NowNide8Injector);
+                var sha11 = Funtcions.GenSha1(stream);
+                if (sha11 != sha1)
+                {
+                    return item;
+                }
+            }
+
             return null;
         }
-
-        return item;
+        catch (Exception e)
+        {
+            Logs.Error("nide8 check error", e);
+            return null;
+        }
     }
 
     /// <summary>

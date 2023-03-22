@@ -80,11 +80,9 @@
     <PackageReference Include="Avalonia.X11" Version="11.0.0-preview4" />
     <PackageReference Include="AvaloniaEdit.TextMate" Version="11.0.0-preview2" />
     <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
-    <PackageReference Include="NAudio" Version="2.1.0" />
-    <PackageReference Include="NAudio.Core" Version="2.1.0" />
+    <PackageReference Include="NAudio" Version="1.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenTK" Version="4.7.5" />
-    <PackageReference Include="OpenTK.OpenAL" Version="4.7.7" />
     <PackageReference Include="ReactiveUI" Version="18.4.26" />
     <PackageReference Include="SixLabors.Fonts" Version="1.0.0-beta19" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.0.0" />
