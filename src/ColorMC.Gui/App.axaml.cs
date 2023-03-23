@@ -656,7 +656,6 @@ public partial class App : Application
                 {
                     window.TransparencyLevelHint = (WindowTransparencyLevel)
                         (GuiConfigUtils.Config.WindowTranType + 1);
-                    window.Background = Brushes.Transparent;
                 }
             }
             else
@@ -664,7 +663,6 @@ public partial class App : Application
                 if (window != null)
                 {
                     window.TransparencyLevelHint = WindowTransparencyLevel.None;
-                    window.Background = Brushes.White;
                 }
             }
         }

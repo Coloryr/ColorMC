@@ -99,6 +99,7 @@ public class ColorMCGui
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();
+        opt.CompositionBackdropCornerRadius = 0;
         //opt.UseWindowsUIComposition = false;
         if (config.UseWindowsUIComposition != null)
         {
