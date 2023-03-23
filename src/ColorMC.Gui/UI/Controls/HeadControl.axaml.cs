@@ -80,7 +80,7 @@ public partial class HeadControl : UserControl
 
     private void Update()
     {
-        Border1.CornerRadius = App.GetCornerRadius();
+        //Border1.CornerRadius = App.GetCornerRadius();
     }
 
     private void ButtonClose_Click(object? sender, RoutedEventArgs e)

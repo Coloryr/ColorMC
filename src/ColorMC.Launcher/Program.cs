@@ -118,10 +118,10 @@ internal class Program
                  })
                 .UsePlatformDetect()
                 .LogToTrace()
-                .With(new X11PlatformOptions()
-                {
-                    UseCompositor = false
-                })
+                //.With(new X11PlatformOptions()
+                //{
+                //    UseCompositor = false
+                //})
                 .StartWithClassicDesktopLifetime(args);
             return;
         }

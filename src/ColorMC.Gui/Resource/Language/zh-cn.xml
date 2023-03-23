@@ -142,7 +142,6 @@
 	<String Key="SettingWindow.Tab2.Text22">字体选择</String>
 	<String Key="SettingWindow.Tab2.Text23">默认字体</String>
 	<String Key="SettingWindow.Tab2.Text24">注意：切换语言后需要重启启动器才能完全生效</String>
-	<String Key="SettingWindow.Tab2.Text25">启用窗口圆角</String>
 	<String Key="SettingWindow.Tab2.Text26">单窗口模式</String>
 	<String Key="SettingWindow.Tab2.Text27">切换后需要重启</String>
 	<String Key="SettingWindow.Tab2.Text28">调整背景图大小为原始分辨率的</String>

@@ -63,6 +63,64 @@ internal struct Vertex
 
 public class SkinRender : Control
 {
+    //    private string VertexShaderSource =>
+    //@"#version 120
+    //#extension GL_ARB_gpu_shader5 : enable
+
+    //attribute vec3 a_position;
+    //attribute vec2 a_texCoord;
+    //attribute vec3 a_normal;
+
+    //uniform mat4 model;
+    //uniform mat4 projection;
+    //uniform mat4 view;
+    //uniform mat4 self;
+
+    //varying vec3 normalIn;
+    //varying vec2 texIn;
+    //varying vec3 fragPosIn;
+
+    //void main()
+    //{
+    //    texIn = a_texCoord;
+
+    //    mat4 temp = view * model * self;
+
+    //    fragPosIn = vec3(temp * vec4(a_position, 1.0f));
+    //    normalIn = mat3(transpose(inverse(temp))) * a_normal;
+
+    //	gl_Position = projection * temp * vec4(a_position, 1.0);
+    //}
+    //";
+
+    //    private string FragmentShaderSource =>
+    //@"#version 120
+    //#extension GL_ARB_gpu_shader5 : enable
+
+    //uniform sampler2D texture0;
+
+    //uniform vec3 lightColor;
+
+    //varying vec3 fragPosIn;
+    //varying vec3 normalIn;
+    //varying vec2 texIn;
+
+    //void main()
+    //{
+    //    float ambientStrength = 0.1f;
+    //    vec3 ambient = ambientStrength * lightColor;
+
+    //    vec3 norm = normalize(normalIn);
+    //    vec3 lightDir = normalize(-fragPosIn);
+    //    float diff = max(dot(norm, lightDir), 0.0f);
+    //    vec3 diffuse = diff * lightColor;
+
+    //    vec3 result = (ambient + diffuse);
+
+    //    gl_FragColor = texture2D(texture0, texIn) * vec4(result, 1.0f);
+    //}
+    //";
+
     private string VertexShaderSource =>
 @"#version 330 core
 

@@ -127,7 +127,7 @@ public static class SkinUtil
 
 public static partial class UIUtils
 {
-    public static T? FindToEnd<T>(this IVisual visual)
+    public static T? FindToEnd<T>(this Visual visual)
     {
         foreach (var item in visual.GetVisualChildren())
         {
@@ -300,7 +300,7 @@ public static partial class UIUtils
         return new(255, 255, 255, 255);
     }
 
-    public static (double X, double Y) GetXY(this IVisual? visual)
+    public static (double X, double Y) GetXY(this Visual? visual)
     {
         if (visual == null)
             return (0, 0);
@@ -315,7 +315,7 @@ public static partial class UIUtils
         return temp;
     }
 
-    public static T? FindTop<T>(this IVisual visual) where T : IVisual
+    public static T? FindTop<T>(this Visual visual) where T : Visual
     {
         var pan = visual.GetVisualParent();
         while (pan != null)

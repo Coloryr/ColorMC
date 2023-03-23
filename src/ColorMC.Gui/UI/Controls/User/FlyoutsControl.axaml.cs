@@ -48,7 +48,7 @@ public partial class FlyoutsControl : UserControl
     }
 }
 
-public class UserFlyout : FlyoutBase
+public class UserFlyout : PopupFlyoutBase
 {
     private UserDisplayObj Obj;
     private UsersControl Win;

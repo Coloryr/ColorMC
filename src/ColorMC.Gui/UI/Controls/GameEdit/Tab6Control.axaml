@@ -20,7 +20,7 @@
                     HorizontalAlignment="Right"
                     Content="{setting:Localize GameEditWindow.Tab6.Text2}" />
             </Grid>
-            <TreeDataGrid Name="FileViewer" Margin="3">
+            <!--<TreeDataGrid Name="FileViewer" Margin="3">
                 <TreeDataGrid.Resources>
                     <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
                         <CheckBox Margin="5,0,5,0" IsChecked="{Binding IsChecked, Mode=TwoWay}" />
@@ -46,7 +46,7 @@
                         <Setter Property="Background" Value="#fff8f8f8" />
                     </Style>
                 </TreeDataGrid.Styles>
-            </TreeDataGrid>
+            </TreeDataGrid>-->
         </DockPanel>
     </Grid>
 </UserControl>

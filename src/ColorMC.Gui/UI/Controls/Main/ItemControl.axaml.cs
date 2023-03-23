@@ -7,6 +7,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils.LaunchSetting;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Threading;
 
@@ -63,18 +64,7 @@ public partial class ItemControl : UserControl
 
     private void Update()
     {
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item2 != null)
-        {
-            if (config.Item2.CornerRadius == true)
-            {
-                Border1.CornerRadius = new CornerRadius(0, 0, config.Item2.Radius, 0);
-            }
-            else
-            {
-                Border1.CornerRadius = new CornerRadius(0);
-            }
-        }
+        
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

@@ -56,7 +56,7 @@
                 VerticalAlignment="Center"
                 Content="{setting:Localize GameEditWindow.Tab3.Text2}"
                 IsVisible="False" />
-            <ae:TextEditor
+            <!--<ae:TextEditor
                 Name="TextEditor1"
                 Background="{setting:Colors TranBack}"
                 FontSize="14"
@@ -65,7 +65,7 @@
                 HorizontalScrollBarVisibility="Auto"
                 ShowLineNumbers="True"
                 VerticalScrollBarVisibility="Visible"
-                WordWrap="True" />
+                WordWrap="True" />-->
         </Grid>
     </DockPanel>
 </UserControl>

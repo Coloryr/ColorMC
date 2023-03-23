@@ -33,8 +33,7 @@ public class FontSel : INotifyPropertyChanged
     public void Load()
     {
         if (!GuiConfigUtils.Config.FontDefault &&
-            FontManager.Current.GetInstalledFontFamilyNames()
-                .Contains(GuiConfigUtils.Config.FontName))
+            FontManager.Current.SystemFonts.FirstOrDefault(a => a.Name == GuiConfigUtils.Config.FontName) != null)
         {
             Font = new(GuiConfigUtils.Config.FontName);
             Reload();

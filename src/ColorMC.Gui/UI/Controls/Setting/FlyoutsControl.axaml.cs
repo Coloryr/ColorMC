@@ -34,7 +34,7 @@ public partial class FlyoutsControl : UserControl
     }
 }
 
-public class SettingFlyout : FlyoutBase
+public class SettingFlyout : PopupFlyoutBase
 {
     private JavaDisplayObj Obj;
     private Tab5Control Win;

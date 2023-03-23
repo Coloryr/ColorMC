@@ -4,6 +4,8 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Download;
@@ -11,6 +13,7 @@ using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.Utils.LaunchSetting;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -60,6 +63,11 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
             Image_Back.Source = App.BackBitmap;
         }
 
+        if (SystemInfo.Os == OsType.Linux)
+        {
+            Head.IsVisible = false;
+        }
+
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
 
@@ -76,7 +84,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         Update();
     }
 
-    public class AllFlyout : FlyoutBase
+    public class AllFlyout : PopupFlyoutBase
     {
         private readonly List<Button> Obj;
         private StackPanel panel;
@@ -302,7 +310,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     private void Update()
     {
-        App.Update(null, Image_Back, Border1, Border2);
+        App.Update(null, Image_Back);
     }
 
     public void SetTitle(string data)

@@ -31,7 +31,7 @@ public partial class Flyouts5Control : UserControl
     }
 }
 
-public class GameEditFlyout5 : FlyoutBase
+public class GameEditFlyout5 : PopupFlyoutBase
 {
     private readonly ServerInfoObj Obj;
     private readonly Tab10Control Con;

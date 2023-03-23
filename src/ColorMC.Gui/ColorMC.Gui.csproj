@@ -66,19 +66,19 @@
     <TrimmableAssembly Include="Avalonia.Themes.Default" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.0-preview4" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview2" />
-    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0-preview4" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview4" />
+    <PackageReference Include="Avalonia" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview5" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0-preview4" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview4" />
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview4" />
-    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.0.0-preview4" />
-    <PackageReference Include="Avalonia.Skia" Version="11.0.0-preview4" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview4" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview4" />
-    <PackageReference Include="Avalonia.X11" Version="11.0.0-preview4" />
-    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.0.0-preview2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview6" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Skia" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.X11" Version="11.0.0-preview6" />
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.0.0-preview5" />
     <PackageReference Include="AvaloniaEdit.TextMate.Grammars" Version="0.10.12" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenTK" Version="4.7.5" />
@@ -86,7 +86,6 @@
     <PackageReference Include="SixLabors.Fonts" Version="1.0.0-beta19" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.0.0" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
-    <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />

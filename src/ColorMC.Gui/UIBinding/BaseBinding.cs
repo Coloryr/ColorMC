@@ -85,23 +85,25 @@ public static class BaseBinding
         });
     }
 
-    public static Task<IReadOnlyList<IStorageFile>> OpFile(IBaseWindow? window, string title,
-        string[] ext, string name, bool multiple = false, IStorageFolder? storage = null)
+    public static Task<IReadOnlyList<IStorageFile>?> OpFile(IBaseWindow? window, string title,
+        string[] ext, string name, bool multiple = false, DirectoryInfo? storage = null)
     {
         return OpFile(window as TopLevel, title, ext, name, multiple, storage);
     }
 
-    public static Task<IReadOnlyList<IStorageFile>> OpFile(TopLevel? window, string title,
-        string[] ext, string name, bool multiple = false, IStorageFolder? storage = null)
+    public static async Task<IReadOnlyList<IStorageFile>?> OpFile(TopLevel? window, string title,
+        string[] ext, string name, bool multiple = false, DirectoryInfo? storage = null)
     {
         if (window == null)
             return null;
 
-        return window.StorageProvider.OpenFilePickerAsync(new()
+        var defaultFolder = storage == null ? null : await window.StorageProvider.TryGetFolderFromPathAsync(storage.FullName);
+
+        return await window.StorageProvider.OpenFilePickerAsync(new()
         {
             Title = title,
             AllowMultiple = multiple,
-            SuggestedStartLocation = storage,
+            SuggestedStartLocation = defaultFolder,
             FileTypeFilter = new List<FilePickerFileType>()
             {
                 new(name)
@@ -181,6 +183,7 @@ public static class BaseBinding
                 GuiConfigUtils.Config.ServerCustom.Port);
 
             obj = obj.CopyObj();
+            obj.StartServer ??= new();
             obj.StartServer.IP = server.ServerAddress;
             obj.StartServer.Port = server.ServerPort;
         }
@@ -498,21 +501,19 @@ public static class BaseBinding
         }
     }
 
-    public static string GetPath(this IStorageFolder file)
+    public static string? GetPath(this IStorageFolder file)
     {
-        file.TryGetUri(out var uri);
-        return uri!.LocalPath;
+        return file.TryGetLocalPath();
     }
 
-    public static string GetPath(this IStorageFile file)
+    public static string? GetPath(this IStorageFile file)
     {
-        file.TryGetUri(out var uri);
-        return uri!.LocalPath;
+        return file.TryGetLocalPath();
     }
 
     public static List<string> GetFontList()
     {
-        return FontManager.Current.GetInstalledFontFamilyNames().ToList();
+        return FontManager.Current.SystemFonts.Select(a=>a.Name).ToList();
     }
 
     public static void OpenBaseDir()
@@ -543,51 +544,51 @@ public static class BaseBinding
                       App.GetLanguage("GameEditWindow.Tab12.Info1"),
                       new string[] { "*" + Schematic.Name1, "*" + Schematic.Name2 },
                       App.GetLanguage("GameEditWindow.Tab12.Info2"), true);
-                if (!res.Any())
+                if (res?.Any() == true)
                 {
-                    return null;
+                    return await GameBinding.AddSchematic(obj, res);
                 }
-                return await GameBinding.AddSchematic(obj, res);
+                return null;
             case FileType.Shaderpack:
                 res = await OpFile(window,
                     App.GetLanguage("GameEditWindow.Tab11.Info1"),
                     new string[] { "*.zip" },
                     App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
-                if (!res.Any())
+                if (res?.Any() == true)
                 {
-                    return null;
+                    return await GameBinding.AddShaderpack(obj, res);
                 }
-                return await GameBinding.AddShaderpack(obj, res);
+                return  null;
             case FileType.Mod:
                 res = await OpFile(window,
                     App.GetLanguage("GameEditWindow.Tab4.Info7"),
                     new string[] { "*.jar" },
                     App.GetLanguage("GameEditWindow.Tab4.Info8"), true);
-                if (!res.Any())
+                if (res?.Any() == true)
                 {
-                    return null;
+                    return await GameBinding.AddMods(obj, res);
                 }
-                return await GameBinding.AddMods(obj, res);
+                return null;
             case FileType.World:
                 res = await OpFile(window!,
                     App.GetLanguage("GameEditWindow.Tab5.Info2"),
                     new string[] { "*.zip" },
                     App.GetLanguage("GameEditWindow.Tab5.Info8"));
-                if (!res.Any())
+                if (res?.Any() == true)
                 {
-                    return null;
+                    return await GameBinding.AddWorld(obj, res[0].GetPath());
                 }
-                return await GameBinding.AddWorld(obj, res[0].GetPath());
+                return null;
             case FileType.Resourcepack:
                 res = await OpFile(window,
                     App.GetLanguage("GameEditWindow.Tab8.Info2"),
                     new string[] { "*.zip" },
                     App.GetLanguage("GameEditWindow.Tab8.Info7"), true);
-                if (!res.Any())
+                if (res?.Any() == true)
                 {
-                    return null;
+                    return await GameBinding.AddResourcepack(obj, res);
                 }
-                return await GameBinding.AddResourcepack(obj, res);
+                return null;
         }
 
         return null;
@@ -928,7 +929,7 @@ public static class BaseBinding
         {
             if (GuiConfigUtils.Config.ServerCustom.SlowVolume)
             {
-                Task.Run(() =>
+                await Task.Run(() =>
                 {
                     for (int a = 0; a < GuiConfigUtils.Config.ServerCustom.Volume; a++)
                     {

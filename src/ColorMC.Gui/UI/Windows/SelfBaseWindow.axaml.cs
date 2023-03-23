@@ -34,44 +34,8 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         if (SystemInfo.Os == OsType.Linux)
         {
-            SystemDecorations = SystemDecorations.BorderOnly;
-            var rectangle = Border1;
-            var window = this;
-            Border1.PointerPressed += (sender, e) =>
-            {
-                if (e.GetCurrentPoint(rectangle).Properties.IsLeftButtonPressed)
-                {
-                    var point = e.GetPosition(rectangle);
-                    var arg1 = point.X / rectangle.Bounds.Width;
-                    var arg2 = point.Y / rectangle.Bounds.Height;
-                    if (arg1 > 0.95)
-                    {
-                        if (arg2 > 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.SouthEast, e);
-                        }
-                        else if (arg2 <= 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.East, e);
-                        }
-                    }
-                    else if (arg1 < 0.05)
-                    {
-                        if (arg2 <= 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.West, e);
-                        }
-                        else if (arg2 > 0.95)
-                        {
-                            window.BeginResizeDrag(WindowEdge.SouthWest, e);
-                        }
-                    }
-                    else if (arg2 > 0.95)
-                    {
-                        window.BeginResizeDrag(WindowEdge.South, e);
-                    }
-                }
-            };
+            SystemDecorations = SystemDecorations.Full;
+            Head.IsVisible = false;
         }
 
         if (SystemInfo.Os == OsType.MacOS)
@@ -190,7 +154,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     }
     private void Update()
     {
-        App.Update(this, Image_Back, Border1, Border2);
+        App.Update(this, Image_Back);
 
         Main?.Update();
     }

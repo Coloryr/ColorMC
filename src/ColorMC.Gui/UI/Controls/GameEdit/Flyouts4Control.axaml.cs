@@ -39,7 +39,7 @@ public partial class Flyouts4Control : UserControl
     }
 }
 
-public class GameEditFlyout4 : FlyoutBase
+public class GameEditFlyout4 : PopupFlyoutBase
 {
     private readonly ScreenshotDisplayObj Obj;
     private readonly Tab9Control Con;

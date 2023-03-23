@@ -129,24 +129,24 @@ public static class JavaBinding
         return (true, null);
     }
 
-    public static IStorageFolder? GetSuggestedStartLocation()
+    public static DirectoryInfo? GetSuggestedStartLocation()
     {
         switch (SystemInfo.Os)
         {
             case OsType.Windows:
                 if (Directory.Exists("C:\\Program Files\\java"))
-                    return new BclStorageFolder(new DirectoryInfo("C:\\Program Files\\java"));
+                    return new DirectoryInfo("C:\\Program Files\\java");
                 else if (Directory.Exists("C:\\Program Files\\Java"))
-                    return new BclStorageFolder(new DirectoryInfo("C:\\Program Files\\Java"));
+                    return new DirectoryInfo("C:\\Program Files\\Java");
                 break;
             case OsType.MacOS:
                 if (Directory.Exists("/Library/Java/JavaVirtualMachines/"))
-                    return new BclStorageFolder(new DirectoryInfo("/Library/Java/JavaVirtualMachines/"));
+                    return new DirectoryInfo("/Library/Java/JavaVirtualMachines/");
                 break;
         }
 
         if (Directory.Exists(JvmPath.BaseDir))
-            return new BclStorageFolder(new DirectoryInfo(JvmPath.BaseDir));
+            return new DirectoryInfo(JvmPath.BaseDir);
 
         return null;
     }

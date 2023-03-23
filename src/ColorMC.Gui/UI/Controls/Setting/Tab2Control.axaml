@@ -148,24 +148,6 @@
 
                 <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
 
-                <!--  圆角  -->
-
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox
-                        Name="CheckBox4"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab2.Text25}" />
-                    <NumericUpDown
-                        Name="Input1"
-                        Width="120"
-                        Margin="5,0,0,0"
-                        FormatString="N0"
-                        IsEnabled="False"
-                        Maximum="10"
-                        Minimum="1"
-                        Value="1" />
-                </StackPanel>
-
                 <!--  颜色设置  -->
                 <Label Content="{setting:Localize SettingWindow.Tab2.Text10}" />
                 <StackPanel Orientation="Horizontal">

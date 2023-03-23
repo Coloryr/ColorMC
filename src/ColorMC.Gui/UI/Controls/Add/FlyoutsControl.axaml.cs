@@ -29,7 +29,7 @@ public partial class FlyoutsControl : UserControl
     }
 }
 
-public class UrlFlyout : FlyoutBase
+public class UrlFlyout : PopupFlyoutBase
 {
     private string Url;
     public UrlFlyout(string url)

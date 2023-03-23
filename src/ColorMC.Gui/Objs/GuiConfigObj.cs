@@ -80,9 +80,6 @@ public record GuiConfigObj
     public int RGBS { get; set; }
     public int RGBV { get; set; }
 
-    public bool CornerRadius { get; set; }
-    public float Radius { get; set; }
-
     public string FontName { get; set; }
     public bool FontDefault { get; set; }
 

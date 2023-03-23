@@ -10,21 +10,10 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <views:HeadControl
-            Name="Head"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top" />
-        <Grid Margin="0,35,0,0">
-            <Border
-                Name="Border2"
-                BorderThickness="2"
-                CornerRadius="0,0,10,10" />
-            <Image
-                Name="Image_Back"
-                Margin="3"
-                Stretch="UniformToFill" />
-
+    <DockPanel>
+        <views:HeadControl Name="Head" DockPanel.Dock="Top" />
+        <Grid>
+            <Image Name="Image_Back" Stretch="UniformToFill" />
             <Grid Name="MainControl" />
 
             <Button
@@ -65,12 +54,6 @@
                     Content="test"
                     FontSize="30" />
             </Grid>
-
-            <Border
-                Name="Border1"
-                BorderBrush="{setting:Colors Main}"
-                BorderThickness="3"
-                CornerRadius="0,0,10,10" />
         </Grid>
-    </Grid>
+    </DockPanel>
 </UserControl>

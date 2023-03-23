@@ -178,16 +178,6 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
-    public static void SetRadius(bool enable, float rad)
-    {
-        GuiConfigUtils.Config.CornerRadius = enable;
-        GuiConfigUtils.Config.Radius = rad;
-
-        GuiConfigUtils.Save();
-
-        App.OnPicUpdate();
-    }
-
     public static void SetLaunchCloseConfig(bool value)
     {
         GuiConfigUtils.Config.CloseBeforeLaunch = value;

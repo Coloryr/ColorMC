@@ -40,7 +40,7 @@ public partial class Flyouts3Control : UserControl
     }
 }
 
-public class GameEditFlyout3 : FlyoutBase
+public class GameEditFlyout3 : PopupFlyoutBase
 {
     private readonly ResourcepackDisplayObj Obj;
     private readonly Tab8Control Con;

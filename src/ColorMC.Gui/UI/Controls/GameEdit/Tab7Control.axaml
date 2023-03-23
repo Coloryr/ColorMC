@@ -32,7 +32,7 @@
                 ToolTip.VerticalOffset="-30" />
 
         </StackPanel>
-        <ae:TextEditor
+        <!--<ae:TextEditor
             Name="TextEditor1"
             Margin="5"
             Background="{setting:Colors TranBack}"
@@ -43,6 +43,6 @@
             IsReadOnly="True"
             ShowLineNumbers="True"
             VerticalScrollBarVisibility="Visible"
-            WordWrap="True" />
+            WordWrap="True" />-->
     </DockPanel>
 </UserControl>

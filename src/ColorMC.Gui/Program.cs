@@ -108,14 +108,14 @@ public class ColorMCGui
         {
             opt.UseWgl = config.UseWgl == true;
         }
-        if (config.UseCompositor != null)
-        {
-            opt.UseCompositor = config.UseCompositor == true;
-        }
-        if (config.UseDeferredRendering != null)
-        {
-            opt.UseDeferredRendering = config.UseDeferredRendering == true;
-        }
+        //if (config.UseCompositor != null)
+        //{
+        //    opt.UseCompositor = config.UseCompositor == true;
+        //}
+        //if (config.UseDeferredRendering != null)
+        //{
+        //    opt.UseDeferredRendering = config.UseDeferredRendering == true;
+        //}
 
         var config1 = GuiConfigUtils.Config.Render.X11;
         var opt1 = new X11PlatformOptions();
@@ -131,14 +131,14 @@ public class ColorMCGui
         {
             opt1.OverlayPopups = config1.OverlayPopups == true;
         }
-        if (config1.UseDeferredRendering != null)
-        {
-            opt1.UseDeferredRendering = config1.UseDeferredRendering == true;
-        }
-        if (config1.UseCompositor != null)
-        {
-            opt1.UseCompositor = config1.UseCompositor == true;
-        }
+        //if (config1.UseDeferredRendering != null)
+        //{
+        //    opt1.UseDeferredRendering = config1.UseDeferredRendering == true;
+        //}
+        //if (config1.UseCompositor != null)
+        //{
+        //    opt1.UseCompositor = config1.UseCompositor == true;
+        //}
 
         return AppBuilder.Configure<App>()
             .With(new FontManagerOptions

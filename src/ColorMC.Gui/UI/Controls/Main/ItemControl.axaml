@@ -14,11 +14,7 @@
                 Name="Grid1"
                 HorizontalAlignment="Left"
                 IsVisible="True">
-                <Border
-                    Name="Border1"
-                    Background="#88FFFFFF"
-                    BorderThickness="2" />
-                <!--<Border BorderBrush="#33000000" BorderThickness="1,1,0,0" />-->
+                <Border Name="Border1" Background="{setting:Colors TranBack}" />
                 <StackPanel Margin="10,0,10,0" VerticalAlignment="Center">
                     <Image
                         Name="Image1"

@@ -53,7 +53,7 @@ public partial class Flyouts2Control : UserControl
     }
 }
 
-public class GameEditFlyout2 : FlyoutBase
+public class GameEditFlyout2 : PopupFlyoutBase
 {
     private readonly WorldDisplayObj Obj;
     private readonly Tab5Control Con;

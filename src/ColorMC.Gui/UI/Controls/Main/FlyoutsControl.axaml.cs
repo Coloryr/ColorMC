@@ -133,7 +133,7 @@ public partial class FlyoutsControl : UserControl
     }
 }
 
-public class MainFlyout : FlyoutBase
+public class MainFlyout : PopupFlyoutBase
 {
     private GameControl Obj;
     private MainControl Win;

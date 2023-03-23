@@ -31,7 +31,7 @@ public partial class Flyouts6Control : UserControl
     }
 }
 
-public class GameEditFlyout6 : FlyoutBase
+public class GameEditFlyout6 : PopupFlyoutBase
 {
     private readonly ShaderpackDisplayObj Obj;
     private readonly Tab11Control Con;

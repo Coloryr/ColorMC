@@ -37,7 +37,8 @@ public static class Media
         string deviceName = ALC.GetString(ALDevice.Null, AlcGetString.DefaultDeviceSpecifier);
 
         device = ALC.OpenDevice(deviceName);
-        context = ALC.CreateContext(device, (int[])null);
+        int temp = 0;
+        context = ALC.CreateContext(device, ref temp);
         ALC.MakeContextCurrent(context);
 
         AL.GenSource(out alSource);
@@ -46,12 +47,20 @@ public static class Media
         ok = true;
     }
 
-    public static void Close()
+    public static async void Close()
     {
         if (!ok)
             return;
 
         Stop();
+
+        await Task.Run(() =>
+        {
+            while (play)
+            {
+                Thread.Sleep(10);
+            }
+        });
 
         AL.DeleteSource(alSource);
 

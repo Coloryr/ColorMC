@@ -8,10 +8,9 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <DockPanel Margin="3" LastChildFill="True">
+    <DockPanel LastChildFill="True">
         <ScrollViewer
             Name="ScrollViewer1"
-            Margin="3,0,3,0"
             VerticalAlignment="Top"
             AllowAutoHide="True"
             Background="{setting:Colors TranBack}"

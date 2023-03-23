@@ -31,7 +31,7 @@ public partial class Flyouts1Control : UserControl
     }
 }
 
-public class ServerPackFlyout1 : FlyoutBase
+public class ServerPackFlyout1 : PopupFlyoutBase
 {
     private readonly ServerPackConfigDisplayObj Obj;
     private readonly Tab4Control Con;

@@ -5,11 +5,16 @@
 - Windows
 - macOs
 
-**需要安装.NET 7环境**
+Linux由于发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以尝试修改`/home/{user}/ColorMC/gui.json`
 
-Linux由于发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以尝试修改`/usr/share/ColorMC/gui.json`
+## 开发环境搭建
 
-## 安装/启动
+### 克隆源码
+
+```
+git clone https://github.com/Coloryr/ColorMC.git
+cd ColorMC
+```
 
 ### 安装.Net7
 
@@ -35,33 +40,20 @@ $ sudo apt-get install -y dotnet-sdk-7.0
 
 ### 启动
 
-解压压缩包
-- Windows
-双击`ColorMC.Gui.exe`即可
-或
+先选择项目`ColorMC.Launcher`进入
+
 ```
-$ dotnet ColorMC.Gui.dll
+$ dotnet build
 ```
-- macOs  
-打开一个终端
 ```
-$ ./ColorMC.Gui
-```
-或
-```
-$ dotnet ColorMC.Gui.dll
-```
-- Linux
-双击`ColorMC.Gui`即可
-或
-```
-$ dotnet ColorMC.Gui.dll
+$ dotnet run
 ```
 
-## 项目
+## 项目说明
 - ColorMC.Core 启动器底层核心
 - ColorMC.Cmd CLI模式 (已放弃)
 - ColorMC.Gui Gui模式
+- ColorMC.Launcher 启动器
 - ColorMC.Test 用于启动器核心测试
 
 ## 皮肤预览
@@ -78,14 +70,11 @@ $ dotnet ColorMC.Gui.dll
 [Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
 [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
 [Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
-[OpenTK](https://opentk.net/) Opengl渲染  
+[OpenTK](https://opentk.net/) Opengl渲染/openal音频  
 [ReactiveUI](https://github.com/reactiveui/ReactiveUI) MVVM 框架  
 [SixLabors](https://sixlabors.com/) 图片处理
 
 ## 使用的IDE
 
-[Visual Studio Code](https://code.visualstudio.com/)
-
+[Visual Studio Code](https://code.visualstudio.com/)  
 [Visual Studio](https://visualstudio.microsoft.com/)
-
-![](/Img/pic.png)

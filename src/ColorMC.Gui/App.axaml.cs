@@ -3,6 +3,7 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
@@ -623,33 +624,7 @@ public partial class App : Application
         Environment.Exit(Environment.ExitCode);
     }
 
-    public static CornerRadius GetCornerRadius()
-    {
-        if (GuiConfigUtils.Config.CornerRadius)
-        {
-            return new CornerRadius(GuiConfigUtils.Config.Radius,
-                GuiConfigUtils.Config.Radius, 0, 0);
-        }
-        else
-        {
-            return new CornerRadius(0);
-        }
-    }
-
-    public static CornerRadius GetCornerRadius1()
-    {
-        if (GuiConfigUtils.Config.CornerRadius)
-        {
-            return new CornerRadius(0, 0, GuiConfigUtils.Config.Radius,
-                GuiConfigUtils.Config.Radius);
-        }
-        else
-        {
-            return new CornerRadius(0);
-        }
-    }
-
-    public static void Update(Window? window, Image? image, Border? rec, Border? rec1)
+    public static void Update(Window? window, Image? image)
     {
         if (GuiConfigUtils.Config != null)
         {
@@ -677,14 +652,11 @@ public partial class App : Application
 
             if (GuiConfigUtils.Config.WindowTran)
             {
-                if (rec1 != null)
-                {
-                    rec1.Background = ColorSel.AppBackColor1;
-                }
                 if (window != null)
                 {
                     window.TransparencyLevelHint = (WindowTransparencyLevel)
                         (GuiConfigUtils.Config.WindowTranType + 1);
+                    window.Background = Brushes.Transparent;
                 }
             }
             else
@@ -692,16 +664,8 @@ public partial class App : Application
                 if (window != null)
                 {
                     window.TransparencyLevelHint = WindowTransparencyLevel.None;
+                    window.Background = Brushes.White;
                 }
-                if (rec1 != null)
-                {
-                    rec1.Background = ColorSel.AppBackColor;
-                }
-            }
-
-            if (rec != null && rec1 != null)
-            {
-                rec.CornerRadius = rec1.CornerRadius = GetCornerRadius1();
             }
         }
     }
@@ -732,5 +696,15 @@ public partial class App : Application
         }
 
         return MainWindow.Window;
+    }
+
+    public static CornerRadius GetCornerRadius1()
+    {
+        if (SystemInfo.Os == OsType.Linux)
+        {
+            return new CornerRadius(5, 5, 0, 0);
+        }
+
+        return new CornerRadius(0);
     }
 }

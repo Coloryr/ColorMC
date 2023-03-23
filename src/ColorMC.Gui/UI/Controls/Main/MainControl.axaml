@@ -13,19 +13,13 @@
     mc:Ignorable="d">
     <Grid>
         <DockPanel LastChildFill="True">
-            <views1:ItemControl
-                Name="ItemInfo"
-                Margin="0,0,3,0"
-                DockPanel.Dock="Right" />
-            <views:ServerMotdControl
-                Name="ServerMotdControl1"
-                Margin="3,3,0,0"
-                DockPanel.Dock="Top" />
+            <views1:ItemControl Name="ItemInfo" DockPanel.Dock="Right" />
+            <views:ServerMotdControl Name="ServerMotdControl1" DockPanel.Dock="Top" />
             <Grid>
-                <ScrollViewer Name="ScrollViewer1" Margin="3,0,0,0">
+                <ScrollViewer Name="ScrollViewer1">
                     <StackPanel Name="GameGroups" />
                 </ScrollViewer>
-                <Grid Name="Grid3" Background="#EEEEEE">
+                <Grid Name="Grid3" Background="#88EEEEEE">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Label
                             HorizontalAlignment="Center"

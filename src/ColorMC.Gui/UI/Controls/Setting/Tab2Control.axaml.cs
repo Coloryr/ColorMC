@@ -30,7 +30,6 @@ public partial class Tab2Control : UserControl
         CheckBox1.Click += CheckBox1_Click;
         CheckBox2.Click += CheckBox2_Click;
         CheckBox3.Click += CheckBox3_Click;
-        CheckBox4.Click += CheckBox4_Click;
         CheckBox5.Click += CheckBox5_Click;
         CheckBox7.Click += CheckBox7_Click;
 
@@ -43,8 +42,6 @@ public partial class Tab2Control : UserControl
         ComboBox1.Items = BaseBinding.GetWindowTranTypes();
         ComboBox2.Items = BaseBinding.GetLanguages();
         ComboBox3.Items = BaseBinding.GetFontList();
-
-        Input1.PropertyChanged += Input1_PropertyChanged;
 
         Slider5.PropertyChanged += Slider5_PropertyChanged;
     }
@@ -77,36 +74,6 @@ public partial class Tab2Control : UserControl
     private void CheckBox5_Click(object? sender, RoutedEventArgs e)
     {
         ConfigBinding.SetWindowMode(CheckBox5.IsChecked == true);
-    }
-
-    private void Input1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
-    {
-        if (load)
-            return;
-
-        if (e.Property.Name == "Value")
-        {
-            Save2();
-        }
-    }
-
-    private void CheckBox4_Click(object? sender, RoutedEventArgs e)
-    {
-        if (CheckBox4.IsChecked == true)
-        {
-            Input1.IsEnabled = true;
-        }
-        else
-        {
-            Input1.IsEnabled = false;
-        }
-
-        Save2();
-    }
-
-    private void Save2()
-    {
-        ConfigBinding.SetRadius(CheckBox4.IsChecked == true, (float)Input1.Value);
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -233,7 +200,6 @@ public partial class Tab2Control : UserControl
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2 != null)
         {
-            Input1.Value = (decimal?)config.Item2.Radius;
             TextBox1.Text = config.Item2.BackImage;
             Slider1.Value = config.Item2.BackEffect;
             Slider2.Value = config.Item2.BackTran;
@@ -250,7 +216,6 @@ public partial class Tab2Control : UserControl
             ColorPicker5.Color = ColorSel.FontColor.ToColor();
             CheckBox2.IsChecked = config.Item2.RGB;
             CheckBox3.IsChecked = config.Item2.FontDefault;
-            CheckBox4.IsChecked = config.Item2.CornerRadius;
             CheckBox5.IsChecked = config.Item2.WindowMode;
             CheckBox7.IsChecked = config.Item2.BackLimit;
 
@@ -258,7 +223,6 @@ public partial class Tab2Control : UserControl
             ComboBox3.IsEnabled = !(CheckBox3.IsChecked == true);
             Slider3.IsEnabled = Slider4.IsEnabled = config.Item2.RGB;
             Slider5.IsEnabled = Button_Set3.IsEnabled = CheckBox7.IsChecked == true;
-            Input1.IsEnabled = CheckBox4.IsChecked == true;
         }
         if (config.Item1 != null)
         {

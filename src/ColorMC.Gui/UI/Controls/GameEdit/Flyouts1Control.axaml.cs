@@ -100,7 +100,7 @@ public partial class Flyouts1Control : UserControl
     }
 }
 
-public class GameEditFlyout1 : FlyoutBase
+public class GameEditFlyout1 : PopupFlyoutBase
 {
     private readonly IEnumerable<ModDisplayObj> Obj;
     private readonly Tab4Control Con;
@@ -109,6 +109,7 @@ public class GameEditFlyout1 : FlyoutBase
         Con = con;
         Obj = obj.Cast<ModDisplayObj>();
     }
+
     protected override Control CreatePresenter()
     {
         var control = new Flyouts1Control();

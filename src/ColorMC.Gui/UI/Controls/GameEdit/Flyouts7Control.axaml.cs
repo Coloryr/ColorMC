@@ -31,7 +31,7 @@ public partial class Flyouts7Control : UserControl
     }
 }
 
-public class GameEditFlyout7 : FlyoutBase
+public class GameEditFlyout7 : PopupFlyoutBase
 {
     private readonly SchematicDisplayObj Obj;
     private readonly Tab12Control Con;
