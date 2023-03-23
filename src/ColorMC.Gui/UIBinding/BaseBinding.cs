@@ -12,6 +12,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils.LaunchSetting;
 using SixLabors.ImageSharp;
@@ -896,14 +897,14 @@ public static class BaseBinding
         Media.Volume = (float)value / 100;
     }
 
-    public static void MusicStart()
+    public static async void MusicStart()
     {
         bool play = false;
         Media.Volume = 0;
         string file = GuiConfigUtils.Config.ServerCustom.Music;
         if (file.StartsWith("http://") || file.StartsWith("https://"))
         {
-            Media.PlayUrl(file);
+            await Media.PlayUrl(file);
             play = true;
         }
         else
@@ -913,7 +914,7 @@ public static class BaseBinding
             {
                 if (file.EndsWith(".mp3"))
                 {
-                    Media.PlayMp3(file);
+                    await Media.PlayMp3(file);
                     play = true;
                 }
                 else if (file.EndsWith(".wav"))

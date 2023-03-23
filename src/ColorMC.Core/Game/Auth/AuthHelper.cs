@@ -5,6 +5,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Runtime.Intrinsics.Arm;
 
 namespace ColorMC.Core.Game.Auth;
 
@@ -90,49 +91,85 @@ public static class AuthHelper
         }
     }
 
+    private static async Task<AuthlibInjectorObj> GetAuthlibInjectorObj()
+    {
+        string url = UrlHelper.AuthlibInjectorMeta(BaseClient.Source);
+        var meta = await BaseClient.GetString(url);
+        if (meta.Item1 == false)
+        {
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                new Exception(url), false);
+            throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+        }
+        var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!)
+            ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+        var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
+
+        var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
+        if (info.Item1 == false)
+        {
+            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"), new Exception(url), false);
+            throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+        }
+        return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!)
+            ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+    }
+
     /// <summary>
     /// 初始化AuthlibInjector，存在不下载
     /// </summary>
     /// <returns>AuthlibInjector下载实例</returns>
     public static async Task<DownloadItemObj?> ReadyAuthlibInjector()
     {
-        var b1 = File.Exists(NowAuthlibInjector);
-        var b2 = string.IsNullOrWhiteSpace(NowAuthlibInjector);
-        if (b2 || !b1)
+        if (string.IsNullOrWhiteSpace(NowAuthlibInjector))
         {
-            string url = UrlHelper.AuthlibInjectorMeta(BaseClient.Source);
-            var meta = await BaseClient.GetString(url);
-            if (meta.Item1 == false)
-            {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"), 
-                    new Exception(url), false);
-                return null;
-            }
-            var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!)
-                ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
-            var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
-
-            var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
-            if (info.Item1 == false)
-            {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"), new Exception(url), false);
-                return null;
-            }
-            var obj1 = JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!)
-                ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+            var obj1 = await GetAuthlibInjectorObj();
             var item1 = BuildAuthlibInjectorItem(obj1);
 
-            NowAuthlibInjector = item1.Local;
-            if (b2)
+            LocalMaven.AddItem(new MavenItemObj()
             {
-                b1 = File.Exists(NowAuthlibInjector);
+                Name = $"moe.yushi:authlibinjector",
+                Url = item1.Url,
+                Have = true,
+                Local = "/moe/yushi/authlibinjector/" +
+                $"{obj1.version}/authlib-injector-{obj1.version}.jar",
+                SHA256 = obj1.checksums.sha256
+            });
+
+            NowAuthlibInjector = item1.Local;
+            if (File.Exists(NowAuthlibInjector))
+            {
+                var sha256 = obj1.checksums?.sha256;
+                if (!string.IsNullOrWhiteSpace(sha256))
+                {
+                    using var stream = File.OpenRead(NowAuthlibInjector);
+                    var sha2561 = Funtcions.GenSha256(stream);
+                    if (sha256 != sha2561)
+                    {
+                        return item1;
+                    }
+                }
             }
-            if (!b1)
+            else
             {
                 return item1;
             }
 
             return null;
+        }
+        else if (File.Exists(NowAuthlibInjector))
+        {
+            var item = LocalMaven.GetItem("moe.yushi:authlibinjector");
+            if (item != null && !string.IsNullOrWhiteSpace(item.SHA256))
+            {
+                using var stream = File.OpenRead(NowAuthlibInjector);
+                var sha2561 = Funtcions.GenSha256(stream);
+                if (item.SHA256 != sha2561)
+                {
+                    var obj1 = await GetAuthlibInjectorObj();
+                    return BuildAuthlibInjectorItem(obj1);
+                }
+            }
         }
 
         return null;

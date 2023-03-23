@@ -199,7 +199,7 @@ public static class Launch
 
             if (login.AuthType == AuthType.Nide8)
             {
-                var item = AuthHelper.ReadyNide8();
+                var item = await AuthHelper.ReadyNide8();
                 if (item != null)
                 {
                     list.Add(item);
