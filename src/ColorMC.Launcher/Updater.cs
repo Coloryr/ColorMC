@@ -16,7 +16,7 @@ public record VersionObj
 
 public class Updater
 {
-    private const string url = "https://coloryr.github.io/colormc/A15/";
+    private const string url = "https://colormc.coloryr.com/colormc/A16/";
 
     private readonly HttpClient Client;
     private readonly VersionObj version;

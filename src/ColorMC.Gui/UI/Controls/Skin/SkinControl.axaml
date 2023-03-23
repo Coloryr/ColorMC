@@ -14,19 +14,20 @@
             <view2:SkinRender x:Name="Skin" />
             <Label
                 Margin="5"
-                CornerRadius="15"
                 VerticalAlignment="Top"
                 Background="#EEEEEE"
                 Content="{setting:Localize SkinWindow.Text2}"
+                CornerRadius="5"
                 Foreground="Black" />
 
-            <TextBlock
-                Name="Text1"
+            <Label
                 Margin="2"
                 VerticalAlignment="Bottom"
                 Background="#EEEEEE"
-                Foreground="Black"
-                TextWrapping="Wrap" />
+                CornerRadius="5"
+                Foreground="Black">
+                <TextBlock Name="Text1" TextWrapping="Wrap" />
+            </Label>
 
             <Label
                 Name="Label1"

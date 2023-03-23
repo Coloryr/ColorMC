@@ -11,7 +11,7 @@ namespace ColorMC.Gui;
 
 public class ColorMCGui
 {
-    public const string Version = "A15.230318";
+    public const string Version = "A16.230323";
 
     public static string RunDir { get; private set; }
     public static Action InitDone { get; private set; }

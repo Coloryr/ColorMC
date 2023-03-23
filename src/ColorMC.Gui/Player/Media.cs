@@ -340,14 +340,22 @@ public static class Media
         if (!ok)
             return (false, null);
 
-        var res = await BaseClient.DownloadClient.GetAsync(url);
-        if (res.StatusCode == System.Net.HttpStatusCode.Redirect)
+        try
         {
-            var url1 = res.Headers.Location;
-            res = await BaseClient.DownloadClient.GetAsync(url1);
+            var res = await BaseClient.DownloadClient.GetAsync(url);
+            if (res.StatusCode == System.Net.HttpStatusCode.Redirect)
+            {
+                var url1 = res.Headers.Location;
+                res = await BaseClient.DownloadClient.GetAsync(url1);
+                return await PlayMp3(res.Content.ReadAsStream());
+            }
+
             return await PlayMp3(res.Content.ReadAsStream());
         }
-
-        return await PlayMp3(res.Content.ReadAsStream());
+        catch (Exception e)
+        {
+            Logs.Error("play error", e);
+            return (false, null);
+        }
     }
 }
