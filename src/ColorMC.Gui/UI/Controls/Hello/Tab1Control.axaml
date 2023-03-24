@@ -33,7 +33,7 @@
                     Content="{setting:Localize HelloWindow.Tab1.Text4}"
                     FontSize="22" />
                 <ComboBox
-                    Name="Lang"
+                    Name="ComboBox1"
                     Width="200"
                     HorizontalAlignment="Center" />
             </StackPanel>

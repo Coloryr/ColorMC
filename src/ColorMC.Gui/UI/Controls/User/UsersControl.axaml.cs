@@ -38,8 +38,6 @@ public partial class UsersControl : UserControl, IUserControl
         Button_Cancel.Click += Button_Cancel_Click;
         Button_Add.Click += Button_Add_Click;
 
-        Expander_A.ContentTransition = App.CrossFade100;
-
         ComboBox_UserType.SelectionChanged += UserType_SelectionChanged;
         ComboBox_UserType.Items = UserBinding.GetUserTypes();
 
@@ -55,7 +53,6 @@ public partial class UsersControl : UserControl, IUserControl
         Dispatcher.UIThread.Post(() =>
         {
             DataGrid_User.MakeTran();
-            Expander_A.MakePadingNull();
         });
 
         Window.SetTitle(App.GetLanguage("UserWindow.Title"));
@@ -465,12 +462,12 @@ public partial class UsersControl : UserControl, IUserControl
 
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_A.IsExpanded = false;
+        App.CrossFade100.Start(Button_A1, null, CancellationToken.None);
     }
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_A.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
     }
 
     public void AddUrl(string url)

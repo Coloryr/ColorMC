@@ -21,10 +21,7 @@
                     Width="120"
                     VerticalAlignment="Center"
                     Content="{setting:Localize AddGameWindow.Text3}" />
-                <ComboBox
-                    Name="ComboBox_GameVersion"
-                    Width="200"
-                    Margin="5,0,0,0" />
+                <ComboBox Name="ComboBox1" Width="200" />
                 <CheckBox
                     Name="CheckBox_Release"
                     Width="80"
@@ -51,7 +48,6 @@
                 <ComboBox
                     Name="ComboBox_LoaderVersion"
                     Width="200"
-                    Margin="5,0,0,0"
                     IsEnabled="False" />
                 <CheckBox
                     Name="CheckBox_Forge"
@@ -82,16 +78,12 @@
                 ToolTip.Tip="{setting:Localize ToolTip.Text27}"
                 ToolTip.VerticalOffset="-30" />
 
-            <Label
-                Margin="5"
-                VerticalAlignment="Center"
-                Content="{setting:Localize AddGameWindow.Text15}" />
-
             <StackPanel Orientation="Horizontal">
-                <ComboBox
-                    Name="ComboBox4"
-                    Width="250"
-                    Margin="5,0,0,0" />
+                <Label
+                    Width="120"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddGameWindow.Text15}" />
+                <ComboBox Name="ComboBox4" Width="200" />
 
                 <Button
                     Name="Button4"

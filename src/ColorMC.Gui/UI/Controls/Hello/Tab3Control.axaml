@@ -8,120 +8,118 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <DockPanel>
-            <StackPanel Margin="5" DockPanel.Dock="Top">
-                <Label Content="{setting:Localize HelloWindow.Tab3.Text1}" />
-                <TextBox
-                    Name="TextBox_Name"
-                    Margin="0,0,0,5"
-                    Classes="input1"
-                    Watermark="{setting:Localize HelloWindow.Tab3.Text2}" />
-                <TextBox
-                    Name="TextBox_Local"
-                    Margin="0,0,0,5"
-                    Classes="input1"
-                    Watermark="{setting:Localize HelloWindow.Tab3.Text3}" />
-                <DockPanel>
-                    <Button
-                        Name="Button_Add"
-                        Width="80"
-                        Height="25"
-                        Content="{setting:Localize Button.Add}"
-                        DockPanel.Dock="Right" />
-                    <Button
-                        Name="Button_SelectFile"
-                        Width="80"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right" />
-                    <Button
-                        Name="Button1"
-                        Width="80"
-                        Height="25"
-                        Content="{setting:Localize HelloWindow.Tab3.Text5}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text21}"
-                        ToolTip.VerticalOffset="-30" />
-                </DockPanel>
-                <Label Margin="0,5,0,0" Content="{setting:Localize HelloWindow.Tab3.Text4}" />
-            </StackPanel>
+    <DockPanel>
+        <StackPanel Margin="5" DockPanel.Dock="Top">
+            <Label Content="{setting:Localize HelloWindow.Tab3.Text1}" />
+            <TextBox
+                Name="TextBox_Name"
+                Margin="0,0,0,5"
+                Classes="input1"
+                Watermark="{setting:Localize HelloWindow.Tab3.Text2}" />
+            <TextBox
+                Name="TextBox_Local"
+                Margin="0,0,0,5"
+                Classes="input1"
+                Watermark="{setting:Localize HelloWindow.Tab3.Text3}" />
+            <DockPanel>
+                <Button
+                    Name="Button_Add"
+                    Width="80"
+                    Height="25"
+                    Content="{setting:Localize Button.Add}"
+                    DockPanel.Dock="Right" />
+                <Button
+                    Name="Button_SelectFile"
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize Button.Select}"
+                    DockPanel.Dock="Right" />
+                <Button
+                    Name="Button1"
+                    Width="80"
+                    Height="25"
+                    Content="{setting:Localize HelloWindow.Tab3.Text5}"
+                    DockPanel.Dock="Right"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text21}"
+                    ToolTip.VerticalOffset="-30" />
+            </DockPanel>
+            <Label Margin="0,5,0,0" Content="{setting:Localize HelloWindow.Tab3.Text4}" />
+        </StackPanel>
 
-            <Grid DockPanel.Dock="Bottom">
-                <StackPanel
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
-                    <Button
-                        Name="Button_Delete"
-                        Width="80"
-                        Height="25"
-                        Margin="5,0,0,0"
-                        Content="{setting:Localize Button.Delete}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text23}"
-                        ToolTip.VerticalOffset="-30" />
-
-                    <Button
-                        Name="Button_Refash"
-                        Width="80"
-                        Height="25"
-                        Margin="5"
-                        Content="{setting:Localize Button.Refash}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text22}"
-                        ToolTip.VerticalOffset="-30" />
-                </StackPanel>
+        <Grid DockPanel.Dock="Bottom">
+            <StackPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Orientation="Horizontal">
+                <Button
+                    Name="Button_Delete"
+                    Width="80"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Content="{setting:Localize Button.Delete}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text23}"
+                    ToolTip.VerticalOffset="-30" />
 
                 <Button
-                    Name="Button_Next"
+                    Name="Button_Refash"
                     Width="80"
                     Height="25"
                     Margin="5"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Content="{setting:Localize Button.Next}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text19}"
+                    Content="{setting:Localize Button.Refash}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text22}"
                     ToolTip.VerticalOffset="-30" />
-            </Grid>
+            </StackPanel>
 
-            <Grid Margin="5,0,5,0">
-                <Border
-                    BorderBrush="{setting:Colors Main}"
-                    BorderThickness="2"
-                    CornerRadius="2">
-                    <ListBox
-                        Name="List_Java"
-                        Margin="2"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                        SelectionMode="Single">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Border
-                                    BorderBrush="{setting:Colors Main}"
-                                    BorderThickness="2"
-                                    CornerRadius="2">
-                                    <StackPanel Margin="2">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock
-                                                Margin="0,0,0,5"
-                                                FontSize="20"
-                                                Text="{Binding Name}" />
-                                            <TextBlock
-                                                Margin="10,0,0,5"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Info}" />
-                                        </StackPanel>
-                                        <TextBlock Name="Text_Local" Text="{Binding Path}" />
+            <Button
+                Name="Button_Next"
+                Width="80"
+                Height="25"
+                Margin="5"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Content="{setting:Localize Button.Next}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text19}"
+                ToolTip.VerticalOffset="-30" />
+        </Grid>
+
+        <Grid Margin="5,0,5,0">
+            <Border
+                BorderBrush="{setting:Colors Main}"
+                BorderThickness="2"
+                CornerRadius="2">
+                <ListBox
+                    Name="List_Java"
+                    Margin="2"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                    SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                BorderBrush="{setting:Colors Main}"
+                                BorderThickness="2"
+                                CornerRadius="2">
+                                <StackPanel Margin="2">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            Margin="0,0,0,5"
+                                            FontSize="20"
+                                            Text="{Binding Name}" />
+                                        <TextBlock
+                                            Margin="10,0,0,5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding Info}" />
                                     </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Border>
-            </Grid>
-        </DockPanel>
-    </Grid>
+                                    <TextBlock Name="Text_Local" Text="{Binding Path}" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+        </Grid>
+    </DockPanel>
 </UserControl>

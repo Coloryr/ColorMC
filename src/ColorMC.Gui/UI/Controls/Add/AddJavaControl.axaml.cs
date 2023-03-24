@@ -29,12 +29,7 @@ public partial class AddJavaControl : UserControl, IUserControl
 
         DataGrid1.Items = List;
 
-        ComboBox1.Items = JavaBinding.GetJavaType();
-
-        ComboBox1.SelectedIndex = 0;
-        ComboBox2.SelectedIndex = 0;
-        ComboBox3.SelectedIndex = 0;
-        ComboBox4.SelectedIndex = 0;
+        ComboBox1.ItemsSource = JavaBinding.GetJavaType();
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
@@ -44,15 +39,13 @@ public partial class AddJavaControl : UserControl, IUserControl
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
 
         Button1.Click += Button1_Click;
-
-        Switch();
     }
 
     public void Opened()
     {
         Window.SetTitle(App.GetLanguage("AddJavaWindow.Title"));
 
-        Button1_Click(null, null);
+        ComboBox1.SelectedIndex = 0;
     }
 
     public void Closed()
@@ -150,9 +143,9 @@ public partial class AddJavaControl : UserControl, IUserControl
 
         if (res.Item1)
         {
-            ComboBox2.Items = res.Os;
-            ComboBox3.Items = res.MainVersion;
-            ComboBox4.Items = res.Arch;
+            ComboBox2.ItemsSource = res.Os;
+            ComboBox3.ItemsSource = res.MainVersion;
+            ComboBox4.ItemsSource = res.Arch;
 
             List1.AddRange(res.Item5!);
 
@@ -213,9 +206,9 @@ public partial class AddJavaControl : UserControl, IUserControl
 
     private void Switch()
     {
-        ComboBox2.Items = null;
-        ComboBox3.Items = null;
-        ComboBox4.Items = null;
+        ComboBox2.ItemsSource = null;
+        ComboBox3.ItemsSource = null;
+        ComboBox4.ItemsSource = null;
         ComboBox3.SelectedIndex = 0;
         ComboBox2.SelectedIndex = 0;
         ComboBox4.SelectedIndex = 0;

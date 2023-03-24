@@ -29,10 +29,10 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
     {
         InitializeComponent();
 
-        ComboBox1.Items = GameBinding.GetSourceList();
-        ComboBox3.Items = List4;
+        ComboBox1.ItemsSource = GameBinding.GetSourceList();
+        ComboBox3.ItemsSource = List4;
 
-        ComboBox6.Items = List4;
+        ComboBox6.ItemsSource = List4;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox_SelectionChanged;
@@ -120,8 +120,8 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
         Lock();
 
-        ComboBox2.Items = null;
-        ComboBox4.Items = null;
+        ComboBox2.ItemsSource = null;
+        ComboBox4.ItemsSource = null;
 
         List4.Clear();
         Categories.Clear();
@@ -136,7 +136,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         {
             case 0:
             case 1:
-                ComboBox4.Items = ComboBox1.SelectedIndex == 0 ?
+                ComboBox4.ItemsSource = ComboBox1.SelectedIndex == 0 ?
                     GameBinding.GetCurseForgeSortTypes() :
                     GameBinding.GetModrinthSortTypes();
 
@@ -172,7 +172,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
                 list2.AddRange(list1.Values);
 
-                ComboBox2.Items = list2;
+                ComboBox2.ItemsSource = list2;
 
                 ComboBox2.SelectedIndex = 0;
                 ComboBox3.SelectedIndex = 0;
@@ -183,7 +183,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
             case 2:
                 list = GameBinding.GetFTBTypeList();
 
-                ComboBox2.Items = list;
+                ComboBox2.ItemsSource = list;
                 ComboBox2.SelectedIndex = 0;
 
                 Load();
@@ -233,7 +233,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
     private void ButtonCancel_Click(object? sender, RoutedEventArgs e)
     {
-        App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
+        App.CrossFade300.Start(Grid1, null, CancellationToken.None);
     }
 
     private void ButtonSearch_Click(object? sender, RoutedEventArgs e)
@@ -269,7 +269,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
     public void Install()
     {
-        App.CrossFade300.Start(null, GridVersion, CancellationToken.None);
+        App.CrossFade300.Start(null, Grid1, CancellationToken.None);
         Load1();
     }
 

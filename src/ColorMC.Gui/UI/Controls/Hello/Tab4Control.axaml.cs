@@ -17,15 +17,15 @@ public partial class Tab4Control : UserControl
     public Tab4Control()
     {
         InitializeComponent();
-        List_User.Items = List;
+        List_User.ItemsSource = List;
 
         Button_Add.Click += Button_Add_Click;
         Button_Next.Click += Button_Next_Click;
         Button_Delete.Click += Button_Delete_Click;
         Button_Refash.Click += Button_Refash_Click;
 
-        ComboBox_UserType.SelectionChanged += UserType_SelectionChanged;
-        ComboBox_UserType.Items = UserBinding.GetUserTypes();
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+        ComboBox1.ItemsSource = UserBinding.GetUserTypes();
 
         Load();
     }
@@ -50,7 +50,7 @@ public partial class Tab4Control : UserControl
     {
         var window = App.FindRoot(VisualRoot);
         Button_Add.IsEnabled = false;
-        switch (ComboBox_UserType.SelectedIndex)
+        switch (ComboBox1.SelectedIndex)
         {
             case 0:
                 var name = TextBox_Input1.Text;
@@ -219,9 +219,9 @@ public partial class Tab4Control : UserControl
         BaseBinding.OpUrl(url);
     }
 
-    private void UserType_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        switch (ComboBox_UserType.SelectedIndex)
+        switch (ComboBox1.SelectedIndex)
         {
             case 0:
                 TextBox_Input1.IsEnabled = true;

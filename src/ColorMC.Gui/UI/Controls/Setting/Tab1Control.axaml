@@ -8,7 +8,32 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
+    <DockPanel>
+        <StackPanel
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                Name="Button1"
+                Width="120"
+                Height="25"
+                Margin="5,0,0,5"
+                Content="{setting:Localize SettingWindow.Tab1.Text1}" />
+            <Button
+                Name="Button2"
+                Width="120"
+                Height="25"
+                Margin="5,0,0,5"
+                Content="{setting:Localize SettingWindow.Tab1.Text2}" />
+
+            <Button
+                Name="Button3"
+                Width="120"
+                Height="25"
+                Margin="5,0,5,5"
+                Content="{setting:Localize SettingWindow.Tab1.Text3}" />
+        </StackPanel>
         <StackPanel Margin="5">
             <StackPanel>
                 <Label Content="{setting:Localize HelloWindow.Tab2.Text1}" />
@@ -76,26 +101,5 @@
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button
-                Name="Button1"
-                Width="120"
-                Height="25"
-                Margin="5,0,0,5"
-                Content="{setting:Localize SettingWindow.Tab1.Text1}" />
-            <Button
-                Name="Button2"
-                Width="120"
-                Height="25"
-                Margin="5,0,0,5"
-                Content="{setting:Localize SettingWindow.Tab1.Text2}" />
-
-            <Button
-                Name="Button3"
-                Width="120"
-                Height="25"
-                Margin="5,0,5,5"
-                Content="{setting:Localize SettingWindow.Tab1.Text3}" />
-        </StackPanel>
-    </Grid>
+    </DockPanel>
 </UserControl>

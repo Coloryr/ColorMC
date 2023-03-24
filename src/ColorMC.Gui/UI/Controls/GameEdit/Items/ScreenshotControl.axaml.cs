@@ -2,7 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
 
-namespace ColorMC.Gui.UI.Controls.GameEdit;
+namespace ColorMC.Gui.UI.Controls.GameEdit.Items;
 
 public partial class ScreenshotControl : UserControl
 {

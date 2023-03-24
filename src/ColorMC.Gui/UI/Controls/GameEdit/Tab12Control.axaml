@@ -9,15 +9,13 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
+    <Grid Margin="5">
         <DockPanel>
             <Button
                 Name="Button1"
                 Width="85"
                 Height="25"
-                Margin="0,5,5,0"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Center"
                 Content="{setting:Localize Button.OpFile}"
                 DockPanel.Dock="Top"
                 ToolTip.Tip="{setting:Localize ToolTip.Text39}"
@@ -25,12 +23,12 @@
 
             <DataGrid
                 Name="DataGrid1"
-                Margin="5"
+                Margin="0,3,0,0"
                 AutoGenerateColumns="False"
-                Background="#88ffffff"
+                CanUserResizeColumns="True"
                 CanUserSortColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn IsReadOnly="True" />
+                    <DataGridTextColumn Width="10" IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Name}"
                         Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text1}"
@@ -63,52 +61,32 @@
             </DataGrid>
         </DockPanel>
 
-        <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
+        <StackPanel VerticalAlignment="Center">
             <Grid>
                 <Button
                     Name="Button_A"
                     Width="20"
                     Height="30"
                     Content="A" />
-                <Expander
-                    Name="Expander_A"
+                <Button
+                    Name="Button_A1"
+                    Width="100"
                     Height="30"
-                    Margin="-94,-5,0,-5"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    CornerRadius="0"
-                    ExpandDirection="Right"
-                    IsExpanded="False">
-                    <Button
-                        Name="Button_A1"
-                        Width="100"
-                        Height="30"
-                        Margin="16,0,0,0"
-                        Content="{setting:Localize Button.Add}" />
-                </Expander>
+                    Content="{setting:Localize Button.Add}"
+                    IsVisible="False" />
             </Grid>
-            <Grid>
+            <Grid Margin="0,5,0,0">
                 <Button
                     Name="Button_R"
                     Width="20"
                     Height="30"
                     Content="R" />
-                <Expander
-                    Name="Expander_R"
+                <Button
+                    Name="Button_R1"
+                    Width="100"
                     Height="30"
-                    Margin="-94,-5,0,-5"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    CornerRadius="0"
-                    ExpandDirection="Right"
-                    IsExpanded="False">
-                    <Button
-                        Name="Button_R1"
-                        Width="100"
-                        Height="30"
-                        Margin="16,0,0,0"
-                        Content="{setting:Localize Button.Refash}" />
-                </Expander>
+                    Content="{setting:Localize Button.Refash}"
+                    IsVisible="False" />
             </Grid>
 
         </StackPanel>

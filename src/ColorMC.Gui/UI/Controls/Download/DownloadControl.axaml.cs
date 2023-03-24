@@ -12,7 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Threading;
 using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace ColorMC.Gui.UI.Controls.Download;
 
@@ -34,9 +36,6 @@ public partial class DownloadControl : UserControl, IUserControl
         ColorMCCore.DownloadItemStateUpdate = DownloadItemStateUpdate;
 
         DataGrid_Download.Items = List;
-
-        Expander_P.ContentTransition = App.CrossFade100;
-        Expander_S.ContentTransition = App.CrossFade100;
 
         Button_P1.PointerExited += Button_P1_PointerLeave;
         Button_P.PointerEntered += Button_P_PointerEnter;
@@ -102,29 +101,27 @@ public partial class DownloadControl : UserControl, IUserControl
 
     private void Button_S1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_S.IsExpanded = false;
+        App.CrossFade100.Start(Button_S1, null, CancellationToken.None);
     }
 
     private void Button_S_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_S.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_S1, CancellationToken.None);
     }
 
     private void Button_P1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_P.IsExpanded = false;
+        App.CrossFade100.Start(Button_P1, null, CancellationToken.None);
     }
 
     private void Button_P_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_P.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_P1, CancellationToken.None);
     }
 
     public void Opened()
     {
         DataGrid_Download.MakeTran();
-        Expander_P.MakePadingNull();
-        Expander_S.MakePadingNull();
 
         Window.SetTitle(App.GetLanguage("DownloadWindow.Title"));
     }
@@ -206,7 +203,6 @@ public partial class DownloadControl : UserControl, IUserControl
         var data = BaseBinding.GetDownloadSize();
         ProgressBar1.Maximum = 100;
         ProgressBar1.Value = (double)data.Item2 / data.Item1 * 100;
-        Label2.Content = data.Item1;
-        Label1.Content = data.Item2;
+        Label1.Content = $"{data.Item2}/{data.Item1}";
     }
 }

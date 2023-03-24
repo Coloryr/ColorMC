@@ -9,11 +9,13 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle
-            Fill="{setting:Colors Back}"
-            Stroke="{setting:Colors Main}"
-            StrokeThickness="3" />
-        <StackPanel Margin="5">
+		<Rectangle
+			 Fill="{setting:Colors Back}"
+			 RadiusX="3"
+			 RadiusY="3"
+			 Stroke="{setting:Colors Main}"
+			 StrokeThickness="2" />
+		<StackPanel Margin="3">
             <Button
                 Name="Button2"
                 Width="80"

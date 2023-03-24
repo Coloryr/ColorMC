@@ -35,7 +35,7 @@ public partial class Tab4Control : UserControl
         Input3.PropertyChanged += Input3_PropertyChanged;
         Input4.PropertyChanged += Input3_PropertyChanged;
 
-        ComboBox1.Items = JavaBinding.GetGCTypes();
+        ComboBox1.ItemsSource = JavaBinding.GetGCTypes();
     }
 
     private void CheckBox8_Click(object? sender, RoutedEventArgs e)

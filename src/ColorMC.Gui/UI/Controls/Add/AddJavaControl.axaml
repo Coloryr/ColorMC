@@ -7,8 +7,9 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
-    <DockPanel Margin="3" Background="{setting:Colors TranBack}">
+    <DockPanel Margin="3">
         <StackPanel
             Margin="0,3,0,0"
             DockPanel.Dock="Top"

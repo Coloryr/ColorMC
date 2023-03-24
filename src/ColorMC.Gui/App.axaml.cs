@@ -246,7 +246,7 @@ public partial class App : Application
     {
         RemoveImage();
         string file = GuiConfigUtils.Config.BackImage;
-        if (!string.IsNullOrWhiteSpace(file) && File.Exists(file))
+        if (!string.IsNullOrWhiteSpace(file))
         {
             BackBitmap = await ImageUtils.MakeBackImage(
                 file, GuiConfigUtils.Config.BackEffect,

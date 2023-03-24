@@ -9,24 +9,14 @@
     d:DesignWidth="800"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Grid Name="Grid1">
-        <Border
-            Name="Border2"
-            BorderThickness="2"
-            CornerRadius="0,0,10,10" />
-        <Image
-            Name="Image_Back"
-            Margin="3"
-            Stretch="UniformToFill" />
-
+    <Grid Background="{setting:Colors TranBack}">
         <Label
-            Margin="5"
+            Margin="3"
             VerticalAlignment="Bottom"
             Content="{setting:Localize Tips.Text2}" />
 
         <DataGrid
             Name="DataGrid_User"
-            Margin="3"
             AutoGenerateColumns="False"
             Background="{setting:Colors TranBack}"
             CanUserResizeColumns="True"
@@ -34,6 +24,7 @@
             HorizontalScrollBarVisibility="Visible"
             VerticalScrollBarVisibility="Visible">
             <DataGrid.Columns>
+                <DataGridTextColumn Width="10" IsReadOnly="True" />
                 <DataGridCheckBoxColumn
                     Binding="{Binding Use}"
                     Header="{setting:Localize UserWindow.DataGrid.Text1}"
@@ -68,28 +59,17 @@
                     Width="20"
                     Height="30"
                     Content="A" />
-                <Expander
-                    Name="Expander_A"
+                <Button
+                    Name="Button_A1"
+                    Width="100"
                     Height="30"
-                    Margin="-94,0,0,0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    CornerRadius="0"
-                    ExpandDirection="Right"
-                    IsExpanded="False">
-                    <Button
-                        Name="Button_A1"
-                        Width="100"
-                        Height="30"
-                        Margin="16,0,0,0"
-                        Content="{setting:Localize UserWindow.Text10}" />
-                </Expander>
+                    Content="{setting:Localize UserWindow.Text10}"
+                    IsVisible="False" />
             </Grid>
         </StackPanel>
 
         <Grid
             Name="Grid_Add"
-            Margin="3"
             Background="#EEEEEEEE"
             IsVisible="False">
             <StackPanel Margin="5">

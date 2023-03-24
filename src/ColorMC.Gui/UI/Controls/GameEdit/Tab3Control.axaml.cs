@@ -26,7 +26,7 @@ public partial class Tab3Control : UserControl
     {
         InitializeComponent();
 
-        ComboBox1.Items = List;
+        ComboBox1.ItemsSource = List;
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
         Button2.Click += Button2_Click;

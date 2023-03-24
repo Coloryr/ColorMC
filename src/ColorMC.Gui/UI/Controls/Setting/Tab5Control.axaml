@@ -8,138 +8,115 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <DockPanel Margin="5">
-            <StackPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
-                <Label Content="{setting:Localize SettingWindow.Tab5.Text1}" />
-                <TextBox
-                    Name="TextBox1"
-                    Classes="input1"
-                    Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
-                <TextBox
-                    Name="TextBox2"
-                    Margin="0,5,0,5"
-                    Classes="input1"
-                    Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
-                <DockPanel>
-                    <Button
-                        Name="Button_Add"
-                        Width="80"
-                        Height="25"
-                        Content="{setting:Localize Button.Add}"
-                        DockPanel.Dock="Right" />
+    <DockPanel Margin="5">
+        <StackPanel DockPanel.Dock="Top">
+            <Label Content="{setting:Localize SettingWindow.Tab5.Text1}" />
+            <TextBox
+                Name="TextBox1"
+                Classes="input1"
+                Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
+            <TextBox
+                Name="TextBox2"
+                Margin="0,5,0,5"
+                Classes="input1"
+                Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
+            <DockPanel>
+                <Button
+                    Name="Button_Add"
+                    Width="80"
+                    Height="25"
+                    Content="{setting:Localize Button.Add}"
+                    DockPanel.Dock="Right" />
 
-                    <Button
-                        Name="Button_SelectFile"
-                        Width="80"
-                        Height="25"
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize Button.Select}"
-                        DockPanel.Dock="Right" />
+                <Button
+                    Name="Button_SelectFile"
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize Button.Select}"
+                    DockPanel.Dock="Right" />
 
-                    <Button
-                        Name="Button1"
-                        Width="80"
-                        Height="25"
-                        Content="{setting:Localize SettingWindow.Tab5.Text5}"
-                        DockPanel.Dock="Left" />
+                <Button
+                    Name="Button1"
+                    Width="80"
+                    Height="25"
+                    Content="{setting:Localize SettingWindow.Tab5.Text5}"
+                    DockPanel.Dock="Left" />
 
-                    <Button
-                        Name="Button2"
-                        Width="120"
-                        Height="25"
-                        Margin="5,0,0,0"
-                        Content="{setting:Localize SettingWindow.Tab5.Text7}"
-                        DockPanel.Dock="Left" />
+                <Button
+                    Name="Button2"
+                    Width="120"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Content="{setting:Localize SettingWindow.Tab5.Text7}"
+                    DockPanel.Dock="Left" />
 
-                </DockPanel>
-                <Label Content="{setting:Localize SettingWindow.Tab5.Text4}" />
+            </DockPanel>
+        </StackPanel>
+
+        <Grid>
+            <DataGrid
+                Name="DataGrid1"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="10" IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text1}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding MajorVersion}"
+                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text3}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Version}"
+                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text4}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Type}"
+                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text5}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Arch}"
+                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text6}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Path}"
+                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text2}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel VerticalAlignment="Center">
+                <Grid>
+                    <Button
+                        Name="Button_R"
+                        Width="20"
+                        Height="30"
+                        Content="R" />
+                    <Button
+                        Name="Button_R1"
+                        Width="100"
+                        Height="30"
+                        Content="{setting:Localize Button.Refash}"
+                        IsVisible="False" />
+                </Grid>
+
+                <Grid Margin="0,5,0,0">
+                    <Button
+                        Name="Button_D"
+                        Width="20"
+                        Height="30"
+                        Content="D" />
+                    <Button
+                        Name="Button_D1"
+                        Width="100"
+                        Height="30"
+                        Content="{setting:Localize SettingWindow.Tab5.Text6}"
+                        IsVisible="False" />
+                </Grid>
             </StackPanel>
-
-            <Grid>
-                <DataGrid
-                    Name="DataGrid1"
-                    AutoGenerateColumns="False"
-                    Background="#88ffffff"
-                    CanUserSortColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Width="30" IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text1}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding MajorVersion}"
-                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text3}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Version}"
-                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text4}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Type}"
-                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text5}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Arch}"
-                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text6}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Path}"
-                            Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text2}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
-                <StackPanel VerticalAlignment="Center">
-                    <Grid>
-                        <Button
-                            Name="Button_R"
-                            Width="20"
-                            Height="30"
-                            Content="R" />
-                        <Expander
-                            Name="Expander_R"
-                            Height="30"
-                            Margin="-94,-5,0,-5"
-                            HorizontalAlignment="Left"
-                            Background="Transparent"
-                            CornerRadius="0"
-                            ExpandDirection="Right"
-                            IsExpanded="False">
-                            <Button
-                                Name="Button_R1"
-                                Width="100"
-                                Height="30"
-                                Margin="16,0,0,0"
-                                Content="{setting:Localize Button.Refash}" />
-                        </Expander>
-                    </Grid>
-
-                    <Grid>
-                        <Button
-                            Name="Button_D"
-                            Width="20"
-                            Height="30"
-                            Content="D" />
-                        <Expander
-                            Name="Expander_D"
-                            Height="30"
-                            Margin="-94,-5,0,-5"
-                            HorizontalAlignment="Left"
-                            Background="Transparent"
-                            CornerRadius="0"
-                            ExpandDirection="Right"
-                            IsExpanded="False">
-                            <Button
-                                Name="Button_D1"
-                                Width="100"
-                                Height="30"
-                                Margin="16,0,0,0"
-                                Content="{setting:Localize SettingWindow.Tab5.Text6}" />
-                        </Expander>
-                    </Grid>
-                </StackPanel>
-            </Grid>
-        </DockPanel>
-    </Grid>
+        </Grid>
+    </DockPanel>
 </UserControl>

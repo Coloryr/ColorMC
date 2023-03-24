@@ -7,6 +7,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="{setting:Colors TranBack}"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Grid Margin="3">
@@ -14,8 +15,7 @@
             <StackPanel
                 Margin="0,0,0,0"
                 HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="#88ffffff">
+                VerticalAlignment="Stretch">
                 <Label Margin="5" Content="{setting:Localize AddGameWindow.Text1}" />
                 <TextBox
                     Name="TextBox_Input1"

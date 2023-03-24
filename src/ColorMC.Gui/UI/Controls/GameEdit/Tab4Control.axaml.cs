@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -60,7 +61,7 @@ public partial class Tab4Control : UserControl
 
         Button1.Click += Button1_Click;
 
-        ComboBox1.Items = BaseBinding.GetFilterName();
+        ComboBox1.ItemsSource = BaseBinding.GetFilterName();
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox1.SelectedIndex = 0;
 
@@ -230,61 +231,56 @@ public partial class Tab4Control : UserControl
 
     private void Button_B1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_B.IsExpanded = false;
+        App.CrossFade100.Start(Button_B1, null, CancellationToken.None);
     }
 
     private void Button_B_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_B.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_B1, CancellationToken.None);
     }
 
     private void Button_C1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_C.IsExpanded = false;
+        App.CrossFade100.Start(Button_C1, null, CancellationToken.None);
     }
 
     private void Button_C_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_C.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_C1, CancellationToken.None);
     }
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_I.IsExpanded = false;
+        App.CrossFade100.Start(Button_I1, null, CancellationToken.None);
     }
 
     private void Button_I_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_I.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_I1, CancellationToken.None);
     }
 
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_A.IsExpanded = false;
+        App.CrossFade100.Start(Button_A1, null, CancellationToken.None);
     }
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_A.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
     }
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = false;
+        App.CrossFade100.Start(Button_R1, null, CancellationToken.None);
     }
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
     }
 
     private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)
     {
         DataGrid1.MakeTran();
-        Expander_I.MakePadingNull();
-        Expander_A.MakePadingNull();
-        Expander_R.MakePadingNull();
-        Expander_C.MakePadingNull();
-        Expander_B.MakePadingNull();
     }
 
     private async void Load()

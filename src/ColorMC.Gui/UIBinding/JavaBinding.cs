@@ -163,6 +163,11 @@ public static class JavaBinding
 
     public static async Task<(bool, List<string>? Arch, List<string>? Os, List<string>? MainVersion, List<JavaDownloadDisplayObj>?)> GetJavaList(int type, int os, int mainversion)
     {
+        if (mainversion == -1)
+            mainversion = 0;
+        if (os == -1)
+            os = 0;
+
         switch (type)
         {
             case 0:
@@ -303,6 +308,8 @@ public static class JavaBinding
             var list3 = new List<JavaDownloadDisplayObj>();
             foreach (var item in list)
             {
+                if (item.binary.image_type == "debugimage")
+                    continue;
                 list3.Add(new()
                 {
                     Name = item.binary.scm_ref + "_" + item.binary.image_type,

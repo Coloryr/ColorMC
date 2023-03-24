@@ -12,12 +12,12 @@ public partial class Tab1Control : UserControl
     {
         InitializeComponent();
 
-        Lang.Items = BaseBinding.GetLanguages();
-        Lang.SelectedIndex = 0;
+        ComboBox1.ItemsSource = BaseBinding.GetLanguages();
+        ComboBox1.SelectedIndex = 0;
 
         Button_Next.Click += Button_Next_Click;
         Button1.Click += Button1_Click;
-        Lang.SelectionChanged += Lang_SelectionChanged;
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -26,9 +26,9 @@ public partial class Tab1Control : UserControl
         (window.Con as HelloControl)?.Done();
     }
 
-    private void Lang_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var type = (LanguageType)Lang.SelectedIndex;
+        var type = (LanguageType)ComboBox1.SelectedIndex;
         LanguageHelper.Change(type);
     }
 

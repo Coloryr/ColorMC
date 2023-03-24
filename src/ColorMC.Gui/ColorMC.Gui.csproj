@@ -141,13 +141,13 @@
     <Compile Update="UI\Controls\GameEdit\Flyouts1Control.axaml.cs">
       <DependentUpon>Flyouts1Control.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Controls\GameEdit\ScreenshotControl.axaml.cs">
+    <Compile Update="UI\Controls\GameEdit\Items\ScreenshotControl.axaml.cs">
       <DependentUpon>ScreenshotControl.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\GameEdit\Tab8Control.axaml.cs">
       <DependentUpon>Tab8Control.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Controls\GameEdit\ResourcePackControl.axaml.cs">
+    <Compile Update="UI\Controls\GameEdit\Items\ResourcePackControl.axaml.cs">
       <DependentUpon>ResourcePackControl.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\Hello\Tab2Control.axaml.cs">
@@ -180,8 +180,8 @@
     <Compile Update="UI\Controls\Info4Control.axaml.cs">
       <DependentUpon>Info4Control.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Controls\Server\Flyouts1Control.axaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="UI\Controls\Server\FlyoutsControl.axaml.cs">
+      <DependentUpon>FlyoutsControl.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\Server\Tab3Control.axaml.cs">
       <DependentUpon>Tab3Control.axaml</DependentUpon>

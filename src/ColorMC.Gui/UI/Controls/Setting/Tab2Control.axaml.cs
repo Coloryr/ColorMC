@@ -5,6 +5,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -16,6 +17,7 @@ public partial class Tab2Control : UserControl
         InitializeComponent();
 
         Button_Delete.Click += Button_Delete_Click;
+        Button_Use.Click += Button_Use_Click;
         Button_SelectFile.Click += Button_SelectFile_Click;
         Button_Set.Click += Button_Set_Click;
         Button_Set2.Click += Button_Set2_Click;
@@ -39,11 +41,16 @@ public partial class Tab2Control : UserControl
         ColorPicker4.ColorChanged += ColorPicker_ColorChanged;
         ColorPicker5.ColorChanged += ColorPicker_ColorChanged;
 
-        ComboBox1.Items = BaseBinding.GetWindowTranTypes();
-        ComboBox2.Items = BaseBinding.GetLanguages();
-        ComboBox3.Items = BaseBinding.GetFontList();
+        ComboBox1.ItemsSource = BaseBinding.GetWindowTranTypes();
+        ComboBox2.ItemsSource = BaseBinding.GetLanguages();
+        ComboBox3.ItemsSource = BaseBinding.GetFontList();
 
         Slider5.PropertyChanged += Slider5_PropertyChanged;
+    }
+
+    private void Button_Use_Click(object? sender, RoutedEventArgs e)
+    {
+        Button_Set2_Click(sender, e);
     }
 
     private async void CheckBox7_Click(object? sender, RoutedEventArgs e)

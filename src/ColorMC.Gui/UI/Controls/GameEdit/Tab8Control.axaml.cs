@@ -3,9 +3,11 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.GameEdit.Items;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -36,8 +38,6 @@ public partial class Tab8Control : UserControl
         Button_I.Click += Button_I1_Click;
 
         Button1.Click += Button1_Click;
-
-        LayoutUpdated += Tab8Control_LayoutUpdated;
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -74,31 +74,31 @@ public partial class Tab8Control : UserControl
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_I.IsExpanded = false;
+        App.CrossFade100.Start(Button_I1, null, CancellationToken.None);
     }
 
     private void Button_I_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_I.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_I1, CancellationToken.None);
     }
 
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_A.IsExpanded = false;
+        App.CrossFade100.Start(Button_A1, null, CancellationToken.None);
     }
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_A.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
     }
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = false;
+        App.CrossFade100.Start(Button_R1, null, CancellationToken.None);
     }
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
     }
 
     public async void Delete(ResourcepackDisplayObj obj)
@@ -145,13 +145,6 @@ public partial class Tab8Control : UserControl
             ListBox_Items.Children.Add(con);
             List.Add(con);
         }
-    }
-
-    private void Tab8Control_LayoutUpdated(object? sender, EventArgs e)
-    {
-        Expander_I.MakePadingNull();
-        Expander_A.MakePadingNull();
-        Expander_R.MakePadingNull();
     }
 
     public void Update()

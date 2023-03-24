@@ -38,9 +38,6 @@ public partial class ItemControl : UserControl
         Button2.Click += Button2_Click;
 
         App.SkinLoad += App_SkinLoad;
-        App.PicUpdate += Update;
-
-        Update();
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
@@ -60,11 +57,6 @@ public partial class ItemControl : UserControl
         }
 
         isplay = !isplay;
-    }
-
-    private void Update()
-    {
-        
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

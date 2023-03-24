@@ -8,6 +8,8 @@
     Height="100"
     d:DesignHeight="100"
     d:DesignWidth="500"
+    ToolTip.Tip="{setting:Localize ToolTip.Text49}"
+    ToolTip.VerticalOffset="-30"
     mc:Ignorable="d">
     <Grid Margin="1" Background="{setting:Colors TranBack}">
         <Rectangle

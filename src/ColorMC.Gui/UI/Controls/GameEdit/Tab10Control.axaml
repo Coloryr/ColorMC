@@ -9,78 +9,56 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <DockPanel LastChildFill="True">
-            <view:ServerMotdControl Name="ServerMotd" DockPanel.Dock="Top" />
-            <Grid>
-                <DataGrid
-                    Name="DataGrid1"
-                    Margin="3,0,3,3"
-                    AutoGenerateColumns="False"
-                    Background="#88ffffff"
-                    CanUserSortColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{setting:Localize DownloadWindow.DataGrid.Text1}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding IP}"
-                            Header="{setting:Localize GameEditWindow.Tab10.Text1}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
-                <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
-                    <Grid>
-                        <Button
-                            Name="Button_A"
-                            Width="20"
-                            Height="30"
-                            Content="A" />
-                        <Expander
-                            Name="Expander_A"
-                            Height="30"
-                            Margin="-94,-5,0,-5"
-                            HorizontalAlignment="Left"
-                            Background="Transparent"
-                            CornerRadius="0"
-                            ExpandDirection="Right"
-                            IsExpanded="False">
-                            <Button
-                                Name="Button_A1"
-                                Width="100"
-                                Height="30"
-                                Margin="16,0,0,0"
-                                Content="{setting:Localize Button.Add}" />
-                        </Expander>
-                    </Grid>
-                    <Grid>
-                        <Button
-                            Name="Button_R"
-                            Width="20"
-                            Height="30"
-                            Content="R" />
-                        <Expander
-                            Name="Expander_R"
-                            Height="30"
-                            Margin="-94,-5,0,-5"
-                            HorizontalAlignment="Left"
-                            Background="Transparent"
-                            CornerRadius="0"
-                            ExpandDirection="Right"
-                            IsExpanded="False">
-                            <Button
-                                Name="Button_R1"
-                                Width="100"
-                                Height="30"
-                                Margin="16,0,0,0"
-                                Content="{setting:Localize Button.Refash}" />
-                        </Expander>
-                    </Grid>
+    <DockPanel Margin="5">
+        <view:ServerMotdControl Name="ServerMotd" DockPanel.Dock="Top" />
+        <Grid>
+            <DataGrid
+                Name="DataGrid1"
+                Margin="0,3,0,0"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="10" IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="{setting:Localize DownloadWindow.DataGrid.Text1}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding IP}"
+                        Header="{setting:Localize GameEditWindow.Tab10.Text1}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel VerticalAlignment="Center">
+                <Grid>
+                    <Button
+                        Name="Button_A"
+                        Width="20"
+                        Height="30"
+                        Content="A" />
+                    <Button
+                        Name="Button_A1"
+                        Width="100"
+                        Height="30"
+                        Content="{setting:Localize Button.Add}"
+                        IsVisible="False" />
+                </Grid>
+                <Grid Margin="0,5,0,0">
+                    <Button
+                        Name="Button_R"
+                        Width="20"
+                        Height="30"
+                        Content="R" />
+                    <Button
+                        Name="Button_R1"
+                        Width="100"
+                        Height="30"
+                        Content="{setting:Localize Button.Refash}"
+                        IsVisible="False" />
+                </Grid>
 
-                </StackPanel>
-            </Grid>
-        </DockPanel>
-    </Grid>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </UserControl>

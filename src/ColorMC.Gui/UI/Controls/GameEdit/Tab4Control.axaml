@@ -5,51 +5,48 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    Margin="5"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <DockPanel>
+    <DockPanel Margin="5">
         <Grid DockPanel.Dock="Top">
-            <StackPanel Orientation="Horizontal">
+            <DockPanel>
                 <Label VerticalAlignment="Center" Content="{setting:Localize GameEditWindow.Tab4.Text2}" />
                 <ComboBox
                     Name="ComboBox1"
-                    Width="200"
+                    Width="120"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center" />
-
+                <Button
+                    Name="Button1"
+                    Width="85"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Content="{setting:Localize Button.OpFile}"
+                    DockPanel.Dock="Right"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
                 <TextBox
                     Name="TextBox1"
-                    Width="300"
                     Margin="5,0,0,0"
-                    HorizontalAlignment="Left"
                     Classes="input1"
                     Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
 
-            </StackPanel>
-            <Button
-                Name="Button1"
-                Width="85"
-                Height="25"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Content="{setting:Localize Button.OpFile}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                ToolTip.VerticalOffset="-30" />
+            </DockPanel>
+
         </Grid>
 
         <Grid>
             <DataGrid
                 Name="DataGrid1"
-                Margin="0,5,0,0"
+                Margin="0,3,0,0"
                 AutoGenerateColumns="False"
                 Background="{setting:Colors TranBack}"
                 CanUserSortColumns="False"
                 HorizontalScrollBarVisibility="Visible"
                 VerticalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Width="10" IsReadOnly="True" />
                     <DataGridCheckBoxColumn
                         Binding="{Binding Enable}"
                         Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text1}"
@@ -68,15 +65,15 @@
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Source}"
-                        Header="下载源"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text8}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding PID}"
-                        Header="项目ID"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding FID}"
-                        Header="文件ID"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Local}"
@@ -99,117 +96,66 @@
                         Width="20"
                         Height="30"
                         Content="I" />
-                    <Expander
-                        Name="Expander_I"
+                    <Button
+                        Name="Button_I1"
+                        Width="100"
                         Height="30"
-                        Margin="-94,-5,0,-5"
-                        HorizontalAlignment="Left"
-                        Background="Transparent"
-                        CornerRadius="0"
-                        ExpandDirection="Right"
-                        IsExpanded="False">
-                        <Button
-                            Name="Button_I1"
-                            Width="100"
-                            Height="30"
-                            Margin="16,0,0,0"
-                            Content="{setting:Localize Button.Input}" />
-                    </Expander>
+                        Content="{setting:Localize Button.Input}"
+                        IsVisible="False" />
                 </Grid>
-                <Grid>
+                <Grid Margin="0,5,0,0">
                     <Button
                         Name="Button_A"
                         Width="20"
                         Height="30"
                         Content="A" />
-                    <Expander
-                        Name="Expander_A"
+                    <Button
+                        Name="Button_A1"
+                        Width="100"
                         Height="30"
-                        Margin="-94,-5,0,-5"
-                        HorizontalAlignment="Left"
-                        Background="Transparent"
-                        CornerRadius="0"
-                        ExpandDirection="Right"
-                        IsExpanded="False">
-                        <Button
-                            Name="Button_A1"
-                            Width="100"
-                            Height="30"
-                            Margin="16,0,0,0"
-                            Content="{setting:Localize Button.Add}" />
-                    </Expander>
+                        Content="{setting:Localize Button.Add}"
+                        IsVisible="False" />
                 </Grid>
-                <Grid>
+                <Grid Margin="0,5,0,0">
                     <Button
                         Name="Button_R"
                         Width="20"
                         Height="30"
                         Content="R" />
-                    <Expander
-                        Name="Expander_R"
+                    <Button
+                        Name="Button_R1"
+                        Width="100"
                         Height="30"
-                        Margin="-94,-5,0,-5"
-                        HorizontalAlignment="Left"
-                        Background="Transparent"
-                        CornerRadius="0"
-                        ExpandDirection="Right"
-                        IsExpanded="False">
-                        <Button
-                            Name="Button_R1"
-                            Width="100"
-                            Height="30"
-                            Margin="16,0,0,0"
-                            Content="{setting:Localize Button.Refash}" />
-                    </Expander>
+                        Content="{setting:Localize Button.Refash}"
+                        IsVisible="False" />
                 </Grid>
-                <Grid>
+                <Grid Margin="0,5,0,0">
                     <Button
                         Name="Button_C"
                         Width="20"
                         Height="30"
                         Content="C" />
-                    <Expander
-                        Name="Expander_C"
+                    <Button
+                        Name="Button_C1"
+                        Width="100"
                         Height="30"
-                        Margin="-94,-5,0,-5"
-                        HorizontalAlignment="Left"
-                        Background="Transparent"
-                        CornerRadius="0"
-                        ExpandDirection="Right"
-                        IsExpanded="False">
-                        <Button
-                            Name="Button_C1"
-                            Width="100"
-                            Height="30"
-                            Margin="16,0,0,0"
-                            Content="{setting:Localize GameEditWindow.Tab4.Text4}" />
-                    </Expander>
+                        Content="{setting:Localize GameEditWindow.Tab4.Text4}"
+                        IsVisible="False" />
                 </Grid>
-                <Grid>
+                <Grid Margin="0,5,0,0">
                     <Button
                         Name="Button_B"
                         Width="20"
                         Height="30"
                         Content="B" />
-                    <Expander
-                        Name="Expander_B"
+                    <Button
+                        Name="Button_B1"
+                        Width="100"
                         Height="30"
-                        Margin="-94,-5,0,-5"
-                        HorizontalAlignment="Left"
-                        Background="Transparent"
-                        CornerRadius="0"
-                        ExpandDirection="Right"
-                        IsExpanded="False">
-                        <Button
-                            Name="Button_B1"
-                            Width="100"
-                            Height="30"
-                            Margin="16,0,0,0"
-                            Content="{setting:Localize GameEditWindow.Tab4.Text5}" />
-                    </Expander>
+                        Content="{setting:Localize GameEditWindow.Tab4.Text5}"
+                        IsVisible="False" />
                 </Grid>
             </StackPanel>
         </Grid>
-
     </DockPanel>
 </UserControl>

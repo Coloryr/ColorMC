@@ -8,6 +8,7 @@ using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -34,8 +35,6 @@ public partial class Tab5Control : UserControl
 
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
-
-        Expander_R.ContentTransition = App.CrossFade100;
 
         DataGrid1.Items = List;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
@@ -72,8 +71,6 @@ public partial class Tab5Control : UserControl
     private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)
     {
         DataGrid1.MakeTran();
-        Expander_R.MakePadingNull();
-        Expander_D.MakePadingNull();
     }
 
     private async void Button_D1_Click(object? sender, RoutedEventArgs e)
@@ -94,22 +91,22 @@ public partial class Tab5Control : UserControl
 
     private void Button_D1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_D.IsExpanded = false;
+        App.CrossFade100.Start(Button_D1, null, CancellationToken.None);
     }
 
     private void Button_D_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_D.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_D1, CancellationToken.None);
     }
 
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = false;
+        App.CrossFade100.Start(Button_R1, null, CancellationToken.None);
     }
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
     }
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)

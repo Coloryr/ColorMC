@@ -21,10 +21,10 @@ public partial class Tab5Control : UserControl
     {
         InitializeComponent();
 
-        ComboBox_GameVersion.Items = List;
-        ComboBox_GameVersion.SelectionChanged += GameVersion_SelectionChanged;
+        ComboBox1.ItemsSource = List;
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
-        ComboBox4.Items = GameBinding.GetPackType();
+        ComboBox4.ItemsSource = GameBinding.GetPackType();
 
         Button_Next.Click += Button_Next_Click;
         Button_Add.Click += Button_Add_Click;
@@ -77,7 +77,7 @@ public partial class Tab5Control : UserControl
             return;
         }
 
-        string? version = ComboBox_GameVersion.SelectedItem as string;
+        var version = ComboBox1.SelectedItem as string;
         if (string.IsNullOrWhiteSpace(version))
         {
             window.Info.Show(App.GetLanguage("AddGameWindow.Error2"));
@@ -114,7 +114,7 @@ public partial class Tab5Control : UserControl
         }
     }
 
-    private async void GameVersion_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private async void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
 
@@ -122,7 +122,7 @@ public partial class Tab5Control : UserControl
         CheckBox_Fabric.IsEnabled = false;
         CheckBox_Quilt.IsEnabled = false;
 
-        string? item = ComboBox_GameVersion.SelectedItem as string;
+        var item = ComboBox1.SelectedItem as string;
         if (!string.IsNullOrWhiteSpace(item))
         {
             window.Info1.Show(App.GetLanguage("AddGameWindow.Info3"));
@@ -152,7 +152,7 @@ public partial class Tab5Control : UserControl
         var window = App.FindRoot(VisualRoot);
         if (CheckBox_Quilt.IsChecked == true)
         {
-            string? item = ComboBox_GameVersion.SelectedItem as string;
+            var item = ComboBox1.SelectedItem as string;
             if (item == null)
                 return;
 
@@ -184,7 +184,7 @@ public partial class Tab5Control : UserControl
         var window = App.FindRoot(VisualRoot);
         if (CheckBox_Fabric.IsChecked == true)
         {
-            string? item = ComboBox_GameVersion.SelectedItem as string;
+            var item = ComboBox1.SelectedItem as string;
             if (item == null)
                 return;
 
@@ -216,7 +216,7 @@ public partial class Tab5Control : UserControl
         var window = App.FindRoot(VisualRoot);
         if (CheckBox_Forge.IsChecked == true)
         {
-            string? item = ComboBox_GameVersion.SelectedItem as string;
+            var item = ComboBox1.SelectedItem as string;
             if (item == null)
                 return;
 

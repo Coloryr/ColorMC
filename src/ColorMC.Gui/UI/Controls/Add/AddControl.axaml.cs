@@ -36,7 +36,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
     public readonly ObservableCollection<OptifineDisplayObj> List6 = new();
 
     private FileItemControl? Last;
-    private GameSettingObj? Obj;
+    private GameSettingObj Obj;
     private bool load = false;
     private bool display = false;
     private FileType now;
@@ -55,12 +55,12 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
         InitializeComponent();
 
-        ComboBox1.Items = GameBinding.GetAddType();
-        ComboBox2.Items = List3;
+        ComboBox1.ItemsSource = GameBinding.GetAddType();
+        ComboBox2.ItemsSource = List3;
 
-        ComboBox3.Items = List4;
-        ComboBox6.Items = List4;
-        ComboBox7.Items = List4;
+        ComboBox3.ItemsSource = List4;
+        ComboBox6.ItemsSource = List4;
+        ComboBox7.ItemsSource = List4;
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
@@ -198,8 +198,8 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         load = true;
 
         List4.Clear();
-        ComboBox4.Items = null;
-        ComboBox5.Items = null;
+        ComboBox4.ItemsSource = null;
+        ComboBox5.ItemsSource = null;
 
         foreach (var item in ListBox_Items.Children)
         {
@@ -210,7 +210,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         var type = List2[ComboBox2.SelectedIndex];
         if (type == SourceType.CurseForge)
         {
-            ComboBox4.Items = GameBinding.GetCurseForgeSortTypes();
+            ComboBox4.ItemsSource = GameBinding.GetCurseForgeSortTypes();
 
             window.Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetCurseForgeGameVersions();
@@ -240,8 +240,8 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
             list2.AddRange(list1.Values);
 
-            ComboBox3.Items = list;
-            ComboBox5.Items = list2;
+            ComboBox3.ItemsSource = list;
+            ComboBox5.ItemsSource = list2;
 
             if (List4.Contains(Obj.Version))
             {
@@ -259,7 +259,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         }
         else if (type == SourceType.Modrinth)
         {
-            ComboBox4.Items = GameBinding.GetModrinthSortTypes();
+            ComboBox4.ItemsSource = GameBinding.GetModrinthSortTypes();
 
             window.Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetModrinthGameVersions();
@@ -289,8 +289,8 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
             list2.AddRange(list1.Values);
 
-            ComboBox3.Items = list;
-            ComboBox5.Items = list2;
+            ComboBox3.ItemsSource = list;
+            ComboBox5.ItemsSource = list2;
 
             if (List4.Contains(Obj.Version))
             {
@@ -324,9 +324,9 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         load = true;
 
         now = (FileType)(ComboBox1.SelectedIndex + 1);
-        ComboBox3.Items = null;
-        ComboBox4.Items = null;
-        ComboBox5.Items = null;
+        ComboBox3.ItemsSource = null;
+        ComboBox4.ItemsSource = null;
+        ComboBox5.ItemsSource = null;
 
         Input2.Value = 0;
 
@@ -405,7 +405,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     private void ButtonCancel_Click(object? sender, RoutedEventArgs e)
     {
-        App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
+        App.CrossFade300.Start(Grid1, null, CancellationToken.None);
     }
 
     private void ButtonSearch_Click(object? sender, RoutedEventArgs e)
@@ -444,7 +444,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     public void Install()
     {
-        App.CrossFade300.Start(null, GridVersion, CancellationToken.None);
+        App.CrossFade300.Start(null, Grid1, CancellationToken.None);
         Load1();
     }
 
@@ -469,7 +469,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         }
         var last = Last!;
         last?.SetNowDownload();
-        await App.CrossFade300.Start(GridVersion, null, CancellationToken.None);
+        await App.CrossFade300.Start(Grid1, null, CancellationToken.None);
         bool res = false;
 
         if (now == FileType.DataPacks)
@@ -663,7 +663,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
                 Thread.Sleep(1000);
         });
 
-        App.CrossFade300.Start(null, GridVersion, CancellationToken.None);
+        App.CrossFade300.Start(null, Grid1, CancellationToken.None);
         Load1(pid);
     }
 

@@ -269,7 +269,7 @@ public partial class Tab6Control : UserControl
             uuids.Add(item.UUID);
         }
 
-        ComboBox1.Items = list1;
+        ComboBox1.ItemsSource = list1;
 
         var config = ConfigBinding.GetAllConfig().Item2?.ServerCustom;
 

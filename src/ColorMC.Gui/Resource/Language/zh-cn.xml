@@ -120,27 +120,26 @@
 	
 	<String Key="SettingWindow.Tab2.Text1">语言选择</String>
 	<String Key="SettingWindow.Tab2.Text2">修改背景图片</String>
-	<String Key="SettingWindow.Tab2.Text3">背景图片位置</String>
+	<String Key="SettingWindow.Tab2.Text3">背景图片地址</String>
 	<String Key="SettingWindow.Tab2.Text4">模糊效果</String>
 	<String Key="SettingWindow.Tab2.Text5">透明度</String>
 	<String Key="SettingWindow.Tab2.Text6">启用</String>
-	<String Key="SettingWindow.Tab2.Text7">效果器</String>
 	<String Key="SettingWindow.Tab2.Text8">注意：不是所有系统都支持半透明效果，Windows系统需要在系统中开启透明效果才能使用模糊效果</String>
-	<String Key="SettingWindow.Tab2.Text9">窗口透明效果</String>
+	<String Key="SettingWindow.Tab2.Text9">启用窗口透明效果</String>
 	<String Key="SettingWindow.Tab2.Text10">颜色设置</String>
 	<String Key="SettingWindow.Tab2.Text11">切换</String>
 	<String Key="SettingWindow.Tab2.Text12">主题色</String>
 	<String Key="SettingWindow.Tab2.Text13">背景色</String>
 	<String Key="SettingWindow.Tab2.Text14">透明背景色</String>
 	<String Key="SettingWindow.Tab2.Text15">重置</String>
-	<String Key="SettingWindow.Tab2.Text16">&lt;---这是什么危险的东西，不要碰它</String>
+	<String Key="SettingWindow.Tab2.Text16">RGB模式</String>
 	<String Key="SettingWindow.Tab2.Text17">饱和度</String>
 	<String Key="SettingWindow.Tab2.Text18">色彩度</String>
 	<String Key="SettingWindow.Tab2.Text19">字体颜色1</String>
 	<String Key="SettingWindow.Tab2.Text20">字体颜色2</String>
 	<String Key="SettingWindow.Tab2.Text21">注意：背景图尺寸越大，启动器越卡</String>
 	<String Key="SettingWindow.Tab2.Text22">字体选择</String>
-	<String Key="SettingWindow.Tab2.Text23">默认字体</String>
+	<String Key="SettingWindow.Tab2.Text23">选择默认字体</String>
 	<String Key="SettingWindow.Tab2.Text24">注意：切换语言后需要重启启动器才能完全生效</String>
 	<String Key="SettingWindow.Tab2.Text26">单窗口模式</String>
 	<String Key="SettingWindow.Tab2.Text27">切换后需要重启</String>
@@ -191,7 +190,7 @@
 	<String Key="SettingWindow.Tab4.Text10">水平大小</String>
 	<String Key="SettingWindow.Tab4.Text11">垂直大小</String>
 	<String Key="SettingWindow.Tab4.Text12">全屏化</String>
-	<String Key="SettingWindow.Tab4.Text13">游运行前戏文件检查</String>
+	<String Key="SettingWindow.Tab4.Text13">启动前设置</String>
 	<String Key="SettingWindow.Tab4.Text14">检查游戏核心文件</String>
 	<String Key="SettingWindow.Tab4.Text15">检查资源文件</String>
 	<String Key="SettingWindow.Tab4.Text16">检查运行库文件</String>
@@ -200,12 +199,10 @@
 	<String Key="SettingWindow.Tab4.Text19">启动后设置</String>
 	<String Key="SettingWindow.Tab4.Text20">执行程序</String>
 	<String Key="SettingWindow.Tab4.Text21">执行的程序命令</String>
-	<String Key="SettingWindow.Tab4.Text22">启动前执行程序</String>
 
 	<String Key="SettingWindow.Tab5.Text1">添加Java路径</String>
 	<String Key="SettingWindow.Tab5.Text2">Java名字</String>
 	<String Key="SettingWindow.Tab5.Text3">Java路径</String>
-	<String Key="SettingWindow.Tab5.Text4">已添加的Java</String>
 	<String Key="SettingWindow.Tab5.Text5">下载Java</String>
 	<String Key="SettingWindow.Tab5.Text6">删除所有</String>
 	<String Key="SettingWindow.Tab5.Text7">打开下载目录</String>
@@ -386,6 +383,9 @@
 	<String Key="GameEditWindow.Tab4.DataGrid.Text5">作者</String>
 	<String Key="GameEditWindow.Tab4.DataGrid.Text6">链接</String>
 	<String Key="GameEditWindow.Tab4.DataGrid.Text7">加载器</String>
+	<String Key="GameEditWindow.Tab4.DataGrid.Text8">下载源</String>
+	<String Key="GameEditWindow.Tab4.DataGrid.Text9">项目ID</String>
+	<String Key="GameEditWindow.Tab4.DataGrid.Text10">文件ID</String>
 	<String Key="GameEditWindow.Tab4.Info1">正在加载Mod列表</String>
 	<String Key="GameEditWindow.Tab4.Info2">添加完成</String>
 	<String Key="GameEditWindow.Tab4.Info3">删除完成</String>
@@ -575,6 +575,7 @@
 	<String Key="AddModPackWindow.Text9">版本列表</String>
 	<String Key="AddModPackWindow.Text10">获取版本</String>
 	<String Key="AddModPackWindow.Text11">下载源</String>
+	<String Key="AddModPackWindow.Text12">下载所选</String>
 	<String Key="AddModPackWindow.DataGrid.Text1">名字</String>
 	<String Key="AddModPackWindow.DataGrid.Text2">大小</String>
 	<String Key="AddModPackWindow.DataGrid.Text3">下载次数</String>
@@ -840,6 +841,7 @@
 	<String Key="ToolTip.Text46">结束初始设置</String>
 	<String Key="ToolTip.Text47">生成一个可供自动更新的文件夹</String>
 	<String Key="ToolTip.Text48">暂停/播放音乐</String>
+	<String Key="ToolTip.Text49">双击打开文件列表</String>
 	
 	<String Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单</String>
 	<String Key="Tips.Text2">双击可切换账户，右键可以打开账户菜单</String>
@@ -848,6 +850,7 @@
 	<String Key="Button.Set">设置</String>
 	<String Key="Button.Select">选择文件</String>
 	<String Key="Button.Input">导入</String>
+	<String Key="Button.Use">应用</String>
 	<String Key="Button.Next">下一步</String>
 	<String Key="Button.Cancel">取消</String>
 	<String Key="Button.Confirm">确定</String>

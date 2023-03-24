@@ -8,7 +8,22 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+            <Button
+                Name="Button2"
+                Width="160"
+                Height="25"
+                Margin="5"
+                Content="{setting:Localize SettingWindow.Tab3.Text13}" />
+
+            <Button
+                Name="Button4"
+                Width="160"
+                Height="25"
+                Margin="0,5,5,5"
+                Content="{setting:Localize SettingWindow.Tab3.Text18}" />
+        </StackPanel>
         <StackPanel Margin="5">
             <StackPanel Orientation="Horizontal">
                 <Label
@@ -108,24 +123,5 @@
                     Content="{setting:Localize SettingWindow.Tab3.Text17}" />
             </StackPanel>
         </StackPanel>
-
-        <StackPanel
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Orientation="Horizontal">
-            <Button
-                Name="Button2"
-                Width="160"
-                Height="25"
-                Margin="5"
-                Content="{setting:Localize SettingWindow.Tab3.Text13}" />
-
-            <Button
-                Name="Button4"
-                Width="160"
-                Height="25"
-                Margin="0,5,5,5"
-                Content="{setting:Localize SettingWindow.Tab3.Text18}" />
-        </StackPanel>
-    </Grid>
+    </DockPanel>
 </UserControl>

@@ -15,7 +15,7 @@ public partial class Tab3Control : UserControl
     {
         InitializeComponent();
 
-        ComboBox1.Items = BaseBinding.GetDownloadSources();
+        ComboBox1.ItemsSource = BaseBinding.GetDownloadSources();
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 

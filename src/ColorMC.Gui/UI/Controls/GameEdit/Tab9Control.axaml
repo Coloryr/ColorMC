@@ -8,75 +8,48 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <DockPanel>
-            <Button
-                Name="Button1"
-                Width="85"
-                Height="25"
-                Margin="0,5,5,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Content="{setting:Localize Button.OpFile}"
-                DockPanel.Dock="Top"
-                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                ToolTip.VerticalOffset="-30" />
-            <Grid>
-                <ScrollViewer
-                    Margin="5"
-                    HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Visible">
-                    <WrapPanel Name="WrapPanel1" />
-                </ScrollViewer>
-                <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
-                    <Grid>
-                        <Button
-                            Name="Button_R"
-                            Width="20"
-                            Height="30"
-                            Content="R" />
-                        <Expander
-                            Name="Expander_R"
-                            Height="30"
-                            Margin="-94,-5,0,-5"
-                            HorizontalAlignment="Left"
-                            Background="Transparent"
-                            CornerRadius="0"
-                            ExpandDirection="Right"
-                            IsExpanded="False">
-                            <Button
-                                Name="Button_R1"
-                                Width="100"
-                                Height="30"
-                                Margin="16,0,0,0"
-                                Content="{setting:Localize Button.Refash}" />
-                        </Expander>
-                    </Grid>
-                    <Grid>
-                        <Button
-                            Name="Button_C"
-                            Width="20"
-                            Height="30"
-                            Content="C" />
-                        <Expander
-                            Name="Expander_C"
-                            Height="30"
-                            Margin="-94,-5,0,-5"
-                            HorizontalAlignment="Left"
-                            Background="Transparent"
-                            CornerRadius="0"
-                            ExpandDirection="Right"
-                            IsExpanded="False">
-                            <Button
-                                Name="Button_C1"
-                                Width="100"
-                                Height="30"
-                                Margin="16,0,0,0"
-                                Content="{setting:Localize GameEditWindow.Flyouts4.Text1}" />
-                        </Expander>
-                    </Grid>
-                </StackPanel>
-            </Grid>
-        </DockPanel>
-    </Grid>
+    <DockPanel Margin="5">
+        <Button
+            Name="Button1"
+            Width="85"
+            Height="25"
+            HorizontalAlignment="Right"
+            Content="{setting:Localize Button.OpFile}"
+            DockPanel.Dock="Top"
+            ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+            ToolTip.VerticalOffset="-30" />
+        <Grid Margin="0,3,0,0">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                <WrapPanel Name="WrapPanel1" />
+            </ScrollViewer>
+            <StackPanel VerticalAlignment="Center">
+                <Grid>
+                    <Button
+                        Name="Button_R"
+                        Width="20"
+                        Height="30"
+                        Content="R" />
+                    <Button
+                        Name="Button_R1"
+                        Width="100"
+                        Height="30"
+                        Content="{setting:Localize Button.Refash}"
+                        IsVisible="False" />
+                </Grid>
+                <Grid Margin="0,5,0,0">
+                    <Button
+                        Name="Button_C"
+                        Width="20"
+                        Height="30"
+                        Content="C" />
+                    <Button
+                        Name="Button_C1"
+                        Width="100"
+                        Height="30"
+                        Content="{setting:Localize GameEditWindow.Flyouts4.Text1}"
+                        IsVisible="False" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </UserControl>

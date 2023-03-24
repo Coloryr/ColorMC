@@ -8,10 +8,9 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <DockPanel Margin="3" LastChildFill="True">
+    <DockPanel Background="{setting:Colors TranBack}">
         <ScrollViewer
             Name="ScrollViewer1"
-            Margin="3,0,3,0"
             VerticalAlignment="Top"
             AllowAutoHide="True"
             Background="{setting:Colors TranBack}"
@@ -27,6 +26,7 @@
                 <TabItem Header="{setting:Localize HelloWindow.Tabs.Text6}" />
             </TabControl>
         </ScrollViewer>
+
         <Grid Name="Tab1" ClipToBounds="True" />
 
     </DockPanel>

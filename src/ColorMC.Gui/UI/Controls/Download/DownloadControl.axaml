@@ -7,51 +7,42 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
-    <Grid>
-        <Grid VerticalAlignment="Top">
-            <Rectangle
-                Margin="0,0,0,0"
-                Fill="{setting:Colors TranBack}"
-                StrokeThickness="3" />
-            <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                <Label Margin="5" Content="{setting:Localize DownloadWindow.Text3}" />
-                <ProgressBar
-                    Name="ProgressBar1"
-                    Width="500"
-                    Height="20"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    BorderBrush="White"
-                    BorderThickness="1"
-                    Foreground="#FF5EBDD3"
-                    ShowProgressText="True" />
-                <Label
-                    Name="Label1"
-                    Margin="10,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="0" />
-                <Label VerticalAlignment="Center" Content="/" />
-                <Label
-                    Name="Label2"
-                    VerticalAlignment="Center"
-                    Content="0" />
-                <Label
-                    Name="Label3"
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="0Mb/s" />
-            </StackPanel>
-        </Grid>
+    <DockPanel Margin="3">
+        <DockPanel DockPanel.Dock="Top">
+            <Label Content="{setting:Localize DownloadWindow.Text3}" />
+            <Label
+                Name="Label3"
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                Content="0Mb/s"
+                DockPanel.Dock="Right" />
+            <Label
+                Name="Label1"
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                Content="0"
+                DockPanel.Dock="Right" />
 
-        <Grid Margin="3,30,3,3">
+            <ProgressBar
+                Name="ProgressBar1"
+                Height="20"
+                VerticalAlignment="Center"
+                BorderBrush="White"
+                BorderThickness="1"
+                Foreground="#FF5EBDD3"
+                ShowProgressText="True" />
+        </DockPanel>
+
+        <Grid>
             <DataGrid
                 Name="DataGrid_Download"
                 AutoGenerateColumns="False"
-                Background="#88ffffff"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Width="10" IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Name}"
                         Header="{setting:Localize DownloadWindow.DataGrid.Text1}"
@@ -74,54 +65,34 @@
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Margin="4,0,0,0" VerticalAlignment="Center">
+            <StackPanel VerticalAlignment="Center">
                 <Grid>
                     <Button
                         Name="Button_P"
                         Width="20"
                         Height="30"
                         Content="P" />
-                    <Expander
-                        Name="Expander_P"
+                    <Button
+                        Name="Button_P1"
+                        Width="100"
                         Height="30"
-                        Margin="-94,-5,0,-5"
-                        HorizontalAlignment="Left"
-                        Background="Transparent"
-                        CornerRadius="0"
-                        ExpandDirection="Right"
-                        IsExpanded="False">
-                        <Button
-                            Name="Button_P1"
-                            Width="100"
-                            Height="30"
-                            Margin="16,0,0,0"
-                            Content="{setting:Localize DownloadWindow.Text1}" />
-                    </Expander>
+                        Content="{setting:Localize DownloadWindow.Text1}"
+                        IsVisible="False" />
                 </Grid>
-                <Grid>
+                <Grid Margin="0,5,0,0">
                     <Button
                         Name="Button_S"
                         Width="20"
                         Height="30"
                         Content="S" />
-                    <Expander
-                        Name="Expander_S"
+                    <Button
+                        Name="Button_S1"
+                        Width="100"
                         Height="30"
-                        Margin="-94,-5,0,-5"
-                        HorizontalAlignment="Left"
-                        Background="Transparent"
-                        CornerRadius="0"
-                        ExpandDirection="Right"
-                        IsExpanded="False">
-                        <Button
-                            Name="Button_S1"
-                            Width="100"
-                            Height="30"
-                            Margin="16,0,0,0"
-                            Content="{setting:Localize DownloadWindow.Text2}" />
-                    </Expander>
+                        Content="{setting:Localize DownloadWindow.Text2}"
+                        IsVisible="False" />
                 </Grid>
             </StackPanel>
         </Grid>
-    </Grid>
+    </DockPanel>
 </UserControl>

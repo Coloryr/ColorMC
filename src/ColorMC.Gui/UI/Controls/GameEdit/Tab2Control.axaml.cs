@@ -25,7 +25,7 @@ public partial class Tab2Control : UserControl
 
         Input1.PropertyChanged += Input1_PropertyChanged;
 
-        ComboBox1.Items = JavaBinding.GetGCTypes();
+        ComboBox1.ItemsSource = JavaBinding.GetGCTypes();
 
         TextBox11.PropertyChanged += TextBox11_TextInput;
 

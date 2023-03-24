@@ -12,7 +12,7 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Grid>
-        <DockPanel LastChildFill="True">
+        <DockPanel>
             <views1:ItemControl Name="ItemInfo" DockPanel.Dock="Right" />
             <views:ServerMotdControl Name="ServerMotdControl1" DockPanel.Dock="Top" />
             <Grid>

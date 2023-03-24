@@ -8,12 +8,11 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <DockPanel LastChildFill="True">
+    <DockPanel Background="{setting:Colors TranBack}">
         <ScrollViewer
             Name="ScrollViewer1"
             VerticalAlignment="Top"
             AllowAutoHide="True"
-            Background="{setting:Colors TranBack}"
             DockPanel.Dock="Top"
             HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Disabled">
@@ -25,9 +24,6 @@
             </TabControl>
         </ScrollViewer>
 
-        <Grid
-            Name="Tab1"
-            Background="{setting:Colors TranBack}"
-            ClipToBounds="True" />
+        <Grid Name="Tab1" ClipToBounds="True" />
     </DockPanel>
 </UserControl>

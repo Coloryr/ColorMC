@@ -41,9 +41,9 @@ public partial class Tab1Control : UserControl
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
         ComboBox3.SelectionChanged += ComboBox3_SelectionChanged;
 
-        ComboBox1.Items = List;
-        ComboBox2.Items = List1;
-        ComboBox3.Items = List2;
+        ComboBox1.ItemsSource = List;
+        ComboBox2.ItemsSource = List1;
+        ComboBox3.ItemsSource = List2;
     }
 
     private void Button8_Click(object? sender, RoutedEventArgs e)

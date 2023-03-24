@@ -28,9 +28,9 @@ public partial class Tab4Control : UserControl
 
         Button1.Click += Button1_Click;
 
-        ComboBox1.Items = List1;
+        ComboBox1.ItemsSource = List1;
 
-        ComboBox2.Items = new List<string>()
+        ComboBox2.ItemsSource = new List<string>()
         {
             App.GetLanguage("ServerPackWindow.Tab4.Item1"),
             App.GetLanguage("ServerPackWindow.Tab4.Item2")

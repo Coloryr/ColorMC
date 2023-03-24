@@ -9,7 +9,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <ae:TextEditor
+    <!--<ae:TextEditor
         Name="TextEditor1"
         Margin="5"
         Background="{setting:Colors TranBack}"
@@ -20,5 +20,5 @@
         IsReadOnly="True"
         ShowLineNumbers="True"
         VerticalScrollBarVisibility="Visible"
-        WordWrap="True" />
+        WordWrap="True" />-->
 </UserControl>

@@ -5,12 +5,12 @@ using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.UI.Controls.Server;
 
-public partial class Flyouts1Control : UserControl
+public partial class FlyoutsControl : UserControl
 {
     private ServerPackConfigDisplayObj Obj;
     private FlyoutBase FlyoutBase;
     private Tab4Control Con;
-    public Flyouts1Control()
+    public FlyoutsControl()
     {
         InitializeComponent();
 
@@ -42,7 +42,7 @@ public class ServerPackFlyout1 : PopupFlyoutBase
     }
     protected override Control CreatePresenter()
     {
-        var control = new Flyouts1Control();
+        var control = new FlyoutsControl();
         control.Set(this, Obj, Con);
         return control;
     }

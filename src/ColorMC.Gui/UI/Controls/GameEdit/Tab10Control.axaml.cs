@@ -8,6 +8,7 @@ using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -35,7 +36,6 @@ public partial class Tab10Control : UserControl
 
         DataGrid1.SelectionChanged += DataGrid1_SelectionChanged;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
-        LayoutUpdated += Tab10Control_LayoutUpdated1;
     }
 
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
@@ -83,29 +83,23 @@ public partial class Tab10Control : UserControl
         Load();
     }
 
-    private void Tab10Control_LayoutUpdated1(object? sender, EventArgs e)
-    {
-        Expander_A.MakePadingNull();
-        Expander_R.MakePadingNull();
-    }
-
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_A.IsExpanded = false;
+        App.CrossFade100.Start(Button_A1, null, CancellationToken.None);
     }
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_A.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
     }
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = false;
+        App.CrossFade100.Start(Button_R1, null, CancellationToken.None);
     }
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
     }
 
     private void Load()

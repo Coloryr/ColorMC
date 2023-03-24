@@ -8,165 +8,163 @@
     d:DesignHeight="850"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <ScrollViewer Margin="5">
-            <StackPanel>
-                <!--  运行前检查  -->
+    <ScrollViewer>
+        <StackPanel Margin="5">
+            <!--  运行前检查  -->
 
-                <Label Content="{setting:Localize SettingWindow.Tab4.Text13}" />
+            <Label Content="{setting:Localize SettingWindow.Tab4.Text13}" />
 
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox
-                        Name="CheckBox2"
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text14}" />
-                    <CheckBox
-                        Name="CheckBox3"
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text15}" />
-                    <CheckBox
-                        Name="CheckBox4"
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text16}" />
-                    <CheckBox
-                        Name="CheckBox5"
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text17}" />
-                </StackPanel>
-
+            <StackPanel Orientation="Horizontal">
+                <CheckBox
+                    Name="CheckBox2"
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize SettingWindow.Tab4.Text14}" />
+                <CheckBox
+                    Name="CheckBox3"
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize SettingWindow.Tab4.Text15}" />
+                <CheckBox
+                    Name="CheckBox4"
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize SettingWindow.Tab4.Text16}" />
+                <CheckBox
+                    Name="CheckBox5"
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize SettingWindow.Tab4.Text17}" />
                 <CheckBox
                     Name="CheckBox8"
                     Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text22}" />
-                <TextBox
-                    Name="TextBox6"
-                    Margin="0,5,0,0"
-                    Classes="input1"
-                    Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
-
-                <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />
-
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox
-                        Name="CheckBox6"
-                        Margin="0,0,5,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text18}" />
-                    <CheckBox Name="CheckBox7" Content="{setting:Localize SettingWindow.Tab4.Text20}" />
-                </StackPanel>
-                <TextBox
-                    Name="TextBox5"
-                    Margin="0,5,0,0"
-                    Classes="input1"
-                    Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
-
-                <!--  Jvm参数  -->
-
-                <Label Content="{setting:Localize SettingWindow.Tab4.Text1}" />
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Width="140"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab4.Text2}" />
-                    <ComboBox Name="ComboBox1" Width="300" />
-
-                </StackPanel>
-
-                <TextBox
-                    Name="TextBox1"
-                    Margin="0,5,0,5"
-                    Classes="input1"
-                    IsEnabled="False"
-                    Watermark="{setting:Localize SettingWindow.Tab4.Text3}" />
-
-                <StackPanel Orientation="Horizontal">
-                    <!--  Jvm内存  -->
-
-                    <Label
-                        Width="140"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab4.Text4}" />
-                    <NumericUpDown
-                        Name="Input1"
-                        Width="150"
-                        Height="30"
-                        FormatString="N0"
-                        Minimum="1"
-                        Value="1" />
-
-                    <Label
-                        Width="140"
-                        Margin="20,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab4.Text5}" />
-                    <NumericUpDown
-                        Name="Input2"
-                        Width="150"
-                        Height="30"
-                        FormatString="N0"
-                        Minimum="1"
-                        Value="1" />
-                </StackPanel>
-
-                <!--  Jvm附加参数  -->
-
-                <TextBox
-                    Name="TextBox2"
-                    Margin="0,5,0,0"
-                    Classes="input1"
-                    Watermark="{setting:Localize SettingWindow.Tab4.Text6}" />
-                <TextBox
-                    Name="TextBox3"
-                    Height="100"
-                    Margin="0,5,0,0"
-                    AcceptsReturn="True"
-                    Classes="input"
-                    Watermark="{setting:Localize SettingWindow.Tab4.Text7}" />
-                <TextBox
-                    Name="TextBox4"
-                    Height="100"
-                    Margin="0,5,0,0"
-                    AcceptsReturn="True"
-                    Classes="input"
-                    Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
-
-                <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
-
-                <!--  分辨率  -->
-
-                <Label Content="{setting:Localize SettingWindow.Tab4.Text9}" />
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Width="140"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab4.Text10}" />
-                    <NumericUpDown
-                        Name="Input3"
-                        Width="150"
-                        Height="30"
-                        FormatString="N0"
-                        Minimum="1"
-                        Value="1" />
-
-                    <Label
-                        Width="140"
-                        Margin="20,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize SettingWindow.Tab4.Text11}" />
-                    <NumericUpDown
-                        Name="Input4"
-                        Width="150"
-                        Height="30"
-                        FormatString="N0"
-                        Minimum="1"
-                        Value="1" />
-
-                    <CheckBox
-                        Name="CheckBox1"
-                        Margin="20,0,0,0"
-                        Content="{setting:Localize SettingWindow.Tab4.Text12}" />
-                </StackPanel>
+                    Content="{setting:Localize SettingWindow.Tab4.Text20}" />
             </StackPanel>
-        </ScrollViewer>
-    </Grid>
+
+            <TextBox
+                Name="TextBox6"
+                Margin="0,5,0,0"
+                Classes="input1"
+                Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
+
+            <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />
+
+            <StackPanel Orientation="Horizontal">
+                <CheckBox
+                    Name="CheckBox6"
+                    Margin="0,0,5,0"
+                    Content="{setting:Localize SettingWindow.Tab4.Text18}" />
+                <CheckBox Name="CheckBox7" Content="{setting:Localize SettingWindow.Tab4.Text20}" />
+            </StackPanel>
+            <TextBox
+                Name="TextBox5"
+                Margin="0,5,0,0"
+                Classes="input1"
+                Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
+
+            <!--  Jvm参数  -->
+
+            <Label Content="{setting:Localize SettingWindow.Tab4.Text1}" />
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="140"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab4.Text2}" />
+                <ComboBox Name="ComboBox1" Width="300" />
+
+            </StackPanel>
+
+            <TextBox
+                Name="TextBox1"
+                Margin="0,5,0,5"
+                Classes="input1"
+                IsEnabled="False"
+                Watermark="{setting:Localize SettingWindow.Tab4.Text3}" />
+
+            <StackPanel Orientation="Horizontal">
+                <!--  Jvm内存  -->
+
+                <Label
+                    Width="140"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab4.Text4}" />
+                <NumericUpDown
+                    Name="Input1"
+                    Width="150"
+                    Height="30"
+                    FormatString="N0"
+                    Minimum="1"
+                    Value="1" />
+
+                <Label
+                    Width="140"
+                    Margin="20,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab4.Text5}" />
+                <NumericUpDown
+                    Name="Input2"
+                    Width="150"
+                    Height="30"
+                    FormatString="N0"
+                    Minimum="1"
+                    Value="1" />
+            </StackPanel>
+
+            <!--  Jvm附加参数  -->
+
+            <TextBox
+                Name="TextBox2"
+                Margin="0,5,0,0"
+                Classes="input1"
+                Watermark="{setting:Localize SettingWindow.Tab4.Text6}" />
+            <TextBox
+                Name="TextBox3"
+                Height="100"
+                Margin="0,5,0,0"
+                AcceptsReturn="True"
+                Classes="input"
+                Watermark="{setting:Localize SettingWindow.Tab4.Text7}" />
+            <TextBox
+                Name="TextBox4"
+                Height="100"
+                Margin="0,5,0,0"
+                AcceptsReturn="True"
+                Classes="input"
+                Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
+
+            <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
+
+            <!--  分辨率  -->
+
+            <Label Content="{setting:Localize SettingWindow.Tab4.Text9}" />
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="140"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab4.Text10}" />
+                <NumericUpDown
+                    Name="Input3"
+                    Width="150"
+                    Height="30"
+                    FormatString="N0"
+                    Minimum="1"
+                    Value="1" />
+
+                <Label
+                    Width="140"
+                    Margin="20,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab4.Text11}" />
+                <NumericUpDown
+                    Name="Input4"
+                    Width="150"
+                    Height="30"
+                    FormatString="N0"
+                    Minimum="1"
+                    Value="1" />
+
+                <CheckBox
+                    Name="CheckBox1"
+                    Margin="20,0,0,0"
+                    Content="{setting:Localize SettingWindow.Tab4.Text12}" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

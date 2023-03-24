@@ -4,9 +4,11 @@ using Avalonia.Interactivity;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.GameEdit.Items;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -32,8 +34,6 @@ public partial class Tab9Control : UserControl
         Button_C.Click += Button_C1_Click;
 
         Button1.Click += Button1_Click;
-
-        LayoutUpdated += Tab9Control_LayoutUpdated;
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -63,30 +63,23 @@ public partial class Tab9Control : UserControl
 
     private void Button_C1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_C.IsExpanded = false;
+        App.CrossFade100.Start(Button_C1, null, CancellationToken.None);
     }
 
     private void Button_C_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_C.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_C1, CancellationToken.None);
     }
 
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = false;
+        App.CrossFade100.Start(Button_R1, null, CancellationToken.None);
     }
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
     }
-
-    private void Tab9Control_LayoutUpdated(object? sender, EventArgs e)
-    {
-        Expander_R.MakePadingNull();
-        Expander_C.MakePadingNull();
-    }
-
     public async void Delete(ScreenshotDisplayObj obj)
     {
         var Window = App.FindRoot(VisualRoot);

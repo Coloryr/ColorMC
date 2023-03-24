@@ -383,13 +383,27 @@ public static class ImageUtils
 
     public static Task<Bitmap?> MakeBackImage(string file, int value, int lim)
     {
-        return Task.Run(() =>
+        return Task.Run(async () =>
         {
             try
             {
+                Stream stream1;
+                if (file.StartsWith("https://") || file.StartsWith("http://"))
+                {
+                    var res = await BaseClient.DownloadClient.GetAsync(file);
+                    stream1 = res.Content.ReadAsStream();
+                }
+                else if (!File.Exists(file))
+                {
+                    return null;
+                }
+                else
+                {
+                    stream1 = File.OpenRead(file);
+                }
                 if (value > 0 || lim != 100)
                 {
-                    using var image = SixLabors.ImageSharp.Image.Load(file);
+                    using var image = SixLabors.ImageSharp.Image.Load(stream1);
                     
                     if (lim != 100)
                     {
@@ -416,9 +430,8 @@ public static class ImageUtils
                 }
                 else
                 {
-                    return new Bitmap(file);
+                    return new Bitmap(stream1);
                 }
-
             }
             catch (Exception e)
             {

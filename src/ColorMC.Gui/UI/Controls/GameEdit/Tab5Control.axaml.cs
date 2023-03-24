@@ -4,10 +4,12 @@ using Avalonia.Interactivity;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.GameEdit.Items;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -40,8 +42,6 @@ public partial class Tab5Control : UserControl
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
-
-        LayoutUpdated += Tab5Control_LayoutUpdated;
     }
 
     private async void Button3_Click(object? sender, RoutedEventArgs e)
@@ -120,31 +120,31 @@ public partial class Tab5Control : UserControl
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_I.IsExpanded = false;
+        App.CrossFade100.Start(Button_I1, null, CancellationToken.None);
     }
 
     private void Button_I_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_I.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_I1, CancellationToken.None);
     }
 
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_A.IsExpanded = false;
+        App.CrossFade100.Start(Button_A1, null, CancellationToken.None);
     }
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_A.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
     }
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = false;
+        App.CrossFade100.Start(Button_R1, null, CancellationToken.None);
     }
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
-        Expander_R.IsExpanded = true;
+        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
     }
 
     public async void Export(WorldDisplayObj obj)
@@ -210,13 +210,6 @@ public partial class Tab5Control : UserControl
             ListBox_Items.Children.Add(con);
             List.Add(con);
         }
-    }
-
-    private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)
-    {
-        Expander_I.MakePadingNull();
-        Expander_A.MakePadingNull();
-        Expander_R.MakePadingNull();
     }
 
     public void Update()
