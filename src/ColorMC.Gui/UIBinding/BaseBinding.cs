@@ -513,7 +513,7 @@ public static class BaseBinding
 
     public static List<string> GetFontList()
     {
-        return FontManager.Current.SystemFonts.Select(a=>a.Name).ToList();
+        return FontManager.Current.SystemFonts.Select(a => a.Name).ToList();
     }
 
     public static void OpenBaseDir()
@@ -558,7 +558,7 @@ public static class BaseBinding
                 {
                     return await GameBinding.AddShaderpack(obj, res);
                 }
-                return  null;
+                return null;
             case FileType.Mod:
                 res = await OpFile(window,
                     App.GetLanguage("GameEditWindow.Tab4.Info7"),

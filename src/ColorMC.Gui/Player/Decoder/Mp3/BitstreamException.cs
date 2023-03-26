@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 
-public class BitstreamException : JavaLayerException 
+public class BitstreamException : JavaLayerException
 {
     private int errorcode = BitstreamErrors.UNKNOWN_ERROR;
 

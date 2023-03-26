@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 
@@ -167,7 +163,7 @@ public class Mp3Decoder : DecoderErrors, IDisposable
 
         if (decoder == null)
         {
-            throw new DecoderException(UNSUPPORTED_LAYER, null );
+            throw new DecoderException(UNSUPPORTED_LAYER, null);
         }
 
         return decoder;

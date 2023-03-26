@@ -22,14 +22,14 @@ public static class AuthDatabase
 
         var path = (SystemInfo.Os == OsType.MacOS ?
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) :
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)) 
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData))
             + "/ColorMC/";
 
         Logs.Info(path);
 
         Directory.CreateDirectory(path);
 
-        Dir = Path.GetFullPath(path  + Name);
+        Dir = Path.GetFullPath(path + Name);
         if (File.Exists(Dir))
         {
             Load();

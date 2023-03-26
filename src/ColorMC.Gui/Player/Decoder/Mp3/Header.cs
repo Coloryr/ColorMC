@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 
@@ -373,7 +370,7 @@ public sealed class Header
      */
     public int Frequency()
     {
-        return frequencies[h_version,h_sample_frequency];
+        return frequencies[h_version, h_sample_frequency];
     }
 
     /**
@@ -430,16 +427,16 @@ public sealed class Header
 
         if (h_layer == 1)
         {
-            framesize = (12 * bitrates[h_version,0,h_bitrate_index]) /
-                    frequencies[h_version,h_sample_frequency];
+            framesize = (12 * bitrates[h_version, 0, h_bitrate_index]) /
+                    frequencies[h_version, h_sample_frequency];
             if (h_padding_bit != 0) framesize++;
             framesize <<= 2;        // one slot is 4 bytes long
             nSlots = 0;
         }
         else
         {
-            framesize = (144 * bitrates[h_version,h_layer - 1,h_bitrate_index]) /
-                    frequencies[h_version,h_sample_frequency];
+            framesize = (144 * bitrates[h_version, h_layer - 1, h_bitrate_index]) /
+                    frequencies[h_version, h_sample_frequency];
             if (h_version == MPEG2_LSF || h_version == MPEG25_LSF) framesize >>= 1;    // SZD
             if (h_padding_bit != 0) framesize++;
             // Layer III slots
@@ -484,7 +481,7 @@ public sealed class Header
             float[,] ms_per_frame_array = {{8.707483f, 8.0f, 12.0f},
                     {26.12245f, 24.0f, 36.0f},
                     {26.12245f, 24.0f, 36.0f}};
-            return (ms_per_frame_array[h_layer - 1,h_sample_frequency]);
+            return (ms_per_frame_array[h_layer - 1, h_sample_frequency]);
         }
     }
 
@@ -518,7 +515,7 @@ public sealed class Header
         {
             return Bitrate() / 1000 + " kb/s";
         }
-        else return bitrate_str[h_version,h_layer - 1,h_bitrate_index];
+        else return bitrate_str[h_version, h_layer - 1, h_bitrate_index];
     }
 
     /**
@@ -532,7 +529,7 @@ public sealed class Header
         {
             return ((int)((h_vbr_bytes * 8) / (MsPerFrame() * h_vbr_frames))) * 1000;
         }
-        else return bitrates[h_version,h_layer - 1,h_bitrate_index];
+        else return bitrates[h_version, h_layer - 1, h_bitrate_index];
     }
 
     /**

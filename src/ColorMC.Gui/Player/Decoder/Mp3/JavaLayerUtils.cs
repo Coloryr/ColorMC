@@ -1,12 +1,7 @@
-﻿using Avalonia.Platform;
-using Avalonia;
-using Newtonsoft.Json.Linq;
+﻿using Avalonia;
+using Avalonia.Platform;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 
@@ -14,7 +9,7 @@ public class JavaLayerUtils
 {
     public static float[] DeserializeArrayResource(string name)
     {
-       string local = $"resm:ColorMC.Launcher.Mp3.{name}?assembly=ColorMC.Launcher";
+        string local = $"resm:ColorMC.Launcher.Mp3.{name}?assembly=ColorMC.Launcher";
 
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
         using var asset = assets!.Open(new Uri(local));

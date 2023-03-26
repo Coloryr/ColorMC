@@ -1,4 +1,3 @@
-using ColorMC.Core.Game;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
@@ -8,7 +7,6 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System.IO;
 using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
@@ -839,7 +837,7 @@ public static class InstancesPath
                             break;
 
                         var mmc1 = Encoding.UTF8.GetString(stream2.ToArray());
-                        
+
                         game = GameHelper.MMCToColorMC(mmc, mmc1);
                         game = await CreateVersion(game);
 

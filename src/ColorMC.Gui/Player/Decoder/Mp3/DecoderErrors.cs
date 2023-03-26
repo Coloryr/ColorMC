@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Gui.Player.Decoder.Mp3;
+﻿namespace ColorMC.Gui.Player.Decoder.Mp3;
 
 public class DecoderErrors : JavaLayerErrors
 {
@@ -25,7 +19,7 @@ public class DecoderErrors : JavaLayerErrors
      */
     public static int ILLEGAL_SUBBAND_ALLOCATION
     {
-        get 
+        get
         {
             return 0x200 + 2;
         }

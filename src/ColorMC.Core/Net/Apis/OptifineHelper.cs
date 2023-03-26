@@ -5,7 +5,6 @@ using ColorMC.Core.Objs.Optifine;
 using ColorMC.Core.Utils;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
-using System;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -23,7 +22,7 @@ public static class OptifineHelper
             {
                 ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
                     new Exception(url), false);
-                return (null,null);
+                return (null, null);
             }
             if (BaseClient.Source == SourceLocal.Offical)
             {

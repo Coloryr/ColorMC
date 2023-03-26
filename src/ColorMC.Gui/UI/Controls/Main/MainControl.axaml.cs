@@ -53,8 +53,8 @@ public partial class MainControl : UserControl, IUserControl
 
     private Task<bool> LaunchP(bool pre)
     {
-        return Dispatcher.UIThread.InvokeAsync(() => 
-            Window.Info.ShowWait(pre ? App.GetLanguage("MainWindow.Info29") 
+        return Dispatcher.UIThread.InvokeAsync(() =>
+            Window.Info.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
             : App.GetLanguage("MainWindow.Info30")));
     }
 

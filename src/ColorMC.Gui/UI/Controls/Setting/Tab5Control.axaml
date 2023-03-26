@@ -54,7 +54,7 @@
             </DockPanel>
         </StackPanel>
 
-        <Grid>
+        <Grid Margin="0,3,0,0">
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"

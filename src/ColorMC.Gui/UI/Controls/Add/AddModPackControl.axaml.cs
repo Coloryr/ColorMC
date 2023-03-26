@@ -344,6 +344,9 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
             a++;
         }
 
+        Last?.SetSelect(false);
+        Last = null;
+
         ScrollViewer1.ScrollToHome();
         window.Info1.Close();
         Unlock();

@@ -2,7 +2,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System;
 
 namespace ColorMC.Core.Net;
 

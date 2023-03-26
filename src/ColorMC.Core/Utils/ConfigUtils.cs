@@ -149,7 +149,7 @@ public static class ConfigUtils
             ProxyIP = "127.0.0.1",
             ProxyPort = 1080,
             CheckFile = true,
-            CheckUpdate = true, 
+            CheckUpdate = true,
             AutoDownload = true
         };
     }

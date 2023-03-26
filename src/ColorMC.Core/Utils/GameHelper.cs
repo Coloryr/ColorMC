@@ -5,11 +5,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OtherLaunch;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Concurrent;
-using System.IO;
-using System.Text;
 
 namespace ColorMC.Core.Utils;
 
@@ -24,10 +20,10 @@ public static class GameHelper
         var list = new ConcurrentBag<DownloadItemObj>();
         var list1 = new HashSet<string>();
         var natives = new ConcurrentDictionary<string, string>();
-        await Parallel.ForEachAsync(obj.libraries, new ParallelOptions() 
+        await Parallel.ForEachAsync(obj.libraries, new ParallelOptions()
         {
             MaxDegreeOfParallelism = 1
-        }, async(item1, cancel) =>
+        }, async (item1, cancel) =>
         {
             bool download = CheckRule.CheckAllow(item1.rules);
             if (!download)
@@ -37,7 +33,7 @@ public static class GameHelper
             {
                 lock (list1)
                 {
-                    if (list1.Contains(item1.downloads.artifact.sha1) 
+                    if (list1.Contains(item1.downloads.artifact.sha1)
                         && item1.downloads.classifiers == null)
                     {
                         return;

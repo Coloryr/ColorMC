@@ -2,7 +2,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -59,7 +58,7 @@ public static class QuiltHelper
         {
             string url = UrlHelper.QuiltMeta(local);
             var data = await BaseClient.GetString(url);
-            if(data.Item1 == false)
+            if (data.Item1 == false)
             {
                 ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
                     new Exception(url), false);

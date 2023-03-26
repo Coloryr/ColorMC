@@ -492,9 +492,9 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             {
                 res = type switch
                 {
-                    SourceType.CurseForge => await GameBinding.Download(item.World, 
+                    SourceType.CurseForge => await GameBinding.Download(item.World,
                     data.Data as CurseForgeObj.Data.LatestFiles),
-                    SourceType.Modrinth => await GameBinding.Download(item.World, 
+                    SourceType.Modrinth => await GameBinding.Download(item.World,
                     data.Data as ModrinthVersionObj)
                 };
             }
@@ -588,6 +588,9 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
                 a++;
             }
         }
+
+        Last?.SetSelect(false);
+        Last = null;
 
         ScrollViewer1.ScrollToHome();
         window.Info1.Close();

@@ -1,10 +1,5 @@
-﻿using SkiaSharp;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 
@@ -287,7 +282,7 @@ public sealed class Bitstream : BitstreamErrors, IDisposable
         // read additional 2 bytes
         int bytesRead = ReadBytes(syncbuf, 0, 3);
 
-        if (bytesRead != 3) 
+        if (bytesRead != 3)
             throw new BitstreamException(STREAM_EOF, null);
 
         headerstring = ((syncbuf[0] << 16) & 0x00FF0000) | ((syncbuf[1] << 8) & 0x0000FF00) | ((syncbuf[2]) & 0x000000FF);

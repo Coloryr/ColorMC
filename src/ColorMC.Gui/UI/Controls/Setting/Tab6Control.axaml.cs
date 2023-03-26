@@ -219,7 +219,7 @@ public partial class Tab6Control : UserControl
         }
 
         Button1.IsEnabled = Button8.IsEnabled = Button9.IsEnabled = Button2.IsEnabled =
-        CheckBox6.IsEnabled = TextBox5.IsEnabled = Slider1.IsEnabled = 
+        CheckBox6.IsEnabled = TextBox5.IsEnabled = Slider1.IsEnabled =
             CheckBox5.IsChecked == true;
     }
 

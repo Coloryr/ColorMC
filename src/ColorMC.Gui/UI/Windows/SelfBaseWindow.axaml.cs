@@ -158,7 +158,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         App.Update(this, Image_Back);
 
-        Grid1.Background = GuiConfigUtils.Config.WindowTran ? 
+        Grid1.Background = GuiConfigUtils.Config.WindowTran ?
             Brushes.Transparent : ColorSel.AppBackColor;
 
         Main?.Update();

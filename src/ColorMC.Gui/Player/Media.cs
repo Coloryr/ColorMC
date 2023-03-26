@@ -1,14 +1,10 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Gui.Player.Decoder.Mp3;
-using Newtonsoft.Json.Linq;
 using OpenTK.Audio.OpenAL;
 using System;
 using System.Buffers.Binary;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -284,12 +280,12 @@ public static class Media
                         AL.SourcePlay(alSource);
                     }
                     int value, value1;
-                    
+
                     do
                     {
                         AL.GetSource(alSource, ALGetSourcei.BuffersQueued, out value);
                         AL.GetSource(alSource, ALGetSourcei.BuffersProcessed, out value1);
-                        
+
                         if (value - value1 > 100)
                         {
                             int temp = AL.SourceUnqueueBuffer(alSource);

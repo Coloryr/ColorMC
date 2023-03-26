@@ -3,12 +3,10 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
 using ColorMC.Core;
-using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -27,7 +25,6 @@ using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -109,7 +106,7 @@ public partial class App : Application
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            
+
         }
 
         try
@@ -501,7 +498,7 @@ public partial class App : Application
         {
             var con = new GameEditControl(obj);
             GameEditWindows.Add(obj.UUID, con);
-            AWindow(con); 
+            AWindow(con);
             con.SetType(type);
         }
     }

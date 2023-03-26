@@ -1,5 +1,4 @@
 ﻿using Avalonia.Media;
-using System;
 using System.ComponentModel;
 using System.Linq;
 

@@ -85,7 +85,7 @@ public class SynthesisFilter
      *
      * @return the loaded values for d[].
      */
-    private static  float[] Load()
+    private static float[] Load()
     {
         return JavaLayerUtils.DeserializeArrayResource("sfd.temp");
     }

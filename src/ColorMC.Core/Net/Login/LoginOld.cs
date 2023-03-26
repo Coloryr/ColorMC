@@ -54,7 +54,7 @@ public static class LoginOld
         if (obj2 == null)
             return (LoginState.JsonError, null, null);
 
-        if(obj2.selectedProfile == null)
+        if (obj2.selectedProfile == null)
             return (LoginState.Error, null, LanguageHelper.GetName("Core.Login.Error23"));
 
         return (LoginState.Done, new()

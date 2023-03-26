@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Gui.Player.Decoder.Mp3;
+﻿namespace ColorMC.Gui.Player.Decoder.Mp3;
 
 /**
  * Implements decoding of MPEG Audio Layer II frames.
@@ -699,7 +693,7 @@ public class LayerIIDecoder : LayerIDecoder, IFrameDecoder
     /**
      * Class for layer II subbands in joint stereo mode.
      */
-    public  class SubbandLayer2IntensityStereo : SubbandLayer2
+    public class SubbandLayer2IntensityStereo : SubbandLayer2
     {
         protected int channel2_scfsi;
         protected float channel2_scalefactor1, channel2_scalefactor2, channel2_scalefactor3;

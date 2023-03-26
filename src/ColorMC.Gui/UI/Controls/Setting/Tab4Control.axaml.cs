@@ -137,7 +137,7 @@ public partial class Tab4Control : UserControl
             JavaAgent = TextBox2.Text,
             MinMemory = Input1.Value == null ? null : (uint)Input1.Value,
             MaxMemory = Input2.Value == null ? null : (uint)Input2.Value,
-            LaunchPre =  CheckBox7.IsChecked == true,
+            LaunchPre = CheckBox7.IsChecked == true,
             LaunchPreData = TextBox6.Text,
             LaunchPost = CheckBox8.IsChecked == true,
             LaunchPostData = TextBox5.Text,

@@ -13,13 +13,10 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
-using OpenTK.Audio.OpenAL;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using SkiaSharp;
 using System;
-using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -173,7 +170,7 @@ public static partial class UIUtils
             var item1 = grid.FindToEnd<DataGridColumnHeadersPresenter>();
             if (item1 != null)
             {
-                item1.Background = Brush.Parse("#ccffffff");
+                item1.Background = Brush.Parse("#CCffffff");
                 foreach (var item in item1.GetVisualChildren())
                 {
                     var item2 = item.FindToEnd<TextBlock>();
@@ -182,56 +179,6 @@ public static partial class UIUtils
                         item2.Foreground = Brushes.Black;
                     }
                 }
-            }
-        }
-        catch
-        {
-
-        }
-    }
-
-    public static void MakePadingNull(this Expander expander)
-    {
-        try
-        {
-            var item = expander.FindToEnd<Border>();
-            if (item != null)
-            {
-                item.Background = Brushes.Transparent;
-                item.Padding = new Thickness(0);
-                item.BorderBrush = Brushes.Transparent;
-            }
-        }
-        catch
-        {
-
-        }
-    }
-
-    public static void MakeThumb(this Slider slider)
-    {
-        try
-        {
-            var item = slider.FindToEnd<Thumb>();
-            if (item != null)
-            {
-                var item1 = item.FindToEnd<Border>();
-                if (item1 == null)
-                    return;
-
-                item1.Bind(Border.BackgroundProperty, new Binding
-                {
-                    Source = ColorSel.Instance,
-                    Path = "[Main]"
-                });
-
-                item1.Bind(Border.BorderBrushProperty, new Binding
-                {
-                    Source = ColorSel.Instance,
-                    Path = "[TranBack]"
-                });
-
-                item1.BorderThickness = new Thickness(2);
             }
         }
         catch
@@ -404,7 +351,7 @@ public static class ImageUtils
                 if (value > 0 || lim != 100)
                 {
                     using var image = SixLabors.ImageSharp.Image.Load(stream1);
-                    
+
                     if (lim != 100)
                     {
                         int x = (int)(image.Width * (float)lim / 100);

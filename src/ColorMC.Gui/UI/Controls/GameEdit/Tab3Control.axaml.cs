@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using AvaloniaEdit.Indentation.CSharp;
 using AvaloniaEdit.TextMate;
 using AvaloniaEdit.TextMate.Grammars;
 using ColorMC.Core.LaunchPath;

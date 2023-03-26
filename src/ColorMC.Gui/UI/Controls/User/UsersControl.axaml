@@ -18,7 +18,6 @@
         <DataGrid
             Name="DataGrid_User"
             AutoGenerateColumns="False"
-            Background="{setting:Colors TranBack}"
             CanUserResizeColumns="True"
             CanUserSortColumns="False"
             HorizontalScrollBarVisibility="Visible"

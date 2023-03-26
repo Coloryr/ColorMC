@@ -5,7 +5,6 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Runtime.Intrinsics.Arm;
 
 namespace ColorMC.Core.Game.Auth;
 

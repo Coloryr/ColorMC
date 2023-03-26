@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 
@@ -209,7 +205,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         prevblck = new float[2][];
         prevblck[0] = new float[SBLIMIT * SSLIMIT];
         prevblck[1] = new float[SBLIMIT * SSLIMIT];
-        k = new float[2,SBLIMIT * SSLIMIT];
+        k = new float[2, SBLIMIT * SSLIMIT];
         nonzero = new int[2];
 
         //III_scalefact_t
@@ -425,7 +421,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 if ((ch == 0) || (which_channels == OutputChannels.RIGHT_CHANNEL))
                 {
                     for (ss = 0; ss < SSLIMIT; ss++)
-                    { 
+                    {
                         // Polyphase synthesis
                         sb = 0;
                         for (sb18 = 0; sb18 < 576; sb18 += 18)
@@ -440,7 +436,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 else
                 {
                     for (ss = 0; ss < SSLIMIT; ss++)
-                    { 
+                    {
                         // Polyphase synthesis
                         sb = 0;
                         for (sb18 = 0; sb18 < 576; sb18 += 18)
@@ -610,8 +606,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         int sfb, window;
         GrInfo gr_info = (si.ch[ch].gr[gr]);
         int scale_comp = gr_info.scalefac_compress;
-        int length0 = slen[0,scale_comp];
-        int length1 = slen[1,scale_comp];
+        int length0 = slen[0, scale_comp];
+        int length1 = slen[1, scale_comp];
 
         if ((gr_info.window_switching_flag != 0) && (gr_info.block_type == 2))
         {
@@ -619,61 +615,61 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             { // MIXED
                 for (sfb = 0; sfb < 8; sfb++)
                     scalefac[ch].l[sfb] = br.Hgetbits(
-                            slen[0,gr_info.scalefac_compress]);
+                            slen[0, gr_info.scalefac_compress]);
                 for (sfb = 3; sfb < 6; sfb++)
                     for (window = 0; window < 3; window++)
-                        scalefac[ch].s[window,sfb] = br.Hgetbits(
-                                slen[0,gr_info.scalefac_compress]);
+                        scalefac[ch].s[window, sfb] = br.Hgetbits(
+                                slen[0, gr_info.scalefac_compress]);
                 for (sfb = 6; sfb < 12; sfb++)
                     for (window = 0; window < 3; window++)
-                        scalefac[ch].s[window,sfb] = br.Hgetbits(
-                                slen[1,gr_info.scalefac_compress]);
+                        scalefac[ch].s[window, sfb] = br.Hgetbits(
+                                slen[1, gr_info.scalefac_compress]);
                 for (sfb = 12, window = 0; window < 3; window++)
-                    scalefac[ch].s[window,sfb] = 0;
+                    scalefac[ch].s[window, sfb] = 0;
 
             }
             else
             {  // SHORT
 
-                scalefac[ch].s[0,0] = br.Hgetbits(length0);
-                scalefac[ch].s[1,0] = br.Hgetbits(length0);
-                scalefac[ch].s[2,0] = br.Hgetbits(length0);
-                scalefac[ch].s[0,1] = br.Hgetbits(length0);
-                scalefac[ch].s[1,1] = br.Hgetbits(length0);
-                scalefac[ch].s[2,1] = br.Hgetbits(length0);
-                scalefac[ch].s[0,2] = br.Hgetbits(length0);
-                scalefac[ch].s[1,2] = br.Hgetbits(length0);
-                scalefac[ch].s[2,2] = br.Hgetbits(length0);
-                scalefac[ch].s[0,3] = br.Hgetbits(length0);
-                scalefac[ch].s[1,3] = br.Hgetbits(length0);
-                scalefac[ch].s[2,3] = br.Hgetbits(length0);
-                scalefac[ch].s[0,4] = br.Hgetbits(length0);
-                scalefac[ch].s[1,4] = br.Hgetbits(length0);
-                scalefac[ch].s[2,4] = br.Hgetbits(length0);
-                scalefac[ch].s[0,5] = br.Hgetbits(length0);
-                scalefac[ch].s[1,5] = br.Hgetbits(length0);
-                scalefac[ch].s[2,5] = br.Hgetbits(length0);
-                scalefac[ch].s[0,6] = br.Hgetbits(length1);
-                scalefac[ch].s[1,6] = br.Hgetbits(length1);
-                scalefac[ch].s[2,6] = br.Hgetbits(length1);
-                scalefac[ch].s[0,7] = br.Hgetbits(length1);
-                scalefac[ch].s[1,7] = br.Hgetbits(length1);
-                scalefac[ch].s[2,7] = br.Hgetbits(length1);
-                scalefac[ch].s[0,8] = br.Hgetbits(length1);
-                scalefac[ch].s[1,8] = br.Hgetbits(length1);
-                scalefac[ch].s[2,8] = br.Hgetbits(length1);
-                scalefac[ch].s[0,9] = br.Hgetbits(length1);
-                scalefac[ch].s[1,9] = br.Hgetbits(length1);
-                scalefac[ch].s[2,9] = br.Hgetbits(length1);
-                scalefac[ch].s[0,10] = br.Hgetbits(length1);
-                scalefac[ch].s[1,10] = br.Hgetbits(length1);
-                scalefac[ch].s[2,10] = br.Hgetbits(length1);
-                scalefac[ch].s[0,11] = br.Hgetbits(length1);
-                scalefac[ch].s[1,11] = br.Hgetbits(length1);
-                scalefac[ch].s[2,11] = br.Hgetbits(length1);
-                scalefac[ch].s[0,12] = 0;
-                scalefac[ch].s[1,12] = 0;
-                scalefac[ch].s[2,12] = 0;
+                scalefac[ch].s[0, 0] = br.Hgetbits(length0);
+                scalefac[ch].s[1, 0] = br.Hgetbits(length0);
+                scalefac[ch].s[2, 0] = br.Hgetbits(length0);
+                scalefac[ch].s[0, 1] = br.Hgetbits(length0);
+                scalefac[ch].s[1, 1] = br.Hgetbits(length0);
+                scalefac[ch].s[2, 1] = br.Hgetbits(length0);
+                scalefac[ch].s[0, 2] = br.Hgetbits(length0);
+                scalefac[ch].s[1, 2] = br.Hgetbits(length0);
+                scalefac[ch].s[2, 2] = br.Hgetbits(length0);
+                scalefac[ch].s[0, 3] = br.Hgetbits(length0);
+                scalefac[ch].s[1, 3] = br.Hgetbits(length0);
+                scalefac[ch].s[2, 3] = br.Hgetbits(length0);
+                scalefac[ch].s[0, 4] = br.Hgetbits(length0);
+                scalefac[ch].s[1, 4] = br.Hgetbits(length0);
+                scalefac[ch].s[2, 4] = br.Hgetbits(length0);
+                scalefac[ch].s[0, 5] = br.Hgetbits(length0);
+                scalefac[ch].s[1, 5] = br.Hgetbits(length0);
+                scalefac[ch].s[2, 5] = br.Hgetbits(length0);
+                scalefac[ch].s[0, 6] = br.Hgetbits(length1);
+                scalefac[ch].s[1, 6] = br.Hgetbits(length1);
+                scalefac[ch].s[2, 6] = br.Hgetbits(length1);
+                scalefac[ch].s[0, 7] = br.Hgetbits(length1);
+                scalefac[ch].s[1, 7] = br.Hgetbits(length1);
+                scalefac[ch].s[2, 7] = br.Hgetbits(length1);
+                scalefac[ch].s[0, 8] = br.Hgetbits(length1);
+                scalefac[ch].s[1, 8] = br.Hgetbits(length1);
+                scalefac[ch].s[2, 8] = br.Hgetbits(length1);
+                scalefac[ch].s[0, 9] = br.Hgetbits(length1);
+                scalefac[ch].s[1, 9] = br.Hgetbits(length1);
+                scalefac[ch].s[2, 9] = br.Hgetbits(length1);
+                scalefac[ch].s[0, 10] = br.Hgetbits(length1);
+                scalefac[ch].s[1, 10] = br.Hgetbits(length1);
+                scalefac[ch].s[2, 10] = br.Hgetbits(length1);
+                scalefac[ch].s[0, 11] = br.Hgetbits(length1);
+                scalefac[ch].s[1, 11] = br.Hgetbits(length1);
+                scalefac[ch].s[2, 11] = br.Hgetbits(length1);
+                scalefac[ch].s[0, 12] = 0;
+                scalefac[ch].s[1, 12] = 0;
+                scalefac[ch].s[2, 12] = 0;
             } // SHORT
 
         }
@@ -822,7 +818,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         m = 0;
         for (int i = 0; i < 4; i++)
         {
-            for (int j = 0; j < nr_of_sfb_block[blocknumber,blocktypenumber,i];
+            for (int j = 0; j < nr_of_sfb_block[blocknumber, blocktypenumber, i];
                  j++)
             {
                 scalefac_buffer[m] = (new_slen[i] == 0) ? 0 :
@@ -857,7 +853,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 {
                     for (window = 0; window < 3; window++)
                     {
-                        scalefac[ch].s[window,sfb] = scalefac_buffer[m];
+                        scalefac[ch].s[window, sfb] = scalefac_buffer[m];
                         m++;
                     }
                 }
@@ -868,13 +864,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 {
                     for (window = 0; window < 3; window++)
                     {
-                        scalefac[ch].s[window,sfb] = scalefac_buffer[m];
+                        scalefac[ch].s[window, sfb] = scalefac_buffer[m];
                         m++;
                     }
                 }
             }
             for (window = 0; window < 3; window++)
-                scalefac[ch].s[window,12] = 0;
+                scalefac[ch].s[window, 12] = 0;
         }
         else
         {   // LONG types 0,1,3
@@ -1047,24 +1043,24 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             // Modif E.B 02/22/99
             int reste = j % SSLIMIT;
             int quotien = (j - reste) / SSLIMIT;
-            if (is_1d[j] == 0) xr[quotien,reste] = 0.0f;
+            if (is_1d[j] == 0) xr[quotien, reste] = 0.0f;
             else
             {
                 int abv = is_1d[j];
                 // Pow Array fix (11/17/04)
                 if (abv < t_43.Length)
                 {
-                    if (is_1d[j] > 0) xr[quotien,reste] = g_gain * t_43[abv];
+                    if (is_1d[j] > 0) xr[quotien, reste] = g_gain * t_43[abv];
                     else
                     {
-                        if (-abv < t_43.Length) xr[quotien,reste] = -g_gain * t_43[-abv];
-                        else xr[quotien,reste] = -g_gain * (float)Math.Pow(-abv, d43);
+                        if (-abv < t_43.Length) xr[quotien, reste] = -g_gain * t_43[-abv];
+                        else xr[quotien, reste] = -g_gain * (float)Math.Pow(-abv, d43);
                     }
                 }
                 else
                 {
-                    if (is_1d[j] > 0) xr[quotien,reste] = g_gain * (float)Math.Pow(abv, d43);
-                    else xr[quotien,reste] = -g_gain * (float)Math.Pow(-abv, d43);
+                    if (is_1d[j] > 0) xr[quotien, reste] = g_gain * (float)Math.Pow(abv, d43);
+                    else xr[quotien, reste] = -g_gain * (float)Math.Pow(-abv, d43);
                 }
             }
         }
@@ -1145,11 +1141,11 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             {
 
                 t_index = (index - cb_begin) / cb_width;
-                int idx = scalefac[ch].s[t_index,cb]
+                int idx = scalefac[ch].s[t_index, cb]
                         << gr_info.scalefac_scale;
                 idx += (gr_info.subblock_gain[t_index] << 2);
 
-                xr[quotien,reste] *= two_to_negative_half_pow[idx];
+                xr[quotien, reste] *= two_to_negative_half_pow[idx];
 
             }
             else
@@ -1160,7 +1156,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     idx += pretab[cb];
 
                 idx = idx << gr_info.scalefac_scale;
-                xr[quotien,reste] *= two_to_negative_half_pow[idx];
+                xr[quotien, reste] *= two_to_negative_half_pow[idx];
             }
             index++;
         }
@@ -1172,7 +1168,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             int quotien = (j - reste) / SSLIMIT;
             if (reste < 0) reste = 0;
             if (quotien < 0) quotien = 0;
-            xr[quotien,reste] = 0.0f;
+            xr[quotien, reste] = 0.0f;
         }
     }
 
@@ -1201,7 +1197,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     // Modif E.B 02/22/99
                     int reste = index % SSLIMIT;
                     int quotien = (index - reste) / SSLIMIT;
-                    out_1d[index] = xr[quotien,reste];
+                    out_1d[index] = xr[quotien, reste];
                 }
                 for (sfb = 3; sfb < 13; sfb++)
                 {
@@ -1220,21 +1216,21 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                         int reste = src_line % SSLIMIT;
                         int quotien = (src_line - reste) / SSLIMIT;
 
-                        out_1d[des_line] = xr[quotien,reste];
+                        out_1d[des_line] = xr[quotien, reste];
                         src_line += sfb_lines;
                         des_line++;
 
                         reste = src_line % SSLIMIT;
                         quotien = (src_line - reste) / SSLIMIT;
 
-                        out_1d[des_line] = xr[quotien,reste];
+                        out_1d[des_line] = xr[quotien, reste];
                         src_line += sfb_lines;
                         des_line++;
 
                         reste = src_line % SSLIMIT;
                         quotien = (src_line - reste) / SSLIMIT;
 
-                        out_1d[des_line] = xr[quotien,reste];
+                        out_1d[des_line] = xr[quotien, reste];
                     }
                 }
 
@@ -1246,7 +1242,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     int j = reorder_table[sfreq][index];
                     int reste = j % SSLIMIT;
                     int quotien = (j - reste) / SSLIMIT;
-                    out_1d[index] = xr[quotien,reste];
+                    out_1d[index] = xr[quotien, reste];
                 }
             }
         }
@@ -1257,7 +1253,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 // Modif E.B 02/22/99
                 int reste = index % SSLIMIT;
                 int quotien = (index - reste) / SSLIMIT;
-                out_1d[index] = xr[quotien,reste];
+                out_1d[index] = xr[quotien, reste];
             }
         }
     }
@@ -1272,9 +1268,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             for (sb = 0; sb < SBLIMIT; sb++)
                 for (ss = 0; ss < SSLIMIT; ss += 3)
                 {
-                    lr[0][sb,ss] = ro[0][sb,ss];
-                    lr[0][sb,ss + 1] = ro[0][sb,ss + 1];
-                    lr[0][sb,ss + 2] = ro[0][sb,ss + 2];
+                    lr[0][sb, ss] = ro[0][sb, ss];
+                    lr[0][sb, ss + 1] = ro[0][sb, ss + 1];
+                    lr[0][sb, ss + 2] = ro[0][sb, ss + 2];
                 }
 
         }
@@ -1323,7 +1319,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                                 while (lines > 0)
                                 {
-                                    if (ro[1][i / 18,i % 18] != 0.0f)
+                                    if (ro[1][i / 18, i % 18] != 0.0f)
                                     {
                                         sfbcnt = sfb;
                                         sfb = -10;
@@ -1346,7 +1342,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                                 for (; sb > 0; sb--)
                                 {
-                                    is_pos[i] = scalefac[1].s[j,sfb];
+                                    is_pos[i] = scalefac[1].s[j, sfb];
                                     if (is_pos[i] != 7)
                                         if (lsf)
                                             IStereoKValues(is_pos[i], io_type, i);
@@ -1369,8 +1365,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                                 if (lsf)
                                 {
-                                    k[0,i] = k[0,sfb];
-                                    k[1,i] = k[1,sfb];
+                                    k[0, i] = k[0, sfb];
+                                    k[1, i] = k[1, sfb];
                                 }
                                 else
                                 {
@@ -1386,7 +1382,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                             sb = -1;
                             while (i >= 0)
                             {
-                                if (ro[1][i,ss] != 0.0f)
+                                if (ro[1][i, ss] != 0.0f)
                                 {
                                     sb = (i << 4) + (i << 1) + ss;
                                     i = -1;
@@ -1436,7 +1432,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                                 while (lines > 0)
                                 {
-                                    if (ro[1][i / 18,i % 18] != 0.0f)
+                                    if (ro[1][i / 18, i % 18] != 0.0f)
                                     {
                                         sfbcnt = sfb;
                                         sfb = -10;
@@ -1455,7 +1451,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                                 i = (temp << 2) - temp + j * sb;
                                 for (; sb > 0; sb--)
                                 {
-                                    is_pos[i] = scalefac[1].s[j,sfb];
+                                    is_pos[i] = scalefac[1].s[j, sfb];
                                     if (is_pos[i] != 7)
                                         if (lsf)
                                             IStereoKValues(is_pos[i], io_type, i);
@@ -1479,8 +1475,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                                 if (lsf)
                                 {
-                                    k[0,i] = k[0,sfb];
-                                    k[1,i] = k[1,sfb];
+                                    k[0, i] = k[0, sfb];
+                                    k[1, i] = k[1, sfb];
                                 }
                                 else
                                 {
@@ -1498,7 +1494,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     sb = 0;
                     while (i >= 0)
                     {
-                        if (ro[1][i,ss] != 0.0f)
+                        if (ro[1][i, ss] != 0.0f)
                         {
                             sb = (i << 4) + (i << 1) + ss;
                             i = -1;
@@ -1540,8 +1536,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                         if (lsf)
                         {
-                            k[0,i] = k[0,sfb];
-                            k[1,i] = k[1,sfb];
+                            k[0, i] = k[0, sfb];
+                            k[1, i] = k[1, sfb];
                         }
                         else
                         {
@@ -1560,13 +1556,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                     {
                         if (ms_stereo)
                         {
-                            lr[0][sb,ss] = (ro[0][sb,ss] + ro[1][sb,ss]) * 0.707106781f;
-                            lr[1][sb,ss] = (ro[0][sb,ss] - ro[1][sb,ss]) * 0.707106781f;
+                            lr[0][sb, ss] = (ro[0][sb, ss] + ro[1][sb, ss]) * 0.707106781f;
+                            lr[1][sb, ss] = (ro[0][sb, ss] - ro[1][sb, ss]) * 0.707106781f;
                         }
                         else
                         {
-                            lr[0][sb,ss] = ro[0][sb,ss];
-                            lr[1][sb,ss] = ro[1][sb,ss];
+                            lr[0][sb, ss] = ro[0][sb, ss];
+                            lr[1][sb, ss] = ro[1][sb, ss];
                         }
                     }
                     else if (i_stereo)
@@ -1574,13 +1570,13 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                         if (lsf)
                         {
-                            lr[0][sb,ss] = ro[0][sb,ss] * k[0,i];
-                            lr[1][sb,ss] = ro[0][sb,ss] * k[1,i];
+                            lr[0][sb, ss] = ro[0][sb, ss] * k[0, i];
+                            lr[1][sb, ss] = ro[0][sb, ss] * k[1, i];
                         }
                         else
                         {
-                            lr[1][sb,ss] = ro[0][sb,ss] / (1 + is_ratio[i]);
-                            lr[0][sb,ss] = lr[1][sb,ss] * is_ratio[i];
+                            lr[1][sb, ss] = ro[0][sb, ss] / (1 + is_ratio[i]);
+                            lr[0][sb, ss] = lr[1][sb, ss] * is_ratio[i];
                         }
                     }
                     /*				else {
@@ -1706,9 +1702,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         {
             for (int ss = 0; ss < SSLIMIT; ss += 3)
             {
-                lr[0][sb,ss] = (lr[0][sb,ss] + lr[1][sb,ss]) * 0.5f;
-                lr[0][sb,ss + 1] = (lr[0][sb,ss + 1] + lr[1][sb,ss + 1]) * 0.5f;
-                lr[0][sb,ss + 2] = (lr[0][sb,ss + 2] + lr[1][sb,ss + 2]) * 0.5f;
+                lr[0][sb, ss] = (lr[0][sb, ss] + lr[1][sb, ss]) * 0.5f;
+                lr[0][sb, ss + 1] = (lr[0][sb, ss + 1] + lr[1][sb, ss + 1]) * 0.5f;
+                lr[0][sb, ss + 2] = (lr[0][sb, ss + 2] + lr[1][sb, ss + 2]) * 0.5f;
             }
         }
     }
@@ -1776,7 +1772,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 input[12 + i] += input[9 + i];
                 input[9 + i] += input[6 + i];
                 input[6 + i] += input[3 + i];
-                input[3 + i] += input[i] ;
+                input[3 + i] += input[i];
 
                 // Input aliasing on odd indices (for 6 point IDCT)
                 input[15 + i] += input[9 + i];
@@ -1784,18 +1780,18 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                 // 3 point IDCT on even indices
                 float pp1, pp2, sum;
-                pp2 = input[12 + i] *0.500000000f;
-                pp1 = input[6 + i] *0.866025403f;
-                sum = input[i] +pp2;
+                pp2 = input[12 + i] * 0.500000000f;
+                pp1 = input[6 + i] * 0.866025403f;
+                sum = input[i] + pp2;
                 tmpf_1 = input[i] - input[12 + i];
                 tmpf_0 = sum + pp1;
                 tmpf_2 = sum - pp1;
 
                 // End 3 point IDCT on even indices
                 // 3 point IDCT on odd indices (for 6 point IDCT)
-                pp2 = input[15 + i] *0.500000000f;
-                pp1 = input[9 + i] *0.866025403f;
-                sum = input[3 + i] +pp2;
+                pp2 = input[15 + i] * 0.500000000f;
+                pp1 = input[9 + i] * 0.866025403f;
+                sum = input[3 + i] + pp2;
                 tmpf_4 = input[3 + i] - input[15 + i];
                 tmpf_5 = sum + pp1;
                 tmpf_3 = sum - pp1;
@@ -1847,18 +1843,18 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
                 tmpf_0 *= 0.130526192f;
 
-                output[six_i +6] += tmpf_0;
-                output[six_i +7] += tmpf_1;
-                output[six_i +8] += tmpf_2;
-                output[six_i +9] += tmpf_3;
-                output[six_i +10] += tmpf_4;
-                output[six_i +11] += tmpf_5;
-                output[six_i +12] += tmpf_6;
-                output[six_i +13] += tmpf_7;
-                output[six_i +14] += tmpf_8;
-                output[six_i +15] += tmpf_9;
-                output[six_i +16] += tmpf_10;
-                output[six_i +17] += tmpf_11;
+                output[six_i + 6] += tmpf_0;
+                output[six_i + 7] += tmpf_1;
+                output[six_i + 8] += tmpf_2;
+                output[six_i + 9] += tmpf_3;
+                output[six_i + 10] += tmpf_4;
+                output[six_i + 11] += tmpf_5;
+                output[six_i + 12] += tmpf_6;
+                output[six_i + 13] += tmpf_7;
+                output[six_i + 14] += tmpf_8;
+                output[six_i + 15] += tmpf_9;
+                output[six_i + 16] += tmpf_10;
+                output[six_i + 17] += tmpf_11;
 
                 six_i += 6;
             }
@@ -1916,38 +1912,38 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             float i00 = input[0] + input[0];
             float iip12 = i00 + input[12];
 
-            tmp0 = iip12 + input[4] *1.8793852415718f + input[8] *1.532088886238f + input[16] *0.34729635533386f;
+            tmp0 = iip12 + input[4] * 1.8793852415718f + input[8] * 1.532088886238f + input[16] * 0.34729635533386f;
             tmp1 = i00 + input[4] - input[8] - input[12] - input[12] - input[16];
-            tmp2 = iip12 - input[4] *0.34729635533386f - input[8] *1.8793852415718f + input[16] *1.532088886238f;
-            tmp3 = iip12 - input[4] *1.532088886238f + input[8] *0.34729635533386f - input[16] *1.8793852415718f;
+            tmp2 = iip12 - input[4] * 0.34729635533386f - input[8] * 1.8793852415718f + input[16] * 1.532088886238f;
+            tmp3 = iip12 - input[4] * 1.532088886238f + input[8] * 0.34729635533386f - input[16] * 1.8793852415718f;
             tmp4 = input[0] - input[4] + input[8] - input[12] + input[16];
 
             // 4 points on even indices
-            float i66_ = input[6] *1.732050808f;        // Sqrt[3]
+            float i66_ = input[6] * 1.732050808f;        // Sqrt[3]
 
-            tmp0_ = input[2] *1.9696155060244f + i66_ + input[10] *1.2855752193731f + input[14] *0.68404028665134f;
-            tmp1_ = (input[2] - input[10] - input[14]) *1.732050808f;
-            tmp2_ = input[2] *1.2855752193731f - i66_ - input[10] *0.68404028665134f + input[14] *1.9696155060244f;
-            tmp3_ = input[2] *0.68404028665134f - i66_ + input[10] *1.9696155060244f - input[14] *1.2855752193731f;
+            tmp0_ = input[2] * 1.9696155060244f + i66_ + input[10] * 1.2855752193731f + input[14] * 0.68404028665134f;
+            tmp1_ = (input[2] - input[10] - input[14]) * 1.732050808f;
+            tmp2_ = input[2] * 1.2855752193731f - i66_ - input[10] * 0.68404028665134f + input[14] * 1.9696155060244f;
+            tmp3_ = input[2] * 0.68404028665134f - i66_ + input[10] * 1.9696155060244f - input[14] * 1.2855752193731f;
 
             // 9 point IDCT on odd indices
             // 5 points on odd indices (not realy an IDCT)
             float i0 = input[1] + input[1];
             float i0p12 = i0 + input[12 + 1];
 
-            tmp0o = i0p12 + input[4 + 1] *1.8793852415718f + input[8 + 1] *1.532088886238f + input[16 + 1] *0.34729635533386f;
+            tmp0o = i0p12 + input[4 + 1] * 1.8793852415718f + input[8 + 1] * 1.532088886238f + input[16 + 1] * 0.34729635533386f;
             tmp1o = i0 + input[4 + 1] - input[8 + 1] - input[12 + 1] - input[12 + 1] - input[16 + 1];
-            tmp2o = i0p12 - input[4 + 1] *0.34729635533386f - input[8 + 1] *1.8793852415718f + input[16 + 1] *1.532088886238f;
-            tmp3o = i0p12 - input[4 + 1] *1.532088886238f + input[8 + 1] *0.34729635533386f - input[16 + 1] *1.8793852415718f;
-            tmp4o = (input[1] - input[4 + 1] + input[8 + 1] - input[12 + 1] + input[16 + 1]) *0.707106781f; // Twiddled
+            tmp2o = i0p12 - input[4 + 1] * 0.34729635533386f - input[8 + 1] * 1.8793852415718f + input[16 + 1] * 1.532088886238f;
+            tmp3o = i0p12 - input[4 + 1] * 1.532088886238f + input[8 + 1] * 0.34729635533386f - input[16 + 1] * 1.8793852415718f;
+            tmp4o = (input[1] - input[4 + 1] + input[8 + 1] - input[12 + 1] + input[16 + 1]) * 0.707106781f; // Twiddled
 
             // 4 points on even indices
-            float i6_ = input[6 + 1] *1.732050808f;        // Sqrt[3]
+            float i6_ = input[6 + 1] * 1.732050808f;        // Sqrt[3]
 
-            tmp0_o = input[2 + 1] *1.9696155060244f + i6_ + input[10 + 1] *1.2855752193731f + input[14 + 1] *0.68404028665134f;
-            tmp1_o = (input[2 + 1] - input[10 + 1] - input[14 + 1]) *1.732050808f;
-            tmp2_o = input[2 + 1] *1.2855752193731f - i6_ - input[10 + 1] *0.68404028665134f + input[14 + 1] *1.9696155060244f;
-            tmp3_o = input[2 + 1] *0.68404028665134f - i6_ + input[10 + 1] *1.9696155060244f - input[14 + 1] *1.2855752193731f;
+            tmp0_o = input[2 + 1] * 1.9696155060244f + i6_ + input[10 + 1] * 1.2855752193731f + input[14 + 1] * 0.68404028665134f;
+            tmp1_o = (input[2 + 1] - input[10 + 1] - input[14 + 1]) * 1.732050808f;
+            tmp2_o = input[2 + 1] * 1.2855752193731f - i6_ - input[10 + 1] * 0.68404028665134f + input[14 + 1] * 1.9696155060244f;
+            tmp3_o = input[2 + 1] * 0.68404028665134f - i6_ + input[10 + 1] * 1.9696155060244f - input[14 + 1] * 1.2855752193731f;
 
             // Twiddle factors on odd indices
             // and
@@ -2119,7 +2115,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         public Temporaire2()
         {
             l = new int[23];
-            s = new int[3,13];
+            s = new int[3, 13];
         }
     }
 

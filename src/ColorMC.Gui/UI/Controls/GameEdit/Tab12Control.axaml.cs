@@ -8,7 +8,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
-using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 

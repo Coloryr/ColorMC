@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
@@ -7,8 +6,6 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils.LaunchSetting;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -189,7 +186,7 @@ public partial class ItemControl : UserControl
         if (config.Item2?.ServerCustom?.PlayMusic == true)
         {
             var window = App.FindRoot(VisualRoot);
-            window.SetTitle(App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33")) ;
+            window.SetTitle(App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33"));
             Button2.IsVisible = true;
         }
         else

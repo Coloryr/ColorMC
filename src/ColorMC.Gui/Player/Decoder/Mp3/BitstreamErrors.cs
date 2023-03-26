@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Gui.Player.Decoder.Mp3;
+﻿namespace ColorMC.Gui.Player.Decoder.Mp3;
 
 public class BitstreamErrors : JavaLayerErrors
 {
     /**
      * An undeterminable error occurred.
      */
-    public static int UNKNOWN_ERROR 
+    public static int UNKNOWN_ERROR
     {
         get
         {
@@ -46,7 +40,7 @@ public class BitstreamErrors : JavaLayerErrors
      */
     public static int INVALIDFRAME
     {
-        get 
+        get
         {
             return 0x100 + 5;
         }

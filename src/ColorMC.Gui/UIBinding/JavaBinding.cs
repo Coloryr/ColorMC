@@ -1,6 +1,4 @@
-﻿using Avalonia.Platform.Storage;
-using Avalonia.Platform.Storage.FileIO;
-using ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Java;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Java;

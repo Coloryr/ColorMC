@@ -5,7 +5,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.GameEdit.Items;
 using ColorMC.Gui.UIBinding;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 
