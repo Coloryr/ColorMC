@@ -592,6 +592,8 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         Last?.SetSelect(false);
         Last = null;
 
+        Grid3.IsVisible = ListBox_Items.Children.Count == 0;
+
         ScrollViewer1.ScrollToHome();
         window.Info1.Close();
     }
@@ -672,6 +674,12 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
+        if (!string.IsNullOrWhiteSpace(Input1.Text) && Input2.Value != 0)
+        {
+            Input2.Value = 0;
+            return;
+        }
+
         Load();
     }
 
