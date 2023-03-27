@@ -34,8 +34,6 @@ public record WindowsRender
 {
     public bool? UseWindowsUIComposition { get; set; }
     public bool? UseWgl { get; set; }
-    public bool? UseCompositor { get; set; }
-    public bool? UseDeferredRendering { get; set; }
 }
 
 public record X11Render
@@ -43,8 +41,6 @@ public record X11Render
     public bool? UseEGL { get; set; }
     public bool? UseGpu { get; set; }
     public bool? OverlayPopups { get; set; }
-    public bool? UseDeferredRendering { get; set; }
-    public bool? UseCompositor { get; set; }
 }
 
 public record Render

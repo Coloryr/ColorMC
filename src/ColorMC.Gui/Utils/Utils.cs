@@ -542,17 +542,13 @@ public static class GuiConfigUtils
             Windows = new()
             {
                 UseWindowsUIComposition = null,
-                UseWgl = null,
-                UseCompositor = null,
-                UseDeferredRendering = null
+                UseWgl = null
             },
             X11 = new()
             {
                 UseEGL = null,
                 UseGpu = null,
-                OverlayPopups = null,
-                UseDeferredRendering = null,
-                UseCompositor = null,
+                OverlayPopups = null
             }
         };
     }

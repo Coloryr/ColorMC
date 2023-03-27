@@ -11,7 +11,7 @@ namespace ColorMC.Gui;
 
 public class ColorMCGui
 {
-    public const string Version = "A16.230323";
+    public const string Version = "A16.230327";
 
     public static string RunDir { get; private set; }
     public static Action InitDone { get; private set; }
@@ -99,8 +99,6 @@ public class ColorMCGui
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();
-        opt.CompositionBackdropCornerRadius = 0;
-        //opt.UseWindowsUIComposition = false;
         if (config.UseWindowsUIComposition != null)
         {
             opt.UseWindowsUIComposition = config.UseWindowsUIComposition == true;
@@ -109,14 +107,6 @@ public class ColorMCGui
         {
             opt.UseWgl = config.UseWgl == true;
         }
-        //if (config.UseCompositor != null)
-        //{
-        //    opt.UseCompositor = config.UseCompositor == true;
-        //}
-        //if (config.UseDeferredRendering != null)
-        //{
-        //    opt.UseDeferredRendering = config.UseDeferredRendering == true;
-        //}
 
         var config1 = GuiConfigUtils.Config.Render.X11;
         var opt1 = new X11PlatformOptions();
@@ -132,14 +122,6 @@ public class ColorMCGui
         {
             opt1.OverlayPopups = config1.OverlayPopups == true;
         }
-        //if (config1.UseDeferredRendering != null)
-        //{
-        //    opt1.UseDeferredRendering = config1.UseDeferredRendering == true;
-        //}
-        //if (config1.UseCompositor != null)
-        //{
-        //    opt1.UseCompositor = config1.UseCompositor == true;
-        //}
 
         return AppBuilder.Configure<App>()
             .With(new FontManagerOptions

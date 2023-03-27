@@ -19,7 +19,6 @@ internal class Program
 
     public static Updater updater;
     public static string BaseDir { get; private set; }
-    public static string VersionBaseDir { get; private set; }
 
     public delegate void IN(string[] args);
     public delegate void IN1();
@@ -53,12 +52,10 @@ internal class Program
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            VersionBaseDir = $"{path}/ColorMC/";
             BaseDir = AppContext.BaseDirectory;
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            VersionBaseDir = "/Users/Shared/ColorMC/";
             BaseDir = $"{AppContext.BaseDirectory}Contents/MacOS/";
 
             if (!Directory.Exists(BaseDir))
@@ -68,7 +65,6 @@ internal class Program
         }
         else
         {
-            VersionBaseDir = AppContext.BaseDirectory;
             BaseDir = AppContext.BaseDirectory;
         }
 
@@ -82,9 +78,6 @@ internal class Program
         }
 
         Console.WriteLine($"BaseDir:{BaseDir}");
-        Console.WriteLine($"VersionBaseDir:{VersionBaseDir}");
-
-        Directory.CreateDirectory(VersionBaseDir);
 
         updater = new();
 
@@ -144,7 +137,6 @@ internal class Program
     private static void Load()
     {
 #if DEBUG
-        VersionBaseDir = AppContext.BaseDirectory;
         BaseDir = AppContext.BaseDirectory;
 #endif
 

@@ -1,53 +1,56 @@
 ﻿using Avalonia.Threading;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Launcher;
-
-public record VersionObj
-{
-    public string Version { get; set; }
-    public string Text { get; set; }
-}
 
 public class Updater
 {
     private const string url = "https://colormc.coloryr.com/colormc/A16/";
 
     private readonly HttpClient Client;
-    private readonly VersionObj version;
-    private readonly string Local;
+    private string sha1;
+    private string sha2;
     public Updater()
     {
         Client = new();
 
-        Local = $"{Program.VersionBaseDir}version.json";
-        try
+        if (File.Exists($"{Program.BaseDir}ColorMC.Core.dll"))
         {
-            if (File.Exists(Local))
-            {
-                version = JsonConvert.DeserializeObject<VersionObj>(
-                    File.ReadAllText(Local))!;
-            }
+            using var file = File.OpenRead($"{Program.BaseDir}ColorMC.Core.dll");
+            sha1 = GenSha1(file);
         }
-        catch (Exception e)
+        else
         {
-            Console.WriteLine(e);
+            sha1 = "";
         }
+        if (File.Exists($"{Program.BaseDir}ColorMC.Gui.dll"))
+        {
+            using var file = File.OpenRead($"{Program.BaseDir}ColorMC.Gui.dll");
+            sha2 = GenSha1(file);
+        }
+        else
+        {
+            sha2 = "";
+        }
+    }
 
-        if (version == null)
+    public static string GenSha1(Stream stream)
+    {
+        SHA1 sha1 = SHA1.Create();
+        StringBuilder EnText = new();
+        foreach (byte iByte in sha1.ComputeHash(stream))
         {
-            version = new()
-            {
-                Version = "0"
-            };
-
-            File.WriteAllText(Local, JsonConvert.SerializeObject(version));
+            EnText.AppendFormat("{0:x2}", iByte);
         }
+        return EnText.ToString().ToLower();
     }
 
     public void Check()
@@ -56,8 +59,8 @@ public class Updater
         {
             try
             {
-                var data = await Client.GetStringAsync(url + "version.json");
-                var obj = JsonConvert.DeserializeObject<VersionObj>(data)!;
+                var data = await Client.GetStringAsync(url + "sha1.json");
+                var obj = JObject.Parse(data);
 
                 Dispatcher.UIThread.Post(async () =>
                 {
@@ -67,9 +70,13 @@ public class Updater
                         return;
                     }
 
-                    if (obj.Version != version.Version)
+                    if ((obj.ContainsKey("core.dll") && obj["core.dll"]?.ToString() != sha1) ||
+                    (obj.ContainsKey("gui.dll") && obj["gui.dll"]?.ToString() != sha2))
                     {
-                        var res = await Program.HaveUpdate(obj.Text);
+                        string text;
+                        obj.TryGetValue("text", out var data1);
+                        text = data1?.ToString() ?? "没有更新消息";
+                        var res = await Program.HaveUpdate(text);
                         if (res)
                             return;
 
@@ -102,15 +109,20 @@ public class Updater
     {
         try
         {
-            var data = await Client.GetStringAsync(url + "version.json");
-            var obj = JsonConvert.DeserializeObject<VersionObj>(data)!;
+            var data = await Client.GetStringAsync(url + "sha1.json");
+            var obj = JObject.Parse(data);
 
             if (obj == null)
             {
                 return (null, null);
             }
 
-            return (obj.Version != version.Version, obj.Text);
+            string text;
+            obj.TryGetValue("text", out var data1);
+            text = data1?.ToString() ?? "没有更新消息";
+
+            return ((obj.ContainsKey("core.dll") && obj["core.dll"]?.ToString() != sha1) ||
+                    (obj.ContainsKey("gui.dll") && obj["gui.dll"]?.ToString() != sha2), text);
         }
         catch
         {
@@ -131,11 +143,6 @@ public class Updater
         state.Invoke(3);
         await Download("ColorMC.Gui.pdb");
         state.Invoke(4);
-
-        var data = await Client.GetStringAsync(url + "version.json");
-        var obj = JsonConvert.DeserializeObject<VersionObj>(data)!;
-
-        File.WriteAllText(Local, JsonConvert.SerializeObject(obj));
     }
 
     private async Task Download(string name)
