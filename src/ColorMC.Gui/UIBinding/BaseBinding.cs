@@ -551,67 +551,6 @@ public static class BaseBinding
 #endif
     }
 
-    public static async Task<bool?> AddFile(Window? window, GameSettingObj obj, FileType type)
-    {
-        if (window == null)
-            return false;
-        switch (type)
-        {
-            case FileType.Schematic:
-                var res = await OpFile(window,
-                      App.GetLanguage("GameEditWindow.Tab12.Info1"),
-                      new string[] { "*" + Schematic.Name1, "*" + Schematic.Name2 },
-                      App.GetLanguage("GameEditWindow.Tab12.Info2"), true);
-                if (res?.Any() == true)
-                {
-                    return await GameBinding.AddSchematic(obj, res);
-                }
-                return null;
-            case FileType.Shaderpack:
-                res = await OpFile(window,
-                    App.GetLanguage("GameEditWindow.Tab11.Info1"),
-                    new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
-                if (res?.Any() == true)
-                {
-                    return await GameBinding.AddShaderpack(obj, res);
-                }
-                return null;
-            case FileType.Mod:
-                res = await OpFile(window,
-                    App.GetLanguage("GameEditWindow.Tab4.Info7"),
-                    new string[] { "*.jar" },
-                    App.GetLanguage("GameEditWindow.Tab4.Info8"), true);
-                if (res?.Any() == true)
-                {
-                    return await GameBinding.AddMods(obj, res);
-                }
-                return null;
-            case FileType.World:
-                res = await OpFile(window!,
-                    App.GetLanguage("GameEditWindow.Tab5.Info2"),
-                    new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab5.Info8"));
-                if (res?.Any() == true)
-                {
-                    return await GameBinding.AddWorld(obj, res[0].GetPath());
-                }
-                return null;
-            case FileType.Resourcepack:
-                res = await OpFile(window,
-                    App.GetLanguage("GameEditWindow.Tab8.Info2"),
-                    new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab8.Info7"), true);
-                if (res?.Any() == true)
-                {
-                    return await GameBinding.AddResourcepack(obj, res);
-                }
-                return null;
-        }
-
-        return null;
-    }
-
     public static Task<bool?> SaveFile(IBaseWindow? window, FileType type, object[]? arg)
     {
         return SaveFile(window as TopLevel, type, arg);

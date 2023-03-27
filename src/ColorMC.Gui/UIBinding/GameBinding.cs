@@ -889,7 +889,7 @@ public static class GameBinding
 
     public static async Task<bool> AddWorld(GameSettingObj obj, string file)
     {
-        var res = await obj.ImportWorldZip(file);
+        var res = await obj.AddWorldZip(file);
         if (!res)
         {
             BaseBinding.OpFile(file);
@@ -965,7 +965,7 @@ public static class GameBinding
         {
             list.Add(item.GetPath());
         }
-        return obj.ImportResourcepack(list);
+        return obj.AddResourcepack(list);
     }
 
     public static void DeleteScreenshot(string file)
@@ -1803,6 +1803,67 @@ public static class GameBinding
         return obj.GenServerPack(local);
     }
 
+    public static async Task<bool?> AddFile(Window? window, GameSettingObj obj, FileType type)
+    {
+        if (window == null)
+            return false;
+        switch (type)
+        {
+            case FileType.Schematic:
+                var res = await BaseBinding.OpFile(window,
+                      App.GetLanguage("GameEditWindow.Tab12.Info1"),
+                      new string[] { "*" + Schematic.Name1, "*" + Schematic.Name2 },
+                      App.GetLanguage("GameEditWindow.Tab12.Info2"), true);
+                if (res?.Any() == true)
+                {
+                    return await GameBinding.AddSchematic(obj, res);
+                }
+                return null;
+            case FileType.Shaderpack:
+                res = await BaseBinding.OpFile(window,
+                    App.GetLanguage("GameEditWindow.Tab11.Info1"),
+                    new string[] { "*.zip" },
+                    App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
+                if (res?.Any() == true)
+                {
+                    return await GameBinding.AddShaderpack(obj, res);
+                }
+                return null;
+            case FileType.Mod:
+                res = await BaseBinding.OpFile(window,
+                    App.GetLanguage("GameEditWindow.Tab4.Info7"),
+                    new string[] { "*.jar" },
+                    App.GetLanguage("GameEditWindow.Tab4.Info8"), true);
+                if (res?.Any() == true)
+                {
+                    return await GameBinding.AddMods(obj, res);
+                }
+                return null;
+            case FileType.World:
+                res = await BaseBinding.OpFile(window!,
+                    App.GetLanguage("GameEditWindow.Tab5.Info2"),
+                    new string[] { "*.zip" },
+                    App.GetLanguage("GameEditWindow.Tab5.Info8"));
+                if (res?.Any() == true)
+                {
+                    return await GameBinding.AddWorld(obj, res[0].GetPath());
+                }
+                return null;
+            case FileType.Resourcepack:
+                res = await BaseBinding.OpFile(window,
+                    App.GetLanguage("GameEditWindow.Tab8.Info2"),
+                    new string[] { "*.zip" },
+                    App.GetLanguage("GameEditWindow.Tab8.Info7"), true);
+                if (res?.Any() == true)
+                {
+                    return await GameBinding.AddResourcepack(obj, res);
+                }
+                return null;
+        }
+
+        return null;
+    }
+
     public static async Task<bool> AddFile(GameSettingObj obj, IDataObject data, FileType type)
     {
         if (!data.Contains(DataFormats.Files))
@@ -1828,6 +1889,59 @@ public static class GameBinding
                 }
 
                 return await obj.AddMods(list1);
+            case FileType.World:
+                foreach (var item in list)
+                {
+                    var file = item.TryGetLocalPath();
+                    if (string.IsNullOrWhiteSpace(file))
+                        continue;
+                    if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
+                    {
+                        return await obj.AddWorldZip(file);
+                    }
+                }
+                return false;
+            case FileType.Resourcepack:
+                list1 = new List<string>();
+                foreach (var item in list)
+                {
+                    var file = item.TryGetLocalPath();
+                    if (string.IsNullOrWhiteSpace(file))
+                        continue;
+                    if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
+                    {
+                        list1.Add(file);
+                    }
+                }
+                return await obj.AddResourcepack(list1);
+            case FileType.Shaderpack:
+                list1 = new List<string>();
+                foreach (var item in list)
+                {
+                    var file = item.TryGetLocalPath();
+                    if (string.IsNullOrWhiteSpace(file))
+                        continue;
+                    if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
+                    {
+                        list1.Add(file);
+                    }
+                }
+                return await obj.AddShaderpack(list1);
+            case FileType.Schematic:
+                list1 = new List<string>();
+                foreach (var item in list)
+                {
+                    var file = item.TryGetLocalPath();
+                    if (string.IsNullOrWhiteSpace(file))
+                        continue;
+                    var file1 = file.ToLower();
+                    if (File.Exists(file) && 
+                        (file1.EndsWith(Schematic.Name1) || file1.EndsWith(Schematic.Name2)))
+                    {
+                        list1.Add(file);
+                    }
+                }
+                return await obj.AddSchematic(list1);
         }
 
         return false;

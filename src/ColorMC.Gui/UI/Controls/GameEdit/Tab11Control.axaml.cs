@@ -37,6 +37,33 @@ public partial class Tab11Control : UserControl
         DataGrid1.Items = List;
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
+
+        AddHandler(DragDrop.DragEnterEvent, DragEnter);
+        AddHandler(DragDrop.DragLeaveEvent, DragLeave);
+        AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    private void DragEnter(object? sender, DragEventArgs e)
+    {
+        if (e.Data.Contains(DataFormats.Files))
+        {
+            Grid2.IsVisible = true;
+        }
+    }
+
+    private void DragLeave(object? sender, DragEventArgs e)
+    {
+        Grid2.IsVisible = false;
+    }
+
+    private async void Drop(object? sender, DragEventArgs e)
+    {
+        Grid2.IsVisible = false;
+        var res = await GameBinding.AddFile(Obj, e.Data, FileType.Shaderpack);
+        if (res)
+        {
+            Load();
+        }
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -66,7 +93,7 @@ public partial class Tab11Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        var res = await BaseBinding.AddFile(window as Window, Obj, FileType.Shaderpack);
+        var res = await GameBinding.AddFile(window as Window, Obj, FileType.Shaderpack);
         if (res == null)
             return;
 

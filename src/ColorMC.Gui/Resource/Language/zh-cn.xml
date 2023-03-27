@@ -772,6 +772,10 @@
 	<String Key="Gui.Info11">选择服务器包储存文件夹</String>
 	<String Key="Gui.Info13">更新服务器文件完成，请重新启动</String>
 	<String Key="Gui.Info14">导入Mod</String>
+	<String Key="Gui.Info15">导入世界压缩包</String>
+	<String Key="Gui.Info16">导入资源包</String>
+	<String Key="Gui.Info17">导入光影包</String>
+	<String Key="Gui.Info18">导入结构文件</String>
 	
 	<String Key="Warn1">配置为空，旧版配置文件会被覆盖</String>
 	<String Key="Error1">背景图片加载失败</String>

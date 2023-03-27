@@ -37,6 +37,33 @@ public partial class Tab8Control : UserControl
         Button_I.Click += Button_I1_Click;
 
         Button1.Click += Button1_Click;
+
+        AddHandler(DragDrop.DragEnterEvent, DragEnter);
+        AddHandler(DragDrop.DragLeaveEvent, DragLeave);
+        AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    private void DragEnter(object? sender, DragEventArgs e)
+    {
+        if (e.Data.Contains(DataFormats.Files))
+        {
+            Grid2.IsVisible = true;
+        }
+    }
+
+    private void DragLeave(object? sender, DragEventArgs e)
+    {
+        Grid2.IsVisible = false;
+    }
+
+    private async void Drop(object? sender, DragEventArgs e)
+    {
+        Grid2.IsVisible = false;
+        var res = await GameBinding.AddFile(Obj, e.Data, FileType.Resourcepack);
+        if (res)
+        {
+            Load();
+        }
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -57,7 +84,7 @@ public partial class Tab8Control : UserControl
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        var file = await BaseBinding.AddFile(window as Window, Obj, FileType.Resourcepack);
+        var file = await GameBinding.AddFile(window as Window, Obj, FileType.Resourcepack);
         if (file == null)
             return;
 

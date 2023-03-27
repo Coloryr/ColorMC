@@ -8,9 +8,10 @@
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Grid Margin="5">
-        <DockPanel>
+    <Grid>
+        <DockPanel Margin="5">
             <Button
                 Name="Button1"
                 Width="85"
@@ -20,54 +21,64 @@
                 DockPanel.Dock="Top"
                 ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                 ToolTip.VerticalOffset="-30" />
-            <DataGrid
-                Name="DataGrid1"
-                Margin="0,3,0,0"
-                AutoGenerateColumns="False"
-                CanUserResizeColumns="True"
-                CanUserSortColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="10" IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="{setting:Localize GameEditWindow.Tab6.Info4}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Local}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text4}"
-                        IsReadOnly="True" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </DockPanel>
-
-        <StackPanel VerticalAlignment="Center">
             <Grid>
-                <Button
-                    Name="Button_A"
-                    Width="20"
-                    Height="30"
-                    Content="A" />
-                <Button
-                    Name="Button_A1"
-                    Width="100"
-                    Height="30"
-                    Content="{setting:Localize Button.Add}"
-                    IsVisible="False" />
+                <DataGrid
+                    Name="DataGrid1"
+                    Margin="0,3,0,0"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="10" IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize GameEditWindow.Tab6.Info4}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Local}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text4}"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel VerticalAlignment="Center">
+                    <Grid>
+                        <Button
+                            Name="Button_A"
+                            Width="20"
+                            Height="30"
+                            Content="A" />
+                        <Button
+                            Name="Button_A1"
+                            Width="100"
+                            Height="30"
+                            Content="{setting:Localize Button.Add}"
+                            IsVisible="False" />
+                    </Grid>
+                    <Grid Margin="0,5,0,0">
+                        <Button
+                            Name="Button_R"
+                            Width="20"
+                            Height="30"
+                            Content="R" />
+                        <Button
+                            Name="Button_R1"
+                            Width="100"
+                            Height="30"
+                            Content="{setting:Localize Button.Refash}"
+                            IsVisible="False" />
+                    </Grid>
+                </StackPanel>
             </Grid>
-            <Grid Margin="0,5,0,0">
-                <Button
-                    Name="Button_R"
-                    Width="20"
-                    Height="30"
-                    Content="R" />
-                <Button
-                    Name="Button_R1"
-                    Width="100"
-                    Height="30"
-                    Content="{setting:Localize Button.Refash}"
-                    IsVisible="False" />
-            </Grid>
-
-        </StackPanel>
+        </DockPanel>
+        <Grid
+            Name="Grid2"
+            Background="#EEEEEEEE"
+            IsVisible="False">
+            <Label
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{setting:Localize Gui.Info17}"
+                FontSize="30" />
+        </Grid>
     </Grid>
 </UserControl>

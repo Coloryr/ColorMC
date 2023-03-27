@@ -90,7 +90,7 @@ public static class Resourcepacks
     /// <param name="obj"></param>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static async Task<bool> ImportResourcepack(this GameSettingObj obj, List<string> file)
+    public static async Task<bool> AddResourcepack(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetResourcepacksPath();
         bool ok = true;

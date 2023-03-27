@@ -105,7 +105,7 @@ public static class Worlds
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件位置</param>
     /// <returns>结果</returns>
-    public static async Task<bool> ImportWorldZip(this GameSettingObj obj, string file)
+    public static async Task<bool> AddWorldZip(this GameSettingObj obj, string file)
     {
         var dir = obj.GetSavesPath();
         var info = new FileInfo(file);

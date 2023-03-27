@@ -146,7 +146,7 @@ public partial class Tab4Control : UserControl
     private async void Button_I1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        var file = await BaseBinding.AddFile(window as Window, Obj, FileType.Mod);
+        var file = await GameBinding.AddFile(window as Window, Obj, FileType.Mod);
 
         if (file == null)
             return;

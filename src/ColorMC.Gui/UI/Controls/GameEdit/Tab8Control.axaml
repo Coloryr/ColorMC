@@ -7,66 +7,79 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <DockPanel Margin="5">
-        <Button
-            Name="Button1"
-            Width="85"
-            Height="25"
-            HorizontalAlignment="Right"
-            Content="{setting:Localize Button.OpFile}"
-            DockPanel.Dock="Top"
-            ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-            ToolTip.VerticalOffset="-30" />
+    <Grid>
+        <DockPanel Margin="5">
+            <Button
+                Name="Button1"
+                Width="85"
+                Height="25"
+                HorizontalAlignment="Right"
+                Content="{setting:Localize Button.OpFile}"
+                DockPanel.Dock="Top"
+                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                ToolTip.VerticalOffset="-30" />
 
-        <Grid Margin="0,3,0,0">
-            <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
-                <StackPanel
-                    Name="ListBox_Items"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch" />
-            </ScrollViewer>
-            <StackPanel VerticalAlignment="Center">
-                <Grid>
-                    <Button
-                        Name="Button_I"
-                        Width="20"
-                        Height="30"
-                        Content="I" />
-                    <Button
-                        Name="Button_I1"
-                        Width="100"
-                        Height="30"
-                        Content="{setting:Localize Button.Input}"
-                        IsVisible="False" />
-                </Grid>
-                <Grid Margin="0,5,0,0">
-                    <Button
-                        Name="Button_A"
-                        Width="20"
-                        Height="30"
-                        Content="A" />
-                    <Button
-                        Name="Button_A1"
-                        Width="100"
-                        Height="30"
-                        Content="{setting:Localize Button.Add}"
-                        IsVisible="False" />
-                </Grid>
-                <Grid Margin="0,5,0,0">
-                    <Button
-                        Name="Button_R"
-                        Width="20"
-                        Height="30"
-                        Content="R" />
-                    <Button
-                        Name="Button_R1"
-                        Width="100"
-                        Height="30"
-                        Content="{setting:Localize Button.Refash}"
-                        IsVisible="False" />
-                </Grid>
-            </StackPanel>
+            <Grid Margin="0,3,0,0">
+                <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
+                    <StackPanel
+                        Name="ListBox_Items"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch" />
+                </ScrollViewer>
+                <StackPanel VerticalAlignment="Center">
+                    <Grid>
+                        <Button
+                            Name="Button_I"
+                            Width="20"
+                            Height="30"
+                            Content="I" />
+                        <Button
+                            Name="Button_I1"
+                            Width="100"
+                            Height="30"
+                            Content="{setting:Localize Button.Input}"
+                            IsVisible="False" />
+                    </Grid>
+                    <Grid Margin="0,5,0,0">
+                        <Button
+                            Name="Button_A"
+                            Width="20"
+                            Height="30"
+                            Content="A" />
+                        <Button
+                            Name="Button_A1"
+                            Width="100"
+                            Height="30"
+                            Content="{setting:Localize Button.Add}"
+                            IsVisible="False" />
+                    </Grid>
+                    <Grid Margin="0,5,0,0">
+                        <Button
+                            Name="Button_R"
+                            Width="20"
+                            Height="30"
+                            Content="R" />
+                        <Button
+                            Name="Button_R1"
+                            Width="100"
+                            Height="30"
+                            Content="{setting:Localize Button.Refash}"
+                            IsVisible="False" />
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+        <Grid
+            Name="Grid2"
+            Background="#EEEEEEEE"
+            IsVisible="False">
+            <Label
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{setting:Localize Gui.Info16}"
+                FontSize="30" />
         </Grid>
-    </DockPanel>
+    </Grid>
 </UserControl>
