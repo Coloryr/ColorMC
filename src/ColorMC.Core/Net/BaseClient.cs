@@ -153,10 +153,4 @@ public static class BaseClient
     {
         tasks.Add((url, token, action));
     }
-
-    public static void WaitTask()
-    {
-        while (!tasks.IsEmpty)
-            Thread.Sleep(100);
-    }
 }

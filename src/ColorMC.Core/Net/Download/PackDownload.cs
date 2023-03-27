@@ -18,12 +18,12 @@ public static class PackDownload
     public static int Size { get; private set; }
     public static int Now { get; private set; }
     /// <summary>
-    /// 下载整合包
+    /// 安装CurseForge整合包
     /// </summary>
     /// <param name="zip">压缩包路径</param>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip, string? name, string? group)
+    public static async Task<(bool State, GameSettingObj? Game)> DownloadCurseForgeModPack(string zip, string? name, string? group)
     {
-        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
+        ColorMCCore.PackState?.Invoke(CoreRunState.Read);
         using ZipFile zFile = new(zip);
         using MemoryStream stream1 = new();
         bool find = false;
@@ -41,8 +41,10 @@ public static class PackDownload
 
         if (!find)
         {
-            return (GetDownloadState.Init, null, null);
+            return (false, null);
         }
+
+        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
         CurseForgePackObj info;
         byte[] array1 = stream1.ToArray();
         try
@@ -53,10 +55,10 @@ public static class PackDownload
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
-            return (GetDownloadState.Init, null, null);
+            return (false, null);
         }
         if (info == null)
-            return (GetDownloadState.Init, null, null);
+            return (false, null);
 
         //获取版本数据
         Loaders loaders = Loaders.Normal;
@@ -94,7 +96,7 @@ public static class PackDownload
 
         if (game == null)
         {
-            return (GetDownloadState.GetInfo, null, game);
+            return (false, game);
         }
 
         //解压文件
@@ -198,18 +200,33 @@ public static class PackDownload
             });
             if (!done)
             {
-                return (GetDownloadState.GetInfo, null, game);
+                return (false, game);
             }
         }
 
         game.SaveModInfo();
 
-        return (GetDownloadState.End, list.ToList(), game);
+        ColorMCCore.PackState?.Invoke(CoreRunState.Download);
+
+        var res2 = await DownloadManager.Start(list.ToList());
+        if (!res2)
+        {
+            return (false, game);
+        }
+
+        return (true,  game);
     }
 
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List, GameSettingObj? Game)> DownloadModrinthModPack(string zip, string? name, string? group)
+    /// <summary>
+    /// 安装Modrinth整合包
+    /// </summary>
+    /// <param name="zip">文件路径</param>
+    /// <param name="name">名字</param>
+    /// <param name="group">群组</param>
+    /// <returns></returns>
+    public static async Task<(bool State, GameSettingObj? Game)> DownloadModrinthModPack(string zip, string? name, string? group)
     {
-        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
+        ColorMCCore.PackState?.Invoke(CoreRunState.Read);
         using ZipFile zFile = new(zip);
         using MemoryStream stream1 = new();
         bool find = false;
@@ -227,8 +244,10 @@ public static class PackDownload
 
         if (!find)
         {
-            return (GetDownloadState.Init, null, null);
+            return (false, null);
         }
+
+        ColorMCCore.PackState?.Invoke(CoreRunState.Init);
         ModrinthPackObj info;
         byte[] array1 = stream1.ToArray();
         try
@@ -239,10 +258,12 @@ public static class PackDownload
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
-            return (GetDownloadState.Init, null, null);
+            return (false, null);
         }
         if (info == null)
-            return (GetDownloadState.Init, null, null);
+        {
+            return (false, null);
+        }
 
         //获取版本数据
         Loaders loaders = Loaders.Normal;
@@ -282,7 +303,7 @@ public static class PackDownload
 
         if (game == null)
         {
-            return (GetDownloadState.GetInfo, null, game);
+            return (false, game);
         }
 
         int length = "overrides".Length;
@@ -356,14 +377,34 @@ public static class PackDownload
 
         game.SaveModInfo();
 
-        return (GetDownloadState.End, list, game);
+        ColorMCCore.PackState?.Invoke(CoreRunState.Download);
+
+        var res = await DownloadManager.Start(list.ToList());
+        if (!res)
+        {
+            return (false, game);
+        }
+
+        return (true, game);
     }
 
+    /// <summary>
+    /// 修正下载地址
+    /// </summary>
+    /// <param name="item"></param>
     public static void FixDownloadUrl(this CurseForgeObj.Data.LatestFiles item)
     {
         item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
     }
 
+    /// <summary>
+    /// 安装FTB整合包
+    /// </summary>
+    /// <param name="obj">FTB整合包数据</param>
+    /// <param name="file">数据</param>
+    /// <param name="name">名字</param>
+    /// <param name="group">群组</param>
+    /// <returns></returns>
     public static async Task<(bool, GameSettingObj?)> InstallFTB(FTBModpackObj obj, FTBModpackObj.Versions file, string? name, string? group)
     {
         ColorMCCore.PackState?.Invoke(CoreRunState.Read);

@@ -97,6 +97,7 @@ public static class LibrariesPath
         var list = new ConcurrentBag<DownloadItemObj>();
         var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
 
+        //forge本体
         await Parallel.ForEachAsync(list1, async (item, cancel) =>
         {
             if (!File.Exists(item.Local))
@@ -120,6 +121,7 @@ public static class LibrariesPath
         if (forgeinstall == null && v2)
             return null;
 
+        //forge安装器
         if (forgeinstall != null)
         {
             await Parallel.ForEachAsync(forgeinstall.libraries, async (item, cacenl) =>

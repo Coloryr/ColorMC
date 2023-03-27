@@ -91,7 +91,7 @@ public static class Worlds
     /// <summary>
     /// 删除世界
     /// </summary>
-    /// <param name="world">世界实例</param>
+    /// <param name="world">世界储存</param>
     public static void Remove(this WorldObj world)
     {
         string dir = Path.GetFullPath(world.Game.GetRemoveWorldPath());
@@ -161,12 +161,16 @@ public static class Worlds
     /// </summary>
     /// <param name="world">世界实例</param>
     /// <param name="file">输出文件位置</param>
-    /// <returns></returns>
     public static Task ExportWorldZip(this WorldObj world, string file)
     {
         return ZipUtils.ZipFile(world.Local, file);
     }
 
+    /// <summary>
+    /// 获取世界数据包储存
+    /// </summary>
+    /// <param name="world">世界储存</param>
+    /// <returns></returns>
     public static string GetWorldDataPacksPath(this WorldObj world)
     {
         return Path.GetFullPath($"{world.Local}/{Name1}");
@@ -174,7 +178,7 @@ public static class Worlds
 
     private class ZipFileStream : IStaticDataSource, IDisposable
     {
-        private MemoryStream Memory;
+        private readonly MemoryStream Memory;
         public ZipFileStream(byte[] data)
         {
             Memory = new(data);
@@ -195,7 +199,7 @@ public static class Worlds
     /// <summary>
     /// 备份世界
     /// </summary>
-    /// <returns></returns>
+    /// <param name="world">世界储存</param>
     public static async Task Backup(this WorldObj world)
     {
         var game = world.Game;
@@ -227,11 +231,18 @@ public static class Worlds
         s.Close();
     }
 
+    /// <summary>
+    /// 还原世界
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="item1">文件</param>
+    /// <returns>结果</returns>
     public static async Task<bool> UnzipBackupWorld(this GameSettingObj obj, FileInfo item1)
     {
-        ZipInputStream s = new(File.OpenRead(item1.FullName));
         ZipEntry theEntry;
         bool res = false;
+
+        using ZipInputStream s = new(File.OpenRead(item1.FullName));
         using var stream1 = new MemoryStream();
         while ((theEntry = s.GetNextEntry()) != null)
         {
@@ -242,7 +253,6 @@ public static class Worlds
                 break;
             }
         }
-        s.Dispose();
         if (!res)
             return false;
         var data = stream1.ToArray();
@@ -272,7 +282,9 @@ public static class Worlds
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke("restore world error", e, false);
+            string text = LanguageHelper.GetName("Core.Pack.Error3");
+            Logs.Error(text, e);
+            ColorMCCore.OnError?.Invoke(text, e, false);
             return false;
         }
     }

@@ -1935,7 +1935,7 @@ public static class GameBinding
                     if (string.IsNullOrWhiteSpace(file))
                         continue;
                     var file1 = file.ToLower();
-                    if (File.Exists(file) && 
+                    if (File.Exists(file) &&
                         (file1.EndsWith(Schematic.Name1) || file1.EndsWith(Schematic.Name2)))
                     {
                         list1.Add(file);

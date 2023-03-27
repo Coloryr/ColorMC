@@ -10,6 +10,10 @@ namespace ColorMC.Core.Game;
 
 public static class ServerPack
 {
+    /// <summary>
+    /// 移动到旧的服务器包
+    /// </summary>
+    /// <param name="obj">服务器包</param>
     public static void MoveToOld(this ServerPackObj obj)
     {
         var file1 = obj.Game.GetServerPackOldFile();
@@ -23,6 +27,11 @@ public static class ServerPack
         File.Move(file2, file1);
     }
 
+    /// <summary>
+    /// 开始更新
+    /// </summary>
+    /// <param name="obj">服务器包</param>
+    /// <returns>结果</returns>
     public static async Task<bool> Update(this ServerPackObj obj)
     {
         File.Delete(obj.Game.GetServerPackFile());
@@ -40,6 +49,7 @@ public static class ServerPack
             };
         }
 
+        //区分新旧mod
         var list1 = obj.Mod.ToArray();
         var list2 = old.Mod.ToArray();
 
@@ -65,6 +75,7 @@ public static class ServerPack
         list3.RemoveAll(a => a == null);
         list4.RemoveAll(a => a == null);
 
+        //添加新mod
         foreach (var item in list3)
         {
             if (item.Source == null)
@@ -91,13 +102,15 @@ public static class ServerPack
 
         var mods = await obj.Game.GetMods();
 
+        //删除旧mod
         foreach (var item in list4)
         {
             mods.Find(a => a.Sha1 == item.Sha1)?.Delete();
         }
 
+        //检查资源包
         path = obj.Game.GetResourcepacksPath();
-
+        
         foreach (var item in obj.Resourcepack)
         {
             list5.Add(new()
@@ -109,6 +122,7 @@ public static class ServerPack
             });
         }
 
+        //检查配置文件
         path = obj.Game.GetGamePath();
         var path1 = obj.Game.GetBasePath();
 
@@ -143,6 +157,7 @@ public static class ServerPack
             }
         }
 
+        //更新UI文件
         if (!string.IsNullOrWhiteSpace(obj.UI))
         {
             list5.Add(new()
@@ -153,6 +168,7 @@ public static class ServerPack
             });
         }
 
+        //开始下载
         var res = await DownloadManager.Start(list5);
         if (!res)
             return false;
@@ -163,6 +179,11 @@ public static class ServerPack
         return true;
     }
 
+    /// <summary>
+    /// 获取服务器包
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>服务器包</returns>
     public static ServerPackObj? GetServerPack(this GameSettingObj obj)
     {
         var file = obj.GetServerPackFile();
@@ -181,6 +202,11 @@ public static class ServerPack
         return obj1;
     }
 
+    /// <summary>
+    /// 获取旧的服务器包
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>服务器包</returns>
     public static ServerPackObj? GetOldServerPack(this GameSettingObj obj)
     {
         var file = obj.GetServerPackOldFile();
@@ -203,16 +229,26 @@ public static class ServerPack
         return obj1;
     }
 
-    public static void Save(this ServerPackObj obj1)
+    /// <summary>
+    /// 保存服务器包
+    /// </summary>
+    /// <param name="obj">服务器包</param>
+    public static void Save(this ServerPackObj obj)
     {
         ConfigSave.AddItem(new()
         {
-            Name = $"game-server-{obj1.Game.Name}",
-            Local = obj1.Game.GetServerPackFile(),
-            Obj = obj1
+            Name = $"game-server-{obj.Game.Name}",
+            Local = obj.Game.GetServerPackFile(),
+            Obj = obj
         });
     }
 
+    /// <summary>
+    /// 生成服务器包
+    /// </summary>
+    /// <param name="obj">服务器包</param>
+    /// <param name="local">保存路径</param>
+    /// <returns>结果</returns>
     public static async Task<bool> GenServerPack(this ServerPackObj obj, string local)
     {
         var obj1 = new ServerPackObj()
@@ -405,6 +441,12 @@ public static class ServerPack
         return !fail;
     }
 
+    /// <summary>
+    /// 检查服务器包
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="url">网址</param>
+    /// <returns>结果</returns>
     public static async Task<(bool, ServerPackObj?)> ServerPackCheck(this GameSettingObj obj, string url)
     {
         var data = await BaseClient.GetString(url + "server.json");

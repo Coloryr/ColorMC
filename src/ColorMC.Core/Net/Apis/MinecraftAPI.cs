@@ -23,18 +23,6 @@ public static class MinecraftAPI
         return JsonConvert.DeserializeObject<MinecraftProfileObj>(data1); ;
     }
 
-    // public static async Task<PlayerAttributesObj?> GetPlayerAttributes(string accessToken)
-    // {
-    //     var endpoint = "https://api.minecraftservices.com/minecraft/profile";
-    //     HttpRequestMessage message = new(HttpMethod.Get, endpoint);
-    //     message.Headers.Add("Authorization", $"Bearer {accessToken}");
-    //     var data = await BaseClient.LoginClient.SendAsync(message);
-
-    //     var data1 = await data.Content.ReadAsStringAsync();
-
-    //     return JsonConvert.DeserializeObject<PlayerAttributesObj>(data1);
-    // }
-
     /// <summary>
     /// 获取皮肤信息
     /// </summary>

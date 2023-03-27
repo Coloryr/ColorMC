@@ -80,6 +80,9 @@ public static class BaseAuth
         }
     }
 
+    /// <summary>
+    /// 取消OAuth登录
+    /// </summary>
     public static void CancelWithOAuth()
     {
         OAuthAPI.Cancel();

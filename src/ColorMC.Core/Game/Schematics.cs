@@ -12,6 +12,11 @@ public static class Schematic
     public const string Name1 = ".litematic";
     public const string Name2 = ".schematic";
 
+    /// <summary>
+    /// 读取结构文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>列表</returns>
     public static async Task<ConcurrentBag<SchematicObj>> GetSchematics(this GameSettingObj obj)
     {
         var list = new ConcurrentBag<SchematicObj>();
@@ -40,6 +45,11 @@ public static class Schematic
         return list;
     }
 
+    /// <summary>
+    /// 读取结构文件
+    /// </summary>
+    /// <param name="file">文件</param>
+    /// <returns>数据</returns>
     private static SchematicObj ReadAsSchematic(string file)
     {
         try
@@ -67,6 +77,11 @@ public static class Schematic
         }
     }
 
+    /// <summary>
+    /// 读取结构文件
+    /// </summary>
+    /// <param name="file">文件</param>
+    /// <returns>数据</returns>
     private static SchematicObj ReadAsLitematic(string file)
     {
         try
@@ -105,39 +120,47 @@ public static class Schematic
         }
     }
 
+    /// <summary>
+    /// 删除结构文件
+    /// </summary>
+    /// <param name="obj">结构文件</param>
     public static void Delete(this SchematicObj obj)
     {
         File.Delete(obj.Local);
     }
 
+    /// <summary>
+    /// 添加结构文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件列表</param>
+    /// <returns>结果</returns>
     public static async Task<bool> AddSchematic(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetSchematicsPath();
         Directory.CreateDirectory(path);
         bool ok = true;
 
-        foreach (var item in file)
+        await Parallel.ForEachAsync(file, async (item, cancel) =>
         {
             var name = Path.GetFileName(item);
             var path1 = Path.GetFullPath(path + "/" + name);
             if (File.Exists(path1))
-                return false;
+                return;
 
-            await Task.Run(() =>
+            try
             {
-                try
-                {
-                    File.Copy(item, path1);
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
-                    ok = false;
-                }
-            });
-            if (!ok)
-                return false;
-        }
+                File.Copy(item, path1);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                ok = false;
+            }
+        });
+
+        if (!ok)
+            return false;
 
         return true;
     }

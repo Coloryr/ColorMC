@@ -135,6 +135,7 @@ public static class Launch
                 list.AddRange(list2);
             }
 
+            //检查加载器运行库
             ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
             if (obj.Loader == Loaders.Forge)
             {

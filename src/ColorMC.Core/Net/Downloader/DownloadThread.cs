@@ -80,6 +80,9 @@ public class DownloadThread
         semaphore1.Release();
     }
 
+    /// <summary>
+    /// 检查暂停
+    /// </summary>
     private void ChckPause(DownloadItemObj item)
     {
         if (pause)

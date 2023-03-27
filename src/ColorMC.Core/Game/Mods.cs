@@ -289,11 +289,11 @@ public static class Mods
             return false;
         string path = obj.GetModsPath();
         bool ok = true;
-        foreach (var item in file)
+        await Parallel.ForEachAsync(file, async (item, cancel) =>
         {
             var info = new FileInfo(item);
             if (!info.Exists)
-                return false;
+                return;
 
             var info1 = new FileInfo(Path.GetFullPath(path + "/" + info.Name));
             if (info1.Exists)
@@ -301,25 +301,26 @@ public static class Mods
                 info1.Delete();
             }
 
-            await Task.Run(() =>
+            try
             {
-                try
-                {
-                    File.Copy(info.FullName, info1.FullName);
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
-                    ok = false;
-                }
-            });
-            if (!ok)
-                return false;
-        }
+                File.Copy(info.FullName, info1.FullName);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                ok = false;
+                return;
+            }
+        });
+        if (!ok)
+            return false;
 
         return true;
     }
 
+    /// <summary>
+    /// 作者分割
+    /// </summary>
     private static List<string> ToStringList(this string obj)
     {
         List<string> list = new();
@@ -332,6 +333,9 @@ public static class Mods
         return list;
     }
 
+    /// <summary>
+    /// 作者分割
+    /// </summary>
     private static List<string> ToStringList(this JArray array)
     {
         List<string> list = new();
@@ -350,6 +354,9 @@ public static class Mods
         return list;
     }
 
+    /// <summary>
+    /// 作者分割
+    /// </summary>
     private static List<string> ToStringList(this JObject array)
     {
         List<string> list = new();

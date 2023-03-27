@@ -54,9 +54,12 @@
 
 	<String Key="Core.Http.Optifine.Error1">Optifine数据加载失败</String>
 	<String Key="Core.Http.Optifine.Error2">Optifine下载地址获取失败</String>
+	<String Key="Core.Http.Optifine.Error3">获取Optifine下载信息失败</String>
+	<String Key="Core.Http.Optifine.Error4">Optifine下载失败</String>
 	
 	<String Key="Core.Pack.Error1">读取压缩包错误</String>
 	<String Key="Core.Pack.Error2">导入压缩包错误</String>
+	<String Key="Core.Pack.Error3">还原世界错误</String>
 	<String Key="Core.Pack.Info1">正在读取资源信息</String>
 	<String Key="Core.Pack.Info2">正在读取游戏对象信息</String>
 	
@@ -67,8 +70,14 @@
 	<String Key="Core.Jvm.Error5">Java下载失败</String>
 	<String Key="Core.Jvm.Error6">没有找到Java</String>
 	<String Key="Core.Jvm.Error7">Java下载错误</String>
+	<String Key="Core.Jvm.Error8">Java添加错误</String>
+	<String Key="Core.Jvm.Error9">Java提升权限错误</String>
+	<String Key="Core.Jvm.Error10">Java验证错误</String>
 	<String Key="Core.Jvm.Info1">正在读取Java信息</String>
 	<String Key="Core.Jvm.Info2">Java:{0} {1}</String>
+	<String Key="Core.Jvm.Info3">Java找到 {0}</String>
+	<String Key="Core.Jvm.Info4">正在读取Java信息</String>
+	<String Key="Core.Jvm.Info5">正在添加Java {0}</String>
 	
 	<String Key="Core.Path.Info1">启动器Minecraft文件夹在{0}</String>
 	<String Key="Core.Path.Info2">正在读取版本信息</String>

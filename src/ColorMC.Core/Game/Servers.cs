@@ -88,6 +88,11 @@ public static class Servers
         outputStream.CopyTo(stream);
     }
 
+    /// <summary>
+    /// 转换服务器储存
+    /// </summary>
+    /// <param name="tag">NBT标签</param>
+    /// <returns>服务器储存</returns>
     private static ServerInfoObj ToServerInfo(NbtCompoundTag tag)
     {
         var info = new ServerInfoObj

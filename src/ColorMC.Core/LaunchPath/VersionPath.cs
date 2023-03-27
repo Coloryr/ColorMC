@@ -85,11 +85,6 @@ public static class VersionPath
         return Versions != null;
     }
 
-    // public static bool Have(string version)
-    // {
-    //     return Versions?.versions.Where(a => a.id == version).Any() == true;
-    // }
-
     /// <summary>
     /// 读取版本信息
     /// </summary>
@@ -165,11 +160,6 @@ public static class VersionPath
             AddGame(await GetHelper.GetGame(data.url));
         }
     }
-
-    // public static ForgeInstallObj? GetForgeInstallObj(GameSettingObj obj)
-    // {
-    //     return GetForgeInstallObj(obj.Version, obj.LoaderVersion);
-    // }
 
     /// <summary>
     /// 获取Forge安装数数据

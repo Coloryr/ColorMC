@@ -10,6 +10,9 @@ namespace ColorMC.Core.Net.Apis;
 
 public static class OptifineHelper
 {
+    /// <summary>
+    /// 获取高清修复版本
+    /// </summary>
     public static async Task<(SourceLocal?, List<OptifineObj>?)> GetOptifineVersion()
     {
         string url = UrlHelper.Optifine(BaseClient.Source);
@@ -103,6 +106,11 @@ public static class OptifineHelper
         return (null, null);
     }
 
+    /// <summary>
+    /// 获取高清修复下载地址
+    /// </summary>
+    /// <param name="obj">高清修复信息</param>
+    /// <returns>下载地址</returns>
     public static async Task<string?> GetOptifineDownloadUrl(OptifineObj obj)
     {
         try
@@ -130,15 +138,21 @@ public static class OptifineHelper
         return null;
     }
 
+    /// <summary>
+    /// 下载高清修复
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="item">高清修复信息</param>
+    /// <returns>结果</returns>
     public static async Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item)
     {
         DownloadItemObj item1;
         if (item.Local == SourceLocal.Offical)
         {
-            var data = await OptifineHelper.GetOptifineDownloadUrl(item);
+            var data = await GetOptifineDownloadUrl(item);
             if (data == null)
             {
-                return (false, "获取Optifine下载信息失败");
+                return (false, LanguageHelper.GetName("Core.Http.Optifine.Error3"));
             }
 
             item1 = new()
@@ -163,7 +177,7 @@ public static class OptifineHelper
         var res = await DownloadManager.Start(new() { item1 });
         if (!res)
         {
-            return (false, "Optifine下载失败");
+            return (false, LanguageHelper.GetName("Core.Http.Optifine.Error4"));
         }
         return (true, null);
     }

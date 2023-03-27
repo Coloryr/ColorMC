@@ -9,6 +9,9 @@ namespace ColorMC.Core.Net.Apis;
 
 public static class ForgeHelper
 {
+    public static string ForgeWrapper => 
+        LibrariesPath.BaseDir + "/io/github/zekerzhayard/ForgeWrapper/mmc3/ForgeWrapper-mmc3.jar";
+
     private static List<string>? SupportVersion;
     /// <summary>
     /// 获取支持的版本
@@ -109,11 +112,10 @@ public static class ForgeHelper
             list.Add(BuildForgeInster(mc, version));
             if (CheckRule.GameLaunchVersion117(mc))
             {
-                //list.Add(BuildForgeClient(mc, version));
+
             }
             else
             {
-                //list.Add(BuildForgeClient(mc, version));
                 list.Add(BuildForgeLauncher(mc, version));
             }
         }
@@ -180,6 +182,13 @@ public static class ForgeHelper
         return string.Empty;
     }
 
+    /// <summary>
+    /// 创建下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <param name="type">类型</param>
+    /// <returns>下载项目</returns>
     private static DownloadItemObj BuildForgeItem(string mc, string version, string type)
     {
         version += FixForgeUrl(mc);
@@ -213,16 +222,14 @@ public static class ForgeHelper
     {
         return BuildForgeItem(mc, version, "universal");
     }
-
     public static DownloadItemObj BuildForgeLauncher(string mc, string version)
     {
         return BuildForgeItem(mc, version, "launcher");
     }
-
-    public static DownloadItemObj BuildForgeClient(string mc, string version)
-    {
-        return BuildForgeItem(mc, version, "client");
-    }
+    //public static DownloadItemObj BuildForgeClient(string mc, string version)
+    //{
+    //    return BuildForgeItem(mc, version, "client");
+    //}
 
     /// <summary>
     /// Forge运行库修改映射
@@ -413,7 +420,9 @@ public static class ForgeHelper
         return null;
     }
 
-    public static string ForgeWrapper => LibrariesPath.BaseDir + "/io/github/zekerzhayard/ForgeWrapper/mmc3/ForgeWrapper-mmc3.jar";
+    /// <summary>
+    /// Forge加载器
+    /// </summary>
     public static void ReadyForgeWrapper()
     {
         var file = new FileInfo(ForgeWrapper);
@@ -427,6 +436,12 @@ public static class ForgeHelper
         }
     }
 
+    /// <summary>
+    /// 获取版本列表
+    /// </summary>
+    /// <param name="version">游戏版本</param>
+    /// <param name="local">下载源</param>
+    /// <returns>版本列表</returns>
     public static async Task<List<string>?> GetVersionList(string version, SourceLocal? local = null)
     {
         try

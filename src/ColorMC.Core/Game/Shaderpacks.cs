@@ -38,11 +38,21 @@ public static class Shaderpacks
         return list;
     }
 
+    /// <summary>
+    /// 删除光影包
+    /// </summary>
+    /// <param name="pack"></param>
     public static void Delete(this ShaderpackObj pack)
     {
         File.Delete(pack.Local);
     }
 
+    /// <summary>
+    /// 添加光影包
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件列表</param>
+    /// <returns>结果</returns>
     public static async Task<bool> AddShaderpack(this GameSettingObj obj, List<string> file)
     {
         var dir = obj.GetResourcepacksPath();
@@ -74,28 +84,4 @@ public static class Shaderpacks
         }
         return true;
     }
-
-    //public static void Disable(this ShaderpackObj pack)
-    //{
-    //    if (pack.Disable)
-    //        return;
-
-    //    var file = new FileInfo(pack.Local);
-    //    pack.Disable = true;
-    //    pack.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name
-    //        .Replace(".zip", ".disable")}");
-    //    File.Move(file.FullName, pack.Local);
-    //}
-
-    //public static void Enable(this ShaderpackObj pack)
-    //{
-    //    if (!pack.Disable)
-    //        return;
-
-    //    var file = new FileInfo(pack.Local);
-    //    pack.Disable = false;
-    //    pack.Local = Path.GetFullPath($"{file.DirectoryName}/{file.Name
-    //        .Replace(".disable", ".zip")}");
-    //    File.Move(file.FullName, pack.Local);
-    //}
 }

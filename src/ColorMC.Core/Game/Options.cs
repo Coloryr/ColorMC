@@ -28,22 +28,4 @@ public static class Options
 
         return options;
     }
-    //public static Dictionary<string, string> ReadOptions(this GameSettingObj game)
-    //{
-    //    var file = game.GetOptionsFile();
-    //    if (File.Exists(file))
-    //        return new();
-    //    return ReadOptions(File.ReadAllText(file));
-    //}
-
-    //public static void SaveOptions(this GameSettingObj game, Dictionary<string, string> dir)
-    //{
-    //    string data = "";
-    //    foreach (var item in dir)
-    //    {
-    //        data += $"{item.Key}:{item.Value}{Environment.NewLine}";
-    //    }
-
-    //    File.WriteAllText(game.GetOptionsFile(), data);
-    //}
 }

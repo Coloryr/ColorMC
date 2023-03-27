@@ -69,7 +69,7 @@ public static class GameDownload
     /// 获取Forge下载项目
     /// </summary>
     /// <param name="mc">游戏版本</param>
-    /// <param name="version"><forge版本/param>
+    /// <param name="version">forge版本</param>
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(string mc, string version)
     {
         var version1 = VersionPath.GetGame(mc)!;

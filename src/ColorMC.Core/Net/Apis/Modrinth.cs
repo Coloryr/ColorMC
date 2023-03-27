@@ -16,7 +16,19 @@ public static class Modrinth
 
     public const string CategoriesDataPack = "datapack";
 
-    public static async Task<ModrinthSearchObj?> Search(string version, string query, int sortOrder, int offset, int limit, string categoryId, string type2, string? type3)
+    /// <summary>
+    /// 搜索
+    /// </summary>
+    /// <param name="version">游戏版本</param>
+    /// <param name="query">关键字</param>
+    /// <param name="sortOrder">排序方式</param>
+    /// <param name="offset">偏移</param>
+    /// <param name="limit">限制</param>
+    /// <param name="categoryId">类型</param>
+    /// <param name="type2">类型1</param>
+    /// <param name="type3">类型2</param>
+    /// <returns></returns>
+    private static async Task<ModrinthSearchObj?> Search(string version, string query, int sortOrder, int offset, int limit, string categoryId, string type2, string? type3)
     {
         try
         {
@@ -120,20 +132,33 @@ public static class Modrinth
             pagesize, categoryId, ClassMod, CategoriesDataPack);
     }
 
-    public static async Task<ModrinthProjectObj?> Project(string id)
-    {
-        try
-        {
-            var res = await BaseClient.DownloadClient.GetStringAsync($"{Url}project/{id}");
-            return JsonConvert.DeserializeObject<ModrinthProjectObj>(res);
-        }
-        catch (Exception e)
-        {
-            Logs.Error("get fail", e);
-            return null;
-        }
-    }
+    ///// <summary>
+    ///// 获取
+    ///// </summary>
+    ///// <param name = "id" ></ param >
+    ///// < returns ></ returns >
+    //public static async Task<ModrinthProjectObj?> Project(string id)
+    //{
+    //    try
+    //    {
+    //        var res = await BaseClient.DownloadClient.GetStringAsync($"{Url}project/{id}");
+    //        return JsonConvert.DeserializeObject<ModrinthProjectObj>(res);
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Logs.Error("get fail", e);
+    //        return null;
+    //    }
+    //}
 
+
+    /// <summary>
+    /// 获取文件列表
+    /// </summary>
+    /// <param name="id">项目ID</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="loader">加载器类型</param>
+    /// <returns></returns>
     public static async Task<List<ModrinthVersionObj>?> Version(string id, string? mc, Loaders loader)
     {
         try
@@ -153,6 +178,9 @@ public static class Modrinth
 
     private static List<string>? ModrinthGameVersions;
 
+    /// <summary>
+    /// 获取所有游戏版本
+    /// </summary>
     public static async Task<List<ModrinthGameVersionObj>?> GetGameVersions()
     {
         try
@@ -167,6 +195,10 @@ public static class Modrinth
         }
     }
 
+    /// <summary>
+    /// 获取所有类型
+    /// </summary>
+    /// <returns></returns>
     public static async Task<List<ModrinthCategoriesObj>?> GetCategories()
     {
         try
@@ -181,6 +213,9 @@ public static class Modrinth
         }
     }
 
+    /// <summary>
+    /// 获取所有游戏版本
+    /// </summary>
     public static async Task<List<string>?> GetGameVersion()
     {
         if (ModrinthGameVersions != null)

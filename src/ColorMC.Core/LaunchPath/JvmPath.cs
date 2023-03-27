@@ -13,6 +13,10 @@ public static class JvmPath
 
     public static string BaseDir;
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
         BaseDir = dir;
@@ -54,6 +58,13 @@ public static class JvmPath
         return (CoreRunState.Init, null);
     }
 
+    /// <summary>
+    /// 下载
+    /// </summary>
+    /// <param name="name">名字</param>
+    /// <param name="sha256">校验</param>
+    /// <param name="url">网址</param>
+    /// <returns>结果</returns>
     private static async Task<(bool, string?)> Download(string name, string sha256, string url)
     {
         var item = new DownloadItemObj()
@@ -77,7 +88,11 @@ public static class JvmPath
         return (true, item.Local);
     }
 
-
+    /// <summary>
+    /// 查找文件
+    /// </summary>
+    /// <param name="path">路径</param>
+    /// <returns>结果</returns>
     private static string? Find(string path)
     {
         return SystemInfo.Os switch
@@ -90,6 +105,12 @@ public static class JvmPath
         };
     }
 
+    /// <summary>
+    /// 解压
+    /// </summary>
+    /// <param name="name">名字</param>
+    /// <param name="file">文件</param>
+    /// <returns></returns>
     private static async Task<(bool, string?)> UnzipJava(string name, string file)
     {
         string path = BaseDir + Name1 + "/" + name;
@@ -102,7 +123,7 @@ public static class JvmPath
             return (false, LanguageHelper.GetName("Core.Jvm.Error6"));
         else
         {
-            Logs.Info($"find java {java}, check it");
+            Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info3"), java));
         }
 
         if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
@@ -126,7 +147,7 @@ public static class JvmPath
     /// <returns>结果</returns>
     public static (bool Res, string Msg) AddItem(string name, string local)
     {
-        Logs.Info($"check java {local}");
+        Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info5"), local));
 
         Jvms.Remove(name);
         var info = GetJavaInfo(local);
@@ -143,7 +164,7 @@ public static class JvmPath
         }
         else
         {
-            Logs.Info($"java info error");
+            Logs.Info(LanguageHelper.GetName("Core.Jvm.Error8"));
         }
 
         return (false, LanguageHelper.GetName("Core.Jvm.Error1"));
@@ -250,6 +271,10 @@ public static class JvmPath
         }
     }
 
+    /// <summary>
+    /// 提升权限
+    /// </summary>
+    /// <param name="path">文件</param>
     private static void Per(string path)
     {
         try
@@ -273,7 +298,7 @@ public static class JvmPath
         }
         catch (Exception e)
         {
-            Logs.Error("java chmod fail", e);
+            Logs.Error(LanguageHelper.GetName("Core.Jvm.Error9"), e);
         }
     }
 
@@ -325,7 +350,7 @@ public static class JvmPath
         }
         catch (Exception e)
         {
-            Logs.Error("java check fail", e);
+            Logs.Error(LanguageHelper.GetName("Core.Jvm.Error10"), e);
             return null;
         }
     }

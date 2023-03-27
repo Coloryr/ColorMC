@@ -84,6 +84,11 @@ public static class CurseForge
         return GetList(ClassMod, version, page, sortField, filter, pagesize, sortOrder, categoryId, Loader(loader));
     }
 
+    /// <summary>
+    /// 加载器转类型
+    /// </summary>
+    /// <param name="loader">加载器</param>
+    /// <returns>类型</returns>
     private static int Loader(Loaders loader)
     {
         return loader switch
@@ -151,14 +156,9 @@ public static class CurseForge
         }
     }
 
-    private record Arg1
-    {
-        public List<long> fileIds { get; set; } = new();
-    }
-
     private record Arg2
     {
-        public List<CurseForgeModObj.Data> data { get; set; } = new();
+        public List<CurseForgeModObj.Data> data { get; set; }
     }
 
     /// <summary>
@@ -168,7 +168,7 @@ public static class CurseForge
     {
         try
         {
-            Arg1 arg1 = new();
+            var arg1 = new { fileIds = new List<long>() };
             obj.ForEach(a => arg1.fileIds.Add(a.fileID));
             string temp = $"{CurseForgeUrl}mods/files";
             HttpRequestMessage httpRequest = new()
@@ -191,31 +191,10 @@ public static class CurseForge
         }
     }
 
-    //public static async Task<JObject?> GetCurseForgeModPage(CurseForgePackObj.Files obj)
-    //{
-    //    try
-    //    {
-    //        string temp = CurseForgeUrl + $"v1/mods/{obj.projectID}";
-    //        HttpRequestMessage httpRequest = new()
-    //        {
-    //            Method = HttpMethod.Get,
-    //            RequestUri = new Uri(temp)
-    //        };
-    //        httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
-    //        var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
-    //        var data1 = await data.Content.ReadAsStringAsync();
-    //        if (string.IsNullOrWhiteSpace(data1))
-    //            return null;
-    //        return JsonConvert.DeserializeObject<JObject>(data1);
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        Logs.Error("获取CurseForge_Mod信息发生错误", e);
-    //        return null;
-    //    }
-    //}
-
-
+    /// <summary>
+    /// 获取分类信息
+    /// </summary>
+    /// <returns>信息</returns>
     public static async Task<CurseForgeCategoriesObj?> GetCategories()
     {
         try

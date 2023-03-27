@@ -14,6 +14,10 @@ public static class FTBHelper
     private const string Search = "https://api.modpacks.ch/public/modpack/search/50?term=";
     private const string ModPack = "https://api.modpacks.ch/public/modpack/";
 
+    /// <summary>
+    /// 获取全部列表
+    /// </summary>
+    /// <returns></returns>
     public static async Task<FTBPackListObj?> GetAll()
     {
         try
@@ -30,6 +34,10 @@ public static class FTBHelper
         return null;
     }
 
+    /// <summary>
+    /// 获取列表1
+    /// </summary>
+    /// <returns></returns>
     public static async Task<FTBPackListObj?> GetFeatured()
     {
         try
@@ -46,6 +54,10 @@ public static class FTBHelper
         return null;
     }
 
+    /// <summary>
+    /// 获取列表2
+    /// </summary>
+    /// <returns></returns>
     public static async Task<FTBPackListObj?> GetPopular()
     {
         try
@@ -62,6 +74,10 @@ public static class FTBHelper
         return null;
     }
 
+    /// <summary>
+    /// 获取列表3
+    /// </summary>
+    /// <returns></returns>
     public static async Task<FTBPackListObj?> GetInstalls()
     {
         try
@@ -78,6 +94,11 @@ public static class FTBHelper
         return null;
     }
 
+    /// <summary>
+    /// 搜索
+    /// </summary>
+    /// <param name="temp">关键字</param>
+    /// <returns></returns>
     public static async Task<FTBPackListObj?> GetSearch(string temp)
     {
         try
@@ -97,6 +118,11 @@ public static class FTBHelper
         return null;
     }
 
+    /// <summary>
+    /// 获取版本列表
+    /// </summary>
+    /// <param name="id">游戏ID</param>
+    /// <returns></returns>
     public static async Task<FTBModpackObj?> GetModpack(int id)
     {
         try
@@ -113,6 +139,12 @@ public static class FTBHelper
         return null;
     }
 
+    /// <summary>
+    /// 获取文件列表
+    /// </summary>
+    /// <param name="id">游戏ID</param>
+    /// <param name="fid">版本ID</param>
+    /// <returns></returns>
     public static async Task<FTBFilesObj?> GetFiles(int id, int fid)
     {
         try
@@ -129,6 +161,11 @@ public static class FTBHelper
         return null;
     }
 
+    /// <summary>
+    /// 转换作者
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
     public static string GetString(this List<FTBModpackObj.Authors> list)
     {
         if (list == null)
@@ -140,6 +177,11 @@ public static class FTBHelper
         return str.ToString();
     }
 
+    /// <summary>
+    /// 通知已安装
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="file"></param>
     public static async void PostIntall(int id, int file)
     {
         var analytics = ModPack + id + "/" + file + "/install";
@@ -154,6 +196,9 @@ public static class FTBHelper
         }
     }
 
+    /// <summary>
+    /// 通知已启动
+    /// </summary>
     public static async void GetPostLaunch(int id, int file)
     {
         var analytics = ModPack + id + "/" + file + "/play";

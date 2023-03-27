@@ -44,12 +44,6 @@ public static class TestItem
     public static void Item3()
     {
         var list = PackDownload.DownloadCurseForgeModPack("H:\\ColonyVenture-1.13.zip", null, null).Result;
-        if (list.State != GetDownloadState.End)
-        {
-            Console.WriteLine("下载列表获取失败");
-            return;
-        }
-        DownloadManager.Start(list.List!).Wait();
     }
 
     public static void Item4()

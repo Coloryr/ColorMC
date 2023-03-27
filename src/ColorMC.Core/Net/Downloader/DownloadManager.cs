@@ -7,14 +7,38 @@ namespace ColorMC.Core.Net.Downloader;
 
 public static class DownloadManager
 {
+    /// <summary>
+    /// 下载项目队列
+    /// </summary>
     private readonly static ConcurrentQueue<DownloadItemObj> Items = new();
+    /// <summary>
+    /// 项目名字
+    /// </summary>
     private readonly static List<string> Name = new();
+    /// <summary>
+    /// 下载线程
+    /// </summary>
     private static List<DownloadThread> threads = new();
-    private static Semaphore semaphore = new(0, 10);
+    /// <summary>
+    /// 信号量
+    /// </summary>
+    private static Semaphore semaphore;
+    /// <summary>
+    /// 下载状态
+    /// </summary>
     public static CoreRunState State { get; private set; } = CoreRunState.End;
+    /// <summary>
+    /// 缓存路径
+    /// </summary>
     public static string DownloadDir { get; private set; }
 
+    /// <summary>
+    /// 总下载数量
+    /// </summary>
     public static int AllSize { get; private set; }
+    /// <summary>
+    /// 已下载数量
+    /// </summary>
     public static int DoneSize { get; private set; }
 
     /// <summary>
@@ -41,6 +65,9 @@ public static class DownloadManager
         Clear();
     }
 
+    /// <summary>
+    /// 停止下载器
+    /// </summary>
     private static void Stop()
     {
         threads.ForEach(a => a.Close());
@@ -80,6 +107,9 @@ public static class DownloadManager
         }
     }
 
+    /// <summary>
+    /// 清空下载器
+    /// </summary>
     private static void Clear()
     {
         Logs.Info(LanguageHelper.GetName("Core.Http.Info2"));

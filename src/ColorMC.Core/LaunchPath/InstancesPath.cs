@@ -409,11 +409,21 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name19}/{Name14}");
     }
 
+    /// <summary>
+    /// 获取服务器包文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>文件路径</returns>
     public static string GetServerPackFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name21}");
     }
 
+    /// <summary>
+    /// 获取旧服务器包文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>文件路径</returns>
     public static string GetServerPackOldFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name22}");
@@ -591,7 +601,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 保存游戏实例cfmod数据
+    /// 保存游戏实例mod数据
     /// </summary>
     /// <param name="obj">游戏实例</param>
     public static void SaveModInfo(this GameSettingObj obj)
@@ -608,7 +618,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 读取游戏实例cfmod数据
+    /// 读取游戏实例mod数据
     /// </summary>
     /// <param name="obj">游戏实例</param>
     public static void ReadCurseForgeMod(this GameSettingObj obj)
@@ -769,31 +779,13 @@ public static class InstancesPath
                     }
                 //Curseforge压缩包
                 case PackType.CurseForge:
-                    ColorMCCore.PackState?.Invoke(CoreRunState.Read);
-                    var res = await PackDownload.DownloadCurseForgeModPack(dir, name, group);
-                    game = res.Game;
-                    if (res.State != GetDownloadState.End)
-                    {
-                        break;
-                    }
-
-                    ColorMCCore.PackState?.Invoke(CoreRunState.Download);
-                    res1111 = await DownloadManager.Start(res.List!);
+                    (res1111, game) = await PackDownload.DownloadCurseForgeModPack(dir, name, group);
 
                     ColorMCCore.PackState?.Invoke(CoreRunState.End);
                     break;
-                //Curseforge压缩包
+                //Modrinth压缩包
                 case PackType.Modrinth:
-                    ColorMCCore.PackState?.Invoke(CoreRunState.Read);
-                    res = await PackDownload.DownloadModrinthModPack(dir, name, group);
-                    game = res.Game;
-                    if (res.State != GetDownloadState.End)
-                    {
-                        break;
-                    }
-
-                    ColorMCCore.PackState?.Invoke(CoreRunState.Download);
-                    res1111 = await DownloadManager.Start(res.List!);
+                    (res1111, game) = await PackDownload.DownloadModrinthModPack(dir, name, group);
 
                     ColorMCCore.PackState?.Invoke(CoreRunState.End);
                     break;
@@ -1022,6 +1014,13 @@ public static class InstancesPath
         return (res1111, game);
     }
 
+    /// <summary>
+    /// 安装Modrinth压缩包
+    /// </summary>
+    /// <param name="data">整合包信息</param>
+    /// <param name="name">名字</param>
+    /// <param name="group">群组</param>
+    /// <returns>结果</returns>
     public static async Task<(bool, GameSettingObj?)> InstallFromModrinth(ModrinthVersionObj data, string? name, string? group)
     {
         var file = data.files.FirstOrDefault(a => a.primary);
@@ -1045,9 +1044,11 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 安装curseforge整合包
+    /// 安装curseforge压缩包
     /// </summary>
     /// <param name="data">整合包信息</param>
+    /// <param name="name">名字</param>
+    /// <param name="group">群组</param>
     /// <returns>结果</returns>
     public static async Task<(bool, GameSettingObj?)> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data, string? name, string? group)
     {
