@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
+using Avalonia.VisualTree;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using System.Collections;
@@ -26,6 +28,19 @@ public partial class Flyouts1Control : UserControl
         Button4.Click += Button4_Click;
         Button5.Click += Button5_Click;
         Button6.Click += Button6_Click;
+        Button7.Click += Button7_Click;
+    }
+
+    private async void Button7_Click(object? sender, RoutedEventArgs e)
+    {
+        FlyoutBase.Hide();
+        var list = new List<IStorageFile>();
+        var window = App.FindRoot(Con.GetVisualRoot());
+        foreach (var item in List)
+        {
+            list.Add(await (window as Window).StorageProvider.TryGetFileFromPathAsync(item.Local));
+        }
+        await BaseBinding.CopyFileClipboard(list);
     }
 
     private void Button6_Click(object? sender, RoutedEventArgs e)

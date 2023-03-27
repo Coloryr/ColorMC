@@ -295,7 +295,7 @@ public partial class UsersControl : UserControl, IUserControl
         Button_Add.IsEnabled = true;
     }
 
-    private void LoginOAuthCode(string url, string code)
+    private async void LoginOAuthCode(string url, string code)
     {
         var window = App.FindRoot(VisualRoot);
         window.Info1.Close();
@@ -306,6 +306,7 @@ public partial class UsersControl : UserControl, IUserControl
                 UserBinding.OAuthCancel();
             });
         BaseBinding.OpUrl(url);
+        await BaseBinding.CopyTextClipboard(code);
     }
 
     private void UserType_SelectionChanged(object? sender, SelectionChangedEventArgs e)

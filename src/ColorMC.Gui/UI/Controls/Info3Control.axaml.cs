@@ -36,6 +36,7 @@ public partial class Info3Control : UserControl
         if (CancelCall != null)
         {
             CancelCall();
+            Button_Cancel.IsEnabled = false;
             CancelCall = null;
             return;
         }
@@ -86,6 +87,8 @@ public partial class Info3Control : UserControl
 
         TextBox_Text1.PasswordChar = password ? '*' : (char)0;
         App.CrossFade300.Start(null, this, CancellationToken.None);
+
+        CancelCall = null;
 
         return Task.Run(() =>
         {
@@ -181,6 +184,7 @@ public partial class Info3Control : UserControl
 
         if (!lock1)
         {
+            CancelCall = null;
             return Task.Run(() =>
             {
                 semaphore.WaitOne();
@@ -202,6 +206,7 @@ public partial class Info3Control : UserControl
         TextBox_Text.Watermark = title;
         App.CrossFade300.Start(null, this, CancellationToken.None);
 
+        CancelCall = null;
         return Task.Run(() =>
         {
             semaphore.WaitOne();

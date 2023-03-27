@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -116,15 +117,22 @@ public partial class GamesControl : UserControl
         }
     }
 
-    private void GameControl_PointerMoved(object? sender, PointerEventArgs e)
+    private async void GameControl_PointerMoved(object? sender, PointerEventArgs e)
     {
         e.Handled = true;
         var game = (sender as GameControl)!;
         if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
+            List<IStorageFolder> files = new();
+            if (Window.Window is Window win)
+            {
+                var item = await win.StorageProvider
+                    .TryGetFolderFromPathAsync(game.Obj.GetBasePath());
+                files.Add(item);
+            }
             var dragData = new DataObject();
             dragData.Set(BaseBinding.DrapType, game);
-            dragData.Set(DataFormats.FileNames, new string[] { game.Obj.GetBasePath() });
+            dragData.Set(DataFormats.Files, files);
 
             Dispatcher.UIThread.Post(() =>
             {

@@ -7,155 +7,168 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <DockPanel Margin="5">
-        <Grid DockPanel.Dock="Top">
-            <DockPanel>
-                <Label VerticalAlignment="Center" Content="{setting:Localize GameEditWindow.Tab4.Text2}" />
-                <ComboBox
-                    Name="ComboBox1"
-                    Width="120"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center" />
-                <Button
-                    Name="Button1"
-                    Width="85"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    Content="{setting:Localize Button.OpFile}"
-                    DockPanel.Dock="Right"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                    ToolTip.VerticalOffset="-30" />
-                <TextBox
-                    Name="TextBox1"
-                    Margin="5,0,0,0"
-                    Classes="input1"
-                    Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
+    <Grid>
+        <DockPanel Margin="5">
+            <Grid DockPanel.Dock="Top">
+                <DockPanel>
+                    <Label VerticalAlignment="Center" Content="{setting:Localize GameEditWindow.Tab4.Text2}" />
+                    <ComboBox
+                        Name="ComboBox1"
+                        Width="120"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center" />
+                    <Button
+                        Name="Button1"
+                        Width="85"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize Button.OpFile}"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                        ToolTip.VerticalOffset="-30" />
+                    <TextBox
+                        Name="TextBox1"
+                        Margin="5,0,0,0"
+                        Classes="input1"
+                        Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
 
-            </DockPanel>
+                </DockPanel>
 
+            </Grid>
+
+            <Grid>
+                <DataGrid
+                    Name="DataGrid1"
+                    Margin="0,3,0,0"
+                    AutoGenerateColumns="False"
+                    Background="{setting:Colors TranBack}"
+                    CanUserSortColumns="False"
+                    HorizontalScrollBarVisibility="Visible"
+                    VerticalScrollBarVisibility="Visible">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="10" IsReadOnly="True" />
+                        <DataGridCheckBoxColumn
+                            Binding="{Binding Enable}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text1}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text2}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Version}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text3}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Loader}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text7}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Source}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text8}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding PID}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding FID}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Local}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text4}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Author}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text5}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Url}"
+                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text6}"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel VerticalAlignment="Center">
+                    <Grid>
+                        <Button
+                            Name="Button_I"
+                            Width="20"
+                            Height="30"
+                            Content="I" />
+                        <Button
+                            Name="Button_I1"
+                            Width="100"
+                            Height="30"
+                            Content="{setting:Localize Button.Input}"
+                            IsVisible="False" />
+                    </Grid>
+                    <Grid Margin="0,5,0,0">
+                        <Button
+                            Name="Button_A"
+                            Width="20"
+                            Height="30"
+                            Content="A" />
+                        <Button
+                            Name="Button_A1"
+                            Width="100"
+                            Height="30"
+                            Content="{setting:Localize Button.Add}"
+                            IsVisible="False" />
+                    </Grid>
+                    <Grid Margin="0,5,0,0">
+                        <Button
+                            Name="Button_R"
+                            Width="20"
+                            Height="30"
+                            Content="R" />
+                        <Button
+                            Name="Button_R1"
+                            Width="100"
+                            Height="30"
+                            Content="{setting:Localize Button.Refash}"
+                            IsVisible="False" />
+                    </Grid>
+                    <Grid Margin="0,5,0,0">
+                        <Button
+                            Name="Button_C"
+                            Width="20"
+                            Height="30"
+                            Content="C" />
+                        <Button
+                            Name="Button_C1"
+                            Width="100"
+                            Height="30"
+                            Content="{setting:Localize GameEditWindow.Tab4.Text4}"
+                            IsVisible="False" />
+                    </Grid>
+                    <Grid Margin="0,5,0,0">
+                        <Button
+                            Name="Button_B"
+                            Width="20"
+                            Height="30"
+                            Content="B" />
+                        <Button
+                            Name="Button_B1"
+                            Width="100"
+                            Height="30"
+                            Content="{setting:Localize GameEditWindow.Tab4.Text5}"
+                            IsVisible="False" />
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+        <Grid
+            Name="Grid2"
+            Background="#EEEEEEEE"
+            IsVisible="False">
+            <Label
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{setting:Localize Gui.Info14}"
+                FontSize="30" />
         </Grid>
-
-        <Grid>
-            <DataGrid
-                Name="DataGrid1"
-                Margin="0,3,0,0"
-                AutoGenerateColumns="False"
-                Background="{setting:Colors TranBack}"
-                CanUserSortColumns="False"
-                HorizontalScrollBarVisibility="Visible"
-                VerticalScrollBarVisibility="Visible">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="10" IsReadOnly="True" />
-                    <DataGridCheckBoxColumn
-                        Binding="{Binding Enable}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text1}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Name}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text2}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Version}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text3}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Loader}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text7}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Source}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text8}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding PID}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding FID}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Local}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text4}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Author}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text5}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding Url}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text6}"
-                        IsReadOnly="True" />
-                </DataGrid.Columns>
-            </DataGrid>
-            <StackPanel VerticalAlignment="Center">
-                <Grid>
-                    <Button
-                        Name="Button_I"
-                        Width="20"
-                        Height="30"
-                        Content="I" />
-                    <Button
-                        Name="Button_I1"
-                        Width="100"
-                        Height="30"
-                        Content="{setting:Localize Button.Input}"
-                        IsVisible="False" />
-                </Grid>
-                <Grid Margin="0,5,0,0">
-                    <Button
-                        Name="Button_A"
-                        Width="20"
-                        Height="30"
-                        Content="A" />
-                    <Button
-                        Name="Button_A1"
-                        Width="100"
-                        Height="30"
-                        Content="{setting:Localize Button.Add}"
-                        IsVisible="False" />
-                </Grid>
-                <Grid Margin="0,5,0,0">
-                    <Button
-                        Name="Button_R"
-                        Width="20"
-                        Height="30"
-                        Content="R" />
-                    <Button
-                        Name="Button_R1"
-                        Width="100"
-                        Height="30"
-                        Content="{setting:Localize Button.Refash}"
-                        IsVisible="False" />
-                </Grid>
-                <Grid Margin="0,5,0,0">
-                    <Button
-                        Name="Button_C"
-                        Width="20"
-                        Height="30"
-                        Content="C" />
-                    <Button
-                        Name="Button_C1"
-                        Width="100"
-                        Height="30"
-                        Content="{setting:Localize GameEditWindow.Tab4.Text4}"
-                        IsVisible="False" />
-                </Grid>
-                <Grid Margin="0,5,0,0">
-                    <Button
-                        Name="Button_B"
-                        Width="20"
-                        Height="30"
-                        Content="B" />
-                    <Button
-                        Name="Button_B1"
-                        Width="100"
-                        Height="30"
-                        Content="{setting:Localize GameEditWindow.Tab4.Text5}"
-                        IsVisible="False" />
-                </Grid>
-            </StackPanel>
-        </Grid>
-    </DockPanel>
+    </Grid>
 </UserControl>

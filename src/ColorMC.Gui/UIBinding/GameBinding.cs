@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
@@ -1800,5 +1801,35 @@ public static class GameBinding
     public static Task<bool> GenServerPack(ServerPackObj obj, string local)
     {
         return obj.GenServerPack(local);
+    }
+
+    public static async Task<bool> AddFile(GameSettingObj obj, IDataObject data, FileType type)
+    {
+        if (!data.Contains(DataFormats.Files))
+        {
+            return false;
+        }
+        var list = data.GetFiles();
+        if (list == null)
+            return false;
+        switch (type)
+        {
+            case FileType.Mod:
+                var list1 = new List<string>();
+                foreach (var item in list)
+                {
+                    var file = item.TryGetLocalPath();
+                    if (string.IsNullOrWhiteSpace(file))
+                        continue;
+                    if (File.Exists(file) && file.ToLower().EndsWith(".jar"))
+                    {
+                        list1.Add(file);
+                    }
+                }
+
+                return await obj.AddMods(list1);
+        }
+
+        return false;
     }
 }

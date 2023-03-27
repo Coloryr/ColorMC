@@ -285,6 +285,8 @@ public static class Mods
     /// <param name="file">文件列表</param>
     public static async Task<bool> AddMods(this GameSettingObj obj, List<string> file)
     {
+        if (file.Count == 0)
+            return false;
         string path = obj.GetModsPath();
         bool ok = true;
         foreach (var item in file)

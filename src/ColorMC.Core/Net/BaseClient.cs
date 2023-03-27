@@ -50,7 +50,6 @@ public static class BaseClient
 
         if (ConfigUtils.Config.Http.DownloadProxy)
         {
-
             DownloadClient = new(new HttpClientHandler()
             {
                 Proxy = new WebProxy(ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort)

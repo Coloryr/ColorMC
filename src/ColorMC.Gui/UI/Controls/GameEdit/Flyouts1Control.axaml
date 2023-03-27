@@ -32,6 +32,11 @@
                 Height="25"
                 Content="{setting:Localize Button.OpFile}" />
             <Button
+                Name="Button7"
+                Width="100"
+                Height="25"
+                Content="{setting:Localize GameEditWindow.Flyouts1.Text6}" />
+            <Button
                 Name="Button4"
                 Width="100"
                 Height="25"

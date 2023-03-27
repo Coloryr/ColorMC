@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -57,6 +59,22 @@ public static class BaseBinding
         }
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
+    }
+
+    public static async Task CopyTextClipboard(string text)
+    {
+        if (Application.Current?.Clipboard is { } clipboard)
+            await clipboard.SetTextAsync(text);
+    }
+
+    public static async Task CopyFileClipboard(List<IStorageFile> text)
+    {
+        if (Application.Current?.Clipboard is { } clipboard)
+        {
+            var obj = new DataObject();
+            obj.Set(DataFormats.Files, text);
+            await clipboard.SetDataObjectAsync(obj);
+        }
     }
 
     public static void UpdateState(string info)

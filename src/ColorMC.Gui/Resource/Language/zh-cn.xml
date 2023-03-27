@@ -483,6 +483,7 @@
 	<String Key="GameEditWindow.Flyouts1.Text3">mcmod搜索</String>
 	<String Key="GameEditWindow.Flyouts1.Text4">打开链接</String>
 	<String Key="GameEditWindow.Flyouts1.Text5">更换版本</String>
+	<String Key="GameEditWindow.Flyouts1.Text6">复制到剪贴板</String>
 	<String Key="GameEditWindow.Flyouts2.Text1">导出世界</String>
 	<String Key="GameEditWindow.Flyouts2.Text2">删除世界</String>
 	<String Key="GameEditWindow.Flyouts2.Text3">备份世界</String>
@@ -770,6 +771,7 @@
 	<String Key="Gui.Info10">已保存</String>
 	<String Key="Gui.Info11">选择服务器包储存文件夹</String>
 	<String Key="Gui.Info13">更新服务器文件完成，请重新启动</String>
+	<String Key="Gui.Info14">导入Mod</String>
 	
 	<String Key="Warn1">配置为空，旧版配置文件会被覆盖</String>
 	<String Key="Error1">背景图片加载失败</String>
