@@ -560,6 +560,8 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
     private async void Load()
     {
         var window = App.FindRoot(VisualRoot);
+        if (window == null)
+            return;
         window.Info1.Show(App.GetLanguage("AddWindow.Info2"));
         var data = await GameBinding.GetList(now, List2[ComboBox2.SelectedIndex],
             ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!,
