@@ -80,7 +80,8 @@ public record CurseForgeObj
             }
             public record Dependencies
             {
-
+                public long modId { get; set; }
+                public int relationType { get; set; }
             }
             public record Modules
             {

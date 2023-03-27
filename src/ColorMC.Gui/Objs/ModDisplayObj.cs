@@ -49,7 +49,7 @@ public record ModDisplayObj : INotifyPropertyChanged
         }
     }
 
-    public ModPackInfoObj? Obj1;
+    public ModInfoObj? Obj1;
     public ModObj Obj;
     public bool Enable
     {

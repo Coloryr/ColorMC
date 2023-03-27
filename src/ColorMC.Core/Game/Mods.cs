@@ -367,4 +367,17 @@ public static class Mods
 
         return list;
     }
+
+    public static void AddModInfo(this GameSettingObj obj, ModInfoObj info)
+    {
+        if (obj.Mods.ContainsKey(info.ModId))
+        {
+            obj.Mods[info.ModId] = info;
+        }
+        else
+        {
+            obj.Mods.Add(info.ModId, info);
+        }
+        obj.SaveModInfo();
+    }
 }

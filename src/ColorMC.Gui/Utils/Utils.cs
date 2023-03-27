@@ -416,7 +416,6 @@ public static class ImageTemp
         }
         else
         {
-            Bitmap? bitmap = null;
             Semaphore semaphore = new(0, 2);
             BaseClient.Poll(url, (res, stream) =>
             {

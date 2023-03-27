@@ -630,7 +630,7 @@ public static class InstancesPath
             return;
         }
 
-        var res = JsonConvert.DeserializeObject<Dictionary<string, ModPackInfoObj>>(
+        var res = JsonConvert.DeserializeObject<Dictionary<string, ModInfoObj>>(
             File.ReadAllText(file));
         if (res == null)
         {

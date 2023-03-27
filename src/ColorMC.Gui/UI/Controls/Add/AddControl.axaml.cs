@@ -14,6 +14,7 @@ using DynamicData;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Avalonia.Input;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -87,13 +88,23 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         Input2.PropertyChanged += Input2_PropertyChanged;
         Input3.PropertyChanged += Input3_PropertyChanged;
 
+        Input1.KeyDown += Input1_KeyDown;
+
         for (int a = 0; a < 20; a++)
         {
             List.Add(new());
         }
     }
 
-    private void DataGrid1_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    private void Input1_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            Button1_Click(null, null);
+        }
+    }
+
+    private void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
     {
         Button5_Click(null, null);
     }
@@ -510,7 +521,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             {
                 res = type switch
                 {
-                    SourceType.CurseForge => await GameBinding.Download(now, Obj!,
+                    SourceType.CurseForge => await GameBinding.Download(window, now, Obj!,
                     data.Data as CurseForgeObj.Data.LatestFiles),
                     SourceType.Modrinth => await GameBinding.Download(now, Obj!,
                     data.Data as ModrinthVersionObj)

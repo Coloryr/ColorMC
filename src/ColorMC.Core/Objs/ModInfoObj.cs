@@ -3,7 +3,7 @@
 /// <summary>
 /// ModPack信息
 /// </summary>
-public record ModPackInfoObj
+public record ModInfoObj
 {
     public string Path { get; set; }
     public string Name { get; set; }

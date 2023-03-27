@@ -887,8 +887,12 @@ public static class GameBinding
         return list;
     }
 
-    public static async Task<bool> AddWorld(GameSettingObj obj, string file)
+    public static async Task<bool> AddWorld(GameSettingObj obj, string? file)
     {
+        if (string.IsNullOrWhiteSpace(file))
+        {
+            return false;
+        }
         var res = await obj.AddWorldZip(file);
         if (!res)
         {
@@ -1357,13 +1361,62 @@ public static class GameBinding
         return builder.ToString()[..^1];
     }
 
-    public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeObj.Data.LatestFiles? data)
+    private static async Task<ConcurrentBag<(DownloadItemObj, ModInfoObj)>> 
+        GetCurseForgeModDependencies(CurseForgeObj.Data.LatestFiles data, GameSettingObj obj)
+    {
+        var list = new ConcurrentBag<(DownloadItemObj, ModInfoObj)>();
+        if (data.dependencies == null || data.dependencies.Count == 0)
+        {
+            return list;
+        }
+        await Parallel.ForEachAsync(data.dependencies, async (item, cancel) =>
+        {
+            var res1 = await CurseForge.GetCurseForgeFiles(item.modId.ToString(), obj.Version, loader: obj.Loader);
+            if (res1 == null || res1.data.Count == 0)
+                return;
+
+            var res = res1.data.First();
+
+            foreach (var item3 in await GetCurseForgeModDependencies(res, obj))
+            {
+                list.Add(item3);
+            }
+
+            res.downloadUrl ??= $"https://edge.forgecdn.net/files/{res.id / 1000}/{res.id % 1000}/{res.fileName}";
+
+            var item1 = new DownloadItemObj()
+            {
+                Url = res.downloadUrl,
+                Name = res.displayName,
+                Local = Path.GetFullPath(obj.GetModsPath() + "/" + res.fileName),
+                SHA1 = res.hashes.Where(a => a.algo == 1)
+                    .Select(a => a.value).FirstOrDefault(),
+                Overwrite = true
+            };
+
+            var item2 = new ModInfoObj()
+            {
+                Path = "mods",
+                Name = res.displayName,
+                File = res.fileName,
+                SHA1 = item1.SHA1,
+                ModId = res.modId.ToString(),
+                FileId = res.id.ToString(),
+                Url = res.downloadUrl
+            };
+            list.Add((item1, item2));
+        });
+
+        return list;
+    }
+
+    public static async Task<bool> Download(IBaseWindow? win, FileType type, GameSettingObj obj, CurseForgeObj.Data.LatestFiles? data)
     {
         if (data == null)
             return false;
 
         data.FixDownloadUrl();
-
+        bool res;
         switch (type)
         {
             case FileType.Mod:
@@ -1384,31 +1437,65 @@ public static class GameBinding
                                 .Select(a => a.value).FirstOrDefault(),
                     Overwrite = true
                 };
-
-                var res = await DownloadManager.Download(item);
-                if (res)
+                if (data.dependencies != null && data.dependencies.Count > 0
+                    && win != null && await win.Info.ShowWait("是否下载前置Mod"))
                 {
-                    var obj1 = new ModPackInfoObj()
+                    var list1 = new List<ModInfoObj>()
                     {
-                        FileId = data.id.ToString(),
-                        ModId = data.modId.ToString(),
-                        File = data.fileName,
-                        Name = data.displayName,
-                        Url = data.downloadUrl,
-                        SHA1 = data.hashes.Where(a => a.algo == 1)
-                        .Select(a => a.value).FirstOrDefault()
+                        new ModInfoObj()
+                        {
+                            Path = "mods",
+                            FileId = data.id.ToString(),
+                            ModId = data.modId.ToString(),
+                            File = data.fileName,
+                            Name = data.displayName,
+                            Url = data.downloadUrl,
+                            SHA1 = item.SHA1
+                        }
                     };
-                    if (obj.Mods.ContainsKey(obj1.ModId))
+                    var list = new List<DownloadItemObj>
                     {
-                        obj.Mods[obj1.ModId] = obj1;
-                    }
-                    else
+                        item
+                    };
+
+                    var list2 = await GetCurseForgeModDependencies(data, obj);
+                    foreach (var item1 in list2)
                     {
-                        obj.Mods.Add(obj1.ModId, obj1);
+                        list1.Add(item1.Item2);
+                        list.Add(item1.Item1);
                     }
-                    obj.SaveModInfo();
+
+                    var res2 = await DownloadManager.Start(list.ToList());
+                    if (res2)
+                    {
+                        foreach (var item1 in list1)
+                        {
+                            obj.AddModInfo(item1);
+                        }
+                    }
+
+                    return res2;
                 }
-                return res;
+                else
+                {
+                    res = await DownloadManager.Download(item);
+                    if (res)
+                    {
+                        var obj1 = new ModInfoObj()
+                        {
+                            Path = "mods",
+                            FileId = data.id.ToString(),
+                            ModId = data.modId.ToString(),
+                            File = data.fileName,
+                            Name = data.displayName,
+                            Url = data.downloadUrl,
+                            SHA1 = item.SHA1
+                        };
+                        obj.AddModInfo(obj1);
+                    }
+                    return res;
+                }
+
             case FileType.World:
                 item = new DownloadItemObj()
                 {
@@ -1478,7 +1565,7 @@ public static class GameBinding
                 var res = await DownloadManager.Download(item);
                 if (res)
                 {
-                    var obj1 = new ModPackInfoObj()
+                    var obj1 = new ModInfoObj()
                     {
                         FileId = data.id.ToString(),
                         ModId = data.project_id,
@@ -1575,7 +1662,7 @@ public static class GameBinding
 
         data.FixDownloadUrl();
 
-        var obj1 = new ModPackInfoObj()
+        var obj1 = new ModInfoObj()
         {
             FileId = data.id.ToString(),
             ModId = data.modId.ToString(),
@@ -1607,7 +1694,7 @@ public static class GameBinding
             file = data.files[0];
         }
 
-        var obj1 = new ModPackInfoObj()
+        var obj1 = new ModInfoObj()
         {
             FileId = data.id.ToString(),
             ModId = data.project_id,
@@ -1756,7 +1843,7 @@ public static class GameBinding
         {
             ok &= item.Item1 switch
             {
-                SourceType.CurseForge => await Download(FileType.Mod, item.Item2.Obj.Game,
+                SourceType.CurseForge => await Download(null, FileType.Mod, item.Item2.Obj.Game,
                 item.Item3 as CurseForgeObj.Data.LatestFiles),
                 SourceType.Modrinth => await Download(FileType.Mod, item.Item2.Obj.Game,
                 item.Item3 as ModrinthVersionObj)
@@ -1816,7 +1903,7 @@ public static class GameBinding
                       App.GetLanguage("GameEditWindow.Tab12.Info2"), true);
                 if (res?.Any() == true)
                 {
-                    return await GameBinding.AddSchematic(obj, res);
+                    return await AddSchematic(obj, res);
                 }
                 return null;
             case FileType.Shaderpack:
@@ -1826,7 +1913,7 @@ public static class GameBinding
                     App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
                 if (res?.Any() == true)
                 {
-                    return await GameBinding.AddShaderpack(obj, res);
+                    return await AddShaderpack(obj, res);
                 }
                 return null;
             case FileType.Mod:
@@ -1836,7 +1923,7 @@ public static class GameBinding
                     App.GetLanguage("GameEditWindow.Tab4.Info8"), true);
                 if (res?.Any() == true)
                 {
-                    return await GameBinding.AddMods(obj, res);
+                    return await AddMods(obj, res);
                 }
                 return null;
             case FileType.World:
@@ -1846,7 +1933,7 @@ public static class GameBinding
                     App.GetLanguage("GameEditWindow.Tab5.Info8"));
                 if (res?.Any() == true)
                 {
-                    return await GameBinding.AddWorld(obj, res[0].GetPath());
+                    return await AddWorld(obj, res[0].GetPath());
                 }
                 return null;
             case FileType.Resourcepack:
@@ -1856,7 +1943,7 @@ public static class GameBinding
                     App.GetLanguage("GameEditWindow.Tab8.Info7"), true);
                 if (res?.Any() == true)
                 {
-                    return await GameBinding.AddResourcepack(obj, res);
+                    return await AddResourcepack(obj, res);
                 }
                 return null;
         }

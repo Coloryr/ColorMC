@@ -157,5 +157,5 @@ public record GameSettingObj
     /// CurseForge_Mod信息
     /// </summary>
     [JsonIgnore]
-    public Dictionary<string, ModPackInfoObj> Mods { get; set; }
+    public Dictionary<string, ModInfoObj> Mods { get; set; }
 }
