@@ -776,6 +776,7 @@
 	<String Key="Gui.Info16">导入资源包</String>
 	<String Key="Gui.Info17">导入光影包</String>
 	<String Key="Gui.Info18">导入结构文件</String>
+	<String Key="Gui.Info19">是否下载前置Mod</String>
 	
 	<String Key="Warn1">配置为空，旧版配置文件会被覆盖</String>
 	<String Key="Error1">背景图片加载失败</String>

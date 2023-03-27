@@ -1438,7 +1438,7 @@ public static class GameBinding
                     Overwrite = true
                 };
                 if (data.dependencies != null && data.dependencies.Count > 0
-                    && win != null && await win.Info.ShowWait("是否下载前置Mod"))
+                    && win != null && await win.Info.ShowWait(App.GetLanguage("Gui.Info19")))
                 {
                     var list1 = new List<ModInfoObj>()
                     {
