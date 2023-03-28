@@ -572,10 +572,6 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             return;
         }
 
-        foreach (var item in ListBox_Items.Children)
-        {
-            (item as FileItemControl)?.Cancel();
-        }
         ListBox_Items.Children.Clear();
         int a = 0;
         if (now == FileType.Mod)

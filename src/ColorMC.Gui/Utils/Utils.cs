@@ -422,25 +422,25 @@ public static class ImageTemp
             {
                 if (res)
                 {
-                    //var image = Image<Rgba32>.Load(stream!);
-                    //if (image.Width > 80 || image.Height > 80)
-                    //{
-                    //    if (image.Width > image.Height)
-                    //    {
-                    //        float x = (float) image.Height / image.Width;
-                    //        image.Mutate(a => a.Resize(80, (int)(80 * x)));
-                    //    }
-                    //    else
-                    //    {
-                    //        float x = (float) image.Width/ image.Height;
-                    //        image.Mutate(a => a.Resize((int)(80 * x), 80));
-                    //    }
-                    //}
-                    //image.SaveAsPng(Local + sha1);
-                    //image.Dispose();
+                    var image = Image<Rgba32>.Load(stream!);
+                    if (image.Width > 80 || image.Height > 80)
+                    {
+                        if (image.Width > image.Height)
+                        {
+                            float x = (float)image.Height / image.Width;
+                            image.Mutate(a => a.Resize(80, (int)(80 * x)));
+                        }
+                        else
+                        {
+                            float x = (float)image.Width / image.Height;
+                            image.Mutate(a => a.Resize((int)(80 * x), 80));
+                        }
+                    }
+                    image.SaveAsPng(Local + sha1);
+                    image.Dispose();
                     //GC.Collect();
-                    using var s = File.Create(Local + sha1);
-                    stream!.CopyTo(s);
+                    //using var s = File.Create(Local + sha1);
+                    //stream!.CopyTo(s);
                     ok = true;
                 }
                 if (token.IsCancellationRequested)

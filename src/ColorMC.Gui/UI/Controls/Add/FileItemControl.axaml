@@ -25,7 +25,7 @@
                 Height="90"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
+                Source="{Binding Image^, FallbackValue=resm:ColorMC.Gui.Resource.Pic.game.png}" />
             <StackPanel
                 Margin="100,0,0,0"
                 HorizontalAlignment="Stretch"
