@@ -9,6 +9,7 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -71,9 +72,18 @@ public partial class FileItemControl : UserControl
     public void Cancel()
     {
         cancel.Cancel();
+
+        if (Image1.Source != App.GameIcon && Image1.Source is Bitmap image)
+        {
+            Image1.Source = null;
+            image.Dispose();
+            GC.Collect();
+
+            Image1.Source = App.GameIcon;
+        }
     }
 
-    public async void Load(FileItemDisplayObj data)
+    public void Load(FileItemDisplayObj data)
     {
         cancel.Dispose();
         cancel = new();
@@ -88,30 +98,35 @@ public partial class FileItemControl : UserControl
         Label3.Content = data.DownloadCount;
         Label4.Content = DateTime.Parse(data.ModifiedDate);
 
-        if (Image1.Source != App.GameIcon)
-        {
-            (Image1.Source as Bitmap)?.Dispose();
-
-            Image1.Source = App.GameIcon;
-        }
-
         if (data.Logo != null)
         {
-            try
+            Task.Run(() =>
             {
-                var img = await ImageTemp.Load(data.Logo, cancel.Token);
-                if (img != null)
+                try
                 {
-                    Image1.Source = img;
+                    var img = ImageTemp.Load(data.Logo, cancel.Token);
+                    if (img != null)
+                    {
+                        if (cancel.IsCancellationRequested)
+                        {
+                            img.Dispose();
+                            GC.Collect();
+                            return;
+                        }
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            Image1.Source = img;
+                        });
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                if (cancel.IsCancellationRequested)
-                    return;
+                catch (Exception e)
+                {
+                    if (cancel.IsCancellationRequested)
+                        return;
 
-                Logs.Error(App.GetLanguage("AddModPackWindow.Error5"), e);
-            }
+                    Logs.Error(App.GetLanguage("AddModPackWindow.Error5"), e);
+                }
+            });
         }
     }
 

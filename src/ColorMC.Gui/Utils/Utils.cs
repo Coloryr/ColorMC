@@ -400,7 +400,7 @@ public static class ImageTemp
         Directory.CreateDirectory(Local);
     }
 
-    public static async Task<Bitmap?> Load(string url, CancellationToken token)
+    public static Bitmap? Load(string url, CancellationToken token)
     {
         if (!Directory.Exists(Local))
         {
@@ -416,26 +416,45 @@ public static class ImageTemp
         }
         else
         {
-            Semaphore semaphore = new(0, 2);
+            using Semaphore semaphore = new(0, 2);
+            bool ok = false;
             BaseClient.Poll(url, (res, stream) =>
             {
                 if (res)
                 {
-                    using var temp = File.Create(Local + sha1);
-                    stream!.CopyTo(temp);
+                    //var image = Image<Rgba32>.Load(stream!);
+                    //if (image.Width > 80 || image.Height > 80)
+                    //{
+                    //    if (image.Width > image.Height)
+                    //    {
+                    //        float x = (float) image.Height / image.Width;
+                    //        image.Mutate(a => a.Resize(80, (int)(80 * x)));
+                    //    }
+                    //    else
+                    //    {
+                    //        float x = (float) image.Width/ image.Height;
+                    //        image.Mutate(a => a.Resize((int)(80 * x), 80));
+                    //    }
+                    //}
+                    //image.SaveAsPng(Local + sha1);
+                    //image.Dispose();
+                    //GC.Collect();
+                    using var s = File.Create(Local + sha1);
+                    stream!.CopyTo(s);
+                    ok = true;
                 }
+                if (token.IsCancellationRequested)
+                    return;
+
                 semaphore.Release();
             }, token);
-            await Task.Run(semaphore.WaitOne);
+            semaphore.WaitOne();
 
             if (token.IsCancellationRequested)
                 return null;
 
-            if (File.Exists(Local + sha1))
+            if (ok)
             {
-                if (token.IsCancellationRequested)
-                    return null;
-
                 return new Bitmap(Local + sha1);
             }
 

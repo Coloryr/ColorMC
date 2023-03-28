@@ -257,10 +257,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
     {
         foreach (var item in ListBox_Items.Children)
         {
-            if (item is not FileItemControl control)
-                return;
-
-            control.Close();
+            (item as FileItemControl)?.Cancel();
         }
         ListBox_Items.Children.Clear();
 
@@ -332,6 +329,10 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
             return;
         }
 
+        foreach (var item in ListBox_Items.Children)
+        {
+            (item as FileItemControl)?.Cancel();
+        }
         ListBox_Items.Children.Clear();
         int a = 0;
         foreach (var item in data)
