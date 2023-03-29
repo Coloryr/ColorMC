@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -400,7 +401,7 @@ public static class ImageTemp
         Directory.CreateDirectory(Local);
     }
 
-    public static Bitmap? Load(string url, CancellationToken token)
+    public static async Task<Bitmap?> Load(string url)
     {
         if (!Directory.Exists(Local))
         {
@@ -409,53 +410,22 @@ public static class ImageTemp
         var sha1 = Funtcions.GenSha256(url);
         if (File.Exists(Local + sha1))
         {
-            if (token.IsCancellationRequested)
-                return null;
-
             return new Bitmap(Local + sha1);
         }
         else
         {
-            using Semaphore semaphore = new(0, 2);
-            bool ok = false;
-            BaseClient.Poll(url, (res, stream) =>
+            try
             {
-                if (res)
-                {
-                    var image = Image<Rgba32>.Load(stream!);
-                    if (image.Width > 80 || image.Height > 80)
-                    {
-                        if (image.Width > image.Height)
-                        {
-                            float x = (float)image.Height / image.Width;
-                            image.Mutate(a => a.Resize(80, (int)(80 * x)));
-                        }
-                        else
-                        {
-                            float x = (float)image.Width / image.Height;
-                            image.Mutate(a => a.Resize((int)(80 * x), 80));
-                        }
-                    }
-                    image.SaveAsPng(Local + sha1);
-                    image.Dispose();
-                    //GC.Collect();
-                    //using var s = File.Create(Local + sha1);
-                    //stream!.CopyTo(s);
-                    ok = true;
-                }
-                if (token.IsCancellationRequested)
-                    return;
+                var data1 = await BaseClient.GetBytes(url);
+                using var stream = new MemoryStream(data1);
+                var image = Bitmap.DecodeToWidth(stream, 80);
+                image.Save(Local + sha1);
 
-                semaphore.Release();
-            }, token);
-            semaphore.WaitOne();
-
-            if (token.IsCancellationRequested)
-                return null;
-
-            if (ok)
+                return image;
+            }
+            catch (Exception e)
             {
-                return new Bitmap(Local + sha1);
+                Logs.Error("http error", e);
             }
 
             return null;

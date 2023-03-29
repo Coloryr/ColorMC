@@ -17,7 +17,6 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 {
-    private readonly List<FileItemControl> List = new();
     private readonly Dictionary<int, string> Categories = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private readonly ObservableCollection<string> List4 = new();
@@ -52,11 +51,6 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
         Input2.PropertyChanged += Input2_PropertyChanged;
         Input3.PropertyChanged += Input3_PropertyChanged;
-
-        for (int a = 0; a < 20; a++)
-        {
-            List.Add(new());
-        }
     }
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
@@ -127,7 +121,10 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         Categories.Clear();
         foreach (var item in ListBox_Items.Children)
         {
-            (item as FileItemControl)?.Cancel();
+            if (item is FileItemControl con)
+            {
+                con.Dispose();
+            }
         }
         ListBox_Items.Children.Clear();
 
@@ -257,7 +254,10 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
     {
         foreach (var item in ListBox_Items.Children)
         {
-            (item as FileItemControl)?.Cancel();
+            if (item is FileItemControl con)
+            {
+                con.Dispose();
+            }
         }
         ListBox_Items.Children.Clear();
 
@@ -329,14 +329,18 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
             return;
         }
 
+        foreach (var item in ListBox_Items.Children)
+        {
+            if (item is FileItemControl con)
+            {
+                con.Dispose();
+            }
+        }
         ListBox_Items.Children.Clear();
         int a = 0;
         foreach (var item in data)
         {
-            if (a >= 50)
-                break;
-            var control = List[a];
-            control.Load(item);
+            var control = new FileItemControl(item);
             ListBox_Items.Children.Add(control);
             a++;
         }

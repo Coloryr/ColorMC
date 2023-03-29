@@ -26,10 +26,13 @@ using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using Newtonsoft.Json;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
@@ -152,14 +155,14 @@ public partial class App : Application
 
             await LoadImage();
 
-            //new Thread(() => 
-            //{
-            //    while (true)
-            //    {
-            //        Thread.Sleep(1000);
-            //        GC.Collect();
-            //    }
-            //}).Start();
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(1000);
+                    GC.Collect();
+                }
+            }).Start();
         }
         catch (Exception e)
         {

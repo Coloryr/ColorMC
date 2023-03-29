@@ -25,33 +25,30 @@
                 Height="90"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Source="{Binding Image^, FallbackValue=resm:ColorMC.Gui.Resource.Pic.game.png}" />
+                Source="{Binding Image^}" />
             <StackPanel
                 Margin="100,0,0,0"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"
                 Orientation="Horizontal">
                 <Label
-                    Name="Label1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="Name" />
+                    Content="{Binding Data.Name}" />
                 <Label
                     Margin="20,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Content="{setting:Localize AddModPackWindow.Control.Text1}" />
                 <Label
-                    Name="Label2"
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="Auth" />
+                    Content="{Binding Data.Author}" />
             </StackPanel>
             <TextBlock
-                Name="TextBlock1"
                 Margin="100,26,5,20"
-                Text="summary"
+                Text="{Binding Data.Summary}"
                 TextWrapping="Wrap" />
             <StackPanel
                 Margin="100,0,0,0"
@@ -63,10 +60,9 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize AddModPackWindow.Control.Text2}" />
                 <Label
-                    Name="Label3"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="Count" />
+                    Content="{Binding Data.DownloadCount}" />
                 <Label
                     Margin="50,0,0,0"
                     HorizontalAlignment="Left"

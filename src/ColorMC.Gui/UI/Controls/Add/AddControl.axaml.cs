@@ -23,7 +23,6 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddControl : UserControl, IUserControl, IAddWindow
 {
-    private readonly List<FileItemControl> List = new();
     private List<SourceType> List2 = new();
     private readonly ObservableCollection<string> List3 = new();
     private readonly Dictionary<int, string> Categories = new();
@@ -89,11 +88,6 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         Input3.PropertyChanged += Input3_PropertyChanged;
 
         Input1.KeyDown += Input1_KeyDown;
-
-        for (int a = 0; a < 20; a++)
-        {
-            List.Add(new());
-        }
     }
 
     private void Input1_KeyDown(object? sender, KeyEventArgs e)
@@ -212,10 +206,6 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         ComboBox4.ItemsSource = null;
         ComboBox5.ItemsSource = null;
 
-        foreach (var item in ListBox_Items.Children)
-        {
-            (item as FileItemControl)?.Cancel();
-        }
         ListBox_Items.Children.Clear();
 
         var type = List2[ComboBox2.SelectedIndex];
@@ -438,10 +428,6 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     public void Closed()
     {
-        foreach (var item in ListBox_Items.Children)
-        {
-            (item as FileItemControl)?.Cancel();
-        }
         ListBox_Items.Children.Clear();
 
         App.AddWindows.Remove(Obj.UUID);
@@ -582,8 +568,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
                 {
                     item.IsDownload = true;
                 }
-                var control = List[a];
-                control.Load(item);
+                var control = new FileItemControl(item);
                 ListBox_Items.Children.Add(control);
                 a++;
             }
@@ -592,8 +577,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         {
             foreach (var item in data)
             {
-                var control = List[a];
-                control.Load(item);
+                var control = new FileItemControl(item);
                 ListBox_Items.Children.Add(control);
                 a++;
             }

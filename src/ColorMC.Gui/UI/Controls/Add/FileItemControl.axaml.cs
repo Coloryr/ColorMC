@@ -9,36 +9,34 @@ using ColorMC.Core;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ReactiveUI;
 using System;
-using System.ComponentModel;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
-public partial class FileItemControl : UserControl
+public partial class FileItemControl : UserControl, IDisposable
 {
-    public static readonly StyledProperty<Task<Bitmap?>> ImageProperty =
-           AvaloniaProperty.Register<Image, Task<Bitmap?>>(nameof(Image), defaultBindingMode: BindingMode.TwoWay);
+    private Task<Bitmap?> Image => GetImage();
+    public FileItemDisplayObj? Data { get; init; }
 
-    private CancellationTokenSource cancel = new();
-    private Task<Bitmap?> Image
-    {
-        get { return GetValue(ImageProperty); }
-        set { SetValue(ImageProperty, value); }
-    }
-    public FileItemDisplayObj Data { get; private set; }
-    public FileItemControl()
+    public FileItemControl(FileItemDisplayObj? data)
     {
         InitializeComponent();
+
+        Data = data;
+        Image1.Source = App.GameIcon;
 
         DataContext = this;
 
         PointerPressed += CurseForgeControl_PointerPressed;
         DoubleTapped += CurseForgeControl_DoubleTapped;
 
-        Image1.Source = App.GameIcon;
+        Load();
+    }
+
+    public FileItemControl() :this(null)
+    {
+        
     }
 
     private void CurseForgeControl_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -55,7 +53,7 @@ public partial class FileItemControl : UserControl
 
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            var url = Data.GetUrl();
+            var url = Data?.GetUrl();
             if (url == null)
                 return;
 
@@ -83,57 +81,36 @@ public partial class FileItemControl : UserControl
         });
     }
 
-    public void Cancel()
+    private async Task<Bitmap?> GetImage()
     {
-        cancel.Cancel();
-    }
-
-    private Task<Bitmap?> GetImage()
-    {
-        return Task.Run(() =>
-        {
-            if (Data == null || Data.Logo == null)
-                return null;
-            try
-            {
-                var image = ImageTemp.Load(Data.Logo, cancel.Token);
-                if (cancel.IsCancellationRequested)
-                {
-                    image?.Dispose();
-                    return null;
-                }
-                return image;
-            }
-            catch (Exception e)
-            {
-                if (cancel.IsCancellationRequested)
-                    return null;
-
-                Logs.Error(App.GetLanguage("AddModPackWindow.Error5"), e);
-            }
-
+        if (Data == null || Data.Logo == null)
             return null;
-        });
+        try
+        {
+            return await ImageTemp.Load(Data.Logo);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(App.GetLanguage("AddModPackWindow.Error5"), e);
+        }
+
+        return null;
     }
 
-    public void Load(FileItemDisplayObj data)
+    private void Load()
     {
-        Cancel();
+        if (Data == null)
+            return;
 
-        cancel.Dispose();
-        cancel = new();
+        Label5.IsVisible = Data.IsDownload;
+        Label4.Content = DateTime.Parse(Data.ModifiedDate);
+    }
 
-        Data = data;
-
-        Label5.IsVisible = data.IsDownload;
-
-        Label1.Content = data.Name;
-        TextBlock1.Text = data.Summary;
-        Label2.Content = data.Author;
-        Label3.Content = data.DownloadCount;
-        Label4.Content = DateTime.Parse(data.ModifiedDate);
-
-        Image1.Source = App.GameIcon;
-        Image = GetImage();
+    public void Dispose()
+    {
+        if (Image1.Source!=null && Image1.Source != App.GameIcon)
+        {
+            (Image1.Source as Bitmap)?.Dispose();
+        }
     }
 }
