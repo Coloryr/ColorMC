@@ -51,17 +51,16 @@
                 Watermark="{setting:Localize GameEditWindow.Tab3.Text1}" />
 
         </DockPanel>
-        <Grid Margin="0,3,0,0">
-            <!--<ae:TextEditor
-                Name="TextEditor1"
-                Background="{setting:Colors TranBack}"
-                FontSize="14"
-                FontWeight="Normal"
-                Foreground="Black"
-                HorizontalScrollBarVisibility="Auto"
-                ShowLineNumbers="True"
-                VerticalScrollBarVisibility="Visible"
-                WordWrap="True" />-->
-        </Grid>
+        <ae:TextEditor
+            Name="TextEditor1"
+            Margin="0,3,0,0"
+            Background="{setting:Colors TranBack}"
+            FontSize="14"
+            FontWeight="Normal"
+            Foreground="Black"
+            HorizontalScrollBarVisibility="Auto"
+            ShowLineNumbers="True"
+            VerticalScrollBarVisibility="Visible"
+            WordWrap="True" />
     </DockPanel>
 </UserControl>

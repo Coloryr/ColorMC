@@ -155,14 +155,14 @@ public partial class App : Application
 
             await LoadImage();
 
-            new Thread(() =>
-            {
-                while (true)
-                {
-                    Thread.Sleep(1000);
-                    GC.Collect();
-                }
-            }).Start();
+            //new Thread(() =>
+            //{
+            //    while (true)
+            //    {
+            //        Thread.Sleep(1000);
+            //        GC.Collect();
+            //    }
+            //}).Start();
         }
         catch (Exception e)
         {

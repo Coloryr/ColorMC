@@ -29,13 +29,13 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Show(string data, Exception e, bool close)
     {
-        //TextEditor1.Text = $"{data}{Environment.NewLine}{e}";
+        TextEditor1.Text = $"{data}{Environment.NewLine}{e}";
         IsClose = close;
     }
 
     public void Show(string data, string e, bool close)
     {
-        //TextEditor1.Text = $"{data}{Environment.NewLine}{e}";
+        TextEditor1.Text = $"{data}{Environment.NewLine}{e}";
         IsClose = close;
     }
 }

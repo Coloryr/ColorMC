@@ -29,7 +29,7 @@ public partial class Tab7Control : UserControl
 
         Button1.Click += Button1_Click;
 
-        //TextEditor1.PointerWheelChanged += TextEditor1_PointerWheelChanged;
+        TextEditor1.PointerWheelChanged += TextEditor1_PointerWheelChanged;
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
@@ -40,7 +40,7 @@ public partial class Tab7Control : UserControl
 
     private void CheckBox1_Click(object? sender, RoutedEventArgs e)
     {
-        //TextEditor1.WordWrap = CheckBox1.IsChecked == true;
+        TextEditor1.WordWrap = CheckBox1.IsChecked == true;
     }
 
     private void TextEditor1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -56,14 +56,14 @@ public partial class Tab7Control : UserControl
             {
                 if (!string.IsNullOrWhiteSpace(temp))
                 {
-                    //TextEditor1.AppendText(temp);
+                    TextEditor1.AppendText(temp);
                     temp = "";
                 }
             }
 
             if (CheckBox2.IsChecked == true)
             {
-                //TextEditor1.ScrollToLine(TextEditor1.LineCount);
+                TextEditor1.ScrollToLine(TextEditor1.LineCount);
             }
         });
     }
@@ -72,7 +72,7 @@ public partial class Tab7Control : UserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            //TextEditor1.Text = "";
+            TextEditor1.Text = "";
         });
     }
 

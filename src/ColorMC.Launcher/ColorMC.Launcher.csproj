@@ -25,11 +25,9 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Gui\ColorMC.Gui.csproj">
-      <!--<CopyToPublishDirectory>Always</CopyToPublishDirectory>-->
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </ProjectReference>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj">
-      <!--<CopyToPublishDirectory>Always</CopyToPublishDirectory>-->
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </ProjectReference>
   </ItemGroup>
