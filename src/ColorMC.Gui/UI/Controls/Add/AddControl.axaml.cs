@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using AvaloniaEdit.Utils;
 using ColorMC.Core;
@@ -14,7 +15,6 @@ using DynamicData;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Avalonia.Input;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

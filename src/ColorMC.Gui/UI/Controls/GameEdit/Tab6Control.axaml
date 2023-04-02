@@ -19,15 +19,19 @@
                 HorizontalAlignment="Right"
                 Content="{setting:Localize GameEditWindow.Tab6.Text2}" />
         </Grid>
-        <TreeDataGrid Name="FileViewer" Margin="3">
+        <TreeDataGrid
+            Name="FileViewer"
+            Margin="3"
+            ScrollViewer.HorizontalScrollBarVisibility="Visible"
+            ScrollViewer.VerticalScrollBarVisibility="Visible">
             <TreeDataGrid.Resources>
                 <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
-                    <CheckBox Margin="5,0,5,0" IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
                 </DataTemplate>
 
                 <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
                     <StackPanel Orientation="Horizontal">
-                        <Image Margin="0,0,4,0" VerticalAlignment="Center">
+                        <Image Margin="0,0,3,0" VerticalAlignment="Center">
                             <Image.Source>
                                 <MultiBinding Converter="{x:Static vm:FilesPageViewModel.FileIconConverter}">
                                     <Binding Path="IsDirectory" />
@@ -38,13 +42,7 @@
                         <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
                     </StackPanel>
                 </DataTemplate>
-
             </TreeDataGrid.Resources>
-            <TreeDataGrid.Styles>
-                <Style Selector="TreeDataGrid TreeDataGridRow:nth-child(2n)">
-                    <Setter Property="Background" Value="#fff8f8f8" />
-                </Style>
-            </TreeDataGrid.Styles>
         </TreeDataGrid>
     </DockPanel>
 </UserControl>

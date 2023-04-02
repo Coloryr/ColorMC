@@ -1,6 +1,4 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
@@ -34,9 +32,9 @@ public partial class FileItemControl : UserControl, IDisposable
         Load();
     }
 
-    public FileItemControl() :this(null)
+    public FileItemControl() : this(null)
     {
-        
+
     }
 
     private void CurseForgeControl_DoubleTapped(object? sender, RoutedEventArgs e)
@@ -108,7 +106,7 @@ public partial class FileItemControl : UserControl, IDisposable
 
     public void Dispose()
     {
-        if (Image1.Source!=null && Image1.Source != App.GameIcon)
+        if (Image1.Source != null && Image1.Source != App.GameIcon)
         {
             (Image1.Source as Bitmap)?.Dispose();
         }

@@ -110,7 +110,7 @@ public static class ServerPack
 
         //检查资源包
         path = obj.Game.GetResourcepacksPath();
-        
+
         foreach (var item in obj.Resourcepack)
         {
             list5.Add(new()

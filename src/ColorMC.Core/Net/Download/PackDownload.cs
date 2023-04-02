@@ -214,7 +214,7 @@ public static class PackDownload
             return (false, game);
         }
 
-        return (true,  game);
+        return (true, game);
     }
 
     /// <summary>

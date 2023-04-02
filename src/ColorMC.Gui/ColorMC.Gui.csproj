@@ -70,7 +70,7 @@
     <!--<PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview5" />-->
     <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview6" />
-    <!--<PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0-preview4" />-->
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview6" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.0.0-preview6" />
@@ -92,9 +92,6 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Avalonia.Controls.TreeDataGrid">
-      <HintPath>..\Lib\Avalonia.Controls.TreeDataGrid.dll</HintPath>
-    </Reference>
     <Reference Include="AvaloniaEdit">
       <HintPath>..\lib\AvaloniaEdit.dll</HintPath>
     </Reference>

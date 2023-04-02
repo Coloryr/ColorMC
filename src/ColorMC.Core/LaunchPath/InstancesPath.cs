@@ -122,6 +122,11 @@ public static class InstancesPath
         else if (GameGroups.TryGetValue(obj.GroupName, out var group))
         {
             group.Remove(obj);
+
+            if (!group.Any())
+            {
+                GameGroups.Remove(obj.GroupName);
+            }
         }
     }
 

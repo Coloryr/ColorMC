@@ -9,7 +9,7 @@ namespace ColorMC.Core.Net.Apis;
 
 public static class ForgeHelper
 {
-    public static string ForgeWrapper => 
+    public static string ForgeWrapper =>
         LibrariesPath.BaseDir + "/io/github/zekerzhayard/ForgeWrapper/mmc3/ForgeWrapper-mmc3.jar";
 
     private static List<string>? SupportVersion;

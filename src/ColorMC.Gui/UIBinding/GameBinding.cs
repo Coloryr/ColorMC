@@ -1361,7 +1361,7 @@ public static class GameBinding
         return builder.ToString()[..^1];
     }
 
-    private static async Task<ConcurrentBag<(DownloadItemObj, ModInfoObj)>> 
+    private static async Task<ConcurrentBag<(DownloadItemObj, ModInfoObj)>>
         GetCurseForgeModDependencies(CurseForgeObj.Data.LatestFiles data, GameSettingObj obj)
     {
         var list = new ConcurrentBag<(DownloadItemObj, ModInfoObj)>();
