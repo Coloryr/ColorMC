@@ -75,11 +75,11 @@ public record AdvanceJvmObj
     /// <summary>
     /// 自定义mainclass
     /// </summary>
-    public string MainClass { get; set; }
+    public string? MainClass { get; set; }
     /// <summary>
     /// 附加的classpath
     /// </summary>
-    public string ClassPath { get; set; }
+    public string? ClassPath { get; set; }
 }
 
 /// <summary>

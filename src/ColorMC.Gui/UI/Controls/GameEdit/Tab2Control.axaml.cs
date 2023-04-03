@@ -313,7 +313,7 @@ public partial class Tab2Control : UserControl
         };
         list.AddRange(JavaBinding.GetJavaName());
 
-        ComboBox2.Items = list;
+        ComboBox2.ItemsSource = list;
 
         ComboBox2.SelectedItem = Obj.JvmName ?? "";
         TextBox11.Text = Obj.JvmLocal;
@@ -323,8 +323,8 @@ public partial class Tab2Control : UserControl
         {
             ComboBox1.SelectedIndex = config.GC == null ? -1 : (int)config.GC;
 
-            Input1.Value = config.MinMemory;
-            Input2.Value = config.MaxMemory;
+            Input1.Value = config.MinMemory == null ? null : (uint)config.MinMemory;
+            Input2.Value = config.MaxMemory == null ? null : (uint)config.MaxMemory;
 
             TextBox1.Text = config.GCArgument;
             TextBox2.Text = config.JavaAgent;
