@@ -181,7 +181,8 @@ public static class GameBinding
                 FTBType.Featured => await FTBHelper.GetFeatured(),
                 FTBType.Popular => await FTBHelper.GetPopular(),
                 FTBType.Installs => await FTBHelper.GetInstalls(),
-                FTBType.Search => await FTBHelper.GetSearch(filter)
+                FTBType.Search => await FTBHelper.GetSearch(filter),
+                _ => null
             };
 
             if (list == null)
@@ -189,7 +190,7 @@ public static class GameBinding
                 return null;
             }
 
-            Dictionary<int, FileItemDisplayObj> bag = new();
+            var bag = new Dictionary<int, FileItemDisplayObj>();
 
             int a = 0;
             foreach (var item in list.packs)
@@ -467,6 +468,8 @@ public static class GameBinding
             {
                 var item = file[0];
                 var name = item.GetPath();
+                if (name == null)
+                    return;
                 var info = await Image.IdentifyAsync(name);
                 if (info.Width != info.Height || info.Width > 200 || info.Height > 200)
                 {
@@ -778,7 +781,9 @@ public static class GameBinding
         var list = new List<string>();
         foreach (var item in file)
         {
-            list.Add(item.GetPath());
+            var item1 = item.GetPath();
+            if (item1 != null)
+                list.Add(item1);
         }
         return obj.AddMods(list);
     }
@@ -907,8 +912,11 @@ public static class GameBinding
         world.Remove();
     }
 
-    public static Task ExportWorld(WorldObj world, string file)
+    public static Task ExportWorld(WorldObj world, string? file)
     {
+        if (file == null)
+            return Task.CompletedTask;
+
         return world.ExportWorldZip(file);
     }
 
@@ -967,7 +975,9 @@ public static class GameBinding
         var list = new List<string>();
         foreach (var item in file)
         {
-            list.Add(item.GetPath());
+            var item1 = item.GetPath();
+            if (item1 != null)
+                list.Add(item1);
         }
         return obj.AddResourcepack(list);
     }
@@ -1107,7 +1117,9 @@ public static class GameBinding
         var list = new List<string>();
         foreach (var item in file)
         {
-            list.Add(item.GetPath());
+            var item1 = item.GetPath();
+            if (item1 != null)
+                list.Add(item1);
         }
 
         return obj.AddShaderpack(list);
@@ -1152,7 +1164,9 @@ public static class GameBinding
         var list = new List<string>();
         foreach (var item in file)
         {
-            list.Add(item.GetPath());
+            var item1 = item.GetPath();
+            if (item1 != null)
+                list.Add(item1);
         }
 
         return obj.AddSchematic(list);
@@ -1755,7 +1769,7 @@ public static class GameBinding
         }
         else if (obj.SourceType == SourceType.FTB)
         {
-            return $"https://feed-the-beast.com/modpacks/{(obj.Data as FTBModpackObj).id}";
+            return $"https://feed-the-beast.com/modpacks/{(obj.Data as FTBModpackObj)?.id}";
         }
 
         return null;
@@ -1846,7 +1860,8 @@ public static class GameBinding
                 SourceType.CurseForge => await Download(null, FileType.Mod, item.Item2.Obj.Game,
                 item.Item3 as CurseForgeObj.Data.LatestFiles),
                 SourceType.Modrinth => await Download(FileType.Mod, item.Item2.Obj.Game,
-                item.Item3 as ModrinthVersionObj)
+                item.Item3 as ModrinthVersionObj),
+                _ => false
             };
         });
 

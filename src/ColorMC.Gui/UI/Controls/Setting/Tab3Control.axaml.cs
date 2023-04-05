@@ -24,7 +24,6 @@ public partial class Tab3Control : UserControl
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
 
-        Input1.ParsingNumberStyle = NumberStyles.Integer;
         Input1.PropertyChanged += Input1_PropertyChanged;
 
         TextBox1.PropertyChanged += TextBox_PropertyChanged;

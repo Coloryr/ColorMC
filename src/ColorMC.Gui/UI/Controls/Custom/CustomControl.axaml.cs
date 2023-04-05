@@ -189,8 +189,7 @@ public partial class CustomControl : UserControl, IUserControl
         }
 
         App_UserEdit();
-
-        Motd?.Load(config.Item2.ServerCustom!.IP, config.Item2.ServerCustom.Port);
+        MotdLoad();
 
         Task.Run(() => BaseBinding.ServerPackCheck(Obj));
     }
@@ -467,5 +466,11 @@ public partial class CustomControl : UserControl, IUserControl
         {
             App.ShowSetting(SettingType.Normal);
         }
+    }
+
+    public void MotdLoad()
+    {
+        var config = ConfigBinding.GetAllConfig();
+        Motd?.Load(config.Item2.ServerCustom.IP, config.Item2.ServerCustom.Port);
     }
 }

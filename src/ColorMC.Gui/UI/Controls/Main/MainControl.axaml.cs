@@ -137,7 +137,7 @@ public partial class MainControl : UserControl, IUserControl
 
         var window = App.FindRoot(VisualRoot);
         launch = true;
-        ItemInfo.SetLaunch(true);
+        ItemInfo.UpdateLaunch();
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
             window.Info1.Show(App.GetLanguage("MainWindow.Info3"));
@@ -182,7 +182,7 @@ public partial class MainControl : UserControl, IUserControl
             }
         }
         launch = false;
-        ItemInfo.SetLaunch(false);
+        ItemInfo.UpdateLaunch();
     }
 
     public void GameClose(GameSettingObj obj)

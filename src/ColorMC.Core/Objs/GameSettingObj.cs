@@ -95,7 +95,7 @@ public record GameSettingObj
     /// <summary>
     /// 实例组名
     /// </summary>
-    public string GroupName { get; set; }
+    public string? GroupName { get; set; }
     /// <summary>
     /// 路径名
     /// </summary>
@@ -111,7 +111,7 @@ public record GameSettingObj
     /// <summary>
     /// Mod加载器版本
     /// </summary>
-    public string LoaderVersion { get; set; }
+    public string? LoaderVersion { get; set; }
     /// <summary>
     /// Jvm参数
     /// </summary>
@@ -119,11 +119,11 @@ public record GameSettingObj
     /// <summary>
     /// Jvm名字
     /// </summary>
-    public string JvmName { get; set; }
+    public string? JvmName { get; set; }
     /// <summary>
     /// Jvm路径
     /// </summary>
-    public string JvmLocal { get; set; }
+    public string? JvmLocal { get; set; }
     /// <summary>
     /// 窗口设置
     /// </summary>

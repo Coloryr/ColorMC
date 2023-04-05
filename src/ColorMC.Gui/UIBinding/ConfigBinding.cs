@@ -150,7 +150,6 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         App.MainWindow?.Load();
-        App.MainWindow?.MotdLoad();
 
         ColorSel.Instance.Load();
     }

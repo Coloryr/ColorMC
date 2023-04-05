@@ -35,9 +35,14 @@ public static class BaseBinding
     private readonly static Dictionary<Process, GameSettingObj> Games = new();
     private readonly static Dictionary<string, Process> RunGames = new();
     private readonly static Dictionary<string, string> GameLogs = new();
+#if !DEBUG
     private static Mutex mutex1;
+#endif
     public static bool ISNewStart => ColorMCCore.NewStart;
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
     public static void Init()
     {
         ColorMCCore.OnError = ShowError;
@@ -61,22 +66,34 @@ public static class BaseBinding
         ColorSel.Instance.Load();
     }
 
+    /// <summary>
+    /// 复制到剪贴板
+    /// </summary>
+    /// <param name="text">文本</param>
     public static async Task CopyTextClipboard(string text)
     {
         if (Application.Current?.Clipboard is { } clipboard)
             await clipboard.SetTextAsync(text);
     }
 
-    public static async Task CopyFileClipboard(List<IStorageFile> text)
+    /// <summary>
+    /// 复制到剪贴板
+    /// </summary>
+    /// <param name="file">文件列表</param>
+    public static async Task CopyFileClipboard(List<IStorageFile> file)
     {
         if (Application.Current?.Clipboard is { } clipboard)
         {
             var obj = new DataObject();
-            obj.Set(DataFormats.Files, text);
+            obj.Set(DataFormats.Files, file);
             await clipboard.SetDataObjectAsync(obj);
         }
     }
 
+    /// <summary>
+    /// 更新状态回调
+    /// </summary>
+    /// <param name="info">信息</param>
     public static void UpdateState(string info)
     {
         var window = App.GetMainWindow();
@@ -90,11 +107,18 @@ public static class BaseBinding
         });
     }
 
+    /// <summary>
+    /// 更新整合包状态回调
+    /// </summary>
+    /// <param name="info">状态</param>
     public static Task<bool> PackUpdate(string info)
     {
         return Dispatcher.UIThread.InvokeAsync(() => App.HaveUpdate(info));
     }
 
+    /// <summary>
+    /// 找不到Java回调
+    /// </summary>
     public static void NoJava()
     {
         Dispatcher.UIThread.Post(() =>
@@ -103,12 +127,16 @@ public static class BaseBinding
         });
     }
 
-    public static Task<IReadOnlyList<IStorageFile>?> OpFile(IBaseWindow? window, string title,
-        string[] ext, string name, bool multiple = false, DirectoryInfo? storage = null)
-    {
-        return OpFile(window as TopLevel, title, ext, name, multiple, storage);
-    }
-
+    /// <summary>
+    /// 打开文件
+    /// </summary>
+    /// <param name="window">窗口</param>
+    /// <param name="title">标题</param>
+    /// <param name="ext">后缀</param>
+    /// <param name="name">名字</param>
+    /// <param name="multiple">多选</param>
+    /// <param name="storage">首选路径</param>
+    /// <returns></returns>
     public static async Task<IReadOnlyList<IStorageFile>?> OpFile(TopLevel? window, string title,
         string[] ext, string name, bool multiple = false, DirectoryInfo? storage = null)
     {
@@ -132,6 +160,10 @@ public static class BaseBinding
         });
     }
 
+    /// <summary>
+    /// 获取过滤器选项
+    /// </summary>
+    /// <returns>选项</returns>
     public static List<string> GetFilterName() => new()
     {
         App.GetLanguage("BaseBinding.Filter.Item1"),
@@ -139,6 +171,10 @@ public static class BaseBinding
         App.GetLanguage("BaseBinding.Filter.Item3")
     };
 
+    /// <summary>
+    /// 获取旋转选项
+    /// </summary>
+    /// <returns>选项</returns>
     public static List<string> GetSkinRotateName() => new()
     {
         App.GetLanguage("BaseBinding.SkinRotate.Item1"),
@@ -146,6 +182,60 @@ public static class BaseBinding
         App.GetLanguage("BaseBinding.SkinRotate.Item3")
     };
 
+    /// <summary>
+    /// 获取下载源选项
+    /// </summary>
+    /// <returns>选项</returns>
+    public static List<string> GetDownloadSources()
+    {
+        var list = new List<string>
+        {
+            SourceLocal.Offical.GetName(),
+            SourceLocal.BMCLAPI.GetName(),
+            SourceLocal.MCBBS.GetName()
+        };
+
+        return list;
+    }
+
+    /// <summary>
+    /// 获取窗口透明选项
+    /// </summary>
+    /// <returns>选项</returns>
+    public static List<string> GetWindowTranTypes()
+    {
+        return new()
+        {
+            App.GetLanguage("TranTypes.Item1"),
+            App.GetLanguage("TranTypes.Item2"),
+            App.GetLanguage("TranTypes.Item3"),
+            App.GetLanguage("TranTypes.Item4"),
+            App.GetLanguage("TranTypes.Item5")
+        };
+    }
+    /// <summary>
+    /// 获取语言选项
+    /// </summary>
+    /// <returns>选项</returns>
+    public static List<string> GetLanguages()
+    {
+        var list = new List<string>
+        {
+            LanguageType.zh_cn.GetName(),
+            LanguageType.en_us.GetName()
+        };
+
+        return list;
+    }
+
+    /// <summary>
+    /// 保存文件
+    /// </summary>
+    /// <param name="window">窗口</param>
+    /// <param name="title">标题</param>
+    /// <param name="ext">后缀</param>
+    /// <param name="name">名字</param>
+    /// <returns>文件路径</returns>
     public static Task<IStorageFile?> OpSave(TopLevel window, string title, string ext, string name)
     {
         return window.StorageProvider.SaveFilePickerAsync(new()
@@ -156,6 +246,9 @@ public static class BaseBinding
         });
     }
 
+    /// <summary>
+    /// 退出
+    /// </summary>
     public static void Exit()
     {
         ColorMCCore.Close();
@@ -165,11 +258,20 @@ public static class BaseBinding
 #endif
     }
 
+    /// <summary>
+    /// 游戏实例是否在运行
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>状态</returns>
     public static bool IsGameRun(GameSettingObj obj)
     {
         return RunGames.ContainsKey(obj.UUID);
     }
 
+    /// <summary>
+    /// 强制停止游戏实例
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static void StopGame(GameSettingObj obj)
     {
         if (RunGames.TryGetValue(obj.UUID, out var item))
@@ -177,17 +279,44 @@ public static class BaseBinding
             Task.Run(item.Kill);
         }
     }
+    /// <summary>
+    /// 打开基础运行路径
+    /// </summary>
+    public static void OpenBaseDir()
+    {
+        OpPath(ColorMCCore.BaseDir);
+    }
 
+    /// <summary>
+    /// 打开下载路径
+    /// </summary>
     public static void OpenDownloadPath()
     {
         OpPath(DownloadManager.DownloadDir);
     }
 
+    /// <summary>
+    /// 打开Java下载路径
+    /// </summary>
     public static void OpenDownloadJavaPath()
     {
         OpPath(Path.GetFullPath(JvmPath.BaseDir + JvmPath.Name1));
     }
 
+    /// <summary>
+    /// 打开图片路径
+    /// </summary>
+    public static void OpenPicPath()
+    {
+        OpPath(ImageTemp.Local);
+    }
+
+    /// <summary>
+    /// 启动游戏
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="obj1">保存的账户</param>
+    /// <returns>结果</returns>
     public static async Task<(bool, string?)> Launch(GameSettingObj obj, LoginObj obj1)
     {
         if (Games.ContainsValue(obj))
@@ -316,6 +445,10 @@ public static class BaseBinding
         return (res != null, temp);
     }
 
+    /// <summary>
+    /// 下载器状态更新回调
+    /// </summary>
+    /// <param name="state">状态</param>
     public static void DownloaderUpdateOnThread(CoreRunState state)
     {
         Dispatcher.UIThread.InvokeAsync(() =>
@@ -324,11 +457,20 @@ public static class BaseBinding
         }).Wait();
     }
 
+    /// <summary>
+    /// 下载器状态更新回调
+    /// </summary>
+    /// <param name="state">状态</param>
     public static void DownloaderUpdate(CoreRunState state)
     {
         App.DownloaderUpdate(state);
     }
 
+    /// <summary>
+    /// 进程日志回调
+    /// </summary>
+    /// <param name="p">进程</param>
+    /// <param name="d">日志</param>
     public static void PLog(Process? p, string? d)
     {
         if (p == null)
@@ -343,6 +485,11 @@ public static class BaseBinding
         }
     }
 
+    /// <summary>
+    /// 游戏实例日志回调
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="d">日志</param>
     public static void PLog(GameSettingObj obj, string? d)
     {
         GameLogs[obj.UUID] += d + Environment.NewLine;
@@ -352,63 +499,46 @@ public static class BaseBinding
         }
     }
 
+    /// <summary>
+    /// 错误显示回调
+    /// </summary>
+    /// <param name="data">数据</param>
+    /// <param name="e">错误</param>
+    /// <param name="close">是否关闭</param>
     private static void ShowError(string data, Exception e, bool close)
     {
         App.ShowError(data, e, close);
     }
 
+    /// <summary>
+    /// 语言调整回调
+    /// </summary>
+    /// <param name="type">语言类型</param>
     private static void Change(LanguageType type)
     {
         App.LoadLanguage(type);
         Localizer.Instance.Reload();
     }
 
+    /// <summary>
+    /// 获取下载状态
+    /// </summary>
+    /// <returns>状态</returns>
     public static (int, int) GetDownloadSize()
     {
         return (DownloadManager.AllSize, DownloadManager.DoneSize);
     }
 
-    public static CoreRunState DownloadState
-        => DownloadManager.State;
-
+    /// <summary>
+    /// 是否正在下载
+    /// </summary>
     public static bool IsDownload
         => DownloadManager.State != CoreRunState.End;
 
-    public static List<string> GetDownloadSources()
-    {
-        var list = new List<string>
-        {
-            SourceLocal.Offical.GetName(),
-            SourceLocal.BMCLAPI.GetName(),
-            SourceLocal.MCBBS.GetName()
-        };
-
-        return list;
-    }
-
-    public static List<string> GetWindowTranTypes()
-    {
-        return new()
-        {
-            App.GetLanguage("TranTypes.Item1"),
-            App.GetLanguage("TranTypes.Item2"),
-            App.GetLanguage("TranTypes.Item3"),
-            App.GetLanguage("TranTypes.Item4"),
-            App.GetLanguage("TranTypes.Item5")
-        };
-    }
-
-    public static List<string> GetLanguages()
-    {
-        var list = new List<string>
-        {
-            LanguageType.zh_cn.GetName(),
-            LanguageType.en_us.GetName()
-        };
-
-        return list;
-    }
-
+    /// <summary>
+    /// 在资源管理器打开文件
+    /// </summary>
+    /// <param name="item">文件</param>
     public static void OpFile(string item)
     {
         switch (SystemInfo.Os)
@@ -435,12 +565,10 @@ public static class BaseBinding
                 break;
         }
     }
-
-    public static byte[] GetUIJson()
-    {
-        return App.GetFile("ColorMC.Gui.Resource.UI.CustomUI.json");
-    }
-
+    /// <summary>
+    /// 在资源管理器打开路径
+    /// </summary>
+    /// <param name="item">路径</param>
     public static void OpPath(string item)
     {
         switch (SystemInfo.Os)
@@ -460,6 +588,12 @@ public static class BaseBinding
         }
     }
 
+    /// <summary>
+    /// 打开路径
+    /// </summary>
+    /// <param name="window">窗口</param>
+    /// <param name="type">类型</param>
+    /// <returns>路径</returns>
     public static async Task<string?> OpPath(IBaseWindow window, FileType type)
     {
         if (window is TopLevel top)
@@ -470,6 +604,12 @@ public static class BaseBinding
         return null;
     }
 
+    /// <summary>
+    /// 选择路径
+    /// </summary>
+    /// <param name="window">窗口</param>
+    /// <param name="type">类型</param>
+    /// <returns>路径</returns>
     public static async Task<string?> OpPath(TopLevel window, FileType type)
     {
         switch (type)
@@ -479,7 +619,7 @@ public static class BaseBinding
                 {
                     Title = App.GetLanguage("Gui.Info11")
                 });
-                if (res.Any())
+                if (res?.Any() == true)
                 {
                     return res.First().GetPath();
                 }
@@ -490,6 +630,10 @@ public static class BaseBinding
         return null;
     }
 
+    /// <summary>
+    /// 在浏览器打开网址
+    /// </summary>
+    /// <param name="url">网址</param>
     public static void OpUrl(string url)
     {
         url = url.Replace(" ", "%20");
@@ -519,26 +663,36 @@ public static class BaseBinding
         }
     }
 
+    /// <summary>
+    /// 目录转字符串
+    /// </summary>
+    /// <param name="file">路径</param>
+    /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFolder file)
     {
         return file.TryGetLocalPath();
     }
-
+    /// <summary>
+    /// 文件转字符串
+    /// </summary>
+    /// <param name="file">文件</param>
+    /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFile file)
     {
         return file.TryGetLocalPath();
     }
-
+    /// <summary>
+    /// 获取字体列表
+    /// </summary>
+    /// <returns></returns>
     public static List<string> GetFontList()
     {
         return FontManager.Current.SystemFonts.Select(a => a.Name).ToList();
     }
-
-    public static void OpenBaseDir()
-    {
-        OpPath(ColorMCCore.BaseDir);
-    }
-
+    /// <summary>
+    /// 是否重复启动
+    /// </summary>
+    /// <returns></returns>
     public static bool IsLaunch()
     {
 #if !DEBUG
@@ -551,11 +705,25 @@ public static class BaseBinding
 #endif
     }
 
+    /// <summary>
+    /// 保存文件
+    /// </summary>
+    /// <param name="window">窗口</param>
+    /// <param name="type">类型</param>
+    /// <param name="arg">参数</param>
+    /// <returns>结果</returns>
     public static Task<bool?> SaveFile(IBaseWindow? window, FileType type, object[]? arg)
     {
         return SaveFile(window as TopLevel, type, arg);
     }
 
+    /// <summary>
+    /// 保存文件
+    /// </summary>
+    /// <param name="window">窗口</param>
+    /// <param name="type">类型</param>
+    /// <param name="arg">参数</param>
+    /// <returns>结果</returns>
     public static async Task<bool?> SaveFile(TopLevel? window, FileType type, object[]? arg)
     {
         if (window == null)
@@ -571,7 +739,8 @@ public static class BaseBinding
 
                 try
                 {
-                    await GameBinding.ExportWorld((arg![0] as WorldDisplayObj)!.World, file.GetPath());
+                    await GameBinding.ExportWorld((arg![0] as WorldDisplayObj)!.World, 
+                        file.GetPath());
                     return true;
                 }
                 catch (Exception e)
@@ -588,6 +757,9 @@ public static class BaseBinding
                 try
                 {
                     var name = file.GetPath();
+                    if (name == null)
+                        return null;
+
                     await GameBinding.ExportGame((arg![0] as GameSettingObj)!, name,
                         (arg[1] as List<string>)!, (PackType)arg[2]);
                     OpFile(name);
@@ -607,12 +779,14 @@ public static class BaseBinding
                 try
                 {
                     var name = file.GetPath();
+                    if (name == null)
+                        return null;
                     if (File.Exists(name))
                     {
                         File.Delete(name);
                     }
 
-                    File.WriteAllBytes(name, GetUIJson());
+                    File.WriteAllBytes(name, App.GetFile("ColorMC.Gui.Resource.UI.CustomUI.json"));
                     return true;
                 }
                 catch (Exception e)
@@ -642,6 +816,12 @@ public static class BaseBinding
         return null;
     }
 
+    /// <summary>
+    /// 打开文件
+    /// </summary>
+    /// <param name="window">窗口</param>
+    /// <param name="type">类型</param>
+    /// <returns>路径</returns>
     public static async Task<string?> OpFile(IBaseWindow window, FileType type)
     {
         if (window is TopLevel top)
@@ -652,6 +832,12 @@ public static class BaseBinding
         return null;
     }
 
+    /// <summary>
+    /// 打开文件
+    /// </summary>
+    /// <param name="window">窗口</param>
+    /// <param name="type">类型</param>
+    /// <returns>路径</returns>
     public static async Task<string?> OpFile(TopLevel? window, FileType type)
     {
         switch (type)
@@ -665,7 +851,9 @@ public static class BaseBinding
                 if (res?.Any() == true)
                 {
                     var file = res[0].GetPath();
-                    if (file.EndsWith("java.exe"))
+                    if (file == null)
+                        return null;
+                    if (SystemInfo.Os == OsType.Windows && file.EndsWith("java.exe"))
                     {
                         var file1 = file[..^4] + "w.exe";
                         if (File.Exists(file1))
@@ -729,6 +917,11 @@ public static class BaseBinding
         return null;
     }
 
+    /// <summary>
+    /// 打开路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="type">路径类型</param>
     public static void OpPath(GameSettingObj obj, PathType type)
     {
         switch (type)
@@ -769,21 +962,26 @@ public static class BaseBinding
         return false;
     }
 
-    public static void OpenPicPath()
-    {
-        OpPath(ImageTemp.Local);
-    }
-
+    /// <summary>
+    /// 停止下载
+    /// </summary>
     public static void DownloadStop()
     {
         DownloadManager.DownloadStop();
     }
 
+    /// <summary>
+    /// 暂停下载
+    /// </summary>
     public static void DownloadPause()
     {
         DownloadManager.DownloadPause();
     }
 
+    /// <summary>
+    /// 服务器包检查
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static async void ServerPackCheck(GameSettingObj obj)
     {
         var config = GuiConfigUtils.Config.ServerCustom;
@@ -837,16 +1035,31 @@ public static class BaseBinding
         }
     }
 
+    /// <summary>
+    /// 转网址
+    /// </summary>
+    /// <param name="item">项目</param>
+    /// <param name="type">类型</param>
+    /// <param name="url">网址</param>
+    /// <returns>网址</returns>
     public static string MakeUrl(ServerModItemObj item, FileType type, string url)
     {
         return UrlHelper.MakeUrl(item, type, url);
     }
 
+    /// <summary>
+    /// 获取基础运行路径
+    /// </summary>
+    /// <returns>路径</returns>
     public static string GetRunDir()
     {
         return ColorMCCore.BaseDir;
     }
 
+    /// <summary>
+    /// 设置音量
+    /// </summary>
+    /// <param name="value">音量</param>
     public static void SetVolume(int value)
     {
         if (value > 100 || value < 0)
@@ -855,6 +1068,9 @@ public static class BaseBinding
         Media.Volume = (float)value / 100;
     }
 
+    /// <summary>
+    /// 播放音乐
+    /// </summary>
     public static async void MusicStart()
     {
         bool play = false;
@@ -902,16 +1118,25 @@ public static class BaseBinding
         }
     }
 
+    /// <summary>
+    /// 音乐停止
+    /// </summary>
     public static void MusicStop()
     {
         Media.Stop();
     }
 
+    /// <summary>
+    /// 音乐恢复
+    /// </summary>
     public static void MusicPlay()
     {
         Media.Play();
     }
 
+    /// <summary>
+    /// 音乐暂停
+    /// </summary>
     public static void MusicPause()
     {
         Media.Pause();

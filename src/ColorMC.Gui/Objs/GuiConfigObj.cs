@@ -57,8 +57,8 @@ public record Render
 public record GuiConfigObj
 {
     public string Version { get; set; }
-    public LastUser LastUser { get; set; }
-    public string BackImage { get; set; }
+    public LastUser? LastUser { get; set; }
+    public string? BackImage { get; set; }
     public int BackEffect { get; set; }
     public int BackTran { get; set; }
     public int BackLimitValue { get; set; }
@@ -78,7 +78,7 @@ public record GuiConfigObj
     public int RGBS { get; set; }
     public int RGBV { get; set; }
 
-    public string FontName { get; set; }
+    public string? FontName { get; set; }
     public bool FontDefault { get; set; }
 
     public bool CloseBeforeLaunch { get; set; }

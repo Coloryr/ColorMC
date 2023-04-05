@@ -804,7 +804,7 @@
 	<String Key="ToolTip.Text1">最小化</String>
 	<String Key="ToolTip.Text2">最大化</String>
 	<String Key="ToolTip.Text3">关闭</String>
-	<String Key="ToolTip.Text4">查看皮肤</String>
+	<String Key="ToolTip.Text4">调整账户</String>
 	<String Key="ToolTip.Text5">打开/关闭侧边栏</String>
 	<String Key="ToolTip.Text7">请选中到bin文件夹内的java</String>
 	<String Key="ToolTip.Text8">示例"C:\Program Files\Java\jdk1.8.0_301\bin\java.exe"</String>

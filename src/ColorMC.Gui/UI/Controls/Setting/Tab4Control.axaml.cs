@@ -24,8 +24,8 @@ public partial class Tab4Control : UserControl
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
-        TextBox1.PropertyChanged += TextBox1_PropertyChanged;
-        TextBox2.PropertyChanged += TextBox1_PropertyChanged;
+        TextBox1.PropertyChanged += TextBox2_PropertyChanged;
+        TextBox2.PropertyChanged += TextBox2_PropertyChanged;
         TextBox3.PropertyChanged += TextBox1_PropertyChanged;
         TextBox4.PropertyChanged += TextBox1_PropertyChanged;
 
@@ -74,6 +74,20 @@ public partial class Tab4Control : UserControl
     }
 
     private void TextBox1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (e.Property.Name == "Text")
+        {
+            Save();
+
+            App.MainWindow?.MotdLoad();
+            App.CustomWindow?.MotdLoad();
+        }
+    }
+
+    private void TextBox2_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (load)
             return;
