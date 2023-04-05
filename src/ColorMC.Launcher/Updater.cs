@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ColorMC.Launcher;
 
@@ -66,8 +65,8 @@ public class Updater
                 {
                     if (obj == null)
                     {
-                        //Program.CheckFailCall();
-                        ColorMC.Gui.ColorMCGui.CheckUpdateFail();
+                        Program.CheckFailCall();
+                        //ColorMC.Gui.ColorMCGui.CheckUpdateFail();
                         return;
                     }
 
@@ -77,8 +76,8 @@ public class Updater
                         string text;
                         obj.TryGetValue("text", out var data1);
                         text = data1?.ToString() ?? "没有更新消息";
-                        //var res = await Program.HaveUpdate(text);
-                        var res = await ColorMC.Gui.ColorMCGui.HaveUpdate(text);
+                        var res = await Program.HaveUpdate(text);
+                        //var res = await ColorMC.Gui.ColorMCGui.HaveUpdate(text);
                         if (res)
                             return;
 

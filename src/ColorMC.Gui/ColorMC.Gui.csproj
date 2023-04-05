@@ -77,26 +77,18 @@
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.X11" Version="11.0.0-preview6" />
-	<PackageReference Include="TextMateSharp" Version="1.0.50" />
-	<PackageReference Include="TextMateSharp.Grammars" Version="1.0.50" />
+	<PackageReference Include="TextMateSharp" Version="1.0.52" />
+	<PackageReference Include="TextMateSharp.Grammars" Version="1.0.52" />
     <!--<PackageReference Include="AvaloniaEdit.TextMate" Version="11.0.0-preview5" />-->
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OpenTK" Version="4.7.7" />
     <PackageReference Include="ReactiveUI" Version="18.4.26" />
     <PackageReference Include="SixLabors.Fonts" Version="1.0.0-beta19" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="AvaloniaEdit">
-      <HintPath>..\lib\AvaloniaEdit.dll</HintPath>
-    </Reference>
-    <Reference Include="AvaloniaEdit.TextMate">
-      <HintPath>..\lib\AvaloniaEdit.TextMate.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -207,5 +199,15 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AvaloniaEdit">
+      <HintPath>..\lib\AvaloniaEdit.dll</HintPath>
+    </Reference>
+    <Reference Include="AvaloniaEdit.TextMate">
+      <HintPath>..\lib\AvaloniaEdit.TextMate.dll</HintPath>
+    </Reference>
+
   </ItemGroup>
 </Project>
