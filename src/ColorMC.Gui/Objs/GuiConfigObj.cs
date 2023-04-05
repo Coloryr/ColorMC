@@ -1,4 +1,5 @@
 using ColorMC.Core.Objs;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.Objs;
 
@@ -34,6 +35,7 @@ public record WindowsRender
 {
     public bool? UseWindowsUIComposition { get; set; }
     public bool? UseWgl { get; set; }
+    public bool? AllowEglInitialization { get; set; }
 }
 
 public record X11Render

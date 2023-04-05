@@ -528,7 +528,8 @@ public static class GuiConfigUtils
             Windows = new()
             {
                 UseWindowsUIComposition = null,
-                UseWgl = null
+                UseWgl = null,
+                AllowEglInitialization = null
             },
             X11 = new()
             {

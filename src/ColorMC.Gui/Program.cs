@@ -18,7 +18,7 @@ public class ColorMCGui
     public static Func<Task<(bool?, string?)>> Check { get; private set; }
     public static Action Update { get; private set; }
 
-    public const string Font = "resm:ColorMC.Launcher.Resource.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
+    public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -106,6 +106,10 @@ public class ColorMCGui
         if (config.UseWgl != null)
         {
             opt.UseWgl = config.UseWgl == true;
+        }
+        if (config.AllowEglInitialization != null)
+        {
+            opt.AllowEglInitialization = config.AllowEglInitialization == true;
         }
 
         var config1 = GuiConfigUtils.Config.Render.X11;

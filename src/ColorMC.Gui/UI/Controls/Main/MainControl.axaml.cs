@@ -19,7 +19,7 @@ public partial class MainControl : UserControl, IUserControl
 {
     private readonly List<GamesControl> Groups = new();
     private readonly Dictionary<GameSettingObj, GameControl> Launchs = new();
-    private GamesControl DefaultGroup;
+    private readonly GamesControl DefaultGroup = new();
 
     public GameControl? Obj { get; private set; }
 
@@ -38,7 +38,6 @@ public partial class MainControl : UserControl, IUserControl
         ColorMCCore.LoginFailLaunch = LoginFailLaunch;
         ColorMCCore.LaunchP = LaunchP;
 
-        Button1.Click += Button1_Click;
         Grid3.PointerPressed += Grid3_PointerPressed;
         ScrollViewer1.PointerPressed += ScrollViewer1_PointerPressed;
 
@@ -47,8 +46,6 @@ public partial class MainControl : UserControl, IUserControl
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
-
-        ItemInfo.SetWindow(this);
     }
 
     private Task<bool> LaunchP(bool pre)
@@ -131,11 +128,6 @@ public partial class MainControl : UserControl, IUserControl
             return window.Info.ShowWait(string.Format(
                 App.GetLanguage("MainWindow.Info21"), login.UserName));
         });
-    }
-
-    private void Button1_Click(object? sender, RoutedEventArgs e)
-    {
-        ItemInfo.Display();
     }
 
     public async void Launch(bool debug)
@@ -419,155 +411,132 @@ public partial class MainControl : UserControl, IUserControl
 
         Grid3.IsVisible = nogame;
 
-        Task.Run(async () =>
+        var config = ConfigBinding.GetAllConfig();
+
+        if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)
         {
-            var config = ConfigBinding.GetAllConfig();
-
-            if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)
+            first = true;
+            var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
+            if (game == null)
             {
-                first = true;
-                var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
-                if (game == null)
+                Dispatcher.UIThread.Post(() =>
                 {
-                    Dispatcher.UIThread.Post(() =>
+                    GameGroups.Children.Clear();
+
+                    var item = new Grid
                     {
-                        GameGroups.Children.Clear();
-
-                        var item = new Grid
-                        {
-                            Background = Brush.Parse("#EEEEEE")
-                        };
-                        var item1 = new Label
-                        {
-                            Content = App.GetLanguage("MainWindow.Info18")
-                        };
-
-                        item.Children.Add(item1);
-
-                        GameGroups.VerticalAlignment = VerticalAlignment.Center;
-                        GameGroups.HorizontalAlignment = HorizontalAlignment.Center;
-
-                        GameGroups.Children.Add(item);
-                    });
-                }
-                else
-                {
-                    Dispatcher.UIThread.Post(() =>
+                        Background = Brush.Parse("#EEEEEE")
+                    };
+                    var item1 = new Label
                     {
-                        GameGroups.Children.Clear();
+                        Content = App.GetLanguage("MainWindow.Info18")
+                    };
 
-                        var item = new GameControl();
-                        item.SetItem(game);
-                        item.SetSelect(true);
-                        item.DoubleTapped += Item_DoubleTapped;
+                    item.Children.Add(item1);
 
-                        GameItemSelect(item);
+                    GameGroups.VerticalAlignment = VerticalAlignment.Center;
+                    GameGroups.HorizontalAlignment = HorizontalAlignment.Center;
 
-                        GameGroups.VerticalAlignment = VerticalAlignment.Center;
-                        GameGroups.HorizontalAlignment = HorizontalAlignment.Center;
-
-                        GameGroups.Children.Add(item);
-                    });
-                }
+                    GameGroups.Children.Add(item);
+                });
             }
             else
             {
-                var list = GameBinding.GetGameGroups();
-                if (first)
+                Dispatcher.UIThread.Post(() =>
                 {
-                    first = false;
-                    await Dispatcher.UIThread.InvokeAsync(() =>
-                    {
-                        GameGroups.VerticalAlignment = VerticalAlignment.Top;
-                        GameGroups.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    GameGroups.Children.Clear();
 
-                        DefaultGroup = new();
-                    });
-                    DefaultGroup.SetWindow(this);
-                    foreach (var item in list)
+                    var item = new GameControl();
+                    item.SetItem(game);
+                    item.SetSelect(true);
+                    item.DoubleTapped += Item_DoubleTapped;
+
+                    GameItemSelect(item);
+
+                    GameGroups.VerticalAlignment = VerticalAlignment.Center;
+                    GameGroups.HorizontalAlignment = HorizontalAlignment.Center;
+
+                    GameGroups.Children.Add(item);
+                });
+            }
+        }
+        else
+        {
+            var list = GameBinding.GetGameGroups();
+            if (first)
+            {
+                first = false;
+                GameGroups.VerticalAlignment = VerticalAlignment.Top;
+                GameGroups.HorizontalAlignment = HorizontalAlignment.Stretch;
+                DefaultGroup.SetWindow(this);
+                foreach (var item in list)
+                {
+                    if (item.Key == " ")
                     {
-                        if (item.Key == " ")
-                        {
-                            await Dispatcher.UIThread.InvokeAsync(() =>
-                            {
-                                DefaultGroup.SetItems(item.Value);
-                                DefaultGroup.SetName(" ", App.GetLanguage("MainWindow.Info20"));
-                            });
-                        }
-                        else
-                        {
-                            await Dispatcher.UIThread.InvokeAsync(() =>
-                            {
-                                var group = new GamesControl();
-                                group.SetItems(item.Value);
-                                group.SetName(item.Key, item.Key);
-                                group.SetWindow(this);
-                                Groups.Add(group);
-                            });
-                        }
+                        DefaultGroup.SetItems(item.Value);
+                        DefaultGroup.SetName(" ", App.GetLanguage("MainWindow.Info20"));
                     }
-
-                    Dispatcher.UIThread.Post(() =>
+                    else
                     {
-                        GameGroups.Children.Clear();
-                        foreach (var item in Groups)
-                        {
-                            GameGroups.Children.Add(item);
-                        }
-                        GameGroups.Children.Add(DefaultGroup);
-                    });
+                        var group = new GamesControl();
+                        group.SetItems(item.Value);
+                        group.SetName(item.Key, item.Key);
+                        group.SetWindow(this);
+                        Groups.Add(group);
+                    }
                 }
-                else
+
+                Dispatcher.UIThread.Post(() =>
                 {
-                    var remove = new List<GamesControl>();
-                    await Dispatcher.UIThread.InvokeAsync(() =>
-                    {
-                        DefaultGroup.SetItems(list[DefaultGroup.Group]);
-                    });
-                    list.Remove(DefaultGroup.Group);
+                    GameGroups.Children.Clear();
                     foreach (var item in Groups)
                     {
-                        if (!list.TryGetValue(item.Group, out var value))
-                        {
-                            remove.Add(item);
-                        }
-                        else
-                        {
-                            await Dispatcher.UIThread.InvokeAsync(() =>
-                            {
-                                item.SetItems(value);
-                            });
-                            list.Remove(item.Group);
-                        }
+                        GameGroups.Children.Add(item);
                     }
-                    foreach (var item in remove)
-                    {
-                        Groups.Remove(item);
-                    }
-                    foreach (var item in list)
-                    {
-                        await Dispatcher.UIThread.InvokeAsync(() =>
-                        {
-                            var group = new GamesControl();
-                            group.SetItems(item.Value);
-                            group.SetName(item.Key, item.Key);
-                            group.SetWindow(this);
-                            Groups.Add(group);
-                        });
-                    }
-
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        GameGroups.Children.Clear();
-                        foreach (var item in Groups)
-                        {
-                            GameGroups.Children.Add(item);
-                        }
-                        GameGroups.Children.Add(DefaultGroup);
-                    });
-                }
+                    GameGroups.Children.Add(DefaultGroup);
+                });
             }
-        });
+            else
+            {
+                var remove = new List<GamesControl>();
+                DefaultGroup.SetItems(list[DefaultGroup.Group]);
+                list.Remove(DefaultGroup.Group);
+                foreach (var item in Groups)
+                {
+                    if (!list.TryGetValue(item.Group, out var value))
+                    {
+                        remove.Add(item);
+                    }
+                    else
+                    {
+                        item.SetItems(value);
+                        list.Remove(item.Group);
+                    }
+                }
+                foreach (var item in remove)
+                {
+                    Groups.Remove(item);
+                }
+                foreach (var item in list)
+                {
+                    var group = new GamesControl();
+                    group.SetItems(item.Value);
+                    group.SetName(item.Key, item.Key);
+                    group.SetWindow(this);
+                    Groups.Add(group);
+                }
+
+                Dispatcher.UIThread.Post(() =>
+                {
+                    GameGroups.Children.Clear();
+                    foreach (var item in Groups)
+                    {
+                        GameGroups.Children.Add(item);
+                    }
+                    GameGroups.Children.Add(DefaultGroup);
+                });
+            }
+        }
     }
 
     private void Item_DoubleTapped(object? sender, TappedEventArgs e)

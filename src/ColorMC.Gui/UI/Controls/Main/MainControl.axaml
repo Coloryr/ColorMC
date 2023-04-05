@@ -34,18 +34,6 @@
             </Grid>
         </DockPanel>
 
-        <Button
-            Name="Button1"
-            Width="25"
-            Height="25"
-            Margin="0,0,8,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Content="←"
-            IsVisible="False"
-            ToolTip.Tip="{setting:Localize ToolTip.Text6}"
-            ToolTip.VerticalOffset="-30" />
-
         <views1:GameGroupControl Name="Group" IsVisible="False" />
 
         <Grid

@@ -29,6 +29,11 @@ internal class Program
         Console.ReadLine();
     }
 
+    public static void GetSha1()
+    { 
+        
+    }
+
     public static void AuthStateUpdate(AuthState state)
     {
         Console.WriteLine($"登录状态{state}");

@@ -14,13 +14,12 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Mp3\sfd.temp" />
-    <EmbeddedResource Include="Resource\MiSans-Normal.ttf;" />
+    <EmbeddedResource Include="Resources\MiSans-Normal.ttf" />
   </ItemGroup>
 	
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="Mp3\sfd.temp" />
-    <None Remove="Resource\MiSans-Normal.ttf" />
   </ItemGroup>
 	
   <ItemGroup>

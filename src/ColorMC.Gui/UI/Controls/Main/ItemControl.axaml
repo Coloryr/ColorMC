@@ -95,11 +95,64 @@
                 </StackPanel>
             </Grid>
 
+            <Grid
+                Name="Grid2"
+                Margin="0,148,6,0"
+                HorizontalAlignment="Right"
+                IsVisible="False">
+                <StackPanel VerticalAlignment="Center">
+                    <Button
+                        Name="Button_Switch1"
+                        Width="25"
+                        Height="35"
+                        Content="P"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text9}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <Button
+                        Name="Button_Add11"
+                        Width="25"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Content="A"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text10}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <Button
+                        Name="Button_Launch1"
+                        Width="25"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Content="L"
+                        IsEnabled="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text11}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Name="Button_Edit1"
+                        Width="25"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Content="E"
+                        IsEnabled="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text12}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <Button
+                        Name="Button_Setting1"
+                        Width="25"
+                        Height="35"
+                        Margin="0,5,0,20"
+                        Content="S"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text13}"
+                        ToolTip.VerticalOffset="-30" />
+                </StackPanel>
+            </Grid>
+
             <Button
                 Name="Button1"
                 Width="25"
                 Height="25"
-                Margin="12,10,8,10"
+                Margin="8,10,6,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Content="→"
@@ -110,7 +163,7 @@
                 Name="Button2"
                 Width="25"
                 Height="25"
-                Margin="12,10,8,10"
+                Margin="8,10,6,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Content="▶️"

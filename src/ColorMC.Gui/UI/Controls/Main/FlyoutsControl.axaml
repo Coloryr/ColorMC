@@ -22,6 +22,11 @@
                 Height="25"
                 Content="{setting:Localize MainWindow.Control.Text4}" />
             <Button
+                Name="Button14"
+                Width="100"
+                Height="25"
+                Content="{setting:Localize MainWindow.Flyouts.Text8}" />
+            <Button
                 Name="Button11"
                 Width="100"
                 Height="25"

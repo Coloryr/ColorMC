@@ -12,11 +12,11 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class ItemControl : UserControl
 {
-    private MainControl Window;
     private LoginObj? Obj1;
     private GameSettingObj? Obj;
     private bool Launch;
     private bool isplay = true;
+    private bool isopen = true;
     public ItemControl()
     {
         InitializeComponent();
@@ -24,10 +24,14 @@ public partial class ItemControl : UserControl
         Button_Launch.Click += Button_Launch_Click;
         Button_Edit.Click += Button_Edit_Click;
         Button_Add1.Click += Button_Add1_Click;
-
         Button_Switch.Click += Button_Switch_Click;
-
         Button_Setting.Click += Button_Setting_Click;
+
+        Button_Launch1.Click += Button_Launch_Click;
+        Button_Edit1.Click += Button_Edit_Click;
+        Button_Add11.Click += Button_Add1_Click;
+        Button_Switch1.Click += Button_Switch_Click;
+        Button_Setting1.Click += Button_Setting_Click;
 
         Image1.PointerPressed += Image1_PointerPressed;
 
@@ -58,16 +62,20 @@ public partial class ItemControl : UserControl
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Button1.IsVisible = true;
-        App.CrossFade100.Start(Grid1, null, CancellationToken.None);
-        Button1.IsVisible = false;
-    }
-
-    public void Display()
-    {
-        Window.Button1.IsVisible = false;
-        App.CrossFade100.Start(null, Grid1, CancellationToken.None);
-        Button1.IsVisible = true;
+        if (isopen)
+        {
+            App.CrossFade100.Start(Grid1, null, CancellationToken.None);
+            Button1.Content = "←";
+            isopen = false;
+            Grid2.IsVisible = true;
+        }
+        else
+        {
+            App.CrossFade100.Start(null, Grid1, CancellationToken.None);
+            Button1.Content = "→";
+            isopen = true;
+            Grid2.IsVisible = false;
+        }
     }
 
     private void App_SkinLoad()
@@ -116,7 +124,8 @@ public partial class ItemControl : UserControl
 
     private void Button_Launch_Click(object? sender, RoutedEventArgs e)
     {
-        Window.Launch(false);
+        var window = App.FindRoot(VisualRoot);
+        (window.Con as MainControl)?.Launch(false);
     }
 
     public void SetGame(GameSettingObj? obj)
@@ -144,11 +153,6 @@ public partial class ItemControl : UserControl
     public void SetLaunch(bool launch)
     {
         Launch = launch;
-    }
-
-    public void SetWindow(MainControl window)
-    {
-        Window = window;
     }
 
     public async void SetUser(LoginObj? obj)

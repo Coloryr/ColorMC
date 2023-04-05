@@ -13,7 +13,7 @@ namespace ColorMC.Launcher;
 
 internal class Program
 {
-    public const string Font = "resm:ColorMC.Launcher.Resource.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
+    public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 
     private static Mutex mutex1;
 

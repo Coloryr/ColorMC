@@ -223,11 +223,11 @@ public static class BaseBinding
             GameLogs.Add(obj.UUID, "");
         }
 
-        var res = await Task.Run(() =>
+        var res = await Task.Run(async () =>
         {
             try
             {
-                return obj.StartGame(obj1).Result;
+                return await obj.StartGame(obj1);
             }
             catch (Exception e)
             {
