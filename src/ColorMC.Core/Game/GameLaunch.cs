@@ -11,7 +11,9 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ColorMC.Core.Game;
@@ -1181,6 +1183,39 @@ public static class Launch
 
         return process;
     }
+
+    public delegate int Func1(int argc, 
+        string[] argv, /* main argc, argc */
+        int jargc, string[] jargv,          /* java args */
+        int appclassc, string[] appclassv,  /* app classpath */
+        string fullversion,                 /* full version defined */
+        string dotversion,                  /* dot version defined */
+        string pname,                       /* program name */
+        string lname,                       /* launcher name */
+        bool javaargs,                      /* JAVA_ARGS */
+        bool cpwildcard,                    /* classpath wildcard*/
+        bool javaw,                         /* windows-only javaw */
+        int ergo                            /* ergonomics class policy */
+    );
+
+    //public static void NativeLaunch(JavaInfo info, List<string> args)
+    //{
+    //    var temp = info.Path
+    //    var data = NativeLoader.Loader.LoadLibrary();
+
+    //    var temp = NativeLoader.Loader.LoadLibrary("/home/coloryr/Desktop/java/jdk-17.0.5+8/lib/libjli.so");
+    //    var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
+    //    var inv = (Func1)Marshal.GetDelegateForFunctionPointer(temp1, typeof(Func1));
+
+    //    var path = Environment.GetEnvironmentVariable("PATH");
+
+    //    //setenv("JAVA_HOME", "/home/coloryr/Desktop/java/jdk-17.0.5+8");
+    //    //setenv("PATH", "/home/coloryr/Desktop/java/jdk-17.0.5+8/bin:" + path);
+    //    //setenv("LD_LIBRARY_PATH", "/home/coloryr/Desktop/java/jdk-17.0.5+8/lib:/home/coloryr/Desktop/java/jdk-17.0.5+8/bin:/system/lib64:/vendor/lib64:/vendor/lib64/hw");
+
+    //    var res = inv(4, new string[] { "java", "-cp", "/home/coloryr/Desktop", "hello" }, 0, null, 0, null, "", "", "", "", false, true, false, 0);
+    //    //var res = inv(2, new string[]{ "java","-version" }, 0, null, 0, null, "", "", "", "", false, true, false, 0);
+    //}
 
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
