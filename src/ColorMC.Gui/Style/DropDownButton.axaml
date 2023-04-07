@@ -1,0 +1,49 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel Height="400">
+                <DropDownButton Width="500">
+                    <DropDownButton.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedLeft">
+                            <ListBox Name="ListBox1" Margin="-10,-5,-5,-10">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding FontName}" />
+                                            <TextBlock FontFamily="{Binding FontFamily}" Text="样例 Sample" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Flyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="DropDownButton:pressed">
+        <Setter Property="RenderTransform" Value="scale(1)" />
+    </Style>
+
+    <Style Selector="DropDownButton">
+        <Setter Property="Background" Value="{setting:Colors Back}" />
+        <Setter Property="BorderBrush" Value="{setting:Colors Main}" />
+        <Setter Property="BorderThickness" Value="2" />
+    </Style>
+
+    <Style Selector="DropDownButton:pointerover /template/ Border#RootBorder">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="BorderBrush" Value="Black" />
+    </Style>
+
+    <Style Selector="DropDownButton:pressed /template/ Border#RootBorder">
+        <Setter Property="Background" Value="#FFCCCCCC" />
+        <Setter Property="BorderBrush" Value="#FF666666" />
+    </Style>
+
+
+</Styles>

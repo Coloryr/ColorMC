@@ -145,6 +145,7 @@
 	<String Key="SettingWindow.Tab2.Text26">单窗口模式</String>
 	<String Key="SettingWindow.Tab2.Text27">切换后需要重启</String>
 	<String Key="SettingWindow.Tab2.Text28">调整背景图大小为原始分辨率的</String>
+	<String Key="SettingWindow.Tab2.Text29">(样例Sample)</String>
 	<String Key="SettingWindow.Tab2.Info1">正在切换语言</String>
 	<String Key="SettingWindow.Tab2.Info2">正在设置</String>
 	<String Key="SettingWindow.Tab2.Info3">选择图片文件</String>

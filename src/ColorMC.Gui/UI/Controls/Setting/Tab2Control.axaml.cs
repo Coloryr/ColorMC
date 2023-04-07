@@ -1,16 +1,32 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
+
+public class FontDisplay
+{
+    public string FontName { get; init; }
+    public FontFamily FontFamily { get; init; }
+
+    public override string ToString()
+    {
+        return FontName;
+    }
+}
 
 public partial class Tab2Control : UserControl
 {
     private bool load = false;
+    private ObservableCollection<FontDisplay> Fonts = new();
+
     public Tab2Control()
     {
         InitializeComponent();
@@ -26,7 +42,8 @@ public partial class Tab2Control : UserControl
 
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox2.SelectionChanged += ComboBox2_SelectionChanged;
-        ComboBox3.SelectionChanged += ComboBox3_SelectionChanged;
+
+        ListBox1.SelectionChanged += ListBox1_SelectionChanged;
 
         CheckBox1.Click += CheckBox1_Click;
         CheckBox2.Click += CheckBox2_Click;
@@ -42,9 +59,33 @@ public partial class Tab2Control : UserControl
 
         ComboBox1.ItemsSource = BaseBinding.GetWindowTranTypes();
         ComboBox2.ItemsSource = BaseBinding.GetLanguages();
-        ComboBox3.ItemsSource = BaseBinding.GetFontList();
+        
+        BaseBinding.GetFontList().ForEach(item =>
+        {
+            Fonts.Add(new()
+            {
+                FontName = item.Name,
+                FontFamily = item
+            });
+        });
+
+        ListBox1.ItemsSource = Fonts;
 
         Slider5.PropertyChanged += Slider5_PropertyChanged;
+    }
+
+    private void ListBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (ListBox1.SelectedItem is not FontDisplay item)
+            return;
+
+        DropDownButton1.Flyout?.Hide();
+        DropDownButton1.Content = item;
+
+        ConfigBinding.SetFont(item.FontName, CheckBox3.IsChecked == true);
     }
 
     private void Button_Use_Click(object? sender, RoutedEventArgs e)
@@ -97,14 +138,6 @@ public partial class Tab2Control : UserControl
             ColorPicker4.Color.ToString(), ColorPicker5.Color.ToString());
     }
 
-    private void ComboBox3_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (load)
-            return;
-
-        ConfigBinding.SetFont(ComboBox3.SelectedItem as string, CheckBox3.IsChecked == true);
-    }
-
     private void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (load)
@@ -121,16 +154,16 @@ public partial class Tab2Control : UserControl
     {
         if (CheckBox3.IsChecked == true)
         {
-            ComboBox3.IsEnabled = false;
+            DropDownButton1.IsEnabled = false;
         }
         else
         {
-            ComboBox3.IsEnabled = true;
+            DropDownButton1.IsEnabled = true;
         }
 
-        ConfigBinding.SetFont(ComboBox3.SelectedItem as string, CheckBox3.IsChecked == true);
+        ConfigBinding.SetFont((DropDownButton1.Content as FontDisplay)?.FontName, 
+            CheckBox3.IsChecked == true);
     }
-
 
     private void Button_Set5_Click(object? sender, RoutedEventArgs e)
     {
@@ -214,7 +247,11 @@ public partial class Tab2Control : UserControl
             Slider5.Value = config.Item2.BackLimitValue;
             CheckBox1.IsChecked = config.Item2.WindowTran;
             ComboBox1.SelectedIndex = config.Item2.WindowTranType;
-            ComboBox3.SelectedItem = config.Item2.FontName;
+
+            var item = Fonts.FirstOrDefault(a=>a.FontName == config.Item2.FontName);
+            ListBox1.SelectedItem = item;
+            DropDownButton1.Content = item;
+
             ColorPicker1.Color = ColorSel.MainColor.ToColor();
             ColorPicker2.Color = ColorSel.BackColor.ToColor();
             ColorPicker3.Color = ColorSel.Back1Color.ToColor();
@@ -226,7 +263,7 @@ public partial class Tab2Control : UserControl
             CheckBox7.IsChecked = config.Item2.BackLimit;
 
             ComboBox1.IsEnabled = config.Item2.WindowTran;
-            ComboBox3.IsEnabled = !(CheckBox3.IsChecked == true);
+            DropDownButton1.IsEnabled = !(CheckBox3.IsChecked == true);
             Slider3.IsEnabled = Slider4.IsEnabled = config.Item2.RGB;
             Slider5.IsEnabled = Button_Set3.IsEnabled = CheckBox7.IsChecked == true;
         }

@@ -724,12 +724,12 @@ public static class GameBinding
                     Name = item.name,
                     Obj = item
                 };
+            }
 
-                var item1 = obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
-                if (item1 != null)
-                {
-                    obj1.Obj1 = item1;
-                }
+            var item1 = obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
+            if (item1 != null)
+            {
+                obj1.Obj1 = item1;
             }
 
             obj1.Enable = item.Disable;

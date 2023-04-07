@@ -11,6 +11,68 @@
     <ScrollViewer>
         <Grid>
             <Grid
+                Name="Grid2"
+                Margin="0,108,6,0"
+                HorizontalAlignment="Right"
+                IsVisible="False">
+                <StackPanel VerticalAlignment="Center">
+                    <Button
+                        Name="Button8"
+                        Width="25"
+                        Height="35"
+                        Content="U"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text4}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <Button
+                        Name="Button9"
+                        Width="25"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Content="P"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text9}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <Button
+                        Name="Button10"
+                        Width="25"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Content="A"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text10}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <Button
+                        Name="Button11"
+                        Width="25"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Content="L"
+                        IsEnabled="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text11}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Name="Button12"
+                        Width="25"
+                        Height="35"
+                        Margin="0,5,0,0"
+                        Content="E"
+                        IsEnabled="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text12}"
+                        ToolTip.VerticalOffset="-30" />
+
+                    <Button
+                        Name="Button13"
+                        Width="25"
+                        Height="35"
+                        Margin="0,5,0,20"
+                        Content="S"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text13}"
+                        ToolTip.VerticalOffset="-30" />
+                </StackPanel>
+            </Grid>
+
+            <Grid
                 Name="Grid1"
                 HorizontalAlignment="Left"
                 IsVisible="True">
@@ -95,67 +157,7 @@
                 </StackPanel>
             </Grid>
 
-            <Grid
-                Name="Grid2"
-                Margin="0,108,6,0"
-                HorizontalAlignment="Right"
-                IsVisible="False">
-                <StackPanel VerticalAlignment="Center">
-                    <Button
-                        Name="Button8"
-                        Width="25"
-                        Height="35"
-                        Content="U"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text4}"
-                        ToolTip.VerticalOffset="-30" />
 
-                    <Button
-                        Name="Button9"
-                        Width="25"
-                        Height="35"
-                        Margin="0,5,0,0"
-                        Content="P"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                        ToolTip.VerticalOffset="-30" />
-
-                    <Button
-                        Name="Button10"
-                        Width="25"
-                        Height="35"
-                        Margin="0,5,0,0"
-                        Content="A"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text10}"
-                        ToolTip.VerticalOffset="-30" />
-
-                    <Button
-                        Name="Button11"
-                        Width="25"
-                        Height="35"
-                        Margin="0,5,0,0"
-                        Content="L"
-                        IsEnabled="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text11}"
-                        ToolTip.VerticalOffset="-30" />
-                    <Button
-                        Name="Button12"
-                        Width="25"
-                        Height="35"
-                        Margin="0,5,0,0"
-                        Content="E"
-                        IsEnabled="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text12}"
-                        ToolTip.VerticalOffset="-30" />
-
-                    <Button
-                        Name="Button13"
-                        Width="25"
-                        Height="35"
-                        Margin="0,5,0,20"
-                        Content="S"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text13}"
-                        ToolTip.VerticalOffset="-30" />
-                </StackPanel>
-            </Grid>
 
             <Button
                 Name="Button1"

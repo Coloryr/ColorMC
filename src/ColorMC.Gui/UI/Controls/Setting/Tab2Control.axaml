@@ -5,7 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="850"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Setting"
+    d:DesignHeight="500"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Visible">
@@ -36,10 +37,34 @@
                     Margin="0,0,5,0"
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab2.Text22}" />
-                <ComboBox
-                    Name="ComboBox3"
+                <DropDownButton
+                    Name="DropDownButton1"
                     Width="200"
-                    Margin="0,0,5,0" />
+                    Margin="0,0,5,0">
+                    <DropDownButton.DataTemplates>
+                        <DataTemplate DataType="view:FontDisplay">
+                            <TextBlock Text="{Binding FontName}" />
+                        </DataTemplate>
+                    </DropDownButton.DataTemplates>
+                    <DropDownButton.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedLeft">
+                            <ListBox
+                                Name="ListBox1"
+                                MinWidth="200"
+                                Margin="-10,-5,-5,-10">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding FontName}" />
+                                            <TextBlock FontFamily="{Binding FontFamily}" Text="{setting:Localize SettingWindow.Tab2.Text29}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Flyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
+
                 <CheckBox Name="CheckBox3" Content="{setting:Localize SettingWindow.Tab2.Text23}" />
             </StackPanel>
 

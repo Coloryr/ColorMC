@@ -226,7 +226,8 @@ public static class Mods
                     Local = Path.GetFullPath(item.FullName),
                     Disable = item.Extension is ".disable",
                     Broken = true,
-                    Sha1 = sha1
+                    Sha1 = sha1,
+                    Game = obj
                 });
             }
         });

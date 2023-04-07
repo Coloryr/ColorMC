@@ -685,9 +685,9 @@ public static class BaseBinding
     /// 获取字体列表
     /// </summary>
     /// <returns></returns>
-    public static List<string> GetFontList()
+    public static List<FontFamily> GetFontList()
     {
-        return FontManager.Current.SystemFonts.Select(a => a.Name).ToList();
+        return FontManager.Current.SystemFonts.ToList();
     }
     /// <summary>
     /// 是否重复启动
