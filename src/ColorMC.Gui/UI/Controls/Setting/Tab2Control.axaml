@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Setting"
-    d:DesignHeight="500"
+    d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Visible">
