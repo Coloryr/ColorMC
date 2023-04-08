@@ -452,6 +452,7 @@
 	<String Key="GameEditWindow.Tab9.Info3">正在加载实例截图</String>
 
 	<String Key="GameEditWindow.Tab10.Text1">地址</String>
+	<String Key="GameEditWindow.Tab10.Text2">到剪贴板</String>
 	<String Key="GameEditWindow.Tab10.Info1">服务器名</String>
 	<String Key="GameEditWindow.Tab10.Info2">服务器地址</String>
 	<String Key="GameEditWindow.Tab10.Info3">添加成功</String>
@@ -485,7 +486,7 @@
 	<String Key="GameEditWindow.Flyouts1.Text3">mcmod搜索</String>
 	<String Key="GameEditWindow.Flyouts1.Text4">打开链接</String>
 	<String Key="GameEditWindow.Flyouts1.Text5">更换版本</String>
-	<String Key="GameEditWindow.Flyouts1.Text6">复制到剪贴板</String>
+	<String Key="GameEditWindow.Flyouts1.Text6">到剪贴板</String>
 	<String Key="GameEditWindow.Flyouts2.Text1">导出世界</String>
 	<String Key="GameEditWindow.Flyouts2.Text2">删除世界</String>
 	<String Key="GameEditWindow.Flyouts2.Text3">备份世界</String>

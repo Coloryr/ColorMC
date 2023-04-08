@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -15,6 +16,13 @@ public partial class Flyouts5Control : UserControl
         InitializeComponent();
 
         Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        FlyoutBase.Hide();
+        GameBinding.CopyServer(Obj);
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

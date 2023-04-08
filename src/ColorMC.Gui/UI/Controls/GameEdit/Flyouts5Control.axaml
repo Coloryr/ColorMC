@@ -9,18 +9,23 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-		<Rectangle
+        <Rectangle
             Fill="{setting:Colors Back}"
             RadiusX="3"
             RadiusY="3"
             Stroke="{setting:Colors Main}"
             StrokeThickness="2" />
-		<StackPanel Margin="3">
+        <StackPanel Margin="3">
             <Button
                 Name="Button1"
                 Width="80"
                 Height="25"
                 Content="{setting:Localize Button.Delete}" />
+            <Button
+                Name="Button2"
+                Width="80"
+                Height="25"
+                Content="{setting:Localize GameEditWindow.Tab10.Text2}" />
         </StackPanel>
     </Grid>
 </UserControl>

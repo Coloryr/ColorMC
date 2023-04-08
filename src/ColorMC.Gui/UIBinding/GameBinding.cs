@@ -2048,4 +2048,9 @@ public static class GameBinding
 
         return false;
     }
+
+    public static async void CopyServer(ServerInfoObj obj)
+    {
+        await BaseBinding.CopyTextClipboard($"{obj.Name}\n{obj.IP}");
+    }
 }
