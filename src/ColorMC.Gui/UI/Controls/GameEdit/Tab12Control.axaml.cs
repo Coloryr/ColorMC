@@ -6,6 +6,7 @@ using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.ObjectModel;
@@ -81,7 +82,7 @@ public partial class Tab12Control : UserControl
                 if (DataGrid1.SelectedItem is not SchematicDisplayObj obj)
                     return;
 
-                new GameEditFlyout7(this, obj).ShowAt(this, true);
+                _ = new GameEditFlyout7(this, obj);
             });
         }
     }

@@ -67,6 +67,7 @@
 	<String Key="MainWindow.Info31">正在执行运行前程序</String>
 	<String Key="MainWindow.Info32">正在执行运行后程序</String>
 	<String Key="MainWindow.Info33">背景音乐播放中...</String>
+	<String Key="MainWindow.Info34">游戏正在启动中，是否关闭启动器</String>
 
 	<String Key="UserWindow.Title">ColorMC 用户列表</String>
 	<String Key="UserWindow.DataGrid.Text1">使用</String>
@@ -447,6 +448,7 @@
 	<String Key="GameEditWindow.Tab8.Info7">资源包</String>
 	<String Key="GameEditWindow.Tab8.Error1">资源包导入是被</String>
 
+	<String Key="GameEditWindow.Tab9.Text1">删除截图</String>
 	<String Key="GameEditWindow.Tab9.Info1">是否要删除截图 {0}</String>
 	<String Key="GameEditWindow.Tab9.Info2">是否要清空实例 {0} 的截图</String>
 	<String Key="GameEditWindow.Tab9.Info3">正在加载实例截图</String>
@@ -746,7 +748,7 @@
 
 	<String Key="UserBinding.Info1">选择皮肤导入</String>
 	<String Key="UserBinding.Info2">皮肤文件</String>
-	<String Key="UserBinding.Info3">没有找到您的Minecraft账户，请在https://minecraft.net登录你的账户后重试</String>
+	<String Key="UserBinding.Info3">没有找到您的Minecraft账户，请确认你的账户已经购买了Minecraft，并在https://minecraft.net登录并查看皮肤</String>
 	<String Key="UserBinding.Error1">登录类型错误</String>
 	<String Key="UserBinding.Error2">游戏启动错误</String>
 

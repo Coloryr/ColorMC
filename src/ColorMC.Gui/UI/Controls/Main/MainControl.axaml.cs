@@ -632,4 +632,18 @@ public partial class MainControl : UserControl, IUserControl
             window.Info2.Show(App.GetLanguage("MainWindow.Info25"));
         }
     }
+
+    public async Task Closing(WindowClosingEventArgs e)
+    {
+        var windows = App.FindRoot(VisualRoot);
+        if (launch)
+        {
+            var res = await windows.Info.ShowWait(App.GetLanguage("MainWindow.Info34"));
+            if (res)
+            {
+                return;
+            }
+            e.Cancel = true;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Flyouts;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit.Items;
 
@@ -22,7 +23,7 @@ public partial class ScreenshotControl : UserControl
 
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            new GameEditFlyout4(Tab, Obj).ShowAt(this, true);
+             _ = new GameEditFlyout4(Tab, Obj);
         }
     }
 

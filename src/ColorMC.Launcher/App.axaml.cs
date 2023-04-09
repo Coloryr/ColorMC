@@ -7,7 +7,7 @@ namespace ColorMC.Launcher;
 
 public partial class App : Application
 {
-    public static IClassicDesktopStyleApplicationLifetime Life;
+    public static IClassicDesktopStyleApplicationLifetime? Life;
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -27,7 +27,7 @@ public partial class App : Application
 
     public static void Exit()
     {
-        Life.Shutdown();
+        Life?.Shutdown();
         Environment.Exit(0);
     }
 }

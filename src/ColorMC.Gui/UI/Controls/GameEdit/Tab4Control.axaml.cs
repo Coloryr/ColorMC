@@ -6,6 +6,7 @@ using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
@@ -179,7 +180,7 @@ public partial class Tab4Control : UserControl
 
             if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
             {
-                new GameEditFlyout1(this, items).ShowAt(this, true);
+                _ = new GameEditFlyout1(this, items);
             }
         });
     }

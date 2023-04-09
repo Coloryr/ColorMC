@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using Timer = System.Timers.Timer;
 
@@ -135,7 +136,7 @@ public partial class DownloadControl : UserControl, IUserControl
         App.DownloadWindow = null;
     }
 
-    public async void Closing(CancelEventArgs e)
+    public async Task Closing(WindowClosingEventArgs e)
     {
         var windows = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)

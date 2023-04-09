@@ -5,6 +5,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -55,7 +56,7 @@ public partial class FileItemControl : UserControl, IDisposable
             if (url == null)
                 return;
 
-            new UrlFlyout(url).ShowAt(this, true);
+            _ = new UrlFlyout(this, url);
         }
     }
 

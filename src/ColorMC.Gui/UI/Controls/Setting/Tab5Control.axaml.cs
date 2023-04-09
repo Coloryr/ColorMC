@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System;
@@ -63,7 +64,7 @@ public partial class Tab5Control : UserControl
 
             if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
             {
-                new SettingFlyout(this, java).ShowAt(this, true);
+                _ = new SettingFlyout1(this, java);
             }
         });
     }

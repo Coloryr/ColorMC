@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.ObjectModel;
@@ -80,7 +81,7 @@ public partial class Tab11Control : UserControl
                 if (DataGrid1.SelectedItem is not ShaderpackDisplayObj obj)
                     return;
 
-                new GameEditFlyout6(this, obj).ShowAt(this, true);
+                _ = new GameEditFlyout6(this, obj);
             });
         }
     }

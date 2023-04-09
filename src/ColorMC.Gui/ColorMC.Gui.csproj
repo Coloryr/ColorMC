@@ -95,14 +95,8 @@
     <Compile Update="UI\Controls\Add\FileItemControl.axaml.cs">
       <DependentUpon>FileItemControl.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Controls\Add\FlyoutsControl.axaml.cs">
+    <Compile Update="UI\Flyouts\FlyoutsControl.axaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\GameEdit\Flyouts7Control.axaml.cs">
-      <DependentUpon>Flyouts7Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\GameEdit\Flyouts6Control.axaml.cs">
-      <DependentUpon>Flyouts6Control.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\GameEdit\Tab12Control.axaml.cs">
       <DependentUpon>Tab12Control.axaml</DependentUpon>
@@ -115,22 +109,6 @@
     </Compile>
     <Compile Update="UI\Controls\Info5Control.axaml.cs">
       <DependentUpon>Info5Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\GameEdit\Flyouts5Control.axaml.cs">
-      <DependentUpon>Flyouts5Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\GameEdit\Flyouts4Control.axaml.cs">
-      <DependentUpon>Flyouts4Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\GameEdit\Flyouts3Control.axaml.cs">
-      <DependentUpon>Flyouts3Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\GameEdit\Flyouts2Control.axaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>Flyouts2Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\GameEdit\Flyouts1Control.axaml.cs">
-      <DependentUpon>Flyouts1Control.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\GameEdit\Items\ScreenshotControl.axaml.cs">
       <DependentUpon>ScreenshotControl.axaml</DependentUpon>
@@ -171,14 +149,8 @@
     <Compile Update="UI\Controls\Info4Control.axaml.cs">
       <DependentUpon>Info4Control.axaml</DependentUpon>
     </Compile>
-    <Compile Update="UI\Controls\Server\FlyoutsControl.axaml.cs">
-      <DependentUpon>FlyoutsControl.axaml</DependentUpon>
-    </Compile>
     <Compile Update="UI\Controls\Server\Tab3Control.axaml.cs">
       <DependentUpon>Tab3Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Setting\FlyoutsControl.axaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\Setting\HelloWindow.Tab2.axaml.cs">
       <DependentUpon>HelloWindow.Tab2.axaml</DependentUpon>

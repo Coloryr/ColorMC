@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Flyouts;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit.Items;
 
@@ -21,7 +22,7 @@ public partial class WorldControl : UserControl
 
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            new GameEditFlyout2(tab, World).ShowAt(this, true);
+             _ = new GameEditFlyout2(tab, World);
         }
     }
 

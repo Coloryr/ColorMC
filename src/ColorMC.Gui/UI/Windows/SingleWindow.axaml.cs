@@ -51,10 +51,19 @@ public partial class SingleWindow : Window, IBaseWindow
 
         Closed += UserWindow_Closed;
         Opened += UserWindow_Opened;
+        Closing += SingleWindow_Closing;
 
         App.PicUpdate += Update;
 
         Update();
+    }
+
+    private async void SingleWindow_Closing(object? sender, WindowClosingEventArgs e)
+    {
+        if (window1 == null)
+            return;
+
+        await window1.Closing(e);
     }
 
     private void Window_KeyDown(object? sender, KeyEventArgs e)

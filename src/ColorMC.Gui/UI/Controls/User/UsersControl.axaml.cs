@@ -6,6 +6,7 @@ using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.Collections.ObjectModel;
@@ -112,7 +113,7 @@ public partial class UsersControl : UserControl, IUserControl
 
             if (pro.Properties.IsRightButtonPressed)
             {
-                new UserFlyout(this, user).ShowAt(this, true);
+                _ = new UserFlyout(this, user);
             }
             else if (e.Column.DisplayIndex == 0 && pro.Properties.IsLeftButtonPressed)
             {

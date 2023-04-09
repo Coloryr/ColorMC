@@ -4,6 +4,7 @@ using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -108,7 +109,7 @@ public partial class Tab4Control : UserControl
             {
                 if (DataGrid1.SelectedItem is ServerPackConfigDisplayObj obj)
                 {
-                    new ServerPackFlyout1(this, obj).ShowAt(this, true);
+                    _ = new ServerPackFlyout1(this, obj);
                 }
             });
         }

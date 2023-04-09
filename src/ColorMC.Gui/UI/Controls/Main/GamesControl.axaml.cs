@@ -4,6 +4,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
@@ -152,12 +153,10 @@ public partial class GamesControl : UserControl
             Window.GameItemSelect(game);
         }
 
-        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed
+            && Window.Obj?.Obj != null)
         {
-            if (Window.Obj?.Obj != null)
-            {
-                new MainFlyout(Window, Window.Obj!).ShowAt(this, true);
-            }
+            _ = new MainFlyout(Window, Window.Obj!);
         }
     }
 }

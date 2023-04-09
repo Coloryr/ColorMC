@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.ObjectModel;
@@ -46,7 +47,7 @@ public partial class Tab10Control : UserControl
                 if (DataGrid1.SelectedItem is not ServerInfoObj obj)
                     return;
 
-                new GameEditFlyout5(this, obj).ShowAt(this, true);
+                _  = new GameEditFlyout5(this, obj);
             });
         }
     }

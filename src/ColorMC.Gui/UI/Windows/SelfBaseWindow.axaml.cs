@@ -60,12 +60,21 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Closed += UserWindow_Closed;
         Opened += UserWindow_Opened;
         Activated += Window_Activated;
+        Closing += SelfBaseWindow_Closing;
 
         App.PicUpdate += Update;
 
         FindGoodPos();
 
         Update();
+    }
+
+    private async void SelfBaseWindow_Closing(object? sender, WindowClosingEventArgs e)
+    {
+        if (Main == null)
+            return;
+
+        await Main.Closing(e);
     }
 
     public void SetTitle(string temp)

@@ -1,4 +1,8 @@
-﻿namespace ColorMC.Gui.UI.Windows;
+﻿using Avalonia.Controls;
+using System.ComponentModel;
+using System.Threading.Tasks;
+
+namespace ColorMC.Gui.UI.Windows;
 
 public interface IUserControl
 {
@@ -6,5 +10,5 @@ public interface IUserControl
     virtual public void Opened() { }
     virtual public void Closed() { }
     virtual public void Update() { }
-    virtual public void Closing() { }
+    virtual public Task Closing(WindowClosingEventArgs e) { return Task.CompletedTask; }
 }

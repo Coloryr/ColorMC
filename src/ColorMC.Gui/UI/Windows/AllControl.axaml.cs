@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -320,5 +321,12 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         }
 
         Head.Title = data;
+    }
+
+    public Task Closing(WindowClosingEventArgs e)
+    {
+        if (Now is not IUserControl now)
+            return Task.CompletedTask;
+        return now.Closing(e);
     }
 }
