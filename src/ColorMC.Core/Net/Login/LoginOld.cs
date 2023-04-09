@@ -94,8 +94,14 @@ public static class LoginOld
             return (LoginState.Error, null);
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
         if (obj2 == null || obj2.selectedProfile == null)
+        {
+            var jobj = JObject.Parse(data);
+            if (jobj?.TryGetValue("errorMessage", out var msg) == true)
+            {
+                ColorMCCore.OnError?.Invoke(msg?.ToString(), null, false);
+            }
             return (LoginState.JsonError, null);
-
+        }
         obj.UserName = obj2.selectedProfile.name;
         obj.UUID = obj2.selectedProfile.id;
         obj.AccessToken = obj2.accessToken;

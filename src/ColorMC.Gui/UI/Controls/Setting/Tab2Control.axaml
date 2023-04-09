@@ -15,11 +15,11 @@
                 <CheckBox
                     Name="CheckBox5"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text26}" />
+                    Content="{setting:Localize SettingWindow.Tab2.Text22}" />
                 <Label
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text27}" />
+                    Content="{setting:Localize SettingWindow.Tab2.Text23}" />
             </StackPanel>
 
             <!--  语言  -->
@@ -36,7 +36,7 @@
                 <Label
                     Margin="0,0,5,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text22}" />
+                    Content="{setting:Localize SettingWindow.Tab2.Text19}" />
                 <DropDownButton
                     Name="DropDownButton1"
                     Width="200"
@@ -56,7 +56,7 @@
                                     <DataTemplate>
                                         <StackPanel>
                                             <TextBlock Text="{Binding FontName}" />
-                                            <TextBlock FontFamily="{Binding FontFamily}" Text="{setting:Localize SettingWindow.Tab2.Text29}" />
+                                            <TextBlock FontFamily="{Binding FontFamily}" Text="{setting:Localize SettingWindow.Tab2.Text25}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -65,10 +65,10 @@
                     </DropDownButton.Flyout>
                 </DropDownButton>
 
-                <CheckBox Name="CheckBox3" Content="{setting:Localize SettingWindow.Tab2.Text23}" />
+                <CheckBox Name="CheckBox3" Content="{setting:Localize SettingWindow.Tab2.Text20}" />
             </StackPanel>
 
-            <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text24}" />
+            <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
 
             <!--  背景图  -->
 
@@ -152,7 +152,7 @@
                 <CheckBox
                     Name="CheckBox7"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text28}" />
+                    Content="{setting:Localize SettingWindow.Tab2.Text24}" />
                 <Slider
                     Name="Slider5"
                     Width="200"
@@ -180,20 +180,20 @@
                     Content="{setting:Localize Button.Set}" />
             </StackPanel>
 
-            <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
+            <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text18}" />
 
             <!--  颜色设置  -->
-            <Label Content="{setting:Localize SettingWindow.Tab2.Text10}" />
+            <Label Content="{setting:Localize SettingWindow.Tab2.Text7}" />
             <StackPanel Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text12}" />
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text8}" />
                 <ColorPicker Name="ColorPicker1" />
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text13}" />
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
                 <ColorPicker Name="ColorPicker2" />
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text14}" />
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text11}" />
                 <ColorPicker Name="ColorPicker3" />
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text19}" />
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text16}" />
                 <ColorPicker Name="ColorPicker4" />
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text20}" />
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text17}" />
                 <ColorPicker Name="ColorPicker5" />
 
             </StackPanel>
@@ -206,12 +206,12 @@
                     Width="80"
                     Height="25"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text15}" />
+                    Content="{setting:Localize SettingWindow.Tab2.Text12}" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <CheckBox Name="CheckBox2" Content="{setting:Localize SettingWindow.Tab2.Text16}" />
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text17}" />
+                <CheckBox Name="CheckBox2" Content="{setting:Localize SettingWindow.Tab2.Text13}" />
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text14}" />
                 <Slider
                     Name="Slider3"
                     Width="200"
@@ -229,7 +229,7 @@
                 <Label
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text18}" />
+                    Content="{setting:Localize SettingWindow.Tab2.Text15}" />
                 <Slider
                     Name="Slider4"
                     Width="200"
@@ -265,7 +265,7 @@
                     VerticalAlignment="Center"
                     IsEnabled="False" />
             </StackPanel>
-            <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text8}" />
+            <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text6}" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>

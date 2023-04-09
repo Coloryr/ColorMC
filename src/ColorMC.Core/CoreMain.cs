@@ -15,7 +15,7 @@ public static class ColorMCCore
     /// 错误显示回调
     /// 标题 错误 关闭程序
     /// </summary>
-    public static Action<string, Exception, bool>? OnError { internal get; set; }
+    public static Action<string?, Exception?, bool>? OnError { internal get; set; }
     /// <summary>
     /// 下载线程相应回调
     /// </summary>

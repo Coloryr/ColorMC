@@ -25,20 +25,20 @@ public class MainFlyout
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("MainWindow.Control.Text4"), !run, Button1_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text8"), true, Button14_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text7"), true, Button11_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text1"), true, Button2_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text2"), true, Button3_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text3"), true, Button4_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text4"), true, Button5_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text1"), !run, Button1_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text2"), true, Button14_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text3"), true, Button11_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text4"), true, Button2_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text5"), true, Button3_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text6"), true, Button4_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text7"), true, Button5_Click),
             (App.GetLanguage("Button.OpFile"), true, Button7_Click),
-            (App.GetLanguage("MainWindow.Control.Text8"), true, Button9_Click),
-            (App.GetLanguage("MainWindow.Control.Text6"), !run, Button8_Click),
-            (App.GetLanguage("MainWindow.Control.Text12"), !run, Button12_Click),
-            (App.GetLanguage("MainWindow.Control.Text5"), !run, Button6_Click),
-            (App.GetLanguage("MainWindow.Control.Text13"), !run, Button13_Click),
-            (App.GetLanguage("MainWindow.Control.Text6"), run, Button10_Click)
+            (App.GetLanguage("MainWindow.Flyouts.Text8"), true, Button9_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text9"), !run, Button8_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text10"), !run, Button12_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text11"), !run, Button6_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text12"), !run, Button13_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text13"), run, Button10_Click)
         }, win);
     }
 

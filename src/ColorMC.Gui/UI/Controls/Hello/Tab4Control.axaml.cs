@@ -210,8 +210,8 @@ public partial class Tab4Control : UserControl
     {
         var window = App.FindRoot(VisualRoot);
         window.Info1.Close();
-        window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Text3"), url),
-            string.Format(App.GetLanguage("UserWindow.Text4"), code), () =>
+        window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Info6"), url),
+            string.Format(App.GetLanguage("UserWindow.Info7"), code), () =>
             {
                 Cancel = true;
                 UserBinding.OAuthCancel();
@@ -226,7 +226,7 @@ public partial class Tab4Control : UserControl
         {
             case 0:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text5");
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Info8");
                 TextBox_Input1.Text = "";
                 break;
             case 1:
@@ -236,12 +236,12 @@ public partial class Tab4Control : UserControl
                 break;
             case 2:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text6");
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Info9");
                 TextBox_Input1.Text = "";
                 break;
             case 3:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text7");
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Info10");
                 TextBox_Input1.Text = "";
                 break;
             case 4:
@@ -251,7 +251,7 @@ public partial class Tab4Control : UserControl
                 break;
             case 5:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text8");
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Info11");
                 TextBox_Input1.Text = "";
                 break;
         }

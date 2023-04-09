@@ -62,21 +62,21 @@
                     Name="Button_A1"
                     Width="100"
                     Height="30"
-                    Content="{setting:Localize UserWindow.Text10}"
+                    Content="{setting:Localize UserWindow.Text4}"
                     IsVisible="False" />
             </Grid>
         </StackPanel>
 
         <Grid
-            Name="Grid_Add"
+            Name="Grid1"
             Background="#EEEEEEEE"
             IsVisible="False">
             <StackPanel Margin="5">
-                <Label Content="{setting:Localize UserWindow.Text11}" />
+                <Label Content="{setting:Localize UserWindow.Text5}" />
                 <StackPanel Orientation="Horizontal">
-                    <Label VerticalAlignment="Center" Content="{setting:Localize UserWindow.Text9}" />
+                    <Label VerticalAlignment="Center" Content="{setting:Localize UserWindow.Text3}" />
                     <ComboBox
-                        Name="ComboBox_UserType"
+                        Name="ComboBox1"
                         Width="200"
                         Margin="5,0,0,0" />
                 </StackPanel>

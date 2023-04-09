@@ -141,7 +141,7 @@
                         Width="100"
                         Height="35"
                         Margin="0,5,0,0"
-                        Content="{setting:Localize MainWindow.Control.Text5}"
+                        Content="{setting:Localize MainWindow.Control.Text4}"
                         IsEnabled="False"
                         ToolTip.Tip="{setting:Localize ToolTip.Text12}"
                         ToolTip.VerticalOffset="-30" />
@@ -151,7 +151,7 @@
                         Width="100"
                         Height="35"
                         Margin="0,5,0,20"
-                        Content="{setting:Localize MainWindow.Control.Text7}"
+                        Content="{setting:Localize MainWindow.Control.Text5}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text13}"
                         ToolTip.VerticalOffset="-30" />
                 </StackPanel>

@@ -1,6 +1,6 @@
 <ResourceDictionary>
 	
-	<String Key="Language">简体中文</String>
+	<String Key="Core.Language">简体中文</String>
 	<String Key="Core.Info1">ColorMC核心已初始化</String>
 
 	<String Key="Core.Config.Info1">正在读取配置文件</String>

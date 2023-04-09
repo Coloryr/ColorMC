@@ -505,7 +505,7 @@ public static class BaseBinding
     /// <param name="data">数据</param>
     /// <param name="e">错误</param>
     /// <param name="close">是否关闭</param>
-    private static void ShowError(string data, Exception e, bool close)
+    private static void ShowError(string? data, Exception? e, bool close)
     {
         App.ShowError(data, e, close);
     }

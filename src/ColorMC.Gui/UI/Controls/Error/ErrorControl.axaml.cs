@@ -27,9 +27,10 @@ public partial class ErrorControl : UserControl, IUserControl
         }
     }
 
-    public void Show(string data, Exception e, bool close)
+    public void Show(string? data, Exception? e, bool close)
     {
-        TextEditor1.Text = $"{data}{Environment.NewLine}{e}";
+        TextEditor1.Text = $"{data ?? ""}{Environment.NewLine}" +
+            $"{(e == null ? "" : e.ToString())}";
         IsClose = close;
     }
 

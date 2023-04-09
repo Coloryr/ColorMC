@@ -4,6 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -194,5 +195,13 @@ public static class ConfigBinding
     public static bool WindowMode()
     {
         return GuiConfigUtils.Config.WindowMode || SystemInfo.Os == OsType.Android;
+    }
+
+    public static void SetLanguage(LanguageType type)
+    {
+        ConfigUtils.Config.Language = type;
+        ConfigUtils.Save();
+
+        LanguageHelper.Change(type);
     }
 }

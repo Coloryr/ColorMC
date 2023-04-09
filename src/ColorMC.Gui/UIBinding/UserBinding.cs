@@ -42,6 +42,20 @@ public static class UserBinding
         return list;
     }
 
+    public static int ToInt(this AuthType type)
+    {
+        return type switch
+        {
+            AuthType.Offline => 0,
+            AuthType.OAuth => 1,
+            AuthType.Nide8 => 2,
+            AuthType.AuthlibInjector => 3,
+            AuthType.LittleSkin => 4,
+            AuthType.SelfLittleSkin => 5,
+            _ => -1
+        };
+    }
+
     public static async Task<(bool, string?)> AddUser(AuthType type, string? input1,
         string? input2 = null, string? input3 = null)
     {

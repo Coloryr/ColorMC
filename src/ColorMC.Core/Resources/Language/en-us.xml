@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary>
 	
-	<String Key="Language">Englist</String>
+	<String Key="Core.Language">Englist</String>
 
 </ResourceDictionary>

@@ -96,7 +96,7 @@ public partial class AddGameControl : UserControl, IUserControl
         var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
-            window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Info19"));
             return;
         }
 
@@ -297,7 +297,7 @@ public partial class AddGameControl : UserControl, IUserControl
         var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
-            window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Info19"));
             return;
         }
 
@@ -543,7 +543,7 @@ public partial class AddGameControl : UserControl, IUserControl
         var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
-            window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Info19"));
             return;
         }
 
@@ -567,7 +567,7 @@ public partial class AddGameControl : UserControl, IUserControl
         var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
-            window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Info19"));
             return;
         }
 
@@ -591,7 +591,7 @@ public partial class AddGameControl : UserControl, IUserControl
         var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
-            window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Info19"));
             return;
         }
 

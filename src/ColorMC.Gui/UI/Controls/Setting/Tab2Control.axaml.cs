@@ -146,7 +146,7 @@ public partial class Tab2Control : UserControl
         var window = App.FindRoot(VisualRoot);
         var type = (LanguageType)ComboBox2.SelectedIndex;
         window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info1"));
-        LanguageHelper.Change(type);
+        ConfigBinding.SetLanguage(type);
         window.Info1.Close();
     }
 

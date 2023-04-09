@@ -581,7 +581,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowError(string data, Exception e, bool close = false)
+    public static void ShowError(string? data, Exception? e, bool close = false)
     {
         Dispatcher.UIThread.Post(() =>
         {

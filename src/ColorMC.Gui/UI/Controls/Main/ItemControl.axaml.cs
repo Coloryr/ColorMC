@@ -104,12 +104,6 @@ public partial class ItemControl : UserControl
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
     {
-        if (BaseBinding.IsDownload)
-        {
-            var window = App.FindRoot(VisualRoot);
-            window.Info.Show(App.GetLanguage("MainWindow.Control.Info3"));
-            return;
-        }
         App.ShowAddGame();
     }
 

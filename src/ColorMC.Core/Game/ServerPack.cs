@@ -11,9 +11,9 @@ namespace ColorMC.Core.Game;
 public static class ServerPack
 {
     /// <summary>
-    /// ÒÆ¶¯µ½¾ÉµÄ·şÎñÆ÷°ü
+    /// ç§»åŠ¨åˆ°æ—§çš„æœåŠ¡å™¨åŒ…
     /// </summary>
-    /// <param name="obj">·şÎñÆ÷°ü</param>
+    /// <param name="obj">æœåŠ¡å™¨åŒ…</param>
     public static void MoveToOld(this ServerPackObj obj)
     {
         var file1 = obj.Game.GetServerPackOldFile();
@@ -28,10 +28,10 @@ public static class ServerPack
     }
 
     /// <summary>
-    /// ¿ªÊ¼¸üĞÂ
+    /// å¼€å§‹æ›´æ–°
     /// </summary>
-    /// <param name="obj">·şÎñÆ÷°ü</param>
-    /// <returns>½á¹û</returns>
+    /// <param name="obj">æœåŠ¡å™¨åŒ…</param>
+    /// <returns>ç»“æœ</returns>
     public static async Task<bool> Update(this ServerPackObj obj)
     {
         File.Delete(obj.Game.GetServerPackFile());
@@ -49,7 +49,7 @@ public static class ServerPack
             };
         }
 
-        //Çø·ÖĞÂ¾Émod
+        //åŒºåˆ†æ–°æ—§mod
         var list1 = obj.Mod.ToArray();
         var list2 = old.Mod.ToArray();
 
@@ -75,7 +75,7 @@ public static class ServerPack
         list3.RemoveAll(a => a == null);
         list4.RemoveAll(a => a == null);
 
-        //Ìí¼ÓĞÂmod
+        //æ·»åŠ æ–°mod
         foreach (var item in list3)
         {
             if (item.Source == null)
@@ -102,13 +102,13 @@ public static class ServerPack
 
         var mods = await obj.Game.GetMods();
 
-        //É¾³ı¾Émod
+        //åˆ é™¤æ—§mod
         foreach (var item in list4)
         {
             mods.Find(a => a.Sha1 == item.Sha1)?.Delete();
         }
 
-        //¼ì²é×ÊÔ´°ü
+        //æ£€æŸ¥èµ„æºåŒ…
         path = obj.Game.GetResourcepacksPath();
 
         foreach (var item in obj.Resourcepack)
@@ -122,7 +122,7 @@ public static class ServerPack
             });
         }
 
-        //¼ì²éÅäÖÃÎÄ¼ş
+        //æ£€æŸ¥é…ç½®æ–‡ä»¶
         path = obj.Game.GetGamePath();
         var path1 = obj.Game.GetBasePath();
 
@@ -157,7 +157,7 @@ public static class ServerPack
             }
         }
 
-        //¸üĞÂUIÎÄ¼ş
+        //æ›´æ–°UIæ–‡ä»¶
         if (!string.IsNullOrWhiteSpace(obj.UI))
         {
             list5.Add(new()
@@ -168,7 +168,7 @@ public static class ServerPack
             });
         }
 
-        //¿ªÊ¼ÏÂÔØ
+        //å¼€å§‹ä¸‹è½½
         var res = await DownloadManager.Start(list5);
         if (!res)
             return false;
@@ -180,10 +180,10 @@ public static class ServerPack
     }
 
     /// <summary>
-    /// »ñÈ¡·şÎñÆ÷°ü
+    /// è·å–æœåŠ¡å™¨åŒ…
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>·şÎñÆ÷°ü</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æœåŠ¡å™¨åŒ…</returns>
     public static ServerPackObj? GetServerPack(this GameSettingObj obj)
     {
         var file = obj.GetServerPackFile();
@@ -203,10 +203,10 @@ public static class ServerPack
     }
 
     /// <summary>
-    /// »ñÈ¡¾ÉµÄ·şÎñÆ÷°ü
+    /// è·å–æ—§çš„æœåŠ¡å™¨åŒ…
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <returns>·şÎñÆ÷°ü</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <returns>æœåŠ¡å™¨åŒ…</returns>
     public static ServerPackObj? GetOldServerPack(this GameSettingObj obj)
     {
         var file = obj.GetServerPackOldFile();
@@ -230,9 +230,9 @@ public static class ServerPack
     }
 
     /// <summary>
-    /// ±£´æ·şÎñÆ÷°ü
+    /// ä¿å­˜æœåŠ¡å™¨åŒ…
     /// </summary>
-    /// <param name="obj">·şÎñÆ÷°ü</param>
+    /// <param name="obj">æœåŠ¡å™¨åŒ…</param>
     public static void Save(this ServerPackObj obj)
     {
         ConfigSave.AddItem(new()
@@ -244,11 +244,11 @@ public static class ServerPack
     }
 
     /// <summary>
-    /// Éú³É·şÎñÆ÷°ü
+    /// ç”ŸæˆæœåŠ¡å™¨åŒ…
     /// </summary>
-    /// <param name="obj">·şÎñÆ÷°ü</param>
-    /// <param name="local">±£´æÂ·¾¶</param>
-    /// <returns>½á¹û</returns>
+    /// <param name="obj">æœåŠ¡å™¨åŒ…</param>
+    /// <param name="local">ä¿å­˜è·¯å¾„</param>
+    /// <returns>ç»“æœ</returns>
     public static async Task<bool> GenServerPack(this ServerPackObj obj, string local)
     {
         var obj1 = new ServerPackObj()
@@ -442,11 +442,11 @@ public static class ServerPack
     }
 
     /// <summary>
-    /// ¼ì²é·şÎñÆ÷°ü
+    /// æ£€æŸ¥æœåŠ¡å™¨åŒ…
     /// </summary>
-    /// <param name="obj">ÓÎÏ·ÊµÀı</param>
-    /// <param name="url">ÍøÖ·</param>
-    /// <returns>½á¹û</returns>
+    /// <param name="obj">æ¸¸æˆå®ä¾‹</param>
+    /// <param name="url">ç½‘å€</param>
+    /// <returns>ç»“æœ</returns>
     public static async Task<(bool, ServerPackObj?)> ServerPackCheck(this GameSettingObj obj, string url)
     {
         var data = await BaseClient.GetString(url + "server.json");

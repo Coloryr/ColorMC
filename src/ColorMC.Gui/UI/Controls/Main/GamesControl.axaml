@@ -30,7 +30,7 @@
                 <Label
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize MainWindow.Control.Text11}"
+                    Content="{setting:Localize MainWindow.Control.Text8}"
                     FontSize="20" />
             </Grid>
         </Grid>

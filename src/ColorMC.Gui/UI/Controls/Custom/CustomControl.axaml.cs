@@ -94,8 +94,8 @@ public partial class CustomControl : UserControl, IUserControl
 
         if (HeadImg != null)
         {
-            CustomModel.Type = App.GetLanguage("MainWindow.Control.Info1");
-            CustomModel.Name = App.GetLanguage("MainWindow.Control.Info2");
+            CustomModel.Type = App.GetLanguage("MainWindow.Info35");
+            CustomModel.Name = App.GetLanguage("MainWindow.Info36");
         }
         else
         {

@@ -9,6 +9,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Web;
@@ -39,8 +40,8 @@ public partial class UsersControl : UserControl, IUserControl
         Button_Cancel.Click += Button_Cancel_Click;
         Button_Add.Click += Button_Add_Click;
 
-        ComboBox_UserType.SelectionChanged += UserType_SelectionChanged;
-        ComboBox_UserType.Items = UserBinding.GetUserTypes();
+        ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
+        ComboBox1.ItemsSource = UserBinding.GetUserTypes();
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
@@ -51,10 +52,7 @@ public partial class UsersControl : UserControl, IUserControl
     {
         Load();
 
-        Dispatcher.UIThread.Post(() =>
-        {
-            DataGrid_User.MakeTran();
-        });
+        Dispatcher.UIThread.Post(DataGrid_User.MakeTran);
 
         Window.SetTitle(App.GetLanguage("UserWindow.Title"));
     }
@@ -149,7 +147,7 @@ public partial class UsersControl : UserControl, IUserControl
         var window = App.FindRoot(VisualRoot);
         bool ok = false;
         Button_Add.IsEnabled = false;
-        switch (ComboBox_UserType.SelectedIndex)
+        switch (ComboBox1.SelectedIndex)
         {
             case 0:
                 var name = TextBox_Input1.Text;
@@ -290,7 +288,7 @@ public partial class UsersControl : UserControl, IUserControl
         if (ok)
         {
             UserBinding.UserLastUser();
-            await App.CrossFade300.Start(Grid_Add, null, CancellationToken.None);
+            await App.CrossFade300.Start(Grid1, null, CancellationToken.None);
         }
         Load();
         Button_Add.IsEnabled = true;
@@ -300,8 +298,8 @@ public partial class UsersControl : UserControl, IUserControl
     {
         var window = App.FindRoot(VisualRoot);
         window.Info1.Close();
-        window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Text3"), url),
-            string.Format(App.GetLanguage("UserWindow.Text4"), code), () =>
+        window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Info6"), url),
+            string.Format(App.GetLanguage("UserWindow.Info7"), code), () =>
             {
                 Cancel = true;
                 UserBinding.OAuthCancel();
@@ -310,13 +308,13 @@ public partial class UsersControl : UserControl, IUserControl
         await BaseBinding.CopyTextClipboard(code);
     }
 
-    private void UserType_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        switch (ComboBox_UserType.SelectedIndex)
+        switch (ComboBox1.SelectedIndex)
         {
             case 0:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text5");
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Info8");
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = false;
                 TextBox_Input2.Text = "";
@@ -334,7 +332,7 @@ public partial class UsersControl : UserControl, IUserControl
                 break;
             case 2:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text6");
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Info9");
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = true;
                 TextBox_Input2.Text = "";
@@ -343,7 +341,7 @@ public partial class UsersControl : UserControl, IUserControl
                 break;
             case 3:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text7");
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Info10");
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = true;
                 TextBox_Input2.Text = "";
@@ -361,7 +359,7 @@ public partial class UsersControl : UserControl, IUserControl
                 break;
             case 5:
                 TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Text8");
+                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Info11");
                 TextBox_Input1.Text = "";
                 TextBox_Input2.IsEnabled = true;
                 TextBox_Input2.Text = "";
@@ -373,7 +371,7 @@ public partial class UsersControl : UserControl, IUserControl
 
     private void Button_Cancel_Click(object? sender, RoutedEventArgs e)
     {
-        App.CrossFade300.Start(Grid_Add, null, CancellationToken.None);
+        App.CrossFade300.Start(Grid1, null, CancellationToken.None);
     }
 
     private void Button_D1_Click(object? sender, RoutedEventArgs e)
@@ -403,10 +401,14 @@ public partial class UsersControl : UserControl, IUserControl
 
     public void SetAdd()
     {
-        App.CrossFade300.Start(null, Grid_Add, CancellationToken.None);
+        ComboBox1.IsEnabled = true;
+        TextBox_Input1.IsEnabled = true;
+        TextBox_Input2.IsEnabled = true;
+
+        App.CrossFade300.Start(null, Grid1, CancellationToken.None);
     }
 
-    public async void ReLogin(UserDisplayObj obj)
+    public async void Refresh(UserDisplayObj obj)
     {
         var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("UserWindow.Info3"));
@@ -419,18 +421,18 @@ public partial class UsersControl : UserControl, IUserControl
             if (user == null)
                 return;
 
-            switch (ComboBox_UserType.SelectedIndex)
+            switch (ComboBox1.SelectedIndex)
             {
                 case 2:
                 case 3:
                 case 5:
-                    UserType_SelectionChanged(null, null);
+                    ComboBox1_SelectionChanged(null, null);
                     SetAdd();
                     TextBox_Input2.Text = user.Text2;
                     TextBox_Input1.Text = user.Text1;
                     break;
                 case 4:
-                    UserType_SelectionChanged(null, null);
+                    ComboBox1_SelectionChanged(null, null);
                     SetAdd();
                     TextBox_Input2.Text = user.Text2;
                     break;
@@ -475,7 +477,21 @@ public partial class UsersControl : UserControl, IUserControl
     public void AddUrl(string url)
     {
         SetAdd();
-        ComboBox_UserType.SelectedIndex = 3;
+        ComboBox1.SelectedIndex = 3;
         TextBox_Input1.Text = HttpUtility.UrlDecode(url.Replace("authlib-injector:yggdrasil-server:", ""));
+    }
+
+    public void ReLogin(UserDisplayObj obj)
+    {
+        ComboBox1.SelectedIndex = obj.AuthType.ToInt();
+
+        ComboBox1.IsEnabled = false;
+        TextBox_Input1.IsEnabled = false;
+        TextBox_Input2.IsEnabled = false;
+
+        TextBox_Input1.Text = obj.Text1;
+        TextBox_Input2.Text = obj.Text2;
+
+        App.CrossFade300.Start(null, Grid1, CancellationToken.None);
     }
 }
