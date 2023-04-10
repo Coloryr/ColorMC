@@ -2,6 +2,8 @@
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ColorMC.Test;
 
@@ -24,14 +26,34 @@ internal class Program
         ColorMCCore.AuthStateUpdate = AuthStateUpdate;
         ColorMCCore.GameLog = Log;
 
-        TestItem.Item22();
+        //TestItem.Item22();
+
+        GetSha1();
 
         Console.ReadLine();
     }
 
     public static void GetSha1()
-    { 
-        
+    {
+        {
+            using var file = File.OpenRead($"tmp/ColorMC.Core.dll");
+            Console.WriteLine($"ColorMC.Core.dll:{GenSha1(file)}");
+        }
+        {
+            using var file = File.OpenRead($"tmp/ColorMC.Gui.dll");
+            Console.WriteLine($"ColorMC.Gui.dll:{GenSha1(file)}");
+        }
+    }
+
+    public static string GenSha1(Stream stream)
+    {
+        SHA1 sha1 = SHA1.Create();
+        StringBuilder EnText = new();
+        foreach (byte iByte in sha1.ComputeHash(stream))
+        {
+            EnText.AppendFormat("{0:x2}", iByte);
+        }
+        return EnText.ToString().ToLower();
     }
 
     public static void AuthStateUpdate(AuthState state)

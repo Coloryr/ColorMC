@@ -22,7 +22,7 @@ public partial class WorldControl : UserControl
 
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-             _ = new GameEditFlyout2(tab, World);
+            _ = new GameEditFlyout2(tab, World);
         }
     }
 

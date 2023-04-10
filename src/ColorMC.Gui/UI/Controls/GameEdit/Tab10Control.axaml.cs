@@ -47,7 +47,7 @@ public partial class Tab10Control : UserControl
                 if (DataGrid1.SelectedItem is not ServerInfoObj obj)
                     return;
 
-                _  = new GameEditFlyout5(this, obj);
+                _ = new GameEditFlyout5(this, obj);
             });
         }
     }

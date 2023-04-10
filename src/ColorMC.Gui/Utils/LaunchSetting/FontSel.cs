@@ -31,7 +31,7 @@ public class FontSel : INotifyPropertyChanged
 
     public void Load()
     {
-        if (!GuiConfigUtils.Config.FontDefault 
+        if (!GuiConfigUtils.Config.FontDefault
             && !string.IsNullOrWhiteSpace(GuiConfigUtils.Config.FontName)
             && FontManager.Current.SystemFonts.Any(a => a.Name == GuiConfigUtils.Config.FontName))
         {

@@ -11,9 +11,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ColorMC.Core.Game;
@@ -1184,7 +1182,7 @@ public static class Launch
         return process;
     }
 
-    public delegate int Func1(int argc, 
+    public delegate int Func1(int argc,
         string[] argv, /* main argc, argc */
         int jargc, string[] jargv,          /* java args */
         int appclassc, string[] appclassv,  /* app classpath */

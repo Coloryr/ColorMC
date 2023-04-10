@@ -1,8 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using ColorMC.Gui.UIBinding;
 using System;
 using System.Collections.Generic;
 
@@ -62,6 +59,6 @@ public partial class FlyoutsControl : UserControl
 
     public FlyoutsControl() : this(null, null)
     {
-        
+
     }
 }

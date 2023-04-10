@@ -9,7 +9,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Web;

@@ -2,11 +2,6 @@
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UIBinding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -23,7 +18,7 @@ public class UserFlyout
         {
             (App.GetLanguage("UserWindow.Flyouts.Text1"), true, Button1_Click),
             (App.GetLanguage("UserWindow.Flyouts.Text2"), obj.AuthType != AuthType.Offline, Button2_Click),
-            (App.GetLanguage("UserWindow.Flyouts.Text3"), obj.AuthType != AuthType.Offline 
+            (App.GetLanguage("UserWindow.Flyouts.Text3"), obj.AuthType != AuthType.Offline
                 && obj.AuthType != AuthType.OAuth, Button4_Click),
             (App.GetLanguage("UserWindow.Flyouts.Text4"), true, Button3_Click)
         }, con);

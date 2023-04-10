@@ -4,7 +4,6 @@ using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
-using System.Globalization;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 

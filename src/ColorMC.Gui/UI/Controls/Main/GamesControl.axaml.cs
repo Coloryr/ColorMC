@@ -169,7 +169,7 @@ public partial class GamesControl : UserControl
     private void GameControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         e.Handled = true;
-        
+
         if (Window.Obj != sender)
         {
             var game = (sender as GameControl)!;

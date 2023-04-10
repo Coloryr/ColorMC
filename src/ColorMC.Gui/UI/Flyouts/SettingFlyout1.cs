@@ -1,11 +1,6 @@
 ﻿using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UIBinding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

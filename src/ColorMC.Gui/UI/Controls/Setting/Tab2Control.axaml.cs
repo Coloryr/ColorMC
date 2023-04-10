@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System.Collections.ObjectModel;
@@ -59,7 +58,7 @@ public partial class Tab2Control : UserControl
 
         ComboBox1.ItemsSource = BaseBinding.GetWindowTranTypes();
         ComboBox2.ItemsSource = BaseBinding.GetLanguages();
-        
+
         BaseBinding.GetFontList().ForEach(item =>
         {
             Fonts.Add(new()
@@ -161,7 +160,7 @@ public partial class Tab2Control : UserControl
             DropDownButton1.IsEnabled = true;
         }
 
-        ConfigBinding.SetFont((DropDownButton1.Content as FontDisplay)?.FontName, 
+        ConfigBinding.SetFont((DropDownButton1.Content as FontDisplay)?.FontName,
             CheckBox3.IsChecked == true);
     }
 
@@ -248,7 +247,7 @@ public partial class Tab2Control : UserControl
             CheckBox1.IsChecked = config.Item2.WindowTran;
             ComboBox1.SelectedIndex = config.Item2.WindowTranType;
 
-            var item = Fonts.FirstOrDefault(a=>a.FontName == config.Item2.FontName);
+            var item = Fonts.FirstOrDefault(a => a.FontName == config.Item2.FontName);
             ListBox1.SelectedItem = item;
             DropDownButton1.Content = item;
 

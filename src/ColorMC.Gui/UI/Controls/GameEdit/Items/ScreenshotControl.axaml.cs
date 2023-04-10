@@ -23,7 +23,7 @@ public partial class ScreenshotControl : UserControl
 
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-             _ = new GameEditFlyout4(Tab, Obj);
+            _ = new GameEditFlyout4(Tab, Obj);
         }
     }
 

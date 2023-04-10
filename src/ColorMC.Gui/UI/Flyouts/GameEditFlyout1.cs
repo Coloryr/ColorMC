@@ -1,18 +1,12 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UIBinding;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -40,9 +34,9 @@ public class GameEditFlyout1
             (App.GetLanguage("Button.OpFile"), Single, Button3_Click),
             (App.GetLanguage("GameEditWindow.Flyouts1.Text6"), true, Button7_Click),
             (App.GetLanguage("GameEditWindow.Flyouts1.Text3"), Single, Button4_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text4"), Single 
+            (App.GetLanguage("GameEditWindow.Flyouts1.Text4"), Single
                 && !string.IsNullOrWhiteSpace(Obj.Url), Button5_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text5"), Single 
+            (App.GetLanguage("GameEditWindow.Flyouts1.Text5"), Single
                 && !string.IsNullOrWhiteSpace(Obj.PID) && !string.IsNullOrWhiteSpace(Obj.FID), Button6_Click),
         }, con);
     }

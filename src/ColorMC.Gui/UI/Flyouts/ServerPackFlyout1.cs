@@ -1,13 +1,5 @@
-﻿using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
-using ColorMC.Gui.Objs;
+﻿using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Server;
-using ColorMC.Gui.UI.Controls.Skin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
