@@ -34,7 +34,7 @@ public partial class ResourcePackControl : UserControl
         Label2.Text = pack.PackFormat.ToString();
         Label3.Text = pack.Description;
         Label4.Text = pack.Pack.Broken ?
-            App.GetLanguage("GameEditWindow.Tab8.Info6") : "";
+            App.GetLanguage("GameEditWindow.Tab8.Info4") : "";
 
         if (pack.Icon != null)
         {

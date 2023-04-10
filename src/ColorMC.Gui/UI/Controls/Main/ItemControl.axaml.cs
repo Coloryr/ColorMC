@@ -164,8 +164,8 @@ public partial class ItemControl : UserControl
 
         if (Obj1 == null)
         {
-            TextBlock2.Text = App.GetLanguage("MainWindow.Control.Info1");
-            TextBlock1.Text = App.GetLanguage("MainWindow.Control.Info2");
+            TextBlock2.Text = App.GetLanguage("MainWindow.Info35");
+            TextBlock1.Text = App.GetLanguage("MainWindow.Info36");
         }
         else
         {

@@ -38,6 +38,10 @@
             </ControlTemplate>
         </Setter>
     </Style>
+ 
+    <Style Selector="Button:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.95)" />
+    </Style>
 
     <Style Selector="Button:pointerover /template/ Border#Border">
         <Setter Property="Background" Value="#FFDDDDDD" />

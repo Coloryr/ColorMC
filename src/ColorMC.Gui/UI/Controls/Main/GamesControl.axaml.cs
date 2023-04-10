@@ -1,5 +1,7 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
@@ -101,11 +103,57 @@ public partial class GamesControl : UserControl
         {
             var game = new GameControl();
             game.PointerPressed += GameControl_PointerPressed;
-            game.PointerMoved += GameControl_PointerMoved;
+            game.PointerReleased += Game_PointerReleased;
+            game.PointerMoved += Game_PointerMoved;
             game.DoubleTapped += Game_DoubleTapped;
             game.SetItem(item);
             Items.Add(item.UUID, game);
             WrapPanel_Items.Children.Add(game);
+        }
+    }
+
+    private Point point;
+
+    private async void Game_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        var game = (sender as GameControl)!;
+        var pro = e.GetCurrentPoint(this);
+        if (pro.Properties.IsLeftButtonPressed)
+        {
+            var pos = pro.Position;
+            if (Math.Sqrt(Math.Pow(Math.Abs(pos.X - point.X), 2) + Math.Pow(Math.Abs(pos.Y - point.Y), 2)) > 30)
+            {
+                if (sender is UserControl con)
+                {
+                    con.RenderTransform = null;
+                }
+
+                List<IStorageFolder> files = new();
+                if (Window.Window is Window win)
+                {
+                    var item = await win.StorageProvider
+                        .TryGetFolderFromPathAsync(game.Obj.GetBasePath());
+                    files.Add(item);
+                }
+                var dragData = new DataObject();
+                dragData.Set(BaseBinding.DrapType, game);
+                dragData.Set(DataFormats.Files, files);
+
+                Dispatcher.UIThread.Post(() =>
+                {
+                    DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
+                });
+
+                e.Handled = true;
+            }
+        }
+    }
+
+    private void Game_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (sender is UserControl con)
+        {
+            con.RenderTransform = null;
         }
     }
 
@@ -118,33 +166,10 @@ public partial class GamesControl : UserControl
         }
     }
 
-    private async void GameControl_PointerMoved(object? sender, PointerEventArgs e)
-    {
-        e.Handled = true;
-        var game = (sender as GameControl)!;
-        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
-        {
-            List<IStorageFolder> files = new();
-            if (Window.Window is Window win)
-            {
-                var item = await win.StorageProvider
-                    .TryGetFolderFromPathAsync(game.Obj.GetBasePath());
-                files.Add(item);
-            }
-            var dragData = new DataObject();
-            dragData.Set(BaseBinding.DrapType, game);
-            dragData.Set(DataFormats.Files, files);
-
-            Dispatcher.UIThread.Post(() =>
-            {
-                DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
-            });
-        }
-    }
-
     private void GameControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         e.Handled = true;
+        
         if (Window.Obj != sender)
         {
             var game = (sender as GameControl)!;
@@ -153,7 +178,15 @@ public partial class GamesControl : UserControl
             Window.GameItemSelect(game);
         }
 
-        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed
+        if (sender is UserControl con)
+        {
+            con.RenderTransform = new ScaleTransform(0.95, 0.95);
+        }
+
+        var pro = e.GetCurrentPoint(this);
+        point = pro.Position;
+
+        if (pro.Properties.IsRightButtonPressed
             && Window.Obj?.Obj != null)
         {
             _ = new MainFlyout(Window, Window.Obj!);

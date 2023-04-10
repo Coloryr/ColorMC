@@ -141,7 +141,7 @@
                             Name="Button_C1"
                             Width="100"
                             Height="30"
-                            Content="{setting:Localize GameEditWindow.Tab4.Text4}"
+                            Content="{setting:Localize GameEditWindow.Tab4.Text3}"
                             IsVisible="False" />
                     </Grid>
                     <Grid Margin="0,5,0,0">
@@ -154,7 +154,7 @@
                             Name="Button_B1"
                             Width="100"
                             Height="30"
-                            Content="{setting:Localize GameEditWindow.Tab4.Text5}"
+                            Content="{setting:Localize GameEditWindow.Tab4.Text4}"
                             IsVisible="False" />
                     </Grid>
                 </StackPanel>

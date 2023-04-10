@@ -11,10 +11,7 @@
     Background="Transparent"
     mc:Ignorable="d">
     <Grid>
-        <Border
-            Name="Border1"
-            Background="{setting:Colors Main}"
-            CornerRadius="10,10,0,0" />
+        <Border Name="Border1" Background="{setting:Colors Main}" />
         <Grid Margin="5,5,5,0">
             <StackPanel Orientation="Horizontal">
                 <Label

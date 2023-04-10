@@ -204,9 +204,9 @@
 	<String Key="SettingWindow.Tab5.Text1">添加Java路径</String>
 	<String Key="SettingWindow.Tab5.Text2">Java名字</String>
 	<String Key="SettingWindow.Tab5.Text3">Java路径</String>
-	<String Key="SettingWindow.Tab5.Text5">下载Java</String>
-	<String Key="SettingWindow.Tab5.Text6">删除所有</String>
-	<String Key="SettingWindow.Tab5.Text7">打开下载目录</String>
+	<String Key="SettingWindow.Tab5.Text4">下载Java</String>
+	<String Key="SettingWindow.Tab5.Text5">删除所有</String>
+	<String Key="SettingWindow.Tab5.Text6">打开下载目录</String>
 	<String Key="SettingWindow.Tab5.DataGrid.Text1">名字</String>
 	<String Key="SettingWindow.Tab5.DataGrid.Text2">路径</String>
 	<String Key="SettingWindow.Tab5.DataGrid.Text3">主版本</String>
@@ -216,7 +216,6 @@
 	<String Key="SettingWindow.Tab5.Info1">正在检查Java</String>
 	<String Key="SettingWindow.Tab5.Info2">选择Java</String>
 	<String Key="SettingWindow.Tab5.Info3">是否删除所有Java</String>
-	<String Key="SettingWindow.Tab5.Info4">Java文件</String>
 
 	<String Key="SettingWindow.Tab6.Text1">Motd显示</String>
 	<String Key="SettingWindow.Tab6.Text2">服务器地址</String>
@@ -368,15 +367,13 @@
 	<String Key="GameEditWindow.Tab2.Info1">是否要删除所有配置</String>
 
 	<String Key="GameEditWindow.Tab3.Text1">过滤器</String>
-	<String Key="GameEditWindow.Tab3.Text2">无法编辑此文件</String>
-	<String Key="GameEditWindow.Tab3.Text3">保存修改</String>
-	<String Key="GameEditWindow.Tab3.Text4">刷新列表</String>
+	<String Key="GameEditWindow.Tab3.Text2">保存修改</String>
+	<String Key="GameEditWindow.Tab3.Text3">刷新列表</String>
 
 	<String Key="GameEditWindow.Tab4.Text1">过滤内容</String>
 	<String Key="GameEditWindow.Tab4.Text2">过滤选项</String>
-	<String Key="GameEditWindow.Tab4.Text3">过滤</String>
-	<String Key="GameEditWindow.Tab4.Text4">检查更新</String>
-	<String Key="GameEditWindow.Tab4.Text5">添加标记</String>
+	<String Key="GameEditWindow.Tab4.Text3">检查更新</String>
+	<String Key="GameEditWindow.Tab4.Text4">添加标记</String>
 	<String Key="GameEditWindow.Tab4.DataGrid.Text1">启用</String>
 	<String Key="GameEditWindow.Tab4.DataGrid.Text2">名字</String>
 	<String Key="GameEditWindow.Tab4.DataGrid.Text3">版本</String>
@@ -409,16 +406,14 @@
 	<String Key="GameEditWindow.Tab5.Info2">选择地图压缩包</String>
 	<String Key="GameEditWindow.Tab5.Info3">地图导出成功</String>
 	<String Key="GameEditWindow.Tab5.Info4">正在导出地图</String>
-	<String Key="GameEditWindow.Tab5.Info5">正在下载世界压缩包</String>
-	<String Key="GameEditWindow.Tab5.Info6">添加世界完成</String>
-	<String Key="GameEditWindow.Tab5.Info7">正在加载地图列表</String>
-	<String Key="GameEditWindow.Tab5.Info8">地图压缩包</String>
-	<String Key="GameEditWindow.Tab5.Info9">正在备份世界</String>
-	<String Key="GameEditWindow.Tab5.Info10">世界已备份</String>
-	<String Key="GameEditWindow.Tab5.Info11">选择备份世界压缩包</String>
-	<String Key="GameEditWindow.Tab5.Info12">该操作会删除旧的世界，是否继续执行</String>
-	<String Key="GameEditWindow.Tab5.Info13">正在还原世界</String>
-	<String Key="GameEditWindow.Tab5.Info14">备份已还原</String>
+	<String Key="GameEditWindow.Tab5.Info5">正在加载地图列表</String>
+	<String Key="GameEditWindow.Tab5.Info6">地图压缩包</String>
+	<String Key="GameEditWindow.Tab5.Info7">正在备份世界</String>
+	<String Key="GameEditWindow.Tab5.Info8">世界已备份</String>
+	<String Key="GameEditWindow.Tab5.Info9">选择备份世界压缩包</String>
+	<String Key="GameEditWindow.Tab5.Info10">该操作会删除旧的世界，是否继续执行</String>
+	<String Key="GameEditWindow.Tab5.Info11">正在还原世界</String>
+	<String Key="GameEditWindow.Tab5.Info12">备份已还原</String>
 	<String Key="GameEditWindow.Tab5.Error1">地图导出错误</String>
 	<String Key="GameEditWindow.Tab5.Error2">导入世界失败</String>
 	<String Key="GameEditWindow.Tab5.Error3">世界备份失败</String>
@@ -440,11 +435,9 @@
 
 	<String Key="GameEditWindow.Tab8.Info1">是否要删除资源包 {0}</String>
 	<String Key="GameEditWindow.Tab8.Info2">选择导入的资源包</String>
-	<String Key="GameEditWindow.Tab8.Info3">正在下载资源包压缩包</String>
-	<String Key="GameEditWindow.Tab8.Info4">添加资源包完成</String>
-	<String Key="GameEditWindow.Tab8.Info5">正在加载资源包列表</String>
-	<String Key="GameEditWindow.Tab8.Info6">损坏的资源包</String>
-	<String Key="GameEditWindow.Tab8.Info7">资源包</String>
+	<String Key="GameEditWindow.Tab8.Info3">正在加载资源包列表</String>
+	<String Key="GameEditWindow.Tab8.Info4">损坏的资源包</String>
+	<String Key="GameEditWindow.Tab8.Info5">资源包</String>
 	<String Key="GameEditWindow.Tab8.Error1">资源包导入是被</String>
 
 	<String Key="GameEditWindow.Tab9.Text1">删除截图</String>
@@ -453,7 +446,6 @@
 	<String Key="GameEditWindow.Tab9.Info3">正在加载实例截图</String>
 
 	<String Key="GameEditWindow.Tab10.Text1">地址</String>
-	<String Key="GameEditWindow.Tab10.Text2">到剪贴板</String>
 	<String Key="GameEditWindow.Tab10.Info1">服务器名</String>
 	<String Key="GameEditWindow.Tab10.Info2">服务器地址</String>
 	<String Key="GameEditWindow.Tab10.Info3">添加成功</String>
@@ -493,6 +485,7 @@
 	<String Key="GameEditWindow.Flyouts2.Text3">备份世界</String>
 	<String Key="GameEditWindow.Flyouts3.Text1">删除资源包</String>
 	<String Key="GameEditWindow.Flyouts4.Text1">清空截图</String>
+	<String Key="GameEditWindow.Flyouts5.Text1">到剪贴板</String>
 	<String Key="GameEditWindow.Info1">正在读取游戏版本</String>
 	<String Key="GameEditWindow.Error1">版本读取失败</String>
 

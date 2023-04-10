@@ -85,15 +85,15 @@ public partial class Tab5Control : UserControl
         {
             names.Add(item.Name);
         }
-        await window.Info5.Show(App.GetLanguage("GameEditWindow.Tab5.Info11"), names);
+        await window.Info5.Show(App.GetLanguage("GameEditWindow.Tab5.Info9"), names);
         if (window.Info5.Cancel)
             return;
         var item1 = list[window.Info5.Read().Item1];
-        var res = await window.Info.ShowWait(App.GetLanguage("GameEditWindow.Tab5.Info12"));
+        var res = await window.Info.ShowWait(App.GetLanguage("GameEditWindow.Tab5.Info10"));
         if (!res)
             return;
 
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info13"));
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info11"));
         res = await GameBinding.BackupWorld(Obj, item1);
         window.Info1.Close();
         if (!res)
@@ -102,7 +102,7 @@ public partial class Tab5Control : UserControl
         }
         else
         {
-            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info14"));
+            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info12"));
             Load();
         }
     }
@@ -223,7 +223,7 @@ public partial class Tab5Control : UserControl
     private async void Load()
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info5"));
         List.Clear();
         ListBox_Items.Children.Clear();
 
@@ -249,12 +249,12 @@ public partial class Tab5Control : UserControl
     public async void Backup(WorldDisplayObj obj)
     {
         var Window = App.FindRoot(VisualRoot);
-        Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info9"));
+        Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
         var res = await GameBinding.BackupWorld(obj.World);
         Window.Info1.Close();
         if (res)
         {
-            Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info10"));
+            Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info8"));
         }
         else
         {

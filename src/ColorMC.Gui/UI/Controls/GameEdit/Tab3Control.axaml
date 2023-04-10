@@ -29,7 +29,7 @@
                 Height="25"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
-                Content="{setting:Localize GameEditWindow.Tab3.Text3}"
+                Content="{setting:Localize GameEditWindow.Tab3.Text2}"
                 DockPanel.Dock="Right"
                 ToolTip.Tip="{setting:Localize ToolTip.Text40}"
                 ToolTip.VerticalOffset="-30" />
@@ -39,7 +39,7 @@
                 Height="25"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
-                Content="{setting:Localize GameEditWindow.Tab3.Text4}"
+                Content="{setting:Localize GameEditWindow.Tab3.Text3}"
                 DockPanel.Dock="Right"
                 ToolTip.Tip="{setting:Localize ToolTip.Text41}"
                 ToolTip.VerticalOffset="-30" />

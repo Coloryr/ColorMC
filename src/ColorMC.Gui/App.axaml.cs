@@ -652,14 +652,14 @@ public partial class App : Application
                 if (window != null)
                 {
                     window.TransparencyLevelHint = (WindowTransparencyLevel)
-                        (GuiConfigUtils.Config.WindowTranType + 1);
+                       (GuiConfigUtils.Config.WindowTranType + 1);
                 }
             }
             else
             {
                 if (window != null)
                 {
-                    window.TransparencyLevelHint = WindowTransparencyLevel.None;
+                    window.TransparencyLevelHint = WindowTransparencyLevel.AcrylicBlur;
                 }
             }
         }

@@ -40,7 +40,7 @@
                     Name="Button1"
                     Width="80"
                     Height="25"
-                    Content="{setting:Localize SettingWindow.Tab5.Text5}"
+                    Content="{setting:Localize SettingWindow.Tab5.Text4}"
                     DockPanel.Dock="Left" />
 
                 <Button
@@ -48,7 +48,7 @@
                     Width="120"
                     Height="25"
                     Margin="5,0,0,0"
-                    Content="{setting:Localize SettingWindow.Tab5.Text7}"
+                    Content="{setting:Localize SettingWindow.Tab5.Text6}"
                     DockPanel.Dock="Left" />
 
             </DockPanel>
@@ -113,7 +113,7 @@
                         Name="Button_D1"
                         Width="100"
                         Height="30"
-                        Content="{setting:Localize SettingWindow.Tab5.Text6}"
+                        Content="{setting:Localize SettingWindow.Tab5.Text5}"
                         IsVisible="False" />
                 </Grid>
             </StackPanel>

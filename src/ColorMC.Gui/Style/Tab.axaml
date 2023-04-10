@@ -43,6 +43,10 @@
         </Setter>
     </Style>
 
+    <Style Selector="TabItem:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.95)" />
+    </Style>
+
     <Style Selector="TabItem:selected /template/ Label#PART_ContentPresenter">
         <Setter Property="Foreground" Value="#FF000000" />
     </Style>

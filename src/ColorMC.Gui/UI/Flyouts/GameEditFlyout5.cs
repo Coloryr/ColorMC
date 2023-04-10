@@ -19,7 +19,7 @@ public class GameEditFlyout5
         var fy = new FlyoutsControl(new()
         {
             (App.GetLanguage("Button.OpFile"), true, Button1_Click),
-            (App.GetLanguage("GameEditWindow.Tab10.Text2"), true, Button2_Click)
+            (App.GetLanguage("GameEditWindow.Flyouts5.Text1"), true, Button2_Click)
         }, con);
     }
 

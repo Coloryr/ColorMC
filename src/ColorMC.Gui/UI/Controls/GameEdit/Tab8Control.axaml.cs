@@ -157,7 +157,7 @@ public partial class Tab8Control : UserControl
     private async void Load()
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab8.Info5"));
+        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab8.Info3"));
         List.Clear();
         ListBox_Items.Children.Clear();
 

@@ -1945,7 +1945,7 @@ public static class GameBinding
                 res = await BaseBinding.OpFile(window!,
                     App.GetLanguage("GameEditWindow.Tab5.Info2"),
                     new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab5.Info8"));
+                    App.GetLanguage("GameEditWindow.Tab5.Info6"));
                 if (res?.Any() == true)
                 {
                     return await AddWorld(obj, res[0].GetPath());
@@ -1955,7 +1955,7 @@ public static class GameBinding
                 res = await BaseBinding.OpFile(window,
                     App.GetLanguage("GameEditWindow.Tab8.Info2"),
                     new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab8.Info7"), true);
+                    App.GetLanguage("GameEditWindow.Tab8.Info5"), true);
                 if (res?.Any() == true)
                 {
                     return await AddResourcepack(obj, res);
