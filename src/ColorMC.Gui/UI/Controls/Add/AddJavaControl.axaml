@@ -88,7 +88,7 @@
 
             <Grid
                 Name="Grid1"
-                Background="{setting:Colors TranBack}"
+                Background="{setting:Colors TopBottom}"
                 IsVisible="False">
                 <Label
                     HorizontalAlignment="Center"

@@ -6,6 +6,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -60,6 +61,10 @@ public partial class Tab2Control : UserControl
         ColorPicker3.ColorChanged += ColorPicker_ColorChanged;
         ColorPicker4.ColorChanged += ColorPicker_ColorChanged;
         ColorPicker5.ColorChanged += ColorPicker_ColorChanged;
+        ColorPicker6.ColorChanged += ColorPicker_ColorChanged;
+        ColorPicker7.ColorChanged += ColorPicker_ColorChanged;
+        ColorPicker8.ColorChanged += ColorPicker_ColorChanged;
+        ColorPicker9.ColorChanged += ColorPicker_ColorChanged;
 
         ComboBox1.ItemsSource = BaseBinding.GetWindowTranTypes();
         ComboBox2.ItemsSource = BaseBinding.GetLanguages();
@@ -134,8 +139,13 @@ public partial class Tab2Control : UserControl
     private async void CheckBox7_Click(object? sender, RoutedEventArgs e)
     {
         Slider5.IsEnabled = Button_Set3.IsEnabled = CheckBox7.IsChecked == true;
-
-        await ConfigBinding.SetBackLimit(CheckBox7.IsChecked == true, (int)Slider5.Value);
+        if (CheckBox7.IsChecked == true)
+        {
+            var window = App.FindRoot(VisualRoot);
+            window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+            await ConfigBinding.SetBackLimit(CheckBox7.IsChecked == true, (int)Slider5.Value);
+            window.Info1.Close();
+        }
     }
 
     private async void Button_Set3_Click(object? sender, RoutedEventArgs e)

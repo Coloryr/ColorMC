@@ -122,7 +122,7 @@
 
         <Grid
             Name="Grid2"
-            Background="#EEEEEEEE"
+            Background="{setting:Colors TopBottom}"
             IsVisible="False">
             <Label
                 HorizontalAlignment="Center"

@@ -1,9 +1,7 @@
-﻿using Avalonia.Controls;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using Avalonia.Media.Immutable;
-using Avalonia.Styling;
-using Avalonia.Threading;
 using Avalonia.Platform;
+using Avalonia.Threading;
 using ColorMC.Core;
 using System;
 using System.ComponentModel;
@@ -14,11 +12,13 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 public class ColorSel : INotifyPropertyChanged
 {
     private static readonly IBrush AppLightBackColor = Brush.Parse("#FFFFFFFF");
-    private static readonly IBrush AppLightBackColor2 = Brush.Parse("#EEEEEEEE");
+    private static readonly IBrush AppLightBackColor1 = Brush.Parse("#EEEEEEEE");
+    private static readonly IBrush AppLightBackColor2 = Brush.Parse("#11FFFFFF");
     private static readonly IBrush AppLightBackColor3 = Brush.Parse("#EEEEEE");
 
     private static readonly IBrush AppDarkBackColor = Brush.Parse("#FF202020");
-    private static readonly IBrush AppDarkBackColor2 = Brush.Parse("#EE111111");
+    private static readonly IBrush AppDarkBackColor1 = Brush.Parse("#EE202020");
+    private static readonly IBrush AppDarkBackColor2 = Brush.Parse("#11202020");
     private static readonly IBrush AppDarkBackColor3 = Brush.Parse("#222222");
 
     public const string MainColorStr = "#FF5ABED6";
@@ -28,10 +28,10 @@ public class ColorSel : INotifyPropertyChanged
     public const string ButtonLightFontStr = "#FFFFFFFF";
     public const string FontLigthColorStr = "#FF000000";
 
-    public const string BackDarkColorStr = "#FF0B0B0A";
-    public const string Back1DarkColorStr = "#DD202020";
+    public const string BackDarkColorStr = "#FF202020";
+    public const string Back1DarkColorStr = "#88202020";
     public const string ButtonDarkFontStr = "#FF202020";
-    public const string FontDarkColorStr = "#FFe9e9e9";
+    public const string FontDarkColorStr = "#FFE9E9E9";
 
     public static IBrush MainColor { get; private set; } = Brush.Parse(MainColorStr);
     public static IBrush BackColor { get; private set; } = Brush.Parse(BackLigthColorStr);
@@ -41,6 +41,7 @@ public class ColorSel : INotifyPropertyChanged
     public static IBrush MotdColor { get; private set; } = Brush.Parse("#FFFFFFFF");
     public static IBrush MotdBackColor { get; private set; } = Brush.Parse("#FF000000");
     public static IBrush BottomColor { get; private set; } = AppLightBackColor;
+    public static IBrush TopBottomColor { get; private set; } = AppLightBackColor1;
     public static IBrush BottomTranColor { get; private set; } = AppLightBackColor2;
     public static IBrush BottomColor1 { get; private set; } = AppLightBackColor3;
 
@@ -62,7 +63,7 @@ public class ColorSel : INotifyPropertyChanged
                 DisableRGB();
                 MainColor = Brush.Parse(GuiConfigUtils.Config.ColorMain);
 
-                var config = App.NowTheme == PlatformThemeVariant.Light ? 
+                var config = App.NowTheme == PlatformThemeVariant.Light ?
                     GuiConfigUtils.Config.ColorLight : GuiConfigUtils.Config.ColorDark;
 
                 BackColor = Brush.Parse(config.ColorBack);
@@ -76,7 +77,10 @@ public class ColorSel : INotifyPropertyChanged
                 BottomColor = App.NowTheme == PlatformThemeVariant.Light
                     ? AppLightBackColor : AppDarkBackColor;
 
-                BottomTranColor = App.NowTheme == PlatformThemeVariant.Light 
+                TopBottomColor = App.NowTheme == PlatformThemeVariant.Light
+                    ? AppLightBackColor1 : AppDarkBackColor1;
+
+                BottomTranColor = App.NowTheme == PlatformThemeVariant.Light
                     ? AppLightBackColor2 : AppDarkBackColor2;
 
                 BottomColor1 = App.NowTheme == PlatformThemeVariant.Light
@@ -188,6 +192,10 @@ public class ColorSel : INotifyPropertyChanged
                 return BottomColor;
             else if (key == "Bottom1")
                 return BottomColor1;
+            else if (key == "TopBottom")
+                return TopBottomColor;
+            else if (key == "BottomTran")
+                return BottomTranColor;
 
             return Brushes.White;
         }

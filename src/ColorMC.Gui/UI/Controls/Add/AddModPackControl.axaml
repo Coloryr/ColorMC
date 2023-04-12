@@ -116,7 +116,7 @@
 
         <DockPanel
             Name="Grid1"
-            Background="{setting:Colors TranBack}"
+            Background="{setting:Colors TopBottom}"
             IsVisible="False">
             <StackPanel
                 Margin="0,3,0,3"

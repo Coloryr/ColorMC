@@ -4,7 +4,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -72,10 +71,10 @@ public static class ConfigBinding
     public static void ResetColor()
     {
         SetColor(
-            ColorSel.MainColorStr, 
-            ColorSel.BackLigthColorStr, 
+            ColorSel.MainColorStr,
+            ColorSel.BackLigthColorStr,
             ColorSel.Back1LigthColorStr,
-            ColorSel.ButtonLightFontStr, 
+            ColorSel.ButtonLightFontStr,
             ColorSel.FontLigthColorStr,
             ColorSel.BackDarkColorStr,
             ColorSel.Back1DarkColorStr,

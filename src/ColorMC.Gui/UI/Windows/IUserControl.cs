@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
 

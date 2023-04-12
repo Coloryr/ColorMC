@@ -179,7 +179,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
             var grid = new Grid
             {
                 IsVisible = false,
-                Background = ColorSel.BottomTranColor
+                Background = ColorSel.TopBottomColor
             };
             List.Add(button);
             grid.Children.Add(con);

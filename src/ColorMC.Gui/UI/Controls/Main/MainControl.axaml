@@ -19,7 +19,7 @@
                 <ScrollViewer Name="ScrollViewer1">
                     <StackPanel Name="GameGroups" />
                 </ScrollViewer>
-                <Grid Name="Grid3" Background="#AAEEEEEE">
+                <Grid Name="Grid3" Background="{setting:Colors TopBottom}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Label
                             HorizontalAlignment="Center"
@@ -38,7 +38,7 @@
 
         <Grid
             Name="Grid2"
-            Background="#EEEEEEEE"
+            Background="{setting:Colors TopBottom}"
             IsVisible="False">
             <Label
                 Name="Label1"

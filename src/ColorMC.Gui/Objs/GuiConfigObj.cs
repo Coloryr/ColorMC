@@ -78,7 +78,7 @@ public record GuiConfigObj
 
     public ColorType ColorType { get; set; }
     public string ColorMain { get; set; }
-    
+
     public ColorSetting ColorLight { get; set; }
     public ColorSetting ColorDark { get; set; }
 

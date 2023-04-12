@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Platform;
 using AvaloniaEdit.Indentation.CSharp;
 using AvaloniaEdit.TextMate;
 using ColorMC.Core.LaunchPath;
@@ -12,7 +13,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using TextMateSharp.Grammars;
-using Avalonia.Platform;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -109,7 +109,7 @@ public partial class Tab3Control : UserControl
 
     private void Load()
     {
-        registryOptions = new RegistryOptions(App.NowTheme == PlatformThemeVariant.Light 
+        registryOptions = new RegistryOptions(App.NowTheme == PlatformThemeVariant.Light
             ? ThemeName.LightPlus : ThemeName.DarkPlus);
         textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
 

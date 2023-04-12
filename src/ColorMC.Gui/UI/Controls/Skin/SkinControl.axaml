@@ -37,10 +37,11 @@
                 VerticalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
-                Background="#EEEEEE"
-                Content=""
+                Background="{setting:Colors Bottom1}"
+                Content="123"
                 FontSize="20"
-                IsVisible="False" />
+                Foreground="{setting:Colors Font}"
+                IsVisible="True" />
         </Grid>
 
         <Grid Grid.Column="1">

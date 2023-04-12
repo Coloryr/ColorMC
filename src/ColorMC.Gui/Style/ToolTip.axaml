@@ -1,0 +1,23 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel Spacing="20">
+                <ToolTip Opacity="1">Text Content</ToolTip>
+                <ToolTip Opacity="1">Very long text content which should exceed the maximum with of the tooltip and wrap.</ToolTip>
+                <ToolTip Opacity="1">
+                    <StackPanel>
+                        <TextBlock>Multi-line</TextBlock>
+                        <TextBlock>Control Content</TextBlock>
+                    </StackPanel>
+                </ToolTip>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="ToolTip">
+        <Setter Property="Background" Value="{setting:Colors Back}" />
+    </Style>
+</Styles>

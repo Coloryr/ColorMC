@@ -53,11 +53,11 @@ public enum ColorType
     /// <summary>
     /// 跟随系统
     /// </summary>
-    Auto, 
+    Auto,
     /// <summary>
     /// 亮色
     /// </summary>
-    Light, 
+    Light,
     /// <summary>
     /// 暗色
     /// </summary>

@@ -25,7 +25,7 @@
                 Margin="-15"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                Background="#EEEEEEEE"
+                Background="{setting:Colors TopBottom}"
                 IsVisible="False">
                 <Label
                     HorizontalAlignment="Center"

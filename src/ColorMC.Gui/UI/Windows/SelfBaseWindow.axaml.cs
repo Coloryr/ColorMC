@@ -7,7 +7,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.Utils.LaunchSetting;
-using Avalonia.Platform;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -182,7 +181,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         App.Update(this, Image_Back);
 
         Grid1.Background = GuiConfigUtils.Config.WindowTran ?
-                Brushes.Transparent : ColorSel.BottomColor;
+                ColorSel.BottomTranColor : ColorSel.BottomColor;
 
         Main?.Update();
     }

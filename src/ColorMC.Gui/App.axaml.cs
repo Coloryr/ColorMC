@@ -675,7 +675,7 @@ public partial class App : Application
                     }
                     else
                     {
-                        image.Opacity = 100;
+                        image.Opacity = 1.0;
                     }
                     image.IsVisible = true;
                 }
@@ -703,7 +703,7 @@ public partial class App : Application
                 {
                     case ColorType.Auto:
                         window.RequestedThemeVariant =
-                            (PlatformSettings.GetColorValues().ThemeVariant) == 
+                            PlatformSettings.GetColorValues().ThemeVariant ==
                             PlatformThemeVariant.Light ? ThemeVariant.Light : ThemeVariant.Dark;
                         break;
                     case ColorType.Light:

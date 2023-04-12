@@ -56,7 +56,7 @@
     </Style>
 
     <Style Selector="TabItem:pointerover /template/ Label#PART_ContentPresenter">
-        <Setter Property="Foreground" Value="#FF606060" />
+        <Setter Property="Foreground" Value="#FF909090" />
     </Style>
 
     <Style Selector="TabItem:selected /template/ Border#select_pipe">
