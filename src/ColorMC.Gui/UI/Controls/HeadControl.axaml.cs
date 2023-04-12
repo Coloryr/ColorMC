@@ -72,15 +72,6 @@ public partial class HeadControl : UserControl
         Button_Min.Click += ButtonMin_Click;
         Button_Max.Click += ButtonMax_Click;
         Button_Close.Click += ButtonClose_Click;
-
-        App.PicUpdate += Update;
-
-        Update();
-    }
-
-    private void Update()
-    {
-        //Border1.CornerRadius = App.GetCornerRadius();
     }
 
     private void ButtonClose_Click(object? sender, RoutedEventArgs e)

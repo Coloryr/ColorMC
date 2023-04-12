@@ -4,6 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -53,21 +54,34 @@ public static class ConfigBinding
         ColorSel.Instance.Load();
     }
 
-    public static void SetColor(string main, string back, string back1, string font1, string font2)
+    public static void SetColor(string main, string back, string back1, string font1, string font2, string back2, string back3, string font3, string font4)
     {
         GuiConfigUtils.Config.ColorMain = main;
-        GuiConfigUtils.Config.ColorBack = back;
-        GuiConfigUtils.Config.ColorTranBack = back1;
-        GuiConfigUtils.Config.ColorFont1 = font1;
-        GuiConfigUtils.Config.ColorFont2 = font2;
+        GuiConfigUtils.Config.ColorLight.ColorBack = back;
+        GuiConfigUtils.Config.ColorLight.ColorTranBack = back1;
+        GuiConfigUtils.Config.ColorLight.ColorFont1 = font1;
+        GuiConfigUtils.Config.ColorLight.ColorFont2 = font2;
+        GuiConfigUtils.Config.ColorDark.ColorBack = back2;
+        GuiConfigUtils.Config.ColorDark.ColorTranBack = back3;
+        GuiConfigUtils.Config.ColorDark.ColorFont1 = font3;
+        GuiConfigUtils.Config.ColorDark.ColorFont2 = font4;
         GuiConfigUtils.Save();
         ColorSel.Instance.Load();
     }
 
     public static void ResetColor()
     {
-        SetColor(ColorSel.MainColorStr, ColorSel.BackColorStr, ColorSel.Back1ColorStr,
-            ColorSel.ButtonFontStr, ColorSel.FontColorStr);
+        SetColor(
+            ColorSel.MainColorStr, 
+            ColorSel.BackLigthColorStr, 
+            ColorSel.Back1LigthColorStr,
+            ColorSel.ButtonLightFontStr, 
+            ColorSel.FontLigthColorStr,
+            ColorSel.BackDarkColorStr,
+            ColorSel.Back1DarkColorStr,
+            ColorSel.ButtonDarkFontStr,
+            ColorSel.FontDarkColorStr
+        );
     }
 
     public static void DeleteGuiImageConfig()
@@ -202,5 +216,15 @@ public static class ConfigBinding
         ConfigUtils.Save();
 
         LanguageHelper.Change(type);
+    }
+
+    public static void SetColorType(ColorType type)
+    {
+        GuiConfigUtils.Config.ColorType = type;
+        GuiConfigUtils.Save();
+
+        App.ColorChange();
+        ColorSel.Instance.Load();
+        App.OnPicUpdate();
     }
 }

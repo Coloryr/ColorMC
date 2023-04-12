@@ -73,7 +73,7 @@
         </DockPanel>
         <Grid
             Name="Grid2"
-            Background="#EEEEEEEE"
+            Background="{setting:Colors TranBack}"
             IsVisible="False">
             <Label
                 HorizontalAlignment="Center"

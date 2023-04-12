@@ -1,0 +1,34 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <DataGrid
+                Name="DataGrid1"
+                AutoGenerateColumns="False"
+                CanUserSortColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="123"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Arch}"
+                        Header="456"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Os}"
+                        Header="789"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="DataGridColumnHeader">
+        <Setter Property="Background" Value="{setting:Colors TranBack}" />
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
+    </Style>
+</Styles>

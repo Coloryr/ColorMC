@@ -184,9 +184,35 @@
 
             <!--  颜色设置  -->
             <Label Content="{setting:Localize SettingWindow.Tab2.Text7}" />
-            <StackPanel Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text8}" />
+
+            <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                <RadioButton
+                    Name="RadioButton1"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab2.Text26}"
+                    GroupName="Group1" />
+                <RadioButton
+                    Name="RadioButton2"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab2.Text27}"
+                    GroupName="Group1" />
+                <RadioButton
+                    Name="RadioButton3"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab2.Text28}"
+                    GroupName="Group1" />
+                <Label
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab2.Text8}" />
                 <ColorPicker Name="ColorPicker1" />
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text27}" />
                 <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
                 <ColorPicker Name="ColorPicker2" />
                 <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text11}" />
@@ -195,8 +221,21 @@
                 <ColorPicker Name="ColorPicker4" />
                 <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text17}" />
                 <ColorPicker Name="ColorPicker5" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text28}" />
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text10}" />
+                <ColorPicker Name="ColorPicker6" />
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text11}" />
+                <ColorPicker Name="ColorPicker7" />
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text16}" />
+                <ColorPicker Name="ColorPicker8" />
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text17}" />
+                <ColorPicker Name="ColorPicker9" />
 
             </StackPanel>
+
             <StackPanel
                 Margin="5"
                 HorizontalAlignment="Right"

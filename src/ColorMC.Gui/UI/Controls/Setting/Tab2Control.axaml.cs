@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System.Collections.ObjectModel;
@@ -44,6 +45,10 @@ public partial class Tab2Control : UserControl
 
         ListBox1.SelectionChanged += ListBox1_SelectionChanged;
 
+        RadioButton1.IsCheckedChanged += RadioButton1_IsCheckedChanged;
+        RadioButton2.IsCheckedChanged += RadioButton2_IsCheckedChanged;
+        RadioButton3.IsCheckedChanged += RadioButton3_IsCheckedChanged;
+
         CheckBox1.Click += CheckBox1_Click;
         CheckBox2.Click += CheckBox2_Click;
         CheckBox3.Click += CheckBox3_Click;
@@ -72,6 +77,40 @@ public partial class Tab2Control : UserControl
 
         Slider5.PropertyChanged += Slider5_PropertyChanged;
     }
+
+    private void RadioButton3_IsCheckedChanged(object? sender, RoutedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (RadioButton3.IsChecked == true)
+        {
+            ConfigBinding.SetColorType(ColorType.Dark);
+        }
+    }
+
+    private void RadioButton2_IsCheckedChanged(object? sender, RoutedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (RadioButton2.IsChecked == true)
+        {
+            ConfigBinding.SetColorType(ColorType.Light);
+        }
+    }
+
+    private void RadioButton1_IsCheckedChanged(object? sender, RoutedEventArgs e)
+    {
+        if (load)
+            return;
+
+        if (RadioButton1.IsChecked == true)
+        {
+            ConfigBinding.SetColorType(ColorType.Auto);
+        }
+    }
+
 
     private void ListBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -134,7 +173,9 @@ public partial class Tab2Control : UserControl
 
         ConfigBinding.SetColor(ColorPicker1.Color.ToString(),
             ColorPicker2.Color.ToString(), ColorPicker3.Color.ToString(),
-            ColorPicker4.Color.ToString(), ColorPicker5.Color.ToString());
+            ColorPicker4.Color.ToString(), ColorPicker5.Color.ToString(),
+            ColorPicker6.Color.ToString(), ColorPicker7.Color.ToString(),
+            ColorPicker8.Color.ToString(), ColorPicker9.Color.ToString());
     }
 
     private void ComboBox2_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -190,10 +231,14 @@ public partial class Tab2Control : UserControl
         load = true;
         ConfigBinding.ResetColor();
         ColorPicker1.Color = ColorSel.MainColor.ToColor();
-        ColorPicker2.Color = ColorSel.BackColor.ToColor();
-        ColorPicker3.Color = ColorSel.Back1Color.ToColor();
-        ColorPicker4.Color = ColorSel.ButtonFont.ToColor();
-        ColorPicker5.Color = ColorSel.FontColor.ToColor();
+        ColorPicker2.Color = Color.Parse(ColorSel.BackLigthColorStr);
+        ColorPicker3.Color = Color.Parse(ColorSel.Back1LigthColorStr);
+        ColorPicker4.Color = Color.Parse(ColorSel.ButtonLightFontStr);
+        ColorPicker5.Color = Color.Parse(ColorSel.FontLigthColorStr);
+        ColorPicker6.Color = Color.Parse(ColorSel.BackDarkColorStr);
+        ColorPicker7.Color = Color.Parse(ColorSel.Back1DarkColorStr);
+        ColorPicker8.Color = Color.Parse(ColorSel.ButtonDarkFontStr);
+        ColorPicker9.Color = Color.Parse(ColorSel.FontDarkColorStr);
         load = false;
         window.Info2.Show(App.GetLanguage("SettingWindow.Tab2.Info4"));
     }
@@ -251,11 +296,27 @@ public partial class Tab2Control : UserControl
             ListBox1.SelectedItem = item;
             DropDownButton1.Content = item;
 
-            ColorPicker1.Color = ColorSel.MainColor.ToColor();
-            ColorPicker2.Color = ColorSel.BackColor.ToColor();
-            ColorPicker3.Color = ColorSel.Back1Color.ToColor();
-            ColorPicker4.Color = ColorSel.ButtonFont.ToColor();
-            ColorPicker5.Color = ColorSel.FontColor.ToColor();
+            switch (config.Item2.ColorType)
+            {
+                case ColorType.Auto:
+                    RadioButton1.IsChecked = true;
+                    break;
+                case ColorType.Light:
+                    RadioButton2.IsChecked = true;
+                    break;
+                case ColorType.Dark:
+                    RadioButton3.IsChecked = true;
+                    break;
+            }
+            ColorPicker1.Color = Color.Parse(config.Item2.ColorMain);
+            ColorPicker2.Color = Color.Parse(config.Item2.ColorLight.ColorBack);
+            ColorPicker3.Color = Color.Parse(config.Item2.ColorLight.ColorTranBack);
+            ColorPicker4.Color = Color.Parse(config.Item2.ColorLight.ColorFont1);
+            ColorPicker5.Color = Color.Parse(config.Item2.ColorLight.ColorFont2);
+            ColorPicker6.Color = Color.Parse(config.Item2.ColorDark.ColorBack);
+            ColorPicker7.Color = Color.Parse(config.Item2.ColorDark.ColorTranBack);
+            ColorPicker8.Color = Color.Parse(config.Item2.ColorDark.ColorFont1);
+            ColorPicker9.Color = Color.Parse(config.Item2.ColorDark.ColorFont2);
             CheckBox2.IsChecked = config.Item2.RGB;
             CheckBox3.IsChecked = config.Item2.FontDefault;
             CheckBox5.IsChecked = config.Item2.WindowMode;

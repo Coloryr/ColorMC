@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using TextMateSharp.Grammars;
+using Avalonia.Platform;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -36,9 +37,6 @@ public partial class Tab3Control : UserControl
         TextEditor1.Options.ShowBoxForControlCharacters = true;
         TextEditor1.TextArea.IndentationStrategy =
             new CSharpIndentationStrategy(TextEditor1.Options);
-
-        registryOptions = new RegistryOptions(ThemeName.LightPlus);
-        textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
 
         TextBox1.PropertyChanged += TextBox1_TextInput;
     }
@@ -111,6 +109,10 @@ public partial class Tab3Control : UserControl
 
     private void Load()
     {
+        registryOptions = new RegistryOptions(App.NowTheme == PlatformThemeVariant.Light 
+            ? ThemeName.LightPlus : ThemeName.DarkPlus);
+        textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
+
         Items.Clear();
         var list = GameBinding.GetAllConfig(Obj);
         Items.AddRange(list);

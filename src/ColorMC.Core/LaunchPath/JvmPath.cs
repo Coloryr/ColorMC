@@ -23,6 +23,16 @@ public static class JvmPath
         Directory.CreateDirectory(dir + Name1);
     }
 
+    public static string GetPath(this JavaInfo info)
+    {
+        if (info.Path.StartsWith(Name1))
+        {
+            return Path.GetFullPath(BaseDir + Name1 + "/" + info.Path);
+        }
+
+        return info.Path;
+    }
+
     /// <summary>
     /// 安装Java
     /// </summary>
@@ -113,7 +123,7 @@ public static class JvmPath
     /// <returns></returns>
     private static async Task<(bool, string?)> UnzipJava(string name, string file)
     {
-        string path = BaseDir + Name1 + "/" + name;
+        string path = BaseDir + Name1 + name;
         Directory.CreateDirectory(path);
 
         await Task.Run(() => ZipUtils.Unzip(path, file));
@@ -131,11 +141,6 @@ public static class JvmPath
             Per(java);
         }
 
-        if (java.StartsWith(ColorMCCore.BaseDir))
-        {
-            return AddItem(name, Path.GetRelativePath(ColorMCCore.BaseDir, java));
-        }
-
         return AddItem(name, java);
     }
 
@@ -147,6 +152,11 @@ public static class JvmPath
     /// <returns>结果</returns>
     public static (bool Res, string Msg) AddItem(string name, string local)
     {
+        if (local.StartsWith(BaseDir))
+        {
+            local = local[BaseDir.Length..];
+        }
+
         Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info5"), local));
 
         Jvms.Remove(name);
@@ -231,7 +241,8 @@ public static class JvmPath
         Jvms.Clear();
         list.ForEach(a =>
         {
-            var info = GetJavaInfo(Path.GetFullPath(a.Local));
+            var path = a.Local;
+            var info = GetJavaInfo(path);
             Jvms.Remove(a.Name);
             if (info != null)
             {
@@ -311,14 +322,19 @@ public static class JvmPath
     {
         try
         {
+            var local = "";
             if (path.StartsWith(Name1))
             {
-                path = BaseDir + path;
+                local = Path.GetFullPath(BaseDir + path);
             }
-            if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+            else
+            {
+                local = path;
+            }
+            if (!string.IsNullOrWhiteSpace(local) && File.Exists(local))
             {
                 Process p = new();
-                p.StartInfo.FileName = path;
+                p.StartInfo.FileName = local;
                 p.StartInfo.Arguments = "-version";
                 p.StartInfo.RedirectStandardError = true;
                 p.StartInfo.UseShellExecute = false;

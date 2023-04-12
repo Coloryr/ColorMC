@@ -94,20 +94,29 @@
                 </StackPanel>
             </StackPanel>
 
-            <ScrollViewer
-                Name="ScrollViewer1"
-                Margin="3,0,3,3"
-                VerticalScrollBarVisibility="Visible">
-                <StackPanel
-                    Name="ListBox_Items"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch" />
-            </ScrollViewer>
+            <Grid Margin="3">
+                <DockPanel
+                    Name="Grid3"
+                    Background="{setting:Colors TranBack}"
+                    IsVisible="True">
+                    <Label
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize AddModPackWindow.Text13}"
+                        FontSize="30" />
+                </DockPanel>
+                <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
+                    <StackPanel
+                        Name="ListBox_Items"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch" />
+                </ScrollViewer>
+            </Grid>
         </DockPanel>
 
         <DockPanel
             Name="Grid1"
-            Background="#EEEEEEEE"
+            Background="{setting:Colors TranBack}"
             IsVisible="False">
             <StackPanel
                 Margin="0,3,0,3"

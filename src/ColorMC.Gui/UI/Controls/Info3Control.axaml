@@ -11,15 +11,14 @@
     <Grid>
         <Border
             Name="Border1"
-            Background="#EEEEEEEE"
-            CornerRadius="0,0,10,10" />
+            Background="{setting:Colors TranBack}" />
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBox
                 Name="TextBox_Text"
                 MinWidth="400"
                 Classes="input1"
                 FontSize="20"
-                Foreground="Black"
+                Foreground="{setting:Colors Font}"
                 IsReadOnly="True"
                 Text="1234测试"
                 TextAlignment="Center"
@@ -30,7 +29,7 @@
                 Margin="0,20,0,0"
                 Classes="input1"
                 FontSize="20"
-                Foreground="Black"
+                Foreground="{setting:Colors Font}"
                 IsReadOnly="True"
                 Text="1234"
                 TextAlignment="Center"

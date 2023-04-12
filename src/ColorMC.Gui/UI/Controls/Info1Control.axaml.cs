@@ -16,15 +16,6 @@ public partial class Info1Control : UserControl
         InitializeComponent();
 
         Button_Cancel.Click += Cancel_Click;
-
-        App.PicUpdate += Update;
-
-        Update();
-    }
-
-    private void Update()
-    {
-        Border1.CornerRadius = App.GetCornerRadius1();
     }
 
     private void Cancel_Click(object? sender, RoutedEventArgs e)

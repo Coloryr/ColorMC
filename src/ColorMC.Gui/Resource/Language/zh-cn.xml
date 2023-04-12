@@ -20,8 +20,8 @@
 	<String Key="MainWindow.Flyouts.Text8">设置图标</String>
 	<String Key="MainWindow.Flyouts.Text9">导出实例</String>
 	<String Key="MainWindow.Flyouts.Text10">重命名</String>
-	<String Key="MainWindow.Flyouts.Text11">复制实例</String>
-	<String Key="MainWindow.Flyouts.Text12">删除实例</String>
+	<String Key="MainWindow.Flyouts.Text11">删除实例</String>
+	<String Key="MainWindow.Flyouts.Text12">复制实例</String>
 	<String Key="MainWindow.Flyouts.Text13">强行停止</String>
 	<String Key="MainWindow.Control.Text1">查看皮肤</String>
 	<String Key="MainWindow.Control.Text2">添加实例</String>
@@ -67,6 +67,7 @@
 	<String Key="MainWindow.Info34">游戏正在启动中，是否关闭启动器</String>
 	<String Key="MainWindow.Info35">空账户</String>
 	<String Key="MainWindow.Info36">没有用户</String>
+	<String Key="MainWindow.Info37">有部分文件删除失败</String>
 
 	<String Key="UserWindow.Title">ColorMC 用户列表</String>
 	<String Key="UserWindow.DataGrid.Text1">使用</String>
@@ -145,6 +146,9 @@
 	<String Key="SettingWindow.Tab2.Text23">注意：切换后需要重启</String>
 	<String Key="SettingWindow.Tab2.Text24">调整背景图大小为原始分辨率的</String>
 	<String Key="SettingWindow.Tab2.Text25">(样例Sample)</String>
+	<String Key="SettingWindow.Tab2.Text26">跟随系统</String>
+	<String Key="SettingWindow.Tab2.Text27">亮色</String>
+	<String Key="SettingWindow.Tab2.Text28">暗色</String>
 	<String Key="SettingWindow.Tab2.Info1">正在切换语言</String>
 	<String Key="SettingWindow.Tab2.Info2">正在设置</String>
 	<String Key="SettingWindow.Tab2.Info3">选择图片文件</String>
@@ -575,6 +579,7 @@
 	<String Key="AddModPackWindow.Text10">获取版本</String>
 	<String Key="AddModPackWindow.Text11">下载源</String>
 	<String Key="AddModPackWindow.Text12">下载所选</String>
+	<String Key="AddModPackWindow.Text13">没有资源</String>
 	<String Key="AddModPackWindow.DataGrid.Text1">名字</String>
 	<String Key="AddModPackWindow.DataGrid.Text2">大小</String>
 	<String Key="AddModPackWindow.DataGrid.Text3">下载次数</String>

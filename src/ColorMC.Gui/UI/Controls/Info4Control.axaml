@@ -11,14 +11,13 @@
     <Grid>
         <Border
             Name="Border1"
-            Background="#EEEEEEEE"
-            CornerRadius="0,0,10,10" />
+            Background="{setting:Colors TranBack}" />
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock
                 Name="TextBlock_Text"
                 HorizontalAlignment="Center"
                 FontSize="20"
-                Foreground="Black"
+                Foreground="{setting:Colors Font}"
                 Text="测试"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />

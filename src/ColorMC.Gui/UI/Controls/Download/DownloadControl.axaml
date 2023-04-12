@@ -14,8 +14,10 @@
             <Label Content="{setting:Localize DownloadWindow.Text3}" />
             <Label
                 Name="Label3"
+                MinWidth="80"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
+                HorizontalContentAlignment="Right"
                 Content="0Mb/s"
                 DockPanel.Dock="Right" />
             <Label

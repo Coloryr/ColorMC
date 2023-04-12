@@ -169,14 +169,15 @@ public static partial class UIUtils
             var item1 = grid.FindToEnd<DataGridColumnHeadersPresenter>();
             if (item1 != null)
             {
-                item1.Background = Brush.Parse("#CCffffff");
+                //item1.Background = Brush.Parse("#CCffffff");
                 foreach (var item in item1.GetVisualChildren())
                 {
                     var item2 = item.FindToEnd<TextBlock>();
-                    if (item2 != null)
+                    item2?.Bind(TextBlock.ForegroundProperty, new Binding
                     {
-                        item2.Foreground = Brushes.Black;
-                    }
+                        Source = ColorSel.Instance,
+                        Path = "[Font]"
+                    });
                 }
             }
         }
@@ -494,6 +495,16 @@ public static class GuiConfigUtils
 
                 Save();
             }
+
+            if (Config.ColorLight == null)
+            {
+                Config.ColorLight = MakeColorLightConfig();
+            }
+
+            if (Config.ColorDark == null)
+            {
+                Config.ColorDark = MakeColorDarkConfig();
+            }
         }
         else
         {
@@ -545,17 +556,37 @@ public static class GuiConfigUtils
         return new()
         {
             Version = ColorMCCore.Version,
-            ColorMain = "#FF5ABED6",
-            ColorBack = "#FFF4F4F5",
-            ColorTranBack = "#88FFFFFF",
+            ColorMain = ColorSel.MainColorStr,
+            ColorLight = MakeColorLightConfig(),
+            ColorDark = MakeColorDarkConfig(),
             RGBS = 100,
             RGBV = 100,
-            ColorFont1 = "#FFFFFFFF",
-            ColorFont2 = "#FF000000",
             ServerCustom = MakeServerCustomConfig(),
             FontDefault = true,
             Render = MakeRenderConfig(),
             BackLimitValue = 50
+        };
+    }
+
+    public static ColorSetting MakeColorLightConfig()
+    {
+        return new()
+        {
+            ColorBack = ColorSel.BackLigthColorStr,
+            ColorTranBack = ColorSel.Back1LigthColorStr,
+            ColorFont1 = ColorSel.ButtonLightFontStr,
+            ColorFont2 = ColorSel.FontLigthColorStr,
+        };
+    }
+
+    public static ColorSetting MakeColorDarkConfig()
+    {
+        return new()
+        {
+            ColorBack = ColorSel.BackDarkColorStr,
+            ColorTranBack = ColorSel.Back1DarkColorStr,
+            ColorFont1 = ColorSel.ButtonDarkFontStr,
+            ColorFont2 = ColorSel.FontDarkColorStr,
         };
     }
 

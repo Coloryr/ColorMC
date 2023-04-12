@@ -111,12 +111,12 @@
             <Grid Margin="3">
                 <DockPanel
                     Name="Grid3"
-                    Background="#EEEEEEEE"
+                    Background="{setting:Colors TranBack}"
                     IsVisible="True">
                     <Label
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Content="没有资源"
+                        Content="{setting:Localize AddModPackWindow.Text13}"
                         FontSize="30" />
                 </DockPanel>
                 <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
@@ -130,7 +130,7 @@
 
         <DockPanel
             Name="Grid1"
-            Background="#EEEEEEEE"
+            Background="{setting:Colors TranBack}"
             IsVisible="False">
             <StackPanel
                 Margin="0,3,0,3"
@@ -214,7 +214,7 @@
 
         <DockPanel
             Name="Grid2"
-            Background="#EEEEEEEE"
+            Background="{setting:Colors TranBack}"
             IsVisible="False">
             <StackPanel
                 Margin="0,3,0,3"

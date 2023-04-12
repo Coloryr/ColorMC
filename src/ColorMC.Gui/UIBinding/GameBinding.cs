@@ -1021,13 +1021,15 @@ public static class GameBinding
         return list;
     }
 
-    public static async Task DeleteGame(GameSettingObj obj)
+    public static async Task<bool> DeleteGame(GameSettingObj obj)
     {
         App.CloseGameWindow(obj);
-        await obj.Remove();
+        var res = await obj.Remove();
 
         App.MainWindow?.IsDelete();
         App.MainWindow?.Load();
+
+        return res;
     }
 
     public static GameSettingObj? GetGame(string? name)

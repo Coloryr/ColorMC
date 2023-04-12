@@ -57,7 +57,7 @@
             Background="{setting:Colors TranBack}"
             FontSize="14"
             FontWeight="Normal"
-            Foreground="Black"
+            Foreground="{setting:Colors Font}"
             HorizontalScrollBarVisibility="Auto"
             ShowLineNumbers="True"
             VerticalScrollBarVisibility="Visible"

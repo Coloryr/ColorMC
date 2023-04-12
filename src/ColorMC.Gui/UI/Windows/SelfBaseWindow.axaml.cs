@@ -1,11 +1,13 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.Utils.LaunchSetting;
+using Avalonia.Platform;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;
@@ -69,12 +71,24 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Update();
     }
 
-    private async void SelfBaseWindow_Closing(object? sender, WindowClosingEventArgs e)
+    bool SetClose = false;
+
+    private void SelfBaseWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
-        if (Main == null)
+        if (Main == null || SetClose == true)
             return;
 
-        await Main.Closing(e);
+        e.Cancel = true;
+
+        Dispatcher.UIThread.Post(async () =>
+        {
+            var res = await Main.Closing();
+            if (!res)
+            {
+                SetClose = true;
+                Close();
+            }
+        });
     }
 
     public void SetTitle(string temp)
@@ -168,7 +182,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         App.Update(this, Image_Back);
 
         Grid1.Background = GuiConfigUtils.Config.WindowTran ?
-            Brushes.Transparent : ColorSel.AppBackColor;
+                Brushes.Transparent : ColorSel.BottomColor;
 
         Main?.Update();
     }

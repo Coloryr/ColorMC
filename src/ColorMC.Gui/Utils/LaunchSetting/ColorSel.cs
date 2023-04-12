@@ -1,6 +1,9 @@
-﻿using Avalonia.Media;
+﻿using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using Avalonia.Styling;
 using Avalonia.Threading;
+using Avalonia.Platform;
 using ColorMC.Core;
 using System;
 using System.ComponentModel;
@@ -10,23 +13,36 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 
 public class ColorSel : INotifyPropertyChanged
 {
-    public static readonly IBrush AppBackColor = Brush.Parse("#FFFFFFFF");
-    public static readonly IBrush AppBackColor1 = Brush.Parse("#11FFFFFF");
-    public static readonly IBrush AppBackColor2 = Brush.Parse("#EEEEEEEE");
+    private static readonly IBrush AppLightBackColor = Brush.Parse("#FFFFFFFF");
+    private static readonly IBrush AppLightBackColor2 = Brush.Parse("#EEEEEEEE");
+    private static readonly IBrush AppLightBackColor3 = Brush.Parse("#EEEEEE");
+
+    private static readonly IBrush AppDarkBackColor = Brush.Parse("#FF202020");
+    private static readonly IBrush AppDarkBackColor2 = Brush.Parse("#EE111111");
+    private static readonly IBrush AppDarkBackColor3 = Brush.Parse("#222222");
 
     public const string MainColorStr = "#FF5ABED6";
-    public const string BackColorStr = "#FFF4F4F5";
-    public const string Back1ColorStr = "#88FFFFFF";
-    public const string ButtonFontStr = "#FFFFFFFF";
-    public const string FontColorStr = "#FF000000";
+
+    public const string BackLigthColorStr = "#FFF4F4F5";
+    public const string Back1LigthColorStr = "#88FFFFFF";
+    public const string ButtonLightFontStr = "#FFFFFFFF";
+    public const string FontLigthColorStr = "#FF000000";
+
+    public const string BackDarkColorStr = "#FF0B0B0A";
+    public const string Back1DarkColorStr = "#DD202020";
+    public const string ButtonDarkFontStr = "#FF202020";
+    public const string FontDarkColorStr = "#FFe9e9e9";
 
     public static IBrush MainColor { get; private set; } = Brush.Parse(MainColorStr);
-    public static IBrush BackColor { get; private set; } = Brush.Parse(BackColorStr);
-    public static IBrush Back1Color { get; private set; } = Brush.Parse(Back1ColorStr);
-    public static IBrush ButtonFont { get; private set; } = Brush.Parse(ButtonFontStr);
-    public static IBrush FontColor { get; private set; } = Brush.Parse(FontColorStr);
+    public static IBrush BackColor { get; private set; } = Brush.Parse(BackLigthColorStr);
+    public static IBrush Back1Color { get; private set; } = Brush.Parse(Back1LigthColorStr);
+    public static IBrush ButtonFont { get; private set; } = Brush.Parse(ButtonLightFontStr);
+    public static IBrush FontColor { get; private set; } = Brush.Parse(FontLigthColorStr);
     public static IBrush MotdColor { get; private set; } = Brush.Parse("#FFFFFFFF");
     public static IBrush MotdBackColor { get; private set; } = Brush.Parse("#FF000000");
+    public static IBrush BottomColor { get; private set; } = AppLightBackColor;
+    public static IBrush BottomTranColor { get; private set; } = AppLightBackColor2;
+    public static IBrush BottomColor1 { get; private set; } = AppLightBackColor3;
 
     public static ColorSel Instance { get; set; } = new ColorSel();
 
@@ -45,13 +61,26 @@ public class ColorSel : INotifyPropertyChanged
             {
                 DisableRGB();
                 MainColor = Brush.Parse(GuiConfigUtils.Config.ColorMain);
-                BackColor = Brush.Parse(GuiConfigUtils.Config.ColorBack);
-                Back1Color = Brush.Parse(GuiConfigUtils.Config.ColorTranBack);
-                ButtonFont = Brush.Parse(GuiConfigUtils.Config.ColorFont1);
-                FontColor = Brush.Parse(GuiConfigUtils.Config.ColorFont2);
+
+                var config = App.NowTheme == PlatformThemeVariant.Light ? 
+                    GuiConfigUtils.Config.ColorLight : GuiConfigUtils.Config.ColorDark;
+
+                BackColor = Brush.Parse(config.ColorBack);
+                Back1Color = Brush.Parse(config.ColorTranBack);
+                ButtonFont = Brush.Parse(config.ColorFont1);
+                FontColor = Brush.Parse(config.ColorFont2);
 
                 MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
                 MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
+
+                BottomColor = App.NowTheme == PlatformThemeVariant.Light
+                    ? AppLightBackColor : AppDarkBackColor;
+
+                BottomTranColor = App.NowTheme == PlatformThemeVariant.Light 
+                    ? AppLightBackColor2 : AppDarkBackColor2;
+
+                BottomColor1 = App.NowTheme == PlatformThemeVariant.Light
+                    ? AppLightBackColor3 : AppDarkBackColor3;
 
                 Reload();
             }
@@ -155,6 +184,10 @@ public class ColorSel : INotifyPropertyChanged
                 return MotdColor;
             else if (key == "MotdBack")
                 return MotdBackColor;
+            else if (key == "Bottom")
+                return BottomColor;
+            else if (key == "Bottom1")
+                return BottomColor1;
 
             return Brushes.White;
         }

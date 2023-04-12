@@ -1058,7 +1058,7 @@ public static class Launch
             ColorMCCore.GameLog?.Invoke(obj, item);
         }
 
-        string path = obj.JvmLocal;
+        var path = obj.JvmLocal;
         if (string.IsNullOrWhiteSpace(path))
         {
             JavaInfo? jvm = JvmPath.GetInfo(obj.JvmName) ?? FindJava(obj);
@@ -1069,7 +1069,7 @@ public static class Launch
                 return null;
             }
 
-            path = jvm.Path;
+            path = jvm.GetPath();
         }
 
         ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info3"));

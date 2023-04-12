@@ -93,9 +93,9 @@
             Margin="0,5,5,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Background="#EEEEEE"
+            Background="{setting:Colors Bottom1}"
             Content="{setting:Localize AddWindow.Control.Text2}"
-            Foreground="Black"
+            Foreground="{setting:Colors Font}"
             IsVisible="True" />
     </Grid>
 </UserControl>

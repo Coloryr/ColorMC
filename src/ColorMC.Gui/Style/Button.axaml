@@ -20,12 +20,11 @@
 
     <Style Selector="Button">
         <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
-        <Setter Property="BorderBrush" Value="White" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
                     x:Name="Border"
-                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderBrush="{setting:Colors Bottom}"
                     BorderThickness="1"
                     CornerRadius="3">
                     <TextBlock
@@ -38,7 +37,7 @@
             </ControlTemplate>
         </Setter>
     </Style>
- 
+
     <Style Selector="Button:pressed">
         <Setter Property="RenderTransform" Value="scale(0.95)" />
     </Style>

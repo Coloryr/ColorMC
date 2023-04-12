@@ -2,7 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using ColorMC.Gui.Utils.LaunchSetting;
 using System;
+using Avalonia.Platform;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,8 +12,6 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class Info2Control : UserControl
 {
-    private readonly static IBrush Back1 = Brush.Parse("#FFFFFF");
-
     public Info2Control()
     {
         InitializeComponent();
@@ -21,7 +21,7 @@ public partial class Info2Control : UserControl
     {
         var grid = new Grid()
         {
-            Background = Utils.LaunchSetting.ColorSel.MainColor,
+            Background = ColorSel.MainColor,
             Margin = new Thickness(0, 0, 0, 60),
             VerticalAlignment = VerticalAlignment.Bottom,
             HorizontalAlignment = HorizontalAlignment.Center
@@ -30,9 +30,9 @@ public partial class Info2Control : UserControl
         {
             Margin = new Thickness(2),
             Padding = new Thickness(5, 0, 5, 0),
-            Background = Back1,
+            Background = ColorSel.BottomColor,
             FontSize = 20,
-            Foreground = Brushes.Black,
+            Foreground = ColorSel.FontColor,
             Text = title
         };
         grid.Children.Add(text);

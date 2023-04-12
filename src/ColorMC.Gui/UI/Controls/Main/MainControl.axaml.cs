@@ -579,15 +579,22 @@ public partial class MainControl : UserControl, IUserControl
         }
     }
 
-    public async void DeleteGame(GameSettingObj obj)
+    public async void DeleteGame(GameSettingObj obj, bool force)
     {
         var window = App.FindRoot(VisualRoot);
-        var res = await window.Info.ShowWait(
-            string.Format(App.GetLanguage("MainWindow.Info19"), obj.Name));
-        if (!res)
-            return;
+        if (!force)
+        {
+            var res = await window.Info.ShowWait(
+                string.Format(App.GetLanguage("MainWindow.Info19"), obj.Name));
+            if (!res)
+                return;
+        }
 
-        await GameBinding.DeleteGame(obj);
+        var res1 = await GameBinding.DeleteGame(obj);
+        if (!res1)
+        {
+            window.Info1.Show(App.GetLanguage("MainWindow.Info37"));
+        }
     }
 
     public async void Rename(GameSettingObj obj)
@@ -632,7 +639,7 @@ public partial class MainControl : UserControl, IUserControl
         }
     }
 
-    public async Task Closing(WindowClosingEventArgs e)
+    public async Task<bool> Closing()
     {
         var windows = App.FindRoot(VisualRoot);
         if (launch)
@@ -640,9 +647,11 @@ public partial class MainControl : UserControl, IUserControl
             var res = await windows.Info.ShowWait(App.GetLanguage("MainWindow.Info34"));
             if (res)
             {
-                return;
+                return false;
             }
-            e.Cancel = true;
+            return true;
         }
+
+        return false;
     }
 }

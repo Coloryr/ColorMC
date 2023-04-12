@@ -8,7 +8,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
+using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Download;
+using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
@@ -141,7 +143,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
         if (IsDialog)
         {
-            MainDialog.Children.Clear();
+            Grid1.Children.Clear();
             IsDialog = false;
         }
         else
@@ -177,7 +179,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
             var grid = new Grid
             {
                 IsVisible = false,
-                Background = ColorSel.AppBackColor2
+                Background = ColorSel.BottomTranColor
             };
             List.Add(button);
             grid.Children.Add(con);
@@ -303,7 +305,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     public void ShowDialog(UserControl con)
     {
-        MainDialog.Children.Add(con);
+        Grid1.Children.Add(con);
 
         IsDialog = true;
     }
@@ -323,10 +325,13 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         Head.Title = data;
     }
 
-    public Task Closing(WindowClosingEventArgs e)
+    public async Task<bool> Closing(WindowClosingEventArgs e)
     {
+        if (Now is MainControl || Now is CustomControl)
+            return false;
         if (Now is not IUserControl now)
-            return Task.CompletedTask;
-        return now.Closing(e);
+            return false;
+
+        return await now.Closing();
     }
 }

@@ -115,7 +115,7 @@ public partial class Tab1Control : UserControl
         if (!res)
             return;
 
-        await GameBinding.DeleteGame(Obj);
+        App.MainWindow?.DeleteGame(Obj, true);
     }
 
     private void Save()

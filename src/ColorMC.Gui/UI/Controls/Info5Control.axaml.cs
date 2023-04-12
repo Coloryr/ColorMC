@@ -19,17 +19,7 @@ public partial class Info5Control : UserControl
 
         Button_Confirm.Click += Button_Add_Click;
         Button_Cancel.Click += Button_Cancel_Click;
-
-        App.PicUpdate += Update;
-
-        Update();
     }
-
-    private void Update()
-    {
-        Border1.CornerRadius = App.GetCornerRadius1();
-    }
-
     private void Button_Cancel_Click(object? sender, RoutedEventArgs e)
     {
         Cancel = true;

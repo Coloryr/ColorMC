@@ -63,7 +63,11 @@ public partial class SingleWindow : Window, IBaseWindow
         if (window1 == null)
             return;
 
-        await window1.Closing(e);
+        var res = await window1.Closing(e);
+        if (res)
+        {
+            e.Cancel = true;
+        }
     }
 
     private void Window_KeyDown(object? sender, KeyEventArgs e)

@@ -5,6 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
@@ -25,6 +26,7 @@ using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -80,6 +82,10 @@ public partial class App : Application
     public static Bitmap GameIcon { get; private set; }
     public static WindowIcon? Icon { get; private set; }
 
+    public static PlatformThemeVariant NowTheme { get; private set; }
+
+    public static IPlatformSettings PlatformSettings { get; private set; }
+
     private static readonly Language Language = new();
 
     public override void Initialize()
@@ -94,6 +100,22 @@ public partial class App : Application
             return data;
 
         return LanguageHelper.GetName(input);
+    }
+
+    public static void ColorChange()
+    {
+        switch (GuiConfigUtils.Config.ColorType)
+        {
+            case ColorType.Auto:
+                NowTheme = PlatformSettings.GetColorValues().ThemeVariant;
+                break;
+            case ColorType.Light:
+                NowTheme = PlatformThemeVariant.Light;
+                break;
+            case ColorType.Dark:
+                NowTheme = PlatformThemeVariant.Dark;
+                break;
+        }
     }
 
     public override async void OnFrameworkInitializationCompleted()
@@ -127,6 +149,11 @@ public partial class App : Application
             using var asset1 = assets!.Open(new Uri("resm:ColorMC.Gui.icon.ico"));
             Icon = new(asset1!);
 
+            PlatformSettings = AvaloniaLocator.Current.GetRequiredService<IPlatformSettings>();
+            PlatformSettings.ColorValuesChanged += PlatformSettings_ColorValuesChanged;
+
+            ColorChange();
+
             BaseBinding.Init();
 
             if (ConfigBinding.WindowMode())
@@ -152,6 +179,7 @@ public partial class App : Application
 
             await LoadImage();
 
+
             //new Thread(() =>
             //{
             //    while (true)
@@ -175,6 +203,17 @@ public partial class App : Application
             return win;
 
         return AllWindow!;
+    }
+
+    private void PlatformSettings_ColorValuesChanged(object? sender, PlatformColorValues e)
+    {
+        if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
+        {
+            NowTheme = PlatformSettings.GetColorValues().ThemeVariant;
+
+            ColorSel.Instance.Load();
+            OnPicUpdate();
+        }
     }
 
     private void Life_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
@@ -647,19 +686,32 @@ public partial class App : Application
                 }
             }
 
-            if (GuiConfigUtils.Config.WindowTran)
+
+            if (window != null)
             {
-                if (window != null)
+                if (GuiConfigUtils.Config.WindowTran)
                 {
                     window.TransparencyLevelHint = (WindowTransparencyLevel)
-                       (GuiConfigUtils.Config.WindowTranType + 1);
+                           (GuiConfigUtils.Config.WindowTranType + 1);
                 }
-            }
-            else
-            {
-                if (window != null)
+                else
                 {
                     window.TransparencyLevelHint = WindowTransparencyLevel.AcrylicBlur;
+                }
+
+                switch (GuiConfigUtils.Config.ColorType)
+                {
+                    case ColorType.Auto:
+                        window.RequestedThemeVariant =
+                            (PlatformSettings.GetColorValues().ThemeVariant) == 
+                            PlatformThemeVariant.Light ? ThemeVariant.Light : ThemeVariant.Dark;
+                        break;
+                    case ColorType.Light:
+                        window.RequestedThemeVariant = ThemeVariant.Light;
+                        break;
+                    case ColorType.Dark:
+                        window.RequestedThemeVariant = ThemeVariant.Dark;
+                        break;
                 }
             }
         }
@@ -691,15 +743,5 @@ public partial class App : Application
         }
 
         return MainWindow.Window;
-    }
-
-    public static CornerRadius GetCornerRadius1()
-    {
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            return new CornerRadius(5, 5, 0, 0);
-        }
-
-        return new CornerRadius(0);
     }
 }

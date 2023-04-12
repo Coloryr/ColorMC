@@ -50,6 +50,14 @@ public record Render
     public X11Render X11 { get; set; }
 }
 
+public record ColorSetting
+{
+    public string ColorBack { get; set; }
+    public string ColorTranBack { get; set; }
+    public string ColorFont1 { get; set; }
+    public string ColorFont2 { get; set; }
+}
+
 /// <summary>
 /// Gui配置文件
 /// </summary>
@@ -68,11 +76,12 @@ public record GuiConfigObj
     public ServerCustom ServerCustom { get; set; }
     public Render Render { get; set; }
 
+    public ColorType ColorType { get; set; }
     public string ColorMain { get; set; }
-    public string ColorBack { get; set; }
-    public string ColorTranBack { get; set; }
-    public string ColorFont1 { get; set; }
-    public string ColorFont2 { get; set; }
+    
+    public ColorSetting ColorLight { get; set; }
+    public ColorSetting ColorDark { get; set; }
+
     public bool RGB { get; set; }
     public int RGBS { get; set; }
     public int RGBV { get; set; }

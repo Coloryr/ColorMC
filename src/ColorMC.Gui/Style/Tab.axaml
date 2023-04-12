@@ -48,7 +48,7 @@
     </Style>
 
     <Style Selector="TabItem:selected /template/ Label#PART_ContentPresenter">
-        <Setter Property="Foreground" Value="#FF000000" />
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
     </Style>
 
     <Style Selector="TabItem /template/ Label#PART_ContentPresenter">

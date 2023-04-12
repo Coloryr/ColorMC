@@ -682,7 +682,7 @@ public static class InstancesPath
     /// 删除游戏实例
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static Task Remove(this GameSettingObj obj)
+    public static Task<bool> Remove(this GameSettingObj obj)
     {
         RemoveFromGroup(obj);
         return PathC.DeleteFiles(obj.GetBasePath());

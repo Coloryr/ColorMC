@@ -25,7 +25,7 @@
                 VerticalAlignment="Top"
                 Content="←" />
 
-            <Grid Name="MainDialog" />
+            <Grid Name="Grid1" />
 
             <Button
                 Name="Button2"

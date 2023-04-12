@@ -135,7 +135,7 @@ public partial class DownloadControl : UserControl, IUserControl
         App.DownloadWindow = null;
     }
 
-    public async Task Closing(WindowClosingEventArgs e)
+    public async Task<bool> Closing()
     {
         var windows = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
@@ -144,10 +144,12 @@ public partial class DownloadControl : UserControl, IUserControl
             if (res)
             {
                 BaseBinding.DownloadStop();
-                return;
+                return false;
             }
-            e.Cancel = true;
+            return true;
         }
+
+        return false;
     }
 
     public void DownloadItemStateUpdate(int index, DownloadItemObj item)

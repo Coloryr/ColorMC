@@ -122,12 +122,22 @@ public static class PathC
     /// <summary>
     /// 删除文件夹
     /// </summary>
-    public static Task DeleteFiles(string dir)
+    public static Task<bool> DeleteFiles(string dir)
     {
         return Task.Run(() =>
         {
-            if (Directory.Exists(dir))
-                Directory.Delete(dir, true);
+            try
+            {
+                if (Directory.Exists(dir))
+                    Directory.Delete(dir, true);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logs.Error("Delete Game Error", e);
+                return false;
+            }
         });
     }
 

@@ -121,10 +121,10 @@ public static class ColorMCCore
         LanguageHelper.Load(LanguageType.zh_cn);
         Logs.Init(dir);
         ConfigSave.Init();
+        JvmPath.Init(dir);
         ConfigUtils.Init(dir);
         LocalMaven.Init(dir);
         DownloadManager.Init(dir);
-        JvmPath.Init(dir);
         AuthDatabase.Init();
         MCPath.Init(dir);
 

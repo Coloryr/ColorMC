@@ -16,15 +16,6 @@ public partial class Info4Control : UserControl
 
         Button_Confirm.Click += Confirm_Click;
         Button_Cancel.Click += Cancel_Click;
-
-        App.PicUpdate += Update;
-
-        Update();
-    }
-
-    private void Update()
-    {
-        Border1.CornerRadius = App.GetCornerRadius1();
     }
 
     private async void Cancel_Click(object? sender, RoutedEventArgs e)

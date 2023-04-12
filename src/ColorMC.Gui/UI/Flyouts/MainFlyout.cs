@@ -79,7 +79,7 @@ public class MainFlyout
 
     private void Button6_Click()
     {
-        Win.DeleteGame(Obj.Obj);
+        Win.DeleteGame(Obj.Obj, false);
     }
 
     private void Button5_Click()

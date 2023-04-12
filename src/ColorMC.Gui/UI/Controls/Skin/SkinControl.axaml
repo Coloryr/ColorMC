@@ -15,18 +15,20 @@
             <Label
                 Margin="5"
                 VerticalAlignment="Top"
-                Background="#EEEEEE"
+                Background="{setting:Colors Bottom1}"
                 Content="{setting:Localize SkinWindow.Text2}"
                 CornerRadius="5"
-                Foreground="Black" />
+                Foreground="{setting:Colors Font}" />
 
             <Label
                 Margin="2"
                 VerticalAlignment="Bottom"
-                Background="#EEEEEE"
-                CornerRadius="5"
-                Foreground="Black">
-                <TextBlock Name="Text1" TextWrapping="Wrap" />
+                Background="{setting:Colors Bottom1}"
+                CornerRadius="5">
+                <TextBlock
+                    Name="Text1"
+                    Foreground="{setting:Colors Font}"
+                    TextWrapping="Wrap" />
             </Label>
 
             <Label
