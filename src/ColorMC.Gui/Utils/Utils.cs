@@ -505,6 +505,11 @@ public static class GuiConfigUtils
             {
                 Config.ColorDark = MakeColorDarkConfig();
             }
+
+            if (SystemInfo.Os == OsType.Linux && Config.WindowMode)
+            {
+                Config.WindowMode = false;
+            }
         }
         else
         {

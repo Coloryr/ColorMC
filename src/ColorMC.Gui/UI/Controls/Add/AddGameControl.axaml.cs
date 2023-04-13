@@ -297,7 +297,7 @@ public partial class AddGameControl : UserControl, IUserControl
         var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
-            window.Info.Show(App.GetLanguage("AddGameWindow.Info19"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Error8"));
             return;
         }
 
@@ -344,6 +344,7 @@ public partial class AddGameControl : UserControl, IUserControl
         {
             App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
             App.MainWindow?.Load();
+            
             window.Close();
         }
     }

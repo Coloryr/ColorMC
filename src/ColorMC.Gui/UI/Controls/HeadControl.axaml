@@ -13,7 +13,7 @@
     <Grid>
         <Border Name="Border1" Background="{setting:Colors Main}" />
         <Grid Margin="5,5,5,0">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Name="StackPanel2" Orientation="Horizontal">
                 <Label
                     Name="TitleShow"
                     Margin="10,0,0,0"
@@ -26,34 +26,10 @@
                     Foreground="{setting:Colors ButtonFont}" />
             </StackPanel>
             <StackPanel
+                Name="StackPanel1"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Orientation="Horizontal">
-                <Button
-                    Name="Button_Min"
-                    Width="24"
-                    Height="24"
-                    Margin="0,0,5,0"
-                    Content="-"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text1}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Name="Button_Max"
-                    Width="24"
-                    Height="24"
-                    Margin="0,0,5,0"
-                    Content="▢"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text2}"
-                    ToolTip.VerticalOffset="-30" />
-                <Button
-                    Name="Button_Close"
-                    Width="24"
-                    Height="24"
-                    Margin="0,0,2,0"
-                    Content="X"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text3}"
-                    ToolTip.VerticalOffset="-30" />
-            </StackPanel>
+                Orientation="Horizontal" />
         </Grid>
     </Grid>
 </UserControl>

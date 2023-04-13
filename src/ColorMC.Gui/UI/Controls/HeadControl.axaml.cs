@@ -1,8 +1,11 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -59,6 +62,10 @@ public partial class HeadControl : UserControl
         }
     }
 
+    private Button Button_Close;
+    private Button Button_Max;
+    private Button Button_Min;
+
     public HeadControl()
     {
         InitializeComponent();
@@ -68,6 +75,45 @@ public partial class HeadControl : UserControl
         Border1.PointerPressed += HeadControl_PointerPressed;
         TitleShow.PointerPressed += HeadControl_PointerPressed;
         TitleShow1.PointerPressed += HeadControl_PointerPressed;
+
+        Button_Min = new Button()
+        {
+            Width = 24,
+            Height = 24,
+            Margin = new Thickness(3, 0, 3, 0),
+            Content = "-",
+        };
+
+        Button_Max = new Button()
+        {
+            Width = 24,
+            Height = 24,
+            Margin = new Thickness(3, 0, 3, 0),
+            Content = "▢",
+        };
+
+        Button_Close = new Button()
+        {
+            Width = 24,
+            Height = 24,
+            Margin = new Thickness(3, 0, 3, 0),
+            Content = "X",
+        };
+
+        if (SystemInfo.Os == OsType.MacOS)
+        {
+            StackPanel2.HorizontalAlignment = HorizontalAlignment.Center;
+            StackPanel1.HorizontalAlignment = HorizontalAlignment.Left;
+            StackPanel1.Children.Add(Button_Close);
+            StackPanel1.Children.Add(Button_Min);
+            StackPanel1.Children.Add(Button_Max);
+        }
+        else
+        {
+            StackPanel1.Children.Add(Button_Min);
+            StackPanel1.Children.Add(Button_Max);
+            StackPanel1.Children.Add(Button_Close);
+        }
 
         Button_Min.Click += ButtonMin_Click;
         Button_Max.Click += ButtonMax_Click;

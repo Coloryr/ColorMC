@@ -73,7 +73,10 @@ public partial class AddJavaControl : UserControl, IUserControl
         if (!res)
             return;
 
-        window.Info1.Show(App.GetLanguage("AddJavaWindow.Info2"));
+        if (ConfigBinding.GetAllConfig().Item2?.WindowMode != true)
+        {
+            window.Info1.Show(App.GetLanguage("AddJavaWindow.Info2"));
+        }
         var res1 = await JavaBinding.DownloadJava(obj);
         window.Info1.Close();
         if (!res1.Item1)

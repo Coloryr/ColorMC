@@ -276,8 +276,17 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         Now = con;
     }
 
-    public void Close(UserControl con)
+    public async void Close(UserControl con)
     {
+        if (con is IUserControl con1)
+        {
+            var res = await con1.Closing();
+            if (res)
+            {
+                return;
+            }
+        }
+
         if (Cons.Remove(con, out var item))
         {
             Cons1.Remove(item);
@@ -313,6 +322,9 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     private void Update()
     {
         App.Update(null, Image_Back);
+
+        Grid3.Background = GuiConfigUtils.Config.WindowTran ?
+                ColorSel.BottomTranColor : ColorSel.BottomColor;
     }
 
     public void SetTitle(string data)

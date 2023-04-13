@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -9,7 +10,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
-using Avalonia.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;

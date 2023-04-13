@@ -143,7 +143,7 @@
 	<String Key="SettingWindow.Tab2.Text20">选择默认字体</String>
 	<String Key="SettingWindow.Tab2.Text21">注意：切换语言后需要重启启动器才能完全生效</String>
 	<String Key="SettingWindow.Tab2.Text22">单窗口模式</String>
-	<String Key="SettingWindow.Tab2.Text23">注意：切换后需要重启</String>
+	<String Key="SettingWindow.Tab2.Text23">注意：切换后需要重启，Linux系统不支持</String>
 	<String Key="SettingWindow.Tab2.Text24">调整背景图大小为原始分辨率的</String>
 	<String Key="SettingWindow.Tab2.Text25">(样例Sample)</String>
 	<String Key="SettingWindow.Tab2.Text26">跟随系统</String>
@@ -535,6 +535,7 @@
 	<String Key="AddGameWindow.Error5">添加实例失败</String>
 	<String Key="AddGameWindow.Error6">请输入名字</String>
 	<String Key="AddGameWindow.Error7">游戏分组添加失败</String>
+	<String Key="AddGameWindow.Error8">实例名字重复</String>
 	<String Key="AddGameWindow.Info1">组名</String>
 	<String Key="AddGameWindow.Info2">添加成功</String>
 	<String Key="AddGameWindow.Info3">正在获取Mod加载器信息</String>

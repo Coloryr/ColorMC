@@ -3,10 +3,10 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils.LaunchSetting;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -68,6 +68,11 @@ public partial class Tab2Control : UserControl
 
         ComboBox1.ItemsSource = BaseBinding.GetWindowTranTypes();
         ComboBox2.ItemsSource = BaseBinding.GetLanguages();
+
+        if (SystemInfo.Os == OsType.Linux)
+        {
+            CheckBox5.IsEnabled = false;
+        }
 
         BaseBinding.GetFontList().ForEach(item =>
         {

@@ -12,7 +12,7 @@
     mc:Ignorable="d">
     <DockPanel>
         <views:HeadControl Name="Head" DockPanel.Dock="Top" />
-        <Grid>
+        <Grid Name="Grid3">
             <Image Name="Image_Back" Stretch="UniformToFill" />
             <Grid Name="MainControl" />
 
@@ -45,7 +45,7 @@
 
             <Grid
                 Name="Grid2"
-                Background="#EEEEEEEE"
+                Background="{setting:Colors TopBottom}"
                 IsVisible="False">
                 <Label
                     Name="Label1"

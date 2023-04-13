@@ -1,9 +1,9 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Controls;
 
