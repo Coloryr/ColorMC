@@ -1,0 +1,1 @@
+sudo debtap colormc-linux-amd64.deb

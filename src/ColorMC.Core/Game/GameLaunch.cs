@@ -12,6 +12,7 @@ using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ColorMC.Core.Game;
@@ -1059,9 +1060,10 @@ public static class Launch
         }
 
         var path = obj.JvmLocal;
+        JavaInfo? jvm = null;
         if (string.IsNullOrWhiteSpace(path))
         {
-            JavaInfo? jvm = JvmPath.GetInfo(obj.JvmName) ?? FindJava(obj);
+            jvm = JvmPath.GetInfo(obj.JvmName) ?? FindJava(obj);
             if (jvm == null)
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
@@ -1074,6 +1076,9 @@ public static class Launch
 
         ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info3"));
         ColorMCCore.GameLog?.Invoke(obj, path);
+
+        //NativeLaunch(jvm!, arg);
+        //return null;
 
         //启动进程
         Process process = new()
@@ -1144,6 +1149,7 @@ public static class Launch
                     {
                         info.ArgumentList.Add(args[a]);
                     }
+
                     var p = new Process()
                     {
                         EnableRaisingEvents = true,
@@ -1196,24 +1202,58 @@ public static class Launch
         int ergo                            /* ergonomics class policy */
     );
 
-    //public static void NativeLaunch(JavaInfo info, List<string> args)
-    //{
-    //    var temp = info.Path
-    //    var data = NativeLoader.Loader.LoadLibrary();
+    private static int Lenght;
+    private static string[] Args;
 
-    //    var temp = NativeLoader.Loader.LoadLibrary("/home/coloryr/Desktop/java/jdk-17.0.5+8/lib/libjli.so");
-    //    var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
-    //    var inv = (Func1)Marshal.GetDelegateForFunctionPointer(temp1, typeof(Func1));
+    public static void NativeLaunch(JavaInfo info, List<string> args)
+    {
+        var info1 = new FileInfo(info.Path);
+        var path = info1.Directory?.Parent?.FullName;
 
-    //    var path = Environment.GetEnvironmentVariable("PATH");
+        var loacl = path + SystemInfo.Os switch
+        {
+            OsType.Windows => "/bin/jli.dll",
+            OsType.Linux => "/lib/libjli.so",
+            OsType.MacOS => "/lib/libjli.dylib",
+        };
+        if (File.Exists(loacl))
+        {
+            loacl = Path.GetFullPath(loacl);
+        }
 
-    //    //setenv("JAVA_HOME", "/home/coloryr/Desktop/java/jdk-17.0.5+8");
-    //    //setenv("PATH", "/home/coloryr/Desktop/java/jdk-17.0.5+8/bin:" + path);
-    //    //setenv("LD_LIBRARY_PATH", "/home/coloryr/Desktop/java/jdk-17.0.5+8/lib:/home/coloryr/Desktop/java/jdk-17.0.5+8/bin:/system/lib64:/vendor/lib64:/vendor/lib64/hw");
+        var temp = NativeLoader.Loader.LoadLibrary(loacl);
+        var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
+        var inv = (Func1)Marshal.GetDelegateForFunctionPointer(temp1, typeof(Func1));
 
-    //    var res = inv(4, new string[] { "java", "-cp", "/home/coloryr/Desktop", "hello" }, 0, null, 0, null, "", "", "", "", false, true, false, 0);
-    //    //var res = inv(2, new string[]{ "java","-version" }, 0, null, 0, null, "", "", "", "", false, true, false, 0);
-    //}
+        //Environment.SetEnvironmentVariable("JAVA_HOME", path);
+        //Environment.SetEnvironmentVariable("PATH", path + "/bin:" + path);
+        //Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", path + "/lib:" + path + "/bin");
+
+        var args1 = new string[args.Count + 1];
+        args1[0] = "java";
+
+        for (int i = 1; i < args1.Length; i++)
+        {
+            args1[i] = args[i - 1];
+        }
+
+        Lenght = args1.Length;
+        Args = args1;
+
+        new Thread(() =>
+        {
+            try
+            {
+                var res = inv(Lenght, Args, 0, null, 0, null, "", "", "", "", false, false, true, 0);
+
+                var res1 = NativeLoader.Loader.CloseLibrary(temp);
+            }
+            catch (Exception e)
+            {
+                ColorMCCore.OnError?.Invoke("Error", e, false);
+            }
+        }).Start();
+    }
 
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {

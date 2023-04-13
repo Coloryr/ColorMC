@@ -27,7 +27,7 @@ public static class JvmPath
     {
         if (info.Path.StartsWith(Name1))
         {
-            return Path.GetFullPath(BaseDir + Name1 + "/" + info.Path);
+            return Path.GetFullPath(BaseDir + info.Path);
         }
 
         return info.Path;
@@ -123,7 +123,7 @@ public static class JvmPath
     /// <returns></returns>
     private static async Task<(bool, string?)> UnzipJava(string name, string file)
     {
-        string path = BaseDir + Name1 + name;
+        string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
 
         await Task.Run(() => ZipUtils.Unzip(path, file));

@@ -27,6 +27,7 @@ public interface IDynLoader
 {
     IntPtr LoadLibrary(string dll);
     IntPtr GetProcAddress(IntPtr dll, string proc, bool optional);
+    bool CloseLibrary(IntPtr dll);
 }
 
 internal class UnixLoader : IDynLoader
@@ -108,6 +109,11 @@ internal class UnixLoader : IDynLoader
             throw new Exception(DlErrorString());
         return ptr;
     }
+
+    public bool CloseLibrary(IntPtr dll)
+    {
+        return false;
+    }
 }
 
 public class Win32Loader : IDynLoader
@@ -117,6 +123,9 @@ public class Win32Loader : IDynLoader
 
     [DllImport("kernel32", EntryPoint = "LoadLibraryW", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern IntPtr LoadLibrary(string lpszLib);
+
+    [DllImport("kernel32", EntryPoint = "FreeLibrary", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern bool FreeLibrary(IntPtr hLibModule);
 
     IntPtr IDynLoader.LoadLibrary(string dll)
     {
@@ -134,5 +143,10 @@ public class Win32Loader : IDynLoader
         if (ptr == IntPtr.Zero && !optional)
             throw new Exception("Error " + Marshal.GetLastWin32Error());
         return ptr;
+    }
+
+    public bool CloseLibrary(IntPtr dll)
+    {
+        return FreeLibrary(dll);
     }
 }
