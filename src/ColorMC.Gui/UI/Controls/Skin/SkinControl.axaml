@@ -12,13 +12,163 @@
     <Grid Margin="3" ColumnDefinitions="4*,1.5*">
         <Grid Grid.Column="0">
             <view2:SkinRender x:Name="Skin" />
-            <Label
-                Margin="5"
+
+            <Grid
+                HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Background="{setting:Colors Bottom1}"
-                Content="{setting:Localize SkinWindow.Text2}"
-                CornerRadius="5"
-                Foreground="{setting:Colors Font}" />
+                ColumnDefinitions="*,*,*"
+                RowDefinitions="*,*,*">
+                <Button
+                    Name="Button_1_1"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="LeftUp"
+                    Content="↖" />
+                <Button
+                    Name="Button_1_2"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="Up"
+                    Content="↑" />
+                <Button
+                    Name="Button_1_3"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="RightUp"
+                    Content="↗" />
+                <Button
+                    Name="Button_1_4"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="Left"
+                    Content="←" />
+                <Button
+                    Name="Button_1_5"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="Right"
+                    Content="→" />
+                <Button
+                    Name="Button_1_6"
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="LeftDown"
+                    Content="↙" />
+                <Button
+                    Name="Button_1_7"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="Down"
+                    Content="↓" />
+                <Button
+                    Name="Button_1_8"
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="RightDown"
+                    Content="↘" />
+            </Grid>
+            <Grid
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                ColumnDefinitions="*,*,*"
+                RowDefinitions="*,*,*">
+                <Button
+                    Name="Button_2_1"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="LeftUp"
+                    Content="↖" />
+                <Button
+                    Name="Button_2_2"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="Up"
+                    Content="↑" />
+                <Button
+                    Name="Button_2_3"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="RightUp"
+                    Content="↗" />
+                <Button
+                    Name="Button_2_4"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="Left"
+                    Content="←" />
+                <Button
+                    Name="Button_2_5"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="Right"
+                    Content="→" />
+                <Button
+                    Name="Button_2_6"
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="LeftDown"
+                    Content="↙" />
+                <Button
+                    Name="Button_2_7"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="Down"
+                    Content="↓" />
+                <Button
+                    Name="Button_2_8"
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    Width="40"
+                    Height="40"
+                    CommandParameter="RightDown"
+                    Content="↘" />
+            </Grid>
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button
+                    Name="Button_3_1"
+                    Width="40"
+                    Height="40"
+                    HorizontalAlignment="Center"
+                    CommandParameter="Up"
+                    Content="↑" />
+                <Button
+                    Name="Button_3_2"
+                    Width="40"
+                    Height="40"
+                    HorizontalAlignment="Center"
+                    CommandParameter="Down"
+                    Content="↓" />
+            </StackPanel>
 
             <Label
                 Margin="2"
@@ -38,10 +188,10 @@
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Background="{setting:Colors Bottom1}"
-                Content="123"
+                Content="Text"
                 FontSize="20"
                 Foreground="{setting:Colors Font}"
-                IsVisible="True" />
+                IsVisible="False" />
         </Grid>
 
         <Grid Grid.Column="1">

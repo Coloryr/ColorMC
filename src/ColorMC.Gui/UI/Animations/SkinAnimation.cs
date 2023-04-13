@@ -72,7 +72,7 @@ public class SkinAnimation : IDisposable
                     //90 -90
                     Leg.Y = 90 - frame * 3;
                     //-30 30
-                    if (Render.steveModelType == SkinType.NewSlim)
+                    if (Render.SteveModelType == SkinType.NewSlim)
                     {
                         Head.Z = 0;
                         Head.X = frame - 30;
@@ -92,7 +92,7 @@ public class SkinAnimation : IDisposable
                     //-90 90
                     Leg.Y = frame * 3 - 270;
                     //30 -30
-                    if (Render.steveModelType == SkinType.NewSlim)
+                    if (Render.SteveModelType == SkinType.NewSlim)
                     {
                         Head.Z = 0;
                         Head.X = 90 - frame;

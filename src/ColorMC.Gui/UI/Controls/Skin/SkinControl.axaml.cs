@@ -8,13 +8,28 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using OpenTK.Mathematics;
 using System;
+using System.Timers;
+using System.Numerics;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 
+public enum MoveType
+{
+    LeftUp, Up, RightUp,
+    Left, Right,
+    LeftDown, Down, RightDown
+}
+
 public partial class SkinControl : UserControl, IUserControl
 {
+    private bool load = false;
+
+    private Timer timer;
+    private Timer timer1;
+    private Timer timer2;
+    private MoveType type;
+
     public IBaseWindow Window => App.FindRoot(VisualRoot);
     public SkinControl()
     {
@@ -32,6 +47,28 @@ public partial class SkinControl : UserControl, IUserControl
         Button4.Click += Button4_Click;
         Button5.Click += Button5_Click;
 
+        Button_1_1.PropertyChanged += Button_1_1_PropertyChanged;
+        Button_1_2.PropertyChanged += Button_1_1_PropertyChanged;
+        Button_1_3.PropertyChanged += Button_1_1_PropertyChanged;
+        Button_1_4.PropertyChanged += Button_1_1_PropertyChanged;
+        Button_1_5.PropertyChanged += Button_1_1_PropertyChanged;
+        Button_1_6.PropertyChanged += Button_1_1_PropertyChanged;
+        Button_1_7.PropertyChanged += Button_1_1_PropertyChanged;
+        Button_1_8.PropertyChanged += Button_1_1_PropertyChanged;
+
+        Button_2_1.PropertyChanged += Button_2_1_PropertyChanged;
+        Button_2_2.PropertyChanged += Button_2_1_PropertyChanged;
+        Button_2_3.PropertyChanged += Button_2_1_PropertyChanged;
+        Button_2_4.PropertyChanged += Button_2_1_PropertyChanged;
+        Button_2_5.PropertyChanged += Button_2_1_PropertyChanged;
+        Button_2_6.PropertyChanged += Button_2_1_PropertyChanged;
+        Button_2_7.PropertyChanged += Button_2_1_PropertyChanged;
+        Button_2_8.PropertyChanged += Button_2_1_PropertyChanged;
+
+        Button_3_1.PropertyChanged += Button_3_1_PropertyChanged;
+        Button_3_2.PropertyChanged += Button_3_1_PropertyChanged;
+
+
         CheckBox1.Click += CheckBox1_Click;
         CheckBox2.Click += CheckBox2_Click;
         CheckBox3.Click += CheckBox3_Click;
@@ -42,41 +79,211 @@ public partial class SkinControl : UserControl, IUserControl
 
         ComboBox2.SelectedIndex = 0;
 
+        timer = new(TimeSpan.FromMilliseconds(20))
+        {
+            AutoReset = true
+        };
+        timer.BeginInit();
+        timer.Elapsed += Timer_Elapsed;
+        timer.EndInit();
+
+        timer1 = new(TimeSpan.FromMilliseconds(20))
+        {
+            AutoReset = true
+        };
+        timer1.BeginInit();
+        timer1.Elapsed += Timer1_Elapsed;
+        timer1.EndInit();
+
+        timer2 = new(TimeSpan.FromMilliseconds(20))
+        {
+            AutoReset = true
+        };
+        timer2.BeginInit();
+        timer2.Elapsed += Timer2_Elapsed; ;
+        timer2.EndInit();
+
         App.SkinLoad += App_SkinLoad;
+    }
+
+    private void Timer2_Elapsed(object? sender, ElapsedEventArgs e)
+    {
+        switch (type)
+        {
+            case MoveType.Up:
+                Skin.AddDis(0.05f);
+                break;
+            case MoveType.Down:
+                Skin.AddDis(-0.05f);
+                break;
+        }
+    }
+
+    private void Button_3_1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == Button.IsPressedProperty)
+        {
+            var button = sender as Button;
+
+            if (button?.IsPressed == true)
+            {
+                type = button.CommandParameter switch
+                {
+                    "Up" => MoveType.Up,
+                    "Down" => MoveType.Down
+                };
+                timer2.Start();
+            }
+            else
+            {
+                timer2.Stop();
+            }
+        }
+    }
+
+    private void Button_2_1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == Button.IsPressedProperty)
+        {
+            var button = sender as Button;
+
+            if (button?.IsPressed == true)
+            {
+                type = button.CommandParameter switch
+                {
+                    "LeftUp" => MoveType.LeftUp,
+                    "Up" => MoveType.Up,
+                    "RightUp" => MoveType.RightUp,
+                    "Left" => MoveType.Left,
+                    "Right" => MoveType.Right,
+                    "LeftDown" => MoveType.LeftDown,
+                    "Down" => MoveType.Down,
+                    "RightDown" => MoveType.RightDown
+                };
+                timer1.Start();
+            }
+            else
+            {
+                timer1.Stop();
+            }
+        }
+    }
+
+    private void Timer1_Elapsed(object? sender, ElapsedEventArgs e)
+    {
+        switch (type)
+        {
+            case MoveType.LeftUp:
+                Skin.Pos(-0.05f, 0.05f);
+                break;
+            case MoveType.Up:
+                Skin.Pos(0, 0.05f);
+                break;
+            case MoveType.RightUp:
+                Skin.Pos(0.05f, 0.05f);
+                break;
+            case MoveType.Left:
+                Skin.Pos(-0.05f, 0);
+                break;
+            case MoveType.Right:
+                Skin.Pos(0.05f, 0);
+                break;
+            case MoveType.LeftDown:
+                Skin.Pos(-0.05f, -0.05f);
+                break;
+            case MoveType.Down:
+                Skin.Pos(0, -0.05f);
+                break;
+            case MoveType.RightDown:
+                Skin.Pos(0.05f, -0.05f);
+                break;
+        }
+    }
+
+    private void Button_1_1_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == Button.IsPressedProperty)
+        {
+            var button = sender as Button;
+
+            if (button?.IsPressed == true)
+            {
+                type = button.CommandParameter switch
+                {
+                    "LeftUp" => MoveType.LeftUp,
+                    "Up" => MoveType.Up,
+                    "RightUp" => MoveType.RightUp,
+                    "Left" => MoveType.Left,
+                    "Right" => MoveType.Right,
+                    "LeftDown" => MoveType.LeftDown,
+                    "Down" => MoveType.Down,
+                    "RightDown" => MoveType.RightDown
+                };
+                timer.Start();
+            }
+            else
+            {
+                timer.Stop();
+            }
+        }
+    }
+
+    private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
+    {
+        switch (type)
+        {
+            case MoveType.LeftUp:
+                Skin.Rot(-10, -10);
+                break;
+            case MoveType.Up:
+                Skin.Rot(-10, 0);
+                break;
+            case MoveType.RightUp:
+                Skin.Rot(-10, 10);
+                break;
+            case MoveType.Left:
+                Skin.Rot(0, -10);
+                break;
+            case MoveType.Right:
+                Skin.Rot(0, 10);
+                break;
+            case MoveType.LeftDown:
+                Skin.Rot(10, -10);
+                break;
+            case MoveType.Down:
+                Skin.Rot(10, 0);
+                break;
+            case MoveType.RightDown:
+                Skin.Rot(10, 10);
+                break;
+        }
+    }
+
+    public void Skin_Loaded()
+    {
+        Text1.Text = Skin.Info;
+
+        Check();
+
+        load = true;
     }
 
     public void Opened()
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            Window.Info.Show("");
-
-            return;
-        }
-
-        var temp = Matrix.CreateRotation(Math.PI);
-        Skin.RenderTransform = new ImmutableTransform(temp);
-
-        Skin.Init();
-        Text1.Text = Skin.Info;
-
         Window.SetTitle(App.GetLanguage("SkinWindow.Title"));
-
-        Check();
     }
 
     public void Update()
     {
-        Skin.InvalidateVisual();
+        if (load)
+        {
+            Skin.RequestNextFrameRendering();
+        }
     }
 
     public void Closed()
     {
         App.SkinLoad -= App_SkinLoad;
-        if (SystemInfo.Os != OsType.Android)
-        {
-            Skin.Close();
-        }
 
         App.SkinWindow = null;
     }
@@ -116,7 +323,7 @@ public partial class SkinControl : UserControl, IUserControl
         Slider1.Value = 0;
         Slider2.Value = 0;
         Slider3.Value = 0;
-        Skin.InvalidateVisual();
+        Skin.RequestNextFrameRendering();
     }
 
     private void Slider3_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -137,7 +344,7 @@ public partial class SkinControl : UserControl, IUserControl
                 default:
                     return;
             }
-            Skin.InvalidateVisual();
+            Skin.RequestNextFrameRendering();
         }
     }
 
@@ -159,7 +366,7 @@ public partial class SkinControl : UserControl, IUserControl
                 default:
                     return;
             }
-            Skin.InvalidateVisual();
+            Skin.RequestNextFrameRendering();
         }
     }
 
@@ -181,19 +388,19 @@ public partial class SkinControl : UserControl, IUserControl
                 default:
                     return;
             }
-            Skin.InvalidateVisual();
+            Skin.RequestNextFrameRendering();
         }
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        if (ComboBox1.SelectedIndex == (int)Skin.steveModelType)
+        if (ComboBox1.SelectedIndex == (int)Skin.SteveModelType)
             return;
         if (ComboBox1.SelectedIndex == (int)SkinType.Unkonw)
         {
             window.Info.Show(App.GetLanguage("SkinWindow.Info1"));
-            ComboBox1.SelectedIndex = (int)Skin.steveModelType;
+            ComboBox1.SelectedIndex = (int)Skin.SteveModelType;
             return;
         }
         Skin.ChangeType(ComboBox1.SelectedIndex);

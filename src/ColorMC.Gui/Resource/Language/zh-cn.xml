@@ -649,7 +649,6 @@
 
 	<String Key="SkinWindow.Title">ColorMC 皮肤预览</String>
 	<String Key="SkinWindow.Text1">重置视角</String>
-	<String Key="SkinWindow.Text2">操作：左键旋转，右键平移，滚轮缩放</String>
 	<String Key="SkinWindow.Text3">修改皮肤</String>
 	<String Key="SkinWindow.Text4">导出皮肤</String>
 	<String Key="SkinWindow.Text5">显示第二层</String>
