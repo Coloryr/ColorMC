@@ -28,12 +28,12 @@ public partial class AddGameControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        ComboBox_GameVersion.Items = List;
+        ComboBox_GameVersion.ItemsSource = List;
         ComboBox_GameVersion.SelectionChanged += GameVersion_SelectionChanged;
 
-        ComboBox_Group.Items = List1;
+        ComboBox_Group.ItemsSource = List1;
 
-        ComboBox4.Items = GameBinding.GetPackType();
+        ComboBox4.ItemsSource = GameBinding.GetPackType();
 
         Button_Add.Click += Button_Add_Click;
 
@@ -63,7 +63,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataFormats.FileNames))
+        if (e.Data.Contains(DataFormats.Files))
         {
             Grid2.IsVisible = true;
         }
@@ -77,14 +77,14 @@ public partial class AddGameControl : UserControl, IUserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid2.IsVisible = false;
-        if (e.Data.Contains(DataFormats.FileNames))
+        if (e.Data.Contains(DataFormats.Files))
         {
-            var files = e.Data.GetFileNames();
+            var files = e.Data.GetFiles();
             if (files == null || files.Count() > 1)
                 return;
 
-            var item = files.First();
-            if (item.EndsWith(".zip") || item.EndsWith(".mrpack"))
+            var item = BaseBinding.GetPath(files.First());
+            if (item?.EndsWith(".zip") == true || item?.EndsWith(".mrpack") == true)
             {
                 AddFile(item);
             }
@@ -150,7 +150,7 @@ public partial class AddGameControl : UserControl, IUserControl
         CheckBox_Fabric.IsChecked = false;
         CheckBox_Quilt.IsChecked = false;
 
-        ComboBox_LoaderVersion.Items = null;
+        ComboBox_LoaderVersion.ItemsSource = null;
         ComboBox_LoaderVersion.SelectedItem = null;
 
         var item = ComboBox_GameVersion.SelectedItem as string;
@@ -374,14 +374,14 @@ public partial class AddGameControl : UserControl, IUserControl
             }
 
             ComboBox_LoaderVersion.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = list;
+            ComboBox_LoaderVersion.ItemsSource = list;
         }
         else
         {
             ComboBox_LoaderVersion.IsEnabled = false;
             CheckBox_Forge.IsEnabled = true;
             CheckBox_Fabric.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = null;
+            ComboBox_LoaderVersion.ItemsSource = null;
         }
     }
 
@@ -405,14 +405,14 @@ public partial class AddGameControl : UserControl, IUserControl
             }
 
             ComboBox_LoaderVersion.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = list;
+            ComboBox_LoaderVersion.ItemsSource = list;
         }
         else
         {
             ComboBox_LoaderVersion.IsEnabled = false;
             CheckBox_Forge.IsEnabled = true;
             CheckBox_Quilt.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = null;
+            ComboBox_LoaderVersion.ItemsSource = null;
         }
     }
 
@@ -437,14 +437,14 @@ public partial class AddGameControl : UserControl, IUserControl
             }
 
             ComboBox_LoaderVersion.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = list;
+            ComboBox_LoaderVersion.ItemsSource = list;
         }
         else
         {
             ComboBox_LoaderVersion.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = true;
             CheckBox_Quilt.IsEnabled = true;
-            ComboBox_LoaderVersion.Items = null;
+            ComboBox_LoaderVersion.ItemsSource = null;
         }
     }
 

@@ -3,6 +3,7 @@ using Avalonia.Interactivity;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -18,8 +19,18 @@ public partial class Info3Control : UserControl
     {
         InitializeComponent();
 
-        Button_Confirm.Click += Button_Add_Click;
+        Button_Confirm.Click += Button_Confirm_Click;
         Button_Cancel.Click += Button_Cancel_Click;
+
+        TextBox_Text1.KeyDown += TextBox_Text1_KeyDown;
+    }
+
+    private void TextBox_Text1_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            Button_Confirm_Click(null, null);
+        }
     }
 
     private void Button_Cancel_Click(object? sender, RoutedEventArgs e)
@@ -38,7 +49,7 @@ public partial class Info3Control : UserControl
         Close();
     }
 
-    private void Button_Add_Click(object? sender, RoutedEventArgs e)
+    private void Button_Confirm_Click(object? sender, RoutedEventArgs e)
     {
         Cancel = false;
         semaphore.Release();

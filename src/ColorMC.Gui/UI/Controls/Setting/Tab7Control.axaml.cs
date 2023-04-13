@@ -16,7 +16,6 @@ public partial class Tab7Control : UserControl
         Button3.Click += Button3_Click;
 
         Label1.Content = ColorMCCore.Version;
-        Label2.Content = ColorMCGui.Version;
 
         Image1.Source = App.GameIcon;
     }

@@ -191,10 +191,10 @@ public static class BaseAuth
     {
         try
         {
-            var (State, Obj) = await Nide8.Refresh(obj);
+            var (State, Obj, Msg) = await Nide8.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null,
-                    LanguageHelper.GetName("Core.Login.Error11"), null);
+                    LanguageHelper.GetName("Core.Login.Error11") + " " + Msg, null);
 
             return (AuthState.Profile, LoginState.Done, Obj, null, null);
         }
@@ -247,10 +247,10 @@ public static class BaseAuth
     {
         try
         {
-            var (State, Obj) = await AuthlibInjector.Refresh(obj);
+            var (State, Obj, Msg) = await AuthlibInjector.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null,
-                    LanguageHelper.GetName("Core.Login.Error15"), null);
+                    LanguageHelper.GetName("Core.Login.Error15") + " " + Msg, null);
 
             return (AuthState.Token, State, Obj, null, null);
         }
@@ -303,10 +303,10 @@ public static class BaseAuth
     {
         try
         {
-            var (State, Obj) = await LittleSkin.Refresh(obj);
+            var (State, Obj, Msg) = await LittleSkin.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null,
-                    LanguageHelper.GetName("Core.Login.Error19"), null);
+                    LanguageHelper.GetName("Core.Login.Error19") + " " +Msg, null);
 
             return (AuthState.Token, State, Obj, null, null);
         }

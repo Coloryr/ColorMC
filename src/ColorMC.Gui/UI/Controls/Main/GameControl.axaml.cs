@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class GameControl : UserControl
 {
-    public GameSettingObj Obj { get; private set; }
+    public GameSettingObj? Obj { get; private set; }
     public GameControl()
     {
         InitializeComponent();
@@ -39,8 +39,8 @@ public partial class GameControl : UserControl
 
     public void Reload()
     {
-        TextBlock1.Text = Obj.Name;
-        string file = Obj.GetIconFile();
+        TextBlock1.Text = Obj?.Name;
+        var file = Obj?.GetIconFile();
         if (File.Exists(file))
         {
             Image1.Source = new Bitmap(file);

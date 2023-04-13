@@ -42,9 +42,31 @@ public partial class UsersControl : UserControl, IUserControl
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
         ComboBox1.ItemsSource = UserBinding.GetUserTypes();
 
+        TextBox_Input1.KeyDown += TextBox_Input1_KeyDown;
+        TextBox_Input3.KeyDown += TextBox_Input3_KeyDown;
+
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    private void TextBox_Input3_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            Button_Add_Click(null, null);
+        }
+    }
+
+    private void TextBox_Input1_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            if (ComboBox1.SelectedIndex == 0)
+            {
+                Button_Add_Click(null, null);
+            }
+        }
     }
 
     public void Opened()
@@ -149,7 +171,7 @@ public partial class UsersControl : UserControl, IUserControl
         switch (ComboBox1.SelectedIndex)
         {
             case 0:
-                var name = TextBox_Input1.Text;
+                var name = TextBox_Input2.Text;
                 if (string.IsNullOrWhiteSpace(name))
                 {
                     window.Info.Show(App.GetLanguage("UserWindow.Error2"));
@@ -312,10 +334,10 @@ public partial class UsersControl : UserControl, IUserControl
         switch (ComboBox1.SelectedIndex)
         {
             case 0:
-                TextBox_Input1.IsEnabled = true;
-                TextBox_Input1.Watermark = App.GetLanguage("UserWindow.Info8");
+                TextBox_Input1.IsEnabled = false;
+                TextBox_Input1.Watermark = "";
                 TextBox_Input1.Text = "";
-                TextBox_Input2.IsEnabled = false;
+                TextBox_Input2.IsEnabled = true;
                 TextBox_Input2.Text = "";
                 TextBox_Input3.IsEnabled = false;
                 TextBox_Input3.Text = "";
@@ -365,6 +387,15 @@ public partial class UsersControl : UserControl, IUserControl
                 TextBox_Input3.IsEnabled = true;
                 TextBox_Input3.Text = "";
                 break;
+            default:
+                TextBox_Input1.IsEnabled = false;
+                TextBox_Input1.Watermark = "";
+                TextBox_Input1.Text = "";
+                TextBox_Input2.IsEnabled = false;
+                TextBox_Input2.Text = "";
+                TextBox_Input3.IsEnabled = false;
+                TextBox_Input3.Text = "";
+                break;
         }
     }
 
@@ -401,8 +432,12 @@ public partial class UsersControl : UserControl, IUserControl
     public void SetAdd()
     {
         ComboBox1.IsEnabled = true;
-        TextBox_Input1.IsEnabled = true;
-        TextBox_Input2.IsEnabled = true;
+
+        TextBox_Input1.Text = "";
+        TextBox_Input2.Text = "";
+        TextBox_Input3.Text = "";
+
+        ComboBox1.SelectedIndex = -1;
 
         App.CrossFade300.Start(null, Grid1, CancellationToken.None);
     }

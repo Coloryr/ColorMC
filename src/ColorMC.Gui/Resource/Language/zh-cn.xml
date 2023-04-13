@@ -257,6 +257,7 @@
 	<String Key="SettingWindow.Tab7.Text3">开源地址</String>
 	<String Key="SettingWindow.Tab7.Text4">Minecraft官网</String>
 	<String Key="SettingWindow.Tab7.Text5">赞助通道</String>
+	<String Key="SettingWindow.Tab7.Text6">版本</String>
 
 	<String Key="HelloWindow.Title">ColorMC 初始设置</String>
 	<String Key="HelloWindow.Tabs.Text1">开始</String>

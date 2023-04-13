@@ -49,7 +49,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     }
 
-    public AddControl(GameSettingObj? obj)
+    public AddControl(GameSettingObj obj)
     {
         Obj = obj;
 

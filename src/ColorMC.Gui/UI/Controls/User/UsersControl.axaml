@@ -69,7 +69,7 @@
 
         <Grid
             Name="Grid1"
-            Background="#EEEEEEEE"
+            Background="{setting:Colors TopBottom}"
             IsVisible="False">
             <StackPanel Margin="5">
                 <Label Content="{setting:Localize UserWindow.Text5}" />

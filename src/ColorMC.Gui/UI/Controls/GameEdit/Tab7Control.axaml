@@ -30,6 +30,15 @@
                 Content="{setting:Localize GameEditWindow.Tab7.Text3}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text44}"
                 ToolTip.VerticalOffset="-30" />
+            <Button
+                Name="Button2"
+                Width="100"
+                Height="25"
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                Content="{setting:Localize MainWindow.Flyouts.Text1}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text44}"
+                ToolTip.VerticalOffset="-30" />
 
         </StackPanel>
         <ae:TextEditor

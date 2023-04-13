@@ -43,16 +43,19 @@ public static class LoginOld
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
             return (LoginState.Error, null, null);
-        var obj1 = JObject.Parse(data);
 
-        if (obj1.ContainsKey("error"))
-        {
-            return (LoginState.Error, null, obj1["errorMessage"]?.ToString());
-        }
+        var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
 
-        var obj2 = obj1.ToObject<AuthenticateResObj>();
         if (obj2 == null)
-            return (LoginState.JsonError, null, null);
+        {
+            var obj1 = JObject.Parse(data);
+            if (obj1?.TryGetValue("errorMessage", out var msg) == true)
+            {
+                return (LoginState.JsonError, null, msg?.ToString());
+            }
+
+            return (LoginState.JsonError, null, "Other Error");
+        }
 
         if (obj2.selectedProfile == null)
             return (LoginState.Error, null, LanguageHelper.GetName("Core.Login.Error23"));
@@ -71,7 +74,7 @@ public static class LoginOld
     /// </summary>
     /// <param name="server">服务器地址</param>
     /// <param name="obj">保存的账户</param>
-    public static async Task<(LoginState State, LoginObj? Obj)> Refresh(string server, LoginObj obj)
+    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(string server, LoginObj obj)
     {
         var obj1 = new RefreshObj
         {
@@ -91,22 +94,22 @@ public static class LoginOld
         var res = await BaseClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
-            return (LoginState.Error, null);
+            return (LoginState.Error, null, "Json Error");
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
         if (obj2 == null || obj2.selectedProfile == null)
         {
             var jobj = JObject.Parse(data);
             if (jobj?.TryGetValue("errorMessage", out var msg) == true)
             {
-                ColorMCCore.OnError?.Invoke(msg?.ToString(), null, false);
+                return (LoginState.JsonError, null, msg?.ToString());
             }
-            return (LoginState.JsonError, null);
+            return (LoginState.JsonError, null, "Other Error");
         }
         obj.UserName = obj2.selectedProfile.name;
         obj.UUID = obj2.selectedProfile.id;
         obj.AccessToken = obj2.accessToken;
         obj.ClientToken = obj2.clientToken;
 
-        return (LoginState.Done, obj);
+        return (LoginState.Done, obj, null);
     }
 }

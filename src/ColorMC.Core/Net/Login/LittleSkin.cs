@@ -53,7 +53,7 @@ public static class LittleSkin
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static Task<(LoginState State, LoginObj? Obj)> Refresh(LoginObj obj)
+    public static Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(LoginObj obj)
     {
         string server;
         if (obj.AuthType == AuthType.LittleSkin)

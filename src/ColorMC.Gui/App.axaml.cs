@@ -7,6 +7,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -201,6 +202,8 @@ public partial class App : Application
     {
         if (con is IBaseWindow win)
             return win;
+        else if (con is UserControl con1 && con1.GetVisualRoot() is IBaseWindow win1)
+            return win1;
 
         return AllWindow!;
     }

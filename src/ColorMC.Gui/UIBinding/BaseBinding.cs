@@ -323,6 +323,7 @@ public static class BaseBinding
         {
             return (false, App.GetLanguage("GameBinding.Error4"));
         }
+        //设置自动加入服务器
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
             !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
         {
@@ -343,6 +344,7 @@ public static class BaseBinding
 
         string? temp = null;
 
+        //清空日志
         if (GameLogs.ContainsKey(obj.UUID))
         {
             GameLogs[obj.UUID] = "";
@@ -351,11 +353,14 @@ public static class BaseBinding
         {
             GameLogs.Add(obj.UUID, "");
         }
+        //锁定账户
+        UserBinding.AddLockUser(obj1);
 
         var res = await Task.Run(async () =>
         {
             try
             {
+                //启动
                 return await obj.StartGame(obj1);
             }
             catch (Exception e)
@@ -387,8 +392,6 @@ public static class BaseBinding
         Funtcions.RunGC();
         if (res != null)
         {
-            UserBinding.AddLockUser(obj1);
-
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
                 _ = Task.Run(() =>
@@ -678,6 +681,15 @@ public static class BaseBinding
     /// <param name="file">文件</param>
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFile file)
+    {
+        return file.TryGetLocalPath();
+    }
+    /// <summary>
+    /// 文件转字符串
+    /// </summary>
+    /// <param name="file">文件</param>
+    /// <returns>路径字符串</returns>
+    public static string? GetPath(this IStorageItem file)
     {
         return file.TryGetLocalPath();
     }

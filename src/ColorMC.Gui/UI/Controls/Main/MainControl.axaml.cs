@@ -190,6 +190,10 @@ public partial class MainControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
+                if (Obj?.Obj.UUID == obj.UUID)
+                {
+                    ItemInfo.SetGame(obj);
+                }
                 con.SetLaunch(false);
             });
         }

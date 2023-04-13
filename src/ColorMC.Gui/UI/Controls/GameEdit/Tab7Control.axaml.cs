@@ -28,8 +28,19 @@ public partial class Tab7Control : UserControl
         CheckBox1.Click += CheckBox1_Click;
 
         Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
 
         TextEditor1.PointerWheelChanged += TextEditor1_PointerWheelChanged;
+    }
+
+    private async void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        var res = await GameBinding.Launch(Obj, false);
+        if (!res.Item1)
+        {
+            var window = App.FindRoot(this);
+            window.Info.Show(res.Item2);
+        }
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

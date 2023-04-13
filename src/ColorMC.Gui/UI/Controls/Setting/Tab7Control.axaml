@@ -25,19 +25,11 @@
                 <Label Content="{setting:Localize SettingWindow.Tab7.Text1}" FontSize="30" />
                 <Label Content="{setting:Localize SettingWindow.Tab7.Text2}" FontSize="30" />
                 <StackPanel Orientation="Horizontal">
-                    <Label Content="Core:" FontSize="20" />
+                    <Label Content="{setting:Localize SettingWindow.Tab7.Text6}" FontSize="20" />
                     <Label
                         Name="Label1"
                         Content="1.0.0"
-                        FontSize="20" />
-                    <Label
-                        Margin="10,0,0,0"
-                        Content="Gui:"
-                        FontSize="20" />
-                    <Label
-                        Name="Label2"
-                        Content="A1"
-                        FontSize="20" />
+                        FontSize="20" /> 
                 </StackPanel>
 
                 <Button

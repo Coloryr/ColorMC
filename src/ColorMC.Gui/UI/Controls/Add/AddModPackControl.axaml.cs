@@ -9,6 +9,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
+using Avalonia.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -51,6 +52,16 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
         Input2.PropertyChanged += Input2_PropertyChanged;
         Input3.PropertyChanged += Input3_PropertyChanged;
+
+        Input1.KeyDown += Input1_KeyDown;
+    }
+
+    private void Input1_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            Button1_Click(null, null);
+        }
     }
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
@@ -393,6 +404,12 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
+        if (!string.IsNullOrWhiteSpace(Input1.Text) && Input2.Value != 0)
+        {
+            Input2.Value = 0;
+            return;
+        }
+
         Load();
     }
 
