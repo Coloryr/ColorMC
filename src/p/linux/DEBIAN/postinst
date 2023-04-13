@@ -1,4 +1,2 @@
-#!/bin/sh
-
 chmod a+x /usr/share/applications/ColorMC.desktop
 chmod a+x /usr/share/ColorMC/ColorMC.Launcher
