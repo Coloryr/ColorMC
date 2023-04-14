@@ -40,8 +40,16 @@ internal class Program
             Console.WriteLine($"ColorMC.Core.dll:{GenSha1(file)}");
         }
         {
+            using var file = File.OpenRead($"tmp/ColorMC.Core.pdb");
+            Console.WriteLine($"ColorMC.Core.pdb:{GenSha1(file)}");
+        }
+        {
             using var file = File.OpenRead($"tmp/ColorMC.Gui.dll");
             Console.WriteLine($"ColorMC.Gui.dll:{GenSha1(file)}");
+        }
+        {
+            using var file = File.OpenRead($"tmp/ColorMC.Gui.pdb");
+            Console.WriteLine($"ColorMC.Gui.pdb:{GenSha1(file)}");
         }
     }
 

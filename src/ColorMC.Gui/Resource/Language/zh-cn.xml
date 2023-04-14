@@ -179,9 +179,6 @@
 	<String Key="SettingWindow.Tab3.Info1">正在进行更新检查</String>
 	<String Key="SettingWindow.Tab3.Info2">检测到新版本，是否要更新</String>
 	<String Key="SettingWindow.Tab3.Info3">已经是最新版了</String>
-	<String Key="SettingWindow.Tab3.Error1">无法进行更新</String>
-	<String Key="SettingWindow.Tab3.Error2">无法进行检查</String>
-	<String Key="SettingWindow.Tab3.Error3">检查更新失败</String>
 
 	<String Key="SettingWindow.Tab4.Text1">Jvm参数设置</String>
 	<String Key="SettingWindow.Tab4.Text2">垃圾回收器设置</String>
@@ -781,6 +778,7 @@
 	<String Key="Gui.Info17">导入光影包</String>
 	<String Key="Gui.Info18">导入结构文件</String>
 	<String Key="Gui.Info19">是否下载前置Mod</String>
+	<String Key="Gui.Info20">没有更新消息</String>
 	
 	<String Key="Warn1">配置为空，旧版配置文件会被覆盖</String>
 	<String Key="Error1">背景图片加载失败</String>
@@ -803,6 +801,8 @@
 	<String Key="Gui.Error18">更新服务器文件失败</String>
 	<String Key="Gui.Error19">更新服务器文件错误</String>
 	<String Key="Gui.Error20">世界备份错误</String>
+	<String Key="Gui.Error21">启动器检查更新错误</String>
+	<String Key="Gui.Error22">启动器下载更新失败</String>
 
 	<String Key="ToolTip.Text1">最小化</String>
 	<String Key="ToolTip.Text2">最大化</String>

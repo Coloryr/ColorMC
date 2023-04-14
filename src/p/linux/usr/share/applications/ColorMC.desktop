@@ -1,5 +1,6 @@
 [Desktop Entry]
 Name=ColorMC
 Type=Application
-Exec=/usr/share/ColorMC/ColorMC.Launcher
-Icon=/usr/share/icons/colormc.png
+Exec=ColorMC.Launcher
+Icon=colormc
+Categories=Game;

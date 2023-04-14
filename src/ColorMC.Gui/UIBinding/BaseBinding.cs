@@ -56,6 +56,7 @@ public static class BaseBinding
 
         try
         {
+            UpdateChecker.Init();
             Media.Init();
         }
         catch (Exception e)

@@ -45,30 +45,18 @@ public partial class Tab3Control : UserControl
 
     private void Button3_Click(object? sender, RoutedEventArgs e)
     {
-        var window = App.FindRoot(VisualRoot);
-        if (ColorMCGui.Update == null)
-        {
-            window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error1"));
-            return;
-        }
-
-        ColorMCGui.Update();
+        UpdateChecker.StartUpdate();
     }
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        if (ColorMCGui.Update == null || ColorMCGui.Check == null)
-        {
-            window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error2"));
-            return;
-        }
         await window.Info1.Show(App.GetLanguage("SettingWindow.Tab3.Info1"));
-        var res = await ColorMCGui.Check();
+        var res = await UpdateChecker.CheckOne();
         window.Info1.Close();
         if (res.Item1 == null)
         {
-            window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Error3"));
+            window.Info.Show(App.GetLanguage("Gui.Error21"));
             return;
         }
         else if (res.Item1 == true)
@@ -76,7 +64,7 @@ public partial class Tab3Control : UserControl
             var res1 = await window.Info6.ShowWait(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
             if (!res1)
             {
-                ColorMCGui.Update();
+                UpdateChecker.StartUpdate();
             }
         }
         else

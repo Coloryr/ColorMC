@@ -78,7 +78,7 @@ public partial class MainControl : UserControl, IUserControl
             Grid2.IsVisible = true;
             Label1.Content = App.GetLanguage("Gui.Info6");
         }
-        else if (e.Data.Contains(DataFormats.FileNames))
+        else if (e.Data.Contains(DataFormats.Files))
         {
             Grid2.IsVisible = true;
             Label1.Content = App.GetLanguage("Gui.Info7");
@@ -105,13 +105,15 @@ public partial class MainControl : UserControl, IUserControl
                 App.ShowUser(str);
             }
         }
-        else if (e.Data.Contains(DataFormats.FileNames))
+        else if (e.Data.Contains(DataFormats.Files))
         {
-            var files = e.Data.GetFileNames();
+            var files = e.Data.GetFiles();
             if (files == null || files.Count() > 1)
                 return;
 
-            var item = files.First();
+            var item = files.First().GetPath();
+            if (item == null)
+                return;
             if (item.EndsWith(".zip") || item.EndsWith(".mrpack"))
             {
                 App.ShowAddGame(item);
@@ -190,7 +192,7 @@ public partial class MainControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (Obj?.Obj.UUID == obj.UUID)
+                if (Obj?.Obj?.UUID == obj.UUID)
                 {
                     ItemInfo.SetGame(obj);
                 }
@@ -243,9 +245,10 @@ public partial class MainControl : UserControl, IUserControl
 #if !DEBUG
         if (ConfigBinding.GetAllConfig().Item1?.Http?.CheckUpdate == true)
         {
-            ColorMCGui.InitDone();
+            UpdateChecker.Check();
         }
 #endif
+        //UpdateChecker.Check();
 
         MotdLoad();
 

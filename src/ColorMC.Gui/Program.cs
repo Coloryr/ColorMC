@@ -1,9 +1,13 @@
 using Avalonia;
 using Avalonia.Media;
 using ColorMC.Core;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,9 +16,6 @@ namespace ColorMC.Gui;
 public class ColorMCGui
 {
     public static string RunDir { get; private set; }
-    public static Action InitDone { get; private set; }
-    public static Func<Task<(bool?, string?)>> Check { get; private set; }
-    public static Action Update { get; private set; }
 
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 
@@ -30,11 +31,9 @@ public class ColorMCGui
         {
             SystemInfo.Init();
 
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-
             RunDir = SystemInfo.Os switch
             {
-                OsType.Linux => $"{path}/ColorMC/",
+                OsType.Linux => $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/",
                 OsType.MacOS => "/Users/shared/ColorMC/",
                 _ => AppContext.BaseDirectory
             };
@@ -51,39 +50,6 @@ public class ColorMCGui
             Logs.Error("run fail", e);
             App.Close();
         }
-    }
-
-    public static void SetInit(Action ac)
-    {
-        InitDone = ac;
-    }
-
-    public static Task<bool> HaveUpdate(string data)
-    {
-        return App.HaveUpdate(data);
-    }
-
-    public static void CheckUpdateFail()
-    {
-        if (App.MainWindow == null)
-            return;
-
-        App.MainWindow.Window.Info1.Show(App.GetLanguage("Error13"));
-    }
-
-    public static void Quit()
-    {
-        App.Close();
-    }
-
-    public static void SetCheck(Func<Task<(bool?, string?)>> action)
-    {
-        Check = action;
-    }
-
-    public static void SetUpdate(Action action)
-    {
-        Update = action;
     }
 
     public static AppBuilder BuildAvaloniaApp()
