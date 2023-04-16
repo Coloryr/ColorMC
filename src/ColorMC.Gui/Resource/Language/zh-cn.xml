@@ -390,13 +390,14 @@
 	<String Key="GameEditWindow.Tab4.Info3">删除完成</String>
 	<String Key="GameEditWindow.Tab4.Info4">是否要删除Mod {0}</String>
 	<String Key="GameEditWindow.Tab4.Info5">损坏的Mod</String>
-	<String Key="GameEditWindow.Tab4.Info6">读取到有{0}个破损的Mod文件</String>
 	<String Key="GameEditWindow.Tab4.Info7">请选择要导入的Mod文件</String>
 	<String Key="GameEditWindow.Tab4.Info8">Mod文件</String>
 	<String Key="GameEditWindow.Tab4.Info9">是否要删除这 {0} 个Mod</String>
 	<String Key="GameEditWindow.Tab4.Info10">正在检测Mod版本更新</String>
 	<String Key="GameEditWindow.Tab4.Info11">检测到 {0} 个Mod有新版本，是否要更新</String>
 	<String Key="GameEditWindow.Tab4.Info12">正在更新Mod</String>
+	<String Key="GameEditWindow.Tab4.Info13">标记的Mod都是最新的</String>
+	<String Key="GameEditWindow.Tab4.Info14">发现有 {0} 组相同的modid正在启用</String>
 	<String Key="GameEditWindow.Tab4.Error1">Mod列表加载失败</String>
 	<String Key="GameEditWindow.Tab4.Error2">Mod导入失败</String>
 	<String Key="GameEditWindow.Tab4.Error3">Mod启用/禁用失败</String>

@@ -32,7 +32,10 @@ public static class Mods
         var files = info.GetFiles();
 
         //多线程同时检查
-        await Parallel.ForEachAsync(files, async (item, cancel) =>
+        await Parallel.ForEachAsync(files, new ParallelOptions() 
+        {
+            MaxDegreeOfParallelism = 1
+        }, async(item, cancel) =>
         {
             if (item.Extension is not (".zip" or ".jar" or ".disable"))
                 return;
@@ -109,6 +112,40 @@ public static class Mods
                             return;
                         }
                     }
+                }
+
+                //forge coremod
+                item1 = zFile.GetEntry("META-INF/fml_cache_annotation.json");
+                if (item1 != null)
+                {
+                    using var stream1 = zFile.GetInputStream(item1);
+                    using var stream = new MemoryStream();
+                    await stream1.CopyToAsync(stream, cancel);
+                    var data = Encoding.UTF8.GetString(stream.ToArray());
+                    var obj1 = JObject.Parse(data);
+                    var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
+                    if (obj2 == null)
+                        return;
+
+                    ModObj obj3 = new()
+                    {
+                        V2 = true,
+                        Loader = Loaders.Forge,
+                        Local = Path.GetFullPath(item.FullName),
+                        Disable = item.Extension is ".disable",
+                        Game = obj,
+                        modid = obj2["modId"]?["value"]?.ToString(),
+                        name = obj2["names"]?["value"]?.ToString(),
+                        version = obj2["version"]?["value"]?.ToString(),
+                        dependants = new() { obj2["dependencies"]?["value"]?.ToString() },
+                        Sha1 = sha1
+                    };
+
+                    obj3.name ??= obj3.modid;
+
+                    list.Add(obj3);
+                    find = true;
+                    return;
                 }
 
                 //forge 1.13及以上
@@ -236,6 +273,43 @@ public static class Mods
         list1.Sort(ModComparer.Instance);
 
         return list1;
+    }
+
+    public static JContainer? FindKey(this JObject obj, string key)
+    {
+        foreach (var item in obj)
+        {
+            if (item.Key == key)
+            {
+                return item.Value?.Parent;
+            }
+
+            if (item.Value is JObject obj1)
+            {
+                return FindKey(obj1, key);
+            }
+            else if (item.Value is JArray arry)
+            {
+                return FindKey(arry, key);
+            }
+        }
+
+        return null;
+    }
+
+    public static JContainer? FindKey(this JArray obj, string key)
+    {
+        foreach (var item in obj)
+        {
+            if (item is JObject obj1)
+            {
+                var data = FindKey(obj1, key);
+                if (data != null)
+                    return data.Parent;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>

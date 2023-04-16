@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
@@ -126,6 +127,10 @@ public partial class Tab4Control : UserControl
 
                 Load();
             }
+        }
+        else
+        {
+            window.Info.Show(App.GetLanguage("GameEditWindow.Tab4.Info13"));
         }
     }
 
@@ -328,12 +333,13 @@ public partial class Tab4Control : UserControl
 
         Items.AddRange(res);
 
-        if (count != 0)
+        var list = res.Where(a => a.Obj.Broken == false && !a.Obj.Disable).GroupBy(a => a.Obj.modid);
+        count = list.Count(a => a.Count() > 1);
+        if (count > 0)
         {
             window.Info.Show(string.Format(App
-                .GetLanguage("GameEditWindow.Tab4.Info6"), count));
+                    .GetLanguage("GameEditWindow.Tab4.Info14"), count));
         }
-
         Load1();
     }
 

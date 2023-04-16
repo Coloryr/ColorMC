@@ -142,4 +142,5 @@ UI调整 调整Tabs边框 Tabs滚动条 okl
 修复Motd不刷新问题 okl
 
 2023.4.16
-添加CoreMod的识别
+添加CoreMod的识别 okl
+添加Mod重复检测 okl
