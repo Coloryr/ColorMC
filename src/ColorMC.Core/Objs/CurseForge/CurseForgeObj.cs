@@ -12,10 +12,15 @@ public enum CurseForgeSortField
     GameVersion = 8
 }
 
+public record CurseForgeObj
+{ 
+    public CurseForgeObjList.Data Data { get; set; }
+}
+
 /// <summary>
 /// CF 数据列表
 /// </summary>
-public record CurseForgeObj
+public record CurseForgeObjList
 {
     public record Data
     {

@@ -72,6 +72,7 @@ public static class BaseClient
             LoginClient = new();
         }
 
+        LoginClient.Timeout = TimeSpan.FromSeconds(10);
         DownloadClient.Timeout = TimeSpan.FromSeconds(10);
 
         ColorMCCore.Stop += ColorMCCore_Stop;

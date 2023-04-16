@@ -51,7 +51,7 @@ public partial class Tab3Control : UserControl
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        await window.Info1.Show(App.GetLanguage("SettingWindow.Tab3.Info1"));
+        window.Info1.Show(App.GetLanguage("SettingWindow.Tab3.Info1"));
         var res = await UpdateChecker.CheckOne();
         window.Info1.Close();
         if (res.Item1 == null)

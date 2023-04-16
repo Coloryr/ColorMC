@@ -40,7 +40,7 @@
                         Width="80"
                         Margin="10,5,5,5"
                         VerticalAlignment="Center"
-                        Content="{setting:Localize AddModPackWindow.Text2}" />
+                        Content="{setting:Localize Text.GameVersion}" />
                     <ComboBox
                         Name="ComboBox3"
                         Width="130"
@@ -140,7 +140,7 @@
                 <Label
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text1}" />
+                    Content="{setting:Localize Text.GameVersion}" />
                 <ComboBox
                     Name="ComboBox6"
                     Width="140"

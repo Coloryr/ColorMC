@@ -28,7 +28,15 @@ public partial class Info1Control : UserControl
         call?.Invoke();
     }
 
-    public Task Close()
+    public void Close()
+    {
+        Display = false;
+
+        Button_Cancel.IsEnabled = false;
+        App.CrossFade300.Start(this, null, CancellationToken.None);
+    }
+
+    public Task CloseAsync()
     {
         Display = false;
 
@@ -43,7 +51,24 @@ public partial class Info1Control : UserControl
         App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
-    public Task Show(string title)
+    public void Show(string title)
+    {
+        if (Display)
+        {
+            NextText(title);
+        }
+        Display = true;
+
+        Button_Cancel.IsEnabled = true;
+        TextBlock_Text.Text = title;
+        call = null;
+
+        Button_Cancel.IsVisible = false;
+
+        App.CrossFade300.Start(null, this, CancellationToken.None);
+    }
+
+    public Task ShowAsync(string title)
     {
         if (Display)
         {

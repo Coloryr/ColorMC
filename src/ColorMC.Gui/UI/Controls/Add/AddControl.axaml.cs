@@ -28,6 +28,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
     private readonly Dictionary<int, string> Categories = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private readonly ObservableCollection<string> List4 = new();
+    public readonly ObservableCollection<DownloadModDisplayObj> List7 = new();
 
     /// <summary>
     /// Optifine
@@ -41,6 +42,9 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
     private bool display = false;
     private FileType now;
     private bool set;
+    private bool download;
+    private (DownloadItemObj, ModInfoObj) modsave;
+    private bool isdownload { get { return download; } set { download = value; StackPanel1.IsEnabled = !download; } }
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -75,6 +79,9 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         DataGrid1.Items = List6;
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
 
+        DataGrid2.Items = List7;
+        DataGrid2.DoubleTapped += DataGrid2_DoubleTapped;
+
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
         ButtonSearch.Click += ButtonSearch_Click;
@@ -83,11 +90,67 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
         Button5.Click += Button5_Click;
+        Button6.Click += Button6_Click;
+        Button7.Click += Button7_Click;
+        Button8.Click += Button8_Click;
 
         Input2.PropertyChanged += Input2_PropertyChanged;
         Input3.PropertyChanged += Input3_PropertyChanged;
 
         Input1.KeyDown += Input1_KeyDown;
+    }
+
+    private void DataGrid2_DoubleTapped(object? sender, TappedEventArgs e)
+    {
+        if (e.Source is DownloadModDisplayObj obj)
+        {
+            obj.Download = !obj.Download;
+        }
+    }
+
+    private void Button8_Click(object? sender, RoutedEventArgs e)
+    {
+        foreach (var item in List7)
+        {
+            item.Download = true;
+        }
+        DownloadMod();
+    }
+
+    private void Button7_Click(object? sender, RoutedEventArgs e)
+    {
+        Last?.SetNoDownloadNow();
+        List7.Clear();
+        isdownload = false;
+        ModDownloadClose();
+    }
+
+    private void Button6_Click(object? sender, RoutedEventArgs e)
+    {
+        DownloadMod();
+    }
+
+    private async void DownloadMod()
+    {
+        var window = App.FindRoot(VisualRoot);
+        window.Info1.Show(App.GetLanguage("AddWindow.Info5"));
+        var list = List7.Where(item => item.Download)
+                        .Select(item => item.Items[item.SelectVersion]).ToList();
+        list.Add(modsave);
+        bool res;
+        res = await WebBinding.DownloadMod(Obj, list);
+        window.Info1.Close();
+        if (!res)
+        {
+            window.Info.Show(App.GetLanguage("AddWindow.Error5"));
+            Last?.SetNoDownloadNow();
+        }
+        else
+        {
+            Last?.SetDownloaded();
+        }
+        isdownload = false;
+        ModDownloadClose();
     }
 
     private void Input1_KeyDown(object? sender, KeyEventArgs e)
@@ -110,11 +173,11 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
         var window = App.FindRoot(VisualRoot);
         var res = await window.Info.ShowWait(string.Format(
-            App.GetLanguage("AddGameWindow.Control1.Info1"), item.Version));
+            App.GetLanguage("AddGameWindow.Info20"), item.Version));
         if (!res)
             return;
-        window.Info1.Show(App.GetLanguage("AddGameWindow.Control1.Info2"));
-        var res1 = await GameBinding.DownloadOptifine(Obj, item);
+        window.Info1.Show(App.GetLanguage("AddGameWindow.Info21"));
+        var res1 = await WebBinding.DownloadOptifine(Obj, item);
         window.Info1.Close();
         if (res1.Item1 == false)
         {
@@ -122,7 +185,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         }
         else
         {
-            window.Info2.Show(App.GetLanguage("AddGameWindow.Control1.Info3"));
+            window.Info2.Show(App.GetLanguage("AddGameWindow.Info22"));
             (window as AddControl)?.OptifineClsoe();
         }
     }
@@ -133,12 +196,12 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         List4.Clear();
         List5.Clear();
         List6.Clear();
-        window.Info1.Show(App.GetLanguage("AddGameWindow.Control1.Info4"));
-        var list = await GameBinding.GetOptifine();
+        window.Info1.Show(App.GetLanguage("AddGameWindow.Info23"));
+        var list = await WebBinding.GetOptifine();
         window.Info1.Close();
         if (list == null)
         {
-            window.Info.Show(App.GetLanguage("AddGameWindow.Control1.Error1"));
+            window.Info.Show(App.GetLanguage("AddGameWindow.Error9"));
             return;
         }
 
@@ -216,12 +279,13 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             window.Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetCurseForgeGameVersions();
             var list1 = await GameBinding.GetCurseForgeCategories(now);
+            window.Info1.Close();
             if (list == null || list1 == null)
             {
 #if !DEBUG
                 window.Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+                window.Close();
 #endif
-                window.Info1.Close();
                 return;
             }
             List4.AddRange(list);
@@ -265,12 +329,13 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             window.Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetModrinthGameVersions();
             var list1 = await GameBinding.GetModrinthCategories(now);
+            window.Info1.Close();
             if (list == null || list1 == null)
             {
 #if !DEBUG
                 window.Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+                window.Close();
 #endif
-                window.Info1.Close();
                 return;
             }
             List4.AddRange(list);
@@ -334,7 +399,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         List1.Clear();
         List3.Clear();
 
-        List2 = GameBinding.GetSourceList(now);
+        List2 = WebBinding.GetSourceList(now);
         List2.ForEach(item => List3.Add(item.GetName()));
     }
 
@@ -438,6 +503,13 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     public void Install()
     {
+        if (isdownload)
+        {
+            var window = App.FindRoot(VisualRoot);
+            window.Info.Show(App.GetLanguage("AddWindow.Info9"));
+            return;
+        }
+
         App.CrossFade300.Start(null, Grid1, CancellationToken.None);
         Load1();
     }
@@ -451,7 +523,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             if (type == SourceType.CurseForge)
             {
                 GameBinding.SetModInfo(Obj,
-                    data.Data as CurseForgeObj.Data.LatestFiles);
+                    data.Data as CurseForgeObjList.Data.LatestFiles);
             }
             else if (type == SourceType.Modrinth)
             {
@@ -461,7 +533,9 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             window.Close();
             return;
         }
+
         var last = Last!;
+        isdownload = true;
         last?.SetNowDownload();
         await App.CrossFade300.Start(Grid1, null, CancellationToken.None);
         bool res = false;
@@ -486,15 +560,55 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             {
                 res = type switch
                 {
-                    SourceType.CurseForge => await GameBinding.Download(item.World,
-                    data.Data as CurseForgeObj.Data.LatestFiles),
-                    SourceType.Modrinth => await GameBinding.Download(item.World,
-                    data.Data as ModrinthVersionObj)
+                    SourceType.CurseForge => await WebBinding.Download(item.World,
+                    data.Data as CurseForgeObjList.Data.LatestFiles),
+                    SourceType.Modrinth => await WebBinding.Download(item.World,
+                    data.Data as ModrinthVersionObj),
+                    _ => false
                 };
+                isdownload = false;
             }
             catch (Exception e)
             {
                 Logs.Error(App.GetLanguage("AddWindow.Error7"), e);
+                res = false;
+            }
+        }
+        else if (now == FileType.Mod)
+        {
+            try
+            {
+                var list = type switch
+                {
+                    SourceType.CurseForge => await WebBinding.DownloadMod(Obj,
+                    data.Data as CurseForgeObjList.Data.LatestFiles),
+                    SourceType.Modrinth => await WebBinding.DownloadMod(Obj,
+                    data.Data as ModrinthVersionObj),
+                    _ => (null, null, null)
+                };
+                if (list.Item1 == null)
+                {
+                    window.Info.Show(App.GetLanguage("AddWindow.Error9"));
+                    return;
+                }
+                if (list.Item3!.Count == 0)
+                {
+                    res = await WebBinding.DownloadMod(Obj, 
+                        new List<(DownloadItemObj, ModInfoObj)>() { (list.Item1!, list.Item2!) });
+                    isdownload = false;
+                }
+                else
+                {
+                    List7.Clear();
+                    List7.AddRange(list.Item3);
+                    modsave = (list.Item1!, list.Item2!);
+                    App.CrossFade300.Start(null, Grid4, CancellationToken.None);
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                Logs.Error(App.GetLanguage("AddWindow.Error8"), e);
                 res = false;
             }
         }
@@ -504,11 +618,13 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             {
                 res = type switch
                 {
-                    SourceType.CurseForge => await GameBinding.Download(window, now, Obj!,
-                    data.Data as CurseForgeObj.Data.LatestFiles),
-                    SourceType.Modrinth => await GameBinding.Download(now, Obj!,
-                    data.Data as ModrinthVersionObj)
+                    SourceType.CurseForge => await WebBinding.Download(now, Obj,
+                    data.Data as CurseForgeObjList.Data.LatestFiles),
+                    SourceType.Modrinth => await WebBinding.Download(now, Obj,
+                    data.Data as ModrinthVersionObj),
+                    _ => false
                 };
+                isdownload = false;
             }
             catch (Exception e)
             {
@@ -519,21 +635,20 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         if (res)
         {
             window.Info2.Show(App.GetLanguage("AddWindow.Info6"));
-            if (last == null)
-            {
-                window.Close();
-                return;
-            }
-            last.SetDownloaded();
+            last?.SetDownloaded();
         }
         else
         {
+            last?.SetNoDownloadNow();
             window.Info.Show(App.GetLanguage("AddWindow.Error5"));
         }
     }
 
     public void SetSelect(FileItemControl last)
     {
+        if (isdownload)
+            return;
+
         Button2.IsEnabled = true;
         Last?.SetSelect(false);
         Last = last;
@@ -546,7 +661,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         if (window == null)
             return;
         window.Info1.Show(App.GetLanguage("AddWindow.Info2"));
-        var data = await GameBinding.GetList(now, List2[ComboBox2.SelectedIndex],
+        var data = await WebBinding.GetList(now, List2[ComboBox2.SelectedIndex],
             ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!,
             ComboBox4.SelectedIndex, ComboBox5.SelectedIndex < 0 ? "" :
                 Categories[ComboBox5.SelectedIndex], Obj.Loader);
@@ -592,6 +707,11 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         window.Info1.Close();
     }
 
+    public void ModDownloadClose()
+    {
+        App.CrossFade300.Start(Grid4, null, CancellationToken.None);
+    }
+
     public void OptifineClsoe()
     {
         App.CrossFade300.Start(Grid2, null, CancellationToken.None);
@@ -611,14 +731,14 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         if (type == SourceType.CurseForge)
         {
             Input3.IsEnabled = true;
-            list = await GameBinding.GetPackFile(type, id ??
-                (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!,
+            list = await WebBinding.GetPackFile(type, id ??
+                (Last!.Data.Data as CurseForgeObjList.Data)!.id.ToString(), (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Obj.Loader, now);
         }
         else if (type == SourceType.Modrinth)
         {
             Input3.IsEnabled = false;
-            list = await GameBinding.GetPackFile(type, id ??
+            list = await WebBinding.GetPackFile(type, id ??
                 (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Obj.Loader, now);
         }

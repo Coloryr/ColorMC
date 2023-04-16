@@ -22,8 +22,10 @@ public class Program
     public static string LoadDir { get; private set; }
 
     public delegate void IN(string[] args);
+    public delegate AppBuilder IN1();
 
     public static IN MainCall;
+    public static IN1 BuildApp;
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -68,6 +70,7 @@ public class Program
             //不存在
             //启动内部的
             MainCall = ColorMCGui.Main;
+            BuildApp = ColorMCGui.BuildAvaloniaApp;
         }
         else
         {
@@ -85,6 +88,14 @@ public class Program
         }
     }
 
+#if DEBUG
+    public static AppBuilder BuildAvaloniaApp()
+    {
+        Load();
+        return BuildApp();
+    }
+#endif
+
     private static bool NotHaveDll(string dir)
     {
         return !File.Exists($"{dir}ColorMC.Core.dll")
@@ -92,7 +103,7 @@ public class Program
             || !File.Exists($"{dir}ColorMC.Gui.dll")
             || !File.Exists($"{dir}ColorMC.Gui.pdb");
     }
-    
+
     private static void Load()
     {
 #if DEBUG
@@ -119,5 +130,8 @@ public class Program
 
         MainCall = (Delegate.CreateDelegate(typeof(IN),
                 mis.GetMethod("Main")!) as IN)!;
+
+        BuildApp = (Delegate.CreateDelegate(typeof(IN1),
+                mis.GetMethod("BuildAvaloniaApp")!) as IN1)!;
     }
 }

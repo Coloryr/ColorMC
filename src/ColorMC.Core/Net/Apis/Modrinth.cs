@@ -2,6 +2,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -133,24 +134,24 @@ public static class Modrinth
             pagesize, categoryId, ClassMod, CategoriesDataPack);
     }
 
-    ///// <summary>
-    ///// 获取
-    ///// </summary>
-    ///// <param name = "id" ></ param >
-    ///// < returns ></ returns >
-    //public static async Task<ModrinthProjectObj?> Project(string id)
-    //{
-    //    try
-    //    {
-    //        var res = await BaseClient.DownloadClient.GetStringAsync($"{Url}project/{id}");
-    //        return JsonConvert.DeserializeObject<ModrinthProjectObj>(res);
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        Logs.Error("get fail", e);
-    //        return null;
-    //    }
-    //}
+    /// <summary>
+    /// 获取指定版本号的内容
+    /// </summary>
+    /// <param name="id">项目ID</param>
+    /// <param name="version">版本ID</param>
+    public static async Task<ModrinthVersionObj?> GetVersion(string id, string version)
+    {
+        try
+        {
+            var res = await BaseClient.DownloadClient.GetStringAsync($"{Url}project/{id}/version/{version}");
+            return JsonConvert.DeserializeObject<ModrinthVersionObj>(res);
+        }
+        catch (Exception e)
+        {
+            Logs.Error("get fail", e);
+            return null;
+        }
+    }
 
 
     /// <summary>
@@ -160,7 +161,7 @@ public static class Modrinth
     /// <param name="mc">游戏版本</param>
     /// <param name="loader">加载器类型</param>
     /// <returns></returns>
-    public static async Task<List<ModrinthVersionObj>?> Version(string id, string? mc, Loaders loader)
+    public static async Task<List<ModrinthVersionObj>?> GetFileVersions(string id, string? mc, Loaders loader)
     {
         try
         {
@@ -240,5 +241,31 @@ public static class Modrinth
         ModrinthGameVersions = list1;
 
         return list1;
+    }
+
+    public static async Task<ConcurrentBag<((string Name, string ModId) Info, 
+        List<ModrinthVersionObj> List)>>
+        GetModDependencies(ModrinthVersionObj data, string mc, Loaders loader)
+    {
+        var list = new ConcurrentBag<((string Name, string ModId) Info, List<ModrinthVersionObj> List)>();
+        if (data.dependencies == null || data.dependencies.Count == 0)
+        {
+            return list;
+        }
+        await Parallel.ForEachAsync(data.dependencies, async (item, cancel) =>
+        {
+            var res = await GetVersion(item.project_id, item.version_id);
+            if (res == null)
+                return;
+
+            list.Add(((res.name, res.project_id), new() { res }));
+
+            foreach (var item3 in await GetModDependencies(res, mc, loader))
+            {
+                list.Add(item3);
+            }
+        });
+
+        return list;
     }
 }

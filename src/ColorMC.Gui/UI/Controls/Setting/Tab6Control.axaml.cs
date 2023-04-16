@@ -112,6 +112,8 @@ public partial class Tab6Control : UserControl
     private void CheckBox_Click(object? sender, RoutedEventArgs e)
     {
         Save();
+
+        App.MainWindow?.MotdLoad();
     }
 
     private void TextBox_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)

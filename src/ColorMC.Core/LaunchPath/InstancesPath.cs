@@ -1055,7 +1055,7 @@ public static class InstancesPath
     /// <param name="name">名字</param>
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, GameSettingObj?)> InstallFromCurseForge(CurseForgeObj.Data.LatestFiles data, string? name, string? group)
+    public static async Task<(bool, GameSettingObj?)> InstallFromCurseForge(CurseForgeObjList.Data.LatestFiles data, string? name, string? group)
     {
         data.FixDownloadUrl();
 

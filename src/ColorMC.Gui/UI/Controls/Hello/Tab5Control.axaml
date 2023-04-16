@@ -20,7 +20,7 @@
                 <Label
                     Width="120"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddGameWindow.Text3}" />
+                    Content="{setting:Localize Text.GameVersion}" />
                 <ComboBox Name="ComboBox1" Width="200" />
                 <CheckBox
                     Name="CheckBox_Release"

@@ -26,7 +26,7 @@
                 <Label
                     Margin="5"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddGameWindow.Text3}" />
+                    Content="{setting:Localize Text.GameVersion}" />
 
                 <StackPanel Orientation="Horizontal">
 

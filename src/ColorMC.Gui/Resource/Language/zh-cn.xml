@@ -1,5 +1,5 @@
 <ResourceDictionary>
-	
+
 	<String Key="Name">ColorMC</String>
 
 	<String Key="MainWindow.Title">ColorMC 主界面</String>
@@ -120,7 +120,7 @@
 	<String Key="SettingWindow.Tab1.Info2">已重置</String>
 	<String Key="SettingWindow.Tab1.Info3">是否删除所有账户</String>
 	<String Key="SettingWindow.Tab1.Info4">已清空</String>
-	
+
 	<String Key="SettingWindow.Tab2.Text1">语言选择</String>
 	<String Key="SettingWindow.Tab2.Text2">修改背景图片</String>
 	<String Key="SettingWindow.Tab2.Text3">背景图片地址</String>
@@ -302,7 +302,7 @@
 	<String Key="HelloWindow.Tab4.Text1">添加账户</String>
 	<String Key="HelloWindow.Tab4.Text2">账户类型</String>
 	<String Key="HelloWindow.Tab4.Text3">现有账户</String>
-	
+
 	<String Key="HelloWindow.Tab6.Text1">最后确认</String>
 	<String Key="HelloWindow.Tab6.Text2">目前导入Java数目：</String>
 	<String Key="HelloWindow.Tab6.Text3">目前登录账户数目：</String>
@@ -327,7 +327,6 @@
 	<String Key="GameEditWindow.Tabs.Text11">光影包</String>
 	<String Key="GameEditWindow.Tabs.Text12">结构文件</String>
 
-	<String Key="GameEditWindow.Tab1.Text1">游戏版本</String>
 	<String Key="GameEditWindow.Tab1.Text2">刷新版本</String>
 	<String Key="GameEditWindow.Tab1.Text3">标记为整合包</String>
 	<String Key="GameEditWindow.Tab1.Text4">注意：Optifine只会下载到mods文件夹</String>
@@ -511,7 +510,6 @@
 	<String Key="AddGameWindow.Title">ColorMC 添加游戏实例</String>
 	<String Key="AddGameWindow.Text1">添加实例</String>
 	<String Key="AddGameWindow.Text2">实例名字</String>
-	<String Key="AddGameWindow.Text3">游戏版本</String>
 	<String Key="AddGameWindow.Text4">Mod加载器</String>
 	<String Key="AddGameWindow.Text5">游戏分组</String>
 	<String Key="AddGameWindow.Text6">正式版</String>
@@ -525,6 +523,7 @@
 	<String Key="AddGameWindow.Text14">添加分组</String>
 	<String Key="AddGameWindow.Text15">导入压缩包</String>
 	<String Key="AddGameWindow.Text16">下载Optifine</String>
+	<String Key="AddGameWindow.DataGrid.Text1">下载Mod</String>
 	<String Key="AddGameWindow.Error1">没有实例名字</String>
 	<String Key="AddGameWindow.Error2">没有选择版本</String>
 	<String Key="AddGameWindow.Error3">导入错误</String>
@@ -533,6 +532,7 @@
 	<String Key="AddGameWindow.Error6">请输入名字</String>
 	<String Key="AddGameWindow.Error7">游戏分组添加失败</String>
 	<String Key="AddGameWindow.Error8">实例名字重复</String>
+	<String Key="AddGameWindow.Error9">Optifine版本加载失败</String>
 	<String Key="AddGameWindow.Info1">组名</String>
 	<String Key="AddGameWindow.Info2">添加成功</String>
 	<String Key="AddGameWindow.Info3">正在获取Mod加载器信息</String>
@@ -552,22 +552,15 @@
 	<String Key="AddGameWindow.Info17">正在导入压缩包</String>
 	<String Key="AddGameWindow.Info18">请选择游戏压缩包类型</String>
 	<String Key="AddGameWindow.Info19">正在下载资源中，无法添加实例</String>
+	<String Key="AddGameWindow.Info20">是否要安装 {0}</String>
+	<String Key="AddGameWindow.Info21">正在下载</String>
+	<String Key="AddGameWindow.Info22">已下载</String>
+	<String Key="AddGameWindow.Info23">正在加载Optifine列表</String>
 	<String Key="AddGameWindow.Tab1.Text1">刷新加载器</String>
 	<String Key="AddGameWindow.Tab1.Text2">刷新版本</String>
-	<String Key="AddGameWindow.Control1.Text1">下载Optifine</String>
-	<String Key="AddGameWindow.Control1.Text2">游戏版本</String>
-	<String Key="AddGameWindow.Control1.DataGrid.Text1">游戏版本</String>
-	<String Key="AddGameWindow.Control1.DataGrid.Text2">版本</String>
-	<String Key="AddGameWindow.Control1.DataGrid.Text3">Forge版本</String>
-	<String Key="AddGameWindow.Control1.Info1">是否要安装 {0}</String>
-	<String Key="AddGameWindow.Control1.Info2">正在下载</String>
-	<String Key="AddGameWindow.Control1.Info3">已下载</String>
-	<String Key="AddGameWindow.Control1.Info4">正在加载Optifine列表</String>
-	<String Key="AddGameWindow.Control1.Error1">Optifine版本加载失败</String>
 
 	<String Key="AddModPackWindow.Title">ColorMC 添加整合包</String>
 	<String Key="AddModPackWindow.Text1">分类</String>
-	<String Key="AddModPackWindow.Text2">游戏版本</String>
 	<String Key="AddModPackWindow.Text3">名字</String>
 	<String Key="AddModPackWindow.Text4">排序</String>
 	<String Key="AddModPackWindow.Text5">页数</String>
@@ -601,9 +594,12 @@
 	<String Key="AddWindow.Title">游戏实例添加资源 {0}</String>
 	<String Key="AddWindow.Text1">资源类型</String>
 	<String Key="AddWindow.Text2">下载源</String>
-	<String Key="AddWindow.Text3">游戏版本</String>
 	<String Key="AddWindow.Text4">排序</String>
 	<String Key="AddWindow.Text5">分类</String>
+	<String Key="AddWindow.Text6">全部下载</String>
+	<String Key="AddWindow.Text7">选择下载的Mod以及前置</String>
+	<String Key="AddWindow.DataGrid.Text1">是否下载</String>
+	<String Key="AddWindow.DataGrid.Text2">前置名字</String>
 	<String Key="AddWindow.Info1">是否下载资源 {0}</String>
 	<String Key="AddWindow.Info2">正在搜索资源中</String>
 	<String Key="AddWindow.Info3">正在获取资源版本中</String>
@@ -612,6 +608,7 @@
 	<String Key="AddWindow.Info6">已下载</String>
 	<String Key="AddWindow.Info7">请选择要添加的世界</String>
 	<String Key="AddWindow.Info8">是否标记Mod {0}</String>
+	<String Key="AddWindow.Info9">正在下载资源中</String>
 	<String Key="AddWindow.Error1">你还没有选择资源</String>
 	<String Key="AddWindow.Error2">资源数据加载失败</String>
 	<String Key="AddWindow.Error3">资源版本数据加载失败</String>
@@ -620,6 +617,7 @@
 	<String Key="AddWindow.Error6">没有可以添加的世界</String>
 	<String Key="AddWindow.Error7">数据包下载错误</String>
 	<String Key="AddWindow.Error8">资源下载错误</String>
+	<String Key="AddWindow.Error9">获取Mod下载信息失败</String>
 	<String Key="AddWindow.Control.Text1">正在下载中</String>
 	<String Key="AddWindow.Control.Text2">已下载</String>
 	<String Key="AddWindow.Control.Text3">打开网页</String>
@@ -706,7 +704,7 @@
 	<String Key="ServerPackWindow.Tab4.Item1">压缩包同步</String>
 	<String Key="ServerPackWindow.Tab4.Item2">完整同步</String>
 
-	<String Key="ServerMotdControl.Text1">玩家数量：</String>	
+	<String Key="ServerMotdControl.Text1">玩家数量：</String>
 	<String Key="ServerMotdControl.Text2">服务器版本：</String>
 	<String Key="ServerMotdControl.Text3">延迟：</String>
 	<String Key="ServerMotdControl.Text4">正在获取Motd</String>
@@ -779,7 +777,7 @@
 	<String Key="Gui.Info18">导入结构文件</String>
 	<String Key="Gui.Info19">是否下载前置Mod</String>
 	<String Key="Gui.Info20">没有更新消息</String>
-	
+
 	<String Key="Warn1">配置为空，旧版配置文件会被覆盖</String>
 	<String Key="Error1">背景图片加载失败</String>
 	<String Key="Error2">配置文件读取错误</String>
@@ -803,6 +801,7 @@
 	<String Key="Gui.Error20">世界备份错误</String>
 	<String Key="Gui.Error21">启动器检查更新错误</String>
 	<String Key="Gui.Error22">启动器下载更新失败</String>
+	<String Key="Gui.Error23">FTB获取出错 {0}</String>
 
 	<String Key="ToolTip.Text1">最小化</String>
 	<String Key="ToolTip.Text2">最大化</String>
@@ -852,9 +851,14 @@
 	<String Key="ToolTip.Text47">生成一个可供自动更新的文件夹</String>
 	<String Key="ToolTip.Text48">暂停/播放音乐</String>
 	<String Key="ToolTip.Text49">双击打开文件列表</String>
-	
+
 	<String Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单</String>
 	<String Key="Tips.Text2">双击可切换账户，右键可以打开账户菜单</String>
+
+	<String Key="Text.ForgeVersion">Forge版本</String>
+	<String Key="Text.GameVersion">游戏版本</String>
+	<String Key="Text.Name">名字</String>
+	<String Key="Text.Version">版本</String>
 
 	<String Key="Button.OpFile">打开文件夹</String>
 	<String Key="Button.Set">设置</String>

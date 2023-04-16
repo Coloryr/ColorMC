@@ -159,9 +159,9 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
                 if (list == null || list1 == null)
                 {
 #if !DEBUG
-                    window.Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+                window.Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+                window.Close();
 #endif
-                    Unlock();
                     return;
                 }
                 List4.AddRange(list);
@@ -189,7 +189,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
                 Load();
                 break;
             case 2:
-                list = GameBinding.GetFTBTypeList();
+                list = WebBinding.GetFTBTypeList();
 
                 ComboBox2.ItemsSource = list;
                 ComboBox2.SelectedIndex = 0;
@@ -287,8 +287,8 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         if (data.SourceType == SourceType.CurseForge)
         {
             App.AddGameWindow?.Install(
-                (data.Data as CurseForgeObj.Data.LatestFiles)!,
-                (Last!.Data.Data as CurseForgeObj.Data)!);
+                (data.Data as CurseForgeObjList.Data.LatestFiles)!,
+                (Last!.Data.Data as CurseForgeObjList.Data)!);
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
@@ -326,7 +326,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         }
 
         window.Info1.Show(App.GetLanguage("AddModPackWindow.Info2"));
-        var data = await GameBinding.GetPackList((SourceType)ComboBox1.SelectedIndex,
+        var data = await WebBinding.GetPackList((SourceType)ComboBox1.SelectedIndex,
             ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!,
             ComboBox1.SelectedIndex == 2 ? ComboBox2.SelectedIndex : ComboBox4.SelectedIndex,
             ComboBox1.SelectedIndex == 2 ? "" :
@@ -375,21 +375,21 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         if (ComboBox1.SelectedIndex == 0)
         {
             Input3.IsEnabled = true;
-            list = await GameBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex,
-                (Last!.Data.Data as CurseForgeObj.Data)!.id.ToString(), (int)Input3.Value!,
+            list = await WebBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex,
+                (Last!.Data.Data as CurseForgeObjList.Data)!.id.ToString(), (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Loaders.Normal);
         }
         else if (ComboBox1.SelectedIndex == 1)
         {
             Input3.IsEnabled = false;
-            list = await GameBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex,
+            list = await WebBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex,
                 (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Loaders.Normal);
         }
         else if (ComboBox1.SelectedIndex == 2)
         {
             Input3.IsEnabled = false;
-            list = GameBinding.GetFTBPackFile(Last!.Data.Data as FTBModpackObj);
+            list = WebBinding.GetFTBPackFile(Last!.Data.Data as FTBModpackObj);
         }
         if (list == null)
         {

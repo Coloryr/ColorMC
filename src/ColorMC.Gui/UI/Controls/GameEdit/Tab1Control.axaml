@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     <Grid>
         <StackPanel Margin="5">
-            <Label Content="{setting:Localize GameEditWindow.Tab1.Text1}" />
+            <Label Content="{setting:Localize Text.GameVersion}" />
 
             <StackPanel Orientation="Horizontal">
                 <ComboBox

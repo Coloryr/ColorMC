@@ -153,7 +153,7 @@ public partial class MainControl : UserControl, IUserControl
         item.SetLoad(false);
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
-            await window.Info1.Close();
+            await window.Info1.CloseAsync();
         }
         if (res.Item1 == false)
         {

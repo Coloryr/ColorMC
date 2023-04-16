@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.Objs"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Add"
     d:DesignHeight="450"
@@ -12,6 +13,7 @@
     <Grid>
         <DockPanel>
             <StackPanel
+                Name="StackPanel1"
                 Margin="3,3,3,0"
                 Background="{setting:Colors TranBack}"
                 DockPanel.Dock="Top">
@@ -40,7 +42,7 @@
                     <Label
                         Margin="5"
                         VerticalAlignment="Center"
-                        Content="{setting:Localize AddWindow.Text3}" />
+                        Content="{setting:Localize Text.GameVersion}" />
                     <ComboBox
                         Name="ComboBox3"
                         Width="120"
@@ -155,7 +157,7 @@
                 <Label
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddModPackWindow.Text2}" />
+                    Content="{setting:Localize Text.GameVersion}" />
                 <ComboBox
                     Name="ComboBox6"
                     Width="140"
@@ -223,12 +225,12 @@
                 <Label
                     Margin="5"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddGameWindow.Control1.Text1}" />
+                    Content="{setting:Localize AddGameWindow.Text16}" />
 
                 <Label
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddGameWindow.Control1.Text2}" />
+                    Content="{setting:Localize Text.GameVersion}" />
                 <ComboBox
                     Name="ComboBox7"
                     Width="140"
@@ -259,20 +261,75 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding MC}"
-                        Header="{setting:Localize AddGameWindow.Control1.DataGrid.Text1}"
+                        Header="{setting:Localize Text.GameVersion}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Version}"
-                        Header="{setting:Localize AddGameWindow.Control1.DataGrid.Text2}"
+                        Header="{setting:Localize Text.Version}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Forge}"
-                        Header="{setting:Localize AddGameWindow.Control1.DataGrid.Text3}"
+                        Header="{setting:Localize Text.ForgeVersion}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Date}"
                         Header="{setting:Localize AddModPackWindow.DataGrid.Text4}"
                         IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+
+        <DockPanel
+            Name="Grid4"
+            Background="{setting:Colors TopBottom}"
+            IsVisible="False">
+            <StackPanel
+                Margin="0,3,0,3"
+                DockPanel.Dock="Top"
+                Orientation="Horizontal">
+                <Label
+                    Margin="5"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize AddWindow.Text7}" />
+
+                <Button
+                    Name="Button8"
+                    Width="100"
+                    Height="30"
+                    Margin="5,0,0,0"
+                    Content="{setting:Localize AddWindow.Text6}" />
+                <Button
+                    Name="Button6"
+                    Width="100"
+                    Height="30"
+                    Margin="5,0,0,0"
+                    Content="{setting:Localize AddModPackWindow.Text12}" />
+                <Button
+                    Name="Button7"
+                    Width="100"
+                    Height="30"
+                    Margin="5,0,0,0"
+                    Content="{setting:Localize Button.Cancel}" />
+            </StackPanel>
+
+            <DataGrid Name="DataGrid2" Background="{setting:Colors TranBack}">
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Binding="{Binding Download}" Header="{setting:Localize AddWindow.DataGrid.Text1}" />
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="{setting:Localize AddWindow.DataGrid.Text2}"
+                        IsReadOnly="True" />
+                    <DataGridTemplateColumn Header="{setting:Localize Text.Version}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate DataType="model:DownloadModDisplayObj">
+                                <ComboBox
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    ItemsSource="{Binding Version}"
+                                    SelectedIndex="{Binding SelectVersion}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

@@ -22,7 +22,7 @@ public static class Nide8
         if (obj.State != LoginState.Done)
             return obj;
 
-        obj.Obj.AuthType = AuthType.Nide8;
+        obj.Obj!.AuthType = AuthType.Nide8;
         obj.Obj.Text1 = server;
 
         return obj;

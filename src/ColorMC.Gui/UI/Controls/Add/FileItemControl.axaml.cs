@@ -65,6 +65,11 @@ public partial class FileItemControl : UserControl, IDisposable
         Rectangle1.IsVisible = select;
     }
 
+    public void SetNoDownloadNow()
+    {
+        Grid1.IsVisible = false;
+    }
+
     public void SetNowDownload()
     {
         Grid1.IsVisible = true;

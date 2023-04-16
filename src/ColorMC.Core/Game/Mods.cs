@@ -369,6 +369,11 @@ public static class Mods
         return list;
     }
 
+    /// <summary>
+    /// 添加Mod信息
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="info"></param>
     public static void AddModInfo(this GameSettingObj obj, ModInfoObj info)
     {
         if (obj.Mods.ContainsKey(info.ModId))

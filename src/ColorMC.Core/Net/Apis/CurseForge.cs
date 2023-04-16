@@ -1,7 +1,9 @@
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net.Apis;
@@ -31,7 +33,7 @@ public static class CurseForge
     /// <param name="pagesize">页大小</param>
     /// <param name="sortOrder">排序</param>
     /// <returns></returns>
-    private static async Task<CurseForgeObj?> GetList(int classid, string version, int page,
+    private static async Task<CurseForgeObjList?> GetList(int classid, string version, int page,
         int sortField, string filter, int pagesize, int sortOrder, string categoryId,
         int modLoaderType)
     {
@@ -55,7 +57,7 @@ public static class CurseForge
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
-            return JsonConvert.DeserializeObject<CurseForgeObj>(data1);
+            return JsonConvert.DeserializeObject<CurseForgeObjList>(data1);
         }
         catch (Exception e)
         {
@@ -67,7 +69,7 @@ public static class CurseForge
     /// <summary>
     /// 获取整合包列表
     /// </summary>
-    public static Task<CurseForgeObj?> GetModPackList(string version = "", int page = 0,
+    public static Task<CurseForgeObjList?> GetModPackList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
@@ -77,7 +79,7 @@ public static class CurseForge
     /// <summary>
     /// 获取Mod列表
     /// </summary>
-    public static Task<CurseForgeObj?> GetModList(string version = "", int page = 0,
+    public static Task<CurseForgeObjList?> GetModList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "", Loaders loader = Loaders.Normal)
     {
@@ -103,7 +105,7 @@ public static class CurseForge
     /// <summary>
     /// 获取世界列表
     /// </summary>
-    public static Task<CurseForgeObj?> GetWorldList(string version = "", int page = 0,
+    public static Task<CurseForgeObjList?> GetWorldList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
@@ -113,7 +115,7 @@ public static class CurseForge
     /// <summary>
     /// 获取资源包列表
     /// </summary>
-    public static Task<CurseForgeObj?> GetResourcepackList(string version = "", int page = 0,
+    public static Task<CurseForgeObjList?> GetResourcepackList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
@@ -123,7 +125,7 @@ public static class CurseForge
     /// <summary>
     /// 获取数据包列表
     /// </summary>
-    public static Task<CurseForgeObj?> GetDataPacksList(string version = "", int page = 0,
+    public static Task<CurseForgeObjList?> GetDataPacksList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
     {
         return GetList(ClassResourcepack, version, page, sortField, filter, pagesize, sortOrder, CategoryIdDataPacks.ToString(), 0);
@@ -274,6 +276,33 @@ public static class CurseForge
     }
 
     /// <summary>
+    /// 获取Mod信息
+    /// </summary>
+    public static async Task<CurseForgeObj?> GetModInfo(string id)
+    {
+        try
+        {
+            string temp = $"{CurseForgeUrl}mods/{id}";
+            HttpRequestMessage httpRequest = new()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(temp)
+            };
+            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
+            var data1 = await data.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(data1))
+                return null;
+            return JsonConvert.DeserializeObject<CurseForgeObj>(data1);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error6"), e);
+            return null;
+        }
+    }
+
+    /// <summary>
     /// 获取文件列表
     /// </summary>
     public static async Task<CurseForgeFileObj?> GetCurseForgeFiles(string id, string? mc, int page = 0, Loaders loader = Loaders.Normal)
@@ -363,5 +392,35 @@ public static class CurseForge
         CurseForgeGameVersions = list3;
 
         return list3;
+    }
+
+    public static async Task<ConcurrentBag<((string Name, string ModId) Info,
+        List<CurseForgeObjList.Data.LatestFiles> List)>>
+       GetModDependencies(CurseForgeObjList.Data.LatestFiles data, string mc, Loaders loader)
+    {
+        var list = new ConcurrentBag<((string Name, string ModId) Info,
+        List<CurseForgeObjList.Data.LatestFiles> List)>();
+        if (data.dependencies == null || data.dependencies.Count == 0)
+        {
+            return list;
+        }
+        await Parallel.ForEachAsync(data.dependencies, async (item, cancel) =>
+        {
+            var res1 = await GetCurseForgeFiles(item.modId.ToString(), mc, loader: loader);
+            if (res1 == null || res1.data.Count == 0)
+                return;
+            var res2 = await GetModInfo(item.modId.ToString());
+            if (res2 == null)
+                return;
+
+            list.Add(((res2.Data.name, res2.Data.id.ToString()), res1.data));
+
+            foreach (var item3 in await GetModDependencies(res1.data.First(), mc, loader))
+            {
+                list.Add(item3);
+            }
+        });
+
+        return list;
     }
 }

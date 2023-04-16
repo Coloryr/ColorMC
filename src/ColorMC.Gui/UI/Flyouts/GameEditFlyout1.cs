@@ -76,7 +76,7 @@ public class GameEditFlyout1
 
     private void Button4_Click()
     {
-        GameBinding.OpenMcmod(Obj);
+        WebBinding.OpenMcmod(Obj);
     }
 
     private void Button5_Click()

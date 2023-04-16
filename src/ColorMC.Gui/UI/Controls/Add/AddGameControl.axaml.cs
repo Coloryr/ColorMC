@@ -539,7 +539,7 @@ public partial class AddGameControl : UserControl, IUserControl
         Load();
     }
 
-    public async void Install(CurseForgeObj.Data.LatestFiles data, CurseForgeObj.Data data1)
+    public async void Install(CurseForgeObjList.Data.LatestFiles data, CurseForgeObjList.Data data1)
     {
         var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)

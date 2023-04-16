@@ -389,15 +389,6 @@ public static class PackDownload
     }
 
     /// <summary>
-    /// 修正下载地址
-    /// </summary>
-    /// <param name="item"></param>
-    public static void FixDownloadUrl(this CurseForgeObj.Data.LatestFiles item)
-    {
-        item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
-    }
-
-    /// <summary>
     /// 安装FTB整合包
     /// </summary>
     /// <param name="obj">FTB整合包数据</param>
