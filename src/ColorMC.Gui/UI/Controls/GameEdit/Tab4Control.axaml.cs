@@ -333,7 +333,7 @@ public partial class Tab4Control : UserControl
 
         Items.AddRange(res);
 
-        var list = res.Where(a => a.Obj.Broken == false && !a.Obj.Disable).GroupBy(a => a.Obj.modid);
+        var list = res.Where(a => a.Obj.Broken == false && !a.Obj.Disable && !string.IsNullOrWhiteSpace(a.Obj.modid)).GroupBy(a => a.Obj.modid);
         count = list.Count(a => a.Count() > 1);
         if (count > 0)
         {

@@ -231,6 +231,7 @@ public partial class MainControl : UserControl, IUserControl
                 await window.Info.ShowOk(App.GetLanguage("MainWindow.Info22"));
                 App.Close();
             });
+            return;
         }
 
         Load();
