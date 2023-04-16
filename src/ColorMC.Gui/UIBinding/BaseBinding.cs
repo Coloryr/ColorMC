@@ -1020,10 +1020,9 @@ public static class BaseBinding
 
                 if (res.Item1)
                 {
-                    Dispatcher.UIThread.Post(async () =>
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        await window.Info.ShowOk(App.GetLanguage("Gui.Info13"));
-                        App.Close();
+                        window.Info.ShowOk(App.GetLanguage("Gui.Info13"), App.Close);
                     });
                 }
                 else if (res.Item2 != null)

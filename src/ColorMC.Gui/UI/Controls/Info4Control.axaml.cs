@@ -84,9 +84,8 @@ public partial class Info4Control : UserControl
         await App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
-    public async Task<bool> ShowOk(string title)
+    public void ShowOk(string title, Action action)
     {
-        bool reut = false;
         using Semaphore semaphore = new(0, 2);
         Button_Confirm.IsEnabled = true;
         Button_Cancel.IsEnabled = false;
@@ -96,19 +95,9 @@ public partial class Info4Control : UserControl
 
         call = (res) =>
         {
-            reut = res;
-            semaphore.Release();
+            action.Invoke();
         };
 
-        await App.CrossFade300.Start(null, this, CancellationToken.None);
-
-        await Task.Run(() =>
-        {
-            semaphore.WaitOne();
-        });
-
-        call = null;
-
-        return reut;
+        App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 }

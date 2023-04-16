@@ -225,12 +225,8 @@ public partial class MainControl : UserControl, IUserControl
 
         if (BaseBinding.IsLaunch())
         {
-            Dispatcher.UIThread.Post(async () =>
-            {
-                var window = App.FindRoot(VisualRoot);
-                await window.Info.ShowOk(App.GetLanguage("MainWindow.Info22"));
-                App.Close();
-            });
+            var window = App.FindRoot(VisualRoot);
+            window.Info.ShowOk(App.GetLanguage("MainWindow.Info22"), App.Close);
             return;
         }
 
