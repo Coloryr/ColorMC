@@ -34,12 +34,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         InitializeComponent();
 
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            SystemDecorations = SystemDecorations.Full;
-            Head.IsVisible = false;
-        }
-
         if (SystemInfo.Os == OsType.MacOS)
         {
             KeyDown += Window_KeyDown;

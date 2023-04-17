@@ -415,10 +415,10 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
     public void Opened()
     {
+        Window.SetTitle(App.GetLanguage("AddModPackWindow.Title"));
+
         DataGridFiles.MakeTran();
 
         ComboBox1.SelectedIndex = 0;
-
-        Window.SetTitle(App.GetLanguage("AddModPackWindow.Title"));
     }
 }

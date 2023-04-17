@@ -30,7 +30,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
     private int now;
 
-    private GameSettingObj? Obj;
+    public GameSettingObj? Obj { get; private set; }
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -90,9 +90,9 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Opened()
     {
-        tab1.Update();
+        Window.SetTitle(string.Format(App.GetLanguage("GameEditWindow.Title"), Obj?.Name));
 
-        Window.SetTitle(string.Format(App.GetLanguage("GameEditWindow.Title"), Obj.Name));
+        tab1.Update();
     }
 
     public void SetType(GameEditWindowType type)

@@ -462,9 +462,17 @@ public static class ForgeHelper
                 if (obj == null)
                     return null;
 
+                var list1 = new List<Version>();
                 foreach (var item in obj)
                 {
-                    list.Add(item.version);
+                    list1.Add(new Version(item.version));
+                }
+                list1.Sort();
+                list1.Reverse();
+
+                foreach (var item in list1)
+                {
+                    list.Add(item.ToString());
                 }
                 return list;
             }

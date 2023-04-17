@@ -121,9 +121,9 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public void Opened()
     {
-        DataGrid_Download.MakeTran();
-
         Window.SetTitle(App.GetLanguage("DownloadWindow.Title"));
+
+        DataGrid_Download.MakeTran();
     }
 
     public void Closed()

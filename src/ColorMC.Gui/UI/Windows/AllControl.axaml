@@ -23,7 +23,7 @@
                 Margin="0,-30,160,5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Content="←" />
+                Content="↓" />
 
             <Grid Name="Grid1" />
 
@@ -34,7 +34,7 @@
                 Margin="0,-30,120,5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Content="↓" />
+                Content="←" />
 
             <views:Info3Control Name="Info3" IsVisible="False" />
             <views:Info1Control Name="Info1" IsVisible="False" />

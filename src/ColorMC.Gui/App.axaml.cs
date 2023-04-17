@@ -200,7 +200,9 @@ public partial class App : Application
 
     public static IBaseWindow FindRoot(object? con)
     {
-        if(GuiConfigUtils.Config.WindowMode)
+        if (con is AllControl all && all.GetVisualRoot() is IBaseWindow win2)
+            return win2;
+        else if (GuiConfigUtils.Config.WindowMode)
             return AllWindow!;
         else if (con is IBaseWindow win)
             return win;

@@ -10,7 +10,11 @@ using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Download;
+using ColorMC.Gui.UI.Controls.Error;
+using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Controls.Hello;
 using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Controls.Server;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
@@ -37,6 +41,8 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     private readonly List<Button> List = new();
 
     public IBaseWindow Window => this;
+
+    public IBaseWindow TopWindow => App.FindRoot(this);
 
     Info3Control IBaseWindow.Info3 => Info3;
 
@@ -133,6 +139,11 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
+        AllFlyout1.ShowAt(this, true);
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
         if (Now == null)
             return;
 
@@ -145,11 +156,6 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         {
             Close(Now);
         }
-    }
-
-    private void Button2_Click(object? sender, RoutedEventArgs e)
-    {
-        AllFlyout1.ShowAt(this, true);
     }
 
     public void Add(UserControl con)
@@ -199,39 +205,55 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         Now = con;
     }
 
-    private string GetName(UserControl con)
+    private static string GetName(UserControl con)
     {
         if (con is SettingControl)
         {
-            return "设置界面";
+            return App.GetLanguage("SettingWindow.Title");
         }
         else if (con is UsersControl)
         {
-            return "用户列表";
+            return App.GetLanguage("UserWindow.Title");
         }
-        else if (con is AddControl)
+        else if (con is AddControl con1)
         {
-            return "添加资源";
+            return string.Format(App.GetLanguage("AddWindow.Title"), con1.Obj.Name);
         }
         else if (con is AddGameControl)
         {
-            return "添加实例";
+            return App.GetLanguage("AddGameWindow.Title");
         }
         else if (con is AddJavaControl)
         {
-            return "添加Java";
+            return App.GetLanguage("AddJavaWindow.Title");
         }
         else if (con is DownloadControl)
         {
-            return "下载界面";
+            return App.GetLanguage("DownloadWindow.Title");
         }
         else if (con is SkinControl)
         {
-            return "皮肤显示";
+            return App.GetLanguage("SkinWindow.Title");
         }
         else if (con is AddModPackControl)
         {
-            return "添加整合包";
+            return App.GetLanguage("AddModPackWindow.Title");
+        }
+        else if (con is ServerPackControl con2)
+        {
+             return string.Format(App.GetLanguage("ServerPackWindow.Title"), con2.Obj?.Name);
+        }
+        else if (con is HelloControl)
+        {
+            return App.GetLanguage("HelloWindow.Title");
+        }
+        else if (con is GameEditControl con3)
+        {
+            return string.Format(App.GetLanguage("GameEditWindow.Title"), con3.Obj?.Name);
+        }
+        else if (con is ErrorControl)
+        {
+            return App.GetLanguage("ErrorWindow.Title");
         }
 
         return "";

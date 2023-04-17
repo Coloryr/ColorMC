@@ -658,8 +658,8 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Load();
-
         Window.SetTitle(App.GetLanguage("AddGameWindow.Title"));
+
+        Load();
     }
 }

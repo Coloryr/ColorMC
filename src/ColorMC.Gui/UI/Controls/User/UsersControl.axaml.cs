@@ -71,11 +71,11 @@ public partial class UsersControl : UserControl, IUserControl
 
     public void Opened()
     {
+        Window.SetTitle(App.GetLanguage("UserWindow.Title"));
+
         Load();
 
         Dispatcher.UIThread.Post(DataGrid_User.MakeTran);
-
-        Window.SetTitle(App.GetLanguage("UserWindow.Title"));
     }
 
     public void Closed()

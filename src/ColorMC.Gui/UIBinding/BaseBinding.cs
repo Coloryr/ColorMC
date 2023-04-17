@@ -841,6 +841,10 @@ public static class BaseBinding
         {
             return await OpFile(top, type);
         }
+        else if (window is AllControl all)
+        {
+            return await OpFile(all.TopWindow, type);
+        }
 
         return null;
     }

@@ -37,7 +37,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
     public readonly ObservableCollection<OptifineDisplayObj> List6 = new();
 
     private FileItemControl? Last;
-    private GameSettingObj Obj;
+    public GameSettingObj Obj { get; private set; }
     private bool load = false;
     private bool display = false;
     private FileType now;
@@ -799,9 +799,9 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     public void Opened()
     {
-        DataGridFiles.MakeTran();
-
         Window.SetTitle(string.Format(App.GetLanguage("AddWindow.Title"), Obj.Name));
+
+        DataGridFiles.MakeTran();
 
         display = true;
     }
