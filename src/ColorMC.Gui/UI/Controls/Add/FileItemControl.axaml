@@ -78,7 +78,7 @@
         </Grid>
         <Grid
             Name="Grid1"
-            Background="#EEEEEE"
+            Background="{setting:Colors Bottom1}"
             IsVisible="False">
             <StackPanel VerticalAlignment="Center">
                 <Label HorizontalAlignment="Center" Content="{setting:Localize AddWindow.Control.Text1}" />

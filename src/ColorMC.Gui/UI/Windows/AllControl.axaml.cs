@@ -133,11 +133,6 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        AllFlyout1.ShowAt(this, true);
-    }
-
-    private void Button2_Click(object? sender, RoutedEventArgs e)
-    {
         if (Now == null)
             return;
 
@@ -150,6 +145,11 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         {
             Close(Now);
         }
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        AllFlyout1.ShowAt(this, true);
     }
 
     public void Add(UserControl con)
