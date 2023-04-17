@@ -174,7 +174,8 @@ public class SkinRender : OpenGlControlBase
                 shader = shader
                     .Replace("varying", "in")
                     .Replace("//DECLAREGLFRAG", "out vec4 outFragColor;")
-                    .Replace("gl_FragColor", "outFragColor");
+                    .Replace("gl_FragColor", "outFragColor")
+                    .Replace("texture2D", "texture");
             else
                 shader = shader.Replace("varying", "out");
         }
@@ -844,7 +845,19 @@ public class SkinRender : OpenGlControlBase
         if (!HaveSkin)
             return;
 
-        gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
+        int x = (int)Bounds.Width;
+        int y = (int)Bounds.Height;
+
+        if (App.FindRoot(VisualRoot) is Window window)
+        {
+            var screen = window.PlatformImpl?.RenderScaling;
+            if (screen != null)
+            {
+                x = (int)(Bounds.Width * screen);
+                y = (int)(Bounds.Height * screen);
+            }
+        }
+        gl.Viewport(0, 0, x, y);
 
         if (App.BackBitmap != null)
         {
