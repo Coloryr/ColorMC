@@ -61,7 +61,7 @@ public static class BaseBinding
         }
         catch (Exception e)
         {
-            Logs.Error("openal error", e);
+            Logs.Error("error", e);
         }
         FontSel.Instance.Load();
         ColorSel.Instance.Load();

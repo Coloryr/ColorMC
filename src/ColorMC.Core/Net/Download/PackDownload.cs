@@ -477,7 +477,7 @@ public static class PackDownload
                 var item11 = new DownloadItemObj()
                 {
                     Url = res1.data.downloadUrl,
-                    Name = item.name,
+                    Name = item.path[1..] + item.name,
                     Local = game.GetGamePath() + item.path[1..] + item.name,
                     SHA1 = item.sha1
                 };
@@ -500,7 +500,7 @@ public static class PackDownload
                 var item11 = new DownloadItemObj()
                 {
                     Url = item.url,
-                    Name = item.name,
+                    Name = item.path[1..] + item.name,
                     Local = game.GetGamePath() + item.path[1..] + item.name,
                     SHA1 = item.sha1
                 };

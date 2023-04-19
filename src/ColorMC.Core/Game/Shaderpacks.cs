@@ -15,7 +15,7 @@ public static class Shaderpacks
     public static async Task<List<ShaderpackObj>> GetShaderpacks(this GameSettingObj game)
     {
         var list = new List<ShaderpackObj>();
-        var dir = game.GetResourcepacksPath();
+        var dir = game.GetShaderpacksPath();
 
         DirectoryInfo info = new(dir);
         if (!info.Exists)

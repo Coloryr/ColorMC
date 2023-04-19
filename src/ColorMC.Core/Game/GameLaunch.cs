@@ -1010,40 +1010,38 @@ public static class Launch
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
 
-        stopwatch.Restart();
-        stopwatch.Start();
-
         //下载缺失的文件
         if (res.Count != 0)
         {
+            bool download = true;
             if (!ConfigUtils.Config.Http.AutoDownload)
             {
                 if (ColorMCCore.GameDownload == null)
                     throw new LaunchException(LaunchState.LostGame,
                         LanguageHelper.GetName("Core.Launch.Error4"));
 
-                var res1 = await ColorMCCore.GameDownload.Invoke(LaunchState.LostFile, obj);
-                if (res1 != true)
-                    throw new LaunchException(LaunchState.LostFile,
-                        LanguageHelper.GetName("Core.Launch.Error4"));
+                download = await ColorMCCore.GameDownload.Invoke(LaunchState.LostFile, obj);
             }
 
-            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Download);
-
-            stopwatch.Restart();
-            stopwatch.Start();
-
-            var ok = await DownloadManager.Start(res);
-            if (!ok)
+            if (download)
             {
-                throw new LaunchException(LaunchState.LostFile,
-                    LanguageHelper.GetName("Core.Launch.Error5"));
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Download);
+
+                stopwatch.Restart();
+                stopwatch.Start();
+
+                var ok = await DownloadManager.Start(res);
+                if (!ok)
+                {
+                    throw new LaunchException(LaunchState.LostFile,
+                        LanguageHelper.GetName("Core.Launch.Error5"));
+                }
+                stopwatch.Stop();
+                temp = string.Format(LanguageHelper.GetName("Core.Launch.Info7"),
+                    obj.Name, stopwatch.Elapsed.ToString());
+                ColorMCCore.GameLog?.Invoke(obj, temp);
+                Logs.Info(temp);
             }
-            stopwatch.Stop();
-            temp = string.Format(LanguageHelper.GetName("Core.Launch.Info7"),
-                obj.Name, stopwatch.Elapsed.ToString());
-            ColorMCCore.GameLog?.Invoke(obj, temp);
-            Logs.Info(temp);
         }
 
         stopwatch.Restart();
