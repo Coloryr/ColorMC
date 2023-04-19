@@ -14,4 +14,9 @@ public class LibVersionObj
 
         return Pack == obj1.Pack && Name == obj1.Name && Extr == obj1.Extr;
     }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
+    }
 }

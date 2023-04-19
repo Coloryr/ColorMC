@@ -135,7 +135,7 @@ public static class BaseAuth
                     LanguageHelper.GetName("Core.Login.Error5"), null);
             }
 
-            obj.UserName = profile.name;
+            obj.UserName = profile!.name;
             obj.UUID = profile.id;
             obj.Text1 = oauth.Auth!.refresh_token;
             obj.AccessToken = auth.AccessToken!;

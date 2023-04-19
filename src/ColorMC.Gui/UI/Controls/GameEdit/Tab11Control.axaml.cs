@@ -127,12 +127,12 @@ public partial class Tab11Control : UserControl
         App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
     }
 
-    private async void Load()
+    private void Load()
     {
         var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
-        List.AddRange(await GameBinding.GetShaderpacks(Obj));
+        List.AddRange(GameBinding.GetShaderpacks(Obj));
         window.Info1.Close();
     }
 

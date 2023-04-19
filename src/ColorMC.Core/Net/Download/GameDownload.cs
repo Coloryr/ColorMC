@@ -62,7 +62,7 @@ public static class GameDownload
     /// <param name="obj">游戏实例</param>
     public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(GameSettingObj obj)
     {
-        return DownloadForge(obj.Version, obj.LoaderVersion);
+        return DownloadForge(obj.Version, obj.LoaderVersion!);
     }
 
     /// <summary>

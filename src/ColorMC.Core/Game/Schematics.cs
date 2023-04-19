@@ -17,7 +17,7 @@ public static class Schematic
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>列表</returns>
-    public static async Task<ConcurrentBag<SchematicObj>> GetSchematics(this GameSettingObj obj)
+    public static ConcurrentBag<SchematicObj> GetSchematics(this GameSettingObj obj)
     {
         var list = new ConcurrentBag<SchematicObj>();
         var path = obj.GetSchematicsPath();
@@ -29,7 +29,7 @@ public static class Schematic
         }
 
         var items = Directory.GetFiles(path);
-        await Parallel.ForEachAsync(items, async (item, cancel) =>
+        Parallel.ForEach(items, (item, cancel) =>
         {
             var info = new FileInfo(item);
             if (info.Extension.ToLower() == Name1)
@@ -135,13 +135,13 @@ public static class Schematic
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
     /// <returns>结果</returns>
-    public static async Task<bool> AddSchematic(this GameSettingObj obj, List<string> file)
+    public static bool AddSchematic(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetSchematicsPath();
         Directory.CreateDirectory(path);
         bool ok = true;
 
-        await Parallel.ForEachAsync(file, async (item, cancel) =>
+        Parallel.ForEach(file, async (item) =>
         {
             var name = Path.GetFileName(item);
             var path1 = Path.GetFullPath(path + "/" + name);

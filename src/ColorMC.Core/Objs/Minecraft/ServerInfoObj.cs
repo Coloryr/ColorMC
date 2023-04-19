@@ -16,7 +16,7 @@ public record ServerInfoObj
     /// <summary>
     /// 图标
     /// </summary>
-    public string Icon { get; set; }
+    public string? Icon { get; set; }
     /// <summary>
     /// 接收材质包
     /// </summary>

@@ -18,7 +18,7 @@ public record ServerPackObj
     /// <summary>
     /// 加载器版本
     /// </summary>
-    public string LoaderVersion { get; set; }
+    public string? LoaderVersion { get; set; }
     /// <summary>
     /// 基础网址
     /// </summary>

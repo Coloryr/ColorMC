@@ -803,15 +803,15 @@ public static class GameBinding
         BaseBinding.OpPath(obj.GetGamePath());
     }
 
-    public static List<ServerInfoObj> GetServers(GameSettingObj obj)
+    public static IEnumerable<ServerInfoObj> GetServers(GameSettingObj obj)
     {
         return obj.GetServerInfos();
     }
 
-    public static async Task<List<ShaderpackDisplayObj>> GetShaderpacks(GameSettingObj obj)
+    public static List<ShaderpackDisplayObj> GetShaderpacks(GameSettingObj obj)
     {
         var list = new List<ShaderpackDisplayObj>();
-        foreach (var item in await obj.GetShaderpacks())
+        foreach (var item in obj.GetShaderpacks())
         {
             list.Add(new()
             {
@@ -831,7 +831,7 @@ public static class GameBinding
 
     public static void DeleteServer(GameSettingObj obj, ServerInfoObj server)
     {
-        var list = obj.GetServerInfos();
+        var list = obj.GetServerInfos().ToList();
         var item = list.First(a => a.Name == server.Name && a.IP == server.IP);
         list.Remove(item);
         obj.SaveServer(list);
@@ -883,9 +883,9 @@ public static class GameBinding
         return obj.AddShaderpack(list);
     }
 
-    public static async Task<List<SchematicDisplayObj>> GetSchematics(GameSettingObj obj)
+    public static List<SchematicDisplayObj> GetSchematics(GameSettingObj obj)
     {
-        var list = await obj.GetSchematics();
+        var list = obj.GetSchematics();
         var list1 = new List<SchematicDisplayObj>();
         foreach (var item in list)
         {
@@ -917,7 +917,7 @@ public static class GameBinding
         return list1;
     }
 
-    public static Task<bool> AddSchematic(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
+    public static bool AddSchematic(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
         foreach (var item in file)
@@ -1086,7 +1086,7 @@ public static class GameBinding
                       App.GetLanguage("GameEditWindow.Tab12.Info2"), true);
                 if (res?.Any() == true)
                 {
-                    return await AddSchematic(obj, res);
+                    return AddSchematic(obj, res);
                 }
                 return null;
             case FileType.Shaderpack:
@@ -1211,7 +1211,7 @@ public static class GameBinding
                         list1.Add(file);
                     }
                 }
-                return await obj.AddSchematic(list1);
+                return obj.AddSchematic(list1);
         }
 
         return false;

@@ -50,8 +50,8 @@ public static class ServerPack
         }
 
         //区分新旧mod
-        var list1 = obj.Mod.ToArray();
-        var list2 = old.Mod.ToArray();
+        ServerModItemObj?[] list1 = obj.Mod.ToArray();
+        ServerModItemObj?[] list2 = old.Mod.ToArray();
 
         for (int a = 0; a < list2.Length; a++)
         {
@@ -61,7 +61,7 @@ public static class ServerPack
                 var item2 = list2[a];
                 if (item2 == null)
                     continue;
-                if (item2.Sha1 == item1.Sha1 || item2.File == item1.File)
+                if (item2.Sha1 == item1?.Sha1 || item2.File == item1?.File)
                 {
                     list1[a] = null;
                     list2[a] = null;
@@ -78,6 +78,8 @@ public static class ServerPack
         //添加新mod
         foreach (var item in list3)
         {
+            if (item == null) 
+                continue;
             if (item.Source == null)
             {
                 list5.Add(new()
@@ -105,6 +107,9 @@ public static class ServerPack
         //删除旧mod
         foreach (var item in list4)
         {
+            if (item == null)
+                continue;
+
             mods.Find(a => a.Sha1 == item.Sha1)?.Delete();
         }
 

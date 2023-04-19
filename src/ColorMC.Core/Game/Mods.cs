@@ -181,7 +181,7 @@ public static class Mods
                     model2.TryGetValue("version", out item2);
                     obj3.version = item2 as string;
                     model2.TryGetValue("authorList", out item2);
-                    obj3.authorList = (item2 as string).ToStringList();
+                    obj3.authorList = (item2 as string)?.ToStringList();
                     model2.TryGetValue("displayURL", out item2);
                     obj3.url = item2 as string;
                     obj3.Sha1 = sha1;

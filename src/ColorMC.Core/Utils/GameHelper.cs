@@ -20,10 +20,7 @@ public static class GameHelper
         var list = new ConcurrentBag<DownloadItemObj>();
         var list1 = new HashSet<string>();
         var natives = new ConcurrentDictionary<string, string>();
-        await Parallel.ForEachAsync(obj.libraries, new ParallelOptions()
-        {
-            MaxDegreeOfParallelism = 1
-        }, async (item1, cancel) =>
+        Parallel.ForEach(obj.libraries, (item1, cancel) =>
         {
             bool download = CheckRule.CheckAllow(item1.rules);
             if (!download)

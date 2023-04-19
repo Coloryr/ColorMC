@@ -2,6 +2,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using NbtLib;
+using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Game;
 
@@ -12,9 +13,9 @@ public static class Servers
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>服务器列表</returns>
-    public static List<ServerInfoObj> GetServerInfos(this GameSettingObj game)
+    public static ConcurrentBag<ServerInfoObj> GetServerInfos(this GameSettingObj game)
     {
-        List<ServerInfoObj> list = new();
+        ConcurrentBag<ServerInfoObj> list = new();
         string file = game.GetServersFile();
         if (!File.Exists(file))
             return list;
@@ -27,7 +28,10 @@ public static class Servers
             var nbtList = (NbtListTag)tag["servers"]!;
             foreach (var item in nbtList)
             {
-                list.Add(ToServerInfo(item as NbtCompoundTag));
+                if (item is NbtCompoundTag tag1)
+                {
+                    list.Add(ToServerInfo(tag1));
+                }
             }
         }
         catch (Exception e)
@@ -59,7 +63,7 @@ public static class Servers
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <param name="list">服务器列表</param>
-    public static void SaveServer(this GameSettingObj game, List<ServerInfoObj> list)
+    public static void SaveServer(this GameSettingObj game, IEnumerable<ServerInfoObj> list)
     {
         var nbtTag = new NbtCompoundTag();
 
@@ -102,7 +106,7 @@ public static class Servers
             Icon = tag.TryGetValue("icon", out var data)
             ? ((NbtStringTag)data).Payload : null,
             AcceptTextures = tag.TryGetValue("acceptTextures", out var data1)
-            ? ((NbtByteTag)data1).Payload == 1 : false
+&& ((NbtByteTag)data1).Payload == 1
         };
 
         return info;
