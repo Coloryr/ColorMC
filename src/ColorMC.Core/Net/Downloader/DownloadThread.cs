@@ -6,19 +6,19 @@ namespace ColorMC.Core.Net.Downloader;
 
 public class DownloadThread
 {
-    private int index;
-    private Thread thread;
-    private bool run = false;
+    private readonly int index;
+    private readonly Thread thread;
     private readonly Semaphore semaphore = new(0, 2);
     private readonly Semaphore semaphore1 = new(0, 2);
-    private CancellationTokenSource cancel;
+    private CancellationTokenSource? cancel;
     private bool pause = false;
+    private bool run = false;
 
     /// <summary>
     /// 初始化下载器
     /// </summary>
     /// <param name="index">标号</param>
-    public void Init(int index)
+    public DownloadThread(int index)
     {
         this.index = index;
         thread = new(Run)
@@ -105,7 +105,7 @@ public class DownloadThread
             {
                 ChckPause(item);
 
-                if (cancel.IsCancellationRequested)
+                if (cancel!.IsCancellationRequested)
                     break;
 
                 byte[]? buffer = null;

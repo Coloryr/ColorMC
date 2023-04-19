@@ -22,36 +22,34 @@ public static partial class Funtcions
 
     public static DateTime MillisecondsToDataTime(long unixTimeStamp)
     {
-        DateTime start = new DateTime(1970, 1, 1) +
+        var start = new DateTime(1970, 1, 1) +
             TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
-        DateTime dt = start.AddMilliseconds(unixTimeStamp);
-        return dt;
+        return start.AddMilliseconds(unixTimeStamp);
     }
 
     public static DateTime SecondsToDataTime(long unixTimeStamp)
     {
-        DateTime start = new DateTime(1970, 1, 1) +
+        var start = new DateTime(1970, 1, 1) +
             TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
-        DateTime dt = start.AddSeconds(unixTimeStamp);
-        return dt;
+        return start.AddSeconds(unixTimeStamp);
     }
     public static string GenMd5(byte[] data)
     {
-        StringBuilder EnText = new();
+        var text = new StringBuilder();
         foreach (byte iByte in MD5.HashData(data))
         {
-            EnText.AppendFormat("{0:x2}", iByte);
+            text.AppendFormat("{0:x2}", iByte);
         }
-        return EnText.ToString().ToLower();
+        return text.ToString().ToLower();
     }
     public static string GenSha1(byte[] data)
     {
-        StringBuilder EnText = new();
-        foreach (byte iByte in SHA1.HashData(data))
+        var text = new StringBuilder();
+        foreach (byte item in SHA1.HashData(data))
         {
-            EnText.AppendFormat("{0:x2}", iByte);
+            text.AppendFormat("{0:x2}", item);
         }
-        return EnText.ToString().ToLower();
+        return text.ToString().ToLower();
     }
 
     public static string GenSha1(string input)
@@ -66,33 +64,42 @@ public static partial class Funtcions
 
     public static string GenSha1(Stream stream)
     {
-        SHA1 sha1 = SHA1.Create();
-        StringBuilder EnText = new();
-        foreach (byte iByte in sha1.ComputeHash(stream))
+        var text = new StringBuilder();
+        foreach (byte item in SHA1.HashData(stream))
         {
-            EnText.AppendFormat("{0:x2}", iByte);
+            text.AppendFormat("{0:x2}", item);
         }
-        return EnText.ToString().ToLower();
+        return text.ToString().ToLower();
+    }
+
+    public static async Task<string> GenSha1Async(Stream stream)
+    {
+        var text = new StringBuilder();
+        foreach (byte item in await SHA1.HashDataAsync(stream))
+        {
+            text.AppendFormat("{0:x2}", item);
+        }
+        return text.ToString().ToLower();
     }
 
     public static string GenSha256(byte[] data)
     {
-        StringBuilder EnText = new();
-        foreach (byte iByte in SHA256.HashData(data))
+        var text = new StringBuilder();
+        foreach (byte item in SHA256.HashData(data))
         {
-            EnText.AppendFormat("{0:x2}", iByte);
+            text.AppendFormat("{0:x2}", item);
         }
-        return EnText.ToString().ToLower();
+        return text.ToString().ToLower();
     }
 
     public static string GenSha256(Stream stream)
     {
-        StringBuilder EnText = new();
-        foreach (byte iByte in SHA256.HashData(stream))
+        var text = new StringBuilder();
+        foreach (byte item in SHA256.HashData(stream))
         {
-            EnText.AppendFormat("{0:x2}", iByte);
+            text.AppendFormat("{0:x2}", item);
         }
-        return EnText.ToString().ToLower();
+        return text.ToString().ToLower();
     }
 
     public static string NewUUID()
@@ -102,8 +109,7 @@ public static partial class Funtcions
 
     public static string GenBase64(string input)
     {
-        byte[] bytes = Encoding.UTF8.GetBytes(input);
-        return Convert.ToBase64String(bytes);
+        return Convert.ToBase64String(Encoding.UTF8.GetBytes(input));
     }
 
     public static void RunGC()

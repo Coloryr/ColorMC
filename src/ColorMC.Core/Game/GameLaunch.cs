@@ -98,7 +98,7 @@ public static class Launch
         if (ConfigUtils.Config.GameCheck.CheckAssets)
         {
             ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckAssets);
-            var assets = AssetsPath.GetIndex(game);
+            var assets = game.GetIndex();
             if (assets == null)
             {
                 assets = await GetHelper.GetAssets(game.assetIndex.url);
@@ -108,10 +108,10 @@ public static class Launch
                     throw new LaunchException(LaunchState.AssetsError,
                         LanguageHelper.GetName("Core.Launch.Error2"));
                 }
-                AssetsPath.AddIndex(assets, game);
+                game.AddIndex(assets);
             }
 
-            var list1 = await AssetsPath.Check(assets);
+            var list1 = await assets.Check();
             foreach (var (Name, Hash) in list1)
             {
                 list.Add(new()
@@ -129,7 +129,7 @@ public static class Launch
         if (ConfigUtils.Config.GameCheck.CheckLib)
         {
             ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
-            var list2 = await LibrariesPath.CheckGame(game);
+            var list2 = await game.CheckGameLib();
             if (list2.Count != 0)
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
@@ -140,7 +140,7 @@ public static class Launch
             ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
             if (obj.Loader == Loaders.Forge)
             {
-                var list3 = await LibrariesPath.CheckForge(obj);
+                var list3 = await obj.CheckForgeLib();
                 if (list3 == null)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
@@ -159,7 +159,7 @@ public static class Launch
             }
             else if (obj.Loader == Loaders.Fabric)
             {
-                var list3 = LibrariesPath.CheckFabric(obj);
+                var list3 = obj.CheckFabricLib();
                 if (list3 == null)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
@@ -178,7 +178,7 @@ public static class Launch
             }
             else if (obj.Loader == Loaders.Quilt)
             {
-                var list3 = LibrariesPath.CheckQuilt(obj);
+                var list3 = obj.CheckQuiltLib();
                 if (list3 == null)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
@@ -226,12 +226,15 @@ public static class Launch
             var mods = await obj.GetMods();
             ModObj? mod = null;
             int find = 0;
-            var array = obj.Mods.Values.ToArray();
+            ModInfoObj?[] array = obj.Mods.Values.ToArray();
             for (int a = 0; a < array.Length; a++)
             {
                 var item = array[a];
                 foreach (var item1 in mods)
                 {
+                    if (item == null)
+                        continue;
+
                     if (item1.Sha1 == item.SHA1 ||
                         item1.Local.ToLower().EndsWith(item.File.ToLower()))
                     {
@@ -362,7 +365,7 @@ public static class Launch
 
         if (obj.Loader == Loaders.Forge)
         {
-            var forge = VersionPath.GetForgeObj(obj)!;
+            var forge = obj.GetForgeObj()!;
             if (forge.arguments.jvm != null)
                 foreach (var item in forge.arguments.jvm)
                 {
@@ -371,7 +374,7 @@ public static class Launch
         }
         else if (obj.Loader == Loaders.Fabric)
         {
-            var fabric = VersionPath.GetFabricObj(obj)!;
+            var fabric = obj.GetFabricObj()!;
             foreach (var item in fabric.arguments.jvm)
             {
                 arg.Add(item);
@@ -390,7 +393,7 @@ public static class Launch
     {
         if (obj.Loader == Loaders.Forge)
         {
-            var forge = VersionPath.GetForgeObj(obj)!;
+            var forge = obj.GetForgeObj()!;
             return new(forge.minecraftArguments.Split(" "));
         }
 
@@ -441,7 +444,7 @@ public static class Launch
 
         if (obj.Loader == Loaders.Forge)
         {
-            var forge = VersionPath.GetForgeObj(obj)!;
+            var forge = obj.GetForgeObj()!;
             foreach (var item in forge.arguments.game)
             {
                 arg.Add(item);
@@ -449,7 +452,7 @@ public static class Launch
         }
         else if (obj.Loader == Loaders.Fabric)
         {
-            var fabric = VersionPath.GetFabricObj(obj)!;
+            var fabric = obj.GetFabricObj()!;
             foreach (var item in fabric.arguments.game)
             {
                 arg.Add(item);
@@ -457,7 +460,7 @@ public static class Launch
         }
         else if (obj.Loader == Loaders.Quilt)
         {
-            var quilt = VersionPath.GetQuiltObj(obj)!;
+            var quilt = obj.GetQuiltObj()!;
             foreach (var item in quilt.arguments.game)
             {
                 arg.Add(item);
@@ -547,7 +550,7 @@ public static class Launch
         {
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
             jvmHead.Add($"-Dforgewrapper.installer={ForgeHelper
-                .BuildForgeInster(obj.Version, obj.LoaderVersion).Local}");
+                .BuildForgeInster(obj.Version, obj.LoaderVersion!).Local}");
             jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
         }
 
@@ -720,9 +723,9 @@ public static class Launch
 
         if (obj.Loader == Loaders.Forge)
         {
-            var forge = VersionPath.GetForgeObj(obj)!;
+            var forge = obj.GetForgeObj()!;
 
-            var list2 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
+            var list2 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
 
             list2.ForEach(a => list.AddOrUpdate(PathC.MakeVersionObj(a.Name), a.Local));
 
@@ -733,7 +736,7 @@ public static class Launch
         }
         else if (obj.Loader == Loaders.Fabric)
         {
-            var fabric = VersionPath.GetFabricObj(obj)!;
+            var fabric = obj.GetFabricObj()!;
             foreach (var item in fabric.libraries)
             {
                 var name = PathC.ToName(item.name);
@@ -743,7 +746,7 @@ public static class Launch
         }
         else if (obj.Loader == Loaders.Quilt)
         {
-            var quilt = VersionPath.GetQuiltObj(obj)!;
+            var quilt = obj.GetQuiltObj()!;
             foreach (var item in quilt.libraries)
             {
                 var name = PathC.ToName(item.name);
@@ -861,18 +864,18 @@ public static class Launch
                 }
                 else
                 {
-                    var forge = VersionPath.GetForgeObj(obj)!;
+                    var forge = obj.GetForgeObj()!;
                     list.Add(forge.mainClass);
                 }
             }
             else if (obj.Loader == Loaders.Fabric)
             {
-                var fabric = VersionPath.GetFabricObj(obj)!;
+                var fabric = obj.GetFabricObj()!;
                 list.Add(fabric.mainClass);
             }
             else if (obj.Loader == Loaders.Quilt)
             {
-                var quilt = VersionPath.GetQuiltObj(obj)!;
+                var quilt = obj.GetQuiltObj()!;
                 list.Add(quilt.mainClass);
             }
         }

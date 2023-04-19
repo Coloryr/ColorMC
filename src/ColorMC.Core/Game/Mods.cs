@@ -275,7 +275,13 @@ public static class Mods
         return list1;
     }
 
-    public static JContainer? FindKey(this JObject obj, string key)
+    /// <summary>
+    /// 找到指定obj
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="key">键名</param>
+    /// <returns></returns>
+    private static JContainer? FindKey(this JObject obj, string key)
     {
         foreach (var item in obj)
         {
@@ -297,7 +303,13 @@ public static class Mods
         return null;
     }
 
-    public static JContainer? FindKey(this JArray obj, string key)
+    /// <summary>
+    /// 找到指定obj
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="key">键名</param>
+    /// <returns></returns>
+    private static JContainer? FindKey(this JArray obj, string key)
     {
         foreach (var item in obj)
         {

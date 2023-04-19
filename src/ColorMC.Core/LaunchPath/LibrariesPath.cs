@@ -13,8 +13,8 @@ namespace ColorMC.Core.LaunchPath;
 public static class LibrariesPath
 {
     private const string Name = "libraries";
-    public static string BaseDir { get; private set; }
-    private static string NativeDir;
+    public static string BaseDir { get; private set; } = "";
+    public static string NativeDir { get; private set; } = "";
 
     /// <summary>
     /// 初始化
@@ -46,7 +46,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏数据</param>
     /// <returns>丢失的库</returns>
-    public static async Task<List<DownloadItemObj>> CheckGame(GameArgObj obj)
+    public static async Task<List<DownloadItemObj>> CheckGameLib(this GameArgObj obj)
     {
         var list = new List<DownloadItemObj>();
 
@@ -61,9 +61,8 @@ public static class LibrariesPath
             }
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
                 FileShare.Read);
-            var sha1 = Funtcions.GenSha1(stream);
-            if (!string.IsNullOrWhiteSpace(item.SHA1)
-            && item.SHA1 != sha1)
+            var sha1 = await Funtcions.GenSha1Async(stream);
+            if (!string.IsNullOrWhiteSpace(item.SHA1) && item.SHA1 != sha1)
             {
                 list.Add(item);
             }
@@ -81,7 +80,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForge(GameSettingObj obj)
+    public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLib(this GameSettingObj obj)
     {
         var version1 = VersionPath.GetGame(obj.Version)!;
         var v2 = CheckRule.GameLaunchVersion(version1);
@@ -95,7 +94,7 @@ public static class LibrariesPath
             return null;
 
         var list = new ConcurrentBag<DownloadItemObj>();
-        var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion);
+        var list1 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
 
         //forge本体
         await Parallel.ForEachAsync(list1, async (item, cancel) =>
@@ -110,14 +109,14 @@ public static class LibrariesPath
 
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
-            var sha1 = Funtcions.GenSha1(stream);
+            var sha1 = await Funtcions.GenSha1Async(stream);
             if (item.SHA1 != sha1)
             {
                 list.Add(item);
             }
         });
 
-        var forgeinstall = VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion);
+        var forgeinstall = VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
         if (forgeinstall == null && v2)
             return null;
 
@@ -129,7 +128,7 @@ public static class LibrariesPath
                 if (item.name.StartsWith("net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
                 {
-                    var item1 = ForgeHelper.BuildForgeUniversal(obj.Version, obj.LoaderVersion);
+                    var item1 = ForgeHelper.BuildForgeUniversal(obj.Version, obj.LoaderVersion!);
                     item1.SHA1 = item.downloads.artifact.sha1;
                     if (!File.Exists(item1.Local))
                     {
@@ -140,7 +139,7 @@ public static class LibrariesPath
                     {
                         using var stream1 = new FileStream(item1.Local, FileMode.Open, FileAccess.ReadWrite,
                        FileShare.ReadWrite);
-                        var sha11 = Funtcions.GenSha1(stream1);
+                        var sha11 = await Funtcions.GenSha1Async(stream1);
                         if (sha11 != item1.SHA1)
                         {
                             list.Add(item1);
@@ -164,7 +163,7 @@ public static class LibrariesPath
                 }
                 using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
                     FileShare.ReadWrite);
-                var sha1 = Funtcions.GenSha1(stream);
+                var sha1 = await Funtcions.GenSha1Async(stream);
                 if (item.downloads.artifact.sha1 != sha1)
                 {
                     list.Add(new()
@@ -186,7 +185,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static List<DownloadItemObj>? CheckFabric(GameSettingObj obj)
+    public static List<DownloadItemObj>? CheckFabricLib(this GameSettingObj obj)
     {
         var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion);
         if (fabric == null)
@@ -197,14 +196,14 @@ public static class LibrariesPath
         foreach (var item in fabric.libraries)
         {
             var name = PathC.ToName(item.name);
-            string file = $"{BaseDir}/{name.Item1}";
+            string file = $"{BaseDir}/{name.Path}";
             if (!File.Exists(file))
             {
                 list.Add(new()
                 {
                     Url = UrlHelper.DownloadFabric(item.url + name.Path, BaseClient.Source),
-                    Name = name.Item2,
-                    Local = $"{BaseDir}/{name.Item1}"
+                    Name = name.Name,
+                    Local = $"{BaseDir}/{name.Path}"
                 });
                 continue;
             }
@@ -218,7 +217,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static List<DownloadItemObj>? CheckQuilt(GameSettingObj obj)
+    public static List<DownloadItemObj>? CheckQuiltLib(this GameSettingObj obj)
     {
         var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion);
         if (quilt == null)
@@ -229,14 +228,14 @@ public static class LibrariesPath
         foreach (var item in quilt.libraries)
         {
             var name = PathC.ToName(item.name);
-            string file = $"{BaseDir}/{name.Item1}";
+            string file = $"{BaseDir}/{name.Path}";
             if (!File.Exists(file))
             {
                 list.Add(new()
                 {
                     Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),
-                    Name = name.Item2,
-                    Local = $"{BaseDir}/{name.Item1}"
+                    Name = name.Name,
+                    Local = $"{BaseDir}/{name.Path}"
                 });
                 continue;
             }

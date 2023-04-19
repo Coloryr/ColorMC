@@ -292,7 +292,7 @@ public static class UserBinding
                 if (file?.Any() == true)
                 {
                     var item = file[0];
-                    AssetsPath.SaveSkin(obj, item.GetPath());
+                    obj.SaveSkin(item.GetPath());
                 }
                 break;
             case AuthType.OAuth:

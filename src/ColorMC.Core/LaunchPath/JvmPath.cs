@@ -11,7 +11,7 @@ public static class JvmPath
     public const string Name1 = "java";
     public static Dictionary<string, JavaInfo> Jvms { get; } = new();
 
-    public static string BaseDir;
+    public static string BaseDir { get; private set; } = "";
 
     /// <summary>
     /// 初始化
@@ -23,6 +23,11 @@ public static class JvmPath
         Directory.CreateDirectory(dir + Name1);
     }
 
+    /// <summary>
+    /// 获取路径
+    /// </summary>
+    /// <param name="info"></param>
+    /// <returns></returns>
     public static string GetPath(this JavaInfo info)
     {
         if (info.Path.StartsWith(Name1))

@@ -25,7 +25,7 @@ public static class VersionPath
     private const string Name2 = "fabric";
     private const string Name3 = "quilt";
 
-    public static string BaseDir { get; private set; }
+    public static string BaseDir { get; private set; } = "";
 
     /// <summary>
     /// 初始化
@@ -182,7 +182,7 @@ public static class VersionPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>启动数据</returns>
-    public static ForgeLaunchObj? GetForgeObj(GameSettingObj obj)
+    public static ForgeLaunchObj? GetForgeObj(this GameSettingObj obj)
     {
         return GetForgeObj(obj.Version, obj.LoaderVersion);
     }
@@ -193,8 +193,11 @@ public static class VersionPath
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
     /// <returns>启动数据</returns>
-    public static ForgeLaunchObj? GetForgeObj(string mc, string version)
+    public static ForgeLaunchObj? GetForgeObj(string mc, string? version)
     {
+        if (version == null)
+            return null;
+
         string file = Path.GetFullPath($"{BaseDir}/{Name1}/forge-{mc}-{version}.json");
 
         if (!File.Exists(file))
@@ -208,7 +211,7 @@ public static class VersionPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>数据</returns>
-    public static FabricLoaderObj? GetFabricObj(GameSettingObj obj)
+    public static FabricLoaderObj? GetFabricObj(this GameSettingObj obj)
     {
         return GetFabricObj(obj.Version, obj.LoaderVersion);
     }
@@ -219,8 +222,10 @@ public static class VersionPath
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
     /// <returns>数据</returns>
-    public static FabricLoaderObj? GetFabricObj(string mc, string version)
+    public static FabricLoaderObj? GetFabricObj(string mc, string? version)
     {
+        if (version == null)
+            return null;
         string file = $"{BaseDir}/{Name2}/fabric-loader-{version}-{mc}.json";
 
         if (!File.Exists(file))
@@ -234,7 +239,7 @@ public static class VersionPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>数据</returns>
-    public static QuiltLoaderObj? GetQuiltObj(GameSettingObj obj)
+    public static QuiltLoaderObj? GetQuiltObj(this GameSettingObj obj)
     {
         return GetQuiltObj(obj.Version, obj.LoaderVersion);
     }
@@ -245,8 +250,11 @@ public static class VersionPath
     /// <param name="mc">游戏版本</param>
     /// <param name="version">quilt版本</param>
     /// <returns>数据</returns>
-    public static QuiltLoaderObj? GetQuiltObj(string mc, string version)
+    public static QuiltLoaderObj? GetQuiltObj(string mc, string? version)
     {
+        if (version == null)
+            return null;
+
         string file = $"{BaseDir}/{Name3}/quilt-loader-{version}-{mc}.json";
 
         if (!File.Exists(file))

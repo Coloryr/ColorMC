@@ -23,8 +23,8 @@ public static class InstancesPath
     private const string Name7 = "screenshots";
     private const string Name8 = "resourcepacks";
     private const string Name9 = "shaderpacks";
-    private const string Name10 = "usercache.json";
-    private const string Name11 = "usernamecache.json";
+    //private const string Name10 = "usercache.json";
+    //private const string Name11 = "usernamecache.json";
     private const string Name12 = "icon.png";
     private const string Name13 = "mods";
     private const string Name14 = "saves";
@@ -40,16 +40,16 @@ public static class InstancesPath
     /// <summary>
     /// 游戏实例列表
     /// </summary>
-    private static Dictionary<string, GameSettingObj> InstallGames = new();
+    private readonly static Dictionary<string, GameSettingObj> InstallGames = new();
     /// <summary>
     /// 游戏实例组
     /// </summary>
-    private static Dictionary<string, List<GameSettingObj>> GameGroups = new();
+    private readonly static Dictionary<string, List<GameSettingObj>> GameGroups = new();
 
     /// <summary>
     /// 基础路径
     /// </summary>
-    public static string BaseDir { get; private set; }
+    public static string BaseDir { get; private set; } = "";
 
     /// <summary>
     /// 获取所有游戏实例
@@ -65,18 +65,18 @@ public static class InstancesPath
     /// <summary>
     /// 获取所有游戏实例组
     /// </summary>
-    public static Dictionary<string, List<GameSettingObj>> Groups
-    {
-        get
-        {
-            return new(GameGroups);
-        }
-    }
+    public static Dictionary<string, List<GameSettingObj>> Groups => new(GameGroups);
 
-    public static bool IsNotGame
-        => InstallGames.Count == 0;
+    /// <summary>
+    /// 是否没有游戏实例
+    /// </summary>
+    public static bool IsNotGame => InstallGames.Count == 0;
 
-    private static void AddToGroup(GameSettingObj obj)
+    /// <summary>
+    /// 添加游戏实例到组
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    private static void AddToGroup(this GameSettingObj obj)
     {
         while (string.IsNullOrWhiteSpace(obj.UUID)
             || InstallGames.ContainsKey(obj.UUID))
@@ -111,7 +111,7 @@ public static class InstancesPath
     /// 从组中删除游戏实例
     /// </summary>
     /// <param name="obj"></param>
-    private static void RemoveFromGroup(GameSettingObj obj)
+    private static void RemoveFromGroup(this GameSettingObj obj)
     {
         InstallGames.Remove(obj.UUID);
 
@@ -177,7 +177,7 @@ public static class InstancesPath
                     game.Save();
                 }
                 game.ReadCurseForgeMod();
-                AddToGroup(game);
+                game.AddToGroup();
             }
         }
     }
@@ -208,7 +208,7 @@ public static class InstancesPath
     {
         ConfigSave.AddItem(new()
         {
-            Name = $"game-{obj.Name}",
+            Name = $"game-{obj.UUID}",
             Local = obj.GetGameJsonFile(),
             Obj = obj
         });
@@ -314,15 +314,15 @@ public static class InstancesPath
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name9}/");
     }
 
-    public static string GetUserCacheFile(this GameSettingObj obj)
-    {
-        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name10}");
-    }
+    //public static string GetUserCacheFile(this GameSettingObj obj)
+    //{
+    //    return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name10}");
+    //}
 
-    public static string GetUserNameCacheFile(this GameSettingObj obj)
-    {
-        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name11}");
-    }
+    //public static string GetUserNameCacheFile(this GameSettingObj obj)
+    //{
+    //    return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name11}");
+    //}
 
     /// <summary>
     /// 获取游戏实例图标文件路径
@@ -468,7 +468,7 @@ public static class InstancesPath
         Directory.CreateDirectory(game.GetGamePath());
 
         game.Save();
-        AddToGroup(game);
+        game.AddToGroup();
 
         return game;
     }
@@ -497,7 +497,7 @@ public static class InstancesPath
     /// <param name="now">组名</param>
     public static void MoveGameGroup(this GameSettingObj obj, string? now)
     {
-        string group = obj.GroupName;
+        var group = obj.GroupName;
         if (string.IsNullOrWhiteSpace(group))
         {
             GameGroups[" "].Remove(obj);
@@ -531,7 +531,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 复制游戏实例
+    /// 复制游戏实例存储
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>游戏实例</returns>
@@ -684,7 +684,7 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     public static Task<bool> Remove(this GameSettingObj obj)
     {
-        RemoveFromGroup(obj);
+        obj.RemoveFromGroup();
         return PathC.DeleteFiles(obj.GetBasePath());
     }
 
@@ -776,7 +776,7 @@ public static class InstancesPath
                             }
                         }
 
-                        AddToGroup(game);
+                        game.AddToGroup();
 
                         ColorMCCore.PackState?.Invoke(CoreRunState.End);
                         res1111 = true;

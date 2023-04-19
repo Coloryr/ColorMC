@@ -393,6 +393,13 @@ public static class CurseForge
         return list3;
     }
 
+    /// <summary>
+    /// 获取Mod依赖
+    /// </summary>
+    /// <param name="data">Mod</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="loader">加载器</param>
+    /// <returns></returns>
     public static async Task<ConcurrentBag<((string Name, string ModId) Info,
         List<CurseForgeObjList.Data.LatestFiles> List)>>
        GetModDependencies(CurseForgeObjList.Data.LatestFiles data, string mc, Loaders loader)

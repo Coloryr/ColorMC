@@ -30,7 +30,7 @@ public static class DownloadManager
     /// <summary>
     /// 缓存路径
     /// </summary>
-    public static string DownloadDir { get; private set; }
+    public static string DownloadDir { get; private set; } = "";
 
     /// <summary>
     /// 总下载数量
@@ -58,8 +58,7 @@ public static class DownloadManager
         threads.Clear();
         for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
         {
-            DownloadThread thread = new();
-            thread.Init(a);
+            DownloadThread thread = new(a);
             threads.Add(thread);
         }
         Clear();

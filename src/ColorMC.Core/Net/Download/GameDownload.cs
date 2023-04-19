@@ -31,7 +31,7 @@ public static class GameDownload
         if (obj2 == null)
             return (GetDownloadState.GetInfo, null);
 
-        AssetsPath.AddIndex(obj2, obj1);
+        obj1.AddIndex(obj2);
         list.Add(new()
         {
             Name = $"{obj.id}.jar",

@@ -243,6 +243,13 @@ public static class Modrinth
         return list1;
     }
 
+    /// <summary>
+    /// 获取Mod依赖
+    /// </summary>
+    /// <param name="data">mod</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="loader">加载器</param>
+    /// <returns></returns>
     public static async Task<ConcurrentBag<((string Name, string ModId) Info,
         List<ModrinthVersionObj> List)>>
         GetModDependencies(ModrinthVersionObj data, string mc, Loaders loader)

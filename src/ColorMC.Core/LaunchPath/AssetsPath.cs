@@ -18,12 +18,12 @@ public static class AssetsPath
     /// <summary>
     /// 基础路径
     /// </summary>
-    public static string BaseDir { get; private set; }
+    public static string BaseDir { get; private set; } = "";
 
     /// <summary>
     /// 资源文件路径
     /// </summary>
-    public static string ObjectsDir { get; private set; }
+    public static string ObjectsDir { get; private set; } = "";
 
     /// <summary>
     /// 初始化
@@ -48,7 +48,7 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">资源数据</param>
     /// <param name="game">游戏数据</param>
-    public static void AddIndex(AssetsObj? obj, GameArgObj game)
+    public static void AddIndex(this GameArgObj game, AssetsObj? obj)
     {
         if (obj == null)
             return;
@@ -62,7 +62,7 @@ public static class AssetsPath
     /// </summary>
     /// <param name="game">游戏数据</param>
     /// <returns></returns>
-    public static AssetsObj? GetIndex(GameArgObj game)
+    public static AssetsObj? GetIndex(this GameArgObj game)
     {
         string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.assets}.json");
         if (!File.Exists(file))
@@ -77,7 +77,7 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">资源数据</param>
     /// <returns>丢失列表</returns>
-    public static async Task<ConcurrentBag<(string Name, string Hash)>> Check(AssetsObj obj)
+    public static async Task<ConcurrentBag<(string Name, string Hash)>> Check(this AssetsObj obj)
     {
         var list1 = new ConcurrentBag<string>();
         var list = new ConcurrentBag<(string, string)>();
@@ -93,7 +93,7 @@ public static class AssetsPath
                 return;
             }
             using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-            var sha1 = Funtcions.GenSha1(stream);
+            var sha1 = await Funtcions.GenSha1Async(stream);
             if (item.Value.hash != sha1)
             {
                 list.Add((item.Key, item.Value.hash));
@@ -121,7 +121,7 @@ public static class AssetsPath
         var obj = await GetHelper.GetAssets(item.assetIndex.url);
         if (obj == null)
             return;
-        AddIndex(obj, item);
+        item.AddIndex(obj);
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">保存的账户</param>
     /// <param name="file">保存路径</param>
-    public static void SaveSkin(LoginObj obj, string file)
+    public static void SaveSkin(this LoginObj obj, string file)
     {
         var path = obj.GetSkinFile();
 

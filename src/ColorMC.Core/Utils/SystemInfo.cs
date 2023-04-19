@@ -7,8 +7,8 @@ public static class SystemInfo
 {
     public static OsType Os { get; private set; } = OsType.Windows;
     public static ArchEnum SystemArch { get; private set; } = ArchEnum.x64;
-    public static string SystemName { get; private set; }
-    public static string System { get; private set; }
+    public static string SystemName { get; private set; } = "";
+    public static string System { get; private set; } = "";
     public static int ProcessorCount { get; private set; }
     public static bool IsArm { get; private set; }
 
@@ -18,17 +18,31 @@ public static class SystemInfo
     public static void Init()
     {
         Logs.Info(LanguageHelper.GetName("Core.System.Info1"));
+        IsArm = RuntimeInformation.OSArchitecture == Architecture.Arm ||
+    RuntimeInformation.OSArchitecture == Architecture.Arm64;
+
         if (Environment.Is64BitOperatingSystem)
         {
-            SystemArch = ArchEnum.x64;
+            if (IsArm)
+            {
+                SystemArch = ArchEnum.aarch64;
+            }
+            else
+            {
+                SystemArch = ArchEnum.x64;
+            }
         }
         else
         {
-            SystemArch = ArchEnum.x32;
+            if (IsArm)
+            {
+                SystemArch = ArchEnum.armV7;
+            }
+            else
+            {
+                SystemArch = ArchEnum.x32;
+            }
         }
-
-        IsArm = RuntimeInformation.OSArchitecture == Architecture.Arm ||
-            RuntimeInformation.OSArchitecture == Architecture.Arm64;
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
