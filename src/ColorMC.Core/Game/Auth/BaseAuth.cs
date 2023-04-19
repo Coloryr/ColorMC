@@ -306,7 +306,7 @@ public static class BaseAuth
             var (State, Obj, Msg) = await LittleSkin.Refresh(obj);
             if (State != LoginState.Done)
                 return (AuthState.Token, State, null,
-                    LanguageHelper.GetName("Core.Login.Error19") + " " +Msg, null);
+                    LanguageHelper.GetName("Core.Login.Error19") + " " + Msg, null);
 
             return (AuthState.Token, State, Obj, null, null);
         }

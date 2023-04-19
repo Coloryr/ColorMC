@@ -1,24 +1,24 @@
-﻿using ColorMC.Core.Net.Apis;
+﻿using Avalonia.Threading;
+using ColorMC.Core;
+using ColorMC.Core.Game;
+using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Apis;
+using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.FTB;
+using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using ColorMC.Core.Utils;
 using System.Threading.Tasks;
-using ColorMC.Core;
-using ColorMC.Core.Objs.FTB;
-using Avalonia.Threading;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
-using System.Collections.Concurrent;
-using System.IO;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net.Downloader;
-using ColorMC.Core.Game;
-using ColorMC.Core.Objs.Minecraft;
 
 namespace ColorMC.Gui.UIBinding;
 

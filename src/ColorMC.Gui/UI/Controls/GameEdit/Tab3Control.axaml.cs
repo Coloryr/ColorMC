@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Platform;
 using AvaloniaEdit.Indentation.CSharp;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;

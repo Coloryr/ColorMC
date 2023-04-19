@@ -1,15 +1,10 @@
 using Avalonia;
 using Avalonia.Media;
 using ColorMC.Core;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
 

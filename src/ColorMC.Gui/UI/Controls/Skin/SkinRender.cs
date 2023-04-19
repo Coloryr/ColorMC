@@ -1,15 +1,8 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Input.Raw;
-using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
-using Avalonia.Platform;
 using Avalonia.Threading;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.SkinModel;
 using ColorMC.Gui.UI.Animations;
@@ -223,7 +216,7 @@ public class SkinRender : OpenGlControlBase
 
         gl.ClearColor(0, 0, 0, 1);
         //GL_BLEND
-        gl.Enable(0x0BE2); 
+        gl.Enable(0x0BE2);
         //GL_SRC_ALPHA GL_ONE_MINUS_SRC_ALPHA
         glBlendFunc(0x0302, 0x0303);
         //GL_BACK
@@ -655,7 +648,7 @@ public class SkinRender : OpenGlControlBase
 
         var modelLoc = GL.GetUniformLocationString(_shaderProgram, "self");
         var model = Matrix4x4.Identity;
-        GL.UniformMatrix4fv(modelLoc,1, false, &model);
+        GL.UniformMatrix4fv(modelLoc, 1, false, &model);
 
         GL.BindVertexArray(NormalVAO.Body.VertexArrayObject);
         GL.DrawElements(GlConsts.GL_TRIANGLES, steveModelDrawOrder,

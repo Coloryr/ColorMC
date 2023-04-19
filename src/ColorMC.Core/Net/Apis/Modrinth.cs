@@ -243,7 +243,7 @@ public static class Modrinth
         return list1;
     }
 
-    public static async Task<ConcurrentBag<((string Name, string ModId) Info, 
+    public static async Task<ConcurrentBag<((string Name, string ModId) Info,
         List<ModrinthVersionObj> List)>>
         GetModDependencies(ModrinthVersionObj data, string mc, Loaders loader)
     {

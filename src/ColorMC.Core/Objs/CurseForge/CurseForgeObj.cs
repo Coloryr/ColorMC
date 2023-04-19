@@ -13,7 +13,7 @@ public enum CurseForgeSortField
 }
 
 public record CurseForgeObj
-{ 
+{
     public CurseForgeObjList.Data Data { get; set; }
 }
 

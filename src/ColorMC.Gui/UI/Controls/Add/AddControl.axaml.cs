@@ -593,7 +593,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
                 }
                 if (list.Item3!.Count == 0)
                 {
-                    res = await WebBinding.DownloadMod(Obj, 
+                    res = await WebBinding.DownloadMod(Obj,
                         new List<(DownloadItemObj, ModInfoObj)>() { (list.Item1!, list.Item2!) });
                     isdownload = false;
                 }

@@ -1,14 +1,10 @@
 using Avalonia;
-using Avalonia.Media;
 using ColorMC.Gui;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Launcher;
 

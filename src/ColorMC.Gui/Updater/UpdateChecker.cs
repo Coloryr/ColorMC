@@ -1,20 +1,14 @@
-﻿using Avalonia.Threading;
-using ColorMC.Core;
+﻿using ColorMC.Core;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;

@@ -241,7 +241,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         }
         else if (con is ServerPackControl con2)
         {
-             return string.Format(App.GetLanguage("ServerPackWindow.Title"), con2.Obj?.Name);
+            return string.Format(App.GetLanguage("ServerPackWindow.Title"), con2.Obj?.Name);
         }
         else if (con is HelloControl)
         {
