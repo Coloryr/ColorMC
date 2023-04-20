@@ -134,6 +134,7 @@
 	<String Key="Core.Launch.Error3">Mod加载器信息读取错误</String>
 	<String Key="Core.Launch.Error4">缺失所需文件，且无法下载</String>
 	<String Key="Core.Launch.Error5">文件下载失败</String>
+	<String Key="Core.Launch.Error6">找不到合适的Java</String>
 	
 	<String Key="AuthType.Offline">离线</String>
 	<String Key="AuthType.OAuth">微软登录</String>

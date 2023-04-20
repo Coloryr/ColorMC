@@ -6,7 +6,6 @@
     <Application.Styles>
         <SimpleTheme />
         <FluentTheme />
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
         <StyleInclude Source="/Style/Button.axaml" />
         <StyleInclude Source="/Style/Tab.axaml" />

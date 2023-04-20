@@ -4,7 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 
-namespace ColorMC.Core.Game.Auth;
+namespace ColorMC.Core.Game;
 
 public static class BaseAuth
 {

@@ -158,18 +158,7 @@ public partial class MainControl : UserControl, IUserControl
         if (res.Item1 == false)
         {
             item.SetLaunch(false);
-            switch (Last)
-            {
-                case LaunchState.LoginFail:
-                    window.Info.Show(App.GetLanguage("MainWindow.Error1"));
-                    break;
-                case LaunchState.JavaError:
-                    window.Info.Show(App.GetLanguage("MainWindow.Error2"));
-                    break;
-                default:
-                    window.Info.Show(res.Item2!);
-                    break;
-            }
+            window.Info.Show(res.Item2!);
         }
         else
         {

@@ -1,4 +1,4 @@
-using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -1069,7 +1069,8 @@ public static class Launch
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
                 ColorMCCore.NoJava?.Invoke();
-                return null;
+                throw new LaunchException(LaunchState.JavaError,
+                        LanguageHelper.GetName("Core.Launch.Error6"));
             }
 
             path = jvm.GetPath();

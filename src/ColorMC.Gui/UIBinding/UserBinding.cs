@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using ColorMC.Core.Game.Auth;
+using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -172,7 +172,7 @@ public static class UserBinding
         }
     }
 
-    public static void RemoveLockUser(LoginObj obj)
+    public static void UnLockUser(LoginObj obj)
     {
         LockUser.Remove(obj);
     }

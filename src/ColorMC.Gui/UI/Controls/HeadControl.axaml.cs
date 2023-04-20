@@ -14,8 +14,8 @@ public partial class HeadControl : UserControl
     public static readonly StyledProperty<object> TitleProperty =
             AvaloniaProperty.Register<Label, object>(nameof(Title), defaultBindingMode: BindingMode.TwoWay);
 
-    public static readonly StyledProperty<object> Title1Property =
-            AvaloniaProperty.Register<Label, object>(nameof(Title1), defaultBindingMode: BindingMode.TwoWay);
+    public static readonly StyledProperty<object?> Title1Property =
+            AvaloniaProperty.Register<Label, object?>(nameof(Title1), defaultBindingMode: BindingMode.TwoWay);
 
     private bool min;
     private bool clo;
@@ -26,7 +26,7 @@ public partial class HeadControl : UserControl
         set { SetValue(TitleProperty, value); }
     }
 
-    public object Title1
+    public object? Title1
     {
         get { return GetValue(Title1Property); }
         set { SetValue(Title1Property, value); }

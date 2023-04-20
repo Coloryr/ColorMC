@@ -1,6 +1,5 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Game;
-using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;

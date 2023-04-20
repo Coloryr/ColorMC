@@ -366,24 +366,23 @@ public static class BaseBinding
             }
             catch (Exception e)
             {
-                UserBinding.RemoveLockUser(obj1);
-                if (e.InnerException is LaunchException launch)
+                UserBinding.UnLockUser(obj1);
+                temp = App.GetLanguage("Gui.Error6");
+                if (e is LaunchException launch)
                 {
-                    temp = string.IsNullOrWhiteSpace(launch.Message)
-                        ? App.GetLanguage("Error6") : launch.Message;
+                    if (!string.IsNullOrWhiteSpace(launch.Message))
+                    {
+                        temp = launch.Message;
+                    }
                     if (launch.Ex != null)
                     {
                         Logs.Error(temp, launch.Ex);
                         App.ShowError(temp, launch.Ex);
                     }
-                    else
-                    {
-                        temp = launch.Message;
-                    }
                 }
                 else
                 {
-                    temp = App.GetLanguage("Error6");
+                    temp = App.GetLanguage("Gui.Error6");
                     Logs.Error(temp, e);
                     App.ShowError(temp, e);
                 }
@@ -420,7 +419,7 @@ public static class BaseBinding
             res.Exited += (a, b) =>
             {
                 RunGames.Remove(obj.UUID);
-                UserBinding.RemoveLockUser(obj1);
+                UserBinding.UnLockUser(obj1);
                 if (Games.Remove(res, out var obj2))
                 {
                     App.MainWindow?.GameClose(obj2);

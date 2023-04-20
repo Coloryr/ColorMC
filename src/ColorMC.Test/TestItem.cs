@@ -1,5 +1,4 @@
 ﻿using ColorMC.Core.Game;
-using ColorMC.Core.Game.Auth;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -409,7 +408,7 @@ public static class TestItem
     {
         var game = InstancesPath.GetGame("test");
 
-        var list = game.GetSchematics().Result;
+        var list = game.GetSchematics();
     }
 
     public static void Item21()

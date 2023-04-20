@@ -30,7 +30,7 @@ public partial class Tab7Control : UserControl
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
 
-        TextEditor1.PointerWheelChanged += TextEditor1_PointerWheelChanged;
+        PointerWheelChanged += TextEditor1_PointerWheelChanged;
     }
 
     private async void Button2_Click(object? sender, RoutedEventArgs e)
@@ -74,7 +74,7 @@ public partial class Tab7Control : UserControl
 
             if (CheckBox2.IsChecked == true)
             {
-                TextEditor1.ScrollToLine(TextEditor1.LineCount);
+                TextEditor1.ScrollToLine(TextEditor1.LineCount - 5);
             }
         });
     }

@@ -5,8 +5,6 @@
 	<String Key="MainWindow.Title">ColorMC 主界面</String>
 	<String Key="MainWindow.Text1">没有游戏实例</String>
 	<String Key="MainWindow.Text2">点击添加一个游戏实例</String>
-	<String Key="MainWindow.Error1">账户登录失败，请重新登录</String>
-	<String Key="MainWindow.Error2">没有合适的Java</String>
 	<String Key="MainWindow.Error3">请输入名字</String>
 	<String Key="MainWindow.Error4">游戏分组添加失败</String>
 	<String Key="MainWindow.Error5">游戏实例复制失败</String>
@@ -785,7 +783,7 @@
 	<String Key="Error3">配置文件保存错误</String>
 	<String Key="Error4">登录发生异常</String>
 	<String Key="Error5">找不到指定的Java</String>
-	<String Key="Error6">游戏启动失败</String>
+	<String Key="Gui.Error6">游戏启动失败</String>
 	<String Key="Error7">输入信息有误</String>
 	<String Key="Error8">请输入必要信息</String>
 	<String Key="Error9">找不到指定的文件</String>

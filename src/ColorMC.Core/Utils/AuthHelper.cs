@@ -2,11 +2,10 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace ColorMC.Core.Game.Auth;
+namespace ColorMC.Core.Utils;
 
 public static class AuthHelper
 {
@@ -27,7 +26,7 @@ public static class AuthHelper
     {
         return new()
         {
-            Url = "https://login.mc-user.com:233/download/nide8auth.jar",
+            Url = "https://login.mc-user.com:233/index/jar",
             Name = "com.nide8.login2:nide8auth:2.4",
             Local = $"{LibrariesPath.BaseDir}/com/nide8/login2/nide8auth/2.4/nide8auth.2.4.jar",
         };
