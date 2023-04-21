@@ -36,13 +36,13 @@ public class SynthesisFilter
     private static readonly float cos1_8 = (float)(1.0 / (2.0 * Math.Cos(MY_PI / 8.0)));
     private static readonly float cos3_8 = (float)(1.0 / (2.0 * Math.Cos(MY_PI * 3.0 / 8.0)));
     private static readonly float cos1_4 = (float)(1.0 / (2.0 * Math.Cos(MY_PI / 4.0)));
-    private static float[] d = null;
+    private static float[] d;
     /**
      * d[] split into subarrays of length 16. This provides for
      * more faster access by allowing a block of 16 to be addressed
      * with static readonlyant offset.
      **/
-    private static float[][] d16 = null;
+    private static float[][] d16;
     private readonly float[] v1;
     private readonly float[] v2;
     private readonly float[] samples;            // 32 new subband samples

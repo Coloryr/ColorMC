@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -23,7 +24,7 @@ public record ModDisplayObj : INotifyPropertyChanged
     }
     public string Local => Obj.Local;
     public string Author => Obj.authorList.MakeString();
-    public string Url => Obj.url;
+    public string? Url => Obj.url;
     public string Loader => Obj.Loader.GetName();
     public string Source
     {

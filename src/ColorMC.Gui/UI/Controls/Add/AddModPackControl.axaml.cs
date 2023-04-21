@@ -288,19 +288,19 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         {
             App.AddGameWindow?.Install(
                 (data.Data as CurseForgeObjList.Data.LatestFiles)!,
-                (Last!.Data.Data as CurseForgeObjList.Data)!);
+                (Last!.Data?.Data as CurseForgeObjList.Data)!);
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
             App.AddGameWindow?.Install(
                 (data.Data as ModrinthVersionObj)!,
-                (Last!.Data.Data as ModrinthSearchObj.Hit)!);
+                (Last!.Data?.Data as ModrinthSearchObj.Hit)!);
         }
         else if (data.SourceType == SourceType.FTB)
         {
             App.AddGameWindow?.Install(
                 (data.Data as FTBModpackObj.Versions)!,
-                (Last!.Data.Data as FTBModpackObj)!);
+                (Last!.Data?.Data as FTBModpackObj)!);
         }
         var window = App.FindRoot(VisualRoot);
         window.Close();
@@ -376,20 +376,20 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         {
             Input3.IsEnabled = true;
             list = await WebBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex,
-                (Last!.Data.Data as CurseForgeObjList.Data)!.id.ToString(), (int)Input3.Value!,
+                (Last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Loaders.Normal);
         }
         else if (ComboBox1.SelectedIndex == 1)
         {
             Input3.IsEnabled = false;
             list = await WebBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex,
-                (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
+                (Last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Loaders.Normal);
         }
         else if (ComboBox1.SelectedIndex == 2)
         {
             Input3.IsEnabled = false;
-            list = WebBinding.GetFTBPackFile(Last!.Data.Data as FTBModpackObj);
+            list = WebBinding.GetFTBPackFile((Last!.Data?.Data as FTBModpackObj)!);
         }
         if (list == null)
         {

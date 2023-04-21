@@ -1,8 +1,8 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.LaunchPath;
@@ -59,13 +59,13 @@ public static class VersionPath
     /// <returns></returns>
     public static async Task GetFromWeb()
     {
-        Versions = await GetHelper.GetVersions();
+        Versions = await GameJsonObj.GetVersions();
         if (Versions != null)
         {
             SaveVersions();
             return;
         }
-        Versions = await GetHelper.GetVersions(SourceLocal.Offical);
+        Versions = await GameJsonObj.GetVersions(SourceLocal.Offical);
         if (Versions == null)
         {
             Logs.Warn(LanguageHelper.GetName("Core.Path.Error3"));
@@ -157,7 +157,7 @@ public static class VersionPath
         var data = Versions.versions.Where(a => a.id == version).FirstOrDefault();
         if (data != null)
         {
-            AddGame(await GetHelper.GetGame(data.url));
+            AddGame(await GameJsonObj.GetGame(data.url));
         }
     }
 

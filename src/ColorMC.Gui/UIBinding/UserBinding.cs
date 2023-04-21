@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using ColorMC.Core.Game;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -216,7 +217,7 @@ public static class UserBinding
         }
         else
         {
-            temp = await GetSkin.DownloadSkin(obj);
+            temp = await PlayerSkin.DownloadSkin(obj);
             if (temp.Item1)
             {
                 file = AssetsPath.GetSkinFile(obj);

@@ -4,10 +4,10 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using AvaloniaEdit.Utils;
 using ColorMC.Core;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -732,14 +732,14 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         {
             Input3.IsEnabled = true;
             list = await WebBinding.GetPackFile(type, id ??
-                (Last!.Data.Data as CurseForgeObjList.Data)!.id.ToString(), (int)Input3.Value!,
+                (Last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Obj.Loader, now);
         }
         else if (type == SourceType.Modrinth)
         {
             Input3.IsEnabled = false;
             list = await WebBinding.GetPackFile(type, id ??
-                (Last!.Data.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
+                (Last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Obj.Loader, now);
         }
         if (list == null)

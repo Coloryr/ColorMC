@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Utils;
+﻿using ColorMC.Core.Helpers;
 
 namespace ColorMC.Core.Objs.Modrinth;
 

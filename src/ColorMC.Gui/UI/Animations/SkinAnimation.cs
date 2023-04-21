@@ -104,7 +104,7 @@ public class SkinAnimation : IDisposable
                     }
                 }
 
-                Dispatcher.UIThread.InvokeAsync(Render.InvalidateVisual).Wait();
+                Dispatcher.UIThread.InvokeAsync(Render.RequestNextFrameRendering).Wait();
 
                 Thread.Sleep(10);
             }

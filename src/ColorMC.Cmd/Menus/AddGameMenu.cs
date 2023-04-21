@@ -1,10 +1,10 @@
-﻿using ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Cmd.Menus;
 
@@ -64,14 +64,14 @@ public static class AddGameMenu
             Name = name,
             Version = item
         };
-        Items = ForgeHelper.GetSupportVersion(BaseClient.Source).Result;
+        Items = ForgeAPI.GetSupportVersion(BaseClient.Source).Result;
         if (Items?.Contains(item) == true)
         {
             var loader = ConsoleUtils.YesNo("启用Forge");
             if (loader)
             {
                 ConsoleUtils.Info1("正在获取Forge版本");
-                Items = ForgeHelper.GetVersionList(item, BaseClient.Source).Result;
+                Items = ForgeAPI.GetVersionList(item, BaseClient.Source).Result;
                 if (Items == null)
                 {
                     ConsoleUtils.Error("Forge列表获取失败");
@@ -87,14 +87,14 @@ public static class AddGameMenu
             }
         }
 
-        Items = FabricHelper.GetSupportVersion().Result;
+        Items = FabricAPI.GetSupportVersion().Result;
         if (Items?.Contains(item) == true)
         {
             var loader = ConsoleUtils.YesNo("启用Fabric");
             if (loader)
             {
                 ConsoleUtils.Info1("正在获取Fabric版本");
-                Items = FabricHelper.GetLoaders(item).Result;
+                Items = FabricAPI.GetLoaders(item).Result;
                 if (Items == null)
                 {
                     ConsoleUtils.Error("Fabric列表获取失败");

@@ -110,9 +110,9 @@ public sealed class Header
     private byte syncmode = Bitstream.INITIAL_SYNC;
     private Crc16 crc;
 
-    public string ToString()
+    public new string ToString()
     {
-        StringBuilder buffer = new StringBuilder(200);
+        StringBuilder buffer = new();
         buffer.Append("Layer ");
         buffer.Append(LayerString());
         buffer.Append(" frame ");

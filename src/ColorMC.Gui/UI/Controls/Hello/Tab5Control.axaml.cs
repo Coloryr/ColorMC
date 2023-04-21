@@ -160,7 +160,7 @@ public partial class Tab5Control : UserControl
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Fabric.IsEnabled = false;
 
-            var list = await QuiltHelper.GetLoaders(item, BaseClient.Source);
+            var list = await QuiltAPI.GetLoaders(item, BaseClient.Source);
             window.Info1.Close();
             if (list == null)
             {
@@ -192,7 +192,7 @@ public partial class Tab5Control : UserControl
             CheckBox_Forge.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
-            var list = await FabricHelper.GetLoaders(item, BaseClient.Source);
+            var list = await FabricAPI.GetLoaders(item, BaseClient.Source);
             window.Info1.Close();
             if (list == null)
             {
@@ -224,7 +224,7 @@ public partial class Tab5Control : UserControl
             CheckBox_Fabric.IsEnabled = false;
             CheckBox_Quilt.IsEnabled = false;
 
-            var list = await ForgeHelper.GetVersionList(item, BaseClient.Source);
+            var list = await ForgeAPI.GetVersionList(item, BaseClient.Source);
             window.Info1.Close();
             if (list == null)
             {

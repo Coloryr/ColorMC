@@ -47,7 +47,7 @@ public static class TestItem
 
     public static void Item4()
     {
-        var res = FabricHelper.GetMeta().Result;
+        var res = FabricAPI.GetMeta().Result;
         if (res == null)
         {
             Console.WriteLine("Fabric信息为空");
@@ -74,7 +74,7 @@ public static class TestItem
 
     public static void Item6()
     {
-        var list = CurseForge.GetModPackList("1.16.5").Result;
+        var list = CurseForgeAPI.GetModPackList("1.16.5").Result;
         if (list == null)
         {
             Console.WriteLine("整合包信息为空");
@@ -368,7 +368,7 @@ public static class TestItem
 
     public static void Item16()
     {
-        var list = ForgeHelper.GetVersionList("1.12.2").Result;
+        var list = ForgeAPI.GetVersionList("1.12.2").Result;
         foreach (var item in list)
         {
             Console.Write(item + " ");
@@ -376,7 +376,7 @@ public static class TestItem
 
         Console.WriteLine();
 
-        var list1 = ForgeHelper.GetSupportVersion().Result;
+        var list1 = ForgeAPI.GetSupportVersion().Result;
         foreach (var item in list1)
         {
             Console.Write(item + " ");
@@ -413,9 +413,9 @@ public static class TestItem
 
     public static void Item21()
     {
-        var list = Modrinth.GetModPackList().Result;
+        var list = ModrinthAPI.GetModPackList().Result;
         var item = list.hits.First();
-        var list1 = Modrinth.GetFileVersions(item.project_id, "", Loaders.Fabric).Result;
+        var list1 = ModrinthAPI.GetFileVersions(item.project_id, "", Loaders.Fabric).Result;
         var item1 = list1.First();
 
         InstancesPath.InstallFromModrinth(item1, null, null).Wait();
@@ -423,8 +423,8 @@ public static class TestItem
 
     public static void Item22()
     {
-        var list = OptifineHelper.GetOptifineVersion().Result;
-        var data = OptifineHelper.GetOptifineDownloadUrl(new()
+        var list = OptifineAPI.GetOptifineVersion().Result;
+        var data = OptifineAPI.GetOptifineDownloadUrl(new()
         {
             Url1 = "http://optifine.net/adloadx?f=preview_OptiFine_1.19.3_HD_U_I2_pre5.jar",
             Url2 = "http://optifine.net/adloadx?f=preview_OptiFine_1.19.3_HD_U_I2_pre5.jar"

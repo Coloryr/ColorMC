@@ -1,4 +1,5 @@
 using ColorMC.Core.Game;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -101,7 +102,7 @@ public static class Launch
             var assets = game.GetIndex();
             if (assets == null)
             {
-                assets = await GetHelper.GetAssets(game.assetIndex.url);
+                assets = await GameJsonObj.GetAssets(game.assetIndex.url);
                 if (assets == null)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
@@ -549,7 +550,7 @@ public static class Launch
         if (v2 && obj.Loader == Loaders.Forge)
         {
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
-            jvmHead.Add($"-Dforgewrapper.installer={ForgeHelper
+            jvmHead.Add($"-Dforgewrapper.installer={ForgeAPI
                 .BuildForgeInster(obj.Version, obj.LoaderVersion!).Local}");
             jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
         }
@@ -725,13 +726,13 @@ public static class Launch
         {
             var forge = obj.GetForgeObj()!;
 
-            var list2 = ForgeHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
+            var list2 = ForgeAPI.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
 
             list2.ForEach(a => list.AddOrUpdate(PathC.MakeVersionObj(a.Name), a.Local));
 
             if (v2)
             {
-                list.AddOrUpdate(new(), ForgeHelper.ForgeWrapper);
+                list.AddOrUpdate(new(), ForgeAPI.ForgeWrapper);
             }
         }
         else if (obj.Loader == Loaders.Fabric)
@@ -1113,7 +1114,7 @@ public static class Launch
                 var obj1 = JsonConvert.DeserializeObject<FTBFilesObj>(File.ReadAllText(file));
                 if (obj1 == null)
                     return;
-                FTBHelper.GetPostLaunch(obj1.parent, obj1.id);
+                FTBAPI.GetPostLaunch(obj1.parent, obj1.id);
             });
         }
 
@@ -1212,18 +1213,19 @@ public static class Launch
         var info1 = new FileInfo(info.Path);
         var path = info1.Directory?.Parent?.FullName;
 
-        var loacl = path + SystemInfo.Os switch
+        var local = path + SystemInfo.Os switch
         {
             OsType.Windows => "/bin/jli.dll",
             OsType.Linux => "/lib/libjli.so",
             OsType.MacOS => "/lib/libjli.dylib",
+            _ => null
         };
-        if (File.Exists(loacl))
+        if (File.Exists(local))
         {
-            loacl = Path.GetFullPath(loacl);
+            local = Path.GetFullPath(local);
         }
 
-        var temp = NativeLoader.Loader.LoadLibrary(loacl);
+        var temp = NativeLoader.Loader.LoadLibrary(local);
         var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
         var inv = (Func1)Marshal.GetDelegateForFunctionPointer(temp1, typeof(Func1));
 

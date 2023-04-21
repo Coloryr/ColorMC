@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
@@ -123,7 +124,7 @@ public static class PackDownload
         Size = info.files.Count;
         Now = 0;
         var list = new ConcurrentBag<DownloadItemObj>();
-        var res = await CurseForge.GetMods(info.files);
+        var res = await CurseForgeAPI.GetMods(info.files);
         if (res != null)
         {
             var res1 = res.Distinct(CurseDataComparer.Instance);
@@ -163,7 +164,7 @@ public static class PackDownload
             bool done = true;
             await Parallel.ForEachAsync(info.files, async (item, token) =>
             {
-                var res = await CurseForge.GetMod(item);
+                var res = await CurseForgeAPI.GetMod(item);
                 if (res == null)
                 {
                     done = false;
@@ -400,7 +401,7 @@ public static class PackDownload
     {
         ColorMCCore.PackState?.Invoke(CoreRunState.Read);
 
-        var data = await FTBHelper.GetFiles(obj.id, file.id);
+        var data = await FTBAPI.GetFiles(obj.id, file.id);
         if (data == null)
             return (false, null);
 
@@ -461,7 +462,7 @@ public static class PackDownload
                 return;
             if (item.type == "mod")
             {
-                var res1 = await CurseForge.GetMod(new()
+                var res1 = await CurseForgeAPI.GetMod(new()
                 {
                     projectID = item.curseforge.project,
                     fileID = item.curseforge.file

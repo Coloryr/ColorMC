@@ -4,10 +4,11 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OtherLaunch;
+using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Concurrent;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Core.Helpers;
 
 public static class GameHelper
 {

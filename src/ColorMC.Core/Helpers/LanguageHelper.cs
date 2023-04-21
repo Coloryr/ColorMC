@@ -1,8 +1,9 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Utils;
 using System.Reflection;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Core.Helpers;
 
 public static class LanguageHelper
 {

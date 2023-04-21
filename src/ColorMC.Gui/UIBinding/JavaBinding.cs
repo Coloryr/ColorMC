@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Java;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Java;

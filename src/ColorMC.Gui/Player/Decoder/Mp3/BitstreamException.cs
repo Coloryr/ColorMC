@@ -6,12 +6,12 @@ public class BitstreamException : JavaLayerException
 {
     private int errorcode = BitstreamErrors.UNKNOWN_ERROR;
 
-    public BitstreamException(String msg, Exception t) : base(msg, t)
+    public BitstreamException(string msg, Exception? t) : base(msg, t)
     {
 
     }
 
-    public BitstreamException(int errorcode, Exception t) : this(getErrorString(errorcode), t)
+    public BitstreamException(int errorcode, Exception? t) : this(getErrorString(errorcode), t)
     {
         this.errorcode = errorcode;
     }

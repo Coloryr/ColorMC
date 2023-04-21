@@ -2,7 +2,7 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Core.Helpers;
 
 public static class ModrinthHelper
 {

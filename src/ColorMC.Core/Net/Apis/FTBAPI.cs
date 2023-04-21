@@ -1,11 +1,11 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.FTB;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace ColorMC.Core.Net.Apis;
 
-public static class FTBHelper
+public static class FTBAPI
 {
     private const string All = "https://api.modpacks.ch/public/modpack/all";
     private const string Featured = "https://api.modpacks.ch/public/modpack/featured/50";

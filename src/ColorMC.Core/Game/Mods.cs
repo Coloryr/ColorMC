@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
@@ -137,7 +138,7 @@ public static class Mods
                         modid = obj2["modId"]?["value"]?.ToString(),
                         name = obj2["names"]?["value"]?.ToString(),
                         version = obj2["version"]?["value"]?.ToString(),
-                        dependants = new() { obj2["dependencies"]?["value"]?.ToString() },
+                        dependencies = new() { obj2["dependencies"]?["value"]?.ToString() },
                         Sha1 = sha1
                     };
 
@@ -370,13 +371,13 @@ public static class Mods
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
-    public static async Task<bool> AddMods(this GameSettingObj obj, List<string> file)
+    public static bool AddMods(this GameSettingObj obj, List<string> file)
     {
         if (file.Count == 0)
             return false;
         string path = obj.GetModsPath();
         bool ok = true;
-        await Parallel.ForEachAsync(file, async (item, cancel) =>
+        Parallel.ForEach(file, (item) =>
         {
             var info = new FileInfo(item);
             if (!info.Exists)

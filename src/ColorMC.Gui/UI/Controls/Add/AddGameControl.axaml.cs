@@ -605,7 +605,7 @@ public partial class AddGameControl : UserControl, IUserControl
         }
         else
         {
-            FTBHelper.PostIntall(data1.id, data.id);
+            FTBAPI.PostIntall(data1.id, data.id);
             App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
             App.MainWindow?.Load();
             window.Close();

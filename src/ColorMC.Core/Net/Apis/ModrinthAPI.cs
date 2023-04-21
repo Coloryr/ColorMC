@@ -1,12 +1,12 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Net.Apis;
 
-public static class Modrinth
+public static class ModrinthAPI
 {
     public const string Url = "https://api.modrinth.com/v2/";
 

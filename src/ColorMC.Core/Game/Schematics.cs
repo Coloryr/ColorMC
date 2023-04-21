@@ -1,7 +1,7 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Utils;
 using NbtLib;
 using System.Collections.Concurrent;
 
@@ -141,7 +141,7 @@ public static class Schematic
         Directory.CreateDirectory(path);
         bool ok = true;
 
-        Parallel.ForEach(file, async (item) =>
+        Parallel.ForEach(file, (item) =>
         {
             var name = Path.GetFileName(item);
             var path1 = Path.GetFullPath(path + "/" + name);

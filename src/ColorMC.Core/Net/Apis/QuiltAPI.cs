@@ -1,11 +1,11 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
-public static class QuiltHelper
+public static class QuiltAPI
 {
     private static List<string>? SupportVersion;
 

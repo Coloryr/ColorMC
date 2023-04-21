@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
@@ -7,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
-public static class ForgeHelper
+public static class ForgeAPI
 {
     public static string ForgeWrapper =>
         LibrariesPath.BaseDir + "/io/github/zekerzhayard/ForgeWrapper/mmc3/ForgeWrapper-mmc3.jar";

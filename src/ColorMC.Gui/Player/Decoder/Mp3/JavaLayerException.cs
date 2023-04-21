@@ -7,7 +7,7 @@ public class JavaLayerException : Exception
 {
     private readonly Exception exception;
 
-    public JavaLayerException(string msg, Exception t) : base(msg)
+    public JavaLayerException(string msg, Exception? t) : base(msg)
     {
         exception = t;
     }

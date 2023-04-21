@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
@@ -118,7 +119,7 @@ public static class AssetsPath
             return;
         }
 
-        var obj = await GetHelper.GetAssets(item.assetIndex.url);
+        var obj = await GameJsonObj.GetAssets(item.assetIndex.url);
         if (obj == null)
             return;
         item.AddIndex(obj);

@@ -1,10 +1,11 @@
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Optifine;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 
-namespace ColorMC.Core.Net;
+namespace ColorMC.Core.Helpers;
 
 public static class UrlHelper
 {
@@ -340,8 +341,8 @@ public static class UrlHelper
             {
                 return url + type switch
                 {
-                    FileType.Mod => "resourcepacks/",
-                    FileType.Resourcepack => "",
+                    FileType.Mod => " mods/",
+                    FileType.Resourcepack => "resourcepacks/",
                     _ => "/"
                 } + item.File;
             }

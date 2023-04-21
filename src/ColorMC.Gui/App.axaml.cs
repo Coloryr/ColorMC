@@ -9,6 +9,7 @@ using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ColorMC.Core;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -288,13 +289,12 @@ public partial class App : Application
     public static async Task LoadImage()
     {
         RemoveImage();
-        string file = GuiConfigUtils.Config.BackImage;
+        var file = GuiConfigUtils.Config.BackImage;
         if (!string.IsNullOrWhiteSpace(file))
         {
             BackBitmap = await ImageUtils.MakeBackImage(
                 file, GuiConfigUtils.Config.BackEffect,
-                GuiConfigUtils.Config.BackLimit ? GuiConfigUtils.Config.BackLimitValue
-                : 100);
+                GuiConfigUtils.Config.BackLimit ? GuiConfigUtils.Config.BackLimitValue : 100);
         }
 
         OnPicUpdate();
@@ -570,14 +570,14 @@ public partial class App : Application
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
             value.Window.Activate();
-            value.GoFile(type1, obj1.PID);
+            value.GoFile(type1, obj1.PID!);
         }
         else
         {
             var con = new AddControl(obj);
             AddWindows.Add(obj.UUID, con);
             AWindow(con);
-            con.GoFile(type1, obj1.PID);
+            con.GoFile(type1, obj1.PID!);
         }
     }
 

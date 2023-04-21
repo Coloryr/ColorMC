@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
 using ColorMC.Core.Game;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -146,12 +147,12 @@ public static class GameBinding
 
     public static Task<List<string>?> GetCurseForgeGameVersions()
     {
-        return CurseForge.GetGameVersions();
+        return CurseForgeAPI.GetGameVersions();
     }
 
     public static Task<List<string>?> GetModrinthGameVersions()
     {
-        return Modrinth.GetGameVersion();
+        return ModrinthAPI.GetGameVersion();
     }
 
     private static CurseForgeCategoriesObj? CurseForgeCategories;
@@ -161,7 +162,7 @@ public static class GameBinding
     {
         if (CurseForgeCategories == null)
         {
-            var list6 = await CurseForge.GetCategories();
+            var list6 = await CurseForgeAPI.GetCategories();
             if (list6 == null)
             {
                 return null;
@@ -173,10 +174,10 @@ public static class GameBinding
         var list7 = from item2 in CurseForgeCategories.data
                     where item2.classId == type switch
                     {
-                        FileType.Mod => CurseForge.ClassMod,
-                        FileType.World => CurseForge.ClassWorld,
-                        FileType.Resourcepack => CurseForge.ClassResourcepack,
-                        _ => CurseForge.ClassModPack
+                        FileType.Mod => CurseForgeAPI.ClassMod,
+                        FileType.World => CurseForgeAPI.ClassWorld,
+                        FileType.Resourcepack => CurseForgeAPI.ClassResourcepack,
+                        _ => CurseForgeAPI.ClassModPack
                     }
                     orderby item2.name descending
                     select (item2.name, item2.id);
@@ -191,7 +192,7 @@ public static class GameBinding
     {
         if (ModrinthCategories == null)
         {
-            var list6 = await Modrinth.GetCategories();
+            var list6 = await ModrinthAPI.GetCategories();
             if (list6 == null)
             {
                 return null;
@@ -203,10 +204,10 @@ public static class GameBinding
         var list7 = from item2 in ModrinthCategories
                     where item2.project_type == type switch
                     {
-                        FileType.Shaderpack => Modrinth.ClassShaderpack,
-                        FileType.Resourcepack => Modrinth.ClassResourcepack,
-                        FileType.ModPack => Modrinth.ClassModPack,
-                        _ => Modrinth.ClassMod
+                        FileType.Shaderpack => ModrinthAPI.ClassShaderpack,
+                        FileType.Resourcepack => ModrinthAPI.ClassResourcepack,
+                        FileType.ModPack => ModrinthAPI.ClassModPack,
+                        _ => ModrinthAPI.ClassMod
                     }
                     && item2.header == "categories"
                     orderby item2.name descending
@@ -537,7 +538,7 @@ public static class GameBinding
         mod.Delete();
     }
 
-    public static Task<bool> AddMods(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
+    public static bool AddMods(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
         foreach (var item in file)
@@ -611,17 +612,17 @@ public static class GameBinding
 
     public static Task<List<string>?> GetForgeVersion(string version)
     {
-        return ForgeHelper.GetVersionList(version, BaseClient.Source);
+        return ForgeAPI.GetVersionList(version, BaseClient.Source);
     }
 
     public static Task<List<string>?> GetFabricVersion(string version)
     {
-        return FabricHelper.GetLoaders(version, BaseClient.Source);
+        return FabricAPI.GetLoaders(version, BaseClient.Source);
     }
 
     public static Task<List<string>?> GetQuiltVersion(string version)
     {
-        return QuiltHelper.GetLoaders(version, BaseClient.Source);
+        return QuiltAPI.GetLoaders(version, BaseClient.Source);
     }
 
     public static async Task<List<WorldDisplayObj>> GetWorlds(GameSettingObj obj)
@@ -839,16 +840,16 @@ public static class GameBinding
 
     public static Task<List<string>?> GetForgeSupportVersion()
     {
-        return ForgeHelper.GetSupportVersion(BaseClient.Source);
+        return ForgeAPI.GetSupportVersion(BaseClient.Source);
     }
 
     public static Task<List<string>?> GetFabricSupportVersion()
     {
-        return FabricHelper.GetSupportVersion(BaseClient.Source);
+        return FabricAPI.GetSupportVersion(BaseClient.Source);
     }
     public static Task<List<string>?> GetQuiltSupportVersion()
     {
-        return QuiltHelper.GetSupportVersion(BaseClient.Source);
+        return QuiltAPI.GetSupportVersion(BaseClient.Source);
     }
 
     public static void DeleteConfig(GameSettingObj obj)
@@ -1106,7 +1107,7 @@ public static class GameBinding
                     App.GetLanguage("GameEditWindow.Tab4.Info8"), true);
                 if (res?.Any() == true)
                 {
-                    return await AddMods(obj, res);
+                    return AddMods(obj, res);
                 }
                 return null;
             case FileType.World:
@@ -1158,7 +1159,7 @@ public static class GameBinding
                     }
                 }
 
-                return await obj.AddMods(list1);
+                return obj.AddMods(list1);
             case FileType.World:
                 foreach (var item in list)
                 {

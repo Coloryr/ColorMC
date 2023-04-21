@@ -1,6 +1,7 @@
 ﻿using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
@@ -30,7 +31,7 @@ public static class WebBinding
         filter ??= "";
         if (type == SourceType.CurseForge)
         {
-            var list = await CurseForge.GetModPackList(version, page, filter: filter,
+            var list = await CurseForgeAPI.GetModPackList(version, page, filter: filter,
                 sortField: sort switch
                 {
                     0 => 1,
@@ -71,7 +72,7 @@ public static class WebBinding
         }
         else if (type == SourceType.Modrinth)
         {
-            var list = await Modrinth.GetModPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId);
+            var list = await ModrinthAPI.GetModPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId);
             if (list == null)
                 return null;
             var list1 = new List<FileItemDisplayObj>();
@@ -97,11 +98,11 @@ public static class WebBinding
         {
             var list = (FTBType)sort switch
             {
-                FTBType.All => await FTBHelper.GetAll(),
-                FTBType.Featured => await FTBHelper.GetFeatured(),
-                FTBType.Popular => await FTBHelper.GetPopular(),
-                FTBType.Installs => await FTBHelper.GetInstalls(),
-                FTBType.Search => await FTBHelper.GetSearch(filter),
+                FTBType.All => await FTBAPI.GetAll(),
+                FTBType.Featured => await FTBAPI.GetFeatured(),
+                FTBType.Popular => await FTBAPI.GetPopular(),
+                FTBType.Installs => await FTBAPI.GetInstalls(),
+                FTBType.Search => await FTBAPI.GetSearch(filter),
                 _ => null
             };
 
@@ -110,7 +111,7 @@ public static class WebBinding
                 return null;
             }
 
-            var bag = new Dictionary<int, FileItemDisplayObj>();
+            var bag = new Dictionary<int, FileItemDisplayObj?>();
 
             int a = 0;
             foreach (var item in list.packs)
@@ -133,13 +134,12 @@ public static class WebBinding
                     if (topcancel.IsCancellationRequested)
                         return;
 
-                    var data = await FTBHelper.GetModpack(item);
+                    var data = await FTBAPI.GetModpack(item);
                     if (data == null)
                     {
                         fail = true;
                         topcancel.Cancel();
                         Logs.Error(string.Format(App.GetLanguage("Gui.Error23"), item));
-                        Thread.Sleep(100);
                         return;
                     }
 
@@ -172,7 +172,15 @@ public static class WebBinding
             if (fail)
                 return null;
 
-            return bag.Values.ToList();
+            var list1 = new List<FileItemDisplayObj>();
+
+            foreach (var item in bag.Values)
+            {
+                if (item != null)
+                    list1.Add(item);
+            }
+
+            return list1;
         }
 
         return null;
@@ -203,7 +211,7 @@ public static class WebBinding
     {
         if (type == SourceType.CurseForge)
         {
-            var list = await CurseForge.GetCurseForgeFiles(id, mc, page, loader);
+            var list = await CurseForgeAPI.GetCurseForgeFiles(id, mc, page, loader);
             if (list == null)
                 return null;
 
@@ -228,7 +236,7 @@ public static class WebBinding
         }
         else if (type == SourceType.Modrinth)
         {
-            var list = await Modrinth.GetFileVersions(id, mc, loader);
+            var list = await ModrinthAPI.GetFileVersions(id, mc, loader);
             if (list == null)
                 return null;
 
@@ -295,7 +303,7 @@ public static class WebBinding
         {
             var list = now switch
             {
-                FileType.Mod => await CurseForge.GetModList(version, page, filter: filter,
+                FileType.Mod => await CurseForgeAPI.GetModList(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -313,7 +321,7 @@ public static class WebBinding
                         4 => 1,
                         _ => 1
                     }, categoryId: categoryId, loader: loader),
-                FileType.World => await CurseForge.GetWorldList(version, page, filter: filter,
+                FileType.World => await CurseForgeAPI.GetWorldList(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -331,7 +339,7 @@ public static class WebBinding
                         4 => 1,
                         _ => 1
                     }, categoryId: categoryId),
-                FileType.Resourcepack => await CurseForge.GetResourcepackList(version, page, filter: filter,
+                FileType.Resourcepack => await CurseForgeAPI.GetResourcepackList(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -349,7 +357,7 @@ public static class WebBinding
                         4 => 1,
                         _ => 1
                     }, categoryId: categoryId),
-                FileType.DataPacks => await CurseForge.GetDataPacksList(version, page, filter: filter,
+                FileType.DataPacks => await CurseForgeAPI.GetDataPacksList(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -395,10 +403,10 @@ public static class WebBinding
         {
             var list = now switch
             {
-                FileType.Mod => await Modrinth.GetModList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId, loader: loader),
-                FileType.Resourcepack => await Modrinth.GetResourcepackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
-                FileType.DataPacks => await Modrinth.GetDataPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
-                FileType.Shaderpack => await Modrinth.GetShaderpackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
+                FileType.Mod => await ModrinthAPI.GetModList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId, loader: loader),
+                FileType.Resourcepack => await ModrinthAPI.GetResourcepackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
+                FileType.DataPacks => await ModrinthAPI.GetDataPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
+                FileType.Shaderpack => await ModrinthAPI.GetShaderpackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
                 _ => null
             };
             if (list == null)
@@ -435,7 +443,7 @@ public static class WebBinding
         var res = new Dictionary<string, DownloadModDisplayObj>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
-            var res1 = await CurseForge.GetModDependencies(data, obj.Version, obj.Loader);
+            var res1 = await CurseForgeAPI.GetModDependencies(data, obj.Version, obj.Loader);
 
             foreach (var item1 in res1)
             {
@@ -471,7 +479,7 @@ public static class WebBinding
         var res = new Dictionary<string, DownloadModDisplayObj>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
-            var list2 = await Modrinth.GetModDependencies(data, obj.Version, obj.Loader);
+            var list2 = await ModrinthAPI.GetModDependencies(data, obj.Version, obj.Loader);
             foreach (var item1 in list2)
             {
                 if (res.ContainsKey(item1.Info.ModId) || obj.Mods.ContainsKey(item1.Info.ModId))
@@ -696,7 +704,7 @@ public static class WebBinding
 
     public static async Task<List<OptifineDisplayObj>?> GetOptifine()
     {
-        var res = await OptifineHelper.GetOptifineVersion();
+        var res = await OptifineAPI.GetOptifineVersion();
         if (res.Item1 == null)
             return null;
 
@@ -718,7 +726,7 @@ public static class WebBinding
 
     public static Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineDisplayObj item)
     {
-        return OptifineHelper.DownloadOptifine(obj, item.Data);
+        return OptifineAPI.DownloadOptifine(obj, item.Data);
     }
 
     public static List<string> GetFTBTypeList()
@@ -756,15 +764,15 @@ public static class WebBinding
                     switch (type1)
                     {
                         case SourceType.CurseForge:
+                            if (item1.Data is CurseForgeObjList.Data.LatestFiles data)
                             {
-                                var data = item1.Data as CurseForgeObjList.Data.LatestFiles;
                                 list.Add((data.MakeModDownloadObj(game), data.MakeModInfo()));
                             }
                             break;
                         case SourceType.Modrinth:
+                            if (item1.Data is ModrinthVersionObj data1)
                             {
-                                var data = item1.Data as ModrinthVersionObj;
-                                list.Add((data.MakeModDownloadObj(game), data.MakeModInfo()));
+                                list.Add((data1.MakeModDownloadObj(game), data1.MakeModInfo()));
                             }
                             break;
                     }

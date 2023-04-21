@@ -11,7 +11,7 @@ public record ModObj
     public string? version { get; set; }
     public List<string>? authorList { get; set; }
     public string credits { get; set; }
-    public List<string> dependants { get; set; }
+    public List<string?> dependants { get; set; }
     public List<string?> dependencies { get; set; }
     public string parent { get; set; }
     public string logoFile { get; set; }

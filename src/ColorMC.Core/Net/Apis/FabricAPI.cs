@@ -1,11 +1,11 @@
-﻿using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
-public static class FabricHelper
+public static class FabricAPI
 {
     private static List<string>? SupportVersion;
 

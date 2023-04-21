@@ -60,7 +60,6 @@
                         Height="30"
                         Margin="10,0,0,0"
                         Classes="input1"
-                        Foreground="Black"
                         Watermark="{setting:Localize AddModPackWindow.Text3}" />
                     <Label
                         Width="50"

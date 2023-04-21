@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
@@ -22,12 +23,12 @@ public static class GameDownload
     {
         var list = new List<DownloadItemObj>();
 
-        var obj1 = await GetHelper.GetGame(obj.url);
+        var obj1 = await GameJsonObj.GetGame(obj.url);
         if (obj1 == null)
             return (GetDownloadState.Init, null);
 
         VersionPath.AddGame(obj1);
-        var obj2 = await GetHelper.GetAssets(obj1.assetIndex.url);
+        var obj2 = await GameJsonObj.GetAssets(obj1.assetIndex.url);
         if (obj2 == null)
             return (GetDownloadState.GetInfo, null);
 
@@ -75,7 +76,7 @@ public static class GameDownload
         var version1 = VersionPath.GetGame(mc)!;
         bool v2 = CheckRule.GameLaunchVersion(version1);
 
-        var down = ForgeHelper.BuildForgeInster(mc, version);
+        var down = ForgeAPI.BuildForgeInster(mc, version);
         try
         {
             var res = await DownloadManager.Download(down);
@@ -130,7 +131,7 @@ public static class GameDownload
                 return (GetDownloadState.GetInfo, null);
             }
 
-            list.AddRange(ForgeHelper.MakeForgeLibs(info, mc, version));
+            list.AddRange(ForgeAPI.MakeForgeLibs(info, mc, version));
 
             byte[] array2 = stream2.ToArray();
             ForgeInstallObj info1;
@@ -185,7 +186,7 @@ public static class GameDownload
                 };
                 foreach (var item in obj.versionInfo.libraries)
                 {
-                    var item1 = ForgeHelper.MakeLibObj(item);
+                    var item1 = ForgeAPI.MakeLibObj(item);
                     if (item1 != null)
                     {
                         info.libraries.Add(item1);
@@ -210,7 +211,7 @@ public static class GameDownload
 
                 File.WriteAllText($"{VersionPath.ForgeDir}/{name}.json", JsonConvert.SerializeObject(info));
 
-                list.AddRange(ForgeHelper.MakeForgeLibs(info, mc, version));
+                list.AddRange(ForgeAPI.MakeForgeLibs(info, mc, version));
             }
             catch (Exception e)
             {
@@ -239,7 +240,7 @@ public static class GameDownload
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadFabric(string mc, string? version = null)
     {
         var list = new List<DownloadItemObj>();
-        var meta = await FabricHelper.GetMeta(BaseClient.Source);
+        var meta = await FabricAPI.GetMeta(BaseClient.Source);
         if (meta == null)
         {
             return (GetDownloadState.Init, null);
@@ -262,7 +263,7 @@ public static class GameDownload
 
         version = fabric.version;
 
-        FabricLoaderObj? meta1 = await FabricHelper.GetLoader(mc, version, BaseClient.Source);
+        FabricLoaderObj? meta1 = await FabricAPI.GetLoader(mc, version, BaseClient.Source);
         if (meta1 == null)
         {
             return (GetDownloadState.GetInfo, null);
@@ -303,7 +304,7 @@ public static class GameDownload
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadQuilt(string mc, string? version = null)
     {
         var list = new List<DownloadItemObj>();
-        var meta = await QuiltHelper.GetMeta(BaseClient.Source);
+        var meta = await QuiltAPI.GetMeta(BaseClient.Source);
         if (meta == null)
         {
             return (GetDownloadState.Init, null);
@@ -326,7 +327,7 @@ public static class GameDownload
 
         version = quilt.version;
 
-        QuiltLoaderObj? meta1 = await QuiltHelper.GetLoader(mc, version, BaseClient.Source);
+        QuiltLoaderObj? meta1 = await QuiltAPI.GetLoader(mc, version, BaseClient.Source);
         if (meta1 == null)
         {
             return (GetDownloadState.GetInfo, null);

@@ -1,14 +1,14 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Optifine;
-using ColorMC.Core.Utils;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
-public static class OptifineHelper
+public static class OptifineAPI
 {
     /// <summary>
     /// 获取高清修复版本

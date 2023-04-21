@@ -1,13 +1,13 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net.Apis;
 
-public static class CurseForge
+public static class CurseForgeAPI
 {
     private const string CurseForgeKEY = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m";
     private const string CurseForgeUrl = "https://api.curseforge.com/v1/";
