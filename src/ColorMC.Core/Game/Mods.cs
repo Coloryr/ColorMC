@@ -33,15 +33,12 @@ public static class Mods
         var files = info.GetFiles();
 
         //多线程同时检查
-        await Parallel.ForEachAsync(files, new ParallelOptions()
-        {
-            MaxDegreeOfParallelism = 1
-        }, async (item, cancel) =>
+        await Parallel.ForEachAsync(files, async (item, cancel) =>
         {
             if (item.Extension is not (".zip" or ".jar" or ".disable"))
                 return;
             string sha1 = "";
-            bool find = false;
+            bool add = false;
             try
             {
                 {
@@ -62,7 +59,7 @@ public static class Mods
                         Sha1 = sha1
                     };
                     list.Add(obj3);
-                    find = true;
+                    add = true;
                     return;
                 }
 
@@ -91,7 +88,7 @@ public static class Mods
                             obj3.Sha1 = sha1;
                             obj3.Game = obj;
                             list.Add(obj3);
-                            find = true;
+                            add = true;
                             return;
                         }
                     }
@@ -109,7 +106,7 @@ public static class Mods
                             obj3.Sha1 = sha1;
                             obj3.Game = obj;
                             list.Add(obj3);
-                            find = true;
+                            add = true;
                             return;
                         }
                     }
@@ -145,7 +142,7 @@ public static class Mods
                     obj3.name ??= obj3.modid;
 
                     list.Add(obj3);
-                    find = true;
+                    add = true;
                     return;
                 }
 
@@ -188,7 +185,7 @@ public static class Mods
                     obj3.Sha1 = sha1;
 
                     list.Add(obj3);
-                    find = true;
+                    add = true;
                     return;
                 }
 
@@ -218,7 +215,7 @@ public static class Mods
                         Sha1 = sha1
                     };
                     list.Add(obj3);
-                    find = true;
+                    add = true;
                     return;
                 }
 
@@ -248,7 +245,7 @@ public static class Mods
                         Game = obj
                     };
                     list.Add(obj3);
-                    find = true;
+                    add = true;
                     return;
                 }
             }
@@ -256,17 +253,20 @@ public static class Mods
             {
                 Logs.Error(LanguageHelper.GetName("Core.Game.Error1"), e);
             }
-            if (!find)
+            finally
             {
-                list.Add(new()
+                if (!add)
                 {
-                    name = "",
-                    Local = Path.GetFullPath(item.FullName),
-                    Disable = item.Extension is ".disable",
-                    Broken = true,
-                    Sha1 = sha1,
-                    Game = obj
-                });
+                    list.Add(new()
+                    {
+                        name = "",
+                        Local = Path.GetFullPath(item.FullName),
+                        Disable = item.Extension is ".disable",
+                        Broken = true,
+                        Sha1 = sha1,
+                        Game = obj
+                    });
+                }
             }
         });
 
