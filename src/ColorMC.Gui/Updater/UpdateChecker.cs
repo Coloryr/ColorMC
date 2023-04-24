@@ -14,8 +14,8 @@ namespace ColorMC.Gui;
 
 public static class UpdateChecker
 {
-    //private const string url = "http://localhost/colormc/A16/";
-    private const string url = "https://colormc.coloryr.com/colormc/A16/";
+    //private const string url = "http://localhost/colormc/A17/";
+    private const string url = "https://colormc.coloryr.com/colormc/A17/";
 
     public static readonly string[] WebSha1s = new string[4] { "", "", "", "" };
     private static readonly string[] Sha1s = new string[4] { "", "", "", "" };
@@ -33,6 +33,10 @@ public static class UpdateChecker
             {
                 using var file = File.OpenRead(Local[a]);
                 Sha1s[a] = Funtcions.GenSha1(file);
+            }
+            else
+            {
+                Sha1s[a] = ColorMCGui.BaseSha1[a];
             }
         }
     }

@@ -9,9 +9,11 @@ using System.Text;
 
 namespace ColorMC.Gui;
 
-public class ColorMCGui
+public static class ColorMCGui
 {
     public static string RunDir { get; private set; }
+
+    public static string[] BaseSha1 { get; private set; }
 
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
 
@@ -50,6 +52,11 @@ public class ColorMCGui
             Logs.Error("run fail", e);
             App.Close();
         }
+    }
+
+    public static void SetBaseSha1(string[] data)
+    {
+        BaseSha1 = data;
     }
 
     public static AppBuilder BuildAvaloniaApp()

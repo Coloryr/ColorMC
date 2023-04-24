@@ -11,7 +11,13 @@ namespace ColorMC.Launcher;
 public static class Program
 {
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
-
+    public static readonly string[] BaseSha1 = new[]
+    {
+        "4eee85b75ec69f6be4a9bb78a2a956eee62e0c45",
+        "670eb3e32e5bf589423f9ce9d6cab40e5dd621b7",
+        "ca0e1a854b98c46e54dfb201b79291d1e69a79ee",
+        "f2ff5f04336e9707d267a4b2a2652ad1c4f61a08"
+    };
     /// <summary>
     /// 加载路径
     /// </summary>
@@ -22,6 +28,7 @@ public static class Program
 
     public static IN MainCall;
     public static IN1 BuildApp;
+    public static IN SetBaseSha1;
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -57,6 +64,7 @@ public static class Program
             //启动内部的
             MainCall = ColorMCGui.Main;
             BuildApp = ColorMCGui.BuildAvaloniaApp;
+            SetBaseSha1 = ColorMCGui.SetBaseSha1;
         }
         else
         {
@@ -66,6 +74,7 @@ public static class Program
 
         try
         {
+            SetBaseSha1(BaseSha1);
             MainCall(args);
         }
         catch (Exception e)
@@ -119,5 +128,8 @@ public static class Program
 
         BuildApp = (Delegate.CreateDelegate(typeof(IN1),
                 mis.GetMethod("BuildAvaloniaApp")!) as IN1)!;
+
+        SetBaseSha1 = (Delegate.CreateDelegate(typeof(IN),
+                mis.GetMethod("SetBaseSha1")!) as IN)!;
     }
 }
