@@ -306,7 +306,7 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
     }
-    
+
     /// <summary>
     /// 获取窗口模式
     /// </summary>

@@ -231,7 +231,7 @@ public class FilesPageViewModel : ReactiveObject
                             TextSearchValueSelector = x => x.Name
                         })
                     {
-                        
+
                     },
                     x => x.Children,
                     x => x.HasChildren,

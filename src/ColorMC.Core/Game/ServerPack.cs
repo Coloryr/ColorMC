@@ -79,7 +79,7 @@ public static class ServerPack
         //添加新mod
         foreach (var item in list3)
         {
-            if (item == null) 
+            if (item == null)
                 continue;
             if (item.Source == null)
             {

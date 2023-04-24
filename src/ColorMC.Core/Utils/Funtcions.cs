@@ -1,5 +1,5 @@
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;

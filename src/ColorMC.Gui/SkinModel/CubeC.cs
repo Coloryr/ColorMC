@@ -34,7 +34,7 @@ public class CubeC
         -Value, -Value, -Value,
     };
 
-    private readonly ushort[] cubeIndicies = new ushort[] 
+    private readonly ushort[] cubeIndicies = new ushort[]
     {
        0, 1, 2, 0, 2, 3,
        4, 5, 6, 4, 6, 7,

@@ -47,7 +47,7 @@ public static class Media
         }
         else
         {
-            player = new NAudioPlayer();  
+            player = new NAudioPlayer();
         }
     }
 
