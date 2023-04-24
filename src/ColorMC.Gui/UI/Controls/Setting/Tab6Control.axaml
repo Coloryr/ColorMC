@@ -119,11 +119,20 @@
                     Content="{setting:Localize SettingWindow.Tab6.Text22}"
                     IsEnabled="False" />
             </StackPanel>
-            <TextBox
-                Name="TextBox5"
-                Classes="input1"
-                IsEnabled="False"
-                Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
+            <DockPanel>
+                <Button
+                    Name="Button10"
+                    Width="80"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Content="{setting:Localize Button.Select}"
+                    DockPanel.Dock="Right" />
+                <TextBox
+                    Name="TextBox5"
+                    Classes="input1"
+                    IsEnabled="False"
+                    Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
+            </DockPanel>
             <StackPanel Orientation="Horizontal">
                 <Label
                     Margin="5,0,0,0"

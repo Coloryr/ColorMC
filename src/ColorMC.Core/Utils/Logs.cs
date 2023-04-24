@@ -1,9 +1,7 @@
-
-
 using ColorMC.Core.Helpers;
 using System.Collections.Concurrent;
 
-namespace ColorMC.Core;
+namespace ColorMC.Core.Utils;
 
 public static class Logs
 {
@@ -89,7 +87,7 @@ public static class Logs
         string text = $"[{DateTime.Now}][Error]{data}";
         AddText(text);
     }
-    
+
     public static void Error(string data, Exception? e)
     {
         string text = $"[{DateTime.Now}][Error]{data}{Environment.NewLine}{e}";

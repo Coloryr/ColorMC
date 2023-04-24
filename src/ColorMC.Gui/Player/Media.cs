@@ -1,10 +1,12 @@
-﻿using ColorMC.Core;
-using ColorMC.Core.Net;
+﻿using ColorMC.Core.Net;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player.Decoder.Mp3;
-using OpenTK.Audio.OpenAL;
 using System;
 using System.Buffers.Binary;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,41 +14,90 @@ namespace ColorMC.Gui.Player;
 
 public static class Media
 {
-    private static float volume = 0.1f;
-    private static int alSource;
-    private static ALDevice device;
-    private static ALContext context;
-    private static bool ok = false;
+    private static IPlayer? player;
+
     private static CancellationTokenSource cancel = new();
+
+    private static bool play = false;
+
     public static float Volume
     {
         set
         {
-            volume = value;
-            AL.Source(alSource, ALSourcef.Gain, volume);
+            if (player != null)
+            {
+                player.Volume = value;
+            }
         }
     }
 
+    /// <summary>
+    /// 初始化播放器
+    /// </summary>
     public static unsafe void Init()
     {
-        // Get the default device, then go though all devices and select the AL soft device if it exists.
-        string deviceName = ALC.GetString(ALDevice.Null, AlcGetString.DefaultDeviceSpecifier);
+        if (ColorMCGui.RunType != RunType.Program)
+        {
+            return;
+        }
 
-        device = ALC.OpenDevice(deviceName);
-        int temp = 0;
-        context = ALC.CreateContext(device, ref temp);
-        ALC.MakeContextCurrent(context);
-
-        AL.GenSource(out alSource);
-
-        CheckALError();
-        ok = true;
+        if (SystemInfo.Os != OsType.Windows)
+        {
+            player = new OpenalPlayer();
+        }
+        else
+        {
+            player = new NAudioPlayer();  
+        }
     }
 
+    /// <summary>
+    /// 关闭播放器
+    /// </summary>
     public static async void Close()
     {
-        if (!ok)
-            return;
+        Stop();
+
+        await Task.Run(() =>
+        {
+            while (play)
+            {
+                Thread.Sleep(10);
+            }
+        });
+
+        player?.Close();
+    }
+
+    /// <summary>
+    /// 暂停
+    /// </summary>
+    public static void Pause() => player?.Pause();
+
+    /// <summary>
+    /// 播放
+    /// </summary>
+    public static void Play() => player?.Play();
+
+    /// <summary>
+    /// 停止
+    /// </summary>
+    public static void Stop()
+    {
+        cancel.Cancel();
+
+        player?.Stop();
+    }
+
+    /// <summary>
+    /// 播放
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <returns></returns>
+    public static async Task<(bool, string?)> PlayWAV(string filePath)
+    {
+        if (player == null)
+            return (false, null);
 
         Stop();
 
@@ -58,94 +109,38 @@ public static class Media
             }
         });
 
-        AL.DeleteSource(alSource);
-
-        ALC.MakeContextCurrent(ALContext.Null);
-        ALC.DestroyContext(context);
-        ALC.CloseDevice(device);
-    }
-
-    public static void CheckALError()
-    {
-        ALError error = AL.GetError();
-        if (error != ALError.NoError)
-        {
-            App.ShowError($"ALError", new Exception(AL.GetErrorString(error)));
-        }
-    }
-
-    public static void Pause()
-    {
-        if (!ok)
-            return;
-
-        AL.SourcePause(alSource);
-    }
-
-    public static void Play()
-    {
-        if (!ok)
-            return;
-
-        AL.SourcePlay(alSource);
-    }
-
-    public static void Stop()
-    {
-        if (!ok)
-            return;
-
-        cancel.Cancel();
-
-        AL.Source(alSource, ALSourcef.Gain, 0);
-        AL.SourceStop(alSource);
-
-        AL.GetSource(alSource, ALGetSourcei.BuffersQueued, out int value);
-        while (value > 0)
-        {
-            int temp = AL.SourceUnqueueBuffer(alSource);
-            AL.DeleteBuffer(temp);
-            value--;
-        }
-    }
-
-    public static unsafe (bool, string?) PlayWAV(string filePath)
-    {
-        if (!ok)
-            return (false, null);
-
-        Stop();
-
         cancel = new();
 
-        ReadOnlySpan<byte> file = File.ReadAllBytes(filePath);
-        int index = 0;
-        if (file[index++] != 'R' || file[index++] != 'I' || file[index++] != 'F' || file[index++] != 'F')
+        var file = File.OpenRead(filePath);
+        var temp = new byte[4];
+        file.Read(temp);
+        if (temp[0] != 'R' || temp[1] != 'I' || temp[2] != 'F' || temp[3] != 'F')
         {
             return (false, "Given file is not in RIFF format");
         }
 
-        var chunkSize = BinaryPrimitives.ReadInt32LittleEndian(file.Slice(index, 4));
-        index += 4;
+        file.Read(temp);
+        var chunkSize = BinaryPrimitives.ReadInt32LittleEndian(temp);
 
-        if (file[index++] != 'W' || file[index++] != 'A' || file[index++] != 'V' || file[index++] != 'E')
+        file.Read(temp);
+        if (temp[0] != 'W' || temp[1] != 'A' || temp[2] != 'V' || temp[3] != 'E')
         {
             return (false, "Given file is not in WAVE format");
         }
 
         short numChannels = -1;
         int sampleRate = -1;
-        int byteRate = -1;
-        short blockAlign = -1;
         short bitsPerSample = -1;
+        int index = 12;
 
-        ALFormat format = 0;
-
-        while (index + 4 < file.Length)
+        while (index < file.Length)
         {
-            var identifier = "" + (char)file[index++] + (char)file[index++] + (char)file[index++] + (char)file[index++];
-            var size = BinaryPrimitives.ReadInt32LittleEndian(file.Slice(index, 4));
+            file.Read(temp);
             index += 4;
+            var identifier = "" + (char)temp[0] + (char)temp[1] + (char)temp[2] + (char)temp[3];
+            file.Read(temp);
+            index += 4;
+            var size = BinaryPrimitives.ReadInt32LittleEndian(temp);
             if (identifier == "fmt ")
             {
                 if (size != 16)
@@ -154,7 +149,8 @@ public static class Media
                 }
                 else
                 {
-                    var audioFormat = BinaryPrimitives.ReadInt16LittleEndian(file.Slice(index, 2));
+                    file.Read(temp, 0, 2);
+                    var audioFormat = BinaryPrimitives.ReadInt16LittleEndian(temp);
                     index += 2;
                     if (audioFormat != 1)
                     {
@@ -162,64 +158,47 @@ public static class Media
                     }
                     else
                     {
-                        numChannels = BinaryPrimitives.ReadInt16LittleEndian(file.Slice(index, 2));
+                        file.Read(temp, 0, 2);
                         index += 2;
-                        sampleRate = BinaryPrimitives.ReadInt32LittleEndian(file.Slice(index, 4));
+                        numChannels = BinaryPrimitives.ReadInt16LittleEndian(temp);
+                        file.Read(temp);
                         index += 4;
-                        byteRate = BinaryPrimitives.ReadInt32LittleEndian(file.Slice(index, 4));
+                        sampleRate = BinaryPrimitives.ReadInt32LittleEndian(temp);
+                        file.Read(temp);
                         index += 4;
-                        blockAlign = BinaryPrimitives.ReadInt16LittleEndian(file.Slice(index, 2));
+                        file.Read(temp, 0, 2);
                         index += 2;
-                        bitsPerSample = BinaryPrimitives.ReadInt16LittleEndian(file.Slice(index, 2));
+                        file.Read(temp, 0, 2);
                         index += 2;
-
-                        if (numChannels == 1)
-                        {
-                            if (bitsPerSample == 8)
-                                format = ALFormat.Mono8;
-                            else if (bitsPerSample == 16)
-                                format = ALFormat.Mono16;
-                            else
-                            {
-                                return (false, $"Can't Play mono {bitsPerSample} sound.");
-                            }
-                        }
-                        else if (numChannels == 2)
-                        {
-                            if (bitsPerSample == 8)
-                                format = ALFormat.Stereo8;
-                            else if (bitsPerSample == 16)
-                                format = ALFormat.Stereo16;
-                            else
-                            {
-                                return (false, $"Can't Play stereo {bitsPerSample} sound.");
-                            }
-                        }
-                        else
-                        {
-                            return (false, $"Can't play audio with {numChannels} sound");
-                        }
+                        bitsPerSample = BinaryPrimitives.ReadInt16LittleEndian(temp);
                     }
                 }
             }
             else if (identifier == "data")
             {
-                var data = file.Slice(index, size);
-                index += size;
-                AL.GenBuffer(out int alBuffer);
-
-                fixed (byte* pData = data)
-                    AL.BufferData(alBuffer, format, pData, size, sampleRate);
-
-                AL.SourceQueueBuffer(alSource, alBuffer);
-
-                if (AL.GetSourceState(alSource) != ALSourceState.Playing)
+                int less = size;
+                int pack = numChannels * bitsPerSample * 1000;
+                temp = new byte[pack];
+                _ = Task.Run(() =>
                 {
-                    AL.SourcePlay(alSource);
-                }
+                    for (int a = 0; a < size; a++)
+                    {
+                        var length = Math.Min(less, pack);
+                        file.Read(temp, 0, length);
+                        player?.Write(numChannels, bitsPerSample, temp, length, sampleRate);
+                        if (cancel.IsCancellationRequested)
+                            break;
+
+                        a += length;
+                        less -= length;
+                    }
+                    file.Dispose();
+                });
+                break;
             }
             else
             {
+                file.Seek(size, SeekOrigin.Current);
                 index += size;
             }
         }
@@ -227,11 +206,14 @@ public static class Media
         return (true, null);
     }
 
-    private static bool play = false;
-
+    /// <summary>
+    /// 播放
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <returns></returns>
     public static async Task<(bool, string?)> PlayMp3(Stream stream)
     {
-        if (!ok)
+        if (player == null)
             return (false, null);
 
         Stop();
@@ -268,58 +250,10 @@ public static class Media
                         break;
                     }
 
-                    AL.GenBuffer(out int alBuffer);
-
-                    AL.BufferData(alBuffer, ALFormat.Stereo16,
-                        new ReadOnlySpan<byte>(frame.buff, 0, frame.len), decoder.outputFrequency);
-
-                    AL.SourceQueueBuffer(alSource, alBuffer);
-
-                    if (AL.GetSourceState(alSource) != ALSourceState.Playing)
-                    {
-                        AL.SourcePlay(alSource);
-                    }
-                    int value, value1;
-
-                    do
-                    {
-                        AL.GetSource(alSource, ALGetSourcei.BuffersQueued, out value);
-                        AL.GetSource(alSource, ALGetSourcei.BuffersProcessed, out value1);
-
-                        if (value - value1 > 100)
-                        {
-                            int temp = AL.SourceUnqueueBuffer(alSource);
-                            AL.DeleteBuffer(temp);
-                            Thread.Sleep(10);
-                        }
-                    }
-                    while (value - value1 > 100);
-
+                    player?.Write(2, 16, frame.buff, frame.len, decoder.outputFrequency);
                     count++;
                 }
                 decoder.Dispose();
-                if (!cancel.IsCancellationRequested)
-                {
-                    while (true)
-                    {
-                        AL.GetSource(alSource, ALGetSourcei.BuffersQueued, out int value);
-                        AL.GetSource(alSource, ALGetSourcei.BuffersProcessed, out int value1);
-                        if (value == value1)
-                        {
-                            AL.Source(alSource, ALSourcef.Gain, 0);
-                            AL.SourceStop(alSource);
-
-                            while (value > 0)
-                            {
-                                int temp = AL.SourceUnqueueBuffer(alSource);
-                                AL.DeleteBuffer(temp);
-                                value--;
-                            }
-                            break;
-                        }
-                        Thread.Sleep(10);
-                    }
-                }
                 play = false;
             }
             catch (Exception e)
@@ -331,24 +265,34 @@ public static class Media
         return (true, null);
     }
 
+    /// <summary>
+    /// 播放
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public static async Task<(bool, string?)> PlayMp3(string file)
     {
-        if (!ok)
+        if (player == null)
             return (false, null);
 
-        using var reader = File.OpenRead(file);
+        var reader = File.OpenRead(file);
         return await PlayMp3(reader);
     }
 
+    /// <summary>
+    /// 播放
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     public static async Task<(bool, string?)> PlayUrl(string url)
     {
-        if (!ok)
+        if (player == null)
             return (false, null);
 
         try
         {
             var res = await BaseClient.DownloadClient.GetAsync(url);
-            if (res.StatusCode == System.Net.HttpStatusCode.Redirect)
+            if (res.StatusCode == HttpStatusCode.Redirect)
             {
                 var url1 = res.Headers.Location;
                 res = await BaseClient.DownloadClient.GetAsync(url1);

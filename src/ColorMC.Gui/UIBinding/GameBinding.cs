@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
-using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -370,7 +369,12 @@ public static class GameBinding
             App.ShowGameEdit(obj, GameEditWindowType.Log);
         }
 
-        return await BaseBinding.Launch(obj, login);
+        var res1 = await BaseBinding.Launch(obj, login);
+        if (res1.Item1)
+        {
+            ConfigBinding.SetLastLaunch(obj.UUID);
+        }
+        return res1;
     }
 
     public static bool AddGameGroup(string name)

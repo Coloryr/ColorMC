@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -124,6 +125,11 @@ public partial class ItemControl : UserControl
     {
         var window = App.FindRoot(VisualRoot);
         (window.Con as MainControl)?.Launch(false);
+    }
+
+    public void SetLaunch(bool launch)
+    {
+        islaunch = launch;
     }
 
     public void SetGame(GameSettingObj? obj)

@@ -2,7 +2,7 @@
 using Avalonia.Media.Immutable;
 using Avalonia.Platform;
 using Avalonia.Threading;
-using ColorMC.Core;
+using ColorMC.Core.Utils;
 using System;
 using System.ComponentModel;
 using System.Threading;

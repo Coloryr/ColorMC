@@ -36,7 +36,11 @@ public static class CurseForgeHelper
         };
     }
 
-
+    /// <summary>
+    /// 创建Mod信息
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public static ModInfoObj MakeModInfo(this CurseForgeObjList.Data.LatestFiles data)
     {
         data.FixDownloadUrl();
@@ -54,6 +58,11 @@ public static class CurseForgeHelper
         };
     }
 
+    /// <summary>
+    /// 获取作者名字
+    /// </summary>
+    /// <param name="authors"></param>
+    /// <returns></returns>
     public static string GetString(this List<CurseForgeObjList.Data.Authors> authors)
     {
         var builder = new StringBuilder();

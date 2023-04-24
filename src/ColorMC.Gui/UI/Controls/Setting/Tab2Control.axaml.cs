@@ -280,7 +280,7 @@ public partial class Tab2Control : UserControl
 
         var window = App.FindRoot(VisualRoot);
         window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info5"));
-        ConfigBinding.SetBl(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
+        ConfigBinding.SetWindowTran(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
         window.Info1.Close();
     }
 

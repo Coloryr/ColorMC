@@ -8,7 +8,7 @@ using System.Runtime.Loader;
 
 namespace ColorMC.Launcher;
 
-public class Program
+public static class Program
 {
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 
@@ -46,16 +46,6 @@ public class Program
         else
         {
             LoadDir = AppContext.BaseDirectory + "dll/";
-        }
-
-        //Ω‚—πopenal
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            var dll = AppContext.BaseDirectory + "OpenAL32.dll";
-            if (!File.Exists(dll))
-            {
-                File.WriteAllBytes(dll, Resource1.OpenAL32);
-            }
         }
 
         Console.WriteLine($"CheckDir:{LoadDir}");

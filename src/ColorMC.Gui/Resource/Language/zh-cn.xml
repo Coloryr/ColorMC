@@ -246,6 +246,8 @@
 	<String Key="SettingWindow.Tab6.Info2">选择UI文件</String>
 	<String Key="SettingWindow.Tab6.Info3">UI文件</String>
 	<String Key="SettingWindow.Tab6.Info4">UI文件已导出</String>
+	<String Key="SettingWindow.Tab6.Info5">选择背景音乐文件</String>
+	<String Key="SettingWindow.Tab6.Info6">背景音乐</String>
 
 	<String Key="SettingWindow.Tab7.Text1">一个全平台Minecraft启动器</String>
 	<String Key="SettingWindow.Tab7.Text2">作者：Coloryr</String>

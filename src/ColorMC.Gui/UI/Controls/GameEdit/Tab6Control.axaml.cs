@@ -213,24 +213,25 @@ public class FilesPageViewModel : ReactiveObject
             {
                 new TemplateColumn<FileTreeNodeModel>(
                     null,
-                    "FileNameCell1",
-                    options: new ColumnOptions<FileTreeNodeModel>
+                    cellTemplateResourceKey: "FileNameCell1",
+                    options: new TemplateColumnOptions<FileTreeNodeModel>
                     {
                         CanUserResizeColumn = false
                     }),
                 new HierarchicalExpanderColumn<FileTreeNodeModel>(
                     new TemplateColumn<FileTreeNodeModel>(
                         App.GetLanguage("GameEditWindow.Tab6.Info4"),
-                        "FileNameCell",
+                        cellTemplateResourceKey: "FileNameCell",
                         new GridLength(1, GridUnitType.Star),
-                        new ColumnOptions<FileTreeNodeModel>
+                        new TemplateColumnOptions<FileTreeNodeModel>
                         {
                             CompareAscending = FileTreeNodeModel.SortAscending(x => x.Name),
                             CompareDescending = FileTreeNodeModel.SortDescending(x => x.Name),
+                            IsTextSearchEnabled = true,
+                            TextSearchValueSelector = x => x.Name
                         })
                     {
-                        IsTextSearchEnabled = true,
-                        TextSearchValueSelector = x => x.Name
+                        
                     },
                     x => x.Children,
                     x => x.HasChildren,

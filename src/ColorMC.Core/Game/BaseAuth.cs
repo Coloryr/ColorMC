@@ -326,19 +326,13 @@ public static class BaseAuth
     /// <returns>结果</returns>
     public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string? Message, Exception? Ex)> RefreshToken(this LoginObj obj)
     {
-        switch (obj.AuthType)
+        return obj.AuthType switch
         {
-            case AuthType.OAuth:
-                return await RefreshWithOAuth(obj);
-            case AuthType.Nide8:
-                return await RefreshWithNide8(obj);
-            case AuthType.AuthlibInjector:
-                return await RefreshWithAuthlibInjector(obj);
-            case AuthType.LittleSkin:
-            case AuthType.SelfLittleSkin:
-                return await RefreshWithLittleSkin(obj);
-            default:
-                return (AuthState.Token, LoginState.Done, obj, null, null);
-        }
+            AuthType.OAuth => await RefreshWithOAuth(obj),
+            AuthType.Nide8 => await RefreshWithNide8(obj),
+            AuthType.AuthlibInjector => await RefreshWithAuthlibInjector(obj),
+            AuthType.LittleSkin or AuthType.SelfLittleSkin => await RefreshWithLittleSkin(obj),
+            _ => (AuthState.Token, LoginState.Done, obj, null, null),
+        };
     }
 }

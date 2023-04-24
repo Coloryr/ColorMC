@@ -929,6 +929,16 @@ public static class BaseBinding
                     return res[0].GetPath();
                 }
                 break;
+            case FileType.Music:
+                res = await OpFile(window,
+                    App.GetLanguage("SettingWindow.Tab6.Info5"),
+                    new string[] { "*.mp3", "*.wav" },
+                    App.GetLanguage("SettingWindow.Tab6.Info6"));
+                if (res?.Any() == true)
+                {
+                    return res[0].GetPath();
+                }
+                break;
         }
 
         return null;
@@ -1109,7 +1119,7 @@ public static class BaseBinding
                 }
                 else if (file.EndsWith(".wav"))
                 {
-                    Media.PlayWAV(file);
+                    await Media.PlayWAV(file);
                     play = true;
                 }
             }

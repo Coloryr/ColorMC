@@ -901,9 +901,9 @@ public static class Launch
     /// <returns></returns>
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login)
     {
-        //登录账户
         Stopwatch stopwatch = new();
 
+        //启动前运行
         if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
             || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
         {
@@ -919,12 +919,15 @@ public static class Launch
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
                     var args = start.Split(' ');
                     var file = args[0];
-                    file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
+                    if (file.StartsWith("./") || file.StartsWith("../"))
+                    {
+                        file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
+                    }
                     var arglist = new List<string>();
 
                     var info = new ProcessStartInfo(file)
                     {
-                        WorkingDirectory = obj.GetBasePath(),
+                        WorkingDirectory = obj.GetGamePath(),
                         RedirectStandardError = true,
                         RedirectStandardOutput = true
                     };
@@ -949,7 +952,7 @@ public static class Launch
                     p.Start();
                     p.BeginOutputReadLine();
                     p.BeginErrorReadLine();
-                    p?.WaitForExit();
+                    p.WaitForExit();
 
                     stopwatch.Stop();
                     string temp1 = string.Format(LanguageHelper.GetName("Core.Launch.Info8"),
@@ -966,6 +969,9 @@ public static class Launch
                 Logs.Info(temp2);
             }
         }
+
+        //登录账户
+        stopwatch.Restart();
         stopwatch.Start();
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Login);
         var (State, State1, Obj, Message, Ex) = await login.RefreshToken();
@@ -973,8 +979,8 @@ public static class Launch
         {
             if (login.AuthType == AuthType.OAuth
                 && !string.IsNullOrWhiteSpace(login.UUID)
-                && ColorMCCore.LoginFailLaunch != null
-                && await ColorMCCore.LoginFailLaunch(login) == true)
+                && ColorMCCore.OfflineLaunch != null
+                && await ColorMCCore.OfflineLaunch(login) == true)
             {
                 login = new()
                 {
@@ -1124,6 +1130,7 @@ public static class Launch
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
 
+        //启动后执行
         if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPost == true
             || ConfigUtils.Config.DefaultJvmArg.LaunchPost))
         {
@@ -1139,12 +1146,15 @@ public static class Launch
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPost);
                     var args = start.Split(' ');
                     var file = args[0];
-                    file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
+                    if (file.StartsWith("./") || file.StartsWith("../"))
+                    {
+                        file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
+                    }
                     var arglist = new List<string>();
 
                     var info = new ProcessStartInfo(file)
                     {
-                        WorkingDirectory = obj.GetBasePath(),
+                        WorkingDirectory = obj.GetGamePath(),
                         RedirectStandardError = true,
                         RedirectStandardOutput = true
                     };
@@ -1170,7 +1180,7 @@ public static class Launch
                     p.Start();
                     p.BeginOutputReadLine();
                     p.BeginErrorReadLine();
-                    p?.WaitForExit();
+                    p.WaitForExit();
                 }
 
                 stopwatch.Stop();
@@ -1191,73 +1201,73 @@ public static class Launch
         return process;
     }
 
-    public delegate int Func1(int argc,
-        string[] argv, /* main argc, argc */
-        int jargc, string[] jargv,          /* java args */
-        int appclassc, string[] appclassv,  /* app classpath */
-        string fullversion,                 /* full version defined */
-        string dotversion,                  /* dot version defined */
-        string pname,                       /* program name */
-        string lname,                       /* launcher name */
-        bool javaargs,                      /* JAVA_ARGS */
-        bool cpwildcard,                    /* classpath wildcard*/
-        bool javaw,                         /* windows-only javaw */
-        int ergo                            /* ergonomics class policy */
-    );
+    //public delegate int Func1(int argc,
+    //    string[] argv, /* main argc, argc */
+    //    int jargc, string[] jargv,          /* java args */
+    //    int appclassc, string[] appclassv,  /* app classpath */
+    //    string fullversion,                 /* full version defined */
+    //    string dotversion,                  /* dot version defined */
+    //    string pname,                       /* program name */
+    //    string lname,                       /* launcher name */
+    //    bool javaargs,                      /* JAVA_ARGS */
+    //    bool cpwildcard,                    /* classpath wildcard*/
+    //    bool javaw,                         /* windows-only javaw */
+    //    int ergo                            /* ergonomics class policy */
+    //);
 
-    private static int Lenght;
-    private static string[] Args;
+    //private static int Lenght;
+    //private static string[] Args;
 
-    public static void NativeLaunch(JavaInfo info, List<string> args)
-    {
-        var info1 = new FileInfo(info.Path);
-        var path = info1.Directory?.Parent?.FullName;
+    //public static void NativeLaunch(JavaInfo info, List<string> args)
+    //{
+    //    var info1 = new FileInfo(info.Path);
+    //    var path = info1.Directory?.Parent?.FullName;
 
-        var local = path + SystemInfo.Os switch
-        {
-            OsType.Windows => "/bin/jli.dll",
-            OsType.Linux => "/lib/libjli.so",
-            OsType.MacOS => "/lib/libjli.dylib",
-            _ => null
-        };
-        if (File.Exists(local))
-        {
-            local = Path.GetFullPath(local);
-        }
+    //    var local = path + SystemInfo.Os switch
+    //    {
+    //        OsType.Windows => "/bin/jli.dll",
+    //        OsType.Linux => "/lib/libjli.so",
+    //        OsType.MacOS => "/lib/libjli.dylib",
+    //        _ => null
+    //    };
+    //    if (File.Exists(local))
+    //    {
+    //        local = Path.GetFullPath(local);
+    //    }
 
-        var temp = NativeLoader.Loader.LoadLibrary(local);
-        var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
-        var inv = (Func1)Marshal.GetDelegateForFunctionPointer(temp1, typeof(Func1));
+    //    var temp = NativeLoader.Loader.LoadLibrary(local);
+    //    var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
+    //    var inv = (Func1)Marshal.GetDelegateForFunctionPointer(temp1, typeof(Func1));
 
-        //Environment.SetEnvironmentVariable("JAVA_HOME", path);
-        //Environment.SetEnvironmentVariable("PATH", path + "/bin:" + path);
-        //Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", path + "/lib:" + path + "/bin");
+    //    //Environment.SetEnvironmentVariable("JAVA_HOME", path);
+    //    //Environment.SetEnvironmentVariable("PATH", path + "/bin:" + path);
+    //    //Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", path + "/lib:" + path + "/bin");
 
-        var args1 = new string[args.Count + 1];
-        args1[0] = "java";
+    //    var args1 = new string[args.Count + 1];
+    //    args1[0] = "java";
 
-        for (int i = 1; i < args1.Length; i++)
-        {
-            args1[i] = args[i - 1];
-        }
+    //    for (int i = 1; i < args1.Length; i++)
+    //    {
+    //        args1[i] = args[i - 1];
+    //    }
 
-        Lenght = args1.Length;
-        Args = args1;
+    //    Lenght = args1.Length;
+    //    Args = args1;
 
-        new Thread(() =>
-        {
-            try
-            {
-                var res = inv(Lenght, Args, 0, null, 0, null, "", "", "", "", false, false, true, 0);
+    //    new Thread(() =>
+    //    {
+    //        try
+    //        {
+    //            var res = inv(Lenght, Args, 0, null, 0, null, "", "", "", "", false, false, true, 0);
 
-                var res1 = NativeLoader.Loader.CloseLibrary(temp);
-            }
-            catch (Exception e)
-            {
-                ColorMCCore.OnError?.Invoke("Error", e, false);
-            }
-        }).Start();
-    }
+    //            var res1 = NativeLoader.Loader.CloseLibrary(temp);
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            ColorMCCore.OnError?.Invoke("Error", e, false);
+    //        }
+    //    }).Start();
+    //}
 
     private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {

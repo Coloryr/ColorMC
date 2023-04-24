@@ -1,5 +1,4 @@
-﻿using ColorMC.Core;
-using ColorMC.Core.Net;
+﻿using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;

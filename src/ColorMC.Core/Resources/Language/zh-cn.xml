@@ -8,7 +8,6 @@
 	<String Key="Core.Config.Error1">配置文件读取错误</String>
 	<String Key="Core.Config.Warn1">配置为空，旧版配置文件会被覆盖</String>
 	
-	<String Key="Core.System.Info1">正在获取系统信息</String>
 	<String Key="Core.Auth.Info1">登录数据库初始化</String>
 	<String Key="Core.Log.Error1">日志文件初始化错误</String>
 	

@@ -34,7 +34,7 @@ public partial class MainControl : UserControl, IUserControl
 
         ColorMCCore.GameLaunch = GameLunch;
         ColorMCCore.GameDownload = GameDownload;
-        ColorMCCore.LoginFailLaunch = LoginFailLaunch;
+        ColorMCCore.OfflineLaunch = OfflineLaunch;
         ColorMCCore.LaunchP = LaunchP;
 
         Grid3.PointerPressed += Grid3_PointerPressed;
@@ -121,7 +121,7 @@ public partial class MainControl : UserControl, IUserControl
         }
     }
 
-    private Task<bool> LoginFailLaunch(LoginObj login)
+    private Task<bool> OfflineLaunch(LoginObj login)
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
@@ -138,6 +138,7 @@ public partial class MainControl : UserControl, IUserControl
 
         var window = App.FindRoot(VisualRoot);
         launch = true;
+        ItemInfo.SetLaunch(true);
         ItemInfo.UpdateLaunch();
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
@@ -172,6 +173,7 @@ public partial class MainControl : UserControl, IUserControl
             }
         }
         launch = false;
+        ItemInfo.SetLaunch(false);
         ItemInfo.UpdateLaunch();
     }
 
@@ -201,7 +203,7 @@ public partial class MainControl : UserControl, IUserControl
 
         ColorMCCore.GameLaunch = null;
         ColorMCCore.GameDownload = null;
-        ColorMCCore.LoginFailLaunch = null;
+        ColorMCCore.OfflineLaunch = null;
 
         App.MainWindow = null;
 
@@ -273,6 +275,7 @@ public partial class MainControl : UserControl, IUserControl
         Obj = obj;
         if (obj != null)
         {
+            obj.SetSelect(true);
             ItemInfo.SetGame(obj.Obj);
         }
         else
@@ -440,7 +443,6 @@ public partial class MainControl : UserControl, IUserControl
 
                     var item = new GameControl();
                     item.SetItem(game);
-                    item.SetSelect(true);
                     item.DoubleTapped += Item_DoubleTapped;
 
                     GameItemSelect(item);
@@ -461,12 +463,15 @@ public partial class MainControl : UserControl, IUserControl
                 GameGroups.VerticalAlignment = VerticalAlignment.Top;
                 GameGroups.HorizontalAlignment = HorizontalAlignment.Stretch;
                 DefaultGroup.SetWindow(this);
+                var uuid = ConfigBinding.GetLastLaunch();
+                GameControl? last = null;
                 foreach (var item in list)
                 {
                     if (item.Key == " ")
                     {
                         DefaultGroup.SetItems(item.Value);
                         DefaultGroup.SetName(" ", App.GetLanguage("MainWindow.Info20"));
+                        last ??= DefaultGroup.Find(uuid);
                     }
                     else
                     {
@@ -475,6 +480,7 @@ public partial class MainControl : UserControl, IUserControl
                         group.SetName(item.Key, item.Key);
                         group.SetWindow(this);
                         Groups.Add(group);
+                        last ??= group.Find(uuid);
                     }
                 }
 
@@ -486,6 +492,7 @@ public partial class MainControl : UserControl, IUserControl
                         GameGroups.Children.Add(item);
                     }
                     GameGroups.Children.Add(DefaultGroup);
+                    GameItemSelect(last);
                 });
             }
             else

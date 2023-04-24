@@ -38,9 +38,14 @@ public static class LanguageHelper
         ColorMCCore.LanguageReload?.Invoke(type);
     }
 
+    /// <summary>
+    /// 取语言
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public static string GetName(string input)
     {
-        return Language.GetLanguage(input, out _);
+        return Language.GetLanguage(input);
     }
 
     public static string GetName(this AuthType type)

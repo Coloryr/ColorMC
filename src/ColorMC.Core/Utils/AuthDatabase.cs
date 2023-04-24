@@ -49,6 +49,9 @@ public static class AuthDatabase
         }
     }
 
+    /// <summary>
+    /// 加载保存的账户
+    /// </summary>
     private static void Load()
     {
         try

@@ -19,7 +19,7 @@ public static class DownloadManager
     /// <summary>
     /// 下载线程
     /// </summary>
-    private static List<DownloadThread> threads = new();
+    private readonly static List<DownloadThread> threads = new();
     /// <summary>
     /// 信号量
     /// </summary>

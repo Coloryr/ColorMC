@@ -10,8 +10,12 @@ namespace ColorMC.Core;
 
 public static class ColorMCCore
 {
-    public const string Version = "A16.230423";
+    public const string Version = "A17.230423";
 
+    /// <summary>
+    /// 运行路径
+    /// </summary>
+    public static string BaseDir { get; private set; }
     /// <summary>
     /// 错误显示回调
     /// 标题 错误 关闭程序
@@ -77,7 +81,7 @@ public static class ColorMCCore
     /// <summary>
     /// 登录失败是否以离线方式启动
     /// </summary>
-    public static Func<LoginObj, Task<bool>>? LoginFailLaunch { internal get; set; }
+    public static Func<LoginObj, Task<bool>>? OfflineLaunch { internal get; set; }
     /// <summary>
     /// 解压Java时
     /// </summary>
@@ -108,8 +112,6 @@ public static class ColorMCCore
     /// 停止事件
     /// </summary>
     internal static event Action? Stop;
-
-    public static string BaseDir { get; private set; }
 
     /// <summary>
     /// 初始化

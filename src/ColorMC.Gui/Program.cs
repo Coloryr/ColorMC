@@ -3,6 +3,7 @@ using Avalonia.Media;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using System;
 using System.Text;
 
@@ -11,6 +12,8 @@ namespace ColorMC.Gui;
 public class ColorMCGui
 {
     public static string RunDir { get; private set; }
+
+    public static RunType RunType { get; private set; } = RunType.AppBuilder;
 
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 
@@ -25,6 +28,8 @@ public class ColorMCGui
         try
         {
             SystemInfo.Init();
+
+            RunType = RunType.Program;
 
             RunDir = SystemInfo.Os switch
             {

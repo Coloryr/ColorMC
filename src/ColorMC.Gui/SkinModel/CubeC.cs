@@ -6,7 +6,7 @@ public class CubeC
 {
     public const float Value = 0.5f;
 
-    private float[] cube = new float[]
+    private readonly float[] cube = new float[]
     {
         Value, Value, -Value, /* Back. */
         Value, -Value, -Value,
@@ -34,7 +34,8 @@ public class CubeC
         -Value, -Value, -Value,
     };
 
-    private ushort[] cubeIndicies = new ushort[] {
+    private readonly ushort[] cubeIndicies = new ushort[] 
+    {
        0, 1, 2, 0, 2, 3,
        4, 5, 6, 4, 6, 7,
        8, 9, 10, 8, 10, 11,

@@ -69,7 +69,7 @@
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0-preview6.1" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview6" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.0.0-preview6" />
@@ -77,8 +77,10 @@
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview6" />
     <PackageReference Include="Avalonia.X11" Version="11.0.0-preview6" />
+    <PackageReference Include="NAudio.Core" Version="2.1.0" />
+    <PackageReference Include="NAudio.WinMM" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ReactiveUI" Version="18.4.26" />
+    <PackageReference Include="ReactiveUI" Version="18.4.34" />
 	<PackageReference Include="OpenTK.OpenAL" Version="4.7.7" />
     <PackageReference Include="SixLabors.Fonts" Version="1.0.0-beta19" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />

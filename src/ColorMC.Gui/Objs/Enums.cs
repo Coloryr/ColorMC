@@ -63,3 +63,11 @@ public enum ColorType
     /// </summary>
     Dark
 }
+
+/// <summary>
+/// 运行类型
+/// </summary>
+public enum RunType
+{
+    Program, AppBuilder
+}

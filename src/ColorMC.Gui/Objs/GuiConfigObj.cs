@@ -92,4 +92,6 @@ public record GuiConfigObj
     public bool CloseBeforeLaunch { get; set; }
 
     public bool WindowMode { get; set; }
+
+    public string LastLaunch { get; set; }
 }

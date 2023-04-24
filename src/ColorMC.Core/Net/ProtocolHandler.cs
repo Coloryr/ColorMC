@@ -1,7 +1,7 @@
 using System.Net.Sockets;
 using System.Text;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Core.Net;
 
 public class ProtocolHandler
 {
@@ -145,11 +145,11 @@ public class ProtocolHandler
     /// <returns>Byte array for this integer</returns>
     public static byte[] GetVarInt(int paramInt)
     {
-        List<byte> bytes = new List<byte>();
+        List<byte> bytes = new();
         while ((paramInt & -128) != 0)
         {
             bytes.Add((byte)(paramInt & 127 | 128));
-            paramInt = (int)(((uint)paramInt) >> 7);
+            paramInt = (int)((uint)paramInt >> 7);
         }
         bytes.Add((byte)paramInt);
         return bytes.ToArray();
@@ -162,7 +162,7 @@ public class ProtocolHandler
     /// <returns>Array containing all the data</returns>
     public static byte[] ConcatBytes(params byte[][] bytes)
     {
-        List<byte> result = new List<byte>();
+        List<byte> result = new();
         foreach (byte[] array in bytes)
         {
             result.AddRange(array);

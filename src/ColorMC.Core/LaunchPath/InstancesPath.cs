@@ -161,7 +161,7 @@ public static class InstancesPath
                         break;
 
                     var mmc1 = File.ReadAllText(file2);
-                    game = GameHelper.MMCToColorMC(mmc, mmc1);
+                    game = GameHelper.ToColorMC(mmc, mmc1);
                 }
             }
             else
@@ -715,7 +715,7 @@ public static class InstancesPath
     public static async Task<(bool, GameSettingObj?)> InstallFromZip(string dir, PackType type, string? name, string? group)
     {
         GameSettingObj? game = null;
-        bool res1111 = false;
+        bool import = false;
         try
         {
             switch (type)
@@ -747,16 +747,6 @@ public static class InstancesPath
                         if (game == null)
                             break;
 
-                        if (!string.IsNullOrWhiteSpace(name))
-                        {
-                            game.Name = name;
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(group))
-                        {
-                            game.GroupName = group;
-                        }
-
                         if (InstallGames.ContainsKey(game.Name))
                         {
                             break;
@@ -780,18 +770,18 @@ public static class InstancesPath
                         game.AddToGroup();
 
                         ColorMCCore.PackState?.Invoke(CoreRunState.End);
-                        res1111 = true;
+                        import = true;
                         break;
                     }
                 //Curseforge压缩包
                 case PackType.CurseForge:
-                    (res1111, game) = await PackDownload.DownloadCurseForgeModPack(dir, name, group);
+                    (import, game) = await PackDownload.DownloadCurseForgeModPack(dir, name, group);
 
                     ColorMCCore.PackState?.Invoke(CoreRunState.End);
                     break;
                 //Modrinth压缩包
                 case PackType.Modrinth:
-                    (res1111, game) = await PackDownload.DownloadModrinthModPack(dir, name, group);
+                    (import, game) = await PackDownload.DownloadModrinthModPack(dir, name, group);
 
                     ColorMCCore.PackState?.Invoke(CoreRunState.End);
                     break;
@@ -836,7 +826,16 @@ public static class InstancesPath
 
                         var mmc1 = Encoding.UTF8.GetString(stream2.ToArray());
 
-                        game = GameHelper.MMCToColorMC(mmc, mmc1);
+                        game = mmc.ToColorMC(mmc1);
+
+                        if (!string.IsNullOrWhiteSpace(name))
+                        {
+                            game.Name = name;
+                        }
+                        if (!string.IsNullOrWhiteSpace(group))
+                        {
+                            game.GroupName = group;
+                        }
                         game = await CreateVersion(game);
 
                         if (game == null)
@@ -858,7 +857,7 @@ public static class InstancesPath
                         }
 
                         ColorMCCore.PackState?.Invoke(CoreRunState.End);
-                        res1111 = true;
+                        import = true;
                         break;
                     }
                 //HMCL压缩包
@@ -899,78 +898,14 @@ public static class InstancesPath
                         if (obj == null)
                             break;
 
-                        game = new GameSettingObj()
-                        {
-                            Name = obj.name,
-                            Loader = Loaders.Normal
-                        };
-
+                        game = obj.ToColorMC();
                         if (!string.IsNullOrWhiteSpace(name))
                         {
                             game.Name = name;
                         }
-
                         if (!string.IsNullOrWhiteSpace(group))
                         {
                             game.GroupName = group;
-                        }
-
-                        foreach (var item in obj.addons)
-                        {
-                            if (item.id == "game")
-                            {
-                                game.Version = item.version;
-                            }
-                            else if (item.id == "forge")
-                            {
-                                game.Loader = Loaders.Forge;
-                                game.LoaderVersion = item.version;
-                            }
-                            else if (item.id == "fabric")
-                            {
-                                game.Loader = Loaders.Fabric;
-                                game.LoaderVersion = item.version;
-                            }
-                            else if (item.id == "quilt")
-                            {
-                                game.Loader = Loaders.Quilt;
-                                game.LoaderVersion = item.version;
-                            }
-                        }
-
-                        if (obj.launchInfo != null)
-                        {
-                            game.JvmArg = new()
-                            {
-                                MinMemory = obj.launchInfo.minMemory
-                            };
-                            string data = "";
-                            foreach (var item in obj.launchInfo.launchArgument)
-                            {
-                                data += item + " ";
-                            }
-                            if (!string.IsNullOrWhiteSpace(data))
-                            {
-                                game.JvmArg.GameArgs = data.Trim();
-                            }
-                            else
-                            {
-                                game.JvmArg.GameArgs = null;
-                            }
-
-                            data = "";
-                            foreach (var item in obj.launchInfo.javaArgument)
-                            {
-                                data += item + " ";
-                            }
-                            if (!string.IsNullOrWhiteSpace(data))
-                            {
-                                game.JvmArg.JvmArgs = data.Trim();
-                            }
-                            else
-                            {
-                                game.JvmArg.JvmArgs = null;
-                            }
                         }
 
                         game = await CreateVersion(game);
@@ -978,12 +913,17 @@ public static class InstancesPath
                         if (game == null)
                             break;
 
-                        var obj1 = JsonConvert.DeserializeObject<CurseForgePackObj>
-                            (Encoding.UTF8.GetString(stream2.ToArray()));
                         string overrides = "overrides";
-                        if (obj1 != null)
+
+                        if (find1)
                         {
-                            overrides = obj1.overrides;
+                            var obj1 = JsonConvert.DeserializeObject<CurseForgePackObj>
+                                (Encoding.UTF8.GetString(stream2.ToArray()));
+                            if (obj1 != null)
+                            {
+                                overrides = obj1.overrides;
+                            }
+
                         }
 
                         foreach (ZipEntry e in zFile)
@@ -1002,7 +942,7 @@ public static class InstancesPath
                         }
 
                         ColorMCCore.PackState?.Invoke(CoreRunState.End);
-                        res1111 = true;
+                        import = true;
                         break;
                     }
             }
@@ -1012,12 +952,12 @@ public static class InstancesPath
             ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Pack.Error2"), e, false);
             Logs.Error(LanguageHelper.GetName("Core.Pack.Error2"), e);
         }
-        if (!res1111 && game != null)
+        if (!import && game != null)
         {
             await game.Remove();
         }
         ColorMCCore.PackState?.Invoke(CoreRunState.End);
-        return (res1111, game);
+        return (import, game);
     }
 
     /// <summary>

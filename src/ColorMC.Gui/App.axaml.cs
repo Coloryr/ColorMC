@@ -8,7 +8,6 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -180,7 +179,6 @@ public partial class App : Application
             ShowCustom();
 
             await LoadImage();
-
 
             //new Thread(() =>
             //{

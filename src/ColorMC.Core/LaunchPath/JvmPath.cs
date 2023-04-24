@@ -244,27 +244,30 @@ public static class JvmPath
     public static void AddList(List<JvmConfigObj> list)
     {
         Logs.Info(LanguageHelper.GetName("Core.Jvm.Info1"));
-        Jvms.Clear();
-        list.ForEach(a =>
+        Task.Run(() =>
         {
-            var path = a.Local;
-            var info = GetJavaInfo(path);
-            Jvms.Remove(a.Name);
-            if (info != null)
+            Jvms.Clear();
+            list.ForEach(a =>
             {
-                Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info2"),
-                    info.Path, info.Version));
-                Jvms.Add(a.Name, info);
-            }
-            else
-            {
-                Jvms.Add(a.Name, new JavaInfo()
+                var path = a.Local;
+                var info = GetJavaInfo(path);
+                Jvms.Remove(a.Name);
+                if (info != null)
                 {
-                    Path = a.Local,
-                    Type = Unknow,
-                    Version = Unknow
-                });
-            }
+                    Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info2"),
+                        info.Path, info.Version));
+                    Jvms.Add(a.Name, info);
+                }
+                else
+                {
+                    Jvms.Add(a.Name, new JavaInfo()
+                    {
+                        Path = a.Local,
+                        Type = Unknow,
+                        Version = Unknow
+                    });
+                }
+            });
         });
     }
 

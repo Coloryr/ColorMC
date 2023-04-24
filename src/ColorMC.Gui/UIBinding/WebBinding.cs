@@ -1,5 +1,4 @@
 ﻿using Avalonia.Threading;
-using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;

@@ -1,7 +1,7 @@
 namespace ColorMC.Core.Objs;
 
 /// <summary>
-/// 资源
+/// 资源来源
 /// </summary>
 public enum SourceType
 {
@@ -22,7 +22,7 @@ public enum PathType
 public enum FileType
 {
     ModPack = 0, Mod, World, Shaderpack, Resourcepack, DataPacks, Schematic,
-    Java, Game, Config, AuthConfig, Pic, UI, Optifne, Skin, ServerPack
+    Java, Game, Config, AuthConfig, Pic, UI, Optifne, Skin, ServerPack, Music
 }
 
 /// <summary>

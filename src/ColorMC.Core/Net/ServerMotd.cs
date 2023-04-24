@@ -1,5 +1,4 @@
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Utils;
 using Heijden.Dns.Portable;
 using Heijden.DNS;
 using Newtonsoft.Json;

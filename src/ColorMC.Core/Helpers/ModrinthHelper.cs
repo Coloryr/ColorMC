@@ -25,6 +25,11 @@ public static class ModrinthHelper
         };
     }
 
+    /// <summary>
+    /// 创建Mod信息
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public static ModInfoObj MakeModInfo(this ModrinthVersionObj data)
     {
         var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];

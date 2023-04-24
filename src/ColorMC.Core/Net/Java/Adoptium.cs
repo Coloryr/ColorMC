@@ -7,12 +7,12 @@ public static class Adoptium
 {
     public readonly static List<string> JavaVersion = new()
     {
-        "8", "11", "16", "17", "18", "19"
+        "8", "11", "16", "17", "18", "19", "20"
     };
 
     public readonly static List<string> SystemType = new()
     {
-        "", "Windows", "Linux", "MacOS"
+        "", "Windows", "Linux", "Alpine Linux", "MacOS", "AIX", "Solaris"
     };
 
     /// <summary>
@@ -25,7 +25,10 @@ public static class Adoptium
         {
             1 => "windows",
             2 => "linux",
-            3 => "mac",
+            3 => "alpine-linux",
+            4 => "mac",
+            5 => "aix",
+            6 => "solaris",
             _ => ""
         };
     }

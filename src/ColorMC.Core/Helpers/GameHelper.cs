@@ -121,7 +121,7 @@ public static class GameHelper
                     var name = item + $":{path[1]}-{path[2]}-natives-linux-arm64";
                     var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-linux-arm64.jar";
 
-                    var item3 = await MakeItem(name, dir);
+                    var item3 = await LocalMaven.MakeItem(name, dir);
                     if (item3 != null)
                     {
                         list.Add(item3);
@@ -131,7 +131,7 @@ public static class GameHelper
                 {
                     var name = item + $":{path[1]}-{path[2]}-natives-windows-arm64";
                     var dir = $"{basedir}{path[1]}/{path[2]}/{path[1]}-{path[2]}-natives-windows-arm64.jar";
-                    var item3 = await MakeItem(name, dir);
+                    var item3 = await LocalMaven.MakeItem(name, dir);
                     if (item3 != null)
                     {
                         list.Add(item3);
@@ -169,71 +169,13 @@ public static class GameHelper
         }
     }
 
-    private static async Task<DownloadItemObj?> MakeItem(string name, string dir)
-    {
-        var item2 = LocalMaven.GetItem(name);
-        if (item2 != null)
-        {
-            if (item2.Have)
-            {
-                return new()
-                {
-                    Name = name,
-                    Url = item2.Url,
-                    Local = $"{LibrariesPath.BaseDir}/{item2.Local}",
-                    SHA1 = item2.SHA1
-                };
-            }
-        }
-        else
-        {
-            try
-            {
-                DownloadItemObj? item3 = null;
-                var maven = new MavenItemObj()
-                {
-                    Name = name
-                };
-                var url = (BaseClient.Source == SourceLocal.Offical ?
-                    UrlHelper.originServers4[0] :
-                    UrlHelper.originServers4[1]) + dir;
-                var res = await BaseClient.DownloadClient
-                    .GetAsync(url + ".sha1",
-                    HttpCompletionOption.ResponseHeadersRead);
-                if (res.IsSuccessStatusCode)
-                {
-                    item3 = new DownloadItemObj()
-                    {
-                        Name = name,
-                        Url = url,
-                        Local = $"{LibrariesPath.BaseDir}/{dir}",
-                        SHA1 = await res.Content.ReadAsStringAsync()
-                    };
-
-                    maven.Have = true;
-                    maven.SHA1 = item3.SHA1;
-                    maven.Url = item3.Url;
-                    maven.Local = dir;
-                }
-                else
-                {
-                    maven.Have = false;
-                }
-
-                LocalMaven.AddItem(maven);
-
-                return item3;
-            }
-            catch (Exception e)
-            {
-                Logs.Error("native load error", e);
-            }
-        }
-
-        return null;
-    }
-
-    public static GameSettingObj MMCToColorMC(MMCObj mmc, string mmc1)
+    /// <summary>
+    /// MMC配置转ColorMC
+    /// </summary>
+    /// <param name="mmc"></param>
+    /// <param name="mmc1"></param>
+    /// <returns></returns>
+    public static GameSettingObj ToColorMC(this MMCObj mmc, string mmc1)
     {
         var list = Options.ReadOptions(mmc1, "=");
         var game = new GameSettingObj
@@ -302,6 +244,80 @@ public static class GameHelper
             {
                 game.StartServer.IP = item1;
                 game.StartServer.Port = 0;
+            }
+        }
+
+        return game;
+    }
+
+    /// <summary>
+    /// HMCL配置转ColorMC
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static GameSettingObj ToColorMC(this HMCLObj obj)
+    {
+        var game = new GameSettingObj()
+        {
+            Name = obj.name,
+            Loader = Loaders.Normal
+        };
+
+        foreach (var item in obj.addons)
+        {
+            if (item.id == "game")
+            {
+                game.Version = item.version;
+            }
+            else if (item.id == "forge")
+            {
+                game.Loader = Loaders.Forge;
+                game.LoaderVersion = item.version;
+            }
+            else if (item.id == "fabric")
+            {
+                game.Loader = Loaders.Fabric;
+                game.LoaderVersion = item.version;
+            }
+            else if (item.id == "quilt")
+            {
+                game.Loader = Loaders.Quilt;
+                game.LoaderVersion = item.version;
+            }
+        }
+
+        if (obj.launchInfo != null)
+        {
+            game.JvmArg = new()
+            {
+                MinMemory = obj.launchInfo.minMemory
+            };
+            string data = "";
+            foreach (var item in obj.launchInfo.launchArgument)
+            {
+                data += item + " ";
+            }
+            if (!string.IsNullOrWhiteSpace(data))
+            {
+                game.JvmArg.GameArgs = data.Trim();
+            }
+            else
+            {
+                game.JvmArg.GameArgs = null;
+            }
+
+            data = "";
+            foreach (var item in obj.launchInfo.javaArgument)
+            {
+                data += item + " ";
+            }
+            if (!string.IsNullOrWhiteSpace(data))
+            {
+                game.JvmArg.JvmArgs = data.Trim();
+            }
+            else
+            {
+                game.JvmArg.JvmArgs = null;
             }
         }
 

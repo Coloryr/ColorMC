@@ -90,6 +90,11 @@ public static class AuthHelper
         }
     }
 
+    /// <summary>
+    /// 获取AuthlibInjector信息
+    /// </summary>
+    /// <returns>信息</returns>
+    /// <exception cref="Exception">获取失败</exception>
     private static async Task<AuthlibInjectorObj> GetAuthlibInjectorObj()
     {
         string url = UrlHelper.AuthlibInjectorMeta(BaseClient.Source);

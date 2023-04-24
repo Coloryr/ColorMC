@@ -66,7 +66,6 @@ public partial class GamesControl : UserControl
 
     private void Expander_Head_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        Window.Obj?.SetSelect(false);
         Window.GameItemSelect(null);
     }
 
@@ -173,8 +172,6 @@ public partial class GamesControl : UserControl
         if (Window.Obj != sender)
         {
             var game = (sender as GameControl)!;
-            Window.Obj?.SetSelect(false);
-            game.SetSelect(true);
             Window.GameItemSelect(game);
         }
 
@@ -191,5 +188,17 @@ public partial class GamesControl : UserControl
         {
             _ = new MainFlyout(Window, Window.Obj!);
         }
+    }
+
+    public GameControl? Find(string? uuid)
+    {
+        if (string.IsNullOrWhiteSpace(uuid))
+            return null;
+        if (Items.TryGetValue(uuid, out var item))
+        {
+            return item;
+        }
+
+        return null;
     }
 }

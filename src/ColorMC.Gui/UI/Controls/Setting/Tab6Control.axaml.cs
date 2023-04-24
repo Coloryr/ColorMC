@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -28,6 +27,7 @@ public partial class Tab6Control : UserControl
         Button2.Click += Button2_Click;
         Button8.Click += Button8_Click;
         Button9.Click += Button9_Click;
+        Button10.Click += Button10_Click;
 
         Button3.Click += Button3_Click;
         Button4.Click += Button4_Click;
@@ -53,6 +53,18 @@ public partial class Tab6Control : UserControl
         ComboBox1.SelectionChanged += ComboBox1_SelectionChanged;
 
         Slider1.PropertyChanged += Slider1_PropertyChanged;
+    }
+
+    private async void Button10_Click(object? sender, RoutedEventArgs e)
+    {
+        var window = App.FindRoot(VisualRoot);
+        var file = await BaseBinding.OpFile(window, FileType.Music);
+        if (file == null)
+        {
+            return;
+        }
+
+        TextBox5.Text = file;
     }
 
     private void Button9_Click(object? sender, RoutedEventArgs e)
@@ -221,7 +233,7 @@ public partial class Tab6Control : UserControl
         }
 
         Button1.IsEnabled = Button8.IsEnabled = Button9.IsEnabled = Button2.IsEnabled =
-        CheckBox6.IsEnabled = TextBox5.IsEnabled = Slider1.IsEnabled =
+        Button10.IsEnabled = CheckBox6.IsEnabled = TextBox5.IsEnabled = Slider1.IsEnabled =
             CheckBox5.IsChecked == true;
     }
 
