@@ -1,5 +1,6 @@
 using Avalonia;
 using ColorMC.Gui;
+using OpenTK.Audio.OpenAL;
 using System;
 using System.IO;
 using System.Linq;
@@ -106,7 +107,7 @@ public static class Program
 #endif
 
         //¼ÓÔØDLL
-        AssemblyLoadContext context = new("ColorMC");
+        AssemblyLoadContext context = new("ColorMC", true);
         {
             using var file = File.OpenRead($"{LoadDir}ColorMC.Gui.dll");
             using var file1 = File.OpenRead($"{LoadDir}ColorMC.Gui.pdb");
@@ -117,19 +118,39 @@ public static class Program
             using var file1 = File.OpenRead($"{LoadDir}ColorMC.Core.pdb");
             context.LoadFromStream(file, file1);
         }
+
         var item = context.Assemblies
+                            .Where(x => x.GetName().Name == "ColorMC.Core")
+                            .First();
+
+        var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Core.ColorMCCore").First();
+
+        var temp = mis.GetField("Version");
+        var version = temp?.GetValue(null) as string;
+        if (version?.StartsWith("A17") == true)
+        {
+            var item1 = context.Assemblies
                        .Where(x => x.GetName().Name == "ColorMC.Gui")
                        .First();
 
-        var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ColorMCGui").First();
+            var mis1 = item1.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ColorMCGui").First();
 
-        MainCall = (Delegate.CreateDelegate(typeof(IN),
-                mis.GetMethod("Main")!) as IN)!;
+            MainCall = (Delegate.CreateDelegate(typeof(IN),
+                    mis1.GetMethod("Main")!) as IN)!;
 
-        BuildApp = (Delegate.CreateDelegate(typeof(IN1),
-                mis.GetMethod("BuildAvaloniaApp")!) as IN1)!;
+            BuildApp = (Delegate.CreateDelegate(typeof(IN1),
+                    mis1.GetMethod("BuildAvaloniaApp")!) as IN1)!;
 
-        SetBaseSha1 = (Delegate.CreateDelegate(typeof(IN),
-                mis.GetMethod("SetBaseSha1")!) as IN)!;
+            SetBaseSha1 = (Delegate.CreateDelegate(typeof(IN),
+                    mis1.GetMethod("SetBaseSha1")!) as IN)!;
+        }
+        else
+        {
+            context.Unload();
+
+            MainCall = ColorMCGui.Main;
+            BuildApp = ColorMCGui.BuildAvaloniaApp;
+            SetBaseSha1 = ColorMCGui.SetBaseSha1;
+        }
     }
 }
