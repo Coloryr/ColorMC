@@ -8,7 +8,7 @@
             "version": "linux",
             "deps": "",
             "repoarch": "amd64",
-            "distrorepo": "Debian",
+            "distrorepo": "Ubuntu",
             "repoversion": "jessie-backports,jessie,jessie",
             "binarypath": "/usr/share/ColorMC/ColorMC.Launcher",
             "desktoppath": "/usr/share/applications/ColorMC.desktop",
