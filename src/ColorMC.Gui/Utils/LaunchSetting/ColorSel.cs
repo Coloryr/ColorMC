@@ -61,33 +61,33 @@ public class ColorSel : INotifyPropertyChanged
             else
             {
                 DisableRGB();
-                MainColor = Brush.Parse(GuiConfigUtils.Config.ColorMain);
-
-                var config = App.NowTheme == PlatformThemeVariant.Light ?
-                    GuiConfigUtils.Config.ColorLight : GuiConfigUtils.Config.ColorDark;
-
-                BackColor = Brush.Parse(config.ColorBack);
-                Back1Color = Brush.Parse(config.ColorTranBack);
-                ButtonFont = Brush.Parse(config.ColorFont1);
-                FontColor = Brush.Parse(config.ColorFont2);
-
-                MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
-                MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
-
-                BottomColor = App.NowTheme == PlatformThemeVariant.Light
-                    ? AppLightBackColor : AppDarkBackColor;
-
-                TopBottomColor = App.NowTheme == PlatformThemeVariant.Light
-                    ? AppLightBackColor1 : AppDarkBackColor1;
-
-                BottomTranColor = App.NowTheme == PlatformThemeVariant.Light
-                    ? AppLightBackColor2 : AppDarkBackColor2;
-
-                BottomColor1 = App.NowTheme == PlatformThemeVariant.Light
-                    ? AppLightBackColor3 : AppDarkBackColor3;
-
-                Reload();
             }
+            MainColor = Brush.Parse(GuiConfigUtils.Config.ColorMain);
+
+            var config = App.NowTheme == PlatformThemeVariant.Light ?
+                GuiConfigUtils.Config.ColorLight : GuiConfigUtils.Config.ColorDark;
+
+            BackColor = Brush.Parse(config.ColorBack);
+            Back1Color = Brush.Parse(config.ColorTranBack);
+            ButtonFont = Brush.Parse(config.ColorFont1);
+            FontColor = Brush.Parse(config.ColorFont2);
+
+            MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
+            MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
+
+            BottomColor = App.NowTheme == PlatformThemeVariant.Light
+                ? AppLightBackColor : AppDarkBackColor;
+
+            TopBottomColor = App.NowTheme == PlatformThemeVariant.Light
+                ? AppLightBackColor1 : AppDarkBackColor1;
+
+            BottomTranColor = App.NowTheme == PlatformThemeVariant.Light
+                ? AppLightBackColor2 : AppDarkBackColor2;
+
+            BottomColor1 = App.NowTheme == PlatformThemeVariant.Light
+                ? AppLightBackColor3 : AppDarkBackColor3;
+
+            Reload();
         }
         catch (Exception e)
         {
@@ -118,6 +118,9 @@ public class ColorSel : INotifyPropertyChanged
 
     public void EnableRGB()
     {
+        if (rbg)
+            return;
+
         rbg = true;
 
         rbg_s = (double)GuiConfigUtils.Config.RGBS / 100;
