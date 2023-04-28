@@ -82,6 +82,18 @@ public record AdvanceJvmObj
     public string? ClassPath { get; set; }
 }
 
+public record LaunchDataObj
+{ 
+    /// <summary>
+    /// 实例添加时间
+    /// </summary>
+    public DateTime AddTime { get; set; }
+    /// <summary>
+    /// 上次启动时间
+    /// </summary>
+    public DateTime LastTime { get; set; }
+}
+
 /// <summary>
 /// 游戏实例
 /// </summary>
@@ -158,4 +170,9 @@ public record GameSettingObj
     /// </summary>
     [JsonIgnore]
     public Dictionary<string, ModInfoObj> Mods { get; set; }
+    /// <summary>
+    /// CurseForge_Mod信息
+    /// </summary>
+    [JsonIgnore]
+    public LaunchDataObj LaunchData { get; set; }
 }

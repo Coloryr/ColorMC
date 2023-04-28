@@ -3,6 +3,7 @@ using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System.Diagnostics;
+using System.IO;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -144,7 +145,7 @@ public static class JvmPath
 
         if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
         {
-            Per(java);
+            JavaHelper.Per(java);
         }
 
         return AddItem(name, java);
@@ -166,7 +167,13 @@ public static class JvmPath
         Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info5"), local));
 
         Jvms.Remove(name);
-        var info = GetJavaInfo(local);
+        var path = local;
+        if (path.StartsWith(Name1))
+        {
+            path = Path.GetFullPath(BaseDir + path);
+        }
+
+        var info = JavaHelper.GetJavaInfo(path);
         if (info != null)
         {
             Jvms.Add(name, info);
@@ -184,40 +191,6 @@ public static class JvmPath
         }
 
         return (false, LanguageHelper.GetName("Core.Jvm.Error1"));
-    }
-
-    /// <summary>
-    /// 编辑Java项目
-    /// </summary>
-    /// <param name="old">旧名字</param>
-    /// <param name="name">新名字</param>
-    /// <param name="local">路径</param>
-    /// <returns>结果</returns>
-    public static (bool Res, string Msg) EditItem(string old, string name, string local)
-    {
-        if (old != name)
-        {
-            if (!Jvms.ContainsKey(old))
-            {
-                return (false, LanguageHelper.GetName("Core.Jvm.Error2"));
-            }
-            if (Jvms.ContainsKey(name))
-            {
-                return (false, LanguageHelper.GetName("Core.Jvm.Error3"));
-            }
-        }
-        var info = GetJavaInfo(local);
-        if (info != null)
-        {
-            Jvms[name] = info;
-            var item = ConfigUtils.Config.JavaList.Where(a => a.Name == old).First();
-            item.Name = name;
-            item.Local = local;
-            ConfigUtils.Save();
-            return (true, name);
-        }
-
-        return (false, LanguageHelper.GetName("Core.Jvm.Error4"));
     }
 
     /// <summary>
@@ -250,7 +223,13 @@ public static class JvmPath
             list.ForEach(a =>
             {
                 var path = a.Local;
-                var info = GetJavaInfo(path);
+                var local = path;
+                if (path.StartsWith(Name1))
+                {
+                    local = Path.GetFullPath(BaseDir + path);
+                }
+
+                var info = JavaHelper.GetJavaInfo(local);
                 Jvms.Remove(a.Name);
                 if (info != null)
                 {
@@ -287,95 +266,6 @@ public static class JvmPath
         }
         else
         {
-            return null;
-        }
-    }
-
-    /// <summary>
-    /// 提升权限
-    /// </summary>
-    /// <param name="path">文件</param>
-    private static void Per(string path)
-    {
-        try
-        {
-            Process p = new();
-            p.StartInfo.FileName = "sh";
-            p.StartInfo.RedirectStandardInput = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.Start();
-
-            p.StandardInput.WriteLine("chmod -R 777 " + path);
-            p.StandardInput.WriteLine("exit");
-            p.WaitForExit();
-
-            string temp = p.StandardOutput.ReadToEnd();
-
-            p.Dispose();
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.GetName("Core.Jvm.Error9"), e);
-        }
-    }
-
-    /// <summary>
-    /// 获取Java信息
-    /// </summary>
-    /// <param name="path">路径</param>
-    /// <returns>信息</returns>
-    public static JavaInfo? GetJavaInfo(string path)
-    {
-        try
-        {
-            var local = "";
-            if (path.StartsWith(Name1))
-            {
-                local = Path.GetFullPath(BaseDir + path);
-            }
-            else
-            {
-                local = path;
-            }
-            if (!string.IsNullOrWhiteSpace(local) && File.Exists(local))
-            {
-                Process p = new();
-                p.StartInfo.FileName = local;
-                p.StartInfo.Arguments = "-version";
-                p.StartInfo.RedirectStandardError = true;
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.WorkingDirectory = BaseDir;
-                p.Start();
-                string result = p.StandardError.ReadToEnd();
-                string[] lines = result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-
-                string[] firstL = lines[0].Split(' ');
-                string type = firstL[0];
-                string version = firstL[2].Trim('\"');
-                bool is64 = result.Contains("64-Bit");
-                ArchEnum arch = is64 ? ArchEnum.x64 : ArchEnum.x32;
-                JavaInfo info = new()
-                {
-                    Path = path,
-                    Version = version,
-                    Arch = arch,
-                    Type = type
-                };
-                p.Dispose();
-                return info;
-            }
-            else
-            {
-                return null;
-            }
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.GetName("Core.Jvm.Error10"), e);
             return null;
         }
     }

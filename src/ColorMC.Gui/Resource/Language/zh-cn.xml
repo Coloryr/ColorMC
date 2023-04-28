@@ -295,9 +295,12 @@
 	<String Key="HelloWindow.Tab3.Text3">Java路径</String>
 	<String Key="HelloWindow.Tab3.Text4">现有Java路径</String>
 	<String Key="HelloWindow.Tab3.Text5">下载Java</String>
+	<String Key="HelloWindow.Tab3.Text6">自动扫描并添加</String>
 	<String Key="HelloWindow.Tab3.Info1">正在检查Java</String>
 	<String Key="HelloWindow.Tab3.Info2">选择Java</String>
+	<String Key="HelloWindow.Tab3.Info3">已自动导入</String>
 	<String Key="HelloWindow.Tab3.Error1">请输入必要信息</String>
+	<String Key="HelloWindow.Tab3.Error2">无法检测Java</String>
 
 	<String Key="HelloWindow.Tab4.Text1">添加账户</String>
 	<String Key="HelloWindow.Tab4.Text2">账户类型</String>
@@ -853,7 +856,7 @@
 	<String Key="ToolTip.Text48">暂停/播放音乐</String>
 	<String Key="ToolTip.Text49">双击打开文件列表</String>
 
-	<String Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单</String>
+	<String Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单&#xA;实例添加于{0}&#xA;最后启动于{1}</String>
 	<String Key="Tips.Text2">双击可切换账户，右键可以打开账户菜单</String>
 
 	<String Key="Text.ForgeVersion">Forge版本</String>

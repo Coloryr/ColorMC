@@ -35,9 +35,9 @@ public class GameEditFlyout1
             (App.GetLanguage("GameEditWindow.Flyouts1.Text6"), true, Button7_Click),
             (App.GetLanguage("GameEditWindow.Flyouts1.Text3"), Single, Button4_Click),
             (App.GetLanguage("GameEditWindow.Flyouts1.Text4"), Single
-                && !string.IsNullOrWhiteSpace(Obj.Url), Button5_Click),
+                && !string.IsNullOrWhiteSpace(Obj?.Url), Button5_Click),
             (App.GetLanguage("GameEditWindow.Flyouts1.Text5"), Single
-                && !string.IsNullOrWhiteSpace(Obj.PID) && !string.IsNullOrWhiteSpace(Obj.FID), Button6_Click),
+                && !string.IsNullOrWhiteSpace(Obj?.PID) && !string.IsNullOrWhiteSpace(Obj?.FID), Button6_Click),
         }, con);
     }
 

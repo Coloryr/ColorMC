@@ -45,6 +45,16 @@ public partial class MainControl : UserControl, IUserControl
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
+
+        KeyDown += MainControl_KeyDown;
+    }
+
+    private void MainControl_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Down)
+        {
+            
+        }
     }
 
     private Task<bool> LaunchP(bool pre)

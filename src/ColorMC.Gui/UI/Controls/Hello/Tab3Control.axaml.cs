@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
@@ -9,11 +10,11 @@ namespace ColorMC.Gui.UI.Controls.Hello;
 
 public partial class Tab3Control : UserControl
 {
-    private ObservableCollection<JavaInfoObj> List = new();
+    private readonly ObservableCollection<JavaInfoObj> List = new();
     public Tab3Control()
     {
         InitializeComponent();
-        List_Java.Items = List;
+        List_Java.ItemsSource = List;
 
         Button_SelectFile.Click += Button_SelectFile_Click;
         Button_Add.Click += Button_Add_Click;
@@ -21,8 +22,24 @@ public partial class Tab3Control : UserControl
         Button_Next.Click += Button_Next_Click;
         Button_Delete.Click += Button_Delete_Click;
         Button1.Click += Button1_Click;
+        Button2.Click += Button2_Click;
 
         Load();
+    }
+
+    private void Button2_Click(object? sender, RoutedEventArgs e)
+    {
+        var window = App.FindRoot(VisualRoot);
+        var list = JavaBinding.FindJava();
+        if (list == null)
+        {
+            window.Info.Show(App.GetLanguage("HelloWindow.Tab3.Error2"));
+            return;
+        }
+
+        list.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
+        Load();
+        window.Info2.Show(App.GetLanguage("HelloWindow.Tab3.Info3"));
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

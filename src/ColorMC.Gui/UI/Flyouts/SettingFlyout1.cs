@@ -1,17 +1,20 @@
 ﻿using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UIBinding;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class SettingFlyout1
 {
-    private JavaDisplayObj Obj;
-    private Tab5Control Con;
-    public SettingFlyout1(Tab5Control con, JavaDisplayObj obj)
+    private readonly IEnumerable<JavaDisplayObj> List;
+    private readonly Tab5Control Con;
+    public SettingFlyout1(Tab5Control con, IList obj)
     {
         Con = con;
-        Obj = obj;
+        List = obj.Cast<JavaDisplayObj>();
 
         var fy = new FlyoutsControl(new()
         {
@@ -21,7 +24,11 @@ public class SettingFlyout1
 
     private void Button1_Click()
     {
-        JavaBinding.RemoveJava(Obj.Name);
+        foreach (var item in List)
+        {
+            JavaBinding.RemoveJava(item.Name);
+        }
+        
         Con.Load();
     }
 }

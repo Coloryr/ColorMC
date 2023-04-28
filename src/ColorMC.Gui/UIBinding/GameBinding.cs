@@ -84,7 +84,7 @@ public static class GameBinding
             GroupName = group
         };
 
-        game = await InstancesPath.CreateVersion(game);
+        game = await InstancesPath.CreateGame(game);
 
         return game != null;
     }

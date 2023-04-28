@@ -8,8 +8,6 @@
     Width="80"
     d:DesignHeight="100"
     d:DesignWidth="80"
-    ToolTip.Tip="{setting:Localize Tips.Text1}"
-    ToolTip.VerticalOffset="-30"
     mc:Ignorable="d">
     <Grid>
         <Rectangle
@@ -26,7 +24,8 @@
                 FontSize="13"
                 Text="Name"
                 TextAlignment="Center"
-                TextWrapping="Wrap" />
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap" />
         </StackPanel>
 
         <Image

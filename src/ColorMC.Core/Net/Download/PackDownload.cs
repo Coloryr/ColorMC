@@ -83,7 +83,7 @@ public static class PackDownload
         }
 
         //创建游戏实例
-        var game = await InstancesPath.CreateVersion(new()
+        var game = await InstancesPath.CreateGame(new()
         {
             GroupName = group,
             Name = name,
@@ -290,7 +290,7 @@ public static class PackDownload
         }
 
         //创建游戏实例
-        var game = await InstancesPath.CreateVersion(new()
+        var game = await InstancesPath.CreateGame(new()
         {
             GroupName = group,
             Name = name,
@@ -437,7 +437,7 @@ public static class PackDownload
         }
 
         //创建游戏实例
-        var game = await InstancesPath.CreateVersion(new()
+        var game = await InstancesPath.CreateGame(new()
         {
             GroupName = group,
             Name = name,

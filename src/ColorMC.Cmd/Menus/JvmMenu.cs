@@ -53,22 +53,6 @@ public static class JvmMenu
                 Show();
                 break;
             default:
-                var item = JvmPath.Jvms.ToArray()[index - 2];
-                ConsoleUtils.Input("编辑Jvm");
-                name = ConsoleUtils.Edit("Jvm名字", item.Key);
-                path = ConsoleUtils.Edit("Jvm路径", item.Value.Path);
-                ConsoleUtils.Info("正在检测...");
-                (Res, Msg) = JvmPath.EditItem(item.Key, name, path);
-                if (!Res)
-                {
-                    ConsoleUtils.Error(Msg);
-                }
-                else
-                {
-                    ConsoleUtils.Ok("已修改");
-                }
-                ConsoleUtils.Keep();
-                Show();
                 break;
         }
     }

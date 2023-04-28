@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Game;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -433,6 +434,6 @@ public static class TestItem
 
     public static void Item23()
     {
-
+        var list = JavaHelper.FindJava();
     }
 }

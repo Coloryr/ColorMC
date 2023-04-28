@@ -77,7 +77,7 @@ public static class JavaBinding
 
     public static JavaInfo? GetJavaInfo(string path)
     {
-        return JvmPath.GetJavaInfo(path);
+        return JavaHelper.GetJavaInfo(path);
     }
 
     public static void RemoveJava(string name)
@@ -604,5 +604,10 @@ public static class JavaBinding
             App.ShowError(App.GetLanguage("JavaBinding.Error1"), e);
             return (false, null, null, null, null);
         }
+    }
+
+    public static List<JavaInfo>? FindJava()
+    {
+        return JavaHelper.FindJava();
     }
 }

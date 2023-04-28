@@ -37,6 +37,7 @@ public static class InstancesPath
     private const string Name20 = "backup";
     private const string Name21 = "server.json";
     private const string Name22 = "server.old.json";
+    private const string Name23 = "launch.json";
 
     /// <summary>
     /// 游戏实例列表
@@ -178,6 +179,7 @@ public static class InstancesPath
                     game.Save();
                 }
                 game.ReadCurseForgeMod();
+                game.ReadLaunchData();
                 game.AddToGroup();
             }
         }
@@ -436,11 +438,21 @@ public static class InstancesPath
     }
 
     /// <summary>
+    /// 获取启动数据
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static string GetLaunchFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name23}");
+    }
+
+    /// <summary>
     /// 新建游戏版本
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>结果</returns>
-    public static async Task<GameSettingObj?> CreateVersion(this GameSettingObj game)
+    public static async Task<GameSettingObj?> CreateGame(this GameSettingObj game)
     {
         if (InstallGames.ContainsKey(game.Name))
         {
@@ -458,6 +470,10 @@ public static class InstancesPath
 
         game.DirName = game.Name;
         game.Mods ??= new();
+        game.LaunchData ??= new()
+        {
+            AddTime = DateTime.Now
+        };
 
         var dir = game.GetBasePath();
         if (Directory.Exists(dir))
@@ -469,6 +485,7 @@ public static class InstancesPath
         Directory.CreateDirectory(game.GetGamePath());
 
         game.Save();
+        game.SaveLaunchData();
         game.AddToGroup();
 
         return game;
@@ -565,7 +582,7 @@ public static class InstancesPath
     /// <returns>复制结果</returns>
     public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
     {
-        var obj1 = await CreateVersion(new()
+        var obj1 = await CreateGame(new()
         {
             Name = name,
             GroupName = obj.GroupName,
@@ -624,6 +641,23 @@ public static class InstancesPath
     }
 
     /// <summary>
+    /// 保存游戏启动数据
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    public static void SaveLaunchData(this GameSettingObj obj)
+    {
+        if (obj.LaunchData == null)
+            return;
+
+        ConfigSave.AddItem(new()
+        {
+            Name = $"game-launch-{obj.Name}",
+            Local = obj.GetLaunchFile(),
+            Obj = obj.LaunchData
+        });
+    }
+
+    /// <summary>
     /// 读取游戏实例mod数据
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -636,46 +670,79 @@ public static class InstancesPath
             return;
         }
 
-        var res = JsonConvert.DeserializeObject<Dictionary<string, ModInfoObj>>(
+        try
+        {
+
+            var res = JsonConvert.DeserializeObject<Dictionary<string, ModInfoObj>>(
             File.ReadAllText(file));
-        if (res == null)
-        {
-            obj.Mods = new();
-        }
-        else
-        {
-            obj.Mods = res;
-        }
-
-        if (obj.ModPack)
-        {
-            return;
-        }
-
-        var list = PathC.GetAllFile(obj.GetModsPath());
-        var remove = new List<string>();
-        foreach (var item in obj.Mods)
-        {
-            bool find = false;
-            foreach (var item1 in list)
+            if (res == null)
             {
-                if (item.Value.File == item1.Name)
+                obj.Mods = new();
+            }
+            else
+            {
+                obj.Mods = res;
+            }
+
+            if (obj.ModPack)
+            {
+                return;
+            }
+
+            var list = PathC.GetAllFile(obj.GetModsPath());
+            var remove = new List<string>();
+            foreach (var item in obj.Mods)
+            {
+                bool find = false;
+                foreach (var item1 in list)
                 {
-                    find = true;
-                    break;
+                    if (item.Value.File == item1.Name)
+                    {
+                        find = true;
+                        break;
+                    }
+                }
+
+                if (!find)
+                {
+                    remove.Add(item.Key);
                 }
             }
 
-            if (!find)
+            if (remove.Count != 0)
             {
-                remove.Add(item.Key);
+                remove.ForEach(item => obj.Mods.Remove(item));
+                obj.SaveModInfo();
             }
         }
-
-        if (remove.Count != 0)
+        catch (Exception e)
         {
-            remove.ForEach(item => obj.Mods.Remove(item));
-            obj.SaveModInfo();
+            Logs.Error("load error", e);
+            obj.Mods = new();
+            return;
+        }
+    }
+
+    public static void ReadLaunchData(this GameSettingObj obj)
+    {
+        string file = obj.GetLaunchFile();
+        if (!File.Exists(file))
+        {
+            obj.LaunchData = new();
+            return;
+        }
+
+        try
+        {
+            var res = JsonConvert.DeserializeObject<LaunchDataObj>(
+            File.ReadAllText(file));
+            obj.LaunchData = res;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("load error", e);
+            obj.LaunchData = new();
+            return;
         }
     }
 
@@ -836,7 +903,7 @@ public static class InstancesPath
                         {
                             game.GroupName = group;
                         }
-                        game = await CreateVersion(game);
+                        game = await CreateGame(game);
 
                         if (game == null)
                             break;
@@ -908,7 +975,7 @@ public static class InstancesPath
                             game.GroupName = group;
                         }
 
-                        game = await CreateVersion(game);
+                        game = await CreateGame(game);
 
                         if (game == null)
                             break;

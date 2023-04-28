@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
@@ -36,11 +37,27 @@ public partial class Tab5Control : UserControl
 
         Button1.Click += Button1_Click;
         Button2.Click += Button2_Click;
+        Button3.Click += Button3_Click;
 
         DataGrid1.Items = List;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
         LayoutUpdated += Tab5Control_LayoutUpdated;
+    }
+
+    private void Button3_Click(object? sender, RoutedEventArgs e)
+    {
+        var window = App.FindRoot(VisualRoot);
+        var list = JavaBinding.FindJava();
+        if (list == null)
+        {
+            window.Info.Show(App.GetLanguage("HelloWindow.Tab3.Error2"));
+            return;
+        }
+
+        list.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
+        Load();
+        window.Info2.Show(App.GetLanguage("HelloWindow.Tab3.Info3"));
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
@@ -64,7 +81,7 @@ public partial class Tab5Control : UserControl
 
             if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
             {
-                _ = new SettingFlyout1(this, java);
+                _ = new SettingFlyout1(this, DataGrid1.SelectedItems);
             }
         });
     }

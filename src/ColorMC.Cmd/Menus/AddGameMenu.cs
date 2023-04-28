@@ -125,7 +125,7 @@ public static class AddGameMenu
         Game.LoaderVersion = null;
         Game.ModPack = false;
 
-        Game = await InstancesPath.CreateVersion(Game);
+        Game = await InstancesPath.CreateGame(Game);
 
         if (Game == null)
         {
