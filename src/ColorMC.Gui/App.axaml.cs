@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
@@ -82,6 +83,7 @@ public partial class App : Application
     public static Bitmap? BackBitmap { get; private set; }
     public static Bitmap GameIcon { get; private set; }
     public static WindowIcon? Icon { get; private set; }
+    public static bool IsHide { get; private set; }
 
     public static PlatformThemeVariant NowTheme { get; private set; }
 
@@ -188,6 +190,15 @@ public partial class App : Application
             //        GC.Collect();
             //    }
             //}).Start();
+
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    ColorMCGui.TestLock();
+                    Show();
+                }
+            }).Start();
         }
         catch (Exception e)
         {
@@ -748,5 +759,73 @@ public partial class App : Application
         }
 
         return MainWindow.Window;
+    }
+
+    private static void Show()
+    {
+        if (ConfigBinding.WindowMode())
+        {
+            if (AllWindow?.GetVisualRoot() is Window window)
+            {
+                window.Show();
+            }
+        }
+        else
+        {
+            if (MainWindow?.GetVisualRoot() is Window window)
+            {
+                window.Show();
+            }
+            else if (CustomWindow?.GetVisualRoot() is Window window1)
+            {
+                window1.Show();
+            }
+        }
+        IsHide = false;
+    }
+
+    public static void Hide()
+    {
+        IsHide = true;
+        if (ConfigBinding.WindowMode())
+        {
+            if(AllWindow?.GetVisualRoot() is Window window)
+            {
+                AllWindow?.HideAll();
+                window.Hide();
+            }
+        }
+        else
+        {
+            if (MainWindow?.GetVisualRoot() is Window window)
+            {
+                window.Hide();
+                (CustomWindow?.GetVisualRoot() as Window)?.Close();
+            }
+            else if (CustomWindow?.GetVisualRoot() is Window window1)
+            {
+                window1.Hide();
+            }
+            (DownloadWindow?.GetVisualRoot() as Window)?.Close();
+            (UserWindow?.GetVisualRoot() as Window)?.Close();
+            (AddGameWindow?.GetVisualRoot() as Window)?.Close();
+            (AddModPackWindow?.GetVisualRoot() as Window)?.Close();
+            (SettingWindow?.GetVisualRoot() as Window)?.Close();
+            (SkinWindow?.GetVisualRoot() as Window)?.Close();
+            (AddJavaWindow?.GetVisualRoot() as Window)?.Close();
+
+            foreach (var item in GameEditWindows.Values)
+            {
+                (item.GetVisualRoot() as Window)?.Close();
+            }
+            foreach (var item in AddWindows.Values)
+            {
+                (item.GetVisualRoot() as Window)?.Close();
+            }
+            foreach (var item in ServerPackWindows.Values)
+            {
+                (item.GetVisualRoot() as Window)?.Close();
+            }
+        }
     }
 }

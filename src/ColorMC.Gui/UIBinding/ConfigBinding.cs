@@ -310,7 +310,7 @@ public static class ConfigBinding
     /// <summary>
     /// 获取窗口模式
     /// </summary>
-    /// <returns></returns>
+    /// <returns>true为单窗口false为多窗口</returns>
     public static bool WindowMode()
     {
         return GuiConfigUtils.Config.WindowMode || SystemInfo.Os == OsType.Android;

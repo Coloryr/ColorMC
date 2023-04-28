@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using System;
 
 namespace ColorMC.Gui.UI.Controls.Error;
@@ -21,7 +22,7 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Closed()
     {
-        if (IsClose)
+        if (IsClose || (App.IsHide && !BaseBinding.IsGameRuning()))
         {
             App.Close();
         }

@@ -1061,9 +1061,23 @@ public static class Launch
 
         var arg = await MakeArg(obj, login);
         ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info1"));
+        bool hidenext = false;
         foreach (var item in arg)
         {
-            ColorMCCore.GameLog?.Invoke(obj, item);
+            if (hidenext)
+            {
+                hidenext = false;
+                ColorMCCore.GameLog?.Invoke(obj, "****************");
+            }
+            else
+            {
+                ColorMCCore.GameLog?.Invoke(obj, item);
+            }
+            var low = item.ToLower();
+            if (low.StartsWith("--uuid") || low.StartsWith("--accesstoken"))
+            {
+                hidenext = true;
+            }
         }
 
         var path = obj.JvmLocal;

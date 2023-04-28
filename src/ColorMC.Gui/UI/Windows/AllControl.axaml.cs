@@ -368,4 +368,10 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
         return await now.Closing();
     }
+
+    public void HideAll()
+    {
+        var list = new List<UserControl>(Cons.Keys);
+        list.ForEach(Close);
+    }
 }

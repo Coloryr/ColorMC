@@ -99,8 +99,6 @@ public static class GameBinding
         return InstancesPath.Groups;
     }
 
-
-
     public static List<string> GetCurseForgeSortTypes()
     {
         return new List<string>()

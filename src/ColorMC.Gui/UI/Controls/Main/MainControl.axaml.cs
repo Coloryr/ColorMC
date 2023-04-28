@@ -24,7 +24,6 @@ public partial class MainControl : UserControl, IUserControl
 
     private bool launch = false;
     private bool first = true;
-    private LaunchState Last;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -224,12 +223,12 @@ public partial class MainControl : UserControl, IUserControl
     {
         Window.SetTitle(App.GetLanguage("MainWindow.Title"));
 
-        if (BaseBinding.IsLaunch())
-        {
-            var window = App.FindRoot(VisualRoot);
-            window.Info.ShowOk(App.GetLanguage("MainWindow.Info22"), App.Close);
-            return;
-        }
+        //if (BaseBinding.IsLaunch())
+        //{
+        //    var window = App.FindRoot(VisualRoot);
+        //    window.Info.ShowOk(App.GetLanguage("MainWindow.Info22"), App.Close);
+        //    return;
+        //}
 
         Load();
         Load1();
@@ -315,7 +314,6 @@ public partial class MainControl : UserControl, IUserControl
         Dispatcher.UIThread.Post(() =>
         {
             var window = App.FindRoot(VisualRoot);
-            Last = state;
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
                 switch (state)
@@ -659,6 +657,12 @@ public partial class MainControl : UserControl, IUserControl
             {
                 return false;
             }
+            return true;
+        }
+
+        if (BaseBinding.IsGameRuning())
+        {
+            App.Hide();
             return true;
         }
 

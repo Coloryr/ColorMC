@@ -6,6 +6,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
@@ -48,6 +49,8 @@ public partial class CustomControl : UserControl, IUserControl
 {
     private UIObj? UI;
     private GameSettingObj? Obj;
+
+    private bool launch = false;
 
     private readonly CustomWindowModel CustomModel = new();
 
@@ -121,7 +124,11 @@ public partial class CustomControl : UserControl, IUserControl
 
     public async void Launch()
     {
+        if (launch)
+            return;
+
         var window = App.FindRoot(VisualRoot);
+        launch = true;
         window.Info1.Show(App.GetLanguage("MainWindow.Launch"));
         var res = await GameBinding.Launch(Obj, false);
         window.Info1.Close();
@@ -144,6 +151,7 @@ public partial class CustomControl : UserControl, IUserControl
         {
             window.Info2.Show(App.GetLanguage("MainWindow.Info2"));
         }
+        launch = false;
     }
 
     public void Load(UIObj ui)
@@ -472,5 +480,27 @@ public partial class CustomControl : UserControl, IUserControl
     {
         var config = ConfigBinding.GetAllConfig();
         Motd?.Load(config.Item2.ServerCustom.IP, config.Item2.ServerCustom.Port);
+    }
+
+    public async Task<bool> Closing()
+    {
+        var windows = App.FindRoot(VisualRoot);
+        if (launch)
+        {
+            var res = await windows.Info.ShowWait(App.GetLanguage("MainWindow.Info34"));
+            if (res)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        if (BaseBinding.IsGameRuning())
+        {
+            App.Hide();
+            return true;
+        }
+
+        return false;
     }
 }

@@ -36,9 +36,6 @@ public static class BaseBinding
     private readonly static Dictionary<Process, GameSettingObj> Games = new();
     private readonly static Dictionary<string, Process> RunGames = new();
     private readonly static Dictionary<string, string> GameLogs = new();
-#if !DEBUG
-    private static Mutex mutex1;
-#endif
     public static bool ISNewStart => ColorMCCore.NewStart;
 
     /// <summary>
@@ -270,6 +267,11 @@ public static class BaseBinding
         return RunGames.ContainsKey(obj.UUID);
     }
 
+    public static bool IsGameRuning()
+    {
+        return RunGames.Count > 0;
+    }
+
     /// <summary>
     /// 强制停止游戏实例
     /// </summary>
@@ -426,17 +428,19 @@ public static class BaseBinding
                     App.MainWindow?.GameClose(obj2);
                 }
                 GameLogs.Remove(obj.UUID, out var log);
-                if (a is Process p)
+                if (a is Process p && p.ExitCode != 0)
                 {
-                    if (p.ExitCode == 0)
-                    {
-                        return;
-                    }
-
                     Dispatcher.UIThread.Post(() =>
                     {
                         App.ShowError(App.GetLanguage("UserBinding.Error2"), log ?? "");
                     });
+                }
+                else
+                {
+                    if (!IsGameRuning())
+                    {
+                        App.Close();
+                    }
                 }
                 res.Dispose();
             };
@@ -706,17 +710,17 @@ public static class BaseBinding
     /// 是否重复启动
     /// </summary>
     /// <returns></returns>
-    public static bool IsLaunch()
-    {
-#if !DEBUG
-        mutex1 = new Mutex(true, "ColorMC-lock" +
-            ColorMCCore.BaseDir.Replace("\\", "_").Replace("/", "_"), out var isnew);
+//    public static bool IsLaunch()
+//    {
+//#if !DEBUG
+//        mutex1 = new Mutex(true, "ColorMC-lock-" +
+//            ColorMCCore.BaseDir.Replace("\\", "_").Replace("/", "_"), out var isnew);
 
-        return !isnew;
-#else
-        return false;
-#endif
-    }
+//        return !isnew;
+//#else
+//        return false;
+//#endif
+//    }
 
     /// <summary>
     /// 保存文件
