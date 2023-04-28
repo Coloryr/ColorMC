@@ -196,7 +196,8 @@ public partial class App : Application
                 while (true)
                 {
                     ColorMCGui.TestLock();
-                    Show();
+                    IsHide = false;
+                    Dispatcher.UIThread.Post(Show);
                 }
             }).Start();
         }
@@ -768,6 +769,7 @@ public partial class App : Application
             if (AllWindow?.GetVisualRoot() is Window window)
             {
                 window.Show();
+                window.WindowState = WindowState.Normal;
             }
         }
         else
@@ -775,10 +777,12 @@ public partial class App : Application
             if (MainWindow?.GetVisualRoot() is Window window)
             {
                 window.Show();
+                window.WindowState = WindowState.Normal;
             }
             else if (CustomWindow?.GetVisualRoot() is Window window1)
             {
                 window1.Show();
+                window1.WindowState = WindowState.Normal;
             }
         }
         IsHide = false;

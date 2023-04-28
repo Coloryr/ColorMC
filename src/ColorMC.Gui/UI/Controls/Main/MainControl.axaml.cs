@@ -223,13 +223,6 @@ public partial class MainControl : UserControl, IUserControl
     {
         Window.SetTitle(App.GetLanguage("MainWindow.Title"));
 
-        //if (BaseBinding.IsLaunch())
-        //{
-        //    var window = App.FindRoot(VisualRoot);
-        //    window.Info.ShowOk(App.GetLanguage("MainWindow.Info22"), App.Close);
-        //    return;
-        //}
-
         Load();
         Load1();
 
@@ -465,14 +458,15 @@ public partial class MainControl : UserControl, IUserControl
         else
         {
             var list = GameBinding.GetGameGroups();
+            var uuid = ConfigBinding.GetLastLaunch();
+            GameControl? last = null;
             if (first)
             {
                 first = false;
                 GameGroups.VerticalAlignment = VerticalAlignment.Top;
                 GameGroups.HorizontalAlignment = HorizontalAlignment.Stretch;
                 DefaultGroup.SetWindow(this);
-                var uuid = ConfigBinding.GetLastLaunch();
-                GameControl? last = null;
+                
                 foreach (var item in list)
                 {
                     if (item.Key == " ")
@@ -507,6 +501,7 @@ public partial class MainControl : UserControl, IUserControl
             {
                 var remove = new List<GamesControl>();
                 DefaultGroup.SetItems(list[DefaultGroup.Group]);
+                last ??= DefaultGroup.Find(uuid);
                 list.Remove(DefaultGroup.Group);
                 foreach (var item in Groups)
                 {
@@ -531,6 +526,7 @@ public partial class MainControl : UserControl, IUserControl
                     group.SetName(item.Key, item.Key);
                     group.SetWindow(this);
                     Groups.Add(group);
+                    last ??= group.Find(uuid);
                 }
 
                 Dispatcher.UIThread.Post(() =>
@@ -541,8 +537,14 @@ public partial class MainControl : UserControl, IUserControl
                         GameGroups.Children.Add(item);
                     }
                     GameGroups.Children.Add(DefaultGroup);
+                    GameItemSelect(last);
                 });
             }
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                GameItemSelect(last);
+            });
         }
     }
 

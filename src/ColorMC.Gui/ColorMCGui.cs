@@ -9,6 +9,8 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -30,19 +32,6 @@ public static class ColorMCGui
 #if DEBUG
     private static Mutex mutex1;
 #endif
-
-    [DllImport("User32.dll")]
-    private static extern bool ShowWindowAsync(IntPtr hWnd, int cmdShow);
-
-    [DllImport("User32.dll")]
-    private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-    private const int SW_SHOWNOMAL = 1;
-    private static void HandleRunningInstance(Process instance)
-    {
-        ShowWindowAsync(instance.MainWindowHandle, SW_SHOWNOMAL);//显示
-        SetForegroundWindow(instance.MainWindowHandle);//设置到最前端
-    }
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -72,16 +61,17 @@ public static class ColorMCGui
             mutex1 = new Mutex(true, name, out var isnew);
             if (!isnew)
             {
-                var list = Process.GetProcessesByName("ColorMC.Launcher");
-                if (list.Length > 0)
+                name = RunDir + "lock";
+                if (File.Exists(name))
                 {
-                    Window window = new Window();
-                    HandleRunningInstance(list.First());
+                    using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    using var writer = new StreamWriter(temp);
+                    writer.Write(true);
                 }
                 return;
             }
 #endif
-
+            
             ColorMCCore.Init(RunDir);
 
             BuildAvaloniaApp()
@@ -97,14 +87,16 @@ public static class ColorMCGui
     public static void TestLock()
     {
 #if DEBUG
+        string name = RunDir + "lock";
+        using var temp = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        using var file = MemoryMappedFile.CreateFromFile(temp, null, 100, MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, false);
+        using var reader = file.CreateViewAccessor();
+        reader.Write(0, false);
         while (true)
         {
-            string name = "ColorMC-pipe-" + RunDir.Replace("\\", "_").Replace("/", "_");
-            if (Mutex.TryOpenExisting(name, out var mutex1))
-            {
-                mutex1.WaitOne();
+            var data = reader.ReadBoolean(0);
+            if (data)
                 break;
-            }
             Thread.Sleep(100);
         }
 #endif

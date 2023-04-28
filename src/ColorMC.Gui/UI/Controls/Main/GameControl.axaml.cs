@@ -3,6 +3,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UIBinding;
 using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -54,6 +55,11 @@ public partial class GameControl : UserControl
         else
         {
             Image1.Source = App.GameIcon;
+        }
+
+        if (BaseBinding.IsGameRun(Obj))
+        {
+            SetLaunch(true);
         }
 
         ToolTip.SetTip(this, string.Format(App.GetLanguage("Tips.Text1"), 

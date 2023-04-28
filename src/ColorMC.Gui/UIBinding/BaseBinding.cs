@@ -437,7 +437,7 @@ public static class BaseBinding
                 }
                 else
                 {
-                    if (!IsGameRuning())
+                    if (App.IsHide && !IsGameRuning())
                     {
                         App.Close();
                     }
