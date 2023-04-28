@@ -252,9 +252,6 @@ public static class BaseBinding
     {
         ColorMCCore.Close();
         ColorSel.Instance.Stop();
-#if !DEBUG
-        mutex1.Dispose();
-#endif
     }
 
     /// <summary>

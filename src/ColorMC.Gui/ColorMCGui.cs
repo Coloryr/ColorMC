@@ -29,9 +29,7 @@ public static class ColorMCGui
 
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 
-#if DEBUG
     private static Mutex mutex1;
-#endif
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -56,7 +54,6 @@ public static class ColorMCGui
 
             Console.WriteLine($"RunDir:{RunDir}");
 
-#if DEBUG
             string name = "ColorMC-lock-" + RunDir.Replace("\\", "_").Replace("/", "_");
             mutex1 = new Mutex(true, name, out var isnew);
             if (!isnew)
@@ -70,7 +67,6 @@ public static class ColorMCGui
                 }
                 return;
             }
-#endif
             
             ColorMCCore.Init(RunDir);
 
@@ -86,7 +82,6 @@ public static class ColorMCGui
 
     public static void TestLock()
     {
-#if DEBUG
         string name = RunDir + "lock";
         using var temp = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         using var file = MemoryMappedFile.CreateFromFile(temp, null, 100, MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, false);
@@ -99,7 +94,6 @@ public static class ColorMCGui
                 break;
             Thread.Sleep(100);
         }
-#endif
     }
 
     public static void SetBaseSha1(string[] data)

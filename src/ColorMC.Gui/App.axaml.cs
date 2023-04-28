@@ -191,15 +191,18 @@ public partial class App : Application
             //    }
             //}).Start();
 
-            new Thread(() =>
+            if (ColorMCGui.RunType == RunType.Program)
             {
-                while (true)
+                new Thread(() =>
                 {
-                    ColorMCGui.TestLock();
-                    IsHide = false;
-                    Dispatcher.UIThread.Post(Show);
-                }
-            }).Start();
+                    while (true)
+                    {
+                        ColorMCGui.TestLock();
+                        IsHide = false;
+                        Dispatcher.UIThread.Post(Show);
+                    }
+                }).Start();
+            }
         }
         catch (Exception e)
         {
