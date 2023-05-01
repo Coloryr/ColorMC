@@ -29,8 +29,6 @@ public static class ColorMCGui
 
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 
-    private static Mutex mutex1;
-
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -54,23 +52,25 @@ public static class ColorMCGui
 
             Console.WriteLine($"RunDir:{RunDir}");
 
-            string name = RunDir + "lock";
-            if (File.Exists(name))
-            {
-                try
-                {
-                    using var temp = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
-                }
-                catch
-                {
-                    using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-                    using var writer = new StreamWriter(temp);
-                    writer.Write(true);
-                    return;
-                }
-            }
-            
             ColorMCCore.Init(RunDir);
+
+            //string name = RunDir + "lock";
+            //if (File.Exists(name))
+            //{
+            //    try
+            //    {
+            //        using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            //    }
+            //    catch
+            //    {
+            //        using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+            //        using var writer = new StreamWriter(temp);
+            //        writer.Write(true);
+            //        return;
+            //    }
+            //}
+
+            
 
             BuildAvaloniaApp()
                  .StartWithClassicDesktopLifetime(args);

@@ -41,13 +41,17 @@ public static class Media
             return;
         }
 
-        if (SystemInfo.Os != OsType.Windows)
+        if (SystemInfo.Os == OsType.Windows)
         {
-            player = new OpenalPlayer();
+            player = new NAudioPlayer();
+        }
+        else if (SystemInfo.Os == OsType.Linux)
+        {
+            player = new AlsaPlayer();
         }
         else
         {
-            player = new NAudioPlayer();
+            player = new OpenalPlayer();
         }
     }
 

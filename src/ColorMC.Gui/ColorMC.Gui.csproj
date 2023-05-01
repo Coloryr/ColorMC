@@ -90,7 +90,7 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
 </Project>

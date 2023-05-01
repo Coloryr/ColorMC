@@ -1,9 +1,8 @@
 using Avalonia;
-using ColorMC.Gui;
-using OpenTK.Audio.OpenAL;
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 
@@ -11,6 +10,8 @@ namespace ColorMC.Launcher;
 
 public static class Program
 {
+    public const string TopVersion = "A18";
+
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
     public static readonly string[] BaseSha1 = new[]
     {
@@ -22,7 +23,7 @@ public static class Program
     /// <summary>
     /// 加载路径
     /// </summary>
-    public static string LoadDir { get; private set; }
+    public static string LoadDir { get; private set; } = AppContext.BaseDirectory;
 
     public delegate void IN(string[] args);
     public delegate AppBuilder IN1();
@@ -58,20 +59,7 @@ public static class Program
 
         Console.WriteLine($"CheckDir:{LoadDir}");
 
-        //先检查加载路径
-        if (NotHaveDll(LoadDir))
-        {
-            //不存在
-            //启动内部的
-            MainCall = ColorMCGui.Main;
-            BuildApp = ColorMCGui.BuildAvaloniaApp;
-            SetBaseSha1 = ColorMCGui.SetBaseSha1;
-        }
-        else
-        {
-            //有Dll
-            Load();
-        }
+        Load();
 
         try
         {
@@ -84,54 +72,85 @@ public static class Program
         }
     }
 
-#if DEBUG
     public static AppBuilder BuildAvaloniaApp()
     {
         Load();
         return BuildApp();
     }
-#endif
 
-    private static bool NotHaveDll(string dir)
+    private static bool NotHaveDll()
     {
-        return !File.Exists($"{dir}ColorMC.Core.dll")
-            || !File.Exists($"{dir}ColorMC.Core.pdb")
-            || !File.Exists($"{dir}ColorMC.Gui.dll")
-            || !File.Exists($"{dir}ColorMC.Gui.pdb");
+        return !File.Exists($"{LoadDir}ColorMC.Core.dll")
+            || !File.Exists($"{LoadDir}ColorMC.Core.pdb")
+            || !File.Exists($"{LoadDir}ColorMC.Gui.dll")
+            || !File.Exists($"{LoadDir}ColorMC.Gui.pdb");
+    }
+
+    private static Assembly Gui;
+    private static Assembly Core;
+
+    private class ColorMCAssembly : AssemblyLoadContext
+    {
+        public ColorMCAssembly(string name, bool unload) : base(name, unload) 
+        {
+            Resolving += ColorMCAssembly_Resolving;
+        }
+
+        private Assembly? ColorMCAssembly_Resolving(AssemblyLoadContext arg1, AssemblyName arg2)
+        {
+            if (arg2.FullName == "ColorMC.Gui")
+            {
+                return Gui;
+            }
+            else if (arg2.FullName == "ColorMC.Core")
+            {
+                return Core;
+            }
+
+            return null;
+        }
     }
 
     private static void Load()
     {
-#if DEBUG
-        LoadDir = AppContext.BaseDirectory;
-#endif
-
         //加载DLL
-        AssemblyLoadContext context = new("ColorMC", true);
+        AssemblyLoadContext context;
+        if (NotHaveDll())
         {
-            using var file = File.OpenRead($"{LoadDir}ColorMC.Gui.dll");
-            using var file1 = File.OpenRead($"{LoadDir}ColorMC.Gui.pdb");
-            context.LoadFromStream(file, file1);
+            context = AssemblyLoadContext.Default;
+            TestLoad.Load1();
         }
+        else
         {
-            using var file = File.OpenRead($"{LoadDir}ColorMC.Core.dll");
-            using var file1 = File.OpenRead($"{LoadDir}ColorMC.Core.pdb");
-            context.LoadFromStream(file, file1);
-        }
+            context = new("ColorMC", true);
+            {
+                using var file = File.OpenRead($"{LoadDir}ColorMC.Gui.dll");
+                using var file1 = File.OpenRead($"{LoadDir}ColorMC.Gui.pdb");
+                Gui = context.LoadFromStream(file, file1);
+            }
+            {
+                using var file = File.OpenRead($"{LoadDir}ColorMC.Core.dll");
+                using var file1 = File.OpenRead($"{LoadDir}ColorMC.Core.pdb");
+                Core = context.LoadFromStream(file, file1);
+            }
 
-        var item = context.Assemblies
-                            .Where(x => x.GetName().Name == "ColorMC.Core")
-                            .First();
+            var item = context.Assemblies
+                                .Where(x => x.GetName().Name == "ColorMC.Core")
+                                .First();
 
-        var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Core.ColorMCCore").First();
+            var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Core.ColorMCCore").First();
 
-        var temp = mis.GetField("Version");
-        var version = temp?.GetValue(null) as string;
-        if (version?.StartsWith("A17") == true)
-        {
+            var temp = mis.GetField("Version");
+            var version = temp?.GetValue(null) as string;
+            if (version?.StartsWith(TopVersion) != true)
+            {
+                context.Unload();
+                context = AssemblyLoadContext.Default;
+            }
+
             var item1 = context.Assemblies
-                       .Where(x => x.GetName().Name == "ColorMC.Gui")
-                       .First();
+                           .Where(x => x.GetName().Name == "ColorMC.Gui")
+                           .First();
 
             var mis1 = item1.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ColorMCGui").First();
 
@@ -143,14 +162,6 @@ public static class Program
 
             SetBaseSha1 = (Delegate.CreateDelegate(typeof(IN),
                     mis1.GetMethod("SetBaseSha1")!) as IN)!;
-        }
-        else
-        {
-            context.Unload();
-
-            MainCall = ColorMCGui.Main;
-            BuildApp = ColorMCGui.BuildAvaloniaApp;
-            SetBaseSha1 = ColorMCGui.SetBaseSha1;
         }
     }
 }
