@@ -54,18 +54,20 @@ public static class ColorMCGui
 
             Console.WriteLine($"RunDir:{RunDir}");
 
-            string name = "ColorMC-lock-" + RunDir.Replace("\\", "_").Replace("/", "_");
-            mutex1 = new Mutex(true, name, out var isnew);
-            if (!isnew)
+            string name = RunDir + "lock";
+            if (File.Exists(name))
             {
-                name = RunDir + "lock";
-                if (File.Exists(name))
+                try
+                {
+                    using var temp = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
+                }
+                catch
                 {
                     using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
                     using var writer = new StreamWriter(temp);
                     writer.Write(true);
+                    return;
                 }
-                return;
             }
             
             ColorMCCore.Init(RunDir);
