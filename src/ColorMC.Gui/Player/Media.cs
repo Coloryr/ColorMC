@@ -45,10 +45,6 @@ public static class Media
         {
             player = new NAudioPlayer();
         }
-        else if (SystemInfo.Os == OsType.Linux)
-        {
-            player = new AlsaPlayer();
-        }
         else
         {
             player = new OpenalPlayer();
