@@ -20,7 +20,7 @@ public static class Program
         "f2ff5f04336e9707d267a4b2a2652ad1c4f61a08"
     };
     /// <summary>
-    /// ¼ÓÔØÂ·¾¶
+    /// åŠ è½½è·¯å¾„
     /// </summary>
     public static string LoadDir { get; private set; }
 
@@ -58,18 +58,18 @@ public static class Program
 
         Console.WriteLine($"CheckDir:{LoadDir}");
 
-        //ÏÈ¼ì²é¼ÓÔØÂ·¾¶
+        //å…ˆæ£€æŸ¥åŠ è½½è·¯å¾„
         if (NotHaveDll(LoadDir))
         {
-            //²»´æÔÚ
-            //Æô¶¯ÄÚ²¿µÄ
+            //ä¸å­˜åœ¨
+            //å¯åŠ¨å†…éƒ¨çš„
             MainCall = ColorMCGui.Main;
             BuildApp = ColorMCGui.BuildAvaloniaApp;
             SetBaseSha1 = ColorMCGui.SetBaseSha1;
         }
         else
         {
-            //ÓĞDll
+            //æœ‰Dll
             Load();
         }
 
@@ -106,7 +106,7 @@ public static class Program
         LoadDir = AppContext.BaseDirectory;
 #endif
 
-        //¼ÓÔØDLL
+        //åŠ è½½DLL
         AssemblyLoadContext context = new("ColorMC", true);
         {
             using var file = File.OpenRead($"{LoadDir}ColorMC.Gui.dll");
