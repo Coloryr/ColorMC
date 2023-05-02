@@ -11,6 +11,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

@@ -8,6 +8,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using System;
 using System.Threading.Tasks;
 
@@ -91,7 +92,7 @@ public partial class FileItemControl : UserControl, IDisposable
             return null;
         try
         {
-            return await ImageTemp.Load(Data.Logo);
+            return await ImageUtils.Load(Data.Logo);
         }
         catch (Exception e)
         {

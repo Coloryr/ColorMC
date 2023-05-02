@@ -111,7 +111,7 @@ public class ColorSel : INotifyPropertyChanged
         timer.Start();
     }
 
-    public void Stop()
+    public void Close()
     {
         run = false;
     }

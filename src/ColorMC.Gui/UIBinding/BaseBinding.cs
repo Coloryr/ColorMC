@@ -17,6 +17,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using SixLabors.ImageSharp;
 using System;
@@ -24,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,9 +35,9 @@ public static class BaseBinding
 {
     public const string DrapType = "Game";
 
-    private readonly static Dictionary<Process, GameSettingObj> Games = new();
-    private readonly static Dictionary<string, Process> RunGames = new();
-    private readonly static Dictionary<string, string> GameLogs = new();
+    public readonly static Dictionary<Process, GameSettingObj> Games = new();
+    public readonly static Dictionary<string, Process> RunGames = new();
+    public readonly static Dictionary<string, string> GameLogs = new();
     public static bool ISNewStart => ColorMCCore.NewStart;
 
     /// <summary>
@@ -52,9 +54,11 @@ public static class BaseBinding
         ColorMCCore.UpdateSelect = PackUpdate;
         ColorMCCore.UpdateState = UpdateState;
 
+        GameTime.Init();
+        UpdateChecker.Init();
+
         try
         {
-            UpdateChecker.Init();
             Media.Init();
         }
         catch (Exception e)
@@ -251,7 +255,9 @@ public static class BaseBinding
     public static void Exit()
     {
         ColorMCCore.Close();
-        ColorSel.Instance.Stop();
+        Media.Close();
+        GameTime.Close();
+        ColorSel.Instance.Close();
     }
 
     /// <summary>
@@ -309,7 +315,7 @@ public static class BaseBinding
     /// </summary>
     public static void OpenPicPath()
     {
-        OpPath(ImageTemp.Local);
+        OpPath(ImageUtils.Local);
     }
 
     /// <summary>
@@ -406,7 +412,7 @@ public static class BaseBinding
 
                         Dispatcher.UIThread.Post(() =>
                         {
-                            App.Close();
+                            App.Hide();
                         });
                     }
                     catch
@@ -418,6 +424,7 @@ public static class BaseBinding
 
             res.Exited += (a, b) =>
             {
+                GameTime.GameClose(obj.UUID);
                 RunGames.Remove(obj.UUID);
                 UserBinding.UnLockUser(obj1);
                 if (Games.Remove(res, out var obj2))
@@ -443,6 +450,7 @@ public static class BaseBinding
             };
             Games.Add(res, obj);
             RunGames.Add(obj.UUID, res);
+            GameTime.Launch(obj.UUID);
         }
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdate;
@@ -731,6 +739,15 @@ public static class BaseBinding
         return SaveFile(window as TopLevel, type, arg);
     }
 
+    public static byte[] GetFile(string name)
+    {
+        var assm = Assembly.GetExecutingAssembly();
+        var item = assm.GetManifestResourceStream(name);
+        using MemoryStream stream = new();
+        item!.CopyTo(stream);
+        return stream.ToArray();
+    }
+
     /// <summary>
     /// 保存文件
     /// </summary>
@@ -800,7 +817,7 @@ public static class BaseBinding
                         File.Delete(name);
                     }
 
-                    File.WriteAllBytes(name, App.GetFile("ColorMC.Gui.Resource.UI.CustomUI.json"));
+                    File.WriteAllBytes(name, GetFile("ColorMC.Gui.Resource.UI.CustomUI.json"));
                     return true;
                 }
                 catch (Exception e)
@@ -818,6 +835,23 @@ public static class BaseBinding
                 {
                     var name = file.GetPath();
                     await UserBinding.SkinImage.SaveAsPngAsync(name);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.GetLanguage("SettingWindow.Tab6.Error3"), e);
+                    return false;
+                }
+            case FileType.Text:
+                file = await OpSave(window,
+                    App.GetLanguage("Gui.Info21"), ".txt", "log.txt");
+                if (file == null)
+                    break;
+
+                try
+                {
+                    var name = file.GetPath();
+                    await File.WriteAllTextAsync(name, arg[0] as string);
                     return true;
                 }
                 catch (Exception e)
@@ -1142,6 +1176,17 @@ public static class BaseBinding
             {
                 Media.Volume = (float)GuiConfigUtils.Config.ServerCustom.Volume / 100;
             }
+        }
+    }
+
+    /// <summary>
+    /// 启动后音乐播放
+    /// </summary>
+    public static void LoadMusic()
+    {
+        if (GuiConfigUtils.Config.ServerCustom.PlayMusic)
+        {
+            MusicStart();
         }
     }
 

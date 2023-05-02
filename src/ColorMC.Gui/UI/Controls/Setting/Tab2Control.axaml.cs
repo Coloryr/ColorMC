@@ -6,6 +6,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System.Collections.ObjectModel;
 using System.Linq;

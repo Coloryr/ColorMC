@@ -6,8 +6,7 @@ namespace ColorMC.Gui.Player;
 
 public class OpenalPlayer : IPlayer
 {
-    private bool ok = false;
-    private int alSource;
+    private readonly int alSource;
     private ALDevice device;
     private ALContext context;
 
@@ -46,7 +45,7 @@ public class OpenalPlayer : IPlayer
                     Thread.Sleep(10);
                 }
             }
-        });
+        }).Start();
     }
 
     public void Close()
@@ -69,25 +68,16 @@ public class OpenalPlayer : IPlayer
 
     public void Pause()
     {
-        if (!ok)
-            return;
-
         AL.SourcePause(alSource);
     }
 
     public void Play()
     {
-        if (!ok)
-            return;
-
         AL.SourcePlay(alSource);
     }
 
     public void Stop()
     {
-        if (!ok)
-            return;
-
         AL.Source(alSource, ALSourcef.Gain, 0);
         AL.SourceStop(alSource);
 

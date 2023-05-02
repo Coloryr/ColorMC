@@ -1,4 +1,5 @@
 using Avalonia;
+using ColorMC.Gui;
 using System;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,16 @@ using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 
 namespace ColorMC.Launcher;
+
+internal static class GuiLoad
+{
+    public static void Load()
+    {
+        Program.MainCall = ColorMCGui.Main;
+        Program.BuildApp = ColorMCGui.BuildAvaloniaApp;
+        Program.SetBaseSha1 = ColorMCGui.SetBaseSha1;
+    }
+}
 
 public static class Program
 {
@@ -86,52 +97,25 @@ public static class Program
             || !File.Exists($"{LoadDir}ColorMC.Gui.pdb");
     }
 
-    private static Assembly Gui;
-    private static Assembly Core;
-
-    private class ColorMCAssembly : AssemblyLoadContext
-    {
-        public ColorMCAssembly(string name, bool unload) : base(name, unload) 
-        {
-            Resolving += ColorMCAssembly_Resolving;
-        }
-
-        private Assembly? ColorMCAssembly_Resolving(AssemblyLoadContext arg1, AssemblyName arg2)
-        {
-            if (arg2.FullName == "ColorMC.Gui")
-            {
-                return Gui;
-            }
-            else if (arg2.FullName == "ColorMC.Core")
-            {
-                return Core;
-            }
-
-            return null;
-        }
-    }
-
     private static void Load()
     {
-        //加载DLL
-        AssemblyLoadContext context;
         if (NotHaveDll())
         {
-            context = AssemblyLoadContext.Default;
-            TestLoad.Load1();
+            GuiLoad.Load();
+            return;
         }
         else
         {
-            context = new("ColorMC", true);
+            var context = new AssemblyLoadContext("ColorMC", true);
             {
                 using var file = File.OpenRead($"{LoadDir}ColorMC.Gui.dll");
                 using var file1 = File.OpenRead($"{LoadDir}ColorMC.Gui.pdb");
-                Gui = context.LoadFromStream(file, file1);
+                context.LoadFromStream(file, file1);
             }
             {
                 using var file = File.OpenRead($"{LoadDir}ColorMC.Core.dll");
                 using var file1 = File.OpenRead($"{LoadDir}ColorMC.Core.pdb");
-                Core = context.LoadFromStream(file, file1);
+                context.LoadFromStream(file, file1);
             }
 
             var item = context.Assemblies
@@ -145,7 +129,8 @@ public static class Program
             if (version?.StartsWith(TopVersion) != true)
             {
                 context.Unload();
-                context = AssemblyLoadContext.Default;
+                GuiLoad.Load();
+                return;
             }
 
             var item1 = context.Assemblies

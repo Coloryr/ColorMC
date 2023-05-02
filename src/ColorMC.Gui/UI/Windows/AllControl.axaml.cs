@@ -18,6 +18,7 @@ using ColorMC.Gui.UI.Controls.Server;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
+using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
 using System.Collections.Generic;
@@ -343,7 +344,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     private void Update()
     {
-        App.Update(null, Image_Back);
+        App.UpdateWindow(null, Image_Back);
 
         Grid3.Background = GuiConfigUtils.Config.WindowTran ?
                 ColorSel.BottomTranColor : ColorSel.BottomColor;

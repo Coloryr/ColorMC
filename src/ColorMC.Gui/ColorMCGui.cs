@@ -7,6 +7,7 @@ using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -110,7 +111,7 @@ public static class ColorMCGui
 #endif
 
         GuiConfigUtils.Init(RunDir);
-        ImageTemp.Init(RunDir);
+        ImageUtils.Init(RunDir);
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();

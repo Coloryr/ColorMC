@@ -2,6 +2,8 @@ using Avalonia.Controls;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
+using Avalonia.Interactivity;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.UI.Controls.Error;
 
@@ -11,6 +13,13 @@ public partial class ErrorControl : UserControl, IUserControl
     public ErrorControl()
     {
         InitializeComponent();
+
+        Button1.Click += Button1_Click;
+    }
+
+    private void Button1_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.SaveFile(Window, FileType.Text, new[] { TextEditor1.Text });
     }
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);

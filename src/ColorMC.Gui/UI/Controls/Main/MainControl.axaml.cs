@@ -8,6 +8,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -242,7 +243,7 @@ public partial class MainControl : UserControl, IUserControl
 
         MotdLoad();
 
-        App.LoadMusic();
+        BaseBinding.LoadMusic();
 
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)

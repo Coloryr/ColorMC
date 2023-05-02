@@ -10,7 +10,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui;
+namespace ColorMC.Gui.Utils;
 
 public static class UpdateChecker
 {

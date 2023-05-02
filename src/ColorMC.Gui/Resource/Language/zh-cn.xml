@@ -495,6 +495,7 @@
 	<String Key="GameEditWindow.Error1">版本读取失败</String>
 
 	<String Key="ErrorWindow.Title">ColorMC 错误</String>
+	<String Key="ErrorWindow.Text1">保存日志</String>
 
 	<String Key="DownloadWindow.Title">ColorMC 下载列表</String>
 	<String Key="DownloadWindow.DataGrid.Text1">名字</String>
@@ -781,6 +782,7 @@
 	<String Key="Gui.Info18">导入结构文件</String>
 	<String Key="Gui.Info19">是否下载前置Mod</String>
 	<String Key="Gui.Info20">没有更新消息</String>
+	<String Key="Gui.Info21">保存文本</String>
 
 	<String Key="Warn1">配置为空，旧版配置文件会被覆盖</String>
 	<String Key="Error1">背景图片加载失败</String>
@@ -856,7 +858,7 @@
 	<String Key="ToolTip.Text48">暂停/播放音乐</String>
 	<String Key="ToolTip.Text49">双击打开文件列表</String>
 
-	<String Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单&#xA;实例添加于{0}&#xA;最后启动于{1}</String>
+	<String Key="Tips.Text1">双击可启动实例，右键可以打开实例菜单&#xA;实例添加于{0}&#xA;最后启动于{1}&#xA;游戏时间{2}</String>
 	<String Key="Tips.Text2">双击可切换账户，右键可以打开账户菜单</String>
 
 	<String Key="Text.ForgeVersion">Forge版本</String>

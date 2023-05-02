@@ -92,6 +92,10 @@ public record LaunchDataObj
     /// 上次启动时间
     /// </summary>
     public DateTime LastTime { get; set; }
+    /// <summary>
+    /// 游戏时间
+    /// </summary>
+    public TimeSpan GameTime { get; set; }
 }
 
 /// <summary>

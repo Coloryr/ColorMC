@@ -7,7 +7,7 @@ public class NAudioPlayer : IPlayer
 {
     public float Volume { set => waveOut.Volume = value; }
 
-    private WaveOutEvent waveOut;
+    private readonly WaveOutEvent waveOut;
     private WaveFormat? wf;
     private BufferedWaveProvider? bwp;
     private bool init = false;

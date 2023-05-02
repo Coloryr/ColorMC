@@ -9,6 +9,7 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using DynamicData;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

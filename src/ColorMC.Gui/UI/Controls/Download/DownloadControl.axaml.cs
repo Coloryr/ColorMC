@@ -8,6 +8,7 @@ using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

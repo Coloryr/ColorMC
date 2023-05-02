@@ -27,6 +27,7 @@ using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using System;
@@ -274,29 +275,12 @@ public partial class App : Application
         Language.Load(item);
     }
 
-    public static byte[] GetFile(string name)
-    {
-        var assm = Assembly.GetExecutingAssembly();
-        var item = assm.GetManifestResourceStream(name);
-        using MemoryStream stream = new();
-        item!.CopyTo(stream);
-        return stream.ToArray();
-    }
-
     public static void RemoveImage()
     {
         var image = BackBitmap;
         BackBitmap = null;
         OnPicUpdate();
         image?.Dispose();
-    }
-
-    public static void LoadMusic()
-    {
-        if (GuiConfigUtils.Config.ServerCustom.PlayMusic)
-        {
-            BaseBinding.MusicStart();
-        }
     }
 
     public static async Task LoadImage()
@@ -674,13 +658,12 @@ public partial class App : Application
 
     public static void Close()
     {
-        Media.Close();
-        Life?.Shutdown();
         BaseBinding.Exit();
+        Life?.Shutdown();
         Environment.Exit(Environment.ExitCode);
     }
 
-    public static void Update(Window? window, Image? image)
+    public static void UpdateWindow(Window? window, Image? image)
     {
         if (GuiConfigUtils.Config != null)
         {

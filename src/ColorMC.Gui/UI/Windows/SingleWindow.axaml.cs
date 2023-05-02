@@ -112,6 +112,6 @@ public partial class SingleWindow : Window, IBaseWindow
 
     private void Update()
     {
-        App.Update(this, null);
+        App.UpdateWindow(this, null);
     }
 }

@@ -36,7 +36,8 @@ public partial class GameControl : UserControl
 
         ToolTip.SetTip(this, string.Format(App.GetLanguage("Tips.Text1"),
             Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
-            Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString()));
+            Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),
+            Obj.LaunchData.GameTime.Ticks == 0 ? "" : Obj.LaunchData.GameTime.ToString()));
     }
 
     public void SetLoad(bool state)
@@ -64,6 +65,7 @@ public partial class GameControl : UserControl
 
         ToolTip.SetTip(this, string.Format(App.GetLanguage("Tips.Text1"), 
             Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
-            Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString()));
+            Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),
+            Obj.LaunchData.GameTime.Ticks == 0 ? "" : Obj.LaunchData.GameTime.ToString()));
     }
 }
