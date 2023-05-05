@@ -711,21 +711,6 @@ public static class BaseBinding
     {
         return FontManager.Current.SystemFonts.ToList();
     }
-    /// <summary>
-    /// 是否重复启动
-    /// </summary>
-    /// <returns></returns>
-//    public static bool IsLaunch()
-//    {
-//#if !DEBUG
-//        mutex1 = new Mutex(true, "ColorMC-lock-" +
-//            ColorMCCore.BaseDir.Replace("\\", "_").Replace("/", "_"), out var isnew);
-
-//        return !isnew;
-//#else
-//        return false;
-//#endif
-//    }
 
     /// <summary>
     /// 保存文件
@@ -851,7 +836,9 @@ public static class BaseBinding
                 try
                 {
                     var name = file.GetPath();
-                    await File.WriteAllTextAsync(name, arg[0] as string);
+                    if (name == null)
+                        return false; 
+                    await File.WriteAllTextAsync(name, arg![0] as string);
                     return true;
                 }
                 catch (Exception e)

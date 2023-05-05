@@ -28,16 +28,15 @@ public partial class GameControl : UserControl
     {
         Rectangle_Select.IsVisible = select;
         TextBlock1.TextWrapping = select ? TextWrapping.Wrap : TextWrapping.NoWrap;
+
+        SetTips();
     }
 
     public void SetLaunch(bool state)
     {
         Image2.IsVisible = state;
 
-        ToolTip.SetTip(this, string.Format(App.GetLanguage("Tips.Text1"),
-            Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
-            Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),
-            Obj.LaunchData.GameTime.Ticks == 0 ? "" : Obj.LaunchData.GameTime.ToString()));
+        SetTips();
     }
 
     public void SetLoad(bool state)
@@ -63,9 +62,14 @@ public partial class GameControl : UserControl
             SetLaunch(true);
         }
 
-        ToolTip.SetTip(this, string.Format(App.GetLanguage("Tips.Text1"), 
+        SetTips();
+    }
+
+    private void SetTips()
+    {
+        ToolTip.SetTip(this, string.Format(App.GetLanguage("Tips.Text1"),
             Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
             Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),
-            Obj.LaunchData.GameTime.Ticks == 0 ? "" : Obj.LaunchData.GameTime.ToString()));
+            Obj.LaunchData.GameTime.Ticks == 0 ? "" : Obj.LaunchData.GameTime.ToString(@"d\.hh\:mm\:ss")));
     }
 }

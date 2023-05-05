@@ -184,7 +184,7 @@ public partial class UsersControl : UserControl, IUserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -202,7 +202,7 @@ public partial class UsersControl : UserControl, IUserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -228,7 +228,7 @@ public partial class UsersControl : UserControl, IUserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -254,7 +254,7 @@ public partial class UsersControl : UserControl, IUserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -274,7 +274,7 @@ public partial class UsersControl : UserControl, IUserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 ok = true;
                 break;
             case 5:
@@ -299,7 +299,7 @@ public partial class UsersControl : UserControl, IUserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;

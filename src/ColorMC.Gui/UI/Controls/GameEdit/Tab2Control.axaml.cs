@@ -188,7 +188,7 @@ public partial class Tab2Control : UserControl
         }
 
         var Window = App.FindRoot(VisualRoot);
-        Window.Info2.Show(App.GetLanguage("Info3"));
+        Window.Info2.Show(App.GetLanguage("Gui.Info3"));
     }
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
@@ -232,7 +232,7 @@ public partial class Tab2Control : UserControl
 
         if (Funtcions.CheckNotNumber(TextBox8.Text))
         {
-            window.Info.Show(App.GetLanguage("Error7"));
+            window.Info.Show(App.GetLanguage("Gui.Error7"));
             return;
         }
 

@@ -64,7 +64,7 @@ public partial class Tab4Control : UserControl
                 {
                     window.Info.Show(res.Item2!);
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 break;
             case 1:
@@ -81,7 +81,7 @@ public partial class Tab4Control : UserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 break;
             case 2:
                 var server = TextBox_Input1.Text;
@@ -110,7 +110,7 @@ public partial class Tab4Control : UserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 break;
             case 3:
@@ -140,7 +140,7 @@ public partial class Tab4Control : UserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 break;
             case 4:
@@ -164,7 +164,7 @@ public partial class Tab4Control : UserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 break;
             case 5:
                 server = TextBox_Input1.Text;
@@ -193,7 +193,7 @@ public partial class Tab4Control : UserControl
                     window.Info.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Info4"));
+                window.Info2.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 break;
             default:

@@ -536,16 +536,12 @@ public partial class MainControl : UserControl, IUserControl
                     foreach (var item in Groups)
                     {
                         GameGroups.Children.Add(item);
+                        last ??= item.Find(uuid);
                     }
                     GameGroups.Children.Add(DefaultGroup);
                     GameItemSelect(last);
                 });
             }
-
-            Dispatcher.UIThread.Post(() =>
-            {
-                GameItemSelect(last);
-            });
         }
     }
 

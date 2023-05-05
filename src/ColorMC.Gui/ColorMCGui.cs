@@ -53,32 +53,32 @@ public static class ColorMCGui
 
             Console.WriteLine($"RunDir:{RunDir}");
 
+            string name = RunDir + "lock";
+            if (File.Exists(name))
+            {
+                try
+                {
+                    using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                }
+                catch
+                {
+                    using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    using var writer = new StreamWriter(temp);
+                    writer.Write(true);
+                    writer.Flush();
+                    Environment.Exit(0);
+                    return;
+                }
+            }
+
             ColorMCCore.Init(RunDir);
-
-            //string name = RunDir + "lock";
-            //if (File.Exists(name))
-            //{
-            //    try
-            //    {
-            //        using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            //    }
-            //    catch
-            //    {
-            //        using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-            //        using var writer = new StreamWriter(temp);
-            //        writer.Write(true);
-            //        return;
-            //    }
-            //}
-
-            
 
             BuildAvaloniaApp()
                  .StartWithClassicDesktopLifetime(args);
         }
         catch (Exception e)
         {
-            Logs.Error("run fail", e);
+            Logs.Error("fail", e);
             App.Close();
         }
     }

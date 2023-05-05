@@ -39,7 +39,7 @@ public partial class Tab7Control : UserControl
         if (!res.Item1)
         {
             var window = App.FindRoot(this);
-            window.Info.Show(res.Item2);
+            window.Info.Show(res.Item2!);
         }
     }
 

@@ -137,7 +137,7 @@ public partial class Tab5Control : UserControl
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
-            window.Info.Show(App.GetLanguage("Error8"));
+            window.Info.Show(App.GetLanguage("Gui.Error8"));
             return;
         }
 

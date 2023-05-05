@@ -14,8 +14,6 @@ namespace ColorMC.Gui.UI.Controls.Server;
 
 public partial class Tab4Control : UserControl
 {
-    private bool load;
-
     private ServerPackObj Obj1;
     private ObservableCollection<ServerPackConfigDisplayObj> List = new();
     private ObservableCollection<string> List1 = new();
@@ -128,7 +126,6 @@ public partial class Tab4Control : UserControl
         if (Obj1 == null)
             return;
 
-        load = true;
         List1.Clear();
         List.Clear();
         var mods = GameBinding.GetAllTopConfig(Obj1.Game);
@@ -156,8 +153,6 @@ public partial class Tab4Control : UserControl
         });
 
         GameBinding.SaveServerPack(Obj1);
-
-        load = false;
     }
 
     public void SetObj(ServerPackObj obj1)

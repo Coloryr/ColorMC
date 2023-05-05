@@ -87,7 +87,7 @@ public static class UserBinding
             if (Ex != null)
             {
                 App.ShowError(Message!, Ex);
-                return (false, App.GetLanguage("Error4"));
+                return (false, App.GetLanguage("Gui.Error4"));
             }
             else
             {

@@ -70,7 +70,7 @@ public static class JavaBinding
             var info = JvmPath.GetInfo(res.Msg);
             if (info == null)
             {
-                return (null, App.GetLanguage("Error5"));
+                return (null, App.GetLanguage("Gui.Error5"));
             }
             return (MakeInfo(res.Msg, info), null);
         }

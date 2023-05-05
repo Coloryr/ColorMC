@@ -130,8 +130,10 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">保存的账户</param>
     /// <param name="file">保存路径</param>
-    public static void SaveSkin(this LoginObj obj, string file)
+    public static void SaveSkin(this LoginObj obj, string? file)
     {
+        if (file == null)
+            return;
         var path = obj.GetSkinFile();
 
         if (File.Exists(path))

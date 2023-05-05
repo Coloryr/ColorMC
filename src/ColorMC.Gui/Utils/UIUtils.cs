@@ -62,7 +62,6 @@ public static partial class UIUtils
             var item1 = grid.FindToEnd<DataGridColumnHeadersPresenter>();
             if (item1 != null)
             {
-                //item1.Background = Brush.Parse("#CCffffff");
                 foreach (var item in item1.GetVisualChildren())
                 {
                     var item2 = item.FindToEnd<TextBlock>();

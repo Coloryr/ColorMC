@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Net;
+﻿using ColorMC.Core;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -14,8 +15,8 @@ namespace ColorMC.Gui.Utils;
 
 public static class UpdateChecker
 {
-    //private const string url = "http://localhost/colormc/A17/";
-    private const string url = "https://colormc.coloryr.com/colormc/A17/";
+    //private const string url = $"http://localhost/colormc/{ColorMCCore.TopVersion}/";
+    private const string url = $"https://colormc.coloryr.com/colormc/{ColorMCCore.TopVersion}/";
 
     public static readonly string[] WebSha1s = new string[4] { "", "", "", "" };
     private static readonly string[] Sha1s = new string[4] { "", "", "", "" };

@@ -91,7 +91,7 @@ public class ColorSel : INotifyPropertyChanged
         }
         catch (Exception e)
         {
-            Logs.Error(App.GetLanguage("Error11"), e);
+            Logs.Error(App.GetLanguage("Gui.Error11"), e);
         }
     }
 

@@ -763,10 +763,8 @@
 	<String Key="FTBType.Search">搜索</String>
 	<String Key="FTBType.Other">未知的排序类型</String>
 
-	<String Key="Info1">正在读取配置文件</String>
-	<String Key="Info2">正在保存配置文件</String>
-	<String Key="Info3">已设置</String>
-	<String Key="Info4">添加成功</String>
+	<String Key="Gui.Info3">已设置</String>
+	<String Key="Gui.Info4">添加成功</String>
 	<String Key="Gui.Info5">有新版本，是否要更新</String>
 	<String Key="Gui.Info6">添加外置登录</String>
 	<String Key="Gui.Info7">导入游戏压缩包</String>
@@ -784,20 +782,16 @@
 	<String Key="Gui.Info20">没有更新消息</String>
 	<String Key="Gui.Info21">保存文本</String>
 
-	<String Key="Warn1">配置为空，旧版配置文件会被覆盖</String>
-	<String Key="Error1">背景图片加载失败</String>
-	<String Key="Error2">配置文件读取错误</String>
-	<String Key="Error3">配置文件保存错误</String>
-	<String Key="Error4">登录发生异常</String>
-	<String Key="Error5">找不到指定的Java</String>
+	<String Key="Gui.Error1">背景图片加载失败</String>
+	<String Key="Gui.Error4">登录发生异常</String>
+	<String Key="Gui.Error5">找不到指定的Java</String>
 	<String Key="Gui.Error6">游戏启动失败</String>
-	<String Key="Error7">输入信息有误</String>
-	<String Key="Error8">请输入必要信息</String>
-	<String Key="Error9">找不到指定的文件</String>
-	<String Key="Error10">自定义UI加载失败</String>
-	<String Key="Error11">颜色数据读取失败</String>
-	<String Key="Error12">文件已存在</String>
-	<String Key="Error13">检查更新错误</String>
+	<String Key="Gui.Error7">输入信息有误</String>
+	<String Key="Gui.Error8">请输入必要信息</String>
+	<String Key="Gui.Error9">找不到指定的文件</String>
+	<String Key="Gui.Error10">自定义UI加载失败</String>
+	<String Key="Gui.Error11">颜色数据读取失败</String>
+	<String Key="Gui.Error12">文件已存在</String>
 	<String Key="Gui.Error14">损坏的结构文件</String>
 	<String Key="Gui.Error15">获取出错</String>
 	<String Key="Gui.Error16">Mod更新检查失败</String>
@@ -808,6 +802,8 @@
 	<String Key="Gui.Error21">启动器检查更新错误</String>
 	<String Key="Gui.Error22">启动器下载更新失败</String>
 	<String Key="Gui.Error23">FTB获取出错 {0}</String>
+	<String Key="Gui.Error24">获取网络图片失败</String>
+	<String Key="Gui.Error25">线程错误</String>
 
 	<String Key="ToolTip.Text1">最小化</String>
 	<String Key="ToolTip.Text2">最大化</String>

@@ -161,7 +161,7 @@ public partial class Tab2Control : UserControl
         await ConfigBinding.SetBackLimit(CheckBox7.IsChecked == true, (int)Slider5.Value);
         window.Info1.Close();
 
-        window.Info2.Show(App.GetLanguage("Info3"));
+        window.Info2.Show(App.GetLanguage("Gui.Info3"));
     }
 
     private void Slider5_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -271,7 +271,7 @@ public partial class Tab2Control : UserControl
         await ConfigBinding.SetBackPic(TextBox1.Text, (int)Slider1.Value);
         window.Info1.Close();
 
-        window.Info2.Show(App.GetLanguage("Info3"));
+        window.Info2.Show(App.GetLanguage("Gui.Info3"));
     }
 
     private void Save1()
@@ -355,7 +355,7 @@ public partial class Tab2Control : UserControl
     {
         var window = App.FindRoot(VisualRoot);
         ConfigBinding.SetBackTran((int)Slider2.Value);
-        window.Info2.Show(App.GetLanguage("Info3"));
+        window.Info2.Show(App.GetLanguage("Gui.Info3"));
     }
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)

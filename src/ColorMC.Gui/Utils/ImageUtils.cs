@@ -48,7 +48,7 @@ public static class ImageUtils
             }
             catch (Exception e)
             {
-                Logs.Error("http error", e);
+                Logs.Error(App.GetLanguage("Gui.Error24"), e);
             }
 
             return null;
@@ -157,7 +157,7 @@ public static class ImageUtils
             }
             catch (Exception e)
             {
-                Logs.Error(App.GetLanguage("Error1"), e);
+                Logs.Error(App.GetLanguage("Gui.Error1"), e);
                 return null;
             }
         });

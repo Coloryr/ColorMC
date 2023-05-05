@@ -102,7 +102,7 @@ public partial class Tab12Control : UserControl
 
         if (res == false)
         {
-            window.Info2.Show(App.GetLanguage("Error12"));
+            window.Info2.Show(App.GetLanguage("Gui.Error12"));
             return;
         }
 

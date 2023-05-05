@@ -12,7 +12,6 @@ namespace ColorMC.Gui.UI.Controls.Server;
 
 public partial class Tab3Control : UserControl
 {
-    private bool load = false;
     private ServerPackObj Obj1;
     private ObservableCollection<ServerPackModDisplayObj> List = new();
 
@@ -96,7 +95,6 @@ public partial class Tab3Control : UserControl
         if (Obj1 == null)
             return;
 
-        load = true;
         List.Clear();
         var mods = await GameBinding.GetResourcepacks(Obj1.Game);
 
@@ -135,8 +133,6 @@ public partial class Tab3Control : UserControl
         });
 
         GameBinding.SaveServerPack(Obj1);
-
-        load = false;
     }
 
     public void SetObj(ServerPackObj obj1)

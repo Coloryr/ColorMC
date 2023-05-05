@@ -50,10 +50,10 @@ public partial class App : Application
 
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        Logs.Error("Error", e.ExceptionObject as Exception);
+        Logs.Error(App.GetLanguage("Gui.Error25"), e.ExceptionObject as Exception);
     }
 
-    public static IClassicDesktopStyleApplicationLifetime? Life { get; private set; }
+    public static IApplicationLifetime? Life { get; private set; }
 
     public static AllControl? AllWindow { get; set; }
     public static DownloadControl? DownloadWindow { get; set; }
@@ -124,90 +124,65 @@ public partial class App : Application
 
     public override async void OnFrameworkInitializationCompleted()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            Life = desktop;
+        Life = ApplicationLifetime;
 
-            desktop.Exit += Life_Exit;
+        if (ConfigUtils.Config == null)
+        {
+            LoadLanguage(LanguageType.zh_cn);
         }
-        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
+        else
         {
-
+            LoadLanguage(ConfigUtils.Config.Language);
         }
 
-        try
+        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
+        using var asset = assets!.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
+        GameIcon = new Bitmap(asset);
+
+        using var asset1 = assets!.Open(new Uri("resm:ColorMC.Gui.icon.ico"));
+        Icon = new(asset1!);
+
+        PlatformSettings = AvaloniaLocator.Current.GetRequiredService<IPlatformSettings>();
+        PlatformSettings.ColorValuesChanged += PlatformSettings_ColorValuesChanged;
+
+        ColorChange();
+
+        BaseBinding.Init();
+
+        if (ConfigBinding.WindowMode())
         {
-            if (ConfigUtils.Config == null)
+            AllWindow = new();
+
+            if (SystemInfo.Os == OsType.Android)
             {
-                LoadLanguage(LanguageType.zh_cn);
+                (Life as ISingleViewApplicationLifetime)!.MainView = AllWindow;
+                AllWindow.Head.Max = false;
+                AllWindow.Head.Min = false;
+                AllWindow.Head.Clo = false;
+                AllWindow.Opened();
             }
-            else
+
+            else if (SystemInfo.Os != OsType.Android)
             {
-                LoadLanguage(ConfigUtils.Config.Language);
+                new SingleWindow(AllWindow).Show();
             }
+        }
 
-            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-            using var asset = assets!.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
-            GameIcon = new Bitmap(asset);
+        ShowCustom();
 
-            using var asset1 = assets!.Open(new Uri("resm:ColorMC.Gui.icon.ico"));
-            Icon = new(asset1!);
+        await LoadImage();
 
-            PlatformSettings = AvaloniaLocator.Current.GetRequiredService<IPlatformSettings>();
-            PlatformSettings.ColorValuesChanged += PlatformSettings_ColorValuesChanged;
-
-            ColorChange();
-
-            BaseBinding.Init();
-
-            if (ConfigBinding.WindowMode())
+        if (ColorMCGui.RunType == RunType.Program)
+        {
+            new Thread(() =>
             {
-                AllWindow = new();
-
-                if (SystemInfo.Os == OsType.Android)
+                while (true)
                 {
-                    (Life as ISingleViewApplicationLifetime)!.MainView = AllWindow;
-                    AllWindow.Head.Max = false;
-                    AllWindow.Head.Min = false;
-                    AllWindow.Head.Clo = false;
-                    AllWindow.Opened();
+                    ColorMCGui.TestLock();
+                    IsHide = false;
+                    Dispatcher.UIThread.Post(Show);
                 }
-
-                else if (SystemInfo.Os != OsType.Android)
-                {
-                    new SingleWindow(AllWindow).Show();
-                }
-            }
-
-            ShowCustom();
-
-            await LoadImage();
-
-            //new Thread(() =>
-            //{
-            //    while (true)
-            //    {
-            //        Thread.Sleep(1000);
-            //        GC.Collect();
-            //    }
-            //}).Start();
-
-            if (ColorMCGui.RunType == RunType.Program)
-            {
-                new Thread(() =>
-                {
-                    while (true)
-                    {
-                        ColorMCGui.TestLock();
-                        IsHide = false;
-                        Dispatcher.UIThread.Post(Show);
-                    }
-                }).Start();
-            }
-        }
-        catch (Exception e)
-        {
-            Logs.Error("fail", e);
+            }).Start();
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -236,11 +211,6 @@ public partial class App : Application
             ColorSel.Instance.Load();
             OnPicUpdate();
         }
-    }
-
-    private void Life_Exit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
-    {
-
     }
 
     public static void OnUserEdit()
@@ -352,7 +322,7 @@ public partial class App : Application
             }
             catch (Exception e)
             {
-                var data = GetLanguage("Error10");
+                var data = GetLanguage("Gui.Error10");
                 Logs.Error(data, e);
                 ShowError(data, e, true);
                 ok = false;
@@ -659,7 +629,7 @@ public partial class App : Application
     public static void Close()
     {
         BaseBinding.Exit();
-        Life?.Shutdown();
+        (Life as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
         Environment.Exit(Environment.ExitCode);
     }
 

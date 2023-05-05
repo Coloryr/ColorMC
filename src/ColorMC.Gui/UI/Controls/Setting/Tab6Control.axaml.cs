@@ -145,7 +145,7 @@ public partial class Tab6Control : UserControl
         var window = App.FindRoot(VisualRoot);
         if (string.IsNullOrWhiteSpace(TextBox3.Text))
         {
-            window.Info.Show(App.GetLanguage("Error8"));
+            window.Info.Show(App.GetLanguage("Gui.Error8"));
             return;
         }
         var file = TextBox3.Text;
@@ -154,7 +154,7 @@ public partial class Tab6Control : UserControl
             file = BaseBinding.GetRunDir() + TextBox3.Text;
             if (!File.Exists(file))
             {
-                window.Info.Show(App.GetLanguage("Error9"));
+                window.Info.Show(App.GetLanguage("Gui.Error9"));
                 return;
             }
         }
