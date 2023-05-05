@@ -106,13 +106,6 @@ public static class ColorMCGui
 
     public static AppBuilder BuildAvaloniaApp()
     {
-#if DEBUG
-        if (SystemInfo.Os == OsType.Windows)
-        {
-            RunDir = AppContext.BaseDirectory;
-        }
-#endif
-
         GuiConfigUtils.Init(RunDir);
         ImageUtils.Init(RunDir);
 
