@@ -130,6 +130,20 @@ public static class Program
             {
                 context.Unload();
                 GuiLoad.Load();
+
+                var name = $"{LoadDir}ColorMC.Gui.dll";
+                if (File.Exists(name))
+                    File.Delete(name);
+                name = $"{LoadDir}ColorMC.Gui.pdb";
+                if (File.Exists(name))
+                    File.Delete(name);
+                name = $"{LoadDir}ColorMC.Core.dll";
+                if (File.Exists(name))
+                    File.Delete(name);
+                name = $"{LoadDir}ColorMC.Core.pdb";
+                if (File.Exists(name))
+                    File.Delete(name);
+
                 return;
             }
 
