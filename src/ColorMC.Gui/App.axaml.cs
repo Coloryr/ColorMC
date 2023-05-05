@@ -726,6 +726,7 @@ public partial class App : Application
             {
                 window.Show();
                 window.WindowState = WindowState.Normal;
+                window.Activate();
             }
         }
         else
@@ -734,11 +735,13 @@ public partial class App : Application
             {
                 window.Show();
                 window.WindowState = WindowState.Normal;
+                window.Activate();
             }
             else if (CustomWindow?.GetVisualRoot() is Window window1)
             {
                 window1.Show();
                 window1.WindowState = WindowState.Normal;
+                window1.Activate();
             }
         }
         IsHide = false;
