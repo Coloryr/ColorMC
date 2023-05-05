@@ -4,7 +4,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -297,12 +296,6 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
                 (data.Data as ModrinthVersionObj)!,
                 (Last!.Data?.Data as ModrinthSearchObj.Hit)!);
         }
-        else if (data.SourceType == SourceType.FTB)
-        {
-            App.AddGameWindow?.Install(
-                (data.Data as FTBModpackObj.Versions)!,
-                (Last!.Data?.Data as FTBModpackObj)!);
-        }
         var window = App.FindRoot(VisualRoot);
         window.Close();
     }
@@ -386,11 +379,6 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
             list = await WebBinding.GetPackFile((SourceType)ComboBox1.SelectedIndex,
                 (Last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, (int)Input3.Value!,
                 ComboBox6.SelectedItem as string, Loaders.Normal);
-        }
-        else if (ComboBox1.SelectedIndex == 2)
-        {
-            Input3.IsEnabled = false;
-            list = WebBinding.GetFTBPackFile((Last!.Data?.Data as FTBModpackObj)!);
         }
         if (list == null)
         {

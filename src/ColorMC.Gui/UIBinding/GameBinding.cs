@@ -9,7 +9,6 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
@@ -137,8 +136,7 @@ public static class GameBinding
         return new()
         {
             SourceType.CurseForge.GetName(),
-            SourceType.Modrinth.GetName(),
-            SourceType.FTB.GetName(),
+            SourceType.Modrinth.GetName()
         };
     }
 
@@ -244,26 +242,6 @@ public static class GameBinding
         if (data1.icon_url != null)
         {
             var res1 = await SetGameIconFromUrl(res.Item2!, data1.icon_url);
-            if (!res1)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public static async Task<bool> InstallFTB(FTBModpackObj.Versions file, FTBModpackObj obj, string? name, string? group)
-    {
-        var res = await PackDownload.InstallFTB(obj, file, name, group);
-        if (!res.Item1)
-        {
-            return false;
-        }
-        var item = obj.art.FirstOrDefault(a => a.type == "square");
-        if (item != null)
-        {
-            var res1 = await SetGameIconFromUrl(res.Item2!, item.url);
             if (!res1)
             {
                 return false;

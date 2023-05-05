@@ -267,7 +267,6 @@ public static class LanguageHelper
         {
             SourceType.CurseForge => GetName("SourceType.CurseForge"),
             SourceType.Modrinth => GetName("SourceType.Modrinth"),
-            SourceType.FTB => GetName("SourceType.FTB"),
             _ => GetName("SourceType.Other")
         };
     }

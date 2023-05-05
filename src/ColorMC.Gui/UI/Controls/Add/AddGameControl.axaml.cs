@@ -5,7 +5,6 @@ using ColorMC.Core;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -581,31 +580,6 @@ public partial class AddGameControl : UserControl, IUserControl
         }
         else
         {
-            App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
-            App.MainWindow?.Load();
-            window.Close();
-        }
-    }
-
-    public async void Install(FTBModpackObj.Versions data, FTBModpackObj data1)
-    {
-        var window = App.FindRoot(VisualRoot);
-        if (BaseBinding.IsDownload)
-        {
-            window.Info.Show(App.GetLanguage("AddGameWindow.Info19"));
-            return;
-        }
-
-        window.Info1.Show(App.GetLanguage("AddGameWindow.Info14"));
-        var res = await GameBinding.InstallFTB(data, data1, TextBox_Input1.Text, ComboBox_Group.SelectedItem as string);
-        window.Info1.Close();
-        if (!res)
-        {
-            window.Info.Show(App.GetLanguage("AddGameWindow.Error4"));
-        }
-        else
-        {
-            FTBAPI.PostIntall(data1.id, data.id);
             App.MainWindow?.Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
             App.MainWindow?.Load();
             window.Close();

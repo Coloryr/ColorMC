@@ -249,7 +249,6 @@
 	
 	<String Key="SourceType.CurseForge">CurseForge</String>
 	<String Key="SourceType.Modrinth">Modrinth</String>
-	<String Key="SourceType.FTB">Free The Beast</String>
 	<String Key="SourceType.Other">未知的下载源</String>
 	
 	<String Key="PackType.ColorMC">ColorMC压缩包</String>

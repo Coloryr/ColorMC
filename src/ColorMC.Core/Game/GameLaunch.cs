@@ -6,7 +6,6 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Download;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -1124,18 +1123,6 @@ public static class Launch
         process.Start();
         process.BeginOutputReadLine();
         process.BeginErrorReadLine();
-
-        if (obj.ModPack && obj.ModPackType == SourceType.FTB)
-        {
-            _ = Task.Run(() =>
-            {
-                var file = obj.GetModPackJsonFile();
-                var obj1 = JsonConvert.DeserializeObject<FTBFilesObj>(File.ReadAllText(file));
-                if (obj1 == null)
-                    return;
-                FTBAPI.GetPostLaunch(obj1.parent, obj1.id);
-            });
-        }
 
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.GetName("Core.Launch.Info6"),

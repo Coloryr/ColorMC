@@ -6,7 +6,6 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.FTB;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
@@ -94,116 +93,8 @@ public static class WebBinding
 
             return list1;
         }
-        else if (type == SourceType.FTB)
-        {
-            var list = (FTBType)sort switch
-            {
-                FTBType.All => await FTBAPI.GetAll(),
-                FTBType.Featured => await FTBAPI.GetFeatured(),
-                FTBType.Popular => await FTBAPI.GetPopular(),
-                FTBType.Installs => await FTBAPI.GetInstalls(),
-                FTBType.Search => await FTBAPI.GetSearch(filter),
-                _ => null
-            };
-
-            if (list == null)
-            {
-                return null;
-            }
-
-            var bag = new Dictionary<int, FileItemDisplayObj?>();
-
-            int a = 0;
-            foreach (var item in list.packs)
-            {
-                if (a >= 20)
-                    break;
-                bag.Add(item, null);
-
-                a++;
-            }
-
-            CancellationTokenSource topcancel = new();
-
-            bool fail = false;
-
-            await Parallel.ForEachAsync(bag.Keys, async (item, cancel) =>
-            {
-                try
-                {
-                    if (topcancel.IsCancellationRequested)
-                        return;
-
-                    var data = await FTBAPI.GetModpack(item);
-                    if (data == null)
-                    {
-                        fail = true;
-                        topcancel.Cancel();
-                        Logs.Error(string.Format(App.GetLanguage("Gui.Error23"), item));
-                        return;
-                    }
-
-                    var logo = data.art?.FirstOrDefault(a => a.type == "square")?.url;
-
-                    bag[item] = new()
-                    {
-                        Name = data.name,
-                        Summary = data.synopsis,
-                        Author = data.authors.GetString(),
-                        DownloadCount = data.installs,
-                        ModifiedDate = Funtcions.SecondsToDataTime(data.updated).ToString(),
-                        Logo = logo,
-                        FileType = FileType.ModPack,
-                        SourceType = SourceType.Modrinth,
-                        Data = data
-                    };
-                }
-                catch (Exception e)
-                {
-                    if (topcancel.IsCancellationRequested)
-                        return;
-
-                    fail = true;
-                    topcancel.Cancel();
-                    Logs.Error(App.GetLanguage("Gui.Error15"), e);
-                }
-            });
-
-            if (fail)
-                return null;
-
-            var list1 = new List<FileItemDisplayObj>();
-
-            foreach (var item in bag.Values)
-            {
-                if (item != null)
-                    list1.Add(item);
-            }
-
-            return list1;
-        }
 
         return null;
-    }
-
-    public static List<FileDisplayObj> GetFTBPackFile(FTBModpackObj pack)
-    {
-        var list = new List<FileDisplayObj>();
-
-        pack.versions.ForEach(item =>
-        {
-            list.Add(new()
-            {
-                Name = item.name + "_" + item.type,
-                Download = 0,
-                Time = Funtcions.SecondsToDataTime(item.updated).ToString(),
-                FileType = FileType.ModPack,
-                SourceType = SourceType.FTB,
-                Data = item
-            });
-        });
-        list.Reverse();
-        return list;
     }
 
     public static async Task<List<FileDisplayObj>?> GetPackFile(SourceType type, string id,
@@ -693,10 +584,6 @@ public static class WebBinding
                 FileType.DataPacks => "https://modrinth.com/datapacks/",
                 _ => "https://modrinth.com/mod/"
             } + obj1.project_id;
-        }
-        else if (obj.SourceType == SourceType.FTB)
-        {
-            return $"https://feed-the-beast.com/modpacks/{(obj.Data as FTBModpackObj)?.id}";
         }
 
         return null;
