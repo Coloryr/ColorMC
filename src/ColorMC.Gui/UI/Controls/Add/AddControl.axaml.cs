@@ -99,6 +99,44 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         Input3.PropertyChanged += Input3_PropertyChanged;
 
         Input1.KeyDown += Input1_KeyDown;
+
+        AddHandler(DragDrop.DragEnterEvent, DragEnter);
+        AddHandler(DragDrop.DragLeaveEvent, DragLeave);
+        AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    private void DragEnter(object? sender, DragEventArgs e)
+    {
+        if (e.Data.Contains(DataFormats.Text))
+        {
+            Grid5.IsVisible = true;
+        }
+    }
+
+    private void DragLeave(object? sender, DragEventArgs e)
+    {
+        Grid5.IsVisible = false;
+    }
+
+    private async void Drop(object? sender, DragEventArgs e)
+    {
+        Grid5.IsVisible = false;
+        if (e.Data.Contains(DataFormats.Text))
+        {
+            var text = e.Data.Get(DataFormats.Text) as string;
+            if (text?.StartsWith("https://link.mcmod.cn/target/") == true)
+            {
+                var value = text.Replace("https://link.mcmod.cn/target/", "");
+                value = Funtcions.DeBase64(value);
+                if (value.StartsWith("https://www.curseforge.com/minecraft/mc-mods/"))
+                {
+                    ComboBox1.SelectedIndex = 0;
+                    var id = await CurseForgeHelper.GetPID(value);
+
+                    
+                }
+            }
+        }
     }
 
     private void DataGrid2_DoubleTapped(object? sender, TappedEventArgs e)

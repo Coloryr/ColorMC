@@ -9,6 +9,7 @@
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Add"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Grid>
         <DockPanel>
@@ -332,5 +333,17 @@
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
+
+        <Grid
+            Name="Grid5"
+            Background="{setting:Colors TopBottom}"
+            IsVisible="False">
+            <Label
+                Name="Label1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{setting:Localize AddWindow.Text8}"
+                FontSize="30" />
+        </Grid>
     </Grid>
 </UserControl>

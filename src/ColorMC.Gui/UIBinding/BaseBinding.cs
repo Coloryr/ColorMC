@@ -54,16 +54,19 @@ public static class BaseBinding
         ColorMCCore.UpdateSelect = PackUpdate;
         ColorMCCore.UpdateState = UpdateState;
 
-        GameTime.Init();
-        UpdateChecker.Init();
+        if (ColorMCGui.RunType == RunType.Program)
+        {
+            GameTime.Init();
+            UpdateChecker.Init();
 
-        try
-        {
-            Media.Init();
-        }
-        catch (Exception e)
-        {
-            Logs.Error("error", e);
+            try
+            {
+                Media.Init();
+            }
+            catch (Exception e)
+            {
+                Logs.Error("error", e);
+            }
         }
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
