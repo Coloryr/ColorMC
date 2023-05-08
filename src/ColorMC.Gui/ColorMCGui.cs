@@ -106,6 +106,11 @@ public static class ColorMCGui
 
     public static AppBuilder BuildAvaloniaApp()
     {
+        if (RunType == RunType.AppBuilder)
+        {
+            RunDir = AppContext.BaseDirectory;
+        }
+
         GuiConfigUtils.Init(RunDir);
         ImageUtils.Init(RunDir);
 
