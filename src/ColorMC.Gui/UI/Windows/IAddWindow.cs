@@ -6,4 +6,6 @@ public interface IAddWindow
 {
     public void SetSelect(FileItemControl item);
     public void Install();
+    void Back();
+    void Next();
 }

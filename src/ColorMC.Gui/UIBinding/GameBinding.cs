@@ -680,6 +680,7 @@ public static class GameBinding
                 list.Add(new()
                 {
                     Local = item.Local,
+                    Pack = item
                 });
             }
             else

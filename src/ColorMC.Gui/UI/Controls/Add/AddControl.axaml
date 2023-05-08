@@ -292,6 +292,8 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize AddWindow.Text7}" />
 
+                <CheckBox Name="CheckBox1" Content="{setting:Localize AddWindow.Text9}" />
+
                 <Button
                     Name="Button8"
                     Width="100"

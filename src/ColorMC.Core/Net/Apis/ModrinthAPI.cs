@@ -144,8 +144,12 @@ public static class ModrinthAPI
     {
         try
         {
-            var res = await BaseClient.DownloadClient.GetStringAsync($"{Url}project/{id}/version/{version}");
-            return JsonConvert.DeserializeObject<ModrinthVersionObj>(res);
+            var res = await BaseClient.GetString($"{Url}project/{id}/version/{version}");
+            if (res.Item1 == false)
+            {
+                return null;
+            }
+            return JsonConvert.DeserializeObject<ModrinthVersionObj>(res.Item2!);
         }
         catch (Exception e)
         {

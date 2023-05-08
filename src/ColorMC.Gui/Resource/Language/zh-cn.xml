@@ -604,6 +604,7 @@
 	<String Key="AddWindow.Text6">全部下载</String>
 	<String Key="AddWindow.Text7">选择下载的Mod以及前置</String>
 	<String Key="AddWindow.Text8">打开链接</String>
+	<String Key="AddWindow.Text9">扩展依赖</String>
 	<String Key="AddWindow.DataGrid.Text1">是否下载</String>
 	<String Key="AddWindow.DataGrid.Text2">前置名字</String>
 	<String Key="AddWindow.Info1">是否下载资源 {0}</String>

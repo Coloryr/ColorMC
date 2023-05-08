@@ -29,7 +29,8 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
     private readonly Dictionary<int, string> Categories = new();
     private readonly ObservableCollection<FileDisplayObj> List1 = new();
     private readonly ObservableCollection<string> List4 = new();
-    public readonly ObservableCollection<DownloadModDisplayObj> List7 = new();
+    private readonly List<DownloadModDisplayObj> List8 = new();
+    private readonly ObservableCollection<DownloadModDisplayObj> List7 = new();
 
     /// <summary>
     /// Optifine
@@ -95,14 +96,33 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         Button7.Click += Button7_Click;
         Button8.Click += Button8_Click;
 
+        Grid1.PointerPressed += Grid1_PointerPressed;
+
+        CheckBox1.Click += CheckBox1_Click;
+
         Input2.PropertyChanged += Input2_PropertyChanged;
         Input3.PropertyChanged += Input3_PropertyChanged;
 
         Input1.KeyDown += Input1_KeyDown;
 
-        AddHandler(DragDrop.DragEnterEvent, DragEnter);
-        AddHandler(DragDrop.DragLeaveEvent, DragLeave);
-        AddHandler(DragDrop.DropEvent, Drop);
+        //AddHandler(DragDrop.DragEnterEvent, DragEnter);
+        //AddHandler(DragDrop.DragLeaveEvent, DragLeave);
+        //AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    private void CheckBox1_Click(object? sender, RoutedEventArgs e)
+    {
+        ModsLoad();
+    }
+
+    private void Grid1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var ev = e.GetCurrentPoint(this);
+        if (ev.Properties.IsXButton1Pressed)
+        {
+            ButtonCancel_Click(null, null);
+            e.Handled = true;
+        }
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -144,6 +164,24 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         if (e.Source is DownloadModDisplayObj obj)
         {
             obj.Download = !obj.Download;
+        }
+    }
+
+    private void ModsLoad()
+    {
+        List7.Clear();
+        if (CheckBox1.IsChecked == true)
+        {
+            List7.AddRange(List8);
+        }
+        else
+        {
+            List8.ForEach(item =>
+            {
+                if(item.Optional)
+                    return;
+                List7.Add(item);
+            });
         }
     }
 
@@ -638,10 +676,18 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
                 }
                 else
                 {
-                    List7.Clear();
-                    List7.AddRange(list.Item3);
+                    List8.Clear();
+                    List8.AddRange(list.Item3);
                     modsave = (list.Item1!, list.Item2!);
                     App.CrossFade300.Start(null, Grid4, CancellationToken.None);
+                    List8.ForEach(item => 
+                    {
+                        if (item.Optional == false)
+                        {
+                            item.Download = true;
+                        }
+                    });
+                    ModsLoad();
                     return;
                 }
             }
@@ -857,5 +903,24 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             while (set)
                 Thread.Sleep(1000);
         });
+    }
+
+    public void Back()
+    {
+        if (isdownload)
+            return;
+
+        if (Input2.Value <= 0)
+            return;
+
+        Input2.Value -= 1;
+    }
+
+    public void Next()
+    {
+        if (isdownload)
+            return;
+
+        Input2.Value += 1;
     }
 }

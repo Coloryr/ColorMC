@@ -10,6 +10,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.Utils;
 using System;
 using System.Collections.Concurrent;
@@ -334,7 +335,7 @@ public static class WebBinding
         var res = new Dictionary<string, DownloadModDisplayObj>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
-            var res1 = await CurseForgeAPI.GetModDependencies(data, obj.Version, obj.Loader);
+            var res1 = await CurseForgeAPI.GetModDependencies(data, obj.Version, obj.Loader, true);
 
             foreach (var item1 in res1)
             {
@@ -354,7 +355,8 @@ public static class WebBinding
                     Name = item1.Info.Name,
                     ModVersion = version,
                     Items = items,
-                    SelectVersion = 0
+                    SelectVersion = 0,
+                    Optional = item1.Info.Opt
                 });
             }
         }

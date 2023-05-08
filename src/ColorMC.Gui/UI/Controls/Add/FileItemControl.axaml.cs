@@ -51,13 +51,25 @@ public partial class FileItemControl : UserControl, IDisposable
         var window = App.FindRoot(VisualRoot);
         (window.Con as IAddWindow)?.SetSelect(this);
 
-        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        var ev = e.GetCurrentPoint(this);
+        if (ev.Properties.IsRightButtonPressed)
         {
             var url = Data?.GetUrl();
             if (url == null)
                 return;
 
             _ = new UrlFlyout(this, url);
+            e.Handled = true;
+        }
+        else if (ev.Properties.IsXButton1Pressed)
+        {
+            (window.Con as IAddWindow)?.Back();
+            e.Handled = true;
+        }
+        else if (ev.Properties.IsXButton2Pressed)
+        {
+            (window.Con as IAddWindow)?.Next();
+            e.Handled = true;
         }
     }
 

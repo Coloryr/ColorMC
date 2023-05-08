@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Controls.Add;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -13,6 +14,8 @@ public class DownloadModDisplayObj : INotifyPropertyChanged
     private string name;
     private bool download;
     private int selectitem;
+
+    public bool Optional;
 
     public List<string> ModVersion;
     public List<(DownloadItemObj Item, ModInfoObj Info)> Items;

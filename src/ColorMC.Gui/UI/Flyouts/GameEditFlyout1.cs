@@ -29,7 +29,7 @@ public class GameEditFlyout1
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text1"), Single, Button1_Click),
+            (App.GetLanguage("GameEditWindow.Flyouts1.Text1"), true, Button1_Click),
             (App.GetLanguage("GameEditWindow.Flyouts1.Text2"), true, Button2_Click),
             (App.GetLanguage("Button.OpFile"), Single, Button3_Click),
             (App.GetLanguage("GameEditWindow.Flyouts1.Text6"), true, Button7_Click),
@@ -43,7 +43,17 @@ public class GameEditFlyout1
 
     private void Button1_Click()
     {
-        Con.DisE(Obj);
+        if (Single)
+        {
+            Con.DisE(Obj);
+        }
+        else
+        {
+            foreach (var item in List)
+            {
+                Con.DisE(item);
+            }
+        }
     }
 
     private void Button2_Click()

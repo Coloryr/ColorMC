@@ -50,10 +50,22 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         ButtonCancel.Click += ButtonCancel_Click;
         ButtonDownload.Click += ButtonDownload_Click;
 
+        Grid1.PointerPressed += Grid1_PointerPressed;
+
         Input2.PropertyChanged += Input2_PropertyChanged;
         Input3.PropertyChanged += Input3_PropertyChanged;
 
         Input1.KeyDown += Input1_KeyDown;
+    }
+
+    private void Grid1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var ev = e.GetCurrentPoint(this);
+        if (ev.Properties.IsXButton1Pressed)
+        {
+            ButtonCancel_Click(null, null);
+            e.Handled = true;
+        }
     }
 
     private void Input1_KeyDown(object? sender, KeyEventArgs e)
@@ -409,5 +421,18 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         DataGridFiles.MakeTran();
 
         ComboBox1.SelectedIndex = 0;
+    }
+
+    public void Back()
+    {
+        if (Input2.Value <= 0)
+            return;
+
+        Input2.Value -= 1;
+    }
+
+    public void Next()
+    {
+        Input2.Value += 1;
     }
 }
