@@ -52,13 +52,13 @@ public partial class Tab5Control : UserControl
         var list = JavaBinding.FindJava();
         if (list == null)
         {
-            window.Info.Show(App.GetLanguage("HelloWindow.Tab3.Error2"));
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab5.Error1"));
             return;
         }
 
         list.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
         Load();
-        window.Info2.Show(App.GetLanguage("HelloWindow.Tab3.Info3"));
+        window.Info2.Show(App.GetLanguage("SettingWindow.Tab5.Info4"));
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)

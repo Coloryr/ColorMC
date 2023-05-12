@@ -454,7 +454,7 @@ public partial class App : Application
             {
                 var con = new SettingControl();
                 con.GoTo(SettingType.SetJava);
-                AWindow1(con);
+                AWindow(con);
             }
         }
     }

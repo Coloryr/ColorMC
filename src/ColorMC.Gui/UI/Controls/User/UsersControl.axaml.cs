@@ -175,7 +175,7 @@ public partial class UsersControl : UserControl, IUserControl
                 var name = TextBox_Input2.Text;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    window.Info.Show(App.GetLanguage("UserWindow.Error2"));
+                    window.Info.Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
                 var res = await UserBinding.AddUser(AuthType.Offline, name, null);
@@ -216,7 +216,7 @@ public partial class UsersControl : UserControl, IUserControl
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                     string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    window.Info.Show(App.GetLanguage("UserWindow.Error2"));
+                    window.Info.Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
@@ -242,7 +242,7 @@ public partial class UsersControl : UserControl, IUserControl
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                    string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    window.Info.Show(App.GetLanguage("UserWindow.Error2"));
+                    window.Info.Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
@@ -262,7 +262,7 @@ public partial class UsersControl : UserControl, IUserControl
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                    string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    window.Info.Show(App.GetLanguage("UserWindow.Error2"));
+                    window.Info.Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
@@ -287,7 +287,7 @@ public partial class UsersControl : UserControl, IUserControl
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                    string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    window.Info.Show(App.GetLanguage("UserWindow.Error2"));
+                    window.Info.Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
                 window.Info1.Show(App.GetLanguage("UserWindow.Info2"));

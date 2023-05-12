@@ -907,9 +907,9 @@ public static class BaseBinding
                 break;
             case FileType.Config:
                 res = await OpFile(window,
-                    App.GetLanguage("HelloWindow.Tab2.Info3"),
+                    App.GetLanguage("SettingWindow.Tab1.Info7"),
                     new string[] { "*.json" },
-                    App.GetLanguage("HelloWindow.Tab2.Info7"));
+                    App.GetLanguage("SettingWindow.Tab1.Info11"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -917,9 +917,9 @@ public static class BaseBinding
                 break;
             case FileType.AuthConfig:
                 res = await OpFile(window,
-                    App.GetLanguage("HelloWindow.Tab2.Info6"),
+                    App.GetLanguage("SettingWindow.Tab1.Info10"),
                     new string[] { "*.json" },
-                    App.GetLanguage("HelloWindow.Tab2.Info8"));
+                    App.GetLanguage("SettingWindow.Tab1.Info12"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();

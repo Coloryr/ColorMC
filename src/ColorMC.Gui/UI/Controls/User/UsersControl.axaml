@@ -30,7 +30,7 @@
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Name}"
-                    Header="{setting:Localize UserWindow.DataGrid.Text2}"
+                    Header="{setting:Localize Text.UserName}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Type}"
@@ -91,7 +91,7 @@
                     Margin="5"
                     Classes="input1"
                     IsEnabled="False"
-                    Watermark="{setting:Localize UserWindow.Text1}" />
+                    Watermark="{setting:Localize Text.UserName}" />
                 <TextBox
                     Name="TextBox_Input3"
                     Margin="5"

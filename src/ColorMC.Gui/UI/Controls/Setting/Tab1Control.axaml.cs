@@ -59,25 +59,25 @@ public partial class Tab1Control : UserControl
         var local = TextBox_Local2.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
-            window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error1"));
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
             return;
         }
-        window.Info1.Show(App.GetLanguage("HelloWindow.Tab2.Info1"));
+        window.Info1.Show(App.GetLanguage("SettingWindow.Tab1.Info5"));
 
         try
         {
             var res = ConfigBinding.LoadGuiConfig(local);
             if (!res)
             {
-                window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error2"));
+                window.Info.Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
                 return;
             }
-            window.Info2.Show(App.GetLanguage("HelloWindow.Tab2.Info2"));
+            window.Info2.Show(App.GetLanguage("SettingWindow.Tab1.Info6"));
         }
         catch (Exception e1)
         {
-            window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error3"));
-            App.ShowError(App.GetLanguage("HelloWindow.Tab2.Error3"), e1);
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
+            App.ShowError(App.GetLanguage("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {
@@ -102,25 +102,25 @@ public partial class Tab1Control : UserControl
         var local = TextBox_Local.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
-            window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error1"));
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
             return;
         }
-        window.Info1.Show(App.GetLanguage("HelloWindow.Tab2.Info1"));
+        window.Info1.Show(App.GetLanguage("SettingWindow.Tab1.Info5"));
 
         try
         {
             var res = ConfigBinding.LoadConfig(local);
             if (!res)
             {
-                window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error2"));
+                window.Info.Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
                 return;
             }
-            window.Info2.Show(App.GetLanguage("HelloWindow.Tab2.Info2"));
+            window.Info2.Show(App.GetLanguage("SettingWindow.Tab1.Info6"));
         }
         catch (Exception e1)
         {
-            window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error3"));
-            App.ShowError(App.GetLanguage("HelloWindow.Tab2.Error3"), e1);
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
+            App.ShowError(App.GetLanguage("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {
@@ -145,24 +145,24 @@ public partial class Tab1Control : UserControl
         var local = TextBox_Local1.Text;
         if (string.IsNullOrWhiteSpace(local))
         {
-            window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error1"));
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
             return;
         }
-        window.Info1.Show(App.GetLanguage("HelloWindow.Tab2.Info4"));
+        window.Info1.Show(App.GetLanguage("SettingWindow.Tab1.Info8"));
 
         try
         {
             var res = ConfigBinding.LoadAuthDatabase(local);
             if (!res)
             {
-                window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error4"));
+                window.Info.Show(App.GetLanguage("SettingWindow.Tab1.Error4"));
                 return;
             }
-            window.Info2.Show(App.GetLanguage("HelloWindow.Tab2.Info5"));
+            window.Info2.Show(App.GetLanguage("SettingWindow.Tab1.Info9"));
         }
         catch (Exception)
         {
-            window.Info.Show(App.GetLanguage("HelloWindow.Tab2.Error5"));
+            window.Info.Show(App.GetLanguage("SettingWindow.Tab1.Error5"));
         }
         finally
         {

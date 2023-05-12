@@ -9,7 +9,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <ScrollViewer HorizontalScrollBarVisibility="Visible">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="5">
             <StackPanel Orientation="Horizontal">
                 <CheckBox
@@ -304,7 +304,9 @@
                     VerticalAlignment="Center"
                     IsEnabled="False" />
             </StackPanel>
-            <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text6}" />
+            <Label Margin="5,0,0,0">
+                <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text6}" TextWrapping="Wrap" />
+            </Label>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

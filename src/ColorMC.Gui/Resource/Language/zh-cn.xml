@@ -64,13 +64,12 @@
 	<String Key="MainWindow.Info33">背景音乐播放中...</String>
 	<String Key="MainWindow.Info34">游戏正在启动中，是否关闭启动器</String>
 	<String Key="MainWindow.Info35">空账户</String>
-	<String Key="MainWindow.Info36">没有用户</String>
+	<String Key="MainWindow.Info36">没有账户</String>
 	<String Key="MainWindow.Info37">有部分文件删除失败</String>
 
 	<String Key="UserWindow.Title">ColorMC 用户列表</String>
 	<String Key="UserWindow.DataGrid.Text1">使用</String>
-	<String Key="UserWindow.DataGrid.Text2">用户名</String>
-	<String Key="UserWindow.DataGrid.Text3">登录方式</String>
+	<String Key="UserWindow.DataGrid.Text3">账户类型</String>
 	<String Key="UserWindow.DataGrid.Text4">UUID</String>
 	<String Key="UserWindow.DataGrid.Text5">附加数据1</String>
 	<String Key="UserWindow.DataGrid.Text6">附加数据2</String>
@@ -78,13 +77,11 @@
 	<String Key="UserWindow.Flyouts.Text2">刷新密匙</String>
 	<String Key="UserWindow.Flyouts.Text3">重新登录</String>
 	<String Key="UserWindow.Flyouts.Text4">删除用户</String>
-	<String Key="UserWindow.Text1">用户名</String>
 	<String Key="UserWindow.Text2">密码</String>
 	<String Key="UserWindow.Text3">账户类型</String>
 	<String Key="UserWindow.Text4">添加用户</String>
 	<String Key="UserWindow.Text5">添加账户</String>
 	<String Key="UserWindow.Error1">请先选择账户</String>
-	<String Key="UserWindow.Error2">请输入必要信息</String>
 	<String Key="UserWindow.Error3">服务器UUID错误</String>
 	<String Key="UserWindow.Error4">服务器Url错误</String>
 	<String Key="UserWindow.Error5">请选择类型</String>
@@ -96,7 +93,6 @@
 	<String Key="UserWindow.Info5">切换成功</String>
 	<String Key="UserWindow.Info6">打开网址：{0}</String>
 	<String Key="UserWindow.Info7">输入代码：{0} 继续登录</String>
-	<String Key="UserWindow.Info8">用户名</String>
 	<String Key="UserWindow.Info9">服务器UUID</String>
 	<String Key="UserWindow.Info10">服务器地址</String>
 	<String Key="UserWindow.Info11">皮肤站地址</String>
@@ -114,10 +110,29 @@
 	<String Key="SettingWindow.Tab1.Text1">重置所有配置</String>
 	<String Key="SettingWindow.Tab1.Text2">清空所有账户</String>
 	<String Key="SettingWindow.Tab1.Text3">打开运行目录</String>
+	<String Key="SettingWindow.Tab1.Text4">导入现有的配置文件</String>
+	<String Key="SettingWindow.Tab1.Text5">配置文件路径</String>
+	<String Key="SettingWindow.Tab1.Text6">导入现有的账户储存数据库</String>
+	<String Key="SettingWindow.Tab1.Text7">账户储存数据库路径</String>
+	<String Key="SettingWindow.Tab1.Text8">导入现有的图形配置文件</String>
+	<String Key="SettingWindow.Tab1.Text9">图形配置文件路径</String>
 	<String Key="SettingWindow.Tab1.Info1">是否重置所有配置</String>
 	<String Key="SettingWindow.Tab1.Info2">已重置</String>
 	<String Key="SettingWindow.Tab1.Info3">是否删除所有账户</String>
 	<String Key="SettingWindow.Tab1.Info4">已清空</String>
+	<String Key="SettingWindow.Tab1.Info5">正在加载配置</String>
+	<String Key="SettingWindow.Tab1.Info6">配置文件已加载</String>
+	<String Key="SettingWindow.Tab1.Info7">选择配置文件</String>
+	<String Key="SettingWindow.Tab1.Info8">正在加载账户数据库</String>
+	<String Key="SettingWindow.Tab1.Info9">账户数据库已加载</String>
+	<String Key="SettingWindow.Tab1.Info10">选择账户数据库</String>
+	<String Key="SettingWindow.Tab1.Info11">配置文件</String>
+	<String Key="SettingWindow.Tab1.Info12">账户数据库</String>
+	<String Key="SettingWindow.Tab1.Error1">输入文件为空</String>
+	<String Key="SettingWindow.Tab1.Error2">配置文件读取错误</String>
+	<String Key="SettingWindow.Tab1.Error3">配置文件读取失败</String>
+	<String Key="SettingWindow.Tab1.Error4">账户数据库读取错误</String>
+	<String Key="SettingWindow.Tab1.Error5">账户数据库读取失败</String>
 
 	<String Key="SettingWindow.Tab2.Text1">语言选择</String>
 	<String Key="SettingWindow.Tab2.Text2">修改背景图片</String>
@@ -206,6 +221,7 @@
 	<String Key="SettingWindow.Tab5.Text4">下载Java</String>
 	<String Key="SettingWindow.Tab5.Text5">删除所有</String>
 	<String Key="SettingWindow.Tab5.Text6">打开下载目录</String>
+	<String Key="SettingWindow.Tab5.Text7">自动扫描并添加</String>
 	<String Key="SettingWindow.Tab5.DataGrid.Text1">名字</String>
 	<String Key="SettingWindow.Tab5.DataGrid.Text2">路径</String>
 	<String Key="SettingWindow.Tab5.DataGrid.Text3">主版本</String>
@@ -215,6 +231,8 @@
 	<String Key="SettingWindow.Tab5.Info1">正在检查Java</String>
 	<String Key="SettingWindow.Tab5.Info2">选择Java</String>
 	<String Key="SettingWindow.Tab5.Info3">是否删除所有Java</String>
+	<String Key="SettingWindow.Tab5.Info4">已自动导入</String>
+	<String Key="SettingWindow.Tab5.Error1">无法检测Java</String>
 
 	<String Key="SettingWindow.Tab6.Text1">Motd显示</String>
 	<String Key="SettingWindow.Tab6.Text2">服务器地址</String>
@@ -255,66 +273,6 @@
 	<String Key="SettingWindow.Tab7.Text4">Minecraft官网</String>
 	<String Key="SettingWindow.Tab7.Text5">赞助通道</String>
 	<String Key="SettingWindow.Tab7.Text6">版本</String>
-
-	<String Key="HelloWindow.Title">ColorMC 初始设置</String>
-	<String Key="HelloWindow.Tabs.Text1">开始</String>
-	<String Key="HelloWindow.Tabs.Text2">导入配置</String>
-	<String Key="HelloWindow.Tabs.Text3">添加Java</String>
-	<String Key="HelloWindow.Tabs.Text4">添加账户</String>
-	<String Key="HelloWindow.Tabs.Text5">添加游戏</String>
-	<String Key="HelloWindow.Tabs.Text6">完成</String>
-
-	<String Key="HelloWindow.Tab1.Text1">看起来你是第一次启动ColorMC</String>
-	<String Key="HelloWindow.Tab1.Text2">进行一些初始设定</String>
-	<String Key="HelloWindow.Tab1.Text3">开始使用吧！</String>
-	<String Key="HelloWindow.Tab1.Text4">语言选择：</String>
-	<String Key="HelloWindow.Tab1.Text5">跳过设置</String>
-
-	<String Key="HelloWindow.Tab2.Text1">导入现有的配置文件</String>
-	<String Key="HelloWindow.Tab2.Text2">配置文件路径</String>
-	<String Key="HelloWindow.Tab2.Text3">导入现有的账户储存数据库</String>
-	<String Key="HelloWindow.Tab2.Text4">账户储存数据库路径</String>
-	<String Key="HelloWindow.Tab2.Text5">导入现有的图形配置文件</String>
-	<String Key="HelloWindow.Tab2.Text6">图形配置文件路径</String>
-	<String Key="HelloWindow.Tab2.Info1">正在加载配置</String>
-	<String Key="HelloWindow.Tab2.Info2">配置文件已加载</String>
-	<String Key="HelloWindow.Tab2.Info3">选择配置文件</String>
-	<String Key="HelloWindow.Tab2.Info4">正在加载账户数据库</String>
-	<String Key="HelloWindow.Tab2.Info5">账户数据库已加载</String>
-	<String Key="HelloWindow.Tab2.Info6">选择账户数据库</String>
-	<String Key="HelloWindow.Tab2.Info7">配置文件</String>
-	<String Key="HelloWindow.Tab2.Info8">数据库</String>
-	<String Key="HelloWindow.Tab2.Error1">输入文件为空</String>
-	<String Key="HelloWindow.Tab2.Error2">配置文件读取错误</String>
-	<String Key="HelloWindow.Tab2.Error3">配置文件读取失败</String>
-	<String Key="HelloWindow.Tab2.Error4">账户数据库读取错误</String>
-	<String Key="HelloWindow.Tab2.Error5">账户数据库读取失败</String>
-
-	<String Key="HelloWindow.Tab3.Text1">添加Java路径</String>
-	<String Key="HelloWindow.Tab3.Text2">Java名字</String>
-	<String Key="HelloWindow.Tab3.Text3">Java路径</String>
-	<String Key="HelloWindow.Tab3.Text4">现有Java路径</String>
-	<String Key="HelloWindow.Tab3.Text5">下载Java</String>
-	<String Key="HelloWindow.Tab3.Text6">自动扫描并添加</String>
-	<String Key="HelloWindow.Tab3.Info1">正在检查Java</String>
-	<String Key="HelloWindow.Tab3.Info2">选择Java</String>
-	<String Key="HelloWindow.Tab3.Info3">已自动导入</String>
-	<String Key="HelloWindow.Tab3.Error1">请输入必要信息</String>
-	<String Key="HelloWindow.Tab3.Error2">无法检测Java</String>
-
-	<String Key="HelloWindow.Tab4.Text1">添加账户</String>
-	<String Key="HelloWindow.Tab4.Text2">账户类型</String>
-	<String Key="HelloWindow.Tab4.Text3">现有账户</String>
-
-	<String Key="HelloWindow.Tab6.Text1">最后确认</String>
-	<String Key="HelloWindow.Tab6.Text2">目前导入Java数目：</String>
-	<String Key="HelloWindow.Tab6.Text3">目前登录账户数目：</String>
-	<String Key="HelloWindow.Tab6.Text4">目前游戏实例数目：</String>
-	<String Key="HelloWindow.Tab6.Text5">导入配置</String>
-	<String Key="HelloWindow.Tab6.Text6">添加Java</String>
-	<String Key="HelloWindow.Tab6.Text7">添加账户</String>
-	<String Key="HelloWindow.Tab6.Text8">添加游戏</String>
-	<String Key="HelloWindow.Tab6.Text9">完成</String>
 
 	<String Key="GameEditWindow.Title">游戏实例设置 {0}</String>
 	<String Key="GameEditWindow.Tabs.Text1">版本设置</String>
@@ -862,6 +820,7 @@
 	<String Key="Text.ForgeVersion">Forge版本</String>
 	<String Key="Text.GameVersion">游戏版本</String>
 	<String Key="Text.Name">名字</String>
+	<String Key="Text.UserName">用户名</String>
 	<String Key="Text.Version">版本</String>
 
 	<String Key="Button.OpFile">打开文件夹</String>

@@ -57,7 +57,7 @@
                     Width="120"
                     Height="25"
                     Margin="5,0,0,0"
-                    Content="{setting:Localize HelloWindow.Tab3.Text6}"
+                    Content="{setting:Localize SettingWindow.Tab5.Text7}"
                     DockPanel.Dock="Left" />
 
             </DockPanel>

@@ -36,12 +36,12 @@
         </StackPanel>
         <StackPanel Margin="5">
             <StackPanel>
-                <Label Content="{setting:Localize HelloWindow.Tab2.Text1}" />
+                <Label Content="{setting:Localize SettingWindow.Tab1.Text4}" />
                 <TextBox
                     Name="TextBox_Local"
                     Margin="0,0,0,5"
                     Classes="input1"
-                    Watermark="{setting:Localize HelloWindow.Tab2.Text2}" />
+                    Watermark="{setting:Localize SettingWindow.Tab1.Text5}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         Name="Button_SelectFile"
@@ -58,12 +58,12 @@
             </StackPanel>
 
             <StackPanel>
-                <Label Content="{setting:Localize HelloWindow.Tab2.Text3}" />
+                <Label Content="{setting:Localize SettingWindow.Tab1.Text6}" />
                 <TextBox
                     Name="TextBox_Local1"
                     Margin="0,0,0,5"
                     Classes="input1"
-                    Watermark="{setting:Localize HelloWindow.Tab2.Text4}" />
+                    Watermark="{setting:Localize SettingWindow.Tab1.Text7}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         Name="Button_SelectFile1"
@@ -80,12 +80,12 @@
             </StackPanel>
 
             <StackPanel>
-                <Label Content="{setting:Localize HelloWindow.Tab2.Text5}" />
+                <Label Content="{setting:Localize SettingWindow.Tab1.Text8}" />
                 <TextBox
                     Name="TextBox_Local2"
                     Margin="0,0,0,5"
                     Classes="input1"
-                    Watermark="{setting:Localize HelloWindow.Tab2.Text6}" />
+                    Watermark="{setting:Localize SettingWindow.Tab1.Text9}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         Name="Button_SelectFile2"
