@@ -17,8 +17,8 @@ public static class LanguageHelper
     {
         string name = type switch
         {
-            LanguageType.en_us => "ColorMC.Core.Resources.Language.en-us.xml",
-            _ => "ColorMC.Core.Resources.Language.zh-cn.xml"
+            LanguageType.en_us => "ColorMC.Core.Resources.Language.core_en-us.xml",
+            _ => "ColorMC.Core.Resources.Language.core_zh-cn.xml"
         };
         Assembly assm = Assembly.GetExecutingAssembly();
         using var istr = assm.GetManifestResourceStream(name)!;

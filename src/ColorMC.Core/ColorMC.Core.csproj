@@ -17,15 +17,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Language\core_en-us.xml" />
+    <None Remove="Resources\Language\core_zh-cn.xml" />
     <None Remove="Resources\Language\en-us" />
-    <None Remove="Resources\Language\en-us.xml" />
     <None Remove="Resources\Language\zh-cn" />
-    <None Remove="Resources\Language\zh-cn.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Language\en-us.xml" />
-    <EmbeddedResource Include="Resources\Language\zh-cn.xml" />
+    <EmbeddedResource Include="Resources\Language\core_en-us.xml" />
+    <EmbeddedResource Include="Resources\Language\core_zh-cn.xml" />
   </ItemGroup>
 
   <ItemGroup>

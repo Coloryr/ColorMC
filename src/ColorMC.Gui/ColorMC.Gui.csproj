@@ -31,9 +31,9 @@
     <None Remove=".gitignore" />
     <None Remove="icon.ico" />
     <None Remove="Resource\Language\en-us" />
-    <None Remove="Resource\Language\en-us.xml" />
+    <None Remove="Resource\Language\giu_zh-cn.xml" />
+    <None Remove="Resource\Language\gui_en-us.xml" />
     <None Remove="Resource\Language\zh-cn" />
-    <None Remove="Resource\Language\zh-cn.xml" />
     <None Remove="Resource\Pic\file.png" />
     <None Remove="Resource\Pic\folder-open.png" />
     <None Remove="Resource\Pic\folder.png" />
@@ -46,8 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="icon.ico" />
-    <EmbeddedResource Include="Resource\Language\en-us.xml" />
-    <EmbeddedResource Include="Resource\Language\zh-cn.xml" />
+    <EmbeddedResource Include="Resource\Language\gui_en-us.xml" />
+    <EmbeddedResource Include="Resource\Language\giu_zh-cn.xml" />
     <EmbeddedResource Include="Resource\Pic\file.png" />
     <EmbeddedResource Include="Resource\Pic\folder-open.png" />
     <EmbeddedResource Include="Resource\Pic\folder.png" />
