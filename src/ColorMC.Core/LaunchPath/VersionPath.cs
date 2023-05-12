@@ -36,8 +36,6 @@ public static class VersionPath
     {
         BaseDir = dir + "/" + Name;
 
-        Logs.Info(LanguageHelper.GetName("Core.Path.Info2"));
-
         Directory.CreateDirectory(BaseDir);
 
         Directory.CreateDirectory(ForgeDir);
@@ -69,7 +67,7 @@ public static class VersionPath
         Versions = await GameJsonObj.GetVersions(SourceLocal.Offical);
         if (Versions == null)
         {
-            Logs.Warn(LanguageHelper.GetName("Core.Path.Error3"));
+            Logs.Error(LanguageHelper.GetName("Core.Path.Error3"));
         }
         else
         {

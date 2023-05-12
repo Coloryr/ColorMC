@@ -256,7 +256,7 @@ public static class ConfigSave
                         }
                         catch (Exception e)
                         {
-                            Logs.Error("Save Error", e);
+                            Logs.Error(LanguageHelper.GetName("Core.Config.Error2"), e);
                         }
                     }
                 }

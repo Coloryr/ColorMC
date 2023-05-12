@@ -80,7 +80,6 @@ public static class Mods
                         if (obj2?.Count > 0)
                         {
                             var obj3 = obj2.First().ToObject<ModObj>()!;
-                            obj3.name ??= LanguageHelper.GetName("Core.Game.Error6");
                             obj3.V2 = false;
                             obj3.Local = Path.GetFullPath(item.FullName);
                             obj3.Disable = item.Extension is ".disable";
@@ -98,7 +97,6 @@ public static class Mods
                         if (obj1?.Count > 0)
                         {
                             var obj3 = obj1.First().ToObject<ModObj>()!;
-                            obj3.name ??= LanguageHelper.GetName("Core.Game.Error6");
                             obj3.V2 = false;
                             obj3.Local = Path.GetFullPath(item.FullName);
                             obj3.Disable = item.Extension is ".disable";
@@ -170,8 +168,7 @@ public static class Mods
                     model2.TryGetValue("modId", out object item2);
                     obj3.modid = item2 as string;
                     model2.TryGetValue("displayName", out item2);
-                    obj3.name = item2 as string ??
-                            LanguageHelper.GetName("Core.Game.Error6");
+                    obj3.name = item2 as string;
                     model2.TryGetValue("modId", out item2);
                     obj3.modid = item2 as string;
                     model2.TryGetValue("description", out item2);
@@ -205,8 +202,7 @@ public static class Mods
                         Loader = Loaders.Fabric,
                         V2 = true,
                         modid = obj1["id"]?.ToString(),
-                        name = obj1["name"]?.ToString() ??
-                            LanguageHelper.GetName("Core.Game.Error6"),
+                        name = obj1["name"]?.ToString(),
                         description = obj1["description"]?.ToString(),
                         version = obj1["version"]?.ToString(),
                         authorList = (obj1["authors"] as JArray)?.ToStringList(),
@@ -235,8 +231,7 @@ public static class Mods
                         Loader = Loaders.Quilt,
                         V2 = true,
                         modid = obj1["quilt_loader"]?["id"]?.ToString(),
-                        name = obj1["quilt_loader"]?["metadata"]?["name"]?.ToString() ??
-                            LanguageHelper.GetName("Core.Game.Error6"),
+                        name = obj1["quilt_loader"]?["metadata"]?["name"]?.ToString(),
                         description = obj1["quilt_loader"]?["metadata"]?["description"]?.ToString(),
                         version = obj1["quilt_loader"]?["version"]?.ToString(),
                         authorList = (obj1["quilt_loader"]?["metadata"]?["contributors"] as JObject)?.ToStringList(),

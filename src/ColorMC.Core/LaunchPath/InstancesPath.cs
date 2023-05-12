@@ -140,8 +140,6 @@ public static class InstancesPath
     {
         BaseDir = Path.GetFullPath(dir + "/" + Name);
 
-        Logs.Info(LanguageHelper.GetName("Core.Pack.Info2"));
-
         Directory.CreateDirectory(BaseDir);
 
         GameGroups.Add(" ", new List<GameSettingObj>());
@@ -178,7 +176,7 @@ public static class InstancesPath
                     game.DirName = path;
                     game.Save();
                 }
-                game.ReadCurseForgeMod();
+                game.ReadModInfo();
                 game.ReadLaunchData();
                 game.AddToGroup();
             }
@@ -661,7 +659,7 @@ public static class InstancesPath
     /// 读取游戏实例mod数据
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static void ReadCurseForgeMod(this GameSettingObj obj)
+    public static void ReadModInfo(this GameSettingObj obj)
     {
         string file = obj.GetModInfoJsonFile();
         if (!File.Exists(file))
@@ -672,7 +670,6 @@ public static class InstancesPath
 
         try
         {
-
             var res = JsonConvert.DeserializeObject<Dictionary<string, ModInfoObj>>(
             File.ReadAllText(file));
             if (res == null)
@@ -717,7 +714,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error("load error", e);
+            Logs.Error(LanguageHelper.GetName("Core.Game.Error8"), e);
             obj.Mods = new();
             return;
         }
@@ -740,7 +737,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error("load error", e);
+            Logs.Error(LanguageHelper.GetName("Core.Game.Error9"), e);
             obj.LaunchData = new();
             return;
         }

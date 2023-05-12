@@ -216,7 +216,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error4"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error7"), e);
             return null;
         }
     }

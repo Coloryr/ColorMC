@@ -146,7 +146,7 @@ public static class LocalMaven
             }
             catch (Exception e)
             {
-                Logs.Error("native load error", e);
+                Logs.Error(LanguageHelper.GetName("Core.Maven.Error1"), e);
             }
         }
 

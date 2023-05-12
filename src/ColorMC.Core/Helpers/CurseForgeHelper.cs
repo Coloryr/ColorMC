@@ -76,27 +76,4 @@ public static class CurseForgeHelper
 
         return builder.ToString()[..^1];
     }
-
-    public static async Task<string?> GetPID(string url)
-    {
-        try
-        {
-            var data = await BaseClient.GetString(url);
-            if(data.Item1 ==false)
-            {
-                return null;
-            }
-            var html = new HtmlDocument();
-            await Task.Run(() =>
-            {
-                html.LoadHtml(data.Item2);
-            });
-            
-        }
-        catch (Exception e)
-        {
-            Logs.Error("http error", e);
-        }
-        return null;
-    }
 }

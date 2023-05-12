@@ -35,8 +35,6 @@ public static class AssetsPath
         BaseDir = dir + "/" + Name;
         ObjectsDir = BaseDir + "/" + Name2;
 
-        Logs.Info(LanguageHelper.GetName("Core.Pack.Info1"));
-
         Directory.CreateDirectory(BaseDir);
 
         Directory.CreateDirectory($"{BaseDir}/{Name1}");

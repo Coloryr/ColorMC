@@ -1,4 +1,7 @@
-﻿using System.Xml;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Text;
+using System.Xml;
 
 namespace ColorMC.Core.Utils;
 
@@ -9,15 +12,11 @@ public class Language
     public void Load(Stream item)
     {
         LanguageList.Clear();
-        var xmlDoc = new XmlDocument();
-        xmlDoc.Load(item);
-        foreach (XmlNode item1 in xmlDoc.DocumentElement!.ChildNodes)
+        using var steam = new StreamReader(item);
+        var json = JObject.Parse(steam.ReadToEnd());
+        foreach (JProperty item1 in json.Properties())
         {
-            if (item1.Name == "String")
-            {
-                LanguageList.Add(item1.Attributes!.GetNamedItem("Key")!.Value!,
-                    item1.FirstChild!.Value!);
-            }
+            LanguageList.Add(item1.Name, item1.Value.ToString());
         }
     }
 

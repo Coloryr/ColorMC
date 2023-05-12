@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ICSharpCode.SharpZipLib.Checksum;
@@ -563,7 +564,7 @@ public static class PathC
             }
             catch (Exception e)
             {
-                Logs.Error("Delete Game Error", e);
+                Logs.Error(LanguageHelper.GetName("Core.Game.Error10"), e);
                 return false;
             }
         });
@@ -578,7 +579,6 @@ public static class PathC
     public static string? GetFile(string path, string name)
     {
         var list = GetAllFile(path);
-        Logs.Info("seach file");
         foreach (var item in list)
         {
             if (item.Name == name)

@@ -89,7 +89,7 @@ public static class ForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error("获取Forge支持版本错误", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Forge.Error5"), e);
             return null;
         }
     }
@@ -520,7 +520,7 @@ public static class ForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Game.Error5"), e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Forge.Error6"), e);
             return null;
         }
     }

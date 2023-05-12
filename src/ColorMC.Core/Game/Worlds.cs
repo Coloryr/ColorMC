@@ -283,7 +283,7 @@ public static class Worlds
         }
         catch (Exception e)
         {
-            string text = LanguageHelper.GetName("Core.Pack.Error3");
+            string text = LanguageHelper.GetName("Core.Game.Error11");
             Logs.Error(text, e);
             ColorMCCore.OnError?.Invoke(text, e, false);
             return false;

@@ -130,7 +130,7 @@ public static class BaseClient
                 catch (Exception e)
                 {
                     item.Item2(false, null);
-                    Logs.Error("http error", e);
+                    Logs.Error(LanguageHelper.GetName("Core.Http.Error9"), e);
                 }
             }
             Thread.Sleep(1000);

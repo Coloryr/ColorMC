@@ -85,7 +85,7 @@ public static class AuthHelper
         }
         catch (Exception e)
         {
-            Logs.Error("nide8 check error", e);
+            Logs.Error(LanguageHelper.GetName("Core.Http.Error8"), e);
             return null;
         }
     }

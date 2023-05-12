@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
@@ -37,7 +38,7 @@ public static class Servers
         }
         catch (Exception e)
         {
-            Logs.Error("server load error", e);
+            Logs.Error(LanguageHelper.GetName("Core.Game.Error7"), e);
         }
         return list;
     }
