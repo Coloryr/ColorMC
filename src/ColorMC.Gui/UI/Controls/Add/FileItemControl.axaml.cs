@@ -30,8 +30,20 @@ public partial class FileItemControl : UserControl, IDisposable
 
         PointerPressed += CurseForgeControl_PointerPressed;
         DoubleTapped += CurseForgeControl_DoubleTapped;
+        PointerEntered += FileItemControl_PointerEntered;
+        PointerExited += FileItemControl_PointerExited;
 
         Load();
+    }
+
+    private void FileItemControl_PointerExited(object? sender, PointerEventArgs e)
+    {
+        Rectangle2.IsVisible = false;
+    }
+
+    private void FileItemControl_PointerEntered(object? sender, PointerEventArgs e)
+    {
+        Rectangle2.IsVisible = true;
     }
 
     public FileItemControl() : this(null)

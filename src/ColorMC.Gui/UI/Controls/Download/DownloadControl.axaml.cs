@@ -21,8 +21,8 @@ namespace ColorMC.Gui.UI.Controls.Download;
 
 public partial class DownloadControl : UserControl, IUserControl
 {
-    private readonly ObservableCollection<DownloadDisplayObj> List = new();
-    private readonly Dictionary<string, DownloadDisplayObj> List1 = new();
+    private readonly ObservableCollection<DownloadDisplayModel> List = new();
+    private readonly Dictionary<string, DownloadDisplayModel> List1 = new();
 
     private bool pause = false;
     private long Count;
@@ -159,7 +159,7 @@ public partial class DownloadControl : UserControl, IUserControl
         {
             if (item.State == DownloadItemState.Init)
             {
-                var item11 = new DownloadDisplayObj()
+                var item11 = new DownloadDisplayModel()
                 {
                     Name = item.Name,
                     State = item.State.GetName(),

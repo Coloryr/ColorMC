@@ -11,6 +11,7 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Add;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
 using System;
 using System.Collections.Concurrent;
@@ -327,12 +328,12 @@ public static class WebBinding
         return null;
     }
 
-    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, List<DownloadModDisplayObj>? List)> DownloadMod(GameSettingObj obj, CurseForgeObjList.Data.LatestFiles? data)
+    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, List<DownloadModDisplayModel>? List)> DownloadMod(GameSettingObj obj, CurseForgeObjList.Data.LatestFiles? data)
     {
         if (data == null)
             return (null, null, null);
 
-        var res = new Dictionary<string, DownloadModDisplayObj>();
+        var res = new Dictionary<string, DownloadModDisplayModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
             var res1 = await CurseForgeAPI.GetModDependencies(data, obj.Version, obj.Loader, true);
@@ -364,12 +365,12 @@ public static class WebBinding
         return (data.MakeModDownloadObj(obj), data.MakeModInfo(), res.Values.ToList());
     }
 
-    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, List<DownloadModDisplayObj>? List)> DownloadMod(GameSettingObj obj, ModrinthVersionObj? data)
+    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, List<DownloadModDisplayModel>? List)> DownloadMod(GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
             return (null, null, null);
 
-        var res = new Dictionary<string, DownloadModDisplayObj>();
+        var res = new Dictionary<string, DownloadModDisplayModel>();
         if (data.dependencies != null && data.dependencies.Count > 0)
         {
             var list2 = await ModrinthAPI.GetModDependencies(data, obj.Version, obj.Loader);
@@ -630,7 +631,7 @@ public static class WebBinding
         };
     }
 
-    public static async Task<List<(DownloadItemObj Item, ModInfoObj Info)>> CheckModUpdate(GameSettingObj game, List<ModDisplayObj> mods)
+    public static async Task<List<(DownloadItemObj Item, ModInfoObj Info)>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
     {
         var list = new ConcurrentBag<(DownloadItemObj Item, ModInfoObj Info)>();
         await Parallel.ForEachAsync(mods, async (item, cancel) =>
@@ -680,7 +681,7 @@ public static class WebBinding
         return list.ToList();
     }
 
-    public static void OpenMcmod(ModDisplayObj obj)
+    public static void OpenMcmod(ModDisplayModel obj)
     {
         BaseBinding.OpUrl($"https://search.mcmod.cn/s?key={obj.Name}");
     }

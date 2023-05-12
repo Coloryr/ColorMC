@@ -199,6 +199,8 @@ public class ColorSel : INotifyPropertyChanged
                 return TopBottomColor;
             else if (key == "BottomTran")
                 return BottomTranColor;
+            else if (key == "PointIn")
+                return MainColor;
 
             return Brushes.White;
         }

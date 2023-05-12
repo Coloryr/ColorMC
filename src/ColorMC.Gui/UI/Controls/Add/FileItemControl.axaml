@@ -13,6 +13,10 @@
     mc:Ignorable="d">
     <Grid Margin="1" Background="{setting:Colors TranBack}">
         <Rectangle
+            Name="Rectangle2"
+            Fill="{setting:Colors Back}"
+            IsVisible="False" />
+        <Rectangle
             Name="Rectangle1"
             Fill="{setting:Colors TranBack}"
             IsVisible="False"

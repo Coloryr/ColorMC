@@ -5,8 +5,8 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using DynamicData;
@@ -20,8 +20,8 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class Tab4Control : UserControl
 {
-    private readonly ObservableCollection<ModDisplayObj> List = new();
-    private readonly List<ModDisplayObj> Items = new();
+    private readonly ObservableCollection<ModDisplayModel> List = new();
+    private readonly List<ModDisplayModel> Items = new();
     private bool isSet;
 
     private GameSettingObj Obj;
@@ -177,7 +177,7 @@ public partial class Tab4Control : UserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var mod = DataGrid1.SelectedItem as ModDisplayObj;
+            var mod = DataGrid1.SelectedItem as ModDisplayModel;
             if (mod == null)
                 return;
 
@@ -202,14 +202,14 @@ public partial class Tab4Control : UserControl
 
     private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        var item = DataGrid1.SelectedItem as ModDisplayObj;
+        var item = DataGrid1.SelectedItem as ModDisplayModel;
         if (item == null)
             return;
 
         DisE(item);
     }
 
-    public async void Delete(IEnumerable<ModDisplayObj> items)
+    public async void Delete(IEnumerable<ModDisplayModel> items)
     {
         var window = App.FindRoot(VisualRoot);
         var res = await window.Info.ShowWait(
@@ -228,7 +228,7 @@ public partial class Tab4Control : UserControl
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
     }
 
-    public async void Delete(ModDisplayObj item)
+    public async void Delete(ModDisplayModel item)
     {
         var window = App.FindRoot(VisualRoot);
         var res = await window.Info.ShowWait(
@@ -244,7 +244,7 @@ public partial class Tab4Control : UserControl
         window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
     }
 
-    public void DisE(ModDisplayObj item)
+    public void DisE(ModDisplayModel item)
     {
         if (BaseBinding.IsGameRun(Obj))
         {

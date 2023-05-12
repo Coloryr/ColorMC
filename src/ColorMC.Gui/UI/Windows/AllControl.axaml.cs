@@ -12,7 +12,6 @@ using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Controls.GameEdit;
-using ColorMC.Gui.UI.Controls.Hello;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.Server;
 using ColorMC.Gui.UI.Controls.Setting;
@@ -243,10 +242,6 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         else if (con is ServerPackControl con2)
         {
             return string.Format(App.GetLanguage("ServerPackWindow.Title"), con2.Obj?.Name);
-        }
-        else if (con is HelloControl)
-        {
-            return App.GetLanguage("HelloWindow.Title");
         }
         else if (con is GameEditControl con3)
         {

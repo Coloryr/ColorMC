@@ -11,11 +11,15 @@
     mc:Ignorable="d">
     <Grid>
         <Rectangle
-            Name="Rectangle_Select"
+            Name="Rectangle2"
             Fill="{setting:Colors Back}"
+            IsVisible="False" />
+        <Rectangle
+            Name="Rectangle1"
+            Fill="{setting:Colors TranBack}"
             IsVisible="False"
             Stroke="{setting:Colors Main}"
-            StrokeThickness="2" />
+            StrokeThickness="3" />
         <StackPanel Margin="5">
             <Image Name="Image1" Stretch="UniformToFill" />
             <TextBlock

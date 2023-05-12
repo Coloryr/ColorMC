@@ -4,6 +4,7 @@ using Avalonia.Media.Imaging;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
+using Avalonia.Input;
 using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Main;
@@ -16,6 +17,19 @@ public partial class GameControl : UserControl
         InitializeComponent();
 
         Image1.Source = App.GameIcon;
+
+        PointerEntered += GameControl_PointerEntered;
+        PointerExited += GameControl_PointerExited;
+    }
+
+    private void GameControl_PointerExited(object? sender, PointerEventArgs e)
+    {
+        Rectangle2.IsVisible = false;
+    }
+
+    private void GameControl_PointerEntered(object? sender, PointerEventArgs e)
+    {
+        Rectangle2.IsVisible = true;
     }
 
     public void SetItem(GameSettingObj obj)
@@ -26,7 +40,7 @@ public partial class GameControl : UserControl
 
     public void SetSelect(bool select)
     {
-        Rectangle_Select.IsVisible = select;
+        Rectangle1.IsVisible = select;
         TextBlock1.TextWrapping = select ? TextWrapping.Wrap : TextWrapping.NoWrap;
 
         SetTips();

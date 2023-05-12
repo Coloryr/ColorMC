@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Helpers;
@@ -7,6 +8,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using System.Threading;
+using Tmds.DBus.Protocol;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -36,8 +38,20 @@ public partial class ItemControl : UserControl
         Button13.Click += Button7_Click;
 
         Image1.PointerPressed += Image1_PointerPressed;
+        Image1.PointerEntered += Image1_PointerEntered;
+        Image1.PointerExited += Image1_PointerExited;
 
         App.SkinLoad += App_SkinLoad;
+    }
+
+    private void Image1_PointerExited(object? sender, PointerEventArgs e)
+    {
+        Border2.IsVisible = false;
+    }
+
+    private void Image1_PointerEntered(object? sender, PointerEventArgs e)
+    {
+        Border2.IsVisible = true;
     }
 
     private void Button8_Click(object? sender, RoutedEventArgs e)

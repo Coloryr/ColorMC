@@ -14,6 +14,7 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
 using DynamicData;
 using SixLabors.ImageSharp;
@@ -441,19 +442,19 @@ public static class GameBinding
         obj.Save();
     }
 
-    public static async Task<List<ModDisplayObj>> GetGameMods(GameSettingObj obj)
+    public static async Task<List<ModDisplayModel>> GetGameMods(GameSettingObj obj)
     {
-        var list = new List<ModDisplayObj>();
+        var list = new List<ModDisplayModel>();
         var list1 = await obj.GetMods();
         if (list1 == null)
             return list;
 
         list1.ForEach(item =>
         {
-            ModDisplayObj obj1;
+            ModDisplayModel obj1;
             if (item.Broken)
             {
-                obj1 = new ModDisplayObj()
+                obj1 = new ModDisplayModel()
                 {
                     Name = App.GetLanguage("GameEditWindow.Tab4.Info5"),
                     Obj = item
@@ -461,7 +462,7 @@ public static class GameBinding
             }
             else
             {
-                obj1 = new ModDisplayObj()
+                obj1 = new ModDisplayModel()
                 {
                     Name = item.name,
                     Obj = item

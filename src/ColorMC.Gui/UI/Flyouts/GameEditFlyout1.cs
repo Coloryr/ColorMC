@@ -1,8 +1,8 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,15 +12,15 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout1
 {
-    private readonly IEnumerable<ModDisplayObj> List;
+    private readonly IEnumerable<ModDisplayModel> List;
     private readonly Tab4Control Con;
-    private ModDisplayObj Obj;
+    private ModDisplayModel Obj;
     private bool Single;
 
     public GameEditFlyout1(Tab4Control con, IList obj)
     {
         Con = con;
-        List = obj.Cast<ModDisplayObj>();
+        List = obj.Cast<ModDisplayModel>();
         if (List.Count() == 1)
         {
             Single = true;

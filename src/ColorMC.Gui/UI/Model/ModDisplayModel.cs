@@ -6,12 +6,12 @@ using ColorMC.Gui.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.UI.Model;
 
 /// <summary>
 /// Mod项目
 /// </summary>
-public record ModDisplayObj : INotifyPropertyChanged
+public record ModDisplayModel : INotifyPropertyChanged
 {
     private bool disable { get; set; }
     private bool _new { get; set; } = false;

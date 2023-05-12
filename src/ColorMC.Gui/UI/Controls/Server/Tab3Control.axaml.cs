@@ -2,7 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -13,7 +13,7 @@ namespace ColorMC.Gui.UI.Controls.Server;
 public partial class Tab3Control : UserControl
 {
     private ServerPackObj Obj1;
-    private ObservableCollection<ServerPackModDisplayObj> List = new();
+    private ObservableCollection<ServerPackModDisplayModel> List = new();
 
     public Tab3Control()
     {
@@ -31,7 +31,6 @@ public partial class Tab3Control : UserControl
         foreach (var item in List)
         {
             item.Check = false;
-            item.NotifyPropertyChanged("Check");
             ItemEdit(item);
         }
     }
@@ -41,12 +40,11 @@ public partial class Tab3Control : UserControl
         foreach (var item in List)
         {
             item.Check = true;
-            item.NotifyPropertyChanged("Check");
             ItemEdit(item);
         }
     }
 
-    private void ItemEdit(ServerPackModDisplayObj obj)
+    private void ItemEdit(ServerPackModDisplayModel obj)
     {
         var item = Obj1.Resourcepack?.FirstOrDefault(a => a.Sha1 == obj.Sha1
                         && a.File == obj.FileName);
@@ -84,7 +82,7 @@ public partial class Tab3Control : UserControl
 
     private void DataGrid1_CellEditEnded(object? sender, DataGridCellEditEndedEventArgs e)
     {
-        if (e.Row.DataContext is ServerPackModDisplayObj obj)
+        if (e.Row.DataContext is ServerPackModDisplayModel obj)
         {
             ItemEdit(obj);
         }
@@ -110,7 +108,7 @@ public partial class Tab3Control : UserControl
             var item1 = Obj1.Resourcepack?.FirstOrDefault(a => a.Sha1 == item.Pack.Sha1
                         && a.File == file);
 
-            var item2 = new ServerPackModDisplayObj()
+            var item2 = new ServerPackModDisplayModel()
             {
                 FileName = file,
                 Check = item1 != null,

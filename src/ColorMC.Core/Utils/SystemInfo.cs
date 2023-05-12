@@ -1,10 +1,12 @@
 using ColorMC.Core.Objs;
+using System.Globalization;
 using System.Runtime.InteropServices;
 
 namespace ColorMC.Core.Utils;
 
 public static class SystemInfo
 {
+    public static CultureInfo CultureInfo { get; private set; } = CultureInfo.InstalledUICulture;
     public static OsType Os { get; private set; } = OsType.Windows;
     public static ArchEnum SystemArch { get; private set; } = ArchEnum.x64;
     public static string SystemName { get; private set; } = "";

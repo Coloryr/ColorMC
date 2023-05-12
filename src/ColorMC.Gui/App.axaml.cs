@@ -19,12 +19,12 @@ using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Controls.GameEdit;
-using ColorMC.Gui.UI.Controls.Hello;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.Server;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -452,7 +452,8 @@ public partial class App : Application
 
             if (BaseBinding.ISNewStart)
             {
-                var con = new HelloControl();
+                var con = new SettingControl();
+                con.GoTo(SettingType.SetJava);
                 AWindow1(con);
             }
         }
@@ -529,7 +530,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowAdd(GameSettingObj obj, ModDisplayObj obj1)
+    public static void ShowAdd(GameSettingObj obj, ModDisplayModel obj1)
     {
         var type1 = Funtcions.CheckNotNumber(obj1.PID) || Funtcions.CheckNotNumber(obj1.FID) ?
             SourceType.Modrinth : SourceType.CurseForge;
@@ -569,14 +570,14 @@ public partial class App : Application
         if (AddWindows.TryGetValue(obj.UUID, out var value))
         {
             value.Window.Activate();
-            value.Go(type);
+            value.GoTo(type);
         }
         else
         {
             var con = new AddControl(obj);
             AddWindows.Add(obj.UUID, con);
             AWindow(con);
-            con.Go(type);
+            con.GoTo(type);
         }
     }
 

@@ -9,15 +9,14 @@
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Add"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Grid>
         <DockPanel>
             <StackPanel
-                Name="StackPanel1"
                 Margin="3,3,3,0"
                 Background="{setting:Colors TranBack}"
-                DockPanel.Dock="Top">
+                DockPanel.Dock="Top"
+                IsEnabled="{Binding !IsDownload}">
                 <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
                     <Label
                         Width="65"
@@ -25,43 +24,46 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddWindow.Text1}" />
                     <ComboBox
-                        Name="ComboBox1"
                         Width="120"
                         Height="30"
-                        Margin="2,2,0,0" />
+                        Margin="2,2,0,0"
+                        IsEnabled="{Binding !Set}"
+                        ItemsSource="{Binding TypeList}"
+                        SelectedIndex="{Binding Type}" />
                     <Label
                         Width="65"
                         Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddWindow.Text2}" />
                     <ComboBox
-                        Name="ComboBox2"
                         Width="120"
                         Height="30"
-                        Margin="2,2,0,0" />
+                        Margin="2,2,0,0"
+                        ItemsSource="{Binding DownloadSourceList}"
+                        SelectedIndex="{Binding DownloadSource}" />
 
                     <Label
                         Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize Text.GameVersion}" />
                     <ComboBox
-                        Name="ComboBox3"
                         Width="120"
                         Height="30"
-                        Margin="2,2,0,0" />
+                        Margin="2,2,0,0"
+                        ItemsSource="{Binding GameVersionList}"
+                        SelectedItem="{Binding GameVersion}" />
                     <Label
                         Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddModPackWindow.Text5}" />
 
                     <NumericUpDown
-                        Name="Input2"
                         Width="120"
                         Height="30"
                         Margin="2,2,0,0"
                         FormatString="N0"
                         Minimum="0"
-                        Value="0" />
+                        Value="{Binding Page}" />
 
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -71,10 +73,11 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddWindow.Text4}" />
                     <ComboBox
-                        Name="ComboBox4"
                         Width="120"
                         Height="30"
-                        Margin="2,2,0,0" />
+                        Margin="2,2,0,0"
+                        ItemsSource="{Binding SortTypeList}"
+                        SelectedIndex="{Binding SortType}" />
 
                     <Label
                         Width="65"
@@ -82,39 +85,42 @@
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddWindow.Text5}" />
                     <ComboBox
-                        Name="ComboBox5"
                         Width="120"
                         Height="30"
-                        Margin="2,2,0,0" />
+                        Margin="2,2,0,0"
+                        ItemsSource="{Binding CategorieList}"
+                        SelectedIndex="{Binding Categorie}" />
 
                     <TextBox
-                        Name="Input1"
                         Width="200"
                         Height="30"
                         Margin="5,0,5,0"
                         Classes="input1"
-                        Watermark="{setting:Localize AddModPackWindow.Text3}" />
+                        Text="{Binding Name}"
+                        Watermark="{setting:Localize AddModPackWindow.Text3}">
+                        <TextBox.KeyBindings>
+                            <KeyBinding Command="{Binding GetNameList}" Gesture="Enter" />
+                        </TextBox.KeyBindings>
+                    </TextBox>
+
                     <Button
-                        Name="Button1"
                         Width="80"
                         Height="30"
                         Margin="5,0,5,0"
+                        Command="{Binding GetList}"
                         Content="{setting:Localize AddModPackWindow.Text8}" />
 
                     <Button
-                        Name="Button2"
                         Width="100"
                         Height="30"
+                        Command="{Binding GoInstall}"
                         Content="{setting:Localize AddModPackWindow.Text9}"
-                        IsEnabled="False" />
+                        IsEnabled="{Binding IsSelect}" />
                 </StackPanel>
             </StackPanel>
 
             <Grid Margin="3">
-                <DockPanel
-                    Name="Grid3"
-                    Background="{setting:Colors TranBack}"
-                    IsVisible="True">
+                <DockPanel Background="{setting:Colors TranBack}" IsVisible="{Binding EmptyDisplay}">
                     <Label
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -147,48 +153,53 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize AddModPackWindow.Text7}" />
                 <NumericUpDown
-                    Name="Input3"
                     Width="120"
                     Height="30"
                     VerticalAlignment="Center"
                     FormatString="N0"
+                    IsEnabled="{Binding EnablePage}"
                     Minimum="0"
-                    Value="0" />
+                    Value="{Binding PageDownload}" />
                 <Label
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Content="{setting:Localize Text.GameVersion}" />
                 <ComboBox
-                    Name="ComboBox6"
                     Width="140"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding GameVersionList}"
+                    SelectedItem="{Binding GameVersionDownload}" />
                 <Button
-                    Name="ButtonSearch"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
+                    Command="{Binding Refresh1}"
                     Content="{setting:Localize AddModPackWindow.Text10}" />
                 <Button
-                    Name="ButtonDownload"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
+                    Command="{Binding GoFile}"
                     Content="{setting:Localize AddModPackWindow.Text12}" />
                 <Button
-                    Name="ButtonCancel"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
+                    Command="{Binding VersionClose}"
                     Content="{setting:Localize Button.Cancel}" />
             </StackPanel>
 
-            <DataGrid Name="DataGridFiles" Background="{setting:Colors TranBack}">
+            <DataGrid
+                Name="DataGridFiles"
+                Background="{setting:Colors TranBack}"
+                Items="{Binding FileList}"
+                SelectedItem="{Binding File}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
@@ -232,32 +243,37 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize Text.GameVersion}" />
                 <ComboBox
-                    Name="ComboBox7"
                     Width="140"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding GameVersionList}"
+                    SelectedItem="{Binding GameVersionOptifine}" />
 
                 <Button
-                    Name="Button4"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
+                    Command="{Binding LoadOptifineList}"
                     Content="{setting:Localize AddModPackWindow.Text10}" />
 
                 <Button
-                    Name="Button5"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
+                    Command="{Binding DownloadOptifine}"
                     Content="{setting:Localize AddModPackWindow.Text12}" />
                 <Button
-                    Name="Button3"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
+                    Command="{Binding OptifineClose}"
                     Content="{setting:Localize Button.Cancel}" />
             </StackPanel>
 
-            <DataGrid Name="DataGrid1" Background="{setting:Colors TranBack}">
+            <DataGrid
+                Name="DataGrid1"
+                Background="{setting:Colors TranBack}"
+                Items="{Binding DownloadOptifineList}"
+                SelectedItem="{Binding OptifineItem}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding MC}"
@@ -292,29 +308,36 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize AddWindow.Text7}" />
 
-                <CheckBox Name="CheckBox1" Content="{setting:Localize AddWindow.Text9}" />
+                <CheckBox
+                    Command="{Binding ModsLoad}"
+                    Content="{setting:Localize AddWindow.Text9}"
+                    IsChecked="{Binding LoadMoreMod}" />
 
                 <Button
-                    Name="Button8"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
+                    Command="{Binding DownloadAllMod}"
                     Content="{setting:Localize AddWindow.Text6}" />
                 <Button
-                    Name="Button6"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
+                    Command="{Binding DownloadMod}"
                     Content="{setting:Localize AddModPackWindow.Text12}" />
                 <Button
-                    Name="Button7"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
+                    Command="{Binding DownloadModCancel}"
                     Content="{setting:Localize Button.Cancel}" />
             </StackPanel>
 
-            <DataGrid Name="DataGrid2" Background="{setting:Colors TranBack}">
+            <DataGrid
+                Name="DataGrid2"
+                Background="{setting:Colors TranBack}"
+                Items="{Binding DownloadModList}"
+                SelectedItem="{Binding Mod}">
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Binding="{Binding Download}" Header="{setting:Localize AddWindow.DataGrid.Text1}" />
                     <DataGridTextColumn
@@ -323,7 +346,7 @@
                         IsReadOnly="True" />
                     <DataGridTemplateColumn Header="{setting:Localize Text.Version}">
                         <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate DataType="model:DownloadModDisplayObj">
+                            <DataTemplate>
                                 <ComboBox
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Stretch"

@@ -78,14 +78,24 @@
                 IsVisible="True">
                 <Border Name="Border1" Background="{setting:Colors TranBack}" />
                 <StackPanel Margin="10,0,10,0" VerticalAlignment="Center">
-                    <Image
-                        Name="Image1"
-                        Width="80"
-                        Height="80"
-                        Margin="0,20,0,0"
-                        Source="resm:ColorMC.Gui.Resource.Pic.user.png"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text4}"
-                        ToolTip.VerticalOffset="-30" />
+                    <Grid Margin="0,20,0,0">
+                        <Border
+                            Name="Border2"
+                            Width="86"
+                            Height="86"
+                            BorderBrush="{setting:Colors Main}"
+                            BorderThickness="3"
+                            IsVisible="False" />
+
+                        <Image
+                            Name="Image1"
+                            Width="80"
+                            Height="80"
+                            Margin="3"
+                            Source="resm:ColorMC.Gui.Resource.Pic.user.png"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text4}"
+                            ToolTip.VerticalOffset="-30" />
+                    </Grid>
                     <ProgressBar
                         Name="ProgressBar1"
                         Width="100"
