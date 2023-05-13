@@ -15,6 +15,7 @@ namespace ColorMC.Core.Game;
 public static class Worlds
 {
     private const string Name1 = "datapacks";
+    private const string Name2 = "serverconfig";
     /// <summary>
     /// 获取世界列表
     /// </summary>
@@ -175,6 +176,11 @@ public static class Worlds
     public static string GetWorldDataPacksPath(this WorldObj world)
     {
         return Path.GetFullPath($"{world.Local}/{Name1}");
+    }
+
+    public static string GetServerConfigPath(this WorldObj world)
+    {
+        return Path.GetFullPath($"{world.Local}/{Name2}");
     }
 
     private class ZipFileStream : IStaticDataSource, IDisposable

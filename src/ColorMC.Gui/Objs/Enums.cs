@@ -13,7 +13,7 @@ public enum SettingType
 /// </summary>
 public enum GameEditWindowType
 {
-    Normal, Mod, Config, World, Export, Log
+    Normal, Mod, World, Export, Log
 }
 
 /// <summary>

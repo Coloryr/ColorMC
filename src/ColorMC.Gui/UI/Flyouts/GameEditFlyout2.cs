@@ -18,9 +18,15 @@ public class GameEditFlyout2
         {
             (App.GetLanguage("Button.OpFile"), true, Button1_Click),
             (App.GetLanguage("GameEditWindow.Flyouts2.Text1"), true, Button2_Click),
+            (App.GetLanguage("GameEditWindow.Flyouts2.Text4"), true, Button5_Click),
             (App.GetLanguage("GameEditWindow.Flyouts2.Text3"), true, Button3_Click),
             (App.GetLanguage("GameEditWindow.Flyouts2.Text2"), true, Button4_Click)
         }, con);
+    }
+
+    private void Button5_Click()
+    {
+        App.ShowConfigEdit(Obj.World);
     }
 
     private void Button4_Click()

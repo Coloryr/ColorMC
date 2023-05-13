@@ -93,4 +93,10 @@
     <Folder Include="Properties\" />
     <Folder Include="UI\Converter\" />
   </ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="UI\Controls\ConfigEdit\ConfigEditControl.axaml.cs">
+	    <DependentUpon>ConfigEditControl.axaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
 </Project>

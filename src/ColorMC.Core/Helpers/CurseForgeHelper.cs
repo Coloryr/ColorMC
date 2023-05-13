@@ -68,6 +68,8 @@ public static class CurseForgeHelper
     /// <returns></returns>
     public static string GetString(this List<CurseForgeObjList.Data.Authors> authors)
     {
+        if (authors == null || authors.Count == 0)
+            return "";
         var builder = new StringBuilder();
         foreach (var item in authors)
         {

@@ -94,7 +94,7 @@ public class MainFlyout
 
     private void Button3_Click()
     {
-        App.ShowGameEdit(Obj.Obj, GameEditWindowType.Config);
+        App.ShowConfigEdit(Obj.Obj);
     }
 
     private void Button2_Click()

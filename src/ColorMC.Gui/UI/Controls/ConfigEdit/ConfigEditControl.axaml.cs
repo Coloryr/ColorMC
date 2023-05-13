@@ -4,6 +4,8 @@ using Avalonia.Interactivity;
 using AvaloniaEdit.Indentation.CSharp;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using DynamicData;
 using System.Collections.Generic;
@@ -13,12 +15,16 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
-public partial class Tab3Control : UserControl
+public partial class ConfigEditControl : UserControl, IUserControl
 {
     private readonly ObservableCollection<string> List = new();
     private readonly List<string> Items = new();
-    private GameSettingObj Obj;
-    public Tab3Control()
+    private readonly GameSettingObj Obj;
+    private readonly WorldObj? World;
+
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
+
+    private ConfigEditControl()
     {
         InitializeComponent();
 
@@ -34,6 +40,29 @@ public partial class Tab3Control : UserControl
             new CSharpIndentationStrategy(TextEditor1.Options);
 
         TextBox1.PropertyChanged += TextBox1_TextInput;
+    }
+
+    public void Opened()
+    {
+        if (World == null)
+        {
+            Window.SetTitle(string.Format(App.GetLanguage("ConfigEditWindow.Title"), Obj?.Name));
+        }
+        else
+        {
+            Window.SetTitle(string.Format(App.GetLanguage("ConfigEditWindow.Title1"), Obj?.Name, World?.LevelName));
+        }
+    }
+
+    public ConfigEditControl(WorldObj world) : this()
+    {
+        World = world;
+        Obj = world.Game;
+    }
+
+    public ConfigEditControl(GameSettingObj obj) : this()
+    {
+        Obj = obj;
     }
 
     private void Button4_Click(object? sender, RoutedEventArgs e)
@@ -77,17 +106,35 @@ public partial class Tab3Control : UserControl
         if (ComboBox1.SelectedItem is not string item)
             return;
 
-        var text = GameBinding.ReadConfigFile(Obj, item);
-        var ex = item[item.LastIndexOf('.')..];
+        string text;
+        if (World != null)
+        {
+            text = GameBinding.ReadConfigFile(World, item);
+        }
+        else
+        {
+            text = GameBinding.ReadConfigFile(Obj, item);
+        }
 
         TextEditor1.Document = new AvaloniaEdit.Document.TextDocument(text);
     }
 
     private void Load()
     {
+        if (Obj == null)
+            return;
+
         Items.Clear();
-        var list = GameBinding.GetAllConfig(Obj);
-        Items.AddRange(list);
+        if (World != null)
+        {
+            var list = GameBinding.GetAllConfig(World);
+            Items.AddRange(list);
+        }
+        else
+        {
+            var list = GameBinding.GetAllConfig(Obj);
+            Items.AddRange(list);
+        }
         Load1();
     }
 
@@ -115,11 +162,6 @@ public partial class Tab3Control : UserControl
         {
             TextEditor1.Text = "";
         }
-    }
-
-    public void SetGame(GameSettingObj obj)
-    {
-        Obj = obj;
     }
 
     public void Update()

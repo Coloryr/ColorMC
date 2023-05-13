@@ -554,6 +554,22 @@ public static class GameBinding
         return list;
     }
 
+    public static List<string> GetAllConfig(WorldObj obj)
+    {
+        var list = new List<string>();
+        var dir = obj.Local.Length + 1;
+
+        string con = obj.GetServerConfigPath();
+
+        var list1 = PathC.GetAllFile(con);
+        foreach (var item in list1)
+        {
+            list.Add(item.FullName[dir..]);
+        }
+
+        return list;
+    }
+
     public static List<string> GetAllTopConfig(GameSettingObj obj)
     {
         var list = new List<string>();
@@ -575,6 +591,13 @@ public static class GameBinding
         }
 
         return list;
+    }
+
+    public static string ReadConfigFile(WorldObj obj, string name)
+    {
+        var dir = obj.Local;
+
+        return File.ReadAllText(Path.GetFullPath(dir + "/" + name));
     }
 
     public static string ReadConfigFile(GameSettingObj obj, string name)

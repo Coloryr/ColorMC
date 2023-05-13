@@ -14,10 +14,10 @@ public static class Schematic
     public const string Name2 = ".schematic";
 
     /// <summary>
-    /// 读取结构文件
+    /// 璇诲彇缁撴瀯鏂囦欢
     /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns>列表</returns>
+    /// <param name="obj">娓告垙瀹炰緥</param>
+    /// <returns>鍒楄〃</returns>
     public static ConcurrentBag<SchematicObj> GetSchematics(this GameSettingObj obj)
     {
         var list = new ConcurrentBag<SchematicObj>();
@@ -47,10 +47,10 @@ public static class Schematic
     }
 
     /// <summary>
-    /// 读取结构文件
+    /// 璇诲彇缁撴瀯鏂囦欢
     /// </summary>
-    /// <param name="file">文件</param>
-    /// <returns>数据</returns>
+    /// <param name="file">鏂囦欢</param>
+    /// <returns>鏁版嵁</returns>
     private static SchematicObj ReadAsSchematic(string file)
     {
         try
@@ -79,10 +79,10 @@ public static class Schematic
     }
 
     /// <summary>
-    /// 读取结构文件
+    /// 璇诲彇缁撴瀯鏂囦欢
     /// </summary>
-    /// <param name="file">文件</param>
-    /// <returns>数据</returns>
+    /// <param name="file">鏂囦欢</param>
+    /// <returns>鏁版嵁</returns>
     private static SchematicObj ReadAsLitematic(string file)
     {
         try
@@ -122,20 +122,20 @@ public static class Schematic
     }
 
     /// <summary>
-    /// 删除结构文件
+    /// 鍒犻櫎缁撴瀯鏂囦欢
     /// </summary>
-    /// <param name="obj">结构文件</param>
+    /// <param name="obj">缁撴瀯鏂囦欢</param>
     public static void Delete(this SchematicObj obj)
     {
         File.Delete(obj.Local);
     }
 
     /// <summary>
-    /// 添加结构文件
+    /// 娣诲姞缁撴瀯鏂囦欢
     /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="file">文件列表</param>
-    /// <returns>结果</returns>
+    /// <param name="obj">娓告垙瀹炰緥</param>
+    /// <param name="file">鏂囦欢鍒楄〃</param>
+    /// <returns>缁撴灉</returns>
     public static bool AddSchematic(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetSchematicsPath();

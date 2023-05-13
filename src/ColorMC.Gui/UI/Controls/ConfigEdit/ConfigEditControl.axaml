@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Tab3Control"
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.ConfigEditControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
@@ -29,7 +29,7 @@
                 Height="25"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
-                Content="{setting:Localize GameEditWindow.Tab3.Text2}"
+                Content="{setting:Localize ConfigEditWindow.Text2}"
                 DockPanel.Dock="Right"
                 ToolTip.Tip="{setting:Localize ToolTip.Text40}"
                 ToolTip.VerticalOffset="-30" />
@@ -39,7 +39,7 @@
                 Height="25"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
-                Content="{setting:Localize GameEditWindow.Tab3.Text3}"
+                Content="{setting:Localize ConfigEditWindow.Text3}"
                 DockPanel.Dock="Right"
                 ToolTip.Tip="{setting:Localize ToolTip.Text41}"
                 ToolTip.VerticalOffset="-30" />
@@ -48,7 +48,7 @@
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Classes="input1"
-                Watermark="{setting:Localize GameEditWindow.Tab3.Text1}" />
+                Watermark="{setting:Localize ConfigEditWindow.Text1}" />
 
         </DockPanel>
         <ae:TextEditor

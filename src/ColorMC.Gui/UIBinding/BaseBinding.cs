@@ -430,10 +430,8 @@ public static class BaseBinding
                 GameTime.GameClose(obj.UUID);
                 RunGames.Remove(obj.UUID);
                 UserBinding.UnLockUser(obj1);
-                if (Games.Remove(res, out var obj2))
-                {
-                    App.MainWindow?.GameClose(obj2);
-                }
+                App.MainWindow?.GameClose(obj.UUID);
+                Games.Remove(res);
                 GameLogs.Remove(obj.UUID, out var log);
                 if (a is Process p && p.ExitCode != 0)
                 {

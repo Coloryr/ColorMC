@@ -18,7 +18,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 public partial class MainControl : UserControl, IUserControl
 {
     private readonly List<GamesControl> Groups = new();
-    private readonly Dictionary<GameSettingObj, GameControl> Launchs = new();
+    private readonly Dictionary<string, GameControl> Launchs = new();
     private readonly GamesControl DefaultGroup = new();
 
     public GameControl? Obj { get; private set; }
@@ -174,7 +174,7 @@ public partial class MainControl : UserControl, IUserControl
         else
         {
             window.Info2.Show(App.GetLanguage("MainWindow.Info2"));
-            Launchs.Add(game, item);
+            Launchs.Add(game.UUID, item);
             item.SetLaunch(true);
 
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
@@ -187,15 +187,15 @@ public partial class MainControl : UserControl, IUserControl
         ItemInfo.UpdateLaunch();
     }
 
-    public void GameClose(GameSettingObj obj)
+    public void GameClose(string uuid)
     {
-        if (Launchs.Remove(obj, out var con))
+        if (Launchs.Remove(uuid, out var con))
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (Obj?.Obj?.UUID == obj.UUID)
+                if (Obj?.Obj?.UUID == uuid)
                 {
-                    ItemInfo.SetGame(obj);
+                    ItemInfo.SetGame(Obj?.Obj);
                 }
                 con.SetLaunch(false);
             });

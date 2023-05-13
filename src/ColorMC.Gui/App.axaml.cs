@@ -10,6 +10,7 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
@@ -67,6 +68,7 @@ public partial class App : Application
     public static AddJavaControl? AddJavaWindow { get; set; }
 
     public readonly static Dictionary<string, GameEditControl> GameEditWindows = new();
+    public readonly static Dictionary<string, ConfigEditControl> ConfigEditWindows = new();
     public readonly static Dictionary<string, AddControl> AddWindows = new();
     public readonly static Dictionary<string, ServerPackControl> ServerPackWindows = new();
 
@@ -790,6 +792,35 @@ public partial class App : Application
             {
                 (item.GetVisualRoot() as Window)?.Close();
             }
+        }
+    }
+
+    public static void ShowConfigEdit(GameSettingObj obj)
+    {
+        if (ConfigEditWindows.TryGetValue(obj.UUID, out var win1))
+        {
+            win1.Window.Activate();
+        }
+        else
+        {
+            var con = new ConfigEditControl(obj);
+            ConfigEditWindows.Add(obj.UUID, con);
+            AWindow(con);
+        }
+    }
+
+    public static void ShowConfigEdit(WorldObj obj)
+    {
+        string key = obj.Game.UUID + ":" + obj.LevelName;
+        if (ConfigEditWindows.TryGetValue(key, out var win1))
+        {
+            win1.Window.Activate();
+        }
+        else
+        {
+            var con = new ConfigEditControl(obj);
+            ConfigEditWindows.Add(key, con);
+            AWindow(con);
         }
     }
 }

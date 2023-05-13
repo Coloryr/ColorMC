@@ -13,7 +13,6 @@ public partial class GameEditControl : UserControl, IUserControl
 
     private readonly Tab1Control tab1 = new();
     private readonly Tab2Control tab2 = new();
-    private readonly Tab3Control tab3 = new();
     private readonly Tab4Control tab4 = new();
     private readonly Tab5Control tab5 = new();
     private readonly Tab6Control tab6 = new();
@@ -30,17 +29,16 @@ public partial class GameEditControl : UserControl, IUserControl
 
     private int now;
 
-    public GameSettingObj? Obj { get; private set; }
+    public GameSettingObj Obj { get; private set; }
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public GameEditControl(GameSettingObj? obj)
+    public GameEditControl(GameSettingObj obj)
     {
         Obj = obj;
 
         tab1.SetGame(obj);
         tab2.SetGame(obj);
-        tab3.SetGame(obj);
         tab4.SetGame(obj);
         tab5.SetGame(obj);
         tab6.SetGame(obj);
@@ -99,20 +97,17 @@ public partial class GameEditControl : UserControl, IUserControl
     {
         switch (type)
         {
-            case GameEditWindowType.Config:
+            case GameEditWindowType.Mod:
                 Tabs.SelectedIndex = 2;
                 break;
-            case GameEditWindowType.Mod:
+            case GameEditWindowType.World:
                 Tabs.SelectedIndex = 3;
                 break;
-            case GameEditWindowType.World:
-                Tabs.SelectedIndex = 4;
-                break;
             case GameEditWindowType.Export:
-                Tabs.SelectedIndex = 10;
+                Tabs.SelectedIndex = 9;
                 break;
             case GameEditWindowType.Log:
-                Tabs.SelectedIndex = 11;
+                Tabs.SelectedIndex = 10;
                 break;
         }
     }
@@ -143,42 +138,38 @@ public partial class GameEditControl : UserControl, IUserControl
                 tab2.Update();
                 break;
             case 2:
-                Go(tab3);
-                tab3.Update();
-                break;
-            case 3:
                 Go(tab4);
                 tab4.Update();
                 break;
-            case 4:
+            case 3:
                 Go(tab5);
                 tab5.Update();
                 break;
-            case 5:
+            case 4:
                 Go(tab8);
                 tab8.Update();
                 break;
-            case 6:
+            case 5:
                 Go(tab9);
                 tab9.Update();
                 break;
-            case 7:
+            case 6:
                 Go(tab10);
                 tab10.Update();
                 break;
-            case 8:
+            case 7:
                 Go(tab11);
                 tab11.Update();
                 break;
-            case 9:
+            case 8:
                 Go(tab12);
                 tab12.Update();
                 break;
-            case 10:
+            case 9:
                 Go(tab6);
                 tab6.Update();
                 break;
-            case 11:
+            case 10:
                 Go(tab7);
                 tab7.Update();
                 break;
