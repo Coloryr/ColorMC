@@ -1,9 +1,9 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using NbtLib;
 using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Game;
@@ -55,21 +55,28 @@ public static class Schematic
     {
         try
         {
-            using var inputStream = File.OpenRead(file);
-            var tag = NbtConvert.ParseNbtStream(inputStream);
+            if (NbtBase.Read(file) is not NbtCompound tag)
+            {
+                return new()
+                {
+                    Local = file,
+                    Broken = true
+                };
+            }
 
             return new()
             {
                 Name = Path.GetFileName(file),
-                Height = ((NbtShortTag)tag["Height"]).Payload,
-                Length = ((NbtShortTag)tag["Length"]).Payload,
-                Width = ((NbtShortTag)tag["Width"]).Payload,
+                Height = (tag["Height"] as NbtShort).Value,
+                Length = (tag["Length"] as NbtShort).Value,
+                Width = (tag["Width"] as NbtShort).Value,
                 Broken = false,
                 Local = file
             };
         }
-        catch
+        catch (Exception e)
         {
+            Logs.Error(LanguageHelper.GetName("Core.Game.Error12"), e);
             return new()
             {
                 Local = file,
@@ -87,32 +94,39 @@ public static class Schematic
     {
         try
         {
-            using var inputStream = File.OpenRead(file);
-            var nbtData = NbtConvert.ParseNbtStream(inputStream);
-            var com1 = (nbtData["Metadata"] as NbtCompoundTag)!;
+            if (NbtBase.Read(file) is not NbtCompound tag)
+            {
+                return new()
+                {
+                    Local = file,
+                    Broken = true
+                };
+            }
+
+            var com1 = (tag["Metadata"] as NbtCompound)!;
 
             var item = new SchematicObj()
             {
-                Name = ((NbtStringTag)com1["Name"]).Payload,
-                Author = ((NbtStringTag)com1["Author"]).Payload,
-                Description = ((NbtStringTag)com1["Description"]).Payload,
+                Name = (com1["Name"] as NbtString).Value,
+                Author = (com1["Author"] as NbtString).Value,
+                Description = (com1["Description"] as NbtString).Value,
                 Broken = false,
                 Local = file
             };
 
-            var pos = (com1["EnclosingSize"] as NbtCompoundTag)!;
+            var pos = (com1["EnclosingSize"] as NbtCompound)!;
             if (pos != null)
             {
-                item.Height = ((NbtIntTag)pos["y"]).Payload;
-                item.Length = ((NbtIntTag)pos["x"]).Payload;
-                item.Width = ((NbtIntTag)pos["z"]).Payload;
+                item.Height = (pos["y"] as NbtInt).Value;
+                item.Length = (pos["x"] as NbtInt).Value;
+                item.Width = (pos["z"] as NbtInt).Value;
             }
 
             return item;
-
         }
-        catch
+        catch (Exception e)
         {
+            Logs.Error(LanguageHelper.GetName("Core.Game.Error12"), e);
             return new()
             {
                 Local = file,

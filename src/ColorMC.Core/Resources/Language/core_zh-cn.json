@@ -104,6 +104,7 @@
   "Core.Game.Error9": "游戏实例:读取游戏时间信息错误",
   "Core.Game.Error10": "游戏实例:文件删除错误",
   "Core.Game.Error11": "游戏实例:还原世界错误",
+  "Core.Game.Error12": "游戏实例:结构文件读取错误",
   "Core.ServerPack.Info1": "正在下载服务器更新",
   "Core.ServerPack.Error1": "服务器包生成失败",
   "Core.Launch.Info1": "游戏启动参数",

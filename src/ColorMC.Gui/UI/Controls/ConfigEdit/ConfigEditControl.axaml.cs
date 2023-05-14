@@ -13,7 +13,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
-namespace ColorMC.Gui.UI.Controls.GameEdit;
+namespace ColorMC.Gui.UI.Controls.ConfigEdit;
 
 public partial class ConfigEditControl : UserControl, IUserControl
 {
@@ -24,7 +24,7 @@ public partial class ConfigEditControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    private ConfigEditControl()
+    public ConfigEditControl()
     {
         InitializeComponent();
 
