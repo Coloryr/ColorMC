@@ -29,27 +29,22 @@ public class NbtPageViewModel : ObservableObject
             {
                 new HierarchicalExpanderColumn<NbtNodeModel>(
                     new TemplateColumn<NbtNodeModel>(
-                        null,
+                        "NBT",
                         cellTemplateResourceKey: "NbtCell",
-                        new GridLength(1, GridUnitType.Star),
+                        new GridLength(1, GridUnitType.Auto),
                         new TemplateColumnOptions<NbtNodeModel>
                         {
                             IsTextSearchEnabled = true,
-                            TextSearchValueSelector = x => x.Name
+                            TextSearchValueSelector = x => x.Name,
+                            CanUserResizeColumn = true,
+                            CanUserSortColumn = false,
                         })
                     {
-
+                        
                     },
                     x => x.Children,
                     x => x.HasChildren,
-                    x => x.IsExpanded),
-                new TextColumn<NbtNodeModel, long?>(
-                    null,
-                    x => x.Size,
-                    options: new TextColumnOptions<NbtNodeModel>
-                    {
-
-                    }),
+                    x => x.IsExpanded)
             }
         };
 
@@ -90,7 +85,7 @@ public class NbtPageViewModel : ObservableObject
                     NbtType.NbtFloat => "F",
                     NbtType.NbtDouble => "D",
                     NbtType.NbtByteArray => "[B]",
-                    NbtType.NbtString => "Str",
+                    NbtType.NbtString => "T",
                     NbtType.NbtList => "[ ]",
                     NbtType.NbtCompound => "{ }",
                     NbtType.NbtIntArray => "[I]",

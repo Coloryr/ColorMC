@@ -112,7 +112,8 @@ public partial class ConfigEditControl : UserControl, IUserControl
         if (ComboBox1.SelectedItem is not string item)
             return;
 
-        if (item.EndsWith(".dat"))
+        var info = new FileInfo(item);
+        if (info.Extension is ".dat" or ".dat_old")
         {
             NbtViewer.IsVisible = true;
             TextEditor1.IsVisible = false;

@@ -72,7 +72,10 @@
                 <TreeDataGrid.Resources>
                     <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
                         <StackPanel Orientation="Horizontal">
-                            <Label Width="30" VerticalAlignment="Center">
+                            <Label
+                                Width="30"
+                                VerticalAlignment="Center"
+                                HorizontalContentAlignment="Center">
                                 <Label.Content>
                                     <MultiBinding Converter="{x:Static vm:NbtPageViewModel.NbtTypeConverter}">
                                         <Binding Path="NbtType" />

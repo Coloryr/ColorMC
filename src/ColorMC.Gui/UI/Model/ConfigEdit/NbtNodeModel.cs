@@ -30,7 +30,7 @@ public partial class NbtNodeModel : ObservableObject
     {
         this.nbt = nbt;
         this.key = key;
-        HasChildren = NbtType.IsGroup();
+        HasChildren = nbt.IsGroup() && nbt.HaveItem();
     }
 
     private ObservableCollection<NbtNodeModel> LoadChildren()

@@ -23,16 +23,3 @@ public enum NbtType : byte
     NbtIntArray = 11, 
     NbtLongArray = 12
 }
-
-public static class NbtTypes
-{
-    public static bool IsGroup(this NbtType type) 
-    {
-        return type switch
-        {
-            NbtType.NbtList => true,
-            NbtType.NbtCompound => true,
-            _ => false
-        };
-    }
-}

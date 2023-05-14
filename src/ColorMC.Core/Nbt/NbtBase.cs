@@ -41,6 +41,26 @@ public abstract class NbtBase
         };
     }
 
+    public bool HaveItem()
+    {
+        return NbtType switch
+        {
+            NbtType.NbtList => (this as NbtList)?.Count > 0,
+            NbtType.NbtCompound => (this as NbtCompound)?.Count > 0,
+            _ => false
+        };
+    }
+
+    public bool IsGroup()
+    {
+        return NbtType switch
+        {
+            NbtType.NbtList => true,
+            NbtType.NbtCompound => true,
+            _ => false
+        };
+    }
+
     private static readonly Dictionary<byte, Type> VALUES = new()
     {
         {0, typeof(NbtEnd) },
