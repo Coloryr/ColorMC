@@ -21,6 +21,8 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
         set => Value[index] = value;
     }
 
+    public int Count => Value.Count;
+
     public NbtList()
     {
         NbtType = NbtType.NbtList;
@@ -59,7 +61,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
 
         for (int a = 0; a < length;a++)
         {
-            var nbt = NbtTypes.ById(type);
+            var nbt = ById(type);
             nbt.Read(stream);
             Value.Add(nbt);
         }

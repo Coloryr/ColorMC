@@ -4,6 +4,7 @@ using Avalonia.Platform.Storage;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Nbt;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Download;
@@ -16,7 +17,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
-using DynamicData;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -559,11 +559,11 @@ public static class GameBinding
         var list = new List<string>();
         var dir = obj.Local.Length + 1;
 
-        string con = obj.GetServerConfigPath();
-
-        var list1 = PathC.GetAllFile(con);
+        var list1 = PathC.GetAllFile(obj.Local);
         foreach (var item in list1)
         {
+            if (item.Extension is ".mca" or ".png" or ".lock")
+                continue;
             list.Add(item.FullName[dir..]);
         }
 
@@ -591,6 +591,20 @@ public static class GameBinding
         }
 
         return list;
+    }
+
+    public static NbtBase? ReadNbt(WorldObj obj, string name) 
+    {
+        var dir = obj.Local;
+
+        return NbtBase.Read(Path.GetFullPath(dir + "/" + name));
+    }
+
+    public static NbtBase? ReadNbt(GameSettingObj obj, string name)
+    {
+        var dir = obj.GetGamePath();
+
+        return NbtBase.Read(Path.GetFullPath(dir + "/" + name));
     }
 
     public static string ReadConfigFile(WorldObj obj, string name)

@@ -14,7 +14,6 @@ using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using DynamicData;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

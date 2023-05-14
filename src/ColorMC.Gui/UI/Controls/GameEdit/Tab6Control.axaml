@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:vm="using:ColorMC.Gui.UI.Controls.GameEdit"
+    xmlns:vm="using:ColorMC.Gui.UI.Model.GameEdit"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">

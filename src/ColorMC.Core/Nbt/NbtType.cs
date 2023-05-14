@@ -26,26 +26,13 @@ public enum NbtType : byte
 
 public static class NbtTypes
 {
-    private static readonly Dictionary<byte, Type> VALUES = new()
+    public static bool IsGroup(this NbtType type) 
     {
-        {0, typeof(NbtEnd) },
-        {1, typeof(NbtByte) },
-        {2, typeof(NbtShort) },
-        {3, typeof(NbtInt) },
-        {4, typeof(NbtLong) },
-        {5, typeof(NbtFloat) },
-        {6, typeof(NbtDouble) },
-        {7, typeof(NbtByteArray) },
-        {8, typeof(NbtString) },
-        {9, typeof(NbtList) },
-        {10, typeof(NbtCompound) },
-        {11, typeof(NbtIntArray) },
-        {12, typeof(NbtLongArray) }
-    };
-
-    public static NbtBase ById(byte id)
-    {
-        var type = VALUES[id];
-        return (Activator.CreateInstance(type) as NbtBase)!;
+        return type switch
+        {
+            NbtType.NbtList => true,
+            NbtType.NbtCompound => true,
+            _ => false
+        };
     }
 }

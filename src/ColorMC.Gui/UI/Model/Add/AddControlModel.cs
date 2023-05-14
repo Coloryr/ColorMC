@@ -6,7 +6,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DynamicData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ using Avalonia.Input;
 using System.Threading;
 using Avalonia.Interactivity;
 using ColorMC.Core.Utils;
-using static ColorMC.Core.Objs.Login.AuthenticateResObj;
+using AvaloniaEdit.Utils;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -404,7 +403,7 @@ public partial class AddControlModel : ObservableObject
             list2.AddRange(list1.Values);
 
             GameVersionList.AddRange(list);
-            CategorieList.Add(list2);
+            CategorieList.AddRange(list2);
 
             if (GameVersionList.Contains(Obj.Version))
             {

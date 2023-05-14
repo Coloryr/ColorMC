@@ -95,7 +95,7 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
             {
                 throw new Exception($"type out {key}:{type}");
             }
-            var nbt = NbtTypes.ById(type);
+            var nbt = ById(type);
             nbt.Read(stream);
             Entries.Add(key, nbt);
         }

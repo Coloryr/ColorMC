@@ -1,19 +1,25 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Interactivity;
 using AvaloniaEdit.Indentation.CSharp;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UI.Model.ConfigEdit;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using DynamicData;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.ConfigEdit;
+
 
 public partial class ConfigEditControl : UserControl, IUserControl
 {
@@ -106,17 +112,45 @@ public partial class ConfigEditControl : UserControl, IUserControl
         if (ComboBox1.SelectedItem is not string item)
             return;
 
-        string text;
-        if (World != null)
+        if (item.EndsWith(".dat"))
         {
-            text = GameBinding.ReadConfigFile(World, item);
+            NbtViewer.IsVisible = true;
+            TextEditor1.IsVisible = false;
+
+            NbtBase? nbt;
+            if (World != null)
+            {
+                nbt = GameBinding.ReadNbt(World, item);
+            }
+            else
+            {
+                nbt = GameBinding.ReadNbt(Obj, item);
+            }
+
+            if (nbt is not NbtCompound nbt1)
+            {
+                return;
+            }
+
+            NbtPageViewModel model = new(nbt1);
+            NbtViewer.Source = model.Source;
         }
         else
         {
-            text = GameBinding.ReadConfigFile(Obj, item);
-        }
+            NbtViewer.IsVisible = false;
+            TextEditor1.IsVisible = true;
+            string text;
+            if (World != null)
+            {
+                text = GameBinding.ReadConfigFile(World, item);
+            }
+            else
+            {
+                text = GameBinding.ReadConfigFile(Obj, item);
+            }
 
-        TextEditor1.Document = new AvaloniaEdit.Document.TextDocument(text);
+            TextEditor1.Document = new AvaloniaEdit.Document.TextDocument(text);
+        }
     }
 
     private void Load()
@@ -171,5 +205,19 @@ public partial class ConfigEditControl : UserControl, IUserControl
 
         TextBox1.Text = "";
         Load();
+    }
+
+    public void Closed()
+    {
+        string key;
+        if (World != null)
+        {
+            key = Obj.UUID + ":" + World.LevelName;
+        }
+        else
+        {
+            key = Obj.UUID;
+        }
+        App.ConfigEditWindows.Remove(key);
     }
 }

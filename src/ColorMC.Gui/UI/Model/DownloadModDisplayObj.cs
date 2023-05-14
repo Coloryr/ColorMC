@@ -20,9 +20,8 @@ public partial class DownloadModDisplayModel : ObservableObject
     private int selectVersion;
 
     public bool Optional;
-
     public List<string> ModVersion;
     public List<(DownloadItemObj Item, ModInfoObj Info)> Items;
 
-    public List<string> Version { get { return ModVersion; } }
+    public List<string> Version => ModVersion;
 }

@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:vm="using:ColorMC.Gui.UI.Model.ConfigEdit"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -51,16 +52,38 @@
                 Watermark="{setting:Localize ConfigEditWindow.Text1}" />
 
         </DockPanel>
-        <ae:TextEditor
-            Name="TextEditor1"
-            Margin="0,3,0,0"
-            Background="{setting:Colors TranBack}"
-            FontSize="14"
-            FontWeight="Normal"
-            Foreground="{setting:Colors Font}"
-            HorizontalScrollBarVisibility="Auto"
-            ShowLineNumbers="True"
-            VerticalScrollBarVisibility="Visible"
-            WordWrap="True" />
+        <Grid>
+            <ae:TextEditor
+                Name="TextEditor1"
+                Margin="0,3,0,0"
+                Background="{setting:Colors TranBack}"
+                FontSize="14"
+                FontWeight="Normal"
+                Foreground="{setting:Colors Font}"
+                HorizontalScrollBarVisibility="Auto"
+                ShowLineNumbers="True"
+                VerticalScrollBarVisibility="Visible"
+                WordWrap="True" />
+            <TreeDataGrid
+                Name="NbtViewer"
+                Margin="3"
+                ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <TreeDataGrid.Resources>
+                    <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Width="30" VerticalAlignment="Center">
+                                <Label.Content>
+                                    <MultiBinding Converter="{x:Static vm:NbtPageViewModel.NbtTypeConverter}">
+                                        <Binding Path="NbtType" />
+                                    </MultiBinding>
+                                </Label.Content>
+                            </Label>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </TreeDataGrid.Resources>
+            </TreeDataGrid>
+        </Grid>
     </DockPanel>
 </UserControl>

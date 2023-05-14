@@ -1,8 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
-using DynamicData;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
@@ -8,7 +9,6 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using DynamicData;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;

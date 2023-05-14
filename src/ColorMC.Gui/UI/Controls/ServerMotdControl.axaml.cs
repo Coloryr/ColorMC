@@ -5,7 +5,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs.Minecraft;
-using DynamicData;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -126,7 +125,7 @@ public partial class ServerMotdControl : UserControl
                 }
                 else
                 {
-                    text.TextDecorations.Add(TextDecorations.Underline);
+                    text.TextDecorations.AddRange(TextDecorations.Underline);
                 }
             }
             if (chat.Strikethrough)
@@ -137,7 +136,7 @@ public partial class ServerMotdControl : UserControl
                 }
                 else
                 {
-                    text.TextDecorations.Add(TextDecorations.Strikethrough);
+                    text.TextDecorations.AddRange(TextDecorations.Strikethrough);
                 }
             }
 
