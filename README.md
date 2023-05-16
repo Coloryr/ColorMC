@@ -65,16 +65,16 @@ $ dotnet run
 ## 引用的项目
 
 [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) 跨平台UI框架  
-[Heijden.Dns.Portable]() DNS解析  
+[Heijden.Dns.Portable](https://github.com/softlion/Heijden.Dns) DNS解析  
 [HtmlAgilityPack](https://html-agility-pack.net/) HTML解析器  
 [Jint](https://github.com/sebastienros/jint) JS解析执行器  
-[MiNET.fnbt]() NBT解析器  
 [Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
 [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
 [Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
-[OpenTK](https://opentk.net/) Opengl渲染/openal音频  
-[ReactiveUI](https://github.com/reactiveui/ReactiveUI) MVVM 框架  
-[SixLabors](https://sixlabors.com/) 图片处理
+[OpenTK](https://opentk.net/) openal音频  
+[SixLabors](https://sixlabors.com/) 图片处理  
+[CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM工具  
+[NAudio](https://github.com/naudio/NAudio) Windows音频播放
 
 ## 使用的IDE
 
