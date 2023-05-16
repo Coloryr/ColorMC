@@ -30,7 +30,7 @@ public partial class AddModPackModel : ObservableObject
     public ObservableCollection<string> SortTypeList { get; init; } = new();
     public ObservableCollection<FileItemDisplayObj> DisplayList { get; init; } = new();
 
-    private FileItemControl? Last;
+    private FileItemModel? Last;
 
     [ObservableProperty]
     private FileDisplayObj item;
@@ -238,12 +238,15 @@ public partial class AddModPackModel : ObservableObject
         }
     }
 
-    public void SetSelect(FileItemControl last)
+    public void SetSelect(FileItemModel last)
     {
         IsSelect = true;
-        Last?.SetSelect(false);
+        if (Last != null)
+        {
+            Last.IsSelect = false;
+        }
         Last = last;
-        Last.SetSelect(true);
+        Last.IsSelect = true;
     }
 
     public void Install()
@@ -299,7 +302,6 @@ public partial class AddModPackModel : ObservableObject
         DisplayList.AddRange(data);
         OnPropertyChanged(nameof(DisplayList));
 
-        Last?.SetSelect(false);
         Last = null;
 
         EmptyDisplay = DisplayList.Count == 0;

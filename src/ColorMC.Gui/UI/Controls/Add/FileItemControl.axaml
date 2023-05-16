@@ -17,9 +17,8 @@
             Fill="{setting:Colors Back}"
             IsVisible="False" />
         <Rectangle
-            Name="Rectangle1"
             Fill="{setting:Colors TranBack}"
-            IsVisible="False"
+            IsVisible="{Binding IsSelect}"
             Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
         <Grid Margin="5">
@@ -38,7 +37,7 @@
                 <Label
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="{Binding Data.Name}" />
+                    Content="{Binding Name}" />
                 <Label
                     Margin="20,0,0,0"
                     HorizontalAlignment="Left"
@@ -48,11 +47,11 @@
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="{Binding Data.Author}" />
+                    Content="{Binding Author}" />
             </StackPanel>
             <TextBlock
                 Margin="100,26,5,20"
-                Text="{Binding Data.Summary}"
+                Text="{Binding Summary}"
                 TextWrapping="Wrap" />
             <StackPanel
                 Margin="100,0,0,0"
@@ -77,13 +76,10 @@
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="Update" />
+                    Content="{Binding ModifiedDate}" />
             </StackPanel>
         </Grid>
-        <Grid
-            Name="Grid1"
-            Background="{setting:Colors Bottom1}"
-            IsVisible="False">
+        <Grid Background="{setting:Colors Bottom1}" IsVisible="{Binding NowDownload}">
             <StackPanel VerticalAlignment="Center">
                 <Label HorizontalAlignment="Center" Content="{setting:Localize AddWindow.Control.Text1}" />
                 <ProgressBar
@@ -93,13 +89,12 @@
             </StackPanel>
         </Grid>
         <Label
-            Name="Label5"
             Margin="0,5,5,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Background="{setting:Colors Bottom1}"
             Content="{setting:Localize AddWindow.Control.Text2}"
             Foreground="{setting:Colors Font}"
-            IsVisible="True" />
+            IsVisible="{Binding IsDownload}" />
     </Grid>
 </UserControl>

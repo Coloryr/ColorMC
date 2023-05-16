@@ -98,9 +98,14 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         App.AddModPackWindow = null;
     }
 
-    public void SetSelect(FileItemControl last)
+    public void SetSelect(FileItemModel last)
     {
         model.SetSelect(last);
+    }
+
+    public void Install(FileItemModel item)
+    {
+        model.Install();
     }
 
     public void Opened()
@@ -123,10 +128,5 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
     public void Next()
     {
         model.Page += 1;
-    }
-
-    public void Install()
-    {
-        model.Install();
     }
 }

@@ -140,9 +140,14 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             model.Set = false;
     }
 
-    public void SetSelect(FileItemControl last)
+    public void SetSelect(FileItemModel last)
     {
         model.SetSelect(last);
+    }
+
+    public void Install(FileItemModel item)
+    {
+        model.Install();
     }
 
     public void GoFile(SourceType type, string pid)
@@ -180,11 +185,6 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
     public void Next()
     {
         model.Next();
-    }
-
-    public void Install()
-    {
-        model.Install();
     }
 
     public void GoTo(FileType type)

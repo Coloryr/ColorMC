@@ -7,13 +7,13 @@ namespace ColorMC.Gui.Objs;
 /// </summary>
 public record FileItemDisplayObj
 {
-    public string Name { get; set; }
-    public string Summary { get; set; }
-    public string Author { get; set; }
-    public long DownloadCount { get; set; }
-    public string ModifiedDate { get; set; }
-    public string? Logo { get; set; }
-    public bool IsDownload { get; set; }
+    public string Name;
+    public string Summary;
+    public string Author;
+    public long DownloadCount;
+    public string ModifiedDate;
+    public string? Logo;
+    public bool IsDownload;
 
     public FileType FileType;
     public SourceType SourceType;
