@@ -1,8 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Data.Converters;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;

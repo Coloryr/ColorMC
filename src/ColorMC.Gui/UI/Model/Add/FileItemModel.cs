@@ -1,19 +1,15 @@
 ﻿using Avalonia.Media.Imaging;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class FileItemModel : ObservableObject
-{ 
+{
     public Task<Bitmap?> Image => GetImage();
 
     public FileItemDisplayObj? Data { get; init; }

@@ -1,19 +1,10 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
-using AvaloniaEdit.Utils;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
 
@@ -21,7 +12,7 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 {
-    private AddModPackModel model;
+    private readonly AddModPackModel model;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 

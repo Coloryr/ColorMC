@@ -16,7 +16,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 {
     public GameSettingObj Obj { get; private set; }
 
-    private AddControlModel model;
+    private readonly AddControlModel model;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -29,10 +29,10 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
     {
         Obj = obj;
 
+        InitializeComponent();
+
         model = new AddControlModel(this, obj);
         model.PropertyChanged += Model_PropertyChanged;
-
-        InitializeComponent();
 
         DataContext = model;
 

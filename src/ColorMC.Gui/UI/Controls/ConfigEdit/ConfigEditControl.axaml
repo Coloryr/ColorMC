@@ -12,43 +12,47 @@
     mc:Ignorable="d">
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Top">
-            <ComboBox Name="ComboBox1" Width="250" />
+            <ComboBox
+                Width="250"
+                ItemsSource="{Binding FileList}"
+                SelectedIndex="{Binding Select}"
+                SelectedItem="{Binding File}" />
 
             <Button
-                Name="Button2"
                 Width="85"
                 Height="25"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
+                Command="{Binding Open}"
                 Content="{setting:Localize Button.OpFile}"
                 DockPanel.Dock="Right"
                 ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                 ToolTip.VerticalOffset="-30" />
             <Button
-                Name="Button3"
                 Width="85"
                 Height="25"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
+                Command="{Binding Save}"
                 Content="{setting:Localize ConfigEditWindow.Text2}"
                 DockPanel.Dock="Right"
                 ToolTip.Tip="{setting:Localize ToolTip.Text40}"
                 ToolTip.VerticalOffset="-30" />
             <Button
-                Name="Button4"
                 Width="85"
                 Height="25"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
+                Command="{Binding Reload}"
                 Content="{setting:Localize ConfigEditWindow.Text3}"
                 DockPanel.Dock="Right"
                 ToolTip.Tip="{setting:Localize ToolTip.Text41}"
                 ToolTip.VerticalOffset="-30" />
             <TextBox
-                Name="TextBox1"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Classes="input1"
+                Text="{Binding Name}"
                 Watermark="{setting:Localize ConfigEditWindow.Text1}" />
 
         </DockPanel>
@@ -57,18 +61,22 @@
                 Name="TextEditor1"
                 Margin="0,3,0,0"
                 Background="{setting:Colors TranBack}"
+                Document="{Binding Text}"
                 FontSize="14"
                 FontWeight="Normal"
                 Foreground="{setting:Colors Font}"
                 HorizontalScrollBarVisibility="Auto"
+                IsVisible="{Binding !NbtEnable}"
                 ShowLineNumbers="True"
                 VerticalScrollBarVisibility="Visible"
                 WordWrap="True" />
             <TreeDataGrid
                 Name="NbtViewer"
                 Margin="3"
+                IsVisible="{Binding NbtEnable}"
                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                ScrollViewer.VerticalScrollBarVisibility="Visible">
+                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                Source="{Binding Source}">
                 <TreeDataGrid.Resources>
                     <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
                         <StackPanel Orientation="Horizontal">

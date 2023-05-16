@@ -13,36 +13,36 @@
         <DockPanel DockPanel.Dock="Top">
             <Label Content="{setting:Localize DownloadWindow.Text3}" />
             <Label
-                Name="Label3"
                 MinWidth="80"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 HorizontalContentAlignment="Right"
-                Content="0Mb/s"
+                Content="{Binding Speed}"
                 DockPanel.Dock="Right" />
             <Label
-                Name="Label1"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
-                Content="0"
+                Content="{Binding Now}"
                 DockPanel.Dock="Right" />
 
             <ProgressBar
-                Name="ProgressBar1"
                 Height="20"
                 VerticalAlignment="Center"
                 BorderBrush="White"
                 BorderThickness="1"
                 Foreground="#FF5EBDD3"
-                ShowProgressText="True" />
+                Maximum="100"
+                ShowProgressText="True"
+                Value="{Binding Value}" />
         </DockPanel>
 
         <Grid>
             <DataGrid
-                Name="DataGrid_Download"
+                Name="DataGrid1"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
-                CanUserSortColumns="False">
+                CanUserSortColumns="False"
+                ItemsSource="{Binding ItemList}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="10" IsReadOnly="True" />
                     <DataGridTextColumn
@@ -73,12 +73,14 @@
                         Name="Button_P"
                         Width="20"
                         Height="30"
-                        Content="P" />
+                        Command="{Binding Pause}"
+                        Content="{Binding Button}" />
                     <Button
                         Name="Button_P1"
                         Width="100"
                         Height="30"
-                        Content="{setting:Localize DownloadWindow.Text1}"
+                        Command="{Binding Pause}"
+                        Content="{Binding Button1}"
                         IsVisible="False" />
                 </Grid>
                 <Grid Margin="0,5,0,0">
@@ -86,11 +88,13 @@
                         Name="Button_S"
                         Width="20"
                         Height="30"
+                        Command="{Binding Stop}"
                         Content="S" />
                     <Button
                         Name="Button_S1"
                         Width="100"
                         Height="30"
+                        Command="{Binding Stop}"
                         Content="{setting:Localize DownloadWindow.Text2}"
                         IsVisible="False" />
                 </Grid>

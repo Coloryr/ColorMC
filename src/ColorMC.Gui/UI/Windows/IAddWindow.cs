@@ -1,5 +1,4 @@
-﻿using ColorMC.Gui.UI.Controls.Add;
-using ColorMC.Gui.UI.Model.Add;
+﻿using ColorMC.Gui.UI.Model.Add;
 
 namespace ColorMC.Gui.UI.Windows;
 

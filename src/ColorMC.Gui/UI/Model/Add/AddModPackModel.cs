@@ -1,20 +1,15 @@
-﻿using Avalonia.Controls;
-using AvaloniaEdit.Utils;
+﻿using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -288,7 +283,7 @@ public partial class AddModPackModel : ObservableObject
         window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info2"));
         var data = await WebBinding.GetPackList((SourceType)Source,
             GameVersion, Text, Page, Source == 2 ? Categorie : SortType,
-            Source == 2 ? "" :  Categorie < 0 ? "" : Categories[Categorie]);
+            Source == 2 ? "" : Categorie < 0 ? "" : Categories[Categorie]);
 
         if (data == null)
         {

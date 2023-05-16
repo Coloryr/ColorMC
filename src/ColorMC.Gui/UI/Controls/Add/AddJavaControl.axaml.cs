@@ -1,16 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Threading;
-using AvaloniaEdit.Utils;
-using ColorMC.Core;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -18,7 +10,7 @@ public partial class AddJavaControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    private AddJavaModel model;
+    private readonly AddJavaModel model;
 
     public AddJavaControl()
     {
@@ -42,7 +34,7 @@ public partial class AddJavaControl : UserControl, IUserControl
         App.AddJavaWindow = null;
     }
 
-    private  void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
+    private void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
     {
         if (DataGrid1.SelectedItem is not JavaDownloadDisplayObj obj)
             return;

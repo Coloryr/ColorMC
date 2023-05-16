@@ -26,9 +26,9 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private int now;
 
-    private AddGameTab1Model model1;
-    private AddGameTab2Model model2;
-    private AddGameTab3Model model3;
+    private readonly AddGameTab1Model model1;
+    private readonly AddGameTab2Model model2;
+    private readonly AddGameTab3Model model3;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -151,7 +151,6 @@ public partial class AddGameControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(App.GetLanguage("AddGameWindow.Title"));
-
     }
 
     public void Install(CurseForgeObjList.Data.LatestFiles data, CurseForgeObjList.Data data1)

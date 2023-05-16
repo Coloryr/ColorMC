@@ -1,5 +1,4 @@
-﻿using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
+﻿using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Utils;
 

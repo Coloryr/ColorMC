@@ -2,22 +2,18 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 using System;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class FileItemControl : UserControl, IDisposable
 {
-    private FileItemModel model;
+    private readonly FileItemModel model;
 
     public FileItemControl() : this(null)
     {

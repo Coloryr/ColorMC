@@ -93,7 +93,7 @@ public static partial class UIUtils
         return temp;
     }
 
-    public static string MakeFileSize(long size)
+    public static string MakeSpeedSize(long size)
     {
         if (size > 1000000)
         {

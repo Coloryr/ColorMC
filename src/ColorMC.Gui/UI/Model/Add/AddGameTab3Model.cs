@@ -1,18 +1,11 @@
 ﻿using Avalonia.Controls;
-using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -27,14 +20,14 @@ public partial class AddGameTab3Model : AddGameTabModel
 
     public AddGameTab3Model(IUserControl con) : base(con)
     {
-        
+
     }
 
     partial void OnLocalChanged(string value)
     {
         if (Directory.Exists(value))
         {
-            FilesPageViewModel = new FilesPageViewModel(value, new() 
+            FilesPageViewModel = new FilesPageViewModel(value, new()
             { "assets", "libraries", "versions", "launcher_profiles.json" });
             Files = FilesPageViewModel.Source;
         }
