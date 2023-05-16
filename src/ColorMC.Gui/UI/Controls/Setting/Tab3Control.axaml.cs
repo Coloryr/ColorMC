@@ -52,17 +52,17 @@ public partial class Tab3Control : UserControl
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("SettingWindow.Tab3.Info1"));
+        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab3.Info1"));
         var res = await UpdateChecker.CheckOne();
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (res.Item1 == null)
         {
-            window.Info.Show(App.GetLanguage("Gui.Error21"));
+            window.OkInfo.Show(App.GetLanguage("Gui.Error21"));
             return;
         }
         else if (res.Item1 == true)
         {
-            var res1 = await window.Info6.ShowWait(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
+            var res1 = await window.TextInfo.ShowWait(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
             if (!res1)
             {
                 UpdateChecker.StartUpdate();
@@ -70,7 +70,7 @@ public partial class Tab3Control : UserControl
         }
         else
         {
-            window.Info.Show(App.GetLanguage("SettingWindow.Tab3.Info3"));
+            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab3.Info3"));
         }
     }
 

@@ -43,13 +43,13 @@ public partial class Tab1Control : UserControl
         var window = App.FindRoot(VisualRoot);
         if (string.IsNullOrWhiteSpace(Obj1.Url))
         {
-            window.Info.Show(App.GetLanguage("ServerPackWindow.Tab1.Error1"));
+            window.OkInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Error1"));
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Obj1.Version))
         {
-            window.Info.Show(App.GetLanguage("ServerPackWindow.Tab1.Error2"));
+            window.OkInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Error2"));
             return;
         }
 
@@ -57,16 +57,16 @@ public partial class Tab1Control : UserControl
         if (local == null)
             return;
 
-        window.Info1.Show(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
+        window.ProgressInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
         var res = await GameBinding.GenServerPack(Obj1, local);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (res)
         {
-            window.Info2.Show(App.GetLanguage("ServerPackWindow.Tab1.Info2"));
+            window.NotifyInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Info2"));
         }
         else
         {
-            window.Info.Show(App.GetLanguage("ServerPackWindow.Tab1.Error3"));
+            window.OkInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Error3"));
         }
     }
 

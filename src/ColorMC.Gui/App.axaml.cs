@@ -462,7 +462,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowCurseForge()
+    public static void ShowAddModPack()
     {
         if (AddModPackWindow != null)
         {
@@ -702,7 +702,7 @@ public partial class App : Application
             return Task.FromResult(false);
         }
 
-        return window.Info6.ShowWait(GetLanguage("Gui.Info5"), data);
+        return window.TextInfo.ShowWait(GetLanguage("Gui.Info5"), data);
     }
 
     public static IBaseWindow? GetMainWindow()

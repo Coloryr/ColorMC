@@ -11,17 +11,17 @@ public partial class SingleWindow : Window, IBaseWindow
 {
     public AllControl window1;
 
-    public Info3Control Info3 => window1.Info3;
+    public Info3Control InputInfo => window1.Info3;
 
-    public Info1Control Info1 => window1.Info1;
+    public Info1Control ProgressInfo => window1.Info1;
 
-    public Info4Control Info => window1.Info;
+    public Info4Control OkInfo => window1.Info;
 
-    public Info2Control Info2 => window1.Info2;
+    public Info2Control NotifyInfo => window1.Info2;
 
-    public Info5Control Info5 => window1.Info5;
+    public Info5Control ComboInfo => window1.Info5;
 
-    public Info6Control Info6 => window1.Info6;
+    public Info6Control TextInfo => window1.Info6;
 
     HeadControl IBaseWindow.Head => window1.Head;
 

@@ -68,18 +68,18 @@ public partial class Tab10Control : UserControl
     private async void Button_A1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        await window.Info3.ShowInput(App.GetLanguage("GameEditWindow.Tab10.Info1"),
+        await window.InputInfo.ShowInput(App.GetLanguage("GameEditWindow.Tab10.Info1"),
             App.GetLanguage("GameEditWindow.Tab10.Info2"), false);
-        var res = window.Info3.Read();
+        var res = window.InputInfo.Read();
 
         if (string.IsNullOrWhiteSpace(res.Item1) || string.IsNullOrWhiteSpace(res.Item2))
         {
-            window.Info.Show(App.GetLanguage("GameEditWindow.Tab10.Error1"));
+            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Error1"));
             return;
         }
 
         GameBinding.AddServer(Obj, res.Item1, res.Item2);
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info3"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info3"));
         Load();
     }
 
@@ -105,10 +105,10 @@ public partial class Tab10Control : UserControl
     private void Load()
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
         List.AddRange(GameBinding.GetServers(Obj));
-        window.Info1.Close();
+        window.ProgressInfo.Close();
     }
 
     public void Update()
@@ -128,7 +128,7 @@ public partial class Tab10Control : UserControl
     {
         var window = App.FindRoot(VisualRoot);
         GameBinding.DeleteServer(Obj, obj);
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();
     }
 }

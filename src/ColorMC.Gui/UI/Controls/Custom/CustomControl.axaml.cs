@@ -129,27 +129,27 @@ public partial class CustomControl : UserControl, IUserControl
 
         var window = App.FindRoot(VisualRoot);
         launch = true;
-        window.Info1.Show(App.GetLanguage("MainWindow.Launch"));
+        window.ProgressInfo.Show(App.GetLanguage("MainWindow.Launch"));
         var res = await GameBinding.Launch(Obj, false);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (res.Item1 == false)
         {
             switch (Last)
             {
                 case LaunchState.LoginFail:
-                    window.Info.Show(App.GetLanguage("MainWindow.Error1"));
+                    window.OkInfo.Show(App.GetLanguage("MainWindow.Error1"));
                     break;
                 case LaunchState.JavaError:
-                    window.Info.Show(App.GetLanguage("MainWindow.Error2"));
+                    window.OkInfo.Show(App.GetLanguage("MainWindow.Error2"));
                     break;
                 default:
-                    window.Info.Show(res.Item2!);
+                    window.OkInfo.Show(res.Item2!);
                     break;
             }
         }
         else
         {
-            window.Info2.Show(App.GetLanguage("MainWindow.Info2"));
+            window.NotifyInfo.Show(App.GetLanguage("MainWindow.Info2"));
         }
         launch = false;
     }
@@ -400,10 +400,10 @@ public partial class CustomControl : UserControl, IUserControl
             var window = App.FindRoot(VisualRoot);
             return state switch
             {
-                LaunchState.LostLib => await window.Info.ShowWait(App.GetLanguage("MainWindow.Info5")),
-                LaunchState.LostLoader => await window.Info.ShowWait(App.GetLanguage("MainWindow.Info6")),
-                LaunchState.LostLoginCore => await window.Info.ShowWait(App.GetLanguage("MainWindow.Info7")),
-                _ => await window.Info.ShowWait(App.GetLanguage("MainWindow.Info4")),
+                LaunchState.LostLib => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info5")),
+                LaunchState.LostLoader => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info6")),
+                LaunchState.LostLoginCore => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info7")),
+                _ => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info4")),
             };
         });
     }
@@ -417,34 +417,34 @@ public partial class CustomControl : UserControl, IUserControl
             switch (state)
             {
                 case LaunchState.Login:
-                    window.Info1.NextText(App.GetLanguage("MainWindow.Info8"));
+                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info8"));
                     break;
                 case LaunchState.Check:
-                    window.Info1.NextText(App.GetLanguage("MainWindow.Info9"));
+                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info9"));
                     break;
                 case LaunchState.CheckVersion:
-                    window.Info1.NextText(App.GetLanguage("MainWindow.Info10"));
+                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info10"));
                     break;
                 case LaunchState.CheckLib:
-                    window.Info1.NextText(App.GetLanguage("MainWindow.Info11"));
+                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info11"));
                     break;
                 case LaunchState.CheckAssets:
-                    window.Info1.NextText(App.GetLanguage("MainWindow.Info12"));
+                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info12"));
                     break;
                 case LaunchState.CheckLoader:
-                    window.Info1.NextText(App.GetLanguage("MainWindow.Info13"));
+                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info13"));
                     break;
                 case LaunchState.CheckLoginCore:
-                    window.Info1.NextText(App.GetLanguage("MainWindow.Info14"));
+                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info14"));
                     break;
                 case LaunchState.CheckMods:
-                    window.Info1.NextText(App.GetLanguage("MainWindow.Info17"));
+                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info17"));
                     break;
                 case LaunchState.Download:
-                    window.Info1.NextText(App.GetLanguage("MainWindow.Info15"));
+                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info15"));
                     break;
                 case LaunchState.JvmPrepare:
-                    window.Info1.NextText(App.GetLanguage("MainWindow.Info16"));
+                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info16"));
                     break;
             }
         });
@@ -487,7 +487,7 @@ public partial class CustomControl : UserControl, IUserControl
         var windows = App.FindRoot(VisualRoot);
         if (launch)
         {
-            var res = await windows.Info.ShowWait(App.GetLanguage("MainWindow.Info34"));
+            var res = await windows.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info34"));
             if (res)
             {
                 return false;

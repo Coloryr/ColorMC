@@ -112,25 +112,25 @@ public partial class Tab4Control : UserControl
     private async void Button_C1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info10"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info10"));
         var res = await WebBinding.CheckModUpdate(Obj, Items);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (res.Count > 0)
         {
-            var res1 = await window.Info.ShowWait(string.Format(
+            var res1 = await window.OkInfo.ShowWait(string.Format(
                 App.GetLanguage("GameEditWindow.Tab4.Info11"), res.Count));
             if (res1)
             {
-                window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info12"));
+                window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info12"));
                 await WebBinding.DownloadMod(Obj, res);
-                window.Info1.Close();
+                window.ProgressInfo.Close();
 
                 Load();
             }
         }
         else
         {
-            window.Info.Show(App.GetLanguage("GameEditWindow.Tab4.Info13"));
+            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info13"));
         }
     }
 
@@ -159,11 +159,11 @@ public partial class Tab4Control : UserControl
 
         if (file == false)
         {
-            window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Error2"));
+            window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Error2"));
             return;
         }
 
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
         Load();
     }
 
@@ -212,7 +212,7 @@ public partial class Tab4Control : UserControl
     public async void Delete(IEnumerable<ModDisplayModel> items)
     {
         var window = App.FindRoot(VisualRoot);
-        var res = await window.Info.ShowWait(
+        var res = await window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count()));
         if (!res)
         {
@@ -225,13 +225,13 @@ public partial class Tab4Control : UserControl
             List.Remove(item);
         });
 
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
     }
 
     public async void Delete(ModDisplayModel item)
     {
         var window = App.FindRoot(VisualRoot);
-        var res = await window.Info.ShowWait(
+        var res = await window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info4"), item.Name));
         if (!res)
         {
@@ -241,7 +241,7 @@ public partial class Tab4Control : UserControl
         GameBinding.DeleteMod(item.Obj);
         List.Remove(item);
 
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
     }
 
     public void DisE(ModDisplayModel item)
@@ -254,7 +254,7 @@ public partial class Tab4Control : UserControl
         if (!res)
         {
             var window = App.FindRoot(VisualRoot);
-            window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Error3"));
+            window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Error3"));
         }
         else
         {
@@ -319,13 +319,13 @@ public partial class Tab4Control : UserControl
     private async void Load()
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
         Items.Clear();
         var res = await GameBinding.GetGameMods(Obj);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (res == null)
         {
-            window.Info.Show(App.GetLanguage("GameEditWindow.Tab4.Error1"));
+            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Error1"));
             return;
         }
 
@@ -337,7 +337,7 @@ public partial class Tab4Control : UserControl
         count = list.Count(a => a.Count() > 1);
         if (count > 0)
         {
-            window.Info.Show(string.Format(App
+            window.OkInfo.Show(string.Format(App
                     .GetLanguage("GameEditWindow.Tab4.Info14"), count));
         }
         Load1();

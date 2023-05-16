@@ -1,4 +1,6 @@
 # ColorMC
+全新的MC启动器
+![](/image/pic.png)
 
 ## 支持平台
 - Linux

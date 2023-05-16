@@ -397,7 +397,7 @@ public partial class SkinControl : UserControl, IUserControl
             return;
         if (ComboBox1.SelectedIndex == (int)SkinType.Unkonw)
         {
-            window.Info.Show(App.GetLanguage("SkinWindow.Info1"));
+            window.OkInfo.Show(App.GetLanguage("SkinWindow.Info1"));
             ComboBox1.SelectedIndex = (int)Skin.SteveModelType;
             return;
         }
@@ -450,7 +450,7 @@ public partial class SkinControl : UserControl, IUserControl
         var res = await BaseBinding.SaveFile(window, FileType.Skin, null);
         if (res == true)
         {
-            window.Info2.Show(App.GetLanguage("Gui.Info10"));
+            window.NotifyInfo.Show(App.GetLanguage("Gui.Info10"));
         }
     }
 

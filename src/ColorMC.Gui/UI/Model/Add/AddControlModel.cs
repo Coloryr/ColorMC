@@ -139,7 +139,7 @@ public partial class AddControlModel : ObservableObject
         if (item == null)
             return;
 
-        var res = await window.Info.ShowWait(
+        var res = await window.OkInfo.ShowWait(
             string.Format(Set ? App.GetLanguage("AddWindow.Info8") : App.GetLanguage("AddWindow.Info1"),
             item.Name));
         if (res)
@@ -160,7 +160,7 @@ public partial class AddControlModel : ObservableObject
         var window = Con.Window;
         if (Last == null)
         {
-            window.Info.Show(App.GetLanguage("AddWindow.Error1"));
+            window.OkInfo.Show(App.GetLanguage("AddWindow.Error1"));
             return;
         }
 
@@ -174,12 +174,12 @@ public partial class AddControlModel : ObservableObject
         GameVersionList.Clear();
         OptifineList.Clear();
         DownloadOptifineList.Clear();
-        window.Info1.Show(App.GetLanguage("AddGameWindow.Info23"));
+        window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info13"));
         var list = await WebBinding.GetOptifine();
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (list == null)
         {
-            window.Info.Show(App.GetLanguage("AddGameWindow.Error9"));
+            window.OkInfo.Show(App.GetLanguage("AddWindow.Error10"));
             return;
         }
 
@@ -217,16 +217,16 @@ public partial class AddControlModel : ObservableObject
     public async void DownloadMod()
     {
         var window = Con.Window;
-        window.Info1.Show(App.GetLanguage("AddWindow.Info5"));
+        window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info5"));
         var list = DownloadModList.Where(item => item.Download)
                         .Select(item => item.Items[item.SelectVersion]).ToList();
         list.Add(modsave);
         bool res;
         res = await WebBinding.DownloadMod(Obj, list);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (!res)
         {
-            window.Info.Show(App.GetLanguage("AddWindow.Error5"));
+            window.OkInfo.Show(App.GetLanguage("AddWindow.Error5"));
             Last?.SetNoDownloadNow();
         }
         else
@@ -282,20 +282,20 @@ public partial class AddControlModel : ObservableObject
             return;
 
         var window = Con.Window;
-        var res = await window.Info.ShowWait(string.Format(
-            App.GetLanguage("AddGameWindow.Info20"), OptifineItem.Version));
+        var res = await window.OkInfo.ShowWait(string.Format(
+            App.GetLanguage("AddWindow.Info10"), OptifineItem.Version));
         if (!res)
             return;
-        window.Info1.Show(App.GetLanguage("AddGameWindow.Info21"));
+        window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info11"));
         var res1 = await WebBinding.DownloadOptifine(Obj, OptifineItem);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (res1.Item1 == false)
         {
-            window.Info.Show(res1.Item2!);
+            window.OkInfo.Show(res1.Item2!);
         }
         else
         {
-            window.Info2.Show(App.GetLanguage("AddGameWindow.Info22"));
+            window.NotifyInfo.Show(App.GetLanguage("AddWindow.Info12"));
             OptifineClose();
         }
     }
@@ -373,10 +373,10 @@ public partial class AddControlModel : ObservableObject
         {
             SortTypeList.AddRange(GameBinding.GetCurseForgeSortTypes());
 
-            window.Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
+            window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetCurseForgeGameVersions();
             var list1 = await GameBinding.GetCurseForgeCategories(now);
-            window.Info1.Close();
+            window.ProgressInfo.Close();
             if (list == null || list1 == null)
             {
 #if !DEBUG
@@ -423,10 +423,10 @@ public partial class AddControlModel : ObservableObject
         {
             SortTypeList.AddRange(GameBinding.GetModrinthSortTypes());
 
-            window.Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
+            window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetModrinthGameVersions();
             var list1 = await GameBinding.GetModrinthCategories(now);
-            window.Info1.Close();
+            window.ProgressInfo.Close();
             if (list == null || list1 == null)
             {
 #if !DEBUG
@@ -516,7 +516,7 @@ public partial class AddControlModel : ObservableObject
         if (IsDownload)
         {
             var window = Con.Window;
-            window.Info.Show(App.GetLanguage("AddWindow.Info9"));
+            window.OkInfo.Show(App.GetLanguage("AddWindow.Info9"));
             return;
         }
 
@@ -555,16 +555,16 @@ public partial class AddControlModel : ObservableObject
             var list = await GameBinding.GetWorlds(Obj);
             if (list.Count == 0)
             {
-                window.Info.Show(App.GetLanguage("AddWindow.Error6"));
+                window.OkInfo.Show(App.GetLanguage("AddWindow.Error6"));
                 return;
             }
 
             var world = new List<string>();
             list.ForEach(item => world.Add(item.World.LevelName));
-            await window.Info5.Show(App.GetLanguage("AddWindow.Info7"), world);
-            if (window.Info5.Cancel)
+            await window.ComboInfo.Show(App.GetLanguage("AddWindow.Info7"), world);
+            if (window.ComboInfo.Cancel)
                 return;
-            var item = list[window.Info5.Read().Item1];
+            var item = list[window.ComboInfo.Read().Item1];
 
             try
             {
@@ -598,7 +598,7 @@ public partial class AddControlModel : ObservableObject
                 };
                 if (list.Item1 == null)
                 {
-                    window.Info.Show(App.GetLanguage("AddWindow.Error9"));
+                    window.OkInfo.Show(App.GetLanguage("AddWindow.Error9"));
                     return;
                 }
                 if (list.Item3!.Count == 0)
@@ -652,13 +652,13 @@ public partial class AddControlModel : ObservableObject
         }
         if (res)
         {
-            window.Info2.Show(App.GetLanguage("AddWindow.Info6"));
+            window.NotifyInfo.Show(App.GetLanguage("AddWindow.Info6"));
             last?.SetDownloaded();
         }
         else
         {
             last?.SetNoDownloadNow();
-            window.Info.Show(App.GetLanguage("AddWindow.Error5"));
+            window.OkInfo.Show(App.GetLanguage("AddWindow.Error5"));
         }
     }
 
@@ -673,7 +673,7 @@ public partial class AddControlModel : ObservableObject
     public async void Load()
     {
         var window = Con.Window;
-        window.Info1.Show(App.GetLanguage("AddWindow.Info2"));
+        window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info2"));
         var data = await WebBinding.GetList(now, SourceTypeList[DownloadSource],
             GameVersion, Name, Page,
             SortType, Categorie < 0 ? "" :
@@ -681,8 +681,8 @@ public partial class AddControlModel : ObservableObject
 
         if (data == null)
         {
-            window.Info1.Close();
-            window.Info.Show(App.GetLanguage("AddWindow.Error2"));
+            window.ProgressInfo.Close();
+            window.OkInfo.Show(App.GetLanguage("AddWindow.Error2"));
             return;
         }
 
@@ -718,7 +718,7 @@ public partial class AddControlModel : ObservableObject
 
         EmptyDisplay = DisplayList.Count == 0;
 
-        window.Info1.Close();
+        window.ProgressInfo.Close();
     }
 
     public async void LoadFile(string? id = null)
@@ -726,7 +726,7 @@ public partial class AddControlModel : ObservableObject
         FileList.Clear();
 
         var window = Con.Window;
-        window.Info1.Show(App.GetLanguage("AddWindow.Info3"));
+        window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info3"));
         List<FileDisplayObj>? list = null;
         var type = SourceTypeList[DownloadSource];
         if (type == SourceType.CurseForge)
@@ -745,8 +745,8 @@ public partial class AddControlModel : ObservableObject
         }
         if (list == null)
         {
-            window.Info.Show(App.GetLanguage("AddWindow.Error3"));
-            window.Info1.Close();
+            window.OkInfo.Show(App.GetLanguage("AddWindow.Error3"));
+            window.ProgressInfo.Close();
             return;
         }
 
@@ -770,7 +770,7 @@ public partial class AddControlModel : ObservableObject
             }
         }
 
-        window.Info1.Close();
+        window.ProgressInfo.Close();
     }
 
     public void OptifineOpen()

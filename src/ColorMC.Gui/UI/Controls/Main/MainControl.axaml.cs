@@ -60,7 +60,7 @@ public partial class MainControl : UserControl, IUserControl
     private Task<bool> LaunchP(bool pre)
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
-            Window.Info.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
+            Window.OkInfo.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
             : App.GetLanguage("MainWindow.Info30")));
     }
 
@@ -136,7 +136,7 @@ public partial class MainControl : UserControl, IUserControl
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
             var window = App.FindRoot(VisualRoot);
-            return window.Info.ShowWait(string.Format(
+            return window.OkInfo.ShowWait(string.Format(
                 App.GetLanguage("MainWindow.Info21"), login.UserName));
         });
     }
@@ -152,34 +152,34 @@ public partial class MainControl : UserControl, IUserControl
         ItemInfo.UpdateLaunch();
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
-            window.Info1.Show(App.GetLanguage("MainWindow.Info3"));
+            window.ProgressInfo.Show(App.GetLanguage("MainWindow.Info3"));
         }
         var item = Obj!;
         var game = item.Obj;
         item.SetLaunch(false);
         item.SetLoad(true);
-        window.Info2.Show(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
+        window.NotifyInfo.Show(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
         var res = await GameBinding.Launch(game, debug);
         window.Head.Title1 = null;
         item.SetLoad(false);
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
-            await window.Info1.CloseAsync();
+            await window.ProgressInfo.CloseAsync();
         }
         if (res.Item1 == false)
         {
             item.SetLaunch(false);
-            window.Info.Show(res.Item2!);
+            window.OkInfo.Show(res.Item2!);
         }
         else
         {
-            window.Info2.Show(App.GetLanguage("MainWindow.Info2"));
+            window.NotifyInfo.Show(App.GetLanguage("MainWindow.Info2"));
             Launchs.Add(game.UUID, item);
             item.SetLaunch(true);
 
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
-                window.Info1.Show(App.GetLanguage("MainWindow.Info26"));
+                window.ProgressInfo.Show(App.GetLanguage("MainWindow.Info26"));
             }
         }
         launch = false;
@@ -230,7 +230,7 @@ public partial class MainControl : UserControl, IUserControl
         if (BaseBinding.CheckOldDir())
         {
             var window = App.FindRoot(VisualRoot);
-            window.Info.Show(App.GetLanguage("MainWindow.Info27"));
+            window.OkInfo.Show(App.GetLanguage("MainWindow.Info27"));
         }
 
 #if !DEBUG
@@ -295,10 +295,10 @@ public partial class MainControl : UserControl, IUserControl
 
             return state switch
             {
-                LaunchState.LostLib => await window.Info.ShowWait(App.GetLanguage("MainWindow.Info5")),
-                LaunchState.LostLoader => await window.Info.ShowWait(App.GetLanguage("MainWindow.Info6")),
-                LaunchState.LostLoginCore => await window.Info.ShowWait(App.GetLanguage("MainWindow.Info7")),
-                _ => await window.Info.ShowWait(App.GetLanguage("MainWindow.Info4")),
+                LaunchState.LostLib => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info5")),
+                LaunchState.LostLoader => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info6")),
+                LaunchState.LostLoginCore => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info7")),
+                _ => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info4")),
             };
         });
     }
@@ -313,40 +313,40 @@ public partial class MainControl : UserControl, IUserControl
                 switch (state)
                 {
                     case LaunchState.Login:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info8"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info8"));
                         break;
                     case LaunchState.Check:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info9"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info9"));
                         break;
                     case LaunchState.CheckVersion:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info10"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info10"));
                         break;
                     case LaunchState.CheckLib:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info11"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info11"));
                         break;
                     case LaunchState.CheckAssets:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info12"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info12"));
                         break;
                     case LaunchState.CheckLoader:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info13"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info13"));
                         break;
                     case LaunchState.CheckLoginCore:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info14"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info14"));
                         break;
                     case LaunchState.CheckMods:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info17"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info17"));
                         break;
                     case LaunchState.Download:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info15"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info15"));
                         break;
                     case LaunchState.JvmPrepare:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info16"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info16"));
                         break;
                     case LaunchState.LaunchPre:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info31"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info31"));
                         break;
                     case LaunchState.LaunchPost:
-                        window.Info1.NextText(App.GetLanguage("MainWindow.Info32"));
+                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info32"));
                         break;
                 }
             }
@@ -566,22 +566,22 @@ public partial class MainControl : UserControl, IUserControl
     public async Task AddGroup()
     {
         var window = App.FindRoot(VisualRoot);
-        await window.Info3.ShowOne(App.GetLanguage("MainWindow.Info1"), false);
-        if (window.Info3.Cancel)
+        await window.InputInfo.ShowOne(App.GetLanguage("MainWindow.Info1"), false);
+        if (window.InputInfo.Cancel)
         {
             return;
         }
 
-        var res = window.Info3.Read().Item1;
+        var res = window.InputInfo.Read().Item1;
         if (string.IsNullOrWhiteSpace(res))
         {
-            window.Info.Show(App.GetLanguage("MainWindow.Error3"));
+            window.OkInfo.Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(res))
         {
-            window.Info.Show(App.GetLanguage("MainWindow.Error4"));
+            window.OkInfo.Show(App.GetLanguage("MainWindow.Error4"));
             return;
         }
     }
@@ -591,7 +591,7 @@ public partial class MainControl : UserControl, IUserControl
         var window = App.FindRoot(VisualRoot);
         if (!force)
         {
-            var res = await window.Info.ShowWait(
+            var res = await window.OkInfo.ShowWait(
                 string.Format(App.GetLanguage("MainWindow.Info19"), obj.Name));
             if (!res)
                 return;
@@ -600,20 +600,20 @@ public partial class MainControl : UserControl, IUserControl
         var res1 = await GameBinding.DeleteGame(obj);
         if (!res1)
         {
-            window.Info1.Show(App.GetLanguage("MainWindow.Info37"));
+            window.ProgressInfo.Show(App.GetLanguage("MainWindow.Info37"));
         }
     }
 
     public async void Rename(GameSettingObj obj)
     {
         var window = App.FindRoot(VisualRoot);
-        await window.Info3.ShowEdit(App.GetLanguage("MainWindow.Info23"), obj.Name);
-        if (window.Info3.Cancel)
+        await window.InputInfo.ShowEdit(App.GetLanguage("MainWindow.Info23"), obj.Name);
+        if (window.InputInfo.Cancel)
             return;
-        var data = window.Info3.Read().Item1;
+        var data = window.InputInfo.Read().Item1;
         if (string.IsNullOrWhiteSpace(data))
         {
-            window.Info.Show(App.GetLanguage("MainWindow.Error3"));
+            window.OkInfo.Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
@@ -623,26 +623,26 @@ public partial class MainControl : UserControl, IUserControl
     public async void Copy(GameSettingObj obj)
     {
         var window = App.FindRoot(VisualRoot);
-        await window.Info3.ShowEdit(App.GetLanguage("MainWindow.Info23"),
+        await window.InputInfo.ShowEdit(App.GetLanguage("MainWindow.Info23"),
             obj.Name + App.GetLanguage("MainWindow.Info24"));
-        if (window.Info3.Cancel)
+        if (window.InputInfo.Cancel)
             return;
-        var data = window.Info3.Read().Item1;
+        var data = window.InputInfo.Read().Item1;
         if (string.IsNullOrWhiteSpace(data))
         {
-            window.Info.Show(App.GetLanguage("MainWindow.Error3"));
+            window.OkInfo.Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
         var res = await GameBinding.CopyGame(obj, data);
         if (!res)
         {
-            window.Info.Show(App.GetLanguage("MainWindow.Error5"));
+            window.OkInfo.Show(App.GetLanguage("MainWindow.Error5"));
             return;
         }
         else
         {
-            window.Info2.Show(App.GetLanguage("MainWindow.Info25"));
+            window.NotifyInfo.Show(App.GetLanguage("MainWindow.Info25"));
         }
     }
 
@@ -651,7 +651,7 @@ public partial class MainControl : UserControl, IUserControl
         var windows = App.FindRoot(VisualRoot);
         if (launch)
         {
-            var res = await windows.Info.ShowWait(App.GetLanguage("MainWindow.Info34"));
+            var res = await windows.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info34"));
             if (res)
             {
                 return false;

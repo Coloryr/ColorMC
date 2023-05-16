@@ -101,7 +101,7 @@
                     Name="Button7"
                     Width="150"
                     Height="25"
-                    Content="{setting:Localize AddGameWindow.Text16}"
+                    Content="{setting:Localize AddWindow.Text10}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text43}"
                     ToolTip.VerticalOffset="-30" />
                 <Label

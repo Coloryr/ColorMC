@@ -112,11 +112,11 @@ public partial class Tab1Control : UserControl
         var window = App.FindRoot(VisualRoot);
         if (BaseBinding.IsGameRun(Obj))
         {
-            window.Info1.Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));
+            window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));
             return;
         }
 
-        var res = await window.Info.ShowWait(string.Format(
+        var res = await window.OkInfo.ShowWait(string.Format(
             App.GetLanguage("GameEditWindow.Tab1.Info1"), Obj.Name));
         if (!res)
             return;
@@ -147,26 +147,26 @@ public partial class Tab1Control : UserControl
     private async void Button4_Click(object? sender, RoutedEventArgs e)
     {
         var Window = App.FindRoot(VisualRoot);
-        await Window.Info3.ShowOne(App.GetLanguage("AddGameWindow.Info1"), false);
-        if (Window.Info3.Cancel)
+        await Window.InputInfo.ShowOne(App.GetLanguage("AddGameWindow.Info1"), false);
+        if (Window.InputInfo.Cancel)
         {
             return;
         }
 
-        var res = Window.Info3.Read().Item1;
+        var res = Window.InputInfo.Read().Item1;
         if (string.IsNullOrWhiteSpace(res))
         {
-            Window.Info1.Show(App.GetLanguage("AddGameWindow.Error6"));
+            Window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Error6"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(res))
         {
-            Window.Info1.Show(App.GetLanguage("AddGameWindow.Error7"));
+            Window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Error7"));
             return;
         }
 
-        Window.Info2.Show(App.GetLanguage("AddGameWindow.Info2"));
+        Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Info2"));
 
         Load2();
     }
@@ -184,12 +184,12 @@ public partial class Tab1Control : UserControl
 
         if (CheckBox5.IsChecked == true)
         {
-            window.Info1.Show(App.GetLanguage("AddGameWindow.Info6"));
+            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Info6"));
             CheckBox6.IsEnabled = false;
             CheckBox7.IsEnabled = false;
 
             var list = await GameBinding.GetForgeVersion(Obj.Version);
-            window.Info1.Close();
+            window.ProgressInfo.Close();
             if (list == null)
             {
                 return;
@@ -201,12 +201,12 @@ public partial class Tab1Control : UserControl
         }
         else if (CheckBox6.IsChecked == true)
         {
-            window.Info1.Show(App.GetLanguage("AddGameWindow.Info5"));
+            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Info5"));
             CheckBox5.IsEnabled = false;
             CheckBox7.IsEnabled = false;
 
             var list = await GameBinding.GetFabricVersion(Obj.Version);
-            window.Info1.Close();
+            window.ProgressInfo.Close();
             if (list == null)
             {
                 return;
@@ -218,12 +218,12 @@ public partial class Tab1Control : UserControl
         }
         else if (CheckBox7.IsChecked == true)
         {
-            window.Info1.Show(App.GetLanguage("AddGameWindow.Info4"));
+            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Info4"));
             CheckBox5.IsEnabled = false;
             CheckBox6.IsEnabled = false;
 
             var list = await GameBinding.GetQuiltVersion(Obj.Version);
-            window.Info1.Close();
+            window.ProgressInfo.Close();
             if (list == null)
             {
                 return;
@@ -294,7 +294,7 @@ public partial class Tab1Control : UserControl
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("AddGameWindow.Info3"));
+        window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Info3"));
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(Obj.Version))
         {
@@ -312,18 +312,18 @@ public partial class Tab1Control : UserControl
         {
             CheckBox7.IsEnabled = true;
         }
-        window.Info1.Close();
+        window.ProgressInfo.Close();
     }
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Info1"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (!res)
         {
-            window.Info.Show(App.GetLanguage("GameEditWindow.Error1"));
+            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Error1"));
             return;
         }
 

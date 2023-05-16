@@ -85,24 +85,24 @@ public partial class Tab5Control : UserControl
         {
             names.Add(item.Name);
         }
-        await window.Info5.Show(App.GetLanguage("GameEditWindow.Tab5.Info9"), names);
-        if (window.Info5.Cancel)
+        await window.ComboInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info9"), names);
+        if (window.ComboInfo.Cancel)
             return;
-        var item1 = list[window.Info5.Read().Item1];
-        var res = await window.Info.ShowWait(App.GetLanguage("GameEditWindow.Tab5.Info10"));
+        var item1 = list[window.ComboInfo.Read().Item1];
+        var res = await window.OkInfo.ShowWait(App.GetLanguage("GameEditWindow.Tab5.Info10"));
         if (!res)
             return;
 
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info11"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info11"));
         res = await GameBinding.BackupWorld(Obj, item1);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (!res)
         {
-            window.Info.Show(App.GetLanguage("GameEditWindow.Tab5.Error4"));
+            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Error4"));
         }
         else
         {
-            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info12"));
+            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info12"));
             Load();
         }
     }
@@ -136,11 +136,11 @@ public partial class Tab5Control : UserControl
 
         if (file == false)
         {
-            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Error2"));
+            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Error2"));
             return;
         }
 
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
         Load();
     }
 
@@ -176,27 +176,27 @@ public partial class Tab5Control : UserControl
     public async void Export(WorldDisplayObj obj)
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info4"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info4"));
         var file = await BaseBinding.SaveFile(window as Window, FileType.World, new object[]
             { obj });
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (file == null)
             return;
 
         if (file == false)
         {
-            window.Info.Show(App.GetLanguage("GameEditWindow.Tab5.Error1"));
+            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Error1"));
         }
         else
         {
-            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info3"));
+            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info3"));
         }
     }
 
     public async void Delete(WorldDisplayObj obj)
     {
         var window = App.FindRoot(VisualRoot);
-        var res = await window!.Info.ShowWait(
+        var res = await window!.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab5.Info1"), obj.Name));
         if (!res)
         {
@@ -204,7 +204,7 @@ public partial class Tab5Control : UserControl
         }
 
         GameBinding.DeleteWorld(obj.World);
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         Load();
     }
 
@@ -223,12 +223,12 @@ public partial class Tab5Control : UserControl
     private async void Load()
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info5"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info5"));
         List.Clear();
         ListBox_Items.Children.Clear();
 
         var res = await GameBinding.GetWorlds(Obj!);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         foreach (var item in res)
         {
             var con = new WorldControl();
@@ -249,16 +249,16 @@ public partial class Tab5Control : UserControl
     public async void Backup(WorldDisplayObj obj)
     {
         var Window = App.FindRoot(VisualRoot);
-        Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
+        Window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
         var res = await GameBinding.BackupWorld(obj.World);
-        Window.Info1.Close();
+        Window.ProgressInfo.Close();
         if (res)
         {
-            Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab5.Info8"));
+            Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info8"));
         }
         else
         {
-            Window.Info1.Show(App.GetLanguage("GameEditWindow.Tab5.Error3"));
+            Window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Error3"));
         }
     }
 }

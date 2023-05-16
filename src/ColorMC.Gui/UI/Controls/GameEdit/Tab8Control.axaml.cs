@@ -90,11 +90,11 @@ public partial class Tab8Control : UserControl
 
         if (file == false)
         {
-            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab8.Error1"));
+            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab8.Error1"));
             return;
         }
 
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
         Load();
     }
 
@@ -130,7 +130,7 @@ public partial class Tab8Control : UserControl
     public async void Delete(ResourcepackDisplayObj obj)
     {
         var window = App.FindRoot(VisualRoot);
-        var res = await window.Info.ShowWait(
+        var res = await window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab8.Info1"), obj.Local));
         if (!res)
         {
@@ -138,7 +138,7 @@ public partial class Tab8Control : UserControl
         }
 
         GameBinding.DeleteResourcepack(obj.Pack);
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         Load();
     }
 
@@ -157,12 +157,12 @@ public partial class Tab8Control : UserControl
     private async void Load()
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab8.Info3"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab8.Info3"));
         List.Clear();
         ListBox_Items.Children.Clear();
 
         var res = await GameBinding.GetResourcepacks(Obj);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         foreach (var item in res)
         {
             var con = new ResourcePackControl();

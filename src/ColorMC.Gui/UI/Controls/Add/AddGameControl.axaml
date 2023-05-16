@@ -10,160 +10,23 @@
     Background="{setting:Colors TranBack}"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Grid Margin="3">
-        <ScrollViewer>
-            <StackPanel
-                Margin="0,0,0,0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-                <Label Margin="5" Content="{setting:Localize AddGameWindow.Text1}" />
-                <TextBox
-                    Name="TextBox_Input1"
-                    Margin="5"
-                    Classes="input1"
-                    Watermark="{setting:Localize AddGameWindow.Text2}" />
+    <Grid>
+        <DockPanel>
+            <ScrollViewer
+                VerticalAlignment="Top"
+                AllowAutoHide="True"
+                DockPanel.Dock="Top"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Disabled">
+                <TabControl Name="Tabs" Margin="0,0,0,5">
+                    <TabItem Header="{setting:Localize AddGameWindow.Tabs.Text1}" />
+                    <TabItem Header="{setting:Localize AddGameWindow.Tabs.Text2}" />
+                    <TabItem Header="{setting:Localize AddGameWindow.Tabs.Text3}" />
+                </TabControl>
+            </ScrollViewer>
 
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize Text.GameVersion}" />
-
-                <StackPanel Orientation="Horizontal">
-
-                    <ComboBox
-                        Name="ComboBox_GameVersion"
-                        Width="200"
-                        Margin="5,0,0,0" />
-                    <CheckBox
-                        Name="CheckBox_Release"
-                        Width="80"
-                        Margin="10,0,0,0"
-                        Content="{setting:Localize AddGameWindow.Text6}"
-                        IsChecked="True" />
-                    <CheckBox
-                        Name="CheckBox_Snapshot"
-                        Width="80"
-                        Margin="10,0,0,0"
-                        Content="{setting:Localize AddGameWindow.Text7}" />
-                    <CheckBox
-                        Name="CheckBox_Other"
-                        Width="80"
-                        Margin="10,0,0,0"
-                        Content="{setting:Localize AddGameWindow.Text8}" />
-
-                    <Button
-                        Name="Button1"
-                        Width="100"
-                        Height="25"
-                        Margin="10,0,0,0"
-                        Content="{setting:Localize GameEditWindow.Tab1.Text2}" />
-                </StackPanel>
-
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize AddGameWindow.Text4}" />
-
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox
-                        Name="ComboBox_LoaderVersion"
-                        Width="200"
-                        Margin="5,0,0,0"
-                        IsEnabled="False" />
-                    <CheckBox
-                        Name="CheckBox_Forge"
-                        Width="80"
-                        Margin="10,0,0,0"
-                        Content="Forge"
-                        IsEnabled="False" />
-                    <CheckBox
-                        Name="CheckBox_Fabric"
-                        Width="80"
-                        Margin="10,0,0,0"
-                        Content="Fabric"
-                        IsEnabled="False" />
-                    <CheckBox
-                        Name="CheckBox_Quilt"
-                        Width="80"
-                        Margin="10,0,0,0"
-                        Content="Quilt"
-                        IsEnabled="False" />
-
-                    <Button
-                        Name="Button2"
-                        Width="100"
-                        Height="25"
-                        Margin="10,0,0,0"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text1}" />
-                    <Button
-                        Name="Button3"
-                        Width="100"
-                        Height="25"
-                        Margin="10,0,0,0"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text2}" />
-                </StackPanel>
-
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize AddGameWindow.Text5}" />
-
-                <StackPanel Orientation="Horizontal">
-
-                    <ComboBox
-                        Name="ComboBox_Group"
-                        Width="200"
-                        Margin="5,0,0,0" />
-
-                    <Button
-                        Name="Button_AddGroup"
-                        Width="100"
-                        Height="25"
-                        Margin="10,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddGameWindow.Text14}" />
-                </StackPanel>
-
-                <Label
-                    Margin="5"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize AddGameWindow.Text15}" />
-
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox
-                        Name="ComboBox4"
-                        Width="200"
-                        Margin="5,0,0,0" />
-
-                    <Button
-                        Name="Button4"
-                        Width="100"
-                        Height="25"
-                        Margin="10,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddGameWindow.Text15}" />
-                </StackPanel>
-                <Grid Margin="0,0,0,40" />
-            </StackPanel>
-        </ScrollViewer>
-
-        <Button
-            Name="Button_Add5"
-            Width="190"
-            Height="25"
-            Margin="3"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Content="{setting:Localize AddGameWindow.Text13}" />
-
-        <Button
-            Name="Button_Add"
-            Width="80"
-            Height="25"
-            Margin="3"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Content="{setting:Localize Button.Add}" />
+            <Grid Name="Tab1" ClipToBounds="True" />
+        </DockPanel>
 
         <Grid
             Name="Grid2"

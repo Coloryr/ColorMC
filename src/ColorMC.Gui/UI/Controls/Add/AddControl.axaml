@@ -236,7 +236,7 @@
                 <Label
                     Margin="5"
                     VerticalAlignment="Center"
-                    Content="{setting:Localize AddGameWindow.Text16}" />
+                    Content="{setting:Localize AddWindow.Text10}" />
 
                 <Label
                     Margin="5,0,0,0"

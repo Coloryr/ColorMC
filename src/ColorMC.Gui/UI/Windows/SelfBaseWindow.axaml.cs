@@ -13,13 +13,13 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class SelfBaseWindow : Window, IBaseWindow
 {
-    Info3Control IBaseWindow.Info3 => Info3;
-    Info1Control IBaseWindow.Info1 => Info1;
-    Info4Control IBaseWindow.Info => Info;
-    Info2Control IBaseWindow.Info2 => Info2;
-    Info6Control IBaseWindow.Info6 => Info6;
+    Info3Control IBaseWindow.InputInfo => Info3;
+    Info1Control IBaseWindow.ProgressInfo => Info1;
+    Info4Control IBaseWindow.OkInfo => Info;
+    Info2Control IBaseWindow.NotifyInfo => Info2;
+    Info6Control IBaseWindow.TextInfo => Info6;
     HeadControl IBaseWindow.Head => Head;
-    Info5Control IBaseWindow.Info5 => Info5;
+    Info5Control IBaseWindow.ComboInfo => Info5;
     UserControl IBaseWindow.Con => (Main as UserControl)!;
 
     public IUserControl? Main;

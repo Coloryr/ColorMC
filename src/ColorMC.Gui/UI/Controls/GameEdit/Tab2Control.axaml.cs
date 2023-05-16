@@ -82,7 +82,7 @@ public partial class Tab2Control : UserControl
     private async void Button2_Click(object? sender, RoutedEventArgs e)
     {
         var Window = App.FindRoot(VisualRoot);
-        var res = await Window.Info.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
+        var res = await Window.OkInfo.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
         if (res)
         {
             GameBinding.DeleteConfig(Obj);
@@ -188,7 +188,7 @@ public partial class Tab2Control : UserControl
         }
 
         var Window = App.FindRoot(VisualRoot);
-        Window.Info2.Show(App.GetLanguage("Gui.Info3"));
+        Window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
     }
 
     private async void Button1_Click(object? sender, RoutedEventArgs e)
@@ -232,7 +232,7 @@ public partial class Tab2Control : UserControl
 
         if (Funtcions.CheckNotNumber(TextBox8.Text))
         {
-            window.Info.Show(App.GetLanguage("Gui.Error7"));
+            window.OkInfo.Show(App.GetLanguage("Gui.Error7"));
             return;
         }
 

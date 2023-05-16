@@ -109,7 +109,7 @@ public static class BaseBinding
         }
         Dispatcher.UIThread.Post(() =>
         {
-            window.Info1.Show(info);
+            window.ProgressInfo.Show(info);
         });
     }
 
@@ -925,9 +925,9 @@ public static class BaseBinding
                 break;
             case FileType.ModPack:
                 res = await OpFile(window,
-                    App.GetLanguage("AddGameWindow.Info13"),
+                    App.GetLanguage("Gui.Info22"),
                     new string[] { "*.zip", "*.mrpack" },
-                    App.GetLanguage("AddGameWindow.Info15"));
+                    App.GetLanguage("Gui.Info23"));
                 if (res?.Any() == true)
                 {
                     return res[0].GetPath();
@@ -1059,14 +1059,14 @@ public static class BaseBinding
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        window.Info.ShowOk(App.GetLanguage("Gui.Info13"), App.Close);
+                        window.OkInfo.ShowOk(App.GetLanguage("Gui.Info13"), App.Close);
                     });
                 }
                 else if (res.Item2 != null)
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        window.Info.Show(App.GetLanguage("Gui.Error18"));
+                        window.OkInfo.Show(App.GetLanguage("Gui.Error18"));
                     });
                 }
 
@@ -1077,8 +1077,8 @@ public static class BaseBinding
                 Logs.Error(text, e);
                 Dispatcher.UIThread.Post(() =>
                 {
-                    window.Info1.Close();
-                    window.Info.Show(text);
+                    window.ProgressInfo.Close();
+                    window.OkInfo.Show(text);
                 });
             }
         }

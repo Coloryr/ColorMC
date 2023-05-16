@@ -38,20 +38,20 @@ public partial class Tab6Control : UserControl
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab6.Info2"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab6.Info2"));
         var file = await BaseBinding.SaveFile(window as Window, FileType.Game, new object[]
             { Obj, FilesPageViewModel.GetUnSelectItems(), PackType.ColorMC });
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (file == null)
             return;
 
         if (file == false)
         {
-            window.Info.Show(App.GetLanguage("GameEditWindow.Tab6.Error1"));
+            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab6.Error1"));
         }
         else
         {
-            window.Info2.Show(App.GetLanguage("GameEditWindow.Tab6.Info3"));
+            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab6.Info3"));
         }
     }
 

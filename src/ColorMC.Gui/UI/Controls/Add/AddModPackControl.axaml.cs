@@ -160,14 +160,14 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
                     GameBinding.GetCurseForgeSortTypes() :
                     GameBinding.GetModrinthSortTypes();
 
-                window.Info1.Show(App.GetLanguage("AddModPackWindow.Info4"));
+                window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
                 var list = ComboBox1.SelectedIndex == 0 ?
                     await GameBinding.GetCurseForgeGameVersions() :
                     await GameBinding.GetModrinthGameVersions();
                 var list1 = ComboBox1.SelectedIndex == 0 ?
                     await GameBinding.GetCurseForgeCategories() :
                     await GameBinding.GetModrinthCategories();
-                window.Info1.Close();
+                window.ProgressInfo.Close();
                 if (list == null || list1 == null)
                 {
 #if !DEBUG
@@ -243,7 +243,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         if (item == null)
             return;
 
-        var res = await window.Info.ShowWait(
+        var res = await window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("AddModPackWindow.Info1"), item.Name));
         if (res)
         {
@@ -266,7 +266,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         if (Last == null)
         {
             var window = App.FindRoot(VisualRoot);
-            window.Info.Show(App.GetLanguage("AddModPackWindow.Error1"));
+            window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error1"));
             return;
         }
 
@@ -326,12 +326,12 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         if (ComboBox1.SelectedIndex == 2 && ComboBox2.SelectedIndex == 4
             && Input1.Text?.Length < 3)
         {
-            window.Info.Show(App.GetLanguage("AddModPackWindow.Error6"));
+            window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error6"));
             Unlock();
             return;
         }
 
-        window.Info1.Show(App.GetLanguage("AddModPackWindow.Info2"));
+        window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info2"));
         var data = await WebBinding.GetPackList((SourceType)ComboBox1.SelectedIndex,
             ComboBox3.SelectedItem as string, Input1.Text, (int)Input2.Value!,
             ComboBox1.SelectedIndex == 2 ? ComboBox2.SelectedIndex : ComboBox4.SelectedIndex,
@@ -340,8 +340,8 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
         if (data == null)
         {
-            window.Info.Show(App.GetLanguage("AddModPackWindow.Error2"));
-            window.Info1.Close();
+            window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error2"));
+            window.ProgressInfo.Close();
             Unlock();
             return;
         }
@@ -368,7 +368,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         Grid3.IsVisible = ListBox_Items.Children.Count == 0;
 
         ScrollViewer1.ScrollToHome();
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         Unlock();
     }
 
@@ -376,7 +376,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
     {
         var window = App.FindRoot(VisualRoot);
         List1.Clear();
-        window.Info1.Show(App.GetLanguage("AddModPackWindow.Info3"));
+        window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info3"));
         List<FileDisplayObj>? list = null;
         if (ComboBox1.SelectedIndex == 0)
         {
@@ -394,13 +394,13 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         }
         if (list == null)
         {
-            window.Info.Show(App.GetLanguage("AddModPackWindow.Error3"));
-            window.Info1.Close();
+            window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error3"));
+            window.ProgressInfo.Close();
             return;
         }
         List1.AddRange(list);
 
-        window.Info1.Close();
+        window.ProgressInfo.Close();
     }
 
     private void Button1_Click(object? sender, RoutedEventArgs e)

@@ -148,7 +148,7 @@ public partial class UsersControl : UserControl, IUserControl
         var item = DataGrid_User.SelectedItem as UserDisplayObj;
         if (item == null)
         {
-            window.Info.Show(App.GetLanguage("UserWindow.Error1"));
+            window.OkInfo.Show(App.GetLanguage("UserWindow.Error1"));
             return;
         }
 
@@ -160,7 +160,7 @@ public partial class UsersControl : UserControl, IUserControl
         var window = App.FindRoot(VisualRoot);
         UserBinding.SetLastUser(item.UUID, item.AuthType);
 
-        window.Info2.Show(App.GetLanguage("UserWindow.Info5"));
+        window.NotifyInfo.Show(App.GetLanguage("UserWindow.Info5"));
         Load();
     }
 
@@ -175,34 +175,34 @@ public partial class UsersControl : UserControl, IUserControl
                 var name = TextBox_Input2.Text;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    window.Info.Show(App.GetLanguage("Gui.Error8"));
+                    window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
                 var res = await UserBinding.AddUser(AuthType.Offline, name, null);
                 if (!res.Item1)
                 {
-                    window.Info.Show(res.Item2!);
+                    window.OkInfo.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Gui.Info4"));
+                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
             case 1:
                 Cancel = false;
                 ColorMCCore.LoginOAuthCode = LoginOAuthCode;
-                window.Info1.Show(App.GetLanguage("UserWindow.Info1"));
+                window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info1"));
                 res = await UserBinding.AddUser(AuthType.OAuth, null);
-                window.Info1.Close();
-                window.Info3.Close();
+                window.ProgressInfo.Close();
+                window.InputInfo.Close();
                 if (Cancel)
                     break;
                 if (!res.Item1)
                 {
-                    window.Info.Show(res.Item2!);
+                    window.OkInfo.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Gui.Info4"));
+                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -210,25 +210,25 @@ public partial class UsersControl : UserControl, IUserControl
                 var server = TextBox_Input1.Text;
                 if (server?.Length != 32)
                 {
-                    window.Info.Show(App.GetLanguage("UserWindow.Error3"));
+                    window.OkInfo.Show(App.GetLanguage("UserWindow.Error3"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                     string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    window.Info.Show(App.GetLanguage("Gui.Error8"));
+                    window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
-                window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
+                window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.Nide8, server,
                     TextBox_Input2.Text, TextBox_Input3.Text);
-                window.Info1.Close();
+                window.ProgressInfo.Close();
                 if (!res.Item1)
                 {
-                    window.Info.Show(res.Item2!);
+                    window.OkInfo.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Gui.Info4"));
+                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -236,25 +236,25 @@ public partial class UsersControl : UserControl, IUserControl
                 server = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    window.Info.Show(App.GetLanguage("UserWindow.Error4"));
+                    window.OkInfo.Show(App.GetLanguage("UserWindow.Error4"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                    string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    window.Info.Show(App.GetLanguage("Gui.Error8"));
+                    window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
-                window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
+                window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.AuthlibInjector, server,
                     TextBox_Input2.Text, TextBox_Input3.Text);
-                window.Info1.Close();
+                window.ProgressInfo.Close();
                 if (!res.Item1)
                 {
-                    window.Info.Show(res.Item2!);
+                    window.OkInfo.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Gui.Info4"));
+                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
@@ -262,49 +262,49 @@ public partial class UsersControl : UserControl, IUserControl
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                    string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    window.Info.Show(App.GetLanguage("Gui.Error8"));
+                    window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
-                window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
+                window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.LittleSkin,
                     TextBox_Input2.Text, TextBox_Input3.Text);
-                window.Info1.Close();
+                window.ProgressInfo.Close();
                 if (!res.Item1)
                 {
-                    window.Info.Show(res.Item2!);
+                    window.OkInfo.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Gui.Info4"));
+                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
                 ok = true;
                 break;
             case 5:
                 server = TextBox_Input1.Text;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    window.Info.Show(App.GetLanguage("UserWindow.Error4"));
+                    window.OkInfo.Show(App.GetLanguage("UserWindow.Error4"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(TextBox_Input2.Text) ||
                    string.IsNullOrWhiteSpace(TextBox_Input3.Text))
                 {
-                    window.Info.Show(App.GetLanguage("Gui.Error8"));
+                    window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
-                window.Info1.Show(App.GetLanguage("UserWindow.Info2"));
+                window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.SelfLittleSkin,
                     TextBox_Input2.Text, TextBox_Input3.Text, server);
-                window.Info1.Close();
+                window.ProgressInfo.Close();
                 if (!res.Item1)
                 {
-                    window.Info.Show(res.Item2!);
+                    window.OkInfo.Show(res.Item2!);
                     break;
                 }
-                window.Info2.Show(App.GetLanguage("Gui.Info4"));
+                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
                 TextBox_Input1.Text = "";
                 ok = true;
                 break;
             default:
-                window.Info.Show(App.GetLanguage("UserWindow.Error5"));
+                window.OkInfo.Show(App.GetLanguage("UserWindow.Error5"));
                 break;
         }
         if (ok)
@@ -319,8 +319,8 @@ public partial class UsersControl : UserControl, IUserControl
     private async void LoginOAuthCode(string url, string code)
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Close();
-        window.Info3.Show(string.Format(App.GetLanguage("UserWindow.Info6"), url),
+        window.ProgressInfo.Close();
+        window.InputInfo.Show(string.Format(App.GetLanguage("UserWindow.Info6"), url),
             string.Format(App.GetLanguage("UserWindow.Info7"), code), () =>
             {
                 Cancel = true;
@@ -411,7 +411,7 @@ public partial class UsersControl : UserControl, IUserControl
         var item = DataGrid_User.SelectedItem as UserDisplayObj;
         if (item == null)
         {
-            window.Info.Show(App.GetLanguage("UserWindow.Error1"));
+            window.OkInfo.Show(App.GetLanguage("UserWindow.Error1"));
             return;
         }
 
@@ -446,12 +446,12 @@ public partial class UsersControl : UserControl, IUserControl
     public async void Refresh(UserDisplayObj obj)
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("UserWindow.Info3"));
+        window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info3"));
         var res = await UserBinding.ReLogin(obj.UUID, obj.AuthType);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (!res)
         {
-            window.Info.Show(App.GetLanguage("UserWindow.Error6"));
+            window.OkInfo.Show(App.GetLanguage("UserWindow.Error6"));
             var user = UserBinding.GetUser(obj.UUID, obj.AuthType);
             if (user == null)
                 return;
@@ -475,7 +475,7 @@ public partial class UsersControl : UserControl, IUserControl
         }
         else
         {
-            window.Info2.Show(App.GetLanguage("UserWindow.Info4"));
+            window.NotifyInfo.Show(App.GetLanguage("UserWindow.Info4"));
         }
     }
 

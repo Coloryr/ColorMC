@@ -102,11 +102,11 @@ public partial class Tab12Control : UserControl
 
         if (res == false)
         {
-            window.Info2.Show(App.GetLanguage("Gui.Error12"));
+            window.NotifyInfo.Show(App.GetLanguage("Gui.Error12"));
             return;
         }
 
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab12.Info3"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab12.Info3"));
         Load();
     }
 
@@ -132,10 +132,10 @@ public partial class Tab12Control : UserControl
     private void Load()
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         List.Clear();
         List.AddRange(GameBinding.GetSchematics(Obj));
-        window.Info1.Close();
+        window.ProgressInfo.Close();
     }
 
     public void Update()
@@ -156,7 +156,7 @@ public partial class Tab12Control : UserControl
         var window = App.FindRoot(VisualRoot);
 
         obj.Schematic.Delete();
-        window.Info2.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
+        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();
     }
 }

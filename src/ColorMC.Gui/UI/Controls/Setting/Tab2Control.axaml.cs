@@ -148,20 +148,20 @@ public partial class Tab2Control : UserControl
         if (CheckBox7.IsChecked == true)
         {
             var window = App.FindRoot(VisualRoot);
-            window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+            window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
             await ConfigBinding.SetBackLimit(CheckBox7.IsChecked == true, (int)Slider5.Value);
-            window.Info1.Close();
+            window.ProgressInfo.Close();
         }
     }
 
     private async void Button_Set3_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackLimit(CheckBox7.IsChecked == true, (int)Slider5.Value);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
 
-        window.Info2.Show(App.GetLanguage("Gui.Info3"));
+        window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
     }
 
     private void Slider5_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -201,9 +201,9 @@ public partial class Tab2Control : UserControl
 
         var window = App.FindRoot(VisualRoot);
         var type = (LanguageType)ComboBox2.SelectedIndex;
-        window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info1"));
+        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info1"));
         ConfigBinding.SetLanguage(type);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
     }
 
     private void CheckBox3_Click(object? sender, RoutedEventArgs e)
@@ -256,7 +256,7 @@ public partial class Tab2Control : UserControl
         ColorPicker8.Color = Color.Parse(ColorSel.ButtonDarkFontStr);
         ColorPicker9.Color = Color.Parse(ColorSel.FontDarkColorStr);
         load = false;
-        window.Info2.Show(App.GetLanguage("SettingWindow.Tab2.Info4"));
+        window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info4"));
     }
 
     private async void Button_Set2_Click(object? sender, RoutedEventArgs e)
@@ -264,14 +264,14 @@ public partial class Tab2Control : UserControl
         var window = App.FindRoot(VisualRoot);
         if (string.IsNullOrWhiteSpace(TextBox1.Text))
         {
-            window.Info.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
+            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
             return;
         }
-        window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackPic(TextBox1.Text, (int)Slider1.Value);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
 
-        window.Info2.Show(App.GetLanguage("Gui.Info3"));
+        window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
     }
 
     private void Save1()
@@ -280,9 +280,9 @@ public partial class Tab2Control : UserControl
             return;
 
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("SettingWindow.Tab2.Info5"));
+        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetWindowTran(CheckBox1.IsChecked == true, ComboBox1.SelectedIndex);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
     }
 
     private void CheckBox1_Click(object? sender, RoutedEventArgs e)
@@ -355,7 +355,7 @@ public partial class Tab2Control : UserControl
     {
         var window = App.FindRoot(VisualRoot);
         ConfigBinding.SetBackTran((int)Slider2.Value);
-        window.Info2.Show(App.GetLanguage("Gui.Info3"));
+        window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
     }
 
     private async void Button_SelectFile_Click(object? sender, RoutedEventArgs e)

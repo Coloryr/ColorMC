@@ -58,7 +58,7 @@ public partial class AddJavaControl : UserControl, IUserControl
         Dispatcher.UIThread.Post(() =>
         {
             var window = App.FindRoot(VisualRoot);
-            window.Info1.NextText(App.GetLanguage("AddJavaWindow.Info5"));
+            window.ProgressInfo.NextText(App.GetLanguage("AddJavaWindow.Info5"));
         });
     }
 
@@ -68,24 +68,24 @@ public partial class AddJavaControl : UserControl, IUserControl
             return;
 
         var window = App.FindRoot(VisualRoot);
-        var res = await window.Info.ShowWait(string.Format(
+        var res = await window.OkInfo.ShowWait(string.Format(
             App.GetLanguage("AddJavaWindow.Info1"), obj.Name));
         if (!res)
             return;
 
         if (ConfigBinding.GetAllConfig().Item2?.WindowMode != true)
         {
-            window.Info1.Show(App.GetLanguage("AddJavaWindow.Info2"));
+            window.ProgressInfo.Show(App.GetLanguage("AddJavaWindow.Info2"));
         }
         var res1 = await JavaBinding.DownloadJava(obj);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         if (!res1.Item1)
         {
-            window.Info.Show(res1.Item2!);
+            window.OkInfo.Show(res1.Item2!);
             return;
         }
 
-        window.Info2.Show(App.GetLanguage("AddJavaWindow.Info3"));
+        window.NotifyInfo.Show(App.GetLanguage("AddJavaWindow.Info3"));
     }
 
     private void ComboBox4_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -135,7 +135,7 @@ public partial class AddJavaControl : UserControl, IUserControl
     private async void Button1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("AddJavaWindow.Info4"));
+        window.ProgressInfo.Show(App.GetLanguage("AddJavaWindow.Info4"));
 
         load = true;
 
@@ -154,11 +154,11 @@ public partial class AddJavaControl : UserControl, IUserControl
 
             Select();
 
-            window.Info1.Close();
+            window.ProgressInfo.Close();
         }
         else
         {
-            window.Info1.Close();
+            window.ProgressInfo.Close();
 #if !DEBUG
             window.Info.Show(App.GetLanguage("AddJavaWindow.Error1"));
 #endif

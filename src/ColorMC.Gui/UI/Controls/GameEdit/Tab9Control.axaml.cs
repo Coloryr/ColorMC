@@ -43,7 +43,7 @@ public partial class Tab9Control : UserControl
     private async void Button_C1_Click(object? sender, RoutedEventArgs e)
     {
         var Window = App.FindRoot(VisualRoot);
-        var res = await Window.Info.ShowWait(
+        var res = await Window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab9.Info2"), Obj.Name));
         if (!res)
         {
@@ -51,7 +51,7 @@ public partial class Tab9Control : UserControl
         }
 
         GameBinding.ClearScreenshots(Obj);
-        Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         Load();
     }
 
@@ -82,7 +82,7 @@ public partial class Tab9Control : UserControl
     public async void Delete(ScreenshotDisplayObj obj)
     {
         var Window = App.FindRoot(VisualRoot);
-        var res = await Window.Info.ShowWait(
+        var res = await Window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab9.Info1"), obj.Local));
         if (!res)
         {
@@ -90,19 +90,19 @@ public partial class Tab9Control : UserControl
         }
 
         GameBinding.DeleteScreenshot(obj.Local);
-        Window.Info2.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         Load();
     }
 
     private async void Load()
     {
         var window = App.FindRoot(VisualRoot);
-        window.Info1.Show(App.GetLanguage("GameEditWindow.Tab9.Info3"));
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab9.Info3"));
         List.Clear();
         WrapPanel1.Children.Clear();
 
         var res = await GameBinding.GetScreenshots(Obj);
-        window.Info1.Close();
+        window.ProgressInfo.Close();
         foreach (var item in res)
         {
             var con = new ScreenshotControl();

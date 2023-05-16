@@ -52,13 +52,13 @@ public partial class Tab5Control : UserControl
         var list = JavaBinding.FindJava();
         if (list == null)
         {
-            window.Info.Show(App.GetLanguage("SettingWindow.Tab5.Error1"));
+            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab5.Error1"));
             return;
         }
 
         list.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
         Load();
-        window.Info2.Show(App.GetLanguage("SettingWindow.Tab5.Info4"));
+        window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab5.Info4"));
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
@@ -95,7 +95,7 @@ public partial class Tab5Control : UserControl
     private async void Button_D1_Click(object? sender, RoutedEventArgs e)
     {
         var window = App.FindRoot(VisualRoot);
-        var res = await window.Info.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
+        var res = await window.OkInfo.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
         if (!res)
             return;
 
@@ -137,25 +137,25 @@ public partial class Tab5Control : UserControl
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(local))
         {
-            window.Info.Show(App.GetLanguage("Gui.Error8"));
+            window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
             return;
         }
 
         try
         {
-            window.Info1.Show(App.GetLanguage("SettingWindow.Tab5.Info1"));
+            window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab5.Info1"));
 
             var res = JavaBinding.AddJava(name, local);
             if (res.Item1 == null)
             {
-                window.Info1.Close();
-                window.Info.Show(res.Item2!);
+                window.ProgressInfo.Close();
+                window.OkInfo.Show(res.Item2!);
                 return;
             }
 
             TextBox1.Text = "";
             TextBox2.Text = "";
-            window.Info1.Close();
+            window.ProgressInfo.Close();
 
             Load();
         }

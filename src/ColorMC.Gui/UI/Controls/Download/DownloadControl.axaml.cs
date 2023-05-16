@@ -70,7 +70,7 @@ public partial class DownloadControl : UserControl, IUserControl
     private async void Button_S_Click(object? sender, RoutedEventArgs e)
     {
         var windows = App.FindRoot(VisualRoot);
-        var res = await windows.Info.ShowWait(App.GetLanguage("DownloadWindow.Info1"));
+        var res = await windows.OkInfo.ShowWait(App.GetLanguage("DownloadWindow.Info1"));
         if (res)
         {
             List.Clear();
@@ -88,7 +88,7 @@ public partial class DownloadControl : UserControl, IUserControl
             pause = true;
             Button_P.Content = "R";
             Button_P1.Content = App.GetLanguage("DownloadWindow.Info5");
-            windows.Info2.Show(App.GetLanguage("DownloadWindow.Info2"));
+            windows.NotifyInfo.Show(App.GetLanguage("DownloadWindow.Info2"));
         }
         else
         {
@@ -96,7 +96,7 @@ public partial class DownloadControl : UserControl, IUserControl
             Button_P.Content = "P";
             Button_P1.Content = App.GetLanguage("DownloadWindow.Text1");
             pause = false;
-            windows.Info2.Show(App.GetLanguage("DownloadWindow.Info3"));
+            windows.NotifyInfo.Show(App.GetLanguage("DownloadWindow.Info3"));
         }
     }
 
@@ -141,7 +141,7 @@ public partial class DownloadControl : UserControl, IUserControl
         var windows = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
-            var res = await windows.Info.ShowWait(App.GetLanguage("DownloadWindow.Info4"));
+            var res = await windows.OkInfo.ShowWait(App.GetLanguage("DownloadWindow.Info4"));
             if (res)
             {
                 BaseBinding.DownloadStop();

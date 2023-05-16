@@ -293,7 +293,7 @@ public static class GameBinding
                 var info = await Image.IdentifyAsync(name);
                 if (info.Width != info.Height || info.Width > 200 || info.Height > 200)
                 {
-                    (win as IBaseWindow)?.Info.Show(App.GetLanguage("GameBinding.Error6"));
+                    (win as IBaseWindow)?.OkInfo.Show(App.GetLanguage("GameBinding.Error6"));
                     return;
                 }
                 var data = await File.ReadAllBytesAsync(name);
@@ -336,7 +336,7 @@ public static class GameBinding
 
         if (UserBinding.IsLock(login))
         {
-            var res = await App.MainWindow!.Window.Info.ShowWait(App.GetLanguage("GameBinding.Info1"));
+            var res = await App.MainWindow!.Window.OkInfo.ShowWait(App.GetLanguage("GameBinding.Info1"));
             if (!res)
                 return (false, App.GetLanguage("GameBinding.Error3"));
         }
