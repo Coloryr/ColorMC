@@ -19,14 +19,12 @@
                 Command="{Binding Add}"
                 Content="{setting:Localize AddGameWindow.Text1}" />
         </Grid>
-        <StackPanel>
+        <StackPanel Margin="5">
             <TextBox
-                Margin="5"
                 Classes="input1"
                 Text="{Binding Name}"
                 Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
             <TextBox
-                Margin="5"
                 Classes="input1"
                 Text="{Binding Local}"
                 Watermark="{setting:Localize AddGameWindow.Tab2.Text1}" />
@@ -34,22 +32,18 @@
             <Button
                 Width="100"
                 Height="25"
-                Margin="5"
+                Margin="0,5,0,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Command="{Binding SelectPack}"
                 Content="{setting:Localize AddGameWindow.Tab2.Text3}" />
 
-            <Label
-                Margin="5"
-                VerticalAlignment="Center"
-                Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
 
             <StackPanel Orientation="Horizontal">
 
                 <ComboBox
                     Width="200"
-                    Margin="5,0,0,0"
                     ItemsSource="{Binding GroupList}"
                     SelectedItem="{Binding Group}" />
 
@@ -62,16 +56,12 @@
                     Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
             </StackPanel>
 
-            <Label
-                Margin="5"
-                VerticalAlignment="Center"
-                Content="{setting:Localize AddGameWindow.Tab2.Text2}" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab2.Text2}" />
 
             <StackPanel Orientation="Horizontal">
 
                 <ComboBox
                     Width="200"
-                    Margin="5,0,0,0"
                     ItemsSource="{Binding PackTypeList}"
                     SelectedIndex="{Binding Type}" />
             </StackPanel>

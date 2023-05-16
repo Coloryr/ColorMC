@@ -634,9 +634,18 @@ public static class BaseBinding
                 });
                 if (res?.Any() == true)
                 {
-                    return res.First().GetPath();
+                    return res[0].GetPath();
                 }
-
+                break;
+            case FileType.Game:
+                res = await window.StorageProvider.OpenFolderPickerAsync(new()
+                {
+                    Title = App.GetLanguage("Gui.Info24")
+                });
+                if (res?.Any() == true)
+                {
+                    return res[0].GetPath();
+                }
                 break;
         }
 

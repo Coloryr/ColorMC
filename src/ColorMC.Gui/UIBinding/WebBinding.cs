@@ -617,18 +617,6 @@ public static class WebBinding
         return OptifineAPI.DownloadOptifine(obj, item.Data);
     }
 
-    public static List<string> GetFTBTypeList()
-    {
-        return new()
-        {
-            FTBType.All.GetName(),
-            FTBType.Featured.GetName(),
-            FTBType.Popular.GetName(),
-            FTBType.Installs.GetName(),
-            FTBType.Search.GetName()
-        };
-    }
-
     public static async Task<List<(DownloadItemObj Item, ModInfoObj Info)>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
     {
         var list = new ConcurrentBag<(DownloadItemObj Item, ModInfoObj Info)>();

@@ -21,16 +21,16 @@
                     Name="CheckBox2"
                     Width="80"
                     Margin="10,0,0,0"
-                    Content="{setting:Localize AddGameWindow.Text6}"
+                    Content="{setting:Localize AddGameWindow.Tab1.Text6}"
                     IsChecked="True" />
                 <CheckBox
                     Name="CheckBox3"
                     Width="80"
-                    Content="{setting:Localize AddGameWindow.Text7}" />
+                    Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
                 <CheckBox
                     Name="CheckBox4"
                     Width="80"
-                    Content="{setting:Localize AddGameWindow.Text8}" />
+                    Content="{setting:Localize AddGameWindow.Tab1.Text8}" />
                 <Button
                     Name="Button1"
                     Width="100"
@@ -40,7 +40,7 @@
                     ToolTip.VerticalOffset="-30" />
             </StackPanel>
 
-            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Text4}" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
 
             <StackPanel Orientation="Horizontal">
 
@@ -68,7 +68,7 @@
                     Name="Button2"
                     Width="100"
                     Height="25"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text1}"
+                    Content="{setting:Localize AddGameWindow.Tab1.Text11}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text34}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
@@ -76,12 +76,12 @@
                     Width="100"
                     Height="25"
                     Margin="5,0,0,0"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text2}"
+                    Content="{setting:Localize AddGameWindow.Tab1.Text12}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text35}"
                     ToolTip.VerticalOffset="-30" />
             </StackPanel>
 
-            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Text5}" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
 
             <StackPanel Orientation="Horizontal">
 
@@ -91,7 +91,7 @@
                     Width="100"
                     Height="25"
                     Margin="10,0,0,0"
-                    Content="{setting:Localize AddGameWindow.Text14}"
+                    Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text37}"
                     ToolTip.VerticalOffset="-30" />
             </StackPanel>

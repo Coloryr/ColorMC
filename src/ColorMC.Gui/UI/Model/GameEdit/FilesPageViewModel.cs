@@ -15,7 +15,7 @@ public class FilesPageViewModel : ObservableObject
     public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; }
     private FileTreeNodeModel _root;
 
-    public FilesPageViewModel(GameSettingObj obj)
+    public FilesPageViewModel(string obj, List<string>? unselect = null)
     {
         Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(Array.Empty<FileTreeNodeModel>())
         {
@@ -67,8 +67,22 @@ public class FilesPageViewModel : ObservableObject
 
         Source.RowSelection!.SingleSelect = false;
 
-        _root = new FileTreeNodeModel(obj.GetBasePath(), true, true);
+        _root = new FileTreeNodeModel(obj, true, true);
         Source.Items = new[] { _root };
+
+        if (unselect != null)
+        {
+            foreach (var item in unselect)
+            {
+                foreach (var item1 in _root.Children)
+                {
+                    if (item1.Path.EndsWith(item))
+                    {
+                        item1.IsChecked = false;
+                    }
+                }
+            }
+        }
     }
 
     public List<string> GetUnSelectItems()
@@ -100,7 +114,7 @@ public class FilesPageViewModel : ObservableObject
                 values[1] is bool isExpanded)
             {
                 if (!isDirectory)
-                    return "[T]";
+                    return "[F]";
                 else
                     return isExpanded ? "{O}" : "{ }";
             }

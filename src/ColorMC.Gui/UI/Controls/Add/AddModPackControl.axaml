@@ -24,7 +24,10 @@
                             Name="ComboBox1"
                             Width="150"
                             Height="30"
-                            Margin="2,2,0,0" />
+                            Margin="2,2,0,0"
+                            IsEnabled="{Binding Enable}"
+                            ItemsSource="{Binding SourceList}"
+                            SelectedIndex="{Binding Source}" />
                     </DockPanel>
                     <Label
                         Width="50"
@@ -35,7 +38,10 @@
                         Name="ComboBox2"
                         Width="130"
                         Height="30"
-                        Margin="0,2,0,0" />
+                        Margin="0,2,0,0"
+                        IsEnabled="{Binding Enable}"
+                        ItemsSource="{Binding CategorieList}"
+                        SelectedIndex="{Binding Categorie}" />
                     <Label
                         Width="80"
                         Margin="10,5,5,5"
@@ -45,12 +51,15 @@
                         Name="ComboBox3"
                         Width="130"
                         Height="30"
-                        Margin="0,2,0,0" />
+                        Margin="0,2,0,0"
+                        IsEnabled="{Binding Enable}"
+                        ItemsSource="{Binding GameVersionList}"
+                        SelectedItem="{Binding GameVersion}" />
                     <Button
-                        Name="Button1"
                         Width="100"
                         Height="30"
                         Margin="10,0,0,0"
+                        Command="{Binding Reload}"
                         Content="{setting:Localize AddModPackWindow.Text8}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -60,6 +69,8 @@
                         Height="30"
                         Margin="10,0,0,0"
                         Classes="input1"
+                        IsEnabled="{Binding TextEnable}"
+                        Text="{Binding Text}"
                         Watermark="{setting:Localize AddModPackWindow.Text3}" />
                     <Label
                         Width="50"
@@ -70,7 +81,10 @@
                         Name="ComboBox4"
                         Width="130"
                         Height="30"
-                        Margin="0,2,0,0" />
+                        Margin="0,2,0,0"
+                        IsEnabled="{Binding Enable}"
+                        ItemsSource="{Binding SortTypeList}"
+                        SelectedIndex="{Binding SortType}" />
                     <Label
                         Width="80"
                         Margin="10,5,5,5"
@@ -81,23 +95,21 @@
                         Width="130"
                         Height="30"
                         FormatString="N0"
+                        IsEnabled="{Binding PageEnable}"
                         Minimum="0"
-                        Value="0" />
+                        Value="{Binding Page}" />
                     <Button
-                        Name="Button2"
                         Width="100"
                         Height="30"
                         Margin="10,0,0,0"
+                        Command="{Binding Select}"
                         Content="{setting:Localize AddModPackWindow.Text9}"
-                        IsEnabled="False" />
+                        IsEnabled="{Binding IsSelect}" />
                 </StackPanel>
             </StackPanel>
 
             <Grid Margin="3">
-                <DockPanel
-                    Name="Grid3"
-                    Background="{setting:Colors TranBack}"
-                    IsVisible="True">
+                <DockPanel Background="{setting:Colors TranBack}" IsVisible="{Binding EmptyDisplay}">
                     <Label
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -134,8 +146,9 @@
                     Width="120"
                     Height="30"
                     FormatString="N0"
+                    IsEnabled="{Binding PageEnable1}"
                     Minimum="0"
-                    Value="0" />
+                    Value="{Binding Page1}" />
                 <Label
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
@@ -143,30 +156,36 @@
                 <ComboBox
                     Name="ComboBox6"
                     Width="140"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    ItemsSource="{Binding GameVersionList}"
+                    SelectedItem="{Binding GameVersion1}" />
 
                 <Button
-                    Name="ButtonSearch"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
+                    Command="{Binding Search}"
                     Content="{setting:Localize AddModPackWindow.Text10}" />
 
                 <Button
-                    Name="ButtonDownload"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
+                    Command="{Binding Download}"
                     Content="{setting:Localize AddModPackWindow.Text12}" />
                 <Button
-                    Name="ButtonCancel"
                     Width="100"
                     Height="30"
                     Margin="5,0,0,0"
+                    Command="{Binding Cancel}"
                     Content="{setting:Localize Button.Cancel}" />
             </StackPanel>
 
-            <DataGrid Name="DataGridFiles" Background="{setting:Colors TranBack}">
+            <DataGrid
+                Name="DataGridFiles"
+                Background="{setting:Colors TranBack}"
+                ItemsSource="{Binding FileList}"
+                SelectedItem="{Binding Item}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"

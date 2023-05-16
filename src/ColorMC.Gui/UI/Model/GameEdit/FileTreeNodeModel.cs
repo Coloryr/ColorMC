@@ -22,10 +22,9 @@ public partial class FileTreeNodeModel : ObservableObject
     private bool isExpanded;
     [ObservableProperty]
     private bool isChecked;
+    [ObservableProperty]
+    private ObservableCollection<FileTreeNodeModel>? children;
 
-    private ObservableCollection<FileTreeNodeModel>? _children;
-
-    public IReadOnlyList<FileTreeNodeModel> Children => _children ??= LoadChildren();
     public bool IsDirectory { get; init; }
 
     public FileTreeNodeModel(
@@ -46,15 +45,19 @@ public partial class FileTreeNodeModel : ObservableObject
             Size = info.Length;
             Modified = info.LastWriteTimeUtc;
         }
+        else
+        {
+            LoadChildren();
+        }
     }
 
     partial void OnIsCheckedChanged(bool value)
     {
         if (IsChecked == true)
         {
-            if (_children != null)
+            if (Children != null)
             {
-                foreach (var item in _children)
+                foreach (var item in Children)
                 {
                     item.IsChecked = true;
                 }
@@ -62,9 +65,9 @@ public partial class FileTreeNodeModel : ObservableObject
         }
         else if (IsChecked == false)
         {
-            if (_children != null)
+            if (Children != null)
             {
-                foreach (var item in _children)
+                foreach (var item in Children)
                 {
                     item.IsChecked = false;
                 }
@@ -72,11 +75,12 @@ public partial class FileTreeNodeModel : ObservableObject
         }
     }
 
-    private ObservableCollection<FileTreeNodeModel> LoadChildren()
+    private void LoadChildren()
     {
         if (!IsDirectory)
         {
-            return new();
+            Children = new();
+            return;
         }
 
         var options = new EnumerationOptions { IgnoreInaccessible = true };
@@ -95,7 +99,7 @@ public partial class FileTreeNodeModel : ObservableObject
         if (result.Count == 0)
             HasChildren = false;
 
-        return result;
+        Children = result;
     }
 
     public static Comparison<FileTreeNodeModel?> SortAscending<T>(Func<FileTreeNodeModel, T> selector)
@@ -139,9 +143,9 @@ public partial class FileTreeNodeModel : ObservableObject
     public List<string> GetUnSelectItems()
     {
         var list = new List<string>();
-        if (_children != null)
+        if (Children != null)
         {
-            foreach (var item in _children)
+            foreach (var item in Children)
             {
                 list.AddRange(item.GetUnSelectItems());
             }

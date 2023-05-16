@@ -15,17 +15,4 @@ public static class LanguageUtils
             _ => App.GetLanguage("SkinType.Other")
         };
     }
-
-    public static string GetName(this FTBType type)
-    {
-        return type switch
-        {
-            FTBType.All => App.GetLanguage("FTBType.All"),
-            FTBType.Featured => App.GetLanguage("FTBType.Featured"),
-            FTBType.Popular => App.GetLanguage("FTBType.Popular"),
-            FTBType.Installs => App.GetLanguage("FTBType.Installs"),
-            FTBType.Search => App.GetLanguage("FTBType.Search"),
-            _ => App.GetLanguage("FTBType.Other")
-        };
-    }
 }

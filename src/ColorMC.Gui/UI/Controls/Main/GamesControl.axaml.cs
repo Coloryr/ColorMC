@@ -64,6 +64,9 @@ public partial class GamesControl : UserControl
         Grid1.IsVisible = false;
         if (e.Data.Get(BaseBinding.DrapType) is not GameControl c)
             return;
+
+        c.RenderTransform = null;
+
         if (Items.ContainsValue(c))
             return;
 
@@ -130,7 +133,7 @@ public partial class GamesControl : UserControl
             {
                 if (sender is UserControl con)
                 {
-                    con.RenderTransform = null;
+                    con.RenderTransform = new ScaleTransform(0.95, 0.95);
                 }
 
                 List<IStorageFolder> files = new();
@@ -179,11 +182,6 @@ public partial class GamesControl : UserControl
         {
             var game = (sender as GameControl)!;
             Window.GameItemSelect(game);
-        }
-
-        if (sender is UserControl con)
-        {
-            con.RenderTransform = new ScaleTransform(0.95, 0.95);
         }
 
         var pro = e.GetCurrentPoint(this);

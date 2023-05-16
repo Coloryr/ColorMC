@@ -88,6 +88,59 @@ public static class GameBinding
         return game != null;
     }
 
+    public static async Task<bool> AddGame(string name, string local, List<string> unselect, string? group = null)
+    {
+        var game = new GameSettingObj()
+        {
+            Name = name,
+            Version = GetGameVersion(true, false, false)[0],
+            Loader = Loaders.Normal,
+            LoaderVersion = null,
+            GroupName = group
+        };
+
+        game = await InstancesPath.CreateGame(game);
+        if (game == null)
+        {
+            return false;
+        }
+
+        var res = await Task.Run(() =>
+        {
+            try
+            {
+                local = Path.GetFullPath(local);
+                var list = PathC.GetAllFile(local);
+                list.RemoveAll(item => unselect.Contains(item.FullName));
+                int basel = local.Length;
+                var local1 = game.GetGamePath();
+                foreach (var item in list)
+                {
+                    var path = item.FullName[basel..];
+                    var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
+                    info.Directory?.Create();
+                    File.Copy(item.FullName, info.FullName);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logs.Error(App.GetLanguage("Gui.Error26"), e);
+                App.ShowError(App.GetLanguage("Gui.Error26"), e);
+                return false;
+            }
+        });
+
+        if (!res)
+        {
+            game?.Remove();
+        }
+
+        App.ShowGameEdit(game);
+
+        return game != null;
+    }
+
     public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type, string? name, string? group)
     {
         return InstancesPath.InstallFromZip(dir, type, name, group);

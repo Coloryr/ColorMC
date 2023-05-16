@@ -28,6 +28,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private AddGameTab1Model model1;
     private AddGameTab2Model model2;
+    private AddGameTab3Model model3;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -37,9 +38,11 @@ public partial class AddGameControl : UserControl, IUserControl
 
         model1 = new(this);
         model2 = new(this);
+        model3 = new(this);
 
         tab1.DataContext = model1;
         tab2.DataContext = model2;
+        tab3.DataContext = model3;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 

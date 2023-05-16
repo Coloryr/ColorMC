@@ -13,30 +13,18 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddGameTab2Model : ObservableObject
+public partial class AddGameTab2Model : AddGameTabModel
 {
-    private IUserControl Con;
-
-    public ObservableCollection<string> GroupList { get; init; } = new();
     public List<string> PackTypeList => GameBinding.GetPackType();
 
-    [ObservableProperty]
-    private string name;
-    [ObservableProperty]
-    private string group;
     [ObservableProperty]
     private string local;
 
     [ObservableProperty]
     private int type = -1;
 
-    public AddGameTab2Model(IUserControl con)
+    public AddGameTab2Model(IUserControl con) : base(con)
     {
-        Con = con;
-
-        GroupList.Clear();
-        GroupList.AddRange(GameBinding.GetGameGroups().Keys);
-
         ColorMCCore.PackState = PackState;
         ColorMCCore.PackUpdate = PackUpdate;
     }
@@ -119,35 +107,6 @@ public partial class AddGameTab2Model : ObservableObject
         }
     }
 
-    [RelayCommand]
-    public async void AddGroup()
-    {
-        var window = Con.Window;
-        await window.InputInfo.ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
-        if (window.InputInfo.Cancel)
-        {
-            return;
-        }
-
-        var res = window.InputInfo.Read().Item1;
-        if (string.IsNullOrWhiteSpace(res))
-        {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error2"));
-            return;
-        }
-
-        if (!GameBinding.AddGameGroup(res))
-        {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error3"));
-            return;
-        }
-
-        window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info6"));
-
-        GroupList.Clear();
-        GroupList.AddRange(GameBinding.GetGameGroups().Keys);
-    }
-
     private void PackUpdate(int size, int now)
     {
         var window = Con.Window;
@@ -195,16 +154,15 @@ public partial class AddGameTab2Model : ObservableObject
         window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Info6"));
         var res = await GameBinding.AddPack(Local, type, Name, Group);
         window.ProgressInfo.Close();
-        if (res.Item1)
-        {
-            App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Info5"));
-            App.MainWindow?.Load();
-            window.Close();
-        }
-        else
+        if (!res.Item1)
         {
             window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Error1"));
+            return;
         }
+
+        App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Info5"));
+        App.MainWindow?.Load();
+        window.Close();
     }
 
     public void AddFile(string file)

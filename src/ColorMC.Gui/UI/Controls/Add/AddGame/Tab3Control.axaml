@@ -5,8 +5,77 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:vm="using:ColorMC.Gui.UI.Model.GameEdit"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    Welcome to Avalonia!
+    <DockPanel>
+        <StackPanel Margin="5" DockPanel.Dock="Top">
+            <TextBox
+                Classes="input1"
+                Text="{Binding Name}"
+                Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
+            <DockPanel>
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,5,0,0"
+                    Command="{Binding SelectLocal}"
+                    Content="{setting:Localize AddGameWindow.Tab3.Text2}"
+                    DockPanel.Dock="Right" />
+                <TextBox
+                    Classes="input1"
+                    Text="{Binding Local}"
+                    Watermark="{setting:Localize AddGameWindow.Tab3.Text1}" />
+            </DockPanel>
+
+            <DockPanel Margin="0,5,0,0">
+                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+
+                <ComboBox
+                    Width="200"
+                    ItemsSource="{Binding GroupList}"
+                    SelectedItem="{Binding Group}" />
+
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="10,0,0,0"
+                    Command="{Binding AddGroup}"
+                    Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
+
+                <Button
+                    Width="80"
+                    Height="25"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Command="{Binding Add}"
+                    Content="{setting:Localize Button.Add}" />
+            </DockPanel>
+        </StackPanel>
+        <TreeDataGrid Margin="5" Source="{Binding Files}">
+            <TreeDataGrid.Resources>
+                <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
+                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+                </DataTemplate>
+
+                <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="30"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center">
+                            <Label.Content>
+                                <MultiBinding Converter="{x:Static vm:FilesPageViewModel.FileIconConverter}">
+                                    <Binding Path="IsDirectory" />
+                                    <Binding Path="IsExpanded" />
+                                </MultiBinding>
+                            </Label.Content>
+                        </Label>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </TreeDataGrid.Resources>
+        </TreeDataGrid>
+    </DockPanel>
 </UserControl>

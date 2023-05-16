@@ -21,9 +21,7 @@
         </Grid>
         <TreeDataGrid
             Name="FileViewer"
-            Margin="3"
-            ScrollViewer.HorizontalScrollBarVisibility="Visible"
-            ScrollViewer.VerticalScrollBarVisibility="Visible">
+            Margin="3">
             <TreeDataGrid.Resources>
                 <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
                     <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />

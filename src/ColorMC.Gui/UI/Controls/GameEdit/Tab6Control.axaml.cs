@@ -3,6 +3,7 @@ using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Core.LaunchPath;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -45,7 +46,7 @@ public partial class Tab6Control : UserControl
 
     private void Load()
     {
-        FilesPageViewModel = new FilesPageViewModel(Obj);
+        FilesPageViewModel = new FilesPageViewModel(Obj.GetBasePath());
         FileViewer.Source = Files.Source;
 
         if (BaseBinding.IsGameRun(Obj))

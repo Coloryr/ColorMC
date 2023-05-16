@@ -307,11 +307,3 @@ public enum CoreRunState
     Download,
     Error,
 }
-
-/// <summary>
-/// FTB类型
-/// </summary>
-public enum FTBType
-{
-    All, Featured, Popular, Installs, Search
-}

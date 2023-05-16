@@ -25,20 +25,15 @@
                 Content="{setting:Localize Button.Add}" />
         </Grid>
 
-        <StackPanel>
+        <StackPanel Margin="5">
             <TextBox
-                Margin="5"
                 Classes="input1"
                 Text="{Binding Name}"
                 Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
-            <Label
-                Margin="5"
-                VerticalAlignment="Center"
-                Content="{setting:Localize Text.GameVersion}" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize Text.GameVersion}" />
             <StackPanel Orientation="Horizontal">
                 <ComboBox
                     Width="200"
-                    Margin="5,0,0,0"
                     ItemsSource="{Binding GameVersionList}"
                     SelectedItem="{Binding Version}" />
                 <CheckBox
@@ -65,15 +60,11 @@
                     Content="{setting:Localize GameEditWindow.Tab1.Text2}" />
             </StackPanel>
 
-            <Label
-                Margin="5"
-                VerticalAlignment="Center"
-                Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
 
             <StackPanel Orientation="Horizontal">
                 <ComboBox
                     Width="200"
-                    Margin="5,0,0,0"
                     IsEnabled="{Binding EnableLoader}"
                     ItemsSource="{Binding LoaderVersionList}" />
                 <CheckBox
@@ -109,16 +100,12 @@
                     Content="{setting:Localize AddGameWindow.Tab1.Text12}" />
             </StackPanel>
 
-            <Label
-                Margin="5"
-                VerticalAlignment="Center"
-                Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
 
             <StackPanel Orientation="Horizontal">
 
                 <ComboBox
                     Width="200"
-                    Margin="5,0,0,0"
                     ItemsSource="{Binding GroupList}"
                     SelectedItem="{Binding Group}" />
 
