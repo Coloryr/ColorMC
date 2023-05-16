@@ -1,16 +1,12 @@
-﻿using Avalonia.Controls.Primitives;
+﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Media.Immutable;
-using Avalonia;
-using ColorMC.Gui.Utils.LaunchSetting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Avalonia.VisualTree;
+using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
+using Avalonia.VisualTree;
+using ColorMC.Gui.Utils.LaunchSetting;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.Utils;
 

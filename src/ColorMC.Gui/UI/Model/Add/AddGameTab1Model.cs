@@ -1,5 +1,4 @@
-﻿using Avalonia.Interactivity;
-using AvaloniaEdit.Utils;
+﻿using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -8,11 +7,7 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
@@ -24,8 +19,6 @@ public partial class AddGameTab1Model : ObservableObject
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> LoaderVersionList { get; init; } = new();
     public ObservableCollection<string> GroupList { get; init; } = new();
-
-    public List<string> PackTypeList => GameBinding.GetPackType();
 
     [ObservableProperty]
     private string version;
@@ -94,7 +87,7 @@ public partial class AddGameTab1Model : ObservableObject
                 return;
             }
 
-            EnableLoader= true;
+            EnableLoader = true;
             LoaderVersionList.Clear();
             LoaderVersionList.AddRange(list);
         }

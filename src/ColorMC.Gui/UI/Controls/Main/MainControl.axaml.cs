@@ -53,7 +53,7 @@ public partial class MainControl : UserControl, IUserControl
     {
         if (e.Key == Key.Down)
         {
-            
+
         }
     }
 
@@ -467,7 +467,11 @@ public partial class MainControl : UserControl, IUserControl
                 GameGroups.VerticalAlignment = VerticalAlignment.Top;
                 GameGroups.HorizontalAlignment = HorizontalAlignment.Stretch;
                 DefaultGroup.SetWindow(this);
-                
+                if (list.Count > 0)
+                {
+                    DefaultGroup.Expander = false;
+                }
+
                 foreach (var item in list)
                 {
                     if (item.Key == " ")
@@ -483,6 +487,10 @@ public partial class MainControl : UserControl, IUserControl
                         group.SetName(item.Key, item.Key);
                         group.SetWindow(this);
                         Groups.Add(group);
+                        if (list.Count > 0)
+                        {
+                            group.Expander = false;
+                        }
                         last ??= group.Find(uuid);
                     }
                 }
@@ -527,6 +535,10 @@ public partial class MainControl : UserControl, IUserControl
                     group.SetName(item.Key, item.Key);
                     group.SetWindow(this);
                     Groups.Add(group);
+                    if (list.Count > 0)
+                    {
+                        group.Expander = false;
+                    }
                     last ??= group.Find(uuid);
                 }
 

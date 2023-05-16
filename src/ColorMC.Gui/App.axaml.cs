@@ -13,7 +13,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.ConfigEdit;
@@ -756,7 +755,7 @@ public partial class App : Application
         IsHide = true;
         if (ConfigBinding.WindowMode())
         {
-            if(AllWindow?.GetVisualRoot() is Window window)
+            if (AllWindow?.GetVisualRoot() is Window window)
             {
                 AllWindow?.HideAll();
                 window.Hide();

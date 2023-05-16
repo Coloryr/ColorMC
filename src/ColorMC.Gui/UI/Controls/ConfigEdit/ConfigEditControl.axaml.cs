@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Interactivity;
 using AvaloniaEdit.Indentation.CSharp;
 using AvaloniaEdit.Utils;
@@ -11,8 +10,6 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Model.ConfigEdit;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;

@@ -1,11 +1,6 @@
 ﻿using ColorMC.Gui.Objs;
-using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace ColorMC.Gui.Utils;
 

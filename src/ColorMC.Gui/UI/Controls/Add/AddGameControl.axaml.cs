@@ -1,21 +1,14 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
-using AvaloniaEdit.Utils;
 using ColorMC.Core;
-using ColorMC.Core.Net.Apis;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Controls.Add.AddGame;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -74,7 +67,7 @@ public partial class AddGameControl : UserControl, IUserControl
             {
                 Label1.Content = App.GetLanguage("AddGameWindow.Text1");
             }
-            
+
 
         }
     }

@@ -7,7 +7,6 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
-using ColorMC.Core.Net.Download;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
@@ -222,11 +221,7 @@ public static class GameBinding
         }
         if (data1.logo != null)
         {
-            var res1 = await SetGameIconFromUrl(res.Item2!, data1.logo.url);
-            if (!res1)
-            {
-                return false;
-            }
+            await SetGameIconFromUrl(res.Item2!, data1.logo.url);
         }
 
         return true;
@@ -242,29 +237,23 @@ public static class GameBinding
         }
         if (data1.icon_url != null)
         {
-            var res1 = await SetGameIconFromUrl(res.Item2!, data1.icon_url);
-            if (!res1)
-            {
-                return false;
-            }
+            await SetGameIconFromUrl(res.Item2!, data1.icon_url);
         }
 
         return true;
     }
 
-    public static async Task<bool> SetGameIconFromUrl(GameSettingObj obj, string url)
+    public static async Task SetGameIconFromUrl(GameSettingObj obj, string url)
     {
         try
         {
             var data = await BaseClient.GetBytes(url);
             await File.WriteAllBytesAsync(obj.GetIconFile(), data);
-            return true;
         }
         catch (Exception e)
         {
-            Logs.Error(App.GetLanguage("GameBinding.Error5"), e);
-            App.ShowError(App.GetLanguage("GameBinding.Error5"), e);
-            return false;
+            Logs.Error(App.GetLanguage("GameBinding.Error8"), e);
+            App.ShowError(App.GetLanguage("GameBinding.Error8"), e);
         }
     }
 
@@ -593,7 +582,7 @@ public static class GameBinding
         return list;
     }
 
-    public static NbtBase? ReadNbt(WorldObj obj, string name) 
+    public static NbtBase? ReadNbt(WorldObj obj, string name)
     {
         var dir = obj.Local;
 

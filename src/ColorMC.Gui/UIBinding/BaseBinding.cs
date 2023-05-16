@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
@@ -838,7 +837,7 @@ public static class BaseBinding
                 {
                     var name = file.GetPath();
                     if (name == null)
-                        return false; 
+                        return false;
                     await File.WriteAllTextAsync(name, arg![0] as string);
                     return true;
                 }

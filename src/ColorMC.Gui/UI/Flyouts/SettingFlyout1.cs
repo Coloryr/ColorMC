@@ -28,7 +28,7 @@ public class SettingFlyout1
         {
             JavaBinding.RemoveJava(item.Name);
         }
-        
+
         Con.Load();
     }
 }

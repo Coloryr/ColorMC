@@ -83,7 +83,7 @@ public record AdvanceJvmObj
 }
 
 public record LaunchDataObj
-{ 
+{
     /// <summary>
     /// 实例添加时间
     /// </summary>

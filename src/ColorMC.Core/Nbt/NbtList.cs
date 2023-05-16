@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace ColorMC.Core.Nbt;
 
@@ -28,7 +23,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
         InNbtType = NbtType.NbtEnd;
     }
 
-    public void Add(NbtBase nbt) 
+    public void Add(NbtBase nbt)
     {
         if (nbt.NbtType != InNbtType)
         {
@@ -38,7 +33,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
         Value.Add(nbt);
     }
 
-    public void RemoveAt(int index) 
+    public void RemoveAt(int index)
     {
         Value.RemoveAt(index);
     }
@@ -58,7 +53,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
             throw new Exception("Missing type on ListTag");
         }
 
-        for (int a = 0; a < length;a++)
+        for (int a = 0; a < length; a++)
         {
             var nbt = ById(type);
             nbt.Read(stream);

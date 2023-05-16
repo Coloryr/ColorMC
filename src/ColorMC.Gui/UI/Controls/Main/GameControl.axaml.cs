@@ -1,10 +1,10 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
-using Avalonia.Input;
 using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Main;

@@ -85,8 +85,8 @@ public static class Servers
             {
                 tag1.Add("icon", new NbtString() { Value = item.Icon });
             }
-            tag1.Add("acceptTextures", new NbtByte() 
-            { Value = item.AcceptTextures ? (byte)1 : (byte)0});
+            tag1.Add("acceptTextures", new NbtByte()
+            { Value = item.AcceptTextures ? (byte)1 : (byte)0 });
             list1.Add(tag1);
         }
 

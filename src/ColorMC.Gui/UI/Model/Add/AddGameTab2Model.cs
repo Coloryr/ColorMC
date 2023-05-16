@@ -1,20 +1,14 @@
-﻿using Avalonia.Controls;
-using Avalonia.Interactivity;
-using AvaloniaEdit.Utils;
+﻿using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Heijden.DNS;
 using ICSharpCode.SharpZipLib.Zip;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
@@ -24,6 +18,7 @@ public partial class AddGameTab2Model : ObservableObject
     private IUserControl Con;
 
     public ObservableCollection<string> GroupList { get; init; } = new();
+    public List<string> PackTypeList => GameBinding.GetPackType();
 
     [ObservableProperty]
     private string name;
@@ -61,6 +56,14 @@ public partial class AddGameTab2Model : ObservableObject
                 if (zFile.GetEntry("game.json") != null)
                 {
                     Type = 0;
+                }
+                else if (zFile.GetEntry("mcbbs.packmeta") != null)
+                {
+                    Type = 4;
+                }
+                else if (zFile.GetEntry("instance.cfg") != null)
+                {
+                    Type = 3;
                 }
                 else if (zFile.GetEntry("manifest.json") != null)
                 {

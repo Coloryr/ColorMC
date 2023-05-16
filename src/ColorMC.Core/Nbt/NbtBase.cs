@@ -1,10 +1,5 @@
 ﻿using ColorMC.Core.Helpers;
-using System;
-using System.Collections.Generic;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Nbt;
 
@@ -106,7 +101,7 @@ public abstract class NbtBase
             }
         }
         var nbt = ById(type);
-        
+
         return nbt.Read(steam2);
     }
 

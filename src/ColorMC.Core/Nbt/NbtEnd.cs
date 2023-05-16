@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Nbt;
+﻿namespace ColorMC.Core.Nbt;
 
 public class NbtEnd : NbtBase
 {
@@ -22,6 +16,6 @@ public class NbtEnd : NbtBase
 
     public override void Write(DataOutputStream stream)
     {
-        
+
     }
 }

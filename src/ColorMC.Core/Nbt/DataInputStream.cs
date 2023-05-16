@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Tomlyn;
+﻿using System.Text;
 
 namespace ColorMC.Core.Nbt;
 
 public class DataInputStream : IDisposable
 {
     private readonly Stream BaseStream;
-    public DataInputStream(Stream stream) 
+    public DataInputStream(Stream stream)
     {
         BaseStream = stream;
     }

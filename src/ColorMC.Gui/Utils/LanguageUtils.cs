@@ -1,10 +1,5 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 

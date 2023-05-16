@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Core.Helpers;
@@ -8,7 +7,6 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using System.Threading;
-using Tmds.DBus.Protocol;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 

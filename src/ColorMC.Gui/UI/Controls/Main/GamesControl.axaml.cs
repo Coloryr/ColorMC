@@ -23,6 +23,11 @@ public partial class GamesControl : UserControl
     private bool Init;
     public string Group { get; private set; }
 
+    public bool Expander
+    {
+        set => Expander_Head.IsExpanded = value;
+    }
+
     public GamesControl()
     {
         InitializeComponent();
@@ -197,6 +202,7 @@ public partial class GamesControl : UserControl
             return null;
         if (Items.TryGetValue(uuid, out var item))
         {
+            Expander_Head.IsExpanded = true;
             return item;
         }
 

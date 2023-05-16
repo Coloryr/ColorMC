@@ -1,18 +1,11 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Data.Converters;
-using Avalonia.Platform;
 using ColorMC.Core.Nbt;
-using ColorMC.Gui.UI.Model.GameEdit;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ConfigEdit;
 
@@ -40,7 +33,7 @@ public class NbtPageViewModel : ObservableObject
                             CanUserSortColumn = false,
                         })
                     {
-                        
+
                     },
                     x => x.Children,
                     x => x.HasChildren,

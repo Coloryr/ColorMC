@@ -1,9 +1,6 @@
 ﻿using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Utils;
-using HtmlAgilityPack;
 using System.Text;
 
 namespace ColorMC.Core.Helpers;

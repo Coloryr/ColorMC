@@ -654,6 +654,7 @@
 	"GameBinding.Error5": "设置图标错误",
 	"GameBinding.Error6": "不允许的图片尺寸",
 	"GameBinding.Error7": "需要至少登录一个微软账户才能使用离线启动",
+	"GameBinding.Error8": "获取图标失败",
 	"TranTypes.Item1": "普通透明",
 	"TranTypes.Item2": "模糊",
 	"TranTypes.Item3": "亚克力模糊",

@@ -1,5 +1,9 @@
-﻿using Avalonia.Controls;
+﻿using AvaloniaEdit.Utils;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Windows;
@@ -7,21 +11,11 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
-using Avalonia.Input;
 using System.Threading;
-using Avalonia.Interactivity;
-using ColorMC.Core.Utils;
-using AvaloniaEdit.Utils;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
