@@ -9,7 +9,6 @@ namespace ColorMC.Core.Nbt;
 
 public class NbtByteArray : NbtBase, IEnumerable<byte>
 {
-    public const int Size = 192;
     public const byte Type = 7;
 
     public List<byte> Value { get; set; }

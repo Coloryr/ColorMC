@@ -8,7 +8,6 @@ namespace ColorMC.Core.Nbt;
 
 public class NbtDouble : NbtBase
 {
-    public const int Size = 128;
     public const byte Type = 6;
 
     public double Value { get; set; }

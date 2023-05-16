@@ -8,7 +8,6 @@ namespace ColorMC.Core.Nbt;
 
 public class NbtEnd : NbtBase
 {
-    public const int Size = 64;
     public const byte Type = 0;
 
     public NbtEnd()

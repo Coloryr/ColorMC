@@ -11,7 +11,6 @@ namespace ColorMC.Core.Nbt;
 
 public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
 {
-    public const int Size = 384;
     public const int Type = 10;
 
     private readonly Dictionary<string, NbtBase> Entries = new();

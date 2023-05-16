@@ -9,7 +9,6 @@ namespace ColorMC.Core.Nbt;
 
 public class NbtList : NbtBase, IEnumerable<NbtBase>
 {
-    public const int Size = 296;
     public const byte Type = 9;
 
     private readonly List<NbtBase> Value = new();

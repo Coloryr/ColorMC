@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Core.Nbt;
 
-public class NbtInt :NbtBase
+public class NbtInt : NbtBase
 {
-    public const int Size = 96;
     public const byte Type = 3;
 
     public int Value { get; set; }

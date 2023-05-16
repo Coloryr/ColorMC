@@ -8,7 +8,6 @@ namespace ColorMC.Core.Nbt;
 
 public class NbtShort : NbtBase
 {
-    public const int Size = 128;
     public const byte Type = 2;
 
     public short Value { get; set; }

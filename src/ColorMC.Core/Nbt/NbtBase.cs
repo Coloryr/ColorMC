@@ -63,19 +63,19 @@ public abstract class NbtBase
 
     private static readonly Dictionary<byte, Type> VALUES = new()
     {
-        {0, typeof(NbtEnd) },
-        {1, typeof(NbtByte) },
-        {2, typeof(NbtShort) },
-        {3, typeof(NbtInt) },
-        {4, typeof(NbtLong) },
-        {5, typeof(NbtFloat) },
-        {6, typeof(NbtDouble) },
-        {7, typeof(NbtByteArray) },
-        {8, typeof(NbtString) },
-        {9, typeof(NbtList) },
-        {10, typeof(NbtCompound) },
-        {11, typeof(NbtIntArray) },
-        {12, typeof(NbtLongArray) }
+        {NbtEnd.Type, typeof(NbtEnd) },
+        {NbtByte.Type, typeof(NbtByte) },
+        {NbtShort.Type, typeof(NbtShort) },
+        {NbtInt.Type, typeof(NbtInt) },
+        {NbtLong.Type, typeof(NbtLong) },
+        {NbtFloat.Type, typeof(NbtFloat) },
+        {NbtDouble.Type, typeof(NbtDouble) },
+        {NbtByteArray.Type, typeof(NbtByteArray) },
+        {NbtString.Type, typeof(NbtString) },
+        {NbtList.Type, typeof(NbtList) },
+        {NbtCompound.Type, typeof(NbtCompound) },
+        {NbtIntArray.Type, typeof(NbtIntArray) },
+        {NbtLongArray.Type, typeof(NbtLongArray) }
     };
 
     public static NbtBase ById(byte id)

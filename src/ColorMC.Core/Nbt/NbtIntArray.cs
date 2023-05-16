@@ -8,7 +8,6 @@ namespace ColorMC.Core.Nbt;
 
 public class NbtIntArray : NbtBase
 {
-    public const int Size = 192;
     public const byte Type = 11;
 
     public List<int> Value { get; set; }
