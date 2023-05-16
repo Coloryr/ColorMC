@@ -23,7 +23,7 @@ public partial class FileTreeNodeModel : ObservableObject
     [ObservableProperty]
     private bool isChecked;
     [ObservableProperty]
-    private ObservableCollection<FileTreeNodeModel>? children;
+    private ObservableCollection<FileTreeNodeModel> children;
 
     public bool IsDirectory { get; init; }
 

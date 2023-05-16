@@ -15,8 +15,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddModPackModel : ObservableObject
 {
-    private IUserControl Con;
-    public readonly Dictionary<int, string> Categories = new();
+    private readonly IUserControl Con;
 
     public List<string> SourceList => GameBinding.GetSourceList();
     public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
@@ -25,7 +24,9 @@ public partial class AddModPackModel : ObservableObject
     public ObservableCollection<string> SortTypeList { get; init; } = new();
     public ObservableCollection<FileItemDisplayObj> DisplayList { get; init; } = new();
 
+    private readonly Dictionary<int, string> Categories = new();
     private FileItemModel? Last;
+    private bool load = false;
 
     [ObservableProperty]
     private FileDisplayObj item;
@@ -62,8 +63,6 @@ public partial class AddModPackModel : ObservableObject
     private bool display = false;
     [ObservableProperty]
     private bool emptyDisplay = true;
-
-    private bool load = false;
 
     public AddModPackModel(IUserControl con)
     {

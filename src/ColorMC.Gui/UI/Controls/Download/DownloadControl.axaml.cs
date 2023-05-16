@@ -13,7 +13,7 @@ namespace ColorMC.Gui.UI.Controls.Download;
 
 public partial class DownloadControl : UserControl, IUserControl
 {
-    private DownloadModel model;
+    private readonly DownloadModel model;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 

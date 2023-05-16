@@ -17,10 +17,11 @@ namespace ColorMC.Gui.UI.Model.ConfigEdit;
 
 public partial class ConfigEditModel : ObservableObject
 {
-    public readonly GameSettingObj Obj;
-    public readonly WorldObj? World;
-
     private readonly List<string> Items = new();
+
+    public GameSettingObj Obj { get; init; }
+    public WorldObj? World { get; init; }
+
 
     public ObservableCollection<string> FileList { get; init; } = new();
 

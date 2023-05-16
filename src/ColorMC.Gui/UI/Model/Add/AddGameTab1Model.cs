@@ -17,12 +17,10 @@ public partial class AddGameTab1Model : AddGameTabModel
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> LoaderVersionList { get; init; } = new();
 
-
     [ObservableProperty]
     private string version;
     [ObservableProperty]
     private string loaderVersion;
-
 
     [ObservableProperty]
     private bool enableLoader;

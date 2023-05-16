@@ -10,9 +10,9 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public class FilesPageViewModel : ObservableObject
 {
+    private readonly FileTreeNodeModel _root;
     public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; }
-    private FileTreeNodeModel _root;
-
+   
     public FilesPageViewModel(string obj, List<string>? unselect = null)
     {
         Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(Array.Empty<FileTreeNodeModel>())
@@ -72,7 +72,7 @@ public class FilesPageViewModel : ObservableObject
         {
             foreach (var item in unselect)
             {
-                foreach (var item1 in _root.Children)
+                foreach (var item1 in _root.Children!)
                 {
                     if (item1.Path.EndsWith(item))
                     {

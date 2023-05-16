@@ -20,17 +20,20 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddControlModel : ObservableObject
 {
-    private IUserControl Con;
+    private readonly IUserControl Con;
 
     public readonly List<SourceType> SourceTypeList = new();
     public readonly Dictionary<int, string> Categories = new();
     public readonly List<DownloadModDisplayModel> ModList = new();
     public readonly List<OptifineDisplayObj> OptifineList = new();
 
-    public FileType now;
+    private FileType now;
+    private FileItemModel? last;
+    private (DownloadItemObj, ModInfoObj) modsave;
+    private bool load = false;
 
     public GameSettingObj Obj { get; private set; }
-    public FileItemModel? last;
+    public bool display = false;
 
     public ObservableCollection<OptifineDisplayObj> DownloadOptifineList { get; init; } = new();
     public ObservableCollection<DownloadModDisplayModel> DownloadModList { get; init; } = new();
@@ -89,10 +92,6 @@ public partial class AddControlModel : ObservableObject
     private string? gameVersionOptifine;
     [ObservableProperty]
     private string? gameVersionDownload;
-
-    public (DownloadItemObj, ModInfoObj) modsave;
-    public bool load = false;
-    public bool display = false;
 
     public AddControlModel(IUserControl con, GameSettingObj obj)
     {

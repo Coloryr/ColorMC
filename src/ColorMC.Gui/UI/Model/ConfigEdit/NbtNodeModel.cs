@@ -7,14 +7,14 @@ namespace ColorMC.Gui.UI.Model.ConfigEdit;
 
 public partial class NbtNodeModel : ObservableObject
 {
-    private NbtBase nbt;
+    private readonly NbtBase nbt;
 
-    private ObservableCollection<NbtNodeModel>? children;
     public string? Name => key == null ? nbt.ToString() : $"{key}: {nbt}";
     public string? key;
     public NbtType NbtType => nbt.NbtType;
-    public IReadOnlyList<NbtNodeModel> Children => children ??= LoadChildren();
 
+    [ObservableProperty]
+    private ObservableCollection<NbtNodeModel> children;
     [ObservableProperty]
     public bool isExpanded;
     [ObservableProperty]
@@ -27,13 +27,14 @@ public partial class NbtNodeModel : ObservableObject
         this.nbt = nbt;
         this.key = key;
         HasChildren = nbt.IsGroup() && nbt.HaveItem();
+        LoadChildren();
     }
 
-    private ObservableCollection<NbtNodeModel> LoadChildren()
+    private void LoadChildren()
     {
         if (!HasChildren)
         {
-            return new();
+            Children = new();
         }
 
         var result = new ObservableCollection<NbtNodeModel>();
@@ -57,6 +58,6 @@ public partial class NbtNodeModel : ObservableObject
         if (result.Count == 0)
             HasChildren = false;
 
-        return result;
+        Children = result;
     }
 }
