@@ -47,7 +47,7 @@ public partial class Info5Control : UserControl
         Display = true;
 
         Label1.Content = title;
-        ComboBox1.Items = list;
+        ComboBox1.ItemsSource = list;
         ComboBox1.SelectedIndex = 0;
 
         App.CrossFade300.Start(null, this, CancellationToken.None);

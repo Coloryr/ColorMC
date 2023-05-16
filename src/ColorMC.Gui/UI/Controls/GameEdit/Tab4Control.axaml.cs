@@ -30,7 +30,7 @@ public partial class Tab4Control : UserControl
     {
         InitializeComponent();
 
-        DataGrid1.Items = List;
+        DataGrid1.ItemsSource = List;
 
         Button_A1.PointerExited += Button_A1_PointerLeave;
         Button_A.PointerEntered += Button_A_PointerEnter;

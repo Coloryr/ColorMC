@@ -125,7 +125,7 @@ public static class ImageUtils
                 }
                 if (value > 0 || lim != 100)
                 {
-                    using var image = SixLabors.ImageSharp.Image.Load(stream1);
+                    using var image = Image.Load(stream1);
 
                     if (lim != 100)
                     {

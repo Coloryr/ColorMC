@@ -41,7 +41,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
         ComboBox6.SelectionChanged += ComboBox6_SelectionChanged;
 
-        DataGridFiles.Items = List1;
+        DataGridFiles.ItemsSource = List1;
         DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
 
         Button1.Click += Button1_Click;

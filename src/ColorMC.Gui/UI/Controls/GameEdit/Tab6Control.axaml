@@ -31,14 +31,17 @@
 
                 <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
                     <StackPanel Orientation="Horizontal">
-                        <Image Margin="0,0,3,0" VerticalAlignment="Center">
-                            <Image.Source>
+                        <Label
+                            Width="30"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center">
+                            <Label.Content>
                                 <MultiBinding Converter="{x:Static vm:FilesPageViewModel.FileIconConverter}">
                                     <Binding Path="IsDirectory" />
                                     <Binding Path="IsExpanded" />
                                 </MultiBinding>
-                            </Image.Source>
-                        </Image>
+                            </Label.Content>
+                        </Label>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
                     </StackPanel>
                 </DataTemplate>

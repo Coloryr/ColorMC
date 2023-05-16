@@ -33,9 +33,6 @@
     <None Remove="Resource\Language\en-us" />
     <None Remove="Resource\Language\gui_zh-cn.json" />
     <None Remove="Resource\Language\zh-cn" />
-    <None Remove="Resource\Pic\file.png" />
-    <None Remove="Resource\Pic\folder-open.png" />
-    <None Remove="Resource\Pic\folder.png" />
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\load.png" />
@@ -46,9 +43,6 @@
   <ItemGroup>
     <EmbeddedResource Include="icon.ico" />
     <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
-    <EmbeddedResource Include="Resource\Pic\file.png" />
-    <EmbeddedResource Include="Resource\Pic\folder-open.png" />
-    <EmbeddedResource Include="Resource\Pic\folder.png" />
     <EmbeddedResource Include="Resource\Pic\game.png" />
     <EmbeddedResource Include="Resource\Pic\launch.png" />
     <EmbeddedResource Include="Resource\Pic\load.png" />
@@ -63,24 +57,20 @@
     <TrimmableAssembly Include="Avalonia.Themes.Default" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0-preview6.1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview6" />
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.Skia" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview6" />
-    <PackageReference Include="Avalonia.X11" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia" Version="11.0.0-preview8" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview8" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0-preview8" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview8" />
+    <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0-preview8" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview8" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview8" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview8" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview8" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
     <PackageReference Include="NAudio.Core" Version="2.1.0" />
     <PackageReference Include="NAudio.WinMM" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	<PackageReference Include="OpenTK.OpenAL" Version="4.7.7" />
-    <PackageReference Include="SixLabors.Fonts" Version="1.0.0-beta19" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
   </ItemGroup>
@@ -93,9 +83,4 @@
     <Folder Include="UI\Converter\" />
   </ItemGroup>
 
-	<ItemGroup>
-	  <Compile Update="UI\Controls\ConfigEdit\ConfigEditControl.axaml.cs">
-	    <DependentUpon>ConfigEditControl.axaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
 </Project>

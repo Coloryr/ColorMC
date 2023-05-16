@@ -32,7 +32,7 @@ public partial class Tab10Control : UserControl
         Button_A.Click += Button_A1_Click;
         Button_A1.Click += Button_A1_Click;
 
-        DataGrid1.Items = List;
+        DataGrid1.ItemsSource = List;
 
         DataGrid1.SelectionChanged += DataGrid1_SelectionChanged;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;

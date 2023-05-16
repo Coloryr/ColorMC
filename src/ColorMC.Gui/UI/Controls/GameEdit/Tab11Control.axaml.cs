@@ -35,7 +35,7 @@ public partial class Tab11Control : UserControl
 
         Button1.Click += Button1_Click;
 
-        DataGrid1.Items = List;
+        DataGrid1.ItemsSource = List;
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 

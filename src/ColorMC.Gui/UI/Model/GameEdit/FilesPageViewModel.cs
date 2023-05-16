@@ -90,20 +90,7 @@ public class FilesPageViewModel : ObservableObject
         {
             if (s_iconConverter is null)
             {
-                var assetLoader = AvaloniaLocator.Current.GetRequiredService<IAssetLoader>();
-
-                using var fileStream = assetLoader.Open(
-                    new Uri("resm:ColorMC.Gui.Resource.Pic.file.png"));
-                using var folderStream = assetLoader.Open(
-                    new Uri("resm:ColorMC.Gui.Resource.Pic.folder.png"));
-                using var folderOpenStream = assetLoader.Open(
-                    new Uri("resm:ColorMC.Gui.Resource.Pic.folder-open.png"));
-
-                var fileIcon = new Bitmap(fileStream);
-                var folderIcon = new Bitmap(folderStream);
-                var folderOpenIcon = new Bitmap(folderOpenStream);
-
-                s_iconConverter = new IconConverter(fileIcon, folderOpenIcon, folderIcon);
+                s_iconConverter = new IconConverter();
             }
 
             return s_iconConverter;
@@ -112,17 +99,6 @@ public class FilesPageViewModel : ObservableObject
 
     private class IconConverter : IMultiValueConverter
     {
-        private readonly Bitmap _file;
-        private readonly Bitmap _folderExpanded;
-        private readonly Bitmap _folderCollapsed;
-
-        public IconConverter(Bitmap file, Bitmap folderExpanded, Bitmap folderCollapsed)
-        {
-            _file = file;
-            _folderExpanded = folderExpanded;
-            _folderCollapsed = folderCollapsed;
-        }
-
         public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
             if (values.Count == 2 &&
@@ -130,9 +106,9 @@ public class FilesPageViewModel : ObservableObject
                 values[1] is bool isExpanded)
             {
                 if (!isDirectory)
-                    return _file;
+                    return "[T]";
                 else
-                    return isExpanded ? _folderExpanded : _folderCollapsed;
+                    return isExpanded ? "{O}" : "{ }";
             }
 
             return null;

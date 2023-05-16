@@ -22,7 +22,7 @@ public partial class Tab4Control : UserControl
     {
         InitializeComponent();
 
-        DataGrid1.Items = List;
+        DataGrid1.ItemsSource = List;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
         Button1.Click += Button1_Click;

@@ -179,6 +179,22 @@ public static class Mods
                     obj3.authorList = (item2 as string)?.ToStringList();
                     model2.TryGetValue("displayURL", out item2);
                     obj3.url = item2 as string;
+
+                    if (model["dependencies"] is TomlTable model3)
+                    {
+                        obj3.dependencies = new();
+                        if (model3.FirstOrDefault().Value is TomlTableArray model4)
+                        {
+                            foreach (var item3 in model4)
+                            {
+                                if (item3.TryGetValue("modId", out item2))
+                                {
+                                    obj3.dependencies.Add(item2 as string);
+                                }
+                            }
+                        }
+                    }
+
                     obj3.Sha1 = sha1;
 
                     list.Add(obj3);
@@ -210,6 +226,14 @@ public static class Mods
                         Game = obj,
                         Sha1 = sha1
                     };
+                    if (obj1.ContainsKey("depends"))
+                    {
+                        obj3.dependencies = new();
+                        foreach (var item3 in obj1.Properties())
+                        {
+                            obj3.dependencies.Add(item3.Name);
+                        }
+                    }
                     list.Add(obj3);
                     add = true;
                     return;
@@ -224,21 +248,33 @@ public static class Mods
                     await stream1.CopyToAsync(stream, cancel);
                     var data = Encoding.UTF8.GetString(stream.ToArray());
                     var obj1 = JObject.Parse(data);
+                    if (obj1["quilt_loader"] is not JObject obj2)
+                    {
+                        return;
+                    }
                     var obj3 = new ModObj
                     {
                         Local = Path.GetFullPath(item.FullName),
                         Disable = item.Extension is ".disable",
                         Loader = Loaders.Quilt,
                         V2 = true,
-                        modid = obj1["quilt_loader"]?["id"]?.ToString(),
-                        name = obj1["quilt_loader"]?["metadata"]?["name"]?.ToString(),
-                        description = obj1["quilt_loader"]?["metadata"]?["description"]?.ToString(),
-                        version = obj1["quilt_loader"]?["version"]?.ToString(),
-                        authorList = (obj1["quilt_loader"]?["metadata"]?["contributors"] as JObject)?.ToStringList(),
-                        url = obj1["quilt_loader"]?["contact"]?["homepage"]?.ToString(),
+                        modid = obj2["id"]?.ToString(),
+                        name = obj2["metadata"]?["name"]?.ToString(),
+                        description = obj2["metadata"]?["description"]?.ToString(),
+                        version = obj2["version"]?.ToString(),
+                        authorList = (obj2["metadata"]?["contributors"] as JObject)?.ToStringList(),
+                        url = obj2["contact"]?["homepage"]?.ToString(),
                         Sha1 = sha1,
                         Game = obj
                     };
+                    if (obj2.ContainsKey("depends"))
+                    {
+                        obj3.dependencies = new();
+                        foreach (var item3 in obj2["depends"]!)
+                        {
+                            obj3.dependencies.Add(item3["id"]?.ToString());
+                        }
+                    }
                     list.Add(obj3);
                     add = true;
                     return;

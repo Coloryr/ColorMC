@@ -1237,8 +1237,8 @@ public static class GameBinding
         return false;
     }
 
-    public static async void CopyServer(ServerInfoObj obj)
+    public static async void CopyServer(TopLevel? top, ServerInfoObj obj)
     {
-        await BaseBinding.CopyTextClipboard($"{obj.Name}\n{obj.IP}");
+        await BaseBinding.CopyTextClipboard(top, $"{obj.Name}\n{obj.IP}");
     }
 }

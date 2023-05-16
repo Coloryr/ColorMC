@@ -27,7 +27,7 @@ public partial class AddJavaControl : UserControl, IUserControl
 
         ColorMCCore.JavaUnzip = JavaUnzip;
 
-        DataGrid1.Items = List;
+        DataGrid1.ItemsSource = List;
 
         ComboBox1.ItemsSource = JavaBinding.GetJavaType();
 

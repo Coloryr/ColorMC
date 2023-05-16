@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Objs.Minecraft;
+﻿using Avalonia.Controls;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UIBinding;
 
@@ -22,7 +23,7 @@ public class GameEditFlyout5
 
     private void Button2_Click()
     {
-        GameBinding.CopyServer(Obj);
+        GameBinding.CopyServer(TopLevel.GetTopLevel(Con), Obj);
     }
 
     private void Button1_Click()

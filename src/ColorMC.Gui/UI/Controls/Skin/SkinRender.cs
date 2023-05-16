@@ -844,7 +844,7 @@ public class SkinRender : OpenGlControlBase
 
         if (App.FindRoot(VisualRoot) is Window window)
         {
-            var screen = window.PlatformImpl?.RenderScaling;
+            var screen = window.RenderScaling;
             if (screen != null)
             {
                 x = (int)(Bounds.Width * screen);

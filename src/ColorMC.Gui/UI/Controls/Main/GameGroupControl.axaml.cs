@@ -22,7 +22,7 @@ public partial class GameGroupControl : UserControl
         Button_Confirm.Click += Button_Confirm_Click;
         Button_Add.Click += Button_Add_Click;
 
-        ComboBox1.Items = List;
+        ComboBox1.ItemsSource = List;
     }
 
     private async void Button_Add_Click(object? sender, RoutedEventArgs e)

@@ -76,12 +76,16 @@ public class GameEditFlyout1
     private async void Button7_Click()
     {
         var list = new List<IStorageFile>();
-        var window = App.FindRoot(Con.GetVisualRoot());
-        foreach (var item in List)
+        var window = Con.GetVisualRoot();
+        if (window is TopLevel top)
         {
-            list.Add(await (window as Window).StorageProvider.TryGetFileFromPathAsync(item.Local));
+            foreach (var item in List)
+            {
+                var data = await top.StorageProvider.TryGetFileFromPathAsync(item.Local);
+                list.Add(data);
+            }
+            await BaseBinding.CopyFileClipboard(TopLevel.GetTopLevel(Con), list);
         }
-        await BaseBinding.CopyFileClipboard(list);
     }
 
     private void Button4_Click()

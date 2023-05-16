@@ -198,7 +198,7 @@
             <DataGrid
                 Name="DataGridFiles"
                 Background="{setting:Colors TranBack}"
-                Items="{Binding FileList}"
+                ItemsSource="{Binding FileList}"
                 SelectedItem="{Binding File}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
@@ -272,7 +272,7 @@
             <DataGrid
                 Name="DataGrid1"
                 Background="{setting:Colors TranBack}"
-                Items="{Binding DownloadOptifineList}"
+                ItemsSource="{Binding DownloadOptifineList}"
                 SelectedItem="{Binding OptifineItem}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
@@ -336,7 +336,7 @@
             <DataGrid
                 Name="DataGrid2"
                 Background="{setting:Colors TranBack}"
-                Items="{Binding DownloadModList}"
+                ItemsSource="{Binding DownloadModList}"
                 SelectedItem="{Binding Mod}">
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Binding="{Binding Download}" Header="{setting:Localize AddWindow.DataGrid.Text1}" />

@@ -40,7 +40,7 @@ public partial class Tab5Control : UserControl
         Button2.Click += Button2_Click;
         Button3.Click += Button3_Click;
 
-        DataGrid1.Items = List;
+        DataGrid1.ItemsSource = List;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
         LayoutUpdated += Tab5Control_LayoutUpdated;

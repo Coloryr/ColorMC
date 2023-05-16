@@ -27,7 +27,7 @@ public partial class UsersControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        DataGrid_User.Items = List;
+        DataGrid_User.ItemsSource = List;
         DataGrid_User.DoubleTapped += DataGrid_User_DoubleTapped;
         DataGrid_User.CellPointerPressed += DataGrid_User_PointerPressed;
 
@@ -327,7 +327,7 @@ public partial class UsersControl : UserControl, IUserControl
                 UserBinding.OAuthCancel();
             });
         BaseBinding.OpUrl(url);
-        await BaseBinding.CopyTextClipboard(code);
+        await BaseBinding.CopyTextClipboard(TopLevel.GetTopLevel(this), code);
     }
 
     private void ComboBox1_SelectionChanged(object? sender, SelectionChangedEventArgs e)

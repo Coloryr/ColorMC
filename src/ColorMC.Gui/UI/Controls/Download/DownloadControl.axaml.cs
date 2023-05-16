@@ -36,7 +36,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
         ColorMCCore.DownloadItemStateUpdate = DownloadItemStateUpdate;
 
-        DataGrid_Download.Items = List;
+        DataGrid_Download.ItemsSource = List;
 
         Button_P1.PointerExited += Button_P1_PointerLeave;
         Button_P.PointerEntered += Button_P_PointerEnter;

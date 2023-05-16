@@ -19,7 +19,7 @@ public partial class Tab3Control : UserControl
     {
         InitializeComponent();
 
-        DataGrid1.Items = List;
+        DataGrid1.ItemsSource = List;
         DataGrid1.CellEditEnded += DataGrid1_CellEditEnded;
 
         Button1.Click += Button1_Click;
