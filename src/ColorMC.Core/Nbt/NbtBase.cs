@@ -1,5 +1,4 @@
 ﻿using ColorMC.Core.Helpers;
-using System.IO;
 using System.IO.Compression;
 
 namespace ColorMC.Core.Nbt;

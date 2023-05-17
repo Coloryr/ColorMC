@@ -1,21 +1,15 @@
-﻿using AvaloniaEdit.Utils;
+﻿using Avalonia.Controls;
+using Avalonia.Input;
+using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Game;
-using System.Text;
-using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using CommunityToolkit.Mvvm.Input;
-using Avalonia.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -66,7 +60,7 @@ public partial class GameEditTab12Model : GameEditTabModel
         Load();
     }
 
-    public async void Drop(IDataObject data) 
+    public async void Drop(IDataObject data)
     {
         var res = await GameBinding.AddFile(Obj, data, FileType.Schematic);
         if (res)

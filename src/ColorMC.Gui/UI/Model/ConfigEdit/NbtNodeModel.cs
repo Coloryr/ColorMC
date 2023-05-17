@@ -1,6 +1,5 @@
 ﻿using ColorMC.Core.Nbt;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.ConfigEdit;

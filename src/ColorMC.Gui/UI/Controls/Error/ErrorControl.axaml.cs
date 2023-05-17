@@ -1,6 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Error;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;

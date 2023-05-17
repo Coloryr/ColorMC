@@ -487,17 +487,17 @@ public static class Launch
         {
             args = new()
             {
-                JvmArgs = obj.JvmArg.JvmArgs 
+                JvmArgs = obj.JvmArg.JvmArgs
                     ?? ConfigUtils.Config.DefaultJvmArg.JvmArgs,
-                GCArgument = obj.JvmArg.GCArgument 
+                GCArgument = obj.JvmArg.GCArgument
                     ?? ConfigUtils.Config.DefaultJvmArg.GCArgument,
-                GC = obj.JvmArg.GC 
+                GC = obj.JvmArg.GC
                     ?? ConfigUtils.Config.DefaultJvmArg.GC,
-                JavaAgent = obj.JvmArg.JavaAgent 
+                JavaAgent = obj.JvmArg.JavaAgent
                     ?? ConfigUtils.Config.DefaultJvmArg.JavaAgent,
-                MaxMemory = obj.JvmArg.MaxMemory 
+                MaxMemory = obj.JvmArg.MaxMemory
                     ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory,
-                MinMemory = obj.JvmArg.MinMemory 
+                MinMemory = obj.JvmArg.MinMemory
                     ?? ConfigUtils.Config.DefaultJvmArg.MinMemory
             };
         }

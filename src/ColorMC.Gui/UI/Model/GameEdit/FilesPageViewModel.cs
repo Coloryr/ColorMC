@@ -12,7 +12,7 @@ public class FilesPageViewModel : ObservableObject
 {
     private readonly FileTreeNodeModel _root;
     public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; }
-   
+
     public FilesPageViewModel(string obj, List<string>? unselect = null)
     {
         Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(Array.Empty<FileTreeNodeModel>())

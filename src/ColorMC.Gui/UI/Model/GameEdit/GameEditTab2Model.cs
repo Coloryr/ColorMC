@@ -1,17 +1,12 @@
-﻿using ColorMC.Core.Objs;
+﻿using AvaloniaEdit.Utils;
+using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using ColorMC.Core.LaunchPath;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
-using Avalonia.Controls;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using AvaloniaEdit.Utils;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -81,7 +76,7 @@ public partial class GameEditTab2Model : GameEditTabModel
     private bool load;
 
     public GameEditTab2Model(IUserControl con, GameSettingObj obj) : base(con, obj)
-    { 
+    {
         title = string.Format(App.GetLanguage("GameEditWindow.Tab2.Text13"), Obj.Name);
 
         Load();

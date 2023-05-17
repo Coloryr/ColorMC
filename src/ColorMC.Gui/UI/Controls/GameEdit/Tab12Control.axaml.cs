@@ -1,16 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Threading;
-using AvaloniaEdit.Utils;
-using ColorMC.Core.Game;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
-using ColorMC.Gui.UIBinding;
-using System.Collections.ObjectModel;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
@@ -83,4 +75,4 @@ public partial class Tab12Control : UserControl
         App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
     }
 }
-   
+

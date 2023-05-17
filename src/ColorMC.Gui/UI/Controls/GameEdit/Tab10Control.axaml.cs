@@ -1,14 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Threading;
-using AvaloniaEdit.Utils;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
-using ColorMC.Gui.UIBinding;
-using System.Collections.ObjectModel;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;

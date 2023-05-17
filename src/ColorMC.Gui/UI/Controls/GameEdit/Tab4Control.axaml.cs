@@ -1,20 +1,11 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
-using AvaloniaEdit.Utils;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Flyouts;
-using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
@@ -141,5 +132,5 @@ public partial class Tab4Control : UserControl
     {
         DataGrid1.MakeTran();
     }
-    
+
 }
