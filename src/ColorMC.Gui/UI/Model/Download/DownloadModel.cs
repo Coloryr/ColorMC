@@ -38,10 +38,6 @@ public partial class DownloadModel : ObservableObject
     [ObservableProperty]
     private double value = 0;
     [ObservableProperty]
-    private bool displayP;
-    [ObservableProperty]
-    private bool displayS;
-    [ObservableProperty]
     private bool isPause;
 
     public DownloadModel(IUserControl con)

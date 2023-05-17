@@ -17,8 +17,6 @@ public partial class ConfigEditControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        DataContext = model;
-
         TextEditor1.Options.ShowBoxForControlCharacters = true;
         TextEditor1.TextArea.IndentationStrategy =
             new CSharpIndentationStrategy(TextEditor1.Options);
@@ -41,11 +39,13 @@ public partial class ConfigEditControl : UserControl, IUserControl
     public ConfigEditControl(WorldObj world) : this()
     {
         model = new(world.Game, world);
+        DataContext = model;
     }
 
     public ConfigEditControl(GameSettingObj obj) : this()
     {
         model = new(obj, null);
+        DataContext = model;
     }
 
     public void Update()

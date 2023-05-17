@@ -16,25 +16,29 @@
                 <ComboBox
                     Name="ComboBox1"
                     Width="200"
-                    HorizontalAlignment="Center" />
+                    HorizontalAlignment="Center"
+                    ItemsSource="{Binding GameVersionList}"
+                    SelectedItem="{Binding GameVersion}" />
                 <CheckBox
                     Name="CheckBox2"
                     Width="80"
                     Margin="10,0,0,0"
                     Content="{setting:Localize AddGameWindow.Tab1.Text6}"
-                    IsChecked="True" />
+                    IsChecked="{Binding SelectRelease}" />
                 <CheckBox
                     Name="CheckBox3"
                     Width="80"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                    Content="{setting:Localize AddGameWindow.Tab1.Text7}"
+                    IsChecked="{Binding SelectSnapshot}" />
                 <CheckBox
                     Name="CheckBox4"
                     Width="80"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text8}" />
+                    Content="{setting:Localize AddGameWindow.Tab1.Text8}"
+                    IsChecked="{Binding SelectOther}" />
                 <Button
-                    Name="Button1"
                     Width="100"
                     Height="25"
+                    Command="{Binding GameVersionReload}"
                     Content="{setting:Localize GameEditWindow.Tab1.Text2}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text33}"
                     ToolTip.VerticalOffset="-30" />
@@ -47,35 +51,40 @@
                 <ComboBox
                     Name="ComboBox2"
                     Width="200"
-                    IsEnabled="False" />
+                    IsEnabled="{Binding EnableLoader}"
+                    ItemsSource="{Binding LoaderVersionList}"
+                    SelectedItem="{Binding LoaderVersion}" />
                 <CheckBox
                     Name="CheckBox5"
                     Width="80"
                     Margin="10,0,0,0"
                     Content="Forge"
-                    IsEnabled="False" />
+                    IsChecked="{Binding SelectForge}"
+                    IsEnabled="{Binding EnableForge}" />
                 <CheckBox
                     Name="CheckBox6"
                     Width="80"
                     Content="Fabric"
-                    IsEnabled="False" />
+                    IsChecked="{Binding SelectFabric}"
+                    IsEnabled="{Binding EnableFabric}" />
                 <CheckBox
                     Name="CheckBox7"
                     Width="80"
                     Content="Quilt"
-                    IsEnabled="False" />
+                    IsChecked="{Binding SelectQuilt}"
+                    IsEnabled="{Binding EnableQuilt}" />
                 <Button
-                    Name="Button2"
                     Width="100"
                     Height="25"
+                    Command="{Binding LoaderReload}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text11}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text34}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
-                    Name="Button3"
                     Width="100"
                     Height="25"
                     Margin="5,0,0,0"
+                    Command="{Binding LoaderVersionLoad}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text12}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text35}"
                     ToolTip.VerticalOffset="-30" />
@@ -85,12 +94,16 @@
 
             <StackPanel Orientation="Horizontal">
 
-                <ComboBox Name="ComboBox3" Width="200" />
+                <ComboBox
+                    Name="ComboBox3"
+                    Width="200"
+                    ItemsSource="{Binding GroupList}"
+                    SelectedItem="{Binding Group}" />
                 <Button
-                    Name="Button4"
                     Width="100"
                     Height="25"
                     Margin="10,0,0,0"
+                    Command="{Binding AddGroup}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text37}"
                     ToolTip.VerticalOffset="-30" />
@@ -98,9 +111,9 @@
 
             <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                 <Button
-                    Name="Button7"
                     Width="150"
                     Height="25"
+                    Command="{Binding OpenOptifine}"
                     Content="{setting:Localize AddWindow.Text10}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text43}"
                     ToolTip.VerticalOffset="-30" />
@@ -109,25 +122,29 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize GameEditWindow.Tab1.Text4}" />
             </StackPanel>
-            <CheckBox Name="CheckBox1" Content="{setting:Localize GameEditWindow.Tab1.Text3}" />
+            <CheckBox
+                Name="CheckBox1"
+                Content="{setting:Localize GameEditWindow.Tab1.Text3}"
+                IsChecked="{Binding ModPack}" />
         </StackPanel>
         <StackPanel
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Orientation="Horizontal">
             <Button
-                Name="Button5"
                 Width="120"
                 Height="25"
                 Margin="5"
+                Command="{Binding Delete}"
                 Content="{setting:Localize Button.Delete}"
+                IsEnabled="{Binding !GameRun}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text36}"
                 ToolTip.VerticalOffset="-30" />
             <Button
-                Name="Button8"
                 Width="120"
                 Height="25"
                 Margin="0,5,5,5"
+                Command="{Binding OpenServerPack}"
                 Content="{setting:Localize GameEditWindow.Tab1.Text5}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text47}"
                 ToolTip.VerticalOffset="-30" />
@@ -138,21 +155,21 @@
             VerticalAlignment="Bottom"
             Orientation="Horizontal">
             <Button
-                Name="Button9"
                 Width="120"
                 Height="25"
                 Margin="0,5,0,5"
+                Command="{Binding OpenConfigEdit}"
                 Content="{setting:Localize GameEditWindow.Tab1.Text6}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text50}"
                 ToolTip.VerticalOffset="-30" />
 
             <Button
-                Name="Button6"
                 Width="120"
                 Height="25"
                 Margin="5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
+                Command="{Binding Open}"
                 Content="{setting:Localize Button.OpFile}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                 ToolTip.VerticalOffset="-30" />

@@ -3,6 +3,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,13 +14,15 @@ namespace ColorMC.Gui.UI.Flyouts;
 public class GameEditFlyout1
 {
     private readonly IEnumerable<ModDisplayModel> List;
-    private readonly Tab4Control Con;
-    private ModDisplayModel Obj;
+    private readonly ModDisplayModel Obj;
+    private readonly Control Con;
+    private readonly GameEditTab4Model Model;
     private bool Single;
 
-    public GameEditFlyout1(Tab4Control con, IList obj)
+    public GameEditFlyout1(Control con, IList obj, GameEditTab4Model model)
     {
         Con = con;
+        Model = model;
         List = obj.Cast<ModDisplayModel>();
         if (List.Count() == 1)
         {
@@ -45,13 +48,13 @@ public class GameEditFlyout1
     {
         if (Single)
         {
-            Con.DisE(Obj);
+            Model.DisE(Obj);
         }
         else
         {
             foreach (var item in List)
             {
-                Con.DisE(item);
+                Model.DisE(item);
             }
         }
     }
@@ -60,11 +63,11 @@ public class GameEditFlyout1
     {
         if (Single)
         {
-            Con.Delete(Obj);
+            Model.Delete(Obj);
         }
         else
         {
-            Con.Delete(List);
+            Model.Delete(List);
         }
     }
 
@@ -82,6 +85,9 @@ public class GameEditFlyout1
             foreach (var item in List)
             {
                 var data = await top.StorageProvider.TryGetFileFromPathAsync(item.Local);
+                if (data == null)
+                    continue;
+
                 list.Add(data);
             }
             await BaseBinding.CopyFileClipboard(TopLevel.GetTopLevel(Con), list);

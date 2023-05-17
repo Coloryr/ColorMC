@@ -243,7 +243,7 @@ public partial class Tab6Control : UserControl
         var obj = new ServerCustom()
         {
             IP = TextBox1.Text,
-            Port = Funtcions.CheckNotNumber(TextBox2.Text) ? 0 : int.Parse(TextBox2.Text!),
+            Port = Funtcions.CheckNotNumber(TextBox2.Text) ? (ushort)0 : ushort.Parse(TextBox2.Text!),
             Motd = CheckBox1.IsChecked == true,
             JoinServer = CheckBox2.IsChecked == true,
             MotdColor = ColorPicker1.Color.ToString(),

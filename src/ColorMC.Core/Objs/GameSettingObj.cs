@@ -40,11 +40,11 @@ public record ServerObj
     /// <summary>
     /// 服务器地址
     /// </summary>
-    public string IP { get; set; }
+    public string? IP { get; set; }
     /// <summary>
     /// 服务器端口
     /// </summary>
-    public int Port { get; set; }
+    public ushort? Port { get; set; }
 }
 
 /// <summary>
@@ -55,19 +55,19 @@ public record ProxyHostObj
     /// <summary>
     /// 服务器地址
     /// </summary>
-    public string IP { get; set; }
+    public string? IP { get; set; }
     /// <summary>
     /// 服务器端口
     /// </summary>
-    public ushort Port { get; set; }
+    public ushort? Port { get; set; }
     /// <summary>
     /// 用户名
     /// </summary>
-    public string User { get; set; }
+    public string? User { get; set; }
     /// <summary>
     /// 密码
     /// </summary>
-    public string Password { get; set; }
+    public string? Password { get; set; }
 }
 
 public record AdvanceJvmObj

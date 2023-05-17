@@ -656,9 +656,9 @@ public static class BaseBinding
     /// 在浏览器打开网址
     /// </summary>
     /// <param name="url">网址</param>
-    public static void OpUrl(string url)
+    public static void OpUrl(string? url)
     {
-        url = url.Replace(" ", "%20");
+        url = url?.Replace(" ", "%20");
         switch (SystemInfo.Os)
         {
             case OsType.Windows:

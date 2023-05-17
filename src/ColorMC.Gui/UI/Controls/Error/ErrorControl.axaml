@@ -11,9 +11,9 @@
     mc:Ignorable="d">
     <Grid>
         <ae:TextEditor
-            Name="TextEditor1"
             Margin="3"
             Background="{setting:Colors TranBack}"
+            Document="{Binding Text}"
             FontSize="14"
             FontWeight="Normal"
             Foreground="{setting:Colors Font}"
@@ -23,12 +23,12 @@
             VerticalScrollBarVisibility="Visible"
             WordWrap="True" />
         <Button
-            Name="Button1"
             Width="100"
             Height="25"
             Margin="3"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
+            Command="{Binding Save}"
             Content="{setting:Localize ErrorWindow.Text1}" />
     </Grid>
 </UserControl>

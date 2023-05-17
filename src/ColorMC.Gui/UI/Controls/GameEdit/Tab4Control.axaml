@@ -15,15 +15,16 @@
                 <DockPanel>
                     <Label VerticalAlignment="Center" Content="{setting:Localize GameEditWindow.Tab4.Text2}" />
                     <ComboBox
-                        Name="ComboBox1"
-                        Width="120"
+                        Width="150"
                         Margin="5,0,0,0"
-                        VerticalAlignment="Center" />
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding FilterList}"
+                        SelectedIndex="{Binding Filter}" />
                     <Button
-                        Name="Button1"
                         Width="85"
                         Height="25"
                         Margin="5,0,0,0"
+                        Command="{Binding Open}"
                         Content="{setting:Localize Button.OpFile}"
                         DockPanel.Dock="Right"
                         ToolTip.Tip="{setting:Localize ToolTip.Text39}"
@@ -32,6 +33,7 @@
                         Name="TextBox1"
                         Margin="5,0,0,0"
                         Classes="input1"
+                        Text="{Binding Text}"
                         Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
 
                 </DockPanel>
@@ -46,6 +48,8 @@
                     Background="{setting:Colors TranBack}"
                     CanUserSortColumns="False"
                     HorizontalScrollBarVisibility="Visible"
+                    ItemsSource="{Binding ModList}"
+                    SelectedItem="{Binding Item}"
                     VerticalScrollBarVisibility="Visible">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="10" IsReadOnly="True" />
@@ -97,11 +101,13 @@
                             Name="Button_I"
                             Width="20"
                             Height="30"
+                            Command="{Binding Import}"
                             Content="I" />
                         <Button
                             Name="Button_I1"
                             Width="100"
                             Height="30"
+                            Command="{Binding Import}"
                             Content="{setting:Localize Button.Input}"
                             IsVisible="False" />
                     </Grid>
@@ -110,11 +116,13 @@
                             Name="Button_A"
                             Width="20"
                             Height="30"
+                            Command="{Binding Add}"
                             Content="A" />
                         <Button
                             Name="Button_A1"
                             Width="100"
                             Height="30"
+                            Command="{Binding Add}"
                             Content="{setting:Localize Button.Add}"
                             IsVisible="False" />
                     </Grid>
@@ -123,11 +131,13 @@
                             Name="Button_R"
                             Width="20"
                             Height="30"
+                            Command="{Binding Load}"
                             Content="R" />
                         <Button
                             Name="Button_R1"
                             Width="100"
                             Height="30"
+                            Command="{Binding Load}"
                             Content="{setting:Localize Button.Refash}"
                             IsVisible="False" />
                     </Grid>
@@ -136,11 +146,13 @@
                             Name="Button_C"
                             Width="20"
                             Height="30"
+                            Command="{Binding Check}"
                             Content="C" />
                         <Button
                             Name="Button_C1"
                             Width="100"
                             Height="30"
+                            Command="{Binding Check}"
                             Content="{setting:Localize GameEditWindow.Tab4.Text3}"
                             IsVisible="False" />
                     </Grid>
@@ -149,11 +161,13 @@
                             Name="Button_B"
                             Width="20"
                             Height="30"
+                            Command="{Binding StartSet}"
                             Content="B" />
                         <Button
                             Name="Button_B1"
                             Width="100"
                             Height="30"
+                            Command="{Binding StartSet}"
                             Content="{setting:Localize GameEditWindow.Tab4.Text4}"
                             IsVisible="False" />
                     </Grid>

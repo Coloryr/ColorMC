@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Windows;
 using System.Threading;
 
@@ -27,6 +28,13 @@ public partial class GameEditControl : UserControl, IUserControl
     private readonly ContentControl content2 = new();
     private CancellationTokenSource cancel = new();
 
+    private readonly GameEditTab1Model model1;
+    private readonly GameEditTab2Model model2;
+    private readonly GameEditTab4Model model4;
+    private readonly GameEditTab10Model model10;
+    private readonly GameEditTab11Model model11;
+    private readonly GameEditTab12Model model12;
+
     private int now;
 
     public GameSettingObj Obj { get; private set; }
@@ -37,17 +45,29 @@ public partial class GameEditControl : UserControl, IUserControl
     {
         Obj = obj;
 
-        tab1.SetGame(obj);
-        tab2.SetGame(obj);
-        tab4.SetGame(obj);
         tab5.SetGame(obj);
         tab6.SetGame(obj);
         tab7.SetGame(obj);
         tab8.SetGame(obj);
         tab9.SetGame(obj);
-        tab10.SetGame(obj);
-        tab11.SetGame(obj);
-        tab12.SetGame(obj);
+
+        model1 = new(this, obj);
+        tab1.DataContext = model1;
+
+        model2 = new(this, obj);
+        tab2.DataContext = model2;
+
+        model4 = new(this, obj);
+        tab4.DataContext = model4;
+
+        model10 = new(this, obj);
+        tab10.DataContext = model10;
+
+        model11 = new(this, obj);
+        tab11.DataContext = model11;
+
+        model12 = new(this, obj);
+        tab12.DataContext = model12;
 
         InitializeComponent();
 
@@ -89,8 +109,6 @@ public partial class GameEditControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(string.Format(App.GetLanguage("GameEditWindow.Title"), Obj?.Name));
-
-        tab1.Update();
     }
 
     public void SetType(GameEditWindowType type)
@@ -131,15 +149,15 @@ public partial class GameEditControl : UserControl, IUserControl
         {
             case 0:
                 Go(tab1);
-                tab1.Update();
+                model1.Load();
                 break;
             case 1:
                 Go(tab2);
-                tab2.Update();
+                model2.Load();
                 break;
             case 2:
                 Go(tab4);
-                tab4.Update();
+                model4.Load();
                 break;
             case 3:
                 Go(tab5);
@@ -155,15 +173,15 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case 6:
                 Go(tab10);
-                tab10.Update();
+                model10.Load();
                 break;
             case 7:
                 Go(tab11);
-                tab11.Update();
+                model11.Load();
                 break;
             case 8:
                 Go(tab12);
-                tab12.Update();
+                model12.Load();
                 break;
             case 9:
                 Go(tab6);

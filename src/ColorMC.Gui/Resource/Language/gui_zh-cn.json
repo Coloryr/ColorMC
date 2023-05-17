@@ -312,6 +312,7 @@
 	"GameEditWindow.Tab2.Text29": "启动后执行程序",
 	"GameEditWindow.Tab2.Text30": "执行的程序命令",
 	"GameEditWindow.Tab2.Text31": "启动前执行程序",
+	"GameEditWindow.Tab2.Text32": "附加的classpath",
 	"GameEditWindow.Tab2.Info1": "是否要删除所有配置",
 	"GameEditWindow.Tab4.Text1": "过滤内容",
 	"GameEditWindow.Tab4.Text2": "过滤选项",

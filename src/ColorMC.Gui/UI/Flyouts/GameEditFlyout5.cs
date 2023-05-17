@@ -1,18 +1,19 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout5
 {
-    private readonly ServerInfoObj Obj;
-    private readonly Tab10Control Con;
-    public GameEditFlyout5(Tab10Control con, ServerInfoObj obj)
+    private readonly Control Con;
+    private readonly GameEditTab10Model Model;
+    public GameEditFlyout5(Control con, GameEditTab10Model model)
     {
         Con = con;
-        Obj = obj;
+        Model = model;
 
         var fy = new FlyoutsControl(new()
         {
@@ -23,11 +24,11 @@ public class GameEditFlyout5
 
     private void Button2_Click()
     {
-        GameBinding.CopyServer(TopLevel.GetTopLevel(Con), Obj);
+        GameBinding.CopyServer(TopLevel.GetTopLevel(Con), Model.Item!);
     }
 
     private void Button1_Click()
     {
-        Con.Delete(Obj);
+        Model.Delete(Model.Item!);
     }
 }

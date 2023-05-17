@@ -22,7 +22,6 @@ public partial class DownloadControl : UserControl, IUserControl
         InitializeComponent();
 
         model = new(this);
-        model.PropertyChanged += Model_PropertyChanged;
         DataContext = model;
 
         Button_P1.PointerExited += Button_P1_PointerLeave;
@@ -32,50 +31,24 @@ public partial class DownloadControl : UserControl, IUserControl
         Button_S.PointerEntered += Button_S_PointerEnter;
     }
 
-    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == "DisplayP")
-        {
-            if (model.DisplayP)
-            {
-                App.CrossFade100.Start(null, Button_P1, CancellationToken.None);
-            }
-            else
-            {
-                App.CrossFade100.Start(Button_P1, null, CancellationToken.None);
-            }
-        }
-        else if (e.PropertyName == "DisplayS")
-        {
-            if (model.DisplayS)
-            {
-                App.CrossFade100.Start(null, Button_S1, CancellationToken.None);
-            }
-            else
-            {
-                App.CrossFade100.Start(Button_S1, null, CancellationToken.None);
-            }
-        }
-    }
-
     private void Button_S1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        model.DisplayS = false;
+        App.CrossFade100.Start(Button_S1, null, CancellationToken.None);
     }
 
     private void Button_S_PointerEnter(object? sender, PointerEventArgs e)
     {
-        model.DisplayS = true;
+        App.CrossFade100.Start(null, Button_S1, CancellationToken.None);
     }
 
     private void Button_P1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        model.DisplayP = false;
+        App.CrossFade100.Start(Button_P1, null, CancellationToken.None);
     }
 
     private void Button_P_PointerEnter(object? sender, PointerEventArgs e)
     {
-        model.DisplayP = true;
+        App.CrossFade100.Start(null, Button_P1, CancellationToken.None);
     }
 
     public void Opened()

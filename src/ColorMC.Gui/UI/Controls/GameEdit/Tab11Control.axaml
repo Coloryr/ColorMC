@@ -13,10 +13,10 @@
     <Grid>
         <DockPanel Margin="5">
             <Button
-                Name="Button1"
                 Width="85"
                 Height="25"
                 HorizontalAlignment="Right"
+                Command="{Binding Open}"
                 Content="{setting:Localize Button.OpFile}"
                 DockPanel.Dock="Top"
                 ToolTip.Tip="{setting:Localize ToolTip.Text39}"
@@ -27,7 +27,9 @@
                     Margin="0,3,0,0"
                     AutoGenerateColumns="False"
                     CanUserResizeColumns="True"
-                    CanUserSortColumns="False">
+                    CanUserSortColumns="False"
+                    ItemsSource="{Binding ShaderpackList}"
+                    SelectedItem="{Binding Item}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="10" IsReadOnly="True" />
                         <DataGridTextColumn
@@ -46,11 +48,13 @@
                             Name="Button_A"
                             Width="20"
                             Height="30"
+                            Command="{Binding Add}"
                             Content="A" />
                         <Button
                             Name="Button_A1"
                             Width="100"
                             Height="30"
+                            Command="{Binding Add}"
                             Content="{setting:Localize Button.Add}"
                             IsVisible="False" />
                     </Grid>
@@ -59,11 +63,13 @@
                             Name="Button_R"
                             Width="20"
                             Height="30"
+                            Command="{Binding Load}"
                             Content="R" />
                         <Button
                             Name="Button_R1"
                             Width="100"
                             Height="30"
+                            Command="{Binding Load}"
                             Content="{setting:Localize Button.Refash}"
                             IsVisible="False" />
                     </Grid>

@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -13,8 +14,23 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class ServerMotdControl : UserControl
 {
-    private string IP;
-    private int Port;
+    public static readonly StyledProperty<string?> IPProperty =
+        AvaloniaProperty.Register<ServerMotdControl, string?>(nameof(IP));
+    public static readonly StyledProperty<ushort> PortProperty =
+        AvaloniaProperty.Register<ServerMotdControl, ushort>(nameof(Port));
+
+    private bool nowset;
+
+    public string? IP
+    {
+        get => GetValue(IPProperty);
+        set => SetValue(IPProperty, value);
+    }
+    public ushort Port
+    {
+        get => GetValue(PortProperty);
+        private set => SetValue(PortProperty, value);
+    }
 
     private bool FirstLine = true;
     private readonly Random random = new();
@@ -24,6 +40,41 @@ public partial class ServerMotdControl : UserControl
         InitializeComponent();
 
         Button2.Click += Button2_Click;
+
+        PropertyChanged += ServerMotdControl_PropertyChanged;
+    }
+
+    private void ServerMotdControl_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == PortProperty)
+        {
+            Update();
+        }
+        else if (e.Property == IPProperty)
+        {
+            if (nowset)
+            {
+                return;
+            }
+            nowset = true;
+            var ip = IP;
+            if (ip == null)
+            {
+                return;
+            }
+            int index = ip.LastIndexOf(':');
+            if (index == -1)
+            {
+                Port = 25565;
+            }
+            else
+            {
+                IP = ip[..index];
+                _ = ushort.TryParse(ip[(index + 1)..], out var port);
+                Port = port;
+            }
+            nowset = false;
+        }
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
@@ -31,29 +82,12 @@ public partial class ServerMotdControl : UserControl
         Update();
     }
 
-    public void Load(string ip)
+    public void Load(string ip, ushort port)
     {
-        int index = ip.LastIndexOf(':');
-        if (index == -1)
-        {
-            IP = ip;
-            Port = 25565;
-        }
-        else
-        {
-            IP = ip[..index];
-            _ = int.TryParse(ip[(index + 1)..], out Port);
-        }
-
-        Update();
-    }
-
-    public void Load(string ip, int port)
-    {
-        IP = ip;
-        Port = port;
-
-        Update();
+        nowset = true;
+        SetValue(IPProperty, ip);
+        SetValue(PortProperty, port);
+        nowset = false;
     }
 
     private async void Update()
@@ -64,9 +98,12 @@ public partial class ServerMotdControl : UserControl
         StackPanel1.Children.Clear();
         StackPanel2.Children.Clear();
 
+        var ip = IP;
+        var port = Port;
+
         var motd = await Task.Run(async () =>
         {
-            return await ServerMotd.GetServerInfo(IP, Port);
+            return await ServerMotd.GetServerInfo(ip, port);
         });
         if (motd.State == StateType.GOOD)
         {

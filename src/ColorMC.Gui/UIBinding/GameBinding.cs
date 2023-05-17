@@ -445,13 +445,6 @@ public static class GameBinding
         obj.Save();
     }
 
-    public static void SetJavaLocal(GameSettingObj obj, string? name, string? local)
-    {
-        obj.JvmName = name;
-        obj.JvmLocal = local;
-        obj.Save();
-    }
-
     public static void SetGameJvmMemArg(GameSettingObj obj, uint? min, uint? max)
     {
         obj.JvmArg ??= new();

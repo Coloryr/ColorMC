@@ -11,7 +11,7 @@ public record LastUser
 public record ServerCustom
 {
     public string IP { get; set; }
-    public int Port { get; set; }
+    public ushort Port { get; set; }
     public bool Motd { get; set; }
     public bool JoinServer { get; set; }
     public string MotdColor { get; set; }

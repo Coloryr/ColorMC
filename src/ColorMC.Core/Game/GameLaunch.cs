@@ -487,18 +487,18 @@ public static class Launch
         {
             args = new()
             {
-                JvmArgs = obj.JvmArg.JvmArgs ??
-                ConfigUtils.Config.DefaultJvmArg.JvmArgs,
-                GCArgument = obj.JvmArg.GCArgument ??
-                ConfigUtils.Config.DefaultJvmArg.GCArgument,
-                GC = obj.JvmArg.GC ??
-                ConfigUtils.Config.DefaultJvmArg.GC,
-                JavaAgent = obj.JvmArg.JavaAgent ??
-                ConfigUtils.Config.DefaultJvmArg.JavaAgent,
-                MaxMemory = obj.JvmArg.MaxMemory ??
-                ConfigUtils.Config.DefaultJvmArg.MaxMemory,
-                MinMemory = obj.JvmArg.MinMemory ??
-                ConfigUtils.Config.DefaultJvmArg.MinMemory
+                JvmArgs = obj.JvmArg.JvmArgs 
+                    ?? ConfigUtils.Config.DefaultJvmArg.JvmArgs,
+                GCArgument = obj.JvmArg.GCArgument 
+                    ?? ConfigUtils.Config.DefaultJvmArg.GCArgument,
+                GC = obj.JvmArg.GC 
+                    ?? ConfigUtils.Config.DefaultJvmArg.GC,
+                JavaAgent = obj.JvmArg.JavaAgent 
+                    ?? ConfigUtils.Config.DefaultJvmArg.JavaAgent,
+                MaxMemory = obj.JvmArg.MaxMemory 
+                    ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory,
+                MinMemory = obj.JvmArg.MinMemory 
+                    ?? ConfigUtils.Config.DefaultJvmArg.MinMemory
             };
         }
 
@@ -600,8 +600,24 @@ public static class Launch
         List<string> gameArg = new();
         gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
 
-        WindowSettingObj window = obj.Window ?? ConfigUtils.Config.Window;
-        if (window.FullScreen)
+        WindowSettingObj window;
+        if (obj.Window == null)
+        {
+            window = ConfigUtils.Config.Window;
+        }
+        else
+        {
+            window = new()
+            {
+                FullScreen = obj.Window.FullScreen
+                    ?? ConfigUtils.Config.Window.FullScreen,
+                Width = obj.Window.Width
+                    ?? ConfigUtils.Config.Window.Width,
+                Height = obj.Window.Height
+                    ?? ConfigUtils.Config.Window.Height,
+            };
+        }
+        if (window.FullScreen == true)
         {
             gameArg.Add("--fullscreen");
         }
@@ -619,7 +635,8 @@ public static class Launch
             }
         }
 
-        if (obj.StartServer != null && !string.IsNullOrWhiteSpace(obj.StartServer.IP))
+        if (obj.StartServer != null && !string.IsNullOrWhiteSpace(obj.StartServer.IP)
+            && obj.StartServer.Port != null)
         {
             gameArg.Add($"--server");
             gameArg.Add(obj.StartServer.IP);
@@ -630,6 +647,8 @@ public static class Launch
             }
         }
 
+        ProxyHostObj host;
+
         if (obj.ProxyHost != null)
         {
             if (!string.IsNullOrWhiteSpace(obj.ProxyHost.IP))
@@ -637,7 +656,7 @@ public static class Launch
                 gameArg.Add($"--proxyHost");
                 gameArg.Add(obj.ProxyHost.IP);
             }
-            if (obj.ProxyHost.Port != 0)
+            if (obj.ProxyHost.Port != null && obj.ProxyHost.Port != 0)
             {
                 gameArg.Add($"--proxyPort");
                 gameArg.Add(obj.ProxyHost.Port.ToString());

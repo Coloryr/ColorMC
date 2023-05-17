@@ -30,17 +30,17 @@ public record WindowSettingObj
     /// <summary>
     /// 全屏
     /// </summary>
-    public bool FullScreen { get; set; }
+    public bool? FullScreen { get; set; }
 
     /// <summary>
     /// 高
     /// </summary>
-    public uint Height { get; set; }
+    public uint? Height { get; set; }
 
     /// <summary>
     /// 宽
     /// </summary>
-    public uint Width { get; set; }
+    public uint? Width { get; set; }
 }
 
 

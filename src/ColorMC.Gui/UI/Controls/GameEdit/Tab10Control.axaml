@@ -10,14 +10,16 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <DockPanel Margin="5">
-        <view:ServerMotdControl Name="ServerMotd" DockPanel.Dock="Top" />
+        <view:ServerMotdControl DockPanel.Dock="Top" IP="{Binding IP}" />
         <Grid>
             <DataGrid
                 Name="DataGrid1"
                 Margin="0,3,0,0"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
-                CanUserSortColumns="False">
+                CanUserSortColumns="False"
+                ItemsSource="{Binding ServerList}"
+                SelectedItem="{Binding Item}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="10" IsReadOnly="True" />
                     <DataGridTextColumn
@@ -36,11 +38,13 @@
                         Name="Button_A"
                         Width="20"
                         Height="30"
+                        Command="{Binding Add}"
                         Content="A" />
                     <Button
                         Name="Button_A1"
                         Width="100"
                         Height="30"
+                        Command="{Binding Add}"
                         Content="{setting:Localize Button.Add}"
                         IsVisible="False" />
                 </Grid>
@@ -49,11 +53,13 @@
                         Name="Button_R"
                         Width="20"
                         Height="30"
+                        Command="{Binding Load}"
                         Content="R" />
                     <Button
                         Name="Button_R1"
                         Width="100"
                         Height="30"
+                        Command="{Binding Load}"
                         Content="{setting:Localize Button.Refash}"
                         IsVisible="False" />
                 </Grid>

@@ -1,17 +1,17 @@
-﻿using ColorMC.Gui.Objs;
+﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout7
 {
-    private readonly SchematicDisplayObj Obj;
-    private readonly Tab12Control Con;
-    public GameEditFlyout7(Tab12Control con, SchematicDisplayObj obj)
+    private readonly GameEditTab12Model Model;
+    public GameEditFlyout7(Control con, GameEditTab12Model model)
     {
-        Con = con;
-        Obj = obj;
+        Model = model;
 
         var fy = new FlyoutsControl(new()
         {
@@ -22,11 +22,11 @@ public class GameEditFlyout7
 
     private void Button1_Click()
     {
-        BaseBinding.OpFile(Obj.Local);
+        BaseBinding.OpFile(Model.Item!.Local);
     }
 
     private void Button2_Click()
     {
-        Con.Delete(Obj);
+        Model.Delete(Model.Item!);
     }
 }

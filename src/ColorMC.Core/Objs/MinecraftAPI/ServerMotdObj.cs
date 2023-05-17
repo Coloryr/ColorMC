@@ -97,7 +97,7 @@ public class ServerMotdObj
     /// Server's runing port
     /// </summary>
     [JsonIgnore]
-    public int ServerPort { get; set; }
+    public ushort ServerPort { get; set; }
 
     /// <summary>
     /// The server version info such name or protocol
@@ -153,7 +153,7 @@ public class ServerMotdObj
     [JsonIgnore]
     public bool AcceptTextures { get; set; }
 
-    public ServerMotdObj(string ip, int port)
+    public ServerMotdObj(string ip, ushort port)
     {
         ServerAddress = ip;
         ServerPort = port;

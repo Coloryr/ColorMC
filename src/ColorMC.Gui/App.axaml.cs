@@ -601,8 +601,7 @@ public partial class App : Application
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var con = new ErrorControl();
-            con.Show(data, e, close);
+            var con = new ErrorControl(data, e, close);
             AWindow(con);
         });
     }
@@ -611,8 +610,7 @@ public partial class App : Application
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var con = new ErrorControl();
-            con.Show(data, e, close);
+            var con = new ErrorControl(data, e, close);
             AWindow(con);
         });
     }

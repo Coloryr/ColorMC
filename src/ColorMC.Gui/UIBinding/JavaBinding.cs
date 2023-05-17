@@ -90,6 +90,7 @@ public static class JavaBinding
     {
         var list = new List<string>()
         {
+            "",
             GCType.G1GC.GetName(),
             GCType.SerialGC.GetName(),
             GCType.ParallelGC.GetName(),

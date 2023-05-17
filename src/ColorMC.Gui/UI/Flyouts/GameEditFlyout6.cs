@@ -1,16 +1,16 @@
-﻿using ColorMC.Gui.Objs;
+﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout6
 {
-    private readonly ShaderpackDisplayObj Obj;
-    private readonly Tab11Control Con;
-    public GameEditFlyout6(Tab11Control con, ShaderpackDisplayObj obj)
+    private readonly GameEditTab11Model Obj;
+    public GameEditFlyout6(Control con, GameEditTab11Model obj)
     {
-        Con = con;
         Obj = obj;
 
         var fy = new FlyoutsControl(new()
@@ -22,11 +22,11 @@ public class GameEditFlyout6
 
     private void Button1_Click()
     {
-        BaseBinding.OpFile(Obj.Local);
+        BaseBinding.OpFile(Obj.Item!.Local);
     }
 
     private void Button2_Click()
     {
-        Con.Delete(Obj);
+        Obj.Delete(Obj.Item!);
     }
 }

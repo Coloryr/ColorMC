@@ -192,7 +192,7 @@ public static class ServerMotd
     /// <param name="ip"></param>
     /// <param name="port"></param>
     /// <returns></returns>
-    public static async Task<ServerMotdObj> GetServerInfo(string ip, int port)
+    public static async Task<ServerMotdObj> GetServerInfo(string ip, ushort port)
     {
         if (port == 0)
         {

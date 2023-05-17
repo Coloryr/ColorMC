@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model.Error;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -9,17 +10,22 @@ namespace ColorMC.Gui.UI.Controls.Error;
 
 public partial class ErrorControl : UserControl, IUserControl
 {
-    private bool IsClose;
+    private readonly ErrorModel model;
     public ErrorControl()
     {
         InitializeComponent();
-
-        Button1.Click += Button1_Click;
     }
 
-    private void Button1_Click(object? sender, RoutedEventArgs e)
+    public ErrorControl(string? data, Exception? e, bool close)
     {
-        BaseBinding.SaveFile(Window, FileType.Text, new[] { TextEditor1.Text });
+        model = new(this, data, e, close);
+        DataContext = model;
+    }
+
+    public ErrorControl(string data, string e, bool close)
+    {
+        model = new(this, data, e, close);
+        DataContext = model;
     }
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
@@ -31,22 +37,9 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Closed()
     {
-        if (IsClose || (App.IsHide && !BaseBinding.IsGameRuning()))
+        if (model.Close || (App.IsHide && !BaseBinding.IsGameRuning()))
         {
             App.Close();
         }
-    }
-
-    public void Show(string? data, Exception? e, bool close)
-    {
-        TextEditor1.Text = $"{data ?? ""}{Environment.NewLine}" +
-            $"{(e == null ? "" : e.ToString())}";
-        IsClose = close;
-    }
-
-    public void Show(string data, string e, bool close)
-    {
-        TextEditor1.Text = $"{data}{Environment.NewLine}{e}";
-        IsClose = close;
     }
 }

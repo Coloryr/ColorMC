@@ -94,7 +94,7 @@ public partial class ConfigEditModel : ObservableObject
                 text = GameBinding.ReadConfigFile(Obj, value);
             }
 
-            Text.Text = text;
+            Text = new(text);
         }
     }
 

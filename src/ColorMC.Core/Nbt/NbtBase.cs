@@ -1,4 +1,5 @@
 ﻿using ColorMC.Core.Helpers;
+using System.IO;
 using System.IO.Compression;
 
 namespace ColorMC.Core.Nbt;
@@ -6,6 +7,7 @@ namespace ColorMC.Core.Nbt;
 public abstract class NbtBase
 {
     public NbtType NbtType { get; protected init; }
+    public bool Gzip { get; set; }
 
     public abstract NbtBase Read(DataInputStream stream);
 
@@ -82,8 +84,21 @@ public abstract class NbtBase
     public static NbtBase? Read(string file)
     {
         using var steam = File.OpenRead(file);
-        using var steam1 = new GZipStream(steam, CompressionMode.Decompress);
-        using var steam2 = new DataInputStream(steam1);
+        DataInputStream steam2;
+        var data = new byte[2];
+        steam.ReadExactly(data);
+        steam.Seek(0, SeekOrigin.Begin);
+        bool gzip = false;
+        if (data[0] == 0x1F && data[1] == 0x8B)
+        {
+            var steam1 = new GZipStream(steam, CompressionMode.Decompress);
+            steam2 = new DataInputStream(steam1);
+            gzip = true;
+        }
+        else
+        {
+            steam2 = new DataInputStream(steam);
+        }
 
         var type = steam2.ReadByte();
         if (type == 0)
@@ -101,15 +116,28 @@ public abstract class NbtBase
             }
         }
         var nbt = ById(type);
+        nbt.Gzip = gzip;
 
-        return nbt.Read(steam2);
+        nbt.Read(steam2);
+
+        steam2.Dispose();
+
+        return nbt;
     }
 
     public static void Write(string file, NbtBase nbt)
     {
         using var steam = File.Create(file);
-        using var steam1 = new GZipStream(steam, CompressionMode.Compress);
-        using var steam2 = new DataOutputStream(steam1);
+        DataOutputStream steam2;
+        if (nbt.Gzip)
+        {
+            using var steam1 = new GZipStream(steam, CompressionMode.Compress);
+            steam2 = new DataOutputStream(steam1);
+        }
+        else
+        {
+            steam2 = new DataOutputStream(steam);
+        }
 
         steam2.Write((byte)nbt.NbtType);
         if (nbt.NbtType != NbtType.NbtEnd)
@@ -117,5 +145,6 @@ public abstract class NbtBase
             steam2.Write("");
             nbt.Write(steam2);
         }
+        steam2.Dispose();
     }
 }
