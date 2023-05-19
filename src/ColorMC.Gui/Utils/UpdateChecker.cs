@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
@@ -106,6 +107,8 @@ public static class UpdateChecker
         {
             Process.Start($"{(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
                     "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");
+            App.NeedClose = true;
+            Thread.Sleep(200);
             App.Close();
         }
         else

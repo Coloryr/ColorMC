@@ -30,14 +30,11 @@
                         ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                         ToolTip.VerticalOffset="-30" />
                     <TextBox
-                        Name="TextBox1"
                         Margin="5,0,0,0"
                         Classes="input1"
                         Text="{Binding Text}"
                         Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
-
                 </DockPanel>
-
             </Grid>
 
             <Grid>

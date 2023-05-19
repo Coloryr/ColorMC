@@ -88,17 +88,9 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
                 }
             });
         }
-        else if (e.PropertyName == "DisplayList")
+        else if (e.PropertyName == "DisplayList") 
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                ListBox_Items.Children.Clear();
-                foreach (var item in model.DisplayList)
-                {
-                    ListBox_Items.Children.Add(new FileItemControl(item));
-                }
-                ScrollViewer1.ScrollToHome();
-            });
+            Dispatcher.UIThread.Post(ScrollViewer1.ScrollToHome);
         }
     }
 

@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace ColorMC.Core.Objs;
+namespace ColorMC.Gui.Objs;
 
 /// <summary>
 /// 下载项目显示

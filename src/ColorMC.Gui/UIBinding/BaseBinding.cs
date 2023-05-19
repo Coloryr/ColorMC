@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +37,7 @@ public static class BaseBinding
 
     public readonly static Dictionary<Process, GameSettingObj> Games = new();
     public readonly static Dictionary<string, Process> RunGames = new();
-    public readonly static Dictionary<string, string> GameLogs = new();
+    public readonly static Dictionary<string, StringBuilder> GameLogs = new();
     public static bool ISNewStart => ColorMCCore.NewStart;
 
     /// <summary>
@@ -356,11 +357,11 @@ public static class BaseBinding
         //清空日志
         if (GameLogs.ContainsKey(obj.UUID))
         {
-            GameLogs[obj.UUID] = "";
+            GameLogs[obj.UUID].Clear();
         }
         else
         {
-            GameLogs.Add(obj.UUID, "");
+            GameLogs.Add(obj.UUID, new());
         }
         //锁定账户
         UserBinding.AddLockUser(obj1);
@@ -436,7 +437,7 @@ public static class BaseBinding
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        App.ShowError(App.GetLanguage("UserBinding.Error2"), log ?? "");
+                        App.ShowError(App.GetLanguage("UserBinding.Error2"), log?.ToString() ?? "");
                     });
                 }
                 else
@@ -490,7 +491,7 @@ public static class BaseBinding
             return;
         if (Games.TryGetValue(p, out var obj))
         {
-            GameLogs[obj.UUID] += d + Environment.NewLine;
+            GameLogs[obj.UUID].Append(d).Append(Environment.NewLine);
             if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
             {
                 win?.Log(d);
@@ -505,7 +506,7 @@ public static class BaseBinding
     /// <param name="d">日志</param>
     public static void PLog(GameSettingObj obj, string? d)
     {
-        GameLogs[obj.UUID] += d + Environment.NewLine;
+        GameLogs[obj.UUID].Append(d).Append(Environment.NewLine);
         if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
             win?.Log(d);

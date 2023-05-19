@@ -48,7 +48,7 @@ public static class ImageUtils
                 Logs.Error(App.GetLanguage("Gui.Error24"), e);
             }
 
-            return null;
+            return App.GameIcon;
         }
     }
 

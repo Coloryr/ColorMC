@@ -31,6 +31,7 @@ public partial class GameEditControl : UserControl, IUserControl
     private readonly GameEditTab1Model model1;
     private readonly GameEditTab2Model model2;
     private readonly GameEditTab4Model model4;
+    private readonly GameEditTab5Model model5;
     private readonly GameEditTab10Model model10;
     private readonly GameEditTab11Model model11;
     private readonly GameEditTab12Model model12;
@@ -45,7 +46,6 @@ public partial class GameEditControl : UserControl, IUserControl
     {
         Obj = obj;
 
-        tab5.SetGame(obj);
         tab6.SetGame(obj);
         tab7.SetGame(obj);
         tab8.SetGame(obj);
@@ -59,6 +59,9 @@ public partial class GameEditControl : UserControl, IUserControl
 
         model4 = new(this, obj);
         tab4.DataContext = model4;
+
+        model5 = new(this, obj);
+        tab5.DataContext = model5;
 
         model10 = new(this, obj);
         tab10.DataContext = model10;
@@ -161,7 +164,7 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case 3:
                 Go(tab5);
-                tab5.Update();
+                model5.Load();
                 break;
             case 4:
                 Go(tab8);

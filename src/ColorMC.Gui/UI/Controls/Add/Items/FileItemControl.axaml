@@ -1,7 +1,8 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Add.FileItemControl"
+    x:Class="ColorMC.Gui.UI.Controls.Add.Items.FileItemControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="clr-namespace:ColorMC.Gui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
@@ -28,7 +29,7 @@
                 Height="90"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Source="{Binding Image^}" />
+                Source="{Binding Image^, FallbackValue={x:Static app:App.LoadIcon}}" />
             <StackPanel
                 Margin="100,0,0,0"
                 HorizontalAlignment="Stretch"

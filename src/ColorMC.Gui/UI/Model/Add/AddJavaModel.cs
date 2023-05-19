@@ -137,7 +137,7 @@ public partial class AddJavaModel : ObservableObject
         {
             window.ProgressInfo.Close();
 #if !DEBUG
-            window.Info.Show(App.GetLanguage("AddJavaWindow.Error1"));
+            window.OkInfo.Show(App.GetLanguage("AddJavaWindow.Error1"));
 #endif
         }
 

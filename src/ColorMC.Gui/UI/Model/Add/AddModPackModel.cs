@@ -22,7 +22,7 @@ public partial class AddModPackModel : ObservableObject
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> CategorieList { get; init; } = new();
     public ObservableCollection<string> SortTypeList { get; init; } = new();
-    public ObservableCollection<FileItemDisplayObj> DisplayList { get; init; } = new();
+    public ObservableCollection<FileItemModel> DisplayList { get; init; } = new();
 
     private readonly Dictionary<int, string> Categories = new();
     private FileItemModel? Last;
@@ -146,7 +146,7 @@ public partial class AddModPackModel : ObservableObject
                 if (list == null || list1 == null)
                 {
 #if !DEBUG
-                window.Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+                window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error4"));
                 window.Close();
 #endif
                     return;
@@ -293,7 +293,10 @@ public partial class AddModPackModel : ObservableObject
         }
 
         DisplayList.Clear();
-        DisplayList.AddRange(data);
+        foreach (var item in data)
+        {
+            DisplayList.Add(new(item));
+        }
         OnPropertyChanged(nameof(DisplayList));
 
         Last = null;

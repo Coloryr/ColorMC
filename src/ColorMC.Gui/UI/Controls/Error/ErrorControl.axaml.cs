@@ -14,13 +14,13 @@ public partial class ErrorControl : UserControl, IUserControl
         InitializeComponent();
     }
 
-    public ErrorControl(string? data, Exception? e, bool close)
+    public ErrorControl(string? data, Exception? e, bool close) : this()
     {
         model = new(this, data, e, close);
         DataContext = model;
     }
 
-    public ErrorControl(string data, string e, bool close)
+    public ErrorControl(string data, string e, bool close) : this()
     {
         model = new(this, data, e, close);
         DataContext = model;

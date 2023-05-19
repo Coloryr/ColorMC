@@ -1,51 +1,65 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Metadata;
+using Avalonia.Threading;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit.Items;
 
 public partial class WorldControl : UserControl
 {
-    public WorldDisplayObj World { get; private set; }
+    public static readonly StyledProperty<WorldModel> WorldModelProperty =
+        AvaloniaProperty.Register<WorldControl, WorldModel>(nameof(WorldModel));
+
+    public WorldModel WorldModel
+    {
+        get => GetValue(WorldModelProperty);
+        set => SetValue(WorldModelProperty, value);
+    }
+
     public WorldControl()
     {
         InitializeComponent();
 
         PointerPressed += WorldControl_PointerPressed;
+
+        PointerEntered += WorldControl_PointerEntered;
+        PointerExited += WorldControl_PointerExited;
+
+        PropertyChanged += WorldControl_PropertyChanged;
+    }
+
+    private void WorldControl_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == WorldModelProperty)
+        {
+            if (WorldModel == null)
+                return;
+
+            DataContext = WorldModel;
+        }
+    }
+
+    private void WorldControl_PointerExited(object? sender, PointerEventArgs e)
+    {
+        Rectangle2.IsVisible = false;
+    }
+
+    private void WorldControl_PointerEntered(object? sender, PointerEventArgs e)
+    {
+        Rectangle2.IsVisible = true;
     }
 
     private void WorldControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        var tab = this.FindTop<Tab5Control>()!;
-        tab.SetSelect(this);
-
+        WorldModel.Select();
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            _ = new GameEditFlyout2(tab, World);
+            WorldModel.Flyout(this);
         }
-    }
-
-    public void Load(WorldDisplayObj world)
-    {
-        World = world;
-
-        Label1.Text = world.Name;
-        Label2.Text = world.Mode;
-        Label3.Text = world.Time;
-        Label4.Text = world.Local;
-        Label5.Text = world.Difficulty;
-        Label6.Text = world.Hardcore.ToString();
-
-        if (world.Pic != null)
-        {
-            Image1.Source = world.Pic;
-        }
-    }
-
-    public void SetSelect(bool select)
-    {
-        Rectangle1.IsVisible = select;
     }
 }

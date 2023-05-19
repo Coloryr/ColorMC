@@ -20,7 +20,7 @@ internal static class GuiLoad
 
 public static class Program
 {
-    public const string TopVersion = "A18";
+    public const string TopVersion = "A19";
 
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
     public static readonly string[] BaseSha1 = new[]

@@ -1,20 +1,20 @@
-﻿using ColorMC.Gui.Objs;
+﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout2
 {
-    private readonly WorldDisplayObj Obj;
-    private readonly Tab5Control Con;
+    private readonly WorldModel Model;
 
-    public GameEditFlyout2(Tab5Control con, WorldDisplayObj obj)
+    public GameEditFlyout2(Control con, WorldModel model)
     {
-        Con = con;
-        Obj = obj;
+        Model = model;
 
-        var fy = new FlyoutsControl(new()
+        _ = new FlyoutsControl(new()
         {
             (App.GetLanguage("Button.OpFile"), true, Button1_Click),
             (App.GetLanguage("GameEditWindow.Flyouts2.Text1"), true, Button2_Click),
@@ -26,26 +26,26 @@ public class GameEditFlyout2
 
     private void Button5_Click()
     {
-        App.ShowConfigEdit(Obj.World);
+        App.ShowConfigEdit(Model.World.World);
     }
 
     private void Button4_Click()
     {
-        Con.Backup(Obj);
+        Model.Backup(Model);
     }
 
     private void Button3_Click()
     {
-        Con.Delete(Obj);
+        Model.Delete(Model.World);
     }
 
     private void Button2_Click()
     {
-        Con.Export(Obj);
+        Model.Export(Model.World);
     }
 
     private void Button1_Click()
     {
-        BaseBinding.OpPath(Obj.Local);
+        BaseBinding.OpPath(Model.World.Local);
     }
 }

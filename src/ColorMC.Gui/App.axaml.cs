@@ -85,6 +85,8 @@ public partial class App : Application
 
     public static Bitmap? BackBitmap { get; private set; }
     public static Bitmap GameIcon { get; private set; }
+
+    public static Bitmap LoadIcon { get; private set; }
     public static WindowIcon? Icon { get; private set; }
     public static bool IsHide { get; private set; }
 
@@ -93,6 +95,8 @@ public partial class App : Application
     public static IPlatformSettings PlatformSettings { get; private set; }
 
     private static readonly Language Language = new();
+
+    public static bool NeedClose = false;
 
     public override void Initialize()
     {
@@ -138,12 +142,19 @@ public partial class App : Application
         }
 
         var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        using var asset = assets!.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
-        GameIcon = new Bitmap(asset);
-
-        using var asset1 = assets!.Open(new Uri("resm:ColorMC.Gui.icon.ico"));
-        Icon = new(asset1!);
-
+        {
+            using var asset = assets!.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
+            GameIcon = new Bitmap(asset);
+        }
+        {
+            using var asset1 = assets!.Open(new Uri("resm:ColorMC.Gui.icon.ico"));
+            Icon = new(asset1!);
+        }
+        {
+            using var asset1 = assets!.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.load.png"));
+            LoadIcon = new(asset1!);
+        }
+        
         PlatformSettings = AvaloniaLocator.Current.GetRequiredService<IPlatformSettings>();
         PlatformSettings.ColorValuesChanged += PlatformSettings_ColorValuesChanged;
 
@@ -178,9 +189,13 @@ public partial class App : Application
         {
             new Thread(() =>
             {
-                while (true)
+                while (!NeedClose)
                 {
                     ColorMCGui.TestLock();
+                    if (NeedClose)
+                    {
+                        return;
+                    }
                     IsHide = false;
                     Dispatcher.UIThread.Post(Show);
                 }

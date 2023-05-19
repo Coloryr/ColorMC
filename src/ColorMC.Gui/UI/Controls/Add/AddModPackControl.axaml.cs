@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Gui.UI.Controls.Add.Items;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
@@ -35,15 +36,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
     {
         if (e.PropertyName == "DisplayList")
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                ListBox_Items.Children.Clear();
-                foreach (var item in model.DisplayList)
-                {
-                    ListBox_Items.Children.Add(new FileItemControl(item));
-                }
-                ScrollViewer1.ScrollToHome();
-            });
+            Dispatcher.UIThread.Post(ScrollViewer1.ScrollToHome);
         }
         else if (e.PropertyName == "Display")
         {

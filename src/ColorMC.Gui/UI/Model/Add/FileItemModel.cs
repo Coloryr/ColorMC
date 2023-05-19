@@ -12,21 +12,21 @@ public partial class FileItemModel : ObservableObject
 {
     public Task<Bitmap?> Image => GetImage();
 
-    public FileItemDisplayObj? Data { get; init; }
-    public string? Name => Data?.Name;
-    public string? Summary => Data?.Summary;
-    public string? Author => Data?.Author;
-    public long? DownloadCount => Data?.DownloadCount;
-    public DateTime? ModifiedDate => Data == null ? null : DateTime.Parse(Data.ModifiedDate);
+    public FileItemDisplayObj Data { get; init; }
+    public string? Name => Data.Name;
+    public string? Summary => Data.Summary;
+    public string? Author => Data.Author;
+    public long? DownloadCount => Data.DownloadCount;
+    public DateTime? ModifiedDate => DateTime.Parse(Data.ModifiedDate);
 
     [ObservableProperty]
-    private bool isDownload;
+    private bool isDownload = false;
     [ObservableProperty]
-    private bool nowDownload;
+    private bool nowDownload = false;
     [ObservableProperty]
     private bool isSelect;
 
-    public FileItemModel(FileItemDisplayObj? data)
+    public FileItemModel(FileItemDisplayObj data)
     {
         Data = data;
 

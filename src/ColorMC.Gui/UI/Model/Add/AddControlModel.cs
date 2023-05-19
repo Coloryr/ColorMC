@@ -40,7 +40,7 @@ public partial class AddControlModel : ObservableObject
     public List<string> TypeList => GameBinding.GetAddType();
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
-    public ObservableCollection<FileItemDisplayObj> DisplayList { get; init; } = new();
+    public ObservableCollection<FileItemModel> DisplayList { get; init; } = new();
     public ObservableCollection<string> DownloadSourceList { get; init; } = new();
     public ObservableCollection<string> SortTypeList { get; init; } = new();
     public ObservableCollection<string> CategorieList { get; init; } = new();
@@ -55,7 +55,7 @@ public partial class AddControlModel : ObservableObject
     [ObservableProperty]
     private bool isDownload;
     [ObservableProperty]
-    private bool emptyDisplay;
+    private bool emptyDisplay = true;
     [ObservableProperty]
     private bool optifineDisplay;
     [ObservableProperty]
@@ -370,7 +370,6 @@ public partial class AddControlModel : ObservableObject
         CategorieList.Clear();
 
         DisplayList.Clear();
-        OnPropertyChanged(nameof(DisplayList));
         var type = SourceTypeList[DownloadSource];
         if (type == SourceType.CurseForge)
         {
@@ -383,7 +382,7 @@ public partial class AddControlModel : ObservableObject
             if (list == null || list1 == null)
             {
 #if !DEBUG
-                window.Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+                window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error4"));
                 window.Close();
 #endif
                 return;
@@ -433,7 +432,7 @@ public partial class AddControlModel : ObservableObject
             if (list == null || list1 == null)
             {
 #if !DEBUG
-                window.Info.Show(App.GetLanguage("AddModPackWindow.Error4"));
+                window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error4"));
                 window.Close();
 #endif
                 return;
@@ -694,7 +693,6 @@ public partial class AddControlModel : ObservableObject
         }
 
         DisplayList.Clear();
-        OnPropertyChanged(nameof(DisplayList));
 
         if (now == FileType.Mod)
         {
@@ -704,12 +702,15 @@ public partial class AddControlModel : ObservableObject
                 {
                     item.IsDownload = true;
                 }
-                DisplayList.Add(item);
+                DisplayList.Add(new(item));
             }
         }
         else
         {
-            DisplayList.AddRange(data);
+            foreach (var item in data)
+            {
+                DisplayList.Add(new(item));
+            }
         }
 
         OnPropertyChanged(nameof(DisplayList));

@@ -3,6 +3,7 @@ using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;

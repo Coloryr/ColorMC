@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Add.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.Objs"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
@@ -128,10 +129,16 @@
                         FontSize="30" />
                 </DockPanel>
                 <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
-                    <StackPanel
-                        Name="ListBox_Items"
+                    <ItemsControl
                         HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch" />
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{Binding DisplayList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <item:FileItemControl FileItemModel="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </ScrollViewer>
             </Grid>
         </DockPanel>

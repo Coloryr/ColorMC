@@ -132,5 +132,4 @@ public partial class Tab4Control : UserControl
     {
         DataGrid1.MakeTran();
     }
-
 }

@@ -30,6 +30,8 @@ public partial class GameControl : UserControl
     private void GameControl_PointerEntered(object? sender, PointerEventArgs e)
     {
         Rectangle2.IsVisible = true;
+
+        SetTips();
     }
 
     public void SetItem(GameSettingObj obj)

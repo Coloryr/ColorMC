@@ -83,7 +83,7 @@ public static class ColorMCGui
         using var file = MemoryMappedFile.CreateFromFile(temp, null, 100, MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, false);
         using var reader = file.CreateViewAccessor();
         reader.Write(0, false);
-        while (true)
+        while (!App.NeedClose)
         {
             var data = reader.ReadBoolean(0);
             if (data)
