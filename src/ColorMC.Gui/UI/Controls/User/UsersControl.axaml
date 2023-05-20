@@ -21,6 +21,8 @@
             CanUserResizeColumns="True"
             CanUserSortColumns="False"
             HorizontalScrollBarVisibility="Visible"
+            ItemsSource="{Binding UserList}"
+            SelectedItem="{Binding Item}"
             VerticalScrollBarVisibility="Visible">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="10" IsReadOnly="True" />
@@ -57,11 +59,13 @@
                     Name="Button_A"
                     Width="20"
                     Height="30"
+                    Command="{Binding SetAdd}"
                     Content="A" />
                 <Button
                     Name="Button_A1"
                     Width="100"
                     Height="30"
+                    Command="{Binding SetAdd}"
                     Content="{setting:Localize UserWindow.Text4}"
                     IsVisible="False" />
             </Grid>
@@ -76,48 +80,54 @@
                 <StackPanel Orientation="Horizontal">
                     <Label VerticalAlignment="Center" Content="{setting:Localize UserWindow.Text3}" />
                     <ComboBox
-                        Name="ComboBox1"
                         Width="200"
-                        Margin="5,0,0,0" />
+                        Margin="5,0,0,0"
+                        IsEnabled="{Binding EnableType}"
+                        ItemsSource="{Binding UserTypeList}"
+                        SelectedIndex="{Binding Type}" />
                 </StackPanel>
                 <TextBox
                     Name="TextBox_Input1"
                     Margin="5"
                     Classes="input1"
-                    IsEnabled="False"
-                    Watermark="" />
+                    IsEnabled="{Binding EnableName}"
+                    Text="{Binding Name}"
+                    Watermark="{Binding WatermarkName}" />
                 <TextBox
                     Name="TextBox_Input2"
                     Margin="5"
                     Classes="input1"
-                    IsEnabled="False"
+                    IsEnabled="{Binding EnableUser}"
+                    Text="{Binding User}"
                     Watermark="{setting:Localize Text.UserName}" />
                 <TextBox
                     Name="TextBox_Input3"
                     Margin="5"
                     Classes="input1"
-                    IsEnabled="False"
+                    IsEnabled="{Binding EnablePassword}"
                     PasswordChar="*"
+                    Text="{Binding Password}"
                     Watermark="{setting:Localize UserWindow.Text2}" />
             </StackPanel>
 
             <Button
-                Name="Button_Cancel"
                 Width="80"
                 Height="25"
                 Margin="7"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
+                Command="{Binding Cancel}"
                 Content="{setting:Localize Button.Cancel}" />
 
             <Button
-                Name="Button_Add"
                 Width="80"
                 Height="25"
                 Margin="7"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                Content="{setting:Localize Button.Add}" />
+                Command="{Binding Add}"
+                Content="{setting:Localize Button.Add}"
+                IsEnabled="{Binding !IsAdding}" />
         </Grid>
 
         <Grid

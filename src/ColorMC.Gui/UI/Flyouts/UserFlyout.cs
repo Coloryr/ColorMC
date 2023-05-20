@@ -1,48 +1,48 @@
-﻿using ColorMC.Core.Objs;
+﻿using Avalonia.Controls;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.User;
+using ColorMC.Gui.UI.Model.User;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class UserFlyout
 {
-    private UserDisplayObj Obj;
-    private UsersControl Con;
-    public UserFlyout(UsersControl con, UserDisplayObj obj)
+    private readonly UserDisplayObj Obj;
+    private readonly UsersModel Model;
+    public UserFlyout(Control con, UsersModel model)
     {
-        Con = con;
-        Obj = obj;
+        Model = model;
+        Obj = model.Item!;
 
         var fy = new FlyoutsControl(new()
         {
             (App.GetLanguage("UserWindow.Flyouts.Text1"), true, Button1_Click),
-            (App.GetLanguage("UserWindow.Flyouts.Text2"), obj.AuthType != AuthType.Offline, Button2_Click),
-            (App.GetLanguage("UserWindow.Flyouts.Text3"), obj.AuthType != AuthType.Offline
-                && obj.AuthType != AuthType.OAuth, Button4_Click),
+            (App.GetLanguage("UserWindow.Flyouts.Text2"), Obj.AuthType != AuthType.Offline, Button2_Click),
+            (App.GetLanguage("UserWindow.Flyouts.Text3"), Obj.AuthType != AuthType.Offline
+                && Obj.AuthType != AuthType.OAuth, Button4_Click),
             (App.GetLanguage("UserWindow.Flyouts.Text4"), true, Button3_Click)
         }, con);
     }
 
     private void Button4_Click()
     {
-        Con.ReLogin(Obj);
+        Model.ReLogin(Obj);
     }
 
     private void Button3_Click()
     {
-        UserBinding.Remove(Obj.UUID, Obj.AuthType);
-        Con.Load();
+        Model.Remove(Obj);
     }
 
     private void Button2_Click()
     {
-        Con.Refresh(Obj);
+        Model.Refresh(Obj);
     }
 
     private void Button1_Click()
     {
-        UserBinding.SetLastUser(Obj.UUID, Obj.AuthType);
-        Con.Load();
+        Model.Select(Obj);
     }
 }
