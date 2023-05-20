@@ -9,12 +9,12 @@ namespace ColorMC.Gui.UI.Animations;
 
 public class SkinAnimation : IDisposable
 {
-    private Thread thread;
+    private readonly Thread thread;
     private bool run;
     private bool start;
-    private Semaphore semaphore = new(0, 2);
+    private readonly Semaphore semaphore = new(0, 2);
     private int frame = 0;
-    private SkinRender Render;
+    private readonly SkinRender Render;
 
     public Vector3 Arm;
     public Vector3 Leg;
@@ -72,7 +72,7 @@ public class SkinAnimation : IDisposable
                     //90 -90
                     Leg.Y = 90 - frame * 3;
                     //-30 30
-                    if (Render.SteveModelType == SkinType.NewSlim)
+                    if (Render.model.SteveModelType == SkinType.NewSlim)
                     {
                         Head.Z = 0;
                         Head.X = frame - 30;
@@ -92,7 +92,7 @@ public class SkinAnimation : IDisposable
                     //-90 90
                     Leg.Y = frame * 3 - 270;
                     //30 -30
-                    if (Render.SteveModelType == SkinType.NewSlim)
+                    if (Render.model.SteveModelType == SkinType.NewSlim)
                     {
                         Head.Z = 0;
                         Head.X = 90 - frame;

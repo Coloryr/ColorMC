@@ -176,32 +176,31 @@
                 Background="{setting:Colors Bottom1}"
                 CornerRadius="5">
                 <TextBlock
-                    Name="Text1"
                     Foreground="{setting:Colors Font}"
+                    Text="{Binding Info}"
                     TextWrapping="Wrap" />
             </Label>
 
             <Label
-                Name="Label1"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Background="{setting:Colors Bottom1}"
-                Content="Text"
+                Content="{Binding Text}"
                 FontSize="20"
                 Foreground="{setting:Colors Font}"
-                IsVisible="False" />
+                IsVisible="{Binding !HaveSkin}" />
         </Grid>
 
         <Grid Grid.Column="1">
             <ScrollViewer>
                 <StackPanel Background="{setting:Colors TranBack}">
                     <Button
-                        Name="Button1"
                         Height="25"
                         Margin="5,5,5,0"
                         HorizontalAlignment="Stretch"
+                        Command="{Binding Load}"
                         Content="{setting:Localize Button.Refash}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text14}"
                         ToolTip.VerticalOffset="-30" />
@@ -216,72 +215,73 @@
                         ToolTip.VerticalOffset="-30" />
 
                     <Button
-                        Name="Button3"
                         Height="25"
                         Margin="5,5,5,0"
                         HorizontalAlignment="Stretch"
+                        Command="{Binding Edit}"
                         Content="{setting:Localize SkinWindow.Text3}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text16}"
                         ToolTip.VerticalOffset="-30" />
 
                     <Button
-                        Name="Button4"
                         Height="25"
                         Margin="5,5,5,0"
                         HorizontalAlignment="Stretch"
+                        Command="{Binding Save}"
                         Content="{setting:Localize SkinWindow.Text4}"
+                        IsEnabled="{Binding HaveSkin}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text17}"
                         ToolTip.VerticalOffset="-30" />
 
                     <ComboBox
-                        Name="ComboBox1"
                         Margin="5,5,5,0"
-                        HorizontalAlignment="Stretch" />
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding SkinTypeList}"
+                        SelectedIndex="{Binding Type}" />
 
                     <CheckBox
-                        Name="CheckBox1"
                         Margin="5,0,0,0"
                         Content="{setting:Localize SkinWindow.Text5}"
-                        IsChecked="True" />
+                        IsChecked="{Binding EnableTop}" />
 
                     <CheckBox
-                        Name="CheckBox2"
                         Margin="5,0,0,0"
                         Content="{setting:Localize SkinWindow.Text6}"
-                        IsChecked="True" />
+                        IsChecked="{Binding EnableCape}" />
 
                     <CheckBox
-                        Name="CheckBox3"
                         Margin="5,0,0,0"
                         Content="{setting:Localize SkinWindow.Text7}"
-                        IsChecked="True" />
+                        IsChecked="{Binding EnableAnimation}" />
 
                     <ComboBox
-                        Name="ComboBox2"
                         Margin="5,5,5,0"
-                        HorizontalAlignment="Stretch" />
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding SkinRotateList}"
+                        SelectedIndex="{Binding RotateType}" />
 
                     <Slider
-                        Name="Slider1"
                         Margin="5,-10,5,-10"
                         Maximum="360"
-                        Minimum="0" />
+                        Minimum="{Binding MinX}"
+                        Value="{Binding RotateX}" />
                     <Slider
-                        Name="Slider2"
                         Margin="5,-10,5,-10"
                         Maximum="360"
-                        Minimum="0" />
+                        Minimum="{Binding MinY}"
+                        Value="{Binding RotateY}" />
                     <Slider
-                        Name="Slider3"
                         Margin="5,-10,5,-10"
+                        IsEnabled="{Binding EnableZ}"
                         Maximum="360"
-                        Minimum="0" />
+                        Minimum="{Binding MinZ}"
+                        Value="{Binding RotateZ}" />
 
                     <Button
-                        Name="Button5"
                         Height="25"
                         Margin="5,0,5,0"
                         HorizontalAlignment="Stretch"
+                        Command="{Binding Reset}"
                         Content="{setting:Localize SkinWindow.Text8}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text18}"
                         ToolTip.VerticalOffset="-30" />

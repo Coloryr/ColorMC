@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ColorMC.Gui.SkinModel;
+namespace ColorMC.Gui.PlayerModel;
 
 public class CubeC
 {

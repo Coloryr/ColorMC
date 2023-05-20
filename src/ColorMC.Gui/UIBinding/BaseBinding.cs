@@ -177,6 +177,19 @@ public static class BaseBinding
         App.GetLanguage("BaseBinding.Filter.Item3")
     };
 
+
+    public static List<string> GetSkinType()
+    {
+        var list = new List<string>()
+        {
+            SkinType.Old.GetName(),
+            SkinType.New.GetName(),
+            SkinType.NewSlim.GetName(),
+            SkinType.Unkonw.GetName(),
+        };
+
+        return list;
+    }
     /// <summary>
     /// 获取旋转选项
     /// </summary>

@@ -257,19 +257,6 @@ public static class UserBinding
         App.OnSkinLoad();
     }
 
-    public static List<string> GetSkinType()
-    {
-        var list = new List<string>()
-        {
-            SkinType.Old.GetName(),
-            SkinType.New.GetName(),
-            SkinType.NewSlim.GetName(),
-            SkinType.Unkonw.GetName(),
-        };
-
-        return list;
-    }
-
     public static void EditSkin(IBaseWindow window)
     {
         if (window is TopLevel top)
