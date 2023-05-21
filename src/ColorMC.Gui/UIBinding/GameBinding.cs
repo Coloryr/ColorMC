@@ -1128,7 +1128,7 @@ public static class GameBinding
         return obj.GenServerPack(local);
     }
 
-    public static async Task<bool?> AddFile(Window? window, GameSettingObj obj, FileType type)
+    public static async Task<bool?> AddFile(TopLevel? window, GameSettingObj obj, FileType type)
     {
         if (window == null)
             return false;

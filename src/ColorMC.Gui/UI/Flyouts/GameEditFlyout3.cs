@@ -1,5 +1,7 @@
-﻿using ColorMC.Gui.Objs;
+﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
@@ -7,12 +9,12 @@ namespace ColorMC.Gui.UI.Flyouts;
 public class GameEditFlyout3
 {
     private readonly ResourcepackDisplayObj Obj;
-    private readonly Tab8Control Con;
+    private readonly ResourcePackModel Model;
 
-    public GameEditFlyout3(Tab8Control con, ResourcepackDisplayObj obj)
+    public GameEditFlyout3(Control con, ResourcePackModel model, ResourcepackDisplayObj obj)
     {
-        Con = con;
         Obj = obj;
+        Model = model;
 
         var fy = new FlyoutsControl(new()
         {
@@ -23,7 +25,7 @@ public class GameEditFlyout3
 
     private void Button2_Click()
     {
-        Con.Delete(Obj);
+        Model.Delete(Obj);
     }
 
     private void Button1_Click()

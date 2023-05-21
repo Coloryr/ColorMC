@@ -4,6 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Windows;
+using System;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
@@ -34,6 +35,7 @@ public partial class GameEditControl : UserControl, IUserControl
     private readonly GameEditTab5Model model5;
     private readonly GameEditTab6Model model6;
     private readonly GameEditTab7Model model7;
+    private readonly GameEditTab8Model model8;
     private readonly GameEditTab10Model model10;
     private readonly GameEditTab11Model model11;
     private readonly GameEditTab12Model model12;
@@ -48,7 +50,6 @@ public partial class GameEditControl : UserControl, IUserControl
     {
         Obj = obj;
 
-        tab8.SetGame(obj);
         tab9.SetGame(obj);
 
         model1 = new(this, obj);
@@ -69,6 +70,9 @@ public partial class GameEditControl : UserControl, IUserControl
         model7 = new(this, obj);
         tab7.DataContext = model7;
         tab7.Bind();
+
+        model8 = new(this, obj);
+        tab8.DataContext = model8;
 
         model10 = new(this, obj);
         tab10.DataContext = model10;
@@ -175,7 +179,7 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case 4:
                 Go(tab8);
-                tab8.Update();
+                model8.Load();
                 break;
             case 5:
                 Go(tab9);
@@ -232,5 +236,11 @@ public partial class GameEditControl : UserControl, IUserControl
     public void Closed()
     {
         App.GameEditWindows.Remove(Obj.UUID);
+    }
+
+    public void Started()
+    {
+        model1.GameStateChange();
+        model7.GameStateChange();
     }
 }

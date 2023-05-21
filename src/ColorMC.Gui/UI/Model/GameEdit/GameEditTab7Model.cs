@@ -12,6 +12,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Avalonia.Controls;
 using System.Timers;
+using Avalonia.Threading;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -27,7 +28,7 @@ public partial class GameEditTab7Model : GameEditTabModel
     [ObservableProperty]
     private bool isAuto = true;
 
-    private string temp = "";
+    public string temp { get; private set; } = "";
     private Timer timer;
 
     public GameEditTab7Model(IUserControl con, GameSettingObj obj) : base(con, obj)
@@ -57,6 +58,11 @@ public partial class GameEditTab7Model : GameEditTabModel
             window.OkInfo.Show(res.Item2!);
         }
         IsGameRun = false;
+    }
+
+    public void GameStateChange()
+    {
+        Load();
     }
 
     public void Load()
@@ -92,7 +98,10 @@ public partial class GameEditTab7Model : GameEditTabModel
         {
             if (!string.IsNullOrWhiteSpace(temp))
             {
-                Text.Insert(Text.TextLength, temp);
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    OnPropertyChanged("Insert");
+                });
                 temp = "";
             }
         }

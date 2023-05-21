@@ -11,26 +11,28 @@
     mc:Ignorable="d">
     <Grid Margin="1" Background="{setting:Colors TranBack}">
         <Rectangle
+            Name="Rectangle2"
+            Fill="{setting:Colors Back}"
+            IsVisible="False" />
+        <Rectangle
             Name="Rectangle1"
-            IsVisible="False"
+            Fill="{setting:Colors TranBack}"
+            IsVisible="{Binding IsSelect}"
             Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
-
         <Grid Margin="5">
             <Image
-                Name="Image1"
                 Width="90"
                 Height="90"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
+                Source="{Binding Pic}" />
             <StackPanel Margin="100,0,0,0">
                 <TextBlock
-                    Name="Label1"
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Text="Local"
+                    Text="{Binding Local}"
                     TextWrapping="Wrap" />
                 <StackPanel
                     Margin="0,0,0,0"
@@ -47,20 +49,21 @@
                         Margin="0,0,20,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Text="PackFormat" />
+                        Text="{Binding PackFormat}" />
                 </StackPanel>
                 <TextBlock
                     Name="Label3"
                     Margin="0,0,5,0"
+                    TextWrapping="NoWarp"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Text="Description" />
+                    Text="{Binding Description}" />
                 <TextBlock
                     Name="Label4"
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Text="Broken" />
+                    Text="{Binding Broken}" />
             </StackPanel>
         </Grid>
     </Grid>

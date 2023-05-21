@@ -34,6 +34,11 @@ public partial class Tab7Control : UserControl
                 TextEditor1.ScrollToLine(TextEditor1.LineCount - 5);
             });
         }
+        else if (e.PropertyName == "Insert")
+        {
+            var model = (DataContext as GameEditTab7Model)!;
+            TextEditor1.AppendText(model.temp);
+        }
     }
 
     private void TextEditor1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)

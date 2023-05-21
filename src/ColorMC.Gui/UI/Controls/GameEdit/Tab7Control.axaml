@@ -23,7 +23,7 @@
                 IsChecked="{Binding IsAuto}" />
             <Button
                 Command="{Binding Stop}"
-                IsEnable="{Binding !IsGameRun}"
+                IsEnabled="{Binding IsGameRun}"
                 Width="100"
                 Height="25"
                 Margin="10,0,0,0"
@@ -33,6 +33,7 @@
                 ToolTip.VerticalOffset="-30" />
             <Button
                 Command="{Binding Launch}"
+                IsEnabled="{Binding !IsGameRun}"
                 Width="100"
                 Height="25"
                 Margin="10,0,0,0"

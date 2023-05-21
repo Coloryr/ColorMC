@@ -467,6 +467,10 @@ public static class BaseBinding
             Games.Add(res, obj);
             RunGames.Add(obj.UUID, res);
             GameTimeUtils.LaunchDone(obj.UUID);
+            if(App.GameEditWindows.TryGetValue(obj.UUID, out var win1))
+            {
+                win1.Started();
+            }
         }
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdate;

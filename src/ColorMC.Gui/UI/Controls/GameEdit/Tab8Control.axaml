@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.GameEdit.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
@@ -12,7 +13,7 @@
     <Grid>
         <DockPanel Margin="5">
             <Button
-                Name="Button1"
+                Command="{Binding Open}"
                 Width="85"
                 Height="25"
                 HorizontalAlignment="Right"
@@ -22,11 +23,14 @@
                 ToolTip.VerticalOffset="-30" />
 
             <Grid Margin="0,3,0,0">
-                <ScrollViewer Name="ScrollViewer1" VerticalScrollBarVisibility="Visible">
-                    <StackPanel
-                        Name="ListBox_Items"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch" />
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding ResourcePackList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <item:ResourcePackControl PackModel="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </ScrollViewer>
                 <StackPanel VerticalAlignment="Center">
                     <Grid>
@@ -34,11 +38,13 @@
                             Name="Button_I"
                             Width="20"
                             Height="30"
+                            Command="{Binding Import}"
                             Content="I" />
                         <Button
                             Name="Button_I1"
                             Width="100"
                             Height="30"
+                            Command="{Binding Import}"
                             Content="{setting:Localize Button.Input}"
                             IsVisible="False" />
                     </Grid>
@@ -47,11 +53,13 @@
                             Name="Button_A"
                             Width="20"
                             Height="30"
+                            Command="{Binding Add}"
                             Content="A" />
                         <Button
                             Name="Button_A1"
                             Width="100"
                             Height="30"
+                            Command="{Binding Add}"
                             Content="{setting:Localize Button.Add}"
                             IsVisible="False" />
                     </Grid>
@@ -60,11 +68,13 @@
                             Name="Button_R"
                             Width="20"
                             Height="30"
+                            Command="{Binding Load}"
                             Content="R" />
                         <Button
                             Name="Button_R1"
                             Width="100"
                             Height="30"
+                            Command="{Binding Load}"
                             Content="{setting:Localize Button.Refash}"
                             IsVisible="False" />
                     </Grid>

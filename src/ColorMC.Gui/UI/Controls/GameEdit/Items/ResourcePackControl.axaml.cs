@@ -1,54 +1,62 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Model.GameEdit;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit.Items;
 
 public partial class ResourcePackControl : UserControl
 {
-    private Tab8Control Tab;
-    public ResourcepackDisplayObj Pack { get; private set; }
+    public static readonly StyledProperty<ResourcePackModel> PackModelProperty =
+        AvaloniaProperty.Register<ResourcePackControl, ResourcePackModel>(nameof(PackModel));
+
+    public ResourcePackModel PackModel
+    {
+        get => GetValue(PackModelProperty);
+        set => SetValue(PackModelProperty, value);
+    }
     public ResourcePackControl()
     {
         InitializeComponent();
 
-        PointerPressed += WorldControl_PointerPressed;
+        PointerPressed += ResourcePackControl_PointerPressed;
+
+        PointerEntered += ResourcePackControl_PointerEntered;
+        PointerExited += ResourcePackControl_PointerExited;
+
+
+        PropertyChanged += ResourcePackControl_PropertyChanged;
     }
 
-    private void WorldControl_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private void ResourcePackControl_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
-        Tab.SetSelect(this);
+        if (e.Property == PackModelProperty)
+        {
+            if (PackModel == null)
+                return;
 
+            DataContext = PackModel;
+        }
+    }
+
+    private void ResourcePackControl_PointerExited(object? sender, PointerEventArgs e)
+    {
+        Rectangle2.IsVisible = false;
+    }
+
+    private void ResourcePackControl_PointerEntered(object? sender, PointerEventArgs e)
+    {
+        Rectangle2.IsVisible = true;
+    }
+
+    private void ResourcePackControl_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        PackModel.Select();
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            _ = new GameEditFlyout3(Tab, Pack);
+            PackModel.Flyout(this);
         }
-    }
-
-    public void Load(ResourcepackDisplayObj pack)
-    {
-        Pack = pack;
-
-        Label1.Text = pack.Local;
-        Label2.Text = pack.PackFormat.ToString();
-        Label3.Text = pack.Description;
-        Label4.Text = pack.Pack.Broken ?
-            App.GetLanguage("GameEditWindow.Tab8.Info4") : "";
-
-        if (pack.Icon != null)
-        {
-            Image1.Source = pack.Icon;
-        }
-    }
-
-    public void SetWindow(Tab8Control tab)
-    {
-        Tab = tab;
-    }
-
-    public void SetSelect(bool select)
-    {
-        Rectangle1.IsVisible = select;
     }
 }

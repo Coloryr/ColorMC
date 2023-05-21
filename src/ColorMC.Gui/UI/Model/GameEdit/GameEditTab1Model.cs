@@ -372,6 +372,11 @@ public partial class GameEditTab1Model : GameEditTabModel
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
     }
 
+    public void GameStateChange()
+    {
+        GameRun = BaseBinding.IsGameRun(Obj);
+    }
+
     public void Load()
     {
         load = true;
