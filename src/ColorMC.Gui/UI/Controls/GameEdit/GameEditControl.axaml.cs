@@ -32,6 +32,8 @@ public partial class GameEditControl : UserControl, IUserControl
     private readonly GameEditTab2Model model2;
     private readonly GameEditTab4Model model4;
     private readonly GameEditTab5Model model5;
+    private readonly GameEditTab6Model model6;
+    private readonly GameEditTab7Model model7;
     private readonly GameEditTab10Model model10;
     private readonly GameEditTab11Model model11;
     private readonly GameEditTab12Model model12;
@@ -46,8 +48,6 @@ public partial class GameEditControl : UserControl, IUserControl
     {
         Obj = obj;
 
-        tab6.SetGame(obj);
-        tab7.SetGame(obj);
         tab8.SetGame(obj);
         tab9.SetGame(obj);
 
@@ -62,6 +62,13 @@ public partial class GameEditControl : UserControl, IUserControl
 
         model5 = new(this, obj);
         tab5.DataContext = model5;
+
+        model6 = new(this, obj);
+        tab6.DataContext = model6;
+
+        model7 = new(this, obj);
+        tab7.DataContext = model7;
+        tab7.Bind();
 
         model10 = new(this, obj);
         tab10.DataContext = model10;
@@ -135,7 +142,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void ClearLog()
     {
-        tab7.Clear();
+        model7.Clear();
     }
 
     public void Log(string? data)
@@ -143,7 +150,7 @@ public partial class GameEditControl : UserControl, IUserControl
         if (data == null)
             return;
 
-        tab7.Log(data);
+        model7.Log(data);
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -188,11 +195,11 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case 9:
                 Go(tab6);
-                tab6.Update();
+                model6.Load();
                 break;
             case 10:
                 Go(tab7);
-                tab7.Update();
+                model7.Load();
                 break;
         }
 

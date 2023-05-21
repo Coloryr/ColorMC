@@ -56,7 +56,7 @@ public static class BaseBinding
 
         if (ColorMCGui.RunType == RunType.Program)
         {
-            GameTime.Init();
+            GameTimeUtils.Init(ColorMCGui.RunDir);
             UpdateChecker.Init();
 
             try
@@ -272,7 +272,7 @@ public static class BaseBinding
     {
         ColorMCCore.Close();
         Media.Close();
-        GameTime.Close();
+        GameTimeUtils.Close();
         ColorSel.Instance.Close();
     }
 
@@ -414,6 +414,8 @@ public static class BaseBinding
         Funtcions.RunGC();
         if (res != null)
         {
+            obj.LaunchData.LastTime = DateTime.Now;
+            obj.SaveLaunchData();
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
                 _ = Task.Run(() =>
@@ -440,7 +442,7 @@ public static class BaseBinding
 
             res.Exited += (a, b) =>
             {
-                GameTime.GameClose(obj.UUID);
+                GameTimeUtils.GameClose(obj.UUID);
                 RunGames.Remove(obj.UUID);
                 UserBinding.UnLockUser(obj1);
                 App.MainWindow?.GameClose(obj.UUID);
@@ -464,7 +466,7 @@ public static class BaseBinding
             };
             Games.Add(res, obj);
             RunGames.Add(obj.UUID, res);
-            GameTime.Launch(obj.UUID);
+            GameTimeUtils.LaunchDone(obj.UUID);
         }
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdate;

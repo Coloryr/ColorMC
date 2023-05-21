@@ -144,11 +144,6 @@ public partial class UsersControl : UserControl, IUserControl
         model.Select();
     }
 
-    private void Button_S1_Click(object? sender, RoutedEventArgs e)
-    {
-        DataGrid_User_DoubleTapped(sender, e);
-    }
-
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(Button_A1, null, CancellationToken.None);

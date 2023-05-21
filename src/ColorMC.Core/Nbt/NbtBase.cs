@@ -57,6 +57,11 @@ public abstract class NbtBase
         };
     }
 
+    public void Write(string file)
+    {
+        Write(file, this);
+    }
+
     private static readonly Dictionary<byte, Type> VALUES = new()
     {
         {NbtEnd.Type, typeof(NbtEnd) },
@@ -130,7 +135,7 @@ public abstract class NbtBase
         DataOutputStream steam2;
         if (nbt.Gzip)
         {
-            using var steam1 = new GZipStream(steam, CompressionMode.Compress);
+            var steam1 = new GZipStream(steam, CompressionMode.Compress);
             steam2 = new DataOutputStream(steam1);
         }
         else

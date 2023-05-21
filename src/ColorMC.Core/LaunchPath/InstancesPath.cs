@@ -470,7 +470,8 @@ public static class InstancesPath
         game.Mods ??= new();
         game.LaunchData ??= new()
         {
-            AddTime = DateTime.Now
+            AddTime = DateTime.Now,
+            TimeList = new()
         };
 
         var dir = game.GetBasePath();
@@ -725,20 +726,30 @@ public static class InstancesPath
         string file = obj.GetLaunchFile();
         if (!File.Exists(file))
         {
-            obj.LaunchData = new();
+            obj.LaunchData = new()
+            {
+                TimeList = new()
+            };
             return;
         }
 
         try
         {
             var res = JsonConvert.DeserializeObject<LaunchDataObj>(
-            File.ReadAllText(file));
+            File.ReadAllText(file))!;
             obj.LaunchData = res;
+            if (obj.LaunchData.TimeList == null)
+            {
+                obj.LaunchData.TimeList = new();
+            }
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.GetName("Core.Game.Error9"), e);
-            obj.LaunchData = new();
+            obj.LaunchData = new() 
+            {
+                TimeList = new()
+            };
             return;
         }
     }

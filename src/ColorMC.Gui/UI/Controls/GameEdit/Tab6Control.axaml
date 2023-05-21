@@ -13,15 +13,13 @@
         <Grid DockPanel.Dock="Top">
             <Label Content="{setting:Localize GameEditWindow.Tab6.Text1}" />
             <Button
-                Name="Button1"
                 Width="160"
                 Height="25"
                 HorizontalAlignment="Right"
-                Content="{setting:Localize GameEditWindow.Tab6.Text2}" />
+                Content="{setting:Localize GameEditWindow.Tab6.Text2}"
+                IsEnabled="{Binding !IsGameRun}" />
         </Grid>
-        <TreeDataGrid
-            Name="FileViewer"
-            Margin="3">
+        <TreeDataGrid Margin="3" Source="{Binding Source}">
             <TreeDataGrid.Resources>
                 <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
                     <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />

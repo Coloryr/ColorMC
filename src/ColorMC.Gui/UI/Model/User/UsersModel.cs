@@ -154,7 +154,7 @@ public partial class UsersModel : ObservableObject
     {
         var window = Con.Window;
         bool ok = false;
-        IsAdding = false;
+        IsAdding = true;
         switch (Type)
         {
             case 0:
@@ -299,7 +299,7 @@ public partial class UsersModel : ObservableObject
             DisplayAdd = false;
         }
         Load();
-        IsAdding = true;
+        IsAdding = false;
     }
 
     [RelayCommand]
@@ -402,6 +402,7 @@ public partial class UsersModel : ObservableObject
         User = obj.Text2;
 
         DisplayAdd = true;
+        IsAdding = false;
     }
 
     public void Load()

@@ -85,6 +85,20 @@ public record AdvanceJvmObj
 public record LaunchDataObj
 {
     /// <summary>
+    /// 游戏统计
+    /// </summary>
+    public record TimeObj
+    { 
+        /// <summary>
+        /// 开始统计时间
+        /// </summary>
+        public DateTime Start { get; set; }
+        /// <summary>
+        /// 统计长度
+        /// </summary>
+        public TimeSpan Span { get; set; }
+    }
+    /// <summary>
     /// 实例添加时间
     /// </summary>
     public DateTime AddTime { get; set; }
@@ -96,6 +110,10 @@ public record LaunchDataObj
     /// 游戏时间
     /// </summary>
     public TimeSpan GameTime { get; set; }
+    /// <summary>
+    /// 游戏统计
+    /// </summary>
+    public List<TimeObj> TimeList { get; set; }
 }
 
 /// <summary>

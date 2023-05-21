@@ -15,14 +15,15 @@
                 Name="CheckBox1"
                 Margin="5,0,0,0"
                 Content="{setting:Localize GameEditWindow.Tab7.Text1}"
-                IsChecked="True" />
+                IsChecked="{Binding IsWordWrap}" />
             <CheckBox
                 Name="CheckBox2"
                 Margin="5,0,0,0"
                 Content="{setting:Localize GameEditWindow.Tab7.Text2}"
-                IsChecked="True" />
+                IsChecked="{Binding IsAuto}" />
             <Button
-                Name="Button1"
+                Command="{Binding Stop}"
+                IsEnable="{Binding !IsGameRun}"
                 Width="100"
                 Height="25"
                 Margin="10,0,0,0"
@@ -31,7 +32,7 @@
                 ToolTip.Tip="{setting:Localize ToolTip.Text44}"
                 ToolTip.VerticalOffset="-30" />
             <Button
-                Name="Button2"
+                Command="{Binding Launch}"
                 Width="100"
                 Height="25"
                 Margin="10,0,0,0"
@@ -51,7 +52,8 @@
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
             ShowLineNumbers="True"
+            Document="{Binding Text}"
             VerticalScrollBarVisibility="Visible"
-            WordWrap="True" />
+            WordWrap="{Binding IsWordWrap}" />
     </DockPanel>
 </UserControl>
