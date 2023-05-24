@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UI.Windows;
 using System.Threading;
 
@@ -18,6 +19,11 @@ public partial class SettingControl : UserControl, IUserControl
 
     private bool switch1 = false;
 
+    private readonly SettingTab1Model model1;
+    private readonly SettingTab2Model model2;
+    private readonly SettingTab3Model model3;
+    private readonly SettingTab4Model model4;
+
     private readonly ContentControl content1 = new();
     private readonly ContentControl content2 = new();
 
@@ -30,6 +36,19 @@ public partial class SettingControl : UserControl, IUserControl
     public SettingControl()
     {
         InitializeComponent();
+
+        model1 = new(this);
+        tab1.DataContext = model1;
+
+        model2 = new(this);
+        tab2.DataContext = model2;
+        tab2.Bind();
+
+        model3 = new(this);
+        tab3.DataContext = model3;
+
+        model4 = new(this);
+        tab4.DataContext = model4;
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
@@ -65,16 +84,16 @@ public partial class SettingControl : UserControl, IUserControl
         switch (Tabs.SelectedIndex)
         {
             case 0:
-                tab2.Load();
                 Go(tab2);
+                model2.Load();
                 break;
             case 1:
-                tab3.Load();
                 Go(tab3);
+                model3.Load();
                 break;
             case 2:
-                tab4.Load();
                 Go(tab4);
+                model4.Load();
                 break;
             case 3:
                 tab5.Load();
@@ -135,6 +154,6 @@ public partial class SettingControl : UserControl, IUserControl
     {
         Window.SetTitle(App.GetLanguage("SettingWindow.Title"));
 
-        tab2.Load();
+        model2.Load();
     }
 }

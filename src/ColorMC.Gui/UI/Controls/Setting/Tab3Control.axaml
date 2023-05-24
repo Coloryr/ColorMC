@@ -11,17 +11,17 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
             <Button
-                Name="Button2"
                 Width="160"
                 Height="25"
                 Margin="5"
+                Command="{Binding OpenDownload}"
                 Content="{setting:Localize SettingWindow.Tab3.Text13}" />
 
             <Button
-                Name="Button4"
                 Width="160"
                 Height="25"
                 Margin="0,5,5,5"
+                Command="{Binding OpenPic}"
                 Content="{setting:Localize SettingWindow.Tab3.Text18}" />
         </StackPanel>
         <StackPanel Margin="5">
@@ -31,9 +31,11 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab3.Text1}" />
                 <ComboBox
-                    Name="ComboBox1"
                     Width="200"
-                    Margin="5,0,0,0" />
+                    Margin="5,0,0,0"
+                    IsEnabled="{Binding !IsDownload}"
+                    ItemsSource="{Binding SourceList}"
+                    SelectedIndex="{Binding Source}" />
 
                 <Label
                     Margin="5,0,5,0"
@@ -41,64 +43,75 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab3.Text2}" />
                 <NumericUpDown
-                    Name="Input1"
                     Width="150"
                     Height="30"
                     FormatString="N0"
+                    IsEnabled="{Binding !IsDownload}"
                     Minimum="1"
-                    Value="1" />
+                    Value="{Binding Thread}" />
             </StackPanel>
 
             <StackPanel>
                 <Label Content="{setting:Localize SettingWindow.Tab3.Text3}" />
                 <StackPanel Orientation="Horizontal">
                     <TextBox
-                        Name="TextBox1"
                         Width="200"
                         Margin="0,0,5,0"
                         Classes="input1"
+                        IsEnabled="{Binding !IsDownload}"
+                        Text="{Binding IP}"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
                     <TextBox
-                        Name="TextBox2"
                         Width="80"
                         Margin="0,0,5,0"
                         Classes="input1"
+                        IsEnabled="{Binding !IsDownload}"
                         MaxLength="5"
+                        Text="{Binding Port}"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
                     <TextBox
-                        Name="TextBox3"
                         Width="200"
                         Margin="0,0,5,0"
                         Classes="input1"
+                        IsEnabled="{Binding !IsDownload}"
+                        Text="{Binding User}"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
                     <TextBox
-                        Name="TextBox4"
                         Width="200"
                         Classes="input1"
+                        IsEnabled="{Binding !IsDownload}"
                         PasswordChar="*"
+                        Text="{Binding Password}"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
                 </StackPanel>
                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                     <CheckBox
-                        Name="CheckBox1"
                         Width="160"
-                        Content="{setting:Localize SettingWindow.Tab3.Text8}" />
+                        Content="{setting:Localize SettingWindow.Tab3.Text8}"
+                        IsChecked="{Binding LoginProxy}"
+                        IsEnabled="{Binding !IsDownload}" />
                     <CheckBox
-                        Name="CheckBox2"
                         Width="160"
-                        Content="{setting:Localize SettingWindow.Tab3.Text9}" />
+                        Content="{setting:Localize SettingWindow.Tab3.Text9}"
+                        IsChecked="{Binding DownloadProxy}"
+                        IsEnabled="{Binding !IsDownload}" />
                     <CheckBox
-                        Name="CheckBox3"
                         Width="160"
-                        Content="{setting:Localize SettingWindow.Tab3.Text10}" />
+                        Content="{setting:Localize SettingWindow.Tab3.Text10}"
+                        IsChecked="{Binding GameProxy}"
+                        IsEnabled="{Binding !IsDownload}" />
 
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <CheckBox
-                        Name="CheckBox4"
                         Width="160"
-                        Content="{setting:Localize SettingWindow.Tab3.Text11}" />
-                    <CheckBox Name="CheckBox6" Content="{setting:Localize SettingWindow.Tab3.Text19}" />
+                        Content="{setting:Localize SettingWindow.Tab3.Text11}"
+                        IsChecked="{Binding CheckFile}"
+                        IsEnabled="{Binding !IsDownload}" />
+                    <CheckBox
+                        Content="{setting:Localize SettingWindow.Tab3.Text19}"
+                        IsChecked="{Binding AutoDownload}"
+                        IsEnabled="{Binding !IsDownload}" />
                 </StackPanel>
 
             </StackPanel>
@@ -108,18 +121,18 @@
             <Label Content="{setting:Localize SettingWindow.Tab3.Text14}" />
 
             <StackPanel Orientation="Horizontal">
-                <CheckBox Name="CheckBox5" Content="{setting:Localize SettingWindow.Tab3.Text15}" />
+                <CheckBox Content="{setting:Localize SettingWindow.Tab3.Text15}" IsChecked="{Binding CheckUpdate}" />
                 <Button
-                    Name="Button1"
                     Width="120"
                     Height="25"
                     Margin="5"
+                    Command="{Binding StartCheck}"
                     Content="{setting:Localize SettingWindow.Tab3.Text16}" />
                 <Button
-                    Name="Button3"
                     Width="120"
                     Height="25"
                     Margin="0,5,5,5"
+                    Command="{Binding StartUpdate}"
                     Content="{setting:Localize SettingWindow.Tab3.Text17}" />
             </StackPanel>
         </StackPanel>

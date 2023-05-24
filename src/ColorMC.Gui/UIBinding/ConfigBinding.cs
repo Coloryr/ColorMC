@@ -6,7 +6,9 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
+using static ColorMC.Core.Objs.Login.AuthenticateResObj;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -198,31 +200,113 @@ public static class ConfigBinding
         App.OnPicUpdate();
     }
 
-    /// <summary>
-    /// 设置网络参数
-    /// </summary>
-    /// <param name="obj"></param>
-    public static void SetHttpConfig(HttpObj obj)
+    public static void SetDownloadSource(SourceLocal value)
     {
         if (DownloadManager.State != CoreRunState.End)
             return;
 
-        ConfigUtils.Config.Http = obj;
+        ConfigUtils.Config.Http ??= new();
+        ConfigUtils.Config.Http.Source = value;
         ConfigUtils.Save();
 
         BaseClient.Init();
     }
 
-    /// <summary>
-    /// 设置Jvm参数
-    /// </summary>
-    /// <param name="obj"></param>
-    public static void SetJvmArgConfig(JvmArgObj obj)
+    public static void SetDownloadThread(int value)
     {
-        ConfigUtils.Config.DefaultJvmArg = obj;
+        if (DownloadManager.State != CoreRunState.End)
+            return;
+
+        ConfigUtils.Config.Http ??= new();
+        ConfigUtils.Config.Http.DownloadThread = value;
         ConfigUtils.Save();
 
         BaseClient.Init();
+    }
+
+    public static void SetDownloadProxy(string ip, ushort port, string user, string password)
+    {
+        if (DownloadManager.State != CoreRunState.End)
+            return;
+
+        ConfigUtils.Config.Http ??= new();
+        ConfigUtils.Config.Http.ProxyIP = ip;
+        ConfigUtils.Config.Http.ProxyPort = port;
+        ConfigUtils.Config.Http.ProxyUser = user;
+        ConfigUtils.Config.Http.ProxyPassword = password;
+        ConfigUtils.Save();
+
+        BaseClient.Init();
+    }
+
+    public static void SetDownloadProxyEnable(bool v1, bool v2, bool v3)
+    {
+        if (DownloadManager.State != CoreRunState.End)
+            return;
+
+        ConfigUtils.Config.Http ??= new();
+        ConfigUtils.Config.Http.LoginProxy = v1;
+        ConfigUtils.Config.Http.DownloadProxy = v2;
+        ConfigUtils.Config.Http.GameProxy = v3;
+        ConfigUtils.Save();
+
+        BaseClient.Init();
+    }
+
+    public static void SetDownloadCheck(bool v1, bool v2, bool v3)
+    {
+        if (DownloadManager.State != CoreRunState.End)
+            return;
+
+        ConfigUtils.Config.Http ??= new();
+        ConfigUtils.Config.Http.CheckFile = v1;
+        ConfigUtils.Config.Http.AutoDownload = v2;
+        ConfigUtils.Config.Http.CheckUpdate = v3;
+        ConfigUtils.Save();
+    }
+
+    public static void SetGc(GCType gc, string? arg)
+    {
+        ConfigUtils.Config.DefaultJvmArg ??= new();
+        ConfigUtils.Config.DefaultJvmArg.GC = gc;
+        ConfigUtils.Config.DefaultJvmArg.GCArgument = arg;
+        ConfigUtils.Save();
+    }
+
+    public static void SetRunCommand(bool v1, bool v2, string? v3, string? v4)
+    {
+        ConfigUtils.Config.DefaultJvmArg ??= new();
+        ConfigUtils.Config.DefaultJvmArg.LaunchPre = v1;
+        ConfigUtils.Config.DefaultJvmArg.LaunchPost = v2;
+        ConfigUtils.Config.DefaultJvmArg.LaunchPreData = v3;
+        ConfigUtils.Config.DefaultJvmArg.LaunchPostData = v4;
+        ConfigUtils.Save();
+    }
+
+    public static void SetRunArg(string? v1, string? v2, string? v3)
+    {
+        ConfigUtils.Config.DefaultJvmArg ??= new();
+        ConfigUtils.Config.DefaultJvmArg.JavaAgent = v1;
+        ConfigUtils.Config.DefaultJvmArg.JvmArgs = v2;
+        ConfigUtils.Config.DefaultJvmArg.GameArgs = v3;
+        ConfigUtils.Save();
+    }
+
+    public static void SetGameWindow(bool v1, uint v2, uint v3)
+    {
+        ConfigUtils.Config.Window ??= new();
+        ConfigUtils.Config.Window.FullScreen = v1;
+        ConfigUtils.Config.Window.Width = v2;
+        ConfigUtils.Config.Window.Height = v3;
+        ConfigUtils.Save();
+    }
+
+    public static void SetMemory(uint minMemory, uint maxMemory)
+    {
+        ConfigUtils.Config.DefaultJvmArg ??= new();
+        ConfigUtils.Config.DefaultJvmArg.MinMemory = minMemory;
+        ConfigUtils.Config.DefaultJvmArg.MaxMemory = maxMemory;
+        ConfigUtils.Save();
     }
 
     /// <summary>
@@ -255,9 +339,13 @@ public static class ConfigBinding
     /// 设置游戏检查选项
     /// </summary>
     /// <param name="obj"></param>
-    public static void SetGameCheckConfig(GameCheckObj obj)
+    public static void SetGameCheckConfig(bool v1, bool v2, bool v3, bool v4)
     {
-        ConfigUtils.Config.GameCheck = obj;
+        ConfigUtils.Config.GameCheck ??= new();
+        ConfigUtils.Config.GameCheck.CheckCore = v1;
+        ConfigUtils.Config.GameCheck.CheckAssets = v2;
+        ConfigUtils.Config.GameCheck.CheckLib = v3;
+        ConfigUtils.Config.GameCheck.CheckMod = v4;
         ConfigUtils.Save();
     }
 

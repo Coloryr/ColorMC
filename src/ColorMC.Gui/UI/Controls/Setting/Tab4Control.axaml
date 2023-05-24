@@ -16,46 +16,47 @@
 
             <StackPanel Orientation="Horizontal">
                 <CheckBox
-                    Name="CheckBox2"
                     Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text14}" />
+                    Content="{setting:Localize SettingWindow.Tab4.Text14}"
+                    IsChecked="{Binding CheckCore}" />
                 <CheckBox
-                    Name="CheckBox3"
                     Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text15}" />
+                    Content="{setting:Localize SettingWindow.Tab4.Text15}"
+                    IsChecked="{Binding CheckAssets}" />
                 <CheckBox
-                    Name="CheckBox4"
                     Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text16}" />
+                    Content="{setting:Localize SettingWindow.Tab4.Text16}"
+                    IsChecked="{Binding CheckLib}" />
                 <CheckBox
-                    Name="CheckBox5"
                     Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text17}" />
+                    Content="{setting:Localize SettingWindow.Tab4.Text17}"
+                    IsChecked="{Binding CheckMod}" />
                 <CheckBox
-                    Name="CheckBox8"
                     Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text20}" />
+                    Content="{setting:Localize SettingWindow.Tab4.Text20}"
+                    IsChecked="{Binding PerRun}" />
             </StackPanel>
 
             <TextBox
-                Name="TextBox6"
                 Margin="0,5,0,0"
                 Classes="input1"
+                IsEnabled="{Binding PerRun}"
+                Text="{Binding PerCmd}"
                 Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
 
             <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />
 
             <StackPanel Orientation="Horizontal">
                 <CheckBox
-                    Name="CheckBox6"
                     Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text18}" />
-                <CheckBox Name="CheckBox7" Content="{setting:Localize SettingWindow.Tab4.Text20}" />
+                    Content="{setting:Localize SettingWindow.Tab4.Text18}"
+                    IsChecked="{Binding Close}" />
+                <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PostRun}" />
             </StackPanel>
             <TextBox
-                Name="TextBox5"
                 Margin="0,5,0,0"
                 Classes="input1"
+                Text="{Binding PostCmd}"
                 Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
 
             <!--  Jvm参数  -->
@@ -67,15 +68,18 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab4.Text2}" />
-                <ComboBox Name="ComboBox1" Width="300" />
+                <ComboBox
+                    Width="300"
+                    ItemsSource="{Binding GCTypeList}"
+                    SelectedIndex="{Binding GC}" />
 
             </StackPanel>
 
             <TextBox
-                Name="TextBox1"
                 Margin="0,5,0,5"
                 Classes="input1"
                 IsEnabled="False"
+                Text="{Binding GCArg}"
                 Watermark="{setting:Localize SettingWindow.Tab4.Text3}" />
 
             <StackPanel Orientation="Horizontal">
@@ -86,12 +90,11 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab4.Text4}" />
                 <NumericUpDown
-                    Name="Input1"
                     Width="150"
                     Height="30"
                     FormatString="N0"
                     Minimum="1"
-                    Value="1" />
+                    Value="{Binding MinMemory}" />
 
                 <Label
                     Width="140"
@@ -99,34 +102,33 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab4.Text5}" />
                 <NumericUpDown
-                    Name="Input2"
                     Width="150"
                     Height="30"
                     FormatString="N0"
                     Minimum="1"
-                    Value="1" />
+                    Value="{Binding MaxMemory}" />
             </StackPanel>
 
             <!--  Jvm附加参数  -->
 
             <TextBox
-                Name="TextBox2"
                 Margin="0,5,0,0"
                 Classes="input1"
+                Text="{Binding JavaAgent}"
                 Watermark="{setting:Localize SettingWindow.Tab4.Text6}" />
             <TextBox
-                Name="TextBox3"
                 Height="100"
                 Margin="0,5,0,0"
                 AcceptsReturn="True"
                 Classes="input"
+                Text="{Binding JvmArg}"
                 Watermark="{setting:Localize SettingWindow.Tab4.Text7}" />
             <TextBox
-                Name="TextBox4"
                 Height="100"
                 Margin="0,5,0,0"
                 AcceptsReturn="True"
                 Classes="input"
+                Text="{Binding GameArg}"
                 Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
 
             <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
@@ -140,12 +142,12 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab4.Text10}" />
                 <NumericUpDown
-                    Name="Input3"
                     Width="150"
                     Height="30"
                     FormatString="N0"
+                    IsEnabled="{Binding !FullScreen}"
                     Minimum="1"
-                    Value="1" />
+                    Value="{Binding Width}" />
 
                 <Label
                     Width="140"
@@ -153,17 +155,17 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab4.Text11}" />
                 <NumericUpDown
-                    Name="Input4"
                     Width="150"
                     Height="30"
                     FormatString="N0"
+                    IsEnabled="{Binding !FullScreen}"
                     Minimum="1"
-                    Value="1" />
+                    Value="{Binding Height}" />
 
                 <CheckBox
-                    Name="CheckBox1"
                     Margin="20,0,0,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text12}" />
+                    Content="{setting:Localize SettingWindow.Tab4.Text12}"
+                    IsChecked="{Binding FullScreen}" />
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

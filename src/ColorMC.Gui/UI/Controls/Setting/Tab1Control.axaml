@@ -15,23 +15,22 @@
             DockPanel.Dock="Bottom"
             Orientation="Horizontal">
             <Button
-                Name="Button1"
                 Width="120"
                 Height="25"
                 Margin="5,0,0,5"
+                Command="{Binding Reset}"
                 Content="{setting:Localize SettingWindow.Tab1.Text1}" />
             <Button
-                Name="Button2"
                 Width="120"
                 Height="25"
                 Margin="5,0,0,5"
+                Command="{Binding ClearUser}"
                 Content="{setting:Localize SettingWindow.Tab1.Text2}" />
-
             <Button
-                Name="Button3"
                 Width="120"
                 Height="25"
                 Margin="5,0,5,5"
+                Command="{Binding Open}"
                 Content="{setting:Localize SettingWindow.Tab1.Text3}" />
         </StackPanel>
         <StackPanel Margin="5">
@@ -41,18 +40,19 @@
                     Name="TextBox_Local"
                     Margin="0,0,0,5"
                     Classes="input1"
+                    Text="{Binding Local1}"
                     Watermark="{setting:Localize SettingWindow.Tab1.Text5}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
-                        Name="Button_SelectFile"
                         Width="80"
                         Height="25"
                         Margin="0,0,5,0"
+                        Command="{Binding Open1}"
                         Content="{setting:Localize Button.Select}" />
                     <Button
-                        Name="Button_Input"
                         Width="80"
                         Height="25"
+                        Command="{Binding Import1}"
                         Content="{setting:Localize Button.Input}" />
                 </StackPanel>
             </StackPanel>
@@ -63,18 +63,19 @@
                     Name="TextBox_Local1"
                     Margin="0,0,0,5"
                     Classes="input1"
+                    Text="{Binding Local2}"
                     Watermark="{setting:Localize SettingWindow.Tab1.Text7}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
-                        Name="Button_SelectFile1"
                         Width="80"
                         Height="25"
                         Margin="0,0,5,0"
+                        Command="{Binding Open2}"
                         Content="{setting:Localize Button.Select}" />
                     <Button
-                        Name="Button_Input1"
                         Width="80"
                         Height="25"
+                        Command="{Binding Import2}"
                         Content="{setting:Localize Button.Input}" />
                 </StackPanel>
             </StackPanel>
@@ -85,18 +86,19 @@
                     Name="TextBox_Local2"
                     Margin="0,0,0,5"
                     Classes="input1"
+                    Text="{Binding Local3}"
                     Watermark="{setting:Localize SettingWindow.Tab1.Text9}" />
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
-                        Name="Button_SelectFile2"
                         Width="80"
                         Height="25"
                         Margin="0,0,5,0"
+                        Command="{Binding Open3}"
                         Content="{setting:Localize Button.Select}" />
                     <Button
-                        Name="Button_Input2"
                         Width="80"
                         Height="25"
+                        Command="{Binding Import3}"
                         Content="{setting:Localize Button.Input}" />
                 </StackPanel>
             </StackPanel>
