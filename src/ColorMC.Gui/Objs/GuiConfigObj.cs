@@ -18,14 +18,14 @@ public record ServerCustom
     public string MotdBackColor { get; set; }
 
     public bool LockGame { get; set; }
-    public string GameName { get; set; }
-    public string UIFile { get; set; }
+    public string? GameName { get; set; }
+    public string? UIFile { get; set; }
 
     public bool ServerPack { get; set; }
-    public string ServerUrl { get; set; }
+    public string? ServerUrl { get; set; }
 
     public bool PlayMusic { get; set; }
-    public string Music { get; set; }
+    public string? Music { get; set; }
     public int Volume { get; set; }
     public bool SlowVolume { get; set; }
 }

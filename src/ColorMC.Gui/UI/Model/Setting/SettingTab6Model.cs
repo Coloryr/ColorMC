@@ -37,11 +37,11 @@ public partial class SettingTab6Model :ObservableObject
     [ObservableProperty]
     private string iP;
     [ObservableProperty]
-    private string fileUI;
+    private string? fileUI;
     [ObservableProperty]
-    private string serverUrl;
+    private string? serverUrl;
     [ObservableProperty]
-    private string music;
+    private string? music;
 
     [ObservableProperty]
     private ushort port;
@@ -80,7 +80,7 @@ public partial class SettingTab6Model :ObservableObject
         SetMusic();
     }
 
-    partial void OnMusicChanged(string value)
+    partial void OnMusicChanged(string? value)
     {
         SetMusic();
     }
@@ -100,12 +100,12 @@ public partial class SettingTab6Model :ObservableObject
         SetServerPack();
     }
 
-    partial void OnServerUrlChanged(string value)
+    partial void OnServerUrlChanged(string? value)
     {
         SetServerPack();
     }
 
-    partial void OnFileUIChanged(string value)
+    partial void OnFileUIChanged(string? value)
     {
         ConfigBinding.SetUI(value);
     }
@@ -272,10 +272,10 @@ public partial class SettingTab6Model :ObservableObject
         var list1 = new List<string>();
 
         uuids.Clear();
-        foreach (var item in list)
+        foreach (var (UUID, Name) in list)
         {
-            list1.Add(item.Name);
-            uuids.Add(item.UUID);
+            list1.Add(Name);
+            uuids.Add(UUID);
         }
 
         GameList.Clear();
@@ -339,6 +339,6 @@ public partial class SettingTab6Model :ObservableObject
         if (load)
             return;
 
-        ConfigBinding.SetOneGame(EnableOneGame, uuids[Game]);
+        ConfigBinding.SetOneGame(EnableOneGame, Game ==-1 ? null : uuids[Game]);
     }
 }

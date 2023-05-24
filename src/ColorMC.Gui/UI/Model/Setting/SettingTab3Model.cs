@@ -174,11 +174,17 @@ public partial class SettingTab3Model : ObservableObject
 
     private void SetCheck()
     {
+        if (load)
+            return;
+
         ConfigBinding.SetDownloadCheck(CheckFile, AutoDownload, CheckUpdate);
     }
 
     private void SetProxyEnable()
     {
+        if (load)
+            return;
+
         ConfigBinding.SetDownloadProxyEnable(LoginProxy , DownloadProxy, GameProxy);
     }
 }

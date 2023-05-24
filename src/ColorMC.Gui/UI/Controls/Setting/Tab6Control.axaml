@@ -39,10 +39,10 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">
-                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text5}" />
-                <ColorPicker Color="{Binding Color1}" />
                 <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text6}" />
                 <ColorPicker Color="{Binding Color1}" />
+                <Label Margin="5" Content="{setting:Localize SettingWindow.Tab6.Text5}" />
+                <ColorPicker Color="{Binding Color2}" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal">

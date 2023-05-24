@@ -452,7 +452,7 @@ public static class ConfigBinding
         ColorSel.Instance.LoadMotd();
     }
 
-    public static void SetOneGame(bool v1, string v2)
+    public static void SetOneGame(bool v1, string? v2)
     {
         GuiConfigUtils.Config.ServerCustom ??= new();
         GuiConfigUtils.Config.ServerCustom.LockGame = v1;
@@ -460,7 +460,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
-    public static void SetUI(string value)
+    public static void SetUI(string? value)
     {
         GuiConfigUtils.Config.ServerCustom ??= new();
         GuiConfigUtils.Config.ServerCustom.UIFile = value;
