@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Server.Tab4Control"
+    x:Class="ColorMC.Gui.UI.Controls.ServerPack.Tab4Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,10 +15,10 @@
                 Content="{setting:Localize ServerPackWindow.Tab4.Text1}"
                 DockPanel.Dock="Left" />
             <Button
-                Name="Button1"
                 Width="80"
                 Height="25"
                 Margin="5"
+                Command="{Binding Add}"
                 Content="{setting:Localize Button.Add}"
                 DockPanel.Dock="Right" />
 
@@ -26,13 +26,19 @@
                 Name="ComboBox2"
                 Width="120"
                 HorizontalAlignment="Stretch"
-                DockPanel.Dock="Right" />
+                DockPanel.Dock="Right"
+                ItemsSource="{Binding FuntionList}"
+                SelectedIndex="{Binding Funtion}" />
             <Label
                 VerticalAlignment="Center"
                 Content=""
                 DockPanel.Dock="Right" />
 
-            <ComboBox Name="ComboBox1" HorizontalAlignment="Stretch" />
+            <ComboBox
+                Name="ComboBox1"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding NameList}"
+                SelectedItem="{Binding Group}" />
         </DockPanel>
 
         <Label Content="{setting:Localize ServerPackWindow.Tab4.Text3}" DockPanel.Dock="Bottom" />
@@ -41,7 +47,9 @@
             Name="DataGrid1"
             AutoGenerateColumns="False"
             CanUserResizeColumns="True"
-            CanUserSortColumns="False">
+            CanUserSortColumns="False"
+            ItemsSource="{Binding ConfigList}"
+            SelectedItem="{Binding Item}">
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Binding="{Binding Group}"

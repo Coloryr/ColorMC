@@ -1,25 +1,77 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
+using System;
+using System.ComponentModel;
 using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class GameControl : UserControl
 {
-    public GameSettingObj Obj { get; private set; }
+    public static readonly StyledProperty<GameModel> GameModelProperty =
+       AvaloniaProperty.Register<GameControl, GameModel>(nameof(GameModel));
+
+    public GameModel GameModel
+    {
+        get => GetValue(GameModelProperty);
+        set => SetValue(GameModelProperty, value);
+    }
+
     public GameControl()
     {
         InitializeComponent();
 
-        Image1.Source = App.GameIcon;
-
         PointerEntered += GameControl_PointerEntered;
         PointerExited += GameControl_PointerExited;
+
+        PointerPressed += GameControl_PointerPressed;
+        PointerReleased += GameControl_PointerReleased;
+        PointerMoved += GameControl_PointerMoved;
+        DoubleTapped += GameControl_DoubleTapped;
+
+        PropertyChanged += GameControl_PropertyChanged;
+    }
+
+    private void GameControl_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == GameModelProperty)
+        {
+            if (GameModel == null)
+                return;
+
+            DataContext = GameModel;
+            if (GameModel != null)
+            {
+                GameModel.PropertyChanged += GameModel_PropertyChanged;
+            }
+        }
+    }
+
+    private void GameModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "IsDrop")
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (GameModel?.IsDrop == true)
+                {
+                    RenderTransform = new ScaleTransform(0.95, 0.95);
+                }
+                else
+                {
+                    RenderTransform = null;
+                }
+            });
+        }
     }
 
     private void GameControl_PointerExited(object? sender, PointerEventArgs e)
@@ -30,62 +82,48 @@ public partial class GameControl : UserControl
     private void GameControl_PointerEntered(object? sender, PointerEventArgs e)
     {
         Rectangle2.IsVisible = true;
-
-        SetTips();
+        GameModel.SetTips();
     }
 
-    public void SetItem(GameSettingObj obj)
+    private Point point;
+
+    private void GameControl_PointerMoved(object? sender, PointerEventArgs e)
     {
-        Obj = obj;
-        Reload();
-    }
-
-    public void SetSelect(bool select)
-    {
-        Rectangle1.IsVisible = select;
-        TextBlock1.TextWrapping = select ? TextWrapping.Wrap : TextWrapping.NoWrap;
-
-        SetTips();
-    }
-
-    public void SetLaunch(bool state)
-    {
-        Image2.IsVisible = state;
-
-        SetTips();
-    }
-
-    public void SetLoad(bool state)
-    {
-        Image3.IsVisible = state;
-    }
-
-    public void Reload()
-    {
-        TextBlock1.Text = Obj.Name;
-        var file = Obj.GetIconFile();
-        if (File.Exists(file))
+        var pro = e.GetCurrentPoint(this);
+        if (pro.Properties.IsLeftButtonPressed)
         {
-            Image1.Source = new Bitmap(file);
+            var pos = pro.Position;
+            if (Math.Sqrt(Math.Pow(Math.Abs(pos.X - point.X), 2) + Math.Pow(Math.Abs(pos.Y - point.Y), 2)) > 30)
+            {
+                GameModel.Move(e);
+                e.Handled = true;
+            }
         }
-        else
-        {
-            Image1.Source = App.GameIcon;
-        }
-
-        if (BaseBinding.IsGameRun(Obj))
-        {
-            SetLaunch(true);
-        }
-
-        SetTips();
     }
 
-    private void SetTips()
+    private void GameControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        ToolTip.SetTip(this, string.Format(App.GetLanguage("Tips.Text1"),
-            Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
-            Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),
-            Obj.LaunchData.GameTime.Ticks == 0 ? "" : Obj.LaunchData.GameTime.ToString(@"d\.hh\:mm\:ss")));
+        GameModel.IsDrop = false;
+    }
+
+    private void GameControl_DoubleTapped(object? sender, TappedEventArgs e)
+    {
+        e.Handled = true;
+        GameModel.Launch(false);
+    }
+
+    private void GameControl_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        e.Handled = true;
+
+        GameModel.SetSelect();
+
+        var pro = e.GetCurrentPoint(this);
+        point = pro.Position;
+
+        if (pro.Properties.IsRightButtonPressed )
+        {
+            GameModel.Flyout(this);
+        }
     }
 }

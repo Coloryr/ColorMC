@@ -21,7 +21,7 @@ using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.Main;
-using ColorMC.Gui.UI.Controls.Server;
+using ColorMC.Gui.UI.Controls.ServerPack;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;

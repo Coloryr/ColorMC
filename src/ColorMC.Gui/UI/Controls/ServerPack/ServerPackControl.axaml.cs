@@ -2,18 +2,24 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
+using ColorMC.Gui.UI.Model.ServerPack;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.Threading;
 
-namespace ColorMC.Gui.UI.Controls.Server;
+namespace ColorMC.Gui.UI.Controls.ServerPack;
 
 public partial class ServerPackControl : UserControl, IUserControl
 {
-    private Tab1Control tab1 = new();
-    private Tab2Control tab2 = new();
-    private Tab3Control tab3 = new();
-    private Tab4Control tab4 = new();
+    private readonly Tab1Control tab1 = new();
+    private readonly Tab2Control tab2 = new();
+    private readonly Tab3Control tab3 = new();
+    private readonly Tab4Control tab4 = new();
+
+    private readonly ServerPackTab1Model model1;
+    private readonly ServerPackTab2Model model2;
+    private readonly ServerPackTab3Model model3;
+    private readonly ServerPackTab4Model model4;
 
     private bool switch1 = false;
 
@@ -24,16 +30,43 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     private int now;
 
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
+    public string GameName => model1.Obj.Game.Name;
 
-    public GameSettingObj Obj { get; private set; }
-    private ServerPackObj Obj1;
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public ServerPackControl(GameSettingObj obj)
     {
-        Obj = obj;
-
         InitializeComponent();
+
+        ServerPackObj? pack = null;
+        if (obj != null)
+        {
+            pack = GameBinding.GetServerPack(obj);
+            if (pack == null)
+            {
+                pack = new()
+                {
+                    Game = obj,
+                    Mod = new(),
+                    Resourcepack = new(),
+                    Config = new()
+                };
+
+                GameBinding.SaveServerPack(pack);
+            }
+        }
+
+        model1 = new(this, pack);
+        tab1.DataContext = model1;
+
+        model2 = new(this, pack);
+        tab2.DataContext = model2;
+
+        model3 = new(this, pack);
+        tab3.DataContext = model3;
+
+        model4 = new(this, pack);
+        tab4.DataContext = model4;
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
@@ -42,30 +75,6 @@ public partial class ServerPackControl : UserControl, IUserControl
         Tab1.Children.Add(content2);
 
         content1.Content = tab1;
-
-        if (obj != null)
-        {
-            Obj1 = GameBinding.GetServerPack(obj);
-            if (Obj1 == null)
-            {
-                Obj1 = new()
-                {
-                    Game = obj,
-                    Mod = new(),
-                    Resourcepack = new(),
-                    Config = new()
-                };
-
-                GameBinding.SaveServerPack(Obj1);
-            }
-
-            tab1.SetObj(Obj1);
-            tab2.SetObj(Obj1);
-            tab3.SetObj(Obj1);
-            tab4.SetObj(Obj1);
-
-            tab1.Load();
-        }
     }
 
     public ServerPackControl() : this(null)
@@ -75,7 +84,8 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(string.Format(App.GetLanguage("ServerPackWindow.Title"), Obj?.Name));
+        Window.SetTitle(string.Format(App.GetLanguage("ServerPackWindow.Title"), 
+            model1.Obj.Game.Name));
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -95,20 +105,20 @@ public partial class ServerPackControl : UserControl, IUserControl
         switch (Tabs.SelectedIndex)
         {
             case 0:
-                tab1.Load();
                 Go(tab1);
+                model1.Load();
                 break;
             case 1:
-                tab2.Load();
                 Go(tab2);
+                model2.Load();
                 break;
             case 2:
-                tab3.Load();
                 Go(tab3);
+                model3.Load();
                 break;
             case 3:
-                tab4.Load();
                 Go(tab4);
+                model4.Load();
                 break;
         }
 
@@ -146,11 +156,6 @@ public partial class ServerPackControl : UserControl, IUserControl
         content1.Content = null;
         content2.Content = null;
 
-        App.ServerPackWindows.Remove(Obj.UUID);
-    }
-
-    public void Save()
-    {
-        GameBinding.SaveServerPack(Obj1);
+        App.ServerPackWindows.Remove(model1.Obj.Game.UUID);
     }
 }

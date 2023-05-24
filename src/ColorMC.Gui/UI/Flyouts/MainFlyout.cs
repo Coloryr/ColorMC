@@ -1,18 +1,18 @@
-﻿using Avalonia.VisualTree;
+﻿using Avalonia.Controls;
+using Avalonia.VisualTree;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class MainFlyout
 {
-    private GameControl Obj;
-    private MainControl Win;
-    public MainFlyout(MainControl win, GameControl obj)
+    private GameModel Obj;
+    public MainFlyout(Control con, GameModel obj)
     {
-        Win = win;
         Obj = obj;
 
         var run = BaseBinding.IsGameRun(obj.Obj);
@@ -33,7 +33,7 @@ public class MainFlyout
             (App.GetLanguage("MainWindow.Flyouts.Text11"), !run, Button6_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text12"), !run, Button13_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text13"), run, Button10_Click)
-        }, win);
+        }, con);
     }
 
     private void Button14_Click()
@@ -43,12 +43,12 @@ public class MainFlyout
 
     private void Button13_Click()
     {
-        Win.Copy(Obj.Obj);
+        Obj.Copy();
     }
 
     private void Button12_Click()
     {
-        Win.Rename(Obj.Obj);
+        Obj.Rename();
     }
 
     private void Button11_Click()
@@ -63,7 +63,7 @@ public class MainFlyout
 
     private async void Button9_Click()
     {
-        await GameBinding.SetGameIconFromFile(App.FindRoot(Win.GetVisualRoot()), Obj.Obj);
+        await GameBinding.SetGameIconFromFile(Obj.Con.Window, Obj.Obj);
         Obj.Reload();
     }
 
@@ -79,12 +79,12 @@ public class MainFlyout
 
     private void Button6_Click()
     {
-        Win.DeleteGame(Obj.Obj, false);
+        Obj.DeleteGame();
     }
 
     private void Button5_Click()
     {
-        Win.EditGroup(Obj.Obj);
+        Obj.EditGroup();
     }
 
     private void Button4_Click()
@@ -104,6 +104,6 @@ public class MainFlyout
 
     private void Button1_Click()
     {
-        Win.Launch(true);
+        Obj.Launch(true);
     }
 }

@@ -10,10 +10,10 @@
     mc:Ignorable="d">
     <DockPanel Margin="5">
         <Button
-            Name="Button1"
             Width="85"
             Height="25"
             HorizontalAlignment="Right"
+            Command="{Binding Open}"
             Content="{setting:Localize Button.OpFile}"
             DockPanel.Dock="Top"
             ToolTip.Tip="{setting:Localize ToolTip.Text39}"
@@ -28,11 +28,13 @@
                         Name="Button_R"
                         Width="20"
                         Height="30"
+                        Command="{Binding Load}"
                         Content="R" />
                     <Button
                         Name="Button_R1"
                         Width="100"
                         Height="30"
+                        Command="{Binding Load}"
                         Content="{setting:Localize Button.Refash}"
                         IsVisible="False" />
                 </Grid>
@@ -41,11 +43,13 @@
                         Name="Button_C"
                         Width="20"
                         Height="30"
+                        Command="{Binding Clear}"
                         Content="C" />
                     <Button
                         Name="Button_C1"
                         Width="100"
                         Height="30"
+                        Command="{Binding Clear}"
                         Content="{setting:Localize GameEditWindow.Flyouts4.Text1}"
                         IsVisible="False" />
                 </Grid>

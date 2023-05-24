@@ -1,15 +1,17 @@
-﻿using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.Server;
+﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.ServerPack;
+using ColorMC.Gui.UI.Model.ServerPack;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class ServerPackFlyout1
 {
     private readonly ServerPackConfigDisplayObj Obj;
-    private readonly Tab4Control Con;
-    public ServerPackFlyout1(Tab4Control con, ServerPackConfigDisplayObj obj)
+    private readonly ServerPackTab4Model Model;
+    public ServerPackFlyout1(Control con, ServerPackTab4Model model, ServerPackConfigDisplayObj obj)
     {
-        Con = con;
+        Model = model;
         Obj = obj;
 
         var fy = new FlyoutsControl(new()
@@ -20,6 +22,6 @@ public class ServerPackFlyout1
 
     private void Button1_Click()
     {
-        Con.Delete(Obj);
+        Model.Delete(Obj);
     }
 }

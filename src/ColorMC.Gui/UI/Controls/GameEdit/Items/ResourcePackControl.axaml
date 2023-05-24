@@ -45,21 +45,18 @@
                         VerticalAlignment="Center"
                         Text="{setting:Localize GameEditWindow.Control.Text5}" />
                     <TextBlock
-                        Name="Label2"
                         Margin="0,0,20,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Text="{Binding PackFormat}" />
                 </StackPanel>
                 <TextBlock
-                    Name="Label3"
                     Margin="0,0,5,0"
-                    TextWrapping="NoWarp"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
+                    MaxLines="1"
                     Text="{Binding Description}" />
                 <TextBlock
-                    Name="Label4"
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"

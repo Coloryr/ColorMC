@@ -10,22 +10,22 @@
     mc:Ignorable="d">
     <Grid Margin="1" Background="{setting:Colors TranBack}">
         <Rectangle
+            Name="Rectangle2"
+            Fill="{setting:Colors Back}"
+            IsVisible="False" />
+        <Rectangle
             Name="Rectangle1"
-            IsVisible="False"
+            Fill="{setting:Colors TranBack}"
+            IsVisible="{Binding IsSelect}"
             Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
-
         <StackPanel Margin="5">
             <Image
-                Name="Image1"
                 Width="200"
                 Height="120"
-                Source="resm:ColorMC.Gui.Resource.Pic.game.png"
+                Source="{Binding Pic}"
                 Stretch="UniformToFill" />
-            <Label
-                Name="Label1"
-                HorizontalAlignment="Center"
-                Content="Name" />
+            <Label HorizontalAlignment="Center" Content="{Binding Name}" />
         </StackPanel>
     </Grid>
 </UserControl>

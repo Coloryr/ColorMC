@@ -18,6 +18,8 @@ public partial class ServerMotdControl : UserControl
         AvaloniaProperty.Register<ServerMotdControl, string?>(nameof(IP));
     public static readonly StyledProperty<ushort> PortProperty =
         AvaloniaProperty.Register<ServerMotdControl, ushort>(nameof(Port));
+    public static readonly StyledProperty<(string, ushort)> IPPortProperty =
+        AvaloniaProperty.Register<ServerMotdControl, (string, ushort)>(nameof(IPPort));
 
     private bool nowset;
 
@@ -30,6 +32,11 @@ public partial class ServerMotdControl : UserControl
     {
         get => GetValue(PortProperty);
         private set => SetValue(PortProperty, value);
+    }
+    public (string, ushort) IPPort
+    {
+        get => GetValue(IPPortProperty);
+        private set => SetValue(IPPortProperty, value);
     }
 
     private bool FirstLine = true;
@@ -46,6 +53,14 @@ public partial class ServerMotdControl : UserControl
 
     private void ServerMotdControl_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
+        if (e.Property == IPPortProperty)
+        {
+            nowset = true;
+            var data = IPPort;
+            IP = data.Item1;
+            Port = data.Item2;
+            nowset = false;
+        }
         if (e.Property == PortProperty)
         {
             Update();

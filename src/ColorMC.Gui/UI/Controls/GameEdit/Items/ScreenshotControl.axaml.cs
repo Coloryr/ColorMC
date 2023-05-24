@@ -1,47 +1,61 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Model.GameEdit;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit.Items;
 
 public partial class ScreenshotControl : UserControl
 {
-    private Tab9Control Tab;
+    public static readonly StyledProperty<ScreenshotModel> ScreenshotModelProperty =
+        AvaloniaProperty.Register<ScreenshotControl, ScreenshotModel>(nameof(ScreenshotModel));
 
-    public ScreenshotDisplayObj Obj { get; private set; }
+    public ScreenshotModel ScreenshotModel
+    {
+        get => GetValue(ScreenshotModelProperty);
+        set => SetValue(ScreenshotModelProperty, value);
+    }
     public ScreenshotControl()
     {
         InitializeComponent();
 
         PointerPressed += ScreenshotControl_PointerPressed;
+
+        PointerEntered += ScreenshotControl_PointerEntered;
+        PointerExited += ScreenshotControl_PointerExited;
+
+        PropertyChanged += ScreenshotControl_PropertyChanged;
+    }
+
+    private void ScreenshotControl_PointerExited(object? sender, PointerEventArgs e)
+    {
+        Rectangle2.IsVisible = false;
+    }
+
+    private void ScreenshotControl_PointerEntered(object? sender, PointerEventArgs e)
+    {
+        Rectangle2.IsVisible = true;
+    }
+
+    private void ScreenshotControl_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == ScreenshotModelProperty)
+        {
+            if (ScreenshotModel == null)
+                return;
+
+            DataContext = ScreenshotModel;
+        }
     }
 
     private void ScreenshotControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        Tab.SetSelect(this);
-
+        ScreenshotModel.Select();
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            _ = new GameEditFlyout4(Tab, Obj);
+            ScreenshotModel.Flyout(this);
         }
-    }
-
-    public void Load(ScreenshotDisplayObj obj)
-    {
-        Obj = obj;
-
-        Label1.Content = obj.Name;
-        Image1.Source = obj.Image;
-    }
-
-    public void SetWindow(Tab9Control tab)
-    {
-        Tab = tab;
-    }
-
-    public void SetSelect(bool select)
-    {
-        Rectangle1.IsVisible = select;
     }
 }

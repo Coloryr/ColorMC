@@ -22,23 +22,23 @@
                 Content="{setting:Localize GameEditWindow.Tab7.Text2}"
                 IsChecked="{Binding IsAuto}" />
             <Button
-                Command="{Binding Stop}"
-                IsEnabled="{Binding IsGameRun}"
                 Width="100"
                 Height="25"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"
+                Command="{Binding Stop}"
                 Content="{setting:Localize GameEditWindow.Tab7.Text3}"
+                IsEnabled="{Binding IsGameRun}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text44}"
                 ToolTip.VerticalOffset="-30" />
             <Button
-                Command="{Binding Launch}"
-                IsEnabled="{Binding !IsGameRun}"
                 Width="100"
                 Height="25"
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"
+                Command="{Binding Launch}"
                 Content="{setting:Localize MainWindow.Flyouts.Text1}"
+                IsEnabled="{Binding !IsGameRun}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text44}"
                 ToolTip.VerticalOffset="-30" />
 
@@ -47,13 +47,13 @@
             Name="TextEditor1"
             Margin="3"
             Background="{setting:Colors TranBack}"
+            Document="{Binding Text}"
             FontSize="14"
             FontWeight="Normal"
             Foreground="{setting:Colors Font}"
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
             ShowLineNumbers="True"
-            Document="{Binding Text}"
             VerticalScrollBarVisibility="Visible"
             WordWrap="{Binding IsWordWrap}" />
     </DockPanel>

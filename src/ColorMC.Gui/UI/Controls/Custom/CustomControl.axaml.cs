@@ -10,6 +10,8 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
@@ -44,7 +46,7 @@ public class CustomWindowModel : INotifyPropertyChanged
     }
 }
 
-public partial class CustomControl : UserControl, IUserControl
+public partial class CustomControl : UserControl, IUserControl, IMainTop
 {
     private UIObj? UI;
     private GameSettingObj? Obj;
@@ -348,8 +350,9 @@ public partial class CustomControl : UserControl, IUserControl
 
         if (type == ViewType.GameItem)
         {
-            (con as GameControl)!.SetItem(Obj!);
-            (con as GameControl)!.SetSelect(true);
+            var con1 = (con as GameControl);
+            con1.GameModel = new(this, this, Obj);
+            con1.GameModel.SetSelect();
         }
 
         if (type == ViewType.StackPanel)
@@ -501,5 +504,20 @@ public partial class CustomControl : UserControl, IUserControl
         }
 
         return false;
+    }
+
+    public void Launch(GameModel obj, bool debug)
+    {
+        
+    }
+
+    public void Select(GameModel? model)
+    {
+        
+    }
+
+    public void EditGroup(GameModel model)
+    {
+        
     }
 }

@@ -36,22 +36,20 @@ public partial class GameEditControl : UserControl, IUserControl
     private readonly GameEditTab6Model model6;
     private readonly GameEditTab7Model model7;
     private readonly GameEditTab8Model model8;
+    private readonly GameEditTab9Model model9;
     private readonly GameEditTab10Model model10;
     private readonly GameEditTab11Model model11;
     private readonly GameEditTab12Model model12;
 
     private int now;
 
-    public GameSettingObj Obj { get; private set; }
+    public string GameName => model1.Obj.Name;
+    public string GameUUID => model1.Obj.UUID;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public GameEditControl(GameSettingObj obj)
     {
-        Obj = obj;
-
-        tab9.SetGame(obj);
-
         model1 = new(this, obj);
         tab1.DataContext = model1;
 
@@ -73,6 +71,9 @@ public partial class GameEditControl : UserControl, IUserControl
 
         model8 = new(this, obj);
         tab8.DataContext = model8;
+
+        model9 = new(this, obj);
+        tab9.DataContext = model9;
 
         model10 = new(this, obj);
         tab10.DataContext = model10;
@@ -122,7 +123,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(string.Format(App.GetLanguage("GameEditWindow.Title"), Obj?.Name));
+        Window.SetTitle(string.Format(App.GetLanguage("GameEditWindow.Title"), GameName));
     }
 
     public void SetType(GameEditWindowType type)
@@ -183,7 +184,7 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case 5:
                 Go(tab9);
-                tab9.Update();
+                model9.Load();
                 break;
             case 6:
                 Go(tab10);
@@ -235,7 +236,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Closed()
     {
-        App.GameEditWindows.Remove(Obj.UUID);
+        App.GameEditWindows.Remove(GameUUID);
     }
 
     public void Started()

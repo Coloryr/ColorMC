@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Server.Tab3Control"
+    x:Class="ColorMC.Gui.UI.Controls.ServerPack.Tab2Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,34 +10,42 @@
     mc:Ignorable="d">
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Label VerticalAlignment="Center" Content="{setting:Localize ServerPackWindow.Tab3.Text1}" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize ServerPackWindow.Tab2.Text1}" />
             <Button
-                Name="Button1"
                 Width="80"
                 Height="25"
+                Command="{Binding SelectAll}"
                 Content="{setting:Localize ServerPackWindow.Tab2.Text2}" />
             <Button
-                Name="Button2"
                 Width="80"
                 Height="25"
                 Margin="5,0,0,0"
+                Command="{Binding UnSelectAll}"
                 Content="{setting:Localize ServerPackWindow.Tab2.Text3}" />
         </StackPanel>
         <DataGrid
             Name="DataGrid1"
             AutoGenerateColumns="False"
             CanUserResizeColumns="True"
-            CanUserSortColumns="False">
+            CanUserSortColumns="False"
+            ItemsSource="{Binding ModList}"
+            SelectedItem="{Binding Item}">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text1}" />
+                <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text1}" />
                 <DataGridTextColumn
                     Binding="{Binding FileName}"
-                    Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text2}"
+                    Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text2}"
                     IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text3}" />
+                <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text3}" />
+                <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text4}" />
+                <DataGridTextColumn
+                    Binding="{Binding Source}"
+                    Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text5}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text6}" />
                 <DataGridTextColumn
                     Binding="{Binding Sha1}"
-                    Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text4}"
+                    Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text7}"
                     IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>

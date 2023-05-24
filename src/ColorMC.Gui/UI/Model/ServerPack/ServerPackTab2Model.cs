@@ -1,53 +1,60 @@
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
+using System.Text;
+using ColorMC.Core.Helpers;
+using System.Threading.Tasks;
+using System.IO;
 
-namespace ColorMC.Gui.UI.Controls.Server;
+namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class Tab2Control : UserControl
+public partial class ServerPackTab2Model : ServerPackTabModel
 {
-    private ServerPackObj Obj1;
-    private ObservableCollection<ServerPackModDisplayModel> List = new();
+    public ObservableCollection<ServerPackModDisplayModel> ModList { get; init; } = new();
 
-    public Tab2Control()
+    [ObservableProperty]
+    private ServerPackModDisplayModel item;
+
+    public ServerPackTab2Model(IUserControl con, ServerPackObj obj) : base(con, obj)
     {
-        InitializeComponent();
-
-        DataGrid1.ItemsSource = List;
-        DataGrid1.CellEditEnded += DataGrid1_CellEditEnded;
-
-        Button1.Click += Button1_Click;
-        Button2.Click += Button2_Click;
+        
     }
 
-    private void Button2_Click(object? sender, RoutedEventArgs e)
+    [RelayCommand]
+    public void SelectAll()
     {
-        foreach (var item in List)
-        {
-            item.Check = false;
-            ItemEdit(item);
-        }
-    }
-
-    private void Button1_Click(object? sender, RoutedEventArgs e)
-    {
-        foreach (var item in List)
+        foreach (var item in ModList)
         {
             item.Check = true;
             ItemEdit(item);
         }
     }
 
+    [RelayCommand]
+    public void UnSelectAll()
+    {
+        foreach (var item in ModList)
+        {
+            item.Check = false;
+            ItemEdit(item);
+        }
+    }
+
+    public void ItemEdit()
+    {
+        ItemEdit(Item);
+    }
+
     private void ItemEdit(ServerPackModDisplayModel obj)
     {
-        var item = Obj1.Mod?.FirstOrDefault(a => a.Sha1 == obj.Sha1
+        var item = Obj.Mod?.FirstOrDefault(a => a.Sha1 == obj.Sha1
                         && a.File == obj.FileName);
         if (obj.Check)
         {
@@ -71,7 +78,7 @@ public partial class Tab2Control : UserControl
             }
             else
             {
-                Obj1.Mod ??= new();
+                Obj.Mod ??= new();
                 item = new()
                 {
                     Projcet = obj.PID,
@@ -80,40 +87,29 @@ public partial class Tab2Control : UserControl
                     Sha1 = obj.Sha1,
                     File = obj.FileName
                 };
-                Obj1.Mod.Add(item);
+                Obj.Mod.Add(item);
             }
 
-            obj.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Mod, Obj1.Url);
+            obj.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Mod, Obj.Url);
         }
         else
         {
             if (item != null)
             {
                 obj.Url = "";
-                Obj1.Mod?.Remove(item);
+                Obj.Mod?.Remove(item);
             }
         }
 
-        GameBinding.SaveServerPack(Obj1);
-    }
-
-    private void DataGrid1_CellEditEnded(object? sender, DataGridCellEditEndedEventArgs e)
-    {
-        if (e.Row.DataContext is ServerPackModDisplayModel obj)
-        {
-            ItemEdit(obj);
-        }
+        GameBinding.SaveServerPack(Obj);
     }
 
     public async void Load()
     {
-        if (Obj1 == null)
-            return;
+        ModList.Clear();
+        var mods = await GameBinding.GetGameMods(Obj.Game);
 
-        List.Clear();
-        var mods = await GameBinding.GetGameMods(Obj1.Game);
-
-        Obj1.Mod?.RemoveAll(a => mods.Find(b => a.Sha1 == b.Obj.Sha1) == null);
+        Obj.Mod?.RemoveAll(a => mods.Find(b => a.Sha1 == b.Obj.Sha1) == null);
 
         mods.ForEach(item =>
         {
@@ -122,7 +118,7 @@ public partial class Tab2Control : UserControl
 
             string file = Path.GetFileName(item.Obj.Local);
 
-            var item1 = Obj1.Mod?.FirstOrDefault(a => a.Sha1 == item.Obj.Sha1
+            var item1 = Obj.Mod?.FirstOrDefault(a => a.Sha1 == item.Obj.Sha1
                         && a.File == file);
 
             var item2 = new ServerPackModDisplayModel()
@@ -147,19 +143,14 @@ public partial class Tab2Control : UserControl
                     }
                     else
                     {
-                        item2.Url = BaseBinding.MakeUrl(item1, FileType.Mod, Obj1.Url);
+                        item2.Url = BaseBinding.MakeUrl(item1, FileType.Mod, Obj.Url);
                     }
                 }
             }
 
-            List.Add(item2);
+            ModList.Add(item2);
         });
 
-        GameBinding.SaveServerPack(Obj1);
-    }
-
-    public void SetObj(ServerPackObj obj1)
-    {
-        Obj1 = obj1;
+        GameBinding.SaveServerPack(Obj);
     }
 }

@@ -404,7 +404,7 @@ public static class GameBinding
     public static void MoveGameGroup(GameSettingObj obj, string? now)
     {
         obj.MoveGameGroup(now);
-        App.MainWindow?.Load();
+        App.MainWindow?.LoadMain();
     }
 
     public static async Task<bool> ReloadVersion()
@@ -842,8 +842,7 @@ public static class GameBinding
         App.CloseGameWindow(obj);
         var res = await obj.Remove();
 
-        App.MainWindow?.IsDelete();
-        App.MainWindow?.Load();
+        App.MainWindow?.LoadMain();
 
         return res;
     }
@@ -1096,7 +1095,7 @@ public static class GameBinding
         obj.Name = data;
         obj.Save();
 
-        App.MainWindow?.Load();
+        App.MainWindow?.LoadMain();
     }
 
     public static async Task<bool> CopyGame(GameSettingObj obj, string data)
@@ -1108,7 +1107,7 @@ public static class GameBinding
         if (res == null)
             return false;
 
-        App.MainWindow?.Load();
+        App.MainWindow?.LoadMain();
 
         return true;
     }

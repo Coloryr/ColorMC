@@ -295,7 +295,7 @@ public partial class AddGameTab1Model : AddGameTabModel
         else
         {
             App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info7"));
-            App.MainWindow?.Load();
+            App.MainWindow?.LoadMain();
 
             window.Close();
         }
@@ -394,7 +394,7 @@ public partial class AddGameTab1Model : AddGameTabModel
         else
         {
             App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info7"));
-            App.MainWindow?.Load();
+            App.MainWindow?.LoadMain();
             window.Close();
         }
     }
@@ -418,7 +418,7 @@ public partial class AddGameTab1Model : AddGameTabModel
         else
         {
             App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info7"));
-            App.MainWindow?.Load();
+            App.MainWindow?.LoadMain();
             window.Close();
         }
     }

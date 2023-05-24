@@ -13,7 +13,7 @@ using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.Main;
-using ColorMC.Gui.UI.Controls.Server;
+using ColorMC.Gui.UI.Controls.ServerPack;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
@@ -241,11 +241,11 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         }
         else if (con is ServerPackControl con2)
         {
-            return string.Format(App.GetLanguage("ServerPackWindow.Title"), con2.Obj?.Name);
+            return string.Format(App.GetLanguage("ServerPackWindow.Title"), con2.GameName);
         }
         else if (con is GameEditControl con3)
         {
-            return string.Format(App.GetLanguage("GameEditWindow.Title"), con3.Obj?.Name);
+            return string.Format(App.GetLanguage("GameEditWindow.Title"), con3.GameName);
         }
         else if (con is ErrorControl)
         {

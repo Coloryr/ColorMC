@@ -8,6 +8,7 @@
     Width="80"
     d:DesignHeight="100"
     d:DesignWidth="80"
+    ToolTip.Tip="{Binding Tips}"
     mc:Ignorable="d">
     <Grid>
         <Rectangle
@@ -17,39 +18,37 @@
         <Rectangle
             Name="Rectangle1"
             Fill="{setting:Colors TranBack}"
-            IsVisible="False"
+            IsVisible="{Binding IsSelect}"
             Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
         <StackPanel Margin="5">
-            <Image Name="Image1" Stretch="UniformToFill" />
+            <Image Source="{Binding Pic}" Stretch="UniformToFill" />
             <TextBlock
                 Name="TextBlock1"
                 HorizontalAlignment="Center"
                 FontSize="13"
-                Text="Name"
+                Text="{Binding Name}"
                 TextAlignment="Center"
                 TextTrimming="CharacterEllipsis"
-                TextWrapping="NoWrap" />
+                TextWrapping="{Binding Wrap}" />
         </StackPanel>
 
         <Image
-            Name="Image2"
             Width="32"
             Height="32"
             Margin="0,30,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            IsVisible="False"
+            IsVisible="{Binding IsLaunch}"
             Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
             Stretch="UniformToFill" />
         <Image
-            Name="Image3"
             Width="32"
             Height="32"
             Margin="0,30,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            IsVisible="False"
+            IsVisible="{Binding IsLoad}"
             Source="resm:ColorMC.Gui.Resource.Pic.load.png"
             Stretch="UniformToFill" />
     </Grid>

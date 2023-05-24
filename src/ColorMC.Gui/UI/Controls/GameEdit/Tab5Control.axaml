@@ -1,21 +1,54 @@
-<UserControl x:Class="ColorMC.Gui.UI.Controls.GameEdit.Tab5Control"
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Tab5Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.GameEdit.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:obj="clr-namespace:ColorMC.Gui.Objs"
-    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting" d:DesignHeight="450" d:DesignWidth="800" DragDrop.AllowDrop="True" mc:Ignorable="d">
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    DragDrop.AllowDrop="True"
+    mc:Ignorable="d">
     <Grid>
         <DockPanel Margin="5">
-            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" DockPanel.Dock="Top" Orientation="Horizontal">
-                <Button Width="120" Height="25" Margin="5,0,0,0" Command="{Binding Backup}" Content="{setting:Localize GameEditWindow.Tab5.Text2}" ToolTip.Tip="{setting:Localize ToolTip.Text42}" ToolTip.VerticalOffset="-30" />
-                <Button Width="120" Height="25" Margin="5,0,0,0" Command="{Binding OpenBackup}" Content="{setting:Localize GameEditWindow.Tab5.Text1}" ToolTip.Tip="{setting:Localize ToolTip.Text39}" ToolTip.VerticalOffset="-30" />
-                <Button Width="85" Height="25" Margin="5,0,0,0" Command="{Binding Open}" Content="{setting:Localize Button.OpFile}" ToolTip.Tip="{setting:Localize ToolTip.Text39}" ToolTip.VerticalOffset="-30" />
+            <StackPanel
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Top"
+                Orientation="Horizontal">
+                <Button
+                    Width="120"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Backup}"
+                    Content="{setting:Localize GameEditWindow.Tab5.Text2}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text42}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="120"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding OpenBackup}"
+                    Content="{setting:Localize GameEditWindow.Tab5.Text1}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="85"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Open}"
+                    Content="{setting:Localize Button.OpFile}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
             </StackPanel>
             <Grid Margin="0,3,0,0">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding WorldList}">
+                    <ItemsControl
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{Binding WorldList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <item:WorldControl WorldModel="{Binding}" />
@@ -25,22 +58,62 @@
                 </ScrollViewer>
                 <StackPanel VerticalAlignment="Center">
                     <Grid>
-                        <Button Name="Button_I" Width="20" Height="30" Command="{Binding Import}" Content="I" />
-                        <Button Name="Button_I1" Width="100" Height="30" Command="{Binding Import}" Content="{setting:Localize Button.Input}" IsVisible="False" />
+                        <Button
+                            Name="Button_I"
+                            Width="20"
+                            Height="30"
+                            Command="{Binding Import}"
+                            Content="I" />
+                        <Button
+                            Name="Button_I1"
+                            Width="100"
+                            Height="30"
+                            Command="{Binding Import}"
+                            Content="{setting:Localize Button.Input}"
+                            IsVisible="False" />
                     </Grid>
                     <Grid Margin="0,5,0,0">
-                        <Button Name="Button_A" Width="20" Height="30" Command="{Binding Add}" Content="A" />
-                        <Button Name="Button_A1" Width="100" Height="30" Command="{Binding Add}" Content="{setting:Localize Button.Add}" IsVisible="False" />
+                        <Button
+                            Name="Button_A"
+                            Width="20"
+                            Height="30"
+                            Command="{Binding Add}"
+                            Content="A" />
+                        <Button
+                            Name="Button_A1"
+                            Width="100"
+                            Height="30"
+                            Command="{Binding Add}"
+                            Content="{setting:Localize Button.Add}"
+                            IsVisible="False" />
                     </Grid>
                     <Grid Margin="0,5,0,0">
-                        <Button Name="Button_R" Width="20" Height="30" Command="{Binding Load}" Content="R" />
-                        <Button Name="Button_R1" Width="100" Height="30" Command="{Binding Load}" Content="{setting:Localize Button.Refash}" IsVisible="False" />
+                        <Button
+                            Name="Button_R"
+                            Width="20"
+                            Height="30"
+                            Command="{Binding Load}"
+                            Content="R" />
+                        <Button
+                            Name="Button_R1"
+                            Width="100"
+                            Height="30"
+                            Command="{Binding Load}"
+                            Content="{setting:Localize Button.Refash}"
+                            IsVisible="False" />
                     </Grid>
                 </StackPanel>
             </Grid>
         </DockPanel>
-        <Grid Name="Grid2" Background="{setting:Colors TopBottom}" IsVisible="False">
-            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{setting:Localize Gui.Info15}" FontSize="30" />
+        <Grid
+            Name="Grid2"
+            Background="{setting:Colors TopBottom}"
+            IsVisible="False">
+            <Label
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="{setting:Localize Gui.Info15}"
+                FontSize="30" />
         </Grid>
     </Grid>
 </UserControl>

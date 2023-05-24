@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Server.Tab1Control"
+    x:Class="ColorMC.Gui.UI.Controls.ServerPack.Tab1Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,45 +16,46 @@
                     Name="TextBox1"
                     Margin="0,0,0,5"
                     Classes="input1"
+                    Text="{Binding Url}"
                     Watermark="{setting:Localize ServerPackWindow.Tab1.Text2}" />
                 <Label Content="{setting:Localize ServerPackWindow.Tab1.Text3}" />
                 <TextBox
-                    Name="TextBox2"
                     Margin="0,0,0,5"
                     Classes="input1"
+                    Text="{Binding Version}"
                     Watermark="{setting:Localize ServerPackWindow.Tab1.Text4}" />
                 <Label Content="{setting:Localize ServerPackWindow.Tab1.Text5}" />
                 <TextBox
-                    Name="TextBox3"
                     Height="60"
                     Margin="0,0,0,5"
                     AcceptsReturn="True"
                     Classes="input2"
+                    Text="{Binding Text}"
                     Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
                 <Label Content="{setting:Localize ServerPackWindow.Tab1.Text7}" />
 
                 <DockPanel>
                     <Button
-                        Name="Button1"
                         Width="80"
                         Height="25"
                         Margin="5,0,0,0"
+                        Command="{Binding OpenUI}"
                         Content="{setting:Localize Button.Select}"
                         DockPanel.Dock="Right" />
                     <TextBox
-                        Name="TextBox4"
                         Classes="input1"
+                        Text="{Binding UI}"
                         Watermark="{setting:Localize ServerPackWindow.Tab1.Text8}" />
 
                 </DockPanel>
-                <CheckBox Name="CheckBox2" Content="{setting:Localize ServerPackWindow.Tab1.Text9}" />
+                <CheckBox Content="{setting:Localize ServerPackWindow.Tab1.Text9}" IsChecked="{Binding ForceUpdate}" />
             </StackPanel>
         </ScrollViewer>
         <Button
-            Name="Button2"
             Width="160"
             Height="25"
             VerticalAlignment="Bottom"
+            Command="{Binding Gen}"
             Content="{setting:Localize ServerPackWindow.Tab1.Text10}"
             ToolTip.Tip="{setting:Localize ToolTip.Text47}"
             ToolTip.VerticalOffset="-30" />

@@ -26,7 +26,6 @@ public partial class ResourcePackControl : UserControl
         PointerEntered += ResourcePackControl_PointerEntered;
         PointerExited += ResourcePackControl_PointerExited;
 
-
         PropertyChanged += ResourcePackControl_PropertyChanged;
     }
 

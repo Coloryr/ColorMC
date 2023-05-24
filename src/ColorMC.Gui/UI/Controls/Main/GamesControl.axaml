@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Views.Main"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Main"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -14,12 +14,24 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Top"
         CornerRadius="0"
-        IsExpanded="True">
+        Header="{Binding Group}"
+        IsExpanded="{Binding Expander}">
         <Grid>
-            <WrapPanel
-                Name="WrapPanel_Items"
+            <ItemsControl
                 VerticalAlignment="Top"
-                Background="Transparent" />
+                Background="Transparent"
+                ItemsSource="{Binding GameList}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <views1:GameControl GameModel="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
             <Grid
                 Name="Grid1"
                 Margin="-15"

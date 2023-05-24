@@ -159,7 +159,7 @@ public partial class AddGameTab2Model : AddGameTabModel
         }
 
         App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Info5"));
-        App.MainWindow?.Load();
+        App.MainWindow?.LoadMain();
         window.Close();
     }
 

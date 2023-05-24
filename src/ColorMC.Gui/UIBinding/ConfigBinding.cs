@@ -246,7 +246,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom = obj;
         GuiConfigUtils.Save();
 
-        App.MainWindow?.Load();
+        App.MainWindow?.LoadMain();
 
         ColorSel.Instance.Load();
     }

@@ -322,7 +322,7 @@ public partial class GameEditTab1Model : GameEditTabModel
         var window = Con.Window;
         if (BaseBinding.IsGameRun(Obj))
         {
-            window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));
+            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));
             return;
         }
 
@@ -331,7 +331,13 @@ public partial class GameEditTab1Model : GameEditTabModel
         if (!res)
             return;
 
-        App.MainWindow?.DeleteGame(Obj, true);
+        var res1 = await GameBinding.DeleteGame(Obj);
+        if (!res1)
+        {
+            window.OkInfo.Show(App.GetLanguage("MainWindow.Info37"));
+        }
+
+        window.Close();
 
     }
 
