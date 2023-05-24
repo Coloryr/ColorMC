@@ -50,6 +50,19 @@ public class ColorSel : INotifyPropertyChanged
     private const string IndexerName = "Item";
     private const string IndexerArrayName = "Item[]";
 
+    public void LoadMotd()
+    {
+        try
+        {
+            MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
+            MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(App.GetLanguage("Gui.Error11"), e);
+        }
+    }
+
     public void Load()
     {
         try
@@ -72,8 +85,7 @@ public class ColorSel : INotifyPropertyChanged
             ButtonFont = Brush.Parse(config.ColorFont1);
             FontColor = Brush.Parse(config.ColorFont2);
 
-            MotdColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdColor);
-            MotdBackColor = Brush.Parse(GuiConfigUtils.Config.ServerCustom.MotdBackColor);
+            LoadMotd();
 
             BottomColor = App.NowTheme == PlatformThemeVariant.Light
                 ? AppLightBackColor : AppDarkBackColor;

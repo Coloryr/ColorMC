@@ -23,6 +23,8 @@ public partial class SettingControl : UserControl, IUserControl
     private readonly SettingTab2Model model2;
     private readonly SettingTab3Model model3;
     private readonly SettingTab4Model model4;
+    private readonly SettingTab5Model model5;
+    private readonly SettingTab6Model model6;
 
     private readonly ContentControl content1 = new();
     private readonly ContentControl content2 = new();
@@ -49,6 +51,12 @@ public partial class SettingControl : UserControl, IUserControl
 
         model4 = new(this);
         tab4.DataContext = model4;
+
+        model5 = new(this);
+        tab5.DataContext = model5;
+
+        model6 = new(this);
+        tab6.DataContext = model6;
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
@@ -96,12 +104,12 @@ public partial class SettingControl : UserControl, IUserControl
                 model4.Load();
                 break;
             case 3:
-                tab5.Load();
                 Go(tab5);
+                model5.Load();
                 break;
             case 4:
-                tab6.Load();
                 Go(tab6);
+                model6.Load();
                 break;
             case 5:
                 Go(tab1);

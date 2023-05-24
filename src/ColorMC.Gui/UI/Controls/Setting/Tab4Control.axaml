@@ -34,14 +34,14 @@
                 <CheckBox
                     Margin="0,0,5,0"
                     Content="{setting:Localize SettingWindow.Tab4.Text20}"
-                    IsChecked="{Binding PerRun}" />
+                    IsChecked="{Binding PreRun}" />
             </StackPanel>
 
             <TextBox
                 Margin="0,5,0,0"
                 Classes="input1"
-                IsEnabled="{Binding PerRun}"
-                Text="{Binding PerCmd}"
+                IsEnabled="{Binding PreRun}"
+                Text="{Binding PreCmd}"
                 Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
 
             <Label Content="{setting:Localize SettingWindow.Tab4.Text19}" />

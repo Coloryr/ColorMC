@@ -31,7 +31,7 @@ public record FontDisplay
 
 public partial class SettingTab2Model : ObservableObject
 {
-    private IUserControl Con;
+    private readonly IUserControl Con;
 
     public ObservableCollection<FontDisplay> FontList { get; init; } = new();
     public List<string> TranTypeList => BaseBinding.GetWindowTranTypes();

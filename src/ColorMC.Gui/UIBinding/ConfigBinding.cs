@@ -322,20 +322,6 @@ public static class ConfigBinding
     }
 
     /// <summary>
-    /// 设置服务器自定义参数
-    /// </summary>
-    /// <param name="obj"></param>
-    public static void SetServerCustom(ServerCustom obj)
-    {
-        GuiConfigUtils.Config.ServerCustom = obj;
-        GuiConfigUtils.Save();
-
-        App.MainWindow?.LoadMain();
-
-        ColorSel.Instance.Load();
-    }
-
-    /// <summary>
     /// 设置游戏检查选项
     /// </summary>
     /// <param name="obj"></param>
@@ -448,5 +434,54 @@ public static class ConfigBinding
     public static string? GetLastLaunch()
     {
         return GuiConfigUtils.Config.LastLaunch;
+    }
+
+    public static void SetMotd(string v1, ushort v2, bool v3, bool v4, string v5, string v6)
+    {
+        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom.IP = v1;
+        GuiConfigUtils.Config.ServerCustom.Port = v2;
+        GuiConfigUtils.Config.ServerCustom.Motd = v3;
+        GuiConfigUtils.Config.ServerCustom.JoinServer = v4;
+        GuiConfigUtils.Config.ServerCustom.MotdColor = v5;
+        GuiConfigUtils.Config.ServerCustom.MotdBackColor = v6;
+
+        GuiConfigUtils.Save();
+
+        App.MainWindow?.MotdLoad();
+        ColorSel.Instance.LoadMotd();
+    }
+
+    public static void SetOneGame(bool v1, string v2)
+    {
+        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom.LockGame = v1;
+        GuiConfigUtils.Config.ServerCustom.GameName = v2;
+        GuiConfigUtils.Save();
+    }
+
+    public static void SetUI(string value)
+    {
+        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom.UIFile = value;
+        GuiConfigUtils.Save();
+    }
+
+    public static void SetServerPack(bool v1, string v2)
+    {
+        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom.ServerPack = v1;
+        GuiConfigUtils.Config.ServerCustom.ServerUrl = v2;
+        GuiConfigUtils.Save();
+    }
+
+    public static void SetMusic(bool v1, bool v2, string v3, int v4)
+    {
+        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom.PlayMusic = v1;
+        GuiConfigUtils.Config.ServerCustom.SlowVolume = v2;
+        GuiConfigUtils.Config.ServerCustom.Music = v3;
+        GuiConfigUtils.Config.ServerCustom.Volume = v4;
+        GuiConfigUtils.Save();
     }
 }

@@ -83,6 +83,13 @@
                         PasswordChar="*"
                         Text="{Binding Password}"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
+                    <Button
+                        Width="80"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding SetProxy}"
+                        Content="{setting:Localize Button.Set}" />
                 </StackPanel>
                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                     <CheckBox

@@ -13,50 +13,50 @@
         <StackPanel DockPanel.Dock="Top">
             <Label Content="{setting:Localize SettingWindow.Tab5.Text1}" />
             <TextBox
-                Name="TextBox1"
                 Classes="input1"
+                Text="{Binding Name}"
                 Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
             <TextBox
-                Name="TextBox2"
                 Margin="0,5,0,5"
                 Classes="input1"
+                Text="{Binding Local}"
                 Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
             <DockPanel>
                 <Button
-                    Name="Button_Add"
                     Width="80"
                     Height="25"
+                    Command="{Binding AddJava}"
                     Content="{setting:Localize Button.Add}"
                     DockPanel.Dock="Right" />
 
                 <Button
-                    Name="Button_SelectFile"
                     Width="80"
                     Height="25"
                     Margin="0,0,5,0"
+                    Command="{Binding Select}"
                     Content="{setting:Localize Button.Select}"
                     DockPanel.Dock="Right" />
 
                 <Button
-                    Name="Button1"
                     Width="80"
                     Height="25"
+                    Command="{Binding ShowAddJava}"
                     Content="{setting:Localize SettingWindow.Tab5.Text4}"
                     DockPanel.Dock="Left" />
 
                 <Button
-                    Name="Button2"
                     Width="120"
                     Height="25"
                     Margin="5,0,0,0"
+                    Command="{Binding OpenPath}"
                     Content="{setting:Localize SettingWindow.Tab5.Text6}"
                     DockPanel.Dock="Left" />
 
                 <Button
-                    Name="Button3"
                     Width="120"
                     Height="25"
                     Margin="5,0,0,0"
+                    Command="{Binding OpenFile}"
                     Content="{setting:Localize SettingWindow.Tab5.Text7}"
                     DockPanel.Dock="Left" />
 
@@ -68,7 +68,9 @@
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
-                CanUserSortColumns="False">
+                CanUserSortColumns="False"
+                ItemsSource="{Binding JavaList}"
+                SelectedItem="{Binding Item}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="10" IsReadOnly="True" />
                     <DataGridTextColumn
@@ -103,11 +105,13 @@
                         Name="Button_R"
                         Width="20"
                         Height="30"
+                        Command="{Binding Load}"
                         Content="R" />
                     <Button
                         Name="Button_R1"
                         Width="100"
                         Height="30"
+                        Command="{Binding Load}"
                         Content="{setting:Localize Button.Refash}"
                         IsVisible="False" />
                 </Grid>
@@ -117,11 +121,13 @@
                         Name="Button_D"
                         Width="20"
                         Height="30"
+                        Command="{Binding Delete}"
                         Content="D" />
                     <Button
                         Name="Button_D1"
                         Width="100"
                         Height="30"
+                        Command="{Binding Delete}"
                         Content="{setting:Localize SettingWindow.Tab5.Text5}"
                         IsVisible="False" />
                 </Grid>

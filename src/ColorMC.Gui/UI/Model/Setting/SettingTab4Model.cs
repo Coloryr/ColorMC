@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingTab4Model : ObservableObject
 {
-    private IUserControl Con;
+    private readonly IUserControl Con;
 
     public List<string> GCTypeList => JavaBinding.GetGCTypes();
 

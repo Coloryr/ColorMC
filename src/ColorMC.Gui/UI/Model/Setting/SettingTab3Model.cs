@@ -14,7 +14,7 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingTab3Model : ObservableObject
 {
-    private IUserControl Con;
+    private readonly IUserControl Con;
 
     private bool load;
 
@@ -84,26 +84,6 @@ public partial class SettingTab3Model : ObservableObject
         SetProxyEnable();
     }
 
-    partial void OnPasswordChanged(string value)
-    {
-        SetProxy();
-    }
-
-    partial void OnUserChanged(string value)
-    {
-        SetProxy();
-    }
-
-    partial void OnPortChanged(ushort value)
-    {
-        SetProxy();
-    }
-
-    partial void OnIPChanged(string value)
-    {
-        SetProxy();
-    }
-
     partial void OnThreadChanged(int value)
     {
         ConfigBinding.SetDownloadThread(value);
@@ -158,6 +138,12 @@ public partial class SettingTab3Model : ObservableObject
         }
     }
 
+    [RelayCommand]
+    public void SetProxy()
+    {
+        ConfigBinding.SetDownloadProxy(IP, Port, User, Password);
+    }
+
     public void Load()
     {
         load = true;
@@ -189,11 +175,6 @@ public partial class SettingTab3Model : ObservableObject
     private void SetCheck()
     {
         ConfigBinding.SetDownloadCheck(CheckFile, AutoDownload, CheckUpdate);
-    }
-
-    private void SetProxy()
-    {
-        ConfigBinding.SetDownloadProxy(IP, Port, User, Password);
     }
 
     private void SetProxyEnable()

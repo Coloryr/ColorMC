@@ -1,5 +1,7 @@
-﻿using ColorMC.Gui.Objs;
+﻿using Avalonia.Controls;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Setting;
+using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,11 +12,11 @@ namespace ColorMC.Gui.UI.Flyouts;
 public class SettingFlyout1
 {
     private readonly IEnumerable<JavaDisplayObj> List;
-    private readonly Tab5Control Con;
-    public SettingFlyout1(Tab5Control con, IList obj)
+    private readonly SettingTab5Model Model;
+    public SettingFlyout1(Control con, SettingTab5Model model, IList list)
     {
-        Con = con;
-        List = obj.Cast<JavaDisplayObj>();
+        Model = model;
+        List = list.Cast<JavaDisplayObj>();
 
         var fy = new FlyoutsControl(new()
         {
@@ -29,6 +31,6 @@ public class SettingFlyout1
             JavaBinding.RemoveJava(item.Name);
         }
 
-        Con.Load();
+        Model.Load();
     }
 }
