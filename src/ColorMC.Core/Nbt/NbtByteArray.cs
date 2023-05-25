@@ -6,22 +6,22 @@ public class NbtByteArray : NbtBase, IEnumerable<byte>
 {
     public const byte Type = 7;
 
-    public List<byte> Values { get; set; }
+    public new List<byte> Value { get; set; }
 
     public NbtByteArray()
     {
         NbtType = NbtType.NbtByteArray;
-        Values ??= new();
+        Value ??= new();
     }
 
     public IEnumerator<byte> GetEnumerator()
     {
-        return Values.GetEnumerator();
+        return Value.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return Values.GetEnumerator();
+        return Value.GetEnumerator();
     }
 
     public override NbtByteArray Read(DataInputStream stream)
@@ -29,13 +29,13 @@ public class NbtByteArray : NbtBase, IEnumerable<byte>
         var length = stream.ReadInt();
         var list = new byte[length];
         stream.Read(list);
-        Values.AddRange(list);
+        Value.AddRange(list);
         return this;
     }
 
     public override void Write(DataOutputStream stream)
     {
-        stream.Write(Values.Count);
-        stream.Write(Values.ToArray());
+        stream.Write(Value.Count);
+        stream.Write(Value.ToArray());
     }
 }

@@ -19,8 +19,8 @@ public class GameEditFlyout2
             (App.GetLanguage("Button.OpFile"), true, Button1_Click),
             (App.GetLanguage("GameEditWindow.Flyouts2.Text1"), true, Button2_Click),
             (App.GetLanguage("GameEditWindow.Flyouts2.Text4"), true, Button5_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts2.Text3"), true, Button3_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts2.Text2"), true, Button4_Click)
+            (App.GetLanguage("GameEditWindow.Flyouts2.Text3"), !model.World.World.Broken, Button3_Click),
+            (App.GetLanguage("GameEditWindow.Flyouts2.Text2"), !model.World.World.Broken, Button4_Click)
         }, con);
     }
 
@@ -31,12 +31,12 @@ public class GameEditFlyout2
 
     private void Button4_Click()
     {
-        Model.Backup(Model);
+        Model.Delete(Model.World);
     }
 
     private void Button3_Click()
     {
-        Model.Delete(Model.World);
+        Model.Backup(Model);
     }
 
     private void Button2_Click()

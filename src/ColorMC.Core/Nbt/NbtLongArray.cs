@@ -6,12 +6,12 @@ public class NbtLongArray : NbtBase
 {
     public const byte Type = 12;
 
-    public List<long> Values { get; set; }
+    public new List<long> Value { get; set; }
 
     public NbtLongArray()
     {
         NbtType = NbtType.NbtLongArray;
-        Values ??= new();
+        Value ??= new();
     }
 
     public override NbtLongArray Read(DataInputStream stream)
@@ -22,15 +22,15 @@ public class NbtLongArray : NbtBase
         stream.Read(list);
 
         Buffer.BlockCopy(list, 0, list1, 0, list.Length);
-        Values.AddRange(list1);
+        Value.AddRange(list1);
         return this;
     }
 
     public override void Write(DataOutputStream stream)
     {
-        stream.Write(Values.Count);
+        stream.Write(Value.Count);
 
-        var list1 = Values.ToArray();
+        var list1 = Value.ToArray();
         var list = new byte[list1.Length * 8];
         Buffer.BlockCopy(list1, 0, list, 0, list.Length);
 

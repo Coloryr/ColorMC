@@ -347,12 +347,12 @@ public partial class ConfigEditModel : ObservableObject
             DataList.Clear();
             DataType = "Byte";
             var list = (model.Nbt as NbtByteArray)!;
-            for (int a = 0; a < list.Values.Count; a++)
+            for (int a = 0; a < list.Value.Count; a++)
             {
                 DataList.Add(new()
                 {
                     Key = a + 1,
-                    Value = list.Values[a]
+                    Value = list.Value[a]
                 });
             }
             DataList.Add(new() { Value = (byte)0 });
@@ -360,10 +360,12 @@ public partial class ConfigEditModel : ObservableObject
             await Task.Run(semaphore.WaitOne);
             DisplayEdit = false;
 
-            list.Values.Clear();
+            list.Value.Clear();
             foreach (var item in DataList)
             {
-                list.Values.Add((byte)item.Value);
+                if (item.Key == 0)
+                    continue;
+                list.Value.Add((byte)item.Value);
             }
         }
         else if (model.NbtType == NbtType.NbtIntArray)
@@ -372,12 +374,12 @@ public partial class ConfigEditModel : ObservableObject
             DataList.Clear();
             DataType = "Int";
             var list = (model.Nbt as NbtIntArray)!;
-            for (int a = 0; a < list.Values.Count; a++)
+            for (int a = 0; a < list.Value.Count; a++)
             {
                 DataList.Add(new()
                 {
                     Key = a + 1,
-                    Value = list.Values[a]
+                    Value = list.Value[a]
                 });
             }
             DataList.Add(new() { Value = 0 });
@@ -385,10 +387,12 @@ public partial class ConfigEditModel : ObservableObject
             await Task.Run(semaphore.WaitOne);
             DisplayEdit = false;
 
-            list.Values.Clear();
+            list.Value.Clear();
             foreach (var item in DataList)
             {
-                list.Values.Add((int)item.Value);
+                if (item.Key == 0)
+                    continue;
+                list.Value.Add((int)item.Value);
             }
         }
         else if (model.NbtType == NbtType.NbtLongArray)
@@ -397,12 +401,12 @@ public partial class ConfigEditModel : ObservableObject
             DataList.Clear();
             DataType = "Long";
             var list = (model.Nbt as NbtLongArray)!;
-            for (int a = 0; a < list.Values.Count; a++)
+            for (int a = 0; a < list.Value.Count; a++)
             {
                 DataList.Add(new()
                 {
                     Key = a + 1,
-                    Value = list.Values[a]
+                    Value = list.Value[a]
                 });
             }
             DataList.Add(new() { Value = (long)0 });
@@ -410,10 +414,12 @@ public partial class ConfigEditModel : ObservableObject
             await Task.Run(semaphore.WaitOne);
             DisplayEdit = false;
 
-            list.Values.Clear();
+            list.Value.Clear();
             foreach (var item in DataList)
             {
-                list.Values.Add((long)item.Value);
+                if (item.Key == 0)
+                    continue;
+                list.Value.Add((long)item.Value);
             }
         }
         else
@@ -443,10 +449,35 @@ public partial class ConfigEditModel : ObservableObject
                 window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error3"));
             }
         }
+
+        model.Update();
     }
 
     public void DataEdit()
     {
+        var window = Con.Window;
+        try
+        {
+            if (DataType == "Byte")
+            {
+                DataItem.Value = byte.Parse(DataItem.Value.ToString());
+            }
+            else if (DataType == "Int")
+            {
+                DataItem.Value = int.Parse(DataItem.Value.ToString());
+            }
+            else if (DataType == "Long")
+            {
+                DataItem.Value = long.Parse(DataItem.Value.ToString());
+            }
+        }
+        catch
+        {
+            window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error3"));
+            DataItem.Value = 0;
+            return;
+        }
+
         if (DataItem.Key == 0)
         {
             DataItem.Key = DataList.Count;

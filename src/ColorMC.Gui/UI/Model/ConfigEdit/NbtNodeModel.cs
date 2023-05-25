@@ -74,13 +74,18 @@ public partial class NbtNodeModel : ObservableObject
             var list = (Top.Nbt as NbtCompound)!;
             list.EditKey(old, now);
             Key = now;
-            OnPropertyChanged(nameof(Name));
+            Update();
         }
     }
 
     public void SetValue(string value)
     {
         Nbt.SetValue(value);
+        Update();
+    }
+
+    public void Update()
+    {
         OnPropertyChanged(nameof(Name));
     }
 
