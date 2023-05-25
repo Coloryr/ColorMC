@@ -55,7 +55,7 @@
                     Margin="10,5,0,0"
                     IsEnabled="{Binding EnableOneGame}"
                     ItemsSource="{Binding GameList}"
-                    SelectedIndex="{Binding Game}" />
+                    SelectedIndex="{Binding Game, Mode=TwoWay}" />
 
             </StackPanel>
 
@@ -102,7 +102,10 @@
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Content="{setting:Localize SettingWindow.Tab6.Text12}" />
-            <CheckBox Content="{setting:Localize SettingWindow.Tab6.Text13}" IsEnabled="{Binding EnableServerPack}" />
+            <CheckBox
+                Content="{setting:Localize SettingWindow.Tab6.Text13}"
+                IsChecked="{Binding EnableServerPack}"
+                IsEnabled="{Binding EnableOneGame}" />
             <TextBox
                 Name="TextBox4"
                 Classes="input1"

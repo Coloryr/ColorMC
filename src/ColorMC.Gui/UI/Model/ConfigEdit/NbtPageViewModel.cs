@@ -43,7 +43,7 @@ public class NbtPageViewModel : ObservableObject
 
         Source.RowSelection!.SingleSelect = false;
 
-        _root = new NbtNodeModel(null, nbt);
+        _root = new NbtNodeModel(null, nbt, null);
         Source.Items = new[] { _root };
     }
 

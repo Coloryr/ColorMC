@@ -5,6 +5,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -21,7 +22,6 @@ public partial class ConfigEditModel : ObservableObject
 
     public GameSettingObj Obj { get; init; }
     public WorldObj? World { get; init; }
-
 
     public ObservableCollection<string> FileList { get; init; } = new();
 
@@ -112,11 +112,6 @@ public partial class ConfigEditModel : ObservableObject
     }
 
     [RelayCommand]
-    public void Reload()
-    {
-        Load();
-    }
-
     public void Load()
     {
         if (Obj == null)
@@ -134,6 +129,15 @@ public partial class ConfigEditModel : ObservableObject
             Items.AddRange(list);
         }
         Load1();
+    }
+
+    public void Pressed(Control con)
+    {
+        var item = Source.Selection;
+        if (item != null)
+        {
+            _ = new ConfigFlyout1(con, item);
+        }
     }
 
     private void Load1()

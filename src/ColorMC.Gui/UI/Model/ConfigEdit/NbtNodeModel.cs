@@ -21,10 +21,13 @@ public partial class NbtNodeModel : ObservableObject
     [ObservableProperty]
     public bool hasChildren;
 
-    public NbtNodeModel(string? key, NbtBase nbt)
+    public NbtNodeModel? Top { get; }
+
+    public NbtNodeModel(string? key, NbtBase nbt, NbtNodeModel? top)
     {
         this.nbt = nbt;
         this.key = key;
+        Top = top;
         HasChildren = nbt.IsGroup() && nbt.HaveItem();
         LoadChildren();
     }
@@ -42,7 +45,7 @@ public partial class NbtNodeModel : ObservableObject
         {
             foreach (var item in list)
             {
-                result.Add(new NbtNodeModel(null, item));
+                result.Add(new NbtNodeModel(null, item, this));
             }
         }
 
@@ -50,7 +53,7 @@ public partial class NbtNodeModel : ObservableObject
         {
             foreach (var item in list1)
             {
-                result.Add(new NbtNodeModel(item.Key, item.Value));
+                result.Add(new NbtNodeModel(item.Key, item.Value, this));
             }
         }
 

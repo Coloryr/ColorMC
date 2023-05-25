@@ -98,6 +98,10 @@ public static class Program
 
     private static void Load()
     {
+#if DEBUG
+        GuiLoad.Load();
+        return;
+#endif
         if (NotHaveDll())
         {
             GuiLoad.Load();

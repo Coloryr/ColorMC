@@ -473,21 +473,26 @@ public partial class MainModel : ObservableObject, IMainTop
 
         if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)
         {
+            GameGroups.Clear();
             GroupList.Clear();
             first = true;
             var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
             if (game == null)
             {
                 IsGameError = true;
+                IsOneGame = false;
             }
             else
             {
+                IsGameError = false;
                 OneGame = new(Con, this, game);
                 IsOneGame = true;
             }
         }
         else
         {
+            IsGameError = false;
+            IsOneGame = false;
             var list = GameBinding.GetGameGroups();
             var uuid = ConfigBinding.GetLastLaunch();
             GameModel? last = null;

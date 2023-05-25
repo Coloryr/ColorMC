@@ -458,6 +458,8 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.LockGame = v1;
         GuiConfigUtils.Config.ServerCustom.GameName = v2;
         GuiConfigUtils.Save();
+
+        App.MainWindow?.LoadMain();
     }
 
     public static void SetUI(string? value)

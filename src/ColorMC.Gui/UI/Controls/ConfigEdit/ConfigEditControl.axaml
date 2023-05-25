@@ -43,7 +43,7 @@
                 Height="25"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
-                Command="{Binding Reload}"
+                Command="{Binding Load}"
                 Content="{setting:Localize ConfigEditWindow.Text3}"
                 DockPanel.Dock="Right"
                 ToolTip.Tip="{setting:Localize ToolTip.Text41}"

@@ -4,6 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Model.ConfigEdit;
 using ColorMC.Gui.UI.Windows;
+using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Controls.ConfigEdit;
 
@@ -17,9 +18,19 @@ public partial class ConfigEditControl : UserControl, IUserControl
     {
         InitializeComponent();
 
+        NbtViewer.PointerPressed += NbtViewer_PointerPressed;
+
         TextEditor1.Options.ShowBoxForControlCharacters = true;
         TextEditor1.TextArea.IndentationStrategy =
             new CSharpIndentationStrategy(TextEditor1.Options);
+    }
+
+    private void NbtViewer_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        {
+            model.Pressed(this);
+        }
     }
 
     public void Opened()

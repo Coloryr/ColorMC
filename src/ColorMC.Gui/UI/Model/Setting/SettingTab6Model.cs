@@ -25,7 +25,7 @@ public partial class SettingTab6Model :ObservableObject
 {
     private readonly IUserControl Con;
 
-    private List<string> uuids = new();
+    private readonly List<string> uuids = new();
 
     public ObservableCollection<string> GameList { get; init; } = new();
 
@@ -62,7 +62,7 @@ public partial class SettingTab6Model :ObservableObject
     private bool slowVolume;
 
     [ObservableProperty]
-    private int game;
+    private int game = -1;
     [ObservableProperty]
     private int volume;
 
