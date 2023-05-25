@@ -365,7 +365,14 @@ public partial class ConfigEditModel : ObservableObject
             {
                 if (item.Key == 0)
                     continue;
-                list.Value.Add((byte)item.Value);
+                if (item.Value is string str)
+                {
+                    list.Value.Add(byte.Parse(str));
+                }
+                else
+                {
+                    list.Value.Add((byte)item.Value);
+                }
             }
         }
         else if (model.NbtType == NbtType.NbtIntArray)
@@ -392,7 +399,14 @@ public partial class ConfigEditModel : ObservableObject
             {
                 if (item.Key == 0)
                     continue;
-                list.Value.Add((int)item.Value);
+                if (item.Value is string str)
+                {
+                    list.Value.Add(int.Parse(str));
+                }
+                else
+                {
+                    list.Value.Add((int)item.Value);
+                }
             }
         }
         else if (model.NbtType == NbtType.NbtLongArray)
@@ -419,7 +433,14 @@ public partial class ConfigEditModel : ObservableObject
             {
                 if (item.Key == 0)
                     continue;
-                list.Value.Add((long)item.Value);
+                if (item.Value is string str)
+                {
+                    list.Value.Add(long.Parse(str));
+                }
+                else
+                {
+                    list.Value.Add((long)item.Value);
+                }
             }
         }
         else
