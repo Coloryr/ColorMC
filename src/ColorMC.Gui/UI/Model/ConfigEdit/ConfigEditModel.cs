@@ -21,6 +21,14 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ConfigEdit;
 
+public partial class DataItem : ObservableObject
+{
+    [ObservableProperty]
+    private int key;
+    [ObservableProperty]
+    private object value;
+}
+
 public partial class ConfigEditModel : ObservableObject
 {
     private readonly IUserControl Con;
@@ -33,6 +41,7 @@ public partial class ConfigEditModel : ObservableObject
     public bool cancel;
 
     public ObservableCollection<string> FileList { get; init; } = new();
+    public ObservableCollection<DataItem> DataList { get; init; } = new();
 
     public List<string> TypeSource { get; init; } = new()
     {
@@ -79,7 +88,13 @@ public partial class ConfigEditModel : ObservableObject
     private string key;
     [ObservableProperty]
     private int type;
-    
+
+    [ObservableProperty]
+    private bool displayEdit;
+    [ObservableProperty]
+    private string dataType;
+    [ObservableProperty]
+    private DataItem dataItem;
 
     public ConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world)
     {
@@ -213,6 +228,12 @@ public partial class ConfigEditModel : ObservableObject
         semaphore.Release();
     }
 
+    [RelayCommand]
+    public void DataEditDone()
+    {
+        semaphore.Release();
+    }
+
     public void Pressed(Control con)
     {
         var item = Source.Selection;
@@ -270,12 +291,9 @@ public partial class ConfigEditModel : ObservableObject
         model.Top.Remove(model);
     }
 
-    public async void Delete(IReadOnlyList<NbtNodeModel>? list)
+    public async void Delete(IReadOnlyList<NbtNodeModel?> list)
     {
-        if (list == null)
-            return;
-
-        var list1 = new List<NbtNodeModel>(list);
+        var list1 = new List<NbtNodeModel?>(list);
 
         var window = Con.Window;
         var res = await window.OkInfo.ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
@@ -284,7 +302,7 @@ public partial class ConfigEditModel : ObservableObject
 
         foreach (var item in list1)
         {
-            item.Top?.Remove(item);
+            item?.Top?.Remove(item);
         }
     }
 
@@ -324,30 +342,147 @@ public partial class ConfigEditModel : ObservableObject
 
     public async void SetValue(NbtNodeModel model)
     {
-        var list = (model.Nbt as NbtCompound)!;
-        var window = Con.Window;
-        Key = model.Nbt.Value.ToString();
-        DisplayType = false;
-        Title = App.GetLanguage("ConfigEditWindow.Info6");
-        Title1 = App.GetLanguage("ConfigEditWindow.Info4");
-        DisplayAdd = true;
-        await Task.Run(semaphore.WaitOne);
-        DisplayAdd = false;
-        if (cancel)
-            return;
-        if (string.IsNullOrWhiteSpace(Key))
+        if (model.NbtType == NbtType.NbtByteArray)
         {
-            window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error1"));
-            return;
-        }
+            DataList.Clear();
+            DataType = "Byte";
+            var list = (model.Nbt as NbtByteArray)!;
+            for (int a = 0; a < list.Values.Count; a++)
+            {
+                DataList.Add(new()
+                {
+                    Key = a + 1,
+                    Value = list.Values[a]
+                });
+            }
+            DataList.Add(new() { Value = (byte)0 });
+            DisplayEdit = true;
+            await Task.Run(semaphore.WaitOne);
+            DisplayEdit = false;
 
-        try
-        {
-            model.SetValue(Key);
+            list.Values.Clear();
+            foreach (var item in DataList)
+            {
+                list.Values.Add((byte)item.Value);
+            }
         }
-        catch
+        else if (model.NbtType == NbtType.NbtIntArray)
         {
-            window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error3"));
+            DisplayEdit = true;
+            DataList.Clear();
+            DataType = "Int";
+            var list = (model.Nbt as NbtIntArray)!;
+            for (int a = 0; a < list.Values.Count; a++)
+            {
+                DataList.Add(new()
+                {
+                    Key = a + 1,
+                    Value = list.Values[a]
+                });
+            }
+            DataList.Add(new() { Value = 0 });
+            DisplayEdit = true;
+            await Task.Run(semaphore.WaitOne);
+            DisplayEdit = false;
+
+            list.Values.Clear();
+            foreach (var item in DataList)
+            {
+                list.Values.Add((int)item.Value);
+            }
+        }
+        else if (model.NbtType == NbtType.NbtLongArray)
+        {
+            DisplayEdit = true;
+            DataList.Clear();
+            DataType = "Long";
+            var list = (model.Nbt as NbtLongArray)!;
+            for (int a = 0; a < list.Values.Count; a++)
+            {
+                DataList.Add(new()
+                {
+                    Key = a + 1,
+                    Value = list.Values[a]
+                });
+            }
+            DataList.Add(new() { Value = (long)0 });
+            DisplayEdit = true;
+            await Task.Run(semaphore.WaitOne);
+            DisplayEdit = false;
+
+            list.Values.Clear();
+            foreach (var item in DataList)
+            {
+                list.Values.Add((long)item.Value);
+            }
+        }
+        else
+        {
+            var window = Con.Window;
+            Key = model.Nbt.Value.ToString();
+            DisplayType = false;
+            Title = App.GetLanguage("ConfigEditWindow.Info6");
+            Title1 = App.GetLanguage("ConfigEditWindow.Info4");
+            DisplayAdd = true;
+            await Task.Run(semaphore.WaitOne);
+            DisplayAdd = false;
+            if (cancel)
+                return;
+            if (string.IsNullOrWhiteSpace(Key))
+            {
+                window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error1"));
+                return;
+            }
+
+            try
+            {
+                model.SetValue(Key);
+            }
+            catch
+            {
+                window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error3"));
+            }
+        }
+    }
+
+    public void DataEdit()
+    {
+        if (DataItem.Key == 0)
+        {
+            DataItem.Key = DataList.Count;
+            if (DataType == "Byte")
+            {
+                DataList.Add(new() { Value = (byte)0 });
+            }
+            else if (DataType == "Int")
+            {
+                DataList.Add(new() { Value = 0 });
+            }
+            else if (DataType == "Long")
+            {
+                DataList.Add(new() { Value = (long)0 });
+            }
+        }
+    }
+
+    public void Flyout(Control con)
+    {
+        if (DataItem != null)
+        {
+            _ = new ConfigFlyout2(con, this, DataItem);
+        }
+    }
+
+    public void DeleteItem(DataItem item)
+    {
+        if (item.Key == 0)
+            return;
+
+        DataList.Remove(item);
+        int a = 1;
+        foreach(var item1 in DataList)
+        {
+            item1.Key = a++;
         }
     }
 

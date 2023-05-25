@@ -5,6 +5,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Model.ConfigEdit;
 using ColorMC.Gui.UI.Windows;
 using Avalonia.Input;
+using Avalonia.Threading;
 
 namespace ColorMC.Gui.UI.Controls.ConfigEdit;
 
@@ -25,6 +26,28 @@ public partial class ConfigEditControl : UserControl, IUserControl
         TextEditor1.Options.ShowBoxForControlCharacters = true;
         TextEditor1.TextArea.IndentationStrategy =
             new CSharpIndentationStrategy(TextEditor1.Options);
+
+        DataGrid1.CellEditEnded += DataGrid1_CellEditEnded;
+        DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
+    }
+
+    private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
+    {
+        if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                (DataContext as ConfigEditModel)?.Flyout(this);
+            });
+        }
+    }
+
+    private void DataGrid1_CellEditEnded(object? sender, DataGridCellEditEndedEventArgs e)
+    {
+        if (e.EditAction == DataGridEditAction.Commit)
+        {
+            (DataContext as ConfigEditModel)?.DataEdit();
+        }
     }
 
     private void NbtViewer_KeyDown(object? sender, KeyEventArgs e)

@@ -4,12 +4,12 @@ public class NbtIntArray : NbtBase
 {
     public const byte Type = 11;
 
-    public List<int> Value { get; set; }
+    public List<int> Values { get; set; }
 
     public NbtIntArray()
     {
         NbtType = NbtType.NbtIntArray;
-        Value ??= new();
+        Values ??= new();
     }
 
     public override NbtIntArray Read(DataInputStream stream)
@@ -19,13 +19,13 @@ public class NbtIntArray : NbtBase
         var list1 = new int[length];
         stream.Read(list);
         Buffer.BlockCopy(list, 0, list1, 0, list.Length);
-        Value.AddRange(list1);
+        Values.AddRange(list1);
         return this;
     }
 
     public override void Write(DataOutputStream stream)
     {
-        stream.Write(Value.Count);
+        stream.Write(Values.Count);
 
         var list1 = Value.ToArray();
         var list = new byte[list1.Length * 4];

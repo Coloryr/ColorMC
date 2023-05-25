@@ -50,6 +50,9 @@ public class ConfigFlyout1
                     NbtType.NbtFloat => true,
                     NbtType.NbtDouble => true,
                     NbtType.NbtString => true,
+                    NbtType.NbtByteArray => true,
+                    NbtType.NbtIntArray => true,
+                    NbtType.NbtLongArray => true,
                     _ => false
                 };
             }

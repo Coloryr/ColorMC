@@ -138,5 +138,50 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
+
+        <Grid IsVisible="{Binding DisplayEdit}">
+            <Border Background="{setting:Colors TopBottom}" />
+            <DockPanel>
+                <Grid DockPanel.Dock="Top">
+                    <StackPanel
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Label Content="{setting:Localize ConfigEditWindow.Text4}" />
+                        <Label Content="{Binding DataType}" />
+                    </StackPanel>
+                    <Button
+                        Width="85"
+                        Height="25"
+                        Margin="5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Command="{Binding DataEditDone}"
+                        Content="{setting:Localize ConfigEditWindow.Text2}"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text40}"
+                        ToolTip.VerticalOffset="-30" />
+                </Grid>
+                <DataGrid
+                    Name="DataGrid1"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    ItemsSource="{Binding DataList}"
+                    SelectedItem="{Binding DataItem}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Key}"
+                            Header="{setting:Localize ConfigEditWindow.DataGrid.Text1}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Width="500"
+                            Binding="{Binding Value}"
+                            Header="{setting:Localize ConfigEditWindow.DataGrid.Text2}"
+                            IsReadOnly="False" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Grid>
     </Grid>
 </UserControl>
