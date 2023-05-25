@@ -13,7 +13,6 @@
     <Company>Coloryr</Company>
     <Product>ColorMC</Product>
 	<Title>ColorMC</Title>
-	<BaseOutputPath></BaseOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>portable</DebugType>
@@ -30,15 +29,12 @@
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="icon.ico" />
-    <None Remove="Resource\Language\en-us" />
     <None Remove="Resource\Language\gui_zh-cn.json" />
-    <None Remove="Resource\Language\zh-cn" />
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\load.png" />
     <None Remove="Resource\Pic\user.png" />
     <None Remove="Resource\UI\CustomUI.json" />
-    <None Remove="UI\Windows\teapot.bin" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="icon.ico" />
@@ -77,11 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
-  </ItemGroup>
-
-	<ItemGroup>
-    <Folder Include="Properties\" />
-    <Folder Include="UI\Converter\" />
   </ItemGroup>
 
 </Project>

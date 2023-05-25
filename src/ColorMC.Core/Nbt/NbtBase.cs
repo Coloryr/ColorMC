@@ -7,10 +7,57 @@ public abstract class NbtBase
 {
     public NbtType NbtType { get; protected init; }
     public bool Gzip { get; set; }
+    public string Value { get => GetValue(); set => SetValue(value); }
 
     public abstract NbtBase Read(DataInputStream stream);
 
     public abstract void Write(DataOutputStream stream);
+
+    public string GetValue()
+    {
+        return NbtType switch
+        {
+            NbtType.NbtByte => (this as NbtByte)!.Value.ToString(),
+            NbtType.NbtShort => (this as NbtShort)!.Value.ToString(),
+            NbtType.NbtInt => (this as NbtInt)!.Value.ToString(),
+            NbtType.NbtLong => (this as NbtLong)!.Value.ToString(),
+            NbtType.NbtFloat => (this as NbtFloat)!.Value.ToString(),
+            NbtType.NbtDouble => (this as NbtDouble)!.Value.ToString(),
+            NbtType.NbtString => (this as NbtString)!.Value.ToString(),
+            _ => ""
+        };
+    }
+
+    public void SetValue(string value)
+    {
+        if (value == null)
+            return;
+
+        switch (NbtType)
+        {
+            case NbtType.NbtByte:
+                (this as NbtByte)!.Value = byte.Parse(value);
+                break;
+            case NbtType.NbtShort:
+                (this as NbtShort)!.Value = short.Parse(value);
+                break;
+            case NbtType.NbtInt:
+                (this as NbtInt)!.Value = int.Parse(value);
+                break;
+            case NbtType.NbtLong:
+                (this as NbtLong)!.Value = long.Parse(value);
+                break;
+            case NbtType.NbtFloat:
+                (this as NbtFloat)!.Value = float.Parse(value);
+                break;
+            case NbtType.NbtDouble:
+                (this as NbtDouble)!.Value = double.Parse(value);
+                break;
+            case NbtType.NbtString:
+                (this as NbtString)!.Value = value!;
+                break;
+        };
+    }
 
     public override string? ToString()
     {
@@ -62,6 +109,7 @@ public abstract class NbtBase
         Write(file, this);
     }
 
+
     private static readonly Dictionary<byte, Type> VALUES = new()
     {
         {NbtEnd.Type, typeof(NbtEnd) },
@@ -79,9 +127,32 @@ public abstract class NbtBase
         {NbtLongArray.Type, typeof(NbtLongArray) }
     };
 
+    private static readonly Dictionary<NbtType, Type> VALUES1 = new()
+    {
+        {NbtType.NbtEnd, typeof(NbtEnd) },
+        {NbtType.NbtByte, typeof(NbtByte) },
+        {NbtType.NbtShort, typeof(NbtShort) },
+        {NbtType.NbtInt, typeof(NbtInt) },
+        {NbtType.NbtLong, typeof(NbtLong) },
+        {NbtType.NbtFloat, typeof(NbtFloat) },
+        {NbtType.NbtDouble, typeof(NbtDouble) },
+        {NbtType.NbtByteArray, typeof(NbtByteArray) },
+        {NbtType.NbtString, typeof(NbtString) },
+        {NbtType.NbtList, typeof(NbtList) },
+        {NbtType.NbtCompound, typeof(NbtCompound) },
+        {NbtType.NbtIntArray, typeof(NbtIntArray) },
+        {NbtType.NbtLongArray, typeof(NbtLongArray) }
+    };
+
     public static NbtBase ById(byte id)
     {
         var type = VALUES[id];
+        return (Activator.CreateInstance(type) as NbtBase)!;
+    }
+
+    public static NbtBase ById(NbtType id)
+    {
+        var type = VALUES1[id];
         return (Activator.CreateInstance(type) as NbtBase)!;
     }
 

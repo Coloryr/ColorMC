@@ -656,11 +656,32 @@ public static class GameBinding
         return File.ReadAllText(Path.GetFullPath(dir + "/" + name));
     }
 
+    public static void SaveConfigFile(WorldObj obj, string name, string? text)
+    {
+        var dir = obj.Local;
+
+        File.WriteAllText(Path.GetFullPath(dir + "/" + name), text);
+    }
+
     public static void SaveConfigFile(GameSettingObj obj, string name, string? text)
     {
         var dir = obj.GetGamePath();
 
         File.WriteAllText(Path.GetFullPath(dir + "/" + name), text);
+    }
+
+    public static void SaveNbtFile(WorldObj obj, string file, NbtBase nbt)
+    {
+        var dir = obj.Local;
+
+        NbtBase.Write(Path.GetFullPath(dir + "/" + file), nbt);
+    }
+
+    public static void SaveNbtFile(GameSettingObj obj, string file, NbtBase nbt)
+    {
+        var dir = obj.GetGamePath();
+
+        NbtBase.Write(Path.GetFullPath(dir + "/" + file), nbt);
     }
 
     public static Task<List<string>?> GetForgeVersion(string version)

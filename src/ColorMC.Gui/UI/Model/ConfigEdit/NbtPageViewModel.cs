@@ -11,11 +11,13 @@ namespace ColorMC.Gui.UI.Model.ConfigEdit;
 
 public class NbtPageViewModel : ObservableObject
 {
+    public NbtBase Nbt { get; }
     private readonly NbtNodeModel _root;
     public HierarchicalTreeDataGridSource<NbtNodeModel> Source { get; }
 
     public NbtPageViewModel(NbtCompound nbt)
     {
+        Nbt = nbt;
         Source = new HierarchicalTreeDataGridSource<NbtNodeModel>(Array.Empty<NbtNodeModel>())
         {
             Columns =
@@ -28,7 +30,7 @@ public class NbtPageViewModel : ObservableObject
                         new TemplateColumnOptions<NbtNodeModel>
                         {
                             IsTextSearchEnabled = true,
-                            TextSearchValueSelector = x => x.Name,
+                            TextSearchValueSelector = x => x.Key,
                             CanUserResizeColumn = true,
                             CanUserSortColumn = false,
                         })

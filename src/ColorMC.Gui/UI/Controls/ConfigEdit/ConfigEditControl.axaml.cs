@@ -19,10 +19,20 @@ public partial class ConfigEditControl : UserControl, IUserControl
         InitializeComponent();
 
         NbtViewer.PointerPressed += NbtViewer_PointerPressed;
+        NbtViewer.KeyDown += NbtViewer_KeyDown;
 
+        TextEditor1.KeyDown += NbtViewer_KeyDown;
         TextEditor1.Options.ShowBoxForControlCharacters = true;
         TextEditor1.TextArea.IndentationStrategy =
             new CSharpIndentationStrategy(TextEditor1.Options);
+    }
+
+    private void NbtViewer_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.S && e.KeyModifiers == KeyModifiers.Control)
+        {
+            (DataContext as ConfigEditModel)?.Save();
+        }
     }
 
     private void NbtViewer_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -47,15 +57,15 @@ public partial class ConfigEditControl : UserControl, IUserControl
         }
     }
 
-    public ConfigEditControl(WorldObj world) : this()
+    public ConfigEditControl( WorldObj world) : this()
     {
-        model = new(world.Game, world);
+        model = new(this, world.Game, world);
         DataContext = model;
     }
 
     public ConfigEditControl(GameSettingObj obj) : this()
     {
-        model = new(obj, null);
+        model = new(this, obj, null);
         DataContext = model;
     }
 

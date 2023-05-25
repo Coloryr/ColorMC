@@ -109,4 +109,12 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
 
         stream.Write((byte)0);
     }
+
+    public void EditKey(string old, string now)
+    {
+        if (Entries.Remove(old, out var value))
+        {
+            Entries.Add(now, value);
+        }
+    }
 }

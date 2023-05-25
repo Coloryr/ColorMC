@@ -16,7 +16,7 @@ public class GameEditFlyout1
     private readonly ModDisplayModel Obj;
     private readonly Control Con;
     private readonly GameEditTab4Model Model;
-    private bool Single;
+    private readonly bool Single;
 
     public GameEditFlyout1(Control con, IList obj, GameEditTab4Model model)
     {

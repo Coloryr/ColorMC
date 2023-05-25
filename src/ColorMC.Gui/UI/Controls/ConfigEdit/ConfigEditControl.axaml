@@ -10,91 +10,133 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <DockPanel Margin="5">
-        <DockPanel DockPanel.Dock="Top">
-            <ComboBox
-                Width="250"
-                ItemsSource="{Binding FileList}"
-                SelectedIndex="{Binding Select}"
-                SelectedItem="{Binding File}" />
+    <Grid>
+        <DockPanel Margin="5">
+            <DockPanel DockPanel.Dock="Top">
+                <ComboBox
+                    Width="250"
+                    ItemsSource="{Binding FileList}"
+                    SelectedIndex="{Binding Select}"
+                    SelectedItem="{Binding File}" />
 
-            <Button
-                Width="85"
-                Height="25"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                Command="{Binding Open}"
-                Content="{setting:Localize Button.OpFile}"
-                DockPanel.Dock="Right"
-                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                ToolTip.VerticalOffset="-30" />
-            <Button
-                Width="85"
-                Height="25"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                Command="{Binding Save}"
-                Content="{setting:Localize ConfigEditWindow.Text2}"
-                DockPanel.Dock="Right"
-                ToolTip.Tip="{setting:Localize ToolTip.Text40}"
-                ToolTip.VerticalOffset="-30" />
-            <Button
-                Width="85"
-                Height="25"
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                Command="{Binding Load}"
-                Content="{setting:Localize ConfigEditWindow.Text3}"
-                DockPanel.Dock="Right"
-                ToolTip.Tip="{setting:Localize ToolTip.Text41}"
-                ToolTip.VerticalOffset="-30" />
-            <TextBox
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                Classes="input1"
-                Text="{Binding Name}"
-                Watermark="{setting:Localize ConfigEditWindow.Text1}" />
+                <Button
+                    Width="85"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Command="{Binding Open}"
+                    Content="{setting:Localize Button.OpFile}"
+                    DockPanel.Dock="Right"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="85"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Command="{Binding Save}"
+                    Content="{setting:Localize ConfigEditWindow.Text2}"
+                    DockPanel.Dock="Right"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text40}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="85"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Command="{Binding Load}"
+                    Content="{setting:Localize ConfigEditWindow.Text3}"
+                    DockPanel.Dock="Right"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text41}"
+                    ToolTip.VerticalOffset="-30" />
+                <TextBox
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Classes="input1"
+                    Text="{Binding Name}"
+                    Watermark="{setting:Localize ConfigEditWindow.Text1}" />
 
+            </DockPanel>
+            <Grid>
+                <ae:TextEditor
+                    Name="TextEditor1"
+                    Margin="0,3,0,0"
+                    Background="{setting:Colors TranBack}"
+                    Document="{Binding Text}"
+                    FontSize="14"
+                    FontWeight="Normal"
+                    Foreground="{setting:Colors Font}"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsVisible="{Binding !NbtEnable}"
+                    ShowLineNumbers="True"
+                    VerticalScrollBarVisibility="Visible"
+                    WordWrap="True" />
+                <TreeDataGrid
+                    Name="NbtViewer"
+                    Margin="3"
+                    IsVisible="{Binding NbtEnable}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                    ScrollViewer.VerticalScrollBarVisibility="Visible"
+                    Source="{Binding Source}">
+                    <TreeDataGrid.Resources>
+                        <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
+                            <StackPanel Orientation="Horizontal">
+                                <Label
+                                    Width="30"
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Center">
+                                    <Label.Content>
+                                        <MultiBinding Converter="{x:Static vm:NbtPageViewModel.NbtTypeConverter}">
+                                            <Binding Path="NbtType" />
+                                        </MultiBinding>
+                                    </Label.Content>
+                                </Label>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TreeDataGrid.Resources>
+                </TreeDataGrid>
+            </Grid>
         </DockPanel>
-        <Grid>
-            <ae:TextEditor
-                Name="TextEditor1"
-                Margin="0,3,0,0"
-                Background="{setting:Colors TranBack}"
-                Document="{Binding Text}"
-                FontSize="14"
-                FontWeight="Normal"
-                Foreground="{setting:Colors Font}"
-                HorizontalScrollBarVisibility="Auto"
-                IsVisible="{Binding !NbtEnable}"
-                ShowLineNumbers="True"
-                VerticalScrollBarVisibility="Visible"
-                WordWrap="True" />
-            <TreeDataGrid
-                Name="NbtViewer"
-                Margin="3"
-                IsVisible="{Binding NbtEnable}"
-                ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                ScrollViewer.VerticalScrollBarVisibility="Visible"
-                Source="{Binding Source}">
-                <TreeDataGrid.Resources>
-                    <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
-                        <StackPanel Orientation="Horizontal">
-                            <Label
-                                Width="30"
-                                VerticalAlignment="Center"
-                                HorizontalContentAlignment="Center">
-                                <Label.Content>
-                                    <MultiBinding Converter="{x:Static vm:NbtPageViewModel.NbtTypeConverter}">
-                                        <Binding Path="NbtType" />
-                                    </MultiBinding>
-                                </Label.Content>
-                            </Label>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </TreeDataGrid.Resources>
-            </TreeDataGrid>
+
+        <Grid IsVisible="{Binding DisplayAdd}">
+            <Border Background="{setting:Colors TopBottom}" />
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label
+                    HorizontalAlignment="Center"
+                    Content="{Binding Title}"
+                    FontSize="20" />
+                <TextBox
+                    Width="300"
+                    Margin="0,10,0,0"
+                    Classes="input1"
+                    Foreground="{setting:Colors Font}"
+                    Text="{Binding Key}"
+                    Watermark="{Binding Title1}" />
+                <ComboBox
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Stretch"
+                    IsVisible="{Binding DisplayType}"
+                    ItemsSource="{Binding TypeSource}"
+                    SelectedIndex="{Binding Type}" />
+                <StackPanel Margin="0,30,0,0">
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Button
+                            Width="100"
+                            Height="30"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Center"
+                            Command="{Binding AddConfirm}"
+                            Content="{setting:Localize Button.Confirm}" />
+                        <Button
+                            Width="100"
+                            Height="30"
+                            HorizontalAlignment="Center"
+                            Command="{Binding AddCancel}"
+                            Content="{setting:Localize Button.Cancel}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
         </Grid>
-    </DockPanel>
+    </Grid>
 </UserControl>

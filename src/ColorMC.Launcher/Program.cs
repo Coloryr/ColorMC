@@ -16,6 +16,12 @@ internal static class GuiLoad
         Program.BuildApp = ColorMCGui.BuildAvaloniaApp;
         Program.SetBaseSha1 = ColorMCGui.SetBaseSha1;
     }
+
+    public static void Run(string[] args)
+    {
+        ColorMCGui.SetBaseSha1(Program.BaseSha1);
+        ColorMCGui.Main(args);
+    }
 }
 
 public static class Program
@@ -69,6 +75,11 @@ public static class Program
 
         Console.WriteLine($"CheckDir:{LoadDir}");
 
+#if DEBUG
+        GuiLoad.Run(args);
+        return;
+#endif
+
         Load();
 
         try
@@ -98,10 +109,6 @@ public static class Program
 
     private static void Load()
     {
-#if DEBUG
-        GuiLoad.Load();
-        return;
-#endif
         if (NotHaveDll())
         {
             GuiLoad.Load();
