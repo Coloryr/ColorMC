@@ -1,31 +1,32 @@
 # ColorMC
 
-[English](./README_EN.md)
-全新的MC启动器
+[简体中文](./README.md)
+
+A new Minecraft Launcher
 ![](/image/pic.png)
 
-## 支持平台
+## Support Platform
 - Linux
 - Windows
 - macOs
 
-Linux由于发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以尝试修改`/home/{user}/ColorMC/gui.json`
+Due to the complexity of Linux distribution, everyone's compatibility is different. If it cannot be opened it, you can try modifying `/home/{user}/ColorMC/gui.json`
 
-## 开发环境搭建
+## Development environment
 
-### 克隆源码
+### Clone code
 
 ```
 git clone https://github.com/Coloryr/ColorMC.git
 cd ColorMC
 ```
 
-### 安装.Net7
+### Insatll .Net7
 
 - Windows/macOs
-[下载](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0)里面的SDK安装包安装即可
+[Download](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0)
 - Linux
-[教程](https://learn.microsoft.com/zh-cn/dotnet/core/install/linux?WT.mc_id=dotnet-35129-website)
+[Doc](https://learn.microsoft.com/zh-cn/dotnet/core/install/linux?WT.mc_id=dotnet-35129-website)
 
 ```
 # ubuntu
@@ -42,9 +43,9 @@ $ sudo apt-get update
 $ sudo apt-get install -y dotnet-sdk-7.0
 ```
 
-### 启动
+### Launch
 
-先选择项目`ColorMC.Launcher`进入
+Goto project `ColorMC.Launcher` directory
 
 ```
 $ dotnet build
@@ -53,18 +54,18 @@ $ dotnet build
 $ dotnet run
 ```
 
-## 项目说明
+## Project description
 - ColorMC.Core 启动器底层核心
 - ColorMC.Cmd CLI模式 (已放弃)
 - ColorMC.Gui Gui模式
 - ColorMC.Launcher 启动器
 - ColorMC.Test 用于启动器核心测试
 
-## 皮肤预览
+## Skin View
 
 ![](/image/GIF1.gif)  
 
-## 引用的项目
+## Referenced
 
 [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) 跨平台UI框架  
 [Heijden.Dns.Portable](https://github.com/softlion/Heijden.Dns) DNS解析  
@@ -78,7 +79,7 @@ $ dotnet run
 [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM工具  
 [NAudio](https://github.com/naudio/NAudio) Windows音频播放
 
-## 使用的IDE
+## Use IDE
 
 [Visual Studio Code](https://code.visualstudio.com/)  
 [Visual Studio](https://visualstudio.microsoft.com/)
