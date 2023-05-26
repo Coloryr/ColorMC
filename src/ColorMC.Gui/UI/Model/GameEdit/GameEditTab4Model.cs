@@ -132,7 +132,7 @@ public partial class GameEditTab4Model : GameEditTabModel
 
         Items.AddRange(res);
 
-        var list = res.Where(a => a.Obj.Broken == false && !a.Obj.Disable && !string.IsNullOrWhiteSpace(a.Obj.modid)).GroupBy(a => a.Obj.modid);
+        var list = res.Where(a => a.Obj.ReadFail == false && !a.Obj.Disable && !string.IsNullOrWhiteSpace(a.Obj.modid)).GroupBy(a => a.Obj.modid);
         count = list.Count(a => a.Count() > 1);
         if (count > 0)
         {
@@ -140,6 +140,19 @@ public partial class GameEditTab4Model : GameEditTabModel
                     .GetLanguage("GameEditWindow.Tab4.Info14"), count));
         }
         Load1();
+    }
+
+    [RelayCommand]
+    public async void DependTest()
+    {
+        var window = Con.Window;
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info15"));
+        var res = await GameBinding.ModCheck(Items);
+        window.ProgressInfo.Close();
+        if (res)
+        {
+            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info16"));
+        }
     }
 
     public async void Drop(IDataObject data)

@@ -31,6 +31,9 @@ public partial class Tab4Control : UserControl
         Button_B1.PointerExited += Button_B1_PointerLeave;
         Button_B.PointerEntered += Button_B_PointerEnter;
 
+        Button_D1.PointerExited += Button_D1_PointerLeave;
+        Button_D.PointerEntered += Button_D_PointerEnter;
+
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
@@ -126,6 +129,16 @@ public partial class Tab4Control : UserControl
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
+    }
+
+    private void Button_D1_PointerLeave(object? sender, PointerEventArgs e)
+    {
+        App.CrossFade100.Start(Button_D1, null, CancellationToken.None);
+    }
+
+    private void Button_D_PointerEnter(object? sender, PointerEventArgs e)
+    {
+        App.CrossFade100.Start(null, Button_D1, CancellationToken.None);
     }
 
     private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)

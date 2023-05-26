@@ -133,7 +133,7 @@ public static class Mods
                         modid = obj2["modId"]?["value"]?.ToString(),
                         name = obj2["names"]?["value"]?.ToString(),
                         version = obj2["version"]?["value"]?.ToString(),
-                        dependencies = new() { obj2["dependencies"]?["value"]?.ToString() },
+                        requiredMods = new() { obj2["dependencies"]?["value"]?.ToString() },
                         Sha1 = sha1
                     };
 
@@ -182,14 +182,16 @@ public static class Mods
 
                     if (model["dependencies"] is TomlTable model3)
                     {
-                        obj3.dependencies = new();
+                        obj3.requiredMods = new();
                         if (model3.FirstOrDefault().Value is TomlTableArray model4)
                         {
                             foreach (var item3 in model4)
                             {
-                                if (item3.TryGetValue("modId", out item2))
+                                if (item3.TryGetValue("modId", out item2)
+                                && item3.TryGetValue("mandatory", out var item4)
+                                && item4?.ToString()?.ToLower() == "true")
                                 {
-                                    obj3.dependencies.Add(item2 as string);
+                                    obj3.requiredMods.Add(item2 as string);
                                 }
                             }
                         }
@@ -228,10 +230,10 @@ public static class Mods
                     };
                     if (obj1.ContainsKey("depends"))
                     {
-                        obj3.dependencies = new();
+                        obj3.requiredMods = new();
                         foreach (var item3 in obj1.Properties())
                         {
-                            obj3.dependencies.Add(item3.Name);
+                            obj3.requiredMods.Add(item3.Name);
                         }
                     }
                     list.Add(obj3);
@@ -269,10 +271,10 @@ public static class Mods
                     };
                     if (obj2.ContainsKey("depends"))
                     {
-                        obj3.dependencies = new();
+                        obj3.requiredMods = new();
                         foreach (var item3 in obj2["depends"]!)
                         {
-                            obj3.dependencies.Add(item3["id"]?.ToString());
+                            obj3.requiredMods.Add(item3["id"]?.ToString());
                         }
                     }
                     list.Add(obj3);
@@ -293,7 +295,7 @@ public static class Mods
                         name = "",
                         Local = Path.GetFullPath(item.FullName),
                         Disable = item.Extension is ".disable",
-                        Broken = true,
+                        ReadFail = true,
                         Sha1 = sha1,
                         Game = obj
                     });

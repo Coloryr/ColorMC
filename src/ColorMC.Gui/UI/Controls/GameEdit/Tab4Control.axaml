@@ -168,6 +168,21 @@
                             Content="{setting:Localize GameEditWindow.Tab4.Text4}"
                             IsVisible="False" />
                     </Grid>
+                    <Grid Margin="0,5,0,0">
+                        <Button
+                            Name="Button_D"
+                            Width="20"
+                            Height="30"
+                            Command="{Binding DependTest}"
+                            Content="D" />
+                        <Button
+                            Name="Button_D1"
+                            Width="100"
+                            Height="30"
+                            Command="{Binding DependTest}"
+                            Content="{setting:Localize GameEditWindow.Tab4.Text5}"
+                            IsVisible="False" />
+                    </Grid>
                 </StackPanel>
             </Grid>
         </DockPanel>

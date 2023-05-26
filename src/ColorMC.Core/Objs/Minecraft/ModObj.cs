@@ -11,8 +11,9 @@ public record ModObj
     public string? version { get; set; }
     public List<string>? authorList { get; set; }
     public string credits { get; set; }
-    public List<string?> dependants { get; set; }
-    public List<string?> dependencies { get; set; }
+    public List<string> dependants { get; set; }
+    public List<string> dependencies { get; set; }
+    public List<string> requiredMods { get; set; }
     public string parent { get; set; }
     public string logoFile { get; set; }
     public List<string> screenshots { get; set; }
@@ -28,7 +29,7 @@ public record ModObj
     [JsonIgnore]
     public bool V2 { get; set; }
     [JsonIgnore]
-    public bool Broken { get; set; }
+    public bool ReadFail { get; set; }
     [JsonIgnore]
     public string Sha1 { get; set; }
     [JsonIgnore]

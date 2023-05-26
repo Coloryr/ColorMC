@@ -20,9 +20,11 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Image = SixLabors.ImageSharp.Image;
 
@@ -133,12 +135,12 @@ public static class GameBinding
 
         if (!res)
         {
-            game?.Remove();
+            await game.Remove();
         }
 
         App.ShowGameEdit(game);
 
-        return game != null;
+        return true;
     }
 
     public static Task<(bool, GameSettingObj?)> AddPack(string dir, PackType type, string? name, string? group)
@@ -487,7 +489,7 @@ public static class GameBinding
         list1.ForEach(item =>
         {
             ModDisplayModel obj1;
-            if (item.Broken)
+            if (item.ReadFail)
             {
                 obj1 = new ModDisplayModel()
                 {
@@ -1295,5 +1297,82 @@ public static class GameBinding
     public static async void CopyServer(TopLevel? top, ServerInfoObj obj)
     {
         await BaseBinding.CopyTextClipboard(top, $"{obj.Name}\n{obj.IP}");
+    }
+
+    public static Task<bool> ModCheck(List<ModDisplayModel> list)
+    {
+        return Task.Run(() =>
+        {
+            Dictionary<string, ModDisplayModel> modid = new();
+            foreach (var item in list)
+            {
+                if (item.Obj.modid == null || item.Obj.Disable)
+                    continue;
+                modid.Add(item.Obj.modid, item);
+            }
+            modid.Add("forge", null);
+
+            ConcurrentBag<(string, List<string>)> lost = new();
+
+            Parallel.ForEach(modid.Values, new ParallelOptions()
+            { 
+                 MaxDegreeOfParallelism = 1
+            }, item =>
+            {
+                if (item == null)
+                    return;
+
+                var list1 = new List<string>();
+                if (item.Obj.requiredMods != null)
+                {
+                    foreach (var item1 in item.Obj.requiredMods)
+                    {
+                        var list2 = item1.Split(",");
+                        list1.AddRange(list2);
+                        foreach (var item2 in list2)
+                        {
+                            if (modid.ContainsKey(item2))
+                            {
+                                list1.Remove(item2);
+                            }
+                        }
+                    }
+                }
+                if (item.Obj.dependencies != null)
+                {
+                    foreach (var item1 in item.Obj.dependencies)
+                    {
+                        var list2 = item1.Split(",");
+                        list1.AddRange(list2);
+                        foreach (var item2 in list2)
+                        {
+                            if (modid.ContainsKey(item2))
+                            {
+                                list1.Remove(item2);
+                            }
+                        }
+                    }
+                }
+
+                if (list1.Count > 0)
+                {
+                    lost.Add((item.Name, list1));
+                }
+            });
+
+            if (lost.Count > 0)
+            {
+                var str = new StringBuilder();
+                foreach (var item in lost)
+                {
+                    str.Append(string.Format(App.GetLanguage("Gui.Info25"), item.Item1, item.Item2.GetString())).Append(Environment.NewLine);
+                }
+
+                App.ShowError(App.GetLanguage("Gui.Info26"), str.ToString());
+                return false;
+            }
+
+            return true;
+        });
     }
 }

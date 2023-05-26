@@ -109,7 +109,7 @@ public partial class ServerPackTab2Model : ServerPackTabModel
 
         mods.ForEach(item =>
         {
-            if (item.Obj.Broken)
+            if (item.Obj.ReadFail)
                 return;
 
             string file = Path.GetFileName(item.Obj.Local);

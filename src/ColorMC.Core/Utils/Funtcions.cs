@@ -145,6 +145,17 @@ public static partial class Funtcions
 
         return input[(temp + start.Length)..temp1];
     }
+
+    public static string GetString(this List<string> list)
+    {
+        var str = new StringBuilder();
+        foreach (var item in list)
+        {
+            str.Append(item).Append(",");
+        }
+
+        return str.ToString()[..^1];
+    }
 }
 
 public static class ZipUtils
