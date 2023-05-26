@@ -77,6 +77,7 @@ public class ConfigFlyout1
             (App.GetLanguage("ConfigEditWindow.Flyouts1.Text2"), delete, Button2_Click),
             (App.GetLanguage("ConfigEditWindow.Flyouts1.Text3"), editKey, Button3_Click),
             (App.GetLanguage("ConfigEditWindow.Flyouts1.Text4"), editValue, Button4_Click),
+            (App.GetLanguage("ConfigEditWindow.Flyouts1.Text5"), true, Button5_Click),
         }, con);
     }
 
@@ -105,5 +106,10 @@ public class ConfigFlyout1
     private void Button4_Click()
     {
         Model.SetValue(Item!);
+    }
+
+    private void Button5_Click()
+    {
+        Model.Find();
     }
 }

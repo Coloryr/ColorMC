@@ -538,6 +538,20 @@ public partial class ConfigEditModel : ObservableObject
         }
     }
 
+    public async void Find()
+    {
+        var window = Con.Window;
+        await window.InputInfo.ShowOne(App.GetLanguage("ConfigEditWindow.Info3"), false);
+        if (window.InputInfo.Cancel)
+            return;
+
+        var data = window.InputInfo.Read().Item1;
+        if (string.IsNullOrWhiteSpace(data))
+            return;
+
+        nbtView.Find(data);
+    }
+
     private void Load1()
     {
         FileList.Clear();
@@ -562,4 +576,5 @@ public partial class ConfigEditModel : ObservableObject
             Text.Text = "";
         }
     }
+
 }

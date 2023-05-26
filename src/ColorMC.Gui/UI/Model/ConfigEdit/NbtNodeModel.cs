@@ -89,6 +89,26 @@ public partial class NbtNodeModel : ObservableObject
         OnPropertyChanged(nameof(Name));
     }
 
+    public NbtNodeModel? Find(string name) 
+    {
+        if (name.ToLower() == Key?.ToLower())
+            return this;
+
+        if (HasChildren)
+        {
+            foreach (var item in Children)
+            {
+                var item1 = item.Find(name);
+                if (item1 != null)
+                {
+                    return item1;
+                }
+            }
+        }
+
+        return null;
+    }
+
     private void LoadChildren()
     {
         HasChildren = Nbt.IsGroup() && Nbt.HaveItem();
@@ -122,5 +142,11 @@ public partial class NbtNodeModel : ObservableObject
         {
             IsExpanded = true;
         }
+    }
+
+    public void Expand()
+    {
+        IsExpanded = true;
+        OnPropertyChanged(nameof(IsExpanded));
     }
 }

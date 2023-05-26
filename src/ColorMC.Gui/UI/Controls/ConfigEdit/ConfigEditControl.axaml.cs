@@ -62,7 +62,10 @@ public partial class ConfigEditControl : UserControl, IUserControl
     {
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
-            model.Pressed(this);
+            Dispatcher.UIThread.Post(() =>
+            {
+                model.Pressed(this);
+            });
         }
     }
 

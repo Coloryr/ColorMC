@@ -1,11 +1,14 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
+using Avalonia.Controls.Selection;
 using Avalonia.Data.Converters;
+using Avalonia.Threading;
 using ColorMC.Core.Nbt;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ConfigEdit;
 
@@ -49,15 +52,46 @@ public class NbtPageViewModel : ObservableObject
         Source.Items = new[] { _root };
     }
 
+    public async void Find(string name)
+    {
+        NbtNodeModel? data = null;
+        await Task.Run(() => data = _root.Find(name));
+        if (data == null)
+            return;
+
+        var list = new List<int>();
+        NbtNodeModel? top = data.Top;
+        NbtNodeModel? down = data;
+        while (top != null)
+        {
+            list.Add(top.Children.IndexOf(down));
+            top.Expand();
+            down = top;
+            top = top.Top;
+        }
+        list.Add(0);
+        list.Reverse();
+        
+        var list1 = list.ToArray();
+        Dispatcher.UIThread.Post(() =>
+        {
+            var list = (Source.Selection as TreeDataGridRowSelectionModel<NbtNodeModel>)!;
+            int a;
+            for (a = 0; a < Source.Rows.Count; a++)
+            {
+                if (Source.Rows[a].Model == data)
+                    break;
+            }
+            list.SelectedIndex = new(list1);
+        });
+    }
+
     private static StringNbtTypeConverter? s_NbtTypeConverter;
     public static IMultiValueConverter NbtTypeConverter
     {
         get
         {
-            if (s_NbtTypeConverter is null)
-            {
-                s_NbtTypeConverter = new StringNbtTypeConverter();
-            }
+            s_NbtTypeConverter ??= new StringNbtTypeConverter();
 
             return s_NbtTypeConverter;
         }

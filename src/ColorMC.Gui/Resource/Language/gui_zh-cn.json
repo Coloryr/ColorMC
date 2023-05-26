@@ -644,6 +644,7 @@
 	"ConfigEditWindow.Flyouts1.Text2": "删除",
 	"ConfigEditWindow.Flyouts1.Text3": "修改键",
 	"ConfigEditWindow.Flyouts1.Text4": "修改值",
+	"ConfigEditWindow.Flyouts1.Text5": "搜索键",
 	"ConfigEditWindow.Info1": "是否删除NBT标签",
 	"ConfigEditWindow.Info2": "添加NBT标签",
 	"ConfigEditWindow.Info3": "键名",
