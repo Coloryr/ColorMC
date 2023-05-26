@@ -2,7 +2,7 @@
 
 [简体中文](./README.md)
 
-A new Minecraft Launcher
+A new Minecraft Launcher  
 ![](/image/pic.png)
 
 ## Support Platform

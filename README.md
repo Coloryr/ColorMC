@@ -1,7 +1,8 @@
 # ColorMC
 
 [English](./README_EN.md)
-全新的MC启动器
+
+全新的MC启动器  
 ![](/image/pic.png)
 
 ## 支持平台
