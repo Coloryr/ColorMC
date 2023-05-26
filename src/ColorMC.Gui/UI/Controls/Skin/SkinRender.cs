@@ -151,7 +151,7 @@ public class SkinRender : OpenGlControlBase
         skina.Start();
     }
 
-    private void Model_PropertyChanged(object? sender,  PropertyChangedEventArgs e)
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "SteveModelType")
         {

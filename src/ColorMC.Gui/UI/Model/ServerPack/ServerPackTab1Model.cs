@@ -1,15 +1,9 @@
-﻿using Avalonia.Controls;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
@@ -29,7 +23,7 @@ public partial class ServerPackTab1Model : ServerPackTabModel
 
     public ServerPackTab1Model(IUserControl con, ServerPackObj obj) : base(con, obj)
     {
-        
+
     }
 
     partial void OnTextChanged(string value)

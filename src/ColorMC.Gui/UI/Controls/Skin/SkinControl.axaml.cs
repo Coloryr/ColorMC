@@ -1,13 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Threading;
-using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.UI.Model.Skin;
+using ColorMC.Gui.UI.Windows;
 using System;
-using System.Numerics;
 using System.Timers;
 
 namespace ColorMC.Gui.UI.Controls.Skin;

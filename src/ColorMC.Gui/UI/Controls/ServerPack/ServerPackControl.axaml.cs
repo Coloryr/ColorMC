@@ -84,7 +84,7 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(string.Format(App.GetLanguage("ServerPackWindow.Title"), 
+        Window.SetTitle(string.Format(App.GetLanguage("ServerPackWindow.Title"),
             model1.Obj.Game.Name));
     }
 

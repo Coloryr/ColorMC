@@ -2,16 +2,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform.Storage;
 using Avalonia.Threading;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Main;
-using ColorMC.Gui.UIBinding;
 using System;
 using System.ComponentModel;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -121,7 +115,7 @@ public partial class GameControl : UserControl
         var pro = e.GetCurrentPoint(this);
         point = pro.Position;
 
-        if (pro.Properties.IsRightButtonPressed )
+        if (pro.Properties.IsRightButtonPressed)
         {
             GameModel.Flyout(this);
         }

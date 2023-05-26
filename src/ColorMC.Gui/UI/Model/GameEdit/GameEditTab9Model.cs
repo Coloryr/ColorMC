@@ -1,15 +1,9 @@
-﻿using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Controls.GameEdit.Items;
+﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
-using CommunityToolkit.Mvvm.Input;
-using System;
-using ColorMC.Core.LaunchPath;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 

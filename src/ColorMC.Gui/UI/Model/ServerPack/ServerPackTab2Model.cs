@@ -1,17 +1,13 @@
-﻿using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using ColorMC.Core.Helpers;
-using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
@@ -24,7 +20,7 @@ public partial class ServerPackTab2Model : ServerPackTabModel
 
     public ServerPackTab2Model(IUserControl con, ServerPackObj obj) : base(con, obj)
     {
-        
+
     }
 
     [RelayCommand]

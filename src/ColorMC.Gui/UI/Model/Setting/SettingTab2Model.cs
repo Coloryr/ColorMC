@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -9,12 +8,9 @@ using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 

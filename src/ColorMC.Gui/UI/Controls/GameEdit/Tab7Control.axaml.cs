@@ -1,13 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Threading;
-using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
-using ColorMC.Gui.UIBinding;
-using System;
 using System.ComponentModel;
-using System.Timers;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

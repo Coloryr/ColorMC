@@ -1,23 +1,16 @@
-﻿using ColorMC.Gui.Objs;
+﻿using Avalonia.Controls;
+using Avalonia.Input;
+using ColorMC.Core;
+using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ColorMC.Core.Helpers;
-using Avalonia.Controls;
-using CommunityToolkit.Mvvm.Input;
-using ColorMC.Core.Objs;
-using ColorMC.Core;
-using System.Threading.Channels;
-using System.Threading;
 using System.Web;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 
 namespace ColorMC.Gui.UI.Model.User;
 

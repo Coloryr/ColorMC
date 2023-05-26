@@ -4,7 +4,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Windows;
-using System;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;

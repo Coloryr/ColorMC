@@ -508,16 +508,16 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
     public void Launch(GameModel obj, bool debug)
     {
-        
+
     }
 
     public void Select(GameModel? model)
     {
-        
+
     }
 
     public void EditGroup(GameModel model)
     {
-        
+
     }
 }

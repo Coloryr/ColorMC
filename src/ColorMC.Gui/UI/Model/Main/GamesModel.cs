@@ -1,16 +1,10 @@
-﻿using Avalonia.Controls.Models.TreeDataGrid;
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Main;
 

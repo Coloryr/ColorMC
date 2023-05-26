@@ -1,15 +1,6 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Threading;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.ServerPack;
-using ColorMC.Gui.UIBinding;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
 

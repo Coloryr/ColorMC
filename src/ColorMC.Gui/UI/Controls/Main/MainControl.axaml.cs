@@ -1,23 +1,14 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Layout;
-using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
-using System;
-using Avalonia.Interactivity;
-using ColorMC.Gui.Objs;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -106,7 +97,7 @@ public partial class MainControl : UserControl, IUserControl
 
         }
     }
-    
+
     private void ScrollViewer1_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         if (e.GetCurrentPoint(ScrollViewer1).Properties.IsLeftButtonPressed)

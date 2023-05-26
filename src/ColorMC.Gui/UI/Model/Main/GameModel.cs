@@ -1,21 +1,17 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Platform.Storage;
+using Avalonia.Threading;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using ColorMC.Core.LaunchPath;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Avalonia.Media;
-using ColorMC.Gui.UIBinding;
-using Avalonia.Platform.Storage;
-using ColorMC.Gui.UI.Windows;
-using Avalonia.Input;
-using Avalonia.Threading;
-using ColorMC.Gui.UI.Flyouts;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -44,7 +40,7 @@ public partial class GameModel : ObservableObject
     public string Name => Obj.Name;
     public Bitmap Pic => GetImage();
 
-    public GameModel(IUserControl con, IMainTop top, GameSettingObj obj) 
+    public GameModel(IUserControl con, IMainTop top, GameSettingObj obj)
     {
         Top = top;
         Con = con;
@@ -53,7 +49,7 @@ public partial class GameModel : ObservableObject
 
     partial void OnIsSelectChanged(bool value)
     {
-        Wrap = value ? TextWrapping.Wrap: TextWrapping.NoWrap;
+        Wrap = value ? TextWrapping.Wrap : TextWrapping.NoWrap;
     }
 
     public void Reload()
@@ -84,7 +80,7 @@ public partial class GameModel : ObservableObject
             files.Add(item!);
             dragData.Set(DataFormats.Files, files);
         }
-        
+
         Dispatcher.UIThread.Post(() =>
         {
             DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);

@@ -1,12 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Metadata;
-using Avalonia.Threading;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
-using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit.Items;
 

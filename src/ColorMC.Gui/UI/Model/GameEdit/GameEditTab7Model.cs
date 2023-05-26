@@ -1,18 +1,12 @@
+using Avalonia.Threading;
+using AvaloniaEdit.Document;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
-using AvaloniaEdit.Document;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Avalonia.Controls;
+using System;
 using System.Timers;
-using Avalonia.Threading;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 

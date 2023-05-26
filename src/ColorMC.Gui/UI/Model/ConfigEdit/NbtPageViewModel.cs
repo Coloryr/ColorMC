@@ -71,7 +71,7 @@ public class NbtPageViewModel : ObservableObject
         }
         list.Add(0);
         list.Reverse();
-        
+
         var list1 = list.ToArray();
         Dispatcher.UIThread.Post(() =>
         {

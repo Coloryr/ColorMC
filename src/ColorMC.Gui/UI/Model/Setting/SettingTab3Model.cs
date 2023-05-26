@@ -4,11 +4,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -153,7 +149,7 @@ public partial class SettingTab3Model : ObservableObject
         var config = ConfigBinding.GetAllConfig();
         if (config.Item1 != null)
         {
-            Source= (int)config.Item1.Http.Source;
+            Source = (int)config.Item1.Http.Source;
 
             Thread = config.Item1.Http.DownloadThread;
 
@@ -185,6 +181,6 @@ public partial class SettingTab3Model : ObservableObject
         if (load)
             return;
 
-        ConfigBinding.SetDownloadProxyEnable(LoginProxy , DownloadProxy, GameProxy);
+        ConfigBinding.SetDownloadProxyEnable(LoginProxy, DownloadProxy, GameProxy);
     }
 }

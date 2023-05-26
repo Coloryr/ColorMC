@@ -1,6 +1,5 @@
 ﻿using ColorMC.Core.Nbt;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.ConfigEdit;
@@ -89,7 +88,7 @@ public partial class NbtNodeModel : ObservableObject
         OnPropertyChanged(nameof(Name));
     }
 
-    public NbtNodeModel? Find(string name) 
+    public NbtNodeModel? Find(string name)
     {
         if (name.ToLower() == Key?.ToLower())
             return this;

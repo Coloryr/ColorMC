@@ -1,18 +1,15 @@
-﻿using ColorMC.Core.Objs.ServerPack;
+﻿using Avalonia.Controls;
+using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Gui.UIBinding;
-using CommunityToolkit.Mvvm.Input;
-using ColorMC.Gui.UI.Flyouts;
-using Avalonia.Controls;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 

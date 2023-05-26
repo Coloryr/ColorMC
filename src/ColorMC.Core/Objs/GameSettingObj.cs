@@ -88,7 +88,7 @@ public record LaunchDataObj
     /// 游戏统计
     /// </summary>
     public record TimeObj
-    { 
+    {
         /// <summary>
         /// 开始统计时间
         /// </summary>

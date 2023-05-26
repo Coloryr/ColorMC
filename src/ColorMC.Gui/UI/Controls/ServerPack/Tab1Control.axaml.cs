@@ -1,9 +1,5 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
 

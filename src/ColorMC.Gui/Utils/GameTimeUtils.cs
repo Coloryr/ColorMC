@@ -96,7 +96,7 @@ public static class GameTimeUtils
             }
         }
 
-        if(Count == null)
+        if (Count == null)
         {
             Count = new()
             {

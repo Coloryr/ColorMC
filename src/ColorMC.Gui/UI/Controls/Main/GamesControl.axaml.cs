@@ -1,17 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media;
-using Avalonia.Platform.Storage;
-using Avalonia.Threading;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Main;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using System;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 

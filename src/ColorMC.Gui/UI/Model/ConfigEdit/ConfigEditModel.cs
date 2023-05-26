@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Controls.Selection;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
@@ -11,7 +10,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -532,7 +530,7 @@ public partial class ConfigEditModel : ObservableObject
 
         DataList.Remove(item);
         int a = 1;
-        foreach(var item1 in DataList)
+        foreach (var item1 in DataList)
         {
             item1.Key = a++;
         }

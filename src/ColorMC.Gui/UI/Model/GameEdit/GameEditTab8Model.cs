@@ -1,12 +1,10 @@
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
+using Avalonia.Controls;
+using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
-using Avalonia.Input;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Objs;
 using CommunityToolkit.Mvvm.Input;
-using Avalonia.Controls;
+using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 

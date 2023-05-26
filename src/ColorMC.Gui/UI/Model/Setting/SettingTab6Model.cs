@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -16,12 +15,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab6Model :ObservableObject
+public partial class SettingTab6Model : ObservableObject
 {
     private readonly IUserControl Con;
 
@@ -155,7 +152,7 @@ public partial class SettingTab6Model :ObservableObject
     }
 
     [RelayCommand]
-    public async void SelectUI() 
+    public async void SelectUI()
     {
         var window = Con.Window;
         var res = await BaseBinding.OpFile(window, FileType.UI);
@@ -166,13 +163,13 @@ public partial class SettingTab6Model :ObservableObject
     }
 
     [RelayCommand]
-    public void Delete() 
+    public void Delete()
     {
         FileUI = "";
     }
 
     [RelayCommand]
-    public void Test() 
+    public void Test()
     {
         var window = Con.Window;
         var file = FileUI;
@@ -181,7 +178,7 @@ public partial class SettingTab6Model :ObservableObject
             window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
             return;
         }
-        
+
         if (!File.Exists(file))
         {
             file = BaseBinding.GetRunDir() + file;
@@ -211,7 +208,7 @@ public partial class SettingTab6Model :ObservableObject
     }
 
     [RelayCommand]
-    public async void Save() 
+    public async void Save()
     {
         var window = Con.Window;
         var str = await BaseBinding.SaveFile(window, FileType.UI, null);
@@ -228,7 +225,7 @@ public partial class SettingTab6Model :ObservableObject
     }
 
     [RelayCommand]
-    public void MusicPlay() 
+    public void MusicPlay()
     {
         BaseBinding.MusicPlay();
     }
@@ -252,7 +249,7 @@ public partial class SettingTab6Model :ObservableObject
     }
 
     [RelayCommand]
-    public async void SelectMusic() 
+    public async void SelectMusic()
     {
         var window = Con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Music);
@@ -330,15 +327,15 @@ public partial class SettingTab6Model :ObservableObject
         if (load)
             return;
 
-        ConfigBinding.SetMotd(IP, Port, EnableMotd, 
+        ConfigBinding.SetMotd(IP, Port, EnableMotd,
             EnableJoin, Color1.ToString(), Color2.ToString());
     }
 
-    private void SetOneGame() 
+    private void SetOneGame()
     {
         if (load)
             return;
 
-        ConfigBinding.SetOneGame(EnableOneGame, Game ==-1 ? null : uuids[Game]);
+        ConfigBinding.SetOneGame(EnableOneGame, Game == -1 ? null : uuids[Game]);
     }
 }

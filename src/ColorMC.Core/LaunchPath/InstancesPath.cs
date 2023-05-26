@@ -746,7 +746,7 @@ public static class InstancesPath
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.GetName("Core.Game.Error9"), e);
-            obj.LaunchData = new() 
+            obj.LaunchData = new()
             {
                 TimeList = new()
             };

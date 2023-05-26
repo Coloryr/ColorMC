@@ -1,10 +1,5 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Gui.UI.Model.ConfigEdit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

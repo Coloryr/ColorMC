@@ -1,11 +1,11 @@
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Threading;
 using AvaloniaEdit.Indentation.CSharp;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Model.ConfigEdit;
 using ColorMC.Gui.UI.Windows;
-using Avalonia.Input;
-using Avalonia.Threading;
 
 namespace ColorMC.Gui.UI.Controls.ConfigEdit;
 
@@ -83,7 +83,7 @@ public partial class ConfigEditControl : UserControl, IUserControl
         }
     }
 
-    public ConfigEditControl( WorldObj world) : this()
+    public ConfigEditControl(WorldObj world) : this()
     {
         model = new(this, world.Game, world);
         DataContext = model;

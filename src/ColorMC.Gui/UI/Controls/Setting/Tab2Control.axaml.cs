@@ -1,18 +1,7 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Media;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Model.Setting;
-using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
-using ColorMC.Gui.Utils.LaunchSetting;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.ComponentModel;
 using Avalonia.Threading;
+using ColorMC.Gui.UI.Model.Setting;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
@@ -33,7 +22,7 @@ public partial class Tab2Control : UserControl
     {
         if (e.PropertyName == "Hide")
         {
-            Dispatcher.UIThread.Post(() => 
+            Dispatcher.UIThread.Post(() =>
             {
                 DropDownButton1.Flyout?.Hide();
             });

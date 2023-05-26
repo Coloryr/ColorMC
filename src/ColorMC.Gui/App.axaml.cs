@@ -154,7 +154,7 @@ public partial class App : Application
             using var asset1 = assets!.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.load.png"));
             LoadIcon = new(asset1!);
         }
-        
+
         PlatformSettings = AvaloniaLocator.Current.GetRequiredService<IPlatformSettings>();
         PlatformSettings.ColorValuesChanged += PlatformSettings_ColorValuesChanged;
 

@@ -1,19 +1,13 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.GameEdit.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using ColorMC.Core.LaunchPath;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -24,8 +18,8 @@ public partial class GameEditTab5Model : GameEditTabModel, IWorldFuntion
     private WorldModel? Last;
 
     public GameEditTab5Model(IUserControl con, GameSettingObj obj) : base(con, obj)
-    { 
-        
+    {
+
     }
 
     [RelayCommand]

@@ -1,26 +1,20 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core;
-using ColorMC.Core.Game;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using ColorMC.Core.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Media.Imaging;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -144,7 +138,7 @@ public partial class MainModel : ObservableObject, IMainTop
     }
 
     [RelayCommand]
-    public void ShowUser() 
+    public void ShowUser()
     {
         App.ShowUser();
     }
@@ -156,7 +150,7 @@ public partial class MainModel : ObservableObject, IMainTop
     }
 
     [RelayCommand]
-    public void EditGame() 
+    public void EditGame()
     {
         if (Game != null)
         {
@@ -165,7 +159,7 @@ public partial class MainModel : ObservableObject, IMainTop
     }
 
     [RelayCommand]
-    public void ShowSetting() 
+    public void ShowSetting()
     {
         App.ShowSetting(SettingType.Normal);
     }
@@ -625,7 +619,7 @@ public partial class MainModel : ObservableObject, IMainTop
         UpdateLaunch();
     }
 
-    private void UpdateLaunch() 
+    private void UpdateLaunch()
     {
         if (Game == null)
         {

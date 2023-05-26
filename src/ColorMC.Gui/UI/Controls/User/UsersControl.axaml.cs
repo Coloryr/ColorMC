@@ -3,19 +3,12 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core;
-using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.User;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
-using System.Web;
 
 namespace ColorMC.Gui.UI.Controls.User;
 
@@ -48,7 +41,7 @@ public partial class UsersControl : UserControl, IUserControl
         AddHandler(DragDrop.DropEvent, Drop);
     }
 
-    private void Model_PropertyChanged(object? sender,  PropertyChangedEventArgs e)
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "DisplayAdd")
         {

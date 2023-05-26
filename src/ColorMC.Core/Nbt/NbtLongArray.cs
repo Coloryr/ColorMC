@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace ColorMC.Core.Nbt;
+﻿namespace ColorMC.Core.Nbt;
 
 public class NbtLongArray : NbtBase
 {
