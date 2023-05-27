@@ -56,7 +56,7 @@ public static class BaseBinding
 
         if (ColorMCGui.RunType == RunType.Program)
         {
-            GameTimeUtils.Init(ColorMCGui.RunDir);
+            GameCountUtils.Init(ColorMCGui.RunDir);
             UpdateChecker.Init();
 
             try
@@ -272,7 +272,7 @@ public static class BaseBinding
     {
         ColorMCCore.Close();
         Media.Close();
-        GameTimeUtils.Close();
+        GameCountUtils.Close();
         ColorSel.Instance.Close();
     }
 
@@ -442,7 +442,7 @@ public static class BaseBinding
 
             res.Exited += (a, b) =>
             {
-                GameTimeUtils.GameClose(obj.UUID);
+                GameCountUtils.GameClose(obj.UUID);
                 RunGames.Remove(obj.UUID);
                 UserBinding.UnLockUser(obj1);
                 App.MainWindow?.GameClose(obj.UUID);
@@ -466,7 +466,7 @@ public static class BaseBinding
             };
             Games.Add(res, obj);
             RunGames.Add(obj.UUID, res);
-            GameTimeUtils.LaunchDone(obj.UUID);
+            GameCountUtils.LaunchDone(obj.UUID);
             if (App.GameEditWindows.TryGetValue(obj.UUID, out var win1))
             {
                 win1.Started();

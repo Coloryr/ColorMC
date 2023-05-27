@@ -113,7 +113,7 @@ public record LaunchDataObj
     /// <summary>
     /// 游戏统计
     /// </summary>
-    public List<TimeObj> TimeList { get; set; }
+    public TimeSpan LastPlay { get; set; }
 }
 
 /// <summary>

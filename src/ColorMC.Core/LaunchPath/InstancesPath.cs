@@ -471,7 +471,7 @@ public static class InstancesPath
         game.LaunchData ??= new()
         {
             AddTime = DateTime.Now,
-            TimeList = new()
+            LastPlay = new()
         };
 
         var dir = game.GetBasePath();
@@ -728,7 +728,7 @@ public static class InstancesPath
         {
             obj.LaunchData = new()
             {
-                TimeList = new()
+                LastPlay = new()
             };
             return;
         }
@@ -738,9 +738,9 @@ public static class InstancesPath
             var res = JsonConvert.DeserializeObject<LaunchDataObj>(
             File.ReadAllText(file))!;
             obj.LaunchData = res;
-            if (obj.LaunchData.TimeList == null)
+            if (obj.LaunchData.LastPlay == null)
             {
-                obj.LaunchData.TimeList = new();
+                obj.LaunchData.LastPlay = new();
             }
         }
         catch (Exception e)
@@ -748,7 +748,7 @@ public static class InstancesPath
             Logs.Error(LanguageHelper.GetName("Core.Game.Error9"), e);
             obj.LaunchData = new()
             {
-                TimeList = new()
+                LastPlay = new()
             };
             return;
         }

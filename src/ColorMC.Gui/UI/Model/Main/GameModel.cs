@@ -64,6 +64,7 @@ public partial class GameModel : ObservableObject
         Tips = string.Format(App.GetLanguage("Tips.Text1"),
             Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
             Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),
+            Obj.LaunchData.LastPlay.Ticks == 0 ? "" : Obj.LaunchData.LastPlay.ToString(@"d\.hh\:mm\:ss"),
             Obj.LaunchData.GameTime.Ticks == 0 ? "" : Obj.LaunchData.GameTime.ToString(@"d\.hh\:mm\:ss"));
     }
 

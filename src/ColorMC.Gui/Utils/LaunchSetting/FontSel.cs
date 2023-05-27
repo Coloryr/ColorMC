@@ -29,6 +29,11 @@ public class FontSel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerArrayName));
     }
 
+    public static string GetFont() 
+    {
+        return Font.Name;
+    }
+
     public void Load()
     {
         if (!GuiConfigUtils.Config.FontDefault

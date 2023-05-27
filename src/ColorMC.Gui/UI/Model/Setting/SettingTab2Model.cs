@@ -170,11 +170,17 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnEnableRGBChanged(bool value)
     {
+        if (load)
+            return;
+
         ConfigBinding.SetRgb(value);
     }
 
     partial void OnWindowModeChanged(bool value)
     {
+        if (load)
+            return;
+
         ConfigBinding.SetWindowMode(value);
     }
 
@@ -213,6 +219,9 @@ public partial class SettingTab2Model : ObservableObject
 
     async partial void OnEnablePicResizeChanged(bool value)
     {
+        if (load)
+            return;
+
         if (value)
         {
             var window = Con.Window;
@@ -232,6 +241,9 @@ public partial class SettingTab2Model : ObservableObject
         {
             EnableFontList = true;
         }
+
+        if (load)
+            return;
 
         ConfigBinding.SetFont(FontItem?.FontName, value);
     }
@@ -307,6 +319,9 @@ public partial class SettingTab2Model : ObservableObject
         {
             Pic = file;
 
+            if (load)
+                return;
+
             SetPic();
         }
     }
@@ -322,6 +337,9 @@ public partial class SettingTab2Model : ObservableObject
     [RelayCommand]
     public async void SetPic()
     {
+        if (load)
+            return;
+
         var window = Con.Window;
         if (string.IsNullOrWhiteSpace(Pic))
         {

@@ -16,6 +16,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Controls.Add;
 using ColorMC.Gui.UI.Controls.ConfigEdit;
+using ColorMC.Gui.UI.Controls.Count;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
@@ -66,6 +67,7 @@ public partial class App : Application
     public static SettingControl? SettingWindow { get; set; }
     public static SkinControl? SkinWindow { get; set; }
     public static AddJavaControl? AddJavaWindow { get; set; }
+    public static CountControl? CountWindow { get; set; }
 
     public readonly static Dictionary<string, GameEditControl> GameEditWindows = new();
     public readonly static Dictionary<string, ConfigEditControl> ConfigEditWindows = new();
@@ -609,6 +611,19 @@ public partial class App : Application
             var con = new ServerPackControl(obj);
             ServerPackWindows.Add(obj.UUID, con);
             AWindow(con);
+        }
+    }
+
+    public static void ShowCount()
+    {
+        if (CountWindow != null)
+        {
+            CountWindow.Window.Activate();
+        }
+        else
+        {
+            CountWindow = new();
+            AWindow(CountWindow);
         }
     }
 

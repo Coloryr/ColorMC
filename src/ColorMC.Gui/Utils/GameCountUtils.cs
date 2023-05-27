@@ -12,17 +12,18 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 
-public static class GameTimeUtils
+public static class GameCountUtils
 {
     private const string Name = "count.dat";
     private static string Dir;
     private static bool IsSave;
     private static bool IsRun;
-    private static CountObj Count;
+    
     private static readonly object Lock = new();
     private readonly static Dictionary<string, DateTime> TimeList = new();
-    private readonly static Dictionary<string, DateTime> StartTimeList = new();
     private readonly static Dictionary<string, TimeSpan> SpanTimeList = new();
+
+    public static CountObj Count { get; private set; }
 
     public static void Init(string local)
     {
@@ -92,7 +93,9 @@ public static class GameTimeUtils
             }
             catch (Exception e)
             {
-                Logs.Error("error", e);
+                string text = App.GetLanguage("Gui.Error27");
+                Logs.Error(text, e);
+                App.ShowError(text, e);
             }
         }
 
@@ -223,15 +226,6 @@ public static class GameTimeUtils
         var now = DateTime.Now;
         lock (TimeList)
         {
-            if (StartTimeList.ContainsKey(uuid))
-            {
-                StartTimeList[uuid] = now;
-            }
-            else
-            {
-                StartTimeList.Add(uuid, now);
-            }
-
             if (TimeList.ContainsKey(uuid))
             {
                 TimeList[uuid] = now;
@@ -326,18 +320,13 @@ public static class GameTimeUtils
 
         lock (SpanTimeList)
         {
-            lock (StartTimeList)
+            if (SpanTimeList.Remove(uuid, out var span))
             {
-                if (StartTimeList.Remove(uuid, out var start) &&
-                    SpanTimeList.Remove(uuid, out var span))
+                var game = InstancesPath.GetGame(uuid);
+                if (game != null)
                 {
-                    var game = InstancesPath.GetGame(uuid);
-                    game?.LaunchData.TimeList.Add(new()
-                    {
-                        Start = start,
-                        Span = span
-                    });
-                    game?.SaveLaunchData();
+                    game.LaunchData.LastPlay = span;
+                    game.SaveLaunchData();
                 }
             }
         }

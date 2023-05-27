@@ -20,48 +20,55 @@
 
     <Style Selector="Button">
         <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
-        <Setter Property="Template">
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="3" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderBrush" Value="{setting:Colors Bottom}" />
+
+        <!--<Setter Property="Template">
             <ControlTemplate>
-                <Border
-                    x:Name="Border"
-                    BorderBrush="{setting:Colors Bottom}"
-                    BorderThickness="1"
-                    CornerRadius="3">
-                    <TextBlock
-                        x:Name="Data"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Foreground="{TemplateBinding Foreground}"
-                        Text="{TemplateBinding Content}" />
-                </Border>
+                <ContentPresenter
+                    x:Name="PART_ContentPresenter"
+                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Content="{TemplateBinding Content}"
+                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    RecognizesAccessKey="True" />
             </ControlTemplate>
-        </Setter>
+        </Setter>-->
     </Style>
 
     <Style Selector="Button:pressed">
         <Setter Property="RenderTransform" Value="scale(0.95)" />
     </Style>
 
-    <Style Selector="Button:pointerover /template/ Border#Border">
+    <Style Selector="Button:pointerover">
         <Setter Property="Background" Value="#FFDDDDDD" />
     </Style>
 
-    <Style Selector="Button:pointerover /template/ TextBlock#Data">
+    <Style Selector="Button:pointerover">
         <Setter Property="Foreground" Value="#FF000000" />
     </Style>
 
-    <Style Selector="Button /template/ Border#Border">
+    <Style Selector="Button">
         <Setter Property="Background" Value="{setting:Colors Main}" />
     </Style>
 
-    <Style Selector="Button:pressed  /template/ Border#Border">
+    <Style Selector="Button:pressed">
         <Setter Property="Background" Value="#FFAAAAAA" />
     </Style>
 
-    <Style Selector="Button:disabled /template/ Border#Border">
+    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="#FF666666" />
     </Style>
-    <Style Selector="Button:disabled /template/ TextBlock#Data">
+    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Foreground" Value="#FFCDCDCD" />
     </Style>
 </Styles>

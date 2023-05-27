@@ -1303,18 +1303,20 @@ public static class GameBinding
     {
         return Task.Run(() =>
         {
-            Dictionary<string, ModDisplayModel> modid = new();
+            List<string> modid = new();
+            List<ModDisplayModel> mod = new();
             foreach (var item in list)
             {
                 if (item.Obj.modid == null || item.Obj.Disable)
                     continue;
-                modid.Add(item.Obj.modid, item);
+                modid.Add(item.Obj.modid);
+                mod.Add(item);
             }
-            modid.Add("forge", null);
+            modid.Add("forge");
 
             ConcurrentBag<(string, List<string>)> lost = new();
 
-            Parallel.ForEach(modid.Values, new ParallelOptions()
+            Parallel.ForEach(mod, new ParallelOptions()
             { 
                  MaxDegreeOfParallelism = 1
             }, item =>
@@ -1331,7 +1333,7 @@ public static class GameBinding
                         list1.AddRange(list2);
                         foreach (var item2 in list2)
                         {
-                            if (modid.ContainsKey(item2))
+                            if (modid.Contains(item2))
                             {
                                 list1.Remove(item2);
                             }
@@ -1346,7 +1348,7 @@ public static class GameBinding
                         list1.AddRange(list2);
                         foreach (var item2 in list2)
                         {
-                            if (modid.ContainsKey(item2))
+                            if (modid.Contains(item2))
                             {
                                 list1.Remove(item2);
                             }

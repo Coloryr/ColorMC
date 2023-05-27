@@ -1,0 +1,43 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Count.CountControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Styles>
+        <Style Selector="Button" />
+    </UserControl.Styles>
+    <ScrollViewer>
+        <StackPanel>
+            <Expander
+                Name="Expander1"
+                HorizontalAlignment="Stretch"
+                Header="{setting:Localize CountWindow.Text1}"
+                IsExpanded="True">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{setting:Localize CountWindow.Text2}" />
+                        <Label Content="{Binding Count}" />
+
+                        <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text5}" />
+                        <Label Content="{Binding CountToday}" />
+                        <Label Content="{setting:Localize CountWindow.Text3}" />
+                        <Label Content="{Binding CountDone}" />
+
+                        <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text4}" />
+                        <Label Content="{Binding CountError}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CalendarDatePicker />
+                    </StackPanel>
+
+                </StackPanel>
+            </Expander>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
