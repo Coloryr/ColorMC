@@ -381,10 +381,8 @@ public partial class AddControlModel : ObservableObject
             window.ProgressInfo.Close();
             if (list == null || list1 == null)
             {
-#if !DEBUG
                 window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error4"));
                 window.Close();
-#endif
                 return;
             }
             GameVersionList.AddRange(list);
@@ -431,10 +429,8 @@ public partial class AddControlModel : ObservableObject
             window.ProgressInfo.Close();
             if (list == null || list1 == null)
             {
-#if !DEBUG
                 window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error4"));
                 window.Close();
-#endif
                 return;
             }
             GameVersionList.AddRange(list);

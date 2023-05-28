@@ -157,9 +157,10 @@
                     TickFrequency="1"
                     Value="{Binding Volume}" />
                 <Label
+                    Width="40"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Content="{Binding Volume, StringFormat='{}%'}" />
+                    Content="{Binding Volume, StringFormat='{}{0}%'}" />
                 <Button
                     Width="80"
                     Height="25"

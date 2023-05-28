@@ -430,7 +430,6 @@ public partial class MainModel : ObservableObject, IMainTop
             UpdateChecker.Check();
         }
 #endif
-        //UpdateChecker.Check();
 
         MotdLoad();
 

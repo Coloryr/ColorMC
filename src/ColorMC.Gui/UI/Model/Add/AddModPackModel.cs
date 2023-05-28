@@ -145,10 +145,8 @@ public partial class AddModPackModel : ObservableObject
                 window.ProgressInfo.Close();
                 if (list == null || list1 == null)
                 {
-#if !DEBUG
-                window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error4"));
-                window.Close();
-#endif
+                    window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error4"));
+                    window.Close();
                     return;
                 }
                 GameVersionList.AddRange(list);
