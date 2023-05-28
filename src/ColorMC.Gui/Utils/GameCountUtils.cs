@@ -48,6 +48,7 @@ public static class GameCountUtils
                         LaunchCount = (nbt.TryGet("LaunchCount") as NbtLong)!.Value,
                         LaunchDoneCount = (nbt.TryGet("LaunchDoneCount") as NbtLong)!.Value,
                         LaunchErrorCount = (nbt.TryGet("LaunchErrorCount") as NbtLong)!.Value,
+                        AllTime = TimeSpan.FromTicks((nbt.TryGet("AllTime") as NbtLong)!.Value),
                         GameRuns = new(),
                         LaunchLogs = new()
                     };
@@ -144,6 +145,7 @@ public static class GameCountUtils
                     }
 
                     game.LaunchData.GameTime += span;
+                    Count.AllTime += span;
                     if (a >= 10)
                     {
                         a = 0;
@@ -169,7 +171,8 @@ public static class GameCountUtils
         {
             { "LaunchCount", new NbtLong() { Value = Count.LaunchCount } },
             { "LaunchDoneCount", new NbtLong() { Value = Count.LaunchDoneCount } },
-            { "LaunchErrorCount", new NbtLong() { Value = Count.LaunchErrorCount } }
+            { "LaunchErrorCount", new NbtLong() { Value = Count.LaunchErrorCount } },
+            { "AllTime", new NbtLong(){ Value = Count.AllTime.Ticks } }
         };
 
         var list = new NbtList() { InNbtType = NbtType.NbtCompound };

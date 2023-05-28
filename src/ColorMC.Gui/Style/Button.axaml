@@ -28,32 +28,15 @@
         <Setter Property="CornerRadius" Value="3" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="BorderBrush" Value="{setting:Colors Bottom}" />
-
-        <!--<Setter Property="Template">
-            <ControlTemplate>
-                <ContentPresenter
-                    x:Name="PART_ContentPresenter"
-                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    Content="{TemplateBinding Content}"
-                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                    CornerRadius="{TemplateBinding CornerRadius}"
-                    RecognizesAccessKey="True" />
-            </ControlTemplate>
-        </Setter>-->
     </Style>
 
     <Style Selector="Button:pressed">
         <Setter Property="RenderTransform" Value="scale(0.95)" />
+        <Setter Property="Background" Value="#FFAAAAAA" />
     </Style>
 
     <Style Selector="Button:pointerover">
         <Setter Property="Background" Value="#FFDDDDDD" />
-    </Style>
-
-    <Style Selector="Button:pointerover">
         <Setter Property="Foreground" Value="#FF000000" />
     </Style>
 
@@ -61,14 +44,8 @@
         <Setter Property="Background" Value="{setting:Colors Main}" />
     </Style>
 
-    <Style Selector="Button:pressed">
-        <Setter Property="Background" Value="#FFAAAAAA" />
-    </Style>
-
     <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="#FF666666" />
-    </Style>
-    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Foreground" Value="#FFCDCDCD" />
     </Style>
 </Styles>

@@ -21,6 +21,8 @@ public record CountObj
     public Dictionary<string, List<GameTime>> GameRuns { get; set; }
     public Dictionary<string, List<LaunchLog>> LaunchLogs { get; set; }
 
+    public TimeSpan AllTime { get; set; }
+
     public long LaunchCount { get; set; }
     public long LaunchDoneCount { get; set; }
     public long LaunchErrorCount { get; set; }

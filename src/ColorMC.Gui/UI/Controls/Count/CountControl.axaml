@@ -32,10 +32,74 @@
                         <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text4}" />
                         <Label Content="{Binding CountError}" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <CalendarDatePicker />
+                    <StackPanel Margin="0,3,0,0" Orientation="Horizontal">
+                        <Label VerticalAlignment="Center" Content="{setting:Localize CountWindow.Text6}" />
+                        <CalendarDatePicker SelectedDate="{Binding Date}" />
+                        <Label
+                            Margin="3,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize CountWindow.Text7}" />
+                        <Label VerticalAlignment="Center" Content="{Binding DateCount}" />
                     </StackPanel>
+                </StackPanel>
+            </Expander>
+            <Expander
+                Name="Expander2"
+                HorizontalAlignment="Stretch"
+                Header="{setting:Localize CountWindow.Text8}"
+                IsExpanded="True">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{setting:Localize CountWindow.Text9}" />
+                        <Label Content="{Binding Time}" />
 
+                        <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text10}" />
+                        <Label Content="{Binding TimeToday}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,3,0,0" Orientation="Horizontal">
+                        <Label VerticalAlignment="Center" Content="{setting:Localize CountWindow.Text6}" />
+                        <CalendarDatePicker SelectedDate="{Binding Date1}" />
+                        <Label
+                            Margin="3,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize CountWindow.Text11}" />
+                        <Label VerticalAlignment="Center" Content="{Binding TimeDate}" />
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+            <Expander
+                Name="Expander3"
+                HorizontalAlignment="Stretch"
+                Header="{setting:Localize CountWindow.Text12}"
+                IsExpanded="True">
+                <StackPanel>
+                    <StackPanel Margin="0,3,0,0" Orientation="Horizontal">
+                        <Label VerticalAlignment="Center" Content="{setting:Localize CountWindow.Text13}" />
+                        <ComboBox
+                            Width="200"
+                            ItemsSource="{Binding Game}"
+                            SelectedIndex="{Binding GameIndex}" />
+
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{setting:Localize CountWindow.Text2}" />
+                        <Label Content="{Binding GameCount}" />
+
+                        <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text5}" />
+                        <Label Content="{Binding GameCountToday}" />
+                        <Label Content="{setting:Localize CountWindow.Text3}" />
+                        <Label Content="{Binding GameCountDone}" />
+
+                        <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text4}" />
+                        <Label Content="{Binding GameCountError}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{setting:Localize CountWindow.Text9}" />
+                        <Label Content="{Binding GameTime}" />
+
+                        <Label Margin="10,0,0,0" Content="{setting:Localize CountWindow.Text10}" />
+                        <Label Content="{Binding GameTime1}" />
+                    </StackPanel>
                 </StackPanel>
             </Expander>
         </StackPanel>
