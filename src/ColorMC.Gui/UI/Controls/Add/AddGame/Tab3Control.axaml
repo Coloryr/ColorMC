@@ -15,7 +15,7 @@
                 Classes="input1"
                 Text="{Binding Name}"
                 Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
-            <DockPanel>
+            <DockPanel Margin="0,5,0,0">
                 <Button
                     Width="100"
                     Height="25"
@@ -31,16 +31,15 @@
 
             <DockPanel Margin="0,5,0,0">
                 <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
-
                 <ComboBox
                     Width="200"
+                    Margin="5,0,0,0"
                     ItemsSource="{Binding GroupList}"
                     SelectedItem="{Binding Group}" />
-
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Command="{Binding AddGroup}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
 

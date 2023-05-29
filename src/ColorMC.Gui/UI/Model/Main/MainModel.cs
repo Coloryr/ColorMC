@@ -525,7 +525,8 @@ public partial class MainModel : ObservableObject, IMainTop
             }
             else
             {
-                foreach (var item in GameGroups)
+                var list1 = new List<GamesModel>(GameGroups);
+                foreach (var item in list1)
                 {
                     if (list.TryGetValue(item.Group, out var value))
                     {

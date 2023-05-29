@@ -11,7 +11,6 @@
     <Grid>
         <StackPanel Margin="5">
             <Label Content="{setting:Localize Text.GameVersion}" />
-
             <StackPanel Orientation="Horizontal">
                 <ComboBox
                     Name="ComboBox1"
@@ -22,17 +21,19 @@
                 <CheckBox
                     Name="CheckBox2"
                     Width="80"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Content="{setting:Localize AddGameWindow.Tab1.Text6}"
                     IsChecked="{Binding SelectRelease}" />
                 <CheckBox
                     Name="CheckBox3"
                     Width="80"
+                    Margin="5,0,0,0"
                     Content="{setting:Localize AddGameWindow.Tab1.Text7}"
                     IsChecked="{Binding SelectSnapshot}" />
                 <CheckBox
                     Name="CheckBox4"
                     Width="80"
+                    Margin="5,0,0,0"
                     Content="{setting:Localize AddGameWindow.Tab1.Text8}"
                     IsChecked="{Binding SelectOther}" />
                 <Button
@@ -43,11 +44,8 @@
                     ToolTip.Tip="{setting:Localize ToolTip.Text33}"
                     ToolTip.VerticalOffset="-30" />
             </StackPanel>
-
             <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
-
             <StackPanel Orientation="Horizontal">
-
                 <ComboBox
                     Name="ComboBox2"
                     Width="200"
@@ -57,19 +55,21 @@
                 <CheckBox
                     Name="CheckBox5"
                     Width="80"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Content="Forge"
                     IsChecked="{Binding SelectForge}"
                     IsEnabled="{Binding EnableForge}" />
                 <CheckBox
                     Name="CheckBox6"
                     Width="80"
+                    Margin="5,0,0,0"
                     Content="Fabric"
                     IsChecked="{Binding SelectFabric}"
                     IsEnabled="{Binding EnableFabric}" />
                 <CheckBox
                     Name="CheckBox7"
                     Width="80"
+                    Margin="5,0,0,0"
                     Content="Quilt"
                     IsChecked="{Binding SelectQuilt}"
                     IsEnabled="{Binding EnableQuilt}" />
@@ -89,11 +89,8 @@
                     ToolTip.Tip="{setting:Localize ToolTip.Text35}"
                     ToolTip.VerticalOffset="-30" />
             </StackPanel>
-
             <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
-
             <StackPanel Orientation="Horizontal">
-
                 <ComboBox
                     Name="ComboBox3"
                     Width="200"
@@ -102,13 +99,12 @@
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Command="{Binding AddGroup}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text37}"
                     ToolTip.VerticalOffset="-30" />
             </StackPanel>
-
             <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                 <Button
                     Width="150"
@@ -149,7 +145,6 @@
                 ToolTip.Tip="{setting:Localize ToolTip.Text47}"
                 ToolTip.VerticalOffset="-30" />
         </StackPanel>
-
         <StackPanel
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
@@ -162,7 +157,6 @@
                 Content="{setting:Localize GameEditWindow.Tab1.Text6}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text50}"
                 ToolTip.VerticalOffset="-30" />
-
             <Button
                 Width="120"
                 Height="25"

@@ -38,17 +38,17 @@
                     SelectedItem="{Binding Version}" />
                 <CheckBox
                     Width="80"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Content="{setting:Localize AddGameWindow.Tab1.Text6}"
                     IsChecked="{Binding SelectRelease}" />
                 <CheckBox
                     Width="80"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Content="{setting:Localize AddGameWindow.Tab1.Text7}"
                     IsChecked="{Binding SelectSnapshot}" />
                 <CheckBox
                     Width="80"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Content="{setting:Localize AddGameWindow.Tab1.Text8}"
                     IsChecked="{Binding SelectOther}" />
 
@@ -56,7 +56,7 @@
                     Name="Button1"
                     Width="100"
                     Height="25"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Content="{setting:Localize GameEditWindow.Tab1.Text2}" />
             </StackPanel>
 
@@ -69,19 +69,19 @@
                     ItemsSource="{Binding LoaderVersionList}" />
                 <CheckBox
                     Width="80"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Content="Forge"
                     IsChecked="{Binding SelectForge}"
                     IsEnabled="{Binding EnableForge}" />
                 <CheckBox
                     Width="80"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Content="Fabric"
                     IsChecked="{Binding SelectFabric}"
                     IsEnabled="{Binding EnableFabric}" />
                 <CheckBox
                     Width="80"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Content="Quilt"
                     IsChecked="{Binding SelectQuilt}"
                     IsEnabled="{Binding EnableQuilt}" />
@@ -89,21 +89,18 @@
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Command="{Binding VersionSelect}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text11}" />
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     Command="{Binding GetLoader}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text12}" />
             </StackPanel>
-
             <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
-
             <StackPanel Orientation="Horizontal">
-
                 <ComboBox
                     Width="200"
                     ItemsSource="{Binding GroupList}"
@@ -112,7 +109,7 @@
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Command="{Binding AddGroup}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text9}" />

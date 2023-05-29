@@ -10,10 +10,7 @@
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
     <DockPanel Margin="3">
-        <StackPanel
-            Margin="0,3,0,0"
-            DockPanel.Dock="Top"
-            Orientation="Horizontal">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Label
                 Margin="5"
                 VerticalAlignment="Center"
@@ -56,8 +53,8 @@
 
             <Button
                 Width="80"
-                Height="30"
-                Margin="10,0,0,0"
+                Height="25"
+                Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Command="{Binding Load}"
                 Content="{setting:Localize Button.Refash}" />

@@ -106,14 +106,14 @@
 
                     <Button
                         Width="80"
-                        Height="30"
+                        Height="25"
                         Margin="5,0,5,0"
                         Command="{Binding GetList}"
                         Content="{setting:Localize AddModPackWindow.Text8}" />
 
                     <Button
                         Width="100"
-                        Height="30"
+                        Height="25"
                         Command="{Binding GoInstall}"
                         Content="{setting:Localize AddModPackWindow.Text9}"
                         IsEnabled="{Binding IsSelect}" />

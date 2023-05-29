@@ -24,33 +24,33 @@
                 Classes="input1"
                 Text="{Binding Name}"
                 Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
-            <TextBox
-                Classes="input1"
-                Text="{Binding Local}"
-                Watermark="{setting:Localize AddGameWindow.Tab2.Text1}" />
-
-            <Button
-                Width="100"
-                Height="25"
-                Margin="0,5,0,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Command="{Binding SelectPack}"
-                Content="{setting:Localize AddGameWindow.Tab2.Text3}" />
+            <DockPanel Margin="0,5,0,0">
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,5,0,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Command="{Binding SelectPack}"
+                    Content="{setting:Localize AddGameWindow.Tab2.Text3}"
+                    DockPanel.Dock="Right" />
+                <TextBox
+                    Classes="input1"
+                    Text="{Binding Local}"
+                    Watermark="{setting:Localize AddGameWindow.Tab2.Text1}" />
+            </DockPanel>
 
             <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
 
             <StackPanel Orientation="Horizontal">
-
                 <ComboBox
                     Width="200"
                     ItemsSource="{Binding GroupList}"
                     SelectedItem="{Binding Group}" />
-
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Command="{Binding AddGroup}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text9}" />

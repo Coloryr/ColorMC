@@ -24,25 +24,22 @@
                     ItemsSource="{Binding JvmList}"
                     SelectedItem="{Binding JvmName}" />
             </StackPanel>
-            <TextBox
-                Margin="0,5,0,0"
-                Classes="input1"
-                Text="{Binding JvmLocal}"
-                Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
-
-            <StackPanel
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Orientation="Horizontal">
+            <DockPanel Margin="0,5,0,0">
                 <Button
                     Width="80"
                     Height="25"
-                    Margin="0,5,0,0"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
                     Command="{Binding Open}"
                     Content="{setting:Localize Button.Select}"
+                    DockPanel.Dock="Right"
                     ToolTip.Tip="{setting:Localize ToolTip.Text7}"
                     ToolTip.VerticalOffset="-30" />
-            </StackPanel>
+                <TextBox
+                    Classes="input1"
+                    Text="{Binding JvmLocal}"
+                    Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
+            </DockPanel>
 
             <!--  执行程序  -->
 
