@@ -129,6 +129,7 @@
                     Width="80"
                     Height="25"
                     Margin="5,0,0,0"
+                    Command="{Binding SelectMusic}"
                     Content="{setting:Localize Button.Select}"
                     DockPanel.Dock="Right"
                     IsEnabled="{Binding EnableMusic}" />

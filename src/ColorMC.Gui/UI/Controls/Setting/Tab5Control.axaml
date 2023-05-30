@@ -16,11 +16,19 @@
                 Classes="input1"
                 Text="{Binding Name}"
                 Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
-            <TextBox
-                Margin="0,5,0,5"
-                Classes="input1"
-                Text="{Binding Local}"
-                Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
+            <DockPanel Margin="0,5,0,5">
+                <Button
+                    Width="80"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Select}"
+                    Content="{setting:Localize Button.Select}"
+                    DockPanel.Dock="Right" />
+                <TextBox
+                    Classes="input1"
+                    Text="{Binding Local}"
+                    Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
+            </DockPanel>
             <DockPanel>
                 <Button
                     Width="80"
@@ -28,22 +36,12 @@
                     Command="{Binding AddJava}"
                     Content="{setting:Localize Button.Add}"
                     DockPanel.Dock="Right" />
-
-                <Button
-                    Width="80"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Command="{Binding Select}"
-                    Content="{setting:Localize Button.Select}"
-                    DockPanel.Dock="Right" />
-
                 <Button
                     Width="80"
                     Height="25"
                     Command="{Binding ShowAddJava}"
                     Content="{setting:Localize SettingWindow.Tab5.Text4}"
                     DockPanel.Dock="Left" />
-
                 <Button
                     Width="120"
                     Height="25"
@@ -51,7 +49,6 @@
                     Command="{Binding OpenPath}"
                     Content="{setting:Localize SettingWindow.Tab5.Text6}"
                     DockPanel.Dock="Left" />
-
                 <Button
                     Width="120"
                     Height="25"
