@@ -35,7 +35,9 @@ public partial class GameModel : ObservableObject
     private string tips;
 
     [ObservableProperty]
-    private TextWrapping wrap;
+    private TextWrapping wrap = TextWrapping.NoWrap;
+    [ObservableProperty]
+    private TextTrimming trim = TextTrimming.CharacterEllipsis;
 
     public string Name => Obj.Name;
     public Bitmap Pic => GetImage();
@@ -50,6 +52,7 @@ public partial class GameModel : ObservableObject
     partial void OnIsSelectChanged(bool value)
     {
         Wrap = value ? TextWrapping.Wrap : TextWrapping.NoWrap;
+        Trim = value ? TextTrimming.None : TextTrimming.CharacterEllipsis;
         IsDrop = false;
     }
 

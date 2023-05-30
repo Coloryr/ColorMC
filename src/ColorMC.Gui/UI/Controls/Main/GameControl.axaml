@@ -29,7 +29,7 @@
                 FontSize="13"
                 Text="{Binding Name}"
                 TextAlignment="Center"
-                TextTrimming="CharacterEllipsis"
+                TextTrimming="{Binding Trim}"
                 TextWrapping="{Binding Wrap}" />
         </StackPanel>
 

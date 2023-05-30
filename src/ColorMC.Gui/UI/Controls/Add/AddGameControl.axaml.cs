@@ -70,8 +70,6 @@ public partial class AddGameControl : UserControl, IUserControl
             {
                 Label1.Content = App.GetLanguage("AddGameWindow.Text1");
             }
-
-
         }
     }
 
