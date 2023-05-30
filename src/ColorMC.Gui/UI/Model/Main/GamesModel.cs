@@ -16,7 +16,7 @@ public partial class GamesModel : ObservableObject
 
     private readonly Dictionary<string, GameModel> Items = new();
 
-    public string Group { get; }
+    public string Header { get; }
     public string Key { get; }
 
     [ObservableProperty]
@@ -34,7 +34,7 @@ public partial class GamesModel : ObservableObject
             Items.Add(item.UUID, model);
             GameList.Add(model);
         }
-        Group = name;
+        Header = name;
         Key = key;
     }
 
@@ -58,7 +58,7 @@ public partial class GamesModel : ObservableObject
         if (Items.ContainsValue(c))
             return;
 
-        GameBinding.MoveGameGroup(c.Obj, Group);
+        GameBinding.MoveGameGroup(c.Obj, Key);
     }
 
     public GameModel? Find(string? uuid)

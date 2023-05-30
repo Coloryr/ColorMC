@@ -46,6 +46,10 @@ public partial class GamesControl : UserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid1.IsVisible = false;
+        if (e.Source is Control)
+        {
+            GamesModel.Drop(e.Data);
+        }
     }
 
     private void GamesControl_LayoutUpdated(object? sender, EventArgs e)

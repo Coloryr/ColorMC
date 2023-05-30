@@ -50,6 +50,7 @@ public partial class GameModel : ObservableObject
     partial void OnIsSelectChanged(bool value)
     {
         Wrap = value ? TextWrapping.Wrap : TextWrapping.NoWrap;
+        IsDrop = false;
     }
 
     public void Reload()
@@ -71,7 +72,8 @@ public partial class GameModel : ObservableObject
     public async void Move(PointerEventArgs e)
     {
         var dragData = new DataObject();
-        dragData.Set(BaseBinding.DrapType, Obj);
+        dragData.Set(BaseBinding.DrapType, this);
+        IsDrop = true;
 
         if (Con.Window is TopLevel top)
         {

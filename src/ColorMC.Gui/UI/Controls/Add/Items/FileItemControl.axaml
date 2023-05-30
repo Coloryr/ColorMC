@@ -66,7 +66,7 @@
                 <Label
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Content="{Binding Data.DownloadCount}" />
+                    Content="{Binding DownloadCount}" />
                 <Label
                     Margin="50,0,0,0"
                     HorizontalAlignment="Left"

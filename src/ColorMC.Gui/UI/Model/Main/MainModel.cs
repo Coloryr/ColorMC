@@ -528,10 +528,10 @@ public partial class MainModel : ObservableObject, IMainTop
                 var list1 = new List<GamesModel>(GameGroups);
                 foreach (var item in list1)
                 {
-                    if (list.TryGetValue(item.Group, out var value))
+                    if (list.TryGetValue(item.Key, out var value))
                     {
                         item.SetItems(value);
-                        list.Remove(item.Group);
+                        list.Remove(item.Key);
                     }
                     else
                     {

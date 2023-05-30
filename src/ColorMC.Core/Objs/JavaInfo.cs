@@ -17,11 +17,21 @@ public record JavaInfo
             string[] vers = Version.Trim().Split('.', '_', '-', '+', 'u', 'U');
             if (vers[0] == "1")
             {
-                return int.Parse(vers[1]);
+                if (int.TryParse(vers[1], out var data))
+                {
+                    return data;
+                }
+
+                return 0;
             }
             else
             {
-                return int.Parse(vers[0]);
+                if(int.TryParse(vers[0], out var data))
+                {
+                    return data;
+                }
+
+                return 0;
             }
         }
     }

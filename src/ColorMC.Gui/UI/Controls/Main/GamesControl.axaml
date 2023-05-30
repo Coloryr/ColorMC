@@ -14,7 +14,7 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Top"
         CornerRadius="0"
-        Header="{Binding Group}"
+        Header="{Binding Header}"
         IsExpanded="{Binding Expander}">
         <Grid>
             <ItemsControl
