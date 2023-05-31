@@ -5,6 +5,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
@@ -65,7 +66,14 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         App.PicUpdate += Update;
 
-        FindGoodPos();
+        if (con is ErrorControl)
+        {
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        }
+        else
+        {
+            FindGoodPos();
+        }
 
         Update();
     }

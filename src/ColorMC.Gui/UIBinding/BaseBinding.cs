@@ -386,30 +386,27 @@ public static class BaseBinding
                 //启动
                 return await obj.StartGame(obj1);
             }
+            catch (LaunchException e1)
+            {
+                temp = App.GetLanguage("Gui.Error6");
+                if (!string.IsNullOrWhiteSpace(e1.Message))
+                {
+                    temp = e1.Message;
+                }
+                if (e1.Ex != null)
+                {
+                    Logs.Error(temp, e1.Ex);
+                    App.ShowError(temp, e1.Ex);
+                }
+            }
             catch (Exception e)
             {
                 UserBinding.UnLockUser(obj1);
                 temp = App.GetLanguage("Gui.Error6");
-                if (e is LaunchException launch)
-                {
-                    if (!string.IsNullOrWhiteSpace(launch.Message))
-                    {
-                        temp = launch.Message;
-                    }
-                    if (launch.Ex != null)
-                    {
-                        Logs.Error(temp, launch.Ex);
-                        App.ShowError(temp, launch.Ex);
-                    }
-                }
-                else
-                {
-                    temp = App.GetLanguage("Gui.Error6");
-                    Logs.Error(temp, e);
-                    App.ShowError(temp, e);
-                }
-                return null;
+                Logs.Error(temp, e);
+                App.ShowError(temp, e);
             }
+            return null;
         });
         Funtcions.RunGC();
         if (res != null)
