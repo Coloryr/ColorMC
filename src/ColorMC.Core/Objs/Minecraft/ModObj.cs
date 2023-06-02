@@ -4,8 +4,8 @@ namespace ColorMC.Core.Objs.Minecraft;
 
 public record ModObj
 {
-    public string? modid { get; set; }
-    public string? name { get; set; }
+    public string modid { get; set; }
+    public string name { get; set; }
     public string? description { get; set; }
     public string mcversion { get; set; }
     public string? version { get; set; }

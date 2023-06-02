@@ -37,14 +37,14 @@ public static class Mods
         {
             if (item.Extension is not (".zip" or ".jar" or ".disable"))
                 return;
+
             string sha1 = "";
             bool add = false;
             try
             {
-                {
-                    using var stream = File.OpenRead(item.FullName);
-                    sha1 = Funtcions.GenSha1(stream);
-                }
+                using var filestream = File.OpenRead(item.FullName);
+                sha1 = Funtcions.GenSha1(filestream);
+                filestream.Seek(0, SeekOrigin.Begin);
 
                 //Mod 资源包
                 if (item.Extension is ".zip")
@@ -63,7 +63,7 @@ public static class Mods
                     return;
                 }
 
-                using ZipFile zFile = new(item.FullName);
+                using ZipFile zFile = new(filestream);
 
                 //forge 1.13以下
                 var item1 = zFile.GetEntry("mcmod.info");
@@ -80,6 +80,8 @@ public static class Mods
                         if (obj2?.Count > 0)
                         {
                             var obj3 = obj2.First().ToObject<ModObj>()!;
+                            obj3.name ??= "";
+                            obj3.modid ??= "";
                             obj3.V2 = false;
                             obj3.Local = Path.GetFullPath(item.FullName);
                             obj3.Disable = item.Extension is ".disable";
@@ -97,6 +99,8 @@ public static class Mods
                         if (obj1?.Count > 0)
                         {
                             var obj3 = obj1.First().ToObject<ModObj>()!;
+                            obj3.name ??= "";
+                            obj3.modid ??= "";
                             obj3.V2 = false;
                             obj3.Local = Path.GetFullPath(item.FullName);
                             obj3.Disable = item.Extension is ".disable";
@@ -137,6 +141,7 @@ public static class Mods
                         Sha1 = sha1
                     };
 
+                    obj3.modid ??= "";
                     obj3.name ??= obj3.modid;
 
                     list.Add(obj3);
@@ -179,6 +184,8 @@ public static class Mods
                     obj3.authorList = (item2 as string)?.ToStringList();
                     model2.TryGetValue("displayURL", out item2);
                     obj3.url = item2 as string;
+
+                    obj3.name ??= "";
 
                     if (model["dependencies"] is TomlTable model3)
                     {
@@ -228,6 +235,9 @@ public static class Mods
                         Game = obj,
                         Sha1 = sha1
                     };
+
+                    obj3.name ??= "";
+
                     if (obj1.ContainsKey("depends"))
                     {
                         obj3.requiredMods = new();
@@ -269,6 +279,9 @@ public static class Mods
                         Sha1 = sha1,
                         Game = obj
                     };
+
+                    obj3.name ??= "";
+
                     if (obj2.ContainsKey("depends"))
                     {
                         obj3.requiredMods = new();

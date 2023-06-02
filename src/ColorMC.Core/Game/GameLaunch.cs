@@ -643,11 +643,9 @@ public static class Launch
             if (obj.StartServer.Port > 0)
             {
                 gameArg.Add($"--port");
-                gameArg.Add(obj.StartServer.Port.ToString());
+                gameArg.Add(obj.StartServer.Port.ToString()!);
             }
         }
-
-        ProxyHostObj host;
 
         if (obj.ProxyHost != null)
         {
@@ -659,7 +657,7 @@ public static class Launch
             if (obj.ProxyHost.Port != null && obj.ProxyHost.Port != 0)
             {
                 gameArg.Add($"--proxyPort");
-                gameArg.Add(obj.ProxyHost.Port.ToString());
+                gameArg.Add(obj.ProxyHost.Port.ToString()!);
             }
             if (!string.IsNullOrWhiteSpace(obj.ProxyHost.User))
             {

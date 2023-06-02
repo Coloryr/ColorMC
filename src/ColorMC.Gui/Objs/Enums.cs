@@ -9,7 +9,7 @@ public enum SettingType
 }
 
 /// <summary>
-/// 游戏编辑类型
+/// 编辑类型
 /// </summary>
 public enum GameEditWindowType
 {

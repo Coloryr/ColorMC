@@ -6,7 +6,7 @@ namespace ColorMC.Core.Utils;
 
 public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
 {
-    public static CurseDataComparer Instance = new();
+    public readonly static CurseDataComparer Instance = new();
     public bool Equals(CurseForgeModObj.Data? x, CurseForgeModObj.Data? y)
     {
         return x?.id == y?.id;
@@ -20,26 +20,46 @@ public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
 
 public class ModComparer : IComparer<ModObj>
 {
-    public static ModComparer Instance = new();
+    public readonly static ModComparer Instance = new();
 
     public int Compare(ModObj? x, ModObj? y)
     {
-        if (x == null && y == null)
+        if (x == null || y == null)
+            throw new Exception("ModObj is null");
+
+        var b3 = string.IsNullOrWhiteSpace(x.name);
+        var b4 = string.IsNullOrWhiteSpace(y.name);
+        if (x == y)
         {
             return 0;
         }
-        else if (x == null || x.name == null)
+        else if (x.ReadFail && y.ReadFail)
+        {
+            return x.Local.CompareTo(y.Local);
+        }
+        else if (x.ReadFail)
         {
             return -1;
         }
-        else if (y == null || y.name == null)
+        else if (y.ReadFail)
         {
             return 1;
         }
-        if (x.name != y.name)
+        else if (b3)
+        {
+            return -1;
+        }
+        else if (b4)
+        {
+            return 1;
+        }
+        else if (b3 && b4)
+        {
+            return x.Local.CompareTo(y.Local);
+        }
+        else
         {
             return x.name.CompareTo(y.name);
         }
-        else return 0;
     }
 }

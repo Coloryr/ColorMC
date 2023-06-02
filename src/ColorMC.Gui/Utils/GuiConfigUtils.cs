@@ -137,7 +137,6 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            Version = ColorMCCore.Version,
             ColorMain = ColorSel.MainColorStr,
             ColorLight = MakeColorLightConfig(),
             ColorDark = MakeColorDarkConfig(),
