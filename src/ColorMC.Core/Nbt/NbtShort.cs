@@ -4,7 +4,7 @@ public class NbtShort : NbtBase
 {
     public const byte Type = 2;
 
-    public short Value { get; set; }
+    public new short Value { get; set; }
 
     public NbtShort()
     {

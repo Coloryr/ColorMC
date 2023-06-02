@@ -1149,7 +1149,10 @@ public static class BaseBinding
     {
         bool play = false;
         Media.Volume = 0;
-        string file = GuiConfigUtils.Config.ServerCustom.Music;
+        var file = GuiConfigUtils.Config.ServerCustom.Music;
+        if (file == null)
+            return;
+
         if (file.StartsWith("http://") || file.StartsWith("https://"))
         {
             await Media.PlayUrl(file);

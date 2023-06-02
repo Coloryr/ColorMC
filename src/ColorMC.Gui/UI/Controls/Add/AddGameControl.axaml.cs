@@ -134,12 +134,12 @@ public partial class AddGameControl : UserControl, IUserControl
         if (!switch1)
         {
             content2.Content = to;
-            App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, cancel.Token);
         }
         else
         {
             content1.Content = to;
-            App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, cancel.Token);
         }
 
         switch1 = !switch1;

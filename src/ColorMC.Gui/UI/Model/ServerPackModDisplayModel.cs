@@ -11,9 +11,9 @@ public partial class ServerPackModDisplayModel : ObservableObject
     [ObservableProperty]
     private string url;
     [ObservableProperty]
-    private string pID;
+    private string? pID;
     [ObservableProperty]
-    private string fID;
+    private string? fID;
     [ObservableProperty]
     public string sha1;
     [ObservableProperty]

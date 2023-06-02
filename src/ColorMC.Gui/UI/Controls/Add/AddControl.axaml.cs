@@ -20,7 +20,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public AddControl() : this(null)
+    public AddControl() : this(new() { Empty = true })
     {
 
     }

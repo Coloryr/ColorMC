@@ -6,7 +6,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
 {
     public const byte Type = 9;
 
-    private readonly List<NbtBase> Value = new();
+    private new readonly List<NbtBase> Value = new();
     public NbtType InNbtType { get; set; }
 
     public NbtBase this[int index]

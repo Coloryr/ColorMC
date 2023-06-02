@@ -197,4 +197,6 @@ public record GameSettingObj
     /// </summary>
     [JsonIgnore]
     public LaunchDataObj LaunchData { get; set; }
+    [JsonIgnore]
+    public bool Empty;
 }

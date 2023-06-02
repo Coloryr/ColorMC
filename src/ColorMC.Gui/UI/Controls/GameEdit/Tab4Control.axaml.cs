@@ -85,60 +85,72 @@ public partial class Tab4Control : UserControl
     private void Button_B1_PointerLeave(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(Button_B1, null, CancellationToken.None);
+        Button_B.IsVisible = true;
     }
 
     private void Button_B_PointerEnter(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(null, Button_B1, CancellationToken.None);
+        Button_B.IsVisible = false;
     }
 
     private void Button_C1_PointerLeave(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(Button_C1, null, CancellationToken.None);
+        Button_C.IsVisible = true;
     }
 
     private void Button_C_PointerEnter(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(null, Button_C1, CancellationToken.None);
+        Button_C.IsVisible = false;
     }
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(Button_I1, null, CancellationToken.None);
+        Button_I.IsVisible = true;
     }
 
     private void Button_I_PointerEnter(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(null, Button_I1, CancellationToken.None);
+        Button_I.IsVisible = false;
     }
 
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(Button_A1, null, CancellationToken.None);
+        Button_A.IsVisible = true;
     }
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
+        Button_A.IsVisible = false;
     }
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(Button_R1, null, CancellationToken.None);
+        Button_R.IsVisible = true;
     }
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
+        Button_R.IsVisible = false;
     }
 
     private void Button_D1_PointerLeave(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(Button_D1, null, CancellationToken.None);
+        Button_D.IsVisible = true;
     }
 
     private void Button_D_PointerEnter(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(null, Button_D1, CancellationToken.None);
+        Button_D.IsVisible = true;
     }
 
     private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)

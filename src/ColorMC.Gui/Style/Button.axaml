@@ -4,7 +4,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
     <Design.PreviewWith>
         <Border Padding="20">
-            <StackPanel>
+            <StackPanel Background="Black">
                 <Button
                     Width="80"
                     Height="40"
@@ -30,12 +30,15 @@
 
     <Style Selector="Button:pressed">
         <Setter Property="RenderTransform" Value="scale(0.95)" />
-        <Setter Property="Background" Value="#FFAAAAAA" />
     </Style>
 
-    <Style Selector="Button:pointerover">
+    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="#FFDDDDDD" />
-        <Setter Property="Foreground" Value="#FF000000" />
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
+    </Style>
+
+    <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#FFAAAAAA" />
     </Style>
 
     <Style Selector="Button">

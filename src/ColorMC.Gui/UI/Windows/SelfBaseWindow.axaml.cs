@@ -107,11 +107,11 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         var basewindow = App.LastWindow;
 
-        if (basewindow == null || basewindow.PlatformImpl == null)
+        if (basewindow == null || basewindow.WindowState == WindowState.Minimized)
             return;
 
         var pos = basewindow.Position;
-        var sec = basewindow.Screens.ScreenFromWindow(basewindow.PlatformImpl);
+        var sec = basewindow.Screens.ScreenFromWindow(basewindow);
         if (sec == null)
             return;
         var area = sec.WorkingArea;

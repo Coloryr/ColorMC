@@ -27,7 +27,7 @@ public static class Servers
             if (NbtBase.Read(file) is not NbtCompound tag)
                 return list;
 
-            var nbtList = tag["servers"] as NbtList;
+            var nbtList = (tag["servers"] as NbtList)!;
             foreach (var item in nbtList)
             {
                 if (item is NbtCompound tag1)
@@ -104,8 +104,8 @@ public static class Servers
     {
         var info = new ServerInfoObj
         {
-            Name = (tag["name"] as NbtString).Value,
-            IP = (tag["ip"] as NbtString).Value,
+            Name = (tag["name"] as NbtString)!.Value,
+            IP = (tag["ip"] as NbtString)!.Value,
             Icon = (tag.TryGet("icon") as NbtString)?.Value,
             AcceptTextures = tag.TryGet("acceptTextures") is NbtByte { Value: 1 }
         };

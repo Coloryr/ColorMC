@@ -140,11 +140,13 @@ public partial class UsersControl : UserControl, IUserControl
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(Button_A1, null, CancellationToken.None);
+        Button_A.IsVisible = true;
     }
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
+        Button_A.IsVisible = false;
     }
 
     public void AddUrl(string url)

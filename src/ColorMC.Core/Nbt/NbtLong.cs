@@ -4,7 +4,7 @@ public class NbtLong : NbtBase
 {
     public const int Type = 4;
 
-    public long Value { get; set; }
+    public new long Value { get; set; }
 
     public NbtLong()
     {

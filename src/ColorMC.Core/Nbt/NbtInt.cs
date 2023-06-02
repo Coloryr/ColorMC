@@ -4,7 +4,7 @@ public class NbtInt : NbtBase
 {
     public const byte Type = 3;
 
-    public int Value { get; set; }
+    public new int Value { get; set; }
 
     public NbtInt()
     {

@@ -50,11 +50,11 @@ public static class Worlds
                     }
 
                     var tag1 = (tag["Data"] as NbtCompound)!;
-                    obj.LastPlayed = (tag1["LastPlayed"] as NbtLong).Value;
-                    obj.GameType = (tag1["GameType"] as NbtInt).Value;
-                    obj.Hardcore = (tag1["hardcore"] as NbtByte).Value;
-                    obj.Difficulty = (tag1["Difficulty"] as NbtByte).Value;
-                    obj.LevelName = (tag1["LevelName"] as NbtString).Value;
+                    obj.LastPlayed = (tag1["LastPlayed"] as NbtLong)!.Value;
+                    obj.GameType = (tag1["GameType"] as NbtInt)!.Value;
+                    obj.Hardcore = (tag1["hardcore"] as NbtByte)!.Value;
+                    obj.Difficulty = (tag1["Difficulty"] as NbtByte)!.Value;
+                    obj.LevelName = (tag1["LevelName"] as NbtString)!.Value;
 
                     obj.Local = Path.GetFullPath(item.FullName);
                     obj.Game = game;

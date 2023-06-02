@@ -467,7 +467,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
-    public static void SetServerPack(bool v1, string v2)
+    public static void SetServerPack(bool v1, string? v2)
     {
         GuiConfigUtils.Config.ServerCustom ??= new();
         GuiConfigUtils.Config.ServerCustom.ServerPack = v1;
@@ -475,7 +475,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
-    public static void SetMusic(bool v1, bool v2, string v3, int v4)
+    public static void SetMusic(bool v1, bool v2, string? v3, int v4)
     {
         GuiConfigUtils.Config.ServerCustom ??= new();
         GuiConfigUtils.Config.ServerCustom.PlayMusic = v1;

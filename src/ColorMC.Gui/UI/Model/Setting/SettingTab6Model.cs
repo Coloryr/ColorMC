@@ -297,8 +297,14 @@ public partial class SettingTab6Model : ObservableObject
 
             Color1 = ColorSel.MotdColor.ToColor();
             Color2 = ColorSel.MotdBackColor.ToColor();
-
-            Game = uuids.IndexOf(config.GameName);
+            if (config.GameName == null)
+            {
+                Game = -1;
+            }
+            else
+            {
+                Game = uuids.IndexOf(config.GameName);
+            }
 
             Volume = config.Volume;
         }

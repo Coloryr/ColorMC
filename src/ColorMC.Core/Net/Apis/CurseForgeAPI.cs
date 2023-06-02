@@ -403,7 +403,7 @@ public static class CurseForgeAPI
     /// <returns></returns>
     public static async Task<ConcurrentBag<((string Name, string ModId, bool Opt) Info,
         List<CurseForgeObjList.Data.LatestFiles> List)>>
-       GetModDependencies(CurseForgeObjList.Data.LatestFiles data, string mc, Loaders loader, bool dep, ConcurrentBag<long> ids = null)
+       GetModDependencies(CurseForgeObjList.Data.LatestFiles data, string mc, Loaders loader, bool dep, ConcurrentBag<long>? ids = null)
     {
         ids ??= new();
         var list = new ConcurrentBag<((string Name, string ModId, bool Opt) Info,

@@ -4,19 +4,19 @@ namespace ColorMC.Gui.Player.Decoder.Mp3;
 
 public class BitstreamException : JavaLayerException
 {
-    private int errorcode = BitstreamErrors.UNKNOWN_ERROR;
+    private int Errorcode = BitstreamErrors.UNKNOWN_ERROR;
 
     public BitstreamException(string msg, Exception? t) : base(msg, t)
     {
 
     }
 
-    public BitstreamException(int errorcode, Exception? t) : this(getErrorString(errorcode), t)
+    public BitstreamException(int errorcode, Exception? t) : this(GetErrorString(errorcode), t)
     {
-        this.errorcode = errorcode;
+        this.Errorcode = errorcode;
     }
 
-    static public string getErrorString(int errorcode)
+    static public string GetErrorString(int errorcode)
     {
         // REVIEW: use resource bundle to map error codes
         // to locale-sensitive strings.
@@ -24,8 +24,8 @@ public class BitstreamException : JavaLayerException
         return $"Bitstream errorcode {errorcode:X}";
     }
 
-    public int getErrorCode()
+    public int GetErrorCode()
     {
-        return errorcode;
+        return Errorcode;
     }
 }

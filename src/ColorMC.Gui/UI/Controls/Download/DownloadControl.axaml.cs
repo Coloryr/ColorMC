@@ -33,21 +33,25 @@ public partial class DownloadControl : UserControl, IUserControl
     private void Button_S1_PointerLeave(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(Button_S1, null, CancellationToken.None);
+        Button_S.IsVisible = true;
     }
 
     private void Button_S_PointerEnter(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(null, Button_S1, CancellationToken.None);
+        Button_S.IsVisible = false;
     }
 
     private void Button_P1_PointerLeave(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(Button_P1, null, CancellationToken.None);
+        Button_P.IsVisible = true;
     }
 
     private void Button_P_PointerEnter(object? sender, PointerEventArgs e)
     {
         App.CrossFade100.Start(null, Button_P1, CancellationToken.None);
+        Button_P.IsVisible = false;
     }
 
     public void Opened()

@@ -337,7 +337,7 @@ public class HuffcodeTabel
             {0, 9}, {2, 1}, {0, 10}, {0, 11}, {4, 1}, {2, 1}, {0, 12}, {0, 13}, {2, 1}, {0, 14},
             {0, 15},
     };
-    public static HuffcodeTabel[] ht = null;     /* Simulate extern struct                 */
+    public static HuffcodeTabel[] ht;     /* Simulate extern struct                 */
     private readonly char tablename0;      /* string, containing table_description   */
     private readonly char tablename1;      /* string, containing table_description   */
     private readonly int xlen;                    /* max. x-index+                          */

@@ -136,7 +136,7 @@ public sealed class Header
     /**
      * Read a 32-bit header from the bitstream.
      */
-    public void ReadHeader(Bitstream stream, Crc16[] crcp)
+    public void ReadHeader(Bitstream stream, Crc16?[] crcp)
     {
         int headerstring;
         int channel_bitrate;
@@ -221,8 +221,7 @@ public sealed class Header
         {
             // frame contains a crc checksum
             checksum = (short)stream.GetBits(16);
-            if (crc == null)
-                crc = new Crc16();
+            crc ??= new Crc16();
             crc.AddBits(headerstring, 16);
             crcp[0] = crc;
         }
@@ -240,8 +239,7 @@ public sealed class Header
     {
         // Trying Xing header.
         string xing = "Xing";
-        byte[]
-    tmp = new byte[4];
+        byte[] tmp = new byte[4];
         int offset;
         // Compute "Xing" offset depending on MPEG version and channels.
         if (h_version == MPEG1)

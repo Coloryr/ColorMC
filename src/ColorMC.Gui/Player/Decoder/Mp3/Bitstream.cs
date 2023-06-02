@@ -163,7 +163,7 @@ public sealed class Bitstream : BitstreamErrors, IDisposable
         }
         catch (BitstreamException ex)
         {
-            if ((ex.getErrorCode() == INVALIDFRAME))
+            if ((ex.GetErrorCode() == INVALIDFRAME))
             {
                 // Try to skip this frame.
                 //System.out.println("INVALIDFRAME");
@@ -174,17 +174,17 @@ public sealed class Bitstream : BitstreamErrors, IDisposable
                 }
                 catch (BitstreamException e)
                 {
-                    if ((e.getErrorCode() != STREAM_EOF))
+                    if ((e.GetErrorCode() != STREAM_EOF))
                     {
                         // wrap original exception so stack trace is maintained.
-                        throw new BitstreamException(e.getErrorCode(), e);
+                        throw new BitstreamException(e.GetErrorCode(), e);
                     }
                 }
             }
-            else if ((ex.getErrorCode() != STREAM_EOF))
+            else if ((ex.GetErrorCode() != STREAM_EOF))
             {
                 // wrap original exception so stack trace is maintained.
-                throw new BitstreamException(ex.getErrorCode(), ex);
+                throw new BitstreamException(ex.GetErrorCode(), ex);
             }
         }
         return result;

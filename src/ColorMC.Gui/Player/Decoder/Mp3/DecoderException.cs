@@ -4,12 +4,12 @@ namespace ColorMC.Gui.Player.Decoder.Mp3;
 
 public class DecoderException : JavaLayerException
 {
-    public DecoderException(string msg, Exception t) : base(msg, t)
+    public DecoderException(string msg, Exception? t) : base(msg, t)
     {
 
     }
 
-    public DecoderException(int errorcode, Exception t) : this(getErrorString(errorcode), t)
+    public DecoderException(int errorcode, Exception? t) : this(getErrorString(errorcode), t)
     {
 
     }

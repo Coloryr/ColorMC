@@ -479,15 +479,15 @@ public partial class ConfigEditModel : ObservableObject
         {
             if (DataType == "Byte")
             {
-                DataItem.Value = byte.Parse(DataItem.Value.ToString());
+                DataItem.Value = byte.Parse(DataItem.Value.ToString()!);
             }
             else if (DataType == "Int")
             {
-                DataItem.Value = int.Parse(DataItem.Value.ToString());
+                DataItem.Value = int.Parse(DataItem.Value.ToString()!);
             }
             else if (DataType == "Long")
             {
-                DataItem.Value = long.Parse(DataItem.Value.ToString());
+                DataItem.Value = long.Parse(DataItem.Value.ToString()!);
             }
         }
         catch

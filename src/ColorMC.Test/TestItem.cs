@@ -370,7 +370,7 @@ public static class TestItem
     public static void Item16()
     {
         var list = ForgeAPI.GetVersionList("1.12.2").Result;
-        foreach (var item in list)
+        foreach (var item in list!)
         {
             Console.Write(item + " ");
         }
@@ -378,7 +378,7 @@ public static class TestItem
         Console.WriteLine();
 
         var list1 = ForgeAPI.GetSupportVersion().Result;
-        foreach (var item in list1)
+        foreach (var item in list1!)
         {
             Console.Write(item + " ");
         }
@@ -409,15 +409,15 @@ public static class TestItem
     {
         var game = InstancesPath.GetGame("test");
 
-        var list = game.GetSchematics();
+        var list = game!.GetSchematics();
     }
 
     public static void Item21()
     {
         var list = ModrinthAPI.GetModPackList().Result;
-        var item = list.hits.First();
+        var item = list!.hits.First();
         var list1 = ModrinthAPI.GetFileVersions(item.project_id, "", Loaders.Fabric).Result;
-        var item1 = list1.First();
+        var item1 = list1!.First();
 
         InstancesPath.InstallFromModrinth(item1, null, null).Wait();
     }

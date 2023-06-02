@@ -98,7 +98,7 @@ public static class ServerPack
                     Name = item.File,
                     Local = Path.GetFullPath(path + item.File),
                     SHA1 = item.Sha1,
-                    Url = UrlHelper.MakeDownloadUrl(item.Source, item.Projcet, item.FileId, item.File)
+                    Url = UrlHelper.MakeDownloadUrl(item.Source, item.Projcet!, item.FileId!, item.File)
                 });
             }
         }

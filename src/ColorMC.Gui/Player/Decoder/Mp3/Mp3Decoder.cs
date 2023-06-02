@@ -123,19 +123,16 @@ public class Mp3Decoder : DecoderErrors, IDisposable
 
     protected IFrameDecoder RetrieveDecoder(Header header, Bitstream stream, int layer)
     {
-        IFrameDecoder decoder = null;
+        IFrameDecoder? decoder = null;
 
         // REVIEW: allow channel output selection type
         // (LEFT, RIGHT, BOTH, DOWNMIX)
         switch (layer)
         {
             case 3:
-                if (l3decoder == null)
-                {
-                    l3decoder = new LayerIIIDecoder(stream,
+                l3decoder ??= new LayerIIIDecoder(stream,
                             header, filter1, filter2,
                             output, OutputChannels.BOTH_CHANNELS);
-                }
 
                 decoder = l3decoder;
                 break;

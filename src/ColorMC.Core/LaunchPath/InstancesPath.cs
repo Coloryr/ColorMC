@@ -738,10 +738,6 @@ public static class InstancesPath
             var res = JsonConvert.DeserializeObject<LaunchDataObj>(
             File.ReadAllText(file))!;
             obj.LaunchData = res;
-            if (obj.LaunchData.LastPlay == null)
-            {
-                obj.LaunchData.LastPlay = new();
-            }
         }
         catch (Exception e)
         {

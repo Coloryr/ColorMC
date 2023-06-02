@@ -47,43 +47,51 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public GameEditControl() : this(new() { Empty = true })
+    {
+
+    }
+
     public GameEditControl(GameSettingObj obj)
     {
-        model1 = new(this, obj);
-        tab1.DataContext = model1;
-
-        model2 = new(this, obj);
-        tab2.DataContext = model2;
-
-        model4 = new(this, obj);
-        tab4.DataContext = model4;
-
-        model5 = new(this, obj);
-        tab5.DataContext = model5;
-
-        model6 = new(this, obj);
-        tab6.DataContext = model6;
-
-        model7 = new(this, obj);
-        tab7.DataContext = model7;
-        tab7.Bind();
-
-        model8 = new(this, obj);
-        tab8.DataContext = model8;
-
-        model9 = new(this, obj);
-        tab9.DataContext = model9;
-
-        model10 = new(this, obj);
-        tab10.DataContext = model10;
-
-        model11 = new(this, obj);
-        tab11.DataContext = model11;
-
-        model12 = new(this, obj);
-        tab12.DataContext = model12;
-
         InitializeComponent();
+
+        if (!obj.Empty)
+        {
+            model1 = new(this, obj);
+            tab1.DataContext = model1;
+
+            model2 = new(this, obj);
+            tab2.DataContext = model2;
+
+            model4 = new(this, obj);
+            tab4.DataContext = model4;
+
+            model5 = new(this, obj);
+            tab5.DataContext = model5;
+
+            model6 = new(this, obj);
+            tab6.DataContext = model6;
+
+            model7 = new(this, obj);
+            tab7.DataContext = model7;
+            tab7.Bind();
+
+            model8 = new(this, obj);
+            tab8.DataContext = model8;
+
+            model9 = new(this, obj);
+            tab9.DataContext = model9;
+
+            model10 = new(this, obj);
+            tab10.DataContext = model10;
+
+            model11 = new(this, obj);
+            tab11.DataContext = model11;
+
+            model12 = new(this, obj);
+            tab12.DataContext = model12;
+        }
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
@@ -93,11 +101,6 @@ public partial class GameEditControl : UserControl, IUserControl
         Tab1.Children.Add(content2);
 
         content1.Content = tab1;
-    }
-
-    public GameEditControl() : this(null)
-    {
-
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -221,12 +224,12 @@ public partial class GameEditControl : UserControl, IUserControl
         if (!switch1)
         {
             content2.Content = to;
-            App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, cancel.Token);
         }
         else
         {
             content1.Content = to;
-            App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, cancel.Token);
         }
 
         switch1 = !switch1;

@@ -108,7 +108,8 @@ public partial class SkinControl : UserControl, IUserControl
                 type = button.CommandParameter switch
                 {
                     "Up" => MoveType.Up,
-                    "Down" => MoveType.Down
+                    "Down" => MoveType.Down,
+                    _ => throw new Exception("MoveType Error")
                 };
                 timer2.Start();
             }
@@ -136,7 +137,8 @@ public partial class SkinControl : UserControl, IUserControl
                     "Right" => MoveType.Right,
                     "LeftDown" => MoveType.LeftDown,
                     "Down" => MoveType.Down,
-                    "RightDown" => MoveType.RightDown
+                    "RightDown" => MoveType.RightDown,
+                    _ => throw new Exception("MoveType Error")
                 };
                 timer1.Start();
             }
@@ -195,7 +197,8 @@ public partial class SkinControl : UserControl, IUserControl
                     "Right" => MoveType.Right,
                     "LeftDown" => MoveType.LeftDown,
                     "Down" => MoveType.Down,
-                    "RightDown" => MoveType.RightDown
+                    "RightDown" => MoveType.RightDown,
+                    _ => throw new Exception("MoveType Error")
                 };
                 timer.Start();
             }

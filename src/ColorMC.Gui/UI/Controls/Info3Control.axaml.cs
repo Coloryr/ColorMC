@@ -29,7 +29,7 @@ public partial class Info3Control : UserControl
     {
         if (e.Key == Key.Enter)
         {
-            Button_Confirm_Click(null, null);
+            Confirm();
         }
     }
 
@@ -50,6 +50,11 @@ public partial class Info3Control : UserControl
     }
 
     private void Button_Confirm_Click(object? sender, RoutedEventArgs e)
+    {
+        Confirm();
+    }
+
+    public void Confirm()
     {
         Cancel = false;
         semaphore.Release();

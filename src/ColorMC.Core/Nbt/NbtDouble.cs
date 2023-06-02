@@ -4,7 +4,7 @@ public class NbtDouble : NbtBase
 {
     public const byte Type = 6;
 
-    public double Value { get; set; }
+    public new double Value { get; set; }
 
     public NbtDouble()
     {

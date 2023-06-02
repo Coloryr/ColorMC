@@ -67,9 +67,9 @@ public static class Schematic
             return new()
             {
                 Name = Path.GetFileName(file),
-                Height = (tag["Height"] as NbtShort).Value,
-                Length = (tag["Length"] as NbtShort).Value,
-                Width = (tag["Width"] as NbtShort).Value,
+                Height = (tag["Height"] as NbtShort)!.Value,
+                Length = (tag["Length"] as NbtShort)!.Value,
+                Width = (tag["Width"] as NbtShort)!.Value,
                 Broken = false,
                 Local = file
             };
@@ -107,9 +107,9 @@ public static class Schematic
 
             var item = new SchematicObj()
             {
-                Name = (com1["Name"] as NbtString).Value,
-                Author = (com1["Author"] as NbtString).Value,
-                Description = (com1["Description"] as NbtString).Value,
+                Name = (com1["Name"] as NbtString)!.Value,
+                Author = (com1["Author"] as NbtString)!.Value,
+                Description = (com1["Description"] as NbtString)!.Value,
                 Broken = false,
                 Local = file
             };
@@ -117,9 +117,9 @@ public static class Schematic
             var pos = (com1["EnclosingSize"] as NbtCompound)!;
             if (pos != null)
             {
-                item.Height = (pos["y"] as NbtInt).Value;
-                item.Length = (pos["x"] as NbtInt).Value;
-                item.Width = (pos["z"] as NbtInt).Value;
+                item.Height = (pos["y"] as NbtInt)!.Value;
+                item.Length = (pos["x"] as NbtInt)!.Value;
+                item.Width = (pos["z"] as NbtInt)!.Value;
             }
 
             return item;

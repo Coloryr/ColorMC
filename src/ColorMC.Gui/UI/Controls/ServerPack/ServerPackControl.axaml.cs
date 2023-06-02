@@ -34,14 +34,18 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public ServerPackControl() : this(new() { Empty = true })
+    {
+
+    }
+
     public ServerPackControl(GameSettingObj obj)
     {
         InitializeComponent();
 
-        ServerPackObj? pack = null;
-        if (obj != null)
+        if (!obj.Empty)
         {
-            pack = GameBinding.GetServerPack(obj);
+            var pack = GameBinding.GetServerPack(obj);
             if (pack == null)
             {
                 pack = new()
@@ -54,19 +58,19 @@ public partial class ServerPackControl : UserControl, IUserControl
 
                 GameBinding.SaveServerPack(pack);
             }
+
+            model1 = new(this, pack);
+            tab1.DataContext = model1;
+
+            model2 = new(this, pack);
+            tab2.DataContext = model2;
+
+            model3 = new(this, pack);
+            tab3.DataContext = model3;
+
+            model4 = new(this, pack);
+            tab4.DataContext = model4;
         }
-
-        model1 = new(this, pack);
-        tab1.DataContext = model1;
-
-        model2 = new(this, pack);
-        tab2.DataContext = model2;
-
-        model3 = new(this, pack);
-        tab3.DataContext = model3;
-
-        model4 = new(this, pack);
-        tab4.DataContext = model4;
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
@@ -75,11 +79,6 @@ public partial class ServerPackControl : UserControl, IUserControl
         Tab1.Children.Add(content2);
 
         content1.Content = tab1;
-    }
-
-    public ServerPackControl() : this(null)
-    {
-
     }
 
     public void Opened()
@@ -137,14 +136,12 @@ public partial class ServerPackControl : UserControl, IUserControl
         if (!switch1)
         {
             content2.Content = to;
-            App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex,
-                cancel.Token);
+            _ = App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, cancel.Token);
         }
         else
         {
             content1.Content = to;
-            App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex,
-                cancel.Token);
+            _ = App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, cancel.Token);
         }
 
         switch1 = !switch1;

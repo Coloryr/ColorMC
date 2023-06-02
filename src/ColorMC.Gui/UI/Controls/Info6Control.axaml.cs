@@ -49,7 +49,7 @@ public partial class Info6Control : UserControl
         Label1.Content = title;
         TextBox1.Text = data;
 
-        App.CrossFade300.Start(null, this, CancellationToken.None);
+        _ = App.CrossFade300.Start(null, this, CancellationToken.None);
 
         await Task.Run(() =>
         {

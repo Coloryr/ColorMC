@@ -49,7 +49,7 @@ public class CustomWindowModel : INotifyPropertyChanged
 public partial class CustomControl : UserControl, IUserControl, IMainTop
 {
     private UIObj? UI;
-    private GameSettingObj? Obj;
+    private GameSettingObj Obj;
 
     private bool launch = false;
 
@@ -170,8 +170,8 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
         Grid1.Children.Clear();
 
-        Obj = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
-        if (Obj == null)
+        var obj = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
+        if (obj == null)
         {
             Grid1.Children.Add(new Label()
             {
@@ -183,6 +183,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
             });
             return;
         }
+        Obj = obj;
 
         HeadImg = null;
 
@@ -190,10 +191,10 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
         foreach (var item in ui.Views)
         {
-            var obj = MakeItem(item);
-            if (obj != null)
+            var obj1 = MakeItem(item);
+            if (obj1 != null)
             {
-                Grid1.Children.Add(obj);
+                Grid1.Children.Add(obj1);
             }
         }
 
@@ -350,7 +351,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
         if (type == ViewType.GameItem)
         {
-            var con1 = (con as GameControl);
+            var con1 = (con as GameControl)!;
             con1.GameModel = new(this, this, Obj);
             con1.GameModel.SetSelect();
         }
