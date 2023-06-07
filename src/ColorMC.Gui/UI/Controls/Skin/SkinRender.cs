@@ -500,12 +500,9 @@ public class SkinRender : OpenGlControlBase
                 model.Point.Length * sizeof(ushort), new IntPtr(pdata), GlConsts.GL_STATIC_DRAW);
         }
 
-        gl.VertexAttribPointer(a_Position, 3, GlConsts.GL_FLOAT,
-            0, 8 * sizeof(float), 0);
-        gl.VertexAttribPointer(a_texCoord, 2, GlConsts.GL_FLOAT,
-            0, 8 * sizeof(float), 3 * sizeof(float));
-        gl.VertexAttribPointer(a_normal, 3, GlConsts.GL_FLOAT,
-            0, 8 * sizeof(float), 5 * sizeof(float));
+        gl.VertexAttribPointer(a_Position, 3, GlConsts.GL_FLOAT, 0, 8 * sizeof(float), 0);
+        gl.VertexAttribPointer(a_texCoord, 2, GlConsts.GL_FLOAT, 0, 8 * sizeof(float), 3 * sizeof(float));
+        gl.VertexAttribPointer(a_normal, 3, GlConsts.GL_FLOAT, 0, 8 * sizeof(float), 5 * sizeof(float));
 
         gl.EnableVertexAttribArray(a_Position);
         gl.EnableVertexAttribArray(a_texCoord);
