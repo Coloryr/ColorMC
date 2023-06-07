@@ -46,13 +46,14 @@ public partial class App : Application
     public App()
     {
         Name = "ColorMC";
+        ThisApp = this;
 
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
     }
 
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        Logs.Error(App.GetLanguage("Gui.Error25"), e.ExceptionObject as Exception);
+        Logs.Error(GetLanguage("Gui.Error25"), e.ExceptionObject as Exception);
     }
 
     public static IApplicationLifetime? Life { get; private set; }
@@ -83,6 +84,8 @@ public partial class App : Application
     public static event Action? UserEdit;
     public static event Action? SkinLoad;
 
+    public static Application ThisApp;
+
     public static Window? LastWindow;
 
     public static Bitmap? BackBitmap { get; private set; }
@@ -93,8 +96,6 @@ public partial class App : Application
     public static bool IsHide { get; private set; }
 
     public static PlatformThemeVariant NowTheme { get; private set; }
-
-    public static IPlatformSettings PlatformSettings { get; private set; }
 
     private static readonly Language Language = new();
 
@@ -119,7 +120,7 @@ public partial class App : Application
         switch (GuiConfigUtils.Config.ColorType)
         {
             case ColorType.Auto:
-                NowTheme = PlatformSettings.GetColorValues().ThemeVariant;
+                NowTheme = ThisApp.PlatformSettings!.GetColorValues().ThemeVariant;
                 break;
             case ColorType.Light:
                 NowTheme = PlatformThemeVariant.Light;
@@ -143,22 +144,20 @@ public partial class App : Application
             LoadLanguage(ConfigUtils.Config.Language);
         }
 
-        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
         {
-            using var asset = assets!.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
+            using var asset = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
             GameIcon = new Bitmap(asset);
         }
         {
-            using var asset1 = assets!.Open(new Uri("resm:ColorMC.Gui.icon.ico"));
+            using var asset1 = AssetLoader.Open(new Uri("resm:ColorMC.Gui.icon.ico"));
             Icon = new(asset1!);
         }
         {
-            using var asset1 = assets!.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.load.png"));
+            using var asset1 = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.load.png"));
             LoadIcon = new(asset1!);
         }
 
-        PlatformSettings = AvaloniaLocator.Current.GetRequiredService<IPlatformSettings>();
-        PlatformSettings.ColorValuesChanged += PlatformSettings_ColorValuesChanged;
+        PlatformSettings!.ColorValuesChanged += PlatformSettings_ColorValuesChanged;
 
         ColorChange();
 
@@ -225,7 +224,7 @@ public partial class App : Application
     {
         if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
         {
-            NowTheme = PlatformSettings.GetColorValues().ThemeVariant;
+            NowTheme = PlatformSettings!.GetColorValues().ThemeVariant;
 
             ColorSel.Instance.Load();
             OnPicUpdate();
@@ -695,19 +694,24 @@ public partial class App : Application
             {
                 if (GuiConfigUtils.Config.WindowTran)
                 {
-                    window.TransparencyLevelHint = (WindowTransparencyLevel)
-                           (GuiConfigUtils.Config.WindowTranType + 1);
+                    window.TransparencyLevelHint = new WindowTransparencyLevel[]
+                        {
+                            WindowTran[GuiConfigUtils.Config.WindowTranType + 1]
+                        };
                 }
                 else
                 {
-                    window.TransparencyLevelHint = WindowTransparencyLevel.AcrylicBlur;
+                    window.TransparencyLevelHint = new WindowTransparencyLevel[]
+                        {
+                            WindowTransparencyLevel.None
+                        };
                 }
 
                 switch (GuiConfigUtils.Config.ColorType)
                 {
                     case ColorType.Auto:
                         window.RequestedThemeVariant =
-                            PlatformSettings.GetColorValues().ThemeVariant ==
+                            ThisApp.PlatformSettings!.GetColorValues().ThemeVariant ==
                             PlatformThemeVariant.Light ? ThemeVariant.Light : ThemeVariant.Dark;
                         break;
                     case ColorType.Light:
@@ -720,6 +724,15 @@ public partial class App : Application
             }
         }
     }
+
+    private static WindowTransparencyLevel[] WindowTran = new[]
+    {
+        WindowTransparencyLevel.None,
+        WindowTransparencyLevel.Transparent,
+        WindowTransparencyLevel.Blur,
+        WindowTransparencyLevel.AcrylicBlur,
+        WindowTransparencyLevel.Mica
+    };
 
     public static Task<bool> HaveUpdate(string data)
     {

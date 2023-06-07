@@ -53,15 +53,15 @@
     <TrimmableAssembly Include="Avalonia.Themes.Default" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.0-preview8" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.0-preview8" />
-    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0-preview8" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-preview8" />
+    <PackageReference Include="Avalonia" Version="11.0.0-rc1.1" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.0-rc1.1" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0-rc1.1" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.0-rc1.1" />
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0-preview8" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview8" />
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview8" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview8" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-preview8" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-rc1.1" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-rc1.1" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-rc1.1" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0-rc1.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
     <PackageReference Include="NAudio.Core" Version="2.1.0" />
     <PackageReference Include="NAudio.WinMM" Version="2.1.0" />
