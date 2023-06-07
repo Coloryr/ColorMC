@@ -53,10 +53,10 @@
                     IsChecked="{Binding SelectOther}" />
 
                 <Button
-                    Name="Button1"
                     Width="100"
                     Height="25"
                     Margin="5,0,0,0"
+                    Command="{Binding LoadVersion}"
                     Content="{setting:Localize GameEditWindow.Tab1.Text2}" />
             </StackPanel>
 
