@@ -358,9 +358,9 @@ public static class BaseBinding
             obj.StartServer.IP = server.ServerAddress;
             obj.StartServer.Port = server.ServerPort;
         }
-        if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
+        if (App.RunTestWindows.TryGetValue(obj.UUID, out var win))
         {
-            win?.ClearLog();
+            win.ClearLog();
         }
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdateOnThread;
@@ -444,12 +444,12 @@ public static class BaseBinding
                 UserBinding.UnLockUser(obj1);
                 App.MainWindow?.GameClose(obj.UUID);
                 Games.Remove(res);
-                GameLogs.Remove(obj.UUID, out var log);
                 if (a is Process p && p.ExitCode != 0)
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        App.ShowError(App.GetLanguage("UserBinding.Error2"), log?.ToString() ?? "");
+                        App.ShowRunTest(obj);
+                        GameLogs.Remove(obj.UUID);
                     });
                 }
                 else
@@ -460,13 +460,17 @@ public static class BaseBinding
                     }
                 }
                 res.Dispose();
+                if (App.RunTestWindows.TryGetValue(obj.UUID, out var win1))
+                {
+                    win1.Update();
+                }
             };
             Games.Add(res, obj);
             RunGames.Add(obj.UUID, res);
             GameCountUtils.LaunchDone(obj.UUID);
-            if (App.GameEditWindows.TryGetValue(obj.UUID, out var win1))
+            if (App.RunTestWindows.TryGetValue(obj.UUID, out var win1))
             {
-                win1.Started();
+                win1.Update();
             }
         }
 
@@ -508,9 +512,9 @@ public static class BaseBinding
         if (Games.TryGetValue(p, out var obj))
         {
             GameLogs[obj.UUID].Append(d).Append(Environment.NewLine);
-            if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
+            if (App.RunTestWindows.TryGetValue(obj.UUID, out var win))
             {
-                win?.Log(d);
+                win.Log(d);
             }
         }
     }
@@ -523,9 +527,9 @@ public static class BaseBinding
     public static void PLog(GameSettingObj obj, string? d)
     {
         GameLogs[obj.UUID].Append(d).Append(Environment.NewLine);
-        if (App.GameEditWindows.TryGetValue(obj.UUID, out var win))
+        if (App.RunTestWindows.TryGetValue(obj.UUID, out var win))
         {
-            win?.Log(d);
+            win.Log(d);
         }
     }
 

@@ -17,7 +17,6 @@ public partial class GameEditControl : UserControl, IUserControl
     private readonly Tab4Control tab4 = new();
     private readonly Tab5Control tab5 = new();
     private readonly Tab6Control tab6 = new();
-    private readonly Tab7Control tab7 = new();
     private readonly Tab8Control tab8 = new();
     private readonly Tab9Control tab9 = new();
     private readonly Tab10Control tab10 = new();
@@ -33,7 +32,6 @@ public partial class GameEditControl : UserControl, IUserControl
     private readonly GameEditTab4Model model4;
     private readonly GameEditTab5Model model5;
     private readonly GameEditTab6Model model6;
-    private readonly GameEditTab7Model model7;
     private readonly GameEditTab8Model model8;
     private readonly GameEditTab9Model model9;
     private readonly GameEditTab10Model model10;
@@ -72,10 +70,6 @@ public partial class GameEditControl : UserControl, IUserControl
 
             model6 = new(this, obj);
             tab6.DataContext = model6;
-
-            model7 = new(this, obj);
-            tab7.DataContext = model7;
-            tab7.Bind();
 
             model8 = new(this, obj);
             tab8.DataContext = model8;
@@ -141,23 +135,7 @@ public partial class GameEditControl : UserControl, IUserControl
             case GameEditWindowType.Export:
                 Tabs.SelectedIndex = 9;
                 break;
-            case GameEditWindowType.Log:
-                Tabs.SelectedIndex = 10;
-                break;
         }
-    }
-
-    public void ClearLog()
-    {
-        model7.Clear();
-    }
-
-    public void Log(string? data)
-    {
-        if (data == null)
-            return;
-
-        model7.Log(data);
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -204,10 +182,6 @@ public partial class GameEditControl : UserControl, IUserControl
                 Go(tab6);
                 model6.Load();
                 break;
-            case 10:
-                Go(tab7);
-                model7.Load();
-                break;
         }
 
         now = Tabs.SelectedIndex;
@@ -244,6 +218,5 @@ public partial class GameEditControl : UserControl, IUserControl
     public void Started()
     {
         model1.GameStateChange();
-        model7.GameStateChange();
     }
 }

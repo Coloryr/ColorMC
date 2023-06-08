@@ -17,7 +17,11 @@ public partial class GameControl : UserControl
     public GameModel GameModel
     {
         get => GetValue(GameModelProperty);
-        set => SetValue(GameModelProperty, value);
+        set
+        {
+            SetValue(GameModelProperty, value);
+            GameModel.SetTips();
+        }
     }
 
     public GameControl()
@@ -103,7 +107,7 @@ public partial class GameControl : UserControl
     private void GameControl_DoubleTapped(object? sender, TappedEventArgs e)
     {
         e.Handled = true;
-        GameModel.Launch(false);
+        GameModel.Launch();
     }
 
     private void GameControl_PointerPressed(object? sender, PointerPressedEventArgs e)

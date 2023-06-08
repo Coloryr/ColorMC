@@ -1,4 +1,4 @@
-using Avalonia.Threading;
+﻿using Avalonia.Threading;
 using AvaloniaEdit.Document;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -6,12 +6,19 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Timers;
 
-namespace ColorMC.Gui.UI.Model.GameEdit;
+namespace ColorMC.Gui.UI.Model.RunTest;
 
-public partial class GameEditTab7Model : GameEditTabModel
+public partial class RunTestModel : ObservableObject
 {
+    private readonly IUserControl Con;
+    public GameSettingObj Obj { get; init; }
+
     [ObservableProperty]
     private TextDocument text;
 
@@ -22,17 +29,32 @@ public partial class GameEditTab7Model : GameEditTabModel
     [ObservableProperty]
     private bool isAuto = true;
 
-    public string temp { get; private set; } = "";
-    private Timer timer;
+    public string Temp { get; private set; } = "";
+    private readonly Timer timer;
 
-    public GameEditTab7Model(IUserControl con, GameSettingObj obj) : base(con, obj)
+    public RunTestModel(IUserControl con, GameSettingObj obj)
     {
+        Con = con;
+        Obj = obj;
+
         text = new();
 
         timer = new(TimeSpan.FromMilliseconds(100));
         timer.BeginInit();
         timer.Elapsed += Timer_Elapsed;
         timer.EndInit();
+
+        isGameRun = BaseBinding.IsGameRun(Obj);
+        if (BaseBinding.GameLogs.ContainsKey(obj.UUID))
+        {
+            text.Text = BaseBinding.GameLogs[obj.UUID].ToString();
+            Dispatcher.UIThread.Post(() =>
+            {
+                OnPropertyChanged("Top");
+            });
+        }
+
+        Load();
     }
 
     [RelayCommand]
@@ -45,17 +67,13 @@ public partial class GameEditTab7Model : GameEditTabModel
     [RelayCommand]
     public async void Launch()
     {
-        var res = await GameBinding.Launch(Obj, false);
+        IsGameRun = true;
+        var res = await GameBinding.Launch(Obj);
         if (!res.Item1)
         {
-            var window = App.FindRoot(this);
+            var window = Con.Window;
             window.OkInfo.Show(res.Item2!);
         }
-        IsGameRun = false;
-    }
-
-    public void GameStateChange()
-    {
         Load();
     }
 
@@ -75,9 +93,9 @@ public partial class GameEditTab7Model : GameEditTabModel
         {
             timer.Start();
         }
-        lock (temp)
+        lock (Temp)
         {
-            temp += data + Environment.NewLine;
+            Temp += data + Environment.NewLine;
         }
     }
 
@@ -88,15 +106,15 @@ public partial class GameEditTab7Model : GameEditTabModel
 
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
-        lock (temp)
+        lock (Temp)
         {
-            if (!string.IsNullOrWhiteSpace(temp))
+            if (!string.IsNullOrWhiteSpace(Temp))
             {
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     OnPropertyChanged("Insert");
                 });
-                temp = "";
+                Temp = "";
             }
         }
 

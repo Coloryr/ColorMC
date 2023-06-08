@@ -22,6 +22,7 @@ using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Controls.RunTest;
 using ColorMC.Gui.UI.Controls.ServerPack;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
@@ -73,6 +74,7 @@ public partial class App : Application
     public readonly static Dictionary<string, ConfigEditControl> ConfigEditWindows = new();
     public readonly static Dictionary<string, AddControl> AddWindows = new();
     public readonly static Dictionary<string, ServerPackControl> ServerPackWindows = new();
+    public readonly static Dictionary<string, RunTestControl> RunTestWindows = new();
 
     public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly CrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
@@ -610,6 +612,20 @@ public partial class App : Application
         {
             var con = new ServerPackControl(obj);
             ServerPackWindows.Add(obj.UUID, con);
+            AWindow(con);
+        }
+    }
+
+    public static void ShowRunTest(GameSettingObj obj)
+    {
+        if (RunTestWindows.TryGetValue(obj.UUID, out var value))
+        {
+            value.Window.Activate();
+        }
+        else
+        {
+            var con = new RunTestControl(obj);
+            RunTestWindows.Add(obj.UUID, con);
             AWindow(con);
         }
     }

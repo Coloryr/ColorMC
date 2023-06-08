@@ -33,10 +33,7 @@
                             FontFamily="{TemplateBinding FontFamily}"
                             FontSize="{TemplateBinding FontSize}"
                             FontWeight="{TemplateBinding FontWeight}" />
-                        <Border
-                            Name="select_pipe"
-                            Background="{setting:Colors Main}"
-                            CornerRadius="{DynamicResource ControlCornerRadius}" />
+                        <Border Name="select_pipe" CornerRadius="{DynamicResource ControlCornerRadius}" />
                     </Panel>
                 </Border>
             </ControlTemplate>
@@ -47,8 +44,12 @@
         <Setter Property="FontSize" Value="22" />
     </Style>
 
-    <Style Selector="TabItem:pressed">
-        <Setter Property="RenderTransform" Value="scale(0.95)" />
+    <Style Selector="TabItem /template/ Border#select_pipe">
+        <Setter Property="Background" Value="{setting:Colors Main}" />
+    </Style>
+
+    <Style Selector="TabItem:pressed /template/ Border#select_pipe">
+        <Setter Property="Background" Value="{setting:Colors Font}" />
     </Style>
 
     <Style Selector="TabItem:selected /template/ Label#PART_ContentPresenter">
@@ -60,7 +61,7 @@
     </Style>
 
     <Style Selector="TabItem:pointerover /template/ Label#PART_ContentPresenter">
-        <Setter Property="Foreground" Value="#FF909090" />
+        <Setter Property="Foreground" Value="#FF666666" />
     </Style>
 
     <Style Selector="TabItem:selected /template/ Border#select_pipe">
@@ -82,7 +83,7 @@
 
     <Style Selector="TabItem[TabStripPlacement=Top] /template/ Border#select_pipe, TabItem[TabStripPlacement=Bottom] /template/ Border#select_pipe">
         <Setter Property="Height" Value="{DynamicResource TabItemPipeThickness}" />
-        <Setter Property="Margin" Value="0,0,0,2" />
+        <Setter Property="Margin" Value="0,0,0,0" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Bottom" />
     </Style>

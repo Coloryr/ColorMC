@@ -351,7 +351,7 @@ public static class GameBinding
         }
     }
 
-    public static async Task<(bool, string?)> Launch(GameSettingObj? obj, bool debug)
+    public static async Task<(bool, string?)> Launch(GameSettingObj? obj)
     {
         if (obj == null)
         {
@@ -383,11 +383,6 @@ public static class GameBinding
             var res = await App.MainWindow!.Window.OkInfo.ShowWait(App.GetLanguage("GameBinding.Info1"));
             if (!res)
                 return (false, App.GetLanguage("GameBinding.Error3"));
-        }
-
-        if (debug)
-        {
-            App.ShowGameEdit(obj, GameEditWindowType.Log);
         }
 
         var res1 = await BaseBinding.Launch(obj, login);

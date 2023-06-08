@@ -131,7 +131,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         var window = App.FindRoot(VisualRoot);
         launch = true;
         window.ProgressInfo.Show(App.GetLanguage("MainWindow.Launch"));
-        var res = await GameBinding.Launch(Obj, false);
+        var res = await GameBinding.Launch(Obj);
         window.ProgressInfo.Close();
         if (res.Item1 == false)
         {
@@ -507,7 +507,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         return false;
     }
 
-    public void Launch(GameModel obj, bool debug)
+    public void Launch(GameModel obj)
     {
 
     }

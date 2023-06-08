@@ -27,7 +27,6 @@
                 <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text11}" />
                 <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text12}" />
                 <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text8}" />
-                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text9}" />
             </TabControl>
         </ScrollViewer>
 

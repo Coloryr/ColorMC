@@ -210,7 +210,7 @@ public partial class MainModel : ObservableObject, IMainTop
     {
         if (Game != null)
         {
-            Launch(Game, false);
+            Launch(Game);
         }
     }
 
@@ -576,7 +576,7 @@ public partial class MainModel : ObservableObject, IMainTop
         }
     }
 
-    public async void Launch(GameModel obj, bool debug)
+    public async void Launch(GameModel obj)
     {
         if (launch)
             return;
@@ -593,7 +593,7 @@ public partial class MainModel : ObservableObject, IMainTop
         item.IsLaunch = false;
         item.IsLoad = true;
         window.NotifyInfo.Show(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
-        var res = await GameBinding.Launch(game, debug);
+        var res = await GameBinding.Launch(game);
         window.Head.Title1 = null;
         item.IsLoad = false;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)

@@ -4,7 +4,7 @@ namespace ColorMC.Gui.UI.Model;
 
 public interface IMainTop
 {
-    void Launch(GameModel obj, bool debug);
+    void Launch(GameModel obj);
     void Select(GameModel? model);
     void EditGroup(GameModel model);
 }

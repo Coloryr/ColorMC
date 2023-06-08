@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.GameEdit.Tab7Control"
+    x:Class="ColorMC.Gui.UI.Controls.RunTest.RunTestControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
@@ -14,12 +14,12 @@
             <CheckBox
                 Name="CheckBox1"
                 Margin="5,0,0,0"
-                Content="{setting:Localize GameEditWindow.Tab7.Text1}"
+                Content="{setting:Localize RunTestWindow.Text1}"
                 IsChecked="{Binding IsWordWrap}" />
             <CheckBox
                 Name="CheckBox2"
                 Margin="5,0,0,0"
-                Content="{setting:Localize GameEditWindow.Tab7.Text2}"
+                Content="{setting:Localize RunTestWindow.Text2}"
                 IsChecked="{Binding IsAuto}" />
             <Button
                 Width="100"
@@ -27,7 +27,7 @@
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"
                 Command="{Binding Stop}"
-                Content="{setting:Localize GameEditWindow.Tab7.Text3}"
+                Content="{setting:Localize RunTestWindow.Text3}"
                 IsEnabled="{Binding IsGameRun}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text44}"
                 ToolTip.VerticalOffset="-30" />
@@ -37,7 +37,7 @@
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"
                 Command="{Binding Launch}"
-                Content="{setting:Localize MainWindow.Flyouts.Text1}"
+                Content="{setting:Localize RunTestWindow.Text4}"
                 IsEnabled="{Binding !IsGameRun}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text44}"
                 ToolTip.VerticalOffset="-30" />

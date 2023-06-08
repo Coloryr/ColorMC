@@ -66,7 +66,8 @@
                 <ComboBox
                     Width="200"
                     IsEnabled="{Binding EnableLoader}"
-                    ItemsSource="{Binding LoaderVersionList}" />
+                    ItemsSource="{Binding LoaderVersionList}"
+                    SelectedItem="{Binding LoaderVersion}" />
                 <CheckBox
                     Width="80"
                     Margin="5,0,0,0"
