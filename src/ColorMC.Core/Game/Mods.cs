@@ -180,21 +180,19 @@ public static class Mods
                     obj3.description = item2 as string;
                     model2.TryGetValue("version", out item2);
                     obj3.version = item2 as string;
-                    if (model2.ContainsKey(model2.TryGetValue("authorList", out item2))
+                    if (model2.TryGetValue("authorList", out item2))
                     {
-                        ;
                         obj3.authorList = (item2 as string)?.ToStringList();
                     }
+                    //forge 1.20
                     else if (model2.TryGetValue("authors", out item2))
                     {
-                        ;
                         obj3.authorList = (item2 as string)?.ToStringList();
                     }
                     if (model2.TryGetValue("displayURL", out item2))
                     {
                         obj3.url = item2 as string;
                     }
-                    
 
                     obj3.name ??= "";
 
