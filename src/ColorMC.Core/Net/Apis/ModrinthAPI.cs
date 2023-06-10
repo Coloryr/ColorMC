@@ -170,9 +170,18 @@ public static class ModrinthAPI
     {
         try
         {
-            string url = $"{Url}project/{id}/version?game_versions=[" +
+            string url;
+            if (string.IsNullOrWhiteSpace(mc))
+            {
+                url = $"{Url}project/{id}/version?" +
+                (loader != Loaders.Normal ? $"&loaders=[\"{loader.GetName().ToLower()}\"]" : "");
+            }
+            else
+            {
+                url = $"{Url}project/{id}/version?game_versions=[" +
                 $"{(string.IsNullOrWhiteSpace(mc) ? "" : ('"' + mc + '"'))}]"
                 + (loader != Loaders.Normal ? $"&loaders=[\"{loader.GetName().ToLower()}\"]" : "");
+            }
             var res = await BaseClient.DownloadClient.GetStringAsync(url);
             return JsonConvert.DeserializeObject<List<ModrinthVersionObj>>(res);
         }

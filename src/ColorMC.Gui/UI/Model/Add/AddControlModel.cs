@@ -329,6 +329,10 @@ public partial class AddControlModel : ObservableObject
         SourceTypeList.Clear();
         SourceTypeList.AddRange(WebBinding.GetSourceList(now));
         SourceTypeList.ForEach(item => DownloadSourceList.Add(item.GetName()));
+
+        load = false;
+
+        DownloadSource = 0;
     }
 
     partial void OnSortTypeChanged(int value)
@@ -359,7 +363,7 @@ public partial class AddControlModel : ObservableObject
 
     async partial void OnDownloadSourceChanged(int value)
     {
-        if (!display)
+        if (!display || load)
             return;
 
         var window = Con.Window;
@@ -738,7 +742,7 @@ public partial class AddControlModel : ObservableObject
             EnablePage = false;
             list = await WebBinding.GetPackFile(type, id ??
                 (last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, PageDownload,
-                GameVersionDownload, Obj.Loader, now);
+                GameVersionDownload, now == FileType.Mod ? Obj.Loader : Loaders.Normal, now);
         }
         if (list == null)
         {

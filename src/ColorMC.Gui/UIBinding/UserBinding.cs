@@ -25,7 +25,7 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class UserBinding
 {
-    private readonly static List<LoginObj> LockUser = new();
+    private readonly static List<(AuthType, string)> LockUser = new();
     public static Image<Rgba32>? SkinImage { get; set; }
     public static Image<Rgba32>? CapeIamge { get; set; }
     public static Bitmap HeadBitmap { get; private set; }
@@ -167,20 +167,20 @@ public static class UserBinding
 
     public static void AddLockUser(LoginObj obj)
     {
-        if (!LockUser.Contains(obj))
+        if (!LockUser.Contains((obj.AuthType, obj.UUID)))
         {
-            LockUser.Add(obj);
+            LockUser.Add((obj.AuthType, obj.UUID));
         }
     }
 
     public static void UnLockUser(LoginObj obj)
     {
-        LockUser.Remove(obj);
+        LockUser.Remove((obj.AuthType, obj.UUID));
     }
 
     public static bool IsLock(LoginObj obj)
     {
-        return LockUser.Contains(obj);
+        return LockUser.Contains((obj.AuthType, obj.UUID));
     }
 
     public static async Task LoadSkin()
