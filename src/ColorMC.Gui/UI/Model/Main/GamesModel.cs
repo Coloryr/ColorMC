@@ -12,9 +12,9 @@ public partial class GamesModel : ObservableObject
 {
     private readonly IUserControl Con;
     private readonly IMainTop Top;
-    public ObservableCollection<GameModel> GameList { get; init; } = new();
+    public ObservableCollection<GameItemModel> GameList { get; init; } = new();
 
-    private readonly Dictionary<string, GameModel> Items = new();
+    private readonly Dictionary<string, GameItemModel> Items = new();
 
     public string Header { get; }
     public string Key { get; }
@@ -30,7 +30,7 @@ public partial class GamesModel : ObservableObject
         Items.Clear();
         foreach (var item in list)
         {
-            var model = new GameModel(Con, Top, item);
+            var model = new GameItemModel(Con, Top, item);
             Items.Add(item.UUID, model);
             GameList.Add(model);
         }
@@ -40,7 +40,7 @@ public partial class GamesModel : ObservableObject
 
     public bool DropIn(IDataObject data)
     {
-        if (data.Get(BaseBinding.DrapType) is not GameModel c)
+        if (data.Get(BaseBinding.DrapType) is not GameItemModel c)
             return false;
         if (Items.ContainsValue(c))
             return false;
@@ -50,7 +50,7 @@ public partial class GamesModel : ObservableObject
 
     public void Drop(IDataObject data)
     {
-        if (data.Get(BaseBinding.DrapType) is not GameModel c)
+        if (data.Get(BaseBinding.DrapType) is not GameItemModel c)
             return;
 
         c.IsDrop = false;
@@ -61,7 +61,7 @@ public partial class GamesModel : ObservableObject
         GameBinding.MoveGameGroup(c.Obj, Key);
     }
 
-    public GameModel? Find(string? uuid)
+    public GameItemModel? Find(string? uuid)
     {
         if (string.IsNullOrWhiteSpace(uuid))
             return null;
@@ -80,7 +80,7 @@ public partial class GamesModel : ObservableObject
         Items.Clear();
         foreach (var item in list)
         {
-            var model = new GameModel(Con, Top, item);
+            var model = new GameItemModel(Con, Top, item);
             Items.Add(item.UUID, model);
             GameList.Add(model);
         }

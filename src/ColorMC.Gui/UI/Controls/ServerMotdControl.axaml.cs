@@ -14,25 +14,12 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class ServerMotdControl : UserControl
 {
-    public static readonly StyledProperty<string?> IPProperty =
-        AvaloniaProperty.Register<ServerMotdControl, string?>(nameof(IP));
-    public static readonly StyledProperty<ushort> PortProperty =
-        AvaloniaProperty.Register<ServerMotdControl, ushort>(nameof(Port));
     public static readonly StyledProperty<(string, ushort)> IPPortProperty =
         AvaloniaProperty.Register<ServerMotdControl, (string, ushort)>(nameof(IPPort));
 
-    private bool nowset;
+    private string? IP;
+    private ushort Port;
 
-    public string? IP
-    {
-        get => GetValue(IPProperty);
-        set => SetValue(IPProperty, value);
-    }
-    public ushort Port
-    {
-        get => GetValue(PortProperty);
-        private set => SetValue(PortProperty, value);
-    }
     public (string, ushort) IPPort
     {
         get => GetValue(IPPortProperty);
@@ -55,40 +42,29 @@ public partial class ServerMotdControl : UserControl
     {
         if (e.Property == IPPortProperty)
         {
-            nowset = true;
             var data = IPPort;
             IP = data.Item1;
+            if (Port == 0)
+            {
+                var ip = IP;
+                if (ip == null)
+                {
+                    return;
+                }
+                int index = ip.LastIndexOf(':');
+                if (index == -1)
+                {
+                    Port = 25565;
+                }
+                else
+                {
+                    IP = ip[..index];
+                    _ = ushort.TryParse(ip[(index + 1)..], out var port);
+                    Port = port;
+                }
+            }
             Port = data.Item2;
-            nowset = false;
-        }
-        if (e.Property == PortProperty)
-        {
             Update();
-        }
-        else if (e.Property == IPProperty)
-        {
-            if (nowset)
-            {
-                return;
-            }
-            nowset = true;
-            var ip = IP;
-            if (ip == null)
-            {
-                return;
-            }
-            int index = ip.LastIndexOf(':');
-            if (index == -1)
-            {
-                Port = 25565;
-            }
-            else
-            {
-                IP = ip[..index];
-                _ = ushort.TryParse(ip[(index + 1)..], out var port);
-                Port = port;
-            }
-            nowset = false;
         }
     }
 
@@ -99,10 +75,8 @@ public partial class ServerMotdControl : UserControl
 
     public void Load(string ip, ushort port)
     {
-        nowset = true;
-        SetValue(IPProperty, ip);
-        SetValue(PortProperty, port);
-        nowset = false;
+        IP = ip;
+        Port = port;
     }
 
     private async void Update()

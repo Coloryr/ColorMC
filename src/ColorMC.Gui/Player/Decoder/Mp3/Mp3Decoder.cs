@@ -3,9 +3,9 @@ using System.IO;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 
-public class Mp3Decoder : DecoderErrors, IDisposable
+public class Mp3Decoder : IDisposable
 {
-    static private readonly Params DEFAULT_PARAMS = new();
+    private static readonly Params DEFAULT_PARAMS = new();
 
     /**
      * The Obuffer instance that will receive the decoded
@@ -160,7 +160,7 @@ public class Mp3Decoder : DecoderErrors, IDisposable
 
         if (decoder == null)
         {
-            throw new DecoderException(UNSUPPORTED_LAYER, null);
+            throw new DecoderException(DecoderErrors.UNSUPPORTED_LAYER, null);
         }
 
         return decoder;

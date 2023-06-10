@@ -507,17 +507,17 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         return false;
     }
 
-    public void Launch(GameModel obj)
+    public void Launch(GameItemModel obj)
     {
 
     }
 
-    public void Select(GameModel? model)
+    public void Select(GameItemModel? model)
     {
 
     }
 
-    public void EditGroup(GameModel model)
+    public void EditGroup(GameItemModel model)
     {
 
     }

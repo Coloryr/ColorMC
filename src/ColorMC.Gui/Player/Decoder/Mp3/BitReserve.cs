@@ -2,11 +2,10 @@
 
 public sealed class BitReserve
 {
-    /**
-     * Size of the internal buffer to store the reserved bits.
-     * Must be a power of 2. And x8, as each bit is stored as a single
-     * entry.
-     */
+    /// <summary>
+    /// Size of the internal buffer to store the reserved bits.
+    /// Must be a power of 2. And x8, as each bit is stored as a single entry.
+    /// </summary>
     private const int BUFSIZE = 4096 * 8;
 
     /**
@@ -15,23 +14,14 @@ public sealed class BitReserve
      */
     private const int BUFSIZE_MASK = BUFSIZE - 1;
     private readonly int[] buf = new int[BUFSIZE];
-    private int offset, totbit, buf_byte_idx;
-
-    public BitReserve()
-    {
-
-        offset = 0;
-        totbit = 0;
-        buf_byte_idx = 0;
-    }
-
+    private int offset, totbit, bufByteIdx;
 
     /**
      * Return totbit Field.
      */
     public int Hsstell()
     {
-        return (totbit);
+        return totbit;
     }
 
     /**
@@ -45,7 +35,7 @@ public sealed class BitReserve
 
         int val = 0;
 
-        int pos = buf_byte_idx;
+        int pos = bufByteIdx;
         if (pos + N < BUFSIZE)
         {
             while (N-- > 0)
@@ -63,7 +53,7 @@ public sealed class BitReserve
                 pos = (pos + 1) & BUFSIZE_MASK;
             }
         }
-        buf_byte_idx = pos;
+        bufByteIdx = pos;
         return val;
     }
 
@@ -75,8 +65,8 @@ public sealed class BitReserve
     public int Hget1bit()
     {
         totbit++;
-        int val = buf[buf_byte_idx];
-        buf_byte_idx = (buf_byte_idx + 1) & BUFSIZE_MASK;
+        int val = buf[bufByteIdx];
+        bufByteIdx = (bufByteIdx + 1) & BUFSIZE_MASK;
         return val;
     }
 
@@ -108,9 +98,9 @@ public sealed class BitReserve
     public void RewindNbits(int N)
     {
         totbit -= N;
-        buf_byte_idx -= N;
-        if (buf_byte_idx < 0)
-            buf_byte_idx += BUFSIZE;
+        bufByteIdx -= N;
+        if (bufByteIdx < 0)
+            bufByteIdx += BUFSIZE;
     }
 
     /**
@@ -120,8 +110,8 @@ public sealed class BitReserve
     {
         int bits = (N << 3);
         totbit -= bits;
-        buf_byte_idx -= bits;
-        if (buf_byte_idx < 0)
-            buf_byte_idx += BUFSIZE;
+        bufByteIdx -= bits;
+        if (bufByteIdx < 0)
+            bufByteIdx += BUFSIZE;
     }
 }

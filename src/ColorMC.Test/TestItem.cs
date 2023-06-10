@@ -436,4 +436,9 @@ public static class TestItem
     {
         var list = JavaHelper.FindJava();
     }
+
+    public static void Item24()
+    {
+        var list = McModAPI.SearchMod("魔法", 0).Result;
+    }
 }

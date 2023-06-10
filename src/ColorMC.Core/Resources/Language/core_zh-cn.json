@@ -225,6 +225,7 @@
   "MSortingType.updated": "更新时间",
   "SourceType.CurseForge": "CurseForge",
   "SourceType.Modrinth": "Modrinth",
+  "SourceType.McMod": "MC百科",
   "SourceType.Other": "未知的下载源",
   "PackType.ColorMC": "ColorMC压缩包",
   "PackType.CurseForge": "CurseForge整合包",

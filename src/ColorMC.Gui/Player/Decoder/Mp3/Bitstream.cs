@@ -3,24 +3,24 @@ using System.IO;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 
-public sealed class Bitstream : BitstreamErrors, IDisposable
+public sealed class Bitstream : IDisposable
 {
     /**
      * Maximum size of the frame buffer.
      */
-    private const int BUFFER_INT_SIZE = 433;
+    public const int BUFFER_INT_SIZE = 433;
     /**
      * Synchronization control constant for the initial
      * synchronization to the start of a frame.
      */
-    public static byte INITIAL_SYNC = 0;
+    public const byte INITIAL_SYNC = 0;
 
     // max. 1730 bytes per frame: 144 * 384kbit/s / 32000 Hz + 2 Bytes CRC
     /**
      * Synchronization control constant for non-initial frame
      * synchronizations.
      */
-    public static byte STRICT_SYNC = 1;
+    public const byte STRICT_SYNC = 1;
     /**
      * The frame buffer that holds the data for the current frame.
      */
@@ -67,7 +67,7 @@ public sealed class Bitstream : BitstreamErrors, IDisposable
     private bool single_ch_mode;
 
     private bool firstframe;
-    private Stream stream;
+    private readonly Stream stream;
     /**
      * Construct a IBitstream that reads data from a
      * given InputStream.
@@ -163,28 +163,18 @@ public sealed class Bitstream : BitstreamErrors, IDisposable
         }
         catch (BitstreamException ex)
         {
-            if ((ex.GetErrorCode() == INVALIDFRAME))
+            if (ex.GetErrorCode() == BitstreamErrors.INVALIDFRAME)
             {
                 // Try to skip this frame.
-                //System.out.println("INVALIDFRAME");
                 try
                 {
                     CloseFrame();
                     result = ReadNextFrame();
                 }
-                catch (BitstreamException e)
+                catch
                 {
-                    if ((e.GetErrorCode() != STREAM_EOF))
-                    {
-                        // wrap original exception so stack trace is maintained.
-                        throw new BitstreamException(e.GetErrorCode(), e);
-                    }
+
                 }
-            }
-            else if ((ex.GetErrorCode() != STREAM_EOF))
-            {
-                // wrap original exception so stack trace is maintained.
-                throw new BitstreamException(ex.GetErrorCode(), ex);
             }
         }
         return result;
@@ -283,7 +273,7 @@ public sealed class Bitstream : BitstreamErrors, IDisposable
         int bytesRead = ReadBytes(syncbuf, 0, 3);
 
         if (bytesRead != 3)
-            throw new BitstreamException(STREAM_EOF, null);
+            throw new BitstreamException(BitstreamErrors.STREAM_EOF, null);
 
         headerstring = ((syncbuf[0] << 16) & 0x00FF0000) | ((syncbuf[1] << 8) & 0x0000FF00) | ((syncbuf[2]) & 0x000000FF);
 
@@ -292,7 +282,7 @@ public sealed class Bitstream : BitstreamErrors, IDisposable
             headerstring <<= 8;
 
             if (ReadBytes(syncbuf, 3, 1) != 1)
-                throw new BitstreamException(STREAM_EOF, null);
+                throw new BitstreamException(BitstreamErrors.STREAM_EOF, null);
 
             headerstring |= (syncbuf[3] & 0x000000FF);
 
@@ -437,9 +427,13 @@ public sealed class Bitstream : BitstreamErrors, IDisposable
         int nRead = 0;
         while (len > 0)
         {
+            if (local >= stream.Length)
+            {
+                return 0;
+            }
             int bytesread = stream.Read(b, offs, len);
             local += bytesread;
-            if (bytesread == -1)
+            if (bytesread == 0)
             {
                 while (len-- > 0)
                 {
@@ -463,9 +457,13 @@ public sealed class Bitstream : BitstreamErrors, IDisposable
         int totalBytesRead = 0;
         while (len > 0)
         {
+            if (local >= stream.Length)
+            {
+                return 0;
+            }
             int bytesread = stream.Read(b, offs, len);
             local += bytesread;
-            if (bytesread == -1 || local >= stream.Length)
+            if (bytesread == 0 || local >= stream.Length)
             {
                 break;
             }

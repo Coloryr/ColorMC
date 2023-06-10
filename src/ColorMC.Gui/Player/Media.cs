@@ -18,7 +18,9 @@ public static class Media
 
     private static CancellationTokenSource cancel = new();
 
-    private static bool play = false;
+    public static bool Decoding { get; private set; }
+
+    private static string MusicFile;
 
     public static float Volume
     {
@@ -60,7 +62,7 @@ public static class Media
 
         await Task.Run(() =>
         {
-            while (play)
+            while (Decoding)
             {
                 Thread.Sleep(10);
             }
@@ -103,7 +105,7 @@ public static class Media
 
         await Task.Run(() =>
         {
-            while (play)
+            while (Decoding)
             {
                 Thread.Sleep(10);
             }
@@ -220,7 +222,7 @@ public static class Media
 
         await Task.Run(() =>
         {
-            while (play)
+            while (Decoding)
             {
                 Thread.Sleep(10);
             }
@@ -238,7 +240,7 @@ public static class Media
         {
             try
             {
-                play = true;
+                Decoding = true;
                 int count = 0;
                 while (true)
                 {
@@ -254,7 +256,7 @@ public static class Media
                     count++;
                 }
                 decoder.Dispose();
-                play = false;
+                Decoding = false;
             }
             catch (Exception e)
             {
@@ -274,6 +276,8 @@ public static class Media
     {
         if (player == null)
             return (false, null);
+
+        MusicFile = file;
 
         var reader = File.OpenRead(file);
         return await PlayMp3(reader);
@@ -305,6 +309,14 @@ public static class Media
         {
             Logs.Error("play error", e);
             return (false, null);
+        }
+    }
+
+    public static void PlayEnd()
+    {
+        if (!string.IsNullOrWhiteSpace(MusicFile))
+        {
+            _ = PlayMp3(MusicFile);
         }
     }
 }

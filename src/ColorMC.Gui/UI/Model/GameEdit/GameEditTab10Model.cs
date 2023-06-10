@@ -16,7 +16,7 @@ public partial class GameEditTab10Model : GameEditTabModel
     [ObservableProperty]
     private ServerInfoObj? item;
     [ObservableProperty]
-    private string? iP;
+    private (string?, ushort) iPPort;
 
     public GameEditTab10Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
@@ -25,7 +25,7 @@ public partial class GameEditTab10Model : GameEditTabModel
 
     partial void OnItemChanged(ServerInfoObj? value)
     {
-        IP = value?.IP;
+        IPPort = (value?.IP, 0);
     }
 
     [RelayCommand]

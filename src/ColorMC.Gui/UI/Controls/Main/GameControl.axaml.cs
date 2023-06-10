@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
@@ -11,10 +12,10 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class GameControl : UserControl
 {
-    public static readonly StyledProperty<GameModel> GameModelProperty =
-       AvaloniaProperty.Register<GameControl, GameModel>(nameof(GameModel));
+    public static readonly StyledProperty<GameItemModel> GameModelProperty =
+       AvaloniaProperty.Register<GameControl, GameItemModel>(nameof(GameModel), defaultBindingMode: BindingMode.TwoWay);
 
-    public GameModel GameModel
+    public GameItemModel GameModel
     {
         get => GetValue(GameModelProperty);
         set
@@ -23,6 +24,8 @@ public partial class GameControl : UserControl
             GameModel.SetTips();
         }
     }
+
+    private GameItemModel model;
 
     public GameControl()
     {
@@ -44,7 +47,19 @@ public partial class GameControl : UserControl
         if (e.Property == GameModelProperty)
         {
             if (GameModel == null)
+            {
+                if (model != null)
+                {
+                    GameModel = model;
+                }
+
                 return;
+            }
+            else if (GameModel == model)
+            {
+                return;
+            }
+            model = GameModel;
 
             DataContext = GameModel;
             if (GameModel != null)
@@ -60,7 +75,7 @@ public partial class GameControl : UserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (GameModel?.IsDrop == true)
+                if (GameModel.IsDrop == true)
                 {
                     RenderTransform = new ScaleTransform(0.95, 0.95);
                 }

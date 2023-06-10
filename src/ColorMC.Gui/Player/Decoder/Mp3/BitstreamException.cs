@@ -13,7 +13,7 @@ public class BitstreamException : JavaLayerException
 
     public BitstreamException(int errorcode, Exception? t) : this(GetErrorString(errorcode), t)
     {
-        this.Errorcode = errorcode;
+        Errorcode = errorcode;
     }
 
     static public string GetErrorString(int errorcode)

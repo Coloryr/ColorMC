@@ -12,10 +12,25 @@ public class NAudioPlayer : IPlayer
     private BufferedWaveProvider? bwp;
     private bool init = false;
     private bool stop = false;
+    private bool IsPlay = false;
 
     public NAudioPlayer()
     {
         waveOut = new();
+
+        new Thread(() =>
+        {
+            while (true)
+            {
+                if (IsPlay && Media.Decoding == false &&
+                    bwp?.BufferedDuration.TotalSeconds == 0)
+                {
+                    IsPlay = false;
+                    Media.PlayEnd();
+                }
+                Thread.Sleep(100);
+            }
+        }).Start();
     }
 
     public void Close()
@@ -75,6 +90,7 @@ public class NAudioPlayer : IPlayer
         if (waveOut.PlaybackState == PlaybackState.Stopped)
         {
             waveOut.Play();
+            IsPlay = true;
         }
     }
 }

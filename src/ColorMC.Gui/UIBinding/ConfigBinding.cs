@@ -6,6 +6,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -483,5 +484,26 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.Music = v3;
         GuiConfigUtils.Config.ServerCustom.Volume = v4;
         GuiConfigUtils.Save();
+    }
+
+    public static void SetLoginLock(bool enableOneLogin, int login, string url)
+    {
+        GuiConfigUtils.Config.ServerCustom ??= new();
+        GuiConfigUtils.Config.ServerCustom.LockLogin = enableOneLogin;
+        GuiConfigUtils.Config.ServerCustom.LoginType = login;
+        GuiConfigUtils.Config.ServerCustom.LoginUrl = url;
+        GuiConfigUtils.Save();
+    }
+
+    public static bool IsLockLogin()
+    {
+        return GuiConfigUtils.Config.ServerCustom.LockLogin;
+    }
+
+    public static void GetLockLogin(out int type, out string url)
+    {
+        var config = GuiConfigUtils.Config.ServerCustom;
+        type = config.LoginType;
+        url = config.LoginUrl;
     }
 }

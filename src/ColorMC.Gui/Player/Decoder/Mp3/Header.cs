@@ -195,6 +195,10 @@ public sealed class Header
             CalculateFramesize();
             // read framedata:
             int framesizeloaded = stream.ReadFrameData(framesize);
+            if (framesizeloaded == 0)
+            {
+                throw new BitstreamException(BitstreamErrors.STREAM_EOF, null);
+            }
             if ((framesize >= 0) && (framesizeloaded != framesize))
             {
                 // Data loaded does not match to expected framesize,

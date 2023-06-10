@@ -15,7 +15,7 @@ using System.IO;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
-public partial class GameModel : ObservableObject
+public partial class GameItemModel : ObservableObject
 {
     public readonly IUserControl Con;
     private readonly IMainTop Top;
@@ -42,7 +42,7 @@ public partial class GameModel : ObservableObject
     public string Name => Obj.Name;
     public Bitmap Pic => GetImage();
 
-    public GameModel(IUserControl con, IMainTop top, GameSettingObj obj)
+    public GameItemModel(IUserControl con, IMainTop top, GameSettingObj obj)
     {
         Top = top;
         Con = con;

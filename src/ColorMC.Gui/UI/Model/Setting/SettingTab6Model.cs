@@ -26,6 +26,8 @@ public partial class SettingTab6Model : ObservableObject
 
     public ObservableCollection<string> GameList { get; init; } = new();
 
+    public List<string> LoginList => UserBinding.GetLoginType();
+
     [ObservableProperty]
     private Color color1;
     [ObservableProperty]
@@ -39,6 +41,8 @@ public partial class SettingTab6Model : ObservableObject
     private string? serverUrl;
     [ObservableProperty]
     private string? music;
+    [ObservableProperty]
+    private string? loginUrl;
 
     [ObservableProperty]
     private ushort port;
@@ -52,6 +56,10 @@ public partial class SettingTab6Model : ObservableObject
     [ObservableProperty]
     private bool enableOneGame;
     [ObservableProperty]
+    private bool enableOneLogin;
+    [ObservableProperty]
+    private bool enableOneLoginUrl;
+    [ObservableProperty]
     private bool enableServerPack;
     [ObservableProperty]
     private bool enableMusic;
@@ -62,12 +70,39 @@ public partial class SettingTab6Model : ObservableObject
     private int game = -1;
     [ObservableProperty]
     private int volume;
+    [ObservableProperty]
+    private int login = -1;
 
     private bool load;
 
     public SettingTab6Model(IUserControl con)
     {
         Con = con;
+    }
+
+    partial void OnLoginUrlChanged(string? value)
+    {
+        SetLoginLock();
+    }
+
+    partial void OnLoginChanged(int value)
+    {
+        var type = (AuthType)(value + 1);
+        if (type is AuthType.Nide8 or AuthType.AuthlibInjector or AuthType.SelfLittleSkin)
+        {
+            EnableOneLoginUrl = true;
+        }
+        else
+        {
+            EnableOneLoginUrl = false;
+        }
+
+        SetLoginLock();
+    }
+
+    partial void OnEnableOneLoginChanged(bool value)
+    {
+        SetLoginLock();
     }
 
     partial void OnVolumeChanged(int value)
@@ -307,6 +342,10 @@ public partial class SettingTab6Model : ObservableObject
             }
 
             Volume = config.Volume;
+
+            LoginUrl = config.LoginUrl;
+            Login = config.LoginType;
+            EnableOneLogin = config.LockLogin;
         }
 
         load = false;
@@ -318,6 +357,14 @@ public partial class SettingTab6Model : ObservableObject
             return;
 
         ConfigBinding.SetMusic(EnableMusic, SlowVolume, Music, Volume);
+    }
+
+    private void SetLoginLock()
+    {
+        if (load)
+            return;
+
+        ConfigBinding.SetLoginLock(EnableOneLogin, Login, LoginUrl!);
     }
 
     private void SetServerPack()

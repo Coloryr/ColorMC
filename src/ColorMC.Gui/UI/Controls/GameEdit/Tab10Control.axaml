@@ -10,7 +10,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <DockPanel Margin="5">
-        <view:ServerMotdControl DockPanel.Dock="Top" IP="{Binding IP}" />
+        <view:ServerMotdControl DockPanel.Dock="Top" IPPort="{Binding IPPort}" />
         <Grid>
             <DataGrid
                 Name="DataGrid1"

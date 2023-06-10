@@ -6,6 +6,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
@@ -164,6 +165,12 @@ public static class WebBinding
         switch (type)
         {
             case FileType.Mod:
+                return new()
+                {
+                    SourceType.CurseForge,
+                    SourceType.Modrinth,
+                    SourceType.McMod
+                };
             case FileType.DataPacks:
             case FileType.Resourcepack:
                 return new()
@@ -586,6 +593,11 @@ public static class WebBinding
                 _ => "https://modrinth.com/mod/"
             } + obj1.project_id;
         }
+        else if (obj.SourceType == SourceType.McMod)
+        {
+            var obj1 = (obj.Data as McModSearchItemObj)!;
+            return obj1.Url;
+        }
 
         return null;
     }
@@ -670,5 +682,26 @@ public static class WebBinding
     public static void OpenMcmod(ModDisplayModel obj)
     {
         BaseBinding.OpUrl($"https://search.mcmod.cn/s?key={obj.Name}");
+    }
+
+    public static async Task<List<FileItemDisplayObj>?> SearchMcmod(FileType type, string key, int page)
+    {
+        var list = type == FileType.Mod ? await McModAPI.SearchMod(key, page)
+            : await McModAPI.SearchModPack(key, page);
+        if (list == null)
+            return null;
+
+        var list1 = new List<FileItemDisplayObj>();
+        list.ForEach(a => list1.Add(new()
+        {
+            Name = a.Name,
+            Summary = a.Text,
+            FileType = type,
+            SourceType = SourceType.McMod,
+            Data = a,
+            ModifiedDate = a.Time
+        }));
+
+        return list1;
     }
 }

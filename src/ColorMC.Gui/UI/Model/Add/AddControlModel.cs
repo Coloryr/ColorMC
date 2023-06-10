@@ -253,6 +253,10 @@ public partial class AddControlModel : ObservableObject
                     return;
                 DownloadModList.Add(item);
             });
+            if (DownloadModList.Count == 0)
+            {
+                LoadMoreMod = true;
+            }
         }
     }
 
@@ -471,6 +475,10 @@ public partial class AddControlModel : ObservableObject
 
             Load();
         }
+        else if (type == SourceType.McMod)
+        {
+            Load();
+        }
 
         load = false;
     }
@@ -679,47 +687,82 @@ public partial class AddControlModel : ObservableObject
     public async void Load()
     {
         var window = Con.Window;
+        var type = SourceTypeList[DownloadSource];
         window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info2"));
-        var data = await WebBinding.GetList(now, SourceTypeList[DownloadSource],
-            GameVersion, Name, Page,
-            SortType, Categorie < 0 ? "" :
-                Categories[Categorie], Obj.Loader);
-
-        if (data == null)
+        if (type == SourceType.McMod)
         {
-            window.ProgressInfo.Close();
-            window.OkInfo.Show(App.GetLanguage("AddWindow.Error2"));
-            return;
-        }
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                window.ProgressInfo.Close();
+                return;
+            }
+            
+            var data = await WebBinding.SearchMcmod(now, Name, Page);
+            if (data == null)
+            {
+                window.ProgressInfo.Close();
+                window.OkInfo.Show(App.GetLanguage("AddWindow.Error2"));
+                return;
+            }
 
-        DisplayList.Clear();
+            DisplayList.Clear();
 
-        if (now == FileType.Mod)
-        {
             foreach (var item in data)
             {
-                if (Obj.Mods.ContainsKey(item.ID))
-                {
-                    item.IsDownload = true;
-                }
                 DisplayList.Add(new(item));
             }
+
+            OnPropertyChanged(nameof(DisplayList));
+
+            last = null;
+
+            EmptyDisplay = DisplayList.Count == 0;
+
+            window.ProgressInfo.Close();
         }
         else
         {
-            foreach (var item in data)
+            var data = await WebBinding.GetList(now, type,
+                GameVersion, Name, Page,
+                SortType, Categorie < 0 ? "" :
+                    Categories[Categorie], Obj.Loader);
+
+            if (data == null)
             {
-                DisplayList.Add(new(item));
+                window.ProgressInfo.Close();
+                window.OkInfo.Show(App.GetLanguage("AddWindow.Error2"));
+                return;
             }
+
+            DisplayList.Clear();
+
+            if (now == FileType.Mod)
+            {
+                foreach (var item in data)
+                {
+                    if (Obj.Mods.ContainsKey(item.ID))
+                    {
+                        item.IsDownload = true;
+                    }
+                    DisplayList.Add(new(item));
+                }
+            }
+            else
+            {
+                foreach (var item in data)
+                {
+                    DisplayList.Add(new(item));
+                }
+            }
+
+            OnPropertyChanged(nameof(DisplayList));
+
+            last = null;
+
+            EmptyDisplay = DisplayList.Count == 0;
+
+            window.ProgressInfo.Close();
         }
-
-        OnPropertyChanged(nameof(DisplayList));
-
-        last = null;
-
-        EmptyDisplay = DisplayList.Count == 0;
-
-        window.ProgressInfo.Close();
     }
 
     public async void LoadFile(string? id = null)

@@ -55,9 +55,29 @@
                     Margin="10,5,0,0"
                     IsEnabled="{Binding EnableOneGame}"
                     ItemsSource="{Binding GameList}"
-                    SelectedIndex="{Binding Game, Mode=TwoWay}" />
+                    SelectedIndex="{Binding Game}" />
 
             </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <CheckBox
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab6.Text24}"
+                    IsChecked="{Binding EnableOneLogin}" />
+                <ComboBox
+                    Width="300"
+                    Margin="10,5,0,0"
+                    IsEnabled="{Binding EnableOneLogin}"
+                    ItemsSource="{Binding LoginList}"
+                    SelectedIndex="{Binding Login}" />
+            </StackPanel>
+
+            <TextBox
+                Margin="0,5,0,0"
+                Classes="input1"
+                IsEnabled="{Binding EnableOneLoginUrl}"
+                Text="{Binding LoginUrl}"
+                Watermark="{setting:Localize SettingWindow.Tab6.Text25}" />
 
             <Label Content="{setting:Localize SettingWindow.Tab6.Text8}" />
 

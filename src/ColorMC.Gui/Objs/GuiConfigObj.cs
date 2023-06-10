@@ -85,6 +85,18 @@ public record ServerCustom
     /// 缓慢提升音量
     /// </summary>
     public bool SlowVolume { get; set; }
+    /// <summary>
+    /// 锁定登录实例
+    /// </summary>
+    public bool LockLogin { get; set; }
+    /// <summary>
+    /// 登录实例类型
+    /// </summary>
+    public int LoginType { get; set; }
+    /// <summary>
+    /// 登录实例网址
+    /// </summary>
+    public string LoginUrl { get; set; }
 }
 
 /// <summary>

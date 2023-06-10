@@ -100,7 +100,8 @@ public partial class AddModPackModel : ObservableObject
         if (load)
             return;
 
-        gameVersion1 = value;
+        
+        GameVersion1 = value;
 
         Load();
     }
@@ -309,6 +310,9 @@ public partial class AddModPackModel : ObservableObject
 
     private async void Load1()
     {
+        if (Display == false)
+            return;
+
         var window = Con.Window;
         FileList.Clear();
         window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info3"));

@@ -29,6 +29,19 @@ public static class UserBinding
     public static Image<Rgba32>? SkinImage { get; set; }
     public static Image<Rgba32>? CapeIamge { get; set; }
     public static Bitmap HeadBitmap { get; private set; }
+    public static List<string> GetLoginType()
+    {
+        var list = new List<string>()
+        {
+            AuthType.OAuth.GetName(),
+            AuthType.Nide8.GetName(),
+            AuthType.AuthlibInjector.GetName(),
+            AuthType.LittleSkin.GetName(),
+            AuthType.SelfLittleSkin.GetName()
+        };
+        return list;
+    }
+
     public static List<string> GetUserTypes()
     {
         var list = new List<string>()

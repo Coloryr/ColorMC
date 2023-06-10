@@ -25,7 +25,7 @@ public partial class MainModel : ObservableObject, IMainTop
     public ObservableCollection<string> GroupList { get; init; } = new();
     public ObservableCollection<GamesModel> GameGroups { get; init; } = new();
 
-    private readonly Dictionary<string, GameModel> Launchs = new();
+    private readonly Dictionary<string, GameItemModel> Launchs = new();
 
     public bool launch = false;
     public bool first = true;
@@ -64,12 +64,12 @@ public partial class MainModel : ObservableObject, IMainTop
     private bool musicDisplay;
 
     [ObservableProperty]
-    private GameModel? game;
+    private GameItemModel? game;
     [ObservableProperty]
-    private GameModel? oneGame;
+    private GameItemModel? oneGame;
 
     [ObservableProperty]
-    private Bitmap head;
+    private Bitmap head = App.LoadIcon;
 
     private LoginObj? Obj1;
 
@@ -91,7 +91,7 @@ public partial class MainModel : ObservableObject, IMainTop
         App.UserEdit += Load1;
     }
 
-    partial void OnGameChanged(GameModel? value)
+    partial void OnGameChanged(GameItemModel? value)
     {
         UpdateLaunch();
     }
@@ -229,7 +229,7 @@ public partial class MainModel : ObservableObject, IMainTop
     }
 
 
-    public Task<(bool, string?)> Set(GameModel obj)
+    public Task<(bool, string?)> Set(GameItemModel obj)
     {
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
@@ -245,7 +245,7 @@ public partial class MainModel : ObservableObject, IMainTop
         });
     }
 
-    public async void EditGroup(GameModel obj)
+    public async void EditGroup(GameItemModel obj)
     {
         await Set(obj);
         if (isCancel)
@@ -272,7 +272,7 @@ public partial class MainModel : ObservableObject, IMainTop
         }
     }
 
-    public void Select(GameModel? obj)
+    public void Select(GameItemModel? obj)
     {
         if (Game != null)
         {
@@ -488,7 +488,7 @@ public partial class MainModel : ObservableObject, IMainTop
             IsOneGame = false;
             var list = GameBinding.GetGameGroups();
             var uuid = ConfigBinding.GetLastLaunch();
-            GameModel? last = null;
+            GameItemModel? last = null;
             if (first)
             {
                 first = false;
@@ -576,7 +576,7 @@ public partial class MainModel : ObservableObject, IMainTop
         }
     }
 
-    public async void Launch(GameModel obj)
+    public async void Launch(GameItemModel obj)
     {
         if (launch)
             return;

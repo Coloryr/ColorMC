@@ -90,7 +90,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         }
         else if (e.PropertyName == "DisplayList")
         {
-            Dispatcher.UIThread.Post(ScrollViewer1.ScrollToHome);
+            ScrollViewer1.ScrollToHome();
         }
     }
 

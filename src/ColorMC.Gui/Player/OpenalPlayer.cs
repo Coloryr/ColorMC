@@ -9,6 +9,7 @@ public class OpenalPlayer : IPlayer
     private readonly int alSource;
     private ALDevice device;
     private ALContext context;
+    private bool IsPlay = false;
 
     public float Volume
     {
@@ -43,6 +44,12 @@ public class OpenalPlayer : IPlayer
                     int temp = AL.SourceUnqueueBuffer(alSource);
                     AL.DeleteBuffer(temp);
                     Thread.Sleep(10);
+                }
+                if (IsPlay && value == 0 && Media.Decoding == false &&
+                    AL.GetSourceState(alSource) == ALSourceState.Stopped)
+                {
+                    IsPlay = false;
+                    Media.PlayEnd();
                 }
             }
         }).Start();
@@ -128,6 +135,7 @@ public class OpenalPlayer : IPlayer
         if (AL.GetSourceState(alSource) != ALSourceState.Playing)
         {
             AL.SourcePlay(alSource);
+            IsPlay = true;
         }
     }
 }

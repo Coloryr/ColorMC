@@ -231,7 +231,7 @@
                             FontSize="30" />
                     </StackPanel>
                 </Grid>
-                <Grid Background="{setting:Colors TopBottom}" IsVisible="{Binding IsOneGame}">
+                <Grid Background="{setting:Colors TranBack}" IsVisible="{Binding IsOneGame}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <views1:GameControl GameModel="{Binding OneGame}" />
                     </StackPanel>

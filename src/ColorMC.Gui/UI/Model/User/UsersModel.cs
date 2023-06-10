@@ -133,11 +133,24 @@ public partial class UsersModel : ObservableObject
     {
         EnableType = true;
 
-        Name = "";
+        if (ConfigBinding.IsLockLogin())
+        {
+            ConfigBinding.GetLockLogin(out var type, out var url);
+            Type = type + 1;
+            Name = url;
+            EnableType = false;
+            EnableName = false;
+        }
+        else
+        {
+            Name = "";
+            Type = -1;
+            EnableType = true;
+            EnableName = true;
+        }
+
         User = "";
         Password = "";
-
-        Type = -1;
 
         DisplayAdd = true;
     }
@@ -330,6 +343,9 @@ public partial class UsersModel : ObservableObject
 
     public void Drop(IDataObject data)
     {
+        if (ConfigBinding.IsLockLogin())
+            return;
+
         if (data.Contains(DataFormats.Text))
         {
             var str = data.GetText();
@@ -342,6 +358,9 @@ public partial class UsersModel : ObservableObject
 
     public void AddUrl(string url)
     {
+        if (ConfigBinding.IsLockLogin())
+            return;
+
         SetAdd();
         Type = 3;
         Name = HttpUtility.UrlDecode(url.Replace("authlib-injector:yggdrasil-server:", ""));

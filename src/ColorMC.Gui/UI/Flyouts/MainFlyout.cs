@@ -8,8 +8,8 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class MainFlyout
 {
-    private GameModel Obj;
-    public MainFlyout(Control con, GameModel obj)
+    private GameItemModel Obj;
+    public MainFlyout(Control con, GameItemModel obj)
     {
         Obj = obj;
 
