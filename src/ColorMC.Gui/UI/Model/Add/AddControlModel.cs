@@ -559,7 +559,10 @@ public partial class AddControlModel : ObservableObject
 
         var last = this.last!;
         IsDownload = true;
-        last.NowDownload = true;
+        if (last != null)
+        {
+            last.NowDownload = true;
+        }
         VersionDisplay = false;
         bool res = false;
 
@@ -666,12 +669,18 @@ public partial class AddControlModel : ObservableObject
         if (res)
         {
             window.NotifyInfo.Show(App.GetLanguage("AddWindow.Info6"));
-            last.NowDownload = false;
-            last.IsDownload = true;
+            if (last != null)
+            {
+                last.NowDownload = false;
+                last.IsDownload = true;
+            }
         }
         else
         {
-            last.NowDownload = false;
+            if (last != null)
+            {
+                last.NowDownload = false;
+            }
             window.OkInfo.Show(App.GetLanguage("AddWindow.Error5"));
         }
     }
