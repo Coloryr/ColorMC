@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Threading;
 using AvaloniaEdit.Indentation.CSharp;
 using ColorMC.Core.Objs;
@@ -23,6 +24,7 @@ public partial class ConfigEditControl : UserControl, IUserControl
         NbtViewer.KeyDown += NbtViewer_KeyDown;
 
         TextEditor1.KeyDown += NbtViewer_KeyDown;
+        TextEditor1.TextArea.Background = Brushes.Transparent;
         TextEditor1.Options.ShowBoxForControlCharacters = true;
         TextEditor1.TextArea.IndentationStrategy =
             new CSharpIndentationStrategy(TextEditor1.Options);

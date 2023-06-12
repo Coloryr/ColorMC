@@ -144,6 +144,14 @@
                 Content="{setting:Localize GameEditWindow.Tab1.Text5}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text47}"
                 ToolTip.VerticalOffset="-30" />
+            <Button
+                Width="120"
+                Height="25"
+                Margin="0,5,5,5"
+                Command="{Binding OpenGameLog}"
+                Content="{setting:Localize GameEditWindow.Tab1.Text7}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+                ToolTip.VerticalOffset="-30" />
         </StackPanel>
         <StackPanel
             HorizontalAlignment="Right"

@@ -865,9 +865,9 @@ public static class GameBinding
         return res;
     }
 
-    public static GameSettingObj? GetGame(string? name)
+    public static GameSettingObj? GetGame(string? uuid)
     {
-        return InstancesPath.GetGame(name);
+        return InstancesPath.GetGame(uuid);
     }
 
     public static void OpPath(GameSettingObj obj)
@@ -1371,5 +1371,20 @@ public static class GameBinding
 
             return true;
         });
+    }
+
+    public static List<string> GetLogList(GameSettingObj obj)
+    {
+        return obj.GetLogFiles();
+    }
+
+    public static async Task<string?> ReadLog(GameSettingObj obj, string name)
+    {
+        if (BaseBinding.IsGameRun(obj))
+        {
+            if (name.EndsWith("latest.log") || name.EndsWith("debug.log"))
+                return null;
+        }
+        return await Task.Run(() => obj.ReadLog(name));
     }
 }

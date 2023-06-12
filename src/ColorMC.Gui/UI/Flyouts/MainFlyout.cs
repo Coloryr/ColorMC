@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class MainFlyout
 {
-    private GameItemModel Obj;
+    private readonly GameItemModel Obj;
     public MainFlyout(Control con, GameItemModel obj)
     {
         Obj = obj;
@@ -17,15 +17,15 @@ public class MainFlyout
 
         var fy = new FlyoutsControl(new()
         {
-            (App.GetLanguage("MainWindow.Flyouts.Text1"), !run, Button1_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text1"), true, Button1_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text3"), true, Button11_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text4"), true, Button2_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text6"), true, Button4_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text7"), true, Button5_Click),
             (App.GetLanguage("Button.OpFile"), true, Button7_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text7"), true, Button5_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text8"), true, Button9_Click),
-            (App.GetLanguage("MainWindow.Flyouts.Text9"), !run, Button8_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text10"), !run, Button12_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text9"), !run, Button8_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text11"), !run, Button6_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text12"), !run, Button13_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text13"), run, Button10_Click)
@@ -83,11 +83,6 @@ public class MainFlyout
         App.ShowGameEdit(Obj.Obj, GameEditWindowType.World);
     }
 
-    private void Button3_Click()
-    {
-        App.ShowConfigEdit(Obj.Obj);
-    }
-
     private void Button2_Click()
     {
         App.ShowGameEdit(Obj.Obj, GameEditWindowType.Mod);
@@ -95,6 +90,6 @@ public class MainFlyout
 
     private void Button1_Click()
     {
-        App.ShowRunTest(Obj.Obj);
+        App.ShowGameLog(Obj.Obj);
     }
 }

@@ -31,7 +31,7 @@ public static class InstancesPath
     private const string Name14 = "saves";
     private const string Name15 = "config";
     private const string Name16 = "modfileinfo.json";
-    private const string Name17 = "logs/latest.log";
+    private const string Name17 = "logs";
     private const string Name18 = "schematics";
     private const string Name19 = "remove";
     private const string Name20 = "backup";
@@ -199,6 +199,14 @@ public static class InstancesPath
         }
 
         return null;
+    }
+
+    public static GameSettingObj? GetGameByName(string? name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return null;
+
+        return InstallGames.Values.FirstOrDefault(a => a.Name == name);
     }
 
     /// <summary>
@@ -396,11 +404,11 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取游戏实例最后日志文件
+    /// 获取游戏实例最后日志路径
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>文件路径</returns>
-    public static string GetLogLatestFile(this GameSettingObj obj)
+    /// <returns>路径</returns>
+    public static string GetLogPath(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name2}/{Name17}");
     }

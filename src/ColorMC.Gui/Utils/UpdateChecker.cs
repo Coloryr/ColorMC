@@ -21,19 +21,19 @@ public static class UpdateChecker
 
     public static readonly string[] WebSha1s = new string[4] { "", "", "", "" };
     private static readonly string[] Sha1s = new string[4] { "", "", "", "" };
-    private static readonly string[] Local = new string[4] { "", "", "", "" };
+    private static readonly string[] LocalPath = new string[4] { "", "", "", "" };
     public static void Init()
     {
-        Local[0] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Core.dll");
-        Local[1] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Core.pdb");
-        Local[2] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Gui.dll");
-        Local[3] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Gui.pdb");
+        LocalPath[0] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Core.dll");
+        LocalPath[1] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Core.pdb");
+        LocalPath[2] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Gui.dll");
+        LocalPath[3] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Gui.pdb");
 
         for (int a = 0; a < 4; a++)
         {
-            if (File.Exists(Local[a]))
+            if (File.Exists(LocalPath[a]))
             {
-                using var file = File.OpenRead(Local[a]);
+                using var file = File.OpenRead(LocalPath[a]);
                 Sha1s[a] = Funtcions.GenSha1(file);
             }
             else

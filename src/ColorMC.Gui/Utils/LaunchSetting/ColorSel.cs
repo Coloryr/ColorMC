@@ -24,12 +24,12 @@ public class ColorSel : INotifyPropertyChanged
     public const string MainColorStr = "#FF5ABED6";
 
     public const string BackLigthColorStr = "#FFF4F4F5";
-    public const string Back1LigthColorStr = "#88FFFFFF";
+    public const string Back1LigthColorStr = "#62FFFFFF";
     public const string ButtonLightFontStr = "#FFFFFFFF";
     public const string FontLigthColorStr = "#FF000000";
 
     public const string BackDarkColorStr = "#FF202020";
-    public const string Back1DarkColorStr = "#88202020";
+    public const string Back1DarkColorStr = "#46202020";
     public const string ButtonDarkFontStr = "#FF202020";
     public const string FontDarkColorStr = "#FFE9E9E9";
 

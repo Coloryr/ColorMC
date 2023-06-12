@@ -441,4 +441,11 @@ public static class TestItem
     {
         var list = McModAPI.SearchMod("魔法", 0).Result;
     }
+
+    public static void Item25()
+    {
+        var game = InstancesPath.GetGameByName("test");
+        var list = game.GetLogFiles();
+        var data = game.ReadLog(list.First());
+    }
 }

@@ -6,6 +6,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Formats.Asn1;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -178,6 +179,12 @@ public partial class GameEditTab1Model : GameEditTabModel
 
         Obj.ModPack = value;
         Obj.Save();
+    }
+
+    [RelayCommand]
+    public void OpenGameLog()
+    {
+        App.ShowGameLog(Obj);
     }
 
     [RelayCommand]

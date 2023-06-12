@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.RunTest.RunTestControl"
+    x:Class="ColorMC.Gui.UI.Controls.GameLog.GameLogControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
@@ -8,41 +8,59 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+    <DockPanel Margin="0,3,0,0">
+        <DockPanel DockPanel.Dock="Top">
             <CheckBox
                 Name="CheckBox1"
                 Margin="5,0,0,0"
-                Content="{setting:Localize RunTestWindow.Text1}"
+                VerticalAlignment="Center"
+                Content="{setting:Localize GameLogWindow.Text1}"
                 IsChecked="{Binding IsWordWrap}" />
             <CheckBox
                 Name="CheckBox2"
                 Margin="5,0,0,0"
-                Content="{setting:Localize RunTestWindow.Text2}"
+                Content="{setting:Localize GameLogWindow.Text2}"
                 IsChecked="{Binding IsAuto}" />
             <Button
                 Width="100"
                 Height="25"
-                Margin="10,0,0,0"
+                Margin="5,0,5,0"
+                VerticalAlignment="Center"
+                Command="{Binding Launch}"
+                Content="{setting:Localize GameLogWindow.Text4}"
+                DockPanel.Dock="Right"
+                IsEnabled="{Binding !IsGameRun}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text44}"
+                ToolTip.VerticalOffset="-30" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Command="{Binding Stop}"
-                Content="{setting:Localize RunTestWindow.Text3}"
+                Content="{setting:Localize GameLogWindow.Text3}"
+                DockPanel.Dock="Right"
                 IsEnabled="{Binding IsGameRun}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text44}"
                 ToolTip.VerticalOffset="-30" />
             <Button
                 Width="100"
                 Height="25"
-                Margin="10,0,0,0"
+                Margin="5,0,0,0"
                 VerticalAlignment="Center"
-                Command="{Binding Launch}"
-                Content="{setting:Localize RunTestWindow.Text4}"
-                IsEnabled="{Binding !IsGameRun}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text44}"
+                Command="{Binding Load1}"
+                Content="{setting:Localize GameLogWindow.Text6}"
+                DockPanel.Dock="Right"
                 ToolTip.VerticalOffset="-30" />
 
-        </StackPanel>
+            <ComboBox
+                Margin="10,0,0,0"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding FileList}"
+                SelectedItem="{Binding File}" />
+        </DockPanel>
         <ae:TextEditor
             Name="TextEditor1"
             Margin="3"

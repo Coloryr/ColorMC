@@ -358,7 +358,7 @@ public static class BaseBinding
             obj.StartServer.IP = server.ServerAddress;
             obj.StartServer.Port = server.ServerPort;
         }
-        if (App.RunTestWindows.TryGetValue(obj.UUID, out var win))
+        if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
         {
             win.ClearLog();
         }
@@ -448,7 +448,7 @@ public static class BaseBinding
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        App.ShowRunTest(obj);
+                        App.ShowGameLog(obj);
                         GameLogs.Remove(obj.UUID);
                     });
                 }
@@ -460,7 +460,7 @@ public static class BaseBinding
                     }
                 }
                 res.Dispose();
-                if (App.RunTestWindows.TryGetValue(obj.UUID, out var win1))
+                if (App.GameLogWindows.TryGetValue(obj.UUID, out var win1))
                 {
                     win1.Update();
                 }
@@ -468,7 +468,7 @@ public static class BaseBinding
             Games.Add(res, obj);
             RunGames.Add(obj.UUID, res);
             GameCountUtils.LaunchDone(obj.UUID);
-            if (App.RunTestWindows.TryGetValue(obj.UUID, out var win1))
+            if (App.GameLogWindows.TryGetValue(obj.UUID, out var win1))
             {
                 win1.Update();
             }
@@ -512,7 +512,7 @@ public static class BaseBinding
         if (Games.TryGetValue(p, out var obj))
         {
             GameLogs[obj.UUID].Append(d).Append(Environment.NewLine);
-            if (App.RunTestWindows.TryGetValue(obj.UUID, out var win))
+            if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
             {
                 win.Log(d);
             }
@@ -527,7 +527,7 @@ public static class BaseBinding
     public static void PLog(GameSettingObj obj, string? d)
     {
         GameLogs[obj.UUID].Append(d).Append(Environment.NewLine);
-        if (App.RunTestWindows.TryGetValue(obj.UUID, out var win))
+        if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
         {
             win.Log(d);
         }
