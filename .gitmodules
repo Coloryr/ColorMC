@@ -1,0 +1,3 @@
+[submodule "Live2DCSharpSDK"]
+	path = Live2DCSharpSDK
+	url = https://github.com/Coloryr/Live2DCSharpSDK.git

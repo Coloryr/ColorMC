@@ -401,11 +401,11 @@ public static class BaseBinding
             }
             catch (Exception e)
             {
-                UserBinding.UnLockUser(obj1);
                 temp = App.GetLanguage("Gui.Error6");
                 Logs.Error(temp, e);
                 App.ShowError(temp, e);
             }
+            UserBinding.UnLockUser(obj1);
             return null;
         });
         Funtcions.RunGC();

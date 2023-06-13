@@ -16,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Live2DCSharpSDK.App", "..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj", "{A8580C80-B8FA-410F-A916-A9149682E1B5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Live2DCSharpSDK.Framework", "..\Live2DCSharpSDK\Live2DCSharpSDK.Framework\Live2DCSharpSDK.Framework.csproj", "{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +60,22 @@ Global
 		{60B8E35E-7277-4DCB-8175-49E71FBB8E2E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{60B8E35E-7277-4DCB-8175-49E71FBB8E2E}.Release|x64.ActiveCfg = Release|Any CPU
 		{60B8E35E-7277-4DCB-8175-49E71FBB8E2E}.Release|x64.Build.0 = Release|Any CPU
+		{A8580C80-B8FA-410F-A916-A9149682E1B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8580C80-B8FA-410F-A916-A9149682E1B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8580C80-B8FA-410F-A916-A9149682E1B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A8580C80-B8FA-410F-A916-A9149682E1B5}.Debug|x64.Build.0 = Debug|Any CPU
+		{A8580C80-B8FA-410F-A916-A9149682E1B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8580C80-B8FA-410F-A916-A9149682E1B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8580C80-B8FA-410F-A916-A9149682E1B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{A8580C80-B8FA-410F-A916-A9149682E1B5}.Release|x64.Build.0 = Release|Any CPU
+		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Debug|x64.Build.0 = Debug|Any CPU
+		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Release|x64.ActiveCfg = Release|Any CPU
+		{39EC99EF-DD4C-4F09-88F7-103F25E1C80B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

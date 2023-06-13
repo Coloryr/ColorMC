@@ -321,6 +321,8 @@ public partial class GameEditTab1Model : GameEditTabModel
         SelectForge = false;
         SelectFabric = false;
         SelectQuilt = false;
+
+        Load1();
     }
 
     [RelayCommand]
