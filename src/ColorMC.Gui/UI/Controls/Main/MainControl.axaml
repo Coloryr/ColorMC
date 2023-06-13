@@ -12,7 +12,11 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Grid>
-        <views1:Live2dControl />
+        <views1:Live2dControl
+            Width="200"
+            Height="200"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom" />
         <DockPanel>
             <ScrollViewer DockPanel.Dock="Right">
                 <Grid>
