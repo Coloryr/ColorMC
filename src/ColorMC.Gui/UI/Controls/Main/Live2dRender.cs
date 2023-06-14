@@ -30,8 +30,9 @@ public class Live2dRender : OpenGlControlBase
     private bool change;
     private bool delete;
     private bool init = false;
+    private MainModel Model;
 
-    public bool HaveModel => lapp.Live2dManager.GetModelNum() != 0;
+    public bool HaveModel => lapp?.Live2dManager.GetModelNum() != 0;
 
     public Live2dRender()
     {
@@ -57,6 +58,7 @@ public class Live2dRender : OpenGlControlBase
         if (DataContext is MainModel model)
         {
             model.PropertyChanged += Model_PropertyChanged;
+            Model = model;
         }
     }
 
@@ -112,6 +114,7 @@ public class Live2dRender : OpenGlControlBase
             lapp = new(new AvaloniaApi(this, gl));
             ChangeModel();
             CheckError(gl);
+            Model.ShowMessage(App.GetLanguage("Live2D.Text1"));
             init = true;
         }
         catch (Exception e)

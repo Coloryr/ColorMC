@@ -437,7 +437,7 @@ public static class BaseBinding
                 });
             }
 
-            App.MainWindow?.ShowMessage("游戏启动了喵");
+            App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text2"));
 
             res.Exited += (a, b) =>
             {
@@ -453,7 +453,7 @@ public static class BaseBinding
                         App.ShowGameLog(obj);
                         GameLogs.Remove(obj.UUID);
                     });
-                    App.MainWindow?.ShowMessage("游戏崩溃了喵");
+                    App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text3"));
                 }
                 else
                 {

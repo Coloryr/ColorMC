@@ -849,5 +849,8 @@
 	"Button.Confirm": "确定",
 	"Button.Delete": "删除",
 	"Button.Refash": "刷新",
-	"Button.Add": "添加"
+	"Button.Add": "添加",
+	"Live2D.Text1": "欢迎回来喵",
+	"Live2D.Text2": "游戏启动了喵",
+	"Live2D.Text3": "游戏崩溃了喵"
 }

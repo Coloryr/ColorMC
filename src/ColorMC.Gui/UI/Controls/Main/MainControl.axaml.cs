@@ -197,8 +197,6 @@ public partial class MainControl : UserControl, IUserControl
         Window.SetTitle(App.GetLanguage("MainWindow.Title"));
 
         model.Open();
-
-        model.ShowMessage("»¶Ó­»ØÀ´ß÷");
     }
 
     private void Item_DoubleTapped(object? sender, TappedEventArgs e)
