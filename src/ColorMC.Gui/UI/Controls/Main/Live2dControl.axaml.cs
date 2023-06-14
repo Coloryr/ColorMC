@@ -1,11 +1,21 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
+using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Model.Main;
+using System;
+using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class Live2dControl : UserControl
 {
+    private CancellationTokenSource cancel = new();
+    private MainModel Model;
+
     public Live2dControl()
     {
         InitializeComponent();
@@ -13,6 +23,31 @@ public partial class Live2dControl : UserControl
         Live2dTop.PointerPressed += Live2dTop_PointerPressed;
         Live2dTop.PointerReleased += Live2dTop_PointerReleased;
         Live2dTop.PointerMoved += Live2dTop_PointerMoved;
+
+        DataContextChanged += Live2dControl_DataContextChanged;
+    }
+
+    private void Live2dControl_DataContextChanged(object? sender, EventArgs e)
+    {
+        if (DataContext is MainModel model)
+        {
+            model.PropertyChanged += Model_PropertyChanged;
+            Model = model;
+        }
+    }
+
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "ModelText")
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                cancel.Cancel();
+                cancel = new();
+
+                ShowMessage();
+            });
+        }
     }
 
     private void Live2dTop_PointerMoved(object? sender, PointerEventArgs e)
@@ -35,5 +70,29 @@ public partial class Live2dControl : UserControl
             Live2d.Pressed();
             Live2d.Moved((float)pro.Position.X, (float)pro.Position.Y);
         }
+        else if (pro.Properties.IsRightButtonPressed)
+        {
+            _ = new Live2DFlyout(this, Live2d);
+        }
+    }
+
+    private async void ShowMessage()
+    {
+        if (!Live2d.HaveModel)
+        {
+            return;
+        }
+        TextBox1.Text = Model.Message;
+        await App.CrossFade300.Start(null, TextBox1, cancel.Token);
+        if (cancel.Token.IsCancellationRequested)
+        {
+            return;
+        }
+        await Task.Delay(TimeSpan.FromSeconds(5));
+        if (cancel.Token.IsCancellationRequested)
+        {
+            return;
+        }
+        await App.CrossFade300.Start(TextBox1, null, cancel.Token);
     }
 }

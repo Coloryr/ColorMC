@@ -157,6 +157,16 @@ public record ColorSetting
     public string ColorFont2 { get; set; }
 }
 
+public record Live2DSetting
+{
+    /// <summary>
+    /// Live2D模型地址
+    /// </summary>
+    public string? Model { get; set; }
+    public int Width { get; set; }
+    public int Height { get; set; }
+}
+
 /// <summary>
 /// Gui配置文件
 /// </summary>
@@ -256,7 +266,7 @@ public record GuiConfigObj
     /// </summary>
     public string LastLaunch { get; set; }
     /// <summary>
-    /// Live2D模型地址
+    /// Live2D设置
     /// </summary>
-    public string? Live2DModel { get; set; }
+    public Live2DSetting Live2D { get; set; }
 }

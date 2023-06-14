@@ -44,14 +44,16 @@ public partial class MainControl : UserControl, IUserControl
 
         SizeChanged += MainControl_SizeChanged;
 
-        model.Live2dWidth = (int)Bounds.Width / 2;
-        model.Live2dHeight = (int)(Bounds.Height / 1.5);
+        var config = GuiConfigUtils.Config.Live2D;
+        model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
+        model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
     }
 
     private void MainControl_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
-        model.Live2dWidth = (int)Bounds.Width / 2;
-        model.Live2dHeight = (int)(Bounds.Height / 1.5);
+        var config = GuiConfigUtils.Config.Live2D;
+        model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
+        model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
     }
 
     private void Image1_PointerExited(object? sender, PointerEventArgs e)
@@ -195,6 +197,8 @@ public partial class MainControl : UserControl, IUserControl
         Window.SetTitle(App.GetLanguage("MainWindow.Title"));
 
         model.Open();
+
+        model.ShowMessage("»¶Ó­»ØÀ´ß÷");
     }
 
     private void Item_DoubleTapped(object? sender, TappedEventArgs e)
@@ -252,5 +256,17 @@ public partial class MainControl : UserControl, IUserControl
     public void DeleteModel()
     {
         model.DeleteModel();
+    }
+
+    public void ChangeLive2DSize()
+    {
+        var config = GuiConfigUtils.Config.Live2D;
+        model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
+        model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
+    }
+
+    public void ShowMessage(string message)
+    {
+        model.ShowMessage(message);
     }
 }

@@ -30,6 +30,7 @@ public partial class MainModel : ObservableObject, IMainTop
 
     public bool launch = false;
     public bool first = true;
+    public string Message;
 
     [ObservableProperty]
     private int live2dWidth = 300;
@@ -254,6 +255,7 @@ public partial class MainModel : ObservableObject, IMainTop
     public async void EditGroup(GameItemModel obj)
     {
         await Set(obj);
+        GroupEnable = false;
         if (isCancel)
         {
             return;
@@ -651,8 +653,14 @@ public partial class MainModel : ObservableObject, IMainTop
         OnPropertyChanged("ModelChange");
     }
 
-    internal void DeleteModel()
+    public void DeleteModel()
     {
         OnPropertyChanged("ModelDelete");
+    }
+
+    public void ShowMessage(string message)
+    {
+        Message = message;
+        OnPropertyChanged("ModelText");
     }
 }

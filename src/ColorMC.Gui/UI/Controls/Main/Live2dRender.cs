@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
@@ -8,6 +9,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
 using Live2DCSharpSDK.App;
+using Live2DCSharpSDK.Framework.Motion;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +29,9 @@ public class Live2dRender : OpenGlControlBase
     private bool render;
     private bool change;
     private bool delete;
+    private bool init = false;
+
+    public bool HaveModel => lapp.Live2dManager.GetModelNum() != 0;
 
     public Live2dRender()
     {
@@ -38,7 +43,7 @@ public class Live2dRender : OpenGlControlBase
                 {
                     Dispatcher.UIThread.Invoke(RequestNextFrameRendering);
                 }
-                Thread.Sleep(50);
+                Thread.Sleep(20);
             }
         }).Start();
 
@@ -70,7 +75,7 @@ public class Live2dRender : OpenGlControlBase
     private void ChangeModel()
     {
         lapp.Live2dManager.ReleaseAllModel();
-        var model = GuiConfigUtils.Config.Live2DModel;
+        var model = GuiConfigUtils.Config.Live2D.Model;
         if (string.IsNullOrWhiteSpace(model) || !File.Exists(model))
         {
             return;
@@ -95,8 +100,6 @@ public class Live2dRender : OpenGlControlBase
         while ((err = gl.GetError()) != GlConsts.GL_NO_ERROR)
             Console.WriteLine(err);
     }
-
-    private bool init = false;
 
     protected override unsafe void OnOpenGlInit(GlInterface gl)
     {
@@ -166,5 +169,25 @@ public class Live2dRender : OpenGlControlBase
     public void Moved(float x, float y)
     {
         lapp.OnMouseCallBack(x, y);
+    }
+
+    public List<string> GetMotions()
+    {
+        return lapp.Live2dManager.GetModel(0).Motions;
+    }
+
+    public List<string> GetExpressions()
+    { 
+        return lapp.Live2dManager.GetModel(0).Expressions;
+    }
+
+    public void PlayMotion(string name)
+    {
+        lapp.Live2dManager.GetModel(0).StartMotion(name, MotionPriority.PriorityNormal);
+    }
+
+    public void PlayExpression(string name)
+    {
+        lapp.Live2dManager.GetModel(0).SetExpression(name);
     }
 }

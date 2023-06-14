@@ -94,6 +94,10 @@ public partial class SettingTab2Model : ObservableObject
     private int rgbV1;
     [ObservableProperty]
     private int rgbV2;
+    [ObservableProperty]
+    private int width;
+    [ObservableProperty]
+    private int height;
 
     [ObservableProperty]
     private string? pic;
@@ -113,6 +117,22 @@ public partial class SettingTab2Model : ObservableObject
         {
             enableWindowMode = false;
         }
+    }
+
+    partial void OnWidthChanged(int value)
+    {
+        if (load)
+            return;
+
+        ConfigBinding.SetLive2DSize(Width, Height);
+    }
+
+    partial void OnHeightChanged(int value)
+    {
+        if (load)
+            return;
+
+        ConfigBinding.SetLive2DSize(Width, Height);
     }
 
     partial void OnLightFont2ColorChanged(Color value)
@@ -463,6 +483,10 @@ public partial class SettingTab2Model : ObservableObject
             WindowMode = config.Item2.WindowMode;
             EnablePicResize = config.Item2.BackLimit;
             EnableWindowTran = config.Item2.WindowTran;
+
+            Live2DModel = config.Item2.Live2D.Model;
+            Height = config.Item2.Live2D.Height;
+            Width = config.Item2.Live2D.Width;
         }
         if (config.Item1 != null)
         {

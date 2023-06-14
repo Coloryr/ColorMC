@@ -437,6 +437,8 @@ public static class BaseBinding
                 });
             }
 
+            App.MainWindow?.ShowMessage("游戏启动了喵");
+
             res.Exited += (a, b) =>
             {
                 GameCountUtils.GameClose(obj.UUID);
@@ -451,6 +453,7 @@ public static class BaseBinding
                         App.ShowGameLog(obj);
                         GameLogs.Remove(obj.UUID);
                     });
+                    App.MainWindow?.ShowMessage("游戏崩溃了喵");
                 }
                 else
                 {

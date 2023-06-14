@@ -245,49 +245,50 @@
             </Grid>
         </DockPanel>
 
-        <StackPanel
+        <Grid
             Name="StackPanel1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
+            Background="{setting:Colors TopBottom}"
             IsVisible="False">
-            <Label
-                Margin="5"
-                HorizontalAlignment="Center"
-                Content="{setting:Localize MainWindow.Control.Text6}"
-                FontSize="20" />
-            <StackPanel Orientation="Horizontal">
-                <ComboBox
-                    Width="200"
-                    VerticalAlignment="Center"
-                    ItemsSource="{Binding GroupList}"
-                    SelectedItem="{Binding GroupItem}" />
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding AddGroup}"
-                    Content="{setting:Localize MainWindow.Control.Text7}" />
-            </StackPanel>
-            <StackPanel
-                Margin="0,80,0,0"
-                HorizontalAlignment="Center"
-                Orientation="Horizontal">
-                <Button
-                    Width="100"
-                    Height="30"
-                    Margin="0,0,30,0"
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label
+                    Margin="5"
                     HorizontalAlignment="Center"
-                    Command="{Binding Confirm}"
-                    Content="{setting:Localize Button.Confirm}" />
-                <Button
-                    Width="100"
-                    Height="30"
+                    Content="{setting:Localize MainWindow.Control.Text6}"
+                    FontSize="20" />
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        Width="200"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding GroupList}"
+                        SelectedItem="{Binding GroupItem}" />
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding AddGroup}"
+                        Content="{setting:Localize MainWindow.Control.Text7}" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,80,0,0"
                     HorizontalAlignment="Center"
-                    Command="{Binding Cancel}"
-                    Content="{setting:Localize Button.Cancel}" />
+                    Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="30"
+                        Margin="0,0,30,0"
+                        HorizontalAlignment="Center"
+                        Command="{Binding Confirm}"
+                        Content="{setting:Localize Button.Confirm}" />
+                    <Button
+                        Width="100"
+                        Height="30"
+                        HorizontalAlignment="Center"
+                        Command="{Binding Cancel}"
+                        Content="{setting:Localize Button.Cancel}" />
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </Grid>
 
         <Grid
             Name="Grid2"

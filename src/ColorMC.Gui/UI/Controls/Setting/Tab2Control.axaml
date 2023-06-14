@@ -307,6 +307,45 @@
                     Watermark="{setting:Localize SettingWindow.Tab2.Text33}" />
             </DockPanel>
 
+            <StackPanel Orientation="Horizontal">
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text34}" />
+                <Slider
+                    Width="200"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Foreground="{setting:Colors Main}"
+                    IsSnapToTickEnabled="True"
+                    LargeChange="1"
+                    Maximum="100"
+                    Minimum="0"
+                    SmallChange="1"
+                    TickFrequency="1"
+                    Value="{Binding Width}" />
+                <Label
+                    Width="40"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{Binding Width, StringFormat='{}{0}%'}" />
+
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text35}" />
+                <Slider
+                    Width="200"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Foreground="{setting:Colors Main}"
+                    IsSnapToTickEnabled="True"
+                    LargeChange="1"
+                    Maximum="100"
+                    Minimum="0"
+                    SmallChange="1"
+                    TickFrequency="1"
+                    Value="{Binding Height}" />
+                <Label
+                    Width="40"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{Binding Height, StringFormat='{}{0}%'}" />
+            </StackPanel>
 
             <StackPanel Orientation="Horizontal">
                 <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text13}" IsChecked="{Binding EnableRGB}" />

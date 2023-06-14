@@ -83,6 +83,11 @@ public static class GuiConfigUtils
                 Config.ColorDark = MakeColorDarkConfig();
             }
 
+            if (Config.Live2D == null)
+            {
+                Config.Live2D = MakeLive2DConfig();
+            }
+
             if (SystemInfo.Os == OsType.Linux && Config.WindowMode)
             {
                 Config.WindowMode = false;
@@ -112,6 +117,15 @@ public static class GuiConfigUtils
             Local = Name,
             Obj = Config
         });
+    }
+
+    public static Live2DSetting MakeLive2DConfig()
+    {
+        return new()
+        {
+            Width = 30,
+            Height = 50
+        };
     }
 
     public static Render MakeRenderConfig()
@@ -145,7 +159,8 @@ public static class GuiConfigUtils
             ServerCustom = MakeServerCustomConfig(),
             FontDefault = true,
             Render = MakeRenderConfig(),
-            BackLimitValue = 50
+            BackLimitValue = 50,
+            Live2D = MakeLive2DConfig()
         };
     }
 

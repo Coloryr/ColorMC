@@ -509,7 +509,8 @@ public static class ConfigBinding
 
     public static void DeleteLive2D()
     {
-        GuiConfigUtils.Config.Live2DModel = null;
+        GuiConfigUtils.Config.Live2D ??= new();
+        GuiConfigUtils.Config.Live2D.Model = null;
         GuiConfigUtils.Save();
 
         App.MainWindow?.DeleteModel();
@@ -517,9 +518,20 @@ public static class ConfigBinding
 
     public static void SetLive2D(string? live2DModel)
     {
-        GuiConfigUtils.Config.Live2DModel = live2DModel;
+        GuiConfigUtils.Config.Live2D ??= new();
+        GuiConfigUtils.Config.Live2D.Model = live2DModel;
         GuiConfigUtils.Save();
 
         App.MainWindow?.ChangeModel();
+    }
+
+    internal static void SetLive2DSize(int width, int height)
+    {
+        GuiConfigUtils.Config.Live2D ??= new();
+        GuiConfigUtils.Config.Live2D.Width = width;
+        GuiConfigUtils.Config.Live2D.Height = height;
+        GuiConfigUtils.Save();
+
+        App.MainWindow?.ChangeLive2DSize();
     }
 }
