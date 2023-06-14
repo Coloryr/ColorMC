@@ -255,4 +255,8 @@ public record GuiConfigObj
     /// 上一次启动的游戏实例
     /// </summary>
     public string LastLaunch { get; set; }
+    /// <summary>
+    /// Live2D模型地址
+    /// </summary>
+    public string? Live2DModel { get; set; }
 }

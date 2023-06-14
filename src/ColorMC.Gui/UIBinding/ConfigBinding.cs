@@ -506,4 +506,20 @@ public static class ConfigBinding
         type = config.LoginType;
         url = config.LoginUrl;
     }
+
+    public static void DeleteLive2D()
+    {
+        GuiConfigUtils.Config.Live2DModel = null;
+        GuiConfigUtils.Save();
+
+        App.MainWindow?.DeleteModel();
+    }
+
+    public static void SetLive2D(string? live2DModel)
+    {
+        GuiConfigUtils.Config.Live2DModel = live2DModel;
+        GuiConfigUtils.Save();
+
+        App.MainWindow?.ChangeModel();
+    }
 }

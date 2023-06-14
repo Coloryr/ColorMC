@@ -991,6 +991,16 @@ public static class BaseBinding
                     return res[0].GetPath();
                 }
                 break;
+            case FileType.Live2D:
+                res = await OpFile(window,
+                    App.GetLanguage("SettingWindow.Tab2.Info7"),
+                    new string[] { "*.model3.json" },
+                    App.GetLanguage("SettingWindow.Tab2.Info8"));
+                if (res?.Any() == true)
+                {
+                    return res[0].GetPath();
+                }
+                break;
         }
 
         return null;
@@ -1232,5 +1242,10 @@ public static class BaseBinding
     public static void MusicPause()
     {
         Media.Pause();
+    }
+
+    public static void OpenLive2DCore()
+    {
+        OpUrl("https://www.live2d.com/download/cubism-sdk/download-native/");
     }
 }

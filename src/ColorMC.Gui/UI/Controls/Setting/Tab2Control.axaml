@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Model.Setting"
-    d:DesignHeight="450"
+    d:DesignHeight="850"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
@@ -260,6 +260,53 @@
                     Command="{Binding ColorReset}"
                     Content="{setting:Localize SettingWindow.Tab2.Text12}" />
             </StackPanel>
+
+            <!--  Live2D人物  -->
+            <Label Content="{setting:Localize SettingWindow.Tab2.Text29}" />
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{setting:Localize SettingWindow.Tab2.Text30}" />
+                <Label Margin="5,0,0,0" Content="{Binding Live2DCoreState}" />
+                <Button
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Right"
+                    Command="{Binding DownloadCore}"
+                    Content="{setting:Localize SettingWindow.Tab2.Text31}" />
+            </StackPanel>
+
+            <Label Content="{setting:Localize SettingWindow.Tab2.Text32}" />
+
+            <DockPanel>
+                <Button
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding DeleteLive2D}"
+                    Content="{setting:Localize Button.Delete}"
+                    DockPanel.Dock="Right" />
+                <Button
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding OpenLive2D}"
+                    Content="{setting:Localize Button.Select}"
+                    DockPanel.Dock="Right" />
+                <Button
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding SetLive2D}"
+                    Content="{setting:Localize Button.Use}"
+                    DockPanel.Dock="Right" />
+
+                <TextBox
+                    Margin="0,0,5,0"
+                    Classes="input1"
+                    Text="{Binding Live2DModel}"
+                    Watermark="{setting:Localize SettingWindow.Tab2.Text33}" />
+            </DockPanel>
+
 
             <StackPanel Orientation="Horizontal">
                 <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text13}" IsChecked="{Binding EnableRGB}" />

@@ -78,12 +78,12 @@ public partial class GameLogTabModel : ObservableObject
         }
 
         var window = Con.Window;
-        window.ProgressInfo.Show("正在读取中");
+        window.ProgressInfo.Show(App.GetLanguage("GameLogWindow.Info1"));
         var data = await GameBinding.ReadLog(Obj, value);
         window.ProgressInfo.Close();
         if (data == null)
         {
-            window.OkInfo.Show("读取失败");
+            window.OkInfo.Show(App.GetLanguage("GameLogWindow.Info2"));
             return;
         }
 

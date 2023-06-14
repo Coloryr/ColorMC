@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public class AvaloniaApi : OpenGLApi
 {
-    private Live2dControl Con;
+    private Live2dRender Con;
     private GlInterface GL;
     public override bool IsES2 => true;
     public override bool IsPhoneES2 => false;
@@ -49,7 +49,7 @@ public class AvaloniaApi : OpenGLApi
     public Func12 Uniform4f;
     public Func5 ValidateProgram;
 
-    public AvaloniaApi(Live2dControl con, GlInterface gl)
+    public AvaloniaApi(Live2dRender con, GlInterface gl)
     {
         Con = con;
         GL = gl;

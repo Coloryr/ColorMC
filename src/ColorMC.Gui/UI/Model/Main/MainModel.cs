@@ -11,6 +11,7 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -29,6 +30,11 @@ public partial class MainModel : ObservableObject, IMainTop
 
     public bool launch = false;
     public bool first = true;
+
+    [ObservableProperty]
+    private int live2dWidth = 300;
+    [ObservableProperty]
+    private int live2dHeight = 300;
 
     [ObservableProperty]
     private (string, ushort) server;
@@ -638,5 +644,15 @@ public partial class MainModel : ObservableObject, IMainTop
             }
             EnableButton2 = true;
         }
+    }
+
+    public void ChangeModel()
+    {
+        OnPropertyChanged("ModelChange");
+    }
+
+    internal void DeleteModel()
+    {
+        OnPropertyChanged("ModelDelete");
     }
 }

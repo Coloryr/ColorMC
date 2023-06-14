@@ -1,10 +1,13 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
@@ -38,6 +41,17 @@ public partial class MainControl : UserControl, IUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         KeyDown += MainControl_KeyDown;
+
+        SizeChanged += MainControl_SizeChanged;
+
+        model.Live2dWidth = (int)Bounds.Width / 2;
+        model.Live2dHeight = (int)(Bounds.Height / 1.5);
+    }
+
+    private void MainControl_SizeChanged(object? sender, SizeChangedEventArgs e)
+    {
+        model.Live2dWidth = (int)Bounds.Width / 2;
+        model.Live2dHeight = (int)(Bounds.Height / 1.5);
     }
 
     private void Image1_PointerExited(object? sender, PointerEventArgs e)
@@ -228,5 +242,15 @@ public partial class MainControl : UserControl, IUserControl
     public void IsDelete()
     {
         Dispatcher.UIThread.Post(model.IsDelete);
+    }
+
+    public void ChangeModel()
+    {
+        model.ChangeModel();
+    }
+
+    public void DeleteModel()
+    {
+        model.DeleteModel();
     }
 }

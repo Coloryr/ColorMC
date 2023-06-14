@@ -11,10 +11,10 @@
     mc:Ignorable="d">
     <Grid Margin="3" ColumnDefinitions="4*,1.5*">
         <Grid Grid.Column="0">
-            <view2:SkinRender x:Name="Skin" />
+            <view2:SkinRender Name="Skin" />
             <Grid
                 Name="SkinTop"
-                Background="#11FFFFFF"
+                Background="#00FFFFFF"
                 Opacity="0" />
             <Grid
                 HorizontalAlignment="Left"

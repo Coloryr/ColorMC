@@ -8,6 +8,8 @@ using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Live2DCSharpSDK.Framework.Core;
+using Live2DCSharpSDK.Framework;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -95,6 +97,11 @@ public partial class SettingTab2Model : ObservableObject
 
     [ObservableProperty]
     private string? pic;
+    [ObservableProperty]
+    private string? live2DModel;
+
+    [ObservableProperty]
+    private string live2DCoreState;
 
     private bool load = false;
 
@@ -266,6 +273,12 @@ public partial class SettingTab2Model : ObservableObject
     }
 
     [RelayCommand]
+    public void DownloadCore()
+    {
+        BaseBinding.OpenLive2DCore();
+    }
+
+    [RelayCommand]
     public void SetRgb()
     {
         ConfigBinding.SetRgb(RgbV1, RgbV2);
@@ -302,6 +315,14 @@ public partial class SettingTab2Model : ObservableObject
     }
 
     [RelayCommand]
+    public void SetPicTran()
+    {
+        var window = Con.Window;
+        ConfigBinding.SetBackTran(PicTran);
+        window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
+    }
+
+    [RelayCommand]
     public void DeletePic()
     {
         Pic = "";
@@ -327,14 +348,6 @@ public partial class SettingTab2Model : ObservableObject
     }
 
     [RelayCommand]
-    public void SetPicTran()
-    {
-        var window = Con.Window;
-        ConfigBinding.SetBackTran(PicTran);
-        window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
-    }
-
-    [RelayCommand]
     public async void SetPic()
     {
         if (load)
@@ -348,6 +361,50 @@ public partial class SettingTab2Model : ObservableObject
         }
         window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackPic(Pic, PicEffect);
+        window.ProgressInfo.Close();
+
+        window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
+    }
+
+    [RelayCommand]
+    public void DeleteLive2D()
+    {
+        Live2DModel = "";
+
+        ConfigBinding.DeleteLive2D();
+    }
+
+    [RelayCommand]
+    public async void OpenLive2D()
+    {
+        var window = Con.Window;
+        var file = await BaseBinding.OpFile(window, FileType.Live2D);
+
+        if (file != null)
+        {
+            Live2DModel = file;
+
+            if (load)
+                return;
+
+            SetLive2D();
+        }
+    }
+
+    [RelayCommand]
+    public void SetLive2D()
+    {
+        if (load)
+            return;
+
+        var window = Con.Window;
+        if (string.IsNullOrWhiteSpace(Pic))
+        {
+            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
+            return;
+        }
+        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        ConfigBinding.SetLive2D(Live2DModel);
         window.ProgressInfo.Close();
 
         window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
@@ -410,6 +467,22 @@ public partial class SettingTab2Model : ObservableObject
         if (config.Item1 != null)
         {
             Language = (int)config.Item1.Language;
+        }
+
+        try
+        {
+            var version = CubismCore.Version();
+
+            uint major = (version & 0xFF000000) >> 24;
+            uint minor = (version & 0x00FF0000) >> 16;
+            uint patch = version & 0x0000FFFF;
+            uint vesionNumber = version;
+
+            Live2DCoreState = $"version: {major:##}.{minor:#}.{patch:####} ({vesionNumber})";
+        }
+        catch
+        {
+            Live2DCoreState = App.GetLanguage("SettingWindow.Tab2.Error2");
         }
 
         load = false;
