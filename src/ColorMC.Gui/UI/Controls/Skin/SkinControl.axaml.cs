@@ -1,9 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UI.Windows;
 using System;
+using System.Runtime.InteropServices;
 using System.Timers;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
@@ -23,6 +25,9 @@ public partial class SkinControl : UserControl, IUserControl
     private readonly Timer timer1;
     private readonly Timer timer2;
     private MoveType type;
+
+    private float xdiff = 0;
+    private float ydiff = 0;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
     public SkinControl()
@@ -82,6 +87,54 @@ public partial class SkinControl : UserControl, IUserControl
         timer2.EndInit();
 
         App.SkinLoad += App_SkinLoad;
+
+        SkinTop.PointerMoved += SkinTop_PointerMoved;
+        SkinTop.PointerPressed += SkinTop_PointerPressed;
+        SkinTop.PointerWheelChanged += SkinTop_PointerWheelChanged;
+    }
+
+    private void SkinTop_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (e.Delta.Y > 0)
+        {
+            Skin.AddDis(0.05f);
+        }
+        else
+        {
+            Skin.AddDis(-0.05f);
+        }
+    }
+
+    private void SkinTop_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var pro = e.GetCurrentPoint(this);
+        xdiff = (float)pro.Position.X;
+        ydiff = -(float)pro.Position.Y;
+    }
+
+    private void SkinTop_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        var pro = e.GetCurrentPoint(this);
+        if (pro.Properties.IsLeftButtonPressed)
+        {
+            float y = (float)pro.Position.X - xdiff;
+            float x = (float)pro.Position.Y + ydiff;
+
+            xdiff = (float)pro.Position.X;
+            ydiff = -(float)pro.Position.Y;
+
+            Skin.Rot(x, y);
+        }
+        else if (pro.Properties.IsRightButtonPressed)
+        {
+            float x = (float)pro.Position.X - xdiff;
+            float y = (float)pro.Position.Y + ydiff;
+
+            xdiff = (float)pro.Position.X;
+            ydiff = -(float)pro.Position.Y;
+
+            Skin.Pos(x / ((float)Bounds.Width / 8), -y / ((float)Bounds.Height / 8));
+        }
     }
 
     private void Timer2_Elapsed(object? sender, ElapsedEventArgs e)

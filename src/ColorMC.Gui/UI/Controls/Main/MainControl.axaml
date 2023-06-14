@@ -13,8 +13,8 @@
     mc:Ignorable="d">
     <Grid>
         <views1:Live2dControl
-            Width="200"
-            Height="200"
+            Width="300"
+            Height="300"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom" />
         <DockPanel>

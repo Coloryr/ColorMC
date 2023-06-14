@@ -62,7 +62,7 @@ public class Live2dControl : OpenGlControlBase
         Info = $"Renderer: {gl.GetString(GlConsts.GL_RENDERER)} Version: {gl.GetString(GlConsts.GL_VERSION)}";
 
         lapp = new(new AvaloniaApi(this, gl));
-        var model = lapp.Live2dManager.LoadModel("E:\\code\\Live2DCSharpSDK\\Resources\\Haru\\", "Haru");
+        var model = lapp.Live2dManager.LoadModel("E:\\code\\Live2DCSharpSDK\\Resources\\Mao\\", "Mao");
         CheckError(gl);
         init = true;
     }

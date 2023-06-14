@@ -218,6 +218,7 @@ public partial class GameEditTab4Model : GameEditTabModel
         }
         else
         {
+            item.NotifyPropertyChanged(nameof(item.Local));
             item.Enable = item.Obj.Disable;
         }
     }

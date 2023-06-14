@@ -12,6 +12,7 @@ using ColorMC.Gui.Utils;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -110,6 +111,8 @@ public class SkinRender : OpenGlControlBase
     private Vector2 SaveXY;
     private Vector2 LastXY;
 
+    private Matrix4x4 Last;
+
     private int texture;
     private int texture1;
     private int steveModelDrawOrder;
@@ -142,6 +145,7 @@ public class SkinRender : OpenGlControlBase
     public SkinRender()
     {
         skina = new(this);
+        Last = Matrix4x4.Identity;
     }
 
     public void SetModel(SkinModel model)
@@ -335,8 +339,6 @@ public class SkinRender : OpenGlControlBase
     public void Reset()
     {
         Dis = 1;
-        RotXY.X = 0;
-        RotXY.Y = 0;
         DiffXY.X = 0;
         DiffXY.Y = 0;
         XY.X = 0;
@@ -345,6 +347,7 @@ public class SkinRender : OpenGlControlBase
         SaveXY.Y = 0;
         LastXY.X = 0;
         LastXY.Y = 0;
+        Last = Matrix4x4.Identity;
 
         RequestNextFrameRendering();
     }
@@ -886,8 +889,16 @@ public class SkinRender : OpenGlControlBase
 
         var view = Matrix4x4.CreateLookAt(new(0, 0, 7), new(), new(0, 1, 0));
 
-        var modelMat = Matrix4x4.CreateRotationX(RotXY.X / 360)
-                    * Matrix4x4.CreateRotationY(RotXY.Y / 360)
+        if (RotXY.X != 0 || RotXY.Y != 0)
+        {
+            Last *= Matrix4x4.CreateRotationX(RotXY.X / 360)
+                    * Matrix4x4.CreateRotationY(RotXY.Y / 360);
+            RotXY.X = 0;
+            RotXY.Y = 0;
+        }
+        
+
+        var modelMat = Last
                     * Matrix4x4.CreateTranslation(new(XY.X, XY.Y, 0))
                     * Matrix4x4.CreateScale(Dis);
 

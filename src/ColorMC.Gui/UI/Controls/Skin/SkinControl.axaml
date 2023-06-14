@@ -13,6 +13,10 @@
         <Grid Grid.Column="0">
             <view2:SkinRender x:Name="Skin" />
             <Grid
+                Name="SkinTop"
+                Background="#11FFFFFF"
+                Opacity="0" />
+            <Grid
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 ColumnDefinitions="*,*,*"
