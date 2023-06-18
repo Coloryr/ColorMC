@@ -1,8 +1,8 @@
 ﻿using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils.Downloader;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -59,7 +59,7 @@ public partial class DownloadModel : ObservableObject
         var windows = Con.Window;
         if (!value)
         {
-            DownloadManager.DownloadResume();
+            BaseBinding.DownloadResume();
             Button = "P";
             Button1 = App.GetLanguage("DownloadWindow.Text1");
             windows.NotifyInfo.Show(App.GetLanguage("DownloadWindow.Info3"));

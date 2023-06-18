@@ -1,11 +1,10 @@
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Net.Download;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
+using ColorMC.Core.Utils.Downloader;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Text;
@@ -577,7 +576,12 @@ public static class InstancesPath
             Window = obj.Window,
             StartServer = obj.StartServer,
             ProxyHost = obj.ProxyHost,
-            Mods = obj.Mods
+            Mods = new(obj.Mods),
+            FID = obj.FID,
+            PID = obj.PID,
+            ModPackType = obj.ModPackType,
+            AdvanceJvm = obj.AdvanceJvm,
+            GameType = obj.GameType
         };
     }
 
@@ -589,22 +593,9 @@ public static class InstancesPath
     /// <returns>复制结果</returns>
     public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, string name)
     {
-        var obj1 = await CreateGame(new()
-        {
-            Name = name,
-            GroupName = obj.GroupName,
-            Version = obj.Version,
-            ModPack = obj.ModPack,
-            Loader = obj.Loader,
-            LoaderVersion = obj.LoaderVersion,
-            JvmArg = obj.JvmArg,
-            JvmName = obj.JvmName,
-            JvmLocal = obj.JvmLocal,
-            Window = obj.Window,
-            StartServer = obj.StartServer,
-            ProxyHost = obj.ProxyHost,
-            Mods = obj.Mods
-        });
+        var obj1 = obj.CopyObj();
+        obj1.Name = name;
+        obj1 = await CreateGame(obj1);
         if (obj1 != null)
         {
             await PathC.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
@@ -854,13 +845,13 @@ public static class InstancesPath
                     }
                 //Curseforge压缩包
                 case PackType.CurseForge:
-                    (import, game) = await PackDownload.DownloadCurseForgeModPack(dir, name, group);
+                    (import, game) = await ModPackHelper.DownloadCurseForgeModPack(dir, name, group);
 
                     ColorMCCore.PackState?.Invoke(CoreRunState.End);
                     break;
                 //Modrinth压缩包
                 case PackType.Modrinth:
-                    (import, game) = await PackDownload.DownloadModrinthModPack(dir, name, group);
+                    (import, game) = await ModPackHelper.DownloadModrinthModPack(dir, name, group);
 
                     ColorMCCore.PackState?.Invoke(CoreRunState.End);
                     break;
@@ -1048,11 +1039,7 @@ public static class InstancesPath
     /// <returns>结果</returns>
     public static async Task<(bool, GameSettingObj?)> InstallFromModrinth(ModrinthVersionObj data, string? name, string? group)
     {
-        var file = data.files.FirstOrDefault(a => a.primary);
-        if (file == null)
-        {
-            file = data.files[0];
-        }
+        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
         var item = new DownloadItemObj()
         {
             Url = file.url,
@@ -1065,7 +1052,15 @@ public static class InstancesPath
         if (!res1)
             return (false, null);
 
-        return await InstallFromZip(item.Local, PackType.Modrinth, name, group);
+        var res2 = await InstallFromZip(item.Local, PackType.Modrinth, name, group);
+        if (res2.Item1)
+        {
+            res2.Item2!.PID = data.project_id;
+            res2.Item2.FID = data.id;
+            res2.Item2.Save();
+        }
+
+        return res2;
     }
 
     /// <summary>
@@ -1090,6 +1085,68 @@ public static class InstancesPath
         if (!res1)
             return (false, null);
 
-        return await InstallFromZip(item.Local, PackType.CurseForge, name, group);
+        var res2 = await InstallFromZip(item.Local, PackType.CurseForge, name, group);
+        if (res2.Item1)
+        {
+            res2.Item2!.PID = data.modId.ToString();
+            res2.Item2.FID = data.id.ToString();
+            res2.Item2.Save();
+        }
+
+        return res2;
+    }
+
+    public static async Task<bool> UpdateModPack(this GameSettingObj obj, CurseForgeObjList.Data.LatestFiles data)
+    {
+        data.FixDownloadUrl();
+
+        var item = new DownloadItemObj()
+        {
+            Url = data.downloadUrl,
+            Name = data.fileName,
+            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + data.fileName),
+        };
+
+        var res = await DownloadManager.Start(new() { item });
+        if (!res)
+            return false;
+
+        res = await ModPackHelper.UpdateCurseForgeModPack(obj, item.Local);
+        if (res)
+        {
+            obj.PID = data.modId.ToString();
+            obj.FID = data.id.ToString();
+            obj.Save();
+            obj.SaveModInfo();
+        }
+
+        return res;
+    }
+
+    public static async Task<bool> UpdateModPack(this GameSettingObj obj, ModrinthVersionObj data)
+    {
+        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
+        var item = new DownloadItemObj()
+        {
+            Url = file.url,
+            Name = file.filename,
+            SHA1 = file.hashes.sha1,
+            Local = Path.GetFullPath(DownloadManager.DownloadDir + "/" + file.filename),
+        };
+
+        var res = await DownloadManager.Start(new() { item });
+        if (!res)
+            return false;
+
+        res = await ModPackHelper.UpdateModrinthModPack(obj, item.Local);
+        if (res)
+        {
+            obj.PID = data.project_id;
+            obj.FID = data.id;
+            obj.Save();
+            obj.SaveModInfo();
+        }
+
+        return res;
     }
 }

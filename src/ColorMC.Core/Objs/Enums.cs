@@ -234,7 +234,11 @@ public enum LaunchState
     /// <summary>
     /// 运行后执行程序
     /// </summary>
-    LaunchPost
+    LaunchPost,
+    /// <summary>
+    /// 结束
+    /// </summary>
+    End
 }
 
 /// <summary>

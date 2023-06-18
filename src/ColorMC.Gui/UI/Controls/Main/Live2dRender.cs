@@ -83,7 +83,16 @@ public class Live2dRender : OpenGlControlBase
             return;
         }
         var info = new FileInfo(model);
-        lapp.Live2dManager.LoadModel(info.DirectoryName! + "/", info.Name.Replace(".model3.json", ""));
+        try
+        {
+            lapp.Live2dManager.LoadModel(info.DirectoryName! + "/", info.Name.Replace(".model3.json", ""));
+        }
+        catch (Exception e)
+        {
+            Logs.Error("model load error", e);
+            var window = Model.Con.Window;
+            window.OkInfo.Show("Live2D模型加载失败");
+        }
     }
 
     private void Live2dRender_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -112,7 +121,7 @@ public class Live2dRender : OpenGlControlBase
         try
         {
             lapp = new(new AvaloniaApi(this, gl));
-            ChangeModel();
+            change = true;
             CheckError(gl);
             Model.ShowMessage(App.GetLanguage("Live2D.Text1"));
             init = true;

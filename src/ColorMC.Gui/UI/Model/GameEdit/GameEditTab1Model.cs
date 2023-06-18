@@ -1,12 +1,15 @@
 ﻿using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Formats.Asn1;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -24,6 +27,10 @@ public partial class GameEditTab1Model : GameEditTabModel
     private string? loaderVersion;
     [ObservableProperty]
     private string? group;
+    [ObservableProperty]
+    private string? pID;
+    [ObservableProperty]
+    private string? fID;
 
     [ObservableProperty]
     private bool enableForge;
@@ -179,6 +186,110 @@ public partial class GameEditTab1Model : GameEditTabModel
 
         Obj.ModPack = value;
         Obj.Save();
+    }
+
+    partial void OnPIDChanged(string? value)
+    {
+        if (load)
+            return;
+
+        Obj.PID = value;
+        Obj.Save();
+    }
+
+    partial void OnFIDChanged(string? value)
+    {
+        if (load)
+            return;
+
+        Obj.FID = value;
+        Obj.Save();
+    }
+
+    [RelayCommand]
+    public async void CheckModPackUpdate()
+    {
+        var window = Con.Window;
+        if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
+        {
+            return;
+        }
+
+        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info2"));
+        if (Funtcions.CheckNotNumber(PID) || Funtcions.CheckNotNumber(FID))
+        {
+            var list = await ModrinthAPI.GetFileVersions(PID, Obj.Version, Obj.Loader);
+            window.ProgressInfo.Close();
+            if (list == null)
+            {
+                window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info3"));
+            }
+            else if (list.Count == 0)
+            {
+                window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info4"));
+            }
+            else if (list.First().id.ToString() == FID)
+            {
+                window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info5"));
+            }
+            else
+            {
+                var res = await window.OkInfo.ShowWait(App.GetLanguage("GameEditWindow.Tab1.Info6"));
+                if (!res)
+                {
+                    return;
+                }
+
+                var item = list.First();
+                res = await GameBinding.ModPackUpdate(Obj, item);
+                if (!res)
+                {
+                    window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error2"));
+                }
+                else
+                {
+                    window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info7"));
+                    FID = item.id.ToString();
+                }
+            }
+        }
+        else
+        {
+            var list = await CurseForgeAPI.GetCurseForgeFiles(PID, Obj.Version);
+            window.ProgressInfo.Close();
+            if (list == null)
+            {
+                window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info3"));
+            }
+            else if (list.data.Count == 0)
+            {
+                window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info4"));
+            }
+            else if (list.data.First().id.ToString() == FID)
+            {
+                window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info5"));
+            }
+            else
+            {
+                var res = await window.OkInfo.ShowWait(App.GetLanguage("GameEditWindow.Tab1.Info6"));
+                if (!res)
+                {
+                    return;
+                }
+
+                var item = list.data.First();
+                res = await GameBinding.ModPackUpdate(Obj, item);
+                if (!res)
+                {
+                    window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error2"));
+                }
+                else
+                {
+                    window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info7"));
+                    FID = item.id.ToString();
+                }
+            }
+        }
     }
 
     [RelayCommand]
@@ -438,6 +549,8 @@ public partial class GameEditTab1Model : GameEditTabModel
         ModPack = Obj.ModPack;
         GameVersion = Obj.Version;
         Group = Obj.GroupName;
+        FID = Obj.FID;
+        PID = Obj.PID;
 
         GameRun = BaseBinding.IsGameRun(Obj);
 

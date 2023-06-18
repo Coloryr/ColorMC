@@ -151,7 +151,7 @@ public static partial class Funtcions
         var str = new StringBuilder();
         foreach (var item in list)
         {
-            str.Append(item).Append(",");
+            str.Append(item).Append(',');
         }
 
         return str.ToString()[..^1];

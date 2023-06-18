@@ -3,12 +3,11 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
-using ColorMC.Core.Net.Download;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using ColorMC.Core.Utils.Downloader;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Text;
@@ -43,7 +42,7 @@ public static class Launch
                     LanguageHelper.GetName("Core.Launch.Error1"));
             }
 
-            var res1 = await GameDownload.Download(version);
+            var res1 = await GameDownloadHelper.Download(version);
             if (res1.State != GetDownloadState.End)
                 throw new LaunchException(LaunchState.VersionError,
                     LanguageHelper.GetName("Core.Launch.Error1"));
@@ -143,7 +142,7 @@ public static class Launch
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                    var list4 = await GameDownload.DownloadForge(obj);
+                    var list4 = await GameDownloadHelper.DownloadForge(obj);
                     if (list4.State != GetDownloadState.End)
                         throw new LaunchException(LaunchState.LostLoader,
                         LanguageHelper.GetName("Core.Launch.Error3"));
@@ -162,7 +161,7 @@ public static class Launch
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                    var list4 = await GameDownload.DownloadFabric(obj);
+                    var list4 = await GameDownloadHelper.DownloadFabric(obj);
                     if (list4.State != GetDownloadState.End)
                         throw new LaunchException(LaunchState.LostLoader,
                         LanguageHelper.GetName("Core.Launch.Error3"));
@@ -181,7 +180,7 @@ public static class Launch
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                    var list4 = await GameDownload.DownloadQuilt(obj);
+                    var list4 = await GameDownloadHelper.DownloadQuilt(obj);
                     if (list4.State != GetDownloadState.End)
                         throw new LaunchException(LaunchState.LostLoader,
                         LanguageHelper.GetName("Core.Launch.Error3"));

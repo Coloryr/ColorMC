@@ -106,6 +106,8 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+
+        StartLock();
     }
 
     public static string GetLanguage(string input)
@@ -190,6 +192,11 @@ public partial class App : Application
 
         await LoadImage();
 
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    public static void StartLock()
+    {
         if (ColorMCGui.RunType == RunType.Program)
         {
             new Thread(() =>
@@ -206,8 +213,6 @@ public partial class App : Application
                 }
             }).Start();
         }
-
-        base.OnFrameworkInitializationCompleted();
     }
 
     public static IBaseWindow FindRoot(object? con)

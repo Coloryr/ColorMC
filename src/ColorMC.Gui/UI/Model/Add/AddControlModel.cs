@@ -385,12 +385,16 @@ public partial class AddControlModel : ObservableObject
 
             window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetCurseForgeGameVersions();
+            if (list == null)
+            {
+                window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
+                return;
+            }
             var list1 = await GameBinding.GetCurseForgeCategories(now);
             window.ProgressInfo.Close();
-            if (list == null || list1 == null)
+            if (list1 == null)
             {
-                window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error4"));
-                window.Close();
+                window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
                 return;
             }
             GameVersionList.AddRange(list);
@@ -437,8 +441,7 @@ public partial class AddControlModel : ObservableObject
             window.ProgressInfo.Close();
             if (list == null || list1 == null)
             {
-                window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error4"));
-                window.Close();
+                window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
                 return;
             }
             GameVersionList.AddRange(list);

@@ -1,18 +1,18 @@
-using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using ColorMC.Core.Utils.Downloader;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace ColorMC.Core.Net.Download;
+namespace ColorMC.Core.Helpers;
 
-public static class GameDownload
+public static class GameDownloadHelper
 {
     /// <summary>
     /// 下载游戏

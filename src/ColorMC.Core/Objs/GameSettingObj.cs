@@ -186,14 +186,22 @@ public record GameSettingObj
     /// 游戏发布类型
     /// </summary>
     public GameType GameType { get; set; }
+    /// <summary>
+    /// 整合包ID
+    /// </summary>
+    public string? PID { get; set; }
+    /// <summary>
+    /// 整合包版本
+    /// </summary>
+    public string? FID { get; set; }
 
     /// <summary>
-    /// CurseForge_Mod信息
+    /// Mod信息
     /// </summary>
     [JsonIgnore]
     public Dictionary<string, ModInfoObj> Mods { get; set; }
     /// <summary>
-    /// CurseForge_Mod信息
+    /// 游玩统计
     /// </summary>
     [JsonIgnore]
     public LaunchDataObj LaunchData { get; set; }

@@ -142,14 +142,18 @@ public partial class AddModPackModel : ObservableObject
                 var list = Source == 0 ?
                     await GameBinding.GetCurseForgeGameVersions() :
                     await GameBinding.GetModrinthGameVersions();
+                if (list == null)
+                {
+                    window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
+                    return;
+                }
                 var list1 = Source == 0 ?
                     await GameBinding.GetCurseForgeCategories() :
                     await GameBinding.GetModrinthCategories();
                 window.ProgressInfo.Close();
-                if (list == null || list1 == null)
+                if (list1 == null)
                 {
-                    window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error4"));
-                    window.Close();
+                    window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
                     return;
                 }
                 GameVersionList.AddRange(list);

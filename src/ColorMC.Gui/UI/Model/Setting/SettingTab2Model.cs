@@ -79,6 +79,8 @@ public partial class SettingTab2Model : ObservableObject
     private bool enableWindowTran;
     [ObservableProperty]
     private bool enableWindowMode = true;
+    [ObservableProperty]
+    private bool coreInstall;
 
     [ObservableProperty]
     private int language;
@@ -418,9 +420,9 @@ public partial class SettingTab2Model : ObservableObject
             return;
 
         var window = Con.Window;
-        if (string.IsNullOrWhiteSpace(Pic))
+        if (string.IsNullOrWhiteSpace(Live2DModel))
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
+            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab2.Error3"));
             return;
         }
         window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
@@ -503,10 +505,12 @@ public partial class SettingTab2Model : ObservableObject
             uint vesionNumber = version;
 
             Live2DCoreState = $"version: {major:##}.{minor:#}.{patch:####} ({vesionNumber})";
+            CoreInstall = true;
         }
         catch
         {
             Live2DCoreState = App.GetLanguage("SettingWindow.Tab2.Error2");
+            CoreInstall = false;
         }
 
         load = false;

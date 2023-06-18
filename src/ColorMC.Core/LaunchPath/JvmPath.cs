@@ -1,7 +1,7 @@
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Core.Utils.Downloader;
 
 namespace ColorMC.Core.LaunchPath;
 

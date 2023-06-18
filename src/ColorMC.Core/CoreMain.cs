@@ -1,9 +1,9 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Core.Utils.Downloader;
 using System.Diagnostics;
 
 namespace ColorMC.Core;
@@ -11,7 +11,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A19";
-    public const string DateVersion = "20230614";
+    public const string DateVersion = "20230618";
 
     public const string Version = $"{TopVersion}.{DateVersion}";
 
@@ -48,7 +48,7 @@ public static class ColorMCCore
     /// <summary>
     /// 游戏启动回调
     /// </summary>
-    public static Action<GameSettingObj, LaunchState>? GameLaunch { internal get; set; }
+    public static Action<GameSettingObj, LaunchState>? GameLaunch { get; set; }
 
     /// <summary>
     /// 压缩包处理回调

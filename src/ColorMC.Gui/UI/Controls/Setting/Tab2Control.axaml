@@ -262,6 +262,7 @@
             </StackPanel>
 
             <!--  Live2D人物  -->
+
             <Label Content="{setting:Localize SettingWindow.Tab2.Text29}" />
             <StackPanel Orientation="Horizontal">
                 <Label Content="{setting:Localize SettingWindow.Tab2.Text30}" />
@@ -284,25 +285,29 @@
                     Margin="0,0,5,0"
                     Command="{Binding DeleteLive2D}"
                     Content="{setting:Localize Button.Delete}"
-                    DockPanel.Dock="Right" />
+                    DockPanel.Dock="Right"
+                    IsEnabled="{Binding CoreInstall}" />
                 <Button
                     Width="80"
                     Height="25"
                     Margin="0,0,5,0"
                     Command="{Binding OpenLive2D}"
                     Content="{setting:Localize Button.Select}"
-                    DockPanel.Dock="Right" />
+                    DockPanel.Dock="Right"
+                    IsEnabled="{Binding CoreInstall}" />
                 <Button
                     Width="80"
                     Height="25"
                     Margin="0,0,5,0"
                     Command="{Binding SetLive2D}"
                     Content="{setting:Localize Button.Use}"
-                    DockPanel.Dock="Right" />
+                    DockPanel.Dock="Right"
+                    IsEnabled="{Binding CoreInstall}" />
 
                 <TextBox
                     Margin="0,0,5,0"
                     Classes="input1"
+                    IsEnabled="{Binding CoreInstall}"
                     Text="{Binding Live2DModel}"
                     Watermark="{setting:Localize SettingWindow.Tab2.Text33}" />
             </DockPanel>

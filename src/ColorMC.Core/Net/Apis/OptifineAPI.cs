@@ -1,8 +1,8 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Optifine;
+using ColorMC.Core.Utils.Downloader;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 

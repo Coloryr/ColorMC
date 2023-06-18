@@ -21,7 +21,7 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class MainModel : ObservableObject, IMainTop
 {
-    private readonly IUserControl Con;
+    public readonly IUserControl Con;
     private readonly Semaphore semaphore = new(0, 2);
     public ObservableCollection<string> GroupList { get; init; } = new();
     public ObservableCollection<GamesModel> GameGroups { get; init; } = new();
@@ -88,7 +88,6 @@ public partial class MainModel : ObservableObject, IMainTop
     {
         Con = con;
 
-        ColorMCCore.GameLaunch = GameLunch;
         ColorMCCore.GameDownload = GameDownload;
         ColorMCCore.OfflineLaunch = OfflineLaunch;
         ColorMCCore.LaunchP = LaunchP;
@@ -354,6 +353,9 @@ public partial class MainModel : ObservableObject, IMainTop
                     case LaunchState.LaunchPost:
                         window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info32"));
                         break;
+                    case LaunchState.End:
+                        window.ProgressInfo.Close();
+                        break;
                 }
             }
             else
@@ -389,6 +391,9 @@ public partial class MainModel : ObservableObject, IMainTop
                         break;
                     case LaunchState.JvmPrepare:
                         window.Head.Title1 = App.GetLanguage("MainWindow.Info16");
+                        break;
+                    case LaunchState.End:
+                        window.Head.Title1 = "";
                         break;
                 }
             }
@@ -588,6 +593,8 @@ public partial class MainModel : ObservableObject, IMainTop
     {
         if (launch)
             return;
+
+        ColorMCCore.GameLaunch = GameLunch;
 
         var window = Con.Window;
         launch = true;

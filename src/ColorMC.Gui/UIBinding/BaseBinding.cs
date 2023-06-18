@@ -8,11 +8,11 @@ using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
-using ColorMC.Core.Net.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
+using ColorMC.Core.Utils.Downloader;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
 using ColorMC.Gui.UI.Windows;
@@ -408,6 +408,7 @@ public static class BaseBinding
             UserBinding.UnLockUser(obj1);
             return null;
         });
+        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.End);
         Funtcions.RunGC();
         if (res != null)
         {
@@ -1068,6 +1069,11 @@ public static class BaseBinding
     public static void DownloadPause()
     {
         DownloadManager.DownloadPause();
+    }
+
+    public static void DownloadResume()
+    {
+        DownloadManager.DownloadResume();
     }
 
     /// <summary>

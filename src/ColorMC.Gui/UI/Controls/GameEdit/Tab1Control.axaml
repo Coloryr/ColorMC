@@ -122,6 +122,42 @@
                 Name="CheckBox1"
                 Content="{setting:Localize GameEditWindow.Tab1.Text3}"
                 IsChecked="{Binding ModPack}" />
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="110"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize GameEditWindow.Tab1.Text8}" />
+                <TextBox
+                    Grid.Column="0"
+                    Width="200"
+                    Margin="5,0,0,0"
+                    Classes="input1"
+                    IsEnabled="{Binding ModPack}"
+                    Text="{Binding PID}"
+                    Watermark="{setting:Localize GameEditWindow.Tab1.Text8}" />
+            </StackPanel>
+            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                <Label
+                    Width="110"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize GameEditWindow.Tab1.Text9}" />
+                <TextBox
+                    Grid.Column="1"
+                    Width="200"
+                    Margin="5,0,0,0"
+                    Classes="input1"
+                    IsEnabled="{Binding ModPack}"
+                    Text="{Binding FID}"
+                    Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
+            </StackPanel>
+            <Button
+                Width="150"
+                Height="25"
+                Margin="0,5,0,0"
+                Command="{Binding CheckModPackUpdate}"
+                Content="{setting:Localize GameEditWindow.Tab1.Text10}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text51}"
+                ToolTip.VerticalOffset="-30" />
         </StackPanel>
         <StackPanel
             HorizontalAlignment="Left"

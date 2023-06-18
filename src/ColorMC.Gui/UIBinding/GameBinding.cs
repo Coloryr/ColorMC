@@ -1387,4 +1387,14 @@ public static class GameBinding
         }
         return await Task.Run(() => obj.ReadLog(name));
     }
+
+    public static Task<bool> ModPackUpdate(GameSettingObj obj, CurseForgeObjList.Data.LatestFiles fid)
+    {
+        return obj.UpdateModPack(fid);
+    }
+
+    public static Task<bool> ModPackUpdate(GameSettingObj obj, ModrinthVersionObj fid)
+    {
+        return obj.UpdateModPack(fid);
+    }
 }
