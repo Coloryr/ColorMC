@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Game;
+using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -10,6 +10,9 @@ using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 游戏文件处理
+/// </summary>
 public static class GameHelper
 {
     /// <summary>
@@ -99,8 +102,10 @@ public static class GameHelper
                         SHA1 = lib.sha1,
                         Later = (test) => UnpackNative(obj.id, test)
                     });
-
-                    list1.Add(lib.sha1);
+                    lock (list1)
+                    {
+                        list1.Add(lib.sha1);
+                    }
                 }
             }
         });

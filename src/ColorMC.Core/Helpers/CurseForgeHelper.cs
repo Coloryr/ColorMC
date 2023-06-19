@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using System.Text;
@@ -6,7 +6,7 @@ using System.Text;
 namespace ColorMC.Core.Helpers;
 
 /// <summary>
-/// CueseForge帮助
+/// CueseForge
 /// </summary>
 public static class CurseForgeHelper
 {
@@ -16,7 +16,7 @@ public static class CurseForgeHelper
     /// <param name="item"></param>
     public static void FixDownloadUrl(this CurseForgeObjList.Data.LatestFiles item)
     {
-        item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
+        item.downloadUrl ??= $"{UrlHelper.CurseForgeDownload}files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
     }
     /// <summary>
     /// 创建下载地址

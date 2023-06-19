@@ -9,13 +9,19 @@ namespace ColorMC.Core.Helpers;
 
 public static class UrlHelper
 {
-    private const string BMCLAPI = "https://bmclapi2.bangbang93.com/";
-    private const string MCBBS = "https://download.mcbbs.net/";
+    public const string BMCLAPI = "https://bmclapi2.bangbang93.com/";
+    public const string MCBBS = "https://download.mcbbs.net/";
+    public const string LittleSkin = "https://littleskin.cn/";
+    public const string Nide8 = "https://auth.mc-user.com:233/";
+    public const string Nide8Jar = "https://login.mc-user.com:233/index/jar";
+
+    public const string CurseForgeDownload = "https://edge.forgecdn.net/";
 
     private static readonly string[] originServers =
     {
         "https://launchermeta.mojang.com/",
-        "https://launcher.mojang.com/", "https://piston-data.mojang.com"
+        "https://launcher.mojang.com/", 
+        "https://piston-data.mojang.com"
     };
 
     private const string originServers1 = "https://libraries.minecraft.net/";

@@ -577,8 +577,8 @@ public static class Launch
         }
         else if (login.AuthType == AuthType.LittleSkin)
         {
-            var res = await BaseClient.GetString("https://littleskin.cn/api/yggdrasil");
-            jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}=https://littleskin.cn/api/yggdrasil");
+            var res = await BaseClient.GetString($"{UrlHelper.LittleSkin}api/yggdrasil");
+            jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
             jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res.Item2!)}");
         }
         else if (login.AuthType == AuthType.SelfLittleSkin)

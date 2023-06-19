@@ -481,6 +481,7 @@ public partial class SettingTab2Model : ObservableObject
             DarkFont2Color = Color.Parse(config.Item2.ColorDark.ColorFont2);
             EnableRGB = config.Item2.RGB;
             IsDefaultFont = config.Item2.FontDefault;
+            EnableFontList = !IsDefaultFont;
             WindowMode = config.Item2.WindowMode;
             EnablePicResize = config.Item2.BackLimit;
             EnableWindowTran = config.Item2.WindowTran;

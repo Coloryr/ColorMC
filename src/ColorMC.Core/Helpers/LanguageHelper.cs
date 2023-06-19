@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 语言文件
+/// </summary>
 public static class LanguageHelper
 {
     private static readonly Language Language = new();

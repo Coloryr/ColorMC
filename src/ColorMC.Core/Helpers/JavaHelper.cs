@@ -1,9 +1,12 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System.Diagnostics;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// Java处理
+/// </summary>
 public static class JavaHelper
 {
     /// <summary>

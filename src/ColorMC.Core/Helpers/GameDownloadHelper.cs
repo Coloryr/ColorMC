@@ -12,6 +12,9 @@ using System.Text;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 游戏下载
+/// </summary>
 public static class GameDownloadHelper
 {
     /// <summary>

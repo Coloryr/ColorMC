@@ -30,7 +30,7 @@ public static class AuthlibHelper
     {
         return new()
         {
-            Url = "https://login.mc-user.com:233/index/jar",
+            Url = UrlHelper.Nide8Jar,
             Name = "com.nide8.login2:nide8auth:2.4",
             Local = $"{LibrariesPath.BaseDir}/com/nide8/login2/nide8auth/2.4/nide8auth.2.4.jar",
         };
@@ -61,7 +61,7 @@ public static class AuthlibHelper
         var item = BuildNide8Item();
         NowNide8Injector = item.Local;
 
-        var data = await BaseClient.GetString("https://auth.mc-user.com:233/00000000000000000000000000000000/");
+        var data = await BaseClient.GetString($"{UrlHelper.Nide8}00000000000000000000000000000000/");
         if (data.Item1 == false)
             return null;
         try

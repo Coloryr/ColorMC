@@ -7,6 +7,9 @@ using System.Collections.Concurrent;
 
 namespace ColorMC.Core.LaunchPath;
 
+/// <summary>
+/// 资源文件夹
+/// </summary>
 public static class AssetsPath
 {
     public const string Name = "assets";
