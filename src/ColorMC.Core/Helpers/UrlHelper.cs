@@ -24,7 +24,7 @@ public static class UrlHelper
 
     public const string OptifineUrl = "https://optifine.net/";
 
-    private static readonly string[] originServers =
+    private static readonly string[] OriginServers =
     {
         "https://launchermeta.mojang.com/",
         "https://launcher.mojang.com/",
@@ -37,7 +37,7 @@ public static class UrlHelper
 
     private const string OriginServers3 = "https://maven.fabricmc.net/";
 
-    public static readonly string[] originServers4 =
+    public static readonly string[] OriginServers4 =
     {
         "https://repo1.maven.org/maven2/",
         "https://maven.aliyun.com/repository/public/"
@@ -107,7 +107,7 @@ public static class UrlHelper
             return url;
         }
 
-        foreach (var item in originServers)
+        foreach (var item in OriginServers)
         {
             url = url.Replace(item, to);
         }

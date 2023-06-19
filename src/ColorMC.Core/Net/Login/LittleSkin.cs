@@ -36,7 +36,7 @@ public static class LittleSkin
             server1 = server;
         }
 
-        var obj = await LoginOld.Authenticate(server1 + "/api/yggdrasil", clientToken, user, pass);
+        var obj = await LoginOld.Authenticate(server1 + "api/yggdrasil", clientToken, user, pass);
         if (obj.State != LoginState.Done)
             return obj;
 

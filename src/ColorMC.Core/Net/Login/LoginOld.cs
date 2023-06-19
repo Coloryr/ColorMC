@@ -46,7 +46,7 @@ public static class LoginOld
 
         var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
 
-        if (obj2 == null)
+        if (obj2 == null || obj2.selectedProfile == null)
         {
             var obj1 = JObject.Parse(data);
             if (obj1?.TryGetValue("errorMessage", out var msg) == true)
@@ -54,11 +54,8 @@ public static class LoginOld
                 return (LoginState.JsonError, null, msg?.ToString());
             }
 
-            return (LoginState.JsonError, null, "Other Error");
+            return (LoginState.JsonError, null, LanguageHelper.GetName("Core.Login.Error23"));
         }
-
-        if (obj2.selectedProfile == null)
-            return (LoginState.Error, null, LanguageHelper.GetName("Core.Login.Error23"));
 
         return (LoginState.Done, new()
         {
