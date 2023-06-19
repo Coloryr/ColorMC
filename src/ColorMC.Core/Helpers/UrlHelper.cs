@@ -11,7 +11,7 @@ public static class UrlHelper
 {
     public const string BMCLAPI = "https://bmclapi2.bangbang93.com/";
     public const string MCBBS = "https://download.mcbbs.net/";
-    
+
     public const string LittleSkin = "https://littleskin.cn/";
 
     public const string Nide8 = "https://auth.mc-user.com:233/";
@@ -22,12 +22,12 @@ public static class UrlHelper
 
     public const string ModrinthUrl = "https://api.modrinth.com/v2/";
 
-    public const string OptifineUrl ="https://optifine.net/";
+    public const string OptifineUrl = "https://optifine.net/";
 
     private static readonly string[] originServers =
     {
         "https://launchermeta.mojang.com/",
-        "https://launcher.mojang.com/", 
+        "https://launcher.mojang.com/",
         "https://piston-data.mojang.com"
     };
 

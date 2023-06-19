@@ -35,7 +35,7 @@ public abstract class NbtBase
                 _ => ""
             };
         }
-        set 
+        set
         {
             if (value == null)
                 return;

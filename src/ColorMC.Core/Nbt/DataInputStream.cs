@@ -56,7 +56,7 @@ public class DataInputStream : IDisposable
         Array.Reverse(temp);
         return BitConverter.ToInt16(temp, 0);
     }
-    
+
     /// <summary>
     /// 读Int值
     /// </summary>
@@ -68,7 +68,7 @@ public class DataInputStream : IDisposable
         Array.Reverse(temp);
         return BitConverter.ToInt32(temp, 0);
     }
-    
+
     /// <summary>
     /// 读Long值
     /// </summary>
@@ -104,7 +104,7 @@ public class DataInputStream : IDisposable
         Array.Reverse(temp);
         return BitConverter.ToDouble(temp, 0);
     }
-    
+
     /// <summary>
     /// 读字符串
     /// </summary>

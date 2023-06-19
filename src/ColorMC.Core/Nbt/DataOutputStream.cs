@@ -12,7 +12,7 @@ public class DataOutputStream : IDisposable
     {
         baseStream = stream;
     }
-   
+
     /// <summary>
     /// 写Byte
     /// </summary>
@@ -21,7 +21,7 @@ public class DataOutputStream : IDisposable
     {
         baseStream.WriteByte(value);
     }
-    
+
     /// <summary>
     /// 写Byte数组
     /// </summary>
@@ -30,7 +30,7 @@ public class DataOutputStream : IDisposable
     {
         baseStream.Write(value);
     }
-    
+
     /// <summary>
     /// 写Bool
     /// </summary>
@@ -39,7 +39,7 @@ public class DataOutputStream : IDisposable
     {
         baseStream.WriteByte(value ? (byte)1 : (byte)0);
     }
-   
+
     /// <summary>
     /// 写Short
     /// </summary>
@@ -50,7 +50,7 @@ public class DataOutputStream : IDisposable
         Array.Reverse(temp);
         baseStream.Write(temp);
     }
-    
+
     /// <summary>
     /// 写Int
     /// </summary>
@@ -61,7 +61,7 @@ public class DataOutputStream : IDisposable
         Array.Reverse(temp);
         baseStream.Write(temp);
     }
-    
+
     /// <summary>
     /// 写Long
     /// </summary>
@@ -72,7 +72,7 @@ public class DataOutputStream : IDisposable
         Array.Reverse(temp);
         baseStream.Write(temp);
     }
-    
+
     /// <summary>
     /// 写Float
     /// </summary>
@@ -83,7 +83,7 @@ public class DataOutputStream : IDisposable
         Array.Reverse(temp);
         baseStream.Write(temp);
     }
-    
+
     /// <summary>
     /// 写Double
     /// </summary>
@@ -94,7 +94,7 @@ public class DataOutputStream : IDisposable
         Array.Reverse(temp);
         baseStream.Write(temp);
     }
-   
+
     /// <summary>
     /// 写字符串
     /// </summary>
@@ -112,7 +112,7 @@ public class DataOutputStream : IDisposable
             baseStream.Write(data);
         }
     }
-    
+
     /// <summary>
     /// 关闭
     /// </summary>
