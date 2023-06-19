@@ -1,8 +1,8 @@
-﻿using ColorMC.Core.Helpers;
+﻿using ColorMC.Core.Downloader;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Core.Utils.Downloader;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -29,7 +29,13 @@ public static class ConfigBinding
     /// <returns></returns>
     public static bool LoadConfig(string dir)
     {
-        return ConfigUtils.Load(dir, true);
+        var res = ConfigUtils.Load(dir, true);
+        if (res)
+        {
+            BaseClient.Init();
+        }
+
+        return res;
     }
     /// <summary>
     /// 加载图形配置文件

@@ -7,10 +7,11 @@ using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Net.Apis;
 
+/// <summary>
+/// Modrinth网络请求
+/// </summary>
 public static class ModrinthAPI
 {
-    public const string Url = "https://api.modrinth.com/v2/";
-
     public const string ClassModPack = "modpack";
     public const string ClassMod = "mod";
     public const string ClassResourcepack = "resourcepack";
@@ -67,7 +68,7 @@ public static class ModrinthAPI
                 _ => MSortingObj.Relevance
             };
 
-            var url = $"{Url}search?query={query}&index={type.Data}&offset={offset}" +
+            var url = $"{UrlHelper.ModrinthUrl}search?query={query}&index={type.Data}&offset={offset}" +
                 $"&limit={limit}&facets={MFacetsObj.Build(list)}";
             var res = await BaseClient.DownloadClient.GetStringAsync(url);
             return JsonConvert.DeserializeObject<ModrinthSearchObj>(res);
@@ -144,7 +145,7 @@ public static class ModrinthAPI
     {
         try
         {
-            var res = await BaseClient.GetString($"{Url}project/{id}/version/{version}");
+            var res = await BaseClient.GetString($"{UrlHelper.ModrinthUrl}project/{id}/version/{version}");
             if (res.Item1 == false)
             {
                 return null;
@@ -173,12 +174,12 @@ public static class ModrinthAPI
             string url;
             if (string.IsNullOrWhiteSpace(mc))
             {
-                url = $"{Url}project/{id}/version?" +
+                url = $"{UrlHelper.ModrinthUrl}project/{id}/version?" +
                 (loader != Loaders.Normal ? $"&loaders=[\"{loader.GetName().ToLower()}\"]" : "");
             }
             else
             {
-                url = $"{Url}project/{id}/version?game_versions=[" +
+                url = $"{UrlHelper.ModrinthUrl}project/{id}/version?game_versions=[" +
                 $"{(string.IsNullOrWhiteSpace(mc) ? "" : ('"' + mc + '"'))}]"
                 + (loader != Loaders.Normal ? $"&loaders=[\"{loader.GetName().ToLower()}\"]" : "");
             }
@@ -201,7 +202,7 @@ public static class ModrinthAPI
     {
         try
         {
-            var res = await BaseClient.DownloadClient.GetStringAsync($"{Url}tag/game_version");
+            var res = await BaseClient.DownloadClient.GetStringAsync($"{UrlHelper.ModrinthUrl}tag/game_version");
             return JsonConvert.DeserializeObject<List<ModrinthGameVersionObj>>(res);
         }
         catch (Exception e)
@@ -219,7 +220,7 @@ public static class ModrinthAPI
     {
         try
         {
-            var res = await BaseClient.DownloadClient.GetStringAsync($"{Url}tag/category");
+            var res = await BaseClient.DownloadClient.GetStringAsync($"{UrlHelper.ModrinthUrl}tag/category");
             return JsonConvert.DeserializeObject<List<ModrinthCategoriesObj>>(res);
         }
         catch (Exception e)

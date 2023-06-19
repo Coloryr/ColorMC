@@ -1,10 +1,13 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Utils;
 using HtmlAgilityPack;
 
 namespace ColorMC.Core.Net.Apis;
 
+/// <summary>
+/// MC百科网络请求
+/// </summary>
 public static class McModAPI
 {
     private static async Task<List<McModSearchItemObj>?> Search(string key, int page, int filter)

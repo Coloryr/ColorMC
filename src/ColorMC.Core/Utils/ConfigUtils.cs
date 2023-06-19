@@ -6,11 +6,12 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// 配置文件
+/// </summary>
 public static class ConfigUtils
 {
     public static ConfigObj Config { get; set; }
-
-    public static string Dir;
 
     private static string Name;
 
@@ -20,7 +21,6 @@ public static class ConfigUtils
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
-        Dir = dir;
         Name = dir + "config.json";
 
         Load(Name);
@@ -105,7 +105,6 @@ public static class ConfigUtils
             }
         }
 
-        BaseClient.Init();
         JvmPath.AddList(Config.JavaList);
         LanguageHelper.Change(Config.Language);
 
@@ -187,92 +186,5 @@ public static class ConfigUtils
             CheckLib = true,
             CheckMod = true
         };
-    }
-}
-
-public record ConfigSaveObj
-{
-    public string Name;
-    public object Obj;
-    public string Local;
-}
-
-public static class ConfigSave
-{
-    private static readonly Dictionary<string, ConfigSaveObj> SaveQue = new();
-
-    private static readonly object Lock = new();
-
-    private static Thread thread;
-    private static bool run;
-
-    public static void Init()
-    {
-        ColorMCCore.Stop += Stop;
-
-        thread = new(Run)
-        {
-            Name = "ColorMC-Save"
-        };
-        run = true;
-        thread.Start();
-    }
-
-    private static void Stop()
-    {
-        run = false;
-        thread.Join();
-
-        lock (Lock)
-        {
-            foreach (var item in SaveQue.Values)
-            {
-                File.WriteAllText(item.Local,
-                    JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
-            }
-
-            SaveQue.Clear();
-        }
-    }
-
-    private static void Run()
-    {
-        while (run)
-        {
-            Thread.Sleep(1000);
-            if (!SaveQue.Any())
-                continue;
-
-            lock (Lock)
-            {
-                foreach (var item in SaveQue.Values)
-                {
-                    if (new FileInfo(item.Local)?.Directory?.Exists == true)
-                    {
-                        try
-                        {
-                            File.WriteAllText(item.Local,
-                                JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
-                        }
-                        catch (Exception e)
-                        {
-                            Logs.Error(LanguageHelper.GetName("Core.Config.Error2"), e);
-                        }
-                    }
-                }
-                SaveQue.Clear();
-            }
-        }
-    }
-
-    public static void AddItem(ConfigSaveObj obj)
-    {
-        lock (Lock)
-        {
-            if (!SaveQue.ContainsKey(obj.Name))
-            {
-                SaveQue.Add(obj.Name, obj);
-            }
-        }
     }
 }

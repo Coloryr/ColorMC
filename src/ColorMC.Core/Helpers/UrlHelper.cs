@@ -11,11 +11,18 @@ public static class UrlHelper
 {
     public const string BMCLAPI = "https://bmclapi2.bangbang93.com/";
     public const string MCBBS = "https://download.mcbbs.net/";
+    
     public const string LittleSkin = "https://littleskin.cn/";
+
     public const string Nide8 = "https://auth.mc-user.com:233/";
     public const string Nide8Jar = "https://login.mc-user.com:233/index/jar";
 
     public const string CurseForgeDownload = "https://edge.forgecdn.net/";
+    public const string CurseForgeUrl = "https://api.curseforge.com/v1/";
+
+    public const string ModrinthUrl = "https://api.modrinth.com/v2/";
+
+    public const string OptifineUrl ="https://optifine.net/";
 
     private static readonly string[] originServers =
     {
@@ -24,17 +31,52 @@ public static class UrlHelper
         "https://piston-data.mojang.com"
     };
 
-    private const string originServers1 = "https://libraries.minecraft.net/";
+    private const string OriginServers1 = "https://libraries.minecraft.net/";
 
-    private const string originServers2 = "https://maven.minecraftforge.net/";
+    private const string OriginServers2 = "https://maven.minecraftforge.net/";
 
-    private const string originServers3 = "https://maven.fabricmc.net/";
+    private const string OriginServers3 = "https://maven.fabricmc.net/";
 
     public static readonly string[] originServers4 =
     {
         "https://repo1.maven.org/maven2/",
         "https://maven.aliyun.com/repository/public/"
     };
+
+    /// <summary>
+    /// 修正Forge下载地址
+    /// </summary>
+    /// <param name="mc">游戏版本号</param>
+    /// <returns></returns>
+    public static string FixForgeUrl(string mc)
+    {
+        if (mc == "1.7.2")
+        {
+            return "-mc172";
+        }
+        else if (mc == "1.7.10")
+        {
+            return "-1.7.10";
+        }
+        else if (mc == "1.8.9")
+        {
+            return "-1.8.9";
+        }
+        else if (mc == "1.9")
+        {
+            return "-1.9.0";
+        }
+        else if (mc == "1.9.4")
+        {
+            return "-1.9.4";
+        }
+        else if (mc == "1.10")
+        {
+            return "-1.10.0";
+        }
+
+        return string.Empty;
+    }
 
     /// <summary>
     /// 游戏版本
@@ -89,7 +131,7 @@ public static class UrlHelper
             return url;
         }
 
-        url = url.Replace(originServers1, to);
+        url = url.Replace(OriginServers1, to);
 
         return url;
     }
@@ -140,7 +182,7 @@ public static class UrlHelper
             return url;
         }
 
-        url = url.Replace(originServers2, to);
+        url = url.Replace(OriginServers2, to);
 
         return url;
     }
@@ -286,19 +328,19 @@ public static class UrlHelper
         var random = new Random();
         if (BaseClient.Source == SourceLocal.Offical)
         {
-            if (old.StartsWith(originServers2))
+            if (old.StartsWith(OriginServers2))
             {
-                return (true, old.Replace(originServers2,
+                return (true, old.Replace(OriginServers2,
                     random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
-            else if (old.StartsWith(originServers1))
+            else if (old.StartsWith(OriginServers1))
             {
-                return (true, old.Replace(originServers1,
+                return (true, old.Replace(OriginServers1,
                    random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
-            else if (old.StartsWith(originServers3))
+            else if (old.StartsWith(OriginServers3))
             {
-                return (true, old.Replace(originServers3,
+                return (true, old.Replace(OriginServers3,
                    random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
         }

@@ -1,10 +1,14 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using System.Buffers;
 
-namespace ColorMC.Core.Utils.Downloader;
+namespace ColorMC.Core.Downloader;
 
+/// <summary>
+/// 下载线程
+/// </summary>
 public class DownloadThread
 {
     private readonly int index;

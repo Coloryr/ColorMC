@@ -1,6 +1,5 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.MinecraftAPI;
@@ -8,9 +7,12 @@ using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace ColorMC.Core.Net;
+namespace ColorMC.Core.Net.Apis;
 
-public static class PlayerSkin
+/// <summary>
+/// 获取皮肤
+/// </summary>
+public static class PlayerSkinAPI
 {
     /// <summary>
     /// 下载皮肤和披风
@@ -73,6 +75,12 @@ public static class PlayerSkin
         return (skin, cape);
     }
 
+    /// <summary>
+    /// 加载皮肤
+    /// </summary>
+    /// <param name="uuid">玩家UUID</param>
+    /// <param name="url">网址</param>
+    /// <returns></returns>
     private static async Task<TexturesObj?> BaseLoad(string uuid, string? url = null)
     {
         try
@@ -93,26 +101,47 @@ public static class PlayerSkin
         }
     }
 
+    /// <summary>
+    /// 从Mojang加载皮肤
+    /// </summary>
+    /// <param name="obj">账户</param>
+    /// <returns></returns>
     private static Task<TexturesObj?> LoadFromMinecraft(LoginObj obj)
     {
         return BaseLoad(obj.UUID);
     }
-
+    /// <summary>
+    /// 从Nide8加载皮肤
+    /// </summary>
+    /// <param name="obj">账户</param>
+    /// <returns></returns>
     private static Task<TexturesObj?> LoadFromNide8(LoginObj obj)
     {
-        return BaseLoad(obj.UUID, $"https://auth.mc-user.com:233/{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
+        return BaseLoad(obj.UUID, $"{UrlHelper.Nide8}{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
-
+    /// <summary>
+    /// 从外置登录加载皮肤
+    /// </summary>
+    /// <param name="obj">账户</param>
+    /// <returns></returns>
     private static Task<TexturesObj?> LoadFromAuthlibInjector(LoginObj obj)
     {
         return BaseLoad(obj.UUID, $"{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
-
+    /// <summary>
+    /// 从皮肤站加载皮肤
+    /// </summary>
+    /// <param name="obj">账户</param>
+    /// <returns></returns>
     private static Task<TexturesObj?> LoadFromLittleskin(LoginObj obj)
     {
-        return BaseLoad(obj.UUID, $"https://littleskin.cn/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
+        return BaseLoad(obj.UUID, $"{UrlHelper.LittleSkin}api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
-
+    /// <summary>
+    /// 从自建皮肤站加载皮肤
+    /// </summary>
+    /// <param name="obj">账户</param>
+    /// <returns></returns>
     private static Task<TexturesObj?> LoadFromSelfLittleskin(LoginObj obj)
     {
         return BaseLoad(obj.UUID, $"{obj.Text1}/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");

@@ -1,3 +1,4 @@
+using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -5,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ColorMC.Core.Utils.Downloader;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Text;
@@ -26,12 +26,12 @@ public static class GameDownloadHelper
     {
         var list = new List<DownloadItemObj>();
 
-        var obj1 = await GameJsonObj.GetGame(obj.url);
+        var obj1 = await GameAPI.GetGame(obj.url);
         if (obj1 == null)
             return (GetDownloadState.Init, null);
 
         VersionPath.AddGame(obj1);
-        var obj2 = await GameJsonObj.GetAssets(obj1.assetIndex.url);
+        var obj2 = await GameAPI.GetAssets(obj1.assetIndex.url);
         if (obj2 == null)
             return (GetDownloadState.GetInfo, null);
 
@@ -79,7 +79,7 @@ public static class GameDownloadHelper
         var version1 = VersionPath.GetGame(mc)!;
         bool v2 = CheckRule.GameLaunchVersion(version1);
 
-        var down = ForgeAPI.BuildForgeInster(mc, version);
+        var down = GameHelper.BuildForgeInster(mc, version);
         try
         {
             var res = await DownloadManager.Download(down);
@@ -134,7 +134,7 @@ public static class GameDownloadHelper
                 return (GetDownloadState.GetInfo, null);
             }
 
-            list.AddRange(ForgeAPI.MakeForgeLibs(info, mc, version));
+            list.AddRange(GameHelper.MakeForgeLibs(info, mc, version));
 
             byte[] array2 = stream2.ToArray();
             ForgeInstallObj info1;
@@ -189,7 +189,7 @@ public static class GameDownloadHelper
                 };
                 foreach (var item in obj.versionInfo.libraries)
                 {
-                    var item1 = ForgeAPI.MakeLibObj(item);
+                    var item1 = GameHelper.MakeLibObj(item);
                     if (item1 != null)
                     {
                         info.libraries.Add(item1);
@@ -214,7 +214,7 @@ public static class GameDownloadHelper
 
                 File.WriteAllText($"{VersionPath.ForgeDir}/{name}.json", JsonConvert.SerializeObject(info));
 
-                list.AddRange(ForgeAPI.MakeForgeLibs(info, mc, version));
+                list.AddRange(GameHelper.MakeForgeLibs(info, mc, version));
             }
             catch (Exception e)
             {

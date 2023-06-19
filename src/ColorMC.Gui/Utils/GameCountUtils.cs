@@ -15,7 +15,7 @@ namespace ColorMC.Gui.Utils;
 public static class GameCountUtils
 {
     private const string Name = "count.dat";
-    private static string Dir;
+    private static string Local;
     private static bool IsSave;
     private static bool IsRun;
 
@@ -27,7 +27,7 @@ public static class GameCountUtils
 
     public static void Init(string local)
     {
-        Dir = Path.GetFullPath(local + Name);
+        Local = Path.GetFullPath(local + Name);
 
         IsRun = true;
         new Thread(Run).Start();
@@ -37,11 +37,11 @@ public static class GameCountUtils
 
     private static void Read()
     {
-        if (File.Exists(Dir))
+        if (File.Exists(Local))
         {
             try
             {
-                if (NbtBase.Read(Dir) is NbtCompound nbt)
+                if (NbtBase.Read(Local) is NbtCompound nbt)
                 {
                     Count = new()
                     {
@@ -219,7 +219,7 @@ public static class GameCountUtils
 
         nbt.Gzip = true;
 
-        nbt.Write(Dir);
+        nbt.Save(Local);
 
         IsSave = false;
     }

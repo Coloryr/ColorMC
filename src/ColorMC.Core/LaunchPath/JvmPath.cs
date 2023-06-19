@@ -1,10 +1,13 @@
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Core.Utils.Downloader;
 
 namespace ColorMC.Core.LaunchPath;
 
+/// <summary>
+/// Java路径
+/// </summary>
 public static class JvmPath
 {
     public const string Unknow = "unknow";

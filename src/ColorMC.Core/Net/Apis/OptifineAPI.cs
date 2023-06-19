@@ -1,13 +1,16 @@
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Optifine;
-using ColorMC.Core.Utils.Downloader;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
+/// <summary>
+/// Optifine网络请求
+/// </summary>
 public static class OptifineAPI
 {
     /// <summary>
@@ -128,7 +131,7 @@ public static class OptifineAPI
             var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
             if (list1 == null)
                 return null;
-            return "https://optifine.net/" + list1.First().Attributes["href"].Value;
+            return UrlHelper.OptifineUrl + list1.First().Attributes["href"].Value;
         }
         catch (Exception e)
         {

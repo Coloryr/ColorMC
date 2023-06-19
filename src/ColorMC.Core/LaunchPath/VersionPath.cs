@@ -1,5 +1,5 @@
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
@@ -9,22 +9,20 @@ using Newtonsoft.Json;
 namespace ColorMC.Core.LaunchPath;
 
 /// <summary>
-/// 版本
+/// 版本路径
 /// </summary>
 public static class VersionPath
 {
-    public static VersionObj? Versions { get; private set; }
-
-    public static string ForgeDir => BaseDir + "/" + Name1;
-    public static string FabricDir => BaseDir + "/" + Name2;
-    public static string QuiltDir => BaseDir + "/" + Name3;
-
-
     private const string Name = "versions";
 
     private const string Name1 = "forge";
     private const string Name2 = "fabric";
     private const string Name3 = "quilt";
+    public static VersionObj? Versions { get; private set; }
+
+    public static string ForgeDir => BaseDir + "/" + Name1;
+    public static string FabricDir => BaseDir + "/" + Name2;
+    public static string QuiltDir => BaseDir + "/" + Name3;
 
     public static string BaseDir { get; private set; } = "";
 
@@ -58,13 +56,13 @@ public static class VersionPath
     /// <returns></returns>
     public static async Task GetFromWeb()
     {
-        Versions = await GameJsonObj.GetVersions();
+        Versions = await GameAPI.GetVersions();
         if (Versions != null)
         {
             SaveVersions();
             return;
         }
-        Versions = await GameJsonObj.GetVersions(SourceLocal.Offical);
+        Versions = await GameAPI.GetVersions(SourceLocal.Offical);
         if (Versions == null)
         {
             Logs.Error(LanguageHelper.GetName("Core.Path.Error3"));
@@ -156,7 +154,7 @@ public static class VersionPath
         var data = Versions.versions.Where(a => a.id == version).FirstOrDefault();
         if (data != null)
         {
-            AddGame(await GameJsonObj.GetGame(data.url));
+            AddGame(await GameAPI.GetGame(data.url));
         }
     }
 

@@ -1,11 +1,11 @@
 using System.Net.Sockets;
 using System.Text;
 
-namespace ColorMC.Core.Net;
+namespace ColorMC.Core.Net.Motd;
 
 public class ProtocolHandler
 {
-    public TcpClient Tcp { get; set; }
+    private TcpClient Tcp;
 
     public ProtocolHandler(TcpClient tcp)
     {
@@ -39,7 +39,7 @@ public class ProtocolHandler
     /// </summary>
     /// <param name="offset">Amount of bytes to read</param>
     /// <returns>The data read from the network as an array</returns>
-    public byte[] readDataRAW(int offset)
+    public byte[] ReadDataRAW(int offset)
     {
         if (offset > 0)
         {
@@ -62,7 +62,7 @@ public class ProtocolHandler
     {
         int i = 0;
         int j = 0;
-        int k = 0;
+        int k;
         byte[] tmp = new byte[1];
         while (true)
         {

@@ -2,6 +2,9 @@
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// 本地加载DLL
+/// </summary>
 public static class NativeLoader
 {
     private static IDynLoader loader;

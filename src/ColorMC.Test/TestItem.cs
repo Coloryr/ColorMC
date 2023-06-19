@@ -1,13 +1,13 @@
-﻿using ColorMC.Core.Game;
+﻿using ColorMC.Core.Downloader;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Java;
+using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using ColorMC.Core.Utils.Downloader;
 using System.Diagnostics;
 
 namespace ColorMC.Test;

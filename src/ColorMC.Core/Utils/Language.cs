@@ -2,10 +2,17 @@
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// 语言储存
+/// </summary>
 public class Language
 {
     private readonly Dictionary<string, string> LanguageList = new();
 
+    /// <summary>
+    /// 加载语言
+    /// </summary>
+    /// <param name="item"></param>
     public void Load(Stream item)
     {
         LanguageList.Clear();
@@ -17,6 +24,11 @@ public class Language
         }
     }
 
+    /// <summary>
+    /// 获取语言
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
     public string GetLanguage(string key)
     {
         if (LanguageList.TryGetValue(key, out var res1))
@@ -27,6 +39,12 @@ public class Language
         return key;
     }
 
+    /// <summary>
+    /// 获取语言
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="have"></param>
+    /// <returns></returns>
     public string GetLanguage(string key, out bool have)
     {
         if (LanguageList.TryGetValue(key, out var res1))

@@ -1,10 +1,10 @@
+using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
-using ColorMC.Core.Utils.Downloader;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;

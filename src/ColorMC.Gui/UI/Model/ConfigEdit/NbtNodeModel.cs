@@ -79,7 +79,7 @@ public partial class NbtNodeModel : ObservableObject
 
     public void SetValue(string value)
     {
-        Nbt.SetValue(value);
+        Nbt.Value = value;
         Update();
     }
 

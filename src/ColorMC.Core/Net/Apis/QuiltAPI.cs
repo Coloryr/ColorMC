@@ -6,6 +6,9 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
+/// <summary>
+/// Quilt网络请求
+/// </summary>
 public static class QuiltAPI
 {
     private static List<string>? SupportVersion;

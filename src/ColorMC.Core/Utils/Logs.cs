@@ -3,15 +3,19 @@ using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// 日志
+/// </summary>
 public static class Logs
 {
+    private static readonly ConcurrentBag<string> bags = new();
+
     private static string Local;
     private static StreamWriter Writer;
     private static Thread ThreadLog = new(Run)
     {
         Name = "ColorMC-Log"
     };
-    private static ConcurrentBag<string> bags = new();
     private static bool IsRun = false;
 
     /// <summary>
@@ -36,6 +40,9 @@ public static class Logs
         }
     }
 
+    /// <summary>
+    /// 运行
+    /// </summary>
     private static void Run()
     {
         while (IsRun)
@@ -49,6 +56,9 @@ public static class Logs
         }
     }
 
+    /// <summary>
+    /// 停止
+    /// </summary>
     private static void Stop()
     {
         IsRun = false;
@@ -61,6 +71,10 @@ public static class Logs
         Writer.Dispose();
     }
 
+    /// <summary>
+    /// 添加数据
+    /// </summary>
+    /// <param name="text"></param>
     private static void AddText(string text)
     {
         if (!IsRun)
@@ -69,6 +83,10 @@ public static class Logs
         bags.Add(text);
     }
 
+    /// <summary>
+    /// 信息
+    /// </summary>
+    /// <param name="data"></param>
     public static void Info(string data)
     {
         string text = $"[{DateTime.Now}][Info]{data}";
@@ -76,27 +94,34 @@ public static class Logs
         AddText(text);
     }
 
+    /// <summary>
+    /// 警告
+    /// </summary>
+    /// <param name="data"></param>
     public static void Warn(string data)
     {
         string text = $"[{DateTime.Now}][Warn]{data}";
         AddText(text);
     }
 
+    /// <summary>
+    /// 错误
+    /// </summary>
+    /// <param name="data"></param>
     public static void Error(string data)
     {
         string text = $"[{DateTime.Now}][Error]{data}";
         AddText(text);
     }
 
+    /// <summary>
+    /// 错误
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="e"></param>
     public static void Error(string data, Exception? e)
     {
         string text = $"[{DateTime.Now}][Error]{data}{Environment.NewLine}{e}";
         AddText(text);
-    }
-
-    public static void Wait()
-    {
-        while (!bags.IsEmpty)
-            Task.Delay(100);
     }
 }

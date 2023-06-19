@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 
@@ -5,7 +6,6 @@ namespace ColorMC.Core.Net.Login;
 
 public static class LittleSkin
 {
-    private const string ServerUrl = "https://littleskin.cn";
     /// <summary>
     /// 皮肤站登录
     /// </summary>
@@ -20,7 +20,7 @@ public static class LittleSkin
         string server1;
         if (string.IsNullOrWhiteSpace(server))
         {
-            server1 = ServerUrl;
+            server1 = UrlHelper.LittleSkin;
         }
         else
         {
@@ -58,7 +58,7 @@ public static class LittleSkin
         string server;
         if (obj.AuthType == AuthType.LittleSkin)
         {
-            server = ServerUrl;
+            server = UrlHelper.LittleSkin;
         }
         else
         {

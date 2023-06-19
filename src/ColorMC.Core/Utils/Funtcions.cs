@@ -13,6 +13,14 @@ namespace ColorMC.Core.Utils;
 
 public static partial class Funtcions
 {
+    [GeneratedRegex("[^0-9]+")]
+    private static partial Regex Regex1();
+
+    /// <summary>
+    /// 检查是否为数字
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public static bool CheckNotNumber(string? input)
     {
         if (string.IsNullOrWhiteSpace(input))
@@ -20,22 +28,23 @@ public static partial class Funtcions
         return Regex1().IsMatch(input);
     }
 
-    [GeneratedRegex("[^0-9]+")]
-    private static partial Regex Regex1();
-
+    /// <summary>
+    /// Tick转时间
+    /// </summary>
+    /// <param name="unixTimeStamp"></param>
+    /// <returns></returns>
     public static DateTime MillisecondsToDataTime(long unixTimeStamp)
     {
         var start = new DateTime(1970, 1, 1) +
             TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
         return start.AddMilliseconds(unixTimeStamp);
     }
-
-    public static DateTime SecondsToDataTime(long unixTimeStamp)
-    {
-        var start = new DateTime(1970, 1, 1) +
-            TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
-        return start.AddSeconds(unixTimeStamp);
-    }
+    
+    /// <summary>
+    /// 获取MD5值
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public static string GenMd5(byte[] data)
     {
         var text = new StringBuilder();
@@ -45,6 +54,11 @@ public static partial class Funtcions
         }
         return text.ToString().ToLower();
     }
+    /// <summary>
+    /// 获取SHA1值
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public static string GenSha1(byte[] data)
     {
         var text = new StringBuilder();
@@ -54,17 +68,29 @@ public static partial class Funtcions
         }
         return text.ToString().ToLower();
     }
-
+    /// <summary>
+    /// 获取SHA1值
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public static string GenSha1(string input)
     {
         return GenSha1(Encoding.UTF8.GetBytes(input));
     }
-
+    /// <summary>
+    /// 获取SHA256值
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public static string GenSha256(string input)
     {
         return GenSha256(Encoding.UTF8.GetBytes(input));
     }
-
+    /// <summary>
+    /// 获取SHA1值
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <returns></returns>
     public static string GenSha1(Stream stream)
     {
         var text = new StringBuilder();
@@ -74,7 +100,11 @@ public static partial class Funtcions
         }
         return text.ToString().ToLower();
     }
-
+    /// <summary>
+    /// 获取SHA1值
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <returns></returns>
     public static async Task<string> GenSha1Async(Stream stream)
     {
         var text = new StringBuilder();
@@ -84,7 +114,11 @@ public static partial class Funtcions
         }
         return text.ToString().ToLower();
     }
-
+    /// <summary>
+    /// 获取SHA256值
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public static string GenSha256(byte[] data)
     {
         var text = new StringBuilder();
@@ -94,7 +128,11 @@ public static partial class Funtcions
         }
         return text.ToString().ToLower();
     }
-
+    /// <summary>
+    /// 获取SHA256值
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <returns></returns>
     public static string GenSha256(Stream stream)
     {
         var text = new StringBuilder();
@@ -104,22 +142,36 @@ public static partial class Funtcions
         }
         return text.ToString().ToLower();
     }
-
+    /// <summary>
+    /// 新的UUID
+    /// </summary>
+    /// <returns></returns>
     public static string NewUUID()
     {
         return Guid.NewGuid().ToString().ToLower();
     }
-
+    /// <summary>
+    /// 生成Base64
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public static string GenBase64(string input)
     {
         return Convert.ToBase64String(Encoding.UTF8.GetBytes(input));
     }
-
+    /// <summary>
+    /// 反解Base64
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public static string DeBase64(string input)
     {
         return Encoding.UTF8.GetString(Convert.FromBase64String(input));
     }
 
+    /// <summary>
+    /// 执行内存回收
+    /// </summary>
     public static void RunGC()
     {
         Task.Run(() =>
@@ -130,6 +182,13 @@ public static partial class Funtcions
         });
     }
 
+    /// <summary>
+    /// 截取字符串
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <returns></returns>
     public static string GetString(string input, string start, string end)
     {
         var temp = input.IndexOf(start);
@@ -144,17 +203,6 @@ public static partial class Funtcions
         }
 
         return input[(temp + start.Length)..temp1];
-    }
-
-    public static string GetString(this List<string> list)
-    {
-        var str = new StringBuilder();
-        foreach (var item in list)
-        {
-            str.Append(item).Append(',');
-        }
-
-        return str.ToString()[..^1];
     }
 }
 
@@ -305,7 +353,12 @@ public static class ZipUtils
             }
         }
     }
-
+    /// <summary>
+    /// 解压Zip
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="stream"></param>
+    /// <param name="tar"></param>
     public static void Unzip(string path, Stream stream, bool tar)
     {
         if (tar)

@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Net;
+﻿using ColorMC.Core.Net.Motd;
 using Newtonsoft.Json;
 
 namespace ColorMC.Core.Objs.Minecraft;

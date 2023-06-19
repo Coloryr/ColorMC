@@ -4,9 +4,12 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
-namespace ColorMC.Core.Net;
+namespace ColorMC.Core.Net.Apis;
 
-public static class GameJsonObj
+/// <summary>
+/// 获取游戏文件
+/// </summary>
+public static class GameAPI
 {
     /// <summary>
     /// 下载资源文件

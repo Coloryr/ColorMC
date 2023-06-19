@@ -95,7 +95,7 @@ public static class Servers
 
         nbtTag.Add("servers", list1);
         string file = game.GetServersFile();
-        NbtBase.Write(file, nbtTag);
+        nbtTag.Save(file);
     }
 
     /// <summary>

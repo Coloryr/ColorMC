@@ -7,118 +7,7 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 
-namespace ColorMC.Core.Net;
-
-public class ServerDescriptionJsonConverter : JsonConverter<Chat>
-{
-    public override Chat? ReadJson(JsonReader reader, Type objectType, Chat? existingValue, bool hasExistingValue, JsonSerializer serializer)
-    {
-        if (reader.TokenType == JsonToken.String)
-        {
-            var str1 = reader.Value?.ToString();
-            if (string.IsNullOrWhiteSpace(str1))
-                return new Chat() { Text = "" };
-
-            var lines = str1.Split("\n");
-            var chat = new Chat()
-            {
-                Extra = new()
-            };
-
-            foreach (var item in lines)
-            {
-                var chat1 = new Chat();
-                bool mode = false;
-                for (var a = 0; a < item.Length; a++)
-                {
-                    var char1 = item[a];
-                    if (char1 == '§' && mode == false)
-                    {
-                        if (!string.IsNullOrWhiteSpace(chat1.Text))
-                        {
-                            chat.Extra.Add(chat1);
-                        }
-                        chat1 = new()
-                        {
-                            Bold = chat1.Bold,
-                            Underlined = chat1.Underlined,
-                            Obfuscated = chat1.Obfuscated,
-                            Strikethrough = chat1.Strikethrough,
-                            Italic = chat1.Italic,
-                            Color = chat1.Color
-                        };
-                        mode = true;
-                    }
-                    else if (mode == true)
-                    {
-                        mode = false;
-                        if (ServerMotd.MinecraftColors.TryGetValue(char1, out var color))
-                        {
-                            chat1.Color = color;
-                        }
-                        else if (char1 == 'r' || char1 == 'R')
-                        {
-                            chat1.Underlined = false;
-                            chat1.Obfuscated = false;
-                            chat1.Strikethrough = false;
-                            chat1.Italic = false;
-                            chat1.Bold = false;
-                            chat1.Color = "#FFFFFF";
-                        }
-                        else if (char1 == 'k' || char1 == 'K')
-                        {
-                            chat1.Obfuscated = true;
-                        }
-                        else if (char1 == 'l' || char1 == 'L')
-                        {
-                            chat1.Bold = true;
-                        }
-                        else if (char1 == 'm' || char1 == 'M')
-                        {
-                            chat1.Strikethrough = true;
-                        }
-                        else if (char1 == 'n' || char1 == 'N')
-                        {
-                            chat1.Underlined = true;
-                        }
-                        else if (char1 == 'o' || char1 == 'O')
-                        {
-                            chat1.Italic = true;
-                        }
-                    }
-                    else
-                    {
-                        chat1.Text += char1;
-                    }
-                }
-
-                chat.Extra.Add(chat1);
-
-                if (lines.Length != 1)
-                {
-                    chat.Extra.Add(new Chat()
-                    {
-                        Text = "\n"
-                    });
-                }
-            }
-
-            return chat;
-        }
-        else
-        {
-            JObject obj = JObject.Load(reader);
-            Chat chat = new();
-            serializer.Populate(obj.CreateReader(), chat);
-            return chat;
-        }
-    }
-
-    public override void WriteJson(JsonWriter writer, Chat? value, JsonSerializer serializer)
-    {
-        serializer.Serialize(writer, value);
-    }
-}
+namespace ColorMC.Core.Net.Motd;
 
 public static class ServerMotd
 {
@@ -249,7 +138,7 @@ public static class ServerMotd
                 byte[] protocol_version = ProtocolHandler.GetVarInt(754);
                 byte[] server_adress_val = Encoding.UTF8.GetBytes(ip);
                 byte[] server_adress_len = ProtocolHandler.GetVarInt(server_adress_val.Length);
-                byte[] server_port = BitConverter.GetBytes((ushort)port);
+                byte[] server_port = BitConverter.GetBytes(port);
                 Array.Reverse(server_port);
                 byte[] next_state = ProtocolHandler.GetVarInt(1);
 
@@ -270,7 +159,7 @@ public static class ServerMotd
                 int packetLength = handler.ReadNextVarIntRAW();
                 if (packetLength > 0)
                 {
-                    List<byte> packetData = new(handler.readDataRAW(packetLength));
+                    List<byte> packetData = new(handler.ReadDataRAW(packetLength));
                     if (ProtocolHandler.ReadNextVarInt(packetData) == 0x00) //Read Packet ID
                     {
                         string result = ProtocolHandler.ReadNextString(packetData); //Get the Json data
@@ -278,7 +167,6 @@ public static class ServerMotd
                     }
                 }
 
-                #region Ping
                 byte[] ping_id = ProtocolHandler.GetVarInt(1);
                 byte[] ping_content = BitConverter.GetBytes((long)233);
                 byte[] ping_packet = ProtocolHandler.ConcatBytes(ping_id, ping_content);
@@ -297,7 +185,7 @@ public static class ServerMotd
                     pingWatcher.Stop();
                     if (pingLenghth > 0)
                     {
-                        List<byte> packetData = new(handler.readDataRAW(pingLenghth));
+                        List<byte> packetData = new(handler.ReadDataRAW(pingLenghth));
                         if (ProtocolHandler.ReadNextVarInt(packetData) == 0x01) //Read Packet ID
                         {
                             long content = ProtocolHandler.ReadNextByte(packetData); //Get the Json data
@@ -312,7 +200,6 @@ public static class ServerMotd
                 {
                     info.Ping = 0;
                 }
-                #endregion
             }
             catch (SocketException)
             {
@@ -333,14 +220,4 @@ public static class ServerMotd
 
         return info;
     }
-
-    //public static string ClearColor(string str)
-    //{
-    //    str = str.Replace(@"\n", "\n");
-    //    while (str.Contains('§'))
-    //    {
-    //        str = str.Remove(str.IndexOf('§'), 2);
-    //    }
-    //    return str.Trim();
-    //}
 }

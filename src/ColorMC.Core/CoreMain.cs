@@ -1,9 +1,10 @@
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using ColorMC.Core.Utils.Downloader;
 using System.Diagnostics;
 
 namespace ColorMC.Core;
@@ -129,6 +130,7 @@ public static class ColorMCCore
         ConfigSave.Init();
         JvmPath.Init(dir);
         ConfigUtils.Init(dir);
+        BaseClient.Init();
         LocalMaven.Init(dir);
         DownloadManager.Init(dir);
         AuthDatabase.Init();

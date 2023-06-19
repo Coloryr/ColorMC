@@ -1,3 +1,4 @@
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 
@@ -5,7 +6,6 @@ namespace ColorMC.Core.Net.Login;
 
 public static class Nide8
 {
-    private const string BaseUrl = "https://auth.mc-user.com:233/";
     /// <summary>
     /// 统一通行证登录
     /// </summary>
@@ -16,7 +16,7 @@ public static class Nide8
     public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Authenticate(string server, string clientToken,
         string user, string pass)
     {
-        string url = BaseUrl + server;
+        string url = UrlHelper.Nide8 + server;
 
         var obj = await LoginOld.Authenticate(url, clientToken, user, pass);
         if (obj.State != LoginState.Done)
@@ -34,6 +34,6 @@ public static class Nide8
     /// <param name="obj">保存的账户</param>
     public static Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(LoginObj obj)
     {
-        return LoginOld.Refresh(BaseUrl + obj.Text1, obj);
+        return LoginOld.Refresh(UrlHelper.Nide8 + obj.Text1, obj);
     }
 }

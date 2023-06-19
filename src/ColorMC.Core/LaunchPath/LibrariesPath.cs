@@ -87,7 +87,7 @@ public static class LibrariesPath
         var v2 = CheckRule.GameLaunchVersion(version1);
         if (v2)
         {
-            ForgeAPI.ReadyForgeWrapper();
+            GameHelper.ReadyForgeWrapper();
         }
 
         var forge = VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion);
@@ -95,7 +95,7 @@ public static class LibrariesPath
             return null;
 
         var list = new ConcurrentBag<DownloadItemObj>();
-        var list1 = ForgeAPI.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
+        var list1 = GameHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
 
         //forge本体
         await Parallel.ForEachAsync(list1, async (item, cancel) =>
@@ -129,7 +129,7 @@ public static class LibrariesPath
                 if (item.name.StartsWith("net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
                 {
-                    var item1 = ForgeAPI.BuildForgeUniversal(obj.Version, obj.LoaderVersion!);
+                    var item1 = GameHelper.BuildForgeUniversal(obj.Version, obj.LoaderVersion!);
                     item1.SHA1 = item.downloads.artifact.sha1;
                     if (!File.Exists(item1.Local))
                     {

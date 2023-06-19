@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// 系统信息
+/// </summary>
 public static class SystemInfo
 {
     public static CultureInfo CultureInfo { get; private set; } = CultureInfo.InstalledUICulture;

@@ -6,8 +6,14 @@ using System.Net;
 
 namespace ColorMC.Core.Net;
 
+/// <summary>
+/// 网络客户端
+/// </summary>
 public static class BaseClient
 {
+    /// <summary>
+    /// 下载源
+    /// </summary>
     public static SourceLocal Source { get; private set; }
 
     public static HttpClient DownloadClient { get; private set; }

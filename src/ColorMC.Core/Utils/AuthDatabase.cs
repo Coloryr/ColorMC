@@ -6,6 +6,9 @@ using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// 账户数据库
+/// </summary>
 public static class AuthDatabase
 {
     public static readonly ConcurrentDictionary<(string, AuthType), LoginObj> Auths = new();

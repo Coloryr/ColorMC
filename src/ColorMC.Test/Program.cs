@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils.Downloader;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;

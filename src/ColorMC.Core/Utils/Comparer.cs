@@ -4,6 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// CurseForge比较器
+/// </summary>
 public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
 {
     public readonly static CurseDataComparer Instance = new();
@@ -18,6 +21,9 @@ public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
     }
 }
 
+/// <summary>
+/// Mod比较器
+/// </summary>
 public class ModComparer : IComparer<ModObj>
 {
     public readonly static ModComparer Instance = new();

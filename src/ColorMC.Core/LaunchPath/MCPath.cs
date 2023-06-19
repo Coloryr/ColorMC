@@ -3,6 +3,9 @@ using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.LaunchPath;
 
+/// <summary>
+/// 游戏路径
+/// </summary>
 public static class MCPath
 {
     private const string Name = "minecraft";

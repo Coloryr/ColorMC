@@ -1,3 +1,4 @@
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -7,7 +8,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ColorMC.Core.Utils.Downloader;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Text;
@@ -26,7 +26,7 @@ public static class Launch
     /// <param name="login">登录的账户</param>
     /// <exception cref="LaunchException">抛出的错误</exception>
     /// <returns>下载列表</returns>
-    private static async Task<List<DownloadItemObj>> CheckGameFile(GameSettingObj obj, LoginObj login)
+    public static async Task<List<DownloadItemObj>> CheckGameFile(GameSettingObj obj, LoginObj login)
     {
         var list = new List<DownloadItemObj>();
 
@@ -101,7 +101,7 @@ public static class Launch
             var assets = game.GetIndex();
             if (assets == null)
             {
-                assets = await GameJsonObj.GetAssets(game.assetIndex.url);
+                assets = await GameAPI.GetAssets(game.assetIndex.url);
                 if (assets == null)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
@@ -549,7 +549,7 @@ public static class Launch
         if (v2 && obj.Loader == Loaders.Forge)
         {
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
-            jvmHead.Add($"-Dforgewrapper.installer={ForgeAPI
+            jvmHead.Add($"-Dforgewrapper.installer={GameHelper
                 .BuildForgeInster(obj.Version, obj.LoaderVersion!).Local}");
             jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
         }
@@ -742,13 +742,13 @@ public static class Launch
         {
             var forge = obj.GetForgeObj()!;
 
-            var list2 = ForgeAPI.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
+            var list2 = GameHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
 
             list2.ForEach(a => list.AddOrUpdate(PathC.MakeVersionObj(a.Name), a.Local));
 
             if (v2)
             {
-                list.AddOrUpdate(new(), ForgeAPI.ForgeWrapper);
+                list.AddOrUpdate(new(), GameHelper.ForgeWrapper);
             }
         }
         else if (obj.Loader == Loaders.Fabric)

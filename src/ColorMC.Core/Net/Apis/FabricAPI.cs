@@ -6,6 +6,9 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
+/// <summary>
+/// Fabric网络请求
+/// </summary>
 public static class FabricAPI
 {
     private static List<string>? SupportVersion;

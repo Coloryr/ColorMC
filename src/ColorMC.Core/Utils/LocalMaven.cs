@@ -7,6 +7,9 @@ using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// 本地缓存
+/// </summary>
 public static class LocalMaven
 {
     private static readonly ConcurrentDictionary<string, MavenItemObj> Items = new();

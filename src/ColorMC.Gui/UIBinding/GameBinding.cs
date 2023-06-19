@@ -671,14 +671,14 @@ public static class GameBinding
     {
         var dir = obj.Local;
 
-        NbtBase.Write(Path.GetFullPath(dir + "/" + file), nbt);
+        nbt.Save(Path.GetFullPath(dir + "/" + file));
     }
 
     public static void SaveNbtFile(GameSettingObj obj, string file, NbtBase nbt)
     {
         var dir = obj.GetGamePath();
 
-        NbtBase.Write(Path.GetFullPath(dir + "/" + file), nbt);
+        nbt.Save(Path.GetFullPath(dir + "/" + file));
     }
 
     public static Task<List<string>?> GetForgeVersion(string version)
@@ -1371,6 +1371,22 @@ public static class GameBinding
 
             return true;
         });
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    private static string GetString(this List<string> list)
+    {
+        var str = new StringBuilder();
+        foreach (var item in list)
+        {
+            str.Append(item).Append(',');
+        }
+
+        return str.ToString()[..^1];
     }
 
     public static List<string> GetLogList(GameSettingObj obj)

@@ -1,11 +1,15 @@
 ﻿using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using System.Buffers;
 using System.Collections.Concurrent;
 
-namespace ColorMC.Core.Utils.Downloader;
+namespace ColorMC.Core.Downloader;
 
+/// <summary>
+/// 下载器
+/// </summary>
 public static class DownloadManager
 {
     /// <summary>
