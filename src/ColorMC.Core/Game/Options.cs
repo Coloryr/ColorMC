@@ -1,5 +1,8 @@
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 配置文件相关操作s
+/// </summary>
 public static class Options
 {
     /// <summary>

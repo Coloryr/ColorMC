@@ -6,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.GameLog;
 using ColorMC.Gui.UI.Windows;
 using System.ComponentModel;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameLog;
 
@@ -16,9 +15,9 @@ public partial class GameLogControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public GameLogControl() : this(new GameSettingObj { Empty = true } )
-    { 
-        
+    public GameLogControl() : this(new GameSettingObj { Empty = true })
+    {
+
     }
 
     public GameLogControl(GameSettingObj obj)

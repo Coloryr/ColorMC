@@ -9,13 +9,16 @@ using System.Text;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 材质包相关操作
+/// </summary>
 public static class Resourcepacks
 {
     /// <summary>
     /// 获取材质包列表
     /// </summary>
     /// <param name="game">游戏实例</param>
-    /// <returns></returns>
+    /// <returns>列表</returns>
     public static async Task<List<ResourcepackObj>> GetResourcepacks(this GameSettingObj game)
     {
         var list = new List<ResourcepackObj>();
@@ -88,9 +91,9 @@ public static class Resourcepacks
     /// <summary>
     /// 导入材质包
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="file"></param>
-    /// <returns></returns>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">导入列表</param>
+    /// <returns>结果</returns>
     public static async Task<bool> AddResourcepack(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetResourcepacksPath();

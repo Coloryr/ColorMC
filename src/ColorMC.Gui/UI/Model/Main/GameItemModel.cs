@@ -68,9 +68,9 @@ public partial class GameItemModel : ObservableObject
         Tips = string.Format(App.GetLanguage("Tips.Text1"),
             Obj.LaunchData.AddTime.Ticks == 0 ? "" : Obj.LaunchData.AddTime.ToString(),
             Obj.LaunchData.LastTime.Ticks == 0 ? "" : Obj.LaunchData.LastTime.ToString(),
-            Obj.LaunchData.LastPlay.Ticks == 0 ? "" : 
+            Obj.LaunchData.LastPlay.Ticks == 0 ? "" :
             $"{Obj.LaunchData.LastPlay.TotalHours:#}:{Obj.LaunchData.LastPlay.Minutes:00}:{Obj.LaunchData.LastPlay.Seconds:00}",
-            Obj.LaunchData.GameTime.Ticks == 0 ? "" : 
+            Obj.LaunchData.GameTime.Ticks == 0 ? "" :
             $"{Obj.LaunchData.GameTime.TotalHours:#}:{Obj.LaunchData.GameTime.Minutes:00}:{Obj.LaunchData.GameTime.Seconds:00}");
     }
 

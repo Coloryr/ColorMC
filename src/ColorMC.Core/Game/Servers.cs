@@ -8,6 +8,9 @@ using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 服务器存储操作
+/// </summary>
 public static class Servers
 {
     /// <summary>

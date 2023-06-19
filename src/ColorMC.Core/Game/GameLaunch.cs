@@ -14,6 +14,9 @@ using System.Text;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 游戏启动类
+/// </summary>
 public static class Launch
 {
     /// <summary>
@@ -23,7 +26,7 @@ public static class Launch
     /// <param name="login">登录的账户</param>
     /// <exception cref="LaunchException">抛出的错误</exception>
     /// <returns>下载列表</returns>
-    public static async Task<List<DownloadItemObj>> CheckGameFile(GameSettingObj obj, LoginObj login)
+    private static async Task<List<DownloadItemObj>> CheckGameFile(GameSettingObj obj, LoginObj login)
     {
         var list = new List<DownloadItemObj>();
 
@@ -198,7 +201,7 @@ public static class Launch
 
             if (login.AuthType == AuthType.Nide8)
             {
-                var item = await AuthHelper.ReadyNide8();
+                var item = await AuthlibHelper.ReadyNide8();
                 if (item != null)
                 {
                     list.Add(item);
@@ -207,7 +210,7 @@ public static class Launch
             else if (login.AuthType is AuthType.AuthlibInjector
                 or AuthType.LittleSkin or AuthType.SelfLittleSkin)
             {
-                var item = await AuthHelper.ReadyAuthlibInjector();
+                var item = await AuthlibHelper.ReadyAuthlibInjector();
                 if (item != null)
                 {
                     list.Add(item);
@@ -273,7 +276,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>Java信息</returns>
-    public static JavaInfo? FindJava(GameSettingObj obj)
+    private static JavaInfo? FindJava(GameSettingObj obj)
     {
         var game = VersionPath.GetGame(obj.Version)!;
         var jv = game.javaVersion.majorVersion;
@@ -306,7 +309,7 @@ public static class Launch
         return list.Where(x => x.MajorVersion == max).FirstOrDefault();
     }
 
-    public readonly static List<string> V1JvmArg = new()
+    private readonly static List<string> V1JvmArg = new()
     {
         "-Djava.library.path=${natives_directory}", "-cp", "${classpath}"
     };
@@ -315,14 +318,14 @@ public static class Launch
     /// 创建V1版启动参数
     /// </summary>
     /// <returns></returns>
-    public static List<string> MakeV1JvmArg() => V1JvmArg;
+    private static List<string> MakeV1JvmArg() => V1JvmArg;
 
     /// <summary>
     /// 创建V2版启动参数
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static List<string> MakeV2JvmArg(GameSettingObj obj)
+    private static List<string> MakeV2JvmArg(GameSettingObj obj)
     {
         var game = VersionPath.GetGame(obj.Version)!;
         if (game.arguments == null)
@@ -386,7 +389,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static List<string> MakeV1GameArg(GameSettingObj obj)
+    private static List<string> MakeV1GameArg(GameSettingObj obj)
     {
         if (obj.Loader == Loaders.Forge)
         {
@@ -403,7 +406,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static List<string> MakeV2GameArg(GameSettingObj obj)
+    private static List<string> MakeV2GameArg(GameSettingObj obj)
     {
         var game = VersionPath.GetGame(obj.Version)!;
         if (game.arguments == null)
@@ -474,7 +477,7 @@ public static class Launch
     /// <param name="v2">V2模式</param>
     /// <param name="login">登录的账户</param>
     /// <returns></returns>
-    public static async Task<List<string>> JvmArg(GameSettingObj obj, bool v2, LoginObj login)
+    private static async Task<List<string>> JvmArg(GameSettingObj obj, bool v2, LoginObj login)
     {
         JvmArgObj args;
 
@@ -563,25 +566,25 @@ public static class Launch
 
         if (login.AuthType == AuthType.Nide8)
         {
-            jvmHead.Add($"-javaagent:{AuthHelper.NowNide8Injector}={login.Text1}");
+            jvmHead.Add($"-javaagent:{AuthlibHelper.NowNide8Injector}={login.Text1}");
             jvmHead.Add("-Dnide8auth.client=true");
         }
         else if (login.AuthType == AuthType.AuthlibInjector)
         {
             var res = await BaseClient.GetString(login.Text1);
-            jvmHead.Add($"-javaagent:{AuthHelper.NowAuthlibInjector}={login.Text1}");
+            jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
             jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res.Item2!)}");
         }
         else if (login.AuthType == AuthType.LittleSkin)
         {
             var res = await BaseClient.GetString("https://littleskin.cn/api/yggdrasil");
-            jvmHead.Add($"-javaagent:{AuthHelper.NowAuthlibInjector}=https://littleskin.cn/api/yggdrasil");
+            jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}=https://littleskin.cn/api/yggdrasil");
             jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res.Item2!)}");
         }
         else if (login.AuthType == AuthType.SelfLittleSkin)
         {
             var res = await BaseClient.GetString($"{login.Text1}/api/yggdrasil");
-            jvmHead.Add($"-javaagent:{AuthHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
+            jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
             jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res.Item2!)}");
         }
 
@@ -594,7 +597,7 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="v2">V2模式</param>
     /// <returns></returns>
-    public static List<string> GameArg(GameSettingObj obj, bool v2)
+    private static List<string> GameArg(GameSettingObj obj, bool v2)
     {
         List<string> gameArg = new();
         gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
@@ -722,7 +725,7 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="v2">V2模式</param>
     /// <returns></returns>
-    public static async Task<List<string>> GetLibs(GameSettingObj obj, bool v2)
+    private static async Task<List<string>> GetLibs(GameSettingObj obj, bool v2)
     {
         Dictionary<LibVersionObj, string> list = new();
         var version = VersionPath.GetGame(obj.Version)!;
@@ -779,7 +782,7 @@ public static class Launch
     /// <param name="login">登录的账户</param>
     /// <param name="all_arg">参数</param>
     /// <param name="v2">V2模式</param>
-    public static async Task ReplaceAll(GameSettingObj obj, LoginObj login, List<string> all_arg, bool v2)
+    private static async Task ReplaceAll(GameSettingObj obj, LoginObj login, List<string> all_arg, bool v2)
     {
         var version = VersionPath.GetGame(obj.Version)!;
         string assetsPath = AssetsPath.BaseDir;
@@ -858,7 +861,7 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="login">登录的账户</param>
     /// <returns></returns>
-    public static async Task<List<string>> MakeArg(GameSettingObj obj, LoginObj login)
+    private static async Task<List<string>> MakeArg(GameSettingObj obj, LoginObj login)
     {
         var list = new List<string>();
         var version = VersionPath.GetGame(obj.Version)!;
@@ -902,6 +905,22 @@ public static class Launch
         await ReplaceAll(obj, login, list, v2);
 
         return list;
+    }
+
+    /// <summary>
+    /// 进程日志
+    /// </summary>
+    private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        ColorMCCore.ProcessLog?.Invoke(sender as Process, e.Data);
+    }
+
+    /// <summary>
+    /// 进程日志
+    /// </summary>
+    private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        ColorMCCore.ProcessLog?.Invoke(sender as Process, e.Data);
     }
 
     /// <summary>
@@ -1283,14 +1302,4 @@ public static class Launch
     //        }
     //    }).Start();
     //}
-
-    private static void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        ColorMCCore.ProcessLog?.Invoke(sender as Process, e.Data);
-    }
-
-    private static void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-    {
-        ColorMCCore.ProcessLog?.Invoke(sender as Process, e.Data);
-    }
 }

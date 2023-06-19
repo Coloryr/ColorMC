@@ -1,12 +1,8 @@
 ﻿using Avalonia.OpenGL;
 using Live2DCSharpSDK.Framework.Rendering.OpenGL;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -227,7 +223,7 @@ public class AvaloniaApi : OpenGLApi
 
     public override int glGenTexture()
     {
-       return  GL.GenTexture();
+        return GL.GenTexture();
     }
 
     public override int glGetAttribLocation(int index, string attr)
@@ -357,7 +353,7 @@ public class AvaloniaApi : OpenGLApi
 
     public override unsafe void glVertexAttribPointer(int index, int length, int type, bool b, int size, float* arr)
     {
-        GL.VertexAttribPointer(index, length, type, b ? 1: 0, size, new IntPtr(arr));
+        GL.VertexAttribPointer(index, length, type, b ? 1 : 0, size, new IntPtr(arr));
     }
 
     public override void glViewport(int x, int y, int w, int h)

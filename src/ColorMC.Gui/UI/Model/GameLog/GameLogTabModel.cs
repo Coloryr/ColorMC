@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Avalonia.Threading;
+﻿using Avalonia.Threading;
 using AvaloniaEdit.Document;
-using System.Text;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Core.Objs;
-using System.Timers;
-using ColorMC.Gui.UIBinding;
-using System.Collections.ObjectModel;
 using AvaloniaEdit.Utils;
 using ColorMC.Core;
+using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Collections.ObjectModel;
+using System.Timers;
 
 namespace ColorMC.Gui.UI.Model.GameLog;
 

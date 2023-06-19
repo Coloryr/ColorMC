@@ -7,6 +7,9 @@ using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 游戏登录类
+/// </summary>
 public static class BaseAuth
 {
     /// <summary>
@@ -34,7 +37,7 @@ public static class BaseAuth
             }
             now = AuthState.XBox;
             ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XBox);
-             (done, var XNLToken, var XBLUhs) = await OAuthAPI.GetXBLAsync(obj!.access_token);
+            (done, var XNLToken, var XBLUhs) = await OAuthAPI.GetXBLAsync(obj!.access_token);
             if (done != LoginState.Done)
             {
                 return (AuthState.XBox, done, null,

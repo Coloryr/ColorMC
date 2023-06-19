@@ -54,7 +54,7 @@ public record CountObj
     /// 值为所有游戏启动统计
     /// </summary>
     public Dictionary<string, List<LaunchLog>> LaunchLogs { get; set; }
-    
+
     /// <summary>
     /// 所有运行时间
     /// </summary>

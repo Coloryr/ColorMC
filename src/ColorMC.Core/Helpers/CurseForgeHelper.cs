@@ -5,6 +5,9 @@ using System.Text;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// CueseForge帮助
+/// </summary>
 public static class CurseForgeHelper
 {
     /// <summary>

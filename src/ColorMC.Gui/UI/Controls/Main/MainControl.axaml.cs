@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core;
@@ -7,7 +6,6 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;

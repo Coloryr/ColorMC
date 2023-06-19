@@ -8,6 +8,9 @@ using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 结构文件操作
+/// </summary>
 public static class Schematic
 {
     public const string Name1 = ".litematic";
@@ -44,6 +47,51 @@ public static class Schematic
         });
 
         return list;
+    }
+
+    /// <summary>
+    /// 删除结构文件
+    /// </summary>
+    /// <param name="obj">结构文件</param>
+    public static void Delete(this SchematicObj obj)
+    {
+        File.Delete(obj.Local);
+    }
+
+    /// <summary>
+    /// 添加结构文件
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件列表</param>
+    /// <returns>结果</returns>
+    public static bool AddSchematic(this GameSettingObj obj, List<string> file)
+    {
+        var path = obj.GetSchematicsPath();
+        Directory.CreateDirectory(path);
+        bool ok = true;
+
+        Parallel.ForEach(file, (item) =>
+        {
+            var name = Path.GetFileName(item);
+            var path1 = Path.GetFullPath(path + "/" + name);
+            if (File.Exists(path1))
+                return;
+
+            try
+            {
+                File.Copy(item, path1);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                ok = false;
+            }
+        });
+
+        if (!ok)
+            return false;
+
+        return true;
     }
 
     /// <summary>
@@ -133,50 +181,5 @@ public static class Schematic
                 Broken = true
             };
         }
-    }
-
-    /// <summary>
-    /// 删除结构文件
-    /// </summary>
-    /// <param name="obj">结构文件</param>
-    public static void Delete(this SchematicObj obj)
-    {
-        File.Delete(obj.Local);
-    }
-
-    /// <summary>
-    /// 添加结构文件
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="file">文件列表</param>
-    /// <returns>结果</returns>
-    public static bool AddSchematic(this GameSettingObj obj, List<string> file)
-    {
-        var path = obj.GetSchematicsPath();
-        Directory.CreateDirectory(path);
-        bool ok = true;
-
-        Parallel.ForEach(file, (item) =>
-        {
-            var name = Path.GetFileName(item);
-            var path1 = Path.GetFullPath(path + "/" + name);
-            if (File.Exists(path1))
-                return;
-
-            try
-            {
-                File.Copy(item, path1);
-            }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
-                ok = false;
-            }
-        });
-
-        if (!ok)
-            return false;
-
-        return true;
     }
 }

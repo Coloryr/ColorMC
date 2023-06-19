@@ -6,13 +6,16 @@ using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 光影包相关操作
+/// </summary>
 public static class Shaderpacks
 {
     /// <summary>
-    /// 获取游戏实例资源包
+    /// 获取游戏实例光影包
     /// </summary>
     /// <param name="game">游戏实例</param>
-    /// <returns>资源包列表</returns>
+    /// <returns>光影包列表</returns>
     public static List<ShaderpackObj> GetShaderpacks(this GameSettingObj game)
     {
         var list = new List<ShaderpackObj>();

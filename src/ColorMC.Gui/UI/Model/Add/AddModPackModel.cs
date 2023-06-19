@@ -100,7 +100,7 @@ public partial class AddModPackModel : ObservableObject
         if (load)
             return;
 
-        
+
         GameVersion1 = value;
 
         Load();

@@ -12,9 +12,13 @@ using System.Text;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 世界相关操作
+/// </summary>
 public static class Worlds
 {
     private const string Name1 = "datapacks";
+
     /// <summary>
     /// 获取世界列表
     /// </summary>
@@ -32,7 +36,7 @@ public static class Worlds
             return list;
         }
 
-        await Parallel.ForEachAsync(info.GetDirectories(), (item, cacenl) =>
+        await Parallel.ForEachAsync(info.GetDirectories(), async (item, cacenl) =>
         {
             bool find = false;
             foreach (var item1 in item.GetFiles())
@@ -62,12 +66,11 @@ public static class Worlds
                     var icon = item.GetFiles().Where(a => a.Name == "icon.png").FirstOrDefault();
                     if (icon != null)
                     {
-                        obj.Icon = File.ReadAllBytes(icon.FullName);
+                        obj.Icon = await File.ReadAllBytesAsync(icon.FullName);
                     }
 
                     list.Add(obj);
                     find = true;
-                    break;
                 }
                 catch (Exception e)
                 {
@@ -83,9 +86,8 @@ public static class Worlds
                         Game = game
                     });
                 }
+                break;
             }
-
-            return ValueTask.CompletedTask;
         });
 
         return list;
@@ -220,7 +222,7 @@ public static class Worlds
         var data = Encoding.UTF8.GetBytes(info1);
         using var stream = new ZipFileStream(data);
         var crc = new Crc32();
-        var entry = new ZipEntry("info.json")
+        var entry = new ZipEntry("colormc.info.json")
         {
             DateTime = DateTime.Now,
             Size = data.Length

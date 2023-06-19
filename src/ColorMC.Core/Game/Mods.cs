@@ -12,13 +12,16 @@ using Tomlyn.Model;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 游戏Mod相关操作
+/// </summary>
 public static class Mods
 {
     /// <summary>
     /// 获取Mod列表
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns></returns>
+    /// <returns>Mod列表</returns>
     public static async Task<List<ModObj>> GetMods(this GameSettingObj obj)
     {
         var list = new ConcurrentBag<ModObj>();
@@ -332,55 +335,6 @@ public static class Mods
     }
 
     /// <summary>
-    /// 找到指定obj
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="key">键名</param>
-    /// <returns></returns>
-    private static JContainer? FindKey(this JObject obj, string key)
-    {
-        foreach (var item in obj)
-        {
-            if (item.Key == key)
-            {
-                return item.Value?.Parent;
-            }
-
-            if (item.Value is JObject obj1)
-            {
-                return FindKey(obj1, key);
-            }
-            else if (item.Value is JArray arry)
-            {
-                return FindKey(arry, key);
-            }
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// 找到指定obj
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="key">键名</param>
-    /// <returns></returns>
-    private static JContainer? FindKey(this JArray obj, string key)
-    {
-        foreach (var item in obj)
-        {
-            if (item is JObject obj1)
-            {
-                var data = FindKey(obj1, key);
-                if (data != null)
-                    return data.Parent;
-            }
-        }
-
-        return null;
-    }
-
-    /// <summary>
     /// 禁用Mod
     /// </summary>
     /// <param name="mod"></param>
@@ -462,6 +416,24 @@ public static class Mods
     }
 
     /// <summary>
+    /// 添加Mod信息
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="info">信息</param>
+    public static void AddModInfo(this GameSettingObj obj, ModInfoObj info)
+    {
+        if (obj.Mods.ContainsKey(info.ModId))
+        {
+            obj.Mods[info.ModId] = info;
+        }
+        else
+        {
+            obj.Mods.Add(info.ModId, info);
+        }
+        obj.SaveModInfo();
+    }
+
+    /// <summary>
     /// 作者分割
     /// </summary>
     private static List<string> ToStringList(this string obj)
@@ -512,20 +484,51 @@ public static class Mods
     }
 
     /// <summary>
-    /// 添加Mod信息
+    /// 找到指定obj
     /// </summary>
     /// <param name="obj"></param>
-    /// <param name="info"></param>
-    public static void AddModInfo(this GameSettingObj obj, ModInfoObj info)
+    /// <param name="key">键名</param>
+    /// <returns></returns>
+    private static JContainer? FindKey(this JObject obj, string key)
     {
-        if (obj.Mods.ContainsKey(info.ModId))
+        foreach (var item in obj)
         {
-            obj.Mods[info.ModId] = info;
+            if (item.Key == key)
+            {
+                return item.Value?.Parent;
+            }
+
+            if (item.Value is JObject obj1)
+            {
+                return FindKey(obj1, key);
+            }
+            else if (item.Value is JArray arry)
+            {
+                return FindKey(arry, key);
+            }
         }
-        else
+
+        return null;
+    }
+
+    /// <summary>
+    /// 找到指定obj
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="key">键名</param>
+    /// <returns></returns>
+    private static JContainer? FindKey(this JArray obj, string key)
+    {
+        foreach (var item in obj)
         {
-            obj.Mods.Add(info.ModId, info);
+            if (item is JObject obj1)
+            {
+                var data = FindKey(obj1, key);
+                if (data != null)
+                    return data.Parent;
+            }
         }
-        obj.SaveModInfo();
+
+        return null;
     }
 }

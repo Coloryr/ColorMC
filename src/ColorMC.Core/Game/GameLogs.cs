@@ -1,25 +1,28 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.GZip;
-using System;
-using System.Collections.Generic;
 using System.IO.Compression;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 游戏日志类
+/// </summary>
 public static class GameLogs
 {
+    /// <summary>
+    /// 获取游戏日志文件列表
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>列表</returns>
     public static List<string> GetLogFiles(this GameSettingObj obj)
     {
         var list = new List<string>();
         var path = Path.GetFullPath(obj.GetLogPath()) + "/";
         if (Directory.Exists(path))
         {
-            var list1 = Directory.GetFiles(path) ;
+            var list1 = Directory.GetFiles(path);
             foreach (var item in list1)
             {
                 list.Add(item.Replace(path, ""));
@@ -29,6 +32,12 @@ public static class GameLogs
         return list;
     }
 
+    /// <summary>
+    /// 读游戏日志
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件名</param>
+    /// <returns>日志内容</returns>
     public static string? ReadLog(this GameSettingObj obj, string file)
     {
         try

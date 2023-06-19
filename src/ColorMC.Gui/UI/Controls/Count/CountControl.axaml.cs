@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using ColorMC.Gui.UI.Model.Count;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
-using System;
 
 namespace ColorMC.Gui.UI.Controls.Count;
 

@@ -1,8 +1,5 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using ColorMC.Core;
 using ColorMC.Gui.UI.Model.Setting;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 

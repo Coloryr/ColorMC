@@ -3,6 +3,9 @@ using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 屏幕截图相关操作
+/// </summary>
 public static class Screenshots
 {
     /// <summary>

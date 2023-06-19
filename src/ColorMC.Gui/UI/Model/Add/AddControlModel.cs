@@ -708,7 +708,7 @@ public partial class AddControlModel : ObservableObject
                 window.ProgressInfo.Close();
                 return;
             }
-            
+
             var data = await WebBinding.SearchMcmod(now, Name, Page);
             if (data == null)
             {

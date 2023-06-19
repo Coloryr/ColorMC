@@ -26,7 +26,7 @@ public record JavaInfo
             }
             else
             {
-                if(int.TryParse(vers[0], out var data))
+                if (int.TryParse(vers[0], out var data))
                 {
                     return data;
                 }

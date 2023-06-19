@@ -1312,8 +1312,8 @@ public static class GameBinding
             ConcurrentBag<(string, List<string>)> lost = new();
 
             Parallel.ForEach(mod, new ParallelOptions()
-            { 
-                 MaxDegreeOfParallelism = 1
+            {
+                MaxDegreeOfParallelism = 1
             }, item =>
             {
                 if (item == null)

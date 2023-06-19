@@ -8,7 +8,6 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Formats.Asn1;
 using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;

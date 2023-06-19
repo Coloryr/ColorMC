@@ -1,5 +1,4 @@
-﻿using ColorMC.Core.Utils;
-using System;
+﻿using System;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 

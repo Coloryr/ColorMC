@@ -29,7 +29,7 @@ public class FontSel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerArrayName));
     }
 
-    public static string GetFont() 
+    public static string GetFont()
     {
         return Font.Name;
     }

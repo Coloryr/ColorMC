@@ -9,6 +9,9 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 服务器包相关操作
+/// </summary>
 public static class ServerPack
 {
     /// <summary>

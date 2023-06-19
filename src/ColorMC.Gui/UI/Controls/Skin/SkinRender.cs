@@ -12,7 +12,6 @@ using ColorMC.Gui.Utils;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -896,7 +895,7 @@ public class SkinRender : OpenGlControlBase
             RotXY.X = 0;
             RotXY.Y = 0;
         }
-        
+
 
         var modelMat = Last
                     * Matrix4x4.CreateTranslation(new(XY.X, XY.Y, 0))

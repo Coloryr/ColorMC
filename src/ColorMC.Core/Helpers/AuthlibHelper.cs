@@ -8,7 +8,10 @@ using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Helpers;
 
-public static class AuthHelper
+/// <summary>
+/// 外置登陆器
+/// </summary>
+public static class AuthlibHelper
 {
     /// <summary>
     /// AuthlibInjector 物理位置

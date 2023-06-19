@@ -18,7 +18,7 @@ public static class GameCountUtils
     private static string Dir;
     private static bool IsSave;
     private static bool IsRun;
-    
+
     private static readonly object Lock = new();
     private readonly static Dictionary<string, DateTime> TimeList = new();
     private readonly static Dictionary<string, TimeSpan> SpanTimeList = new();

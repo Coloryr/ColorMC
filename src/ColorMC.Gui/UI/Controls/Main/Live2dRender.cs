@@ -1,9 +1,6 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
-using Avalonia.Rendering;
 using Avalonia.Threading;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Main;
@@ -14,10 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -120,7 +114,7 @@ public class Live2dRender : OpenGlControlBase
 
         try
         {
-            lapp = new(new AvaloniaApi(this, gl));
+            lapp = new(new AvaloniaApi(this, gl), Logs.Info);
             change = true;
             CheckError(gl);
             Model.ShowMessage(App.GetLanguage("Live2D.Text1"));
@@ -170,12 +164,12 @@ public class Live2dRender : OpenGlControlBase
 
     public void Pressed()
     {
-        lapp.OnMouseCallBack(ButtonType.LEFT, ButtonFuntion.PRESS);
+        lapp.OnMouseCallBack(true);
     }
 
     public void Release()
     {
-        lapp.OnMouseCallBack(ButtonType.LEFT, ButtonFuntion.RELEASE);
+        lapp.OnMouseCallBack(false);
     }
 
     public void Moved(float x, float y)
@@ -189,7 +183,7 @@ public class Live2dRender : OpenGlControlBase
     }
 
     public List<string> GetExpressions()
-    { 
+    {
         return lapp.Live2dManager.GetModel(0).Expressions;
     }
 

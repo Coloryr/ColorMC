@@ -9,7 +9,6 @@ using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Live2DCSharpSDK.Framework.Core;
-using Live2DCSharpSDK.Framework;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
