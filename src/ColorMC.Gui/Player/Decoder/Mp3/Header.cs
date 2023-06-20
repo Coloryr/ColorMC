@@ -175,7 +175,7 @@ public sealed class Header
                 IntensityStereoBound = (ModeExtension << 2) + 4;
             else
                 IntensityStereoBound = 0; // should never be used
-                                              // calculate number of subbands:
+                                          // calculate number of subbands:
             if (Layer == 1)
                 NumberOfSubbands = 32;
             else

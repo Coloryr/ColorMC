@@ -25,6 +25,8 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     public IUserControl? Main;
 
+    private bool SetClose;
+
     public SelfBaseWindow() : this(null)
     {
 
@@ -77,8 +79,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         Update();
     }
-
-    bool SetClose = false;
 
     private void SelfBaseWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
@@ -164,6 +164,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         Main?.Opened();
     }
+
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
         App.PicUpdate -= Update;

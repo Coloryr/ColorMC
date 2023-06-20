@@ -16,9 +16,9 @@ public partial class DownloadModDisplayModel : ObservableObject
     [ObservableProperty]
     private int selectVersion;
 
+    public List<string> Version => ModVersion;
+
     public bool Optional;
     public List<string> ModVersion;
     public List<(DownloadItemObj Item, ModInfoObj Info)> Items;
-
-    public List<string> Version => ModVersion;
 }

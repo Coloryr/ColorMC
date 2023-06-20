@@ -17,6 +17,7 @@ public class MainFlyout
 
         var fy = new FlyoutsControl(new()
         {
+            (App.GetLanguage("MainWindow.Flyouts.Text2"), true, Button3_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text1"), true, Button1_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text3"), true, Button11_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text4"), true, Button2_Click),
@@ -30,6 +31,10 @@ public class MainFlyout
             (App.GetLanguage("MainWindow.Flyouts.Text12"), !run, Button13_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text13"), run, Button10_Click)
         }, con);
+    }
+    private void Button3_Click()
+    {
+        App.ShowGameEdit(Obj.Obj);
     }
 
     private void Button13_Click()

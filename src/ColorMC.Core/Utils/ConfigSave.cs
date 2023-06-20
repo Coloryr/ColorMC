@@ -1,7 +1,6 @@
 ﻿using ColorMC.Core.Helpers;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace ColorMC.Core.Utils;
 

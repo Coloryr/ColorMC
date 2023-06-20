@@ -30,6 +30,8 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class AllControl : UserControl, IUserControl, IBaseWindow
 {
+    public IBaseWindow TopWindow => App.FindRoot(this);
+
     private UserControl BaseControl;
     private UserControl Now;
     private AllFlyout AllFlyout1;
@@ -41,24 +43,15 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     private readonly List<Button> List = new();
 
     public IBaseWindow Window => this;
-
-    public IBaseWindow TopWindow => App.FindRoot(this);
+    public UserControl Con => Now;
 
     Info3Control IBaseWindow.InputInfo => Info3;
-
     Info1Control IBaseWindow.ProgressInfo => Info1;
-
     Info4Control IBaseWindow.OkInfo => Info;
-
     Info2Control IBaseWindow.NotifyInfo => Info2;
-
     Info5Control IBaseWindow.ComboInfo => Info5;
-
     Info6Control IBaseWindow.TextInfo => Info6;
-
     HeadControl IBaseWindow.Head => Head;
-
-    public UserControl Con => Now;
 
     public AllControl()
     {

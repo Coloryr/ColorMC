@@ -10,7 +10,7 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class GamesModel : ObservableObject
 {
-    private readonly IUserControl Con;
+    public readonly IUserControl Con;
     private readonly IMainTop Top;
     public ObservableCollection<GameItemModel> GameList { get; init; } = new();
 

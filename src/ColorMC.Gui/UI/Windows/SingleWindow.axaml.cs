@@ -11,21 +11,21 @@ public partial class SingleWindow : Window, IBaseWindow
 {
     public AllControl window1;
 
-    public Info3Control InputInfo => window1.Info3;
+    Info3Control IBaseWindow.InputInfo => window1.Info3;
 
-    public Info1Control ProgressInfo => window1.Info1;
+    Info1Control IBaseWindow.ProgressInfo => window1.Info1;
 
-    public Info4Control OkInfo => window1.Info;
+    Info4Control IBaseWindow.OkInfo => window1.Info;
 
-    public Info2Control NotifyInfo => window1.Info2;
+    Info2Control IBaseWindow.NotifyInfo => window1.Info2;
 
-    public Info5Control ComboInfo => window1.Info5;
+    Info5Control IBaseWindow.ComboInfo => window1.Info5;
 
-    public Info6Control TextInfo => window1.Info6;
+    Info6Control IBaseWindow.TextInfo => window1.Info6;
 
     HeadControl IBaseWindow.Head => window1.Head;
 
-    public UserControl Con => window1.Con;
+    UserControl IBaseWindow.Con => window1.Con;
 
     public SingleWindow(AllControl window) : this()
     {

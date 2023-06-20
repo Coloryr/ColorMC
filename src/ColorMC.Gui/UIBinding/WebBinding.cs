@@ -666,7 +666,7 @@ public static class WebBinding
                     }
                     Dispatcher.UIThread.Post(() =>
                     {
-                        item.New = true;
+                        item.IsNew = true;
                     });
                 }
             }

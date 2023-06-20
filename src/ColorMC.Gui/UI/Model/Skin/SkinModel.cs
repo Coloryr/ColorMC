@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Model.Skin;
 
 public partial class SkinModel : ObservableObject
 {
-    private IUserControl Con;
+    private readonly IUserControl Con;
     public List<string> SkinTypeList { get; } = BaseBinding.GetSkinType();
     public List<string> SkinRotateList { get; } = BaseBinding.GetSkinRotateName();
 

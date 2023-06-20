@@ -16,7 +16,7 @@ namespace ColorMC.Gui.UI.Model.User;
 
 public partial class UsersModel : ObservableObject
 {
-    private IUserControl Con;
+    private readonly IUserControl Con;
 
     private bool cancel;
 

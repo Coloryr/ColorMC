@@ -21,6 +21,8 @@ public partial class ServerPackTab1Model : ServerPackTabModel
     [ObservableProperty]
     private bool forceUpdate;
 
+    private bool load;
+
     public ServerPackTab1Model(IUserControl con, ServerPackObj obj) : base(con, obj)
     {
 
@@ -92,17 +94,22 @@ public partial class ServerPackTab1Model : ServerPackTabModel
 
     public void Load()
     {
+        load = true;
+
         Url = Obj.Url;
         Version = Obj.Version;
         Text = Obj.Text;
         UI = Obj.UI;
         ForceUpdate = Obj.ForceUpdate;
+
+        load = false;
     }
 
     private void Save()
     {
+        if (load)
+            return;
+
         GameBinding.SaveServerPack(Obj);
     }
-
-
 }

@@ -54,7 +54,7 @@ public class SkinAnimation
         start = true;
         semaphore.Release();
     }
-    
+
     /// <summary>
     /// 暂停
     /// </summary>

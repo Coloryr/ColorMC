@@ -211,6 +211,7 @@ public partial class GameEditTab1Model : GameEditTabModel
         var window = Con.Window;
         if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
         {
+            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error3"));
             return;
         }
 

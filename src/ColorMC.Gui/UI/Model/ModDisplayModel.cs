@@ -3,26 +3,20 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Utils;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model;
 
 /// <summary>
 /// Mod项目
 /// </summary>
-public record ModDisplayModel : INotifyPropertyChanged
+public partial class ModDisplayModel : ObservableObject
 {
-    private bool disable { get; set; }
-    private bool _new { get; set; } = false;
+    [ObservableProperty]
+    public bool enable;
+
     public string Name { get; set; }
-    public string Version
-    {
-        get
-        {
-            return Obj.version + (New ? " " + App.GetLanguage("Gui.Info8") : "");
-        }
-    }
+    public string Version => Obj.version + (IsNew ? " " + App.GetLanguage("Gui.Info8") : "");
     public string Local => Obj.Local;
     public string Author => Obj.authorList.MakeString();
     public string? Url => Obj.url;
@@ -41,28 +35,12 @@ public record ModDisplayModel : INotifyPropertyChanged
     public string? PID => Obj1?.ModId;
     public string? FID => Obj1?.FileId;
 
-    public bool New
-    {
-        get { return _new; }
-        set
-        {
-            _new = value;
-            NotifyPropertyChanged(nameof(Version));
-        }
-    }
-
+    public bool IsNew;
     public ModInfoObj? Obj1;
     public ModObj Obj;
-    public bool Enable
-    {
-        get { return !disable; }
-        set { disable = value; NotifyPropertyChanged(); }
-    }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    public void LocalChange()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        OnPropertyChanged(nameof(Local));
     }
 }
