@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Model.Count;
 
 public partial class CountModel : ObservableObject
 {
-    private IUserControl Con;
+    private readonly IUserControl Con;
 
     [ObservableProperty]
     private long count;
@@ -53,7 +53,7 @@ public partial class CountModel : ObservableObject
     private string gameTime1;
 
     private readonly List<GameSettingObj> List = new();
-    private ObservableCollection<string> Game { get; init; } = new();
+    public ObservableCollection<string> Game { get; init; } = new();
 
     public CountModel(IUserControl con)
     {
@@ -81,7 +81,7 @@ public partial class CountModel : ObservableObject
                                       item1.Time.Month == date.Month &&
                                       item1.Time.Day == date.Day
                                       select item).Count();
-            time = data.AllTime.ToString();
+            time = $"{data.AllTime.TotalHours:0}:{data.AllTime.Minutes}:{data.AllTime.Seconds}";
             TimeSpan temp = TimeSpan.Zero;
             foreach (var item in data.GameRuns)
             {
@@ -185,7 +185,7 @@ public partial class CountModel : ObservableObject
                     temp1 += item.StopTime - item.StartTime;
                 }
             }
-            GameTime = temp.ToString();
+            GameTime = $"{temp.TotalHours:0}:{temp.Minutes}:{temp.Seconds}";
             GameTime1 = temp1.ToString();
         }
 

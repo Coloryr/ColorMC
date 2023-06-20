@@ -254,6 +254,7 @@ public static class GameCountUtils
             Count.LaunchDoneCount++;
             var time = new CountObj.GameTime()
             {
+                Now = true,
                 StartTime = now,
                 StopTime = now
             };
@@ -341,6 +342,7 @@ public static class GameCountUtils
                 var item = list.FirstOrDefault(a => a.Now);
                 if (item != null)
                 {
+                    item.Now = false;
                     item.StopTime = time;
                 }
             }
