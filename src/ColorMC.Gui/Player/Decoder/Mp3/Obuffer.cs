@@ -13,7 +13,7 @@ public abstract class Obuffer
     /**
      * Accepts 32 new PCM samples.
      */
-    public void AppendSamples(int channel, float[] f)
+    public virtual void AppendSamples(int channel, float[] f)
     {
         short s;
         for (int i = 0; i < 32;)

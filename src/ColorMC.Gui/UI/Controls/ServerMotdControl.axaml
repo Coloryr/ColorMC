@@ -9,8 +9,8 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid Background="{setting:Colors MotdBack}">
-        <Grid Margin="2">
+    <Panel Background="{setting:Colors MotdBack}">
+        <Panel Margin="2">
             <Image
                 Name="Image1"
                 Width="64"
@@ -56,10 +56,10 @@
                         Foreground="{setting:Colors Motd}" />
                 </StackPanel>
             </StackPanel>
-        </Grid>
-        <Grid
+        </Panel>
+        <Panel
             Name="Grid1"
-            Background="#EEEEEE"
+            Background="{setting:Colors Bottom1}"
             IsVisible="False">
             <StackPanel VerticalAlignment="Center">
                 <Label
@@ -71,16 +71,16 @@
                     Margin="10,0,10,0"
                     IsIndeterminate="True" />
             </StackPanel>
-        </Grid>
-        <Grid
+        </Panel>
+        <Panel
             Name="Grid2"
-            Background="#EEEEEE"
+            Background="{setting:Colors Bottom1}"
             IsVisible="False">
             <Label
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="{setting:Localize ServerMotdControl.Text5}" />
-        </Grid>
+        </Panel>
 
         <Button
             Name="Button2"
@@ -90,5 +90,5 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Content="{setting:Localize Button.Refash}" />
-    </Grid>
+    </Panel>
 </UserControl>

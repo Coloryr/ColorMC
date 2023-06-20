@@ -29,6 +29,7 @@ public partial class CountControl : UserControl, IUserControl
         Window.SetTitle(App.GetLanguage("CountWindow.Title"));
 
         Expander1.MakeTran();
+        Expander2.MakeTran();
+        Expander3.MakeTran();
     }
-
 }

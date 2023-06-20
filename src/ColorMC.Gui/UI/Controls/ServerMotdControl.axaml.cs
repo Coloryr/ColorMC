@@ -87,7 +87,6 @@ public partial class ServerMotdControl : UserControl
         StackPanel1.Children.Clear();
         StackPanel2.Children.Clear();
 
-
         var ip = IP;
         var port = Port;
         if (ip == null)

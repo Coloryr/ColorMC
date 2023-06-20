@@ -14,7 +14,6 @@ namespace ColorMC.Gui.UI.Controls.User;
 
 public partial class UsersControl : UserControl, IUserControl
 {
-
     private readonly UsersModel model;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
@@ -82,7 +81,7 @@ public partial class UsersControl : UserControl, IUserControl
     {
         Window.SetTitle(App.GetLanguage("UserWindow.Title"));
 
-        Dispatcher.UIThread.Post(DataGrid_User.MakeTran);
+        Dispatcher.UIThread.Post(DataGrid_User.SetFontColor);
     }
 
     public void Closed()

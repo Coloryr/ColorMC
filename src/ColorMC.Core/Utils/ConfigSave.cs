@@ -1,5 +1,7 @@
 ﻿using ColorMC.Core.Helpers;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace ColorMC.Core.Utils;
 
@@ -15,9 +17,7 @@ public static class ConfigSave
         public string Local;
     }
 
-    private static readonly Dictionary<string, ConfigSaveObj> SaveQue = new();
-
-    private static readonly object Lock = new();
+    private static readonly ConcurrentBag<ConfigSaveObj> SaveQue = new();
 
     private static Thread thread;
     private static bool run;
@@ -45,16 +45,7 @@ public static class ConfigSave
         run = false;
         thread.Join();
 
-        lock (Lock)
-        {
-            foreach (var item in SaveQue.Values)
-            {
-                File.WriteAllText(item.Local,
-                    JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
-            }
-
-            SaveQue.Clear();
-        }
+        Save();
     }
 
     /// <summary>
@@ -68,24 +59,42 @@ public static class ConfigSave
             if (!SaveQue.Any())
                 continue;
 
-            lock (Lock)
+            Save();
+        }
+    }
+
+    private static void Save()
+    {
+        Dictionary<string, ConfigSaveObj> list = new();
+        lock (SaveQue)
+        {
+            list.Clear();
+            while (SaveQue.TryTake(out var item))
             {
-                foreach (var item in SaveQue.Values)
+                if (list.ContainsKey(item.Name))
                 {
-                    if (new FileInfo(item.Local)?.Directory?.Exists == true)
-                    {
-                        try
-                        {
-                            File.WriteAllText(item.Local,
-                                JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
-                        }
-                        catch (Exception e)
-                        {
-                            Logs.Error(LanguageHelper.GetName("Core.Config.Error2"), e);
-                        }
-                    }
+                    list[item.Name] = item;
                 }
-                SaveQue.Clear();
+                else
+                {
+                    list.Add(item.Name, item);
+                }
+            }
+            SaveQue.Clear();
+        }
+
+        foreach (var item in list.Values)
+        {
+            var info = new FileInfo(item.Local);
+            info.Directory?.Create();
+            try
+            {
+                File.WriteAllText(item.Local,
+                    JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.GetName("Core.Config.Error2"), e);
             }
         }
     }
@@ -96,12 +105,9 @@ public static class ConfigSave
     /// <param name="obj"></param>
     public static void AddItem(ConfigSaveObj obj)
     {
-        lock (Lock)
+        lock (SaveQue)
         {
-            if (!SaveQue.ContainsKey(obj.Name))
-            {
-                SaveQue.Add(obj.Name, obj);
-            }
+            SaveQue.Add(obj);
         }
     }
 }

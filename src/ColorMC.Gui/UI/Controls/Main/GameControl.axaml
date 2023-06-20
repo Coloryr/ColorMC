@@ -10,20 +10,20 @@
     d:DesignWidth="80"
     ToolTip.Tip="{Binding Tips}"
     mc:Ignorable="d">
-    <Grid>
-        <Rectangle
+	<Panel>
+		<Rectangle
             Name="Rectangle2"
             Fill="{setting:Colors Back}"
             IsVisible="False" />
-        <Rectangle
+		<Rectangle
             Name="Rectangle1"
             Fill="{setting:Colors TranBack}"
             IsVisible="{Binding IsSelect}"
             Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
-        <StackPanel Margin="5">
-            <Image Source="{Binding Pic}" Stretch="UniformToFill" />
-            <TextBlock
+		<StackPanel Margin="5">
+			<Image Source="{Binding Pic}" Stretch="UniformToFill" />
+			<TextBlock
                 Name="TextBlock1"
                 HorizontalAlignment="Center"
                 FontSize="13"
@@ -31,9 +31,9 @@
                 TextAlignment="Center"
                 TextTrimming="{Binding Trim}"
                 TextWrapping="{Binding Wrap}" />
-        </StackPanel>
+		</StackPanel>
 
-        <Image
+		<Image
             Width="32"
             Height="32"
             Margin="0,30,0,0"
@@ -42,7 +42,7 @@
             IsVisible="{Binding IsLaunch}"
             Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
             Stretch="UniformToFill" />
-        <Image
+		<Image
             Width="32"
             Height="32"
             Margin="0,30,0,0"
@@ -51,6 +51,6 @@
             IsVisible="{Binding IsLoad}"
             Source="resm:ColorMC.Gui.Resource.Pic.load.png"
             Stretch="UniformToFill" />
-    </Grid>
+	</Panel>
 
 </UserControl>

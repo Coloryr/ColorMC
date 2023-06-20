@@ -117,7 +117,6 @@ public class Live2dRender : OpenGlControlBase
             lapp = new(new AvaloniaApi(this, gl), Logs.Info);
             change = true;
             CheckError(gl);
-            Model.ShowMessage(App.GetLanguage("Live2D.Text1"));
             init = true;
         }
         catch (Exception e)
@@ -139,6 +138,7 @@ public class Live2dRender : OpenGlControlBase
         {
             change = false;
             ChangeModel();
+            Model.ShowMessage(App.GetLanguage("Live2D.Text1"));
         }
         if (delete)
         {

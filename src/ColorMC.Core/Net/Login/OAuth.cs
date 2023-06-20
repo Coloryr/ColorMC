@@ -40,8 +40,14 @@ public static class OAuthAPI
     private static string url;
     private static string device_code;
     private static int expires_in;
-    private static bool cancel;
+    private static CancellationTokenSource cancel;
 
+    /// <summary>
+    /// 请求数据
+    /// </summary>
+    /// <param name="url">网址</param>
+    /// <param name="arg">参数</param>
+    /// <returns>数据</returns>
     private static async Task<string> PostString(string url, Dictionary<string, string> arg)
     {
         FormUrlEncodedContent content = new(arg);
@@ -49,7 +55,12 @@ public static class OAuthAPI
 
         return await message.Content.ReadAsStringAsync();
     }
-
+    /// <summary>
+    /// 请求数据
+    /// </summary>
+    /// <param name="url">网址</param>
+    /// <param name="arg">参数</param>
+    /// <returns>数据</returns>
     private static async Task<JObject> PostObj(string url, object arg)
     {
         var data1 = JsonConvert.SerializeObject(arg);
@@ -58,7 +69,12 @@ public static class OAuthAPI
         var data = await message.Content.ReadAsStringAsync();
         return JObject.Parse(data);
     }
-
+    /// <summary>
+    /// 请求数据
+    /// </summary>
+    /// <param name="url">网址</param>
+    /// <param name="arg">参数</param>
+    /// <returns>数据</returns>
     private static async Task<JObject> PostObj(string url, Dictionary<string, string> arg)
     {
         FormUrlEncodedContent content = new(arg);
@@ -102,11 +118,11 @@ public static class OAuthAPI
         Arg2["code"] = device_code;
         long startTime = DateTime.Now.Ticks;
         int delay = 2;
-        cancel = false;
+        cancel = new();
         do
         {
             await Task.Delay(delay * 1000);
-            if (cancel)
+            if (cancel.IsCancellationRequested)
             {
                 return (LoginState.Error, null);
             }
@@ -244,8 +260,11 @@ public static class OAuthAPI
         return (LoginState.Done, accessToken);
     }
 
+    /// <summary>
+    /// 取消请求
+    /// </summary>
     public static void Cancel()
     {
-        cancel = true;
+        cancel.Cancel();
     }
 }

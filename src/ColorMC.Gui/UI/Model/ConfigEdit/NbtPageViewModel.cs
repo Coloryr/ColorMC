@@ -14,8 +14,9 @@ namespace ColorMC.Gui.UI.Model.ConfigEdit;
 
 public class NbtPageViewModel : ObservableObject
 {
-    public NbtBase Nbt { get; }
     private readonly NbtNodeModel _root;
+
+    public NbtBase Nbt { get; }
     public HierarchicalTreeDataGridSource<NbtNodeModel> Source { get; }
 
     public NbtPageViewModel(NbtCompound nbt)

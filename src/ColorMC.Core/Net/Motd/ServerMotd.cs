@@ -116,7 +116,6 @@ public static class ServerMotd
 
             try
             {
-                #region Handshake
                 /*
                 *  packid  filed name          filed type      notes
                 *  
@@ -145,7 +144,6 @@ public static class ServerMotd
                 byte[] tosend = ProtocolHandler.ConcatBytes(ProtocolHandler.GetVarInt(concat_pack.Length), concat_pack);
 
                 tcp.Client.Send(tosend, SocketFlags.None);
-                #endregion
 
                 // Request
                 byte[] status_request = ProtocolHandler.GetVarInt(0);

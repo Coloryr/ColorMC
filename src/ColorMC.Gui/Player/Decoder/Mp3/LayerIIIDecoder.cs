@@ -5,122 +5,122 @@ namespace ColorMC.Gui.Player.Decoder.Mp3;
 public sealed class LayerIIIDecoder : IFrameDecoder
 {
     public static readonly int[] pretab =
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 3, 2, 0};
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 3, 2, 0};
     public static readonly float[] two_to_negative_half_pow =
-            {1.0000000000E+00f, 7.0710678119E-01f, 5.0000000000E-01f, 3.5355339059E-01f,
-                    2.5000000000E-01f, 1.7677669530E-01f, 1.2500000000E-01f, 8.8388347648E-02f,
-                    6.2500000000E-02f, 4.4194173824E-02f, 3.1250000000E-02f, 2.2097086912E-02f,
-                    1.5625000000E-02f, 1.1048543456E-02f, 7.8125000000E-03f, 5.5242717280E-03f,
-                    3.9062500000E-03f, 2.7621358640E-03f, 1.9531250000E-03f, 1.3810679320E-03f,
-                    9.7656250000E-04f, 6.9053396600E-04f, 4.8828125000E-04f, 3.4526698300E-04f,
-                    2.4414062500E-04f, 1.7263349150E-04f, 1.2207031250E-04f, 8.6316745750E-05f,
-                    6.1035156250E-05f, 4.3158372875E-05f, 3.0517578125E-05f, 2.1579186438E-05f,
-                    1.5258789062E-05f, 1.0789593219E-05f, 7.6293945312E-06f, 5.3947966094E-06f,
-                    3.8146972656E-06f, 2.6973983047E-06f, 1.9073486328E-06f, 1.3486991523E-06f,
-                    9.5367431641E-07f, 6.7434957617E-07f, 4.7683715820E-07f, 3.3717478809E-07f,
-                    2.3841857910E-07f, 1.6858739404E-07f, 1.1920928955E-07f, 8.4293697022E-08f,
-                    5.9604644775E-08f, 4.2146848511E-08f, 2.9802322388E-08f, 2.1073424255E-08f,
-                    1.4901161194E-08f, 1.0536712128E-08f, 7.4505805969E-09f, 5.2683560639E-09f,
-                    3.7252902985E-09f, 2.6341780319E-09f, 1.8626451492E-09f, 1.3170890160E-09f,
-                    9.3132257462E-10f, 6.5854450798E-10f, 4.6566128731E-10f, 3.2927225399E-10f
-            };
+    {1.0000000000E+00f, 7.0710678119E-01f, 5.0000000000E-01f, 3.5355339059E-01f,
+        2.5000000000E-01f, 1.7677669530E-01f, 1.2500000000E-01f, 8.8388347648E-02f,
+        6.2500000000E-02f, 4.4194173824E-02f, 3.1250000000E-02f, 2.2097086912E-02f,
+        1.5625000000E-02f, 1.1048543456E-02f, 7.8125000000E-03f, 5.5242717280E-03f,
+        3.9062500000E-03f, 2.7621358640E-03f, 1.9531250000E-03f, 1.3810679320E-03f,
+        9.7656250000E-04f, 6.9053396600E-04f, 4.8828125000E-04f, 3.4526698300E-04f,
+        2.4414062500E-04f, 1.7263349150E-04f, 1.2207031250E-04f, 8.6316745750E-05f,
+        6.1035156250E-05f, 4.3158372875E-05f, 3.0517578125E-05f, 2.1579186438E-05f,
+        1.5258789062E-05f, 1.0789593219E-05f, 7.6293945312E-06f, 5.3947966094E-06f,
+        3.8146972656E-06f, 2.6973983047E-06f, 1.9073486328E-06f, 1.3486991523E-06f,
+        9.5367431641E-07f, 6.7434957617E-07f, 4.7683715820E-07f, 3.3717478809E-07f,
+        2.3841857910E-07f, 1.6858739404E-07f, 1.1920928955E-07f, 8.4293697022E-08f,
+        5.9604644775E-08f, 4.2146848511E-08f, 2.9802322388E-08f, 2.1073424255E-08f,
+        1.4901161194E-08f, 1.0536712128E-08f, 7.4505805969E-09f, 5.2683560639E-09f,
+        3.7252902985E-09f, 2.6341780319E-09f, 1.8626451492E-09f, 1.3170890160E-09f,
+        9.3132257462E-10f, 6.5854450798E-10f, 4.6566128731E-10f, 3.2927225399E-10f
+    };
     public static readonly float[] t_43 = CreateTab43();
     public static readonly float[,] io =
-            {
-                    {1.0000000000E+00f, 8.4089641526E-01f, 7.0710678119E-01f, 5.9460355751E-01f,
-                            5.0000000001E-01f, 4.2044820763E-01f, 3.5355339060E-01f, 2.9730177876E-01f,
-                            2.5000000001E-01f, 2.1022410382E-01f, 1.7677669530E-01f, 1.4865088938E-01f,
-                            1.2500000000E-01f, 1.0511205191E-01f, 8.8388347652E-02f, 7.4325444691E-02f,
-                            6.2500000003E-02f, 5.2556025956E-02f, 4.4194173826E-02f, 3.7162722346E-02f,
-                            3.1250000002E-02f, 2.6278012978E-02f, 2.2097086913E-02f, 1.8581361173E-02f,
-                            1.5625000001E-02f, 1.3139006489E-02f, 1.1048543457E-02f, 9.2906805866E-03f,
-                            7.8125000006E-03f, 6.5695032447E-03f, 5.5242717285E-03f, 4.6453402934E-03f},
-                    {1.0000000000E+00f, 7.0710678119E-01f, 5.0000000000E-01f, 3.5355339060E-01f,
-                            2.5000000000E-01f, 1.7677669530E-01f, 1.2500000000E-01f, 8.8388347650E-02f,
-                            6.2500000001E-02f, 4.4194173825E-02f, 3.1250000001E-02f, 2.2097086913E-02f,
-                            1.5625000000E-02f, 1.1048543456E-02f, 7.8125000002E-03f, 5.5242717282E-03f,
-                            3.9062500001E-03f, 2.7621358641E-03f, 1.9531250001E-03f, 1.3810679321E-03f,
-                            9.7656250004E-04f, 6.9053396603E-04f, 4.8828125002E-04f, 3.4526698302E-04f,
-                            2.4414062501E-04f, 1.7263349151E-04f, 1.2207031251E-04f, 8.6316745755E-05f,
-                            6.1035156254E-05f, 4.3158372878E-05f, 3.0517578127E-05f, 2.1579186439E-05f}
-            };
+    {
+        {1.0000000000E+00f, 8.4089641526E-01f, 7.0710678119E-01f, 5.9460355751E-01f,
+            5.0000000001E-01f, 4.2044820763E-01f, 3.5355339060E-01f, 2.9730177876E-01f,
+            2.5000000001E-01f, 2.1022410382E-01f, 1.7677669530E-01f, 1.4865088938E-01f,
+            1.2500000000E-01f, 1.0511205191E-01f, 8.8388347652E-02f, 7.4325444691E-02f,
+            6.2500000003E-02f, 5.2556025956E-02f, 4.4194173826E-02f, 3.7162722346E-02f,
+            3.1250000002E-02f, 2.6278012978E-02f, 2.2097086913E-02f, 1.8581361173E-02f,
+            1.5625000001E-02f, 1.3139006489E-02f, 1.1048543457E-02f, 9.2906805866E-03f,
+            7.8125000006E-03f, 6.5695032447E-03f, 5.5242717285E-03f, 4.6453402934E-03f},
+        {1.0000000000E+00f, 7.0710678119E-01f, 5.0000000000E-01f, 3.5355339060E-01f,
+            2.5000000000E-01f, 1.7677669530E-01f, 1.2500000000E-01f, 8.8388347650E-02f,
+            6.2500000001E-02f, 4.4194173825E-02f, 3.1250000001E-02f, 2.2097086913E-02f,
+            1.5625000000E-02f, 1.1048543456E-02f, 7.8125000002E-03f, 5.5242717282E-03f,
+            3.9062500001E-03f, 2.7621358641E-03f, 1.9531250001E-03f, 1.3810679321E-03f,
+            9.7656250004E-04f, 6.9053396603E-04f, 4.8828125002E-04f, 3.4526698302E-04f,
+            2.4414062501E-04f, 1.7263349151E-04f, 1.2207031251E-04f, 8.6316745755E-05f,
+            6.1035156254E-05f, 4.3158372878E-05f, 3.0517578127E-05f, 2.1579186439E-05f}
+    };
     public static readonly float[] TAN12 =
-            {
-                    0.0f, 0.26794919f, 0.57735027f, 1.0f,
-                    1.73205081f, 3.73205081f, 9.9999999e10f, -3.73205081f,
-                    -1.73205081f, -1.0f, -0.57735027f, -0.26794919f,
-                    0.0f, 0.26794919f, 0.57735027f, 1.0f
-            };
+    {
+        0.0f, 0.26794919f, 0.57735027f, 1.0f,
+        1.73205081f, 3.73205081f, 9.9999999e10f, -3.73205081f,
+        -1.73205081f, -1.0f, -0.57735027f, -0.26794919f,
+        0.0f, 0.26794919f, 0.57735027f, 1.0f
+    };
 
     public static readonly float[][] win = new float[][]
-            {
-                    new float[]{-1.6141214951E-02f, -5.3603178919E-02f, -1.0070713296E-01f, -1.6280817573E-01f,
-                            -4.9999999679E-01f, -3.8388735032E-01f, -6.2061144372E-01f, -1.1659756083E+00f,
-                            -3.8720752656E+00f, -4.2256286556E+00f, -1.5195289984E+00f, -9.7416483388E-01f,
-                            -7.3744074053E-01f, -1.2071067773E+00f, -5.1636156596E-01f, -4.5426052317E-01f,
-                            -4.0715656898E-01f, -3.6969460527E-01f, -3.3876269197E-01f, -3.1242222492E-01f,
-                            -2.8939587111E-01f, -2.6880081906E-01f, -5.0000000266E-01f, -2.3251417468E-01f,
-                            -2.1596714708E-01f, -2.0004979098E-01f, -1.8449493497E-01f, -1.6905846094E-01f,
-                            -1.5350360518E-01f, -1.3758624925E-01f, -1.2103922149E-01f, -2.0710679058E-01f,
-                            -8.4752577594E-02f, -6.4157525656E-02f, -4.1131172614E-02f, -1.4790705759E-02f},
+    {
+        new float[]{-1.6141214951E-02f, -5.3603178919E-02f, -1.0070713296E-01f, -1.6280817573E-01f,
+            -4.9999999679E-01f, -3.8388735032E-01f, -6.2061144372E-01f, -1.1659756083E+00f,
+            -3.8720752656E+00f, -4.2256286556E+00f, -1.5195289984E+00f, -9.7416483388E-01f,
+            -7.3744074053E-01f, -1.2071067773E+00f, -5.1636156596E-01f, -4.5426052317E-01f,
+            -4.0715656898E-01f, -3.6969460527E-01f, -3.3876269197E-01f, -3.1242222492E-01f,
+            -2.8939587111E-01f, -2.6880081906E-01f, -5.0000000266E-01f, -2.3251417468E-01f,
+            -2.1596714708E-01f, -2.0004979098E-01f, -1.8449493497E-01f, -1.6905846094E-01f,
+            -1.5350360518E-01f, -1.3758624925E-01f, -1.2103922149E-01f, -2.0710679058E-01f,
+            -8.4752577594E-02f, -6.4157525656E-02f, -4.1131172614E-02f, -1.4790705759E-02f},
 
-                     new float[]{-1.6141214951E-02f, -5.3603178919E-02f, -1.0070713296E-01f, -1.6280817573E-01f,
-                            -4.9999999679E-01f, -3.8388735032E-01f, -6.2061144372E-01f, -1.1659756083E+00f,
-                            -3.8720752656E+00f, -4.2256286556E+00f, -1.5195289984E+00f, -9.7416483388E-01f,
-                            -7.3744074053E-01f, -1.2071067773E+00f, -5.1636156596E-01f, -4.5426052317E-01f,
-                            -4.0715656898E-01f, -3.6969460527E-01f, -3.3908542600E-01f, -3.1511810350E-01f,
-                            -2.9642226150E-01f, -2.8184548650E-01f, -5.4119610000E-01f, -2.6213228100E-01f,
-                            -2.5387916537E-01f, -2.3296291359E-01f, -1.9852728987E-01f, -1.5233534808E-01f,
-                            -9.6496400054E-02f, -3.3423828516E-02f, 0.0000000000E+00f, 0.0000000000E+00f,
-                            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f},
+        new float[]{-1.6141214951E-02f, -5.3603178919E-02f, -1.0070713296E-01f, -1.6280817573E-01f,
+            -4.9999999679E-01f, -3.8388735032E-01f, -6.2061144372E-01f, -1.1659756083E+00f,
+            -3.8720752656E+00f, -4.2256286556E+00f, -1.5195289984E+00f, -9.7416483388E-01f,
+            -7.3744074053E-01f, -1.2071067773E+00f, -5.1636156596E-01f, -4.5426052317E-01f,
+            -4.0715656898E-01f, -3.6969460527E-01f, -3.3908542600E-01f, -3.1511810350E-01f,
+            -2.9642226150E-01f, -2.8184548650E-01f, -5.4119610000E-01f, -2.6213228100E-01f,
+            -2.5387916537E-01f, -2.3296291359E-01f, -1.9852728987E-01f, -1.5233534808E-01f,
+            -9.6496400054E-02f, -3.3423828516E-02f, 0.0000000000E+00f, 0.0000000000E+00f,
+            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f},
 
-                     new float[]{-4.8300800645E-02f, -1.5715656932E-01f, -2.8325045177E-01f, -4.2953747763E-01f,
-                            -1.2071067795E+00f, -8.2426483178E-01f, -1.1451749106E+00f, -1.7695290101E+00f,
-                            -4.5470225061E+00f, -3.4890531002E+00f, -7.3296292804E-01f, -1.5076514758E-01f,
-                            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
-                            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
-                            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
-                            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
-                            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
-                            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f},
+        new float[]{-4.8300800645E-02f, -1.5715656932E-01f, -2.8325045177E-01f, -4.2953747763E-01f,
+            -1.2071067795E+00f, -8.2426483178E-01f, -1.1451749106E+00f, -1.7695290101E+00f,
+            -4.5470225061E+00f, -3.4890531002E+00f, -7.3296292804E-01f, -1.5076514758E-01f,
+            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
+            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
+            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
+            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
+            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
+            0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f},
 
-                     new float[]{0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
-                            0.0000000000E+00f, 0.0000000000E+00f, -1.5076513660E-01f, -7.3296291107E-01f,
-                            -3.4890530566E+00f, -4.5470224727E+00f, -1.7695290031E+00f, -1.1451749092E+00f,
-                            -8.3137738100E-01f, -1.3065629650E+00f, -5.4142014250E-01f, -4.6528974900E-01f,
-                            -4.1066990750E-01f, -3.7004680800E-01f, -3.3876269197E-01f, -3.1242222492E-01f,
-                            -2.8939587111E-01f, -2.6880081906E-01f, -5.0000000266E-01f, -2.3251417468E-01f,
-                            -2.1596714708E-01f, -2.0004979098E-01f, -1.8449493497E-01f, -1.6905846094E-01f,
-                            -1.5350360518E-01f, -1.3758624925E-01f, -1.2103922149E-01f, -2.0710679058E-01f,
-                            -8.4752577594E-02f, -6.4157525656E-02f, -4.1131172614E-02f, -1.4790705759E-02f}
-            };
+        new float[]{0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f, 0.0000000000E+00f,
+            0.0000000000E+00f, 0.0000000000E+00f, -1.5076513660E-01f, -7.3296291107E-01f,
+            -3.4890530566E+00f, -4.5470224727E+00f, -1.7695290031E+00f, -1.1451749092E+00f,
+            -8.3137738100E-01f, -1.3065629650E+00f, -5.4142014250E-01f, -4.6528974900E-01f,
+            -4.1066990750E-01f, -3.7004680800E-01f, -3.3876269197E-01f, -3.1242222492E-01f,
+            -2.8939587111E-01f, -2.6880081906E-01f, -5.0000000266E-01f, -2.3251417468E-01f,
+            -2.1596714708E-01f, -2.0004979098E-01f, -1.8449493497E-01f, -1.6905846094E-01f,
+            -1.5350360518E-01f, -1.3758624925E-01f, -1.2103922149E-01f, -2.0710679058E-01f,
+            -8.4752577594E-02f, -6.4157525656E-02f, -4.1131172614E-02f, -1.4790705759E-02f}
+    };
     public static readonly int[,,] nr_of_sfb_block =
-            {{{6, 5, 5, 5}, {9, 9, 9, 9}, {6, 9, 9, 9}},
-                    {{6, 5, 7, 3}, {9, 9, 12, 6}, {6, 9, 12, 6}},
-                    {{11, 10, 0, 0}, {18, 18, 0, 0}, {15, 18, 0, 0}},
-                    {{7, 7, 7, 0}, {12, 12, 12, 0}, {6, 15, 12, 0}},
-                    {{6, 6, 6, 3}, {12, 9, 9, 6}, {6, 12, 9, 6}},
-                    {{8, 8, 5, 0}, {15, 12, 9, 0}, {6, 18, 9, 0}}};
+    {{{6, 5, 5, 5}, {9, 9, 9, 9}, {6, 9, 9, 9}},
+        {{6, 5, 7, 3}, {9, 9, 12, 6}, {6, 9, 12, 6}},
+        {{11, 10, 0, 0}, {18, 18, 0, 0}, {15, 18, 0, 0}},
+        {{7, 7, 7, 0}, {12, 12, 12, 0}, {6, 15, 12, 0}},
+        {{6, 6, 6, 3}, {12, 9, 9, 6}, {6, 12, 9, 6}},
+        {{8, 8, 5, 0}, {15, 12, 9, 0}, {6, 18, 9, 0}}};
     private static readonly int SSLIMIT = 18;
     private static readonly int SBLIMIT = 32;
     private static readonly int[,] slen =
-            {
-                    {0, 0, 0, 0, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4},
-                    {0, 1, 2, 3, 0, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2, 3}
-            };
+    {
+        {0, 0, 0, 0, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4},
+        {0, 1, 2, 3, 0, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2, 3}
+    };
     private static readonly float[] cs =
-            {
-                    0.857492925712f, 0.881741997318f, 0.949628649103f, 0.983314592492f,
-                    0.995517816065f, 0.999160558175f, 0.999899195243f, 0.999993155067f
-            };
+    {
+        0.857492925712f, 0.881741997318f, 0.949628649103f, 0.983314592492f,
+        0.995517816065f, 0.999160558175f, 0.999899195243f, 0.999993155067f
+    };
     private static readonly float[] ca =
-            {
-                    -0.5144957554270f, -0.4717319685650f, -0.3133774542040f, -0.1819131996110f,
-                    -0.0945741925262f, -0.0409655828852f, -0.0141985685725f, -0.00369997467375f
-            };
+    {
+        -0.5144957554270f, -0.4717319685650f, -0.3133774542040f, -0.1819131996110f,
+        -0.0945741925262f, -0.0409655828852f, -0.0141985685725f, -0.00369997467375f
+    };
 
     private static /*readonly*/ int[][] reorder_table/* = loadReorderTable()*/;    // SZD: will be generated on demand
-    readonly double d43 = (4.0 / 3.0);
+    readonly double d43 = 4.0 / 3.0;
     /**
      *
      */
@@ -161,24 +161,24 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     /**
      *
      */
-    int[] x = { 0 };
-    int[] y = { 0 };
-    int[] v = { 0 };
-    int[] w = { 0 };
+    private readonly int[] x = { 0 };
+    private readonly int[] y = { 0 };
+    private readonly int[] v = { 0 };
+    private readonly int[] w = { 0 };
     /**
      *
      */
 
-    int[] is_pos = new int[576];
-    float[] is_ratio = new float[576];
+    private readonly int[] is_pos = new int[576];
+    private readonly float[] is_ratio = new float[576];
     /**
      *
      */
 
     // MDM: tsOutCopy and rawout do not need initializing, so the arrays
     // can be reused.
-    float[] tsOutCopy = new float[18];
-    float[] rawout = new float[36];
+    private readonly float[] tsOutCopy = new float[18];
+    private readonly float[] rawout = new float[36];
     // MDM: removed, as this wasn't being used.
     private int CheckSumHuff = 0;
     private int frame_start;
@@ -193,7 +193,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                            SynthesisFilter filtera, SynthesisFilter filterb,
                            Obuffer buffer0, int which_ch0)
     {
-        HuffcodeTabel.Inithuff();
         is_1d = new int[SBLIMIT * SSLIMIT + 4];
         ro = new float[2][,];
         ro[0] = new float[SBLIMIT, SSLIMIT];
@@ -275,12 +274,12 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         which_channels = which_ch0;
 
         frame_start = 0;
-        channels = (header.Mode() == Header.SINGLE_CHANNEL) ? 1 : 2;
-        max_gr = (header.Version() == Header.MPEG1) ? 2 : 1;
+        channels = (header.Mode == Header.SINGLE_CHANNEL) ? 1 : 2;
+        max_gr = (header.Version == Header.MPEG1) ? 2 : 1;
 
-        sfreq = header.SampleFrequency() +
-                ((header.Version() == Header.MPEG1) ? 3 :
-                        (header.Version() == Header.MPEG25_LSF) ? 6 : 0);    // SZD
+        sfreq = header.SampleFrequency +
+                ((header.Version == Header.MPEG1) ? 3 :
+                        (header.Version == Header.MPEG25_LSF) ? 6 : 0);    // SZD
 
         if (channels == 2)
         {
@@ -320,7 +319,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private static float[] CreateTab43()
     {
         float[] t43 = new float[8192];
-        double d43 = (4.0 / 3.0);
+        double d43 = 4.0 / 3.0;
 
         for (int i = 0; i < 8192; i++)
         {
@@ -349,7 +348,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
     public void DecodeFrame()
     {
-        int nSlots = header.Slots();
+        int nSlots = header.Slots;
         int flush_main;
         int gr, ch, ss, sb, sb18;
         int main_data_end;
@@ -361,9 +360,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         for (i = 0; i < nSlots; i++)
             br.Hputbuf(stream.GetBits(8));
 
-        main_data_end = br.Hsstell() >>> 3; // of previous frame
+        main_data_end = br.Hsstell >>> 3; // of previous frame
 
-        if ((flush_main = (br.Hsstell() & 7)) != 0)
+        if ((flush_main = br.Hsstell & 7) != 0)
         {
             br.Hgetbits(8 - flush_main);
             main_data_end++;
@@ -388,12 +387,11 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         for (gr = 0; gr < max_gr; gr++)
         {
-
             for (ch = 0; ch < channels; ch++)
             {
-                part2_start = br.Hsstell();
+                part2_start = br.Hsstell;
 
-                if (header.Version() == Header.MPEG1)
+                if (header.Version == Header.MPEG1)
                     GetScaleFactors(ch, gr);
                 else  // MPEG-2 LSF, SZD: MPEG-2.5 LSF
                     GetLSFScaleFactors(ch, gr);
@@ -461,9 +459,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private void GetSideInfo()
     {
         int ch, gr;
-        if (header.Version() == Header.MPEG1)
+        if (header.Version == Header.MPEG1)
         {
-
             si.main_data_begin = stream.GetBits(9);
             if (channels == 1)
                 si.private_bits = stream.GetBits(5);
@@ -604,7 +601,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private void GetScaleFactors(int ch, int gr)
     {
         int sfb, window;
-        GrInfo gr_info = (si.ch[ch].gr[gr]);
+        GrInfo gr_info = si.ch[ch].gr[gr];
         int scale_comp = gr_info.scalefac_compress;
         int length0 = slen[0, scale_comp];
         int length1 = slen[1, scale_comp];
@@ -719,12 +716,12 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     {
 
         int scalefac_comp, int_scalefac_comp;
-        int mode_ext = header.ModeExtension();
+        int mode_ext = header.ModeExtension;
         int m;
         int blocktypenumber;
         int blocknumber = 0;
 
-        GrInfo gr_info = (si.ch[ch].gr[gr]);
+        GrInfo gr_info = si.ch[ch].gr[gr];
 
         scalefac_comp = gr_info.scalefac_compress;
 
@@ -836,7 +833,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     {
         int m = 0;
         int sfb, window;
-        GrInfo gr_info = (si.ch[ch].gr[gr]);
+        GrInfo gr_info = si.ch[ch].gr[gr];
 
         GetLSFScaleData(ch, gr);
 
@@ -929,9 +926,9 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         // Read bigvalues area
         for (int i = 0; i < (si.ch[ch].gr[gr].big_values << 1); i += 2)
         {
-            if (i < region1Start) h = HuffcodeTabel.ht[si.ch[ch].gr[gr].table_select[0]];
-            else if (i < region2Start) h = HuffcodeTabel.ht[si.ch[ch].gr[gr].table_select[1]];
-            else h = HuffcodeTabel.ht[si.ch[ch].gr[gr].table_select[2]];
+            if (i < region1Start) h = HuffcodeTabel.HT[si.ch[ch].gr[gr].table_select[0]];
+            else if (i < region2Start) h = HuffcodeTabel.HT[si.ch[ch].gr[gr].table_select[1]];
+            else h = HuffcodeTabel.HT[si.ch[ch].gr[gr].table_select[2]];
 
             HuffcodeTabel.HuffmanDecoder(h, x, y, v, w, br);
 
@@ -942,8 +939,8 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         }
 
         // Read count1 area
-        h = HuffcodeTabel.ht[si.ch[ch].gr[gr].count1table_select + 32];
-        num_bits = br.Hsstell();
+        h = HuffcodeTabel.HT[si.ch[ch].gr[gr].count1table_select + 32];
+        num_bits = br.Hsstell;
 
         while ((num_bits < part2_3_end) && (index < 576))
         {
@@ -955,7 +952,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             is_1d[index++] = x[0];
             is_1d[index++] = y[0];
             CheckSumHuff = CheckSumHuff + v[0] + w[0] + x[0] + y[0];
-            num_bits = br.Hsstell();
+            num_bits = br.Hsstell;
         }
 
         if (num_bits > part2_3_end)
@@ -964,7 +961,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
             index -= 4;
         }
 
-        num_bits = br.Hsstell();
+        num_bits = br.Hsstell;
 
         // Dismiss stuffing bits
         if (num_bits < part2_3_end)
@@ -1155,7 +1152,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
                 if (gr_info.preflag != 0)
                     idx += pretab[cb];
 
-                idx = idx << gr_info.scalefac_scale;
+                idx <<= gr_info.scalefac_scale;
                 xr[quotien, reste] *= two_to_negative_half_pow[idx];
             }
             index++;
@@ -1177,7 +1174,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
      */
     private void Reorder(float[,] xr, int ch, int gr)
     {
-        GrInfo gr_info = (si.ch[ch].gr[gr]);
+        GrInfo gr_info = si.ch[ch].gr[gr];
         int freq, freq3;
         int index;
         int sfb, sfb_start, sfb_lines;
@@ -1276,18 +1273,17 @@ public sealed class LayerIIIDecoder : IFrameDecoder
         }
         else
         {
-
-            GrInfo gr_info = (si.ch[0].gr[gr]);
-            int mode_ext = header.ModeExtension();
+            GrInfo gr_info = si.ch[0].gr[gr];
+            int mode_ext = header.ModeExtension;
             int sfb;
             int i;
             int lines, temp, temp2;
 
-            bool ms_stereo = ((header.Mode() == Header.JOINT_STEREO) && ((mode_ext & 0x2) != 0));
-            bool i_stereo = ((header.Mode() == Header.JOINT_STEREO) && ((mode_ext & 0x1) != 0));
-            bool lsf = ((header.Version() == Header.MPEG2_LSF || header.Version() == Header.MPEG25_LSF));    // SZD
+            bool ms_stereo = (header.Mode == Header.JOINT_STEREO) && ((mode_ext & 0x2) != 0);
+            bool i_stereo = (header.Mode == Header.JOINT_STEREO) && ((mode_ext & 0x1) != 0);
+            bool lsf = header.Version == Header.MPEG2_LSF || header.Version == Header.MPEG25_LSF;    // SZD
 
-            int io_type = (gr_info.scalefac_compress & 1);
+            int io_type = gr_info.scalefac_compress & 1;
 
             // initialization
 
@@ -1595,7 +1591,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     private void Antialias(int ch, int gr)
     {
         int sb18, ss, sb18lim;
-        GrInfo gr_info = (si.ch[ch].gr[gr]);
+        GrInfo gr_info = si.ch[ch].gr[gr];
         // 31 alias-reduction operations between each pair of sub-bands
         // with 8 butterflies between each pair
 
@@ -1631,7 +1627,7 @@ public sealed class LayerIIIDecoder : IFrameDecoder
     {
         int bt;
         int sb18;
-        GrInfo gr_info = (si.ch[ch].gr[gr]);
+        GrInfo gr_info = si.ch[ch].gr[gr];
         float[] tsOut;
 
         float[][] prvblk;
@@ -1723,7 +1719,6 @@ public sealed class LayerIIIDecoder : IFrameDecoder
 
         if (block_type == 2)
         {
-
             output[0] = 0.0f;
             output[1] = 0.0f;
             output[2] = 0.0f;

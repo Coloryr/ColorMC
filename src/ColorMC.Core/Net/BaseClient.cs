@@ -19,10 +19,6 @@ public static class BaseClient
     public static HttpClient DownloadClient { get; private set; }
     public static HttpClient LoginClient { get; private set; }
 
-    private static readonly Thread[] threads = new Thread[5];
-    private static readonly ConcurrentBag<(string, Action<bool, byte[]?>)> tasks = new();
-    private static bool run;
-
     /// <summary>
     /// 初始化
     /// </summary>
@@ -38,16 +34,6 @@ public static class BaseClient
         }
 
         Source = ConfigUtils.Config.Http.Source;
-
-        for (int a = 0; a < 5; a++)
-        {
-            run = true;
-            threads[a] = new(Run)
-            {
-                Name = $"ColorMC-Http_{a}"
-            };
-            threads[a].Start();
-        }
 
         DownloadClient?.CancelPendingRequests();
         DownloadClient?.Dispose();
@@ -81,13 +67,6 @@ public static class BaseClient
 
         LoginClient.Timeout = TimeSpan.FromSeconds(10);
         DownloadClient.Timeout = TimeSpan.FromSeconds(10);
-
-        ColorMCCore.Stop += ColorMCCore_Stop;
-    }
-
-    private static void ColorMCCore_Stop()
-    {
-        run = false;
     }
 
     /// <summary>
@@ -115,36 +94,5 @@ public static class BaseClient
     public static async Task<byte[]> GetBytes(string url)
     {
         return await DownloadClient.GetByteArrayAsync(url);
-    }
-
-    private static async void Run()
-    {
-        while (run)
-        {
-            while (tasks.TryTake(out var item))
-            {
-                try
-                {
-                    var data1 = await DownloadClient.GetAsync(item.Item1);
-                    var data2 = await data1.Content.ReadAsByteArrayAsync();
-
-                    item.Item2(data1.IsSuccessStatusCode, data2);
-
-                    data1.Content.Dispose();
-                    data1.Dispose();
-                }
-                catch (Exception e)
-                {
-                    item.Item2(false, null);
-                    Logs.Error(LanguageHelper.GetName("Core.Http.Error9"), e);
-                }
-            }
-            Thread.Sleep(1000);
-        }
-    }
-
-    public static void Poll(string url, Action<bool, byte[]?> action)
-    {
-        tasks.Add((url, action));
     }
 }

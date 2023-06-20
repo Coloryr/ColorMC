@@ -23,8 +23,6 @@ public partial class GameEditControl : UserControl, IUserControl
     private readonly Tab11Control tab11 = new();
     private readonly Tab12Control tab12 = new();
 
-    private readonly ContentControl content1 = new();
-    private readonly ContentControl content2 = new();
     private CancellationTokenSource cancel = new();
 
     private readonly GameEditTab1Model model1;
@@ -91,10 +89,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
-        Tab1.Children.Add(content1);
-        Tab1.Children.Add(content2);
-
-        content1.Content = tab1;
+        Content1.Content = tab1;
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -197,13 +192,13 @@ public partial class GameEditControl : UserControl, IUserControl
 
         if (!switch1)
         {
-            content2.Content = to;
-            _ = App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, cancel.Token);
+            Content2.Content = to;
+            _ = App.PageSlide500.Start(Content1, Content2, now < Tabs.SelectedIndex, cancel.Token);
         }
         else
         {
-            content1.Content = to;
-            _ = App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, cancel.Token);
+            Content1.Content = to;
+            _ = App.PageSlide500.Start(Content2, Content1, now < Tabs.SelectedIndex, cancel.Token);
         }
 
         switch1 = !switch1;

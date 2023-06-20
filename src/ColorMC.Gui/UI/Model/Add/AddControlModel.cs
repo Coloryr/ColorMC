@@ -98,7 +98,198 @@ public partial class AddControlModel : ObservableObject
         Con = con;
         Obj = obj;
     }
+    partial void OnTypeChanged(int value)
+    {
+        if (!display)
+            return;
 
+        if (Type == 5)
+        {
+            OptifineOpen();
+            return;
+        }
+
+        load = true;
+
+        now = (FileType)(Type + 1);
+        GameVersionList.Clear();
+        SortTypeList.Clear();
+        CategorieList.Clear();
+
+        Page = 0;
+
+        FileList.Clear();
+        DownloadSourceList.Clear();
+
+        SourceTypeList.Clear();
+        SourceTypeList.AddRange(WebBinding.GetSourceList(now));
+        SourceTypeList.ForEach(item => DownloadSourceList.Add(item.GetName()));
+
+        load = false;
+
+        DownloadSource = 0;
+    }
+
+    partial void OnSortTypeChanged(int value)
+    {
+        Refresh();
+    }
+
+    partial void OnCategorieChanged(int value)
+    {
+        Refresh();
+    }
+
+    partial void OnPageChanged(int value)
+    {
+        if (!display || load)
+            return;
+
+        Load();
+    }
+
+    partial void OnPageDownloadChanged(int value)
+    {
+        if (!display || load)
+            return;
+
+        LoadFile();
+    }
+
+    async partial void OnDownloadSourceChanged(int value)
+    {
+        if (!display || load)
+            return;
+
+        var window = Con.Window;
+        load = true;
+
+        GameVersionList.Clear();
+        SortTypeList.Clear();
+        CategorieList.Clear();
+
+        DisplayList.Clear();
+        var type = SourceTypeList[DownloadSource];
+        if (type == SourceType.CurseForge)
+        {
+            SortTypeList.AddRange(GameBinding.GetCurseForgeSortTypes());
+
+            window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
+            var list = await GameBinding.GetCurseForgeGameVersions();
+            if (list == null)
+            {
+                window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
+                return;
+            }
+            var list1 = await GameBinding.GetCurseForgeCategories(now);
+            window.ProgressInfo.Close();
+            if (list1 == null)
+            {
+                window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
+                return;
+            }
+            GameVersionList.AddRange(list);
+
+            Categories.Clear();
+            Categories.Add(0, "");
+            int a = 1;
+            foreach (var item in list1)
+            {
+                Categories.Add(a++, item.Key);
+            }
+
+            var list2 = new List<string>()
+            {
+                ""
+            };
+
+            list2.AddRange(list1.Values);
+
+            GameVersionList.AddRange(list);
+            CategorieList.AddRange(list2);
+
+            if (GameVersionList.Contains(Obj.Version))
+            {
+                GameVersionOptifine = GameVersionDownload = GameVersion = Obj.Version;
+            }
+            else
+            {
+                GameVersionOptifine = GameVersionDownload = GameVersion = GameVersionList.FirstOrDefault();
+            }
+
+            SortType = 1;
+            Categorie = 0;
+
+            Load();
+        }
+        else if (type == SourceType.Modrinth)
+        {
+            SortTypeList.AddRange(GameBinding.GetModrinthSortTypes());
+
+            window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
+            var list = await GameBinding.GetModrinthGameVersions();
+            var list1 = await GameBinding.GetModrinthCategories(now);
+            window.ProgressInfo.Close();
+            if (list == null || list1 == null)
+            {
+                window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
+                return;
+            }
+            GameVersionList.AddRange(list);
+
+            Categories.Clear();
+            Categories.Add(0, "");
+            int a = 1;
+            foreach (var item in list1)
+            {
+                Categories.Add(a++, item.Key);
+            }
+
+            var list2 = new List<string>()
+            {
+                ""
+            };
+
+            list2.AddRange(list1.Values);
+
+            GameVersionList.AddRange(list);
+            CategorieList.AddRange(list2);
+
+            if (GameVersionList.Contains(Obj.Version))
+            {
+                GameVersionDownload = GameVersionOptifine = GameVersion = Obj.Version;
+            }
+            else
+            {
+                GameVersionDownload = GameVersionOptifine = GameVersion = GameVersionList.FirstOrDefault();
+            }
+
+            SortType = 0;
+            Categorie = 0;
+
+            Load();
+        }
+        else if (type == SourceType.McMod)
+        {
+            Load();
+        }
+
+        load = false;
+    }
+
+    partial void OnGameVersionChanged(string? value)
+    {
+        Refresh();
+    }
+
+    partial void OnGameVersionDownloadChanged(string? value)
+    {
+        if (!display || load)
+            return;
+
+        LoadFile();
+    }
+    ///////////////////////////////////////////////////
     [RelayCommand]
     public void GetList()
     {
@@ -305,198 +496,6 @@ public partial class AddControlModel : ObservableObject
             window.NotifyInfo.Show(App.GetLanguage("AddWindow.Info12"));
             OptifineClose();
         }
-    }
-    ///////////////////////////////////////////////////
-    partial void OnTypeChanged(int value)
-    {
-        if (!display)
-            return;
-
-        if (Type == 5)
-        {
-            OptifineOpen();
-            return;
-        }
-
-        load = true;
-
-        now = (FileType)(Type + 1);
-        GameVersionList.Clear();
-        SortTypeList.Clear();
-        CategorieList.Clear();
-
-        Page = 0;
-
-        FileList.Clear();
-        DownloadSourceList.Clear();
-
-        SourceTypeList.Clear();
-        SourceTypeList.AddRange(WebBinding.GetSourceList(now));
-        SourceTypeList.ForEach(item => DownloadSourceList.Add(item.GetName()));
-
-        load = false;
-
-        DownloadSource = 0;
-    }
-
-    partial void OnSortTypeChanged(int value)
-    {
-        Refresh();
-    }
-
-    partial void OnCategorieChanged(int value)
-    {
-        Refresh();
-    }
-
-    partial void OnPageChanged(int value)
-    {
-        if (!display || load)
-            return;
-
-        Load();
-    }
-
-    partial void OnPageDownloadChanged(int value)
-    {
-        if (!display || load)
-            return;
-
-        LoadFile();
-    }
-
-    async partial void OnDownloadSourceChanged(int value)
-    {
-        if (!display || load)
-            return;
-
-        var window = Con.Window;
-        load = true;
-
-        GameVersionList.Clear();
-        SortTypeList.Clear();
-        CategorieList.Clear();
-
-        DisplayList.Clear();
-        var type = SourceTypeList[DownloadSource];
-        if (type == SourceType.CurseForge)
-        {
-            SortTypeList.AddRange(GameBinding.GetCurseForgeSortTypes());
-
-            window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
-            var list = await GameBinding.GetCurseForgeGameVersions();
-            if (list == null)
-            {
-                window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
-                return;
-            }
-            var list1 = await GameBinding.GetCurseForgeCategories(now);
-            window.ProgressInfo.Close();
-            if (list1 == null)
-            {
-                window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
-                return;
-            }
-            GameVersionList.AddRange(list);
-
-            Categories.Clear();
-            Categories.Add(0, "");
-            int a = 1;
-            foreach (var item in list1)
-            {
-                Categories.Add(a++, item.Key);
-            }
-
-            var list2 = new List<string>()
-            {
-                ""
-            };
-
-            list2.AddRange(list1.Values);
-
-            GameVersionList.AddRange(list);
-            CategorieList.AddRange(list2);
-
-            if (GameVersionList.Contains(Obj.Version))
-            {
-                GameVersionOptifine = GameVersionDownload = GameVersion = Obj.Version;
-            }
-            else
-            {
-                GameVersionOptifine = GameVersionDownload = GameVersion = GameVersionList.FirstOrDefault();
-            }
-
-            SortType = 1;
-            Categorie = 0;
-
-            Load();
-        }
-        else if (type == SourceType.Modrinth)
-        {
-            SortTypeList.AddRange(GameBinding.GetModrinthSortTypes());
-
-            window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
-            var list = await GameBinding.GetModrinthGameVersions();
-            var list1 = await GameBinding.GetModrinthCategories(now);
-            window.ProgressInfo.Close();
-            if (list == null || list1 == null)
-            {
-                window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
-                return;
-            }
-            GameVersionList.AddRange(list);
-
-            Categories.Clear();
-            Categories.Add(0, "");
-            int a = 1;
-            foreach (var item in list1)
-            {
-                Categories.Add(a++, item.Key);
-            }
-
-            var list2 = new List<string>()
-            {
-                ""
-            };
-
-            list2.AddRange(list1.Values);
-
-            GameVersionList.AddRange(list);
-            CategorieList.AddRange(list2);
-
-            if (GameVersionList.Contains(Obj.Version))
-            {
-                GameVersionDownload = GameVersionOptifine = GameVersion = Obj.Version;
-            }
-            else
-            {
-                GameVersionDownload = GameVersionOptifine = GameVersion = GameVersionList.FirstOrDefault();
-            }
-
-            SortType = 0;
-            Categorie = 0;
-
-            Load();
-        }
-        else if (type == SourceType.McMod)
-        {
-            Load();
-        }
-
-        load = false;
-    }
-
-    partial void OnGameVersionChanged(string? value)
-    {
-        Refresh();
-    }
-
-    partial void OnGameVersionDownloadChanged(string? value)
-    {
-        if (!display || load)
-            return;
-
-        LoadFile();
     }
     ///////////////////////////////////////////////////
     public void SetSelect(FileItemModel last)

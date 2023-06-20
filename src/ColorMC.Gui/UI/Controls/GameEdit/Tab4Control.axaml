@@ -9,9 +9,9 @@
     d:DesignWidth="800"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Grid>
+    <Panel>
         <DockPanel Margin="5">
-            <Grid DockPanel.Dock="Top">
+            <Panel DockPanel.Dock="Top">
                 <DockPanel>
                     <Label VerticalAlignment="Center" Content="{setting:Localize GameEditWindow.Tab4.Text2}" />
                     <ComboBox
@@ -35,9 +35,9 @@
                         Text="{Binding Text}"
                         Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
                 </DockPanel>
-            </Grid>
+            </Panel>
 
-            <Grid>
+            <Panel>
                 <DataGrid
                     Name="DataGrid1"
                     Margin="0,3,0,0"
@@ -93,7 +93,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 <StackPanel VerticalAlignment="Center">
-                    <Grid>
+                    <Panel>
                         <Button
                             Name="Button_I"
                             Width="20"
@@ -107,8 +107,8 @@
                             Command="{Binding Import}"
                             Content="{setting:Localize Button.Input}"
                             IsVisible="False" />
-                    </Grid>
-                    <Grid Margin="0,5,0,0">
+                    </Panel>
+                    <Panel Margin="0,5,0,0">
                         <Button
                             Name="Button_A"
                             Width="20"
@@ -122,8 +122,8 @@
                             Command="{Binding Add}"
                             Content="{setting:Localize Button.Add}"
                             IsVisible="False" />
-                    </Grid>
-                    <Grid Margin="0,5,0,0">
+                    </Panel>
+                    <Panel Margin="0,5,0,0">
                         <Button
                             Name="Button_R"
                             Width="20"
@@ -137,7 +137,7 @@
                             Command="{Binding Load}"
                             Content="{setting:Localize Button.Refash}"
                             IsVisible="False" />
-                    </Grid>
+                    </Panel>
                     <Grid Margin="0,5,0,0">
                         <Button
                             Name="Button_C"
@@ -153,7 +153,7 @@
                             Content="{setting:Localize GameEditWindow.Tab4.Text3}"
                             IsVisible="False" />
                     </Grid>
-                    <Grid Margin="0,5,0,0">
+                    <Panel Margin="0,5,0,0">
                         <Button
                             Name="Button_B"
                             Width="20"
@@ -167,7 +167,7 @@
                             Command="{Binding StartSet}"
                             Content="{setting:Localize GameEditWindow.Tab4.Text4}"
                             IsVisible="False" />
-                    </Grid>
+                    </Panel>
                     <Grid Margin="0,5,0,0">
                         <Button
                             Name="Button_D"
@@ -184,9 +184,9 @@
                             IsVisible="False" />
                     </Grid>
                 </StackPanel>
-            </Grid>
+            </Panel>
         </DockPanel>
-        <Grid
+        <Panel
             Name="Grid2"
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
@@ -195,6 +195,6 @@
                 VerticalAlignment="Center"
                 Content="{setting:Localize Gui.Info14}"
                 FontSize="30" />
-        </Grid>
-    </Grid>
+        </Panel>
+    </Panel>
 </UserControl>

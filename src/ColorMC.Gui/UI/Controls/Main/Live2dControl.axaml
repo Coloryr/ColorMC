@@ -9,9 +9,9 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
+    <Panel>
         <views1:Live2dRender Name="Live2d" />
-        <Grid
+        <Panel
             Name="Live2dTop"
             Background="#00FFFFFF"
             Opacity="0" />
@@ -24,6 +24,7 @@
             CornerRadius="30"
             Foreground="{setting:Colors Font}"
             IsReadOnly="True"
-            IsVisible="False" />
-    </Grid>
+            IsVisible="False"
+            Text="{Binding Message}" />
+    </Panel>
 </UserControl>

@@ -51,7 +51,7 @@ public static partial class UIUtils
         }
     }
 
-    public static void MakeTran(this DataGrid grid)
+    public static void SetFontColor(this DataGrid grid)
     {
         try
         {

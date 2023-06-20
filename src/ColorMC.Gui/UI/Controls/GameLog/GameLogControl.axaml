@@ -13,13 +13,11 @@
     <DockPanel Margin="0,3,0,0">
         <DockPanel DockPanel.Dock="Top">
             <CheckBox
-                Name="CheckBox1"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Content="{setting:Localize GameLogWindow.Text1}"
                 IsChecked="{Binding IsWordWrap}" />
             <CheckBox
-                Name="CheckBox2"
                 Margin="5,0,0,0"
                 Content="{setting:Localize GameLogWindow.Text2}"
                 IsChecked="{Binding IsAuto}" />

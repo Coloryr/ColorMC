@@ -99,9 +99,11 @@ public partial class App : Application
 
     public static IPlatformSettings PlatformSettings { get; private set; }
 
+    public static event Action? OnStop;
+
     private static readonly Language Language = new();
 
-    public static bool NeedClose = false;
+    public static bool NeedClose { get; set; }
 
     public override void Initialize()
     {
@@ -681,6 +683,7 @@ public partial class App : Application
 
     public static void Close()
     {
+        OnStop?.Invoke();
         BaseBinding.Exit();
         (Life as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
         Environment.Exit(Environment.ExitCode);

@@ -29,7 +29,6 @@ public partial class MainModel : ObservableObject, IMainTop
 
     public bool launch = false;
     public bool first = true;
-    public string Message;
 
     [ObservableProperty]
     private int live2dWidth = 300;
@@ -47,6 +46,8 @@ public partial class MainModel : ObservableObject, IMainTop
     private string userName;
     [ObservableProperty]
     private string authType;
+    [ObservableProperty]
+    public string message;
 
     [ObservableProperty]
     private bool groupEnable;

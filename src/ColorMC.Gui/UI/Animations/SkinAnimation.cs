@@ -1,13 +1,15 @@
 ﻿using Avalonia.Threading;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Skin;
-using System;
 using System.Numerics;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Animations;
 
-public class SkinAnimation : IDisposable
+/// <summary>
+/// 皮肤的动画
+/// </summary>
+public class SkinAnimation
 {
     private readonly Thread thread;
     private bool run;
@@ -31,25 +33,39 @@ public class SkinAnimation : IDisposable
         thread.Start();
 
         Arm.X = 40;
+
+        App.OnStop += Stop;
     }
 
-    public void Dispose()
+    /// <summary>
+    /// 停止
+    /// </summary>
+    public void Stop()
     {
         run = false;
         thread.Join();
     }
 
+    /// <summary>
+    /// 开始
+    /// </summary>
     public void Start()
     {
         start = true;
         semaphore.Release();
     }
-
+    
+    /// <summary>
+    /// 暂停
+    /// </summary>
     public void Pause()
     {
         start = false;
     }
 
+    /// <summary>
+    /// 运行
+    /// </summary>
     private void Tick()
     {
         while (run)
@@ -104,9 +120,9 @@ public class SkinAnimation : IDisposable
                     }
                 }
 
-                Dispatcher.UIThread.InvokeAsync(Render.RequestNextFrameRendering).Wait();
+                Dispatcher.UIThread.Invoke(Render.RequestNextFrameRendering);
 
-                Thread.Sleep(10);
+                Thread.Sleep(15);
             }
         }
     }

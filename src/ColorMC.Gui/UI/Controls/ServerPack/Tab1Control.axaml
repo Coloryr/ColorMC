@@ -8,7 +8,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid Margin="5">
+    <Panel Margin="5">
         <ScrollViewer>
             <StackPanel Margin="0,0,0,30">
                 <Label Content="{setting:Localize ServerPackWindow.Tab1.Text1}" />
@@ -59,5 +59,5 @@
             Content="{setting:Localize ServerPackWindow.Tab1.Text10}"
             ToolTip.Tip="{setting:Localize ToolTip.Text47}"
             ToolTip.VerticalOffset="-30" />
-    </Grid>
+    </Panel>
 </UserControl>

@@ -96,6 +96,5 @@ public sealed class Equalizer
         {
             return 0.0f;
         }
-
     }
 }

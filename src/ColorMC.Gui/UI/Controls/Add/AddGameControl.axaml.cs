@@ -20,8 +20,6 @@ public partial class AddGameControl : UserControl, IUserControl
     private readonly Tab2Control tab2 = new();
     private readonly Tab3Control tab3 = new();
 
-    private readonly ContentControl content1 = new();
-    private readonly ContentControl content2 = new();
     private CancellationTokenSource cancel = new();
 
     private int now;
@@ -50,10 +48,7 @@ public partial class AddGameControl : UserControl, IUserControl
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
 
-        Tab1.Children.Add(content1);
-        Tab1.Children.Add(content2);
-
-        content1.Content = tab1;
+        Content1.Content = tab1;
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -61,15 +56,6 @@ public partial class AddGameControl : UserControl, IUserControl
         if (e.Data.Contains(DataFormats.Files))
         {
             Grid2.IsVisible = true;
-
-            var files = e.Data.GetFiles();
-            if (files == null)
-                return;
-
-            if (files.Count() == 1)
-            {
-                Label1.Content = App.GetLanguage("AddGameWindow.Text1");
-            }
         }
     }
 
@@ -133,13 +119,13 @@ public partial class AddGameControl : UserControl, IUserControl
 
         if (!switch1)
         {
-            content2.Content = to;
-            _ = App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, cancel.Token);
+            Content2.Content = to;
+            _ = App.PageSlide500.Start(Content1, Content2, now < Tabs.SelectedIndex, cancel.Token);
         }
         else
         {
-            content1.Content = to;
-            _ = App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, cancel.Token);
+            Content1.Content = to;
+            _ = App.PageSlide500.Start(Content2, Content1, now < Tabs.SelectedIndex, cancel.Token);
         }
 
         switch1 = !switch1;

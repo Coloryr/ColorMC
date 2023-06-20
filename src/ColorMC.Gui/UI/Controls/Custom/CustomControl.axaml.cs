@@ -352,7 +352,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         if (type == ViewType.GameItem)
         {
             var con1 = (con as GameControl)!;
-            con1.GameModel = new(this, this, Obj);
+            con1.DataContext = new GameItemModel(this, this, Obj);
             con1.GameModel.SetSelect();
         }
 

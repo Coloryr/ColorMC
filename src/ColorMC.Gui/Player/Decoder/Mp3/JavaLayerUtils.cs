@@ -5,7 +5,7 @@ using System.IO;
 
 namespace ColorMC.Gui.Player.Decoder.Mp3;
 
-public class JavaLayerUtils
+public static class JavaLayerUtils
 {
     public static float[] DeserializeArrayResource(string name)
     {

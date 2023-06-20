@@ -14,15 +14,9 @@ public sealed class BitReserve
      */
     private const int BUFSIZE_MASK = BUFSIZE - 1;
     private readonly int[] buf = new int[BUFSIZE];
-    private int offset, totbit, bufByteIdx;
+    private int offset, bufByteIdx;
 
-    /**
-     * Return totbit Field.
-     */
-    public int Hsstell()
-    {
-        return totbit;
-    }
+    public int Hsstell { get; private set; }
 
     /**
      * Read a number bits from the bit stream.
@@ -31,7 +25,7 @@ public sealed class BitReserve
      */
     public int Hgetbits(int N)
     {
-        totbit += N;
+        Hsstell += N;
 
         int val = 0;
 
@@ -64,7 +58,7 @@ public sealed class BitReserve
      */
     public int Hget1bit()
     {
-        totbit++;
+        Hsstell++;
         int val = buf[bufByteIdx];
         bufByteIdx = (bufByteIdx + 1) & BUFSIZE_MASK;
         return val;
@@ -97,7 +91,7 @@ public sealed class BitReserve
      */
     public void RewindNbits(int N)
     {
-        totbit -= N;
+        Hsstell -= N;
         bufByteIdx -= N;
         if (bufByteIdx < 0)
             bufByteIdx += BUFSIZE;
@@ -109,7 +103,7 @@ public sealed class BitReserve
     public void RewindNbytes(int N)
     {
         int bits = (N << 3);
-        totbit -= bits;
+        Hsstell -= bits;
         bufByteIdx -= bits;
         if (bufByteIdx < 0)
             bufByteIdx += BUFSIZE;

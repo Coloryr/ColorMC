@@ -1,15 +1,15 @@
 ﻿using Avalonia.OpenGL;
+using ColorMC.Gui.UI.Controls.Main;
 using Live2DCSharpSDK.Framework.Rendering.OpenGL;
-using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ColorMC.Gui.UI.Controls.Main;
+namespace ColorMC.Gui.UI;
 
 public class AvaloniaApi : OpenGLApi
 {
-    private Live2dRender Con;
-    private GlInterface GL;
+    private readonly Live2dRender Con;
+    private readonly GlInterface GL;
     public override bool IsES2 => true;
     public override bool IsPhoneES2 => false;
 
@@ -188,7 +188,7 @@ public class AvaloniaApi : OpenGLApi
 
     public override unsafe void glDrawElements(int type, int count, int type1, ushort* arry)
     {
-        GL.DrawElements(type, count, type1, new IntPtr(arry));
+        GL.DrawElements(type, count, type1, new nint(arry));
     }
 
     public override void glEnable(int bit)
@@ -353,7 +353,7 @@ public class AvaloniaApi : OpenGLApi
 
     public override unsafe void glVertexAttribPointer(int index, int length, int type, bool b, int size, float* arr)
     {
-        GL.VertexAttribPointer(index, length, type, b ? 1 : 0, size, new IntPtr(arr));
+        GL.VertexAttribPointer(index, length, type, b ? 1 : 0, size, new nint(arr));
     }
 
     public override void glViewport(int x, int y, int w, int h)

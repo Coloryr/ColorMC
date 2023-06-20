@@ -31,7 +31,9 @@ public class Mp3Decoder : IDisposable
     public int bitrate;
     private bool initialized;
     private Bitstream bitstream;
-    private Stream stream;
+    private readonly Stream stream;
+
+    private readonly BuffPack pack = new();
 
     /**
      * Creates a new <code>Decoder</code> instance with default
@@ -45,10 +47,10 @@ public class Mp3Decoder : IDisposable
         if (eq != null)
         {
             /*
-      The Bistream from which the MPEG audio frames are read.
-     */
+              The Bistream from which the MPEG audio frames are read.
+             */
             //private Bitstream				stream;
-            Equalizer equalizer = new Equalizer();
+            Equalizer equalizer = new();
             equalizer.SetFrom(eq);
         }
     }
@@ -67,18 +69,9 @@ public class Mp3Decoder : IDisposable
     protected byte[] ToByteArray(short[] samples, int offs, int len)
     {
         byte[] b = GetByteArray(len * 2);
-        int idx = 0;
-        short s;
-        while (len-- > 0)
-        {
-            s = samples[offs++];
-            b[idx++] = (byte)s;
-            b[idx++] = (byte)(s >>> 8);
-        }
+        Buffer.BlockCopy(samples, offs, b, 0, len * 2);
         return b;
     }
-
-    private readonly BuffPack pack = new BuffPack();
 
     /**
      * Decodes one frame from an MPEG audio bitstream.
@@ -90,12 +83,12 @@ public class Mp3Decoder : IDisposable
         var header = bitstream.ReadFrame();
         if (header == null)
             return null;
-        int layer = header.Layer();
+        int layer = header.Layer;
         output.ClearBuffer();
         IFrameDecoder decoder = RetrieveDecoder(header, bitstream, layer);
         decoder.DecodeFrame();
         bitstream.CloseFrame();
-        pack.buff = ToByteArray(output.GetBuffer(), 0, output.GetBufferLength());
+        pack.buff = ToByteArray(output.Buffer, 0, output.GetBufferLength());
         pack.len = output.GetBufferLength() * 2;
         return pack;
     }
@@ -172,12 +165,11 @@ public class Mp3Decoder : IDisposable
         // REVIEW: allow customizable scale factor
         float scalefactor = 32700.0f;
 
-        int mode = header.Mode();
+        int mode = header.Mode;
         int channels = mode == Header.SINGLE_CHANNEL ? 1 : 2;
 
         // set up output buffer if not set up by client.
-        if (output == null)
-            output = new SampleBuffer(channels);
+        output ??= new SampleBuffer(channels);
 
         filter1 = new SynthesisFilter(0, scalefactor);
 
@@ -201,7 +193,7 @@ public class Mp3Decoder : IDisposable
     public class Params : ICloneable
     {
 
-        private readonly Equalizer equalizer = new Equalizer();
+        private readonly Equalizer equalizer = new();
 
         public Params()
         {

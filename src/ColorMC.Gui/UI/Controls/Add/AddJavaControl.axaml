@@ -70,7 +70,7 @@
             Content="{setting:Localize AddJavaWindow.Text5}"
             DockPanel.Dock="Bottom" />
 
-        <Grid>
+        <Panel>
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
@@ -104,12 +104,12 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Grid Background="{setting:Colors TopBottom}" IsVisible="{Binding Display}">
+            <Panel Background="{setting:Colors TopBottom}" IsVisible="{Binding Display}">
                 <Label
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Content="{setting:Localize AddJavaWindow.Text6}" />
-            </Grid>
-        </Grid>
+            </Panel>
+        </Panel>
     </DockPanel>
 </UserControl>

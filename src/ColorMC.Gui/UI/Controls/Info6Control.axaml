@@ -8,7 +8,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
+    <Panel>
         <Border Name="Border1" Background="{setting:Colors TopBottom}" />
         <DockPanel
             Margin="20"
@@ -44,7 +44,6 @@
                 AcceptsReturn="True"
                 CornerRadius="0"
                 IsReadOnly="True" />
-
         </DockPanel>
-    </Grid>
+    </Panel>
 </UserControl>

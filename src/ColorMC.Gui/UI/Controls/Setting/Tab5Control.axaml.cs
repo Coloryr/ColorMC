@@ -41,7 +41,7 @@ public partial class Tab5Control : UserControl
 
     private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)
     {
-        DataGrid1.MakeTran();
+        DataGrid1.SetFontColor();
     }
 
     private void Button_D1_PointerLeave(object? sender, PointerEventArgs e)

@@ -58,7 +58,7 @@ public partial class DownloadControl : UserControl, IUserControl
     {
         Window.SetTitle(App.GetLanguage("DownloadWindow.Title"));
 
-        DataGrid1.MakeTran();
+        DataGrid1.SetFontColor();
     }
 
     public void Closed()

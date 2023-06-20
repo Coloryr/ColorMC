@@ -337,7 +337,45 @@ public class HuffcodeTabel
             {0, 9}, {2, 1}, {0, 10}, {0, 11}, {4, 1}, {2, 1}, {0, 12}, {0, 13}, {2, 1}, {0, 14},
             {0, 15},
     };
-    public static HuffcodeTabel[] ht;     /* Simulate extern struct                 */
+    /* Simulate extern struct                 */
+    public static HuffcodeTabel[] HT = new HuffcodeTabel[HTN]
+    {
+        new HuffcodeTabel("0  ", 0, 0, 0, ValTab0, 0),
+        new HuffcodeTabel("1  ", 2, 2, 0, ValTab1, 7),
+        new HuffcodeTabel("2  ", 3, 3, 0, ValTab2, 17),
+        new HuffcodeTabel("3  ", 3, 3, 0, ValTab3, 17),
+        new HuffcodeTabel("4  ", 0, 0, 0, ValTab4, 0),
+        new HuffcodeTabel("5  ", 4, 4, 0, ValTab5, 31),
+        new HuffcodeTabel("6  ", 4, 4, 0, ValTab6, 31),
+        new HuffcodeTabel("7  ", 6, 6, 0, ValTab7, 71),
+        new HuffcodeTabel("8  ", 6, 6, 0, ValTab8, 71),
+        new HuffcodeTabel("9  ", 6, 6, 0, ValTab9, 71),
+        new HuffcodeTabel("10 ", 8, 8, 0, ValTab10, 127),
+        new HuffcodeTabel("11 ", 8, 8, 0, ValTab11, 127),
+        new HuffcodeTabel("12 ", 8, 8, 0, ValTab12, 127),
+        new HuffcodeTabel("13 ", 16, 16, 0, ValTab13, 511),
+        new HuffcodeTabel("14 ", 0, 0, 0, ValTab14, 0),
+        new HuffcodeTabel("15 ", 16, 16, 0, ValTab15, 511),
+        new HuffcodeTabel("16 ", 16, 16, 1, ValTab16, 511),
+        new HuffcodeTabel("17 ", 16, 16, 2, ValTab16, 511),
+        new HuffcodeTabel("18 ", 16, 16, 3, ValTab16, 511),
+        new HuffcodeTabel("19 ", 16, 16, 4, ValTab16, 511),
+        new HuffcodeTabel("20 ", 16, 16, 6, ValTab16, 511),
+        new HuffcodeTabel("21 ", 16, 16, 8, ValTab16, 511),
+        new HuffcodeTabel("22 ", 16, 16, 10, ValTab16, 511),
+        new HuffcodeTabel("23 ", 16, 16, 13, ValTab16, 511),
+        new HuffcodeTabel("24 ", 16, 16, 4, ValTab24, 512),
+        new HuffcodeTabel("25 ", 16, 16, 5, ValTab24, 512),
+        new HuffcodeTabel("26 ", 16, 16, 6, ValTab24, 512),
+        new HuffcodeTabel("27 ", 16, 16, 7, ValTab24, 512),
+        new HuffcodeTabel("28 ", 16, 16, 8, ValTab24, 512),
+        new HuffcodeTabel("29 ", 16, 16, 9, ValTab24, 512),
+        new HuffcodeTabel("30 ", 16, 16, 11, ValTab24, 512),
+        new HuffcodeTabel("31 ", 16, 16, 13, ValTab24, 512),
+        new HuffcodeTabel("32 ", 1, 16, 0, ValTab32, 31),
+        new HuffcodeTabel("33 ", 1, 16, 0, ValTab33, 31)
+    };
+
     private readonly char tablename0;      /* string, containing table_description   */
     private readonly char tablename1;      /* string, containing table_description   */
     private readonly int xlen;                    /* max. x-index+                          */
@@ -444,47 +482,5 @@ public class HuffcodeTabel
         }
         if (y[0] != 0)
             if (br.Hget1bit() != 0) y[0] = -y[0];
-    }
-
-    public static void Inithuff()
-    {
-        if (ht != null)
-            return;
-
-        ht = new HuffcodeTabel[HTN];
-        ht[0] = new HuffcodeTabel("0  ", 0, 0, 0, ValTab0, 0);
-        ht[1] = new HuffcodeTabel("1  ", 2, 2, 0, ValTab1, 7);
-        ht[2] = new HuffcodeTabel("2  ", 3, 3, 0, ValTab2, 17);
-        ht[3] = new HuffcodeTabel("3  ", 3, 3, 0, ValTab3, 17);
-        ht[4] = new HuffcodeTabel("4  ", 0, 0, 0, ValTab4, 0);
-        ht[5] = new HuffcodeTabel("5  ", 4, 4, 0, ValTab5, 31);
-        ht[6] = new HuffcodeTabel("6  ", 4, 4, 0, ValTab6, 31);
-        ht[7] = new HuffcodeTabel("7  ", 6, 6, 0, ValTab7, 71);
-        ht[8] = new HuffcodeTabel("8  ", 6, 6, 0, ValTab8, 71);
-        ht[9] = new HuffcodeTabel("9  ", 6, 6, 0, ValTab9, 71);
-        ht[10] = new HuffcodeTabel("10 ", 8, 8, 0, ValTab10, 127);
-        ht[11] = new HuffcodeTabel("11 ", 8, 8, 0, ValTab11, 127);
-        ht[12] = new HuffcodeTabel("12 ", 8, 8, 0, ValTab12, 127);
-        ht[13] = new HuffcodeTabel("13 ", 16, 16, 0, ValTab13, 511);
-        ht[14] = new HuffcodeTabel("14 ", 0, 0, 0, ValTab14, 0);
-        ht[15] = new HuffcodeTabel("15 ", 16, 16, 0, ValTab15, 511);
-        ht[16] = new HuffcodeTabel("16 ", 16, 16, 1, ValTab16, 511);
-        ht[17] = new HuffcodeTabel("17 ", 16, 16, 2, ValTab16, 511);
-        ht[18] = new HuffcodeTabel("18 ", 16, 16, 3, ValTab16, 511);
-        ht[19] = new HuffcodeTabel("19 ", 16, 16, 4, ValTab16, 511);
-        ht[20] = new HuffcodeTabel("20 ", 16, 16, 6, ValTab16, 511);
-        ht[21] = new HuffcodeTabel("21 ", 16, 16, 8, ValTab16, 511);
-        ht[22] = new HuffcodeTabel("22 ", 16, 16, 10, ValTab16, 511);
-        ht[23] = new HuffcodeTabel("23 ", 16, 16, 13, ValTab16, 511);
-        ht[24] = new HuffcodeTabel("24 ", 16, 16, 4, ValTab24, 512);
-        ht[25] = new HuffcodeTabel("25 ", 16, 16, 5, ValTab24, 512);
-        ht[26] = new HuffcodeTabel("26 ", 16, 16, 6, ValTab24, 512);
-        ht[27] = new HuffcodeTabel("27 ", 16, 16, 7, ValTab24, 512);
-        ht[28] = new HuffcodeTabel("28 ", 16, 16, 8, ValTab24, 512);
-        ht[29] = new HuffcodeTabel("29 ", 16, 16, 9, ValTab24, 512);
-        ht[30] = new HuffcodeTabel("30 ", 16, 16, 11, ValTab24, 512);
-        ht[31] = new HuffcodeTabel("31 ", 16, 16, 13, ValTab24, 512);
-        ht[32] = new HuffcodeTabel("32 ", 1, 16, 0, ValTab32, 31);
-        ht[33] = new HuffcodeTabel("33 ", 1, 16, 0, ValTab33, 31);
     }
 }

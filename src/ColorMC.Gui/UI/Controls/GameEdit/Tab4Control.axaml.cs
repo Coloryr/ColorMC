@@ -155,6 +155,6 @@ public partial class Tab4Control : UserControl
 
     private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)
     {
-        DataGrid1.MakeTran();
+        DataGrid1.SetFontColor();
     }
 }

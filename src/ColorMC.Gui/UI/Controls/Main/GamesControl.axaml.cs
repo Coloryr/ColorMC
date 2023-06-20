@@ -9,15 +9,6 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class GamesControl : UserControl
 {
-    public static readonly StyledProperty<GamesModel> GamesModelProperty =
-        AvaloniaProperty.Register<GamesControl, GamesModel>(nameof(GamesModel));
-
-    public GamesModel GamesModel
-    {
-        get => GetValue(GamesModelProperty);
-        set => SetValue(GamesModelProperty, value);
-    }
-
     public GamesControl()
     {
         InitializeComponent();
@@ -32,9 +23,9 @@ public partial class GamesControl : UserControl
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
-        if (e.Source is Control)
+        if (e.Source is Control && DataContext is GamesModel model)
         {
-            Grid1.IsVisible = GamesModel.DropIn(e.Data);
+            Grid1.IsVisible = model.DropIn(e.Data);
         }
     }
 
@@ -46,9 +37,9 @@ public partial class GamesControl : UserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid1.IsVisible = false;
-        if (e.Source is Control)
+        if (e.Source is Control && DataContext is GamesModel model)
         {
-            GamesModel.Drop(e.Data);
+            model.Drop(e.Data);
         }
     }
 

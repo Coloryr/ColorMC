@@ -4,7 +4,7 @@ namespace ColorMC.Gui.Player.Decoder.Mp3;
 
 public class SampleBuffer : Obuffer
 {
-    private readonly short[] buffer;
+    public readonly short[] Buffer;
     private readonly int[] bufferp;
     private readonly int channels;
 
@@ -13,18 +13,13 @@ public class SampleBuffer : Obuffer
      */
     public SampleBuffer(int number_of_channels)
     {
-        buffer = new short[OBUFFERSIZE];
+        Buffer = new short[OBUFFERSIZE];
         bufferp = new int[MAXCHANNELS];
         channels = number_of_channels;
 
         for (int i = 0; i < number_of_channels; ++i)
             bufferp[i] = (short)i;
 
-    }
-
-    public short[] GetBuffer()
-    {
-        return this.buffer;
     }
 
     public int GetBufferLength()
@@ -37,11 +32,11 @@ public class SampleBuffer : Obuffer
      */
     public override void Append(int channel, short value)
     {
-        buffer[bufferp[channel]] = value;
+        Buffer[bufferp[channel]] = value;
         bufferp[channel] += channels;
     }
 
-    public new void AppendSamples(int channel, float[] f)
+    public override void AppendSamples(int channel, float[] f)
     {
         int pos = bufferp[channel];
 
@@ -50,11 +45,11 @@ public class SampleBuffer : Obuffer
         for (int i = 0; i < 32;)
         {
             fs = f[i++];
-            fs = (fs > 32767.0f ? 32767.0f
-                    : (Math.Max(fs, -32767.0f)));
+            fs = fs > 32767.0f ? 32767.0f
+                    : (Math.Max(fs, -32767.0f));
 
             s = (short)fs;
-            buffer[pos] = s;
+            Buffer[pos] = s;
             pos += channels;
         }
 

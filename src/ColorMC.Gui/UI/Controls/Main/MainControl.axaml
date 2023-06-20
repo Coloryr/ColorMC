@@ -11,7 +11,7 @@
     d:DesignWidth="800"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Grid>
+    <Panel>
         <views1:Live2dControl
             Width="{Binding Live2dWidth}"
             Height="{Binding Live2dHeight}"
@@ -20,8 +20,8 @@
 
         <DockPanel>
             <ScrollViewer DockPanel.Dock="Right">
-                <Grid>
-                    <Grid
+                <Panel>
+                    <Panel
                         Margin="0,110,6,0"
                         HorizontalAlignment="Right"
                         IsVisible="{Binding !SideDisplay}">
@@ -81,12 +81,12 @@
                                 ToolTip.Tip="{setting:Localize ToolTip.Text13}"
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
-                    </Grid>
+                    </Panel>
 
-                    <Grid Name="Grid1" HorizontalAlignment="Left">
+                    <Panel Name="Grid1" HorizontalAlignment="Left">
                         <Border Name="Border1" Background="{setting:Colors TranBack}" />
                         <StackPanel Margin="10,0,10,0" VerticalAlignment="Center">
-                            <Grid Margin="0,20,0,0">
+                            <Panel Margin="0,20,0,0">
                                 <Border
                                     Name="Border2"
                                     Width="86"
@@ -111,7 +111,7 @@
                                     Margin="0,5,0,0"
                                     IsIndeterminate="True"
                                     IsVisible="{Binding IsHeadLoad}" />
-                            </Grid>
+                            </Panel>
 
                             <TextBlock
                                 Width="100"
@@ -173,7 +173,7 @@
                                 ToolTip.Tip="{setting:Localize ToolTip.Text13}"
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
-                    </Grid>
+                    </Panel>
 
                     <Button
                         Width="25"
@@ -197,24 +197,24 @@
                         IsVisible="{Binding MusicDisplay}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text48}"
                         ToolTip.VerticalOffset="-30" />
-                </Grid>
+                </Panel>
             </ScrollViewer>
 
             <views:ServerMotdControl
                 DockPanel.Dock="Top"
                 IPPort="{Binding Server}"
                 IsVisible="{Binding MotdDisplay}" />
-            <Grid>
+            <Panel>
                 <ScrollViewer Name="ScrollViewer1" VerticalAlignment="Top">
                     <ItemsControl ItemsSource="{Binding GameGroups}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <views1:GamesControl GamesModel="{Binding}" />
+                                <views1:GamesControl DataContext="{Binding}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
-                <Grid
+                <Panel
                     Name="Grid3"
                     Background="{setting:Colors TopBottom}"
                     IsVisible="{Binding IsNotGame}">
@@ -228,24 +228,24 @@
                             Content="{setting:Localize MainWindow.Text2}"
                             FontSize="30" />
                     </StackPanel>
-                </Grid>
-                <Grid Background="{setting:Colors TopBottom}" IsVisible="{Binding IsGameError}">
+                </Panel>
+                <Panel Background="{setting:Colors TopBottom}" IsVisible="{Binding IsGameError}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Label
                             HorizontalAlignment="Center"
                             Content="{setting:Localize MainWindow.Info18}"
                             FontSize="30" />
                     </StackPanel>
-                </Grid>
-                <Grid Background="{setting:Colors TranBack}" IsVisible="{Binding IsOneGame}">
+                </Panel>
+                <Panel Background="{setting:Colors TranBack}" IsVisible="{Binding IsOneGame}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <views1:GameControl GameModel="{Binding OneGame}" />
+                        <views1:GameControl DataContext="{Binding OneGame}" />
                     </StackPanel>
-                </Grid>
-            </Grid>
+                </Panel>
+            </Panel>
         </DockPanel>
 
-        <Grid
+        <Panel
             Name="StackPanel1"
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
@@ -288,9 +288,9 @@
                         Content="{setting:Localize Button.Cancel}" />
                 </StackPanel>
             </StackPanel>
-        </Grid>
+        </Panel>
 
-        <Grid
+        <Panel
             Name="Grid2"
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
@@ -300,6 +300,6 @@
                 VerticalAlignment="Center"
                 Content="test"
                 FontSize="30" />
-        </Grid>
-    </Grid>
+        </Panel>
+    </Panel>
 </UserControl>

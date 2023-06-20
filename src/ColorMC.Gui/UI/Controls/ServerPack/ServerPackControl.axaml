@@ -16,7 +16,7 @@
             DockPanel.Dock="Top"
             HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Disabled">
-            <TabControl Name="Tabs" Margin="0,0,0,5">
+            <TabControl Name="Tabs" Margin="-5,-5,-5,0">
                 <TabItem Header="{setting:Localize ServerPackWindow.Tabs.Text1}" />
                 <TabItem Header="{setting:Localize ServerPackWindow.Tabs.Text2}" />
                 <TabItem Header="{setting:Localize ServerPackWindow.Tabs.Text3}" />
@@ -24,6 +24,9 @@
             </TabControl>
         </ScrollViewer>
 
-        <Grid Name="Tab1" ClipToBounds="True" />
+        <Panel ClipToBounds="True">
+            <ContentControl Name="Content1" />
+            <ContentControl Name="Content2" />
+        </Panel>
     </DockPanel>
 </UserControl>

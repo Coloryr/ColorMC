@@ -12,20 +12,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class GameControl : UserControl
 {
-    public static readonly StyledProperty<GameItemModel> GameModelProperty =
-       AvaloniaProperty.Register<GameControl, GameItemModel>(nameof(GameModel), defaultBindingMode: BindingMode.TwoWay);
-
-    public GameItemModel GameModel
-    {
-        get => GetValue(GameModelProperty);
-        set
-        {
-            SetValue(GameModelProperty, value);
-            GameModel.SetTips();
-        }
-    }
-
-    private GameItemModel model;
+    public GameItemModel GameModel { get; private set; }
 
     public GameControl()
     {
@@ -39,33 +26,14 @@ public partial class GameControl : UserControl
         PointerMoved += GameControl_PointerMoved;
         DoubleTapped += GameControl_DoubleTapped;
 
-        PropertyChanged += GameControl_PropertyChanged;
+        DataContextChanged += GameControl_DataContextChanged;
     }
 
-    private void GameControl_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    private void GameControl_DataContextChanged(object? sender, EventArgs e)
     {
-        if (e.Property == GameModelProperty)
+        if (DataContext is GameItemModel mo)
         {
-            if (GameModel == null)
-            {
-                if (model != null)
-                {
-                    GameModel = model;
-                }
-
-                return;
-            }
-            else if (GameModel == model)
-            {
-                return;
-            }
-            model = GameModel;
-
-            DataContext = GameModel;
-            if (GameModel != null)
-            {
-                GameModel.PropertyChanged += GameModel_PropertyChanged;
-            }
+            GameModel = mo;
         }
     }
 

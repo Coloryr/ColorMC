@@ -95,7 +95,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
     {
         Window.SetTitle(App.GetLanguage("AddModPackWindow.Title"));
 
-        DataGridFiles.MakeTran();
+        DataGridFiles.SetFontColor();
 
         model.Source = 0;
     }

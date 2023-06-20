@@ -13,7 +13,6 @@ namespace ColorMC.Gui.UI.Controls.Main;
 public partial class Live2dControl : UserControl
 {
     private CancellationTokenSource cancel = new();
-    private MainModel Model;
 
     public Live2dControl()
     {
@@ -31,7 +30,6 @@ public partial class Live2dControl : UserControl
         if (DataContext is MainModel model)
         {
             model.PropertyChanged += Model_PropertyChanged;
-            Model = model;
         }
     }
 
@@ -81,7 +79,6 @@ public partial class Live2dControl : UserControl
         {
             return;
         }
-        TextBox1.Text = Model.Message;
         await App.CrossFade300.Start(null, TextBox1, cancel.Token);
         if (cancel.Token.IsCancellationRequested)
         {

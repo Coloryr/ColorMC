@@ -10,7 +10,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
+    <Panel>
         <DockPanel Margin="5">
             <DockPanel DockPanel.Dock="Top">
                 <ComboBox
@@ -18,7 +18,6 @@
                     ItemsSource="{Binding FileList}"
                     SelectedIndex="{Binding Select}"
                     SelectedItem="{Binding File}" />
-
                 <Button
                     Width="85"
                     Height="25"
@@ -57,7 +56,7 @@
                     Watermark="{setting:Localize ConfigEditWindow.Text1}" />
 
             </DockPanel>
-            <Grid>
+            <Panel>
                 <ae:TextEditor
                     Name="TextEditor1"
                     Margin="0,3,0,0"
@@ -96,10 +95,10 @@
                         </DataTemplate>
                     </TreeDataGrid.Resources>
                 </TreeDataGrid>
-            </Grid>
+            </Panel>
         </DockPanel>
 
-        <Grid IsVisible="{Binding DisplayAdd}">
+        <Panel IsVisible="{Binding DisplayAdd}">
             <Border Background="{setting:Colors TopBottom}" />
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label
@@ -137,12 +136,12 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-        </Grid>
+        </Panel>
 
-        <Grid IsVisible="{Binding DisplayEdit}">
+        <Panel IsVisible="{Binding DisplayEdit}">
             <Border Background="{setting:Colors TopBottom}" />
             <DockPanel>
-                <Grid DockPanel.Dock="Top">
+                <Panel DockPanel.Dock="Top">
                     <StackPanel
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
@@ -161,7 +160,7 @@
                         DockPanel.Dock="Right"
                         ToolTip.Tip="{setting:Localize ToolTip.Text40}"
                         ToolTip.VerticalOffset="-30" />
-                </Grid>
+                </Panel>
                 <DataGrid
                     Name="DataGrid1"
                     AutoGenerateColumns="False"
@@ -182,6 +181,6 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>
-        </Grid>
-    </Grid>
+        </Panel>
+    </Panel>
 </UserControl>

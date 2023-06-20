@@ -11,7 +11,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
+    <Panel>
         <DockPanel>
             <StackPanel
                 Margin="3,3,3,0"
@@ -120,7 +120,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <Grid Margin="3">
+            <Panel Margin="3">
                 <DockPanel Background="{setting:Colors TranBack}" IsVisible="{Binding EmptyDisplay}">
                     <Label
                         HorizontalAlignment="Center"
@@ -135,12 +135,12 @@
                         ItemsSource="{Binding DisplayList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <item:FileItemControl FileItemModel="{Binding}" />
+                                <item:FileItemControl DataContext="{Binding}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
-            </Grid>
+            </Panel>
         </DockPanel>
 
         <DockPanel
@@ -366,16 +366,12 @@
             </DataGrid>
         </DockPanel>
 
-        <Grid
-            Name="Grid5"
-            Background="{setting:Colors TopBottom}"
-            IsVisible="False">
+        <Panel Background="{setting:Colors TopBottom}" IsVisible="False">
             <Label
-                Name="Label1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="{setting:Localize AddWindow.Text8}"
                 FontSize="30" />
-        </Grid>
-    </Grid>
+        </Panel>
+    </Panel>
 </UserControl>

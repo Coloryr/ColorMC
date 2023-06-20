@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Player;
 
+/// <summary>
+/// 音频播放
+/// </summary>
 public static class Media
 {
     private static IPlayer? player;
@@ -312,6 +315,9 @@ public static class Media
         }
     }
 
+    /// <summary>
+    /// 播放结束
+    /// </summary>
     public static void PlayEnd()
     {
         if (!string.IsNullOrWhiteSpace(MusicFile))

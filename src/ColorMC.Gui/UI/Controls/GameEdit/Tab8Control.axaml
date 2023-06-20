@@ -13,10 +13,10 @@
     <Grid>
         <DockPanel Margin="5">
             <Button
-                Command="{Binding Open}"
                 Width="85"
                 Height="25"
                 HorizontalAlignment="Right"
+                Command="{Binding Open}"
                 Content="{setting:Localize Button.OpFile}"
                 DockPanel.Dock="Top"
                 ToolTip.Tip="{setting:Localize ToolTip.Text39}"
@@ -24,10 +24,13 @@
 
             <Grid Margin="0,3,0,0">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding ResourcePackList}">
+                    <ItemsControl
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{Binding ResourcePackList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <item:ResourcePackControl PackModel="{Binding}" />
+                                <item:ResourcePackControl DataContext="{Binding}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

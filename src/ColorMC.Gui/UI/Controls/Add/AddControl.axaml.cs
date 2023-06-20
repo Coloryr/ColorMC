@@ -151,7 +151,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
     {
         Window.SetTitle(string.Format(App.GetLanguage("AddWindow.Title"), Obj.Name));
 
-        DataGridFiles.MakeTran();
+        DataGridFiles.SetFontColor();
 
         model.display = true;
     }

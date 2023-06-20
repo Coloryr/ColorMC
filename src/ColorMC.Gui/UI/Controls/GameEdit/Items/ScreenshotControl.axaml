@@ -8,7 +8,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid Margin="1" Background="{setting:Colors TranBack}">
+    <Panel Margin="1" Background="{setting:Colors TranBack}">
         <Rectangle
             Name="Rectangle2"
             Fill="{setting:Colors Back}"
@@ -27,5 +27,5 @@
                 Stretch="UniformToFill" />
             <Label HorizontalAlignment="Center" Content="{Binding Name}" />
         </StackPanel>
-    </Grid>
+    </Panel>
 </UserControl>

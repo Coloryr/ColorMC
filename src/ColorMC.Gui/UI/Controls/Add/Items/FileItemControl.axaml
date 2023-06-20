@@ -12,7 +12,7 @@
     ToolTip.Tip="{setting:Localize ToolTip.Text49}"
     ToolTip.VerticalOffset="-30"
     mc:Ignorable="d">
-    <Grid Margin="1" Background="{setting:Colors TranBack}">
+    <Panel Margin="1" Background="{setting:Colors TranBack}">
         <Rectangle
             Name="Rectangle2"
             Fill="{setting:Colors Back}"
@@ -24,7 +24,6 @@
             StrokeThickness="3" />
         <Grid Margin="5">
             <Image
-                Name="Image1"
                 Width="90"
                 Height="90"
                 HorizontalAlignment="Left"
@@ -80,7 +79,7 @@
                     Content="{Binding ModifiedDate}" />
             </StackPanel>
         </Grid>
-        <Grid Background="{setting:Colors Bottom1}" IsVisible="{Binding NowDownload}">
+        <Panel Background="{setting:Colors Bottom1}" IsVisible="{Binding NowDownload}">
             <StackPanel VerticalAlignment="Center">
                 <Label HorizontalAlignment="Center" Content="{setting:Localize AddWindow.Control.Text1}" />
                 <ProgressBar
@@ -88,7 +87,7 @@
                     Margin="10"
                     IsIndeterminate="True" />
             </StackPanel>
-        </Grid>
+        </Panel>
         <Label
             Margin="0,5,5,0"
             HorizontalAlignment="Right"
@@ -97,5 +96,5 @@
             Content="{setting:Localize AddWindow.Control.Text2}"
             Foreground="{setting:Colors Font}"
             IsVisible="{Binding IsDownload}" />
-    </Grid>
+    </Panel>
 </UserControl>

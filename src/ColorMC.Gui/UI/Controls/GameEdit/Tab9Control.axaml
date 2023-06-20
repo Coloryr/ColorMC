@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.GameEdit.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
@@ -18,42 +19,53 @@
             DockPanel.Dock="Top"
             ToolTip.Tip="{setting:Localize ToolTip.Text39}"
             ToolTip.VerticalOffset="-30" />
-        <Grid Margin="0,3,0,0">
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-                <WrapPanel Name="WrapPanel1" />
-            </ScrollViewer>
-            <StackPanel VerticalAlignment="Center">
-                <Grid>
-                    <Button
+		<Panel Margin="0,3,0,0">
+			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+				<ItemsControl ItemsSource="{Binding ScreenshotList}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<item:ScreenshotControl DataContext="{Binding}" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+				</ItemsControl>
+			</ScrollViewer>
+			<StackPanel VerticalAlignment="Center">
+				<Panel>
+					<Button
                         Name="Button_R"
                         Width="20"
                         Height="30"
                         Command="{Binding Load}"
                         Content="R" />
-                    <Button
+					<Button
                         Name="Button_R1"
                         Width="100"
                         Height="30"
                         Command="{Binding Load}"
                         Content="{setting:Localize Button.Refash}"
                         IsVisible="False" />
-                </Grid>
-                <Grid Margin="0,5,0,0">
-                    <Button
+				</Panel>
+				<Panel Margin="0,5,0,0">
+					<Button
                         Name="Button_C"
                         Width="20"
                         Height="30"
                         Command="{Binding Clear}"
                         Content="C" />
-                    <Button
+					<Button
                         Name="Button_C1"
                         Width="100"
                         Height="30"
                         Command="{Binding Clear}"
                         Content="{setting:Localize GameEditWindow.Flyouts4.Text1}"
                         IsVisible="False" />
-                </Grid>
-            </StackPanel>
-        </Grid>
+				</Panel>
+			</StackPanel>
+		</Panel>
     </DockPanel>
 </UserControl>

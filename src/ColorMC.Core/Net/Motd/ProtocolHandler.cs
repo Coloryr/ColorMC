@@ -12,7 +12,7 @@ public class ProtocolHandler
         Tcp = tcp;
     }
 
-    public void Receive(byte[] buffer, int start, int offset, SocketFlags f)
+    private void Receive(byte[] buffer, int start, int offset, SocketFlags f)
     {
         int read = 0;
         while (read < offset)

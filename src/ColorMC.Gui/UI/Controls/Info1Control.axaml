@@ -8,8 +8,8 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <Border Name="Border1" Background="{setting:Colors TopBottom}" />
+    <Panel>
+        <Border Background="{setting:Colors TopBottom}" />
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock
                 Name="TextBlock_Text"
@@ -33,6 +33,6 @@
                     Content="{setting:Localize Button.Cancel}" />
             </StackPanel>
         </StackPanel>
-    </Grid>
+    </Panel>
 
 </UserControl>

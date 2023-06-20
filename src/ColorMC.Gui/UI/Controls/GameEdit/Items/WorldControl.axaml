@@ -9,7 +9,7 @@
     d:DesignHeight="100"
     d:DesignWidth="500"
     mc:Ignorable="d">
-    <Grid Margin="1" Background="{setting:Colors TranBack}">
+    <Panel Margin="1" Background="{setting:Colors TranBack}">
         <Rectangle
             Name="Rectangle2"
             Fill="{setting:Colors Back}"
@@ -20,7 +20,7 @@
             IsVisible="{Binding IsSelect}"
             Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
-        <Grid Margin="4">
+        <Panel Margin="4">
             <Image
                 Width="90"
                 Height="90"
@@ -84,6 +84,6 @@
                     Text="{Binding Local}"
                     TextWrapping="Wrap" />
             </StackPanel>
-        </Grid>
-    </Grid>
+        </Panel>
+    </Panel>
 </UserControl>

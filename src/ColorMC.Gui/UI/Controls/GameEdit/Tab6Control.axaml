@@ -10,7 +10,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <DockPanel Margin="5">
-        <Grid DockPanel.Dock="Top">
+        <Panel DockPanel.Dock="Top">
             <Label Content="{setting:Localize GameEditWindow.Tab6.Text1}" />
             <Button
                 Width="160"
@@ -18,7 +18,7 @@
                 HorizontalAlignment="Right"
                 Content="{setting:Localize GameEditWindow.Tab6.Text2}"
                 IsEnabled="{Binding !IsGameRun}" />
-        </Grid>
+        </Panel>
         <TreeDataGrid Margin="3" Source="{Binding Source}">
             <TreeDataGrid.Resources>
                 <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">

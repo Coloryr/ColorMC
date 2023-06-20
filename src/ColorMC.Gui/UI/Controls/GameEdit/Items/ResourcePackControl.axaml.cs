@@ -7,14 +7,6 @@ namespace ColorMC.Gui.UI.Controls.GameEdit.Items;
 
 public partial class ResourcePackControl : UserControl
 {
-    public static readonly StyledProperty<ResourcePackModel> PackModelProperty =
-        AvaloniaProperty.Register<ResourcePackControl, ResourcePackModel>(nameof(PackModel));
-
-    public ResourcePackModel PackModel
-    {
-        get => GetValue(PackModelProperty);
-        set => SetValue(PackModelProperty, value);
-    }
     public ResourcePackControl()
     {
         InitializeComponent();
@@ -23,19 +15,6 @@ public partial class ResourcePackControl : UserControl
 
         PointerEntered += ResourcePackControl_PointerEntered;
         PointerExited += ResourcePackControl_PointerExited;
-
-        PropertyChanged += ResourcePackControl_PropertyChanged;
-    }
-
-    private void ResourcePackControl_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
-    {
-        if (e.Property == PackModelProperty)
-        {
-            if (PackModel == null)
-                return;
-
-            DataContext = PackModel;
-        }
     }
 
     private void ResourcePackControl_PointerExited(object? sender, PointerEventArgs e)
@@ -50,10 +29,13 @@ public partial class ResourcePackControl : UserControl
 
     private void ResourcePackControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        PackModel.Select();
-        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        if (DataContext is ResourcePackModel model)
         {
-            PackModel.Flyout(this);
+            model.Select();
+            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+            {
+                model.Flyout(this);
+            }
         }
     }
 }

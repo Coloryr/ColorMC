@@ -265,7 +265,7 @@ public sealed class Bitstream : IDisposable
      * The returned value is False at the end of stream.
      */
 
-    public int syncHeader(byte syncmode)
+    public int SyncHeader(byte syncmode)
     {
         bool sync;
         int headerstring;
