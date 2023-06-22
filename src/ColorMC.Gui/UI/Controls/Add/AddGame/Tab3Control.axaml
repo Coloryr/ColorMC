@@ -10,7 +10,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <DockPanel>
-        <StackPanel Margin="5" DockPanel.Dock="Top">
+        <StackPanel Margin="5,0,5,5" DockPanel.Dock="Top">
             <TextBox
                 Classes="input1"
                 Text="{Binding Name}"

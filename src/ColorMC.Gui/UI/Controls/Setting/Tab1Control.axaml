@@ -33,7 +33,7 @@
                 Command="{Binding Open}"
                 Content="{setting:Localize SettingWindow.Tab1.Text3}" />
         </StackPanel>
-        <StackPanel Margin="5">
+        <StackPanel Margin="5,0,5,5">
             <Label Content="{setting:Localize SettingWindow.Tab1.Text4}" />
             <DockPanel>
                 <Button

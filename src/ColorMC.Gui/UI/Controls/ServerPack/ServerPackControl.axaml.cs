@@ -20,6 +20,8 @@ public partial class ServerPackControl : UserControl, IUserControl
     private readonly ServerPackTab3Model model3;
     private readonly ServerPackTab4Model model4;
 
+    private readonly ServerPackModel model;
+
     private bool switch1 = false;
 
     private CancellationTokenSource cancel = new();
@@ -54,6 +56,9 @@ public partial class ServerPackControl : UserControl, IUserControl
 
                 GameBinding.SaveServerPack(pack);
             }
+
+            model = new(this, pack);
+            DataContext = model;
 
             model1 = new(this, pack);
             tab1.DataContext = model1;

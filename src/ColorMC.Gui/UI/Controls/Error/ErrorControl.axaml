@@ -9,7 +9,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
+    <Panel>
         <ae:TextEditor
             Margin="3"
             Background="{setting:Colors TranBack}"
@@ -30,5 +30,5 @@
             VerticalAlignment="Top"
             Command="{Binding Save}"
             Content="{setting:Localize ErrorWindow.Text1}" />
-    </Grid>
+    </Panel>
 </UserControl>

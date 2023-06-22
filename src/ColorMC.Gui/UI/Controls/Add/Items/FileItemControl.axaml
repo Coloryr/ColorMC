@@ -22,7 +22,7 @@
             IsVisible="{Binding IsSelect}"
             Stroke="{setting:Colors Main}"
             StrokeThickness="3" />
-        <Grid Margin="5">
+        <Panel Margin="5">
             <Image
                 Width="90"
                 Height="90"
@@ -78,7 +78,7 @@
                     VerticalAlignment="Center"
                     Content="{Binding ModifiedDate}" />
             </StackPanel>
-        </Grid>
+        </Panel>
         <Panel Background="{setting:Colors Bottom1}" IsVisible="{Binding NowDownload}">
             <StackPanel VerticalAlignment="Center">
                 <Label HorizontalAlignment="Center" Content="{setting:Localize AddWindow.Control.Text1}" />

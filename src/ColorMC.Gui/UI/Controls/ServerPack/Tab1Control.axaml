@@ -51,13 +51,5 @@
                 <CheckBox Content="{setting:Localize ServerPackWindow.Tab1.Text9}" IsChecked="{Binding ForceUpdate}" />
             </StackPanel>
         </ScrollViewer>
-        <Button
-            Width="160"
-            Height="25"
-            VerticalAlignment="Bottom"
-            Command="{Binding Gen}"
-            Content="{setting:Localize ServerPackWindow.Tab1.Text10}"
-            ToolTip.Tip="{setting:Localize ToolTip.Text47}"
-            ToolTip.VerticalOffset="-30" />
     </Panel>
 </UserControl>

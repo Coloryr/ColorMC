@@ -59,39 +59,6 @@ public partial class ServerPackTab1Model : ServerPackTabModel
         UI = file;
     }
 
-    [RelayCommand]
-    public async void Gen()
-    {
-        var window = Con.Window;
-        if (string.IsNullOrWhiteSpace(Obj.Url))
-        {
-            window.OkInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Error1"));
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(Obj.Version))
-        {
-            window.OkInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Error2"));
-            return;
-        }
-
-        var local = await BaseBinding.OpPath(window, FileType.ServerPack);
-        if (local == null)
-            return;
-
-        window.ProgressInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
-        var res = await GameBinding.GenServerPack(Obj, local);
-        window.ProgressInfo.Close();
-        if (res)
-        {
-            window.NotifyInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Info2"));
-        }
-        else
-        {
-            window.OkInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Error3"));
-        }
-    }
-
     public void Load()
     {
         load = true;

@@ -36,7 +36,7 @@
                 Value="{Binding Value}" />
         </DockPanel>
 
-        <Grid>
+        <Panel>
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
@@ -68,7 +68,7 @@
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel VerticalAlignment="Center">
-                <Grid>
+                <Panel>
                     <Button
                         Name="Button_P"
                         Width="20"
@@ -82,8 +82,8 @@
                         Command="{Binding Pause}"
                         Content="{Binding Button1}"
                         IsVisible="False" />
-                </Grid>
-                <Grid Margin="0,5,0,0">
+                </Panel>
+                <Panel Margin="0,5,0,0">
                     <Button
                         Name="Button_S"
                         Width="20"
@@ -97,8 +97,8 @@
                         Command="{Binding Stop}"
                         Content="{setting:Localize DownloadWindow.Text2}"
                         IsVisible="False" />
-                </Grid>
+                </Panel>
             </StackPanel>
-        </Grid>
+        </Panel>
     </DockPanel>
 </UserControl>

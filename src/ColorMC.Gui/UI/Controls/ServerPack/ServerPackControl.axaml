@@ -24,6 +24,16 @@
             </TabControl>
         </ScrollViewer>
 
+        <Button
+            Width="160"
+            Height="25"
+            Margin="5"
+            Command="{Binding Gen}"
+            Content="{setting:Localize ServerPackWindow.Tab1.Text10}"
+            DockPanel.Dock="Bottom"
+            ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+            ToolTip.VerticalOffset="-30" />
+
         <Panel ClipToBounds="True">
             <ContentControl Name="Content1" />
             <ContentControl Name="Content2" />

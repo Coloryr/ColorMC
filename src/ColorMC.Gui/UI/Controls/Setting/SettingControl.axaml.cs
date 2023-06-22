@@ -26,9 +26,6 @@ public partial class SettingControl : UserControl, IUserControl
     private readonly SettingTab5Model model5;
     private readonly SettingTab6Model model6;
 
-    private readonly ContentControl content1 = new();
-    private readonly ContentControl content2 = new();
-
     private CancellationTokenSource cancel = new();
 
     private int now;
@@ -61,17 +58,12 @@ public partial class SettingControl : UserControl, IUserControl
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
-        Tab1.Children.Add(content1);
-        Tab1.Children.Add(content2);
 
-        content1.Content = tab2;
+        Content1.Content = tab2;
     }
 
     public void Closed()
     {
-        content1.Content = null;
-        content2.Content = null;
-
         App.SettingWindow = null;
     }
 
@@ -133,13 +125,13 @@ public partial class SettingControl : UserControl, IUserControl
 
         if (!switch1)
         {
-            content2.Content = to;
-            _ = App.PageSlide500.Start(content1, content2, now < Tabs.SelectedIndex, cancel.Token);
+            Content2.Content = to;
+            _ = App.PageSlide500.Start(Content1, Content2, now < Tabs.SelectedIndex, cancel.Token);
         }
         else
         {
-            content1.Content = to;
-            _ = App.PageSlide500.Start(content2, content1, now < Tabs.SelectedIndex, cancel.Token);
+            Content1.Content = to;
+            _ = App.PageSlide500.Start(Content2, Content1, now < Tabs.SelectedIndex, cancel.Token);
         }
 
         switch1 = !switch1;

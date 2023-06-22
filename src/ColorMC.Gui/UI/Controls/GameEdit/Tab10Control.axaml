@@ -63,7 +63,6 @@
                         Content="{setting:Localize Button.Refash}"
                         IsVisible="False" />
                 </Panel>
-
             </StackPanel>
         </Panel>
     </DockPanel>

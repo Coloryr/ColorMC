@@ -27,7 +27,10 @@
             </TabControl>
         </ScrollViewer>
 
-        <Grid Name="Tab1" ClipToBounds="True" />
+        <Panel ClipToBounds="True">
+            <ContentControl Name="Content1" />
+            <ContentControl Name="Content2" />
+        </Panel>
 
     </DockPanel>
 </UserControl>

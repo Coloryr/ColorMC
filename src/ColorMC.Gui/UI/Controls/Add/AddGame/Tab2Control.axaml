@@ -58,13 +58,10 @@
 
             <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab2.Text2}" />
 
-            <StackPanel Orientation="Horizontal">
-
-                <ComboBox
-                    Width="200"
-                    ItemsSource="{Binding PackTypeList}"
-                    SelectedIndex="{Binding Type}" />
-            </StackPanel>
+            <ComboBox
+                Width="200"
+                ItemsSource="{Binding PackTypeList}"
+                SelectedIndex="{Binding Type}" />
         </StackPanel>
     </DockPanel>
 </UserControl>

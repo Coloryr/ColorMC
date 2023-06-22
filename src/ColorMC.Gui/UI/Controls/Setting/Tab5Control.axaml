@@ -60,7 +60,7 @@
             </DockPanel>
         </StackPanel>
 
-        <Grid Margin="0,3,0,0">
+        <Panel Margin="0,3,0,0">
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
@@ -97,7 +97,7 @@
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel VerticalAlignment="Center">
-                <Grid>
+                <Panel>
                     <Button
                         Name="Button_R"
                         Width="20"
@@ -111,9 +111,9 @@
                         Command="{Binding Load}"
                         Content="{setting:Localize Button.Refash}"
                         IsVisible="False" />
-                </Grid>
+                </Panel>
 
-                <Grid Margin="0,5,0,0">
+                <Panel Margin="0,5,0,0">
                     <Button
                         Name="Button_D"
                         Width="20"
@@ -127,8 +127,8 @@
                         Command="{Binding Delete}"
                         Content="{setting:Localize SettingWindow.Tab5.Text5}"
                         IsVisible="False" />
-                </Grid>
+                </Panel>
             </StackPanel>
-        </Grid>
+        </Panel>
     </DockPanel>
 </UserControl>
