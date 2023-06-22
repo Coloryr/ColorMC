@@ -11,7 +11,7 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Margin="5">
+        <DockPanel Margin="5,0,5,5">
             <Button
                 Width="85"
                 Height="25"

@@ -9,6 +9,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Text;
 
@@ -19,6 +20,8 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Launch
 {
+    private static CancellationTokenSource cancel = new();
+
     /// <summary>
     /// 检查游戏文件
     /// </summary>
@@ -26,9 +29,9 @@ public static class Launch
     /// <param name="login">登录的账户</param>
     /// <exception cref="LaunchException">抛出的错误</exception>
     /// <returns>下载列表</returns>
-    public static async Task<List<DownloadItemObj>> CheckGameFile(GameSettingObj obj, LoginObj login)
+    public static async Task<ConcurrentBag<DownloadItemObj>> CheckGameFile(GameSettingObj obj, LoginObj login)
     {
-        var list = new List<DownloadItemObj>();
+        var list = new ConcurrentBag<DownloadItemObj>();
 
         //检查游戏启动json
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.Check);
@@ -50,7 +53,7 @@ public static class Launch
                 throw new LaunchException(LaunchState.VersionError,
                     LanguageHelper.GetName("Core.Launch.Error1"));
 
-            list.AddRange(res1.List!);
+            res1.List!.ForEach(list.Add);
 
             game = VersionPath.GetGame(obj.Version);
         }
@@ -60,28 +63,16 @@ public static class Launch
             throw new LaunchException(LaunchState.VersionError, LanguageHelper.GetName("Core.Launch.Error1"));
         }
 
+        var list1 = new List<Task>();
+
         //检查游戏核心文件
         if (ConfigUtils.Config.GameCheck.CheckCore)
         {
-            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckVersion);
-            string file = LibrariesPath.GetGameFile(game.id);
-            if (!File.Exists(file))
+            list1.Add(Task.Run(() =>
             {
-                list.Add(new()
-                {
-                    Url = game.downloads.client.url,
-                    SHA1 = game.downloads.client.sha1,
-                    Local = file,
-                    Name = $"{obj.Version}.jar"
-                });
-            }
-            else
-            {
-                using FileStream stream2 = new(file, FileMode.Open, FileAccess.ReadWrite,
-                    FileShare.ReadWrite);
-                stream2.Seek(0, SeekOrigin.Begin);
-                string sha1 = Funtcions.GenSha1(stream2);
-                if (sha1 != game.downloads.client.sha1)
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckVersion);
+                string file = LibrariesPath.GetGameFile(game.id);
+                if (!File.Exists(file))
                 {
                     list.Add(new()
                     {
@@ -91,182 +82,222 @@ public static class Launch
                         Name = $"{obj.Version}.jar"
                     });
                 }
-            }
+                else
+                {
+                    using FileStream stream2 = new(file, FileMode.Open, FileAccess.ReadWrite,
+                        FileShare.ReadWrite);
+                    stream2.Seek(0, SeekOrigin.Begin);
+                    string sha1 = Funtcions.GenSha1(stream2);
+                    if (sha1 != game.downloads.client.sha1)
+                    {
+                        list.Add(new()
+                        {
+                            Url = game.downloads.client.url,
+                            SHA1 = game.downloads.client.sha1,
+                            Local = file,
+                            Name = $"{obj.Version}.jar"
+                        });
+                    }
+                }
+            }));
         }
 
         //检查游戏资源文件
         if (ConfigUtils.Config.GameCheck.CheckAssets)
         {
-            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckAssets);
-            var assets = game.GetIndex();
-            if (assets == null)
+            list1.Add(Task.Run(async () =>
             {
-                assets = await GameAPI.GetAssets(game.assetIndex.url);
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckAssets);
+                var assets = game.GetIndex();
                 if (assets == null)
                 {
-                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
-                    throw new LaunchException(LaunchState.AssetsError,
-                        LanguageHelper.GetName("Core.Launch.Error2"));
+                    assets = await GameAPI.GetAssets(game.assetIndex.url);
+                    if (assets == null)
+                    {
+                        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
+                        throw new LaunchException(LaunchState.AssetsError,
+                            LanguageHelper.GetName("Core.Launch.Error2"));
+                    }
+                    game.AddIndex(assets);
                 }
-                game.AddIndex(assets);
-            }
 
-            var list1 = await assets.Check();
-            foreach (var (Name, Hash) in list1)
-            {
-                list.Add(new()
+                var list1 = await assets.Check();
+                foreach (var (Name, Hash) in list1)
                 {
-                    Overwrite = true,
-                    Url = UrlHelper.DownloadAssets(Hash, BaseClient.Source),
-                    SHA1 = Hash,
-                    Local = $"{AssetsPath.ObjectsDir}/{Hash[..2]}/{Hash}",
-                    Name = Name
-                });
-            }
+                    list.Add(new()
+                    {
+                        Overwrite = true,
+                        Url = UrlHelper.DownloadAssets(Hash, BaseClient.Source),
+                        SHA1 = Hash,
+                        Local = $"{AssetsPath.ObjectsDir}/{Hash[..2]}/{Hash}",
+                        Name = Name
+                    });
+                }
+            }));
         }
 
         //检查运行库
         if (ConfigUtils.Config.GameCheck.CheckLib)
         {
-            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
-            var list2 = await game.CheckGameLib();
-            if (list2.Count != 0)
+            list1.Add(Task.Run(async () =>
             {
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
-                list.AddRange(list2);
-            }
-
-            //检查加载器运行库
-            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
-            if (obj.Loader == Loaders.Forge)
-            {
-                var list3 = await obj.CheckForgeLib();
-                if (list3 == null)
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
+                var list2 = await game.CheckGameLib();
+                if (list2.Count != 0)
                 {
-                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
-
-                    var list4 = await GameDownloadHelper.DownloadForge(obj);
-                    if (list4.State != GetDownloadState.End)
-                        throw new LaunchException(LaunchState.LostLoader,
-                        LanguageHelper.GetName("Core.Launch.Error3"));
-
-                    list.AddRange(list4.List!);
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
+                    foreach (var item in list2)
+                    {
+                        list.Add(item);
+                    }
                 }
-                else
+
+                //检查加载器运行库
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
+                if (obj.Loader == Loaders.Forge)
                 {
-                    list.AddRange(list3);
-                }
-            }
-            else if (obj.Loader == Loaders.Fabric)
-            {
-                var list3 = obj.CheckFabricLib();
-                if (list3 == null)
-                {
-                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
+                    var list3 = await obj.CheckForgeLib();
+                    if (list3 == null)
+                    {
+                        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                    var list4 = await GameDownloadHelper.DownloadFabric(obj);
-                    if (list4.State != GetDownloadState.End)
-                        throw new LaunchException(LaunchState.LostLoader,
-                        LanguageHelper.GetName("Core.Launch.Error3"));
+                        var list4 = await GameDownloadHelper.DownloadForge(obj);
+                        if (list4.State != GetDownloadState.End)
+                            throw new LaunchException(LaunchState.LostLoader,
+                            LanguageHelper.GetName("Core.Launch.Error3"));
 
-                    list.AddRange(list4.List!);
+                        list4.List!.ForEach(list.Add);
+                    }
+                    else
+                    {
+                        foreach (var item in list3)
+                        {
+                            list.Add(item);
+                        }
+                    }
                 }
-                else
+                else if (obj.Loader == Loaders.Fabric)
                 {
-                    list.AddRange(list3);
-                }
-            }
-            else if (obj.Loader == Loaders.Quilt)
-            {
-                var list3 = obj.CheckQuiltLib();
-                if (list3 == null)
-                {
-                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
+                    var list3 = obj.CheckFabricLib();
+                    if (list3 == null)
+                    {
+                        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                    var list4 = await GameDownloadHelper.DownloadQuilt(obj);
-                    if (list4.State != GetDownloadState.End)
-                        throw new LaunchException(LaunchState.LostLoader,
-                        LanguageHelper.GetName("Core.Launch.Error3"));
+                        var list4 = await GameDownloadHelper.DownloadFabric(obj);
+                        if (list4.State != GetDownloadState.End)
+                            throw new LaunchException(LaunchState.LostLoader,
+                            LanguageHelper.GetName("Core.Launch.Error3"));
 
-                    list.AddRange(list4.List!);
+                        list4.List!.ForEach(list.Add);
+                    }
+                    else
+                    {
+                        foreach (var item in list3)
+                        {
+                            list.Add(item);
+                        }
+                    }
                 }
-                else
+                else if (obj.Loader == Loaders.Quilt)
                 {
-                    list.AddRange(list3);
-                }
-            }
+                    var list3 = obj.CheckQuiltLib();
+                    if (list3 == null)
+                    {
+                        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-            //检查外置登录器
-            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoginCore);
+                        var list4 = await GameDownloadHelper.DownloadQuilt(obj);
+                        if (list4.State != GetDownloadState.End)
+                            throw new LaunchException(LaunchState.LostLoader,
+                            LanguageHelper.GetName("Core.Launch.Error3"));
 
-            if (login.AuthType == AuthType.Nide8)
-            {
-                var item = await AuthlibHelper.ReadyNide8();
-                if (item != null)
-                {
-                    list.Add(item);
+                        list4.List!.ForEach(list.Add);
+                    }
+                    else
+                    {
+                        foreach (var item in list3)
+                        {
+                            list.Add(item);
+                        }
+                    }
                 }
-            }
-            else if (login.AuthType is AuthType.AuthlibInjector
-                or AuthType.LittleSkin or AuthType.SelfLittleSkin)
-            {
-                var item = await AuthlibHelper.ReadyAuthlibInjector();
-                if (item != null)
+
+                //检查外置登录器
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoginCore);
+
+                if (login.AuthType == AuthType.Nide8)
                 {
-                    list.Add(item);
+                    var item = await AuthlibHelper.ReadyNide8();
+                    if (item != null)
+                    {
+                        list.Add(item);
+                    }
                 }
-            }
+                else if (login.AuthType is AuthType.AuthlibInjector
+                    or AuthType.LittleSkin or AuthType.SelfLittleSkin)
+                {
+                    var item = await AuthlibHelper.ReadyAuthlibInjector();
+                    if (item != null)
+                    {
+                        list.Add(item);
+                    }
+                }
+            }));
         }
 
         //检查整合包mod
         if (obj.ModPack && ConfigUtils.Config.GameCheck.CheckMod)
         {
-            ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckMods);
-
-            var mods = await obj.GetMods();
-            ModObj? mod = null;
-            int find = 0;
-            ModInfoObj?[] array = obj.Mods.Values.ToArray();
-            for (int a = 0; a < array.Length; a++)
+            list1.Add(Task.Run(async () =>
             {
-                var item = array[a];
-                foreach (var item1 in mods)
-                {
-                    if (item == null)
-                        continue;
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckMods);
 
-                    if (item1.Sha1 == item.SHA1 ||
-                        item1.Local.ToLower().EndsWith(item.File.ToLower()))
+                var mods = await obj.GetMods();
+                ModObj? mod = null;
+                int find = 0;
+                ModInfoObj?[] array = obj.Mods.Values.ToArray();
+                for (int a = 0; a < array.Length; a++)
+                {
+                    var item = array[a];
+                    foreach (var item1 in mods)
                     {
-                        mod = item1;
-                        break;
+                        if (item == null)
+                            continue;
+
+                        if (item1.Sha1 == item.SHA1 ||
+                            item1.Local.ToLower().EndsWith(item.File.ToLower()))
+                        {
+                            mod = item1;
+                            break;
+                        }
+                    }
+                    if (mod != null)
+                    {
+                        mods.Remove(mod);
+                        find++;
+                        mod = null;
+                        array[a] = null;
                     }
                 }
-                if (mod != null)
+                if (find != array.Length)
                 {
-                    mods.Remove(mod);
-                    find++;
-                    mod = null;
-                    array[a] = null;
-                }
-            }
-            if (find != array.Length)
-            {
-                foreach (var item in array)
-                {
-                    if (item == null)
-                        continue;
-
-                    list.Add(new()
+                    foreach (var item in array)
                     {
-                        Url = item.Url,
-                        Name = item.File,
-                        Local = obj.GetModsPath() + item.File,
-                        SHA1 = item.SHA1
-                    });
+                        if (item == null)
+                            continue;
+
+                        list.Add(new()
+                        {
+                            Url = item.Url,
+                            Name = item.File,
+                            Local = obj.GetModsPath() + item.File,
+                            SHA1 = item.SHA1
+                        });
+                    }
                 }
-            }
+            }));
         }
+
+        await Task.WhenAll(list1.ToArray());
 
         return list;
     }
@@ -1025,7 +1056,7 @@ public static class Launch
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LoginFail);
                 if (Ex != null)
-                    throw new LaunchException(LaunchState.LoginFail, Ex);
+                    throw new LaunchException(LaunchState.LoginFail, Message!, Ex);
 
                 throw new LaunchException(LaunchState.LoginFail, Message!);
             }
@@ -1072,7 +1103,7 @@ public static class Launch
                 stopwatch.Restart();
                 stopwatch.Start();
 
-                var ok = await DownloadManager.Start(res);
+                var ok = await DownloadManager.Start(res.ToList());
                 if (!ok)
                 {
                     throw new LaunchException(LaunchState.LostFile,

@@ -10,7 +10,7 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Margin="5">
+        <DockPanel Margin="5,0,5,5">
             <Panel DockPanel.Dock="Top">
                 <DockPanel>
                     <Label VerticalAlignment="Center" Content="{setting:Localize GameEditWindow.Tab4.Text2}" />

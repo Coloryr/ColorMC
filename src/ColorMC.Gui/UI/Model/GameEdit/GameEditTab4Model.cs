@@ -219,7 +219,7 @@ public partial class GameEditTab4Model : GameEditTabModel
         else
         {
             item.LocalChange();
-            item.Enable = item.Obj.Disable;
+            item.Enable = !item.Obj.Disable;
         }
     }
 

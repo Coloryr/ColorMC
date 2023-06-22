@@ -9,7 +9,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <DockPanel Margin="5">
+    <DockPanel Margin="5,0,5,5">
         <Panel DockPanel.Dock="Top">
             <Label Content="{setting:Localize GameEditWindow.Tab6.Text1}" />
             <Button

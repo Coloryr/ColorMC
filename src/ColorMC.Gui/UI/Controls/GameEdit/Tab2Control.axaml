@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     <ScrollViewer>
         <!--  指定Java  -->
-        <StackPanel Margin="5">
+        <StackPanel Margin="5,0,5,5">
             <Label HorizontalAlignment="Center" Content="{Binding Title}" />
             <Label Content="{setting:Localize GameEditWindow.Tab2.Text24}" />
             <StackPanel Orientation="Horizontal">

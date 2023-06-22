@@ -507,7 +507,7 @@ public static class GameBinding
                 obj1.Obj1 = item1;
             }
 
-            obj1.Enable = item.Disable;
+            obj1.Enable = !item.Disable;
 
             list.Add(obj1);
         });
@@ -763,6 +763,7 @@ public static class GameBinding
     {
         var list = new List<ResourcepackDisplayObj>();
         var list1 = await obj.GetResourcepacks();
+        var path = obj.GetGamePath();
 
         foreach (var item in list1)
         {
@@ -778,9 +779,9 @@ public static class GameBinding
             {
                 var obj1 = new ResourcepackDisplayObj()
                 {
-                    Local = item.Local,
-                    PackFormat = item.pack.pack_format,
-                    Description = item.pack.description,
+                    Local = item.Local.Replace(path, ""),
+                    PackFormat = item.pack_format,
+                    Description = item.description,
                     Pack = item
                 };
 

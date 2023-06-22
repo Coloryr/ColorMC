@@ -149,6 +149,9 @@ public static class LibrariesPath
                     return;
                 }
 
+                if (string.IsNullOrWhiteSpace(item.downloads.artifact.url))
+                    return;
+
                 string file = $"{BaseDir}/{item.downloads.artifact.path}";
                 if (!File.Exists(file))
                 {
@@ -157,7 +160,8 @@ public static class LibrariesPath
                         Local = file,
                         Name = item.name,
                         SHA1 = item.downloads.artifact.sha1,
-                        Url = item.downloads.artifact.url
+                        Url = UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
+                             BaseClient.Source)
                     });
                     return;
                 }
@@ -171,10 +175,47 @@ public static class LibrariesPath
                         Local = file,
                         Name = item.name,
                         SHA1 = item.downloads.artifact.sha1,
-                        Url = item.downloads.artifact.url
+                        Url = UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
+                             BaseClient.Source)
                     });
                 }
             });
+            //if (!string.IsNullOrWhiteSpace(forgeinstall.data?.MOJMAPS?.client)
+            //    && version1.downloads.client_mappings != null)
+            //{
+            //    var args = forgeinstall.data.MOJMAPS.client.Split(":");
+            //    if (args[3] == "mappings@txt]")
+            //    {
+            //        string name1 = $"client-{args[2]}-mappings.txt";
+            //        string local = $"{BaseDir}/net/minecraft/client/{args[2]}/{name1}";
+            //        if (!File.Exists(local))
+            //        {
+            //            list.Add(new()
+            //            {
+            //                Url = version1.downloads.client_mappings.url,
+            //                SHA1 = version1.downloads.client_mappings.sha1,
+            //                Name = name1,
+            //                Local = local
+            //            });
+            //        }
+            //        else
+            //        {
+            //            using var stream = new FileStream(local, FileMode.Open, FileAccess.ReadWrite,
+            //           FileShare.ReadWrite);
+            //            var sha1 = await Funtcions.GenSha1Async(stream);
+            //            if (sha1 != version1.downloads.client_mappings.sha1)
+            //            {
+            //                list.Add(new()
+            //                {
+            //                    Url = version1.downloads.client_mappings.url,
+            //                    SHA1 = version1.downloads.client_mappings.sha1,
+            //                    Name = name1,
+            //                    Local = local
+            //                });
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         return list;

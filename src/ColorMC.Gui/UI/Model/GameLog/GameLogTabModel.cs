@@ -149,9 +149,9 @@ public partial class GameLogTabModel : ObservableObject
 
     public void Clear()
     {
-        if (!string.IsNullOrWhiteSpace(Temp))
+        if (string.IsNullOrWhiteSpace(File))
         {
-            Text.Text = "";
+            Text = new();
         }
     }
 

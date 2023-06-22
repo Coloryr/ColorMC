@@ -5,6 +5,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
 
 namespace ColorMC.Core.Game;
@@ -51,20 +52,43 @@ public static class Resourcepacks
                     using var stream = new MemoryStream();
                     await stream1.CopyToAsync(stream, cancel);
                     var data = Encoding.UTF8.GetString(stream.ToArray());
-                    var obj1 = JsonConvert.DeserializeObject<ResourcepackObj>(data);
+                    var obj1 = JObject.Parse(data);
                     if (obj1 != null)
                     {
-                        obj1.Local = Path.GetFullPath(item.FullName);
-                        obj1.Sha1 = sha1;
+                        ResourcepackObj obj = new()
+                        {
+                            Local = Path.GetFullPath(item.FullName),
+                            Sha1 = sha1,
+                        };
+                        if (obj1.ContainsKey("pack"))
+                        {
+                            var obj2 = (obj1["pack"] as JObject)!;
+                            if (obj2.TryGetValue("pack_format", out var item2))
+                            {
+                                obj.pack_format = (int)item2;
+                            }
+                            if (obj2.ContainsKey("description"))
+                            {
+                                var obj3 = obj2["description"]!;
+                                if (obj3.Type == JTokenType.String)
+                                {
+                                    obj.description = obj3.ToString();
+                                }
+                                else if (obj3.Type == JTokenType.Object)
+                                {
+                                    obj.description = obj3["fallback"]?.ToString() ?? "";
+                                }
+                            }
+                        }
                         item1 = zFile.GetEntry("pack.png");
                         if (item1 != null)
                         {
                             using var stream2 = zFile.GetInputStream(item1);
                             using var stream3 = new MemoryStream();
                             await stream2.CopyToAsync(stream3, cancel);
-                            obj1.Icon = stream3.ToArray();
+                            obj.Icon = stream3.ToArray();
                         }
-                        list.Add(obj1);
+                        list.Add(obj);
                         find = true;
                     }
                 }

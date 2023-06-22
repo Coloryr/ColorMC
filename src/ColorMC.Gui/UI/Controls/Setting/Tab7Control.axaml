@@ -8,52 +8,50 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <StackPanel
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
-            <Image
-                Width="160"
-                Height="160"
-                Margin="0,0,20,0"
-                HorizontalAlignment="Left"
-                Source="{Binding Bitmap}" />
+    <StackPanel
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Orientation="Horizontal">
+        <Image
+            Width="160"
+            Height="160"
+            Margin="0,0,20,0"
+            HorizontalAlignment="Left"
+            Source="{Binding Bitmap}" />
 
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label Content="ColorMC" FontSize="60" />
-                <Label Content="{setting:Localize SettingWindow.Tab7.Text1}" FontSize="30" />
-                <Label Content="{setting:Localize SettingWindow.Tab7.Text2}" FontSize="30" />
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{setting:Localize SettingWindow.Tab7.Text6}" FontSize="20" />
-                    <Label Content="{Binding Version}" FontSize="20" />
-                </StackPanel>
-
-                <Button
-                    Height="30"
-                    Margin="0,5,0,5"
-                    HorizontalAlignment="Stretch"
-                    Command="{Binding Open1}"
-                    Content="{setting:Localize SettingWindow.Tab7.Text3}" />
-                <Button
-                    Height="30"
-                    Margin="0,0,0,5"
-                    HorizontalAlignment="Stretch"
-                    Command="{Binding Open2}"
-                    Content="{setting:Localize SettingWindow.Tab7.Text4}" />
-                <Button
-                    Height="30"
-                    Margin="0,0,0,5"
-                    HorizontalAlignment="Stretch"
-                    Command="{Binding Open3}"
-                    Content="{setting:Localize SettingWindow.Tab7.Text5}" />
-                <Button
-                    Height="30"
-                    Margin="0,0,0,5"
-                    HorizontalAlignment="Stretch"
-                    Command="{Binding Open4}"
-                    Content="{setting:Localize SettingWindow.Tab7.Text7}" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="ColorMC" FontSize="60" />
+            <Label Content="{setting:Localize SettingWindow.Tab7.Text1}" FontSize="30" />
+            <Label Content="{setting:Localize SettingWindow.Tab7.Text2}" FontSize="30" />
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{setting:Localize SettingWindow.Tab7.Text6}" FontSize="20" />
+                <Label Content="{Binding Version}" FontSize="20" />
             </StackPanel>
+
+            <Button
+                Height="30"
+                Margin="0,5,0,5"
+                HorizontalAlignment="Stretch"
+                Command="{Binding Open1}"
+                Content="{setting:Localize SettingWindow.Tab7.Text3}" />
+            <Button
+                Height="30"
+                Margin="0,0,0,5"
+                HorizontalAlignment="Stretch"
+                Command="{Binding Open2}"
+                Content="{setting:Localize SettingWindow.Tab7.Text4}" />
+            <Button
+                Height="30"
+                Margin="0,0,0,5"
+                HorizontalAlignment="Stretch"
+                Command="{Binding Open3}"
+                Content="{setting:Localize SettingWindow.Tab7.Text5}" />
+            <Button
+                Height="30"
+                Margin="0,0,0,5"
+                HorizontalAlignment="Stretch"
+                Command="{Binding Open4}"
+                Content="{setting:Localize SettingWindow.Tab7.Text7}" />
         </StackPanel>
-    </Grid>
+    </StackPanel>
 </UserControl>

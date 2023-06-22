@@ -13,14 +13,13 @@
         <DockPanel DockPanel.Dock="Top">
             <Label Content="{setting:Localize DownloadWindow.Text3}" />
             <Label
-                MinWidth="80"
+                MinWidth="120"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 HorizontalContentAlignment="Right"
                 Content="{Binding Speed}"
                 DockPanel.Dock="Right" />
             <Label
-                MinWidth="80"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 Content="{Binding Now}"

@@ -82,7 +82,7 @@ public static class GameDownloadHelper
         var down = GameHelper.BuildForgeInster(mc, version);
         try
         {
-            var res = await DownloadManager.Download(down);
+            var res = await DownloadManager.Start(new() { down });
             if (!res)
             {
                 return (GetDownloadState.Init, null);
@@ -137,11 +137,9 @@ public static class GameDownloadHelper
             list.AddRange(GameHelper.MakeForgeLibs(info, mc, version));
 
             byte[] array2 = stream2.ToArray();
-            ForgeInstallObj info1;
             var data1 = Encoding.UTF8.GetString(array2);
             try
             {
-                info1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data1)!;
                 File.WriteAllBytes($"{VersionPath.ForgeDir}/{name}-install.json", stream2.ToArray());
             }
             catch (Exception e)
@@ -149,26 +147,10 @@ public static class GameDownloadHelper
                 Logs.Error(LanguageHelper.GetName("Core.Http.Forge.Error2"), e);
                 return (GetDownloadState.GetInfo, null);
             }
-
-            foreach (var item1 in info1.libraries)
-            {
-                if (string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
-                    continue;
-
-                list.Add(new()
-                {
-                    Url = UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
-                             BaseClient.Source),
-                    Name = item1.name,
-                    Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
-                    SHA1 = item1.downloads.artifact.sha1
-                });
-            }
         }
         //旧forge
         else
         {
-
             ForgeInstallObj1 obj;
             byte[] array1 = stream2.ToArray();
             ForgeLaunchObj info;

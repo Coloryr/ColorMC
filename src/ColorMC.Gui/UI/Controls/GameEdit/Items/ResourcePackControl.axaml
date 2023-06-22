@@ -31,7 +31,6 @@
                 <TextBlock
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
                     Text="{Binding Local}"
                     TextWrapping="Wrap" />
                 <StackPanel
@@ -42,24 +41,21 @@
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{setting:Localize GameEditWindow.Control.Text5}" />
                     <TextBlock
                         Margin="0,0,20,0"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
                         Text="{Binding PackFormat}" />
                 </StackPanel>
                 <TextBlock
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    MaxLines="1"
-                    Text="{Binding Description}" />
+                    MaxLines="2"
+                    Text="{Binding Description}"
+                    TextTrimming="CharacterEllipsis" />
                 <TextBlock
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
                     Text="{Binding Broken}" />
             </StackPanel>
         </Panel>

@@ -16,7 +16,6 @@
                 Margin="5"
                 Command="{Binding OpenDownload}"
                 Content="{setting:Localize SettingWindow.Tab3.Text13}" />
-
             <Button
                 Width="160"
                 Height="25"
@@ -24,7 +23,7 @@
                 Command="{Binding OpenPic}"
                 Content="{setting:Localize SettingWindow.Tab3.Text18}" />
         </StackPanel>
-        <StackPanel Margin="5">
+        <StackPanel Margin="5,0,5,5">
             <StackPanel Orientation="Horizontal">
                 <Label
                     HorizontalAlignment="Center"

@@ -10,8 +10,8 @@
     d:DesignWidth="800"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
-    <Grid>
-        <DockPanel Margin="5">
+    <Panel>
+        <DockPanel Margin="5,0,5,5">
             <Button
                 Width="85"
                 Height="25"
@@ -22,7 +22,7 @@
                 ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                 ToolTip.VerticalOffset="-30" />
 
-            <Grid Margin="0,3,0,0">
+            <Panel Margin="0,3,0,0">
                 <ScrollViewer VerticalScrollBarVisibility="Visible">
                     <ItemsControl
                         HorizontalAlignment="Stretch"
@@ -36,7 +36,7 @@
                     </ItemsControl>
                 </ScrollViewer>
                 <StackPanel VerticalAlignment="Center">
-                    <Grid>
+                    <Panel>
                         <Button
                             Name="Button_I"
                             Width="20"
@@ -50,8 +50,8 @@
                             Command="{Binding Import}"
                             Content="{setting:Localize Button.Input}"
                             IsVisible="False" />
-                    </Grid>
-                    <Grid Margin="0,5,0,0">
+                    </Panel>
+                    <Panel Margin="0,5,0,0">
                         <Button
                             Name="Button_A"
                             Width="20"
@@ -65,8 +65,8 @@
                             Command="{Binding Add}"
                             Content="{setting:Localize Button.Add}"
                             IsVisible="False" />
-                    </Grid>
-                    <Grid Margin="0,5,0,0">
+                    </Panel>
+                    <Panel Margin="0,5,0,0">
                         <Button
                             Name="Button_R"
                             Width="20"
@@ -80,11 +80,11 @@
                             Command="{Binding Load}"
                             Content="{setting:Localize Button.Refash}"
                             IsVisible="False" />
-                    </Grid>
+                    </Panel>
                 </StackPanel>
-            </Grid>
+            </Panel>
         </DockPanel>
-        <Grid
+        <Panel
             Name="Grid2"
             Background="{setting:Colors TopBottom}"
             IsVisible="False">
@@ -93,6 +93,6 @@
                 VerticalAlignment="Center"
                 Content="{setting:Localize Gui.Info16}"
                 FontSize="30" />
-        </Grid>
-    </Grid>
+        </Panel>
+    </Panel>
 </UserControl>
