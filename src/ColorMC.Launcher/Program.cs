@@ -31,10 +31,10 @@ public static class Program
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
     public static readonly string[] BaseSha1 = new[]
     {
-        "968bf9502a1c14d547e6748bd9f57ba6ff9141f1",
-        "9014468e552fb8e6440fb398ef409ca25f1330bc",
-        "06282ac5d3b3b64a15e352a713b5ca8a1eec01ea",
-        "96fedf880dc0d56716dc0952ae5f402c7a24e67e"
+        "3f5f2d2f40e41e95325535de3c409edfecdf9d63",
+        "a89277ad2442a82a19ce58ae0ee599633c315efe",
+        "0cc67395e2f5077d330a1ffd356976e50801a66f",
+        "da2ac5b4b3668c6e4f6be166c3c2b242efec3bef"
     };
     /// <summary>
     /// 加载路径
