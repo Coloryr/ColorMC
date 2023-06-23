@@ -36,6 +36,7 @@ using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -137,7 +138,7 @@ public partial class App : Application
         }
     }
 
-    public override async void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
     {
         Life = ApplicationLifetime;
 
@@ -189,10 +190,9 @@ public partial class App : Application
                 new SingleWindow(AllWindow).Show();
             }
         }
-
         ShowCustom();
 
-        await LoadImage();
+        Dispatcher.UIThread.Post(() => _ = LoadImage());
 
         base.OnFrameworkInitializationCompleted();
     }

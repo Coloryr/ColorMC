@@ -316,6 +316,7 @@
 	"GameEditWindow.Tab1.Info5": "已经是最新版",
 	"GameEditWindow.Tab1.Info6": "整合包有新版本，是否要更新\n注意：该操作会删除旧Mod，安装新版Mod，并覆盖所有配置文件",
 	"GameEditWindow.Tab1.Info7": "更新完成",
+	"GameEditWindow.Tab1.Info8": "整合包更新中",
 	"GameEditWindow.Tab1.Error1": "游戏运行中，无法删除",
 	"GameEditWindow.Tab1.Error2": "更新失败",
 	"GameEditWindow.Tab1.Error3": "无法检测，没有版本信息",

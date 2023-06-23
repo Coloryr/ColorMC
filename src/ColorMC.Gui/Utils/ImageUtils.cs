@@ -89,7 +89,7 @@ public static class ImageUtils
 
     private static Rgba32 Mix(Rgba32 rgba, Rgba32 mix)
     {
-        double ap = (double)(mix.A / 255);
+        double ap = mix.A / 255;
         double dp = 1 - ap;
 
         rgba.R = (byte)(mix.R * ap + rgba.R * dp);

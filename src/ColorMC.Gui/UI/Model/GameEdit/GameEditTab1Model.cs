@@ -240,8 +240,10 @@ public partial class GameEditTab1Model : GameEditTabModel
                     return;
                 }
 
+                window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info8"));
                 var item = list.First();
                 res = await GameBinding.ModPackUpdate(Obj, item);
+                window.ProgressInfo.Close();
                 if (!res)
                 {
                     window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error2"));
@@ -277,8 +279,10 @@ public partial class GameEditTab1Model : GameEditTabModel
                     return;
                 }
 
+                window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info8"));
                 var item = list.data.First();
                 res = await GameBinding.ModPackUpdate(Obj, item);
+                window.ProgressInfo.Close();
                 if (!res)
                 {
                     window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error2"));
