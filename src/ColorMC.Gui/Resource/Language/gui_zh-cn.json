@@ -26,6 +26,8 @@
 	"MainWindow.Control.Text6": "切换游戏分组",
 	"MainWindow.Control.Text7": "添加分组",
 	"MainWindow.Control.Text8": "移动到此游戏分组",
+	"MainWindow.Live2d.Error1": "Live2D模型不存在",
+	"MainWindow.Live2d.Error2": "Live2D模型加载失败",
 	"MainWindow.Info1": "组名",
 	"MainWindow.Info2": "已启动",
 	"MainWindow.Info3": "正在启动游戏",

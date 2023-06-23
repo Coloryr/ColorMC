@@ -73,9 +73,13 @@ public class Live2dRender : OpenGlControlBase
         var window = Model.Con.Window;
         lapp.Live2dManager.ReleaseAllModel();
         var model = GuiConfigUtils.Config.Live2D.Model;
-        if (string.IsNullOrWhiteSpace(model) || !File.Exists(model))
+        if (string.IsNullOrWhiteSpace(model))
         {
-            window.OkInfo.Show("Live2D模型不存在");
+            return;
+        }
+        if (!File.Exists(model))
+        {
+            window.OkInfo.Show(App.GetLanguage("MainWindow.Live2d.Error1"));
             return;
         }
         var info = new FileInfo(model);
@@ -86,7 +90,7 @@ public class Live2dRender : OpenGlControlBase
         catch (Exception e)
         {
             Logs.Error("model load error", e);
-            window.OkInfo.Show("Live2D模型加载失败");
+            window.OkInfo.Show(App.GetLanguage("MainWindow.Live2d.Error2"));
         }
     }
 
