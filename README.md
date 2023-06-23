@@ -3,7 +3,9 @@
 [English](./README_EN.md)
 
 全新的MC启动器  
-![](/image/pic.png)
+![](/image/run.png)  
+![](/image/GIF.gif)  
+![](/image/GIF1.gif)  
 
 ## 支持平台
 - Linux
@@ -60,10 +62,6 @@ $ dotnet run
 - ColorMC.Gui Gui模式
 - ColorMC.Launcher 启动器
 - ColorMC.Test 用于启动器核心测试
-
-## 皮肤预览
-
-![](/image/GIF1.gif)  
 
 ## 引用的项目
 
