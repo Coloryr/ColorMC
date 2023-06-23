@@ -481,9 +481,7 @@ public partial class App : Application
 
             if (BaseBinding.ISNewStart)
             {
-                var con = new SettingControl();
-                con.GoTo(SettingType.SetJava);
-                AWindow(con);
+                ShowSetting(SettingType.SetJava);
             }
         }
     }

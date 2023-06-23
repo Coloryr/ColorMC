@@ -27,11 +27,11 @@ public static class LittleSkin
             type = AuthType.SelfLittleSkin;
             if (server.EndsWith("/api/yggdrasil"))
             {
-                server = server.Replace("/api/yggdrasil", "");
+                server = server.Replace("/api/yggdrasil", "/");
             }
             if (server.EndsWith("/user"))
             {
-                server = server.Replace("/user", "");
+                server = server.Replace("/user", "/");
             }
             server1 = server;
         }
@@ -65,7 +65,7 @@ public static class LittleSkin
             server = obj.Text1;
         }
 
-        server += "/api/yggdrasil";
+        server += "api/yggdrasil";
 
         return LoginOld.Refresh(server, obj);
     }

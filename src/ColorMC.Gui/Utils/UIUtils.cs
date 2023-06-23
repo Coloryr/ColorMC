@@ -125,7 +125,7 @@ public static partial class UIUtils
         }
     }
 
-    public static Avalonia.Media.Color ToColor(this IBrush brush)
+    public static Color ToColor(this IBrush brush)
     {
         if (brush is ImmutableSolidColorBrush brush1)
         {

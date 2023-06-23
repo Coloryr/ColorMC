@@ -30,7 +30,6 @@
                 Width="120"
                 Height="30"
                 ItemsSource="{Binding SystemList}"
-                SelectedIndex="{Binding SystemIndex}"
                 SelectedItem="{Binding System}" />
 
             <Label
@@ -41,7 +40,6 @@
                 Width="70"
                 Height="30"
                 ItemsSource="{Binding VersionList}"
-                SelectedIndex="{Binding VersionIndex}"
                 SelectedItem="{Binding Version}" />
 
             <Label

@@ -33,10 +33,6 @@ public partial class AddJavaModel : ObservableObject
     [ObservableProperty]
     private int typeIndex = -1;
     [ObservableProperty]
-    private int systemIndex = -1;
-    [ObservableProperty]
-    private int versionIndex = -1;
-    [ObservableProperty]
     private int archIndex = -1;
     [ObservableProperty]
     private bool display = true;
@@ -53,6 +49,7 @@ public partial class AddJavaModel : ObservableObject
 
     partial void OnJavaTypeChanged(string value)
     {
+        load = true;
         Switch();
         Load();
     }
@@ -106,23 +103,20 @@ public partial class AddJavaModel : ObservableObject
         List1.Clear();
         JavaList.Clear();
 
-        SystemList.Clear();
-        VersionList.Clear();
-        ArchList.Clear();
-
-        var res = await JavaBinding.GetJavaList(TypeIndex, SystemIndex, VersionIndex);
+        var res = await JavaBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System), VersionList.IndexOf(Version));
 
         if (res.Item1)
         {
-            if (res.Os != null)
+            if (res.Os != null && SystemList.Count == 0)
             {
                 SystemList.AddRange(res.Os);
             }
-            if (res.MainVersion != null)
+            if (res.MainVersion != null && VersionList.Count == 0)
             {
                 VersionList.AddRange(res.MainVersion);
+                Version = res.MainVersion[0];
             }
-            if (res.Arch != null)
+            if (res.Arch != null && ArchList.Count == 0)
             {
                 ArchList.AddRange(res.Arch);
             }
@@ -167,8 +161,11 @@ public partial class AddJavaModel : ObservableObject
 
     private void Switch()
     {
-        SystemIndex = 0;
-        VersionIndex = 0;
+        SystemList.Clear();
+        VersionList.Clear();
+        ArchList.Clear();
+        System = "";
+        Version = "";
         ArchIndex = 0;
     }
 

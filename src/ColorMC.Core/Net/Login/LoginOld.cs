@@ -30,12 +30,16 @@ public static class LoginOld
             password = pass,
             clientToken = clientToken
         };
+        if (!server.EndsWith("/"))
+        {
+            server += "/";
+        }
         HttpRequestMessage message = new()
         {
             Method = HttpMethod.Post,
-            RequestUri = new(server + "/authserver/authenticate")
+            RequestUri = new(server + "authserver/authenticate")
         };
-        message.Headers.UserAgent.Add(ProductInfoHeaderValue.Parse($"ColorMC/{ColorMCCore.Version}"));
+        message.Headers.UserAgent.Append(new("ColorMC", ColorMCCore.Version));
         message.Content = new StringContent(JsonConvert.SerializeObject(obj),
             MediaTypeHeaderValue.Parse("application/json"));
 
@@ -83,8 +87,7 @@ public static class LoginOld
             Method = HttpMethod.Post,
             RequestUri = new(server + "/authserver/refresh")
         };
-        message.Headers.UserAgent.Append(
-            new("ColorMC", ColorMCCore.Version));
+        message.Headers.UserAgent.Append(new("ColorMC", ColorMCCore.Version));
         message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
             MediaTypeHeaderValue.Parse("application/json"));
 

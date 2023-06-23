@@ -833,6 +833,8 @@ public class SkinRender : OpenGlControlBase
 
     protected override unsafe void OnOpenGlRender(GlInterface gl, int fb)
     {
+        skina.Tick();
+
         if (SwitchSkin)
         {
             LoadSkin(gl);
@@ -961,6 +963,8 @@ public class SkinRender : OpenGlControlBase
 
     protected override void OnOpenGlDeinit(GlInterface gl)
     {
+        skina.Stop();
+
         // Unbind everything
         gl.BindBuffer(GlConsts.GL_ARRAY_BUFFER, 0);
         gl.BindBuffer(GlConsts.GL_ELEMENT_ARRAY_BUFFER, 0);
