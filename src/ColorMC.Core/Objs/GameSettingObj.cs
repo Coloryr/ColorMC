@@ -194,6 +194,10 @@ public record GameSettingObj
     /// 整合包版本
     /// </summary>
     public string? FID { get; set; }
+    /// <summary>
+    /// 图标
+    /// </summary>
+    public string? Icon { get; set; }
 
     /// <summary>
     /// Mod信息

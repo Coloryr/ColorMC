@@ -157,7 +157,8 @@ public static class InstancesPath
                         break;
 
                     var mmc1 = File.ReadAllText(file2);
-                    game = GameHelper.ToColorMC(mmc, mmc1);
+                    game = GameHelper.ToColorMC(mmc, mmc1, out var icon);
+                    game.Icon = icon + ".png";
                 }
             }
             else
@@ -332,7 +333,12 @@ public static class InstancesPath
     /// <returns>文件路径</returns>
     public static string GetIconFile(this GameSettingObj obj)
     {
-        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name10}");
+        if (string.IsNullOrWhiteSpace(obj.Icon))
+        {
+            obj.Icon = Name10;
+            obj.Save();
+        }
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{obj.Icon}");
     }
 
     /// <summary>
@@ -893,7 +899,7 @@ public static class InstancesPath
 
                         var mmc1 = Encoding.UTF8.GetString(stream2.ToArray());
 
-                        game = mmc.ToColorMC(mmc1);
+                        game = mmc.ToColorMC(mmc1 ,out var icon);
 
                         if (!string.IsNullOrWhiteSpace(name))
                         {
@@ -902,6 +908,14 @@ public static class InstancesPath
                         if (!string.IsNullOrWhiteSpace(group))
                         {
                             game.GroupName = group;
+                        }
+                        if (string.IsNullOrWhiteSpace(game.Name))
+                        {
+                            game.Name = new FileInfo(dir).Name;
+                        }
+                        if (!string.IsNullOrWhiteSpace(icon))
+                        {
+                            game.Icon = icon + ".png";
                         }
                         game = await CreateGame(game);
 

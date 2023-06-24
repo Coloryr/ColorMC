@@ -18,6 +18,8 @@ public static class Options
         var lines = file.Split("\n");
         foreach (var item in lines)
         {
+            if (string.IsNullOrWhiteSpace(item))
+                continue;
             var temp = item.Trim().Split(sp);
             if (temp.Length == 1)
             {

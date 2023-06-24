@@ -493,12 +493,11 @@ public static class GameHelper
     /// <param name="mmc"></param>
     /// <param name="mmc1"></param>
     /// <returns></returns>
-    public static GameSettingObj ToColorMC(this MMCObj mmc, string mmc1)
+    public static GameSettingObj ToColorMC(this MMCObj mmc, string mmc1, out string icon)
     {
         var list = Options.ReadOptions(mmc1, "=");
         var game = new GameSettingObj
         {
-            Name = list["name"],
             Loader = Loaders.Normal
         };
 
@@ -526,7 +525,11 @@ public static class GameHelper
         }
         game.JvmArg = new();
         game.Window = new();
-        if (list.TryGetValue("JvmArgs", out var item1))
+        if (list.TryGetValue("Name", out var item1))
+        {
+            game.Name = item1;
+        }
+        if (list.TryGetValue("JvmArgs", out item1))
         {
             game.JvmArg.JvmArgs = item1;
         }
@@ -563,6 +566,20 @@ public static class GameHelper
                 game.StartServer.IP = item1;
                 game.StartServer.Port = 0;
             }
+        }
+        if (list.TryGetValue("PreLaunchCommand", out item1))
+        {
+            game.JvmArg ??= new();
+            game.JvmArg.LaunchPre = true;
+            game.JvmArg.LaunchPreData = item1;
+        }
+        if (list.TryGetValue("iconKey", out item1))
+        {
+            icon = item1;
+        }
+        else
+        {
+            icon = "";
         }
 
         return game;

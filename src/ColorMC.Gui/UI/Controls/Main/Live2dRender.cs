@@ -139,6 +139,14 @@ public class Live2dRender : OpenGlControlBase
     {
         if (!init)
             return;
+        if (!HaveModel && IsVisible)
+        {
+            IsVisible = false;
+        }
+        else if(HaveModel && !IsVisible)
+        {
+            IsVisible = true;
+        }
         if (change)
         {
             change = false;
