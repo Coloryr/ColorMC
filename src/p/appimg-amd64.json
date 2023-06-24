@@ -2,10 +2,10 @@
     "buildinfo": [
         {
             "prerun": [
-                "cp /home/coloryr/Desktop/colormc-linux-amd64.deb ~/.cache/deb2appimage/debs/colormc-linux-amd64.deb"
+                "cp /home/coloryr/Desktop/colormc-A19-linux-amd64.deb ~/.cache/deb2appimage/debs/colormc-A19-linux-amd64.deb"
             ],
             "name": "colormc",
-            "version": "linux",
+            "version": "A19-linux",
             "deps": "",
             "repoarch": "amd64",
             "distrorepo": "Ubuntu",

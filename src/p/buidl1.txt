@@ -1,5 +1,5 @@
 pkgname = colormc
-pkgver = 1-1
+pkgver = A19
 pkgdesc = ColorMC .
 url = https://www.github.com/Coloryr/ColorMC
 builddate = 1677483497
