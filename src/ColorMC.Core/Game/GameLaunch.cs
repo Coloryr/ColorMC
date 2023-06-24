@@ -966,6 +966,22 @@ public static class Launch
     {
         Stopwatch stopwatch = new();
 
+        var path = obj.JvmLocal;
+        JavaInfo? jvm = null;
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            jvm = JvmPath.GetInfo(obj.JvmName) ?? FindJava(obj);
+            if (jvm == null)
+            {
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
+                ColorMCCore.NoJava?.Invoke();
+                throw new LaunchException(LaunchState.JavaError,
+                        LanguageHelper.GetName("Core.Launch.Error6"));
+            }
+
+            path = jvm.GetPath();
+        }
+
         //启动前运行
         if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
             || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
@@ -992,8 +1008,9 @@ public static class Launch
                     {
                         WorkingDirectory = obj.GetGamePath(),
                         RedirectStandardError = true,
-                        RedirectStandardOutput = true
+                        RedirectStandardOutput = true,
                     };
+                    info.EnvironmentVariables.Add("INST_JAVA", path);
                     for (int a = 1; a < args.Length; a++)
                     {
                         info.ArgumentList.Add(args[a]);
@@ -1084,7 +1101,7 @@ public static class Launch
         Logs.Info(temp);
 
         //下载缺失的文件
-        if (res.Count != 0)
+        if (!res.IsEmpty)
         {
             bool download = true;
             if (!ConfigUtils.Config.Http.AutoDownload)
@@ -1142,22 +1159,6 @@ public static class Launch
             {
                 hidenext = true;
             }
-        }
-
-        var path = obj.JvmLocal;
-        JavaInfo? jvm = null;
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            jvm = JvmPath.GetInfo(obj.JvmName) ?? FindJava(obj);
-            if (jvm == null)
-            {
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
-                ColorMCCore.NoJava?.Invoke();
-                throw new LaunchException(LaunchState.JavaError,
-                        LanguageHelper.GetName("Core.Launch.Error6"));
-            }
-
-            path = jvm.GetPath();
         }
 
         ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info3"));
@@ -1223,6 +1224,7 @@ public static class Launch
                         RedirectStandardError = true,
                         RedirectStandardOutput = true
                     };
+                    info.EnvironmentVariables.Add("INST_JAVA", path);
                     for (int a = 1; a < args.Length; a++)
                     {
                         info.ArgumentList.Add(args[a]);
