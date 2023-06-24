@@ -303,6 +303,15 @@ public static class BaseBinding
             Task.Run(item.Kill);
         }
     }
+
+    /// <summary>
+    /// 打开二进制运行路径
+    /// </summary>
+    public static void OpenRunDir()
+    {
+        OpPath(AppContext.BaseDirectory);
+    }
+
     /// <summary>
     /// 打开基础运行路径
     /// </summary>

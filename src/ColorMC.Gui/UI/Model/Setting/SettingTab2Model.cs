@@ -294,6 +294,12 @@ public partial class SettingTab2Model : ObservableObject
     }
 
     [RelayCommand]
+    public void OpenRunDir()
+    {
+        BaseBinding.OpenRunDir();
+    }
+
+    [RelayCommand]
     public void DownloadCore()
     {
         BaseBinding.OpenLive2DCore();

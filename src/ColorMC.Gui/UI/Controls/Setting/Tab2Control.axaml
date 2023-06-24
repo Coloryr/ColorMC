@@ -274,6 +274,13 @@
                     HorizontalAlignment="Right"
                     Command="{Binding DownloadCore}"
                     Content="{setting:Localize SettingWindow.Tab2.Text31}" />
+                <Button
+                    Width="80"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Right"
+                    Command="{Binding OpenRunDir}"
+                    Content="{setting:Localize Button.OpFile}" />
             </StackPanel>
 
             <Label Content="{setting:Localize SettingWindow.Tab2.Text32}" />

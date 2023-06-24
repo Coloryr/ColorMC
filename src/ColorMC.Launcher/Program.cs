@@ -31,10 +31,10 @@ public static class Program
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
     public static readonly string[] BaseSha1 = new[]
     {
-        "8aae59e6bed4914f25199aee4782a903838f673b",
-        "8b53b6c118519142e06d4fbf74407187330e7182",
-        "0d74570b656c01c30185f67dd686e281c664e53b",
-        "932028363e6df6fd9e25caf8e194794803e4f6a4"
+        "92ebb84c01135a099d1f18c6cfcba8392ad3616d",
+        "97d9854df8eb303136e4b3790f77a664f214e5e6",
+        "17d720e71c3c6f3e4b6060cea99e8761e520c60f",
+        "423b2cd3972a662bd7bfb12dd0830b9d857d2051"
     };
     /// <summary>
     /// 加载路径
@@ -118,13 +118,13 @@ public static class Program
         {
             var context = new AssemblyLoadContext("ColorMC", true);
             {
-                using var file = File.OpenRead($"{LoadDir}ColorMC.Gui.dll");
-                using var file1 = File.OpenRead($"{LoadDir}ColorMC.Gui.pdb");
+                using var file = File.OpenRead($"{LoadDir}ColorMC.Core.dll");
+                using var file1 = File.OpenRead($"{LoadDir}ColorMC.Core.pdb");
                 context.LoadFromStream(file, file1);
             }
             {
-                using var file = File.OpenRead($"{LoadDir}ColorMC.Core.dll");
-                using var file1 = File.OpenRead($"{LoadDir}ColorMC.Core.pdb");
+                using var file = File.OpenRead($"{LoadDir}ColorMC.Gui.dll");
+                using var file1 = File.OpenRead($"{LoadDir}ColorMC.Gui.pdb");
                 context.LoadFromStream(file, file1);
             }
 

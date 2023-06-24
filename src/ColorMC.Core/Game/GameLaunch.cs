@@ -966,73 +966,6 @@ public static class Launch
     {
         Stopwatch stopwatch = new();
 
-        //启动前运行
-        if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
-            || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
-        {
-            string? start = obj.JvmArg?.LaunchPreData;
-            if (string.IsNullOrWhiteSpace(start))
-                start = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
-            if (!string.IsNullOrWhiteSpace(start))
-            {
-                var res1 = await ColorMCCore.LaunchP.Invoke(true);
-                if (res1)
-                {
-                    stopwatch.Start();
-                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
-                    var args = start.Split(' ');
-                    var file = args[0];
-                    if (file.StartsWith("./") || file.StartsWith("../"))
-                    {
-                        file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
-                    }
-                    var arglist = new List<string>();
-
-                    var info = new ProcessStartInfo(file)
-                    {
-                        WorkingDirectory = obj.GetGamePath(),
-                        RedirectStandardError = true,
-                        RedirectStandardOutput = true
-                    };
-                    for (int a = 1; a < args.Length; a++)
-                    {
-                        info.ArgumentList.Add(args[a]);
-                    }
-                    var p = new Process()
-                    {
-                        EnableRaisingEvents = true,
-                        StartInfo = info
-                    };
-                    p.OutputDataReceived += (a, b) =>
-                    {
-                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
-                    };
-                    p.ErrorDataReceived += (a, b) =>
-                    {
-                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
-                    };
-
-                    p.Start();
-                    p.BeginOutputReadLine();
-                    p.BeginErrorReadLine();
-                    p.WaitForExit();
-
-                    stopwatch.Stop();
-                    string temp1 = string.Format(LanguageHelper.GetName("Core.Launch.Info8"),
-                        obj.Name, stopwatch.Elapsed.ToString());
-                    ColorMCCore.GameLog?.Invoke(obj, temp1);
-                    Logs.Info(temp1);
-                }
-            }
-            else
-            {
-                string temp2 = string.Format(LanguageHelper.GetName("Core.Launch.Info10"),
-                obj.Name);
-                ColorMCCore.GameLog?.Invoke(obj, temp2);
-                Logs.Info(temp2);
-            }
-        }
-
         //登录账户
         stopwatch.Restart();
         stopwatch.Start();
@@ -1120,6 +1053,90 @@ public static class Launch
         stopwatch.Restart();
         stopwatch.Start();
 
+        var path = obj.JvmLocal;
+        JavaInfo? jvm = null;
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            jvm = JvmPath.GetInfo(obj.JvmName) ?? FindJava(obj);
+            if (jvm == null)
+            {
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
+                ColorMCCore.NoJava?.Invoke();
+                throw new LaunchException(LaunchState.JavaError,
+                        LanguageHelper.GetName("Core.Launch.Error6"));
+            }
+
+            path = jvm.GetPath();
+        }
+
+        //启动前运行
+        if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
+            || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
+        {
+            string? start = obj.JvmArg?.LaunchPreData;
+            if (string.IsNullOrWhiteSpace(start))
+                start = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
+            if (!string.IsNullOrWhiteSpace(start))
+            {
+                var res1 = await ColorMCCore.LaunchP.Invoke(true);
+                if (res1)
+                {
+                    stopwatch.Start();
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
+                    var args = start.Split(' ');
+                    var file = args[0];
+                    if (file.StartsWith("./") || file.StartsWith("../"))
+                    {
+                        file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
+                    }
+                    var arglist = new List<string>();
+
+                    var info = new ProcessStartInfo(file)
+                    {
+                        WorkingDirectory = obj.GetGamePath(),
+                        RedirectStandardError = true,
+                        RedirectStandardOutput = true
+                    };
+                    for (int a = 1; a < args.Length; a++)
+                    {
+                        info.ArgumentList.Add(args[a]);
+                    }
+                    info.EnvironmentVariables.Add("INST_JAVA", path);
+                    var p = new Process()
+                    {
+                        EnableRaisingEvents = true,
+                        StartInfo = info
+                    };
+                    p.OutputDataReceived += (a, b) =>
+                    {
+                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
+                    };
+                    p.ErrorDataReceived += (a, b) =>
+                    {
+                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
+                    };
+
+                    p.Start();
+                    p.BeginOutputReadLine();
+                    p.BeginErrorReadLine();
+                    p.WaitForExit();
+
+                    stopwatch.Stop();
+                    string temp1 = string.Format(LanguageHelper.GetName("Core.Launch.Info8"),
+                        obj.Name, stopwatch.Elapsed.ToString());
+                    ColorMCCore.GameLog?.Invoke(obj, temp1);
+                    Logs.Info(temp1);
+                }
+            }
+            else
+            {
+                string temp2 = string.Format(LanguageHelper.GetName("Core.Launch.Info10"),
+                obj.Name);
+                ColorMCCore.GameLog?.Invoke(obj, temp2);
+                Logs.Info(temp2);
+            }
+        }
+
         //准备Jvm参数
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
 
@@ -1142,22 +1159,6 @@ public static class Launch
             {
                 hidenext = true;
             }
-        }
-
-        var path = obj.JvmLocal;
-        JavaInfo? jvm = null;
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            jvm = JvmPath.GetInfo(obj.JvmName) ?? FindJava(obj);
-            if (jvm == null)
-            {
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
-                ColorMCCore.NoJava?.Invoke();
-                throw new LaunchException(LaunchState.JavaError,
-                        LanguageHelper.GetName("Core.Launch.Error6"));
-            }
-
-            path = jvm.GetPath();
         }
 
         ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info3"));
@@ -1227,7 +1228,7 @@ public static class Launch
                     {
                         info.ArgumentList.Add(args[a]);
                     }
-
+                    info.EnvironmentVariables.Add("INST_JAVA", path);
                     var p = new Process()
                     {
                         EnableRaisingEvents = true,
