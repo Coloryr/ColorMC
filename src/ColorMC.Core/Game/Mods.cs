@@ -309,7 +309,7 @@ public static class Mods
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Game.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.Game.Error1"), e);
             }
             finally
             {
@@ -404,7 +404,7 @@ public static class Mods
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
                 ok = false;
                 return;
             }

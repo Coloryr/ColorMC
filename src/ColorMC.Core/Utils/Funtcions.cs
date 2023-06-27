@@ -482,16 +482,16 @@ public static class CheckRule
     /// </summary>
     /// <param name="version"></param>
     /// <returns></returns>
-    public static bool GameLaunchVersion117(string version)
+    public static bool IsGameLaunchVersion117(string version)
     {
         Version version1 = new(version);
         return version1.Minor >= 17;
     }
 
-    public static bool GameLaunchVersion119(string version)
+    public static bool IsGameLaunchVersion120(string version)
     {
         Version version1 = new(version);
-        return version1.Minor >= 19;
+        return version1.Minor >= 20;
     }
 }
 
@@ -628,7 +628,7 @@ public static class PathC
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Game.Error10"), e);
+                Logs.Error(LanguageHelper.Get("Core.Game.Error10"), e);
                 return false;
             }
         });

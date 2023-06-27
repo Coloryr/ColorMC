@@ -1,11 +1,13 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -92,6 +94,21 @@ public partial class WorldModel : ObservableObject
         else
         {
             Window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Error3"));
+        }
+    }
+
+    public async void Launch(WorldDisplayObj world)
+    {
+        if (BaseBinding.IsGameRun(world.World.Game))
+        {
+            return;
+        }
+
+        var window = Con.Window;
+        var res = await GameBinding.Launch(window, world.World.Game, world.World);
+        if (!res.Item1)
+        {
+            window.OkInfo.Show(res.Item2!);
         }
     }
 }

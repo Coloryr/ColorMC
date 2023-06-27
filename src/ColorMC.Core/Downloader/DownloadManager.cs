@@ -56,7 +56,7 @@ public static class DownloadManager
 
         DownloadDir = dir + "download";
         Directory.CreateDirectory(DownloadDir);
-        Logs.Info(string.Format(LanguageHelper.GetName("Core.Http.Info1"),
+        Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info1"),
             ConfigUtils.Config.Http.DownloadThread));
         semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
         threads.ForEach(a => a.Close());
@@ -116,7 +116,7 @@ public static class DownloadManager
     /// </summary>
     private static void Clear()
     {
-        Logs.Info(LanguageHelper.GetName("Core.Http.Info2"));
+        Logs.Info(LanguageHelper.Get("Core.Http.Info2"));
         Name.Clear();
         Items.Clear();
         AllSize = 0;
@@ -134,7 +134,7 @@ public static class DownloadManager
             return false;
 
         Clear();
-        Logs.Info(LanguageHelper.GetName("Core.Http.Info4"));
+        Logs.Info(LanguageHelper.Get("Core.Http.Info4"));
         ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
         foreach (var item in list)
         {
@@ -149,7 +149,7 @@ public static class DownloadManager
             Name.Add(item.Name);
         }
 
-        Logs.Info(LanguageHelper.GetName("Core.Http.Info3"));
+        Logs.Info(LanguageHelper.Get("Core.Http.Info3"));
         DoneSize = 0;
         AllSize = Items.Count;
         ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Start);
@@ -208,7 +208,7 @@ public static class DownloadManager
     /// <param name="e">错误内容</param>
     public static void Error(int index, DownloadItemObj item, Exception e)
     {
-        Logs.Error(string.Format(LanguageHelper.GetName("Core.Http.Error1"),
+        Logs.Error(string.Format(LanguageHelper.Get("Core.Http.Error1"),
             item.Name), e);
         ColorMCCore.DownloadItemError?.Invoke(index, item, e);
     }

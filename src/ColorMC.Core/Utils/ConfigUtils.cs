@@ -30,7 +30,7 @@ public static class ConfigUtils
     /// </summary>
     public static bool Load(string name, bool quit = false)
     {
-        Logs.Info(LanguageHelper.GetName("Core.Config.Info1"));
+        Logs.Info(LanguageHelper.Get("Core.Config.Info1"));
         if (File.Exists(name))
         {
             try
@@ -39,7 +39,7 @@ public static class ConfigUtils
             }
             catch (Exception e)
             {
-                string text = LanguageHelper.GetName("Core.Config.Error1");
+                string text = LanguageHelper.Get("Core.Config.Error1");
                 ColorMCCore.OnError?.Invoke(text, e, true);
                 Logs.Error(text, e);
             }
@@ -55,7 +55,7 @@ public static class ConfigUtils
             {
                 return false;
             }
-            Logs.Warn(LanguageHelper.GetName("Core.Config.Warn1"));
+            Logs.Warn(LanguageHelper.Get("Core.Config.Warn1"));
 
             Config = MakeDefaultConfig();
             Save();
@@ -117,7 +117,7 @@ public static class ConfigUtils
     /// </summary>
     public static void Save()
     {
-        Logs.Info(LanguageHelper.GetName("Core.Config.Info2"));
+        Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
         ConfigSave.AddItem(new()
         {
             Name = "config.json",

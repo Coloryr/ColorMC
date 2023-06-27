@@ -74,7 +74,7 @@ public static class Worlds
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(LanguageHelper.GetName("Core.Game.Error4"), e);
+                    Logs.Error(LanguageHelper.Get("Core.Game.Error4"), e);
                 }
 
                 if (!find)
@@ -155,7 +155,7 @@ public static class Worlds
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Pack.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Pack.Error2"), e);
         }
 
         return false;
@@ -287,7 +287,7 @@ public static class Worlds
         }
         catch (Exception e)
         {
-            string text = LanguageHelper.GetName("Core.Game.Error11");
+            string text = LanguageHelper.Get("Core.Game.Error11");
             Logs.Error(text, e);
             ColorMCCore.OnError?.Invoke(text, e, false);
             return false;

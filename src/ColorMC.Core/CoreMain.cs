@@ -136,7 +136,7 @@ public static class ColorMCCore
         AuthDatabase.Init();
         MCPath.Init(dir);
 
-        Logs.Info(LanguageHelper.GetName("Core.Info1"));
+        Logs.Info(LanguageHelper.Get("Core.Info1"));
     }
 
     /// <summary>

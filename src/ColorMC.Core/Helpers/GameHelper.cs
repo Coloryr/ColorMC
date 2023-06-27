@@ -81,7 +81,7 @@ public static class GameHelper
         {
             list.Add(BuildForgeUniversal(mc, version));
             list.Add(BuildForgeInster(mc, version));
-            if (CheckRule.GameLaunchVersion117(mc))
+            if (CheckRule.IsGameLaunchVersion117(mc))
             {
 
             }

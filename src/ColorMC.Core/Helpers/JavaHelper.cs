@@ -36,7 +36,7 @@ public static class JavaHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Jvm.Error9"), e);
+            Logs.Error(LanguageHelper.Get("Core.Jvm.Error9"), e);
         }
     }
 
@@ -83,7 +83,7 @@ public static class JavaHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Jvm.Error10"), e);
+            Logs.Error(LanguageHelper.Get("Core.Jvm.Error10"), e);
             return null;
         }
     }
@@ -136,7 +136,7 @@ public static class JavaHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Jvm.Error10"), e);
+            Logs.Error(LanguageHelper.Get("Core.Jvm.Error10"), e);
             return null;
         }
     }

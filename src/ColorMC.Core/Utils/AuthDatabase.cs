@@ -22,7 +22,7 @@ public static class AuthDatabase
     /// <param name="dir">运行的路径</param>
     public static void Init()
     {
-        Logs.Info(LanguageHelper.GetName("Core.Auth.Info1"));
+        Logs.Info(LanguageHelper.Get("Core.Auth.Info1"));
 
         var path = (SystemInfo.Os == OsType.MacOS ?
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) :

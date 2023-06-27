@@ -55,7 +55,7 @@ public static class ModPackHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
             return false;
         }
         if (info == null)
@@ -205,7 +205,7 @@ public static class ModPackHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
             return (false, null);
         }
         if (info == null)
@@ -427,7 +427,7 @@ public static class ModPackHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
             return false;
         }
         if (info == null)
@@ -582,7 +582,7 @@ public static class ModPackHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Pack.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
             return (false, null);
         }
         if (info == null)

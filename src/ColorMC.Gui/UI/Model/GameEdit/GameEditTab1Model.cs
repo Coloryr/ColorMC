@@ -89,6 +89,13 @@ public partial class GameEditTab1Model : GameEditTabModel
             EnableFabric = true;
             EnableQuilt = true;
             LoaderVersionList.Clear();
+
+            if (SelectFabric == false && SelectQuilt == false)
+            {
+                Obj.Loader = Loaders.Normal;
+                Obj.LoaderVersion = null;
+                Obj.Save();
+            }
         }
     }
 
@@ -115,6 +122,13 @@ public partial class GameEditTab1Model : GameEditTabModel
             EnableForge = true;
             EnableQuilt = true;
             LoaderVersionList.Clear();
+
+            if (SelectForge == false && SelectQuilt == false)
+            {
+                Obj.Loader = Loaders.Normal;
+                Obj.LoaderVersion = null;
+                Obj.Save();
+            }
         }
     }
 
@@ -141,6 +155,13 @@ public partial class GameEditTab1Model : GameEditTabModel
             EnableForge = true;
             EnableFabric = true;
             LoaderVersionList.Clear();
+
+            if (SelectForge == false && SelectFabric == false)
+            {
+                Obj.Loader = Loaders.Normal;
+                Obj.LoaderVersion = null;
+                Obj.Save();
+            }
         }
     }
 

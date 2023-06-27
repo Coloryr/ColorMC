@@ -23,12 +23,12 @@ public static class BaseClient
     /// </summary>
     public static void Init()
     {
-        Logs.Info(LanguageHelper.GetName("Core.Http.Info5"));
+        Logs.Info(LanguageHelper.Get("Core.Http.Info5"));
         if (ConfigUtils.Config.Http.DownloadProxy ||
             ConfigUtils.Config.Http.GameProxy ||
             ConfigUtils.Config.Http.LoginProxy)
         {
-            Logs.Info(string.Format(LanguageHelper.GetName("Core.Http.Info6"),
+            Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info6"),
                ConfigUtils.Config.Http.ProxyIP, ConfigUtils.Config.Http.ProxyPort));
         }
 

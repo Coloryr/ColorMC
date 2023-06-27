@@ -111,12 +111,10 @@ public partial class GameLogTabModel : ObservableObject
 
         IsGameRun = true;
 
-        ColorMCCore.GameLaunch = GameLunch;
-
-        var res = await GameBinding.Launch(Obj);
+        var window = Con.Window;
+        var res = await GameBinding.Launch(window, Obj);
         if (!res.Item1)
         {
-            var window = Con.Window;
             window.OkInfo.Show(res.Item2!);
         }
         Load();
@@ -153,50 +151,6 @@ public partial class GameLogTabModel : ObservableObject
         {
             Text = new();
         }
-    }
-
-    private void GameLunch(GameSettingObj obj, LaunchState state)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            var window = Con.Window;
-            switch (state)
-            {
-                case LaunchState.Login:
-                    window.Head.Title1 = App.GetLanguage("MainWindow.Info8");
-                    break;
-                case LaunchState.Check:
-                    window.Head.Title1 = App.GetLanguage("MainWindow.Info9");
-                    break;
-                case LaunchState.CheckVersion:
-                    window.Head.Title1 = App.GetLanguage("MainWindow.Info10");
-                    break;
-                case LaunchState.CheckLib:
-                    window.Head.Title1 = App.GetLanguage("MainWindow.Info11");
-                    break;
-                case LaunchState.CheckAssets:
-                    window.Head.Title1 = App.GetLanguage("MainWindow.Info12");
-                    break;
-                case LaunchState.CheckLoader:
-                    window.Head.Title1 = App.GetLanguage("MainWindow.Info13");
-                    break;
-                case LaunchState.CheckLoginCore:
-                    window.Head.Title1 = App.GetLanguage("MainWindow.Info14");
-                    break;
-                case LaunchState.CheckMods:
-                    window.Head.Title1 = App.GetLanguage("MainWindow.Info17");
-                    break;
-                case LaunchState.Download:
-                    window.Head.Title1 = App.GetLanguage("MainWindow.Info15");
-                    break;
-                case LaunchState.JvmPrepare:
-                    window.Head.Title1 = App.GetLanguage("MainWindow.Info16");
-                    break;
-                case LaunchState.End:
-                    window.Head.Title1 = "";
-                    break;
-            }
-        });
     }
 
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)

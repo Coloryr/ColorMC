@@ -713,7 +713,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Game.Error8"), e);
+            Logs.Error(LanguageHelper.Get("Core.Game.Error8"), e);
             obj.Mods = new();
             return;
         }
@@ -743,7 +743,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Game.Error9"), e);
+            Logs.Error(LanguageHelper.Get("Core.Game.Error9"), e);
             obj.LaunchData = new()
             {
                 LastPlay = new()
@@ -1030,8 +1030,8 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Pack.Error2"), e, false);
-            Logs.Error(LanguageHelper.GetName("Core.Pack.Error2"), e);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Pack.Error2"), e, false);
+            Logs.Error(LanguageHelper.Get("Core.Pack.Error2"), e);
         }
         if (!import && game != null)
         {

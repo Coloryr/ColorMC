@@ -149,7 +149,7 @@ public static class LocalMaven
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Maven.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.Maven.Error1"), e);
             }
         }
 

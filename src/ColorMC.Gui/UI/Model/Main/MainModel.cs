@@ -89,7 +89,6 @@ public partial class MainModel : ObservableObject, IMainTop
         Con = con;
 
         ColorMCCore.GameDownload = GameDownload;
-        ColorMCCore.OfflineLaunch = OfflineLaunch;
         ColorMCCore.LaunchP = LaunchP;
 
         App.SkinLoad += App_SkinLoad;
@@ -308,98 +307,6 @@ public partial class MainModel : ObservableObject, IMainTop
         });
     }
 
-    private void GameLunch(GameSettingObj obj, LaunchState state)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            var window = Con.Window;
-            if (GuiConfigUtils.Config.CloseBeforeLaunch)
-            {
-                switch (state)
-                {
-                    case LaunchState.Login:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info8"));
-                        break;
-                    case LaunchState.Check:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info9"));
-                        break;
-                    case LaunchState.CheckVersion:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info10"));
-                        break;
-                    case LaunchState.CheckLib:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info11"));
-                        break;
-                    case LaunchState.CheckAssets:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info12"));
-                        break;
-                    case LaunchState.CheckLoader:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info13"));
-                        break;
-                    case LaunchState.CheckLoginCore:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info14"));
-                        break;
-                    case LaunchState.CheckMods:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info17"));
-                        break;
-                    case LaunchState.Download:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info15"));
-                        break;
-                    case LaunchState.JvmPrepare:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info16"));
-                        break;
-                    case LaunchState.LaunchPre:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info31"));
-                        break;
-                    case LaunchState.LaunchPost:
-                        window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info32"));
-                        break;
-                    case LaunchState.End:
-                        window.ProgressInfo.Close();
-                        break;
-                }
-            }
-            else
-            {
-                switch (state)
-                {
-                    case LaunchState.Login:
-                        window.Head.Title1 = App.GetLanguage("MainWindow.Info8");
-                        break;
-                    case LaunchState.Check:
-                        window.Head.Title1 = App.GetLanguage("MainWindow.Info9");
-                        break;
-                    case LaunchState.CheckVersion:
-                        window.Head.Title1 = App.GetLanguage("MainWindow.Info10");
-                        break;
-                    case LaunchState.CheckLib:
-                        window.Head.Title1 = App.GetLanguage("MainWindow.Info11");
-                        break;
-                    case LaunchState.CheckAssets:
-                        window.Head.Title1 = App.GetLanguage("MainWindow.Info12");
-                        break;
-                    case LaunchState.CheckLoader:
-                        window.Head.Title1 = App.GetLanguage("MainWindow.Info13");
-                        break;
-                    case LaunchState.CheckLoginCore:
-                        window.Head.Title1 = App.GetLanguage("MainWindow.Info14");
-                        break;
-                    case LaunchState.CheckMods:
-                        window.Head.Title1 = App.GetLanguage("MainWindow.Info17");
-                        break;
-                    case LaunchState.Download:
-                        window.Head.Title1 = App.GetLanguage("MainWindow.Info15");
-                        break;
-                    case LaunchState.JvmPrepare:
-                        window.Head.Title1 = App.GetLanguage("MainWindow.Info16");
-                        break;
-                    case LaunchState.End:
-                        window.Head.Title1 = "";
-                        break;
-                }
-            }
-        });
-    }
-
     public async void Load1()
     {
         Obj1 = UserBinding.GetLastUser();
@@ -567,16 +474,6 @@ public partial class MainModel : ObservableObject, IMainTop
         }
     }
 
-    private Task<bool> OfflineLaunch(LoginObj login)
-    {
-        return Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            var window = Con.Window;
-            return window.OkInfo.ShowWait(string.Format(
-                App.GetLanguage("MainWindow.Info21"), login.UserName));
-        });
-    }
-
     public void GameClose(string uuid)
     {
         if (Launchs.Remove(uuid, out var con))
@@ -594,8 +491,6 @@ public partial class MainModel : ObservableObject, IMainTop
         if (launch)
             return;
 
-        ColorMCCore.GameLaunch = GameLunch;
-
         var window = Con.Window;
         launch = true;
         UpdateLaunch();
@@ -608,7 +503,7 @@ public partial class MainModel : ObservableObject, IMainTop
         item.IsLaunch = false;
         item.IsLoad = true;
         window.NotifyInfo.Show(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
-        var res = await GameBinding.Launch(game);
+        var res = await GameBinding.Launch(window, game);
         window.Head.Title1 = null;
         item.IsLoad = false;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)

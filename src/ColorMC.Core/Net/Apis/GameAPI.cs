@@ -22,7 +22,7 @@ public static class GameAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -30,7 +30,7 @@ public static class GameAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error4"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Error4"), e);
             return null;
         }
     }
@@ -46,7 +46,7 @@ public static class GameAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -54,7 +54,7 @@ public static class GameAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error5"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Error5"), e);
             return null;
         }
     }
@@ -70,7 +70,7 @@ public static class GameAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -78,7 +78,7 @@ public static class GameAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error6"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Error6"), e);
             return null;
         }
     }

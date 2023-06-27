@@ -308,7 +308,7 @@ public static class ServerPack
             catch (Exception e)
             {
                 fail = true;
-                Logs.Error(LanguageHelper.GetName("Core.ServerPack.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.ServerPack.Error1"), e);
             }
         });
 
@@ -336,7 +336,7 @@ public static class ServerPack
             catch (Exception e)
             {
                 fail = true;
-                Logs.Error(LanguageHelper.GetName("Core.ServerPack.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.ServerPack.Error1"), e);
             }
         });
 
@@ -427,7 +427,7 @@ public static class ServerPack
             catch (Exception e)
             {
                 fail = true;
-                Logs.Error(LanguageHelper.GetName("Core.ServerPack.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.ServerPack.Error1"), e);
             }
         });
 
@@ -461,7 +461,7 @@ public static class ServerPack
         var data = await BaseClient.GetString(url + "server.json");
         if (data.Item1 == false)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
             return (false, null);
         }
@@ -484,7 +484,7 @@ public static class ServerPack
             obj2?.MoveToOld();
             obj1.Game = obj;
 
-            ColorMCCore.UpdateState?.Invoke(LanguageHelper.GetName("Core.ServerPack.Info1"));
+            ColorMCCore.UpdateState?.Invoke(LanguageHelper.Get("Core.ServerPack.Info1"));
 
             var res = await obj1.Update();
             return (res, obj1);

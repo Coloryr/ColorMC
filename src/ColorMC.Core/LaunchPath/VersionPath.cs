@@ -46,7 +46,7 @@ public static class VersionPath
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Path.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Path.Error2"), e);
         }
     }
 
@@ -65,7 +65,7 @@ public static class VersionPath
         Versions = await GameAPI.GetVersions(SourceLocal.Offical);
         if (Versions == null)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Path.Error3"));
+            Logs.Error(LanguageHelper.Get("Core.Path.Error3"));
         }
         else
         {

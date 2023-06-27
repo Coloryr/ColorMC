@@ -83,7 +83,7 @@ public static class Schematic
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
                 ok = false;
             }
         });
@@ -124,7 +124,7 @@ public static class Schematic
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Game.Error12"), e);
+            Logs.Error(LanguageHelper.Get("Core.Game.Error12"), e);
             return new()
             {
                 Local = file,
@@ -174,7 +174,7 @@ public static class Schematic
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Game.Error12"), e);
+            Logs.Error(LanguageHelper.Get("Core.Game.Error12"), e);
             return new()
             {
                 Local = file,

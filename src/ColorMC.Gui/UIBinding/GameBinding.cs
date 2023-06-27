@@ -9,6 +9,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
@@ -351,7 +352,34 @@ public static class GameBinding
         }
     }
 
-    public static async Task<(bool, string?)> Launch(GameSettingObj? obj)
+    private static async Task<(LoginObj?, string?)> GetUser(GameSettingObj obj)
+    {
+        var login = UserBinding.GetLastUser();
+        if (login == null)
+        {
+            return (null, App.GetLanguage("GameBinding.Error2"));
+        }
+        if (login.AuthType == AuthType.Offline)
+        {
+            var have = AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
+            if (!have)
+            {
+                BaseBinding.OpUrl("https://www.minecraft.net/");
+                return (null, App.GetLanguage("GameBinding.Error7"));
+            }
+        }
+
+        if (UserBinding.IsLock(login))
+        {
+            var res = await App.MainWindow!.Window.OkInfo.ShowWait(App.GetLanguage("GameBinding.Info1"));
+            if (!res)
+                return (null, App.GetLanguage("GameBinding.Error3"));
+        }
+
+        return (login, null);
+    }
+
+    public static async Task<(bool, string?)> Launch(IBaseWindow window, GameSettingObj? obj, WorldObj? world = null)
     {
         if (obj == null)
         {
@@ -363,35 +391,20 @@ public static class GameBinding
             return (false, App.GetLanguage("GameBinding.Error4"));
         }
 
-        var login = UserBinding.GetLastUser();
-        if (login == null)
+        var user = await GetUser(obj);
+        if (user.Item1 == null)
         {
-            return (false, App.GetLanguage("GameBinding.Error2"));
-        }
-        if (login.AuthType == AuthType.Offline)
-        {
-            var have = AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
-            if (!have)
-            {
-                BaseBinding.OpUrl("https://www.minecraft.net/");
-                return (false, App.GetLanguage("GameBinding.Error7"));
-            }
+            return (false, user.Item2);
         }
 
-        if (UserBinding.IsLock(login))
-        {
-            var res = await App.MainWindow!.Window.OkInfo.ShowWait(App.GetLanguage("GameBinding.Info1"));
-            if (!res)
-                return (false, App.GetLanguage("GameBinding.Error3"));
-        }
-
-        var res1 = await BaseBinding.Launch(obj, login);
+        var res1 = await BaseBinding.Launch(window, obj, user.Item1, world);
         if (res1.Item1)
         {
             ConfigBinding.SetLastLaunch(obj.UUID);
         }
         return res1;
     }
+        
 
     public static bool AddGameGroup(string name)
     {

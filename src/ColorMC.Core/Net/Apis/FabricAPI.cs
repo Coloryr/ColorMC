@@ -24,7 +24,7 @@ public static class FabricAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -32,7 +32,7 @@ public static class FabricAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Download.Fabric.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Download.Fabric.Error1"), e);
             return null;
         }
     }
@@ -50,7 +50,7 @@ public static class FabricAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -58,7 +58,7 @@ public static class FabricAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Fabric.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Fabric.Error1"), e);
             return null;
         }
     }
@@ -75,7 +75,7 @@ public static class FabricAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -93,7 +93,7 @@ public static class FabricAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Fabric.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Fabric.Error2"), e);
             return null;
         }
     }
@@ -112,7 +112,7 @@ public static class FabricAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -132,7 +132,7 @@ public static class FabricAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Fabric.Error3"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Fabric.Error3"), e);
             return null;
         }
     }

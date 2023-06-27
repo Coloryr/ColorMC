@@ -57,7 +57,7 @@ public static class JvmPath
             var res = await Download(file, sha256, url);
             if (!res.Item1)
             {
-                return (CoreRunState.Error, LanguageHelper.GetName("Core.Jvm.Error5"));
+                return (CoreRunState.Error, LanguageHelper.Get("Core.Jvm.Error5"));
             }
             ColorMCCore.JavaUnzip?.Invoke();
             res = await UnzipJava(name, res.Item2!);
@@ -68,7 +68,7 @@ public static class JvmPath
         }
         catch (Exception e)
         {
-            string text = LanguageHelper.GetName("Core.Jvm.Error7");
+            string text = LanguageHelper.Get("Core.Jvm.Error7");
             Logs.Error(text, e);
             return (CoreRunState.Error, text);
         }
@@ -138,10 +138,10 @@ public static class JvmPath
 
         var java = Find(path);
         if (java == null)
-            return (false, LanguageHelper.GetName("Core.Jvm.Error6"));
+            return (false, LanguageHelper.Get("Core.Jvm.Error6"));
         else
         {
-            Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info3"), java));
+            Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info3"), java));
         }
 
         if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
@@ -165,7 +165,7 @@ public static class JvmPath
             local = local[BaseDir.Length..];
         }
 
-        Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info5"), local));
+        Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info5"), local));
 
         Jvms.Remove(name);
         var path = local;
@@ -188,10 +188,10 @@ public static class JvmPath
         }
         else
         {
-            Logs.Info(LanguageHelper.GetName("Core.Jvm.Error8"));
+            Logs.Info(LanguageHelper.Get("Core.Jvm.Error8"));
         }
 
-        return (false, LanguageHelper.GetName("Core.Jvm.Error1"));
+        return (false, LanguageHelper.Get("Core.Jvm.Error1"));
     }
 
     /// <summary>
@@ -217,7 +217,7 @@ public static class JvmPath
     /// <param name="list">列表</param>
     public static void AddList(List<JvmConfigObj> list)
     {
-        Logs.Info(LanguageHelper.GetName("Core.Jvm.Info1"));
+        Logs.Info(LanguageHelper.Get("Core.Jvm.Info1"));
         Task.Run(() =>
         {
             Jvms.Clear();
@@ -234,7 +234,7 @@ public static class JvmPath
                 Jvms.Remove(a.Name);
                 if (info != null)
                 {
-                    Logs.Info(string.Format(LanguageHelper.GetName("Core.Jvm.Info2"),
+                    Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info2"),
                         info.Path, info.Version));
                     Jvms.Add(a.Name, info);
                 }

@@ -63,7 +63,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error1"), e);
             return null;
         }
     }
@@ -155,7 +155,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error2"), e);
             return null;
         }
     }
@@ -190,7 +190,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error3"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error3"), e);
             return null;
         }
     }
@@ -218,7 +218,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error7"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error7"), e);
             return null;
         }
     }
@@ -245,7 +245,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error4"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error4"), e);
             return null;
         }
     }
@@ -272,7 +272,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error5"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error5"), e);
             return null;
         }
     }
@@ -299,7 +299,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error6"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error6"), e);
             return null;
         }
     }
@@ -331,7 +331,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.CurseForge.Error6"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error6"), e);
             return null;
         }
     }

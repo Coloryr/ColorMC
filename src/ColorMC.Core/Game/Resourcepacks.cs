@@ -95,7 +95,7 @@ public static class Resourcepacks
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Game.Error2"), e);
+                Logs.Error(LanguageHelper.Get("Core.Game.Error2"), e);
             }
 
             if (!find)
@@ -137,7 +137,7 @@ public static class Resourcepacks
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(LanguageHelper.GetName("Core.Game.Error3"), e);
+                    Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
                     ok = false;
                 }
             });

@@ -26,7 +26,7 @@ public static class OptifineAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return (null, null);
             }
@@ -103,7 +103,7 @@ public static class OptifineAPI
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Optifine.Error1"), e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Optifine.Error1"), e, false);
         }
 
         return (null, null);
@@ -122,7 +122,7 @@ public static class OptifineAPI
             var data = await BaseClient.GetString(obj.Url2);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(obj.Url2), false);
                 return null;
             }
@@ -135,7 +135,7 @@ public static class OptifineAPI
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Optifine.Error2"), e, false);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Optifine.Error2"), e, false);
         }
 
         return null;
@@ -155,7 +155,7 @@ public static class OptifineAPI
             var data = await GetOptifineDownloadUrl(item);
             if (data == null)
             {
-                return (false, LanguageHelper.GetName("Core.Http.Optifine.Error3"));
+                return (false, LanguageHelper.Get("Core.Http.Optifine.Error3"));
             }
 
             item1 = new()
@@ -180,7 +180,7 @@ public static class OptifineAPI
         var res = await DownloadManager.Start(new() { item1 });
         if (!res)
         {
-            return (false, LanguageHelper.GetName("Core.Http.Optifine.Error4"));
+            return (false, LanguageHelper.Get("Core.Http.Optifine.Error4"));
         }
         return (true, null);
     }

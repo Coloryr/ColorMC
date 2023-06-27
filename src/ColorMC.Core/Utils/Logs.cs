@@ -36,7 +36,7 @@ public static class Logs
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Log.Error1"), e, true);
+            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Log.Error1"), e, true);
         }
     }
 

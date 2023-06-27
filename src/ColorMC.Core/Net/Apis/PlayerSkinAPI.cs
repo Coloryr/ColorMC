@@ -51,7 +51,7 @@ public static class PlayerSkinAPI
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Http.Error2"), e);
+                Logs.Error(LanguageHelper.Get("Core.Http.Error2"), e);
             }
         }
 
@@ -68,7 +68,7 @@ public static class PlayerSkinAPI
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Http.Error2"), e);
+                Logs.Error(LanguageHelper.Get("Core.Http.Error2"), e);
             }
         }
 
@@ -96,7 +96,7 @@ public static class PlayerSkinAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error3"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Error3"), e);
             return null;
         }
     }

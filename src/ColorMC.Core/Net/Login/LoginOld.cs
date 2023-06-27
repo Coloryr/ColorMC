@@ -58,7 +58,7 @@ public static class LoginOld
                 return (LoginState.JsonError, null, msg?.ToString());
             }
 
-            return (LoginState.JsonError, null, LanguageHelper.GetName("Core.Login.Error23"));
+            return (LoginState.JsonError, null, LanguageHelper.Get("Core.Login.Error23"));
         }
 
         return (LoginState.Done, new()

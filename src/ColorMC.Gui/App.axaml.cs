@@ -119,7 +119,7 @@ public partial class App : Application
         if (have)
             return data;
 
-        return LanguageHelper.GetName(input);
+        return LanguageHelper.Get(input);
     }
 
     public static void ColorChange()

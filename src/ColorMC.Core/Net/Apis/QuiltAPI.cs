@@ -27,7 +27,7 @@ public static class QuiltAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -48,7 +48,7 @@ public static class QuiltAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Quilt.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Quilt.Error1"), e);
             return null;
         }
     }
@@ -64,7 +64,7 @@ public static class QuiltAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -72,7 +72,7 @@ public static class QuiltAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Quilt.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Quilt.Error2"), e);
             return null;
         }
     }
@@ -89,7 +89,7 @@ public static class QuiltAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -107,7 +107,7 @@ public static class QuiltAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Quilt.Error3"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Quilt.Error3"), e);
             return null;
         }
     }
@@ -125,7 +125,7 @@ public static class QuiltAPI
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
-                ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+                ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
@@ -133,7 +133,7 @@ public static class QuiltAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Quilt.Error4"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Quilt.Error4"), e);
             return null;
         }
     }

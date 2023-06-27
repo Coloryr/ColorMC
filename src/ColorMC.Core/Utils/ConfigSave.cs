@@ -93,7 +93,7 @@ public static class ConfigSave
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.GetName("Core.Config.Error2"), e);
+                Logs.Error(LanguageHelper.Get("Core.Config.Error2"), e);
             }
         }
     }

@@ -45,13 +45,13 @@ public static class Launch
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.VersionError);
                 throw new LaunchException(LaunchState.VersionError,
-                    LanguageHelper.GetName("Core.Launch.Error1"));
+                    LanguageHelper.Get("Core.Launch.Error1"));
             }
 
             var res1 = await GameDownloadHelper.Download(version);
             if (res1.State != GetDownloadState.End)
                 throw new LaunchException(LaunchState.VersionError,
-                    LanguageHelper.GetName("Core.Launch.Error1"));
+                    LanguageHelper.Get("Core.Launch.Error1"));
 
             res1.List!.ForEach(list.Add);
 
@@ -60,7 +60,7 @@ public static class Launch
 
         if (game == null)
         {
-            throw new LaunchException(LaunchState.VersionError, LanguageHelper.GetName("Core.Launch.Error1"));
+            throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
         }
 
         var list1 = new List<Task>();
@@ -116,7 +116,7 @@ public static class Launch
                     {
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
                         throw new LaunchException(LaunchState.AssetsError,
-                            LanguageHelper.GetName("Core.Launch.Error2"));
+                            LanguageHelper.Get("Core.Launch.Error2"));
                     }
                     game.AddIndex(assets);
                 }
@@ -164,7 +164,7 @@ public static class Launch
                         var list4 = await GameDownloadHelper.DownloadForge(obj);
                         if (list4.State != GetDownloadState.End)
                             throw new LaunchException(LaunchState.LostLoader,
-                            LanguageHelper.GetName("Core.Launch.Error3"));
+                            LanguageHelper.Get("Core.Launch.Error3"));
 
                         list4.List!.ForEach(list.Add);
                     }
@@ -186,7 +186,7 @@ public static class Launch
                         var list4 = await GameDownloadHelper.DownloadFabric(obj);
                         if (list4.State != GetDownloadState.End)
                             throw new LaunchException(LaunchState.LostLoader,
-                            LanguageHelper.GetName("Core.Launch.Error3"));
+                            LanguageHelper.Get("Core.Launch.Error3"));
 
                         list4.List!.ForEach(list.Add);
                     }
@@ -208,7 +208,7 @@ public static class Launch
                         var list4 = await GameDownloadHelper.DownloadQuilt(obj);
                         if (list4.State != GetDownloadState.End)
                             throw new LaunchException(LaunchState.LostLoader,
-                            LanguageHelper.GetName("Core.Launch.Error3"));
+                            LanguageHelper.Get("Core.Launch.Error3"));
 
                         list4.List!.ForEach(list.Add);
                     }
@@ -437,7 +437,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    private static List<string> MakeV2GameArg(GameSettingObj obj)
+    private static List<string> MakeV2GameArg(GameSettingObj obj, WorldObj? world = null)
     {
         var game = VersionPath.GetGame(obj.Version)!;
         if (game.arguments == null)
@@ -628,10 +628,10 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="v2">V2模式</param>
     /// <returns></returns>
-    private static List<string> GameArg(GameSettingObj obj, bool v2)
+    private static List<string> GameArg(GameSettingObj obj, bool v2, WorldObj? world)
     {
         List<string> gameArg = new();
-        gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
+        gameArg.AddRange(v2 ? MakeV2GameArg(obj, world) : MakeV1GameArg(obj));
 
         WindowSettingObj window;
         if (obj.Window == null)
@@ -668,15 +668,40 @@ public static class Launch
             }
         }
 
-        if (obj.StartServer != null && !string.IsNullOrWhiteSpace(obj.StartServer.IP)
-            && obj.StartServer.Port != null)
+        //--quickPlayMultiplayer
+
+        if (world != null)
         {
-            gameArg.Add($"--server");
-            gameArg.Add(obj.StartServer.IP);
-            if (obj.StartServer.Port > 0)
+            gameArg.Add($"--quickPlaySingleplayer");
+            gameArg.Add($"{world.LevelName}");
+        }
+        else
+        {
+            if (obj.StartServer != null && !string.IsNullOrWhiteSpace(obj.StartServer.IP)
+                && obj.StartServer.Port != null)
             {
-                gameArg.Add($"--port");
-                gameArg.Add(obj.StartServer.Port.ToString()!);
+                if (CheckRule.IsGameLaunchVersion120(obj.Version))
+                {
+                    gameArg.Add($"--quickPlayMultiplayer");
+                    if (obj.StartServer.Port > 0)
+                    {
+                        gameArg.Add($"{obj.StartServer.IP}:{obj.StartServer.Port}");
+                    }
+                    else
+                    {
+                        gameArg.Add($"{obj.StartServer.IP}:25565");
+                    }
+                }
+                else
+                {
+                    gameArg.Add($"--server");
+                    gameArg.Add(obj.StartServer.IP);
+                    if (obj.StartServer.Port > 0)
+                    {
+                        gameArg.Add($"--port");
+                        gameArg.Add(obj.StartServer.Port.ToString()!);
+                    }
+                }
             }
         }
 
@@ -837,7 +862,7 @@ public static class Launch
         var libraries = await GetLibs(obj, v2);
         StringBuilder classpath = new();
         string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
-        ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info2"));
+        ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.Get("Core.Launch.Info2"));
 
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.ClassPath))
         {
@@ -892,7 +917,7 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="login">登录的账户</param>
     /// <returns></returns>
-    private static async Task<List<string>> MakeArg(GameSettingObj obj, LoginObj login)
+    private static async Task<List<string>> MakeArg(GameSettingObj obj, LoginObj login, WorldObj? world)
     {
         var list = new List<string>();
         var version = VersionPath.GetGame(obj.Version)!;
@@ -931,7 +956,7 @@ public static class Launch
         {
             list.Add(obj.AdvanceJvm.MainClass);
         }
-        list.AddRange(GameArg(obj, v2));
+        list.AddRange(GameArg(obj, v2, world));
 
         await ReplaceAll(obj, login, list, v2);
 
@@ -962,9 +987,15 @@ public static class Launch
     /// <param name="jvmCfg">使用的Java</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns></returns>
-    public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login)
+    public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, WorldObj? world = null)
     {
         Stopwatch stopwatch = new();
+
+        if (string.IsNullOrWhiteSpace(obj.Version) ||
+            (obj.Loader != Loaders.Normal && string.IsNullOrWhiteSpace(obj.LoaderVersion)))
+        {
+            throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
+        }
 
         //登录账户
         stopwatch.Restart();
@@ -1001,7 +1032,7 @@ public static class Launch
         }
 
         stopwatch.Stop();
-        string temp = string.Format(LanguageHelper.GetName("Core.Launch.Info4"),
+        string temp = string.Format(LanguageHelper.Get("Core.Launch.Info4"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
@@ -1011,20 +1042,20 @@ public static class Launch
         //检查游戏文件
         var res = await CheckGameFile(obj, login);
         stopwatch.Stop();
-        temp = string.Format(LanguageHelper.GetName("Core.Launch.Info5"),
+        temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
 
         //下载缺失的文件
-        if (res.Count != 0)
+        if (!res.IsEmpty)
         {
             bool download = true;
             if (!ConfigUtils.Config.Http.AutoDownload)
             {
                 if (ColorMCCore.GameDownload == null)
                     throw new LaunchException(LaunchState.LostGame,
-                        LanguageHelper.GetName("Core.Launch.Error4"));
+                        LanguageHelper.Get("Core.Launch.Error4"));
 
                 download = await ColorMCCore.GameDownload.Invoke(LaunchState.LostFile, obj);
             }
@@ -1040,10 +1071,10 @@ public static class Launch
                 if (!ok)
                 {
                     throw new LaunchException(LaunchState.LostFile,
-                        LanguageHelper.GetName("Core.Launch.Error5"));
+                        LanguageHelper.Get("Core.Launch.Error5"));
                 }
                 stopwatch.Stop();
-                temp = string.Format(LanguageHelper.GetName("Core.Launch.Info7"),
+                temp = string.Format(LanguageHelper.Get("Core.Launch.Info7"),
                     obj.Name, stopwatch.Elapsed.ToString());
                 ColorMCCore.GameLog?.Invoke(obj, temp);
                 Logs.Info(temp);
@@ -1063,7 +1094,7 @@ public static class Launch
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
                 ColorMCCore.NoJava?.Invoke();
                 throw new LaunchException(LaunchState.JavaError,
-                        LanguageHelper.GetName("Core.Launch.Error6"));
+                        LanguageHelper.Get("Core.Launch.Error6"));
             }
 
             path = jvm.GetPath();
@@ -1122,7 +1153,7 @@ public static class Launch
                     p.WaitForExit();
 
                     stopwatch.Stop();
-                    string temp1 = string.Format(LanguageHelper.GetName("Core.Launch.Info8"),
+                    string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                         obj.Name, stopwatch.Elapsed.ToString());
                     ColorMCCore.GameLog?.Invoke(obj, temp1);
                     Logs.Info(temp1);
@@ -1130,7 +1161,7 @@ public static class Launch
             }
             else
             {
-                string temp2 = string.Format(LanguageHelper.GetName("Core.Launch.Info10"),
+                string temp2 = string.Format(LanguageHelper.Get("Core.Launch.Info10"),
                 obj.Name);
                 ColorMCCore.GameLog?.Invoke(obj, temp2);
                 Logs.Info(temp2);
@@ -1140,8 +1171,8 @@ public static class Launch
         //准备Jvm参数
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
 
-        var arg = await MakeArg(obj, login);
-        ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info1"));
+        var arg = await MakeArg(obj, login, world);
+        ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.Get("Core.Launch.Info1"));
         bool hidenext = false;
         foreach (var item in arg)
         {
@@ -1161,7 +1192,7 @@ public static class Launch
             }
         }
 
-        ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.GetName("Core.Launch.Info3"));
+        ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.Get("Core.Launch.Info3"));
         ColorMCCore.GameLog?.Invoke(obj, path);
 
         //NativeLaunch(jvm!, arg);
@@ -1191,7 +1222,7 @@ public static class Launch
         process.BeginErrorReadLine();
 
         stopwatch.Stop();
-        temp = string.Format(LanguageHelper.GetName("Core.Launch.Info6"),
+        temp = string.Format(LanguageHelper.Get("Core.Launch.Info6"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
@@ -1250,14 +1281,14 @@ public static class Launch
                 }
 
                 stopwatch.Stop();
-                string temp1 = string.Format(LanguageHelper.GetName("Core.Launch.Info9"),
+                string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info9"),
                     obj.Name, stopwatch.Elapsed.ToString());
                 ColorMCCore.GameLog?.Invoke(obj, temp1);
                 Logs.Info(temp1);
             }
             else
             {
-                string temp2 = string.Format(LanguageHelper.GetName("Core.Launch.Info11"),
+                string temp2 = string.Format(LanguageHelper.Get("Core.Launch.Info11"),
                 obj.Name);
                 ColorMCCore.GameLog?.Invoke(obj, temp2);
                 Logs.Info(temp2);

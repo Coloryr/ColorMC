@@ -41,7 +41,7 @@ public static class Servers
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Game.Error7"), e);
+            Logs.Error(LanguageHelper.Get("Core.Game.Error7"), e);
         }
         return list;
     }

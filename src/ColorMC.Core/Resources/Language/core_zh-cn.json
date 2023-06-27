@@ -125,6 +125,7 @@
   "Core.Launch.Error4": "缺失所需文件，且无法下载",
   "Core.Launch.Error5": "所需文件下载失败",
   "Core.Launch.Error6": "找不到合适的Java",
+  "Core.Launch.Error7": "没有版本号信息",
   "AuthType.Offline": "离线",
   "AuthType.OAuth": "微软登录",
   "AuthType.Nide8": "统一通行证",

@@ -88,7 +88,7 @@ public static class AuthlibHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.GetName("Core.Http.Error8"), e);
+            Logs.Error(LanguageHelper.Get("Core.Http.Error8"), e);
             return null;
         }
     }
@@ -104,22 +104,22 @@ public static class AuthlibHelper
         var meta = await BaseClient.GetString(url);
         if (meta.Item1 == false)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"),
+            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                 new Exception(url), false);
-            throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+            throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
         }
         var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!)
-            ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+            ?? throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
         var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
 
         var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
         if (info.Item1 == false)
         {
-            ColorMCCore.OnError?.Invoke(LanguageHelper.GetName("Core.Http.Error7"), new Exception(url), false);
-            throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+            ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"), new Exception(url), false);
+            throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
         }
         return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!)
-            ?? throw new Exception(LanguageHelper.GetName("AuthlibInjector.Error1"));
+            ?? throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
     }
 
     /// <summary>
