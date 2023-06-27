@@ -1322,6 +1322,7 @@ public static class GameBinding
                 mod.Add(item);
             }
             modid.Add("forge");
+            modid.Add("minecraft");
 
             ConcurrentBag<(string, List<string>)> lost = new();
 
