@@ -114,6 +114,8 @@ public partial class MainModel : ObservableObject, IMainTop
             SideDisplay = true;
             SideButton = "→";
         }
+
+        ConfigBinding.SetMainHide(SideDisplay);
     }
 
     [RelayCommand]
@@ -373,7 +375,7 @@ public partial class MainModel : ObservableObject, IMainTop
 
         var config = ConfigBinding.GetAllConfig();
 
-        if (config.Item2?.ServerCustom?.PlayMusic == true)
+        if (config.Item2.ServerCustom?.PlayMusic == true)
         {
             var window = Con.Window;
             window.SetTitle(App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33"));
@@ -384,7 +386,9 @@ public partial class MainModel : ObservableObject, IMainTop
             MusicDisplay = false;
         }
 
-        if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)
+        SideDisplay = config.Item2.Gui.MainDisplay;
+
+        if (config.Item2.ServerCustom?.LockGame == true)
         {
             GameGroups.Clear();
             GroupList.Clear();

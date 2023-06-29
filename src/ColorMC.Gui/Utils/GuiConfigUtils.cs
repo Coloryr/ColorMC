@@ -44,7 +44,10 @@ public static class GuiConfigUtils
                 Config = MakeDefaultConfig();
 
                 SaveNow();
+                return true;
             }
+
+            bool save = false;
 
             if (Config.ServerCustom == null)
             {
@@ -54,10 +57,8 @@ public static class GuiConfigUtils
                 }
 
                 Config.ServerCustom = MakeServerCustomConfig();
-
-                Save();
+                save = true;
             }
-
             if (Config.Render == null
                 || Config.Render.Windows == null
                 || Config.Render.X11 == null)
@@ -68,28 +69,36 @@ public static class GuiConfigUtils
                 }
 
                 Config.Render = MakeRenderConfig();
-
-                Save();
+                save = true;
             }
-
             if (Config.ColorLight == null)
             {
                 Config.ColorLight = MakeColorLightConfig();
+                save = true;
             }
-
             if (Config.ColorDark == null)
             {
                 Config.ColorDark = MakeColorDarkConfig();
+                save = true;
             }
-
             if (Config.Live2D == null)
             {
                 Config.Live2D = MakeLive2DConfig();
+                save = true;
             }
-
+            if (Config.Gui == null)
+            {
+                Config.Gui = MakeGuiSettingConfig();
+                save = true;
+            }
             if (SystemInfo.Os == OsType.Linux && Config.WindowMode)
             {
                 Config.WindowMode = false;
+                save = true;
+            }
+            if (save)
+            {
+                Save();
             }
         }
         else
@@ -159,7 +168,8 @@ public static class GuiConfigUtils
             FontDefault = true,
             Render = MakeRenderConfig(),
             BackLimitValue = 50,
-            Live2D = MakeLive2DConfig()
+            Live2D = MakeLive2DConfig(),
+            Gui = MakeGuiSettingConfig()
         };
     }
 
@@ -192,6 +202,14 @@ public static class GuiConfigUtils
             MotdColor = "#FFFFFFFF",
             MotdBackColor = "#FF000000",
             Volume = 30
+        };
+    }
+
+    public static GuiSetting MakeGuiSettingConfig()
+    {
+        return new()
+        {
+             MainDisplay = true
         };
     }
 }

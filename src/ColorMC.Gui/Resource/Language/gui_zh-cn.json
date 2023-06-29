@@ -261,6 +261,7 @@
 	"SettingWindow.Tab6.Text23": "继续",
 	"SettingWindow.Tab6.Text24": "锁定登录模型",
 	"SettingWindow.Tab6.Text25": "登录网址参数",
+	"SettingWindow.Tab6.Text26": "启动后暂停",
 	"SettingWindow.Tab6.Error1": "UI文件错误",
 	"SettingWindow.Tab6.Error2": "自定义UI窗口启动错误",
 	"SettingWindow.Tab6.Error3": "导出UI文件错误",

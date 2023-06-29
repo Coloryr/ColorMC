@@ -65,6 +65,8 @@ public partial class SettingTab6Model : ObservableObject
     private bool enableMusic;
     [ObservableProperty]
     private bool slowVolume;
+    [ObservableProperty]
+    private bool runPause;
 
     [ObservableProperty]
     private int game = -1;
@@ -123,6 +125,11 @@ public partial class SettingTab6Model : ObservableObject
     }
 
     partial void OnSlowVolumeChanged(bool value)
+    {
+        SetMusic();
+    }
+
+    partial void OnRunPauseChanged(bool value)
     {
         SetMusic();
     }
@@ -328,6 +335,7 @@ public partial class SettingTab6Model : ObservableObject
             EnableOneGame = config.LockGame;
             EnableServerPack = config.ServerPack;
             EnableMusic = config.PlayMusic;
+            RunPause = config.RunPause;
             SlowVolume = config.SlowVolume;
 
             Color1 = ColorSel.MotdColor.ToColor();
@@ -356,7 +364,7 @@ public partial class SettingTab6Model : ObservableObject
         if (load)
             return;
 
-        ConfigBinding.SetMusic(EnableMusic, SlowVolume, Music, Volume);
+        ConfigBinding.SetMusic(EnableMusic, SlowVolume, Music, Volume, RunPause);
     }
 
     private void SetLoginLock()

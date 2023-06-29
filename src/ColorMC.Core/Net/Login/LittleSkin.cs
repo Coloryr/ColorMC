@@ -33,6 +33,10 @@ public static class LittleSkin
             {
                 server = server.Replace("/user", "/");
             }
+            if (!server.EndsWith("/"))
+            {
+                server += "/";
+            }
             server1 = server;
         }
 
@@ -63,6 +67,11 @@ public static class LittleSkin
         else
         {
             server = obj.Text1;
+        }
+
+        if (!server.EndsWith("/"))
+        {
+            server += "/";
         }
 
         server += "api/yggdrasil";

@@ -40,7 +40,7 @@ public class NAudioPlayer : IPlayer
 
     public void Pause()
     {
-        if (init)
+        if (init && waveOut.PlaybackState != PlaybackState.Paused)
         {
             waveOut.Pause();
         }

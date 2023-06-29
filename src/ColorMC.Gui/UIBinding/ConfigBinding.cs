@@ -6,6 +6,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -481,13 +482,14 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
-    public static void SetMusic(bool v1, bool v2, string? v3, int v4)
+    public static void SetMusic(bool v1, bool v2, string? v3, int v4, bool v5)
     {
         GuiConfigUtils.Config.ServerCustom ??= new();
         GuiConfigUtils.Config.ServerCustom.PlayMusic = v1;
         GuiConfigUtils.Config.ServerCustom.SlowVolume = v2;
         GuiConfigUtils.Config.ServerCustom.Music = v3;
         GuiConfigUtils.Config.ServerCustom.Volume = v4;
+        GuiConfigUtils.Config.ServerCustom.RunPause = v5;
         GuiConfigUtils.Save();
     }
 
@@ -530,7 +532,7 @@ public static class ConfigBinding
         App.MainWindow?.ChangeModel();
     }
 
-    internal static void SetLive2DSize(int width, int height)
+    public static void SetLive2DSize(int width, int height)
     {
         GuiConfigUtils.Config.Live2D ??= new();
         GuiConfigUtils.Config.Live2D.Width = width;
@@ -538,5 +540,12 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         App.MainWindow?.ChangeLive2DSize();
+    }
+
+    public static void SetMainHide(bool sideDisplay)
+    {
+        GuiConfigUtils.Config.Gui ??= new();
+        GuiConfigUtils.Config.Gui.MainDisplay = sideDisplay;
+        GuiConfigUtils.Save();
     }
 }

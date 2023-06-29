@@ -561,6 +561,11 @@ public static class BaseBinding
                 });
             }
 
+            if (GuiConfigUtils.Config.ServerCustom.RunPause)
+            {
+                Media.Pause();
+            }
+
             App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text2"));
 
             res.Exited += (a, b) =>

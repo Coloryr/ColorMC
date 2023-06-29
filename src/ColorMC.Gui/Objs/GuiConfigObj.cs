@@ -2,6 +2,11 @@ using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
 
+public record GuiSetting
+{ 
+    public bool MainDisplay { get; set; }
+}
+
 /// <summary>
 /// 上一个启动的账户
 /// </summary>
@@ -85,6 +90,11 @@ public record ServerCustom
     /// 缓慢提升音量
     /// </summary>
     public bool SlowVolume { get; set; }
+    /// <summary>
+    /// 游戏启动后暂停
+    /// </summary>
+    public bool RunPause { get; set; }
+
     /// <summary>
     /// 锁定登录实例
     /// </summary>
@@ -269,4 +279,5 @@ public record GuiConfigObj
     /// Live2D设置
     /// </summary>
     public Live2DSetting Live2D { get; set; }
+    public GuiSetting Gui { get; set; }
 }
