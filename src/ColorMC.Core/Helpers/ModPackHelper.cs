@@ -307,29 +307,8 @@ public static class ModPackHelper
             var res1 = res.Distinct(CurseDataComparer.Instance);
             foreach (var item in res1)
             {
-                item.downloadUrl ??= $"https://edge.forgecdn.net/files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
-
-                var item11 = new DownloadItemObj()
-                {
-                    Url = item.downloadUrl,
-                    Name = item.fileName,
-                    Local = game.GetGamePath() + "/mods/" + item.fileName,
-                    SHA1 = item.hashes.Where(a => a.algo == 1)
-                            .Select(a => a.value).FirstOrDefault()
-                };
-
-                list.Add(item11);
-
-                game.Mods.Add(item.modId.ToString(), new()
-                {
-                    Path = "mods",
-                    Name = item.displayName,
-                    File = item.fileName,
-                    SHA1 = item11.SHA1!,
-                    ModId = item.modId.ToString(),
-                    FileId = item.id.ToString(),
-                    Url = item.downloadUrl
-                });
+                list.Add(item.MakeModDownloadObj(game));
+                game.Mods.Add(item.modId.ToString(), item.MakeModInfo());
 
                 now++;
                 if (notify)
@@ -344,35 +323,14 @@ public static class ModPackHelper
             await Parallel.ForEachAsync(info.files, async (item, token) =>
             {
                 var res = await CurseForgeAPI.GetMod(item);
-                if (res == null)
+                if (res == null || res.data == null)
                 {
                     done = false;
                     return;
                 }
 
-                res.data.downloadUrl ??= $"https://edge.forgecdn.net/files/{res.data.id / 1000}/{res.data.id % 1000}/{res.data.fileName}";
-
-                var item11 = new DownloadItemObj()
-                {
-                    Url = res.data.downloadUrl,
-                    Name = res.data.displayName,
-                    Local = game.GetGamePath() + "/mods/" + res.data.fileName,
-                    SHA1 = res.data.hashes.Where(a => a.algo == 1)
-                        .Select(a => a.value).FirstOrDefault()
-                };
-
-                list.Add(item11);
-
-                game.Mods.Add(res.data.modId.ToString(), new()
-                {
-                    Path = "mods",
-                    Name = res.data.displayName,
-                    File = res.data.fileName,
-                    SHA1 = item11.SHA1!,
-                    ModId = res.data.modId.ToString(),
-                    FileId = res.data.id.ToString(),
-                    Url = res.data.downloadUrl
-                });
+                list.Add(res.data.MakeModDownloadObj(game));
+                game.Mods.Add(res.data.modId.ToString(), res.data.MakeModInfo());
 
                 now++;
                 if (notify)
@@ -698,13 +656,7 @@ public static class ModPackHelper
                 fileid = Funtcions.GetString(url, "versions/", "/");
             }
 
-            var item11 = new DownloadItemObj()
-            {
-                Url = item.downloads[0],
-                Name = item.path,
-                Local = obj.GetGamePath() + "/" + item.path,
-                SHA1 = item.hashes.sha1
-            };
+            var item11 = item.MakeDownloadObj(obj);
 
             list.Add(item11);
 

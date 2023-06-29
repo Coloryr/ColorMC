@@ -8,6 +8,7 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace ColorMC.Core.Helpers;
 
@@ -119,6 +120,108 @@ public static class GameHelper
                 });
             }
         }
+
+        return list;
+    }
+
+    public static async Task<ConcurrentBag<DownloadItemObj>> MakeForgeLibs(ForgeInstallObj info, string mc, string version)
+    {
+        var list = new ConcurrentBag<DownloadItemObj>();
+
+        await Parallel.ForEachAsync(info.libraries, async (item, cacenl) =>
+        {
+            if (item.name.StartsWith("net.minecraftforge:forge:")
+            && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
+            {
+                var item1 = GameHelper.BuildForgeUniversal(mc, version);
+                item1.SHA1 = item.downloads.artifact.sha1;
+                if (!File.Exists(item1.Local))
+                {
+                    list.Add(item1);
+                    return;
+                }
+                if (!string.IsNullOrWhiteSpace(item1.SHA1))
+                {
+                    using var stream1 = new FileStream(item1.Local, FileMode.Open, FileAccess.ReadWrite,
+                   FileShare.ReadWrite);
+                    var sha11 = await Funtcions.GenSha1Async(stream1);
+                    if (sha11 != item1.SHA1)
+                    {
+                        list.Add(item1);
+                    }
+                }
+
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(item.downloads.artifact.url))
+                return;
+
+            string file = $"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}";
+            if (!File.Exists(file))
+            {
+                list.Add(new()
+                {
+                    Local = file,
+                    Name = item.name,
+                    SHA1 = item.downloads.artifact.sha1,
+                    Url = UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
+                         BaseClient.Source)
+                });
+                return;
+            }
+            using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
+                FileShare.ReadWrite);
+            var sha1 = await Funtcions.GenSha1Async(stream);
+            if (item.downloads.artifact.sha1 != sha1)
+            {
+                list.Add(new()
+                {
+                    Local = file,
+                    Name = item.name,
+                    SHA1 = item.downloads.artifact.sha1,
+                    Url = UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
+                         BaseClient.Source)
+                });
+            }
+        });
+
+        //if (!string.IsNullOrWhiteSpace(forgeinstall.data?.MOJMAPS?.client)
+        //    && version1.downloads.client_mappings != null)
+        //{
+        //    var args = forgeinstall.data.MOJMAPS.client.Split(":");
+        //    if (args[3] == "mappings@txt]")
+        //    {
+        //        string name1 = $"client-{args[2]}-mappings.txt";
+        //        string local = $"{BaseDir}/net/minecraft/client/{args[2]}/{name1}";
+        //        if (!File.Exists(local))
+        //        {
+        //            list.Add(new()
+        //            {
+        //                Url = version1.downloads.client_mappings.url,
+        //                SHA1 = version1.downloads.client_mappings.sha1,
+        //                Name = name1,
+        //                Local = local
+        //            });
+        //        }
+        //        else
+        //        {
+        //            using var stream = new FileStream(local, FileMode.Open, FileAccess.ReadWrite,
+        //           FileShare.ReadWrite);
+        //            var sha1 = await Funtcions.GenSha1Async(stream);
+        //            if (sha1 != version1.downloads.client_mappings.sha1)
+        //            {
+        //                list.Add(new()
+        //                {
+        //                    Url = version1.downloads.client_mappings.url,
+        //                    SHA1 = version1.downloads.client_mappings.sha1,
+        //                    Name = name1,
+        //                    Local = local
+        //                });
+        //            }
+        //        }
+        //    }
+        //}
 
         return list;
     }
@@ -385,18 +488,15 @@ public static class GameHelper
                     _ => null
                 };
 
-                if (lib == null)
+                if (lib == null && SystemInfo.Os == OsType.Windows)
                 {
-                    if (SystemInfo.Os == OsType.Windows)
+                    if (SystemInfo.SystemArch == ArchEnum.x32)
                     {
-                        if (SystemInfo.SystemArch == ArchEnum.x32)
-                        {
-                            lib = item1.downloads.classifiers.natives_windows_32;
-                        }
-                        else
-                        {
-                            lib = item1.downloads.classifiers.natives_windows_64;
-                        }
+                        lib = item1.downloads.classifiers.natives_windows_32;
+                    }
+                    else
+                    {
+                        lib = item1.downloads.classifiers.natives_windows_64;
                     }
                 }
 

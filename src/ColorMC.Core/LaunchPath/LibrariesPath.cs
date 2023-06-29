@@ -93,10 +93,22 @@ public static class LibrariesPath
         if (forge == null)
             return null;
 
-        var list = new ConcurrentBag<DownloadItemObj>();
+        //forge本体
         var list1 = GameHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
 
-        //forge本体
+        var forgeinstall = VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
+        if (forgeinstall == null && v2)
+            return null;
+
+        //forge安装器
+        if (forgeinstall != null)
+        {
+            var list2 = await GameHelper.MakeForgeLibs(forgeinstall, obj.Version, obj.LoaderVersion!);
+            list1.AddRange(list2);
+        }
+
+        var list = new ConcurrentBag<DownloadItemObj>();
+
         await Parallel.ForEachAsync(list1, async (item, cancel) =>
         {
             if (!File.Exists(item.Local))
@@ -115,108 +127,6 @@ public static class LibrariesPath
                 list.Add(item);
             }
         });
-
-        var forgeinstall = VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
-        if (forgeinstall == null && v2)
-            return null;
-
-        //forge安装器
-        if (forgeinstall != null)
-        {
-            await Parallel.ForEachAsync(forgeinstall.libraries, async (item, cacenl) =>
-            {
-                if (item.name.StartsWith("net.minecraftforge:forge:")
-                && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
-                {
-                    var item1 = GameHelper.BuildForgeUniversal(obj.Version, obj.LoaderVersion!);
-                    item1.SHA1 = item.downloads.artifact.sha1;
-                    if (!File.Exists(item1.Local))
-                    {
-                        list.Add(item1);
-                        return;
-                    }
-                    if (!string.IsNullOrWhiteSpace(item1.SHA1))
-                    {
-                        using var stream1 = new FileStream(item1.Local, FileMode.Open, FileAccess.ReadWrite,
-                       FileShare.ReadWrite);
-                        var sha11 = await Funtcions.GenSha1Async(stream1);
-                        if (sha11 != item1.SHA1)
-                        {
-                            list.Add(item1);
-                        }
-                    }
-
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(item.downloads.artifact.url))
-                    return;
-
-                string file = $"{BaseDir}/{item.downloads.artifact.path}";
-                if (!File.Exists(file))
-                {
-                    list.Add(new()
-                    {
-                        Local = file,
-                        Name = item.name,
-                        SHA1 = item.downloads.artifact.sha1,
-                        Url = UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
-                             BaseClient.Source)
-                    });
-                    return;
-                }
-                using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
-                    FileShare.ReadWrite);
-                var sha1 = await Funtcions.GenSha1Async(stream);
-                if (item.downloads.artifact.sha1 != sha1)
-                {
-                    list.Add(new()
-                    {
-                        Local = file,
-                        Name = item.name,
-                        SHA1 = item.downloads.artifact.sha1,
-                        Url = UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
-                             BaseClient.Source)
-                    });
-                }
-            });
-            //if (!string.IsNullOrWhiteSpace(forgeinstall.data?.MOJMAPS?.client)
-            //    && version1.downloads.client_mappings != null)
-            //{
-            //    var args = forgeinstall.data.MOJMAPS.client.Split(":");
-            //    if (args[3] == "mappings@txt]")
-            //    {
-            //        string name1 = $"client-{args[2]}-mappings.txt";
-            //        string local = $"{BaseDir}/net/minecraft/client/{args[2]}/{name1}";
-            //        if (!File.Exists(local))
-            //        {
-            //            list.Add(new()
-            //            {
-            //                Url = version1.downloads.client_mappings.url,
-            //                SHA1 = version1.downloads.client_mappings.sha1,
-            //                Name = name1,
-            //                Local = local
-            //            });
-            //        }
-            //        else
-            //        {
-            //            using var stream = new FileStream(local, FileMode.Open, FileAccess.ReadWrite,
-            //           FileShare.ReadWrite);
-            //            var sha1 = await Funtcions.GenSha1Async(stream);
-            //            if (sha1 != version1.downloads.client_mappings.sha1)
-            //            {
-            //                list.Add(new()
-            //                {
-            //                    Url = version1.downloads.client_mappings.url,
-            //                    SHA1 = version1.downloads.client_mappings.sha1,
-            //                    Name = name1,
-            //                    Local = local
-            //                });
-            //            }
-            //        }
-            //    }
-            //}
-        }
 
         return list;
     }

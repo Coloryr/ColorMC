@@ -104,36 +104,36 @@ public static class BaseAuth
         try
         {
             ColorMCCore.AuthStateUpdate?.Invoke(AuthState.OAuth);
-            var oauth = await OAuthAPI.RefreshTokenAsync(obj.Text1);
-            if (oauth.Done != LoginState.Done)
+            var (done, auth) = await OAuthAPI.RefreshTokenAsync(obj.Text1);
+            if (done != LoginState.Done)
             {
-                return (AuthState.OAuth, oauth.Done, null,
+                return (AuthState.OAuth, done, null,
                     LanguageHelper.Get("Core.Login.Error1"), null);
             }
             ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XBox);
-            var xbox = await OAuthAPI.GetXBLAsync(oauth.Auth!.access_token);
-            if (xbox.Done != LoginState.Done)
+            (done, var XNLToken, var XBLUhs) = await OAuthAPI.GetXBLAsync(auth!.access_token);
+            if (done != LoginState.Done)
             {
-                return (AuthState.XBox, xbox.Done, null,
+                return (AuthState.XBox, done, null,
                     LanguageHelper.Get("Core.Login.Error2"), null);
             }
             ColorMCCore.AuthStateUpdate?.Invoke(AuthState.XSTS);
-            var xsts = await OAuthAPI.GetXSTSAsync(xbox.XNLToken!);
-            if (xsts.Done != LoginState.Done)
+            (done, var XSTSToken, var XSTSUhs) = await OAuthAPI.GetXSTSAsync(XNLToken!);
+            if (done != LoginState.Done)
             {
-                return (AuthState.XSTS, xsts.Done, null,
+                return (AuthState.XSTS, done, null,
                     LanguageHelper.Get("Core.Login.Error3"), null);
             }
             ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
-            var auth = await OAuthAPI.GetMinecraftAsync(xsts.XSTSUhs!, xsts.XSTSToken!);
-            if (auth.Done != LoginState.Done)
+            (done, var token) = await OAuthAPI.GetMinecraftAsync(XSTSUhs!, XSTSToken!);
+            if (done != LoginState.Done)
             {
-                return (AuthState.Token, auth.Done, null,
+                return (AuthState.Token, done, null,
                     LanguageHelper.Get("Core.Login.Error4"), null);
             }
 
-            var profile = await MinecraftAPI.GetMinecraftProfileAsync(auth.AccessToken!);
-            if (auth.Done != LoginState.Done)
+            var profile = await MinecraftAPI.GetMinecraftProfileAsync(token!);
+            if (done != LoginState.Done)
             {
                 return (AuthState.Token, LoginState.Error, null,
                     LanguageHelper.Get("Core.Login.Error5"), null);
@@ -141,8 +141,8 @@ public static class BaseAuth
 
             obj.UserName = profile!.name;
             obj.UUID = profile.id;
-            obj.Text1 = oauth.Auth!.refresh_token;
-            obj.AccessToken = auth.AccessToken!;
+            obj.Text1 = auth!.refresh_token;
+            obj.AccessToken = token!;
 
             return (AuthState.Profile, LoginState.Done, obj, null, null);
         }

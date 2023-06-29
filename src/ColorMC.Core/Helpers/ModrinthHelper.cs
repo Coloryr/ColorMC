@@ -1,6 +1,7 @@
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
+using System;
 
 namespace ColorMC.Core.Helpers;
 
@@ -20,8 +21,18 @@ public static class ModrinthHelper
             Name = data.name,
             Url = file.url,
             Local = Path.GetFullPath(obj.GetModsPath() + "/" + file.filename),
-            SHA1 = file.hashes.sha1,
-            Overwrite = true
+            SHA1 = file.hashes.sha1
+        };
+    }
+
+    public static DownloadItemObj MakeDownloadObj(this ModrinthPackObj.File data, GameSettingObj obj)
+    {
+        return new DownloadItemObj()
+        {
+            Url = data.downloads[0],
+            Name = data.path,
+            Local = obj.GetGamePath() + "/" + data.path,
+            SHA1 = data.hashes.sha1
         };
     }
 

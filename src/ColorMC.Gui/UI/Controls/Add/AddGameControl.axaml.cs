@@ -137,7 +137,7 @@ public partial class AddGameControl : UserControl, IUserControl
         Window.SetTitle(App.GetLanguage("AddGameWindow.Title"));
     }
 
-    public void Install(CurseForgeObjList.Data.LatestFiles data, CurseForgeObjList.Data data1)
+    public void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
     {
         model1.Install(data, data1);
     }

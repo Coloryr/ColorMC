@@ -82,11 +82,17 @@ public partial class SettingTab3Model : ObservableObject
 
     partial void OnThreadChanged(int value)
     {
+        if (load)
+            return;
+
         ConfigBinding.SetDownloadThread(value);
     }
 
     partial void OnSourceChanged(int value)
     {
+        if (load)
+            return;
+
         ConfigBinding.SetDownloadSource((SourceLocal)value);
     }
 

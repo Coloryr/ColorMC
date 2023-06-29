@@ -267,7 +267,7 @@ public static class GameBinding
         return list7.ToDictionary(a => a);
     }
 
-    public static async Task<bool> InstallCurseForge(CurseForgeObjList.Data.LatestFiles data,
+    public static async Task<bool> InstallCurseForge(CurseForgeModObj.Data data,
         CurseForgeObjList.Data data1, string? name, string? group)
     {
         var res = await InstancesPath.InstallFromCurseForge(data, name, group);
@@ -352,7 +352,7 @@ public static class GameBinding
         }
     }
 
-    private static async Task<(LoginObj?, string?)> GetUser(GameSettingObj obj)
+    private static async Task<(LoginObj?, string?)> GetUser()
     {
         var login = UserBinding.GetLastUser();
         if (login == null)
@@ -391,7 +391,7 @@ public static class GameBinding
             return (false, App.GetLanguage("GameBinding.Error4"));
         }
 
-        var user = await GetUser(obj);
+        var user = await GetUser();
         if (user.Item1 == null)
         {
             return (false, user.Item2);
@@ -1041,7 +1041,7 @@ public static class GameBinding
         };
     }
 
-    public static void SetModInfo(GameSettingObj obj, CurseForgeObjList.Data.LatestFiles? data)
+    public static void SetModInfo(GameSettingObj obj, CurseForgeModObj.Data? data)
     {
         if (data == null)
             return;
@@ -1074,12 +1074,7 @@ public static class GameBinding
         if (data == null)
             return;
 
-        var file = data.files.FirstOrDefault(a => a.primary);
-        if (file == null)
-        {
-            file = data.files[0];
-        }
-
+        var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
         var obj1 = new ModInfoObj()
         {
             FileId = data.id.ToString(),
@@ -1326,10 +1321,7 @@ public static class GameBinding
 
             ConcurrentBag<(string, List<string>)> lost = new();
 
-            Parallel.ForEach(mod, new ParallelOptions()
-            {
-                MaxDegreeOfParallelism = 1
-            }, item =>
+            Parallel.ForEach(mod, item =>
             {
                 if (item == null)
                     return;
@@ -1372,7 +1364,7 @@ public static class GameBinding
                 }
             });
 
-            if (lost.Count > 0)
+            if (!lost.IsEmpty)
             {
                 var str = new StringBuilder();
                 foreach (var item in lost)
@@ -1419,7 +1411,7 @@ public static class GameBinding
         return await Task.Run(() => obj.ReadLog(name));
     }
 
-    public static Task<bool> ModPackUpdate(GameSettingObj obj, CurseForgeObjList.Data.LatestFiles fid)
+    public static Task<bool> ModPackUpdate(GameSettingObj obj, CurseForgeModObj.Data fid)
     {
         return obj.UpdateModPack(fid);
     }

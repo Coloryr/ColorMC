@@ -5,5 +5,5 @@ namespace ColorMC.Core.Objs.CurseForge;
 /// </summary>
 public record CurseForgeFileObj
 {
-    public List<CurseForgeObjList.Data.LatestFiles> data { get; set; }
+    public List<CurseForgeModObj.Data> data { get; set; }
 }

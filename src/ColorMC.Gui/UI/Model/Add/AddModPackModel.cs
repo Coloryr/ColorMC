@@ -260,7 +260,7 @@ public partial class AddModPackModel : ObservableObject
         if (data.SourceType == SourceType.CurseForge)
         {
             App.AddGameWindow?.Install(
-                (data.Data as CurseForgeObjList.Data.LatestFiles)!,
+                (data.Data as CurseForgeModObj.Data)!,
                 (Last!.Data?.Data as CurseForgeObjList.Data)!);
         }
         else if (data.SourceType == SourceType.Modrinth)

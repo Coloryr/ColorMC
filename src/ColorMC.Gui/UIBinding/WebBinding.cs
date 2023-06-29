@@ -333,7 +333,7 @@ public static class WebBinding
         return null;
     }
 
-    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, List<DownloadModDisplayModel>? List)> DownloadMod(GameSettingObj obj, CurseForgeObjList.Data.LatestFiles? data)
+    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, List<DownloadModDisplayModel>? List)> DownloadMod(GameSettingObj obj, CurseForgeModObj.Data? data)
     {
         if (data == null)
             return (null, null, null);
@@ -445,7 +445,7 @@ public static class WebBinding
         return res;
     }
 
-    public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeObjList.Data.LatestFiles? data)
+    public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeModObj.Data? data)
     {
         if (data == null)
             return false;
@@ -532,7 +532,7 @@ public static class WebBinding
         }
     }
 
-    public static async Task<bool> Download(WorldObj obj1, CurseForgeObjList.Data.LatestFiles? data)
+    public static async Task<bool> Download(WorldObj obj1, CurseForgeModObj.Data? data)
     {
         if (data == null)
             return false;
@@ -652,7 +652,7 @@ public static class WebBinding
                     switch (type1)
                     {
                         case SourceType.CurseForge:
-                            if (item1.Data is CurseForgeObjList.Data.LatestFiles data)
+                            if (item1.Data is CurseForgeModObj.Data data)
                             {
                                 list.Add((data.MakeModDownloadObj(game), data.MakeModInfo()));
                             }

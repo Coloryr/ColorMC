@@ -24,6 +24,7 @@
   "Core.Http.Error7": "没有资源",
   "Core.Http.Error8": "读取Nide8数据错误",
   "Core.Http.Error9": "图片获取失败",
+  "Core.Http.Error10": "下载文件校验失败",
   "Core.Http.Forge.Error1": "读取Forge信息错误",
   "Core.Http.Forge.Error2": "读取Forge安装信息错误",
   "Core.Http.Forge.Error3": "读取Forge信息错误",

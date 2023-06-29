@@ -14,17 +14,18 @@ public static class CurseForgeHelper
     /// 修正下载地址
     /// </summary>
     /// <param name="item"></param>
-    public static void FixDownloadUrl(this CurseForgeObjList.Data.LatestFiles item)
+    public static void FixDownloadUrl(this CurseForgeModObj.Data item)
     {
         item.downloadUrl ??= $"{UrlHelper.CurseForgeDownload}files/{item.id / 1000}/{item.id % 1000}/{item.fileName}";
     }
+
     /// <summary>
-    /// 创建下载地址
+    /// 创建下载对象
     /// </summary>
     /// <param name="data"></param>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static DownloadItemObj MakeModDownloadObj(this CurseForgeObjList.Data.LatestFiles data, GameSettingObj obj)
+    public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.Data data, GameSettingObj obj)
     {
         data.FixDownloadUrl();
 
@@ -34,8 +35,7 @@ public static class CurseForgeHelper
             Name = data.displayName,
             Local = obj.GetModsPath() + "/" + data.fileName,
             SHA1 = data.hashes.Where(a => a.algo == 1)
-                    .Select(a => a.value).FirstOrDefault(),
-            Overwrite = true
+                    .Select(a => a.value).FirstOrDefault()
         };
     }
 
@@ -44,7 +44,7 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static ModInfoObj MakeModInfo(this CurseForgeObjList.Data.LatestFiles data)
+    public static ModInfoObj MakeModInfo(this CurseForgeModObj.Data data)
     {
         data.FixDownloadUrl();
 

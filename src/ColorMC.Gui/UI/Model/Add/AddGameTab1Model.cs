@@ -374,7 +374,7 @@ public partial class AddGameTab1Model : AddGameTabModel
         Update();
     }
 
-    public async void Install(CurseForgeObjList.Data.LatestFiles data, CurseForgeObjList.Data data1)
+    public async void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
     {
         var window = Con.Window;
         if (BaseBinding.IsDownload)

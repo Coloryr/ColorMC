@@ -68,52 +68,6 @@ public record CurseForgeObjList
             public string thumbnailUrl { get; set; }
             public string url { get; set; }
         }
-        public record LatestFiles
-        {
-            public record Hashes
-            {
-                public string value { get; set; }
-                public int algo { get; set; }
-            }
-            public record SortableGameVersions
-            {
-                public string gameVersionName { get; set; }
-                public string gameVersionPadded { get; set; }
-                public string gameVersion { get; set; }
-                public string gameVersionReleaseDate { get; set; }
-                public long? gameVersionTypeId { get; set; }
-            }
-            public record Dependencies
-            {
-                public long modId { get; set; }
-                public int relationType { get; set; }
-            }
-            public record Modules
-            {
-                public string name { get; set; }
-                public long fingerprint { get; set; }
-            }
-            public long id { get; set; }
-            public long gameId { get; set; }
-            public long modId { get; set; }
-            public bool isAvailable { get; set; }
-            public string displayName { get; set; }
-            public string fileName { get; set; }
-            public long releaseType { get; set; }
-            public long fileStatus { get; set; }
-            public List<Hashes> hashes { get; set; }
-            public string fileDate { get; set; }
-            public long fileLength { get; set; }
-            public long downloadCount { get; set; }
-            public string downloadUrl { get; set; }
-            public List<string> gameVersions { get; set; }
-            public List<SortableGameVersions> sortableGameVersions { get; set; }
-            public List<Dependencies> dependencies { get; set; }
-            public long alternateFileId { get; set; }
-            public bool isServerPack { get; set; }
-            public long fileFingerprint { get; set; }
-            public List<Modules> modules { get; set; }
-        }
         public record LatestFilesIndexes
         {
             public string gameVersion { get; set; }
@@ -139,7 +93,7 @@ public record CurseForgeObjList
         public Logo logo { get; set; }
         public List<Screenshots> screenshots { get; set; }
         public long mainFileId { get; set; }
-        public List<LatestFiles> latestFiles { get; set; }
+        public List<CurseForgeModObj.Data> latestFiles { get; set; }
         public List<LatestFilesIndexes> latestFilesIndexes { get; set; }
         public string dateCreated { get; set; }
         public string dateModified { get; set; }

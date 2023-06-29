@@ -44,9 +44,9 @@ public static class Program
     public delegate void IN(string[] args);
     public delegate AppBuilder IN1();
 
-    public static IN MainCall;
-    public static IN1 BuildApp;
-    public static IN SetBaseSha1;
+    public static IN MainCall { get; set; }
+    public static IN1 BuildApp { get; set; }
+    public static IN SetBaseSha1 { get; set; }
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -78,7 +78,7 @@ public static class Program
 #if DEBUG
         GuiLoad.Run(args);
         return;
-#endif
+#else
 
         Load();
 
@@ -91,6 +91,7 @@ public static class Program
         {
             Console.WriteLine(e);
         }
+#endif
     }
 
     public static AppBuilder BuildAvaloniaApp()

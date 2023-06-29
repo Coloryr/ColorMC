@@ -20,7 +20,7 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Launch
 {
-    private static CancellationTokenSource cancel = new();
+    private static CancellationTokenSource cancel;
 
     /// <summary>
     /// 检查游戏文件
@@ -989,6 +989,7 @@ public static class Launch
     /// <returns></returns>
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, WorldObj? world = null)
     {
+        cancel = new();
         Stopwatch stopwatch = new();
 
         if (string.IsNullOrWhiteSpace(obj.Version) ||
@@ -1030,6 +1031,9 @@ public static class Launch
             login = Obj!;
             login.Save();
         }
+
+        if (cancel.IsCancellationRequested)
+            return null;
 
         stopwatch.Stop();
         string temp = string.Format(LanguageHelper.Get("Core.Launch.Info4"),
@@ -1100,6 +1104,9 @@ public static class Launch
             path = jvm.GetPath();
         }
 
+        if (cancel.IsCancellationRequested)
+            return null;
+
         //启动前运行
         if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
             || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
@@ -1168,6 +1175,9 @@ public static class Launch
             }
         }
 
+        if (cancel.IsCancellationRequested)
+            return null;
+
         //准备Jvm参数
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
 
@@ -1194,6 +1204,9 @@ public static class Launch
 
         ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.Get("Core.Launch.Info3"));
         ColorMCCore.GameLog?.Invoke(obj, path);
+
+        if (cancel.IsCancellationRequested)
+            return null;
 
         //NativeLaunch(jvm!, arg);
         //return null;

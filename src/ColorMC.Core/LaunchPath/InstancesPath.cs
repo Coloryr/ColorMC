@@ -8,6 +8,7 @@ using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Text;
+using System;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -1012,8 +1013,7 @@ public static class InstancesPath
                             if (e.IsFile)
                             {
                                 using var stream = zFile.GetInputStream(e);
-                                string file = Path.GetFullPath(game.GetGamePath() +
-                     overrides.Substring(game.Name.Length));
+                                string file = Path.GetFullPath(string.Concat(game.GetGamePath(), overrides.AsSpan(game.Name.Length)));
                                 FileInfo info2 = new(file);
                                 info2.Directory?.Create();
                                 using FileStream stream3 = new(file, FileMode.Create,
@@ -1081,7 +1081,7 @@ public static class InstancesPath
     /// <param name="name">名字</param>
     /// <param name="group">群组</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, GameSettingObj?)> InstallFromCurseForge(CurseForgeObjList.Data.LatestFiles data, string? name, string? group)
+    public static async Task<(bool, GameSettingObj?)> InstallFromCurseForge(CurseForgeModObj.Data data, string? name, string? group)
     {
         data.FixDownloadUrl();
 
@@ -1113,7 +1113,7 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="data">数据</param>
     /// <returns>结果</returns>
-    public static async Task<bool> UpdateModPack(this GameSettingObj obj, CurseForgeObjList.Data.LatestFiles data)
+    public static async Task<bool> UpdateModPack(this GameSettingObj obj, CurseForgeModObj.Data data)
     {
         data.FixDownloadUrl();
 

@@ -548,7 +548,7 @@ public partial class AddControlModel : ObservableObject
             if (type == SourceType.CurseForge)
             {
                 GameBinding.SetModInfo(Obj,
-                    data.Data as CurseForgeObjList.Data.LatestFiles);
+                    data.Data as CurseForgeModObj.Data);
             }
             else if (type == SourceType.Modrinth)
             {
@@ -589,7 +589,7 @@ public partial class AddControlModel : ObservableObject
                 res = type switch
                 {
                     SourceType.CurseForge => await WebBinding.Download(item.World,
-                    data.Data as CurseForgeObjList.Data.LatestFiles),
+                    data.Data as CurseForgeModObj.Data),
                     SourceType.Modrinth => await WebBinding.Download(item.World,
                     data.Data as ModrinthVersionObj),
                     _ => false
@@ -609,7 +609,7 @@ public partial class AddControlModel : ObservableObject
                 var list = type switch
                 {
                     SourceType.CurseForge => await WebBinding.DownloadMod(Obj,
-                    data.Data as CurseForgeObjList.Data.LatestFiles),
+                    data.Data as CurseForgeModObj.Data),
                     SourceType.Modrinth => await WebBinding.DownloadMod(Obj,
                     data.Data as ModrinthVersionObj),
                     _ => (null, null, null)
@@ -655,7 +655,7 @@ public partial class AddControlModel : ObservableObject
                 res = type switch
                 {
                     SourceType.CurseForge => await WebBinding.Download(now, Obj,
-                    data.Data as CurseForgeObjList.Data.LatestFiles),
+                    data.Data as CurseForgeModObj.Data),
                     SourceType.Modrinth => await WebBinding.Download(now, Obj,
                     data.Data as ModrinthVersionObj),
                     _ => false

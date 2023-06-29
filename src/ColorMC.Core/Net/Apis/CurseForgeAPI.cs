@@ -404,12 +404,12 @@ public static class CurseForgeAPI
     /// <param name="loader">加载器</param>
     /// <returns></returns>
     public static async Task<ConcurrentBag<((string Name, string ModId, bool Opt) Info,
-        List<CurseForgeObjList.Data.LatestFiles> List)>>
-       GetModDependencies(CurseForgeObjList.Data.LatestFiles data, string mc, Loaders loader, bool dep, ConcurrentBag<long>? ids = null)
+        List<CurseForgeModObj.Data> List)>>
+       GetModDependencies(CurseForgeModObj.Data data, string mc, Loaders loader, bool dep, ConcurrentBag<long>? ids = null)
     {
         ids ??= new();
         var list = new ConcurrentBag<((string Name, string ModId, bool Opt) Info,
-        List<CurseForgeObjList.Data.LatestFiles> List)>();
+        List<CurseForgeModObj.Data> List)>();
         if (data.dependencies == null || data.dependencies.Count == 0)
         {
             return list;

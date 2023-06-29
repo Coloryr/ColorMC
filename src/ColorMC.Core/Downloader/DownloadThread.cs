@@ -15,7 +15,7 @@ public class DownloadThread
     private readonly Thread thread;
     private readonly Semaphore semaphore = new(0, 2);
     private readonly Semaphore semaphore1 = new(0, 2);
-    private CancellationTokenSource? cancel;
+    private CancellationTokenSource cancel = new();
     private bool pause = false;
     private bool run = false;
 
@@ -43,7 +43,7 @@ public class DownloadThread
             return;
 
         run = false;
-        cancel?.Cancel();
+        cancel.Cancel();
         semaphore.Release();
     }
 
@@ -52,7 +52,7 @@ public class DownloadThread
     /// </summary>
     public void DownloadStop()
     {
-        cancel?.Cancel();
+        cancel.Cancel();
         if (pause)
         {
             Resume();
@@ -64,6 +64,7 @@ public class DownloadThread
     /// </summary>
     public void Start()
     {
+        cancel.Dispose();
         cancel = new();
         semaphore.Release();
     }
@@ -110,71 +111,72 @@ public class DownloadThread
             {
                 ChckPause(item);
 
-                if (cancel!.IsCancellationRequested)
+                if (cancel.IsCancellationRequested)
                     break;
 
                 byte[]? buffer = null;
+                FileInfo info = new(item.Local);
 
-                try
+                if (info.Exists)
                 {
-                    //检查文件
-                    if (ConfigUtils.Config.Http.CheckFile && File.Exists(item.Local))
+                    try
                     {
-                        if (!string.IsNullOrWhiteSpace(item.SHA1) && !item.Overwrite)
+                        //检查文件
+                        if (item.Overwrite)
                         {
-                            using FileStream stream2 = new(item.Local, FileMode.Open,
-                                FileAccess.Read, FileShare.Read);
-                            stream2.Seek(0, SeekOrigin.Begin);
-                            string sha1 = Funtcions.GenSha1(stream2);
-                            if (sha1 == item.SHA1)
+                            File.Delete(item.Local);
+                        }
+                        else if (ConfigUtils.Config.Http.CheckFile)
+                        {
+                            if (!string.IsNullOrWhiteSpace(item.SHA1))
                             {
-                                item.State = DownloadItemState.Action;
-                                item.Update?.Invoke(index);
+                                using FileStream stream2 = new(item.Local, FileMode.Open,
+                                    FileAccess.Read, FileShare.Read);
                                 stream2.Seek(0, SeekOrigin.Begin);
-                                item.Later?.Invoke(stream2);
+                                string sha1 = Funtcions.GenSha1(stream2);
+                                if (sha1 == item.SHA1)
+                                {
+                                    item.State = DownloadItemState.Action;
+                                    item.Update?.Invoke(index);
+                                    stream2.Seek(0, SeekOrigin.Begin);
+                                    item.Later?.Invoke(stream2);
 
-                                item.State = DownloadItemState.Done;
-                                item.Update?.Invoke(index);
-                                DownloadManager.Done();
-                                continue;
+                                    item.State = DownloadItemState.Done;
+                                    item.Update?.Invoke(index);
+                                    DownloadManager.Done();
+                                    continue;
+                                }
+                            }
+                            if (!string.IsNullOrWhiteSpace(item.SHA256))
+                            {
+                                using FileStream stream2 = new(item.Local, FileMode.Open,
+                                    FileAccess.Read, FileShare.Read);
+                                stream2.Seek(0, SeekOrigin.Begin);
+                                string sha1 = Funtcions.GenSha256(stream2);
+                                if (sha1 == item.SHA256)
+                                {
+                                    item.State = DownloadItemState.Action;
+                                    item.Update?.Invoke(index);
+                                    stream2.Seek(0, SeekOrigin.Begin);
+                                    item.Later?.Invoke(stream2);
+
+                                    item.State = DownloadItemState.Done;
+                                    item.Update?.Invoke(index);
+                                    DownloadManager.Done();
+                                    continue;
+                                }
                             }
                         }
 
-                        if (!string.IsNullOrWhiteSpace(item.SHA256) && !item.Overwrite)
-                        {
-                            using FileStream stream2 = new(item.Local, FileMode.Open,
-                                FileAccess.Read, FileShare.Read);
-                            stream2.Seek(0, SeekOrigin.Begin);
-                            string sha1 = Funtcions.GenSha256(stream2);
-                            if (sha1 == item.SHA256)
-                            {
-                                item.State = DownloadItemState.Action;
-                                item.Update?.Invoke(index);
-                                stream2.Seek(0, SeekOrigin.Begin);
-                                item.Later?.Invoke(stream2);
-
-                                item.State = DownloadItemState.Done;
-                                item.Update?.Invoke(index);
-                                DownloadManager.Done();
-                                continue;
-                            }
-                        }
-
-                        File.Delete(item.Local);
                     }
-                    FileInfo info = new(item.Local);
-                    if (!Directory.Exists(info.DirectoryName))
+                    catch (Exception e)
                     {
-                        Directory.CreateDirectory(info.DirectoryName!);
+                        item.State = DownloadItemState.Error;
+                        item.ErrorTime++;
+                        item.Update?.Invoke(index);
+                        DownloadManager.Error(index, item, e);
+                        continue;
                     }
-                }
-                catch (Exception e)
-                {
-                    item.State = DownloadItemState.Error;
-                    item.ErrorTime++;
-                    item.Update?.Invoke(index);
-                    DownloadManager.Error(index, item, e);
-                    continue;
                 }
 
                 if (cancel.IsCancellationRequested)
@@ -222,11 +224,7 @@ public class DownloadThread
                             item.Update?.Invoke(index);
                         }
 
-                        if (pause)
-                        {
-                            item.State = DownloadItemState.Pause;
-                            semaphore1.WaitOne();
-                        }
+                        ChckPause(item);
 
                         if (cancel.IsCancellationRequested)
                             break;
@@ -242,19 +240,19 @@ public class DownloadThread
                                 {
                                     item.State = DownloadItemState.Error;
                                     item.Update?.Invoke(index);
-                                    DownloadManager.Error(index, item, new Exception("hash error"));
+                                    DownloadManager.Error(index, item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
 
                                     break;
                                 }
                             }
-                            else if (!string.IsNullOrWhiteSpace(item.SHA256))
+                            if (!string.IsNullOrWhiteSpace(item.SHA256))
                             {
                                 string sha1 = Funtcions.GenSha256(stream);
                                 if (sha1 != item.SHA256)
                                 {
                                     item.State = DownloadItemState.Error;
                                     item.Update?.Invoke(index);
-                                    DownloadManager.Error(index, item, new Exception("hash error"));
+                                    DownloadManager.Error(index, item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
 
                                     break;
                                 }
@@ -278,7 +276,7 @@ public class DownloadThread
                         {
                             File.Delete(item.Local);
                         }
-                        new FileInfo(item.Local).Directory?.Create();
+                        info.Directory?.Create();
                         File.Move(file, item.Local);
 
                         item.State = DownloadItemState.Done;
