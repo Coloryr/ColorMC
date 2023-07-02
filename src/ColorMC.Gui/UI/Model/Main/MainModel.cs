@@ -492,7 +492,7 @@ public partial class MainModel : ObservableObject, IMainTop
 
     public async void Launch(GameItemModel obj)
     {
-        if (launch)
+        if (launch || obj.IsLaunch)
             return;
 
         var window = Con.Window;

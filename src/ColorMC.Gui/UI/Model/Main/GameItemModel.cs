@@ -107,6 +107,9 @@ public partial class GameItemModel : ObservableObject
 
     public void Launch()
     {
+        if (IsLaunch)
+            return;
+
         Top.Launch(this);
     }
 
