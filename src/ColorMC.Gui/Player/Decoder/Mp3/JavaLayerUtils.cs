@@ -11,8 +11,7 @@ public static class JavaLayerUtils
     {
         string local = $"resm:ColorMC.Launcher.Mp3.{name}?assembly=ColorMC.Launcher";
 
-        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        using var asset = assets!.Open(new Uri(local));
+        using var asset = AssetLoader.Open(new Uri(local));
         var stream = new MemoryStream();
         asset.CopyTo(stream);
         var values = stream.ToArray();

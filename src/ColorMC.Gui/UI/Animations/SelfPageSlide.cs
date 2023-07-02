@@ -78,7 +78,7 @@ public class SelfPageSlide : IPageTransition
                     },
                 Duration = Duration
             };
-            tasks.Add(animation.RunAsync(from, null, cancellationToken));
+            tasks.Add(animation.RunAsync(from, cancellationToken));
         }
 
         if (to != null)
@@ -111,7 +111,7 @@ public class SelfPageSlide : IPageTransition
                     },
                 Duration = Duration
             };
-            tasks.Add(animation.RunAsync(to, null, cancellationToken));
+            tasks.Add(animation.RunAsync(to, cancellationToken));
         }
 
         await Task.WhenAll(tasks);

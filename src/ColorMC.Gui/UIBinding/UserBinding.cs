@@ -208,8 +208,7 @@ public static class UserBinding
         CapeIamge = null;
 
         var uri = new Uri($"resm:ColorMC.Gui.Resource.Pic.user.png");
-        var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-        using var asset = assets!.Open(uri);
+        using var asset = AssetLoader.Open(uri);
 
         if (obj == null)
         {
