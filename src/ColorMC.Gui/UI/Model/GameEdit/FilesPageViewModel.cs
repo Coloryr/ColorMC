@@ -29,7 +29,8 @@ public class FilesPageViewModel : ObservableObject
                 new HierarchicalExpanderColumn<FileTreeNodeModel>(
                     new TemplateColumn<FileTreeNodeModel>(
                         App.GetLanguage("GameEditWindow.Tab6.Info4"),
-                        cellTemplateResourceKey: "FileNameCell",
+                        "FileNameCell",
+                        null,
                         new GridLength(1, GridUnitType.Star),
                         new TemplateColumnOptions<FileTreeNodeModel>
                         {
@@ -94,10 +95,7 @@ public class FilesPageViewModel : ObservableObject
     {
         get
         {
-            if (s_iconConverter is null)
-            {
-                s_iconConverter = new IconConverter();
-            }
+            s_iconConverter ??= new IconConverter();
 
             return s_iconConverter;
         }

@@ -51,16 +51,15 @@ public partial class App : Application
         Name = "ColorMC";
         ThisApp = this;
 
-        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        AppDomain.CurrentDomain.UnhandledException += (a, e)=> 
+        {
+            Logs.Error(GetLanguage("Gui.Error25"), e.ExceptionObject as Exception);
+        };
     }
 
-    private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-    {
-        Logs.Error(GetLanguage("Gui.Error25"), e.ExceptionObject as Exception);
-    }
+    public static bool NeedClose { get; set; }
 
-    public static IApplicationLifetime? Life { get; private set; }
-
+    public static Window? LastWindow { get; set; }
     public static AllControl? AllWindow { get; set; }
     public static DownloadControl? DownloadWindow { get; set; }
     public static UsersControl? UserWindow { get; set; }
@@ -88,26 +87,21 @@ public partial class App : Application
     public static event Action? UserEdit;
     public static event Action? SkinLoad;
 
-    public static Application ThisApp;
-
-    public static Window? LastWindow;
+    public static Application ThisApp { get; private set; }
+    public static IApplicationLifetime? Life { get; private set; }
 
     public static Bitmap? BackBitmap { get; private set; }
     public static Bitmap GameIcon { get; private set; }
-
     public static Bitmap LoadIcon { get; private set; }
     public static WindowIcon? Icon { get; private set; }
+
     public static bool IsHide { get; private set; }
 
     public static PlatformThemeVariant NowTheme { get; private set; }
 
-    public static IPlatformSettings PlatformSettings { get; private set; }
-
     public static event Action? OnStop;
 
     private static readonly Language Language = new();
-
-    public static bool NeedClose { get; set; }
 
     public override void Initialize()
     {
@@ -750,7 +744,7 @@ public partial class App : Application
         }
     }
 
-    private static WindowTransparencyLevel[] WindowTran = new[]
+    private static readonly WindowTransparencyLevel[] WindowTran = new[]
     {
         WindowTransparencyLevel.None,
         WindowTransparencyLevel.Transparent,

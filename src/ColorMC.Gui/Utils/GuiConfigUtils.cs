@@ -142,14 +142,12 @@ public static class GuiConfigUtils
         {
             Windows = new()
             {
-                UseWindowsUIComposition = null,
-                UseWgl = null,
-                AllowEglInitialization = null
+                ShouldRenderOnUIThread = null
             },
             X11 = new()
             {
-                UseEGL = null,
-                UseGpu = null,
+                UseDBusMenu = null,
+                UseDBusFilePicker = null,
                 OverlayPopups = null
             }
         };

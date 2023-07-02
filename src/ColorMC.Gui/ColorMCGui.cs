@@ -109,28 +109,20 @@ public static class ColorMCGui
 
         var config = GuiConfigUtils.Config.Render.Windows;
         var opt = new Win32PlatformOptions();
-        if (config.UseWindowsUIComposition != null)
+        if (config.ShouldRenderOnUIThread != null)
         {
-            opt.UseWindowsUIComposition = config.UseWindowsUIComposition == true;
-        }
-        if (config.UseWgl != null)
-        {
-            opt.UseWgl = config.UseWgl == true;
-        }
-        if (config.AllowEglInitialization != null)
-        {
-            opt.AllowEglInitialization = config.AllowEglInitialization == true;
+            opt.ShouldRenderOnUIThread = config.ShouldRenderOnUIThread == true;
         }
 
         var config1 = GuiConfigUtils.Config.Render.X11;
         var opt1 = new X11PlatformOptions();
-        if (config1.UseEGL != null)
+        if (config1.UseDBusMenu != null)
         {
-            opt1.UseEGL = config1.UseEGL == true;
+            opt1.UseDBusMenu = config1.UseDBusMenu == true;
         }
-        if (config1.UseGpu != null)
+        if (config1.UseDBusFilePicker != null)
         {
-            opt1.UseGpu = config1.UseGpu == true;
+            opt1.UseDBusFilePicker = config1.UseDBusFilePicker == true;
         }
         if (config1.OverlayPopups != null)
         {

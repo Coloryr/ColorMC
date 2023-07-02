@@ -29,7 +29,8 @@ public class NbtPageViewModel : ObservableObject
                 new HierarchicalExpanderColumn<NbtNodeModel>(
                     new TemplateColumn<NbtNodeModel>(
                         "NBT",
-                        cellTemplateResourceKey: "NbtCell",
+                        "NbtCell",
+                        null,
                         new GridLength(1, GridUnitType.Auto),
                         new TemplateColumnOptions<NbtNodeModel>
                         {

@@ -114,9 +114,7 @@ public record ServerCustom
 /// </summary>
 public record WindowsRender
 {
-    public bool? UseWindowsUIComposition { get; set; }
-    public bool? UseWgl { get; set; }
-    public bool? AllowEglInitialization { get; set; }
+    public bool? ShouldRenderOnUIThread { get; set; }
 }
 
 /// <summary>
@@ -124,8 +122,8 @@ public record WindowsRender
 /// </summary>
 public record X11Render
 {
-    public bool? UseEGL { get; set; }
-    public bool? UseGpu { get; set; }
+    public bool? UseDBusMenu { get; set; }
+    public bool? UseDBusFilePicker { get; set; }
     public bool? OverlayPopups { get; set; }
 }
 
