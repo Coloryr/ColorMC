@@ -10,7 +10,7 @@ public partial class AddJavaControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    private readonly AddJavaModel model;
+    private readonly AddJavaControlModel model;
 
     public AddJavaControl()
     {

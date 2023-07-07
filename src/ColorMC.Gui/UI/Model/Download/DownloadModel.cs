@@ -11,6 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Timers;
 using Timer = System.Timers.Timer;
 
@@ -79,7 +80,7 @@ public partial class DownloadModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Stop()
+    public async Task Stop()
     {
         var windows = Con.Window;
         var res = await windows.OkInfo.ShowWait(App.GetLanguage("DownloadWindow.Info1"));

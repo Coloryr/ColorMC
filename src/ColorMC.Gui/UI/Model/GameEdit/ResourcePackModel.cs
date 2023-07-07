@@ -15,7 +15,7 @@ public partial class ResourcePackModel : ObservableObject
     [ObservableProperty]
     private bool isSelect;
 
-    private readonly IResourcePackFuntion Top;
+    private readonly ILoadFuntion<ResourcePackModel> Top;
     private readonly IUserControl Con;
 
     public string Local => Pack.Local;
@@ -26,7 +26,7 @@ public partial class ResourcePackModel : ObservableObject
 
     public Bitmap Pic => Pack.Icon ?? App.GameIcon;
 
-    public ResourcePackModel(IUserControl con, IResourcePackFuntion top, ResourcepackDisplayObj pack)
+    public ResourcePackModel(IUserControl con, ILoadFuntion<ResourcePackModel> top, ResourcepackDisplayObj pack)
     {
         Con = con;
         Top = top;
@@ -55,6 +55,6 @@ public partial class ResourcePackModel : ObservableObject
 
         GameBinding.DeleteResourcepack(obj.Pack);
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        Top.Load();
+        await Top.Load();
     }
 }

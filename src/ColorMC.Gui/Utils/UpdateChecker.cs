@@ -24,6 +24,9 @@ public static class UpdateChecker
     private static readonly string[] LocalPath = new string[4] { "", "", "", "" };
     public static void Init()
     {
+        if (ColorMCGui.BaseSha1 == null)
+            return;
+
         LocalPath[0] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Core.dll");
         LocalPath[1] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Core.pdb");
         LocalPath[2] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Gui.dll");
@@ -61,7 +64,6 @@ public static class UpdateChecker
         {
             App.ShowError(App.GetLanguage("Gui.Error21"), e);
         }
-
     }
 
     public static async void StartUpdate()
@@ -119,6 +121,9 @@ public static class UpdateChecker
 
     public static async Task<(bool?, string?)> CheckOne()
     {
+        if (ColorMCGui.BaseSha1 == null)
+            return (false, null);
+
         try
         {
             var data = await BaseClient.DownloadClient.GetStringAsync(url + "sha1.json");

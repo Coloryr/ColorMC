@@ -5,10 +5,11 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab8Model : GameEditTabModel, IResourcePackFuntion
+public partial class GameEditTab8Model : GameEditTabModel, ILoadFuntion<ResourcePackModel>
 {
     public ObservableCollection<ResourcePackModel> ResourcePackList { get; init; } = new();
 
@@ -26,7 +27,7 @@ public partial class GameEditTab8Model : GameEditTabModel, IResourcePackFuntion
     }
 
     [RelayCommand]
-    public async void Import()
+    public async Task Import()
     {
         var window = Con.Window;
         var file = await GameBinding.AddFile(window as TopLevel, Obj, FileType.Resourcepack);
@@ -40,7 +41,7 @@ public partial class GameEditTab8Model : GameEditTabModel, IResourcePackFuntion
         }
 
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
-        Load();
+        await Load();
     }
 
     [RelayCommand]
@@ -50,7 +51,7 @@ public partial class GameEditTab8Model : GameEditTabModel, IResourcePackFuntion
     }
 
     [RelayCommand]
-    public async void Load()
+    public async Task Load()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab8.Info3"));

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -194,7 +195,7 @@ public partial class SettingTab6Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void SelectUI()
+    public async Task SelectUI()
     {
         var window = Con.Window;
         var res = await BaseBinding.OpFile(window, FileType.UI);
@@ -250,7 +251,7 @@ public partial class SettingTab6Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void Save()
+    public async Task Save()
     {
         var window = Con.Window;
         var str = await BaseBinding.SaveFile(window, FileType.UI, null);
@@ -291,7 +292,7 @@ public partial class SettingTab6Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void SelectMusic()
+    public async Task SelectMusic()
     {
         var window = Con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Music);

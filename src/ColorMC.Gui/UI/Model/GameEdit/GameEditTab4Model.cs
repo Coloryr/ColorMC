@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -70,7 +71,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void Import()
+    public async Task Import()
     {
         var window = Con.Window;
         var file = await GameBinding.AddFile(window as Window, Obj, FileType.Mod);
@@ -85,11 +86,11 @@ public partial class GameEditTab4Model : GameEditTabModel
         }
 
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
-        Load();
+        await Load();
     }
 
     [RelayCommand]
-    public async void Check()
+    public async Task Check()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info10"));
@@ -105,7 +106,7 @@ public partial class GameEditTab4Model : GameEditTabModel
                 await WebBinding.DownloadMod(Obj, res);
                 window.ProgressInfo.Close();
 
-                Load();
+                await Load();
             }
         }
         else
@@ -115,7 +116,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void Load()
+    public async Task Load()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
@@ -143,7 +144,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void DependTest()
+    public async Task DependTest()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info15"));
@@ -160,7 +161,7 @@ public partial class GameEditTab4Model : GameEditTabModel
         var res = await GameBinding.AddFile(Obj, data, FileType.Mod);
         if (res)
         {
-            Load();
+            await Load();
         }
     }
 

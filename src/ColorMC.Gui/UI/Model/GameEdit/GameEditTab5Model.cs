@@ -8,10 +8,11 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab5Model : GameEditTabModel, IWorldFuntion
+public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldModel>
 {
     public ObservableCollection<WorldModel> WorldList { get; init; } = new();
 
@@ -93,7 +94,7 @@ public partial class GameEditTab5Model : GameEditTabModel, IWorldFuntion
         BaseBinding.OpPath(Obj.GetWorldBackupPath());
     }
     [RelayCommand]
-    public async void Load()
+    public async Task Load()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info5"));
@@ -112,7 +113,7 @@ public partial class GameEditTab5Model : GameEditTabModel, IWorldFuntion
         var res = await GameBinding.AddFile(Obj, data, FileType.World);
         if (res)
         {
-            Load();
+            await Load();
         }
     }
 

@@ -11,6 +11,7 @@ using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ColorMC.Core.Game;
@@ -1208,8 +1209,8 @@ public static class Launch
         if (cancel.IsCancellationRequested)
             return null;
 
-        //NativeLaunch(jvm!, arg);
-        //return null;
+        NativeLaunch(jvm!, arg);
+        return null;
 
         //启动进程
         Process process = new()
@@ -1311,71 +1312,71 @@ public static class Launch
         return process;
     }
 
-    //public delegate int Func1(int argc,
-    //    string[] argv, /* main argc, argc */
-    //    int jargc, string[] jargv,          /* java args */
-    //    int appclassc, string[] appclassv,  /* app classpath */
-    //    string fullversion,                 /* full version defined */
-    //    string dotversion,                  /* dot version defined */
-    //    string pname,                       /* program name */
-    //    string lname,                       /* launcher name */
-    //    bool javaargs,                      /* JAVA_ARGS */
-    //    bool cpwildcard,                    /* classpath wildcard*/
-    //    bool javaw,                         /* windows-only javaw */
-    //    int ergo                            /* ergonomics class policy */
-    //);
+    public delegate int Func1(int argc,
+        string[] argv, /* main argc, argc */
+        int jargc, string[] jargv,          /* java args */
+        int appclassc, string[] appclassv,  /* app classpath */
+        string fullversion,                 /* full version defined */
+        string dotversion,                  /* dot version defined */
+        string pname,                       /* program name */
+        string lname,                       /* launcher name */
+        bool javaargs,                      /* JAVA_ARGS */
+        bool cpwildcard,                    /* classpath wildcard*/
+        bool javaw,                         /* windows-only javaw */
+        int ergo                            /* ergonomics class policy */
+    );
 
-    //private static int Lenght;
-    //private static string[] Args;
+    private static int Lenght;
+    private static string[] Args;
 
-    //public static void NativeLaunch(JavaInfo info, List<string> args)
-    //{
-    //    var info1 = new FileInfo(info.Path);
-    //    var path = info1.Directory?.Parent?.FullName;
+    public static void NativeLaunch(JavaInfo info, List<string> args)
+    {
+        var info1 = new FileInfo(info.Path);
+        var path = info1.Directory?.Parent?.FullName;
 
-    //    var local = path + SystemInfo.Os switch
-    //    {
-    //        OsType.Windows => "/bin/jli.dll",
-    //        OsType.Linux => "/lib/libjli.so",
-    //        OsType.MacOS => "/lib/libjli.dylib",
-    //        _ => null
-    //    };
-    //    if (File.Exists(local))
-    //    {
-    //        local = Path.GetFullPath(local);
-    //    }
+        var local = path + SystemInfo.Os switch
+        {
+            OsType.Windows => "/bin/jli.dll",
+            OsType.Linux => "/lib/libjli.so",
+            OsType.MacOS => "/lib/libjli.dylib",
+            OsType.Android => "/lib/libjli.so",
+        };
+        if (File.Exists(local))
+        {
+            local = Path.GetFullPath(local);
+        }
 
-    //    var temp = NativeLoader.Loader.LoadLibrary(local);
-    //    var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
-    //    var inv = (Func1)Marshal.GetDelegateForFunctionPointer(temp1, typeof(Func1));
+        var temp = NativeLoader.Loader.LoadLibrary(local);
+        var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
+        var inv = Marshal.GetDelegateForFunctionPointer<Func1>(temp1);
 
-    //    //Environment.SetEnvironmentVariable("JAVA_HOME", path);
-    //    //Environment.SetEnvironmentVariable("PATH", path + "/bin:" + path);
-    //    //Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", path + "/lib:" + path + "/bin");
+        //Environment.SetEnvironmentVariable("JAVA_HOME", path);
+        //Environment.SetEnvironmentVariable("PATH", path + "/bin:" + path);
+        //Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", path + "/lib:" + path + "/bin");
 
-    //    var args1 = new string[args.Count + 1];
-    //    args1[0] = "java";
+        var args1 = new string[args.Count + 1];
+        args1[0] = "java";
 
-    //    for (int i = 1; i < args1.Length; i++)
-    //    {
-    //        args1[i] = args[i - 1];
-    //    }
+        for (int i = 1; i < args1.Length; i++)
+        {
+            args1[i] = args[i - 1];
+        }
 
-    //    Lenght = args1.Length;
-    //    Args = args1;
+        Lenght = args1.Length;
+        Args = args1;
 
-    //    new Thread(() =>
-    //    {
-    //        try
-    //        {
-    //            var res = inv(Lenght, Args, 0, null, 0, null, "", "", "", "", false, false, true, 0);
+        new Thread(() =>
+        {
+            try
+            {
+                var res = inv(Lenght, Args, 0, null, 0, null, "", "", "", "", false, false, true, 0);
 
-    //            var res1 = NativeLoader.Loader.CloseLibrary(temp);
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            ColorMCCore.OnError?.Invoke("Error", e, false);
-    //        }
-    //    }).Start();
-    //}
+                var res1 = NativeLoader.Loader.CloseLibrary(temp);
+            }
+            catch (Exception e)
+            {
+                ColorMCCore.OnError?.Invoke("Error", e, false);
+            }
+        }).Start();
+    }
 }

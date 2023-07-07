@@ -50,9 +50,9 @@ public partial class AddGameTab1Model : AddGameTabModel
         Update();
     }
 
-    partial void OnVersionChanged(string value)
+    async partial void OnVersionChanged(string value)
     {
-        VersionSelect();
+        await VersionSelect();
     }
 
     async partial void OnSelectForgeChanged(bool value)
@@ -180,7 +180,7 @@ public partial class AddGameTab1Model : AddGameTabModel
 
 
     [RelayCommand]
-    public async void GetLoader()
+    public async Task GetLoader()
     {
         EnableLoader = false;
 
@@ -245,7 +245,7 @@ public partial class AddGameTab1Model : AddGameTabModel
     }
 
     [RelayCommand]
-    public async void Add()
+    public async Task Add()
     {
         ColorMCCore.GameOverwirte = GameOverwirte;
 
@@ -308,7 +308,7 @@ public partial class AddGameTab1Model : AddGameTabModel
     }
 
     [RelayCommand]
-    public async void VersionSelect()
+    public async Task VersionSelect()
     {
         change = true;
 
@@ -359,7 +359,7 @@ public partial class AddGameTab1Model : AddGameTabModel
     }
 
     [RelayCommand]
-    public async void LoadVersion()
+    public async Task LoadVersion()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Info1"));

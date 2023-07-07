@@ -6,6 +6,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -39,7 +40,7 @@ public partial class GameEditTab10Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void Add()
+    public async Task Add()
     {
         var window = Con.Window;
         await window.InputInfo.ShowInput(App.GetLanguage("GameEditWindow.Tab10.Info1"),

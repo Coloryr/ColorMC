@@ -10,6 +10,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -42,7 +43,7 @@ public partial class GameEditTab12Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void Add()
+    public async Task Add()
     {
         var window = Con.Window;
         var res = await GameBinding.AddFile(window as Window, Obj, FileType.Schematic);

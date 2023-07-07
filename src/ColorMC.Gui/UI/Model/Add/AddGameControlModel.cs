@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddGameTabModel : ObservableObject
+public abstract partial class AddGameTabModel : ObservableObject
 {
     protected IUserControl Con;
     public ObservableCollection<string> GroupList { get; init; } = new();

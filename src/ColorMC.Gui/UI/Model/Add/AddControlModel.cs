@@ -315,7 +315,7 @@ public partial class AddControlModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void GoFile()
+    public async Task GoFile()
     {
         var window = Con.Window;
         var item = File;
@@ -351,7 +351,7 @@ public partial class AddControlModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void LoadOptifineList()
+    public async Task LoadOptifineList()
     {
         var window = Con.Window;
         GameVersionList.Clear();
@@ -397,7 +397,7 @@ public partial class AddControlModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void DownloadMod()
+    public async Task DownloadMod()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info5"));
@@ -452,13 +452,13 @@ public partial class AddControlModel : ObservableObject
     }
 
     [RelayCommand]
-    public void DownloadAllMod()
+    public async void DownloadAllMod()
     {
         foreach (var item in DownloadModList)
         {
             item.Download = true;
         }
-        DownloadMod();
+        await DownloadMod();
     }
 
     [RelayCommand]
@@ -474,7 +474,7 @@ public partial class AddControlModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void DownloadOptifine()
+    public async Task DownloadOptifine()
     {
         if (OptifineItem == null)
             return;
@@ -828,10 +828,10 @@ public partial class AddControlModel : ObservableObject
         window.ProgressInfo.Close();
     }
 
-    public void OptifineOpen()
+    public async void OptifineOpen()
     {
         OptifineDisplay = true;
-        LoadOptifineList();
+        await LoadOptifineList();
     }
 
     public void GoTo(FileType file)

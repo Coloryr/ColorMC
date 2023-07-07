@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -223,7 +224,7 @@ public partial class AddModPackModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Download()
+    public async Task Download()
     {
         if (Item == null)
             return;

@@ -9,7 +9,7 @@ using System.IO;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddGameTab3Model : AddGameTabModel
+public partial class AddGameTab3Model : AddGameControlModel
 {
     private FilesPageViewModel FilesPageViewModel;
 

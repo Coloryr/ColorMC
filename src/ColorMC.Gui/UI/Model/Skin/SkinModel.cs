@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Skin;
 
@@ -176,7 +177,7 @@ public partial class SkinModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Save()
+    public async Task Save()
     {
         var window = Con.Window;
         var res = await BaseBinding.SaveFile(window, FileType.Skin, null);
@@ -217,7 +218,7 @@ public partial class SkinModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Load()
+    public async Task Load()
     {
         await UserBinding.LoadSkin();
     }

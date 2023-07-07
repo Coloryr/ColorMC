@@ -49,36 +49,51 @@ public static class JavaHelper
     {
         try
         {
-            if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+            if (SystemInfo.Os == OsType.Android)
             {
-                using var p = new Process();
-                p.StartInfo.FileName = path;
-                p.StartInfo.Arguments = "-version";
-                p.StartInfo.RedirectStandardError = true;
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
-                p.Start();
-                string result = p.StandardError.ReadToEnd();
-                string[] lines = result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-
-                string[] firstL = lines[0].Split(' ');
-                string type = firstL[0];
-                string version = firstL[2].Trim('\"');
-                bool is64 = result.Contains("64-Bit");
-                ArchEnum arch = is64 ? ArchEnum.x64 : ArchEnum.x32;
                 JavaInfo info = new()
                 {
                     Path = path,
-                    Version = version,
-                    Arch = arch,
-                    Type = type
+                    Version = "17",
+                    Arch = ArchEnum.x64,
+                    Type = "java"
                 };
+
                 return info;
             }
             else
             {
-                return null;
+                if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+                {
+                    using var p = new Process();
+                    p.StartInfo.FileName = path;
+                    p.StartInfo.Arguments = "-version";
+                    p.StartInfo.RedirectStandardError = true;
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.CreateNoWindow = true;
+                    p.StartInfo.WorkingDirectory = ColorMCCore.BaseDir;
+                    p.Start();
+                    string result = p.StandardError.ReadToEnd();
+                    string[] lines = result.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+                    string[] firstL = lines[0].Split(' ');
+                    string type = firstL[0];
+                    string version = firstL[2].Trim('\"');
+                    bool is64 = result.Contains("64-Bit");
+                    ArchEnum arch = is64 ? ArchEnum.x64 : ArchEnum.x32;
+                    JavaInfo info = new()
+                    {
+                        Path = path,
+                        Version = version,
+                        Arch = arch,
+                        Type = type
+                    };
+                    return info;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
         catch (Exception e)

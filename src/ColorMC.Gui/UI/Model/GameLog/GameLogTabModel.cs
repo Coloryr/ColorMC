@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace ColorMC.Gui.UI.Model.GameLog;
@@ -104,7 +105,7 @@ public partial class GameLogTabModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Launch()
+    public async Task Launch()
     {
         if (IsGameRun)
             return;

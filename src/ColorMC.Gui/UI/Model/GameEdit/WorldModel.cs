@@ -1,13 +1,11 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -15,7 +13,7 @@ public partial class WorldModel : ObservableObject
 {
     public WorldDisplayObj World { get; }
 
-    private readonly IWorldFuntion Top;
+    private readonly ILoadFuntion<WorldModel> Top;
     private readonly IUserControl Con;
 
     [ObservableProperty]
@@ -29,7 +27,7 @@ public partial class WorldModel : ObservableObject
     public string Hardcore => World.Hardcore.ToString();
     public Bitmap Pic => World.Pic ?? App.GameIcon;
 
-    public WorldModel(IUserControl con, IWorldFuntion top, WorldDisplayObj world)
+    public WorldModel(IUserControl con, ILoadFuntion<WorldModel> top, WorldDisplayObj world)
     {
         Con = con;
         Top = top;
@@ -58,7 +56,7 @@ public partial class WorldModel : ObservableObject
 
         GameBinding.DeleteWorld(obj.World);
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        Top.Load();
+        await Top.Load();
     }
 
     public async void Export(WorldDisplayObj obj)

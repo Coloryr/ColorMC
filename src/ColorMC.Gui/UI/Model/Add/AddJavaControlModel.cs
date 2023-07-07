@@ -9,12 +9,13 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddJavaModel : ObservableObject
 {
-    private IUserControl Con;
+    private readonly IUserControl Con;
     private readonly List<JavaDownloadDisplayObj> List1 = new();
     public ObservableCollection<JavaDownloadDisplayObj> JavaList { get; init; } = new();
     public ObservableCollection<string> SystemList { get; init; } = new();
@@ -47,11 +48,11 @@ public partial class AddJavaModel : ObservableObject
         ColorMCCore.JavaUnzip = JavaUnzip;
     }
 
-    partial void OnJavaTypeChanged(string value)
+    async partial void OnJavaTypeChanged(string value)
     {
         load = true;
         Switch();
-        Load();
+        await Load();
     }
 
     partial void OnArchChanged(string value)
@@ -62,14 +63,14 @@ public partial class AddJavaModel : ObservableObject
         Select();
     }
 
-    partial void OnSystemChanged(string value)
+    async partial void OnSystemChanged(string value)
     {
         if (load)
             return;
 
         if (TypeIndex == 0)
         {
-            Load();
+            await Load();
         }
         else
         {
@@ -77,14 +78,14 @@ public partial class AddJavaModel : ObservableObject
         }
     }
 
-    partial void OnVersionChanged(string value)
+    async partial void OnVersionChanged(string value)
     {
         if (load)
             return;
 
         if (TypeIndex == 0)
         {
-            Load();
+            await Load();
         }
         else
         {
@@ -93,7 +94,7 @@ public partial class AddJavaModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Load()
+    public async Task Load()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("AddJavaWindow.Info4"));

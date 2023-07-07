@@ -58,21 +58,21 @@ public partial class UsersControl : UserControl, IUserControl
         }
     }
 
-    private void TextBox_Input3_KeyDown(object? sender, KeyEventArgs e)
+    private async void TextBox_Input3_KeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.Enter)
         {
-            model.Add();
+            await model.Add();
         }
     }
 
-    private void TextBox_Input1_KeyDown(object? sender, KeyEventArgs e)
+    private async void TextBox_Input1_KeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.Enter)
         {
             if (model.Type == 0)
             {
-                model.Add();
+                await model.Add();
             }
         }
     }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddGameTab2Model : AddGameTabModel
+public partial class AddGameTab2Model : AddGameControlModel
 {
     public List<string> PackTypeList => GameBinding.GetPackType();
 

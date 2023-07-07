@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace ColorMC.Gui.UI.Model.User;
@@ -156,7 +157,7 @@ public partial class UsersModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void Add()
+    public async Task Add()
     {
         var window = Con.Window;
         bool ok = false;

@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 {
-    private readonly AddModPackModel model;
+    private readonly AddModPackControlModel model;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 

@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -227,7 +228,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void CheckModPackUpdate()
+    public async Task CheckModPackUpdate()
     {
         var window = Con.Window;
         if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
@@ -324,7 +325,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void AddGroup()
+    public async Task AddGroup()
     {
         var window = Con.Window;
         await window.InputInfo.ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
@@ -353,7 +354,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void LoaderVersionLoad()
+    public async Task LoaderVersionLoad()
     {
         var window = Con.Window;
 
@@ -416,7 +417,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void LoaderReload()
+    public async Task LoaderReload()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info4"));
@@ -441,7 +442,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void GameVersionReload()
+    public async Task GameVersionReload()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Info1"));
@@ -462,7 +463,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void Delete()
+    public async Task Delete()
     {
         var window = Con.Window;
         if (BaseBinding.IsGameRun(Obj))

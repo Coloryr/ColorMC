@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using ColorMC.Core.Objs;
+using System.Runtime.InteropServices;
 
 namespace ColorMC.Core.Utils;
 
@@ -16,7 +17,7 @@ public static class NativeLoader
             if (loader != null)
                 return loader;
 
-            if (SystemInfo.Os == Objs.OsType.Windows)
+            if (SystemInfo.Os == OsType.Windows)
                 loader = new Win32Loader();
             else
                 loader = new UnixLoader();
@@ -45,6 +46,25 @@ internal class UnixLoader : IDynLoader
         private static extern IntPtr dlsym(IntPtr handle, string symbol);
 
         [DllImport("libdl.so.2")]
+        private static extern IntPtr dlerror();
+
+        public static void Init()
+        {
+            DlOpen = dlopen;
+            DlSym = dlsym;
+            DlError = dlerror;
+        }
+    }
+
+    static class AndroidImports
+    {
+        [DllImport("libdl.so")]
+        private static extern IntPtr dlopen(string path, int flags);
+
+        [DllImport("libdl.so")]
+        private static extern IntPtr dlsym(IntPtr handle, string symbol);
+
+        [DllImport("libdl.so")]
         private static extern IntPtr dlerror();
 
         public static void Init()
@@ -87,7 +107,16 @@ internal class UnixLoader : IDynLoader
         if (unixName == "Darwin")
             OsXImports.Init();
         else
-            LinuxImports.Init();
+        {
+            if (SystemInfo.Os == OsType.Android)
+            {
+                AndroidImports.Init();
+            }
+            else
+            {
+                LinuxImports.Init();
+            }
+        }
     }
 
     private static Func<string, int, IntPtr> DlOpen;

@@ -12,7 +12,7 @@ public partial class ScreenshotModel : ObservableObject
 {
     public ScreenshotDisplayObj Screenshot { get; }
 
-    private IScreenshotFuntion Top;
+    private ILoadFuntion<ScreenshotModel> Top;
     private IUserControl Con;
 
     [ObservableProperty]
@@ -21,7 +21,7 @@ public partial class ScreenshotModel : ObservableObject
     public string Name => Screenshot.Name;
     public Bitmap Pic => Screenshot.Image;
 
-    public ScreenshotModel(IUserControl con, IScreenshotFuntion top, ScreenshotDisplayObj obj)
+    public ScreenshotModel(IUserControl con, ILoadFuntion<ScreenshotModel> top, ScreenshotDisplayObj obj)
     {
         Con = con;
         Top = top;

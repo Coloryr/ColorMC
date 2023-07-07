@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -324,7 +325,7 @@ public partial class GameEditTab2Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void Delete()
+    public async Task Delete()
     {
         var Window = Con.Window;
         var res = await Window.OkInfo.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
@@ -337,7 +338,7 @@ public partial class GameEditTab2Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void Open()
+    public async Task Open()
     {
         var window = Con.Window;
 

@@ -77,6 +77,20 @@ public static class ColorMCGui
         }
     }
 
+    public static void StartPhone(string local)
+    {
+        SystemInfo.Init();
+
+        RunType = RunType.Program;
+
+        RunDir = local;
+
+        Console.WriteLine($"RunDir:{RunDir}");
+
+        ColorMCCore.Init(RunDir);
+        GuiConfigUtils.Init(RunDir);
+    }
+
     public static void TestLock()
     {
         string name = RunDir + "lock";

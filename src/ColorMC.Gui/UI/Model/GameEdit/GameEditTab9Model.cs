@@ -4,10 +4,11 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab9Model : GameEditTabModel, IScreenshotFuntion
+public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<ScreenshotModel>
 {
     public ObservableCollection<ScreenshotModel> ScreenshotList { get; init; } = new();
 
@@ -19,7 +20,7 @@ public partial class GameEditTab9Model : GameEditTabModel, IScreenshotFuntion
     }
 
     [RelayCommand]
-    public async void Load()
+    public async Task Load()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab9.Info3"));
@@ -40,7 +41,7 @@ public partial class GameEditTab9Model : GameEditTabModel, IScreenshotFuntion
     }
 
     [RelayCommand]
-    public async void Clear()
+    public async Task Clear()
     {
         var Window = Con.Window;
         var res = await Window.OkInfo.ShowWait(
@@ -52,7 +53,7 @@ public partial class GameEditTab9Model : GameEditTabModel, IScreenshotFuntion
 
         GameBinding.ClearScreenshots(Obj);
         Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        Load();
+        await Load();
     }
 
     public void SetSelect(ScreenshotModel item)
