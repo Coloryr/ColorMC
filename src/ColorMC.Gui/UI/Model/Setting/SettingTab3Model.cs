@@ -5,6 +5,7 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -115,7 +116,7 @@ public partial class SettingTab3Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void StartCheck()
+    public async Task StartCheck()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab3.Info1"));

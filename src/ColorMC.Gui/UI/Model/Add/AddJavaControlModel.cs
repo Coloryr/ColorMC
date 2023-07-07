@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddJavaModel : ObservableObject
+public partial class AddJavaControlModel : ObservableObject
 {
     private readonly IUserControl Con;
     private readonly List<JavaDownloadDisplayObj> List1 = new();
@@ -41,7 +41,7 @@ public partial class AddJavaModel : ObservableObject
     private bool load = true;
 
 
-    public AddJavaModel(IUserControl con)
+    public AddJavaControlModel(IUserControl con)
     {
         Con = con;
 

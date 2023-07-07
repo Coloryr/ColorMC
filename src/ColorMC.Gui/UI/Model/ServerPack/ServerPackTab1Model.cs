@@ -4,6 +4,7 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
@@ -49,7 +50,7 @@ public partial class ServerPackTab1Model : ServerPackTabModel
     }
 
     [RelayCommand]
-    public async void OpenUI()
+    public async Task OpenUI()
     {
         var window = Con.Window;
         var file = await BaseBinding.OpFile(window, Core.Objs.FileType.UI);

@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -77,7 +78,7 @@ public partial class SettingTab5Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void Select()
+    public async Task Select()
     {
         var window = Con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Java);
@@ -117,7 +118,7 @@ public partial class SettingTab5Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void Delete()
+    public async Task Delete()
     {
         var window = Con.Window;
         var res = await window.OkInfo.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));

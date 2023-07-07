@@ -24,7 +24,7 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
     }
 
     [RelayCommand]
-    public async void Backup()
+    public async Task Backup()
     {
         var window = Con.Window;
         var info = new DirectoryInfo(Obj.GetWorldBackupPath());
@@ -57,11 +57,11 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
         else
         {
             window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info12"));
-            Load();
+            await Load();
         }
     }
     [RelayCommand]
-    public async void Import()
+    public async Task Import()
     {
         var window = Con.Window;
         var file = await GameBinding.AddFile(window as Window, Obj, FileType.World);
@@ -75,7 +75,7 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
         }
 
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
-        Load();
+        await Load();
     }
     [RelayCommand]
     public void Open()

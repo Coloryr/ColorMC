@@ -19,7 +19,7 @@ public partial class ServerPackModel : ServerPackTabModel
     }
 
     [RelayCommand]
-    public async void Gen()
+    public async Task Gen()
     {
         var window = Con.Window;
         if (string.IsNullOrWhiteSpace(Obj.Url))

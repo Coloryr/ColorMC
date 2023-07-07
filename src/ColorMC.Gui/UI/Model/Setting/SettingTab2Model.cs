@@ -12,6 +12,7 @@ using Live2DCSharpSDK.Framework.Core;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -331,7 +332,7 @@ public partial class SettingTab2Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void SetPicSize()
+    public async Task SetPicSize()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
@@ -358,7 +359,7 @@ public partial class SettingTab2Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void OpenPic()
+    public async Task OpenPic()
     {
         var window = Con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Pic);
@@ -370,12 +371,12 @@ public partial class SettingTab2Model : ObservableObject
             if (load)
                 return;
 
-            SetPic();
+            await SetPic();
         }
     }
 
     [RelayCommand]
-    public async void SetPic()
+    public async Task SetPic()
     {
         if (load)
             return;
@@ -402,7 +403,7 @@ public partial class SettingTab2Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void OpenLive2D()
+    public async Task OpenLive2D()
     {
         var window = Con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Live2D);

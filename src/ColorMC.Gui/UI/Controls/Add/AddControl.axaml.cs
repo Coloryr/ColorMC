@@ -112,14 +112,14 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         }
     }
 
-    private void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
+    private async void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        model.DownloadOptifine();
+        await model.DownloadOptifine();
     }
 
-    private void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
+    private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        model.GoFile();
+        await model.GoFile();
     }
 
     public void Closed()

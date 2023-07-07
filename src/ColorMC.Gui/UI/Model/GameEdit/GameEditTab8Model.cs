@@ -70,7 +70,7 @@ public partial class GameEditTab8Model : GameEditTabModel, ILoadFuntion<Resource
         var res = await GameBinding.AddFile(Obj, data, FileType.Resourcepack);
         if (res)
         {
-            Load();
+            await Load();
         }
     }
 

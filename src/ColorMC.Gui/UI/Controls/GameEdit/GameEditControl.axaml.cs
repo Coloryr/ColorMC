@@ -133,7 +133,7 @@ public partial class GameEditControl : UserControl, IUserControl
         }
     }
 
-    private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private async void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         switch (Tabs.SelectedIndex)
         {
@@ -147,19 +147,19 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case 2:
                 Go(tab4);
-                model4.Load();
+                await model4.Load();
                 break;
             case 3:
                 Go(tab5);
-                model5.Load();
+                await model5.Load();
                 break;
             case 4:
                 Go(tab8);
-                model8.Load();
+                await model8.Load();
                 break;
             case 5:
                 Go(tab9);
-                model9.Load();
+                await model9.Load();
                 break;
             case 6:
                 Go(tab10);

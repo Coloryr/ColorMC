@@ -172,7 +172,7 @@ public partial class MainModel : ObservableObject, IMainTop
     }
 
     [RelayCommand]
-    public async void AddGroup()
+    public async Task AddGroup()
     {
         var window = Con.Window;
         await window.InputInfo.ShowOne(App.GetLanguage("MainWindow.Info1"), false);

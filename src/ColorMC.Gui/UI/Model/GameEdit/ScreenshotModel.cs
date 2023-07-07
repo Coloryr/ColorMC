@@ -50,6 +50,6 @@ public partial class ScreenshotModel : ObservableObject
 
         GameBinding.DeleteScreenshot(Screenshot.Local);
         Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        Top.Load();
+        await Top.Load();
     }
 }

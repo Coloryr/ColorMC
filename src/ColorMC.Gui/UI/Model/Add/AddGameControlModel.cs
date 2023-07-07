@@ -4,10 +4,11 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public abstract partial class AddGameTabModel : ObservableObject
+public abstract partial class AddGameControlModel : ObservableObject
 {
     protected IUserControl Con;
     public ObservableCollection<string> GroupList { get; init; } = new();
@@ -17,7 +18,7 @@ public abstract partial class AddGameTabModel : ObservableObject
     [ObservableProperty]
     private string group;
 
-    public AddGameTabModel(IUserControl con)
+    public AddGameControlModel(IUserControl con)
     {
         Con = con;
 
@@ -26,7 +27,7 @@ public abstract partial class AddGameTabModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void AddGroup()
+    public async Task AddGroup()
     {
         var window = Con.Window;
         await window.InputInfo.ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);

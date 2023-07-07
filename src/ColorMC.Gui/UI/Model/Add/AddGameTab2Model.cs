@@ -95,7 +95,7 @@ public partial class AddGameTab2Model : AddGameControlModel
     }
 
     [RelayCommand]
-    public async void SelectPack()
+    public async Task SelectPack()
     {
         var window = Con.Window;
         var res = await BaseBinding.OpFile(window, FileType.ModPack);

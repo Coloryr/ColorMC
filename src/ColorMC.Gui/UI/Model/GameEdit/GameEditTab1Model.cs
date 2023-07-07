@@ -67,7 +67,7 @@ public partial class GameEditTab1Model : GameEditTabModel
         Load();
     }
 
-    partial void OnSelectForgeChanged(bool value)
+    async partial void OnSelectForgeChanged(bool value)
     {
         if (value)
         {
@@ -82,7 +82,7 @@ public partial class GameEditTab1Model : GameEditTabModel
             Obj.LoaderVersion = null;
             Obj.Save();
 
-            LoaderVersionLoad();
+            await LoaderVersionLoad();
         }
         else
         {
@@ -100,7 +100,7 @@ public partial class GameEditTab1Model : GameEditTabModel
         }
     }
 
-    partial void OnSelectFabricChanged(bool value)
+    async partial void OnSelectFabricChanged(bool value)
     {
         if (value)
         {
@@ -115,7 +115,7 @@ public partial class GameEditTab1Model : GameEditTabModel
             Obj.LoaderVersion = null;
             Obj.Save();
 
-            LoaderVersionLoad();
+            await LoaderVersionLoad();
         }
         else
         {
@@ -133,7 +133,7 @@ public partial class GameEditTab1Model : GameEditTabModel
         }
     }
 
-    partial void OnSelectQuiltChanged(bool value)
+    async partial void OnSelectQuiltChanged(bool value)
     {
         if (value)
         {
@@ -148,7 +148,7 @@ public partial class GameEditTab1Model : GameEditTabModel
             Obj.LoaderVersion = null;
             Obj.Save();
 
-            LoaderVersionLoad();
+            await LoaderVersionLoad();
         }
         else
         {

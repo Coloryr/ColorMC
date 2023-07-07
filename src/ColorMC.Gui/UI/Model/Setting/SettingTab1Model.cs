@@ -4,6 +4,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -24,7 +25,7 @@ public partial class SettingTab1Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void Open1()
+    public async Task Open1()
     {
         var window = Con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Config);
@@ -36,7 +37,7 @@ public partial class SettingTab1Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void Open2()
+    public async Task Open2()
     {
         var window = Con.Window;
         var file = await BaseBinding.OpFile(window, FileType.AuthConfig);
@@ -48,7 +49,7 @@ public partial class SettingTab1Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void Open3()
+    public async Task Open3()
     {
         var window = Con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Config);
@@ -158,7 +159,7 @@ public partial class SettingTab1Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void Reset()
+    public async Task Reset()
     {
         var window = Con.Window;
         var res = await window.OkInfo.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info1"));
@@ -170,7 +171,7 @@ public partial class SettingTab1Model : ObservableObject
     }
 
     [RelayCommand]
-    public async void ClearUser()
+    public async Task ClearUser()
     {
         var window = Con.Window;
         var res = await window.OkInfo.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info3"));

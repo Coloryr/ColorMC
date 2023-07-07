@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddModPackModel : ObservableObject
+public partial class AddModPackControlModel : ObservableObject
 {
     private readonly IUserControl Con;
 
@@ -65,7 +65,7 @@ public partial class AddModPackModel : ObservableObject
     [ObservableProperty]
     private bool emptyDisplay = true;
 
-    public AddModPackModel(IUserControl con)
+    public AddModPackControlModel(IUserControl con)
     {
         Con = con;
     }

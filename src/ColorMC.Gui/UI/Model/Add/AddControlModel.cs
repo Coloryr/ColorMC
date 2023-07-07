@@ -452,7 +452,7 @@ public partial class AddControlModel : ObservableObject
     }
 
     [RelayCommand]
-    public async void DownloadAllMod()
+    public async Task DownloadAllMod()
     {
         foreach (var item in DownloadModList)
         {

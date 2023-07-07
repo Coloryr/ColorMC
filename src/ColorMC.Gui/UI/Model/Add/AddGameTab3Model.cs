@@ -6,6 +6,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -34,7 +35,7 @@ public partial class AddGameTab3Model : AddGameControlModel
     }
 
     [RelayCommand]
-    public async void Add()
+    public async Task Add()
     {
         var window = Con.Window;
         if (string.IsNullOrWhiteSpace(Name))
@@ -59,7 +60,7 @@ public partial class AddGameTab3Model : AddGameControlModel
     }
 
     [RelayCommand]
-    public async void SelectLocal()
+    public async Task SelectLocal()
     {
         var res = await BaseBinding.OpPath(Con.Window, FileType.Game);
         if (string.IsNullOrWhiteSpace(res))

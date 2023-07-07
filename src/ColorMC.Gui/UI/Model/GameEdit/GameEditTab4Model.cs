@@ -60,7 +60,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public async void StartSet()
+    public async Task StartSet()
     {
         if (isSet)
             return;
