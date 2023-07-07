@@ -53,12 +53,12 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         }
     }
 
-    private void Grid1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private async void Grid1_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
         {
-            model.Download();
+            await model.Download();
             e.Handled = true;
         }
     }
@@ -71,9 +71,9 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         }
     }
 
-    private void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
+    private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        model.Download();
+        await model.Download();
     }
 
     public void Closed()
