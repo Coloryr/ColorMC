@@ -11,6 +11,7 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui;
 
@@ -34,6 +35,8 @@ public static class ColorMCGui
 
         try
         {
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
             SystemInfo.Init();
 
             RunType = RunType.Program;
@@ -75,6 +78,11 @@ public static class ColorMCGui
             BaseBinding.OpFile(Logs.SaveCrash("Gui Crash", e));
             App.Close();
         }
+    }
+
+    private static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+    {
+        BaseBinding.OpFile(Logs.SaveCrash("Gui Crash", e.Exception));
     }
 
     public static void StartPhone(string local)
