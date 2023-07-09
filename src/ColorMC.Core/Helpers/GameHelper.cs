@@ -82,18 +82,10 @@ public static class GameHelper
         {
             list.Add(BuildForgeUniversal(mc, version));
             list.Add(BuildForgeInster(mc, version));
-            if (CheckRule.IsGameLaunchVersion117(mc))
-            {
-
-            }
-            else
+            if (!CheckRule.IsGameLaunchVersion117(mc))
             {
                 list.Add(BuildForgeLauncher(mc, version));
             }
-        }
-        else
-        {
-
         }
 
         foreach (var item1 in info.libraries)
@@ -124,38 +116,38 @@ public static class GameHelper
         return list;
     }
 
-    public static async Task<ConcurrentBag<DownloadItemObj>> MakeForgeLibs(ForgeInstallObj info, string mc, string version)
+    public static List<DownloadItemObj> MakeForgeLibs(ForgeInstallObj info, string mc, string version)
     {
-        var list = new ConcurrentBag<DownloadItemObj>();
+        var list = new List<DownloadItemObj>();
 
-        await Parallel.ForEachAsync(info.libraries, async (item, cacenl) =>
+        foreach (var item in info.libraries)
         {
             if (item.name.StartsWith("net.minecraftforge:forge:")
-            && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
+                && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
             {
                 var item1 = GameHelper.BuildForgeUniversal(mc, version);
                 item1.SHA1 = item.downloads.artifact.sha1;
                 if (!File.Exists(item1.Local))
                 {
                     list.Add(item1);
-                    return;
+                    continue;
                 }
                 if (!string.IsNullOrWhiteSpace(item1.SHA1))
                 {
                     using var stream1 = new FileStream(item1.Local, FileMode.Open, FileAccess.ReadWrite,
                    FileShare.ReadWrite);
-                    var sha11 = await Funtcions.GenSha1Async(stream1);
+                    var sha11 = Funtcions.GenSha1(stream1);
                     if (sha11 != item1.SHA1)
                     {
                         list.Add(item1);
                     }
                 }
 
-                return;
+                continue;
             }
 
             if (string.IsNullOrWhiteSpace(item.downloads.artifact.url))
-                return;
+                continue;
 
             string file = $"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}";
             if (!File.Exists(file))
@@ -168,11 +160,11 @@ public static class GameHelper
                     Url = UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
                          BaseClient.Source)
                 });
-                return;
+                continue;
             }
             using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
-            var sha1 = await Funtcions.GenSha1Async(stream);
+            var sha1 = Funtcions.GenSha1(stream);
             if (item.downloads.artifact.sha1 != sha1)
             {
                 list.Add(new()
@@ -184,7 +176,7 @@ public static class GameHelper
                          BaseClient.Source)
                 });
             }
-        });
+        }
 
         //if (!string.IsNullOrWhiteSpace(forgeinstall.data?.MOJMAPS?.client)
         //    && version1.downloads.client_mappings != null)

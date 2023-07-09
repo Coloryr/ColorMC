@@ -120,13 +120,14 @@ public static class GameDownloadHelper
         //1.12.2以上
         if (find1 && find2)
         {
-            byte[] array1 = stream1.ToArray();
+            
             ForgeLaunchObj info;
             try
             {
-                var data = Encoding.UTF8.GetString(array1);
+                var array = stream1.ToArray();
+                var data = Encoding.UTF8.GetString(stream1.ToArray());
                 info = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
-                File.WriteAllBytes($"{VersionPath.ForgeDir}/{name}.json", array1);
+                File.WriteAllBytes($"{VersionPath.ForgeDir}/{name}.json", array);
             }
             catch (Exception e)
             {
@@ -136,17 +137,21 @@ public static class GameDownloadHelper
 
             list.AddRange(GameHelper.MakeForgeLibs(info, mc, version));
 
-            byte[] array2 = stream2.ToArray();
-            var data1 = Encoding.UTF8.GetString(array2);
+            ForgeInstallObj info1;
             try
             {
-                File.WriteAllBytes($"{VersionPath.ForgeDir}/{name}-install.json", stream2.ToArray());
+                var array = stream2.ToArray();
+                var data = Encoding.UTF8.GetString(array);
+                info1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
+                File.WriteAllBytes($"{VersionPath.ForgeDir}/{name}-install.json", array);
             }
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error2"), e);
                 return (GetDownloadState.GetInfo, null);
             }
+
+            list.AddRange(GameHelper.MakeForgeLibs(info1, mc, version));
         }
         //旧forge
         else

@@ -103,7 +103,7 @@ public static class LibrariesPath
         //forge安装器
         if (forgeinstall != null)
         {
-            var list2 = await GameHelper.MakeForgeLibs(forgeinstall, obj.Version, obj.LoaderVersion!);
+            var list2 = GameHelper.MakeForgeLibs(forgeinstall, obj.Version, obj.LoaderVersion!);
             list1.AddRange(list2);
         }
 
