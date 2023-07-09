@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -227,7 +226,7 @@ public partial class GameEditTab4Model : GameEditTabModel
             }
 
             var list = GameBinding.ModDisable(item, Items);
-            
+
             if (list.Count == 0)
             {
                 return;

@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using ColorMC.Core.Game;

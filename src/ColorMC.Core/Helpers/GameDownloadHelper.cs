@@ -120,7 +120,7 @@ public static class GameDownloadHelper
         //1.12.2以上
         if (find1 && find2)
         {
-            
+
             ForgeLaunchObj info;
             try
             {

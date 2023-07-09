@@ -8,7 +8,6 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace ColorMC.Core.Helpers;
 

@@ -8,7 +8,6 @@ using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System.Text;
-using System;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -900,7 +899,7 @@ public static class InstancesPath
 
                         var mmc1 = Encoding.UTF8.GetString(stream2.ToArray());
 
-                        game = mmc.ToColorMC(mmc1 ,out var icon);
+                        game = mmc.ToColorMC(mmc1, out var icon);
 
                         if (!string.IsNullOrWhiteSpace(name))
                         {

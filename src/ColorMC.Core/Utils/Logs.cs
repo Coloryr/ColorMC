@@ -129,7 +129,7 @@ public static class Logs
     {
         var date = DateTime.Now;
         string text = $"[{date}][Error]{data}{Environment.NewLine}{e}";
-        
+
         var file = $"{Local}{date.Year}_{date.Month}_{date.Day}_" +
             $"{date.Hour}_{date.Minute}_{date.Second}_crash.log";
 

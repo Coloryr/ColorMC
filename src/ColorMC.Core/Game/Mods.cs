@@ -282,7 +282,7 @@ public static class Mods
 
         //多线程同时检查
         await Parallel.ForEachAsync(files, new ParallelOptions()
-        { 
+        {
             MaxDegreeOfParallelism = 1
         }, async (item, cancel) =>
         {

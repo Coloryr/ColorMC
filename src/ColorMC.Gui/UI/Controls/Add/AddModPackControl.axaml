@@ -192,6 +192,7 @@
                 Name="DataGridFiles"
                 Background="{setting:Colors TranBack}"
                 ItemsSource="{Binding FileList}"
+                CanUserResizeColumns="True"
                 SelectedItem="{Binding Item}">
                 <DataGrid.Columns>
                     <DataGridTextColumn

@@ -8,7 +8,6 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
@@ -37,7 +36,6 @@ using ColorMC.Gui.Utils.LaunchSetting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -52,7 +50,7 @@ public partial class App : Application
         Name = "ColorMC";
         ThisApp = this;
 
-        AppDomain.CurrentDomain.UnhandledException += (a, e)=> 
+        AppDomain.CurrentDomain.UnhandledException += (a, e) =>
         {
             Logs.Error(GetLanguage("Gui.Error25"), e.ExceptionObject as Exception);
         };

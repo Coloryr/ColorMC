@@ -1,7 +1,6 @@
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
-using System;
 
 namespace ColorMC.Core.Helpers;
 

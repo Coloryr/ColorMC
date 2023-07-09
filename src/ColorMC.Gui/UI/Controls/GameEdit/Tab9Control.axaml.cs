@@ -1,6 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Input;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

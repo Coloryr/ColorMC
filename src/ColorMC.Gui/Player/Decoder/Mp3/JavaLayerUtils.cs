@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Platform;
+﻿using Avalonia.Platform;
 using System;
 using System.IO;
 

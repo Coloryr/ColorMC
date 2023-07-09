@@ -3,7 +3,7 @@ using ColorMC.Core.Objs;
 namespace ColorMC.Gui.Objs;
 
 public record GuiSetting
-{ 
+{
     public bool MainDisplay { get; set; }
 }
 

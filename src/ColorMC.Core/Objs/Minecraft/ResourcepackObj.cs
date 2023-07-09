@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace ColorMC.Core.Objs.Minecraft;
+﻿namespace ColorMC.Core.Objs.Minecraft;
 
 public record ResourcepackObj
 {

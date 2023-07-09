@@ -1,5 +1,4 @@
-﻿using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.ServerPack;
+﻿using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;

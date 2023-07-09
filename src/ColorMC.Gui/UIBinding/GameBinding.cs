@@ -404,7 +404,7 @@ public static class GameBinding
         }
         return res1;
     }
-        
+
 
     public static bool AddGameGroup(string name)
     {

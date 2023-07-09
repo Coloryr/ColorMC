@@ -75,7 +75,6 @@
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
-                CanUserSortColumns="False"
                 ItemsSource="{Binding ItemList}">
                 <DataGrid.Columns>
                     <DataGridTextColumn

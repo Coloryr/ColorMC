@@ -2,7 +2,6 @@
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;

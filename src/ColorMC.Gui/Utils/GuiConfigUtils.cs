@@ -207,7 +207,7 @@ public static class GuiConfigUtils
     {
         return new()
         {
-             MainDisplay = true
+            MainDisplay = true
         };
     }
 }

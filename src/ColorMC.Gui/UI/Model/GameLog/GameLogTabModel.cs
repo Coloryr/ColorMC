@@ -1,7 +1,6 @@
 ﻿using Avalonia.Threading;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
-using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;

@@ -114,6 +114,6 @@ public class SkinAnimation
                 Dispatcher.UIThread.Invoke(Render.RequestNextFrameRendering);
             }
         });
-        
+
     }
 }

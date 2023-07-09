@@ -1,6 +1,5 @@
 ﻿using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
-using ColorMC.Gui.UI.Controls.Main;
 using Live2DCSharpSDK.Framework.Rendering.OpenGL;
 using System.Runtime.InteropServices;
 using System.Text;

@@ -151,6 +151,7 @@
                 AutoGenerateColumns="False"
                 Background="{setting:Colors TranBack}"
                 CanUserSortColumns="False"
+                CanUserResizeColumns="True"
                 HorizontalScrollBarVisibility="Visible"
                 ItemsSource="{Binding ModList}"
                 SelectedItem="{Binding Item}"
