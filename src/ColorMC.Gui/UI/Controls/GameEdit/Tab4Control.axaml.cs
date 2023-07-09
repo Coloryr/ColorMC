@@ -34,6 +34,9 @@ public partial class Tab4Control : UserControl
         Button_D1.PointerExited += Button_D1_PointerLeave;
         Button_D.PointerEntered += Button_D_PointerEnter;
 
+        Button_O1.PointerExited += Button_O1_PointerLeave;
+        Button_O.PointerEntered += Button_O_PointerEnter;
+
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
@@ -90,8 +93,8 @@ public partial class Tab4Control : UserControl
 
     private void Button_B_PointerEnter(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(null, Button_B1, CancellationToken.None);
         Button_B.IsVisible = false;
+        App.CrossFade100.Start(null, Button_B1, CancellationToken.None);
     }
 
     private void Button_C1_PointerLeave(object? sender, PointerEventArgs e)
@@ -102,8 +105,8 @@ public partial class Tab4Control : UserControl
 
     private void Button_C_PointerEnter(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(null, Button_C1, CancellationToken.None);
         Button_C.IsVisible = false;
+        App.CrossFade100.Start(null, Button_C1, CancellationToken.None);
     }
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
@@ -114,8 +117,8 @@ public partial class Tab4Control : UserControl
 
     private void Button_I_PointerEnter(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(null, Button_I1, CancellationToken.None);
         Button_I.IsVisible = false;
+        App.CrossFade100.Start(null, Button_I1, CancellationToken.None);
     }
 
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
@@ -126,8 +129,8 @@ public partial class Tab4Control : UserControl
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
         Button_A.IsVisible = false;
+        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
     }
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
@@ -137,8 +140,8 @@ public partial class Tab4Control : UserControl
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
         Button_R.IsVisible = false;
+        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
     }
 
     private void Button_D1_PointerLeave(object? sender, PointerEventArgs e)
@@ -149,8 +152,20 @@ public partial class Tab4Control : UserControl
 
     private void Button_D_PointerEnter(object? sender, PointerEventArgs e)
     {
+        Button_D.IsVisible = false;
         App.CrossFade100.Start(null, Button_D1, CancellationToken.None);
-        Button_D.IsVisible = true;
+    }
+
+    private void Button_O1_PointerLeave(object? sender, PointerEventArgs e)
+    {
+        App.CrossFade100.Start(Button_O1, null, CancellationToken.None);
+        Button_O.IsVisible = true;
+    }
+
+    private void Button_O_PointerEnter(object? sender, PointerEventArgs e)
+    {
+        Button_O.IsVisible = false;
+        App.CrossFade100.Start(null, Button_O1, CancellationToken.None);
     }
 
     private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)

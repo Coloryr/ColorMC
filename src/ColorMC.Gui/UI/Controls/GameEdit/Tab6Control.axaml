@@ -24,7 +24,6 @@
                 <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
                     <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
                 </DataTemplate>
-
                 <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
                     <StackPanel Orientation="Horizontal">
                         <Label

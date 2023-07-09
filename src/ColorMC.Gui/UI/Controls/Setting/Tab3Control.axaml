@@ -52,16 +52,16 @@
 
             <StackPanel>
                 <Label Content="{setting:Localize SettingWindow.Tab3.Text3}" />
-                <StackPanel Orientation="Horizontal">
+                <Grid ColumnDefinitions="1.6*,1*,1.6*,1.6*,1*">
                     <TextBox
-                        Width="200"
+                        Grid.Column="0"
                         Margin="0,0,5,0"
                         Classes="input1"
                         IsEnabled="{Binding !IsDownload}"
                         Text="{Binding IP}"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
                     <TextBox
-                        Width="80"
+                        Grid.Column="1"
                         Margin="0,0,5,0"
                         Classes="input1"
                         IsEnabled="{Binding !IsDownload}"
@@ -69,27 +69,29 @@
                         Text="{Binding Port}"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
                     <TextBox
-                        Width="200"
+                        Grid.Column="2"
                         Margin="0,0,5,0"
                         Classes="input1"
                         IsEnabled="{Binding !IsDownload}"
                         Text="{Binding User}"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
                     <TextBox
-                        Width="200"
+                        Grid.Column="3"
+                        Margin="0,0,5,0"
                         Classes="input1"
                         IsEnabled="{Binding !IsDownload}"
                         PasswordChar="*"
                         Text="{Binding Password}"
                         Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
                     <Button
-                        Width="80"
+                        Grid.Column="4"
+                        Width="100"
                         Height="25"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         Command="{Binding SetProxy}"
                         Content="{setting:Localize Button.Set}" />
-                </StackPanel>
+                </Grid>
                 <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
                     <CheckBox
                         Width="160"

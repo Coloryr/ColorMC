@@ -11,71 +11,100 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <DockPanel Margin="5,0,5,5">
-            <Button
-                Width="85"
-                Height="25"
+        <Panel Margin="5,0,5,5">
+            <DataGrid
+                Name="DataGrid1"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                ItemsSource="{Binding ShaderpackList}"
+                SelectedItem="{Binding Item}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Name}"
+                        Header="{setting:Localize GameEditWindow.Tab6.Info4}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Local}"
+                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text4}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel
+                Margin="0,3,0,0"
                 HorizontalAlignment="Right"
-                Command="{Binding Open}"
-                Content="{setting:Localize Button.OpFile}"
-                DockPanel.Dock="Top"
-                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                ToolTip.VerticalOffset="-30" />
-            <Panel>
-                <DataGrid
-                    Name="DataGrid1"
-                    Margin="0,3,0,0"
-                    AutoGenerateColumns="False"
-                    CanUserResizeColumns="True"
-                    CanUserSortColumns="False"
-                    ItemsSource="{Binding ShaderpackList}"
-                    SelectedItem="{Binding Item}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Width="10" IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{setting:Localize GameEditWindow.Tab6.Info4}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Local}"
-                            Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text4}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
-                <StackPanel VerticalAlignment="Center">
-                    <Panel>
-                        <Button
-                            Name="Button_A"
-                            Width="20"
-                            Height="30"
-                            Command="{Binding Add}"
-                            Content="A" />
-                        <Button
-                            Name="Button_A1"
-                            Width="100"
-                            Height="30"
-                            Command="{Binding Add}"
-                            Content="{setting:Localize Button.Add}"
-                            IsVisible="False" />
-                    </Panel>
-                    <Panel Margin="0,5,0,0">
-                        <Button
-                            Name="Button_R"
-                            Width="20"
-                            Height="30"
-                            Command="{Binding Load}"
-                            Content="R" />
-                        <Button
-                            Name="Button_R1"
-                            Width="100"
-                            Height="30"
-                            Command="{Binding Load}"
-                            Content="{setting:Localize Button.Refash}"
-                            IsVisible="False" />
-                    </Panel>
-                </StackPanel>
-            </Panel>
-        </DockPanel>
+                VerticalAlignment="Top"
+                Orientation="Horizontal">
+                <Panel>
+                    <Button
+                        Name="Button_O"
+                        Width="25"
+                        Height="25"
+                        Command="{Binding Open}"
+                        Content="O" />
+                    <Button
+                        Name="Button_O1"
+                        Width="100"
+                        Height="25"
+                        Command="{Binding Open}"
+                        Content="{setting:Localize Button.OpFile}"
+                        IsVisible="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                        ToolTip.VerticalOffset="-30" />
+                </Panel>
+                <Panel Margin="5,0,0,0">
+                    <Button
+                        Name="Button_I"
+                        Width="25"
+                        Height="25"
+                        Command="{Binding Import}"
+                        Content="I" />
+                    <Button
+                        Name="Button_I1"
+                        Width="100"
+                        Height="25"
+                        Command="{Binding Import}"
+                        Content="{setting:Localize Button.Input}"
+                        IsVisible="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text60}"
+                        ToolTip.VerticalOffset="-30" />
+                </Panel>
+                <Panel Margin="5,0,0,0">
+                    <Button
+                        Name="Button_A"
+                        Width="25"
+                        Height="25"
+                        Command="{Binding Add}"
+                        Content="A" />
+                    <Button
+                        Name="Button_A1"
+                        Width="100"
+                        Height="25"
+                        Command="{Binding Add}"
+                        Content="{setting:Localize Button.Add}"
+                        IsVisible="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text61}"
+                        ToolTip.VerticalOffset="-30" />
+                </Panel>
+                <Panel Margin="5,0,0,0">
+                    <Button
+                        Name="Button_R"
+                        Width="25"
+                        Height="25"
+                        Command="{Binding Load}"
+                        Content="R" />
+                    <Button
+                        Name="Button_R1"
+                        Width="100"
+                        Height="25"
+                        Command="{Binding Load}"
+                        Content="{setting:Localize Button.Refash}"
+                        IsVisible="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text62}"
+                        ToolTip.VerticalOffset="-30" />
+                </Panel>
+            </StackPanel>
+        </Panel>
         <Panel
             Name="Grid2"
             Background="{setting:Colors TopBottom}"

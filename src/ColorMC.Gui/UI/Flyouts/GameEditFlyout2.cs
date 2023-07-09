@@ -51,6 +51,6 @@ public class GameEditFlyout2
 
     private void Button1_Click()
     {
-        BaseBinding.OpPath(Model.World.Local);
+        BaseBinding.OpPath(Model.World.World);
     }
 }

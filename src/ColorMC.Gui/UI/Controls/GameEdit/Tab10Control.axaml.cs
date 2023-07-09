@@ -41,8 +41,8 @@ public partial class Tab10Control : UserControl
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
         Button_A.IsVisible = false;
+        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
     }
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
@@ -52,7 +52,7 @@ public partial class Tab10Control : UserControl
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
         Button_R.IsVisible = false;
+        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
     }
 }

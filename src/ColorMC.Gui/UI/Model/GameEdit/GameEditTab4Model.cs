@@ -56,7 +56,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpPath(Obj.GetModsPath());
+        BaseBinding.OpPath(Obj, PathType.ModPath);
     }
 
     [RelayCommand]

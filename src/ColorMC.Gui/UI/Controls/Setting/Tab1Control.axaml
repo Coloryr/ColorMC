@@ -43,7 +43,7 @@
                     Content="{setting:Localize Button.Input}"
                     DockPanel.Dock="Right" />
                 <Button
-                    Width="80"
+                    Width="100"
                     Height="25"
                     Margin="5,0,5,0"
                     Command="{Binding Open1}"
@@ -65,7 +65,7 @@
                     Content="{setting:Localize Button.Input}"
                     DockPanel.Dock="Right" />
                 <Button
-                    Width="80"
+                    Width="100"
                     Height="25"
                     Margin="5,0,5,0"
                     Command="{Binding Open2}"
@@ -87,7 +87,7 @@
                     Content="{setting:Localize Button.Input}"
                     DockPanel.Dock="Right" />
                 <Button
-                    Width="80"
+                    Width="100"
                     Height="25"
                     Margin="5,0,5,0"
                     Command="{Binding Open3}"

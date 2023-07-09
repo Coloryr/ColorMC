@@ -1,17 +1,19 @@
 using Avalonia.Media.Imaging;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.Objs;
 
 public record WorldDisplayObj
 {
-    public string Name;
-    public string Mode;
-    public string Time;
-    public string Local;
-    public string Difficulty;
-    public bool Hardcore;
+    public string Name => World.LevelName;
+    public string Mode => LanguageHelper.GetNameWithGameType(World.GameType);
+    public string Time => Funtcions.MillisecondsToDataTime(World.LastPlayed).ToString();
+    public string Local => World.Local;
+    public string Difficulty => LanguageHelper.GetNameWithDifficulty(World.Difficulty);
+    public bool Hardcore => World.Hardcore == 1;
     public Bitmap? Pic;
 
-    public WorldObj World;
+    public required WorldObj World;
 }

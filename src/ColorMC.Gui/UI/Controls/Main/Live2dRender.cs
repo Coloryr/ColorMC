@@ -25,6 +25,7 @@ public class Live2dRender : OpenGlControlBase
     private bool delete;
     private bool init = false;
     private MainModel Model;
+    private bool first = false;
 
     public bool HaveModel => lapp?.Live2dManager.GetModelNum() != 0;
 
@@ -113,6 +114,9 @@ public class Live2dRender : OpenGlControlBase
 
     protected override unsafe void OnOpenGlInit(GlInterface gl)
     {
+        if (first)
+            return;
+        first = true;
         if (init)
             return;
         CheckError(gl);
@@ -143,7 +147,7 @@ public class Live2dRender : OpenGlControlBase
         {
             IsVisible = false;
         }
-        else if(HaveModel && !IsVisible)
+        else if (HaveModel && !IsVisible)
         {
             IsVisible = true;
         }

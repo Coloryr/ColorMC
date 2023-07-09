@@ -29,7 +29,7 @@ public partial class GameEditTab12Model : GameEditTabModel
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpPath(Obj.GetSchematicsPath());
+        BaseBinding.OpPath(Obj, PathType.SchematicsPath);
     }
 
     [RelayCommand]

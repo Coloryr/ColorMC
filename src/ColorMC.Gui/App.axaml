@@ -5,7 +5,6 @@
     <Application.Resources />
     <Application.Styles>
         <FluentTheme />
-        <!--<StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />-->
         <StyleInclude Source="/Style/Button.axaml" />
         <StyleInclude Source="/Style/Tab.axaml" />
         <StyleInclude Source="/Style/TextBox.axaml" />
@@ -21,5 +20,6 @@
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
         <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml" />
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
     </Application.Styles>
 </Application>

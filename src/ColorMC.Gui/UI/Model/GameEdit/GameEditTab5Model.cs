@@ -80,7 +80,7 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpPath(Obj.GetSavesPath());
+        BaseBinding.OpPath(Obj, PathType.SavePath);
     }
     [RelayCommand]
     public void Add()
@@ -91,7 +91,7 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
     [RelayCommand]
     public void OpenBackup()
     {
-        BaseBinding.OpPath(Obj.GetWorldBackupPath());
+        BaseBinding.OpPath(Obj, PathType.WorldBackPath);
     }
     [RelayCommand]
     public async Task Load()

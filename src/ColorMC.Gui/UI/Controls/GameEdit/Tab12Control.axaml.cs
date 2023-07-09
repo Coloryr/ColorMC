@@ -19,6 +19,9 @@ public partial class Tab12Control : UserControl
         Button_R1.PointerExited += Button_R1_PointerLeave;
         Button_R.PointerEntered += Button_R_PointerEnter;
 
+        Button_O1.PointerExited += Button_O1_PointerLeave;
+        Button_O.PointerEntered += Button_O_PointerEnter;
+
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
@@ -64,8 +67,8 @@ public partial class Tab12Control : UserControl
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
         Button_A.IsVisible = false;
+        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
     }
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
@@ -75,8 +78,20 @@ public partial class Tab12Control : UserControl
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
         Button_R.IsVisible = false;
+        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
+    }
+
+    private void Button_O1_PointerLeave(object? sender, PointerEventArgs e)
+    {
+        App.CrossFade100.Start(Button_O1, null, CancellationToken.None);
+        Button_O.IsVisible = true;
+    }
+
+    private void Button_O_PointerEnter(object? sender, PointerEventArgs e)
+    {
+        Button_O.IsVisible = false;
+        App.CrossFade100.Start(null, Button_O1, CancellationToken.None);
     }
 }
 

@@ -735,7 +735,7 @@ public static class BaseBinding
     /// 在资源管理器打开路径
     /// </summary>
     /// <param name="item">路径</param>
-    public static void OpPath(string item)
+    private static void OpPath(string item)
     {
         switch (SystemInfo.Os)
         {
@@ -752,6 +752,50 @@ public static class BaseBinding
                     '"' + item + '"');
                 break;
         }
+    }
+
+    /// <summary>
+    /// 打开路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="type">路径类型</param>
+    public static void OpPath(GameSettingObj obj, PathType type)
+    {
+        switch (type)
+        {
+            case PathType.ShaderpacksPath:
+                OpPath(obj.GetShaderpacksPath());
+                break;
+            case PathType.ResourcepackPath:
+                OpPath(obj.GetResourcepacksPath());
+                break;
+            case PathType.WorldBackPath:
+                OpPath(obj.GetWorldBackupPath());
+                break;
+            case PathType.SavePath:
+                OpPath(obj.GetSavesPath());
+                break;
+            case PathType.GamePath:
+                OpPath(obj.GetGamePath());
+                break;
+            case PathType.SchematicsPath:
+                OpPath(obj.GetSchematicsPath());
+                break;
+            case PathType.ScreenshotsPath:
+                OpPath(obj.GetScreenshotsPath());
+                break;
+            case PathType.ModPath:
+                OpPath(obj.GetModsPath());
+                break;
+            case PathType.BasePath:
+                OpPath(obj.GetBasePath());
+                break;
+        }
+    }
+
+    public static void OpPath(WorldObj obj)
+    {
+        OpPath(obj.Local);
     }
 
     /// <summary>
@@ -1136,24 +1180,6 @@ public static class BaseBinding
         }
 
         return null;
-    }
-
-    /// <summary>
-    /// 打开路径
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="type">路径类型</param>
-    public static void OpPath(GameSettingObj obj, PathType type)
-    {
-        switch (type)
-        {
-            case PathType.ShaderpacksPath:
-                OpPath(obj.GetShaderpacksPath());
-                break;
-            case PathType.ResourcepackPath:
-                OpPath(obj.GetResourcepacksPath());
-                break;
-        }
     }
 
     /// <summary>

@@ -40,7 +40,7 @@ public partial class GameEditTab11Model : GameEditTabModel
         window.ProgressInfo.Close();
     }
     [RelayCommand]
-    public async Task Add()
+    public async Task Import()
     {
         var window = Con.Window;
         var res = await GameBinding.AddFile(window as Window, Obj, FileType.Shaderpack);
@@ -55,6 +55,12 @@ public partial class GameEditTab11Model : GameEditTabModel
 
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab11.Info3"));
         Load();
+    }
+
+    [RelayCommand]
+    public void Add()
+    {
+        App.ShowAdd(Obj, FileType.Shaderpack);
     }
 
     public async void Drop(IDataObject data)

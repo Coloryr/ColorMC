@@ -12,7 +12,7 @@ public static class Logs
 
     private static string Local;
     private static StreamWriter Writer;
-    private static Thread ThreadLog = new(Run)
+    private static readonly Thread ThreadLog = new(Run)
     {
         Name = "ColorMC-Log"
     };
@@ -26,10 +26,10 @@ public static class Logs
     {
         ColorMCCore.Stop += Stop;
 
-        Local = dir + "logs.log";
+        Local = dir;
         try
         {
-            Writer = File.AppendText(Local);
+            Writer = File.AppendText(Local + "logs.log");
             Writer.AutoFlush = true;
             IsRun = true;
             ThreadLog.Start();
@@ -123,5 +123,18 @@ public static class Logs
     {
         string text = $"[{DateTime.Now}][Error]{data}{Environment.NewLine}{e}";
         AddText(text);
+    }
+
+    public static string SaveCrash(string data, Exception e)
+    {
+        var date = DateTime.Now;
+        string text = $"[{date}][Error]{data}{Environment.NewLine}{e}";
+        
+        var file = $"{Local}{date.Year}_{date.Month}_{date.Day}_" +
+            $"{date.Hour}_{date.Minute}_{date.Second}crash.log";
+
+        File.WriteAllText(file, text);
+
+        return file;
     }
 }

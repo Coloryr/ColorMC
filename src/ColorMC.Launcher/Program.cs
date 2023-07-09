@@ -26,15 +26,14 @@ internal static class GuiLoad
 
 public static class Program
 {
-    public const string TopVersion = "A19";
+    public const string TopVersion = "A19.1";
 
-    public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
     public static readonly string[] BaseSha1 = new[]
     {
-        "92ebb84c01135a099d1f18c6cfcba8392ad3616d",
-        "97d9854df8eb303136e4b3790f77a664f214e5e6",
-        "17d720e71c3c6f3e4b6060cea99e8761e520c60f",
-        "423b2cd3972a662bd7bfb12dd0830b9d857d2051"
+        "986860e721be1d7df9249213abcaa62f5345d8dd",
+        "8b08ca8559ad01daeacfba3916baff977f0ce0fc",
+        "f7525e50be2be5dc2a9e6e4fb99f8a9ffff7d83d",
+        "eb03ef7b4198b63d140c561648e71c7814601bda"
     };
     /// <summary>
     /// 加载路径

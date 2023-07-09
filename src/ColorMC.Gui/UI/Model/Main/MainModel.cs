@@ -387,6 +387,14 @@ public partial class MainModel : ObservableObject, IMainTop
         }
 
         SideDisplay = config.Item2.Gui.MainDisplay;
+        if (SideDisplay)
+        {
+            SideButton = "→";
+        }
+        else
+        {
+            SideButton = "←";
+        }
 
         if (config.Item2.ServerCustom?.LockGame == true)
         {

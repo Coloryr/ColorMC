@@ -490,7 +490,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpPath(Obj.GetBasePath());
+        BaseBinding.OpPath(Obj, PathType.BasePath);
     }
 
     [RelayCommand]

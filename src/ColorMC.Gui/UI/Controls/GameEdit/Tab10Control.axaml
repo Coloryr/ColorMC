@@ -14,14 +14,12 @@
         <Panel>
             <DataGrid
                 Name="DataGrid1"
-                Margin="0,3,0,0"
                 AutoGenerateColumns="False"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False"
                 ItemsSource="{Binding ServerList}"
                 SelectedItem="{Binding Item}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="10" IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Name}"
                         Header="{setting:Localize DownloadWindow.DataGrid.Text1}"
@@ -32,36 +30,44 @@
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel VerticalAlignment="Center">
+            <StackPanel
+                Margin="0,3,0,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Orientation="Horizontal">
                 <Panel>
                     <Button
                         Name="Button_A"
-                        Width="20"
-                        Height="30"
+                        Width="25"
+                        Height="25"
                         Command="{Binding Add}"
                         Content="A" />
                     <Button
                         Name="Button_A1"
                         Width="100"
-                        Height="30"
+                        Height="25"
                         Command="{Binding Add}"
                         Content="{setting:Localize Button.Add}"
-                        IsVisible="False" />
+                        IsVisible="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text58}"
+                        ToolTip.VerticalOffset="-30" />
                 </Panel>
-                <Panel Margin="0,5,0,0">
+                <Panel Margin="5,0,0,0">
                     <Button
                         Name="Button_R"
-                        Width="20"
-                        Height="30"
+                        Width="25"
+                        Height="25"
                         Command="{Binding Load}"
                         Content="R" />
                     <Button
                         Name="Button_R1"
                         Width="100"
-                        Height="30"
+                        Height="25"
                         Command="{Binding Load}"
                         Content="{setting:Localize Button.Refash}"
-                        IsVisible="False" />
+                        IsVisible="False"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text59}"
+                        ToolTip.VerticalOffset="-30" />
                 </Panel>
             </StackPanel>
         </Panel>

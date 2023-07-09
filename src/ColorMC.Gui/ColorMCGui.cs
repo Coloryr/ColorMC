@@ -4,6 +4,7 @@ using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using System;
 using System.Diagnostics;
@@ -72,7 +73,7 @@ public static class ColorMCGui
         }
         catch (Exception e)
         {
-            Logs.Error("fail", e);
+            BaseBinding.OpFile(Logs.SaveCrash("Gui Crash", e));
             App.Close();
         }
     }

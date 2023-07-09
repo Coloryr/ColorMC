@@ -438,7 +438,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    private static List<string> MakeV2GameArg(GameSettingObj obj, WorldObj? world = null)
+    private static List<string> MakeV2GameArg(GameSettingObj obj)
     {
         var game = VersionPath.GetGame(obj.Version)!;
         if (game.arguments == null)
@@ -632,7 +632,7 @@ public static class Launch
     private static List<string> GameArg(GameSettingObj obj, bool v2, WorldObj? world)
     {
         List<string> gameArg = new();
-        gameArg.AddRange(v2 ? MakeV2GameArg(obj, world) : MakeV1GameArg(obj));
+        gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
 
         WindowSettingObj window;
         if (obj.Window == null)
@@ -1209,8 +1209,11 @@ public static class Launch
         if (cancel.IsCancellationRequested)
             return null;
 
-        NativeLaunch(jvm!, arg);
-        return null;
+        if (SystemInfo.Os == OsType.Android)
+        {
+            NativeLaunch(jvm!, arg);
+            return null;
+        }
 
         //启动进程
         Process process = new()
@@ -1340,6 +1343,7 @@ public static class Launch
             OsType.Linux => "/lib/libjli.so",
             OsType.MacOS => "/lib/libjli.dylib",
             OsType.Android => "/lib/libjli.so",
+            _ => throw new NotImplementedException(),
         };
         if (File.Exists(local))
         {

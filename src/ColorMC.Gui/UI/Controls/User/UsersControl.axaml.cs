@@ -29,9 +29,6 @@ public partial class UsersControl : UserControl, IUserControl
         DataGrid_User.DoubleTapped += DataGrid_User_DoubleTapped;
         DataGrid_User.CellPointerPressed += DataGrid_User_PointerPressed;
 
-        Button_A1.PointerExited += Button_A1_PointerLeave;
-        Button_A.PointerEntered += Button_A_PointerEnter;
-
         TextBox_Input1.KeyDown += TextBox_Input1_KeyDown;
         TextBox_Input3.KeyDown += TextBox_Input3_KeyDown;
 
@@ -135,19 +132,6 @@ public partial class UsersControl : UserControl, IUserControl
     {
         model.Select();
     }
-
-    private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        App.CrossFade100.Start(Button_A1, null, CancellationToken.None);
-        Button_A.IsVisible = true;
-    }
-
-    private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
-        Button_A.IsVisible = false;
-    }
-
     public void AddUrl(string url)
     {
         model.AddUrl(url);

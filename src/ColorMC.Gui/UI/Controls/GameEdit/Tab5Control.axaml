@@ -14,14 +14,12 @@
     <Panel>
         <DockPanel Margin="5,0,5,5">
             <StackPanel
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
+                VerticalAlignment="Top"
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
                 <Button
-                    Width="120"
+                    Width="100"
                     Height="25"
-                    Margin="5,0,0,0"
                     Command="{Binding Backup}"
                     Content="{setting:Localize GameEditWindow.Tab5.Text2}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text42}"
@@ -35,75 +33,44 @@
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
-                    Width="85"
+                    Width="100"
                     Height="25"
                     Margin="5,0,0,0"
                     Command="{Binding Open}"
                     Content="{setting:Localize Button.OpFile}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Import}"
+                    Content="{setting:Localize Button.Input}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Add}"
+                    Content="{setting:Localize Button.Add}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Load}"
+                    Content="{setting:Localize Button.Refash}" />
             </StackPanel>
-            <Panel Margin="0,3,0,0">
-                <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <ItemsControl
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        ItemsSource="{Binding WorldList}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <item:WorldControl DataContext="{Binding}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-                <StackPanel VerticalAlignment="Center">
-                    <Panel>
-                        <Button
-                            Name="Button_I"
-                            Width="20"
-                            Height="30"
-                            Command="{Binding Import}"
-                            Content="I" />
-                        <Button
-                            Name="Button_I1"
-                            Width="100"
-                            Height="30"
-                            Command="{Binding Import}"
-                            Content="{setting:Localize Button.Input}"
-                            IsVisible="False" />
-                    </Panel>
-                    <Panel Margin="0,5,0,0">
-                        <Button
-                            Name="Button_A"
-                            Width="20"
-                            Height="30"
-                            Command="{Binding Add}"
-                            Content="A" />
-                        <Button
-                            Name="Button_A1"
-                            Width="100"
-                            Height="30"
-                            Command="{Binding Add}"
-                            Content="{setting:Localize Button.Add}"
-                            IsVisible="False" />
-                    </Panel>
-                    <Panel Margin="0,5,0,0">
-                        <Button
-                            Name="Button_R"
-                            Width="20"
-                            Height="30"
-                            Command="{Binding Load}"
-                            Content="R" />
-                        <Button
-                            Name="Button_R1"
-                            Width="100"
-                            Height="30"
-                            Command="{Binding Load}"
-                            Content="{setting:Localize Button.Refash}"
-                            IsVisible="False" />
-                    </Panel>
-                </StackPanel>
-            </Panel>
+            <ScrollViewer Margin="0,3,0,0" VerticalScrollBarVisibility="Visible">
+                <ItemsControl
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    ItemsSource="{Binding WorldList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <item:WorldControl DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
         </DockPanel>
         <Panel
             Name="Grid2"

@@ -11,19 +11,51 @@
     mc:Ignorable="d">
     <DockPanel Margin="3">
         <DockPanel DockPanel.Dock="Top">
+            <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
+                <Button
+                    Name="Button_P"
+                    Width="20"
+                    Height="25"
+                    Command="{Binding Pause}"
+                    Content="{Binding Button}" />
+                <Button
+                    Name="Button_P1"
+                    Width="100"
+                    Height="25"
+                    Command="{Binding Pause}"
+                    Content="{Binding Button1}"
+                    IsVisible="False" />
+            </Panel>
+            <Panel DockPanel.Dock="Right">
+                <Button
+                    Name="Button_S"
+                    Width="20"
+                    Height="25"
+                    Command="{Binding Stop}"
+                    Content="S" />
+                <Button
+                    Name="Button_S1"
+                    Width="100"
+                    Height="25"
+                    Command="{Binding Stop}"
+                    Content="{setting:Localize DownloadWindow.Text2}"
+                    IsVisible="False" />
+            </Panel>
             <Label Content="{setting:Localize DownloadWindow.Text3}" />
             <Label
-                MinWidth="100"
+                MinWidth="90"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
                 Content="{Binding Speed}"
                 DockPanel.Dock="Right" />
             <Label
-                MinWidth="100"
+                MinWidth="90"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 HorizontalContentAlignment="Right"
+                VerticalContentAlignment="Center"
                 Content="{Binding Now}"
                 DockPanel.Dock="Right" />
 
@@ -46,7 +78,6 @@
                 CanUserSortColumns="False"
                 ItemsSource="{Binding ItemList}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="10" IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Name}"
                         Header="{setting:Localize DownloadWindow.DataGrid.Text1}"
@@ -69,38 +100,6 @@
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel VerticalAlignment="Center">
-                <Panel>
-                    <Button
-                        Name="Button_P"
-                        Width="20"
-                        Height="30"
-                        Command="{Binding Pause}"
-                        Content="{Binding Button}" />
-                    <Button
-                        Name="Button_P1"
-                        Width="100"
-                        Height="30"
-                        Command="{Binding Pause}"
-                        Content="{Binding Button1}"
-                        IsVisible="False" />
-                </Panel>
-                <Panel Margin="0,5,0,0">
-                    <Button
-                        Name="Button_S"
-                        Width="20"
-                        Height="30"
-                        Command="{Binding Stop}"
-                        Content="S" />
-                    <Button
-                        Name="Button_S1"
-                        Width="100"
-                        Height="30"
-                        Command="{Binding Stop}"
-                        Content="{setting:Localize DownloadWindow.Text2}"
-                        IsVisible="False" />
-                </Panel>
-            </StackPanel>
         </Panel>
     </DockPanel>
 </UserControl>

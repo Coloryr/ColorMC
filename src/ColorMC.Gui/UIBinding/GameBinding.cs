@@ -717,12 +717,6 @@ public static class GameBinding
         {
             var obj1 = new WorldDisplayObj()
             {
-                Name = item.LevelName,
-                Mode = LanguageHelper.GetNameWithGameType(item.GameType),
-                Time = Funtcions.MillisecondsToDataTime(item.LastPlayed).ToString(),
-                Local = item.Local,
-                Difficulty = LanguageHelper.GetNameWithDifficulty(item.Difficulty),
-                Hardcore = item.Hardcore == 1,
                 World = item
             };
             if (item.Icon != null)
@@ -886,7 +880,7 @@ public static class GameBinding
 
     public static void OpPath(GameSettingObj obj)
     {
-        BaseBinding.OpPath(obj.GetGamePath());
+        BaseBinding.OpPath(obj, PathType.GamePath);
     }
 
     public static IEnumerable<ServerInfoObj> GetServers(GameSettingObj obj)

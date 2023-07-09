@@ -25,7 +25,6 @@
             SelectedItem="{Binding Item}"
             VerticalScrollBarVisibility="Visible">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="10" IsReadOnly="True" />
                 <DataGridCheckBoxColumn
                     Binding="{Binding Use}"
                     Header="{setting:Localize UserWindow.DataGrid.Text1}"
@@ -53,23 +52,14 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Margin="5,0,0,0" VerticalAlignment="Center">
-            <Panel>
-                <Button
-                    Name="Button_A"
-                    Width="20"
-                    Height="30"
-                    Command="{Binding SetAdd}"
-                    Content="A" />
-                <Button
-                    Name="Button_A1"
-                    Width="100"
-                    Height="30"
-                    Command="{Binding SetAdd}"
-                    Content="{setting:Localize UserWindow.Text4}"
-                    IsVisible="False" />
-            </Panel>
-        </StackPanel>
+        <Button
+            Width="100"
+            Height="25"
+            Margin="0,3,5,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding SetAdd}"
+            Content="{setting:Localize UserWindow.Text4}" />
 
         <Panel
             Name="Grid1"

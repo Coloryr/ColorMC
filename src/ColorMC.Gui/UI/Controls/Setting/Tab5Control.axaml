@@ -18,7 +18,7 @@
                 Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
             <DockPanel Margin="0,5,0,5">
                 <Button
-                    Width="80"
+                    Width="100"
                     Height="25"
                     Margin="5,0,0,0"
                     Command="{Binding Select}"
@@ -31,13 +31,13 @@
             </DockPanel>
             <DockPanel>
                 <Button
-                    Width="80"
+                    Width="100"
                     Height="25"
                     Command="{Binding AddJava}"
                     Content="{setting:Localize Button.Add}"
                     DockPanel.Dock="Right" />
                 <Button
-                    Width="80"
+                    Width="100"
                     Height="25"
                     Command="{Binding ShowAddJava}"
                     Content="{setting:Localize SettingWindow.Tab5.Text4}"
@@ -56,6 +56,18 @@
                     Command="{Binding OpenFile}"
                     Content="{setting:Localize SettingWindow.Tab5.Text7}"
                     DockPanel.Dock="Left" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Delete}"
+                    Content="{setting:Localize SettingWindow.Tab5.Text5}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Load}"
+                    Content="{setting:Localize Button.Refash}" />
 
             </DockPanel>
         </StackPanel>
@@ -69,7 +81,6 @@
                 ItemsSource="{Binding JavaList}"
                 SelectedItem="{Binding Item}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="10" IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Name}"
                         Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text1}"
@@ -96,39 +107,6 @@
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel VerticalAlignment="Center">
-                <Panel>
-                    <Button
-                        Name="Button_R"
-                        Width="20"
-                        Height="30"
-                        Command="{Binding Load}"
-                        Content="R" />
-                    <Button
-                        Name="Button_R1"
-                        Width="100"
-                        Height="30"
-                        Command="{Binding Load}"
-                        Content="{setting:Localize Button.Refash}"
-                        IsVisible="False" />
-                </Panel>
-
-                <Panel Margin="0,5,0,0">
-                    <Button
-                        Name="Button_D"
-                        Width="20"
-                        Height="30"
-                        Command="{Binding Delete}"
-                        Content="D" />
-                    <Button
-                        Name="Button_D1"
-                        Width="100"
-                        Height="30"
-                        Command="{Binding Delete}"
-                        Content="{setting:Localize SettingWindow.Tab5.Text5}"
-                        IsVisible="False" />
-                </Panel>
-            </StackPanel>
         </Panel>
     </DockPanel>
 </UserControl>

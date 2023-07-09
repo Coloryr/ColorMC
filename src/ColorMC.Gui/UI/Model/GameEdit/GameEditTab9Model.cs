@@ -37,7 +37,7 @@ public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<Screensh
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpPath(Obj.GetScreenshotsPath());
+        BaseBinding.OpPath(Obj, PathType.ScreenshotsPath);
     }
 
     [RelayCommand]
