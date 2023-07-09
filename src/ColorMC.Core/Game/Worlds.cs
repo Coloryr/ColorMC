@@ -66,7 +66,7 @@ public static class Worlds
                     var icon = item.GetFiles().Where(a => a.Name == "icon.png").FirstOrDefault();
                     if (icon != null)
                     {
-                        obj.Icon = await File.ReadAllBytesAsync(icon.FullName);
+                        obj.Icon = await File.ReadAllBytesAsync(icon.FullName, cacenl);
                     }
 
                     list.Add(obj);

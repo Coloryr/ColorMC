@@ -404,45 +404,37 @@ public static class WebBinding
         return (data.MakeModDownloadObj(obj), data.MakeModInfo(), res.Values.ToList());
     }
 
-    public static async Task<bool> DownloadMod(GameSettingObj obj, IList<(DownloadItemObj Item, ModInfoObj Info)> list)
+    public static async Task<bool> DownloadMod(GameSettingObj obj, IList<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)> list)
     {
-        bool res;
-
-        foreach (var (Item, Info) in list)
+        foreach (var (Item, Info, Mod) in list)
         {
-            foreach (var item1 in obj.Mods)
-            {
-                if (item1.Key == Info.ModId)
-                {
-                    File.Delete(Path.GetFullPath(obj.GetModsPath() + '/' + item1.Value.File));
-                    break;
-                }
-            }
+            File.Delete(Mod.Local);
         }
 
-        if (list.Count == 1)
+        var list1 = new List<DownloadItemObj>();
+        foreach (var (Item, Info, Mod) in list)
         {
-            var (Item, Info) = list[0];
-            res = await DownloadManager.Download(Item);
-            if (res)
+            Item.Later = (s) =>
             {
                 obj.AddModInfo(Info);
-            }
+            };
+            list1.Add(Item);
         }
-        else
+        return await DownloadManager.Start(list1);
+    }
+
+    public static async Task<bool> DownloadMod(GameSettingObj obj, IList<(DownloadItemObj Item, ModInfoObj Info)> list)
+    {
+        var list1 = new List<DownloadItemObj>();
+        foreach (var (Item, Info) in list)
         {
-            var list1 = new List<DownloadItemObj>();
-            foreach (var (Item, Info) in list)
+            Item.Later = (s) =>
             {
-                Item.Later = (s) =>
-                {
-                    obj.AddModInfo(Info);
-                };
-                list1.Add(Item);
-            }
-            res = await DownloadManager.Start(list1);
+                obj.AddModInfo(Info);
+            };
+            list1.Add(Item);
         }
-        return res;
+        return await DownloadManager.Start(list1);
     }
 
     public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeModObj.Data? data)
@@ -629,9 +621,9 @@ public static class WebBinding
         return OptifineAPI.DownloadOptifine(obj, item.Data);
     }
 
-    public static async Task<List<(DownloadItemObj Item, ModInfoObj Info)>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
+    public static async Task<List<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
     {
-        var list = new ConcurrentBag<(DownloadItemObj Item, ModInfoObj Info)>();
+        var list = new ConcurrentBag<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>();
         await Parallel.ForEachAsync(mods, async (item, cancel) =>
         {
             try
@@ -654,13 +646,13 @@ public static class WebBinding
                         case SourceType.CurseForge:
                             if (item1.Data is CurseForgeModObj.Data data)
                             {
-                                list.Add((data.MakeModDownloadObj(game), data.MakeModInfo()));
+                                list.Add((data.MakeModDownloadObj(game), data.MakeModInfo(), item));
                             }
                             break;
                         case SourceType.Modrinth:
                             if (item1.Data is ModrinthVersionObj data1)
                             {
-                                list.Add((data1.MakeModDownloadObj(game), data1.MakeModInfo()));
+                                list.Add((data1.MakeModDownloadObj(game), data1.MakeModInfo(), item));
                             }
                             break;
                     }

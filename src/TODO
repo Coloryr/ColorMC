@@ -238,5 +238,9 @@ UI调整 调整Tabs边框 Tabs滚动条 okl
 
 2023.7.9
 修改UI布局 okl
+修复fabric的Mod依赖错误 okl
+添加JarInJar的识别 okl
+添加依赖禁用Mod okl
+修复更新Mod时禁用的Mod不会删除的问题 okl
 
 添加McMod搜索源 不做了

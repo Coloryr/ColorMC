@@ -1308,10 +1308,20 @@ public static class GameBinding
                 if (item.Obj.modid == null || item.Obj.Disable)
                     continue;
                 modid.Add(item.Obj.modid);
+                if (item.Obj.InJar?.Count > 0)
+                {
+                    foreach (var item1 in item.Obj.InJar)
+                    {
+                        modid.Add(item1.modid);
+                    }
+                }
                 mod.Add(item);
             }
             modid.Add("forge");
+            modid.Add("fabric");
             modid.Add("minecraft");
+            modid.Add("java");
+            modid.Add("fabricloader");
 
             ConcurrentBag<(string, List<string>)> lost = new();
 
@@ -1413,5 +1423,57 @@ public static class GameBinding
     public static Task<bool> ModPackUpdate(GameSettingObj obj, ModrinthVersionObj fid)
     {
         return obj.UpdateModPack(fid);
+    }
+
+    public static List<ModDisplayModel> ModDisable(ModDisplayModel item, List<ModDisplayModel> items)
+    {
+        var list = new List<ModDisplayModel>();
+        foreach (var item1 in items)
+        {
+            if (!item1.Enable || item1.Obj.modid == item.Obj.modid)
+            {
+                continue;
+            }
+            if (item1.Obj.dependencies != null)
+            {
+                if (item1.Obj.dependencies.Contains(item.Obj.modid))
+                {
+                    list.Add(item1);
+                    continue;
+                }
+                else if (item.Obj.InJar != null)
+                {
+                    foreach (var item2 in item.Obj.InJar)
+                    {
+                        if (item1.Obj.dependencies.Contains(item2.modid))
+                        {
+                            list.Add(item1);
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (item1.Obj.requiredMods != null)
+            {
+                if (item1.Obj.requiredMods.Contains(item.Obj.modid))
+                {
+                    list.Add(item1);
+                    continue;
+                }
+                else if (item.Obj.InJar != null)
+                {
+                    foreach (var item2 in item.Obj.InJar)
+                    {
+                        if (item1.Obj.requiredMods.Contains(item2.modid))
+                        {
+                            list.Add(item1);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 }

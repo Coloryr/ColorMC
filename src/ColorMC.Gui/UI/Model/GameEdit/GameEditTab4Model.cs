@@ -205,22 +205,45 @@ public partial class GameEditTab4Model : GameEditTabModel
         DisE(Item);
     }
 
-    public void DisE(ModDisplayModel item)
+    public async void DisE(ModDisplayModel item)
     {
         if (BaseBinding.IsGameRun(Obj))
         {
             return;
         }
+        var window = Con.Window;
         var res = GameBinding.ModEnDi(item.Obj);
         if (!res)
         {
-            var window = Con.Window;
             window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Error3"));
         }
         else
         {
             item.LocalChange();
             item.Enable = !item.Obj.Disable;
+            if (item.Enable)
+            {
+                return;
+            }
+
+            var list = GameBinding.ModDisable(item, Items);
+            
+            if (list.Count == 0)
+            {
+                return;
+            }
+
+            res = await window.OkInfo.ShowWait(
+                string.Format(App.GetLanguage("GameEditWindow.Tab4.Info17"), list.Count));
+            if (res)
+            {
+                foreach (var item1 in list)
+                {
+                    GameBinding.ModEnDi(item1.Obj);
+                    item1.LocalChange();
+                    item1.Enable = !item1.Obj.Disable;
+                }
+            }
         }
     }
 

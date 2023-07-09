@@ -386,6 +386,7 @@
 	"GameEditWindow.Tab4.Info14": "发现有 {0} 组相同的modid正在启用",
 	"GameEditWindow.Tab4.Info15": "正在检测Mod依赖",
 	"GameEditWindow.Tab4.Info16": "没有缺失的依赖项",
+	"GameEditWindow.Tab4.Info17": "是否同时禁用依赖此的 {0} 个Mod",
 	"GameEditWindow.Tab4.Error1": "Mod列表加载失败",
 	"GameEditWindow.Tab4.Error2": "Mod导入失败",
 	"GameEditWindow.Tab4.Error3": "Mod启用/禁用失败",

@@ -29,9 +29,13 @@ public record ModObj
     [JsonIgnore]
     public bool V2 { get; set; }
     [JsonIgnore]
+    public bool CoreMod { get; set; }
+    [JsonIgnore]
     public bool ReadFail { get; set; }
     [JsonIgnore]
     public string Sha1 { get; set; }
     [JsonIgnore]
     public GameSettingObj Game { get; set; }
+    [JsonIgnore]
+    public List<ModObj> InJar { get; set; }
 }

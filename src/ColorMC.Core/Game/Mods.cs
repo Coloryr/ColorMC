@@ -17,6 +17,251 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Mods
 {
+    private static async Task<ModObj?> ReadMod(ZipFile zFile)
+    {
+        //forge 1.13以下
+        var item1 = zFile.GetEntry("mcmod.info");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream = new MemoryStream();
+            await stream1.CopyToAsync(stream);
+            var data = Encoding.UTF8.GetString(stream.ToArray());
+            if (data.StartsWith("{"))
+            {
+                var obj1 = JObject.Parse(data);
+                var obj2 = obj1.GetValue("modList") as JArray;
+                if (obj2?.Count > 0)
+                {
+                    var obj3 = obj2.First().ToObject<ModObj>()!;
+                    obj3.name ??= "";
+                    obj3.modid ??= "";
+                    obj3.V2 = false;
+                    obj3.Loader = Loaders.Forge;
+                    return obj3;
+                }
+            }
+            else if (data.StartsWith("["))
+            {
+                var obj1 = JArray.Parse(data);
+                if (obj1?.Count > 0)
+                {
+                    var obj3 = obj1.First().ToObject<ModObj>()!;
+                    obj3.name ??= "";
+                    obj3.modid ??= "";
+                    obj3.V2 = false;
+                    obj3.Loader = Loaders.Forge;
+                    return obj3;
+                }
+            }
+        }
+
+        //forge coremod
+        item1 = zFile.GetEntry("META-INF/fml_cache_annotation.json");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream = new MemoryStream();
+            await stream1.CopyToAsync(stream);
+            var data = Encoding.UTF8.GetString(stream.ToArray());
+            var obj1 = JObject.Parse(data);
+            var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
+            if (obj2 == null)
+                return null;
+
+            ModObj obj3 = new()
+            {
+                V2 = true,
+                Loader = Loaders.Forge,
+                modid = obj2["modId"]?["value"]?.ToString(),
+                name = obj2["names"]?["value"]?.ToString(),
+                version = obj2["version"]?["value"]?.ToString(),
+                requiredMods = new() { obj2["dependencies"]?["value"]?.ToString() },
+                CoreMod = true
+            };
+
+            obj3.modid ??= "";
+            obj3.name ??= obj3.modid;
+
+            return obj3;
+        }
+
+        //forge 1.13及以上
+        item1 = zFile.GetEntry("META-INF/mods.toml");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream = new MemoryStream();
+            await stream1.CopyToAsync(stream);
+            var model = Toml.Parse(stream.ToArray()).ToModel();
+            if (model["mods"] is not TomlTableArray model1)
+                return null;
+            var model2 = model1[0];
+            if (model2 == null)
+                return null;
+            ModObj obj3 = new()
+            {
+                V2 = true,
+                Loader = Loaders.Forge,
+            };
+            model2.TryGetValue("modId", out object item2);
+            obj3.modid = item2 as string;
+            model2.TryGetValue("displayName", out item2);
+            obj3.name = item2 as string;
+            model2.TryGetValue("modId", out item2);
+            obj3.modid = item2 as string;
+            model2.TryGetValue("description", out item2);
+            obj3.description = item2 as string;
+            model2.TryGetValue("version", out item2);
+            obj3.version = item2 as string;
+            if (model2.TryGetValue("authorList", out item2))
+            {
+                obj3.authorList = (item2 as string)?.ToStringList();
+            }
+            //forge 1.20
+            else if (model2.TryGetValue("authors", out item2))
+            {
+                obj3.authorList = (item2 as string)?.ToStringList();
+            }
+            if (model2.TryGetValue("displayURL", out item2))
+            {
+                obj3.url = item2 as string;
+            }
+
+            obj3.name ??= "";
+
+            if (model["dependencies"] is TomlTable model3)
+            {
+                obj3.requiredMods = new();
+                if (model3.FirstOrDefault().Value is TomlTableArray model4)
+                {
+                    foreach (var item3 in model4)
+                    {
+                        if (item3.TryGetValue("modId", out item2)
+                        && item3.TryGetValue("mandatory", out var item4)
+                        && item4?.ToString()?.ToLower() == "true")
+                        {
+                            obj3.requiredMods.Add(item2 as string);
+                        }
+                    }
+                }
+            }
+
+            return obj3;
+        }
+
+        //fabric
+        item1 = zFile.GetEntry("fabric.mod.json");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream = new MemoryStream();
+            await stream1.CopyToAsync(stream);
+            var data = Encoding.UTF8.GetString(stream.ToArray());
+            var obj1 = JObject.Parse(data);
+            var obj3 = new ModObj
+            {
+                Loader = Loaders.Fabric,
+                V2 = true,
+                modid = obj1["id"]?.ToString(),
+                name = obj1["name"]?.ToString(),
+                description = obj1["description"]?.ToString(),
+                version = obj1["version"]?.ToString(),
+                authorList = (obj1["authors"] as JArray)?.ToStringList(),
+                url = obj1["contact"]?["homepage"]?.ToString(),
+            };
+
+            obj3.name ??= "";
+
+            if (obj1.ContainsKey("depends"))
+            {
+                obj3.requiredMods = new();
+                foreach (var item3 in (obj1["depends"] as JObject)!.Properties())
+                {
+                    obj3.requiredMods.Add(item3.Name);
+                }
+            }
+
+            obj3.InJar = new();
+
+            foreach (ZipEntry item2 in zFile)
+            {
+                if (item2.Name.EndsWith(".jar") && item2.Name.StartsWith("META-INF/jars/"))
+                {
+                    using var filestream = zFile.GetInputStream(item2);
+                    using var stream2 = new MemoryStream();
+                    await filestream.CopyToAsync(stream2);
+                    stream2.Seek(0, SeekOrigin.Begin);
+                    using ZipFile zFile1 = new(stream2);
+                    var inmod = await ReadMod(zFile1);
+                    if (inmod != null)
+                    {
+                        obj3.InJar.Add(inmod);
+                    }
+                }
+            }
+
+            return obj3;
+        }
+
+        //quilt
+        item1 = zFile.GetEntry("quilt.mod.json");
+        if (item1 != null)
+        {
+            using var stream1 = zFile.GetInputStream(item1);
+            using var stream = new MemoryStream();
+            await stream1.CopyToAsync(stream);
+            var data = Encoding.UTF8.GetString(stream.ToArray());
+            var obj1 = JObject.Parse(data);
+            if (obj1["quilt_loader"] is not JObject obj2)
+            {
+                return null;
+            }
+            var obj3 = new ModObj
+            {
+                Loader = Loaders.Quilt,
+                V2 = true,
+                modid = obj2["id"]?.ToString(),
+                name = obj2["metadata"]?["name"]?.ToString(),
+                description = obj2["metadata"]?["description"]?.ToString(),
+                version = obj2["version"]?.ToString(),
+                authorList = (obj2["metadata"]?["contributors"] as JObject)?.ToStringList(),
+                url = obj2["contact"]?["homepage"]?.ToString(),
+            };
+
+            obj3.name ??= "";
+
+            if (obj2.ContainsKey("depends"))
+            {
+                obj3.requiredMods = new();
+                foreach (var item3 in obj2["depends"]!)
+                {
+                    obj3.requiredMods.Add(item3["id"]?.ToString());
+                }
+            }
+
+            obj3.InJar = new();
+
+            foreach (ZipEntry item2 in zFile)
+            {
+                if (item2.Name.EndsWith(".jar") && item2.Name.StartsWith("META-INF/jars/"))
+                {
+                    using var filestream = zFile.GetInputStream(item2);
+                    using ZipFile zFile1 = new(filestream);
+                    var inmod = await ReadMod(zFile1);
+                    if (inmod != null)
+                    {
+                        obj3.InJar.Add(inmod);
+                    }
+                }
+            }
+
+            return obj3;
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// 获取Mod列表
     /// </summary>
@@ -36,7 +281,10 @@ public static class Mods
         var files = info.GetFiles();
 
         //多线程同时检查
-        await Parallel.ForEachAsync(files, async (item, cancel) =>
+        await Parallel.ForEachAsync(files, new ParallelOptions()
+        { 
+            MaxDegreeOfParallelism = 1
+        }, async (item, cancel) =>
         {
             if (item.Extension is not (".zip" or ".jar" or ".disable"))
                 return;
@@ -67,244 +315,15 @@ public static class Mods
                 }
 
                 using ZipFile zFile = new(filestream);
-
-                //forge 1.13以下
-                var item1 = zFile.GetEntry("mcmod.info");
-                if (item1 != null)
+                var mod = await ReadMod(zFile);
+                if (mod != null)
                 {
-                    using var stream1 = zFile.GetInputStream(item1);
-                    using var stream = new MemoryStream();
-                    await stream1.CopyToAsync(stream, cancel);
-                    var data = Encoding.UTF8.GetString(stream.ToArray());
-                    if (data.StartsWith("{"))
-                    {
-                        var obj1 = JObject.Parse(data);
-                        var obj2 = obj1.GetValue("modList") as JArray;
-                        if (obj2?.Count > 0)
-                        {
-                            var obj3 = obj2.First().ToObject<ModObj>()!;
-                            obj3.name ??= "";
-                            obj3.modid ??= "";
-                            obj3.V2 = false;
-                            obj3.Local = Path.GetFullPath(item.FullName);
-                            obj3.Disable = item.Extension is ".disable";
-                            obj3.Loader = Loaders.Forge;
-                            obj3.Sha1 = sha1;
-                            obj3.Game = obj;
-                            list.Add(obj3);
-                            add = true;
-                            return;
-                        }
-                    }
-                    else if (data.StartsWith("["))
-                    {
-                        var obj1 = JArray.Parse(data);
-                        if (obj1?.Count > 0)
-                        {
-                            var obj3 = obj1.First().ToObject<ModObj>()!;
-                            obj3.name ??= "";
-                            obj3.modid ??= "";
-                            obj3.V2 = false;
-                            obj3.Local = Path.GetFullPath(item.FullName);
-                            obj3.Disable = item.Extension is ".disable";
-                            obj3.Loader = Loaders.Forge;
-                            obj3.Sha1 = sha1;
-                            obj3.Game = obj;
-                            list.Add(obj3);
-                            add = true;
-                            return;
-                        }
-                    }
-                }
-
-                //forge coremod
-                item1 = zFile.GetEntry("META-INF/fml_cache_annotation.json");
-                if (item1 != null)
-                {
-                    using var stream1 = zFile.GetInputStream(item1);
-                    using var stream = new MemoryStream();
-                    await stream1.CopyToAsync(stream, cancel);
-                    var data = Encoding.UTF8.GetString(stream.ToArray());
-                    var obj1 = JObject.Parse(data);
-                    var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
-                    if (obj2 == null)
-                        return;
-
-                    ModObj obj3 = new()
-                    {
-                        V2 = true,
-                        Loader = Loaders.Forge,
-                        Local = Path.GetFullPath(item.FullName),
-                        Disable = item.Extension is ".disable",
-                        Game = obj,
-                        modid = obj2["modId"]?["value"]?.ToString(),
-                        name = obj2["names"]?["value"]?.ToString(),
-                        version = obj2["version"]?["value"]?.ToString(),
-                        requiredMods = new() { obj2["dependencies"]?["value"]?.ToString() },
-                        Sha1 = sha1
-                    };
-
-                    obj3.modid ??= "";
-                    obj3.name ??= obj3.modid;
-
-                    list.Add(obj3);
+                    mod.Local = Path.GetFullPath(item.FullName);
+                    mod.Disable = item.Extension is ".disable";
+                    mod.Sha1 = sha1;
+                    mod.Game = obj;
+                    list.Add(mod);
                     add = true;
-                    return;
-                }
-
-                //forge 1.13及以上
-                item1 = zFile.GetEntry("META-INF/mods.toml");
-                if (item1 != null)
-                {
-                    using var stream1 = zFile.GetInputStream(item1);
-                    using var stream = new MemoryStream();
-                    await stream1.CopyToAsync(stream, cancel);
-                    var model = Toml.Parse(stream.ToArray()).ToModel();
-                    if (model["mods"] is not TomlTableArray model1)
-                        return;
-                    var model2 = model1[0];
-                    if (model2 == null)
-                        return;
-                    ModObj obj3 = new()
-                    {
-                        V2 = true,
-                        Loader = Loaders.Forge,
-                        Local = Path.GetFullPath(item.FullName),
-                        Disable = item.Extension is ".disable",
-                        Game = obj
-                    };
-                    model2.TryGetValue("modId", out object item2);
-                    obj3.modid = item2 as string;
-                    model2.TryGetValue("displayName", out item2);
-                    obj3.name = item2 as string;
-                    model2.TryGetValue("modId", out item2);
-                    obj3.modid = item2 as string;
-                    model2.TryGetValue("description", out item2);
-                    obj3.description = item2 as string;
-                    model2.TryGetValue("version", out item2);
-                    obj3.version = item2 as string;
-                    if (model2.TryGetValue("authorList", out item2))
-                    {
-                        obj3.authorList = (item2 as string)?.ToStringList();
-                    }
-                    //forge 1.20
-                    else if (model2.TryGetValue("authors", out item2))
-                    {
-                        obj3.authorList = (item2 as string)?.ToStringList();
-                    }
-                    if (model2.TryGetValue("displayURL", out item2))
-                    {
-                        obj3.url = item2 as string;
-                    }
-
-                    obj3.name ??= "";
-
-                    if (model["dependencies"] is TomlTable model3)
-                    {
-                        obj3.requiredMods = new();
-                        if (model3.FirstOrDefault().Value is TomlTableArray model4)
-                        {
-                            foreach (var item3 in model4)
-                            {
-                                if (item3.TryGetValue("modId", out item2)
-                                && item3.TryGetValue("mandatory", out var item4)
-                                && item4?.ToString()?.ToLower() == "true")
-                                {
-                                    obj3.requiredMods.Add(item2 as string);
-                                }
-                            }
-                        }
-                    }
-
-                    obj3.Sha1 = sha1;
-
-                    list.Add(obj3);
-                    add = true;
-                    return;
-                }
-
-                //fabric
-                item1 = zFile.GetEntry("fabric.mod.json");
-                if (item1 != null)
-                {
-                    using var stream1 = zFile.GetInputStream(item1);
-                    using var stream = new MemoryStream();
-                    await stream1.CopyToAsync(stream, cancel);
-                    var data = Encoding.UTF8.GetString(stream.ToArray());
-                    var obj1 = JObject.Parse(data);
-                    var obj3 = new ModObj
-                    {
-                        Local = Path.GetFullPath(item.FullName),
-                        Disable = item.Extension is ".disable",
-                        Loader = Loaders.Fabric,
-                        V2 = true,
-                        modid = obj1["id"]?.ToString(),
-                        name = obj1["name"]?.ToString(),
-                        description = obj1["description"]?.ToString(),
-                        version = obj1["version"]?.ToString(),
-                        authorList = (obj1["authors"] as JArray)?.ToStringList(),
-                        url = obj1["contact"]?["homepage"]?.ToString(),
-                        Game = obj,
-                        Sha1 = sha1
-                    };
-
-                    obj3.name ??= "";
-
-                    if (obj1.ContainsKey("depends"))
-                    {
-                        obj3.requiredMods = new();
-                        foreach (var item3 in obj1.Properties())
-                        {
-                            obj3.requiredMods.Add(item3.Name);
-                        }
-                    }
-                    list.Add(obj3);
-                    add = true;
-                    return;
-                }
-
-                //quilt
-                item1 = zFile.GetEntry("quilt.mod.json");
-                if (item1 != null)
-                {
-                    using var stream1 = zFile.GetInputStream(item1);
-                    using var stream = new MemoryStream();
-                    await stream1.CopyToAsync(stream, cancel);
-                    var data = Encoding.UTF8.GetString(stream.ToArray());
-                    var obj1 = JObject.Parse(data);
-                    if (obj1["quilt_loader"] is not JObject obj2)
-                    {
-                        return;
-                    }
-                    var obj3 = new ModObj
-                    {
-                        Local = Path.GetFullPath(item.FullName),
-                        Disable = item.Extension is ".disable",
-                        Loader = Loaders.Quilt,
-                        V2 = true,
-                        modid = obj2["id"]?.ToString(),
-                        name = obj2["metadata"]?["name"]?.ToString(),
-                        description = obj2["metadata"]?["description"]?.ToString(),
-                        version = obj2["version"]?.ToString(),
-                        authorList = (obj2["metadata"]?["contributors"] as JObject)?.ToStringList(),
-                        url = obj2["contact"]?["homepage"]?.ToString(),
-                        Sha1 = sha1,
-                        Game = obj
-                    };
-
-                    obj3.name ??= "";
-
-                    if (obj2.ContainsKey("depends"))
-                    {
-                        obj3.requiredMods = new();
-                        foreach (var item3 in obj2["depends"]!)
-                        {
-                            obj3.requiredMods.Add(item3["id"]?.ToString());
-                        }
-                    }
-                    list.Add(obj3);
-                    add = true;
-                    return;
                 }
             }
             catch (Exception e)

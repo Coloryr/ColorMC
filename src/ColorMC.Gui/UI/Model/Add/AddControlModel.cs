@@ -699,6 +699,10 @@ public partial class AddControlModel : ObservableObject
     {
         var window = Con.Window;
         var type = SourceTypeList[DownloadSource];
+        if (window == null)
+        {
+            return;
+        }
         window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info2"));
         if (type == SourceType.McMod)
         {

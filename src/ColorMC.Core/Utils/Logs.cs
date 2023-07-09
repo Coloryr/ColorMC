@@ -131,7 +131,7 @@ public static class Logs
         string text = $"[{date}][Error]{data}{Environment.NewLine}{e}";
         
         var file = $"{Local}{date.Year}_{date.Month}_{date.Day}_" +
-            $"{date.Hour}_{date.Minute}_{date.Second}crash.log";
+            $"{date.Hour}_{date.Minute}_{date.Second}_crash.log";
 
         File.WriteAllText(file, text);
 
