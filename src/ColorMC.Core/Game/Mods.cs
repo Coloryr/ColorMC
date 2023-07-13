@@ -17,6 +17,11 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Mods
 {
+    /// <summary>
+    /// 读取一个Mod文件
+    /// </summary>
+    /// <param name="zFile">Mod压缩包</param>
+    /// <returns></returns>
     private static async Task<ModObj?> ReadMod(ZipFile zFile)
     {
         //forge 1.13以下

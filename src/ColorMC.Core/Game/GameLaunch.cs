@@ -155,14 +155,14 @@ public static class Launch
 
                 //检查加载器运行库
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
-                if (obj.Loader == Loaders.Forge)
+                if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
                 {
-                    var list3 = await obj.CheckForgeLib();
+                    var list3 = await obj.CheckForgeLib(obj.Loader == Loaders.NeoForge);
                     if (list3 == null)
                     {
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                        var list4 = await GameDownloadHelper.DownloadForge(obj);
+                        var list4 = await GameDownloadHelper.DownloadForge(obj, obj.Loader == Loaders.NeoForge);
                         if (list4.State != GetDownloadState.End)
                             throw new LaunchException(LaunchState.LostLoader,
                             LanguageHelper.Get("Core.Launch.Error3"));
@@ -341,16 +341,13 @@ public static class Launch
         return list.Where(x => x.MajorVersion == max).FirstOrDefault();
     }
 
+    /// <summary>
+    /// 创建V1版启动参数
+    /// </summary>
     private readonly static List<string> V1JvmArg = new()
     {
         "-Djava.library.path=${natives_directory}", "-cp", "${classpath}"
     };
-
-    /// <summary>
-    /// 创建V1版启动参数
-    /// </summary>
-    /// <returns></returns>
-    private static List<string> MakeV1JvmArg() => V1JvmArg;
 
     /// <summary>
     /// 创建V2版启动参数
@@ -361,7 +358,7 @@ public static class Launch
     {
         var game = VersionPath.GetGame(obj.Version)!;
         if (game.arguments == null)
-            return MakeV1JvmArg();
+            return V1JvmArg;
 
         List<string> arg = new();
         foreach (var item in game.arguments.jvm)
@@ -395,9 +392,10 @@ public static class Launch
             }
         }
 
-        if (obj.Loader == Loaders.Forge)
+        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
-            var forge = obj.GetForgeObj()!;
+            var forge = obj.Loader == Loaders.NeoForge ?
+                obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
             if (forge.arguments.jvm != null)
                 foreach (var item in forge.arguments.jvm)
                 {
@@ -423,9 +421,10 @@ public static class Launch
     /// <returns></returns>
     private static List<string> MakeV1GameArg(GameSettingObj obj)
     {
-        if (obj.Loader == Loaders.Forge)
+        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
-            var forge = obj.GetForgeObj()!;
+            var forge = obj.Loader == Loaders.NeoForge ? 
+                obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
             return new(forge.minecraftArguments.Split(" "));
         }
 
@@ -474,9 +473,9 @@ public static class Launch
             //}
         }
 
-        if (obj.Loader == Loaders.Forge)
+        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
-            var forge = obj.GetForgeObj()!;
+            var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
             foreach (var item in forge.arguments.game)
             {
                 arg.Add(item);
@@ -578,11 +577,12 @@ public static class Launch
             jvmHead.AddRange(args.JvmArgs.Split(";"));
         }
 
-        if (v2 && obj.Loader == Loaders.Forge)
+        if (v2 && obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
             jvmHead.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
-            jvmHead.Add($"-Dforgewrapper.installer={GameHelper
-                .BuildForgeInster(obj.Version, obj.LoaderVersion!).Local}");
+            jvmHead.Add($"-Dforgewrapper.installer={(obj.Loader == Loaders.NeoForge?
+                GameHelper.BuildNeoForgeInster(obj.Version, obj.LoaderVersion!).Local:
+                GameHelper.BuildForgeInster(obj.Version, obj.LoaderVersion!).Local)}");
             jvmHead.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
         }
 
@@ -594,7 +594,7 @@ public static class Launch
         //jvmHead.Add("-Dcom.sun.jndi.cosnaming.object.trustURLCodebase=false");
         //jvmHead.Add($"-Dminecraft.client.jar={VersionPath.BaseDir}/{obj.Version}.jar");
 
-        jvmHead.AddRange(v2 ? MakeV2JvmArg(obj) : MakeV1JvmArg());
+        jvmHead.AddRange(v2 ? MakeV2JvmArg(obj) : V1JvmArg);
 
         if (login.AuthType == AuthType.Nide8)
         {
@@ -795,11 +795,13 @@ public static class Launch
                 list.AddOrUpdate(key, item.Local);
         }
 
-        if (obj.Loader == Loaders.Forge)
+        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
-            var forge = obj.GetForgeObj()!;
+            var forge = obj.Loader == Loaders.NeoForge ? 
+                obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
 
-            var list2 = GameHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
+            var list2 = GameHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!,
+                obj.Loader == Loaders.NeoForge);
 
             list2.ForEach(a => list.AddOrUpdate(PathC.MakeVersionObj(a.Name), a.Local));
 
@@ -930,7 +932,7 @@ public static class Launch
         {
             if (obj.Loader == Loaders.Normal)
                 list.Add(version.mainClass);
-            else if (obj.Loader == Loaders.Forge)
+            else if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
             {
                 if (v2)
                 {
@@ -938,7 +940,7 @@ public static class Launch
                 }
                 else
                 {
-                    var forge = obj.GetForgeObj()!;
+                    var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
                     list.Add(forge.mainClass);
                 }
             }
@@ -1315,7 +1317,7 @@ public static class Launch
         return process;
     }
 
-    public delegate int Func1(int argc,
+    public delegate int DLaunch(int argc,
         string[] argv, /* main argc, argc */
         int jargc, string[] jargv,          /* java args */
         int appclassc, string[] appclassv,  /* app classpath */
@@ -1332,6 +1334,11 @@ public static class Launch
     private static int Lenght;
     private static string[] Args;
 
+    /// <summary>
+    /// native启动
+    /// </summary>
+    /// <param name="info">Java信息</param>
+    /// <param name="args">启动参数</param>
     public static void NativeLaunch(JavaInfo info, List<string> args)
     {
         var info1 = new FileInfo(info.Path);
@@ -1352,7 +1359,7 @@ public static class Launch
 
         var temp = NativeLoader.Loader.LoadLibrary(local);
         var temp1 = NativeLoader.Loader.GetProcAddress(temp, "JLI_Launch", false);
-        var inv = Marshal.GetDelegateForFunctionPointer<Func1>(temp1);
+        var inv = Marshal.GetDelegateForFunctionPointer<DLaunch>(temp1);
 
         //Environment.SetEnvironmentVariable("JAVA_HOME", path);
         //Environment.SetEnvironmentVariable("PATH", path + "/bin:" + path);

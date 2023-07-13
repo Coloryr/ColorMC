@@ -22,7 +22,11 @@ public enum Loaders
     /// <summary>
     /// Quilt加载器
     /// </summary>
-    Quilt
+    Quilt,
+    /// <summary>
+    /// NeoForge加载器
+    /// </summary>
+    NeoForge
 }
 
 public enum GameType

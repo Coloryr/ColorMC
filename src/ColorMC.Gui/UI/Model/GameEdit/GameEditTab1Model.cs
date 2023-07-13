@@ -35,6 +35,8 @@ public partial class GameEditTab1Model : GameEditTabModel
     [ObservableProperty]
     private bool enableForge;
     [ObservableProperty]
+    private bool enableNeoForge;
+    [ObservableProperty]
     private bool enableFabric;
     [ObservableProperty]
     private bool enableQuilt;
@@ -48,6 +50,8 @@ public partial class GameEditTab1Model : GameEditTabModel
 
     [ObservableProperty]
     private bool selectForge;
+    [ObservableProperty]
+    private bool selectNeoForge;
     [ObservableProperty]
     private bool selectFabric;
     [ObservableProperty]
@@ -71,9 +75,11 @@ public partial class GameEditTab1Model : GameEditTabModel
     {
         if (value)
         {
+            EnableNeoForge = false;
             EnableFabric = false;
-            SelectFabric = false;
             EnableQuilt = false;
+            SelectNeoForge = false;
+            SelectFabric = false;
             SelectQuilt = false;
 
             if (load)
@@ -87,11 +93,48 @@ public partial class GameEditTab1Model : GameEditTabModel
         else
         {
             EnableLoader = false;
+            EnableNeoForge = true;
             EnableFabric = true;
             EnableQuilt = true;
             LoaderVersionList.Clear();
 
-            if (SelectFabric == false && SelectQuilt == false)
+            if (SelectFabric == false && SelectQuilt == false && SelectNeoForge == false)
+            {
+                Obj.Loader = Loaders.Normal;
+                Obj.LoaderVersion = null;
+                Obj.Save();
+            }
+        }
+    }
+
+    async partial void OnSelectNeoForgeChanged(bool value)
+    {
+        if (value)
+        {
+            EnableForge = false;
+            EnableFabric = false;
+            EnableQuilt = false;
+            SelectForge = false;
+            SelectFabric = false;
+            SelectQuilt = false;
+
+            if (load)
+                return;
+            Obj.Loader = Loaders.NeoForge;
+            Obj.LoaderVersion = null;
+            Obj.Save();
+
+            await LoaderVersionLoad();
+        }
+        else
+        {
+            EnableLoader = false;
+            EnableForge = true;
+            EnableFabric = true;
+            EnableQuilt = true;
+            LoaderVersionList.Clear();
+
+            if (SelectFabric == false && SelectQuilt == false && SelectForge == false)
             {
                 Obj.Loader = Loaders.Normal;
                 Obj.LoaderVersion = null;
@@ -105,9 +148,11 @@ public partial class GameEditTab1Model : GameEditTabModel
         if (value)
         {
             EnableForge = false;
-            SelectForge = false;
+            EnableNeoForge = false;
             EnableQuilt = false;
+            SelectForge = false;
             SelectQuilt = false;
+            SelectNeoForge = false;
 
             if (load)
                 return;
@@ -122,9 +167,10 @@ public partial class GameEditTab1Model : GameEditTabModel
             EnableLoader = false;
             EnableForge = true;
             EnableQuilt = true;
+            EnableNeoForge = true;
             LoaderVersionList.Clear();
 
-            if (SelectForge == false && SelectQuilt == false)
+            if (SelectForge == false && SelectQuilt == false && SelectNeoForge == false)
             {
                 Obj.Loader = Loaders.Normal;
                 Obj.LoaderVersion = null;
@@ -138,8 +184,10 @@ public partial class GameEditTab1Model : GameEditTabModel
         if (value)
         {
             EnableForge = false;
-            SelectForge = false;
+            EnableNeoForge = false;
             EnableFabric = false;
+            SelectForge = false;
+            SelectNeoForge = false;
             SelectFabric = false;
 
             if (load)
@@ -154,10 +202,11 @@ public partial class GameEditTab1Model : GameEditTabModel
         {
             EnableLoader = false;
             EnableForge = true;
+            EnableNeoForge = true;
             EnableFabric = true;
             LoaderVersionList.Clear();
 
-            if (SelectForge == false && SelectFabric == false)
+            if (SelectForge == false && SelectFabric == false && SelectNeoForge == false)
             {
                 Obj.Loader = Loaders.Normal;
                 Obj.LoaderVersion = null;
@@ -363,6 +412,7 @@ public partial class GameEditTab1Model : GameEditTabModel
         if (SelectForge == true)
         {
             window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+            EnableNeoForge = false;
             EnableFabric = false;
             EnableQuilt = false;
 
@@ -378,9 +428,29 @@ public partial class GameEditTab1Model : GameEditTabModel
             LoaderVersionList.Clear();
             LoaderVersionList.AddRange(list);
         }
+        else if (SelectNeoForge == true)
+        {
+            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+            EnableForge = false;
+            EnableFabric = false;
+            EnableQuilt = false;
+
+            var list = await GameBinding.GetNeoForgeVersion(Obj.Version);
+            window.ProgressInfo.Close();
+            if (list == null)
+            {
+                window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                return;
+            }
+
+            EnableLoader = true;
+            LoaderVersionList.Clear();
+            LoaderVersionList.AddRange(list);
+        }
         else if (SelectFabric == true)
         {
             window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info2"));
+            EnableNeoForge = false;
             EnableForge = false;
             EnableQuilt = false;
 
@@ -400,6 +470,7 @@ public partial class GameEditTab1Model : GameEditTabModel
         {
             window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info3"));
             EnableForge = false;
+            EnableNeoForge = false;
             EnableFabric = false;
 
             var list = await GameBinding.GetQuiltVersion(Obj.Version);
@@ -425,6 +496,12 @@ public partial class GameEditTab1Model : GameEditTabModel
         if (list != null && list.Contains(Obj.Version))
         {
             EnableForge = true;
+        }
+
+        list = await GameBinding.GetNeoForgeSupportVersion();
+        if (list != null && list.Contains(Obj.Version))
+        {
+            EnableNeoForge = true;
         }
 
         list = await GameBinding.GetFabricSupportVersion();
@@ -557,6 +634,10 @@ public partial class GameEditTab1Model : GameEditTabModel
                 case Loaders.Quilt:
                     EnableQuilt = true;
                     SelectQuilt = true;
+                    break;
+                case Loaders.NeoForge:
+                    EnableNeoForge = true;
+                    SelectNeoForge = true;
                     break;
             }
 

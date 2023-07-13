@@ -24,20 +24,22 @@ public static class UrlHelper
 
     public const string OptifineUrl = "https://optifine.net/";
 
-    private static readonly string[] OriginServers =
+    public const string NeoForgeUrl = "https://maven.neoforged.net/";
+
+    private static readonly string[] MojangUrl =
     {
         "https://launchermeta.mojang.com/",
         "https://launcher.mojang.com/",
         "https://piston-data.mojang.com"
     };
 
-    private const string OriginServers1 = "https://libraries.minecraft.net/";
+    private const string MinecraftLibUrl = "https://libraries.minecraft.net/";
 
-    private const string OriginServers2 = "https://maven.minecraftforge.net/";
+    private const string ForgeUrl = "https://maven.minecraftforge.net/";
 
-    private const string OriginServers3 = "https://maven.fabricmc.net/";
+    private const string FabricUrl = "https://maven.fabricmc.net/";
 
-    public static readonly string[] OriginServers4 =
+    public static readonly string[] MavenUrl =
     {
         "https://repo1.maven.org/maven2/",
         "https://maven.aliyun.com/repository/public/"
@@ -107,7 +109,7 @@ public static class UrlHelper
             return url;
         }
 
-        foreach (var item in OriginServers)
+        foreach (var item in MojangUrl)
         {
             url = url.Replace(item, to);
         }
@@ -131,7 +133,7 @@ public static class UrlHelper
             return url;
         }
 
-        url = url.Replace(OriginServers1, to);
+        url = url.Replace(MinecraftLibUrl, to);
 
         return url;
     }
@@ -167,6 +169,21 @@ public static class UrlHelper
     }
 
     /// <summary>
+    /// NeoForge地址
+    /// </summary>
+    public static string DownloadNeoForgeJar(string mc, string version, SourceLocal? local)
+    {
+        string? url = local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/neoforged/forge/{mc}-{version}/",
+            SourceLocal.MCBBS => $"{MCBBS}maven/net/neoforged/forge/{mc}-{version}/",
+            _ => $"https://maven.neoforged.net/releases/net/neoforged/forge/{mc}-{version}/"
+        };
+
+        return url;
+    }
+
+    /// <summary>
     /// Forge运行库地址
     /// </summary>
     public static string DownloadForgeLib(string url, SourceLocal? local)
@@ -182,9 +199,31 @@ public static class UrlHelper
             return url;
         }
 
-        url = url.Replace(OriginServers2, to);
+        url = url.Replace(ForgeUrl, to);
 
         return url;
+    }
+
+    /// <summary>
+    /// Forge运行库地址
+    /// </summary>
+    public static string DownloadNeoForgeLib(string url, SourceLocal? local)
+    {
+        return url;
+        //string? to = local switch
+        //{
+        //    SourceLocal.BMCLAPI => BMCLAPI + "maven/",
+        //    SourceLocal.MCBBS => MCBBS + "maven/",
+        //    _ => null
+        //};
+        //if (to == null)
+        //{
+        //    return url;
+        //}
+
+        //url = url.Replace(NeoForgeUrl, to);
+
+        //return url;
     }
 
     /// <summary>
@@ -301,7 +340,8 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft",
             SourceLocal.MCBBS => $"{MCBBS}forge/minecraft",
-            _ => "https://files.minecraftforge.net/net/minecraftforge/forge/"
+            //_ => "https://files.minecraftforge.net/net/minecraftforge/forge/"
+            _ => "https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml"
         };
     }
 
@@ -314,7 +354,30 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
             SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
-            _ => $"https://files.minecraftforge.net/net/minecraftforge/forge/index_{version}.html"
+            //_ => $"https://files.minecraftforge.net/net/minecraftforge/forge/index_{version}.html"
+            _ => "https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml"
+        };
+    }
+
+    public static string NeoForgeVersion(SourceLocal? local)
+    {
+        return local switch
+        {
+            //SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
+            //SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
+            //_ => $"https://files.minecraftforge.net/net/minecraftforge/forge/index_{version}.html"
+            _ => $"{NeoForgeUrl}releases/net/neoforged/forge/maven-metadata.xml"
+        };
+    }
+
+    public static string NeoForgeVersions(string version, SourceLocal? local)
+    {
+        return local switch
+        {
+            //SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
+            //SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
+            //_ => $"https://files.minecraftforge.net/net/minecraftforge/forge/index_{version}.html"
+            _ => $"{NeoForgeUrl}releases/net/neoforged/forge/maven-metadata.xml"
         };
     }
 
@@ -328,19 +391,19 @@ public static class UrlHelper
         var random = new Random();
         if (BaseClient.Source == SourceLocal.Offical)
         {
-            if (old.StartsWith(OriginServers2))
+            if (old.StartsWith(ForgeUrl))
             {
-                return (true, old.Replace(OriginServers2,
+                return (true, old.Replace(ForgeUrl,
                     random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
-            else if (old.StartsWith(OriginServers1))
+            else if (old.StartsWith(MinecraftLibUrl))
             {
-                return (true, old.Replace(OriginServers1,
+                return (true, old.Replace(MinecraftLibUrl,
                    random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
-            else if (old.StartsWith(OriginServers3))
+            else if (old.StartsWith(FabricUrl))
             {
-                return (true, old.Replace(OriginServers3,
+                return (true, old.Replace(FabricUrl,
                    random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
         }

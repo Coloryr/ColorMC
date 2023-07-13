@@ -64,9 +64,9 @@ public static class GameDownloadHelper
     /// 获取Forge下载项目
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(GameSettingObj obj)
+    public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(GameSettingObj obj, bool neo)
     {
-        return DownloadForge(obj.Version, obj.LoaderVersion!);
+        return DownloadForge(obj.Version, obj.LoaderVersion!, neo);
     }
 
     /// <summary>
@@ -74,12 +74,14 @@ public static class GameDownloadHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
-    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(string mc, string version)
+    public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
         bool v2 = CheckRule.GameLaunchVersion(version1);
 
-        var down = GameHelper.BuildForgeInster(mc, version);
+        var down = neo ? 
+            GameHelper.BuildNeoForgeInster(mc, version) :              
+            GameHelper.BuildForgeInster(mc, version);
         try
         {
             var res = await DownloadManager.Start(new() { down });
@@ -127,7 +129,7 @@ public static class GameDownloadHelper
                 var array = stream1.ToArray();
                 var data = Encoding.UTF8.GetString(stream1.ToArray());
                 info = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
-                File.WriteAllBytes($"{VersionPath.ForgeDir}/{name}.json", array);
+                File.WriteAllBytes($"{(neo ? VersionPath.NeoForgeDir : VersionPath.ForgeDir)}/{name}.json", array);
             }
             catch (Exception e)
             {
@@ -135,7 +137,7 @@ public static class GameDownloadHelper
                 return (GetDownloadState.GetInfo, null);
             }
 
-            list.AddRange(GameHelper.MakeForgeLibs(info, mc, version));
+            list.AddRange(GameHelper.MakeForgeLibs(info, mc, version, neo));
 
             ForgeInstallObj info1;
             try
@@ -143,7 +145,7 @@ public static class GameDownloadHelper
                 var array = stream2.ToArray();
                 var data = Encoding.UTF8.GetString(array);
                 info1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
-                File.WriteAllBytes($"{VersionPath.ForgeDir}/{name}-install.json", array);
+                File.WriteAllBytes($"{(neo ? VersionPath.NeoForgeDir : VersionPath.ForgeDir)}/{name}-install.json", array);
             }
             catch (Exception e)
             {
@@ -151,7 +153,7 @@ public static class GameDownloadHelper
                 return (GetDownloadState.GetInfo, null);
             }
 
-            list.AddRange(GameHelper.MakeForgeLibs(info1, mc, version));
+            list.AddRange(GameHelper.MakeForgeLibs(info1, mc, version, neo));
         }
         //旧forge
         else
@@ -201,7 +203,7 @@ public static class GameDownloadHelper
 
                 File.WriteAllText($"{VersionPath.ForgeDir}/{name}.json", JsonConvert.SerializeObject(info));
 
-                list.AddRange(GameHelper.MakeForgeLibs(info, mc, version));
+                list.AddRange(GameHelper.MakeForgeLibs(info, mc, version, neo));
             }
             catch (Exception e)
             {

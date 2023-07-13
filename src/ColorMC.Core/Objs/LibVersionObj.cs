@@ -12,7 +12,7 @@ public class LibVersionObj
         if (obj is not LibVersionObj obj1)
             return false;
 
-        return Pack == obj1.Pack && Name == obj1.Name && Extr == obj1.Extr;
+        return Pack == obj1.Pack && Name == obj1.Name && Verison == obj1.Verison && Extr == obj1.Extr;
     }
 
     public override int GetHashCode()

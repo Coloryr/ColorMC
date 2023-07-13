@@ -4,6 +4,8 @@ using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using System.Linq;
+using System.Xml;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -13,16 +15,21 @@ namespace ColorMC.Core.Net.Apis;
 public static class ForgeAPI
 {
     private static List<string>? SupportVersion;
+    private static Dictionary<string, List<string>>? ForgeVersion;
+
+    private static List<string>? NeoSupportVersion;
+    private static Dictionary<string, List<string>>? NeoForgeVersion;
+
     /// <summary>
     /// 获取支持的版本
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<string>?> GetSupportVersion(SourceLocal? local = null)
+    public static async Task<List<string>?> GetSupportVersion(bool neo, SourceLocal? local = null)
     {
         try
         {
-            if (SupportVersion != null)
-                return SupportVersion;
+            if ((neo ? NeoSupportVersion : SupportVersion) != null)
+                return neo ? NeoSupportVersion : SupportVersion;
 
             if (local == SourceLocal.BMCLAPI
                 || local == SourceLocal.MCBBS)
@@ -39,13 +46,18 @@ public static class ForgeAPI
                 if (obj == null)
                     return null;
 
-                SupportVersion = obj;
+                if (neo)
+                    NeoSupportVersion = obj;
+                else
+                    SupportVersion = obj;
 
                 return obj;
             }
             else
             {
-                string url = UrlHelper.ForgeVersion(SourceLocal.Offical);
+                string url = neo ? 
+                    UrlHelper.NeoForgeVersion(SourceLocal.Offical):
+                    UrlHelper.ForgeVersion(SourceLocal.Offical);
                 var html = await BaseClient.GetString(url);
                 if (html.Item1 == false)
                 {
@@ -53,33 +65,68 @@ public static class ForgeAPI
                         new Exception(url), false);
                     return null;
                 }
-                var doc = new HtmlDocument();
-                doc.LoadHtml(html.Item2!);
-                var nodes = doc.DocumentNode.Descendants("li")
-                    .Where(x => x.Attributes["class"]?.Value == "li-version-list");
-                if (nodes == null)
-                    return null;
+
+                var xml = new XmlDocument();
+                xml.LoadXml(html.Item2!);
+
                 List<string> list = new();
 
-                foreach (var item in nodes)
+                var node = xml.SelectNodes("//metadata/versioning/versions/version");
+                if (node?.Count > 0)
                 {
-                    var nodes1 = item.SelectNodes("ul/li/a");
-                    if (nodes1 == null)
-                        return null;
-
-                    foreach (var item1 in nodes1)
+                    foreach (XmlNode item in node)
                     {
-                        list.Add(item1.InnerText.Trim());
+                        var str = item.InnerText;
+                        var index = str.IndexOf('-');
+                        var mc = str[..index++];
+                        var version = str[index..];
+
+                        if (!list.Contains(mc))
+                        {
+                            list.Add(mc);
+                        }
                     }
 
-                    var nodes2 = item.SelectNodes("ul/li")
-                        .Where(a => a.HasClass("elem-active"));
+                    if (neo)
+                        NeoSupportVersion = list;
+                    else
+                        SupportVersion = list;
 
-                    foreach (var item1 in nodes2)
-                    {
-                        list.Add(item1.InnerText.Trim());
-                    }
+                    return list;
                 }
+                else
+                {
+                    return null;
+                }
+
+
+                //var doc = new HtmlDocument();
+                //doc.LoadHtml(html.Item2!);
+                //var nodes = doc.DocumentNode.Descendants("li")
+                //    .Where(x => x.Attributes["class"]?.Value == "li-version-list");
+                //if (nodes == null)
+                //    return null;
+                //List<string> list = new();
+
+                //foreach (var item in nodes)
+                //{
+                //    var nodes1 = item.SelectNodes("ul/li/a");
+                //    if (nodes1 == null)
+                //        return null;
+
+                //    foreach (var item1 in nodes1)
+                //    {
+                //        list.Add(item1.InnerText.Trim());
+                //    }
+
+                //    var nodes2 = item.SelectNodes("ul/li")
+                //        .Where(a => a.HasClass("elem-active"));
+
+                //    foreach (var item1 in nodes2)
+                //    {
+                //        list.Add(item1.InnerText.Trim());
+                //    }
+                //}
 
                 SupportVersion = list;
 
@@ -93,13 +140,15 @@ public static class ForgeAPI
         }
     }
 
+
+
     /// <summary>
     /// 获取版本列表
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <param name="local">下载源</param>
     /// <returns>版本列表</returns>
-    public static async Task<List<string>?> GetVersionList(string version, SourceLocal? local = null)
+    public static async Task<List<string>?> GetVersionList(bool neo, string version, SourceLocal? local = null)
     {
         try
         {
@@ -135,7 +184,18 @@ public static class ForgeAPI
             }
             else
             {
-                string url = UrlHelper.ForgeVersions(version, SourceLocal.Offical);
+                if (!neo && ForgeVersion != null && ForgeVersion.TryGetValue(version, out var list1))
+                {
+                    return list1;
+                }
+                else if (neo && NeoForgeVersion != null && NeoForgeVersion.TryGetValue(version, out list1))
+                {
+                    return list1;
+                }
+
+                string url = neo ?
+                    UrlHelper.NeoForgeVersions(version, SourceLocal.Offical) :
+                    UrlHelper.ForgeVersions(version, SourceLocal.Offical);
                 var data = await BaseClient.DownloadClient.GetAsync(url);
 
                 string? html = null;
@@ -147,30 +207,68 @@ public static class ForgeAPI
                 {
                     return null;
                 }
-                var doc = new HtmlDocument();
-                doc.LoadHtml(html);
-                var nodes = doc.DocumentNode.Descendants("table")
-                    .Where(x => x.Attributes["class"]?.Value == "download-list").FirstOrDefault();
-                if (nodes == null)
-                    return null;
-                var nodes1 = nodes.Descendants("tbody").FirstOrDefault();
-                if (nodes1 == null)
-                    return null;
 
-                foreach (var item in nodes1.Descendants("tr"))
+                var xml = new XmlDocument();
+                xml.LoadXml(html);
+
+                var node = xml.SelectNodes("//metadata/versioning/versions/version");
+                if (node?.Count > 0)
                 {
-                    var item1 = item.Descendants("td").Where(x => x.Attributes["class"]?.Value == "download-version").FirstOrDefault();
-                    if (item1 != null)
+                    ForgeVersion = new();
+                    foreach (XmlNode item in node)
                     {
-                        string item2 = item1.InnerText.Trim();
-                        if (item2.Contains("Branch:"))
+                        var str = item.InnerText;
+                        var index = str.IndexOf('-');
+                        var mc = str[..index++];
+                        var version1 = str[index..];
+
+                        if (ForgeVersion.TryGetValue(mc, out var list2))
                         {
-                            int a = item2.IndexOf(' ');
-                            item2 = item2[..a].Trim();
+                            list2.Add(version1);
                         }
-                        list.Add(item2);
+                        else
+                        {
+                            var list3 = new List<string>() { version1 };
+                            ForgeVersion.Add(mc, list3);
+                        }
+                    }
+
+                    if (ForgeVersion.TryGetValue(version, out var list4))
+                    {
+                        return list4;
                     }
                 }
+
+                return null;
+
+                //var doc = new HtmlDocument();
+                //doc.LoadHtml(html);
+                //var nodes = doc.DocumentNode.Descendants("table")
+                //    .Where(x => x.Attributes["class"]?.Value == "download-list").FirstOrDefault();
+                //if (nodes == null)
+                //    return null;
+                //var nodes1 = nodes.Descendants("tbody").FirstOrDefault();
+                //if (nodes1 == null)
+                //    return null;
+
+                //foreach (var item in nodes1.Descendants("tr"))
+                //{
+                //    var item1 = item.Descendants("td").Where(x => x.Attributes["class"]?.Value == "download-version").FirstOrDefault();
+                //    if (item1 != null)
+                //    {
+                //        string item2 = item1.InnerText.Trim();
+                //        if (item2.Contains("Branch:"))
+                //        {
+                //            int a = item2.IndexOf(' ');
+                //            item2 = item2[..a].Trim();
+                //        }
+                //        list.Add(item2);
+                //    }
+                //}
+
+
+
+
                 return list;
             }
         }

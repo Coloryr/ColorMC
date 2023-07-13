@@ -18,11 +18,13 @@ public static class VersionPath
     private const string Name1 = "forge";
     private const string Name2 = "fabric";
     private const string Name3 = "quilt";
+    private const string Name4 = "neoforged";
     public static VersionObj? Versions { get; private set; }
 
     public static string ForgeDir => BaseDir + "/" + Name1;
     public static string FabricDir => BaseDir + "/" + Name2;
     public static string QuiltDir => BaseDir + "/" + Name3;
+    public static string NeoForgeDir => BaseDir + "/" + Name4;
 
     public static string BaseDir { get; private set; } = "";
 
@@ -37,6 +39,7 @@ public static class VersionPath
         Directory.CreateDirectory(BaseDir);
 
         Directory.CreateDirectory(ForgeDir);
+        Directory.CreateDirectory(NeoForgeDir);
         Directory.CreateDirectory(FabricDir);
         Directory.CreateDirectory(QuiltDir);
 
@@ -156,6 +159,51 @@ public static class VersionPath
         {
             AddGame(await GameAPI.GetGame(data.url));
         }
+    }
+
+    /// <summary>
+    /// 获取Forge安装数数据
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <returns>Forge安装数据</returns>
+    public static ForgeInstallObj? GetNeoForgeInstallObj(string mc, string version)
+    {
+        string file = $"{BaseDir}/{Name4}/forge-{mc}-{version}-install.json";
+
+        if (!File.Exists(file))
+            return null;
+
+        return JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file));
+    }
+
+    /// <summary>
+    /// 获取Forge启动数据
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>启动数据</returns>
+    public static ForgeLaunchObj? GetNeoForgeObj(this GameSettingObj obj)
+    {
+        return GetNeoForgeObj(obj.Version, obj.LoaderVersion);
+    }
+
+    /// <summary>
+    /// 获取Forge启动数据
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <returns>启动数据</returns>
+    public static ForgeLaunchObj? GetNeoForgeObj(string mc, string? version)
+    {
+        if (version == null)
+            return null;
+
+        string file = Path.GetFullPath($"{BaseDir}/{Name4}/forge-{mc}-{version}.json");
+
+        if (!File.Exists(file))
+            return null;
+
+        return JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file));
     }
 
     /// <summary>

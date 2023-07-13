@@ -75,6 +75,12 @@
                     IsChecked="{Binding SelectForge}"
                     IsEnabled="{Binding EnableForge}" />
                 <CheckBox
+                    Width="100"
+                    Margin="5,0,0,0"
+                    Content="NeoForge"
+                    IsChecked="{Binding SelectNeoForge}"
+                    IsEnabled="{Binding EnableNeoForge}" />
+                <CheckBox
                     Width="80"
                     Margin="5,0,0,0"
                     Content="Fabric"

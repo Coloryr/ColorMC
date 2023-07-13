@@ -41,6 +41,26 @@ public static class GameHelper
     }
 
     /// <summary>
+    /// 创建下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <param name="type">类型</param>
+    /// <returns>下载项目</returns>
+    private static DownloadItemObj BuildNeoForgeItem(string mc, string version, string type)
+    {
+        string name = $"forge-{mc}-{version}-{type}";
+        string url = UrlHelper.DownloadNeoForgeJar(mc, version, BaseClient.Source);
+
+        return new()
+        {
+            Url = url + name + ".jar",
+            Name = $"net.neoforged:forge:{mc}-{version}-{type}",
+            Local = $"{LibrariesPath.BaseDir}/net/neoforged/forge/{mc}-{version}/{name}.jar",
+        };
+    }
+
+    /// <summary>
     /// 创建Forge安装器下载项目
     /// </summary>
     /// <param name="mc">游戏版本</param>
@@ -48,6 +68,16 @@ public static class GameHelper
     public static DownloadItemObj BuildForgeInster(string mc, string version)
     {
         return BuildForgeItem(mc, version, "installer");
+    }
+
+    /// <summary>
+    /// 创建Forge安装器下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    public static DownloadItemObj BuildNeoForgeInster(string mc, string version)
+    {
+        return BuildNeoForgeItem(mc, version, "installer");
     }
 
     /// <summary>
@@ -59,9 +89,19 @@ public static class GameHelper
     {
         return BuildForgeItem(mc, version, "universal");
     }
+
+    public static DownloadItemObj BuildNeoForgeUniversal(string mc, string version)
+    {
+        return BuildNeoForgeItem(mc, version, "universal");
+    }
+
     public static DownloadItemObj BuildForgeLauncher(string mc, string version)
     {
         return BuildForgeItem(mc, version, "launcher");
+    }
+    public static DownloadItemObj BuildNeoForgeLauncher(string mc, string version)
+    {
+        return BuildNeoForgeItem(mc, version, "launcher");
     }
 
     /// <summary>
@@ -71,7 +111,7 @@ public static class GameHelper
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
     /// <returns></returns>
-    public static List<DownloadItemObj> MakeForgeLibs(ForgeLaunchObj info, string mc, string version)
+    public static List<DownloadItemObj> MakeForgeLibs(ForgeLaunchObj info, string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
         var v2 = CheckRule.GameLaunchVersion(version1);
@@ -79,19 +119,27 @@ public static class GameHelper
 
         if (v2)
         {
-            list.Add(BuildForgeUniversal(mc, version));
-            list.Add(BuildForgeInster(mc, version));
+            list.Add(neo?
+                BuildNeoForgeUniversal(mc, version) : 
+                BuildForgeUniversal(mc, version));
+            list.Add(neo ?
+                BuildNeoForgeInster(mc, version) :
+                BuildForgeInster(mc, version));
             if (!CheckRule.IsGameLaunchVersion117(mc))
             {
-                list.Add(BuildForgeLauncher(mc, version));
+                list.Add(neo?
+                    BuildNeoForgeLauncher(mc, version):
+                    BuildForgeLauncher(mc, version));
             }
         }
 
         foreach (var item1 in info.libraries)
         {
-            if (item1.name.StartsWith("net.minecraftforge:forge:")
+            if (item1.name.StartsWith(neo ? 
+                "net.neoforged.forge:" : "net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
             {
+                //1.12.2及以下
                 if (!v2)
                 {
                     var temp = BuildForgeUniversal(mc, version);
@@ -103,7 +151,10 @@ public static class GameHelper
             {
                 list.Add(new()
                 {
-                    Url = UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
+                    Url = neo ?
+                    UrlHelper.DownloadNeoForgeLib(item1.downloads.artifact.url,
+                        BaseClient.Source):
+                    UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
                         BaseClient.Source),
                     Name = item1.name,
                     Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
@@ -115,16 +166,18 @@ public static class GameHelper
         return list;
     }
 
-    public static List<DownloadItemObj> MakeForgeLibs(ForgeInstallObj info, string mc, string version)
+    public static List<DownloadItemObj> MakeForgeLibs(ForgeInstallObj info, string mc, string version, bool neo)
     {
         var list = new List<DownloadItemObj>();
 
         foreach (var item in info.libraries)
         {
-            if (item.name.StartsWith("net.minecraftforge:forge:")
+            if (item.name.StartsWith(neo ? "net.neoforged.forge:" : "net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
             {
-                var item1 = GameHelper.BuildForgeUniversal(mc, version);
+                var item1 = neo ? 
+                    BuildNeoForgeUniversal(mc, version) : 
+                    BuildForgeUniversal(mc, version);
                 item1.SHA1 = item.downloads.artifact.sha1;
                 if (!File.Exists(item1.Local))
                 {
@@ -156,7 +209,10 @@ public static class GameHelper
                     Local = file,
                     Name = item.name,
                     SHA1 = item.downloads.artifact.sha1,
-                    Url = UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
+                    Url = neo ?
+                    UrlHelper.DownloadNeoForgeLib(item.downloads.artifact.url,
+                         BaseClient.Source) :
+                    UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
                          BaseClient.Source)
                 });
                 continue;
@@ -171,7 +227,10 @@ public static class GameHelper
                     Local = file,
                     Name = item.name,
                     SHA1 = item.downloads.artifact.sha1,
-                    Url = UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
+                    Url = neo ?
+                    UrlHelper.DownloadNeoForgeLib(item.downloads.artifact.url,
+                         BaseClient.Source) :
+                    UrlHelper.DownloadForgeLib(item.downloads.artifact.url,
                          BaseClient.Source)
                 });
             }

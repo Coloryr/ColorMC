@@ -80,7 +80,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLib(this GameSettingObj obj)
+    public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLib(this GameSettingObj obj, bool neo)
     {
         var version1 = VersionPath.GetGame(obj.Version)!;
         var v2 = CheckRule.GameLaunchVersion(version1);
@@ -89,21 +89,26 @@ public static class LibrariesPath
             GameHelper.ReadyForgeWrapper();
         }
 
-        var forge = VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion);
+        var forge = neo ?
+            VersionPath.GetNeoForgeObj(obj.Version, obj.LoaderVersion) :
+            VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion);
         if (forge == null)
             return null;
 
         //forge本体
-        var list1 = GameHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!);
+        var list1 = GameHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo);
 
-        var forgeinstall = VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
+        var forgeinstall = neo ?
+            VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!) :
+            VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
         if (forgeinstall == null && v2)
             return null;
 
         //forge安装器
         if (forgeinstall != null)
         {
-            var list2 = GameHelper.MakeForgeLibs(forgeinstall, obj.Version, obj.LoaderVersion!);
+            var list2 = GameHelper.MakeForgeLibs(forgeinstall, obj.Version,
+                obj.LoaderVersion!, neo);
             list1.AddRange(list2);
         }
 

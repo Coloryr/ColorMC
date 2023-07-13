@@ -458,7 +458,7 @@ public static class WebBinding
                     Overwrite = true
                 };
 
-                res = await DownloadManager.Download(item);
+                res = await DownloadManager.Start(new() { item });
                 if (!res)
                 {
                     return false;
@@ -476,7 +476,7 @@ public static class WebBinding
                     Overwrite = true
                 };
 
-                return await DownloadManager.Download(item);
+                return await DownloadManager.Start(new() { item });
             default:
                 return false;
         }
@@ -507,7 +507,7 @@ public static class WebBinding
                     Overwrite = true
                 };
 
-                return await DownloadManager.Download(item);
+                return await DownloadManager.Start(new() { item });
             case FileType.Shaderpack:
                 item = new DownloadItemObj()
                 {
@@ -518,7 +518,7 @@ public static class WebBinding
                     Overwrite = true
                 };
 
-                return await DownloadManager.Download(item);
+                return await DownloadManager.Start(new() { item });
             default:
                 return false;
         }
@@ -541,7 +541,7 @@ public static class WebBinding
             Overwrite = true
         };
 
-        return await DownloadManager.Download(item);
+        return await DownloadManager.Start(new() { item });
     }
 
     public static async Task<bool> Download(WorldObj obj1, ModrinthVersionObj? data)
@@ -564,7 +564,7 @@ public static class WebBinding
             Overwrite = true
         };
 
-        return await DownloadManager.Download(item);
+        return await DownloadManager.Start(new() { item });
     }
 
     public static string? GetUrl(this FileItemDisplayObj obj)

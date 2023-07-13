@@ -368,7 +368,7 @@ public static class TestItem
 
     public static void Item16()
     {
-        var list = ForgeAPI.GetVersionList("1.12.2").Result;
+        var list = ForgeAPI.GetVersionList(false, "1.12.2").Result;
         foreach (var item in list!)
         {
             Console.Write(item + " ");
@@ -376,7 +376,7 @@ public static class TestItem
 
         Console.WriteLine();
 
-        var list1 = ForgeAPI.GetSupportVersion().Result;
+        var list1 = ForgeAPI.GetSupportVersion(false).Result;
         foreach (var item in list1!)
         {
             Console.Write(item + " ");
@@ -446,5 +446,10 @@ public static class TestItem
         var game = InstancesPath.GetGameByName("test");
         var list = game.GetLogFiles();
         var data = game.ReadLog(list.First());
+    }
+
+    public static void Item26()
+    {
+        var list = ForgeAPI.GetSupportVersion(false).Result;
     }
 }

@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Live2DCSharpSDK.Framework",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorMC.Android", "ColorMC.Android\ColorMC.Android.csproj", "{7B4AB179-2459-45AB-A361-440AE05CB51C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorMC.Android.Lib", "ColorMC.Android.Lib\ColorMC.Android.Lib.csproj", "{10B46962-A4BF-4660-9C97-5BA974C3583D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,14 @@ Global
 		{7B4AB179-2459-45AB-A361-440AE05CB51C}.Release|x64.ActiveCfg = Release|Any CPU
 		{7B4AB179-2459-45AB-A361-440AE05CB51C}.Release|x64.Build.0 = Release|Any CPU
 		{7B4AB179-2459-45AB-A361-440AE05CB51C}.Release|x64.Deploy.0 = Release|Any CPU
+		{10B46962-A4BF-4660-9C97-5BA974C3583D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B46962-A4BF-4660-9C97-5BA974C3583D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B46962-A4BF-4660-9C97-5BA974C3583D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{10B46962-A4BF-4660-9C97-5BA974C3583D}.Debug|x64.Build.0 = Debug|Any CPU
+		{10B46962-A4BF-4660-9C97-5BA974C3583D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10B46962-A4BF-4660-9C97-5BA974C3583D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10B46962-A4BF-4660-9C97-5BA974C3583D}.Release|x64.ActiveCfg = Release|Any CPU
+		{10B46962-A4BF-4660-9C97-5BA974C3583D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

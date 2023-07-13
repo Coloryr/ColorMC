@@ -696,7 +696,7 @@ public static class GameBinding
 
     public static Task<List<string>?> GetForgeVersion(string version)
     {
-        return ForgeAPI.GetVersionList(version, BaseClient.Source);
+        return ForgeAPI.GetVersionList(false, version, BaseClient.Source);
     }
 
     public static Task<List<string>?> GetFabricVersion(string version)
@@ -919,7 +919,7 @@ public static class GameBinding
 
     public static Task<List<string>?> GetForgeSupportVersion()
     {
-        return ForgeAPI.GetSupportVersion(BaseClient.Source);
+        return ForgeAPI.GetSupportVersion(false, BaseClient.Source);
     }
 
     public static Task<List<string>?> GetFabricSupportVersion()
@@ -1475,5 +1475,15 @@ public static class GameBinding
         }
 
         return list;
+    }
+
+    public static Task<List<string>?> GetNeoForgeVersion(string version)
+    {
+        return ForgeAPI.GetVersionList(true, version, BaseClient.Source);
+    }
+
+    public static Task<List<string>?> GetNeoForgeSupportVersion()
+    {
+        return ForgeAPI.GetSupportVersion(true, BaseClient.Source);
     }
 }

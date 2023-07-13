@@ -185,7 +185,7 @@ public static class DownloadManager
     }
 
     /// <summary>
-    /// 下载完成
+    /// 下载线程完成
     /// </summary>
     public static void Done()
     {
@@ -242,70 +242,5 @@ public static class DownloadManager
         }
 
         return bufferSize;
-    }
-
-    /// <summary>
-    /// 下载项目
-    /// </summary>
-    /// <param name="item">下载项目</param>
-    /// <returns>结果</returns>
-    public static async Task<bool> Download(DownloadItemObj item)
-    {
-        string file = Path.GetFullPath(DownloadDir + "/" + Guid.NewGuid().ToString());
-        FileInfo info = new(file);
-        if (!Directory.Exists(info.DirectoryName))
-        {
-            Directory.CreateDirectory(info.DirectoryName!);
-        }
-        using FileStream stream = new(file, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-        var data = await BaseClient.DownloadClient.GetAsync(item.Url, HttpCompletionOption.ResponseHeadersRead);
-        using Stream stream1 = data.Content.ReadAsStream();
-        byte[] buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
-        try
-        {
-            int bytesRead;
-            while ((bytesRead = await stream1.ReadAsync(new Memory<byte>(buffer))
-                .ConfigureAwait(false)) != 0)
-            {
-                await stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead))
-                    .ConfigureAwait(false);
-            }
-
-            if (ConfigUtils.Config.Http.CheckFile)
-            {
-                if (!string.IsNullOrWhiteSpace(item.SHA1))
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    string sha1 = Funtcions.GenSha1(stream);
-                    if (sha1 != item.SHA1)
-                    {
-                        return false;
-                    }
-                }
-                if (!string.IsNullOrWhiteSpace(item.SHA256))
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    string sha1 = Funtcions.GenSha256(stream);
-                    if (sha1 != item.SHA256)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            stream.Dispose();
-            if (File.Exists(item.Local))
-            {
-                File.Delete(item.Local);
-            }
-            new FileInfo(item.Local).Directory?.Create();
-            File.Move(file, item.Local);
-
-            return true;
-        }
-        finally
-        {
-            ArrayPool<byte>.Shared.Return(buffer);
-        }
     }
 }
