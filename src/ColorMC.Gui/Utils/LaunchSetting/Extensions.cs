@@ -65,3 +65,24 @@ public class FontExtension : MarkupExtension
         return binding.ProvideValue(serviceProvider);
     }
 }
+
+public class StyleExtension : MarkupExtension
+{
+    public StyleExtension(string key)
+    {
+        Key = key;
+    }
+
+    public string Key { get; set; }
+    public override object ProvideValue(IServiceProvider serviceProvider)
+    {
+        var keyToUse = Key;
+        var binding = new ReflectionBindingExtension($"[{keyToUse}]")
+        {
+            Mode = BindingMode.OneWay,
+            Source = StyleSel.Instance,
+        };
+
+        return binding.ProvideValue(serviceProvider);
+    }
+}

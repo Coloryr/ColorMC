@@ -79,6 +79,7 @@ public static class BaseBinding
         }
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
+        StyleSel.Instance.Load();
     }
 
     private static Task<bool> LaunchP(bool pre)

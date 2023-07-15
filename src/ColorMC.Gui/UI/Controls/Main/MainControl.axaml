@@ -15,11 +15,11 @@
         <views1:Live2dControl
             Width="{Binding Live2dWidth}"
             Height="{Binding Live2dHeight}"
-            HorizontalAlignment="Left"
+            HorizontalAlignment="{Binding Mirror3}"
             VerticalAlignment="Bottom" />
 
         <DockPanel>
-            <ScrollViewer DockPanel.Dock="Right">
+            <ScrollViewer DockPanel.Dock="{Binding Mirror1}">
                 <Panel>
                     <Panel
                         Margin="0,110,6,0"
@@ -83,7 +83,7 @@
                         </StackPanel>
                     </Panel>
 
-                    <Panel Name="Grid1" HorizontalAlignment="Left">
+                    <Panel Name="Grid1">
                         <Border Name="Border1" Background="{setting:Colors TranBack}" />
                         <StackPanel Margin="10,0,10,0" VerticalAlignment="Center">
                             <Panel Margin="0,20,0,0">
@@ -179,7 +179,7 @@
                         Width="25"
                         Height="25"
                         Margin="8,10,6,10"
-                        HorizontalAlignment="Right"
+                        HorizontalAlignment="{Binding Mirror2}"
                         VerticalAlignment="Top"
                         Command="{Binding SideChange}"
                         Content="{Binding SideButton}"
@@ -190,7 +190,7 @@
                         Width="25"
                         Height="25"
                         Margin="8,10,6,10"
-                        HorizontalAlignment="Right"
+                        HorizontalAlignment="{Binding Mirror2}"
                         VerticalAlignment="Bottom"
                         Command="{Binding MusicPause}"
                         Content="▶️"

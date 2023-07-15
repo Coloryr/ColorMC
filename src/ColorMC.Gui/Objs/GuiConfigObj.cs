@@ -2,9 +2,28 @@ using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
 
-public record GuiSetting
+public record StyleSetting
+{ 
+    /// <summary>
+    /// 按钮圆角程度
+    /// </summary>
+    public int ButtonCornerRadius { get; set; }
+}
+
+public record MainWindowSetting
 {
+    /// <summary>
+    /// 菜单栏状态
+    /// </summary>
     public bool MainDisplay { get; set; }
+    /// <summary>
+    /// 菜单栏状态保存
+    /// </summary>
+    public bool WindowStateSave { get; set; }
+    /// <summary>
+    /// 主界面镜像
+    /// </summary>
+    public bool WindowMirror { get; set; }
 }
 
 /// <summary>
@@ -277,5 +296,12 @@ public record GuiConfigObj
     /// Live2D设置
     /// </summary>
     public Live2DSetting Live2D { get; set; }
-    public GuiSetting Gui { get; set; }
+    /// <summary>
+    /// 主界面设置
+    /// </summary>
+    public MainWindowSetting Gui { get; set; }
+    /// <summary>
+    /// 样式设置
+    /// </summary>
+    public StyleSetting Style { get; set; }
 }

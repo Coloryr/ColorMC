@@ -23,7 +23,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="3" />
+        <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="BorderBrush" Value="{setting:Colors Bottom}" />
     </Style>

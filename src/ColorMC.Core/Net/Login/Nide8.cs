@@ -1,3 +1,4 @@
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -32,8 +33,14 @@ public static class Nide8
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(LoginObj obj)
+    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(LoginObj obj)
     {
-        return LoginOld.Refresh(UrlHelper.Nide8 + obj.Text1, obj);
+        string server = UrlHelper.Nide8 + obj.Text1;
+        if (await LoginOld.Validate(server, obj))
+        {
+            return (LoginState.Done, obj, null);
+        }
+
+        return await LoginOld.Refresh(server, obj);
     }
 }

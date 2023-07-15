@@ -91,6 +91,11 @@ public static class GuiConfigUtils
                 Config.Gui = MakeGuiSettingConfig();
                 save = true;
             }
+            if (Config.Style == null)
+            {
+                Config.Style = MakeStyleSettingConfig();
+                save = true;
+            }
             if (SystemInfo.Os == OsType.Linux && Config.WindowMode)
             {
                 Config.WindowMode = false;
@@ -125,6 +130,14 @@ public static class GuiConfigUtils
             Local = Name,
             Obj = Config
         });
+    }
+
+    public static StyleSetting MakeStyleSettingConfig()
+    {
+        return new()
+        {
+            ButtonCornerRadius = 3
+        };
     }
 
     public static Live2DSetting MakeLive2DConfig()
@@ -167,7 +180,8 @@ public static class GuiConfigUtils
             Render = MakeRenderConfig(),
             BackLimitValue = 50,
             Live2D = MakeLive2DConfig(),
-            Gui = MakeGuiSettingConfig()
+            Gui = MakeGuiSettingConfig(),
+            Style = MakeStyleSettingConfig()
         };
     }
 
@@ -203,7 +217,7 @@ public static class GuiConfigUtils
         };
     }
 
-    public static GuiSetting MakeGuiSettingConfig()
+    public static MainWindowSetting MakeGuiSettingConfig()
     {
         return new()
         {

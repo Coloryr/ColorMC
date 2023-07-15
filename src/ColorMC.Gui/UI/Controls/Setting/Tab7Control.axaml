@@ -34,24 +34,40 @@
                 HorizontalAlignment="Stretch"
                 Command="{Binding Open1}"
                 Content="{setting:Localize SettingWindow.Tab7.Text3}" />
-            <Button
-                Height="30"
-                Margin="0,0,0,5"
-                HorizontalAlignment="Stretch"
-                Command="{Binding Open2}"
-                Content="{setting:Localize SettingWindow.Tab7.Text4}" />
-            <Button
-                Height="30"
-                Margin="0,0,0,5"
-                HorizontalAlignment="Stretch"
-                Command="{Binding Open3}"
-                Content="{setting:Localize SettingWindow.Tab7.Text5}" />
-            <Button
-                Height="30"
-                Margin="0,0,0,5"
-                HorizontalAlignment="Stretch"
-                Command="{Binding Open4}"
-                Content="{setting:Localize SettingWindow.Tab7.Text7}" />
+            <Grid ColumnDefinitions="*,*" RowDefinitions="*,*">
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Height="30"
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding Open2}"
+                    Content="{setting:Localize SettingWindow.Tab7.Text4}" />
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Height="30"
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding Open3}"
+                    Content="{setting:Localize SettingWindow.Tab7.Text5}" />
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Height="30"
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding Open4}"
+                    Content="{setting:Localize SettingWindow.Tab7.Text7}" />
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Height="30"
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding Open5}"
+                    Content="{setting:Localize SettingWindow.Tab7.Text8}" />
+            </Grid>
         </StackPanel>
     </StackPanel>
 </UserControl>

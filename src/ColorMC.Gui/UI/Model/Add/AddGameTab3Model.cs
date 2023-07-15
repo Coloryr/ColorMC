@@ -68,6 +68,14 @@ public partial class AddGameTab3Model : AddGameControlModel
             return;
         }
 
-        Local = res;
+        if (Directory.Exists(res))
+        {
+            Local = res;
+        }
+        else 
+        {
+            var window = Con.Window;
+            window.OkInfo.Show(string.Format(App.GetLanguage("AddGameWindow.Tab3.Error2"), res));
+        }
     }
 }

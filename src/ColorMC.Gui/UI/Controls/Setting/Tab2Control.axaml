@@ -23,6 +23,54 @@
                     Content="{setting:Localize SettingWindow.Tab2.Text23}" />
             </StackPanel>
 
+            <Label
+                Margin="0,0,5,0"
+                VerticalAlignment="Center"
+                Content="{setting:Localize SettingWindow.Tab2.Text36}" />
+
+            <StackPanel Orientation="Horizontal">
+                <CheckBox
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab2.Text37}"
+                    IsChecked="{Binding MainWindowMirror}" />
+                <CheckBox
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab2.Text38}"
+                    IsChecked="{Binding MainWindowStateSave}" />
+            </StackPanel>
+
+            <Label
+                Margin="0,0,5,0"
+                VerticalAlignment="Center"
+                Content="{setting:Localize SettingWindow.Tab2.Text39}" />
+
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab2.Text40}" />
+
+                <Slider
+                    Width="200"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"
+                    Foreground="{setting:Colors Main}"
+                    IsSnapToTickEnabled="True"
+                    LargeChange="1"
+                    Maximum="20"
+                    Minimum="0"
+                    SmallChange="1"
+                    TickFrequency="1"
+                    Value="{Binding ButtonCornerRadius}" />
+                <Label
+                    Width="40"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{Binding ButtonCornerRadius, StringFormat='{}{0}'}" />
+
+            </StackPanel>
+
             <!--  语言  -->
 
             <StackPanel Orientation="Horizontal">

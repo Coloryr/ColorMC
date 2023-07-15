@@ -3,6 +3,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net.Login;
@@ -111,5 +112,30 @@ public static class LoginOld
         obj.ClientToken = obj2.clientToken;
 
         return (LoginState.Done, obj, null);
+    }
+
+    public static async Task<bool> Validate(string server, LoginObj obj)
+    {
+        var obj1 = new RefreshObj
+        {
+            accessToken = obj.AccessToken,
+            clientToken = obj.ClientToken
+        };
+        HttpRequestMessage message = new()
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new(server + "/authserver/validate")
+        };
+        message.Headers.UserAgent.Append(new("ColorMC", ColorMCCore.Version));
+        message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
+            MediaTypeHeaderValue.Parse("application/json"));
+
+        var res = await BaseClient.LoginClient.SendAsync(message);
+        if (res.StatusCode == HttpStatusCode.NoContent)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

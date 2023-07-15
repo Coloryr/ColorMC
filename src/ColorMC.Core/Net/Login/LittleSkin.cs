@@ -57,7 +57,7 @@ public static class LittleSkin
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(LoginObj obj)
+    public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(LoginObj obj)
     {
         string server;
         if (obj.AuthType == AuthType.LittleSkin)
@@ -76,6 +76,11 @@ public static class LittleSkin
 
         server += "api/yggdrasil";
 
-        return LoginOld.Refresh(server, obj);
+        if (await LoginOld.Validate(server, obj))
+        {
+            return (LoginState.Done, obj, null);
+        }
+
+        return await LoginOld.Refresh(server, obj);
     }
 }

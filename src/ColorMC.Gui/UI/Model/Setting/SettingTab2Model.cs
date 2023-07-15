@@ -81,6 +81,10 @@ public partial class SettingTab2Model : ObservableObject
     private bool enableWindowMode = true;
     [ObservableProperty]
     private bool coreInstall;
+    [ObservableProperty]
+    private bool mainWindowStateSave;
+    [ObservableProperty]
+    private bool mainWindowMirror;
 
     [ObservableProperty]
     private int language;
@@ -100,6 +104,8 @@ public partial class SettingTab2Model : ObservableObject
     private int width;
     [ObservableProperty]
     private int height;
+    [ObservableProperty]
+    private int buttonCornerRadius;
 
     [ObservableProperty]
     private string? pic;
@@ -119,6 +125,30 @@ public partial class SettingTab2Model : ObservableObject
         {
             enableWindowMode = false;
         }
+    }
+
+    partial void OnButtonCornerRadiusChanged(int value)
+    {
+        if (load)
+            return;
+
+        ConfigBinding.SetStyle(value);
+    }
+
+    partial void OnMainWindowStateSaveChanged(bool value)
+    {
+        if (load)
+            return;
+
+        ConfigBinding.SetWindowStateSave(MainWindowStateSave);
+    }
+
+    partial void OnMainWindowMirrorChanged(bool value)
+    {
+        if (load)
+            return;
+
+        ConfigBinding.SetMainWindow(MainWindowMirror);
     }
 
     partial void OnWidthChanged(int value)
@@ -492,6 +522,11 @@ public partial class SettingTab2Model : ObservableObject
             WindowMode = config.Item2.WindowMode;
             EnablePicResize = config.Item2.BackLimit;
             EnableWindowTran = config.Item2.WindowTran;
+
+            MainWindowMirror = config.Item2.Gui.WindowMirror;
+            MainWindowStateSave = config.Item2.Gui.WindowStateSave;
+
+            ButtonCornerRadius = config.Item2.Style.ButtonCornerRadius;
 
             Live2DModel = config.Item2.Live2D.Model;
             Height = config.Item2.Live2D.Height;

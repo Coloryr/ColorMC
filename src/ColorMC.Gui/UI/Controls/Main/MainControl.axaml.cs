@@ -6,6 +6,7 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
@@ -268,5 +269,10 @@ public partial class MainControl : UserControl, IUserControl
     public void ShowMessage(string message)
     {
         model.ShowMessage(message);
+    }
+
+    public void MirrorChange()
+    {
+        model.Mirror();
     }
 }

@@ -6,6 +6,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -49,6 +50,7 @@ public static class ConfigBinding
         {
             ColorSel.Instance.Load();
             FontSel.Instance.Load();
+            StyleSel.Instance.Load();
         }
 
         return res;
@@ -546,5 +548,30 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Gui ??= new();
         GuiConfigUtils.Config.Gui.MainDisplay = sideDisplay;
         GuiConfigUtils.Save();
+    }
+
+    public static void SetWindowStateSave(bool v1)
+    {
+        GuiConfigUtils.Config.Gui ??= new();
+        GuiConfigUtils.Config.Gui.WindowStateSave = v1;
+        GuiConfigUtils.Save();
+    }
+
+    public static void SetMainWindow(bool v1)
+    {
+        GuiConfigUtils.Config.Gui ??= new();
+        GuiConfigUtils.Config.Gui.WindowMirror = v1;
+        GuiConfigUtils.Save();
+
+        App.MainWindow?.MirrorChange();
+    }
+
+    public static void SetStyle(int value)
+    {
+        GuiConfigUtils.Config.Style ??= new();
+        GuiConfigUtils.Config.Style.ButtonCornerRadius = value;
+        GuiConfigUtils.Save();
+
+        StyleSel.Instance.Load();
     }
 }

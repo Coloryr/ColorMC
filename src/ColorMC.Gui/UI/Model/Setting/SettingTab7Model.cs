@@ -34,4 +34,10 @@ public partial class SettingTab7Model : ObservableObject
     {
         App.ShowCount();
     }
+
+    [RelayCommand]
+    public void Open5()
+    {
+        BaseBinding.OpUrl("https://github.com/Coloryr/ColorMC/blob/master/guide/Main.md");
+    }
 }

@@ -35,7 +35,7 @@ public partial class DownloadModel : ObservableObject
     [ObservableProperty]
     private string button = "P";
     [ObservableProperty]
-    private string button1 = "P";
+    private string button1 = App.GetLanguage("DownloadWindow.Text1");
     [ObservableProperty]
     private double value = 0;
     [ObservableProperty]
