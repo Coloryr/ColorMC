@@ -108,7 +108,7 @@ public partial class ConfigEditModel : ObservableObject
         Load1();
     }
 
-    partial void OnFileChanged(string value)
+    async partial  void OnFileChanged(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             return;
@@ -121,11 +121,11 @@ public partial class ConfigEditModel : ObservableObject
             NbtBase? nbt;
             if (World != null)
             {
-                nbt = GameBinding.ReadNbt(World, value);
+                nbt = await GameBinding.ReadNbt(World, value);
             }
             else
             {
-                nbt = GameBinding.ReadNbt(Obj, value);
+                nbt = await GameBinding.ReadNbt(Obj, value);
             }
 
             if (nbt is not NbtCompound nbt1)

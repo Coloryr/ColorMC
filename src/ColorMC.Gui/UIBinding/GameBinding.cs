@@ -638,18 +638,18 @@ public static class GameBinding
         return list;
     }
 
-    public static NbtBase? ReadNbt(WorldObj obj, string name)
+    public static async Task<NbtBase> ReadNbt(WorldObj obj, string name)
     {
         var dir = obj.Local;
 
-        return NbtBase.Read(Path.GetFullPath(dir + "/" + name));
+        return await NbtBase.Read(Path.GetFullPath(dir + "/" + name));
     }
 
-    public static NbtBase? ReadNbt(GameSettingObj obj, string name)
+    public static async Task<NbtBase> ReadNbt(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
 
-        return NbtBase.Read(Path.GetFullPath(dir + "/" + name));
+        return await NbtBase.Read(Path.GetFullPath(dir + "/" + name));
     }
 
     public static string ReadConfigFile(WorldObj obj, string name)
@@ -883,9 +883,9 @@ public static class GameBinding
         BaseBinding.OpPath(obj, PathType.GamePath);
     }
 
-    public static IEnumerable<ServerInfoObj> GetServers(GameSettingObj obj)
+    public static async Task<IEnumerable<ServerInfoObj>> GetServers(GameSettingObj obj)
     {
-        return obj.GetServerInfos();
+        return await obj.GetServerInfos();
     }
 
     public static List<ShaderpackDisplayObj> GetShaderpacks(GameSettingObj obj)
@@ -909,11 +909,12 @@ public static class GameBinding
         obj.AddServer(name, ip);
     }
 
-    public static void DeleteServer(GameSettingObj obj, ServerInfoObj server)
+    public static async void DeleteServer(GameSettingObj obj, ServerInfoObj server)
     {
-        var list = obj.GetServerInfos().ToList();
-        var item = list.First(a => a.Name == server.Name && a.IP == server.IP);
-        list.Remove(item);
+        var list = await obj.GetServerInfos();
+        var list1 = list.ToList();
+        var item = list1.First(a => a.Name == server.Name && a.IP == server.IP);
+        list1.Remove(item);
         obj.SaveServer(list);
     }
 
@@ -963,9 +964,9 @@ public static class GameBinding
         return obj.AddShaderpack(list);
     }
 
-    public static List<SchematicDisplayObj> GetSchematics(GameSettingObj obj)
+    public static async Task<List<SchematicDisplayObj>> GetSchematics(GameSettingObj obj)
     {
-        var list = obj.GetSchematics();
+        var list = await obj.GetSchematics();
         var list1 = new List<SchematicDisplayObj>();
         foreach (var item in list)
         {

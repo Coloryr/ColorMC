@@ -14,7 +14,7 @@ public class StyleSel : INotifyPropertyChanged
 
     private CornerRadius ButtonCornerRadius = new(3);
 
-    public object this[string key]
+    public object? this[string key]
     {
         get
         {

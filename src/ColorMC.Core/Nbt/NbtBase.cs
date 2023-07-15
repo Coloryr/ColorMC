@@ -137,9 +137,9 @@ public abstract class NbtBase
         };
     }
 
-    public void Save(string file)
+    public async void Save(string file)
     {
-        Save(this, file);
+        await Save(this, file);
     }
 
     /// <summary>
@@ -169,12 +169,12 @@ public abstract class NbtBase
     /// </summary>
     /// <param name="file">文件名</param>
     /// <returns></returns>
-    public static NbtBase? Read(string file)
+    public static async Task<NbtBase> Read(string file)
     {
         using var steam = File.OpenRead(file);
         DataInputStream steam2;
         var data = new byte[2];
-        steam.ReadExactly(data);
+        await steam.ReadExactlyAsync(data);
         steam.Seek(0, SeekOrigin.Begin);
         bool gzip = false;
         if (data[0] == 0x1F && data[1] == 0x8B)
@@ -218,26 +218,29 @@ public abstract class NbtBase
     /// </summary>
     /// <param name="file">文件名</param>
     /// <param name="nbt">标签</param>
-    public static void Save(NbtBase nbt, string file)
+    public static Task Save(NbtBase nbt, string file)
     {
-        using var steam = File.Create(file);
-        DataOutputStream steam2;
-        if (nbt.Gzip)
+        return Task.Run(() =>
         {
-            var steam1 = new GZipStream(steam, CompressionMode.Compress);
-            steam2 = new DataOutputStream(steam1);
-        }
-        else
-        {
-            steam2 = new DataOutputStream(steam);
-        }
+            using var steam = File.Create(file);
+            DataOutputStream steam2;
+            if (nbt.Gzip)
+            {
+                var steam1 = new GZipStream(steam, CompressionMode.Compress);
+                steam2 = new DataOutputStream(steam1);
+            }
+            else
+            {
+                steam2 = new DataOutputStream(steam);
+            }
 
-        steam2.Write((byte)nbt.NbtType);
-        if (nbt.NbtType != NbtType.NbtEnd)
-        {
-            steam2.Write("");
-            nbt.Write(steam2);
-        }
-        steam2.Dispose();
+            steam2.Write((byte)nbt.NbtType);
+            if (nbt.NbtType != NbtType.NbtEnd)
+            {
+                steam2.Write("");
+                nbt.Write(steam2);
+            }
+            steam2.Dispose();
+        });
     }
 }

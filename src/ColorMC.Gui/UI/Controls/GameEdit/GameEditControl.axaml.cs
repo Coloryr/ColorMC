@@ -167,7 +167,7 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case 6:
                 Go(tab10);
-                model10.Load();
+                await model10.Load();
                 break;
             case 7:
                 Go(tab11);
@@ -175,7 +175,7 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case 8:
                 Go(tab12);
-                model12.Load();
+                await model12.Load();
                 break;
             case 9:
                 Go(tab6);

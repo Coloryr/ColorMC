@@ -15,10 +15,10 @@ namespace ColorMC.Core.Net.Apis;
 public static class ForgeAPI
 {
     private static List<string>? SupportVersion;
-    private static Dictionary<string, List<string>>? ForgeVersion;
+    private static readonly Dictionary<string, List<string>> ForgeVersion = new();
 
     private static List<string>? NeoSupportVersion;
-    private static Dictionary<string, List<string>>? NeoForgeVersion;
+    private static readonly Dictionary<string, List<string>> NeoForgeVersion = new();
 
     /// <summary>
     /// 获取支持的版本
@@ -128,9 +128,9 @@ public static class ForgeAPI
                 //    }
                 //}
 
-                SupportVersion = list;
+                //SupportVersion = list;
 
-                return list;
+                //return list;
             }
         }
         catch (Exception e)
@@ -184,11 +184,11 @@ public static class ForgeAPI
             }
             else
             {
-                if (!neo && ForgeVersion != null && ForgeVersion.TryGetValue(version, out var list1))
+                if (!neo && ForgeVersion.TryGetValue(version, out var list1))
                 {
                     return list1;
                 }
-                else if (neo && NeoForgeVersion != null && NeoForgeVersion.TryGetValue(version, out list1))
+                else if (neo && NeoForgeVersion.TryGetValue(version, out list1))
                 {
                     return list1;
                 }
@@ -214,7 +214,14 @@ public static class ForgeAPI
                 var node = xml.SelectNodes("//metadata/versioning/versions/version");
                 if (node?.Count > 0)
                 {
-                    ForgeVersion = new();
+                    if (neo)
+                    {
+                        NeoForgeVersion.Clear();
+                    }
+                    else
+                    {
+                        ForgeVersion.Clear();
+                    }
                     foreach (XmlNode item in node)
                     {
                         var str = item.InnerText;
@@ -222,20 +229,45 @@ public static class ForgeAPI
                         var mc = str[..index++];
                         var version1 = str[index..];
 
-                        if (ForgeVersion.TryGetValue(mc, out var list2))
+                        if (neo)
                         {
-                            list2.Add(version1);
+                            if (NeoForgeVersion.TryGetValue(mc, out var list2))
+                            {
+                                list2.Add(version1);
+                            }
+                            else
+                            {
+                                var list3 = new List<string>() { version1 };
+                                NeoForgeVersion.Add(mc, list3);
+                            }
                         }
                         else
                         {
-                            var list3 = new List<string>() { version1 };
-                            ForgeVersion.Add(mc, list3);
+                            if (ForgeVersion.TryGetValue(mc, out var list2))
+                            {
+                                list2.Add(version1);
+                            }
+                            else
+                            {
+                                var list3 = new List<string>() { version1 };
+                                ForgeVersion.Add(mc, list3);
+                            }
                         }
                     }
 
-                    if (ForgeVersion.TryGetValue(version, out var list4))
+                    if (neo)
                     {
-                        return list4;
+                        if (NeoForgeVersion.TryGetValue(version, out var list4))
+                        {
+                            return list4;
+                        }
+                    }
+                    else
+                    {
+                        if (ForgeVersion.TryGetValue(version, out var list4))
+                        {
+                            return list4;
+                        }
                     }
                 }
 
@@ -265,11 +297,7 @@ public static class ForgeAPI
                 //        list.Add(item2);
                 //    }
                 //}
-
-
-
-
-                return list;
+                //return list;
             }
         }
         catch (Exception e)

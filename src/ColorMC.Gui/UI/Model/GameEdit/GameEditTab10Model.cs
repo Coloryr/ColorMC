@@ -30,12 +30,12 @@ public partial class GameEditTab10Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public void Load()
+    public async Task Load()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         ServerList.Clear();
-        ServerList.AddRange(GameBinding.GetServers(Obj));
+        ServerList.AddRange(await GameBinding.GetServers(Obj));
         window.ProgressInfo.Close();
     }
 
@@ -55,14 +55,14 @@ public partial class GameEditTab10Model : GameEditTabModel
 
         GameBinding.AddServer(Obj, res.Item1, res.Item2);
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info3"));
-        Load();
+        await Load();
     }
 
-    public void Delete(ServerInfoObj obj)
+    public async void Delete(ServerInfoObj obj)
     {
         var window = Con.Window;
         GameBinding.DeleteServer(Obj, obj);
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
-        Load();
+        await Load();
     }
 }

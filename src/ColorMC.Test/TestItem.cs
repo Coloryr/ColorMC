@@ -328,10 +328,10 @@ public static class TestItem
         }
     }
 
-    public static void Item13()
+    public static async void Item13()
     {
         var games = InstancesPath.Games;
-        var list = Servers.GetServerInfos(games[0]);
+        var list = await Servers.GetServerInfos(games[0]);
 
         foreach (var item in list)
         {

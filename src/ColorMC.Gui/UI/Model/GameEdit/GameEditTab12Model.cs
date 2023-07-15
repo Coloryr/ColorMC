@@ -32,12 +32,12 @@ public partial class GameEditTab12Model : GameEditTabModel
     }
 
     [RelayCommand]
-    public void Load()
+    public async Task Load()
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         SchematicList.Clear();
-        SchematicList.AddRange(GameBinding.GetSchematics(Obj));
+        SchematicList.AddRange(await GameBinding.GetSchematics(Obj));
         window.ProgressInfo.Close();
     }
 
@@ -57,7 +57,7 @@ public partial class GameEditTab12Model : GameEditTabModel
         }
 
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab12.Info3"));
-        Load();
+        await Load();
     }
 
     public async void Drop(IDataObject data)
@@ -65,15 +65,15 @@ public partial class GameEditTab12Model : GameEditTabModel
         var res = await GameBinding.AddFile(Obj, data, FileType.Schematic);
         if (res)
         {
-            Load();
+            await Load();
         }
     }
 
-    public void Delete(SchematicDisplayObj obj)
+    public async void Delete(SchematicDisplayObj obj)
     {
         var window = Con.Window;
         obj.Schematic.Delete();
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
-        Load();
+        await Load();
     }
 }

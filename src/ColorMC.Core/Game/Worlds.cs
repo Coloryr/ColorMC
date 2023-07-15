@@ -48,7 +48,7 @@ public static class Worlds
                 {
                     WorldObj obj = new();
 
-                    if (NbtBase.Read(item1.FullName) is not NbtCompound tag)
+                    if (await NbtBase.Read(item1.FullName) is not NbtCompound tag)
                     {
                         break;
                     }

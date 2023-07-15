@@ -18,7 +18,7 @@ public static class Servers
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>服务器列表</returns>
-    public static ConcurrentBag<ServerInfoObj> GetServerInfos(this GameSettingObj game)
+    public static async Task<ConcurrentBag<ServerInfoObj>> GetServerInfos(this GameSettingObj game)
     {
         ConcurrentBag<ServerInfoObj> list = new();
         string file = game.GetServersFile();
@@ -27,7 +27,7 @@ public static class Servers
 
         try
         {
-            if (NbtBase.Read(file) is not NbtCompound tag)
+            if (await NbtBase.Read(file) is not NbtCompound tag)
                 return list;
 
             var nbtList = (tag["servers"] as NbtList)!;
@@ -52,9 +52,9 @@ public static class Servers
     /// <param name="game">游戏实例</param>
     /// <param name="name">名字</param>
     /// <param name="ip">地址</param>
-    public static void AddServer(this GameSettingObj game, string name, string ip)
+    public static async void AddServer(this GameSettingObj game, string name, string ip)
     {
-        var list = game.GetServerInfos();
+        var list = await game.GetServerInfos();
         list.Add(new ServerInfoObj()
         {
             Name = name,

@@ -21,7 +21,7 @@ public static class Schematic
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>列表</returns>
-    public static ConcurrentBag<SchematicObj> GetSchematics(this GameSettingObj obj)
+    public static async Task<ConcurrentBag<SchematicObj>> GetSchematics(this GameSettingObj obj)
     {
         var list = new ConcurrentBag<SchematicObj>();
         var path = obj.GetSchematicsPath();
@@ -33,16 +33,16 @@ public static class Schematic
         }
 
         var items = Directory.GetFiles(path);
-        Parallel.ForEach(items, (item, cancel) =>
+        await Parallel.ForEachAsync(items, async (item, cancel) =>
         {
             var info = new FileInfo(item);
             if (info.Extension.ToLower() == Name1)
             {
-                list.Add(ReadAsLitematic(item));
+                list.Add(await ReadAsLitematic(item));
             }
             else if (info.Extension.ToLower() == Name2)
             {
-                list.Add(ReadAsSchematic(item));
+                list.Add(await ReadAsSchematic(item));
             }
         });
 
@@ -99,11 +99,11 @@ public static class Schematic
     /// </summary>
     /// <param name="file">文件</param>
     /// <returns>数据</returns>
-    private static SchematicObj ReadAsSchematic(string file)
+    private static async Task<SchematicObj> ReadAsSchematic(string file)
     {
         try
         {
-            if (NbtBase.Read(file) is not NbtCompound tag)
+            if (await NbtBase.Read(file) is not NbtCompound tag)
             {
                 return new()
                 {
@@ -138,11 +138,11 @@ public static class Schematic
     /// </summary>
     /// <param name="file">文件</param>
     /// <returns>数据</returns>
-    private static SchematicObj ReadAsLitematic(string file)
+    private static async Task<SchematicObj> ReadAsLitematic(string file)
     {
         try
         {
-            if (NbtBase.Read(file) is not NbtCompound tag)
+            if (await NbtBase.Read(file) is not NbtCompound tag)
             {
                 return new()
                 {

@@ -35,13 +35,13 @@ public static class GameCountUtils
         Read();
     }
 
-    private static void Read()
+    private static async void Read()
     {
         if (File.Exists(Local))
         {
             try
             {
-                if (NbtBase.Read(Local) is NbtCompound nbt)
+                if (await NbtBase.Read(Local) is NbtCompound nbt)
                 {
                     Count = new()
                     {
