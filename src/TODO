@@ -249,5 +249,6 @@ UI调整 调整Tabs边框 Tabs滚动条 okl
 添加按钮圆角程度修改 okl
 修改自定义UI okl
 修复导入文件夹的bug okl
+修复添加实例时mod加载器版本选择问题 okl
 
 添加McMod搜索源 不做了
