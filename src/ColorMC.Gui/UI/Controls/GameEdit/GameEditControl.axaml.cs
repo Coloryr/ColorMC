@@ -43,6 +43,10 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title => string.Format(App.GetLanguage("GameEditWindow.Title"), GameName);
+
     public GameEditControl() : this(new() { Empty = true })
     {
 
@@ -114,7 +118,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(string.Format(App.GetLanguage("GameEditWindow.Title"), GameName));
+        Window.SetTitle(Title);
     }
 
     public void SetType(GameEditWindowType type)

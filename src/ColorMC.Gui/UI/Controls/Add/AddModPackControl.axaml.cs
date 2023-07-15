@@ -16,6 +16,10 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title => App.GetLanguage("AddModPackWindow.Title");
+
     public AddModPackControl()
     {
         InitializeComponent();
@@ -93,7 +97,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
     public void Opened()
     {
-        Window.SetTitle(App.GetLanguage("AddModPackWindow.Title"));
+        Window.SetTitle(Title);
 
         DataGridFiles.SetFontColor();
 

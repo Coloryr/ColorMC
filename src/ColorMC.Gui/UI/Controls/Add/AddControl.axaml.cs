@@ -20,6 +20,10 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => throw new System.NotImplementedException();
+
+    public string Title => throw new System.NotImplementedException();
+
     public AddControl() : this(new() { Empty = true })
     {
 

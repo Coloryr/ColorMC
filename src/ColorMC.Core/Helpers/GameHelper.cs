@@ -119,12 +119,13 @@ public static class GameHelper
 
         if (v2)
         {
-            list.Add(neo?
-                BuildNeoForgeUniversal(mc, version) : 
-                BuildForgeUniversal(mc, version));
             list.Add(neo ?
                 BuildNeoForgeInster(mc, version) :
                 BuildForgeInster(mc, version));
+            list.Add(neo?
+                BuildNeoForgeUniversal(mc, version) : 
+                BuildForgeUniversal(mc, version));
+            
             if (!CheckRule.IsGameLaunchVersion117(mc))
             {
                 list.Add(neo?

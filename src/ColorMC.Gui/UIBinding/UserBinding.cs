@@ -83,7 +83,7 @@ public static class UserBinding
             });
             return (true, null);
         }
-        var (State, State1, Obj, Message, Ex) = type switch
+        var (_, State1, Obj, Message, Ex) = type switch
         {
             AuthType.OAuth => await BaseAuth.LoginWithOAuth(),
             AuthType.Nide8 => await BaseAuth.LoginWithNide8(input1!, input2!, input3!),

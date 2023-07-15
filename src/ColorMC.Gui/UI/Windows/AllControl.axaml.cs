@@ -32,18 +32,19 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 {
     public IBaseWindow TopWindow => App.FindRoot(this);
 
-    private UserControl BaseControl;
-    private UserControl Now;
-    private AllFlyout AllFlyout1;
+    private IUserControl BaseControl;
+    private IUserControl Now;
+    private readonly AllFlyout AllFlyout1;
     private bool IsDialog;
 
-    private readonly Dictionary<UserControl, Grid> Cons = new();
-    private readonly Dictionary<Grid, UserControl> Cons1 = new();
+    private readonly Dictionary<IUserControl, Grid> Cons = new();
+    private readonly Dictionary<Grid, IUserControl> Cons1 = new();
     private readonly Dictionary<Grid, Button> Switchs = new();
     private readonly List<Button> List = new();
 
     public IBaseWindow Window => this;
-    public UserControl Con => Now;
+    public IUserControl Con => Now;
+    UserControl IUserControl.Con => Now.Con;
 
     Info3Control IBaseWindow.InputInfo => Info3;
     Info1Control IBaseWindow.ProgressInfo => Info1;
@@ -52,6 +53,8 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     Info5Control IBaseWindow.ComboInfo => Info5;
     Info6Control IBaseWindow.TextInfo => Info6;
     HeadControl IBaseWindow.Head => Head;
+
+    public string Title => "";
 
     public AllControl()
     {
@@ -88,8 +91,8 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     public class AllFlyout : PopupFlyoutBase
     {
         private readonly List<Button> Obj;
-        private StackPanel panel;
-        private Grid control;
+        private readonly StackPanel panel;
+        private readonly Grid control;
         public AllFlyout(List<Button> list)
         {
             Obj = list;
@@ -151,12 +154,12 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         }
     }
 
-    public void Add(UserControl con)
+    public void Add(IUserControl con)
     {
         if (BaseControl == null)
         {
             BaseControl = con;
-            MainControl.Children.Add(BaseControl);
+            MainControl.Children.Add(BaseControl.Con);
             Dispatcher.UIThread.Post(() =>
             {
                 (BaseControl as IUserControl)?.Opened();
@@ -166,9 +169,9 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         {
             var button = new Button
             {
-                Content = GetName(con),
+                Content = GetName(con.Con),
                 Height = 25,
-                Width = 100
+                Width = 150
             };
             button.Click += (a, e) =>
             {
@@ -181,7 +184,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
                 Background = ColorSel.TopBottomColor
             };
             List.Add(button);
-            grid.Children.Add(con);
+            grid.Children.Add(con.Con);
             Switchs.Add(grid, button);
             Cons.Add(con, grid);
             Cons1.Add(grid, con);
@@ -269,7 +272,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         }
     }
 
-    public void Active(UserControl con)
+    public void Active(IUserControl con)
     {
         foreach (Control item1 in MainControl.Children)
         {
@@ -287,7 +290,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         Now = con;
     }
 
-    public async void Close(UserControl con)
+    public async void Close(IUserControl con)
     {
         if (con is IUserControl con1)
         {
@@ -320,7 +323,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
         Up();
 
-        (con as IUserControl)?.Closed();
+        con.Closed();
     }
 
     public void ShowDialog(UserControl con)
@@ -348,7 +351,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         Head.Title = data;
     }
 
-    public async Task<bool> Closing(WindowClosingEventArgs e)
+    public async Task<bool> Closing(WindowClosingEventArgs _)
     {
         if (Now is MainControl || Now is CustomControl)
             return false;
@@ -360,7 +363,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     public void HideAll()
     {
-        var list = new List<UserControl>(Cons.Keys);
+        var list = new List<IUserControl>(Cons.Keys);
         list.ForEach(Close);
     }
 }

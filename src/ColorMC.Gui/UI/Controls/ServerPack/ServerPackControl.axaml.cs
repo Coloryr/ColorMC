@@ -32,6 +32,11 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title => string.Format(App.GetLanguage("ServerPackWindow.Title"),
+            model1.Obj.Game.Name);
+
     public ServerPackControl() : this(new() { Empty = true })
     {
 
@@ -82,8 +87,7 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(string.Format(App.GetLanguage("ServerPackWindow.Title"),
-            model1.Obj.Game.Name));
+        Window.SetTitle(Title);
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)

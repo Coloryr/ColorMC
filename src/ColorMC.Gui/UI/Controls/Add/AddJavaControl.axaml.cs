@@ -10,6 +10,10 @@ public partial class AddJavaControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title => App.GetLanguage("AddJavaWindow.Title");
+
     private readonly AddJavaControlModel model;
 
     public AddJavaControl()
@@ -24,7 +28,7 @@ public partial class AddJavaControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(App.GetLanguage("AddJavaWindow.Title"));
+        Window.SetTitle(Title);
 
         model.TypeIndex = 0;
     }

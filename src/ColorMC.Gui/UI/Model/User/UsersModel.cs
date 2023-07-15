@@ -448,6 +448,6 @@ public partial class UsersModel : ObservableObject
                 UserBinding.OAuthCancel();
             });
         BaseBinding.OpUrl(url);
-        await BaseBinding.CopyTextClipboard(TopLevel.GetTopLevel(Con.Window.Con), code);
+        await BaseBinding.CopyTextClipboard(TopLevel.GetTopLevel(Con.Con), code);
     }
 }

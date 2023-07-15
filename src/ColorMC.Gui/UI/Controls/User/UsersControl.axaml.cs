@@ -18,6 +18,10 @@ public partial class UsersControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title => App.GetLanguage("UserWindow.Title");
+
     public UsersControl()
     {
         InitializeComponent();
@@ -76,7 +80,7 @@ public partial class UsersControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(App.GetLanguage("UserWindow.Title"));
+        Window.SetTitle(Title);
 
         Dispatcher.UIThread.Post(DataGrid_User.SetFontColor);
     }

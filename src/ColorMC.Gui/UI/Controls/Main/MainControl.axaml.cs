@@ -19,6 +19,10 @@ public partial class MainControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title => App.GetLanguage("MainWindow.Title");
+
     public MainControl()
     {
         InitializeComponent();
@@ -192,7 +196,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(App.GetLanguage("MainWindow.Title"));
+        Window.SetTitle(Title);
 
         model.Open();
     }

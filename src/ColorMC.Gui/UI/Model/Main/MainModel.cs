@@ -88,9 +88,6 @@ public partial class MainModel : ObservableObject, IMainTop
     {
         Con = con;
 
-        ColorMCCore.GameDownload = GameDownload;
-        ColorMCCore.LaunchP = LaunchP;
-
         App.SkinLoad += App_SkinLoad;
 
         App.UserEdit += Load1;
@@ -228,14 +225,6 @@ public partial class MainModel : ObservableObject, IMainTop
         IsHeadLoad = false;
     }
 
-    private Task<bool> LaunchP(bool pre)
-    {
-        return Dispatcher.UIThread.InvokeAsync(() =>
-            Con.Window.OkInfo.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
-            : App.GetLanguage("MainWindow.Info30")));
-    }
-
-
     public Task<(bool, string?)> Set(GameItemModel obj)
     {
         GroupList.Clear();
@@ -291,22 +280,6 @@ public partial class MainModel : ObservableObject, IMainTop
         {
             Game.IsSelect = true;
         }
-    }
-
-    private Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
-    {
-        return Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var window = Con.Window;
-
-            return state switch
-            {
-                LaunchState.LostLib => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info5")),
-                LaunchState.LostLoader => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info6")),
-                LaunchState.LostLoginCore => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info7")),
-                _ => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info4")),
-            };
-        });
     }
 
     public async void Load1()

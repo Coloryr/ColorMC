@@ -16,6 +16,25 @@ public partial class ConfigEditControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title 
+    { 
+        get 
+        {
+            if (model.World == null)
+            {
+                return string.Format(App.GetLanguage("ConfigEditWindow.Title"),
+                    model.Obj?.Name);
+            }
+            else
+            {
+                return string.Format(App.GetLanguage("ConfigEditWindow.Title1"),
+                    model.Obj?.Name, model.World?.LevelName);
+            }
+        } 
+    }
+
     public ConfigEditControl()
     {
         InitializeComponent();
@@ -73,16 +92,7 @@ public partial class ConfigEditControl : UserControl, IUserControl
 
     public void Opened()
     {
-        if (model.World == null)
-        {
-            Window.SetTitle(string.Format(App.GetLanguage("ConfigEditWindow.Title"),
-                model.Obj?.Name));
-        }
-        else
-        {
-            Window.SetTitle(string.Format(App.GetLanguage("ConfigEditWindow.Title1"),
-                model.Obj?.Name, model.World?.LevelName));
-        }
+        Window.SetTitle(Title);
     }
 
     public ConfigEditControl(WorldObj world) : this()

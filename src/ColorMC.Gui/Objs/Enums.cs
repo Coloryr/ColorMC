@@ -22,7 +22,7 @@ public enum GameEditWindowType
 public enum ViewType
 {
     Button, Label, ServerMotd,
-    GameItem, UsearHead, StackPanel, Grid
+    GameItem, UsearHead, StackPanel, Grid, Image, Expander
 }
 
 public enum SkinType

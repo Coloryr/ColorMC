@@ -11,6 +11,10 @@ public partial class CountControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title => App.GetLanguage("CountWindow.Title");
+
     public CountControl()
     {
         InitializeComponent();
@@ -26,7 +30,7 @@ public partial class CountControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(App.GetLanguage("CountWindow.Title"));
+        Window.SetTitle(Title);
 
         Expander1.MakeTran();
         Expander2.MakeTran();

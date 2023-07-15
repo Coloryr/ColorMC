@@ -8,7 +8,14 @@ namespace ColorMC.Gui.UI.Controls.Error;
 
 public partial class ErrorControl : UserControl, IUserControl
 {
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
+
+    public UserControl Con => this;
+
+    public string Title => App.GetLanguage("ErrorWindow.Title");
+
     private readonly ErrorModel model;
+
     public ErrorControl()
     {
         InitializeComponent();
@@ -26,11 +33,9 @@ public partial class ErrorControl : UserControl, IUserControl
         DataContext = model;
     }
 
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
     public void Opened()
     {
-        Window.SetTitle(App.GetLanguage("ErrorWindow.Title"));
+        Window.SetTitle(Title);
     }
 
     public void Closed()

@@ -27,6 +27,9 @@
     <DebugType>portable</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <AvaloniaXaml Remove="Resource\UI\UI.axaml" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="icon.ico" />
     <None Remove="Resource\Language\gui_zh-cn.json" />
@@ -34,7 +37,6 @@
     <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\load.png" />
     <None Remove="Resource\Pic\user.png" />
-    <None Remove="Resource\UI\CustomUI.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="icon.ico" />
@@ -43,7 +45,7 @@
     <EmbeddedResource Include="Resource\Pic\launch.png" />
     <EmbeddedResource Include="Resource\Pic\load.png" />
     <EmbeddedResource Include="Resource\Pic\user.png" />
-    <EmbeddedResource Include="Resource\UI\CustomUI.json" />
+    <EmbeddedResource Include="Resource\UI\UI.axaml" />
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.
@@ -59,6 +61,7 @@
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.0.999-cibuild0037473-beta" />
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.999-cibuild0037473-beta" />
+	<PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.0.999-cibuild0037473-beta" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.999-cibuild0037473-beta" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.999-cibuild0037473-beta" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.999-cibuild0037473-beta" />

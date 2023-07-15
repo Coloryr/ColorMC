@@ -233,14 +233,7 @@ public partial class SettingTab6Model : ObservableObject
         }
         try
         {
-            var obj = JsonConvert.DeserializeObject<UIObj>(File.ReadAllText(file));
-            if (obj == null)
-            {
-                window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab6.Error1"));
-                return;
-            }
-
-            App.ShowCustom(obj);
+            App.ShowCustom(file);
         }
         catch (Exception ex)
         {

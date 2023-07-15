@@ -25,7 +25,7 @@ public partial class SingleWindow : Window, IBaseWindow
 
     HeadControl IBaseWindow.Head => window1.Head;
 
-    UserControl IBaseWindow.Con => window1.Con;
+    IUserControl IBaseWindow.Con => window1.Con;
 
     public SingleWindow(AllControl window) : this()
     {
@@ -42,11 +42,6 @@ public partial class SingleWindow : Window, IBaseWindow
         if (SystemInfo.Os == OsType.MacOS)
         {
             KeyDown += Window_KeyDown;
-        }
-
-        if (window1 != null && SystemInfo.Os == OsType.Linux)
-        {
-            SystemDecorations = SystemDecorations.BorderOnly;
         }
 
         Closed += UserWindow_Closed;

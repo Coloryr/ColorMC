@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media;
 using ColorMC.Core;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
@@ -29,6 +30,10 @@ public partial class AddGameControl : UserControl, IUserControl
     private readonly AddGameTab3Model model3;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
+
+    public UserControl Con => this;
+
+    public string Title => App.GetLanguage("AddGameWindow.Title");
 
     public AddGameControl()
     {
@@ -134,7 +139,7 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(App.GetLanguage("AddGameWindow.Title"));
+        Window.SetTitle(Title);
     }
 
     public void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)

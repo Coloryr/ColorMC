@@ -21,18 +21,18 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     Info6Control IBaseWindow.TextInfo => Info6;
     HeadControl IBaseWindow.Head => Head;
     Info5Control IBaseWindow.ComboInfo => Info5;
-    UserControl IBaseWindow.Con => (Main as UserControl)!;
+    IUserControl IBaseWindow.Con => Main;
 
-    public IUserControl? Main;
+    public IUserControl Main;
 
     private bool SetClose;
 
-    public SelfBaseWindow() : this(null)
+    public SelfBaseWindow() : this(null!)
     {
 
     }
 
-    public SelfBaseWindow(IUserControl? con)
+    public SelfBaseWindow(IUserControl con)
     {
         Main = con;
 
@@ -171,7 +171,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         Main?.Closed();
 
-        Main = null;
         MainControl.Children.Clear();
 
         if (App.LastWindow == this)

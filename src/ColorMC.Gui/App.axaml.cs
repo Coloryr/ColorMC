@@ -59,6 +59,7 @@ public partial class App : Application
     public static bool NeedClose { get; set; }
 
     public static Window? LastWindow { get; set; }
+
     public static AllControl? AllWindow { get; set; }
     public static DownloadControl? DownloadWindow { get; set; }
     public static UsersControl? UserWindow { get; set; }
@@ -184,6 +185,7 @@ public partial class App : Application
                 new SingleWindow(AllWindow).Show();
             }
         }
+
         ShowCustom();
 
         Dispatcher.UIThread.Post(() => _ = LoadImage());
@@ -213,14 +215,14 @@ public partial class App : Application
 
     public static IBaseWindow FindRoot(object? con)
     {
-        if (con is AllControl all && all.GetVisualRoot() is IBaseWindow win2)
-            return win2;
+        if (con is AllControl all)
+            return all;
         else if (GuiConfigUtils.Config.WindowMode)
             return AllWindow!;
         else if (con is IBaseWindow win)
             return win;
-        else if (con is UserControl con1 && con1.GetVisualRoot() is IBaseWindow win1)
-            return win1;
+        else if (con is IUserControl con1)
+            return con1.Window;
 
         return AllWindow!;
     }
@@ -332,15 +334,7 @@ public partial class App : Application
 
                 if (ok)
                 {
-                    var obj = JsonConvert.DeserializeObject<UIObj>(File.ReadAllText(file));
-                    if (obj == null)
-                    {
-                        ok = false;
-                    }
-                    else
-                    {
-                        ShowCustom(obj);
-                    }
+                    ShowCustom(file);
                 }
             }
             catch (Exception e)
@@ -362,7 +356,7 @@ public partial class App : Application
     {
         if (ConfigBinding.WindowMode())
         {
-            AllWindow?.Add((con as UserControl)!);
+            AllWindow?.Add(con);
         }
         else
         {
@@ -374,7 +368,7 @@ public partial class App : Application
     {
         if (ConfigBinding.WindowMode())
         {
-            AllWindow?.Add((con as UserControl)!);
+            AllWindow?.Add(con);
         }
         else
         {
@@ -399,7 +393,7 @@ public partial class App : Application
         }
     }
 
-    public static void ShowCustom(UIObj obj)
+    public static void ShowCustom(string obj)
     {
         if (CustomWindow != null)
         {

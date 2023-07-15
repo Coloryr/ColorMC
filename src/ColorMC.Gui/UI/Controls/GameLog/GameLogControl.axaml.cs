@@ -15,6 +15,11 @@ public partial class GameLogControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title => string.Format(App.GetLanguage("GameLogWindow.Title"),
+            model.Obj.Name);
+
     public GameLogControl() : this(new GameSettingObj { Empty = true })
     {
 
@@ -54,8 +59,7 @@ public partial class GameLogControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(string.Format(App.GetLanguage("GameLogWindow.Title"),
-            model.Obj.Name));
+        Window.SetTitle(Title);
     }
 
     public void Closed()

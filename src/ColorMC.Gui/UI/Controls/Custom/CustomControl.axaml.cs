@@ -3,7 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
@@ -14,100 +16,160 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Custom;
 
-public class CustomWindowModel : INotifyPropertyChanged
+public partial class CustomWindowModel : ObservableObject
 {
-    private string name = "";
-    private string type = "";
+    private CustomControl Con;
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    public string Name
-    {
-        get { return name; }
-        set { name = value; NotifyPropertyChanged(); }
-    }
-
-    public string Type
-    {
-        get { return type; }
-        set { type = value; NotifyPropertyChanged(); }
-    }
-
-    private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-}
-
-public partial class CustomControl : UserControl, IUserControl, IMainTop
-{
-    private UIObj? UI;
     private GameSettingObj Obj;
 
-    private bool launch = false;
+    [ObservableProperty]
+    private GameItemModel game;
 
-    private readonly CustomWindowModel CustomModel = new();
+    public bool launch = false;
 
-    private LaunchState Last;
-    private Image? HeadImg;
-    private ServerMotdControl? Motd;
+    [ObservableProperty]
+    private string userName = "";
+    [ObservableProperty]
+    private string userType = "";
+    [ObservableProperty]
+    private Bitmap head = App.LoadIcon;
+    [ObservableProperty]
+    private (string, ushort) server;
 
-    public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public CustomControl()
+    public CustomWindowModel(CustomControl con, GameSettingObj obj)
     {
-        InitializeComponent();
+        Con = con;
+        Obj = obj;
 
-        ColorMCCore.GameLaunch = GameLunch;
-        ColorMCCore.GameDownload = GameDownload;
+        Game = new(con, con, obj);
 
         App.UserEdit += App_UserEdit;
         App.SkinLoad += App_SkinLoad;
     }
 
-    private void App_SkinLoad()
+    [RelayCommand]
+    public void Launch()
     {
-        if (HeadImg != null)
-        {
-            HeadImg.Source = UserBinding.HeadBitmap!;
+        Con.Launch(Game);
+    }
 
-            HeadImg.PointerPressed += HeadImg_PointerPressed;
+    [RelayCommand]
+    public void Setting()
+    {
+        App.ShowSetting(SettingType.Normal);
+    }
+
+    [RelayCommand]
+    public void User()
+    {
+        App.ShowUser();
+    }
+
+    [RelayCommand]
+    public void Skin()
+    {
+        App.ShowSkin();
+    }
+
+    [RelayCommand]
+    public void OpUrl(object? value)
+    {
+        BaseBinding.OpUrl(value?.ToString());
+    }
+
+    public async void Launch(GameItemModel obj)
+    {
+        if (launch || obj.IsLaunch)
+            return;
+
+        var window = Con.Window;
+        launch = true;
+        window.ProgressInfo.Show(App.GetLanguage("MainWindow.Info3"));
+        var item = Game;
+        var game = item.Obj;
+        item.IsLaunch = false;
+        item.IsLoad = true;
+        window.NotifyInfo.Show(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
+        var res = await GameBinding.Launch(window, game);
+        window.Head.Title1 = null;
+        item.IsLoad = false;
+        await window.ProgressInfo.CloseAsync();
+        if (res.Item1 == false)
+        {
+            window.OkInfo.Show(res.Item2!);
         }
+        else
+        {
+            window.NotifyInfo.Show(App.GetLanguage("MainWindow.Info2"));
+
+            item.IsLaunch = true;
+
+            window.ProgressInfo.Show(App.GetLanguage("MainWindow.Info26"));
+        }
+        launch = false;
+    }
+
+    public void App_SkinLoad()
+    {
+        Head = UserBinding.HeadBitmap!;
+    }
+
+    public async void App_UserEdit()
+    {
+        var user = UserBinding.GetLastUser();
+
+        if (user == null)
+        {
+            UserType = App.GetLanguage("MainWindow.Info35");
+            UserName = App.GetLanguage("MainWindow.Info36");
+        }
+        else
+        {
+            UserType = user.AuthType.GetName();
+            UserName = user.UserName;
+        }
+
+        await UserBinding.LoadSkin();
+    }
+
+    public void MotdLoad()
+    {
+        var config = ConfigBinding.GetAllConfig();
+        Server = (config.Item2.ServerCustom.IP, config.Item2.ServerCustom.Port);
     }
 
     private void HeadImg_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        if (e.GetCurrentPoint(sender as Visual).Properties.IsLeftButtonPressed)
         {
             App.ShowSkin();
         }
     }
+}
 
-    private async void App_UserEdit()
+public partial class CustomControl : UserControl, IUserControl, IMainTop
+{
+    public IBaseWindow Window => App.FindRoot(VisualRoot);
+
+    public UserControl Con => this;
+
+    public string Title { get; set; }
+
+    private CustomWindowModel Model;
+
+    public CustomControl()
     {
-        var user = UserBinding.GetLastUser();
-        if (user == null)
-            return;
-
-        if (HeadImg != null)
-        {
-            CustomModel.Type = App.GetLanguage("MainWindow.Info35");
-            CustomModel.Name = App.GetLanguage("MainWindow.Info36");
-        }
-        else
-        {
-            CustomModel.Type = user.AuthType.GetName();
-            CustomModel.Name = user.UserName;
-        }
-
-        await UserBinding.LoadSkin();
+        InitializeComponent();
     }
 
     public void Closed()
@@ -123,45 +185,8 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         }
     }
 
-    public async void Launch()
+    public void Load(string local)
     {
-        if (launch)
-            return;
-
-        var window = App.FindRoot(VisualRoot);
-        launch = true;
-        window.ProgressInfo.Show(App.GetLanguage("MainWindow.Launch"));
-        var res = await GameBinding.Launch(window, Obj);
-        window.ProgressInfo.Close();
-        if (res.Item1 == false)
-        {
-            switch (Last)
-            {
-                case LaunchState.LoginFail:
-                    window.OkInfo.Show(App.GetLanguage("MainWindow.Error1"));
-                    break;
-                case LaunchState.JavaError:
-                    window.OkInfo.Show(App.GetLanguage("MainWindow.Error2"));
-                    break;
-                default:
-                    window.OkInfo.Show(res.Item2!);
-                    break;
-            }
-        }
-        else
-        {
-            window.NotifyInfo.Show(App.GetLanguage("MainWindow.Info2"));
-        }
-        launch = false;
-    }
-
-    public void Load(UIObj ui)
-    {
-        UI = ui;
-
-        if (ui.Views == null)
-            return;
-
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2 == null)
         {
@@ -183,312 +208,28 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
             });
             return;
         }
-        Obj = obj;
 
-        HeadImg = null;
+        var ui1 = AvaloniaRuntimeXamlLoader.Parse<CustomPanelControl>(File.ReadAllText(local));
 
-        Window.SetTitle(UI.Title);
+        Model = new CustomWindowModel(this, obj);
 
-        foreach (var item in ui.Views)
-        {
-            var obj1 = MakeItem(item);
-            if (obj1 != null)
-            {
-                Grid1.Children.Add(obj1);
-            }
-        }
+        ui1.DataContext = Model;
 
-        App_UserEdit();
-        MotdLoad();
+        Title = ui1.Title;
+        Window.SetTitle(Title);
 
-        Task.Run(() => BaseBinding.ServerPackCheck(Obj));
-    }
+        Grid1.Children.Add(ui1);
 
-    private void MakeItems(Panel? panel, ViewObj ui)
-    {
-        if (panel == null)
-            return;
+        Model.App_UserEdit();
+        Model.MotdLoad();
 
-        foreach (var item in ui.Views)
-        {
-            var obj = MakeItem(item);
-            if (obj != null)
-            {
-                panel.Children.Add(obj);
-            }
-        }
-    }
-
-    private Control? MakeItem(ViewObj obj)
-    {
-        ViewType type;
-        Control con;
-        switch (obj.Type)
-        {
-            case "StackPanel":
-                con = new StackPanel();
-                type = ViewType.StackPanel;
-                break;
-            case "Grid":
-                con = new Grid();
-                type = ViewType.Grid;
-                break;
-            case "Button":
-                con = new Button();
-                type = ViewType.Button;
-                break;
-            case "Label":
-                con = new Label();
-                type = ViewType.Label;
-                break;
-            case "ServerMotd":
-                con = new ServerMotdControl();
-                type = ViewType.ServerMotd;
-                Motd = con as ServerMotdControl;
-                break;
-            case "GameItem":
-                con = new GameControl();
-                type = ViewType.GameItem;
-                break;
-            case "UsearHead":
-                con = new Image
-                {
-                    Width = 80,
-                    Height = 80
-                };
-                type = ViewType.UsearHead;
-                HeadImg = con as Image;
-                break;
-            default:
-                return null;
-        }
-
-        if (!string.IsNullOrWhiteSpace(obj.VerticalAlignment))
-        {
-            if (Enum.TryParse(typeof(VerticalAlignment), obj.VerticalAlignment,
-                true, out var arg))
-            {
-                con.VerticalAlignment = (VerticalAlignment)arg;
-            }
-        }
-
-        if (!string.IsNullOrWhiteSpace(obj.HorizontalAlignment))
-        {
-            if (Enum.TryParse(typeof(HorizontalAlignment), obj.HorizontalAlignment,
-                true, out var arg))
-            {
-                con.HorizontalAlignment = (HorizontalAlignment)arg;
-            }
-        }
-
-        if (!string.IsNullOrWhiteSpace(obj.Content))
-        {
-            if (type == ViewType.Button || type == ViewType.Label)
-            {
-                (con as ContentControl)!.Content = obj.Content;
-            }
-        }
-
-        if (!string.IsNullOrWhiteSpace(obj.Funtion))
-        {
-            if (type == ViewType.Button)
-            {
-                (con as Button)!.Click += (s, e) =>
-                {
-                    ButtonClick(obj.Funtion);
-                };
-            }
-        }
-
-        if (!string.IsNullOrWhiteSpace(obj.Margin))
-        {
-            con.Margin = Thickness.Parse(obj.Margin);
-        }
-
-        if (!string.IsNullOrWhiteSpace(obj.Background))
-        {
-            var color = Brush.Parse(obj.Background);
-            switch (type)
-            {
-                case ViewType.Button:
-                    (con as Button)!.Background = color;
-                    break;
-                case ViewType.Label:
-                    (con as Label)!.Background = color;
-                    break;
-                case ViewType.StackPanel:
-                    (con as StackPanel)!.Background = color;
-                    break;
-                case ViewType.Grid:
-                    (con as Grid)!.Background = color;
-                    break;
-            }
-        }
-
-        if (!string.IsNullOrWhiteSpace(obj.Foreground))
-        {
-            var color = Brush.Parse(obj.Foreground);
-            switch (type)
-            {
-                case ViewType.Button:
-                    (con as Button)!.Foreground = color;
-                    break;
-                case ViewType.Label:
-                    (con as Label)!.Foreground = color;
-                    break;
-            }
-        }
-
-        if (obj.Width != 0)
-        {
-            con.Width = obj.Width;
-        }
-
-        if (obj.Height != 0)
-        {
-            con.Height = obj.Height;
-        }
-
-        if (type == ViewType.GameItem)
-        {
-            var con1 = (con as GameControl)!;
-            con1.DataContext = new GameItemModel(this, this, Obj);
-            con1.GameModel.SetSelect();
-        }
-
-        if (type == ViewType.StackPanel)
-        {
-            if (!string.IsNullOrWhiteSpace(obj.Orientation))
-            {
-                if (Enum.TryParse(typeof(Orientation), obj.Orientation,
-                    true, out var arg))
-                {
-                    (con as StackPanel)!.Orientation = (Orientation)arg;
-                }
-            }
-        }
-
-        if (type == ViewType.Grid || type == ViewType.StackPanel)
-        {
-            MakeItems(con as Panel, obj);
-        }
-
-        if (type == ViewType.Label)
-        {
-            if (obj.Content == "{UserName}")
-            {
-                (con as Label)!.Bind(ContentProperty, new Binding
-                {
-                    Source = CustomModel,
-                    Path = "Name"
-                });
-            }
-            else if (obj.Content == "{UserType}")
-            {
-                (con as Label)!.Bind(ContentProperty, new Binding
-                {
-                    Source = CustomModel,
-                    Path = "Type"
-                });
-            }
-        }
-
-        return con;
-    }
-
-    private Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
-    {
-        return Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var window = App.FindRoot(VisualRoot);
-            return state switch
-            {
-                LaunchState.LostLib => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info5")),
-                LaunchState.LostLoader => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info6")),
-                LaunchState.LostLoginCore => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info7")),
-                _ => await window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info4")),
-            };
-        });
-    }
-
-    private void GameLunch(GameSettingObj obj, LaunchState state)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            var window = App.FindRoot(VisualRoot);
-            Last = state;
-            switch (state)
-            {
-                case LaunchState.Login:
-                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info8"));
-                    break;
-                case LaunchState.Check:
-                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info9"));
-                    break;
-                case LaunchState.CheckVersion:
-                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info10"));
-                    break;
-                case LaunchState.CheckLib:
-                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info11"));
-                    break;
-                case LaunchState.CheckAssets:
-                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info12"));
-                    break;
-                case LaunchState.CheckLoader:
-                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info13"));
-                    break;
-                case LaunchState.CheckLoginCore:
-                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info14"));
-                    break;
-                case LaunchState.CheckMods:
-                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info17"));
-                    break;
-                case LaunchState.Download:
-                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info15"));
-                    break;
-                case LaunchState.JvmPrepare:
-                    window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info16"));
-                    break;
-            }
-        });
-    }
-
-    private void ButtonClick(string name)
-    {
-        if (name.StartsWith("OpUrl"))
-        {
-            var arg = name.Split(" ");
-            if (arg.Length != 2)
-            {
-                return;
-            }
-
-            BaseBinding.OpUrl(arg[1]);
-        }
-        else if (name == "Launch")
-        {
-            Launch();
-        }
-        else if (name == "UserEdit")
-        {
-            App.ShowUser();
-        }
-        else if (name == "Setting")
-        {
-            App.ShowSetting(SettingType.Normal);
-        }
-    }
-
-    public void MotdLoad()
-    {
-        var config = ConfigBinding.GetAllConfig();
-        Motd?.Load(config.Item2.ServerCustom.IP, config.Item2.ServerCustom.Port);
+        Task.Run(() => BaseBinding.ServerPackCheck(obj));
     }
 
     public async Task<bool> Closing()
     {
         var windows = App.FindRoot(VisualRoot);
-        if (launch)
+        if (Model.launch)
         {
             var res = await windows.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info34"));
             if (res)
@@ -509,12 +250,12 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
     public void Launch(GameItemModel obj)
     {
-
+        Model.Launch(obj);
     }
 
     public void Select(GameItemModel? model)
     {
-
+        
     }
 
     public void EditGroup(GameItemModel model)

@@ -29,6 +29,11 @@ public partial class SkinControl : UserControl, IUserControl
     private float ydiff = 0;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
+
+    public UserControl Con => this;
+
+    public string Title => App.GetLanguage("SkinWindow.Title");
+
     public SkinControl()
     {
         InitializeComponent();
@@ -294,7 +299,7 @@ public partial class SkinControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(App.GetLanguage("SkinWindow.Title"));
+        Window.SetTitle(Title);
     }
 
     public void Update()

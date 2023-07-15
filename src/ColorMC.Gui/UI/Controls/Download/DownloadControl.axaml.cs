@@ -16,6 +16,10 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title => App.GetLanguage("DownloadWindow.Title");
+
     public DownloadControl()
     {
         InitializeComponent();
@@ -56,7 +60,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(App.GetLanguage("DownloadWindow.Title"));
+        Window.SetTitle(Title);
 
         DataGrid1.SetFontColor();
     }

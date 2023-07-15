@@ -32,6 +32,10 @@ public partial class SettingControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
+    public UserControl Con => this;
+
+    public string Title => App.GetLanguage("SettingWindow.Title");
+
     public SettingControl()
     {
         InitializeComponent();
@@ -150,7 +154,7 @@ public partial class SettingControl : UserControl, IUserControl
 
     public void Opened()
     {
-        Window.SetTitle(App.GetLanguage("SettingWindow.Title"));
+        Window.SetTitle(Title);
 
         model2.Load();
     }

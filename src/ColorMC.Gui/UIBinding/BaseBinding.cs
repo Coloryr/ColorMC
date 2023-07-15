@@ -29,6 +29,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static ColorMC.Core.Game.Launch;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -58,6 +59,8 @@ public static class BaseBinding
         ColorMCCore.UpdateState = UpdateState;
         ColorMCCore.OfflineLaunch = OfflineLaunch;
         ColorMCCore.GameLaunch = GameLunch;
+        ColorMCCore.GameDownload = GameDownload;
+        ColorMCCore.LaunchP = LaunchP;
 
         if (ColorMCGui.RunType == RunType.Program)
         {
@@ -76,6 +79,37 @@ public static class BaseBinding
         }
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
+    }
+
+    private static Task<bool> LaunchP(bool pre)
+    {
+        if (Window == null)
+        {
+            return Task.Run(() => { return false; });
+        }
+
+        return Dispatcher.UIThread.InvokeAsync(() =>
+            Window.OkInfo.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
+            : App.GetLanguage("MainWindow.Info30")));
+    }
+
+    private static Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
+    {
+        if (Window == null)
+        {
+            return Task.Run(() => { return false; });
+        }
+
+        return Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            return state switch
+            {
+                LaunchState.LostLib => await Window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info5")),
+                LaunchState.LostLoader => await Window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info6")),
+                LaunchState.LostLoginCore => await Window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info7")),
+                _ => await Window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info4")),
+            };
+        });
     }
 
     private static Task<bool> OfflineLaunch(LoginObj login)
@@ -994,7 +1028,7 @@ public static class BaseBinding
                 }
             case FileType.UI:
                 file = await OpSave(window,
-                    App.GetLanguage("SettingWindow.Tab6.Info1"), ".json", "ui.json");
+                    App.GetLanguage("SettingWindow.Tab6.Info1"), ".axaml", "ui.axaml");
                 if (file == null)
                     break;
 
@@ -1008,7 +1042,7 @@ public static class BaseBinding
                         File.Delete(name);
                     }
 
-                    File.WriteAllBytes(name, GetFile("ColorMC.Gui.Resource.UI.CustomUI.json"));
+                    File.WriteAllBytes(name, GetFile("ColorMC.Gui.Resource.UI.UI.axaml"));
                     return true;
                 }
                 catch (Exception e)
@@ -1150,7 +1184,7 @@ public static class BaseBinding
             case FileType.UI:
                 res = await OpFile(window,
                     App.GetLanguage("SettingWindow.Tab6.Info2"),
-                    new string[] { "*.json" },
+                    new string[] { "*.axaml" },
                     App.GetLanguage("SettingWindow.Tab6.Info3"));
                 if (res?.Any() == true)
                 {

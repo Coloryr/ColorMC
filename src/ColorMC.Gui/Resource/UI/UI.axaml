@@ -1,0 +1,82 @@
+﻿<view:CustomPanelControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Custom"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
+    xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Main"
+    Title="自定义标题"
+    mc:Ignorable="d">
+    <Panel>
+        <StackPanel
+            Margin="0,0,5,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom">
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,0,0,5"
+                Command="{Binding Launch}"
+                Content="启动游戏" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,0,0,5"
+                Command="{Binding Setting}"
+                Content="启动器设置" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,0,0,5"
+                Command="{Binding OpUrl}"
+                CommandParameter="Https://www.baidu.com"
+                Content="打开网页" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,0,0,5"
+                Command="{Binding User}"
+                Content="编辑账户" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,0,0,5"
+                Command="{Binding Skin}"
+                Content="查看皮肤" />
+        </StackPanel>
+        <Label
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Background="#FFEEEEEE"
+            Content="xxx服务器专用客户端"
+            FontSize="20"
+            Foreground="#FF000000" />
+        <views:ServerMotdControl Margin="5" IPPort="{Binding Server}" />
+        <views1:GameControl
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            DataContext="{Binding Game}" />
+        <StackPanel
+            Margin="10,80,10,10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Orientation="Vertical">
+            <Image
+                Width="80"
+                Height="80"
+                Margin="10,0,10,0"
+                HorizontalAlignment="Center"
+                Source="{Binding Head}" />
+            <Label
+                Margin="0,5,0,5"
+                HorizontalContentAlignment="Center"
+                Content="{Binding UserName}" />
+            <Label
+                Margin="0,5,0,5"
+                HorizontalContentAlignment="Center"
+                Content="{Binding UserType}" />
+        </StackPanel>
+    </Panel>
+</view:CustomPanelControl>

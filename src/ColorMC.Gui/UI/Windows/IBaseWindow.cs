@@ -13,7 +13,7 @@ public interface IBaseWindow
     public Info5Control ComboInfo { get; }
     public Info6Control TextInfo { get; }
     public HeadControl Head { get; }
-    public UserControl Con { get; }
+    public IUserControl Con { get; }
     public void SetTitle(string data);
 
     virtual public void Close()
