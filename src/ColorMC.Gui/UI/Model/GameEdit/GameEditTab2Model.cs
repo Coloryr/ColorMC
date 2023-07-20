@@ -302,6 +302,15 @@ public partial class GameEditTab2Model : GameEditTabModel
         Obj.Save();
     }
 
+    partial void OnJvmNameChanged(string? value)
+    {
+        if (load)
+            return;
+
+        Obj.JvmName = JvmName;
+        Obj.Save();
+    }
+
     partial void OnJvmGcChanged(string? value)
     {
         if (load)

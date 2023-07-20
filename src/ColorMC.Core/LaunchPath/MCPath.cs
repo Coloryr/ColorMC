@@ -17,7 +17,7 @@ public static class MCPath
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
-        BaseDir = dir + Name;
+        BaseDir = $"{dir}{Name}";
 
         Logs.Info(string.Format(LanguageHelper.Get("Core.Path.Info1"), BaseDir));
 

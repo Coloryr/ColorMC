@@ -158,7 +158,7 @@ public static class GameHelper
                     UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
                         BaseClient.Source),
                     Name = item1.name,
-                    Local = $"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}",
+                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item1.downloads.artifact.path}"),
                     SHA1 = item1.downloads.artifact.sha1
                 });
             }
@@ -202,7 +202,7 @@ public static class GameHelper
             if (string.IsNullOrWhiteSpace(item.downloads.artifact.url))
                 continue;
 
-            string file = $"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}";
+            string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.downloads.artifact.path}");
             if (!File.Exists(file))
             {
                 list.Add(new()

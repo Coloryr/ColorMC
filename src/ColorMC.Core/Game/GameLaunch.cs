@@ -10,6 +10,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -588,8 +589,9 @@ public static class Launch
 
         //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");
         //jvmHead.Add("-XX:+UnlockExperimentalVMOptions");
-        //jvmHead.Add("-Dfml.ignoreInvalidMinecraftCertificates=true");
-        //jvmHead.Add("-Dfml.ignorePatchDiscrepancies=true");
+        jvmHead.Add("-Dfml.ignoreInvalidMinecraftCertificates=true");
+        jvmHead.Add("-Dfml.ignorePatchDiscrepancies=true");
+        jvmHead.Add("-Dlog4j2.formatMsgNoLookups=true");
         //jvmHead.Add("-Dcom.sun.jndi.rmi.object.trustURLCodebase=false");
         //jvmHead.Add("-Dcom.sun.jndi.cosnaming.object.trustURLCodebase=false");
         //jvmHead.Add($"-Dminecraft.client.jar={VersionPath.BaseDir}/{obj.Version}.jar");
@@ -619,6 +621,9 @@ public static class Launch
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
             jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res.Item2!)}");
         }
+
+        //jvmHead.Add("--add-exports");
+        //jvmHead.Add("cpw.mods.bootstraplauncher/cpw.mods.bootstraplauncher=ALL-UNNAMED");
 
         return jvmHead;
     }
@@ -817,7 +822,7 @@ public static class Launch
             {
                 var name = PathC.ToName(item.name);
                 list.AddOrUpdate(PathC.MakeVersionObj(name.Name),
-                    $"{LibrariesPath.BaseDir}/{name.Path}");
+                    Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
             }
         }
         else if (obj.Loader == Loaders.Quilt)
@@ -827,11 +832,17 @@ public static class Launch
             {
                 var name = PathC.ToName(item.name);
                 list.AddOrUpdate(PathC.MakeVersionObj(name.Name),
-                    $"{LibrariesPath.BaseDir}/{name.Path}");
+                    Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
             }
         }
 
-        return new(list.Values) { LibrariesPath.GetGameFile(obj.Version) };
+        var list3 = new List<string>(list.Values);
+        if (obj.Loader != Loaders.NeoForge)
+        {
+            list3.Add(LibrariesPath.GetGameFile(obj.Version));
+        }
+
+        return list3;
     }
 
     /// <summary>
@@ -888,25 +899,25 @@ public static class Launch
         classpath.Remove(classpath.Length - 1, 1);
 
         Dictionary<string, string> argDic = new()
-            {
-                {"${auth_player_name}", login.UserName },
-                {"${version_name}",version_name },
-                {"${game_directory}",gameDir },
-                {"${assets_root}",assetsPath },
-                {"${assets_index_name}",assetsIndexName },
-                {"${auth_uuid}",login.UUID },
-                {"${auth_access_token}",login.AccessToken },
-                {"${game_assets}",assetsPath },
-                {"${user_properties}", "{}" },
-                {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "legacy" },
-                {"${version_type}", "ColorMC" },
-                {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
-                {"${library_directory}",LibrariesPath.BaseDir },
-                {"${classpath_separator}", sep },
-                {"${launcher_name}","ColorMC" },
-                {"${launcher_version}", ColorMCCore.Version },
-                {"${classpath}", classpath.ToString().Trim() },
-            };
+        {
+            {"${auth_player_name}", login.UserName },
+            {"${version_name}",version_name },
+            {"${game_directory}",gameDir },
+            {"${assets_root}",assetsPath },
+            {"${assets_index_name}",assetsIndexName },
+            {"${auth_uuid}",login.UUID },
+            {"${auth_access_token}",login.AccessToken },
+            {"${game_assets}",assetsPath },
+            {"${user_properties}", "{}" },
+            {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "legacy" },
+            {"${version_type}", "ColorMC" },
+            {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
+            {"${library_directory}",LibrariesPath.BaseDir },
+            {"${classpath_separator}", sep },
+            {"${launcher_name}","ColorMC" },
+            {"${launcher_version}", ColorMCCore.Version  },
+            {"${classpath}",  classpath.ToString().Trim() },
+        };
 
         for (int a = 0; a < all_arg.Count; a++)
         {
@@ -1224,6 +1235,7 @@ public static class Launch
         };
         process.StartInfo.FileName = path;
         process.StartInfo.WorkingDirectory = InstancesPath.GetGamePath(obj);
+        process.StartInfo.Environment.Add("APPDATA", InstancesPath.GetGamePath(obj));
         Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
         foreach (var item in arg)
         {

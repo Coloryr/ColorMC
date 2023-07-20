@@ -34,7 +34,7 @@ public static class VersionPath
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
-        BaseDir = dir + "/" + Name;
+        BaseDir = $"{dir}/{Name}";
 
         Directory.CreateDirectory(BaseDir);
 

@@ -62,7 +62,10 @@ public static class Logs
     private static void Stop()
     {
         IsRun = false;
-        ThreadLog.Join();
+        if (ThreadLog.ThreadState == ThreadState.Running)
+        {
+            ThreadLog.Join();
+        }
 
         while (bags.TryTake(out var item))
         {
