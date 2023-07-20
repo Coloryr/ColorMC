@@ -43,6 +43,7 @@ public static class BaseBinding
     public static bool ISNewStart => ColorMCCore.NewStart;
 
     private static IBaseWindow? Window;
+    private static CancellationTokenSource LaunchCancel = new();
 
     /// <summary>
     /// 初始化
@@ -64,7 +65,7 @@ public static class BaseBinding
 
         if (ColorMCGui.RunType == RunType.Program)
         {
-            GameCountUtils.Init(ColorMCGui.RunDir);
+            GameCount.Init(ColorMCGui.RunDir);
             ImageUtils.Init(ColorMCGui.RunDir);
             UpdateChecker.Init();
 
@@ -419,7 +420,7 @@ public static class BaseBinding
     {
         ColorMCCore.Close();
         Media.Close();
-        GameCountUtils.Close();
+        GameCount.Close();
         ColorSel.Instance.Close();
     }
 
@@ -444,6 +445,7 @@ public static class BaseBinding
     /// <param name="obj">游戏实例</param>
     public static void StopGame(GameSettingObj obj)
     {
+        LaunchCancel.Cancel();
         if (RunGames.TryGetValue(obj.UUID, out var item))
         {
             Task.Run(item.Kill);
@@ -499,6 +501,7 @@ public static class BaseBinding
     public static async Task<(bool, string?)> Launch(IBaseWindow window, GameSettingObj obj, LoginObj obj1, WorldObj? world = null)
     {
         Window = window;
+        LaunchCancel = new();
 
         if (Games.ContainsValue(obj))
         {
@@ -523,8 +526,6 @@ public static class BaseBinding
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdateOnThread;
 
-        string? temp = null;
-
         //清空日志
         if (GameLogs.ContainsKey(obj.UUID))
         {
@@ -537,38 +538,17 @@ public static class BaseBinding
         //锁定账户
         UserBinding.AddLockUser(obj1);
 
-        var res = await Task.Run(async () =>
-        {
-            try
-            {
-                //启动
-                return await obj.StartGame(obj1, world);
-            }
-            catch (LaunchException e1)
-            {
-                temp = App.GetLanguage("Gui.Error6");
-                if (!string.IsNullOrWhiteSpace(e1.Message))
-                {
-                    temp = e1.Message;
-                }
-                if (e1.Ex != null)
-                {
-                    Logs.Error(temp, e1.Ex);
-                    App.ShowError(temp, e1.Ex);
-                }
-            }
-            catch (Exception e)
-            {
-                temp = App.GetLanguage("Gui.Error6");
-                Logs.Error(temp, e);
-                App.ShowError(temp, e);
-            }
-            UserBinding.UnLockUser(obj1);
-            return null;
-        });
+        var res = await Task.Run(async () => await Launch(obj, obj1, world, LaunchCancel.Token));
+
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.End);
         Funtcions.RunGC();
-        if (res != null)
+
+        if (LaunchCancel.IsCancellationRequested)
+            return (true, null);
+
+        var p = res.Item1;
+
+        if (p != null)
         {
             obj.LaunchData.LastTime = DateTime.Now;
             obj.SaveLaunchData();
@@ -579,9 +559,9 @@ public static class BaseBinding
                     Task.Delay(1000);
                     try
                     {
-                        res.WaitForInputIdle();
+                        p.WaitForInputIdle();
 
-                        if (res.HasExited)
+                        if (p.HasExited)
                             return;
 
                         Dispatcher.UIThread.Post(() =>
@@ -603,14 +583,14 @@ public static class BaseBinding
 
             App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text2"));
 
-            res.Exited += (a, b) =>
+            p.Exited += (a, b) =>
             {
-                GameCountUtils.GameClose(obj.UUID);
+                GameCount.GameClose(obj.UUID);
                 RunGames.Remove(obj.UUID);
                 UserBinding.UnLockUser(obj1);
                 App.MainWindow?.GameClose(obj.UUID);
-                Games.Remove(res);
-                if (a is Process p && p.ExitCode != 0)
+                Games.Remove(p);
+                if (a is Process p1 && p1.ExitCode != 0)
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
@@ -626,24 +606,64 @@ public static class BaseBinding
                         App.Close();
                     }
                 }
-                res.Dispose();
-                if (App.GameLogWindows.TryGetValue(obj.UUID, out var win1))
-                {
-                    win1.Update();
-                }
+                p.Dispose();
+                GameBinding.GameStateUpdate(obj);
             };
-            Games.Add(res, obj);
-            RunGames.Add(obj.UUID, res);
-            GameCountUtils.LaunchDone(obj.UUID);
-            if (App.GameLogWindows.TryGetValue(obj.UUID, out var win1))
-            {
-                win1.Update();
-            }
+
+            Games.Add(p, obj);
+            RunGames.Add(obj.UUID, p);
+            GameCount.LaunchDone(obj.UUID);
+            GameBinding.GameStateUpdate(obj);
+        }
+        else
+        {
+            UserBinding.UnLockUser(obj1);
         }
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdate;
 
-        return (res != null, temp);
+        return (p != null, res.Item2);
+    }
+
+    private static async Task<(Process?, string?)> Launch(GameSettingObj obj, LoginObj obj1,  WorldObj? world, CancellationToken cancel)
+    {
+        string? temp = null;
+        try
+        {
+            //启动
+            var p = await obj.StartGame(obj1, world, cancel);
+            if (cancel.IsCancellationRequested)
+            {
+                if (p != null && p.Id != 0)
+                {
+                    p.Kill();
+                }
+            }
+            else
+            {
+                return (p, null);
+            }
+        }
+        catch (LaunchException e1)
+        {
+            temp = App.GetLanguage("Gui.Error6");
+            if (!string.IsNullOrWhiteSpace(e1.Message))
+            {
+                temp = e1.Message;
+            }
+            if (e1.Ex != null)
+            {
+                Logs.Error(temp, e1.Ex);
+                App.ShowError(temp, e1.Ex);
+            }
+        }
+        catch (Exception e)
+        {
+            temp = App.GetLanguage("Gui.Error6");
+            Logs.Error(temp, e);
+            App.ShowError(temp, e);
+        }
+        return (null, temp);
     }
 
     /// <summary>

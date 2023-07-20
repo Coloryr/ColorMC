@@ -1487,4 +1487,12 @@ public static class GameBinding
     {
         return ForgeAPI.GetSupportVersion(true, BaseClient.Source);
     }
+
+    public static void GameStateUpdate(GameSettingObj obj)
+    {
+        if (App.GameLogWindows.TryGetValue(obj.UUID, out var win1))
+        {
+            win1.Update();
+        }
+    }
 }

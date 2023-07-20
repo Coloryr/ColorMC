@@ -60,7 +60,7 @@ public partial class CountModel : ObservableObject
         Con = con;
 
         date1 = date = DateTime.Now;
-        var data = GameCountUtils.Count;
+        var data = Utils.GameCount.Count;
         if (data == null)
         {
             count = 0;
@@ -111,7 +111,7 @@ public partial class CountModel : ObservableObject
 
     partial void OnDateChanged(DateTime value)
     {
-        var data = GameCountUtils.Count;
+        var data = Utils.GameCount.Count;
         if (data == null)
         {
             DateCount = 0;
@@ -129,7 +129,7 @@ public partial class CountModel : ObservableObject
 
     partial void OnDate1Changed(DateTime value)
     {
-        var data = GameCountUtils.Count;
+        var data = Utils.GameCount.Count;
         if (data == null)
         {
             TimeDate = "";
@@ -162,7 +162,7 @@ public partial class CountModel : ObservableObject
         if (List.Count == 0)
             return;
 
-        var data = GameCountUtils.Count;
+        var data = Utils.GameCount.Count;
         if (data == null)
         {
             return;

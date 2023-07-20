@@ -93,6 +93,11 @@ public record GameCheckObj
     public bool CheckLib { get; set; }
     public bool CheckAssets { get; set; }
     public bool CheckMod { get; set; }
+
+    public bool CheckCoreSha1 { get; set; }
+    public bool CheckLibSha1 { get; set; }
+    public bool CheckAssetsSha1 { get; set; }
+    public bool CheckModSha1 { get; set; }
 }
 
 public record ConfigObj

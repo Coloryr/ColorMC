@@ -223,6 +223,7 @@
 	"SettingWindow.Tab4.Text19": "启动后设置",
 	"SettingWindow.Tab4.Text20": "执行程序",
 	"SettingWindow.Tab4.Text21": "执行的程序命令",
+	"SettingWindow.Tab4.Text22": "校验Sha1值",
 	"SettingWindow.Tab5.Text1": "添加Java路径",
 	"SettingWindow.Tab5.Text2": "Java名字",
 	"SettingWindow.Tab5.Text3": "Java路径",

@@ -78,12 +78,15 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">资源数据</param>
     /// <returns>丢失列表</returns>
-    public static async Task<ConcurrentBag<(string Name, string Hash)>> Check(this AssetsObj obj)
+    public static async Task<ConcurrentBag<(string Name, string Hash)>> Check(this AssetsObj obj, CancellationToken cancel)
     {
         var list1 = new ConcurrentBag<string>();
         var list = new ConcurrentBag<(string, string)>();
-        await Parallel.ForEachAsync(obj.objects, async (item, cancel) =>
+        await Parallel.ForEachAsync(obj.objects, cancel, async (item, cancel) =>
         {
+            if (cancel.IsCancellationRequested)
+                return;
+
             if (list1.Contains(item.Value.hash))
                 return;
 
@@ -93,6 +96,9 @@ public static class AssetsPath
                 list.Add((item.Key, item.Value.hash));
                 return;
             }
+
+            if (!ConfigUtils.Config.GameCheck.CheckAssetsSha1)
+                return;
             using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
             var sha1 = await Funtcions.GenSha1Async(stream);
             if (item.Value.hash != sha1)

@@ -183,7 +183,11 @@ public static class ConfigUtils
             CheckCore = true,
             CheckAssets = true,
             CheckLib = true,
-            CheckMod = true
+            CheckMod = true,
+            CheckCoreSha1 = true,
+            CheckAssetsSha1 = true,
+            CheckLibSha1 = true,
+            CheckModSha1 = true,
         };
     }
 }

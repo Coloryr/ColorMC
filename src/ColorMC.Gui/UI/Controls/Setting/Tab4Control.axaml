@@ -15,22 +15,50 @@
             <Label Content="{setting:Localize SettingWindow.Tab4.Text13}" />
 
             <StackPanel Orientation="Horizontal">
-                <CheckBox
-                    Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text14}"
-                    IsChecked="{Binding CheckCore}" />
-                <CheckBox
-                    Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text15}"
-                    IsChecked="{Binding CheckAssets}" />
-                <CheckBox
-                    Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text16}"
-                    IsChecked="{Binding CheckLib}" />
-                <CheckBox
-                    Margin="0,0,5,0"
-                    Content="{setting:Localize SettingWindow.Tab4.Text17}"
-                    IsChecked="{Binding CheckMod}" />
+                <StackPanel>
+                    <CheckBox
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize SettingWindow.Tab4.Text14}"
+                        IsChecked="{Binding CheckCore}" />
+                    <CheckBox
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                        IsChecked="{Binding CheckCoreSha1}" />
+                </StackPanel>
+
+                <StackPanel>
+                    <CheckBox
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize SettingWindow.Tab4.Text15}"
+                        IsChecked="{Binding CheckAssets}" />
+                    <CheckBox
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                        IsChecked="{Binding CheckAssetsSha1}" />
+                </StackPanel>
+
+                <StackPanel>
+                    <CheckBox
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize SettingWindow.Tab4.Text16}"
+                        IsChecked="{Binding CheckLib}" />
+                    <CheckBox
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                        IsChecked="{Binding CheckLibSha1}" />
+                </StackPanel>
+
+                <StackPanel>
+                    <CheckBox
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize SettingWindow.Tab4.Text17}"
+                        IsChecked="{Binding CheckMod}" />
+                    <CheckBox
+                        Margin="0,0,5,0"
+                        Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                        IsChecked="{Binding CheckModSha1}" />
+                </StackPanel>
+
                 <CheckBox
                     Margin="0,0,5,0"
                     Content="{setting:Localize SettingWindow.Tab4.Text20}"

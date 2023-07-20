@@ -34,6 +34,14 @@ public partial class SettingTab4Model : ObservableObject
     [ObservableProperty]
     private bool checkMod;
     [ObservableProperty]
+    private bool checkCoreSha1;
+    [ObservableProperty]
+    private bool checkAssetsSha1;
+    [ObservableProperty]
+    private bool checkLibSha1;
+    [ObservableProperty]
+    private bool checkModSha1;
+    [ObservableProperty]
     private bool preRun;
     [ObservableProperty]
     private bool postRun;
@@ -131,6 +139,26 @@ public partial class SettingTab4Model : ObservableObject
         SetGc();
     }
 
+    partial void OnCheckCoreSha1Changed(bool value)
+    {
+        SetCheck();
+    }
+
+    partial void OnCheckAssetsSha1Changed(bool value)
+    {
+        SetCheck();
+    }
+
+    partial void OnCheckLibSha1Changed(bool value)
+    {
+        SetCheck();
+    }
+
+    partial void OnCheckModSha1Changed(bool value)
+    {
+        SetCheck();
+    }
+
     partial void OnCheckCoreChanged(bool value)
     {
         SetCheck();
@@ -176,6 +204,10 @@ public partial class SettingTab4Model : ObservableObject
             CheckAssets = config.Item1.GameCheck.CheckAssets;
             CheckLib = config.Item1.GameCheck.CheckLib;
             CheckMod = config.Item1.GameCheck.CheckMod;
+            CheckCoreSha1 = config.Item1.GameCheck.CheckCoreSha1;
+            CheckAssetsSha1 = config.Item1.GameCheck.CheckAssetsSha1;
+            CheckLibSha1 = config.Item1.GameCheck.CheckLibSha1;
+            CheckModSha1 = config.Item1.GameCheck.CheckModSha1;
             PostRun = config.Item1.DefaultJvmArg.LaunchPost;
             PreRun = config.Item1.DefaultJvmArg.LaunchPre;
         }
@@ -232,6 +264,7 @@ public partial class SettingTab4Model : ObservableObject
         if (load)
             return;
 
-        ConfigBinding.SetGameCheckConfig(CheckCore, CheckAssets, CheckLib, CheckMod);
+        ConfigBinding.SetGameCheckConfig(CheckCore, CheckAssets, CheckLib, CheckMod,
+            CheckCoreSha1, CheckAssetsSha1, CheckLibSha1, CheckModSha1);
     }
 }

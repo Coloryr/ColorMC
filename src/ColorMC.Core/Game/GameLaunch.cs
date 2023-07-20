@@ -22,7 +22,7 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Launch
 {
-    private static CancellationTokenSource cancel;
+    private static CancellationToken cancel;
 
     /// <summary>
     /// 检查游戏文件
@@ -84,7 +84,7 @@ public static class Launch
                         Name = $"{obj.Version}.jar"
                     });
                 }
-                else
+                else if(ConfigUtils.Config.GameCheck.CheckCoreSha1)
                 {
                     using FileStream stream2 = new(file, FileMode.Open, FileAccess.ReadWrite,
                         FileShare.ReadWrite);
@@ -101,7 +101,7 @@ public static class Launch
                         });
                     }
                 }
-            }));
+            }, cancel));
         }
 
         //检查游戏资源文件
@@ -123,9 +123,11 @@ public static class Launch
                     game.AddIndex(assets);
                 }
 
-                var list1 = await assets.Check();
+                var list1 = await assets.Check(cancel);
                 foreach (var (Name, Hash) in list1)
                 {
+                    if (cancel.IsCancellationRequested)
+                        return;
                     list.Add(new()
                     {
                         Overwrite = true,
@@ -135,7 +137,7 @@ public static class Launch
                         Name = Name
                     });
                 }
-            }));
+            }, cancel));
         }
 
         //检查运行库
@@ -144,7 +146,7 @@ public static class Launch
             list1.Add(Task.Run(async () =>
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
-                var list2 = await game.CheckGameLib();
+                var list2 = await game.CheckGameLib(cancel);
                 if (list2.Count != 0)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
@@ -158,12 +160,15 @@ public static class Launch
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLoader);
                 if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
                 {
-                    var list3 = await obj.CheckForgeLib(obj.Loader == Loaders.NeoForge);
+                    bool neo = obj.Loader == Loaders.NeoForge;
+                    var list3 = await obj.CheckForgeLib(neo, cancel);
+                    if (cancel.IsCancellationRequested)
+                        return;
                     if (list3 == null)
                     {
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
 
-                        var list4 = await GameDownloadHelper.DownloadForge(obj, obj.Loader == Loaders.NeoForge);
+                        var list4 = await GameDownloadHelper.DownloadForge(obj, neo);
                         if (list4.State != GetDownloadState.End)
                             throw new LaunchException(LaunchState.LostLoader,
                             LanguageHelper.Get("Core.Launch.Error3"));
@@ -180,7 +185,9 @@ public static class Launch
                 }
                 else if (obj.Loader == Loaders.Fabric)
                 {
-                    var list3 = obj.CheckFabricLib();
+                    var list3 = obj.CheckFabricLib(cancel);
+                    if (cancel.IsCancellationRequested)
+                        return;
                     if (list3 == null)
                     {
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
@@ -202,7 +209,9 @@ public static class Launch
                 }
                 else if (obj.Loader == Loaders.Quilt)
                 {
-                    var list3 = obj.CheckQuiltLib();
+                    var list3 = obj.CheckQuiltLib(cancel);
+                    if (cancel.IsCancellationRequested)
+                        return;
                     if (list3 == null)
                     {
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLoader);
@@ -243,7 +252,7 @@ public static class Launch
                         list.Add(item);
                     }
                 }
-            }));
+            }, cancel));
         }
 
         //检查整合包mod
@@ -259,12 +268,16 @@ public static class Launch
                 ModInfoObj?[] array = obj.Mods.Values.ToArray();
                 for (int a = 0; a < array.Length; a++)
                 {
+                    if (cancel.IsCancellationRequested)
+                        return;
+
                     var item = array[a];
                     foreach (var item1 in mods)
                     {
                         if (item == null)
                             continue;
-
+                        if (!ConfigUtils.Config.GameCheck.CheckModSha1)
+                            continue;
                         if (item1.Sha1 == item.SHA1 ||
                             item1.Local.ToLower().EndsWith(item.File.ToLower()))
                         {
@@ -284,6 +297,8 @@ public static class Launch
                 {
                     foreach (var item in array)
                     {
+                        if (cancel.IsCancellationRequested)
+                            return;
                         if (item == null)
                             continue;
 
@@ -296,7 +311,7 @@ public static class Launch
                         });
                     }
                 }
-            }));
+            }, cancel));
         }
 
         await Task.WhenAll(list1.ToArray());
@@ -1001,9 +1016,9 @@ public static class Launch
     /// <param name="jvmCfg">使用的Java</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns></returns>
-    public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, WorldObj? world = null)
+    public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, WorldObj? world, CancellationToken token)
     {
-        cancel = new();
+        cancel = token;
         Stopwatch stopwatch = new();
 
         if (string.IsNullOrWhiteSpace(obj.Version) ||

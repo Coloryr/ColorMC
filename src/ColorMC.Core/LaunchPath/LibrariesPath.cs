@@ -46,19 +46,24 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏数据</param>
     /// <returns>丢失的库</returns>
-    public static async Task<List<DownloadItemObj>> CheckGameLib(this GameArgObj obj)
+    public static async Task<List<DownloadItemObj>> CheckGameLib(this GameArgObj obj, CancellationToken cancel)
     {
         var list = new List<DownloadItemObj>();
 
         var list1 = await GameHelper.MakeGameLibs(obj);
 
-        await Parallel.ForEachAsync(list1, async (item, cancel) =>
+        await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
         {
+            if (cancel.IsCancellationRequested)
+                return;
+
             if (!File.Exists(item.Local))
             {
                 list.Add(item);
                 return;
             }
+            if (!ConfigUtils.Config.GameCheck.CheckLibSha1)
+                return;
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
                 FileShare.Read);
             var sha1 = await Funtcions.GenSha1Async(stream);
@@ -80,7 +85,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLib(this GameSettingObj obj, bool neo)
+    public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLib(this GameSettingObj obj, bool neo, CancellationToken cancel)
     {
         var version1 = VersionPath.GetGame(obj.Version)!;
         var v2 = CheckRule.GameLaunchVersion(version1);
@@ -114,8 +119,11 @@ public static class LibrariesPath
 
         var list = new ConcurrentBag<DownloadItemObj>();
 
-        await Parallel.ForEachAsync(list1, async (item, cancel) =>
+        await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
         {
+            if (cancel.IsCancellationRequested)
+                return;
+
             if (!File.Exists(item.Local))
             {
                 list.Add(item);
@@ -124,6 +132,8 @@ public static class LibrariesPath
             if (item.SHA1 == null)
                 return;
 
+            if (!ConfigUtils.Config.GameCheck.CheckLibSha1)
+                return;
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
             var sha1 = await Funtcions.GenSha1Async(stream);
@@ -141,7 +151,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static List<DownloadItemObj>? CheckFabricLib(this GameSettingObj obj)
+    public static List<DownloadItemObj>? CheckFabricLib(this GameSettingObj obj, CancellationToken cancel)
     {
         var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion);
         if (fabric == null)
@@ -151,6 +161,9 @@ public static class LibrariesPath
 
         foreach (var item in fabric.libraries)
         {
+            if (cancel.IsCancellationRequested)
+                break;
+
             var name = PathC.ToName(item.name);
             string file = $"{BaseDir}/{name.Path}";
             if (!File.Exists(file))
@@ -173,7 +186,7 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>丢失的库</returns>
-    public static List<DownloadItemObj>? CheckQuiltLib(this GameSettingObj obj)
+    public static List<DownloadItemObj>? CheckQuiltLib(this GameSettingObj obj, CancellationToken cancel)
     {
         var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion);
         if (quilt == null)
@@ -183,6 +196,9 @@ public static class LibrariesPath
 
         foreach (var item in quilt.libraries)
         {
+            if (cancel.IsCancellationRequested)
+                return null;
+
             var name = PathC.ToName(item.name);
             string file = $"{BaseDir}/{name.Path}";
             if (!File.Exists(file))

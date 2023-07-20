@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 
-public static class GameCountUtils
+public static class GameCount
 {
     private const string Name = "count.dat";
     private static string Local;

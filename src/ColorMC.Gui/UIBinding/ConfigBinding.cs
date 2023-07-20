@@ -331,13 +331,18 @@ public static class ConfigBinding
     /// 设置游戏检查选项
     /// </summary>
     /// <param name="obj"></param>
-    public static void SetGameCheckConfig(bool v1, bool v2, bool v3, bool v4)
+    public static void SetGameCheckConfig(bool v1, bool v2, bool v3, bool v4,
+        bool v5, bool v6, bool v7, bool v8)
     {
         ConfigUtils.Config.GameCheck ??= new();
         ConfigUtils.Config.GameCheck.CheckCore = v1;
         ConfigUtils.Config.GameCheck.CheckAssets = v2;
         ConfigUtils.Config.GameCheck.CheckLib = v3;
         ConfigUtils.Config.GameCheck.CheckMod = v4;
+        ConfigUtils.Config.GameCheck.CheckCoreSha1 = v5;
+        ConfigUtils.Config.GameCheck.CheckAssetsSha1 = v6;
+        ConfigUtils.Config.GameCheck.CheckLibSha1 = v7;
+        ConfigUtils.Config.GameCheck.CheckModSha1 = v8;
         ConfigUtils.Save();
     }
 
