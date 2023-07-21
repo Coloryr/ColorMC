@@ -19,6 +19,15 @@ public static class VersionPath
     private const string Name2 = "fabric";
     private const string Name3 = "quilt";
     private const string Name4 = "neoforged";
+
+    private readonly static Dictionary<string, GameArgObj> GameArgs = new();
+    private readonly static Dictionary<string, ForgeInstallObj> ForgeInstalls = new();
+    private readonly static Dictionary<string, ForgeInstallObj> NeoForgeInstalls = new();
+    private readonly static Dictionary<string, ForgeLaunchObj> ForgeLaunchs = new();
+    private readonly static Dictionary<string, ForgeLaunchObj> NeoForgeLaunchs = new();
+    private readonly static Dictionary<string, FabricLoaderObj> FabricLoaders = new();
+    private readonly static Dictionary<string, QuiltLoaderObj> QuiltLoaders = new();
+
     public static VersionObj? Versions { get; private set; }
 
     public static string ForgeDir => BaseDir + "/" + Name1;
@@ -120,7 +129,9 @@ public static class VersionPath
     public static void AddGame(GameArgObj? obj)
     {
         if (obj == null)
+        {
             return;
+        }
         string file = $"{BaseDir}/{obj.id}.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
     }
@@ -132,12 +143,20 @@ public static class VersionPath
     /// <returns>游戏数据</returns>
     public static GameArgObj? GetGame(string version)
     {
+        if (GameArgs.TryGetValue(version, out var temp))
+        {
+            return temp;
+        }
         string file = $"{BaseDir}/{version}.json";
 
         if (!File.Exists(file))
+        {
             return null;
+        }
 
-        return JsonConvert.DeserializeObject<GameArgObj>(File.ReadAllText(file));
+        var obj = JsonConvert.DeserializeObject<GameArgObj>(File.ReadAllText(file))!;
+        GameArgs.Add(version, obj);
+        return obj;
     }
 
     /// <summary>
@@ -169,12 +188,22 @@ public static class VersionPath
     /// <returns>Forge安装数据</returns>
     public static ForgeInstallObj? GetNeoForgeInstallObj(string mc, string version)
     {
+        var key = $"{mc}-{version}";
+        if (ForgeInstalls.TryGetValue(key, out var temp))
+        {
+            return temp;
+        }
+
         string file = $"{BaseDir}/{Name4}/forge-{mc}-{version}-install.json";
 
         if (!File.Exists(file))
+        {
             return null;
+        }
 
-        return JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file));
+        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file))!;
+        ForgeInstalls.Add(key, obj);
+        return obj;
     }
 
     /// <summary>
@@ -184,7 +213,7 @@ public static class VersionPath
     /// <returns>启动数据</returns>
     public static ForgeLaunchObj? GetNeoForgeObj(this GameSettingObj obj)
     {
-        return GetNeoForgeObj(obj.Version, obj.LoaderVersion);
+        return GetNeoForgeObj(obj.Version, obj.LoaderVersion!);
     }
 
     /// <summary>
@@ -193,17 +222,24 @@ public static class VersionPath
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
     /// <returns>启动数据</returns>
-    public static ForgeLaunchObj? GetNeoForgeObj(string mc, string? version)
+    public static ForgeLaunchObj? GetNeoForgeObj(string mc, string version)
     {
-        if (version == null)
-            return null;
+        var key = $"{mc}-{version}";
+        if (NeoForgeLaunchs.TryGetValue(key, out var temp))
+        {
+            return temp;
+        }
 
         string file = Path.GetFullPath($"{BaseDir}/{Name4}/forge-{mc}-{version}.json");
 
         if (!File.Exists(file))
+        {
             return null;
+        }
 
-        return JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file));
+        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file))!;
+        NeoForgeLaunchs.Add(key, obj);
+        return obj;
     }
 
     /// <summary>
@@ -214,12 +250,21 @@ public static class VersionPath
     /// <returns>Forge安装数据</returns>
     public static ForgeInstallObj? GetForgeInstallObj(string mc, string version)
     {
+        var key = $"{mc}-{version}";
         string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}-install.json";
+        if (NeoForgeInstalls.TryGetValue(key, out var temp))
+        {
+            return temp;
+        }
 
         if (!File.Exists(file))
+        {
             return null;
+        }
 
-        return JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file));
+        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file))!;
+        NeoForgeInstalls.Add(key, obj);
+        return obj;
     }
 
     /// <summary>
@@ -229,7 +274,7 @@ public static class VersionPath
     /// <returns>启动数据</returns>
     public static ForgeLaunchObj? GetForgeObj(this GameSettingObj obj)
     {
-        return GetForgeObj(obj.Version, obj.LoaderVersion);
+        return GetForgeObj(obj.Version, obj.LoaderVersion!);
     }
 
     /// <summary>
@@ -238,17 +283,23 @@ public static class VersionPath
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
     /// <returns>启动数据</returns>
-    public static ForgeLaunchObj? GetForgeObj(string mc, string? version)
+    public static ForgeLaunchObj? GetForgeObj(string mc, string version)
     {
-        if (version == null)
-            return null;
-
+        var key = $"{mc}-{version}";
+        if (ForgeLaunchs.TryGetValue(key, out var temp))
+        {
+            return temp;
+        }
         string file = Path.GetFullPath($"{BaseDir}/{Name1}/forge-{mc}-{version}.json");
 
         if (!File.Exists(file))
+        {
             return null;
+        }
 
-        return JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file));
+        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file))!;
+        ForgeLaunchs.Add(key, obj);
+        return obj;
     }
 
     /// <summary>
@@ -258,7 +309,7 @@ public static class VersionPath
     /// <returns>数据</returns>
     public static FabricLoaderObj? GetFabricObj(this GameSettingObj obj)
     {
-        return GetFabricObj(obj.Version, obj.LoaderVersion);
+        return GetFabricObj(obj.Version, obj.LoaderVersion!);
     }
 
     /// <summary>
@@ -267,16 +318,23 @@ public static class VersionPath
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
     /// <returns>数据</returns>
-    public static FabricLoaderObj? GetFabricObj(string mc, string? version)
+    public static FabricLoaderObj? GetFabricObj(string mc, string version)
     {
-        if (version == null)
-            return null;
-        string file = $"{BaseDir}/{Name2}/fabric-loader-{version}-{mc}.json";
+        var key = $"{mc}-{version}";
+        if (FabricLoaders.TryGetValue(key, out var temp))
+        {
+            return temp;
+        }
+        string file = $"{BaseDir}/{Name2}/fabric-loader-{mc}-{version}.json";
 
         if (!File.Exists(file))
+        {
             return null;
+        }
 
-        return JsonConvert.DeserializeObject<FabricLoaderObj>(File.ReadAllText(file));
+        var obj = JsonConvert.DeserializeObject<FabricLoaderObj>(File.ReadAllText(file))!;
+        FabricLoaders.Add(key, obj);
+        return obj;
     }
 
     /// <summary>
@@ -286,7 +344,7 @@ public static class VersionPath
     /// <returns>数据</returns>
     public static QuiltLoaderObj? GetQuiltObj(this GameSettingObj obj)
     {
-        return GetQuiltObj(obj.Version, obj.LoaderVersion);
+        return GetQuiltObj(obj.Version, obj.LoaderVersion!);
     }
 
     /// <summary>
@@ -295,16 +353,22 @@ public static class VersionPath
     /// <param name="mc">游戏版本</param>
     /// <param name="version">quilt版本</param>
     /// <returns>数据</returns>
-    public static QuiltLoaderObj? GetQuiltObj(string mc, string? version)
+    public static QuiltLoaderObj? GetQuiltObj(string mc, string version)
     {
-        if (version == null)
-            return null;
-
-        string file = $"{BaseDir}/{Name3}/quilt-loader-{version}-{mc}.json";
+        var key = $"{mc}-{version}";
+        if (QuiltLoaders.TryGetValue(key, out var temp))
+        {
+            return temp;
+        }
+        string file = $"{BaseDir}/{Name3}/quilt-loader-{mc}-{version}.json";
 
         if (!File.Exists(file))
+        {
             return null;
+        }
 
-        return JsonConvert.DeserializeObject<QuiltLoaderObj>(File.ReadAllText(file));
+        var obj = JsonConvert.DeserializeObject<QuiltLoaderObj>(File.ReadAllText(file))!;
+        QuiltLoaders.Add(key, obj);
+        return obj;
     }
 }

@@ -18,6 +18,8 @@ public static class AssetsPath
     public const string Name2 = "objects";
     public const string Name3 = "skins";
 
+    private readonly static Dictionary<string, AssetsObj> Assets = new();
+
     /// <summary>
     /// 基础路径
     /// </summary>
@@ -52,7 +54,9 @@ public static class AssetsPath
     public static void AddIndex(this GameArgObj game, AssetsObj? obj)
     {
         if (obj == null)
+        {
             return;
+        }
 
         string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.assets}.json");
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
@@ -65,12 +69,19 @@ public static class AssetsPath
     /// <returns></returns>
     public static AssetsObj? GetIndex(this GameArgObj game)
     {
+        if (Assets.TryGetValue(game.assets, out var temp))
+        {
+            return temp;
+        }
         string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.assets}.json");
         if (!File.Exists(file))
+        {
             return null;
+        }
 
-        var data = File.ReadAllText(file);
-        return JsonConvert.DeserializeObject<AssetsObj>(data);
+        var obj = JsonConvert.DeserializeObject<AssetsObj>(File.ReadAllText(file))!;
+        Assets.Add(game.assets, obj);
+        return obj;
     }
 
     /// <summary>

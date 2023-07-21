@@ -46,15 +46,20 @@
                         Name="Label4"
                         Content="ServerType"
                         Foreground="{setting:Colors Motd}" />
-                    <Label
-                        Margin="10,0,0,0"
-                        Content="{setting:Localize ServerMotdControl.Text3}"
-                        Foreground="{setting:Colors Motd}" />
-                    <Label
-                        Name="Label5"
-                        Content="ServerType"
-                        Foreground="{setting:Colors Motd}" />
                 </StackPanel>
+            </StackPanel>
+            <StackPanel
+                Margin="0,0,10,0"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Label
+                    Margin="10,0,0,0"
+                    Content="{setting:Localize ServerMotdControl.Text3}"
+                    Foreground="{setting:Colors Motd}" />
+                <Label
+                    Name="Label5"
+                    Content="ServerType"
+                    Foreground="{setting:Colors Motd}" />
             </StackPanel>
         </Panel>
         <Panel
