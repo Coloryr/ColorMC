@@ -13,11 +13,11 @@ public partial class WorldModel : ObservableObject
 {
     public WorldDisplayObj World { get; }
 
-    private readonly ILoadFuntion<WorldModel> Top;
-    private readonly IUserControl Con;
+    private readonly ILoadFuntion<WorldModel> _top;
+    private readonly IUserControl _con;
 
     [ObservableProperty]
-    private bool isSelect;
+    private bool _isSelect;
 
     public string Name => World.Name;
     public string Mode => World.Mode;
@@ -29,14 +29,14 @@ public partial class WorldModel : ObservableObject
 
     public WorldModel(IUserControl con, ILoadFuntion<WorldModel> top, WorldDisplayObj world)
     {
-        Con = con;
-        Top = top;
+        _con = con;
+        _top = top;
         World = world;
     }
 
     public void Select()
     {
-        Top.SetSelect(this);
+        _top.SetSelect(this);
     }
 
     public void Flyout(Control con)
@@ -46,7 +46,7 @@ public partial class WorldModel : ObservableObject
 
     public async void Delete(WorldDisplayObj obj)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window!.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab5.Info1"), obj.Name));
         if (!res)
@@ -56,12 +56,12 @@ public partial class WorldModel : ObservableObject
 
         GameBinding.DeleteWorld(obj.World);
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        await Top.Load();
+        await _top.Load();
     }
 
     public async void Export(WorldDisplayObj obj)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info4"));
         var file = await BaseBinding.SaveFile(window as TopLevel, FileType.World, new object[]
             { obj });
@@ -81,7 +81,7 @@ public partial class WorldModel : ObservableObject
 
     public async void Backup(WorldModel obj)
     {
-        var Window = Con.Window;
+        var Window = _con.Window;
         Window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
         var res = await GameBinding.BackupWorld(obj.World.World);
         Window.ProgressInfo.Close();
@@ -102,7 +102,7 @@ public partial class WorldModel : ObservableObject
             return;
         }
 
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await GameBinding.Launch(window, world.World.Game, world.World);
         if (!res.Item1)
         {

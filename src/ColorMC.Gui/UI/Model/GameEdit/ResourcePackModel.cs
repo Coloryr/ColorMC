@@ -13,10 +13,10 @@ public partial class ResourcePackModel : ObservableObject
     public ResourcepackDisplayObj Pack { get; }
 
     [ObservableProperty]
-    private bool isSelect;
+    private bool _isSelect;
 
-    private readonly ILoadFuntion<ResourcePackModel> Top;
-    private readonly IUserControl Con;
+    private readonly ILoadFuntion<ResourcePackModel> _top;
+    private readonly IUserControl _con;
 
     public string Local => Pack.Local;
     public string PackFormat => Pack.PackFormat.ToString();
@@ -28,14 +28,14 @@ public partial class ResourcePackModel : ObservableObject
 
     public ResourcePackModel(IUserControl con, ILoadFuntion<ResourcePackModel> top, ResourcepackDisplayObj pack)
     {
-        Con = con;
-        Top = top;
+        _con = con;
+        _top = top;
         Pack = pack;
     }
 
     public void Select()
     {
-        Top.SetSelect(this);
+        _top.SetSelect(this);
     }
 
     public void Flyout(Control con)
@@ -45,7 +45,7 @@ public partial class ResourcePackModel : ObservableObject
 
     public async void Delete(ResourcepackDisplayObj obj)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab8.Info1"), obj.Local));
         if (!res)
@@ -55,6 +55,6 @@ public partial class ResourcePackModel : ObservableObject
 
         GameBinding.DeleteResourcepack(obj.Pack);
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        await Top.Load();
+        await _top.Load();
     }
 }

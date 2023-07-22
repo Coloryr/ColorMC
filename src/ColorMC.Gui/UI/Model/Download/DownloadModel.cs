@@ -19,44 +19,43 @@ namespace ColorMC.Gui.UI.Model.Download;
 
 public partial class DownloadModel : ObservableObject
 {
-    private readonly IUserControl Con;
-
-    private long Count;
-    private readonly Timer Timer;
-
     public ObservableCollection<DownloadDisplayModel> ItemList { get; init; } = new();
 
     public Dictionary<string, DownloadDisplayModel> List1 = new();
 
+    private readonly IUserControl _con;
+    private long _count;
+    private readonly Timer _timer;
+
     [ObservableProperty]
-    private string speed;
+    private string _speed;
     [ObservableProperty]
-    private string now;
+    private string _now;
     [ObservableProperty]
-    private string button = "P";
+    private string _button = "P";
     [ObservableProperty]
-    private string button1 = App.GetLanguage("DownloadWindow.Text1");
+    private string _button1 = App.GetLanguage("DownloadWindow.Text1");
     [ObservableProperty]
-    private double value = 0;
+    private double _value = 0;
     [ObservableProperty]
-    private bool isPause;
+    private bool _isPause;
 
     public DownloadModel(IUserControl con)
     {
-        Con = con;
+        _con = con;
 
         ColorMCCore.DownloadItemStateUpdate = DownloadItemStateUpdate;
 
-        Timer = new(TimeSpan.FromSeconds(1))
+        _timer = new(TimeSpan.FromSeconds(1))
         {
             AutoReset = true
         };
-        Timer.Elapsed += Timer_Elapsed;
+        _timer.Elapsed += Timer_Elapsed;
     }
 
     partial void OnIsPauseChanged(bool value)
     {
-        var windows = Con.Window;
+        var windows = _con.Window;
         if (!value)
         {
             BaseBinding.DownloadResume();
@@ -82,7 +81,7 @@ public partial class DownloadModel : ObservableObject
     [RelayCommand]
     public async Task Stop()
     {
-        var windows = Con.Window;
+        var windows = _con.Window;
         var res = await windows.OkInfo.ShowWait(App.GetLanguage("DownloadWindow.Info1"));
         if (res)
         {
@@ -94,14 +93,14 @@ public partial class DownloadModel : ObservableObject
 
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
-        long now = Count;
-        Count = 0;
+        long now = _count;
+        _count = 0;
         Speed = UIUtils.MakeSpeedSize(now);
     }
 
     public void Close()
     {
-        Timer.Dispose();
+        _timer.Dispose();
     }
 
     public void DownloadItemStateUpdate(int index, DownloadItemObj item)
@@ -115,7 +114,7 @@ public partial class DownloadModel : ObservableObject
             };
             Dispatcher.UIThread.Post(() => ItemList.Add(item11));
             List1.Add(item.Name, item11);
-            Timer.Start();
+            _timer.Start();
 
             return;
         }
@@ -141,7 +140,7 @@ public partial class DownloadModel : ObservableObject
             long temp = List1[item.Name].Last;
             List1[item.Name].NowSize = $"{(double)item.NowSize / item.AllSize * 100:0.##} %";
             List1[item.Name].Last = item.NowSize;
-            Count += item.NowSize - temp;
+            _count += item.NowSize - temp;
         }
         else if (item.State == DownloadItemState.Error)
         {

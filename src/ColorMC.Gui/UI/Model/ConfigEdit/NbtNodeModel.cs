@@ -15,11 +15,11 @@ public partial class NbtNodeModel : ObservableObject
     public ObservableCollection<NbtNodeModel> Children { get; init; } = new();
 
     [ObservableProperty]
-    public bool isExpanded;
+    private bool _isExpanded;
     [ObservableProperty]
-    public long? size;
+    private long? _size;
     [ObservableProperty]
-    public bool hasChildren;
+    private bool _hasChildren;
 
     public NbtNodeModel? Top { get; }
 

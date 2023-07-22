@@ -16,7 +16,7 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
 {
     public ObservableCollection<WorldModel> WorldList { get; init; } = new();
 
-    private WorldModel? Last;
+    private WorldModel? _last;
 
     public GameEditTab5Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
@@ -119,11 +119,11 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
 
     public void SetSelect(WorldModel item)
     {
-        if (Last != null)
+        if (_last != null)
         {
-            Last.IsSelect = false;
+            _last.IsSelect = false;
         }
-        Last = item;
-        Last.IsSelect = true;
+        _last = item;
+        _last.IsSelect = true;
     }
 }

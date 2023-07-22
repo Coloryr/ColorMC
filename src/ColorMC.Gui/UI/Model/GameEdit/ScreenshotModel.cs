@@ -12,25 +12,25 @@ public partial class ScreenshotModel : ObservableObject
 {
     public ScreenshotDisplayObj Screenshot { get; }
 
-    private ILoadFuntion<ScreenshotModel> Top;
-    private IUserControl Con;
+    private ILoadFuntion<ScreenshotModel> _top;
+    private IUserControl _con;
 
     [ObservableProperty]
-    private bool isSelect;
+    private bool _isSelect;
 
     public string Name => Screenshot.Name;
     public Bitmap Pic => Screenshot.Image;
 
     public ScreenshotModel(IUserControl con, ILoadFuntion<ScreenshotModel> top, ScreenshotDisplayObj obj)
     {
-        Con = con;
-        Top = top;
+        _con = con;
+        _top = top;
         Screenshot = obj;
     }
 
     public void Select()
     {
-        Top.SetSelect(this);
+        _top.SetSelect(this);
     }
 
     public void Flyout(Control con)
@@ -40,7 +40,7 @@ public partial class ScreenshotModel : ObservableObject
 
     public async void Delete()
     {
-        var Window = Con.Window;
+        var Window = _con.Window;
         var res = await Window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab9.Info1"), Screenshot.Local));
         if (!res)
@@ -50,6 +50,6 @@ public partial class ScreenshotModel : ObservableObject
 
         GameBinding.DeleteScreenshot(Screenshot.Local);
         Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        await Top.Load();
+        await _top.Load();
     }
 }

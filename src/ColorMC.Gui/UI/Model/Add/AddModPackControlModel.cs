@@ -16,7 +16,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddModPackControlModel : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
 
     public List<string> SourceList => GameBinding.GetSourceList();
     public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
@@ -25,49 +25,49 @@ public partial class AddModPackControlModel : ObservableObject
     public ObservableCollection<string> SortTypeList { get; init; } = new();
     public ObservableCollection<FileItemModel> DisplayList { get; init; } = new();
 
-    private readonly Dictionary<int, string> Categories = new();
-    private FileItemModel? Last;
-    private bool load = false;
+    private readonly Dictionary<int, string> _categories = new();
+    private FileItemModel? _last;
+    private bool _load = false;
 
     [ObservableProperty]
-    private FileDisplayObj item;
+    private FileDisplayObj _item;
 
     [ObservableProperty]
-    private int source = -1;
+    private int _source = -1;
     [ObservableProperty]
-    private int categorie;
+    private int _categorie;
     [ObservableProperty]
-    private int sortType;
+    private int _sortType;
     [ObservableProperty]
-    private int page;
+    private int _page;
     [ObservableProperty]
-    private int page1;
+    private int _page1;
     [ObservableProperty]
-    private string? gameVersion;
+    private string? _gameVersion;
     [ObservableProperty]
-    private string? gameVersion1;
+    private string? _gameVersion1;
     [ObservableProperty]
-    private string? text;
+    private string? _text;
     [ObservableProperty]
-    private bool textEnable = true;
+    private bool _textEnable = true;
     [ObservableProperty]
-    private bool pageEnable = true;
+    private bool _pageEnable = true;
     [ObservableProperty]
-    private bool pageEnable1 = true;
+    private bool _pageEnable1 = true;
     [ObservableProperty]
-    private bool enable = true;
+    private bool _enable = true;
     [ObservableProperty]
-    private bool enable1 = true;
+    private bool _enable1 = true;
     [ObservableProperty]
-    private bool isSelect = false;
+    private bool _isSelect = false;
     [ObservableProperty]
-    private bool display = false;
+    private bool _display = false;
     [ObservableProperty]
-    private bool emptyDisplay = true;
+    private bool _emptyDisplay = true;
 
     public AddModPackControlModel(IUserControl con)
     {
-        Con = con;
+        _con = con;
     }
 
     partial void OnGameVersion1Changed(string? value)
@@ -82,7 +82,7 @@ public partial class AddModPackControlModel : ObservableObject
 
     partial void OnCategorieChanged(int value)
     {
-        if (load)
+        if (_load)
             return;
 
         Load();
@@ -90,7 +90,7 @@ public partial class AddModPackControlModel : ObservableObject
 
     partial void OnSortTypeChanged(int value)
     {
-        if (load)
+        if (_load)
             return;
 
         Load();
@@ -98,7 +98,7 @@ public partial class AddModPackControlModel : ObservableObject
 
     partial void OnGameVersionChanged(string? value)
     {
-        if (load)
+        if (_load)
             return;
 
 
@@ -109,7 +109,7 @@ public partial class AddModPackControlModel : ObservableObject
 
     partial void OnPageChanged(int value)
     {
-        if (load)
+        if (_load)
             return;
 
         Load();
@@ -117,7 +117,7 @@ public partial class AddModPackControlModel : ObservableObject
 
     async partial void OnSourceChanged(int value)
     {
-        load = true;
+        _load = true;
 
         Lock();
 
@@ -125,12 +125,12 @@ public partial class AddModPackControlModel : ObservableObject
         SortTypeList.Clear();
 
         GameVersionList.Clear();
-        Categories.Clear();
+        _categories.Clear();
 
         DisplayList.Clear();
         OnPropertyChanged(nameof(DisplayList));
 
-        var window = Con.Window;
+        var window = _con.Window;
         switch (Source)
         {
             case 0:
@@ -159,11 +159,11 @@ public partial class AddModPackControlModel : ObservableObject
                 }
                 GameVersionList.AddRange(list);
 
-                Categories.Add(0, "");
+                _categories.Add(0, "");
                 var a = 1;
                 foreach (var item in list1)
                 {
-                    Categories.Add(a++, item.Key);
+                    _categories.Add(a++, item.Key);
                 }
 
                 var list2 = new List<string>()
@@ -183,15 +183,15 @@ public partial class AddModPackControlModel : ObservableObject
                 break;
         }
 
-        load = false;
+        _load = false;
     }
 
     [RelayCommand]
     public void Select()
     {
-        if (Last == null)
+        if (_last == null)
         {
-            var window = Con.Window;
+            var window = _con.Window;
             window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error1"));
             return;
         }
@@ -229,7 +229,7 @@ public partial class AddModPackControlModel : ObservableObject
         if (Item == null)
             return;
 
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("AddModPackWindow.Info1"), Item.Name));
         if (res)
@@ -241,12 +241,12 @@ public partial class AddModPackControlModel : ObservableObject
     public void SetSelect(FileItemModel last)
     {
         IsSelect = true;
-        if (Last != null)
+        if (_last != null)
         {
-            Last.IsSelect = false;
+            _last.IsSelect = false;
         }
-        Last = last;
-        Last.IsSelect = true;
+        _last = last;
+        _last.IsSelect = true;
     }
 
     public void Install()
@@ -262,21 +262,21 @@ public partial class AddModPackControlModel : ObservableObject
         {
             App.AddGameWindow?.Install(
                 (data.Data as CurseForgeModObj.Data)!,
-                (Last!.Data?.Data as CurseForgeObjList.Data)!);
+                (_last!.Data?.Data as CurseForgeObjList.Data)!);
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
             App.AddGameWindow?.Install(
                 (data.Data as ModrinthVersionObj)!,
-                (Last!.Data?.Data as ModrinthSearchObj.Hit)!);
+                (_last!.Data?.Data as ModrinthSearchObj.Hit)!);
         }
-        var window = Con.Window;
+        var window = _con.Window;
         window.Close();
     }
 
     private async void Load()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         if (Source == 2 && Categorie == 4
             && Text?.Length < 3)
         {
@@ -288,7 +288,7 @@ public partial class AddModPackControlModel : ObservableObject
         window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info2"));
         var data = await WebBinding.GetPackList((SourceType)Source,
             GameVersion, Text, Page, Source == 2 ? Categorie : SortType,
-            Source == 2 ? "" : Categorie < 0 ? "" : Categories[Categorie]);
+            Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
 
         if (data == null)
         {
@@ -305,7 +305,7 @@ public partial class AddModPackControlModel : ObservableObject
         }
         OnPropertyChanged(nameof(DisplayList));
 
-        Last = null;
+        _last = null;
 
         EmptyDisplay = DisplayList.Count == 0;
 
@@ -318,7 +318,7 @@ public partial class AddModPackControlModel : ObservableObject
         if (Display == false)
             return;
 
-        var window = Con.Window;
+        var window = _con.Window;
         FileList.Clear();
         window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info3"));
         List<FileDisplayObj>? list = null;
@@ -326,14 +326,14 @@ public partial class AddModPackControlModel : ObservableObject
         {
             PageEnable1 = true;
             list = await WebBinding.GetPackFile((SourceType)Source,
-                (Last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), Page1,
+                (_last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), Page1,
                 GameVersion1, Loaders.Normal);
         }
         else if (Source == 1)
         {
             PageEnable1 = false;
             list = await WebBinding.GetPackFile((SourceType)Source,
-                (Last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, Page1,
+                (_last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, Page1,
                 GameVersion1, Loaders.Normal);
         }
         if (list == null)

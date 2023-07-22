@@ -18,7 +18,7 @@ public partial class GameEditTab12Model : GameEditTabModel
     public ObservableCollection<SchematicDisplayObj> SchematicList { get; set; } = new();
 
     [ObservableProperty]
-    private SchematicDisplayObj? item;
+    private SchematicDisplayObj? _item;
 
     public GameEditTab12Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {

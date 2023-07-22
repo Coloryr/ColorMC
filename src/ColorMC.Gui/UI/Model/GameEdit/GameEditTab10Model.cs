@@ -15,9 +15,9 @@ public partial class GameEditTab10Model : GameEditTabModel
     public ObservableCollection<ServerInfoObj> ServerList { get; init; } = new();
 
     [ObservableProperty]
-    private ServerInfoObj? item;
+    private ServerInfoObj? _item;
     [ObservableProperty]
-    private (string?, ushort) iPPort;
+    private (string?, ushort) _iPPort;
 
     public GameEditTab10Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {

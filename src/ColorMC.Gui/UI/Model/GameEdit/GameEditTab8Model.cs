@@ -13,7 +13,7 @@ public partial class GameEditTab8Model : GameEditTabModel, ILoadFuntion<Resource
 {
     public ObservableCollection<ResourcePackModel> ResourcePackList { get; init; } = new();
 
-    private ResourcePackModel? Last;
+    private ResourcePackModel? _last;
 
     public GameEditTab8Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
@@ -76,11 +76,11 @@ public partial class GameEditTab8Model : GameEditTabModel, ILoadFuntion<Resource
 
     public void SetSelect(ResourcePackModel item)
     {
-        if (Last != null)
+        if (_last != null)
         {
-            Last.IsSelect = false;
+            _last.IsSelect = false;
         }
-        Last = item;
-        Last.IsSelect = true;
+        _last = item;
+        _last.IsSelect = true;
     }
 }

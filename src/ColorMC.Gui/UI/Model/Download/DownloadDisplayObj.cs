@@ -11,27 +11,27 @@ public partial class DownloadDisplayModel : ObservableObject
     /// 名字
     /// </summary>
     [ObservableProperty]
-    private string name;
+    private string _name;
     /// <summary>
     /// 总大小
     /// </summary>
     [ObservableProperty]
-    private string allSize;
+    private string _allSize;
     /// <summary>
     /// 已下载大小
     /// </summary>
     [ObservableProperty]
-    private string nowSize;
+    private string _nowSize;
     /// <summary>
     /// 当前状态
     /// </summary>
     [ObservableProperty]
-    private string state;
+    private string _state;
     /// <summary>
     /// 错误次数
     /// </summary
     [ObservableProperty]
-    private int errorTime;
+    private int _errorTime;
 
     /// <summary>
     /// 1秒下载的大小

@@ -19,52 +19,52 @@ public partial class GameEditTab1Model : GameEditTabModel
     public ObservableCollection<string> LoaderVersionList { get; init; } = new();
     public ObservableCollection<string> GroupList { get; init; } = new();
 
-    private bool load = false;
+    private bool _load = false;
 
     [ObservableProperty]
-    private string gameVersion;
+    private string _gameVersion;
     [ObservableProperty]
-    private string? loaderVersion;
+    private string? _loaderVersion;
     [ObservableProperty]
-    private string? group;
+    private string? _group;
     [ObservableProperty]
-    private string? pID;
+    private string? _pID;
     [ObservableProperty]
-    private string? fID;
+    private string? _fID;
 
     [ObservableProperty]
-    private bool enableForge;
+    private bool _enableForge;
     [ObservableProperty]
-    private bool enableNeoForge;
+    private bool _enableNeoForge;
     [ObservableProperty]
-    private bool enableFabric;
+    private bool _enableFabric;
     [ObservableProperty]
-    private bool enableQuilt;
+    private bool _enableQuilt;
 
     [ObservableProperty]
-    private bool selectRelease = true;
+    private bool _selectRelease = true;
     [ObservableProperty]
-    private bool selectSnapshot;
+    private bool _selectSnapshot;
     [ObservableProperty]
-    private bool selectOther;
+    private bool _selectOther;
 
     [ObservableProperty]
-    private bool selectForge;
+    private bool _selectForge;
     [ObservableProperty]
-    private bool selectNeoForge;
+    private bool _selectNeoForge;
     [ObservableProperty]
-    private bool selectFabric;
+    private bool _selectFabric;
     [ObservableProperty]
-    private bool selectQuilt;
+    private bool _selectQuilt;
 
     [ObservableProperty]
-    private bool modPack;
+    private bool _modPack;
 
     [ObservableProperty]
-    private bool gameRun;
+    private bool _gameRun;
 
     [ObservableProperty]
-    private bool enableLoader;
+    private bool _enableLoader;
 
     public GameEditTab1Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
@@ -82,7 +82,7 @@ public partial class GameEditTab1Model : GameEditTabModel
             SelectFabric = false;
             SelectQuilt = false;
 
-            if (load)
+            if (_load)
                 return;
             Obj.Loader = Loaders.Forge;
             Obj.LoaderVersion = null;
@@ -118,7 +118,7 @@ public partial class GameEditTab1Model : GameEditTabModel
             SelectFabric = false;
             SelectQuilt = false;
 
-            if (load)
+            if (_load)
                 return;
             Obj.Loader = Loaders.NeoForge;
             Obj.LoaderVersion = null;
@@ -154,7 +154,7 @@ public partial class GameEditTab1Model : GameEditTabModel
             SelectQuilt = false;
             SelectNeoForge = false;
 
-            if (load)
+            if (_load)
                 return;
             Obj.Loader = Loaders.Fabric;
             Obj.LoaderVersion = null;
@@ -190,7 +190,7 @@ public partial class GameEditTab1Model : GameEditTabModel
             SelectNeoForge = false;
             SelectFabric = false;
 
-            if (load)
+            if (_load)
                 return;
             Obj.Loader = Loaders.Quilt;
             Obj.LoaderVersion = null;
@@ -217,7 +217,7 @@ public partial class GameEditTab1Model : GameEditTabModel
 
     partial void OnGameVersionChanged(string value)
     {
-        if (load)
+        if (_load)
             return;
 
         LoaderVersion = null;
@@ -234,7 +234,7 @@ public partial class GameEditTab1Model : GameEditTabModel
 
     partial void OnLoaderVersionChanged(string? value)
     {
-        if (load)
+        if (_load)
             return;
 
         Obj.LoaderVersion = value;
@@ -243,7 +243,7 @@ public partial class GameEditTab1Model : GameEditTabModel
 
     partial void OnGroupChanged(string? value)
     {
-        if (load)
+        if (_load)
             return;
 
         GameBinding.MoveGameGroup(Obj, value);
@@ -251,7 +251,7 @@ public partial class GameEditTab1Model : GameEditTabModel
 
     partial void OnModPackChanged(bool value)
     {
-        if (load)
+        if (_load)
             return;
 
         Obj.ModPack = value;
@@ -260,7 +260,7 @@ public partial class GameEditTab1Model : GameEditTabModel
 
     partial void OnPIDChanged(string? value)
     {
-        if (load)
+        if (_load)
             return;
 
         Obj.PID = value;
@@ -269,7 +269,7 @@ public partial class GameEditTab1Model : GameEditTabModel
 
     partial void OnFIDChanged(string? value)
     {
-        if (load)
+        if (_load)
             return;
 
         Obj.FID = value;
@@ -608,7 +608,7 @@ public partial class GameEditTab1Model : GameEditTabModel
 
     public void Load()
     {
-        load = true;
+        _load = true;
 
         if (Obj.GameType == GameType.Snapshot)
         {
@@ -661,6 +661,6 @@ public partial class GameEditTab1Model : GameEditTabModel
 
         GameRun = BaseBinding.IsGameRun(Obj);
 
-        load = false;
+        _load = false;
     }
 }

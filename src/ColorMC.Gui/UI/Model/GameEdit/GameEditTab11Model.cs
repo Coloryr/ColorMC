@@ -18,7 +18,7 @@ public partial class GameEditTab11Model : GameEditTabModel
     public ObservableCollection<ShaderpackDisplayObj> ShaderpackList { get; init; } = new();
 
     [ObservableProperty]
-    private ShaderpackDisplayObj? item;
+    private ShaderpackDisplayObj? _item;
 
     public GameEditTab11Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {

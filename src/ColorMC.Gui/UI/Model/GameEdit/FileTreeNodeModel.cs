@@ -9,21 +9,21 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 public partial class FileTreeNodeModel : ObservableObject
 {
     [ObservableProperty]
-    private string path;
+    private string _path;
     [ObservableProperty]
-    private string name;
+    private string _name;
     [ObservableProperty]
-    private long? size;
+    private long? _size;
     [ObservableProperty]
-    private DateTimeOffset? modified;
+    private DateTimeOffset? _modified;
     [ObservableProperty]
-    private bool hasChildren = true;
+    private bool _hasChildren = true;
     [ObservableProperty]
     private bool isExpanded;
     [ObservableProperty]
-    private bool isChecked;
-    [ObservableProperty]
-    private ObservableCollection<FileTreeNodeModel> children;
+    private bool _isChecked;
+
+    public ObservableCollection<FileTreeNodeModel> Children { get; init; } = new();
 
     public bool IsDirectory { get; init; }
 
@@ -32,10 +32,10 @@ public partial class FileTreeNodeModel : ObservableObject
             bool isDirectory,
             bool isRoot = false)
     {
-        this.path = path;
-        name = isRoot ? path : System.IO.Path.GetFileName(Path);
+        this._path = path;
+        _name = isRoot ? path : System.IO.Path.GetFileName(Path);
         isExpanded = isRoot;
-        isChecked = true;
+        _isChecked = true;
         IsDirectory = isDirectory;
         HasChildren = isDirectory;
 
@@ -55,31 +55,25 @@ public partial class FileTreeNodeModel : ObservableObject
     {
         if (IsChecked == true)
         {
-            if (Children != null)
+            foreach (var item in Children)
             {
-                foreach (var item in Children)
-                {
-                    item.IsChecked = true;
-                }
+                item.IsChecked = true;
             }
         }
         else if (IsChecked == false)
         {
-            if (Children != null)
+            foreach (var item in Children)
             {
-                foreach (var item in Children)
-                {
-                    item.IsChecked = false;
-                }
+                item.IsChecked = false;
             }
         }
     }
 
     private void LoadChildren()
     {
+        Children.Clear();
         if (!IsDirectory)
         {
-            Children = new();
             return;
         }
 
@@ -88,18 +82,16 @@ public partial class FileTreeNodeModel : ObservableObject
 
         foreach (var d in Directory.EnumerateDirectories(Path, "*", options))
         {
-            result.Add(new FileTreeNodeModel(d, true));
+            Children.Add(new FileTreeNodeModel(d, true));
         }
 
         foreach (var f in Directory.EnumerateFiles(Path, "*", options))
         {
-            result.Add(new FileTreeNodeModel(f, false));
+            Children.Add(new FileTreeNodeModel(f, false));
         }
 
-        if (result.Count == 0)
+        if (Children.Count == 0)
             HasChildren = false;
-
-        Children = result;
     }
 
     public static Comparison<FileTreeNodeModel?> SortAscending<T>(Func<FileTreeNodeModel, T> selector)

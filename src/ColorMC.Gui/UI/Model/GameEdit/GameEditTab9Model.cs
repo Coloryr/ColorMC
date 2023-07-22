@@ -11,7 +11,7 @@ public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<Screensh
 {
     public ObservableCollection<ScreenshotModel> ScreenshotList { get; init; } = new();
 
-    private ScreenshotModel? Last;
+    private ScreenshotModel? _last;
 
     public GameEditTab9Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
@@ -57,11 +57,11 @@ public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<Screensh
 
     public void SetSelect(ScreenshotModel item)
     {
-        if (Last != null)
+        if (_last != null)
         {
-            Last.IsSelect = false;
+            _last.IsSelect = false;
         }
-        Last = item;
-        Last.IsSelect = true;
+        _last = item;
+        _last.IsSelect = true;
     }
 }

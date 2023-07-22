@@ -11,13 +11,13 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class GameEditTab6Model : GameEditTabModel
 {
-    private FilesPageViewModel FilesPageViewModel;
+    private FilesPageViewModel _model;
 
     [ObservableProperty]
-    private bool isGameRun;
+    private bool _isGameRun;
 
     [ObservableProperty]
-    private HierarchicalTreeDataGridSource<FileTreeNodeModel> source;
+    private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
 
     public GameEditTab6Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
@@ -30,7 +30,7 @@ public partial class GameEditTab6Model : GameEditTabModel
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab6.Info2"));
         var file = await BaseBinding.SaveFile(window, FileType.Game, new object[]
-            { Obj, FilesPageViewModel.GetUnSelectItems(), PackType.ColorMC });
+            { Obj, _model.GetUnSelectItems(), PackType.ColorMC });
         window.ProgressInfo.Close();
         if (file == null)
             return;
@@ -47,8 +47,8 @@ public partial class GameEditTab6Model : GameEditTabModel
 
     public void Load()
     {
-        FilesPageViewModel = new FilesPageViewModel(Obj.GetBasePath());
-        Source = FilesPageViewModel.Source;
+        _model = new FilesPageViewModel(Obj.GetBasePath());
+        Source = _model.Source;
         IsGameRun = BaseBinding.IsGameRun(Obj);
     }
 }

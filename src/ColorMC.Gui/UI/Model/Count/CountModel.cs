@@ -12,101 +12,102 @@ namespace ColorMC.Gui.UI.Model.Count;
 
 public partial class CountModel : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
 
     [ObservableProperty]
-    private long count;
+    private long _count;
     [ObservableProperty]
-    private long countDone;
+    private long _countDone;
     [ObservableProperty]
-    private long countError;
+    private long _countError;
     [ObservableProperty]
-    private int countToday;
+    private int _countToday;
     [ObservableProperty]
-    private DateTime date;
+    private DateTime _date;
     [ObservableProperty]
-    private int dateCount;
+    private int _dateCount;
 
     [ObservableProperty]
-    private string time;
+    private string _time;
     [ObservableProperty]
-    private string timeToday;
+    private string _timeToday;
     [ObservableProperty]
-    private DateTime date1;
+    private DateTime _date1;
     [ObservableProperty]
-    private string timeDate;
+    private string _timeDate;
 
     [ObservableProperty]
-    private int gameIndex = -1;
+    private int _gameIndex = -1;
 
     [ObservableProperty]
-    private int gameCount;
+    private int _gameCount;
     [ObservableProperty]
-    private int gameCountDone;
+    private int _gameCountDone;
     [ObservableProperty]
-    private int gameCountError;
+    private int _gameCountError;
     [ObservableProperty]
-    private int gameCountToday;
+    private int _gameCountToday;
     [ObservableProperty]
-    private string gameTime;
+    private string _gameTime;
     [ObservableProperty]
-    private string gameTime1;
+    private string _gameTime1;
 
-    private readonly List<GameSettingObj> List = new();
+    private readonly List<GameSettingObj> _list = new();
+    
     public ObservableCollection<string> Game { get; init; } = new();
 
     public CountModel(IUserControl con)
     {
-        Con = con;
+        _con = con;
 
-        date1 = date = DateTime.Now;
+        _date1 = _date = DateTime.Now;
         var data = Utils.GameCount.Count;
         if (data == null)
         {
-            count = 0;
-            countDone = 0;
-            countError = 0;
-            countToday = 0;
-            time = "";
-            timeToday = "";
+            _count = 0;
+            _countDone = 0;
+            _countError = 0;
+            _countToday = 0;
+            _time = "";
+            _timeToday = "";
         }
         else
         {
-            count = data.LaunchCount;
-            countDone = data.LaunchDoneCount;
-            countError = data.LaunchErrorCount;
-            dateCount = countToday = (from item in data.LaunchLogs.Values
+            _count = data.LaunchCount;
+            _countDone = data.LaunchDoneCount;
+            _countError = data.LaunchErrorCount;
+            _dateCount = _countToday = (from item in data.LaunchLogs.Values
                                       from item1 in item
-                                      where item1.Time.Year == date.Year &&
-                                      item1.Time.Month == date.Month &&
-                                      item1.Time.Day == date.Day
+                                      where item1.Time.Year == _date.Year &&
+                                      item1.Time.Month == _date.Month &&
+                                      item1.Time.Day == _date.Day
                                       select item).Count();
-            time = $"{data.AllTime.TotalHours:0}:{data.AllTime.Minutes}:{data.AllTime.Seconds}";
+            _time = $"{data.AllTime.TotalHours:0}:{data.AllTime.Minutes}:{data.AllTime.Seconds}";
             TimeSpan temp = TimeSpan.Zero;
             foreach (var item in data.GameRuns)
             {
                 foreach (var item1 in item.Value)
                 {
                     if (item1.StopTime.Ticks != 0
-                        && item1.StartTime.Year == date.Year
-                        && item1.StartTime.Month == date.Month
-                        && item1.StartTime.Day == date.Day)
+                        && item1.StartTime.Year == _date.Year
+                        && item1.StartTime.Month == _date.Month
+                        && item1.StartTime.Day == _date.Day)
                     {
                         temp += item1.StopTime - item1.StartTime;
                     }
                 }
             }
-            timeDate = timeToday = temp.ToString();
+            _timeDate = _timeToday = temp.ToString();
             var list = GameBinding.GetGames();
             foreach (var item in list)
             {
-                List.Add(item);
+                _list.Add(item);
                 Game.Add(item.Name);
             }
         }
 
-        gameCount = gameCountDone = gameCountError = gameCountToday = 0;
-        gameTime = gameTime1 = "0";
+        _gameCount = _gameCountDone = _gameCountError = _gameCountToday = 0;
+        _gameTime = _gameTime1 = "0";
     }
 
     partial void OnDateChanged(DateTime value)
@@ -159,7 +160,7 @@ public partial class CountModel : ObservableObject
         GameCount = GameCountError = GameCountDone = GameCountToday = 0;
         GameTime = GameTime1 = "0";
 
-        if (List.Count == 0)
+        if (_list.Count == 0)
             return;
 
         var data = Utils.GameCount.Count;
@@ -169,7 +170,7 @@ public partial class CountModel : ObservableObject
         }
 
         var date = DateTime.Now;
-        var game = List[value];
+        var game = _list[value];
         if (data.GameRuns.TryGetValue(game.UUID, out var list))
         {
             TimeSpan temp = TimeSpan.Zero;

@@ -18,7 +18,7 @@ public partial class CustomControlPanelModel : ObservableObject
     [ObservableProperty]
     private GameItemModel _game;
 
-    public bool IsLaunch = false;
+    public bool IsLaunch { get; set; }
 
     [ObservableProperty]
     private string _userName = "";

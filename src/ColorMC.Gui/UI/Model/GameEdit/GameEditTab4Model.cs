@@ -18,18 +18,18 @@ public partial class GameEditTab4Model : GameEditTabModel
     public ObservableCollection<ModDisplayModel> ModList { get; init; } = new();
     public List<string> FilterList => BaseBinding.GetFilterName();
 
-    private readonly List<ModDisplayModel> Items = new();
+    private readonly List<ModDisplayModel> _items = new();
 
     [ObservableProperty]
-    private ModDisplayModel item;
+    private ModDisplayModel _item;
 
     [ObservableProperty]
-    private string text;
+    private string _text;
 
     [ObservableProperty]
-    private int filter;
+    private int _filter;
 
-    private bool isSet;
+    private bool _isSet;
 
     public GameEditTab4Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
@@ -61,12 +61,12 @@ public partial class GameEditTab4Model : GameEditTabModel
     [RelayCommand]
     public async Task StartSet()
     {
-        if (isSet)
+        if (_isSet)
             return;
 
-        isSet = true;
+        _isSet = true;
         await App.ShowAddSet(Obj);
-        isSet = false;
+        _isSet = false;
     }
 
     [RelayCommand]
@@ -93,7 +93,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info10"));
-        var res = await WebBinding.CheckModUpdate(Obj, Items);
+        var res = await WebBinding.CheckModUpdate(Obj, _items);
         window.ProgressInfo.Close();
         if (res.Count > 0)
         {
@@ -119,7 +119,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
-        Items.Clear();
+        _items.Clear();
         var res = await GameBinding.GetGameMods(Obj);
         window.ProgressInfo.Close();
         if (res == null)
@@ -130,7 +130,7 @@ public partial class GameEditTab4Model : GameEditTabModel
 
         int count = 0;
 
-        Items.AddRange(res);
+        _items.AddRange(res);
 
         var list = res.Where(a => a.Obj.ReadFail == false && !a.Obj.Disable && !string.IsNullOrWhiteSpace(a.Obj.modid)).GroupBy(a => a.Obj.modid);
         count = list.Count(a => a.Count() > 1);
@@ -147,7 +147,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     {
         var window = Con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info15"));
-        var res = await GameBinding.ModCheck(Items);
+        var res = await GameBinding.ModCheck(_items);
         window.ProgressInfo.Close();
         if (res)
         {
@@ -225,7 +225,7 @@ public partial class GameEditTab4Model : GameEditTabModel
                 return;
             }
 
-            var list = GameBinding.ModDisable(item, Items);
+            var list = GameBinding.ModDisable(item, _items);
 
             if (list.Count == 0)
             {
@@ -251,7 +251,7 @@ public partial class GameEditTab4Model : GameEditTabModel
         if (string.IsNullOrWhiteSpace(Text))
         {
             ModList.Clear();
-            ModList.AddRange(Items);
+            ModList.AddRange(_items);
         }
         else
         {
@@ -259,21 +259,21 @@ public partial class GameEditTab4Model : GameEditTabModel
             switch (Filter)
             {
                 case 0:
-                    var list = from item in Items
+                    var list = from item in _items
                                where item.Name.ToLower().Contains(fil)
                                select item;
                     ModList.Clear();
                     ModList.AddRange(list);
                     break;
                 case 1:
-                    list = from item in Items
+                    list = from item in _items
                            where item.Local.ToLower().Contains(fil)
                            select item;
                     ModList.Clear();
                     ModList.AddRange(list);
                     break;
                 case 2:
-                    list = from item in Items
+                    list = from item in _items
                            where item.Author.ToLower().Contains(fil)
                            select item;
                     ModList.Clear();

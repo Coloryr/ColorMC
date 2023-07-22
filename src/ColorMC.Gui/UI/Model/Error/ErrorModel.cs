@@ -10,32 +10,33 @@ namespace ColorMC.Gui.UI.Model.Error;
 
 public partial class ErrorModel : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
+    
     [ObservableProperty]
-    private TextDocument text;
+    private TextDocument _text;
 
     public bool Close { get; }
 
     public ErrorModel(IUserControl con, string? data, Exception? e, bool close)
     {
-        text = new TextDocument($"{data ?? ""}{Environment.NewLine}" +
+        _text = new TextDocument($"{data ?? ""}{Environment.NewLine}" +
             $"{(e == null ? "" : e.ToString())}");
 
-        Con = con;
+        _con = con;
         Close = close;
     }
 
     public ErrorModel(IUserControl con, string data, string e, bool close)
     {
-        text = new TextDocument($"{data}{Environment.NewLine}{e}");
+        _text = new TextDocument($"{data}{Environment.NewLine}{e}");
 
-        Con = con;
+        _con = con;
         Close = close;
     }
 
     [RelayCommand]
     public void Save()
     {
-        BaseBinding.SaveFile(Con.Window, FileType.Text, new[] { Text.Text });
+        BaseBinding.SaveFile(_con.Window, FileType.Text, new[] { Text.Text });
     }
 }

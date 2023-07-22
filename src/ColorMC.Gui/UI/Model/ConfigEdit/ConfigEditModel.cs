@@ -29,14 +29,13 @@ public partial class NbtDataItem : ObservableObject
 
 public partial class ConfigEditModel : ObservableObject
 {
-    private readonly IUserControl Con;
-    private readonly List<string> Items = new();
+    private readonly IUserControl _con;
+    private readonly List<string> _items = new();
+    private readonly Semaphore _semaphore = new(0, 2);
 
     public GameSettingObj Obj { get; init; }
     public WorldObj? World { get; init; }
-
-    private readonly Semaphore semaphore = new(0, 2);
-    public bool cancel;
+    public bool Cancel { get; set; }
 
     public ObservableCollection<string> FileList { get; init; } = new();
     public ObservableCollection<NbtDataItem> DataList { get; init; } = new();
@@ -96,7 +95,7 @@ public partial class ConfigEditModel : ObservableObject
 
     public ConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world)
     {
-        Con = con;
+        _con = con;
         Obj = obj;
         World = world;
 
@@ -108,7 +107,7 @@ public partial class ConfigEditModel : ObservableObject
         Load1();
     }
 
-    async partial  void OnFileChanged(string value)
+    async partial void OnFileChanged(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
             return;
@@ -188,7 +187,7 @@ public partial class ConfigEditModel : ObservableObject
             }
         }
 
-        var window = Con.Window;
+        var window = _con.Window;
         window.NotifyInfo.Show(App.GetLanguage("Gui.Info10"));
     }
 
@@ -198,16 +197,16 @@ public partial class ConfigEditModel : ObservableObject
         if (Obj == null)
             return;
 
-        Items.Clear();
+        _items.Clear();
         if (World != null)
         {
             var list = GameBinding.GetAllConfig(World);
-            Items.AddRange(list);
+            _items.AddRange(list);
         }
         else
         {
             var list = GameBinding.GetAllConfig(Obj);
-            Items.AddRange(list);
+            _items.AddRange(list);
         }
         Load1();
     }
@@ -215,21 +214,21 @@ public partial class ConfigEditModel : ObservableObject
     [RelayCommand]
     public void AddConfirm()
     {
-        cancel = false;
-        semaphore.Release();
+        Cancel = false;
+        _semaphore.Release();
     }
 
     [RelayCommand]
     public void AddCancel()
     {
-        cancel = true;
-        semaphore.Release();
+        Cancel = true;
+        _semaphore.Release();
     }
 
     [RelayCommand]
     public void DataEditDone()
     {
-        semaphore.Release();
+        _semaphore.Release();
     }
 
     public void Pressed(Control con)
@@ -246,16 +245,16 @@ public partial class ConfigEditModel : ObservableObject
         if (model.NbtType == NbtType.NbtCompound)
         {
             var list = (model.Nbt as NbtCompound)!;
-            var window = Con.Window;
+            var window = _con.Window;
             Key = "";
             Type = 0;
             DisplayType = true;
             Title = App.GetLanguage("ConfigEditWindow.Info2");
             Title1 = App.GetLanguage("ConfigEditWindow.Info3");
             DisplayAdd = true;
-            await Task.Run(semaphore.WaitOne);
+            await Task.Run(_semaphore.WaitOne);
             DisplayAdd = false;
-            if (cancel)
+            if (Cancel)
                 return;
             if (string.IsNullOrWhiteSpace(Key))
             {
@@ -281,7 +280,7 @@ public partial class ConfigEditModel : ObservableObject
         if (model.Top == null)
             return;
 
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
         if (!res)
             return;
@@ -293,7 +292,7 @@ public partial class ConfigEditModel : ObservableObject
     {
         var list1 = new List<NbtNodeModel?>(list);
 
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
         if (!res)
             return;
@@ -310,15 +309,15 @@ public partial class ConfigEditModel : ObservableObject
             return;
 
         var list = (model.Top.Nbt as NbtCompound)!;
-        var window = Con.Window;
+        var window = _con.Window;
         Key = model.Key!;
         DisplayType = false;
         Title = App.GetLanguage("ConfigEditWindow.Info5");
         Title1 = App.GetLanguage("ConfigEditWindow.Info3");
         DisplayAdd = true;
-        await Task.Run(semaphore.WaitOne);
+        await Task.Run(_semaphore.WaitOne);
         DisplayAdd = false;
-        if (cancel)
+        if (Cancel)
             return;
         if (string.IsNullOrWhiteSpace(Key))
         {
@@ -355,7 +354,7 @@ public partial class ConfigEditModel : ObservableObject
             }
             DataList.Add(new() { Value = (byte)0 });
             DisplayEdit = true;
-            await Task.Run(semaphore.WaitOne);
+            await Task.Run(_semaphore.WaitOne);
             DisplayEdit = false;
 
             list.Value.Clear();
@@ -389,7 +388,7 @@ public partial class ConfigEditModel : ObservableObject
             }
             DataList.Add(new() { Value = 0 });
             DisplayEdit = true;
-            await Task.Run(semaphore.WaitOne);
+            await Task.Run(_semaphore.WaitOne);
             DisplayEdit = false;
 
             list.Value.Clear();
@@ -423,7 +422,7 @@ public partial class ConfigEditModel : ObservableObject
             }
             DataList.Add(new() { Value = (long)0 });
             DisplayEdit = true;
-            await Task.Run(semaphore.WaitOne);
+            await Task.Run(_semaphore.WaitOne);
             DisplayEdit = false;
 
             list.Value.Clear();
@@ -443,15 +442,15 @@ public partial class ConfigEditModel : ObservableObject
         }
         else
         {
-            var window = Con.Window;
+            var window = _con.Window;
             Key = model.Nbt.Value.ToString();
             DisplayType = false;
             Title = App.GetLanguage("ConfigEditWindow.Info6");
             Title1 = App.GetLanguage("ConfigEditWindow.Info4");
             DisplayAdd = true;
-            await Task.Run(semaphore.WaitOne);
+            await Task.Run(_semaphore.WaitOne);
             DisplayAdd = false;
-            if (cancel)
+            if (Cancel)
                 return;
             if (string.IsNullOrWhiteSpace(Key))
             {
@@ -474,7 +473,7 @@ public partial class ConfigEditModel : ObservableObject
 
     public void DataEdit()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         try
         {
             if (DataType == "Byte")
@@ -538,7 +537,7 @@ public partial class ConfigEditModel : ObservableObject
 
     public async void Find()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         await window.InputInfo.ShowOne(App.GetLanguage("ConfigEditWindow.Info3"), false);
         if (window.InputInfo.Cancel)
             return;
@@ -555,11 +554,11 @@ public partial class ConfigEditModel : ObservableObject
         FileList.Clear();
         if (string.IsNullOrWhiteSpace(Name))
         {
-            FileList.AddRange(Items);
+            FileList.AddRange(_items);
         }
         else
         {
-            var list = from item in Items
+            var list = from item in _items
                        where item.Contains(Name)
                        select item;
             FileList.AddRange(list);
