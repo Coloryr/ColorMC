@@ -6,10 +6,10 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout6
 {
-    private readonly GameEditTab11Model Obj;
+    private readonly GameEditTab11Model _obj;
     public GameEditFlyout6(Control con, GameEditTab11Model obj)
     {
-        Obj = obj;
+        _obj = obj;
 
         var fy = new FlyoutsControl(new()
         {
@@ -20,11 +20,11 @@ public class GameEditFlyout6
 
     private void Button1_Click()
     {
-        BaseBinding.OpFile(Obj.Item!.Local);
+        BaseBinding.OpFile(_obj.Item!.Local);
     }
 
     private void Button2_Click()
     {
-        Obj.Delete(Obj.Item!);
+        _obj.Delete(_obj.Item!);
     }
 }

@@ -6,12 +6,12 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout5
 {
-    private readonly Control Con;
-    private readonly GameEditTab10Model Model;
+    private readonly Control _con;
+    private readonly GameEditTab10Model _model;
     public GameEditFlyout5(Control con, GameEditTab10Model model)
     {
-        Con = con;
-        Model = model;
+        _con = con;
+        _model = model;
 
         var fy = new FlyoutsControl(new()
         {
@@ -22,11 +22,11 @@ public class GameEditFlyout5
 
     private void Button2_Click()
     {
-        GameBinding.CopyServer(TopLevel.GetTopLevel(Con), Model.Item!);
+        GameBinding.CopyServer(TopLevel.GetTopLevel(_con), _model.Item!);
     }
 
     private void Button1_Click()
     {
-        Model.Delete(Model.Item!);
+        _model.Delete(_model.Item!);
     }
 }

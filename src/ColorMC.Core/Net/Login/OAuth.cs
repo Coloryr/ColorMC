@@ -10,37 +10,37 @@ namespace ColorMC.Core.Net.Login;
 
 public static class OAuthAPI
 {
-    private const string OAuthCode = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
-    private const string OAuthToken = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
-    private const string XboxLive = "https://user.auth.xboxlive.com/user/authenticate";
-    private const string XSTS = "https://xsts.auth.xboxlive.com/xsts/authorize";
-    private const string XBoxProfile = "https://api.minecraftservices.com/authentication/login_with_xbox";
+    public const string OAuthCode = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
+    public const string OAuthToken = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
+    public const string XboxLive = "https://user.auth.xboxlive.com/user/authenticate";
+    public const string XSTS = "https://xsts.auth.xboxlive.com/xsts/authorize";
+    public const string XBoxProfile = "https://api.minecraftservices.com/authentication/login_with_xbox";
 
-    private readonly static Dictionary<string, string> Arg1 = new()
+    public readonly static Dictionary<string, string> Arg1 = new()
     {
         { "client_id", "aa0dd576-d717-4950-b257-a478d2c20968"},
         { "scope", "XboxLive.signin offline_access"}
     };
 
-    private readonly static Dictionary<string, string> Arg2 = new()
+    public readonly static Dictionary<string, string> Arg2 = new()
     {
         { "client_id", "aa0dd576-d717-4950-b257-a478d2c20968"},
         { "grant_type", "urn:ietf:params:oauth:grant-type:device_code"},
         { "code", "" }
     };
 
-    private readonly static Dictionary<string, string> Arg3 = new()
+    public readonly static Dictionary<string, string> Arg3 = new()
     {
         { "client_id", "aa0dd576-d717-4950-b257-a478d2c20968"},
         { "grant_type", "refresh_token"},
         { "refresh_token", "" }
     };
 
-    private static string code;
-    private static string url;
-    private static string device_code;
-    private static int expires_in;
-    private static CancellationTokenSource cancel;
+    private static string s_code;
+    private static string s_url;
+    private static string s_deviceCode;
+    private static int s_expiresIn;
+    private static CancellationTokenSource s_cancel;
 
     /// <summary>
     /// 请求数据
@@ -102,12 +102,12 @@ public static class OAuthAPI
             return (LoginState.JsonError,
                 LanguageHelper.Get("Core.Login.Error22"), null);
         }
-        code = obj2.user_code;
-        url = obj2.verification_uri;
-        device_code = obj2.device_code;
-        expires_in = obj2.expires_in;
+        s_code = obj2.user_code;
+        s_url = obj2.verification_uri;
+        s_deviceCode = obj2.device_code;
+        s_expiresIn = obj2.expires_in;
 
-        return (LoginState.Done, code, url);
+        return (LoginState.Done, s_code, s_url);
     }
 
     /// <summary>
@@ -115,20 +115,20 @@ public static class OAuthAPI
     /// </summary>
     public static async Task<(LoginState Done, OAuth1Obj? Obj)> RunGetCode()
     {
-        Arg2["code"] = device_code;
+        Arg2["code"] = s_deviceCode;
         long startTime = DateTime.Now.Ticks;
         int delay = 2;
-        cancel = new();
+        s_cancel = new();
         do
         {
             await Task.Delay(delay * 1000);
-            if (cancel.IsCancellationRequested)
+            if (s_cancel.IsCancellationRequested)
             {
                 return (LoginState.Error, null);
             }
             long estimatedTime = DateTime.Now.Ticks - startTime;
             long sec = estimatedTime / 10000000;
-            if (sec > expires_in)
+            if (sec > s_expiresIn)
             {
                 return (LoginState.TimeOut, null);
             }
@@ -265,6 +265,6 @@ public static class OAuthAPI
     /// </summary>
     public static void Cancel()
     {
-        cancel.Cancel();
+        s_cancel.Cancel();
     }
 }

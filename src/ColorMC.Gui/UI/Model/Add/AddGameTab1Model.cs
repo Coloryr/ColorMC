@@ -18,39 +18,39 @@ public partial class AddGameTab1Model : AddGameControlModel
     public ObservableCollection<string> LoaderVersionList { get; init; } = new();
 
     [ObservableProperty]
-    private string version;
+    private string _version;
     [ObservableProperty]
-    private string loaderVersion;
+    private string _loaderVersion;
 
     [ObservableProperty]
-    private bool enableLoader;
+    private bool _enableLoader;
 
     [ObservableProperty]
-    private bool enableForge;
+    private bool _enableForge;
     [ObservableProperty]
-    private bool enableNeoForge;
+    private bool _enableNeoForge;
     [ObservableProperty]
-    private bool enableFabric;
+    private bool _enableFabric;
     [ObservableProperty]
-    private bool enableQuilt;
+    private bool _enableQuilt;
 
     [ObservableProperty]
-    private bool selectForge;
+    private bool _selectForge;
     [ObservableProperty]
-    private bool selectNeoForge;
+    private bool _selectNeoForge;
     [ObservableProperty]
-    private bool selectFabric;
+    private bool _selectFabric;
     [ObservableProperty]
-    private bool selectQuilt;
+    private bool _selectQuilt;
 
     [ObservableProperty]
-    private bool selectRelease = true;
+    private bool _selectRelease = true;
     [ObservableProperty]
-    private bool selectSnapshot;
+    private bool _selectSnapshot;
     [ObservableProperty]
-    private bool selectOther;
+    private bool _selectOther;
 
-    private bool change = false;
+    private bool _change = false;
 
     public AddGameTab1Model(IUserControl con) : base(con)
     {
@@ -64,7 +64,7 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     async partial void OnSelectForgeChanged(bool value)
     {
-        if (change)
+        if (_change)
             return;
 
         var window = Con.Window;
@@ -99,7 +99,7 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     async partial void OnSelectNeoForgeChanged(bool value)
     {
-        if (change)
+        if (_change)
             return;
 
         var window = Con.Window;
@@ -134,7 +134,7 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     async partial void OnSelectFabricChanged(bool value)
     {
-        if (change)
+        if (_change)
             return;
 
         var window = Con.Window;
@@ -169,7 +169,7 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     async partial void OnSelectQuiltChanged(bool value)
     {
-        if (change)
+        if (_change)
             return;
 
         var window = Con.Window;
@@ -383,7 +383,7 @@ public partial class AddGameTab1Model : AddGameControlModel
     [RelayCommand]
     public async Task VersionSelect()
     {
-        change = true;
+        _change = true;
 
         EnableForge = false;
         EnableNeoForge = false;
@@ -435,7 +435,7 @@ public partial class AddGameTab1Model : AddGameControlModel
         }
         window.ProgressInfo.Close();
 
-        change = false;
+        _change = false;
     }
 
     [RelayCommand]

@@ -8,8 +8,8 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class Info1Control : UserControl
 {
-    private Action? call;
-    private bool Display = false;
+    private Action? _call;
+    private bool _display = false;
 
     public Info1Control()
     {
@@ -20,17 +20,17 @@ public partial class Info1Control : UserControl
 
     private void Cancel_Click(object? sender, RoutedEventArgs e)
     {
-        Display = false;
+        _display = false;
 
         Button_Cancel.IsEnabled = false;
         App.CrossFade300.Start(this, null, CancellationToken.None);
 
-        call?.Invoke();
+        _call?.Invoke();
     }
 
     public void Close()
     {
-        Display = false;
+        _display = false;
 
         Button_Cancel.IsEnabled = false;
         App.CrossFade300.Start(this, null, CancellationToken.None);
@@ -38,7 +38,7 @@ public partial class Info1Control : UserControl
 
     public Task CloseAsync()
     {
-        Display = false;
+        _display = false;
 
         Button_Cancel.IsEnabled = false;
         return App.CrossFade300.Start(this, null, CancellationToken.None);
@@ -46,22 +46,22 @@ public partial class Info1Control : UserControl
 
     public void Show()
     {
-        Display = true;
+        _display = true;
 
         App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
     public void Show(string title)
     {
-        if (Display)
+        if (_display)
         {
             NextText(title);
         }
-        Display = true;
+        _display = true;
 
         Button_Cancel.IsEnabled = true;
         TextBlock_Text.Text = title;
-        call = null;
+        _call = null;
 
         Button_Cancel.IsVisible = false;
 
@@ -70,16 +70,16 @@ public partial class Info1Control : UserControl
 
     public Task ShowAsync(string title)
     {
-        if (Display)
+        if (_display)
         {
             NextText(title);
             return Task.CompletedTask;
         }
-        Display = true;
+        _display = true;
 
         Button_Cancel.IsEnabled = true;
         TextBlock_Text.Text = title;
-        call = null;
+        _call = null;
 
         Button_Cancel.IsVisible = false;
 
@@ -90,7 +90,7 @@ public partial class Info1Control : UserControl
     {
         Button_Cancel.IsEnabled = true;
         TextBlock_Text.Text = title;
-        call = cancel;
+        _call = cancel;
 
         App.CrossFade300.Start(null, this, CancellationToken.None);
     }

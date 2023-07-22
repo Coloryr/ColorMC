@@ -17,17 +17,17 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public class Live2dRender : OpenGlControlBase
 {
-    private LAppDelegate lapp;
+    private LAppDelegate _lapp;
 
-    private DateTime time;
-    private bool render;
-    private bool change;
-    private bool delete;
-    private bool init = false;
-    private MainModel Model;
-    private bool first = false;
+    private DateTime _time;
+    private bool _render;
+    private bool _change;
+    private bool _delete;
+    private bool _init = false;
+    private MainModel _model;
+    private bool _first = false;
 
-    public bool HaveModel => lapp?.Live2dManager.GetModelNum() != 0;
+    public bool HaveModel => _lapp?.Live2dManager.GetModelNum() != 0;
 
     public Live2dRender()
     {
@@ -35,7 +35,7 @@ public class Live2dRender : OpenGlControlBase
         {
             while (true)
             {
-                if (render)
+                if (_render)
                 {
                     Dispatcher.UIThread.Invoke(RequestNextFrameRendering);
                 }
@@ -53,7 +53,7 @@ public class Live2dRender : OpenGlControlBase
         if (DataContext is MainModel model)
         {
             model.PropertyChanged += Model_PropertyChanged;
-            Model = model;
+            _model = model;
         }
     }
 
@@ -61,18 +61,18 @@ public class Live2dRender : OpenGlControlBase
     {
         if (e.PropertyName == "ModelChange")
         {
-            change = true;
+            _change = true;
         }
         else if (e.PropertyName == "ModelDelete")
         {
-            delete = true;
+            _delete = true;
         }
     }
 
     private void ChangeModel()
     {
-        var window = Model.Con.Window;
-        lapp.Live2dManager.ReleaseAllModel();
+        var window = _model.Con.Window;
+        _lapp.Live2dManager.ReleaseAllModel();
         var model = GuiConfigUtils.Config.Live2D.Model;
         if (string.IsNullOrWhiteSpace(model))
         {
@@ -86,7 +86,7 @@ public class Live2dRender : OpenGlControlBase
         var info = new FileInfo(model);
         try
         {
-            lapp.Live2dManager.LoadModel(info.DirectoryName! + "/", info.Name.Replace(".model3.json", ""));
+            _lapp.Live2dManager.LoadModel(info.DirectoryName! + "/", info.Name.Replace(".model3.json", ""));
         }
         catch (Exception e)
         {
@@ -114,19 +114,19 @@ public class Live2dRender : OpenGlControlBase
 
     protected override unsafe void OnOpenGlInit(GlInterface gl)
     {
-        if (first)
+        if (_first)
             return;
-        first = true;
-        if (init)
+        _first = true;
+        if (_init)
             return;
         CheckError(gl);
 
         try
         {
-            lapp = new(new AvaloniaApi(this, gl), Logs.Info);
-            change = true;
+            _lapp = new(new AvaloniaApi(this, gl), Logs.Info);
+            _change = true;
             CheckError(gl);
-            init = true;
+            _init = true;
         }
         catch (Exception e)
         {
@@ -141,7 +141,7 @@ public class Live2dRender : OpenGlControlBase
 
     protected override void OnOpenGlRender(GlInterface gl, int fb)
     {
-        if (!init)
+        if (!_init)
             return;
         if (!HaveModel && IsVisible)
         {
@@ -151,66 +151,66 @@ public class Live2dRender : OpenGlControlBase
         {
             IsVisible = true;
         }
-        if (change)
+        if (_change)
         {
-            change = false;
+            _change = false;
             ChangeModel();
-            Model.ShowMessage(App.GetLanguage("Live2D.Text1"));
+            _model.ShowMessage(App.GetLanguage("Live2D.Text1"));
         }
-        if (delete)
+        if (_delete)
         {
-            delete = false;
-            lapp.Live2dManager.ReleaseAllModel();
+            _delete = false;
+            _lapp.Live2dManager.ReleaseAllModel();
         }
         gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
-        render = true;
+        _render = true;
         var now = DateTime.Now;
         float span = 0;
-        if (time.Ticks == 0)
+        if (_time.Ticks == 0)
         {
-            time = now;
+            _time = now;
         }
         else
         {
-            span = (float)(now - time).TotalSeconds;
-            time = now;
+            span = (float)(now - _time).TotalSeconds;
+            _time = now;
         }
-        lapp.Run(span);
+        _lapp.Run(span);
         CheckError(gl);
     }
 
     public void Pressed()
     {
-        lapp.OnMouseCallBack(true);
+        _lapp.OnMouseCallBack(true);
     }
 
     public void Release()
     {
-        lapp.OnMouseCallBack(false);
+        _lapp.OnMouseCallBack(false);
     }
 
     public void Moved(float x, float y)
     {
-        lapp.OnMouseCallBack(x, y);
+        _lapp.OnMouseCallBack(x, y);
     }
 
     public List<string> GetMotions()
     {
-        return lapp.Live2dManager.GetModel(0).Motions;
+        return _lapp.Live2dManager.GetModel(0).Motions;
     }
 
     public List<string> GetExpressions()
     {
-        return lapp.Live2dManager.GetModel(0).Expressions;
+        return _lapp.Live2dManager.GetModel(0).Expressions;
     }
 
     public void PlayMotion(string name)
     {
-        lapp.Live2dManager.GetModel(0).StartMotion(name, MotionPriority.PriorityNormal);
+        _lapp.Live2dManager.GetModel(0).StartMotion(name, MotionPriority.PriorityNormal);
     }
 
     public void PlayExpression(string name)
     {
-        lapp.Live2dManager.GetModel(0).SetExpression(name);
+        _lapp.Live2dManager.GetModel(0).SetExpression(name);
     }
 }

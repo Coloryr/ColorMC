@@ -14,7 +14,7 @@ namespace ColorMC.Gui.UI.Controls.User;
 
 public partial class UsersControl : UserControl, IUserControl
 {
-    private readonly UsersModel model;
+    private readonly UsersModel _model;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -26,9 +26,9 @@ public partial class UsersControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        model = new(this);
-        model.PropertyChanged += Model_PropertyChanged;
-        DataContext = model;
+        _model = new(this);
+        _model.PropertyChanged += Model_PropertyChanged;
+        DataContext = _model;
 
         DataGrid_User.DoubleTapped += DataGrid_User_DoubleTapped;
         DataGrid_User.CellPointerPressed += DataGrid_User_PointerPressed;
@@ -47,7 +47,7 @@ public partial class UsersControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (model.DisplayAdd)
+                if (_model.DisplayAdd)
                 {
                     App.CrossFade300.Start(null, Grid1, CancellationToken.None);
                 }
@@ -63,7 +63,7 @@ public partial class UsersControl : UserControl, IUserControl
     {
         if (e.Key == Key.Enter)
         {
-            await model.Add();
+            await _model.Add();
         }
     }
 
@@ -71,9 +71,9 @@ public partial class UsersControl : UserControl, IUserControl
     {
         if (e.Key == Key.Enter)
         {
-            if (model.Type == 0)
+            if (_model.Type == 0)
             {
-                await model.Add();
+                await _model.Add();
             }
         }
     }
@@ -108,7 +108,7 @@ public partial class UsersControl : UserControl, IUserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid2.IsVisible = false;
-        model.Drop(e.Data);
+        _model.Drop(e.Data);
     }
 
     private void DataGrid_User_PointerPressed(object? sender,
@@ -116,28 +116,28 @@ public partial class UsersControl : UserControl, IUserControl
     {
         Dispatcher.UIThread.Post(() =>
         {
-            if (model.Item == null)
+            if (_model.Item == null)
                 return;
 
             var pro = e.PointerPressedEventArgs.GetCurrentPoint(this);
 
             if (pro.Properties.IsRightButtonPressed)
             {
-                _ = new UserFlyout(this, model);
+                _ = new UserFlyout(this, _model);
             }
             else if (e.Column.DisplayIndex == 0 && pro.Properties.IsLeftButtonPressed)
             {
-                model.Select(model.Item);
+                _model.Select(_model.Item);
             }
         });
     }
 
     private void DataGrid_User_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        model.Select();
+        _model.Select();
     }
     public void AddUrl(string url)
     {
-        model.AddUrl(url);
+        _model.AddUrl(url);
     }
 }

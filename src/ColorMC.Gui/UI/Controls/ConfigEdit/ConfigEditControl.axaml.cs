@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Controls.ConfigEdit;
 
 public partial class ConfigEditControl : UserControl, IUserControl
 {
-    private readonly ConfigEditModel model;
+    private readonly ConfigEditModel _model;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -22,15 +22,15 @@ public partial class ConfigEditControl : UserControl, IUserControl
     { 
         get 
         {
-            if (model.World == null)
+            if (_model.World == null)
             {
                 return string.Format(App.GetLanguage("ConfigEditWindow.Title"),
-                    model.Obj?.Name);
+                    _model.Obj?.Name);
             }
             else
             {
                 return string.Format(App.GetLanguage("ConfigEditWindow.Title1"),
-                    model.Obj?.Name, model.World?.LevelName);
+                    _model.Obj?.Name, _model.World?.LevelName);
             }
         } 
     }
@@ -52,13 +52,25 @@ public partial class ConfigEditControl : UserControl, IUserControl
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
     }
 
+    public ConfigEditControl(WorldObj world) : this()
+    {
+        _model = new(this, world.Game, world);
+        DataContext = _model;
+    }
+
+    public ConfigEditControl(GameSettingObj obj) : this()
+    {
+        _model = new(this, obj, null);
+        DataContext = _model;
+    }
+
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
     {
         if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
             Dispatcher.UIThread.Post(() =>
             {
-                (DataContext as ConfigEditModel)?.Flyout(this);
+                _model.Flyout(this);
             });
         }
     }
@@ -67,7 +79,7 @@ public partial class ConfigEditControl : UserControl, IUserControl
     {
         if (e.EditAction == DataGridEditAction.Commit)
         {
-            (DataContext as ConfigEditModel)?.DataEdit();
+            _model.DataEdit();
         }
     }
 
@@ -75,7 +87,7 @@ public partial class ConfigEditControl : UserControl, IUserControl
     {
         if (e.Key == Key.S && e.KeyModifiers == KeyModifiers.Control)
         {
-            (DataContext as ConfigEditModel)?.Save();
+            _model.Save();
         }
     }
 
@@ -85,7 +97,7 @@ public partial class ConfigEditControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                model.Pressed(this);
+                _model.Pressed(this);
             });
         }
     }
@@ -95,33 +107,21 @@ public partial class ConfigEditControl : UserControl, IUserControl
         Window.SetTitle(Title);
     }
 
-    public ConfigEditControl(WorldObj world) : this()
-    {
-        model = new(this, world.Game, world);
-        DataContext = model;
-    }
-
-    public ConfigEditControl(GameSettingObj obj) : this()
-    {
-        model = new(this, obj, null);
-        DataContext = model;
-    }
-
     public void Update()
     {
-        model.Load();
+        _model.Load();
     }
 
     public void Closed()
     {
         string key;
-        if (model.World != null)
+        if (_model.World != null)
         {
-            key = model.Obj.UUID + ":" + model.World.LevelName;
+            key = _model.Obj.UUID + ":" + _model.World.LevelName;
         }
         else
         {
-            key = model.Obj.UUID;
+            key = _model.Obj.UUID;
         }
         App.ConfigEditWindows.Remove(key);
     }

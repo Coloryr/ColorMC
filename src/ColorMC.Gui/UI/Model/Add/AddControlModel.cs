@@ -20,20 +20,20 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddControlModel : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
 
-    public readonly List<SourceType> SourceTypeList = new();
-    public readonly Dictionary<int, string> Categories = new();
-    public readonly List<DownloadModDisplayModel> ModList = new();
-    public readonly List<OptifineDisplayObj> OptifineList = new();
+    public readonly List<SourceType> _sourceTypeList = new();
+    public readonly Dictionary<int, string> _categories = new();
+    public readonly List<DownloadModDisplayModel> _modList = new();
+    public readonly List<OptifineDisplayObj> _optifineList = new();
 
-    private FileType now;
-    private FileItemModel? last;
-    private (DownloadItemObj, ModInfoObj) modsave;
-    private bool load = false;
+    private FileType _now;
+    private FileItemModel? _last;
+    private (DownloadItemObj, ModInfoObj) _modsave;
+    private bool _load = false;
 
     public GameSettingObj Obj { get; private set; }
-    public bool display = false;
+    public bool Display { get; set; }
 
     public ObservableCollection<OptifineDisplayObj> DownloadOptifineList { get; init; } = new();
     public ObservableCollection<DownloadModDisplayModel> DownloadModList { get; init; } = new();
@@ -46,61 +46,61 @@ public partial class AddControlModel : ObservableObject
     public ObservableCollection<string> CategorieList { get; init; } = new();
 
     [ObservableProperty]
-    private OptifineDisplayObj? optifineItem;
+    private OptifineDisplayObj? _optifineItem;
     [ObservableProperty]
-    private FileDisplayObj? file;
+    private FileDisplayObj? _file;
     [ObservableProperty]
-    private DownloadModDisplayModel? mod;
+    private DownloadModDisplayModel? _mod;
 
     [ObservableProperty]
-    private bool isDownload;
+    private bool _isDownload;
     [ObservableProperty]
-    private bool emptyDisplay = true;
+    private bool _emptyDisplay = true;
     [ObservableProperty]
-    private bool optifineDisplay;
+    private bool _optifineDisplay;
     [ObservableProperty]
-    private bool modDownloadDisplay;
+    private bool _modDownloadDisplay;
     [ObservableProperty]
-    private bool versionDisplay;
+    private bool _versionDisplay;
     [ObservableProperty]
-    private bool loadMoreMod;
+    private bool _loadMoreMod;
     [ObservableProperty]
-    private bool enablePage;
+    private bool _enablePage;
     [ObservableProperty]
-    private bool isSelect;
+    private bool _isSelect;
     [ObservableProperty]
-    public bool set;
+    public bool _set;
 
     [ObservableProperty]
-    private int type = -1;
+    private int _type = -1;
     [ObservableProperty]
-    private int sortType = -1;
+    private int _sortType = -1;
     [ObservableProperty]
-    private int downloadSource = -1;
+    private int _downloadSource = -1;
     [ObservableProperty]
-    private int page;
+    private int _page;
     [ObservableProperty]
-    private int categorie;
+    private int _categorie;
     [ObservableProperty]
-    private int pageDownload;
+    private int _pageDownload;
 
     [ObservableProperty]
-    private string? gameVersion;
+    private string? _gameVersion;
     [ObservableProperty]
-    private string? name;
+    private string? _name;
     [ObservableProperty]
-    private string? gameVersionOptifine;
+    private string? _gameVersionOptifine;
     [ObservableProperty]
-    private string? gameVersionDownload;
+    private string? _gameVersionDownload;
 
     public AddControlModel(IUserControl con, GameSettingObj obj)
     {
-        Con = con;
+        _con = con;
         Obj = obj;
     }
     partial void OnTypeChanged(int value)
     {
-        if (!display)
+        if (!Display)
             return;
 
         if (Type == 5)
@@ -109,9 +109,9 @@ public partial class AddControlModel : ObservableObject
             return;
         }
 
-        load = true;
+        _load = true;
 
-        now = (FileType)(Type + 1);
+        _now = (FileType)(Type + 1);
         GameVersionList.Clear();
         SortTypeList.Clear();
         CategorieList.Clear();
@@ -121,11 +121,11 @@ public partial class AddControlModel : ObservableObject
         FileList.Clear();
         DownloadSourceList.Clear();
 
-        SourceTypeList.Clear();
-        SourceTypeList.AddRange(WebBinding.GetSourceList(now));
-        SourceTypeList.ForEach(item => DownloadSourceList.Add(item.GetName()));
+        _sourceTypeList.Clear();
+        _sourceTypeList.AddRange(WebBinding.GetSourceList(_now));
+        _sourceTypeList.ForEach(item => DownloadSourceList.Add(item.GetName()));
 
-        load = false;
+        _load = false;
 
         DownloadSource = 0;
     }
@@ -142,7 +142,7 @@ public partial class AddControlModel : ObservableObject
 
     partial void OnPageChanged(int value)
     {
-        if (!display || load)
+        if (!Display || _load)
             return;
 
         Load();
@@ -150,7 +150,7 @@ public partial class AddControlModel : ObservableObject
 
     partial void OnPageDownloadChanged(int value)
     {
-        if (!display || load)
+        if (!Display || _load)
             return;
 
         LoadFile();
@@ -158,18 +158,18 @@ public partial class AddControlModel : ObservableObject
 
     async partial void OnDownloadSourceChanged(int value)
     {
-        if (!display || load)
+        if (!Display || _load)
             return;
 
-        var window = Con.Window;
-        load = true;
+        var window = _con.Window;
+        _load = true;
 
         GameVersionList.Clear();
         SortTypeList.Clear();
         CategorieList.Clear();
 
         DisplayList.Clear();
-        var type = SourceTypeList[DownloadSource];
+        var type = _sourceTypeList[DownloadSource];
         if (type == SourceType.CurseForge)
         {
             SortTypeList.AddRange(GameBinding.GetCurseForgeSortTypes());
@@ -181,7 +181,7 @@ public partial class AddControlModel : ObservableObject
                 window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
                 return;
             }
-            var list1 = await GameBinding.GetCurseForgeCategories(now);
+            var list1 = await GameBinding.GetCurseForgeCategories(_now);
             window.ProgressInfo.Close();
             if (list1 == null)
             {
@@ -190,12 +190,12 @@ public partial class AddControlModel : ObservableObject
             }
             GameVersionList.AddRange(list);
 
-            Categories.Clear();
-            Categories.Add(0, "");
+            _categories.Clear();
+            _categories.Add(0, "");
             int a = 1;
             foreach (var item in list1)
             {
-                Categories.Add(a++, item.Key);
+                _categories.Add(a++, item.Key);
             }
 
             var list2 = new List<string>()
@@ -228,7 +228,7 @@ public partial class AddControlModel : ObservableObject
 
             window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetModrinthGameVersions();
-            var list1 = await GameBinding.GetModrinthCategories(now);
+            var list1 = await GameBinding.GetModrinthCategories(_now);
             window.ProgressInfo.Close();
             if (list == null || list1 == null)
             {
@@ -237,12 +237,12 @@ public partial class AddControlModel : ObservableObject
             }
             GameVersionList.AddRange(list);
 
-            Categories.Clear();
-            Categories.Add(0, "");
+            _categories.Clear();
+            _categories.Add(0, "");
             int a = 1;
             foreach (var item in list1)
             {
-                Categories.Add(a++, item.Key);
+                _categories.Add(a++, item.Key);
             }
 
             var list2 = new List<string>()
@@ -274,7 +274,7 @@ public partial class AddControlModel : ObservableObject
             Load();
         }
 
-        load = false;
+        _load = false;
     }
 
     partial void OnGameVersionChanged(string? value)
@@ -284,7 +284,7 @@ public partial class AddControlModel : ObservableObject
 
     partial void OnGameVersionDownloadChanged(string? value)
     {
-        if (!display || load)
+        if (!Display || _load)
             return;
 
         LoadFile();
@@ -317,7 +317,7 @@ public partial class AddControlModel : ObservableObject
     [RelayCommand]
     public async Task GoFile()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var item = File;
         if (item == null)
             return;
@@ -340,8 +340,8 @@ public partial class AddControlModel : ObservableObject
     [RelayCommand]
     public void GoInstall()
     {
-        var window = Con.Window;
-        if (last == null)
+        var window = _con.Window;
+        if (_last == null)
         {
             window.OkInfo.Show(App.GetLanguage("AddWindow.Error1"));
             return;
@@ -353,9 +353,9 @@ public partial class AddControlModel : ObservableObject
     [RelayCommand]
     public async Task LoadOptifineList()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         GameVersionList.Clear();
-        OptifineList.Clear();
+        _optifineList.Clear();
         DownloadOptifineList.Clear();
         window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info13"));
         var list = await WebBinding.GetOptifine();
@@ -366,7 +366,7 @@ public partial class AddControlModel : ObservableObject
             return;
         }
 
-        OptifineList.AddRange(list);
+        _optifineList.AddRange(list);
 
         GameVersionList.Add("");
         GameVersionList.AddRange(from item2 in list
@@ -377,11 +377,11 @@ public partial class AddControlModel : ObservableObject
         var item = GameVersionOptifine;
         if (string.IsNullOrWhiteSpace(item))
         {
-            DownloadOptifineList.AddRange(OptifineList);
+            DownloadOptifineList.AddRange(_optifineList);
         }
         else
         {
-            DownloadOptifineList.AddRange(from item1 in OptifineList
+            DownloadOptifineList.AddRange(from item1 in _optifineList
                                           where item1.MC == item
                                           select item1);
         }
@@ -399,29 +399,29 @@ public partial class AddControlModel : ObservableObject
     [RelayCommand]
     public async Task DownloadMod()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info5"));
         var list = DownloadModList.Where(item => item.Download)
                         .Select(item => item.Items[item.SelectVersion]).ToList();
-        list.Add(modsave);
+        list.Add(_modsave);
         bool res;
         res = await WebBinding.DownloadMod(Obj, list);
         window.ProgressInfo.Close();
         if (!res)
         {
             window.OkInfo.Show(App.GetLanguage("AddWindow.Error5"));
-            if (last != null)
+            if (_last != null)
             {
-                last.IsDownload = false;
-                last.NowDownload = true;
+                _last.IsDownload = false;
+                _last.NowDownload = true;
             }
         }
         else
         {
-            if (last != null)
+            if (_last != null)
             {
-                last.NowDownload = false;
-                last.IsDownload = true;
+                _last.NowDownload = false;
+                _last.IsDownload = true;
             }
         }
         IsDownload = false;
@@ -434,11 +434,11 @@ public partial class AddControlModel : ObservableObject
         DownloadModList.Clear();
         if (LoadMoreMod)
         {
-            DownloadModList.AddRange(ModList);
+            DownloadModList.AddRange(_modList);
         }
         else
         {
-            ModList.ForEach(item =>
+            _modList.ForEach(item =>
             {
                 if (item.Optional)
                     return;
@@ -464,9 +464,9 @@ public partial class AddControlModel : ObservableObject
     [RelayCommand]
     public void DownloadModCancel()
     {
-        if (last != null)
+        if (_last != null)
         {
-            last.NowDownload = false;
+            _last.NowDownload = false;
         }
         DownloadModList.Clear();
         IsDownload = false;
@@ -479,7 +479,7 @@ public partial class AddControlModel : ObservableObject
         if (OptifineItem == null)
             return;
 
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(string.Format(
             App.GetLanguage("AddWindow.Info10"), OptifineItem.Version));
         if (!res)
@@ -504,12 +504,12 @@ public partial class AddControlModel : ObservableObject
             return;
 
         IsSelect = true;
-        if (this.last != null)
+        if (this._last != null)
         {
-            this.last.IsSelect = false;
+            this._last.IsSelect = false;
         }
-        this.last = last;
-        this.last.IsSelect = true;
+        this._last = last;
+        this._last.IsSelect = true;
     }
 
     public async void GoFile(SourceType type, string pid)
@@ -518,7 +518,7 @@ public partial class AddControlModel : ObservableObject
         DownloadSource = (int)type;
         await Task.Run(() =>
         {
-            while (!display || load)
+            while (!Display || _load)
                 Thread.Sleep(1000);
         });
 
@@ -530,7 +530,7 @@ public partial class AddControlModel : ObservableObject
     {
         if (IsDownload)
         {
-            var window = Con.Window;
+            var window = _con.Window;
             window.OkInfo.Show(App.GetLanguage("AddWindow.Info9"));
             return;
         }
@@ -541,8 +541,8 @@ public partial class AddControlModel : ObservableObject
 
     public async void Install1(FileDisplayObj data)
     {
-        var window = Con.Window;
-        var type = SourceTypeList[DownloadSource];
+        var window = _con.Window;
+        var type = _sourceTypeList[DownloadSource];
         if (Set)
         {
             if (type == SourceType.CurseForge)
@@ -559,7 +559,7 @@ public partial class AddControlModel : ObservableObject
             return;
         }
 
-        var last = this.last!;
+        var last = this._last!;
         IsDownload = true;
         if (last != null)
         {
@@ -568,7 +568,7 @@ public partial class AddControlModel : ObservableObject
         VersionDisplay = false;
         bool res = false;
 
-        if (now == FileType.DataPacks)
+        if (_now == FileType.DataPacks)
         {
             var list = await GameBinding.GetWorlds(Obj);
             if (list.Count == 0)
@@ -602,7 +602,7 @@ public partial class AddControlModel : ObservableObject
                 res = false;
             }
         }
-        else if (now == FileType.Mod)
+        else if (_now == FileType.Mod)
         {
             try
             {
@@ -627,11 +627,11 @@ public partial class AddControlModel : ObservableObject
                 }
                 else
                 {
-                    ModList.Clear();
-                    ModList.AddRange(list.Item3);
-                    modsave = (list.Item1!, list.Item2!);
+                    _modList.Clear();
+                    _modList.AddRange(list.Item3);
+                    _modsave = (list.Item1!, list.Item2!);
                     ModDownloadDisplay = true;
-                    ModList.ForEach(item =>
+                    _modList.ForEach(item =>
                     {
                         if (item.Optional == false)
                         {
@@ -654,9 +654,9 @@ public partial class AddControlModel : ObservableObject
             {
                 res = type switch
                 {
-                    SourceType.CurseForge => await WebBinding.Download(now, Obj,
+                    SourceType.CurseForge => await WebBinding.Download(_now, Obj,
                     data.Data as CurseForgeModObj.Data),
-                    SourceType.Modrinth => await WebBinding.Download(now, Obj,
+                    SourceType.Modrinth => await WebBinding.Download(_now, Obj,
                     data.Data as ModrinthVersionObj),
                     _ => false
                 };
@@ -689,7 +689,7 @@ public partial class AddControlModel : ObservableObject
 
     public void Refresh()
     {
-        if (!display || load)
+        if (!Display || _load)
             return;
 
         Load();
@@ -697,8 +697,8 @@ public partial class AddControlModel : ObservableObject
 
     public async void Load()
     {
-        var window = Con.Window;
-        var type = SourceTypeList[DownloadSource];
+        var window = _con.Window;
+        var type = _sourceTypeList[DownloadSource];
         if (window == null)
         {
             return;
@@ -712,7 +712,7 @@ public partial class AddControlModel : ObservableObject
                 return;
             }
 
-            var data = await WebBinding.SearchMcmod(now, Name, Page);
+            var data = await WebBinding.SearchMcmod(_now, Name, Page);
             if (data == null)
             {
                 window.ProgressInfo.Close();
@@ -729,7 +729,7 @@ public partial class AddControlModel : ObservableObject
 
             OnPropertyChanged(nameof(DisplayList));
 
-            last = null;
+            _last = null;
 
             EmptyDisplay = DisplayList.Count == 0;
 
@@ -737,10 +737,10 @@ public partial class AddControlModel : ObservableObject
         }
         else
         {
-            var data = await WebBinding.GetList(now, type,
+            var data = await WebBinding.GetList(_now, type,
                 GameVersion, Name, Page,
                 SortType, Categorie < 0 ? "" :
-                    Categories[Categorie], Obj.Loader);
+                    _categories[Categorie], Obj.Loader);
 
             if (data == null)
             {
@@ -751,7 +751,7 @@ public partial class AddControlModel : ObservableObject
 
             DisplayList.Clear();
 
-            if (now == FileType.Mod)
+            if (_now == FileType.Mod)
             {
                 foreach (var item in data)
                 {
@@ -772,7 +772,7 @@ public partial class AddControlModel : ObservableObject
 
             OnPropertyChanged(nameof(DisplayList));
 
-            last = null;
+            _last = null;
 
             EmptyDisplay = DisplayList.Count == 0;
 
@@ -784,23 +784,23 @@ public partial class AddControlModel : ObservableObject
     {
         FileList.Clear();
 
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("AddWindow.Info3"));
         List<FileDisplayObj>? list = null;
-        var type = SourceTypeList[DownloadSource];
+        var type = _sourceTypeList[DownloadSource];
         if (type == SourceType.CurseForge)
         {
             EnablePage = true;
             list = await WebBinding.GetPackFile(type, id ??
-                (last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), PageDownload,
-                GameVersionDownload, Obj.Loader, now);
+                (_last!.Data?.Data as CurseForgeObjList.Data)!.id.ToString(), PageDownload,
+                GameVersionDownload, Obj.Loader, _now);
         }
         else if (type == SourceType.Modrinth)
         {
             EnablePage = false;
             list = await WebBinding.GetPackFile(type, id ??
-                (last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, PageDownload,
-                GameVersionDownload, now == FileType.Mod ? Obj.Loader : Loaders.Normal, now);
+                (_last!.Data?.Data as ModrinthSearchObj.Hit)!.project_id, PageDownload,
+                GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
         }
         if (list == null)
         {
@@ -809,7 +809,7 @@ public partial class AddControlModel : ObservableObject
             return;
         }
 
-        if (now == FileType.Mod)
+        if (_now == FileType.Mod)
         {
             foreach (var item in list)
             {

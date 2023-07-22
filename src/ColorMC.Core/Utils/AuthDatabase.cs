@@ -13,8 +13,8 @@ public static class AuthDatabase
 {
     public static readonly ConcurrentDictionary<(string, AuthType), LoginObj> Auths = new();
 
-    private const string Name = "auth.json";
-    private static string Dir;
+    public const string Name = "auth.json";
+    private static string s_local;
 
     /// <summary>
     /// 初始化
@@ -33,8 +33,8 @@ public static class AuthDatabase
 
         Directory.CreateDirectory(path);
 
-        Dir = Path.GetFullPath(path + Name);
-        if (File.Exists(Dir))
+        s_local = Path.GetFullPath(path + Name);
+        if (File.Exists(s_local))
         {
             Load();
         }
@@ -43,7 +43,7 @@ public static class AuthDatabase
             string file1 = AppContext.BaseDirectory + Name;
             if (File.Exists(file1))
             {
-                File.Move(file1, Dir);
+                File.Move(file1, s_local);
             }
             else
             {
@@ -59,7 +59,7 @@ public static class AuthDatabase
     {
         try
         {
-            var data = File.ReadAllText(Dir);
+            var data = File.ReadAllText(s_local);
             var list = JsonConvert.DeserializeObject<List<LoginObj>>(data);
             if (list == null)
                 return;
@@ -84,7 +84,7 @@ public static class AuthDatabase
         {
             Name = "auth.json",
             Obj = Auths.Values,
-            Local = Dir
+            Local = s_local
         });
     }
 

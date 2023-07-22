@@ -6,10 +6,10 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout4
 {
-    private readonly ScreenshotModel Model;
+    private readonly ScreenshotModel _model;
     public GameEditFlyout4(Control con, ScreenshotModel model)
     {
-        Model = model;
+        _model = model;
 
         var fy = new FlyoutsControl(new()
         {
@@ -20,11 +20,11 @@ public class GameEditFlyout4
 
     private void Button2_Click()
     {
-        Model.Delete();
+        _model.Delete();
     }
 
     private void Button1_Click()
     {
-        BaseBinding.OpFile(Model.Screenshot.Local);
+        BaseBinding.OpFile(_model.Screenshot.Local);
     }
 }

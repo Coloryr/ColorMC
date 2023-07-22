@@ -17,9 +17,9 @@ public partial class HeadControl : UserControl
     public static readonly StyledProperty<object?> Title1Property =
             AvaloniaProperty.Register<Label, object?>(nameof(Title1), defaultBindingMode: BindingMode.TwoWay);
 
-    private bool min;
-    private bool clo;
-    private bool max;
+    private bool _min;
+    private bool _clo;
+    private bool _max;
     public object Title
     {
         get { return GetValue(TitleProperty); }
@@ -34,37 +34,37 @@ public partial class HeadControl : UserControl
 
     public bool Max
     {
-        get { return max; }
+        get { return _max; }
         set
         {
-            max = value;
-            Button_Max.IsVisible = max;
+            _max = value;
+            _buttonMax.IsVisible = _max;
         }
     }
 
     public bool Min
     {
-        get { return min; }
+        get { return _min; }
         set
         {
-            min = value;
-            Button_Min.IsVisible = min;
+            _min = value;
+            _buttonMin.IsVisible = _min;
         }
     }
 
     public bool Clo
     {
-        get { return clo; }
+        get { return _clo; }
         set
         {
-            clo = value;
-            Button_Close.IsVisible = clo;
+            _clo = value;
+            _buttonClose.IsVisible = _clo;
         }
     }
 
-    private Button Button_Close;
-    private Button Button_Max;
-    private Button Button_Min;
+    private Button _buttonClose;
+    private Button _buttonMax;
+    private Button _buttonMin;
 
     public HeadControl()
     {
@@ -76,7 +76,7 @@ public partial class HeadControl : UserControl
         TitleShow.PointerPressed += HeadControl_PointerPressed;
         TitleShow1.PointerPressed += HeadControl_PointerPressed;
 
-        Button_Min = new Button()
+        _buttonMin = new Button()
         {
             Width = 24,
             Height = 24,
@@ -84,7 +84,7 @@ public partial class HeadControl : UserControl
             Content = "-",
         };
 
-        Button_Max = new Button()
+        _buttonMax = new Button()
         {
             Width = 24,
             Height = 24,
@@ -92,7 +92,7 @@ public partial class HeadControl : UserControl
             Content = "▢",
         };
 
-        Button_Close = new Button()
+        _buttonClose = new Button()
         {
             Width = 24,
             Height = 24,
@@ -104,20 +104,20 @@ public partial class HeadControl : UserControl
         {
             StackPanel2.HorizontalAlignment = HorizontalAlignment.Center;
             StackPanel1.HorizontalAlignment = HorizontalAlignment.Left;
-            StackPanel1.Children.Add(Button_Close);
-            StackPanel1.Children.Add(Button_Min);
-            StackPanel1.Children.Add(Button_Max);
+            StackPanel1.Children.Add(_buttonClose);
+            StackPanel1.Children.Add(_buttonMin);
+            StackPanel1.Children.Add(_buttonMax);
         }
         else
         {
-            StackPanel1.Children.Add(Button_Min);
-            StackPanel1.Children.Add(Button_Max);
-            StackPanel1.Children.Add(Button_Close);
+            StackPanel1.Children.Add(_buttonMin);
+            StackPanel1.Children.Add(_buttonMax);
+            StackPanel1.Children.Add(_buttonClose);
         }
 
-        Button_Min.Click += ButtonMin_Click;
-        Button_Max.Click += ButtonMax_Click;
-        Button_Close.Click += ButtonClose_Click;
+        _buttonMin.Click += ButtonMin_Click;
+        _buttonMax.Click += ButtonMax_Click;
+        _buttonClose.Click += ButtonClose_Click;
     }
 
     private void ButtonClose_Click(object? sender, RoutedEventArgs e)

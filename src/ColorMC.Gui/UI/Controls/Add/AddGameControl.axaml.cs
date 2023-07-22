@@ -15,19 +15,19 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddGameControl : UserControl, IUserControl
 {
-    private bool switch1 = false;
+    private bool _switch1 = false;
 
-    private readonly Tab1Control tab1 = new();
-    private readonly Tab2Control tab2 = new();
-    private readonly Tab3Control tab3 = new();
+    private readonly Tab1Control _tab1 = new();
+    private readonly Tab2Control _tab2 = new();
+    private readonly Tab3Control _tab3 = new();
 
-    private CancellationTokenSource cancel = new();
+    private CancellationTokenSource _cancel = new();
 
-    private int now;
+    private int _now;
 
-    private readonly AddGameTab1Model model1;
-    private readonly AddGameTab2Model model2;
-    private readonly AddGameTab3Model model3;
+    private readonly AddGameTab1Model _model1;
+    private readonly AddGameTab2Model _model2;
+    private readonly AddGameTab3Model _model3;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -39,13 +39,13 @@ public partial class AddGameControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        model1 = new(this);
-        model2 = new(this);
-        model3 = new(this);
+        _model1 = new(this);
+        _model2 = new(this);
+        _model3 = new(this);
 
-        tab1.DataContext = model1;
-        tab2.DataContext = model2;
-        tab3.DataContext = model3;
+        _tab1.DataContext = _model1;
+        _tab2.DataContext = _model2;
+        _tab3.DataContext = _model3;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
@@ -53,7 +53,7 @@ public partial class AddGameControl : UserControl, IUserControl
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
 
-        Content1.Content = tab1;
+        Content1.Content = _tab1;
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -82,7 +82,7 @@ public partial class AddGameControl : UserControl, IUserControl
             if (item?.EndsWith(".zip") == true || item?.EndsWith(".mrpack") == true)
             {
                 Tabs.SelectedIndex = 1;
-                model2.AddFile(item);
+                _model2.AddFile(item);
             }
         }
     }
@@ -101,39 +101,39 @@ public partial class AddGameControl : UserControl, IUserControl
         switch (Tabs.SelectedIndex)
         {
             case 0:
-                Go(tab1);
+                Go(_tab1);
                 break;
             case 1:
-                Go(tab2);
+                Go(_tab2);
                 break;
             case 2:
-                Go(tab3);
+                Go(_tab3);
                 break;
         }
 
-        now = Tabs.SelectedIndex;
+        _now = Tabs.SelectedIndex;
     }
 
     private void Go(UserControl to)
     {
-        cancel.Cancel();
-        cancel.Dispose();
+        _cancel.Cancel();
+        _cancel.Dispose();
 
-        cancel = new();
+        _cancel = new();
         Tabs.IsEnabled = false;
 
-        if (!switch1)
+        if (!_switch1)
         {
             Content2.Content = to;
-            _ = App.PageSlide500.Start(Content1, Content2, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(Content1, Content2, _now < Tabs.SelectedIndex, _cancel.Token);
         }
         else
         {
             Content1.Content = to;
-            _ = App.PageSlide500.Start(Content2, Content1, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(Content2, Content1, _now < Tabs.SelectedIndex, _cancel.Token);
         }
 
-        switch1 = !switch1;
+        _switch1 = !_switch1;
         Tabs.IsEnabled = true;
     }
 
@@ -144,12 +144,12 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
     {
-        model1.Install(data, data1);
+        _model1.Install(data, data1);
     }
 
     public void Install(ModrinthVersionObj data, ModrinthSearchObj.Hit data1)
     {
-        model1.Install(data, data1);
+        _model1.Install(data, data1);
     }
 
     public void AddFile(string file)
@@ -157,7 +157,7 @@ public partial class AddGameControl : UserControl, IUserControl
         if (file.EndsWith(".zip") == true || file.EndsWith(".mrpack") == true)
         {
             Tabs.SelectedIndex = 1;
-            model2.AddFile(file);
+            _model2.AddFile(file);
         }
     }
 }

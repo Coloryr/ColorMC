@@ -12,32 +12,32 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public static class LocalMaven
 {
-    private static readonly ConcurrentDictionary<string, MavenItemObj> Items = new();
-
     public const string Name1 = "maven.json";
-    private static string Dir;
+
+    private static readonly ConcurrentDictionary<string, MavenItemObj> s_items = new();
+    private static string s_local;
     /// <summary>
     /// 初始化本地缓存
     /// </summary>
     /// <param name="dir"></param>
     public static void Init(string dir)
     {
-        Dir = dir + Name1;
+        s_local = dir + Name1;
 
-        if (File.Exists(Dir))
+        if (File.Exists(s_local))
         {
             try
             {
-                var data = File.ReadAllText(Dir);
+                var data = File.ReadAllText(s_local);
                 var list = JsonConvert.DeserializeObject<Dictionary<string, MavenItemObj>>(data);
 
                 if (list != null)
                 {
-                    Items.Clear();
+                    s_items.Clear();
 
                     foreach (var item in list)
                     {
-                        Items.TryAdd(item.Key, item.Value);
+                        s_items.TryAdd(item.Key, item.Value);
                     }
                 }
             }
@@ -55,7 +55,7 @@ public static class LocalMaven
     /// <returns></returns>
     public static MavenItemObj? GetItem(string name)
     {
-        if (Items.TryGetValue(name, out var item))
+        if (s_items.TryGetValue(name, out var item))
         {
             return item;
         }
@@ -69,20 +69,20 @@ public static class LocalMaven
     /// <param name="item"></param>
     public static void AddItem(MavenItemObj item)
     {
-        if (Items.ContainsKey(item.Name))
+        if (s_items.ContainsKey(item.Name))
         {
-            Items[item.Name] = item;
+            s_items[item.Name] = item;
         }
         else
         {
-            Items.TryAdd(item.Name, item);
+            s_items.TryAdd(item.Name, item);
         }
 
         ConfigSave.AddItem(new()
         {
             Name = Name1,
-            Local = Dir,
-            Obj = Items
+            Local = s_local,
+            Obj = s_items
         });
     }
 

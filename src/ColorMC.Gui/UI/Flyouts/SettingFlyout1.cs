@@ -10,12 +10,12 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class SettingFlyout1
 {
-    private readonly IEnumerable<JavaDisplayObj> List;
-    private readonly SettingTab5Model Model;
+    private readonly IEnumerable<JavaDisplayObj> _list;
+    private readonly SettingTab5Model _model;
     public SettingFlyout1(Control con, SettingTab5Model model, IList list)
     {
-        Model = model;
-        List = list.Cast<JavaDisplayObj>();
+        _model = model;
+        _list = list.Cast<JavaDisplayObj>();
 
         var fy = new FlyoutsControl(new()
         {
@@ -25,11 +25,11 @@ public class SettingFlyout1
 
     private void Button1_Click()
     {
-        foreach (var item in List)
+        foreach (var item in _list)
         {
             JavaBinding.RemoveJava(item.Name);
         }
 
-        Model.Load();
+        _model.Load();
     }
 }

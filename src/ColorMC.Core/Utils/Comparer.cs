@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace ColorMC.Core.Utils;
 
 /// <summary>
-/// CurseForge±È½ÏÆ÷
+/// CurseForgeæ¯”è¾ƒå™¨
 /// </summary>
 public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
 {
@@ -22,7 +22,7 @@ public class CurseDataComparer : IEqualityComparer<CurseForgeModObj.Data>
 }
 
 /// <summary>
-/// Mod±È½ÏÆ÷
+/// Modæ¯”è¾ƒå™¨
 /// </summary>
 public class ModComparer : IComparer<ModObj>
 {

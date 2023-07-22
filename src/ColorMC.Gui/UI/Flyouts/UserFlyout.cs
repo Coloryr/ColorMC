@@ -7,40 +7,40 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class UserFlyout
 {
-    private readonly UserDisplayObj Obj;
-    private readonly UsersModel Model;
+    private readonly UserDisplayObj _obj;
+    private readonly UsersModel _model;
     public UserFlyout(Control con, UsersModel model)
     {
-        Model = model;
-        Obj = model.Item!;
+        _model = model;
+        _obj = model.Item!;
 
         var fy = new FlyoutsControl(new()
         {
             (App.GetLanguage("UserWindow.Flyouts.Text1"), true, Button1_Click),
-            (App.GetLanguage("UserWindow.Flyouts.Text2"), Obj.AuthType != AuthType.Offline, Button2_Click),
-            (App.GetLanguage("UserWindow.Flyouts.Text3"), Obj.AuthType != AuthType.Offline
-                && Obj.AuthType != AuthType.OAuth, Button4_Click),
+            (App.GetLanguage("UserWindow.Flyouts.Text2"), _obj.AuthType != AuthType.Offline, Button2_Click),
+            (App.GetLanguage("UserWindow.Flyouts.Text3"), _obj.AuthType != AuthType.Offline
+                && _obj.AuthType != AuthType.OAuth, Button4_Click),
             (App.GetLanguage("UserWindow.Flyouts.Text4"), true, Button3_Click)
         }, con);
     }
 
     private void Button4_Click()
     {
-        Model.ReLogin(Obj);
+        _model.ReLogin(_obj);
     }
 
     private void Button3_Click()
     {
-        Model.Remove(Obj);
+        _model.Remove(_obj);
     }
 
     private void Button2_Click()
     {
-        Model.Refresh(Obj);
+        _model.Refresh(_obj);
     }
 
     private void Button1_Click()
     {
-        Model.Select(Obj);
+        _model.Select(_obj);
     }
 }

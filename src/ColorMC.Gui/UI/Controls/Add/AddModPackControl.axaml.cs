@@ -12,21 +12,21 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 {
-    private readonly AddModPackControlModel model;
-
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("AddModPackWindow.Title");
+    
+    private readonly AddModPackControlModel _model;
 
     public AddModPackControl()
     {
         InitializeComponent();
 
-        model = new(this);
-        model.PropertyChanged += Model_PropertyChanged;
-        DataContext = model;
+        _model = new(this);
+        _model.PropertyChanged += Model_PropertyChanged;
+        DataContext = _model;
 
         DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
 
@@ -45,7 +45,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (model.Display)
+                if (_model.Display)
                 {
                     App.CrossFade300.Start(null, Grid1, CancellationToken.None);
                 }
@@ -62,7 +62,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
         {
-            await model.Download();
+            await _model.Download();
             e.Handled = true;
         }
     }
@@ -71,13 +71,13 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
     {
         if (e.Key == Key.Enter)
         {
-            model.Reload();
+            _model.Reload();
         }
     }
 
     private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        await model.Download();
+        await _model.Download();
     }
 
     public void Closed()
@@ -87,12 +87,12 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
     public void SetSelect(FileItemModel last)
     {
-        model.SetSelect(last);
+        _model.SetSelect(last);
     }
 
     public void Install(FileItemModel item)
     {
-        model.Install();
+        _model.Install();
     }
 
     public void Opened()
@@ -101,19 +101,19 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
 
         DataGridFiles.SetFontColor();
 
-        model.Source = 0;
+        _model.Source = 0;
     }
 
     public void Back()
     {
-        if (model.Page <= 0)
+        if (_model.Page <= 0)
             return;
 
-        model.Page -= 1;
+        _model.Page -= 1;
     }
 
     public void Next()
     {
-        model.Page += 1;
+        _model.Page += 1;
     }
 }

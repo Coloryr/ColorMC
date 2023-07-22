@@ -22,7 +22,7 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Launch
 {
-    private static CancellationToken cancel;
+    private static CancellationToken s_cancel;
 
     /// <summary>
     /// 检查游戏文件
@@ -101,7 +101,7 @@ public static class Launch
                         });
                     }
                 }
-            }, cancel));
+            }, s_cancel));
         }
 
         //检查游戏资源文件
@@ -123,10 +123,10 @@ public static class Launch
                     game.AddIndex(assets);
                 }
 
-                var list1 = await assets.Check(cancel);
+                var list1 = await assets.Check(s_cancel);
                 foreach (var (Name, Hash) in list1)
                 {
-                    if (cancel.IsCancellationRequested)
+                    if (s_cancel.IsCancellationRequested)
                         return;
                     list.Add(new()
                     {
@@ -137,7 +137,7 @@ public static class Launch
                         Name = Name
                     });
                 }
-            }, cancel));
+            }, s_cancel));
         }
 
         //检查运行库
@@ -146,7 +146,7 @@ public static class Launch
             list1.Add(Task.Run(async () =>
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.CheckLib);
-                var list2 = await game.CheckGameLib(cancel);
+                var list2 = await game.CheckGameLib(s_cancel);
                 if (list2.Count != 0)
                 {
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostLib);
@@ -161,8 +161,8 @@ public static class Launch
                 if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
                 {
                     bool neo = obj.Loader == Loaders.NeoForge;
-                    var list3 = await obj.CheckForgeLib(neo, cancel);
-                    if (cancel.IsCancellationRequested)
+                    var list3 = await obj.CheckForgeLib(neo, s_cancel);
+                    if (s_cancel.IsCancellationRequested)
                         return;
                     if (list3 == null)
                     {
@@ -185,8 +185,8 @@ public static class Launch
                 }
                 else if (obj.Loader == Loaders.Fabric)
                 {
-                    var list3 = obj.CheckFabricLib(cancel);
-                    if (cancel.IsCancellationRequested)
+                    var list3 = obj.CheckFabricLib(s_cancel);
+                    if (s_cancel.IsCancellationRequested)
                         return;
                     if (list3 == null)
                     {
@@ -209,8 +209,8 @@ public static class Launch
                 }
                 else if (obj.Loader == Loaders.Quilt)
                 {
-                    var list3 = obj.CheckQuiltLib(cancel);
-                    if (cancel.IsCancellationRequested)
+                    var list3 = obj.CheckQuiltLib(s_cancel);
+                    if (s_cancel.IsCancellationRequested)
                         return;
                     if (list3 == null)
                     {
@@ -252,7 +252,7 @@ public static class Launch
                         list.Add(item);
                     }
                 }
-            }, cancel));
+            }, s_cancel));
         }
 
         //检查整合包mod
@@ -268,7 +268,7 @@ public static class Launch
                 ModInfoObj?[] array = obj.Mods.Values.ToArray();
                 for (int a = 0; a < array.Length; a++)
                 {
-                    if (cancel.IsCancellationRequested)
+                    if (s_cancel.IsCancellationRequested)
                         return;
 
                     var item = array[a];
@@ -297,7 +297,7 @@ public static class Launch
                 {
                     foreach (var item in array)
                     {
-                        if (cancel.IsCancellationRequested)
+                        if (s_cancel.IsCancellationRequested)
                             return;
                         if (item == null)
                             continue;
@@ -311,7 +311,7 @@ public static class Launch
                         });
                     }
                 }
-            }, cancel));
+            }, s_cancel));
         }
 
         await Task.WhenAll(list1.ToArray());
@@ -413,10 +413,12 @@ public static class Launch
             var forge = obj.Loader == Loaders.NeoForge ?
                 obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
             if (forge.arguments.jvm != null)
+            {
                 foreach (var item in forge.arguments.jvm)
                 {
                     arg.Add(item);
                 }
+            }
         }
         else if (obj.Loader == Loaders.Fabric)
         {
@@ -1018,7 +1020,7 @@ public static class Launch
     /// <returns></returns>
     public static async Task<Process?> StartGame(this GameSettingObj obj, LoginObj login, WorldObj? world, CancellationToken token)
     {
-        cancel = token;
+        s_cancel = token;
         Stopwatch stopwatch = new();
 
         if (string.IsNullOrWhiteSpace(obj.Version) ||
@@ -1061,7 +1063,7 @@ public static class Launch
             login.Save();
         }
 
-        if (cancel.IsCancellationRequested)
+        if (s_cancel.IsCancellationRequested)
             return null;
 
         stopwatch.Stop();
@@ -1133,7 +1135,7 @@ public static class Launch
             path = jvm.GetPath();
         }
 
-        if (cancel.IsCancellationRequested)
+        if (s_cancel.IsCancellationRequested)
             return null;
 
         //启动前运行
@@ -1204,7 +1206,7 @@ public static class Launch
             }
         }
 
-        if (cancel.IsCancellationRequested)
+        if (s_cancel.IsCancellationRequested)
             return null;
 
         //准备Jvm参数
@@ -1234,7 +1236,7 @@ public static class Launch
         ColorMCCore.GameLog?.Invoke(obj, LanguageHelper.Get("Core.Launch.Info3"));
         ColorMCCore.GameLog?.Invoke(obj, path);
 
-        if (cancel.IsCancellationRequested)
+        if (s_cancel.IsCancellationRequested)
             return null;
 
         if (SystemInfo.Os == OsType.Android)

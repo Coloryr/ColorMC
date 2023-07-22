@@ -5,11 +5,11 @@ namespace ColorMC.Core.Net.Motd;
 
 public class ProtocolHandler
 {
-    private TcpClient Tcp;
+    private TcpClient s_tcp;
 
     public ProtocolHandler(TcpClient tcp)
     {
-        Tcp = tcp;
+        s_tcp = tcp;
     }
 
     private void Receive(byte[] buffer, int start, int offset, SocketFlags f)
@@ -17,7 +17,7 @@ public class ProtocolHandler
         int read = 0;
         while (read < offset)
         {
-            read += Tcp.Client.Receive(buffer, start + read, offset - read, f);
+            read += s_tcp.Client.Receive(buffer, start + read, offset - read, f);
         }
     }
 

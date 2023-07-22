@@ -8,15 +8,15 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public static class Logs
 {
-    private static readonly ConcurrentBag<string> bags = new();
+    private static readonly ConcurrentBag<string> s_bags = new();
 
-    private static string Local;
-    private static StreamWriter Writer;
-    private static readonly Thread ThreadLog = new(Run)
+    private static string s_local;
+    private static StreamWriter s_writer;
+    private static readonly Thread t_log = new(Run)
     {
         Name = "ColorMC-Log"
     };
-    private static bool IsRun = false;
+    private static bool s_run = false;
 
     /// <summary>
     /// 初始化
@@ -26,13 +26,13 @@ public static class Logs
     {
         ColorMCCore.Stop += Stop;
 
-        Local = dir;
+        s_local = dir;
         try
         {
-            Writer = File.AppendText(Local + "logs.log");
-            Writer.AutoFlush = true;
-            IsRun = true;
-            ThreadLog.Start();
+            s_writer = File.AppendText(s_local + "logs.log");
+            s_writer.AutoFlush = true;
+            s_run = true;
+            t_log.Start();
         }
         catch (Exception e)
         {
@@ -45,11 +45,14 @@ public static class Logs
     /// </summary>
     private static void Run()
     {
-        while (IsRun)
+        while (s_run)
         {
-            while (bags.TryTake(out var item))
+            lock (s_bags)
             {
-                Writer.WriteLine(item);
+                while (s_bags.TryTake(out var item))
+                {
+                    s_writer.WriteLine(item);
+                }
             }
 
             Thread.Sleep(100);
@@ -61,17 +64,15 @@ public static class Logs
     /// </summary>
     private static void Stop()
     {
-        IsRun = false;
-        if (ThreadLog.ThreadState == ThreadState.Running)
+        s_run = false;
+        lock (s_bags)
         {
-            ThreadLog.Join();
+            while (s_bags.TryTake(out var item))
+            {
+                s_writer.WriteLine(item);
+            }
+            s_writer.Dispose();
         }
-
-        while (bags.TryTake(out var item))
-        {
-            Writer.WriteLine(item);
-        }
-        Writer.Dispose();
     }
 
     /// <summary>
@@ -80,10 +81,10 @@ public static class Logs
     /// <param name="text"></param>
     private static void AddText(string text)
     {
-        if (!IsRun)
+        if (!s_run)
             return;
 
-        bags.Add(text);
+        s_bags.Add(text);
     }
 
     /// <summary>
@@ -133,7 +134,7 @@ public static class Logs
         var date = DateTime.Now;
         string text = $"[{date}][Error]{data}{Environment.NewLine}{e}";
 
-        var file = $"{Local}{date.Year}_{date.Month}_{date.Day}_" +
+        var file = $"{s_local}{date.Year}_{date.Month}_{date.Day}_" +
             $"{date.Hour}_{date.Minute}_{date.Second}_crash.log";
 
         File.WriteAllText(file, text);

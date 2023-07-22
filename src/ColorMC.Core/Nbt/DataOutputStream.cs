@@ -7,10 +7,11 @@ namespace ColorMC.Core.Nbt;
 /// </summary>
 public class DataOutputStream : IDisposable
 {
-    private readonly Stream baseStream;
+    private readonly Stream s_baseStream;
+
     public DataOutputStream(Stream stream)
     {
-        baseStream = stream;
+        s_baseStream = stream;
     }
 
     /// <summary>
@@ -19,7 +20,7 @@ public class DataOutputStream : IDisposable
     /// <param name="value">值</param>
     public void Write(byte value)
     {
-        baseStream.WriteByte(value);
+        s_baseStream.WriteByte(value);
     }
 
     /// <summary>
@@ -28,7 +29,7 @@ public class DataOutputStream : IDisposable
     /// <param name="value">值</param>
     public void Write(byte[] value)
     {
-        baseStream.Write(value);
+        s_baseStream.Write(value);
     }
 
     /// <summary>
@@ -37,7 +38,7 @@ public class DataOutputStream : IDisposable
     /// <param name="value">值</param>
     public void Write(bool value)
     {
-        baseStream.WriteByte(value ? (byte)1 : (byte)0);
+        s_baseStream.WriteByte(value ? (byte)1 : (byte)0);
     }
 
     /// <summary>
@@ -48,7 +49,7 @@ public class DataOutputStream : IDisposable
     {
         var temp = BitConverter.GetBytes(value);
         Array.Reverse(temp);
-        baseStream.Write(temp);
+        s_baseStream.Write(temp);
     }
 
     /// <summary>
@@ -59,7 +60,7 @@ public class DataOutputStream : IDisposable
     {
         var temp = BitConverter.GetBytes(value);
         Array.Reverse(temp);
-        baseStream.Write(temp);
+        s_baseStream.Write(temp);
     }
 
     /// <summary>
@@ -70,7 +71,7 @@ public class DataOutputStream : IDisposable
     {
         var temp = BitConverter.GetBytes(value);
         Array.Reverse(temp);
-        baseStream.Write(temp);
+        s_baseStream.Write(temp);
     }
 
     /// <summary>
@@ -81,7 +82,7 @@ public class DataOutputStream : IDisposable
     {
         var temp = BitConverter.GetBytes(value);
         Array.Reverse(temp);
-        baseStream.Write(temp);
+        s_baseStream.Write(temp);
     }
 
     /// <summary>
@@ -92,7 +93,7 @@ public class DataOutputStream : IDisposable
     {
         var temp = BitConverter.GetBytes(value);
         Array.Reverse(temp);
-        baseStream.Write(temp);
+        s_baseStream.Write(temp);
     }
 
     /// <summary>
@@ -109,7 +110,7 @@ public class DataOutputStream : IDisposable
         Write((short)data.Length);
         if (data.Length > 0)
         {
-            baseStream.Write(data);
+            s_baseStream.Write(data);
         }
     }
 
@@ -118,7 +119,7 @@ public class DataOutputStream : IDisposable
     /// </summary>
     public void Dispose()
     {
-        baseStream.Dispose();
+        s_baseStream.Dispose();
         GC.SuppressFinalize(this);
     }
 }

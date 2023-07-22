@@ -16,10 +16,10 @@ public static class ConfigSave
         public string Local;
     }
 
-    private static readonly ConcurrentBag<ConfigSaveObj> SaveQue = new();
+    private static readonly ConcurrentBag<ConfigSaveObj> s_saveQue = new();
 
-    private static Thread thread;
-    private static bool run;
+    private static Thread t_thread;
+    private static bool s_run;
 
     /// <summary>
     /// 初始化
@@ -28,12 +28,12 @@ public static class ConfigSave
     {
         ColorMCCore.Stop += Stop;
 
-        thread = new(Run)
+        t_thread = new(Run)
         {
             Name = "ColorMC-Save"
         };
-        run = true;
-        thread.Start();
+        s_run = true;
+        t_thread.Start();
     }
 
     /// <summary>
@@ -41,8 +41,7 @@ public static class ConfigSave
     /// </summary>
     private static void Stop()
     {
-        run = false;
-        thread.Join();
+        s_run = false;
 
         Save();
     }
@@ -52,11 +51,21 @@ public static class ConfigSave
     /// </summary>
     private static void Run()
     {
-        while (run)
+        int count = 0;
+        while (s_run)
         {
-            Thread.Sleep(1000);
-            if (!SaveQue.Any())
+            Thread.Sleep(100);
+            if (count < 10)
+            {
+                count++;
                 continue;
+            }
+
+            count = 0;
+            if (!s_saveQue.Any())
+            {
+                continue;
+            }
 
             Save();
         }
@@ -65,10 +74,9 @@ public static class ConfigSave
     private static void Save()
     {
         Dictionary<string, ConfigSaveObj> list = new();
-        lock (SaveQue)
+        lock (s_saveQue)
         {
-            list.Clear();
-            while (SaveQue.TryTake(out var item))
+            while (s_saveQue.TryTake(out var item))
             {
                 if (list.ContainsKey(item.Name))
                 {
@@ -79,7 +87,7 @@ public static class ConfigSave
                     list.Add(item.Name, item);
                 }
             }
-            SaveQue.Clear();
+            s_saveQue.Clear();
         }
 
         foreach (var item in list.Values)
@@ -104,9 +112,9 @@ public static class ConfigSave
     /// <param name="obj"></param>
     public static void AddItem(ConfigSaveObj obj)
     {
-        lock (SaveQue)
+        lock (s_saveQue)
         {
-            SaveQue.Add(obj);
+            s_saveQue.Add(obj);
         }
     }
 }

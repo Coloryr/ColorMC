@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ConfigEdit;
 
-public partial class DataItem : ObservableObject
+public partial class NbtDataItem : ObservableObject
 {
     [ObservableProperty]
     private int key;
@@ -39,7 +39,7 @@ public partial class ConfigEditModel : ObservableObject
     public bool cancel;
 
     public ObservableCollection<string> FileList { get; init; } = new();
-    public ObservableCollection<DataItem> DataList { get; init; } = new();
+    public ObservableCollection<NbtDataItem> DataList { get; init; } = new();
 
     public List<string> TypeSource { get; init; } = new()
     {
@@ -92,7 +92,7 @@ public partial class ConfigEditModel : ObservableObject
     [ObservableProperty]
     private string dataType;
     [ObservableProperty]
-    private DataItem dataItem;
+    private NbtDataItem dataItem;
 
     public ConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world)
     {
@@ -523,7 +523,7 @@ public partial class ConfigEditModel : ObservableObject
         }
     }
 
-    public void DeleteItem(DataItem item)
+    public void DeleteItem(NbtDataItem item)
     {
         if (item.Key == 0)
             return;

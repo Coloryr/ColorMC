@@ -9,26 +9,27 @@ namespace ColorMC.Gui.UI.Controls.Setting;
 
 public partial class SettingControl : UserControl, IUserControl
 {
-    private readonly Tab1Control tab1 = new();
-    private readonly Tab2Control tab2 = new();
-    private readonly Tab3Control tab3 = new();
-    private readonly Tab4Control tab4 = new();
-    private readonly Tab5Control tab5 = new();
-    private readonly Tab6Control tab6 = new();
-    private readonly Tab7Control tab7 = new();
+    private readonly Tab1Control _tab1 = new();
+    private readonly Tab2Control _tab2 = new();
+    private readonly Tab3Control _tab3 = new();
+    private readonly Tab4Control _tab4 = new();
+    private readonly Tab5Control _tab5 = new();
+    private readonly Tab6Control _tab6 = new();
+    private readonly Tab7Control _tab7 = new();
 
-    private bool switch1 = false;
+    private bool _switch1 = false;
 
-    private readonly SettingTab1Model model1;
-    private readonly SettingTab2Model model2;
-    private readonly SettingTab3Model model3;
-    private readonly SettingTab4Model model4;
-    private readonly SettingTab5Model model5;
-    private readonly SettingTab6Model model6;
+    private readonly SettingTab1Model _model1;
+    private readonly SettingTab2Model _model2;
+    private readonly SettingTab3Model _model3;
+    private readonly SettingTab4Model _model4;
+    private readonly SettingTab5Model _model5;
+    private readonly SettingTab6Model _model6;
+    private readonly SettingTab7Model _model7;
 
-    private CancellationTokenSource cancel = new();
+    private CancellationTokenSource _cancel = new();
 
-    private int now;
+    private int _now;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -40,30 +41,32 @@ public partial class SettingControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        model1 = new(this);
-        tab1.DataContext = model1;
+        _model1 = new(this);
+        _tab1.DataContext = _model1;
 
-        model2 = new(this);
-        tab2.DataContext = model2;
-        tab2.Bind();
+        _model2 = new(this);
+        _tab2.DataContext = _model2;
 
-        model3 = new(this);
-        tab3.DataContext = model3;
+        _model3 = new(this);
+        _tab3.DataContext = _model3;
 
-        model4 = new(this);
-        tab4.DataContext = model4;
+        _model4 = new(this);
+        _tab4.DataContext = _model4;
 
-        model5 = new(this);
-        tab5.DataContext = model5;
+        _model5 = new(this);
+        _tab5.DataContext = _model5;
 
-        model6 = new(this);
-        tab6.DataContext = model6;
+        _model6 = new(this);
+        _tab6.DataContext = _model6;
+
+        _model7 = new();
+        _tab7.DataContext = _model7;
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
-        Content1.Content = tab2;
+        Content1.Content = _tab2;
     }
 
     public void Closed()
@@ -88,57 +91,57 @@ public partial class SettingControl : UserControl, IUserControl
         switch (Tabs.SelectedIndex)
         {
             case 0:
-                Go(tab2);
-                model2.Load();
+                Go(_tab2);
+                _model2.Load();
                 break;
             case 1:
-                Go(tab3);
-                model3.Load();
+                Go(_tab3);
+                _model3.Load();
                 break;
             case 2:
-                Go(tab4);
-                model4.Load();
+                Go(_tab4);
+                _model4.Load();
                 break;
             case 3:
-                Go(tab5);
-                model5.Load();
+                Go(_tab5);
+                _model5.Load();
                 break;
             case 4:
-                Go(tab6);
-                model6.Load();
+                Go(_tab6);
+                _model6.Load();
                 break;
             case 5:
-                Go(tab1);
+                Go(_tab1);
                 break;
             case 6:
-                Go(tab7);
+                Go(_tab7);
                 break;
         }
 
-        now = Tabs.SelectedIndex;
+        _now = Tabs.SelectedIndex;
     }
 
     private void Go(UserControl to)
     {
-        cancel.Cancel();
-        cancel.Dispose();
+        _cancel.Cancel();
+        _cancel.Dispose();
 
-        cancel = new();
+        _cancel = new();
 
         Tabs.IsEnabled = false;
 
-        if (!switch1)
+        if (!_switch1)
         {
             Content2.Content = to;
-            _ = App.PageSlide500.Start(Content1, Content2, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(Content1, Content2, _now < Tabs.SelectedIndex, _cancel.Token);
         }
         else
         {
             Content1.Content = to;
-            _ = App.PageSlide500.Start(Content2, Content1, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(Content2, Content1, _now < Tabs.SelectedIndex, _cancel.Token);
         }
 
-        switch1 = !switch1;
+        _switch1 = !_switch1;
         Tabs.IsEnabled = true;
     }
 
@@ -156,6 +159,6 @@ public partial class SettingControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        model2.Load();
+        _model2.Load();
     }
 }

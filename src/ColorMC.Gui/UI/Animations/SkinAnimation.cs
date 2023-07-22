@@ -12,10 +12,10 @@ namespace ColorMC.Gui.UI.Animations;
 /// </summary>
 public class SkinAnimation
 {
-    private bool run;
-    private bool start;
-    private int frame = 0;
-    private readonly SkinRender Render;
+    private bool _run;
+    private bool _start;
+    private int _frame = 0;
+    private readonly SkinRender _render;
 
     public Vector3 Arm;
     public Vector3 Leg;
@@ -23,8 +23,8 @@ public class SkinAnimation
 
     public SkinAnimation(SkinRender render)
     {
-        Render = render;
-        run = true;
+        _render = render;
+        _run = true;
 
         Arm.X = 40;
     }
@@ -34,8 +34,8 @@ public class SkinAnimation
     /// </summary>
     public void Stop()
     {
-        start = false;
-        run = false;
+        _start = false;
+        _run = false;
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ public class SkinAnimation
     /// </summary>
     public void Start()
     {
-        start = true;
+        _start = true;
     }
 
     /// <summary>
@@ -51,57 +51,57 @@ public class SkinAnimation
     /// </summary>
     public void Pause()
     {
-        start = false;
+        _start = false;
     }
 
     public void Tick()
     {
-        if (start)
+        if (_start)
         {
-            frame++;
-            if (frame > 120)
+            _frame++;
+            if (_frame > 120)
             {
-                frame = 0;
+                _frame = 0;
             }
 
-            if (frame <= 60)
+            if (_frame <= 60)
             {
                 //0 360
                 //-180 180
-                Arm.Y = frame * 6 - 180;
+                Arm.Y = _frame * 6 - 180;
                 //0 180
                 //90 -90
-                Leg.Y = 90 - frame * 3;
+                Leg.Y = 90 - _frame * 3;
                 //-30 30
-                if (Render.model.SteveModelType == SkinType.NewSlim)
+                if (_render._model.SteveModelType == SkinType.NewSlim)
                 {
                     Head.Z = 0;
-                    Head.X = frame - 30;
+                    Head.X = _frame - 30;
                 }
                 else
                 {
                     Head.X = 0;
-                    Head.Z = frame - 30;
+                    Head.Z = _frame - 30;
                 }
             }
             else
             {
                 //360 720
                 //180 -180
-                Arm.Y = 540 - frame * 6;
+                Arm.Y = 540 - _frame * 6;
                 //180 360
                 //-90 90
-                Leg.Y = frame * 3 - 270;
+                Leg.Y = _frame * 3 - 270;
                 //30 -30
-                if (Render.model.SteveModelType == SkinType.NewSlim)
+                if (_render._model.SteveModelType == SkinType.NewSlim)
                 {
                     Head.Z = 0;
-                    Head.X = 90 - frame;
+                    Head.X = 90 - _frame;
                 }
                 else
                 {
                     Head.X = 0;
-                    Head.Z = 90 - frame;
+                    Head.Z = 90 - _frame;
                 }
             }
         }
@@ -109,9 +109,9 @@ public class SkinAnimation
         Task.Run(() =>
         {
             Thread.Sleep(15);
-            if (run)
+            if (_run)
             {
-                Dispatcher.UIThread.Invoke(Render.RequestNextFrameRendering);
+                Dispatcher.UIThread.Invoke(_render.RequestNextFrameRendering);
             }
         });
 

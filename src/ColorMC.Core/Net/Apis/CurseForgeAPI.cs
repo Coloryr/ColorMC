@@ -41,7 +41,7 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForgeUrl}mods/search?gameId={GameID}&classId={classid}&"
+            string temp = $"{UrlHelper.CurseForge}mods/search?gameId={GameID}&classId={classid}&"
                 + $"gameVersion={version}&index={page * pagesize}&sortField={sortField}&"
                 + $"searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}&"
                 + $"categoryId={categoryId}";
@@ -140,7 +140,7 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForgeUrl}mods/{obj.projectID}/files/{obj.fileID}";
+            string temp = $"{UrlHelper.CurseForge}mods/{obj.projectID}/files/{obj.fileID}";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -174,7 +174,7 @@ public static class CurseForgeAPI
         {
             var arg1 = new { fileIds = new List<long>() };
             obj.ForEach(a => arg1.fileIds.Add(a.fileID));
-            string temp = $"{UrlHelper.CurseForgeUrl}mods/files";
+            string temp = $"{UrlHelper.CurseForge}mods/files";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Post,
@@ -203,7 +203,7 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForgeUrl}categories?gameId={GameID}";
+            string temp = $"{UrlHelper.CurseForge}categories?gameId={GameID}";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -230,7 +230,7 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForgeUrl}games/{GameID}/versions";
+            string temp = $"{UrlHelper.CurseForge}games/{GameID}/versions";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -257,7 +257,7 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForgeUrl}games/{GameID}/version-types";
+            string temp = $"{UrlHelper.CurseForge}games/{GameID}/version-types";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -284,7 +284,7 @@ public static class CurseForgeAPI
     {
         try
         {
-            string temp = $"{UrlHelper.CurseForgeUrl}mods/{id}";
+            string temp = $"{UrlHelper.CurseForge}mods/{id}";
             HttpRequestMessage httpRequest = new()
             {
                 Method = HttpMethod.Get,
@@ -312,7 +312,7 @@ public static class CurseForgeAPI
         try
         {
             mc ??= "";
-            string temp = $"{UrlHelper.CurseForgeUrl}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}";
+            string temp = $"{UrlHelper.CurseForge}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}";
             if (loader != Loaders.Normal)
             {
                 temp += $"&modLoaderType={Loader(loader)}";

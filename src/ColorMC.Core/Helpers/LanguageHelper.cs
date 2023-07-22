@@ -10,8 +10,8 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class LanguageHelper
 {
-    private static readonly Language Language = new();
-    private static LanguageType NowType;
+    private static readonly Language s_language = new();
+    private static LanguageType s_nowType;
 
     /// <summary>
     /// 加载语言文件
@@ -25,7 +25,7 @@ public static class LanguageHelper
         };
         Assembly assm = Assembly.GetExecutingAssembly();
         using var istr = assm.GetManifestResourceStream(name)!;
-        Language.Load(istr);
+        s_language.Load(istr);
     }
 
     /// <summary>
@@ -33,10 +33,10 @@ public static class LanguageHelper
     /// </summary>
     public static void Change(LanguageType type)
     {
-        if (NowType == type)
+        if (s_nowType == type)
             return;
 
-        NowType = type;
+        s_nowType = type;
         Load(type);
         ColorMCCore.LanguageReload?.Invoke(type);
     }
@@ -48,7 +48,7 @@ public static class LanguageHelper
     /// <returns></returns>
     public static string Get(string input)
     {
-        return Language.GetLanguage(input);
+        return s_language.GetLanguage(input);
     }
 
     public static string GetName(this AuthType type)

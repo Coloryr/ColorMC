@@ -11,13 +11,12 @@ namespace ColorMC.Core.Downloader;
 /// </summary>
 public class DownloadThread
 {
-    private readonly int index;
-    private readonly Thread thread;
-    private readonly Semaphore semaphore = new(0, 2);
-    private readonly Semaphore semaphore1 = new(0, 2);
-    private CancellationTokenSource cancel = new();
-    private bool pause = false;
-    private bool run = false;
+    private readonly int _index;
+    private readonly Thread _thread;
+    private readonly Semaphore _semaphore = new(0, 2);
+    private readonly Semaphore _semaphore1 = new(0, 2);
+    private bool _pause = false;
+    private bool _run = false;
 
     /// <summary>
     /// 初始化下载器
@@ -25,10 +24,10 @@ public class DownloadThread
     /// <param name="index">标号</param>
     public DownloadThread(int index)
     {
-        this.index = index;
-        thread = new(() =>
+        this._index = index;
+        _thread = new(() =>
         {
-            while (run)
+            while (_run)
             {
                 Run();
             }
@@ -36,8 +35,8 @@ public class DownloadThread
         {
             Name = $"DownloadThread_{index}"
         };
-        run = true;
-        thread.Start();
+        _run = true;
+        _thread.Start();
     }
 
     /// <summary>
@@ -45,12 +44,11 @@ public class DownloadThread
     /// </summary>
     public void Close()
     {
-        if (!run)
+        if (!_run)
             return;
 
-        run = false;
-        cancel.Cancel();
-        semaphore.Release();
+        _run = false;
+        _semaphore.Release();
     }
 
     /// <summary>
@@ -58,8 +56,7 @@ public class DownloadThread
     /// </summary>
     public void DownloadStop()
     {
-        cancel.Cancel();
-        if (pause)
+        if (_pause)
         {
             Resume();
         }
@@ -70,9 +67,7 @@ public class DownloadThread
     /// </summary>
     public void Start()
     {
-        cancel.Dispose();
-        cancel = new();
-        semaphore.Release();
+        _semaphore.Release();
     }
 
     /// <summary>
@@ -80,7 +75,7 @@ public class DownloadThread
     /// </summary>
     public void Pause()
     {
-        pause = true;
+        _pause = true;
     }
 
     /// <summary>
@@ -88,8 +83,8 @@ public class DownloadThread
     /// </summary>
     public void Resume()
     {
-        pause = false;
-        semaphore1.Release();
+        _pause = false;
+        _semaphore1.Release();
     }
 
     /// <summary>
@@ -97,11 +92,11 @@ public class DownloadThread
     /// </summary>
     private void ChckPause(DownloadItemObj item)
     {
-        if (pause)
+        if (_pause)
         {
             item.State = DownloadItemState.Pause;
-            item.Update?.Invoke(index);
-            semaphore1.WaitOne();
+            item.Update?.Invoke(_index);
+            _semaphore1.WaitOne();
         }
     }
 
@@ -110,15 +105,15 @@ public class DownloadThread
     /// </summary>
     private void Run()
     {
-        semaphore.WaitOne();
-        if (!run)
+        _semaphore.WaitOne();
+        if (!_run)
             return;
         DownloadItemObj? item;
         while ((item = DownloadManager.GetItem()) != null)
         {
             ChckPause(item);
 
-            if (cancel.IsCancellationRequested)
+            if (DownloadManager.Cancel.IsCancellationRequested)
                 break;
 
             byte[]? buffer = null;
@@ -144,12 +139,12 @@ public class DownloadThread
                             if (sha1 == item.SHA1)
                             {
                                 item.State = DownloadItemState.Action;
-                                item.Update?.Invoke(index);
+                                item.Update?.Invoke(_index);
                                 stream2.Seek(0, SeekOrigin.Begin);
                                 item.Later?.Invoke(stream2);
 
                                 item.State = DownloadItemState.Done;
-                                item.Update?.Invoke(index);
+                                item.Update?.Invoke(_index);
                                 DownloadManager.Done();
                                 continue;
                             }
@@ -163,12 +158,12 @@ public class DownloadThread
                             if (sha1 == item.SHA256)
                             {
                                 item.State = DownloadItemState.Action;
-                                item.Update?.Invoke(index);
+                                item.Update?.Invoke(_index);
                                 stream2.Seek(0, SeekOrigin.Begin);
                                 item.Later?.Invoke(stream2);
 
                                 item.State = DownloadItemState.Done;
-                                item.Update?.Invoke(index);
+                                item.Update?.Invoke(_index);
                                 DownloadManager.Done();
                                 continue;
                             }
@@ -180,13 +175,13 @@ public class DownloadThread
                 {
                     item.State = DownloadItemState.Error;
                     item.ErrorTime++;
-                    item.Update?.Invoke(index);
-                    DownloadManager.Error(index, item, e);
+                    item.Update?.Invoke(_index);
+                    DownloadManager.Error(_index, item, e);
                     continue;
                 }
             }
 
-            if (cancel.IsCancellationRequested)
+            if (DownloadManager.Cancel.IsCancellationRequested)
                 break;
 
             int time = 0;
@@ -197,17 +192,18 @@ public class DownloadThread
                 {
                     ChckPause(item);
 
-                    if (cancel.IsCancellationRequested)
+                    if (DownloadManager.Cancel.IsCancellationRequested)
                         break;
 
                     //网络请求
                     var data = BaseClient.DownloadClient.GetAsync(item.Url,
-                        HttpCompletionOption.ResponseHeadersRead, cancel.Token).Result;
+                        HttpCompletionOption.ResponseHeadersRead, 
+                        DownloadManager.Cancel.Token).Result;
                     item.AllSize = (long)data.Content.Headers.ContentLength!;
                     item.State = DownloadItemState.GetInfo;
                     item.NowSize = 0;
-                    item.Update?.Invoke(index);
-                    using Stream stream1 = data.Content.ReadAsStream(cancel.Token);
+                    item.Update?.Invoke(_index);
+                    using Stream stream1 = data.Content.ReadAsStream(DownloadManager.Cancel.Token);
                     buffer = ArrayPool<byte>.Shared.Rent(DownloadManager.GetCopyBufferSize(stream1));
 
                     string file = Path.GetFullPath(DownloadManager.DownloadDir + '/' + Guid.NewGuid().ToString());
@@ -216,24 +212,25 @@ public class DownloadThread
 
                     int bytesRead;
                     while ((bytesRead = stream1.ReadAsync(new Memory<byte>(buffer),
-                        cancel.Token).Result) != 0)
+                        DownloadManager.Cancel.Token).Result) != 0)
                     {
                         stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0,
-                            bytesRead), cancel.Token).AsTask().Wait(cancel.Token);
+                            bytesRead), DownloadManager.Cancel.Token)
+                            .AsTask().Wait(DownloadManager.Cancel.Token);
 
                         ChckPause(item);
 
-                        if (cancel.IsCancellationRequested)
+                        if (DownloadManager.Cancel.IsCancellationRequested)
                             break;
 
                         item.State = DownloadItemState.Download;
                         item.NowSize += bytesRead;
-                        item.Update?.Invoke(index);
+                        item.Update?.Invoke(_index);
                     }
 
                     ChckPause(item);
 
-                    if (cancel.IsCancellationRequested)
+                    if (DownloadManager.Cancel.IsCancellationRequested)
                         break;
 
                     //检查文件
@@ -246,8 +243,8 @@ public class DownloadThread
                             if (sha1 != item.SHA1)
                             {
                                 item.State = DownloadItemState.Error;
-                                item.Update?.Invoke(index);
-                                DownloadManager.Error(index, item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                                item.Update?.Invoke(_index);
+                                DownloadManager.Error(_index, item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
 
                                 break;
                             }
@@ -258,8 +255,8 @@ public class DownloadThread
                             if (sha1 != item.SHA256)
                             {
                                 item.State = DownloadItemState.Error;
-                                item.Update?.Invoke(index);
-                                DownloadManager.Error(index, item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                                item.Update?.Invoke(_index);
+                                DownloadManager.Error(_index, item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
 
                                 break;
                             }
@@ -267,11 +264,11 @@ public class DownloadThread
                     }
 
                     item.State = DownloadItemState.Action;
-                    item.Update?.Invoke(index);
+                    item.Update?.Invoke(_index);
 
                     ChckPause(item);
 
-                    if (cancel.IsCancellationRequested)
+                    if (DownloadManager.Cancel.IsCancellationRequested)
                         break;
 
                     //后续操作
@@ -287,20 +284,20 @@ public class DownloadThread
                     File.Move(file, item.Local);
 
                     item.State = DownloadItemState.Done;
-                    item.Update?.Invoke(index);
+                    item.Update?.Invoke(_index);
                     DownloadManager.Done();
                     break;
                 }
                 catch (Exception e)
                 {
-                    if (cancel.IsCancellationRequested)
+                    if (DownloadManager.Cancel.IsCancellationRequested)
                         break;
 
                     item.State = DownloadItemState.Error;
                     item.ErrorTime++;
-                    item.Update?.Invoke(index);
+                    item.Update?.Invoke(_index);
                     time++;
-                    DownloadManager.Error(index, item, e);
+                    DownloadManager.Error(_index, item, e);
 
                     if (time == 5)
                     {

@@ -8,16 +8,16 @@ public class Steve3DTexture
     {
         SteveTexture tex = new()
         {
-            Head = GetTex(HeadTex, type, 32f, 0f),
+            Head = GetTex(_headTex, type, 32f, 0f),
         };
 
         if (type != SkinType.Old)
         {
-            tex.Body = GetTex(BodyTex, type, 16f, 32f);
-            tex.LeftArm = GetTex(type == SkinType.NewSlim ? SlimArmTex : LegArmTex, type, 48f, 48f);
-            tex.RightArm = GetTex(type == SkinType.NewSlim ? SlimArmTex : LegArmTex, type, 40f, 32f);
-            tex.LeftLeg = GetTex(LegArmTex, type, 0f, 48f);
-            tex.RightLeg = GetTex(LegArmTex, type, 0f, 32f);
+            tex.Body = GetTex(_bodyTex, type, 16f, 32f);
+            tex.LeftArm = GetTex(type == SkinType.NewSlim ? _slimArmTex : _legArmTex, type, 48f, 48f);
+            tex.RightArm = GetTex(type == SkinType.NewSlim ? _slimArmTex : _legArmTex, type, 40f, 32f);
+            tex.LeftLeg = GetTex(_legArmTex, type, 0f, 48f);
+            tex.RightLeg = GetTex(_legArmTex, type, 0f, 32f);
         };
 
         return tex;
@@ -27,30 +27,30 @@ public class Steve3DTexture
     {
         SteveTexture tex = new()
         {
-            Head = GetTex(HeadTex, type),
-            Body = GetTex(BodyTex, type, 16f, 16f),
-            Cape = GetTex1(CapeTex),
+            Head = GetTex(_headTex, type),
+            Body = GetTex(_bodyTex, type, 16f, 16f),
+            Cape = GetCapTex(_capeTex),
         };
 
         if (type == SkinType.Old)
         {
-            tex.LeftArm = GetTex(LegArmTex, type, 40f, 16f);
-            tex.RightArm = GetTex(LegArmTex, type, 40f, 16f);
-            tex.LeftLeg = GetTex(LegArmTex, type, 0f, 16f);
-            tex.RightLeg = GetTex(LegArmTex, type, 0f, 16f);
+            tex.LeftArm = GetTex(_legArmTex, type, 40f, 16f);
+            tex.RightArm = GetTex(_legArmTex, type, 40f, 16f);
+            tex.LeftLeg = GetTex(_legArmTex, type, 0f, 16f);
+            tex.RightLeg = GetTex(_legArmTex, type, 0f, 16f);
         }
         else
         {
-            tex.LeftArm = GetTex(type == SkinType.NewSlim ? SlimArmTex : LegArmTex, type, 32f, 48f);
-            tex.RightArm = GetTex(type == SkinType.NewSlim ? SlimArmTex : LegArmTex, type, 40f, 16f);
-            tex.LeftLeg = GetTex(LegArmTex, type, 0f, 16f);
-            tex.RightLeg = GetTex(LegArmTex, type, 16f, 48f);
+            tex.LeftArm = GetTex(type == SkinType.NewSlim ? _slimArmTex : _legArmTex, type, 32f, 48f);
+            tex.RightArm = GetTex(type == SkinType.NewSlim ? _slimArmTex : _legArmTex, type, 40f, 16f);
+            tex.LeftLeg = GetTex(_legArmTex, type, 0f, 16f);
+            tex.RightLeg = GetTex(_legArmTex, type, 16f, 48f);
         }
 
         return tex;
     }
 
-    private readonly float[] HeadTex = new float[]
+    private readonly float[] _headTex = new float[]
     {
         // back
         32f, 8f, 32f, 16f, 24f, 16f, 24f, 8f,
@@ -66,7 +66,7 @@ public class Steve3DTexture
         24f, 0f, 24f, 8f, 16f, 8f, 16f, 0f
     };
 
-    private readonly float[] LegArmTex = new float[]
+    private readonly float[] _legArmTex = new float[]
     {
         // back
         12f, 4f, 12f, 16f, 16f, 16f, 16f, 4f,
@@ -82,7 +82,7 @@ public class Steve3DTexture
         12f, 0f, 12f, 4f, 8f, 4f, 8f, 0f,
     };
 
-    private readonly float[] SlimArmTex = new float[]
+    private readonly float[] _slimArmTex = new float[]
     {
         // back
         11f, 4f, 11f, 16f, 14f, 16f, 14f, 4f,
@@ -98,7 +98,7 @@ public class Steve3DTexture
         10f, 0f, 10f, 4f, 7f, 4f, 7f, 0f,
     };
 
-    private readonly float[] BodyTex = new float[]
+    private readonly float[] _bodyTex = new float[]
     {
         // back
         24f, 4f, 24f, 16f, 16f, 16f, 16f, 4f,
@@ -114,7 +114,7 @@ public class Steve3DTexture
         20f, 0f, 20f, 4f, 12f, 4f, 12f, 0f
     };
 
-    private readonly float[] CapeTex = new float[]
+    private readonly float[] _capeTex = new float[]
     {
         // back
         11f, 1f, 11f, 17f, 1f, 17f, 1f, 1f,
@@ -159,7 +159,7 @@ public class Steve3DTexture
         return temp;
     }
 
-    public static float[] GetTex1(float[] input)
+    public static float[] GetCapTex(float[] input)
     {
         var temp = new float[input.Length];
         for (int a = 0; a < input.Length; a++)

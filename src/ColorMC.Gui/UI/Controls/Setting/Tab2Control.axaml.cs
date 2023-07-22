@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Model.Setting;
+using System;
 using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
@@ -11,9 +12,11 @@ public partial class Tab2Control : UserControl
     public Tab2Control()
     {
         InitializeComponent();
+
+        DataContextChanged += OnDataContext_Change;
     }
 
-    public void Bind()
+    public void OnDataContext_Change(object? sender, EventArgs e)
     {
         (DataContext as SettingTab2Model)!.PropertyChanged += Tab2Control_PropertyChanged;
     }

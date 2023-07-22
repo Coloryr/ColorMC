@@ -7,8 +7,8 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class Info6Control : UserControl
 {
-    private readonly Semaphore semaphore = new(0, 2);
-    private bool Display = false;
+    private readonly Semaphore _semaphore = new(0, 2);
+    private bool _display = false;
 
     public bool Cancel { get; private set; }
 
@@ -23,20 +23,20 @@ public partial class Info6Control : UserControl
     private void Button_Cancel_Click(object? sender, RoutedEventArgs e)
     {
         Cancel = true;
-        semaphore.Release();
+        _semaphore.Release();
         Close();
     }
 
     private void Button_Add_Click(object? sender, RoutedEventArgs e)
     {
         Cancel = false;
-        semaphore.Release();
+        _semaphore.Release();
         Close();
     }
 
     public void Close()
     {
-        if (!Display)
+        if (!_display)
             return;
 
         App.CrossFade300.Start(this, null, CancellationToken.None);
@@ -44,7 +44,7 @@ public partial class Info6Control : UserControl
 
     public async Task<bool> ShowWait(string title, string data)
     {
-        Display = true;
+        _display = true;
 
         Label1.Content = title;
         TextBox1.Text = data;
@@ -53,7 +53,7 @@ public partial class Info6Control : UserControl
 
         await Task.Run(() =>
         {
-            semaphore.WaitOne();
+            _semaphore.WaitOne();
         });
 
         return Cancel;

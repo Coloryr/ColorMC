@@ -8,8 +8,8 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class MCPath
 {
-    private const string Name = "minecraft";
-    public static string BaseDir { get; private set; } = "";
+    public const string Name = "minecraft";
+    public static string BaseDir { get; private set; }
 
     /// <summary>
     /// 初始化

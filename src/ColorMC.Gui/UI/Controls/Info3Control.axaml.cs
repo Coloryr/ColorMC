@@ -9,9 +9,9 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class Info3Control : UserControl
 {
-    private readonly Semaphore semaphore = new(0, 2);
-    private Action? CancelCall;
-    private bool Display = false;
+    private readonly Semaphore _semaphore = new(0, 2);
+    private Action? _cancelCall;
+    private bool _display = false;
 
     public bool Cancel { get; private set; }
 
@@ -35,16 +35,16 @@ public partial class Info3Control : UserControl
 
     private void Button_Cancel_Click(object? sender, RoutedEventArgs e)
     {
-        if (CancelCall != null)
+        if (_cancelCall != null)
         {
-            CancelCall();
+            _cancelCall();
             Button_Cancel.IsEnabled = false;
-            CancelCall = null;
+            _cancelCall = null;
             return;
         }
 
         Cancel = true;
-        semaphore.Release();
+        _semaphore.Release();
 
         Close();
     }
@@ -57,24 +57,24 @@ public partial class Info3Control : UserControl
     public void Confirm()
     {
         Cancel = false;
-        semaphore.Release();
+        _semaphore.Release();
 
         Close();
     }
 
     public void Close()
     {
-        if (!Display)
+        if (!_display)
             return;
 
-        Display = false;
+        _display = false;
 
         App.CrossFade300.Start(this, null, CancellationToken.None);
     }
 
     public Task ShowInput(string title, string title1, bool password)
     {
-        Display = true;
+        _display = true;
 
         TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = false;
 
@@ -95,17 +95,17 @@ public partial class Info3Control : UserControl
         TextBox_Text1.PasswordChar = password ? '*' : (char)0;
         App.CrossFade300.Start(null, this, CancellationToken.None);
 
-        CancelCall = null;
+        _cancelCall = null;
 
         return Task.Run(() =>
         {
-            semaphore.WaitOne();
+            _semaphore.WaitOne();
         });
     }
 
     public void Show(string title, string title1)
     {
-        Display = true;
+        _display = true;
 
         TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = true;
         TextBox_Text.Text = title;
@@ -129,7 +129,7 @@ public partial class Info3Control : UserControl
 
     public void Show(string title, string title1, Action cancel)
     {
-        Display = true;
+        _display = true;
 
         TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = true;
         TextBox_Text.Text = title;
@@ -143,7 +143,7 @@ public partial class Info3Control : UserControl
         Button_Confirm.IsEnabled = false;
         Button_Confirm.IsVisible = false;
 
-        CancelCall = cancel;
+        _cancelCall = cancel;
 
         Button_Cancel.IsEnabled = true;
         Button_Cancel.IsVisible = true;
@@ -155,7 +155,7 @@ public partial class Info3Control : UserControl
 
     public Task ShowOne(string title, bool lock1 = true)
     {
-        Display = true;
+        _display = true;
 
         TextBox_Text1.IsVisible = false;
         TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = lock1;
@@ -191,10 +191,10 @@ public partial class Info3Control : UserControl
 
         if (!lock1)
         {
-            CancelCall = null;
+            _cancelCall = null;
             return Task.Run(() =>
             {
-                semaphore.WaitOne();
+                _semaphore.WaitOne();
             });
         }
 
@@ -203,7 +203,7 @@ public partial class Info3Control : UserControl
 
     public Task ShowEdit(string title, string data)
     {
-        Display = true;
+        _display = true;
 
         TextBox_Text1.IsVisible = false;
         TextBox_Text.IsReadOnly = false;
@@ -213,10 +213,10 @@ public partial class Info3Control : UserControl
         TextBox_Text.Watermark = title;
         App.CrossFade300.Start(null, this, CancellationToken.None);
 
-        CancelCall = null;
+        _cancelCall = null;
         return Task.Run(() =>
         {
-            semaphore.WaitOne();
+            _semaphore.WaitOne();
         });
     }
 

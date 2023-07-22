@@ -13,42 +13,42 @@ namespace ColorMC.Core.LaunchPath;
 
 public static class InstancesPath
 {
-    private const string Name = "instances";
-    private const string Name1 = "game.json";
-    private const string Name2 = ".minecraft";
-    private const string Name3 = "modinfo.json";
-    private const string Name4 = "modpack.json";
-    private const string Name5 = "options.txt";
-    private const string Name6 = "servers.dat";
-    private const string Name7 = "screenshots";
-    private const string Name8 = "resourcepacks";
-    private const string Name9 = "shaderpacks";
-    private const string Name10 = "icon.png";
-    private const string Name11 = "mods";
-    private const string Name12 = "saves";
-    private const string Name13 = "config";
-    private const string Name14 = "modfileinfo.json";
-    private const string Name15 = "logs";
-    private const string Name16 = "schematics";
-    private const string Name17 = "remove";
-    private const string Name18 = "backup";
-    private const string Name19 = "server.json";
-    private const string Name20 = "server.old.json";
-    private const string Name21 = "launch.json";
+    public const string Name = "instances";
+    public const string Name1 = "game.json";
+    public const string Name2 = ".minecraft";
+    public const string Name3 = "modinfo.json";
+    public const string Name4 = "modpack.json";
+    public const string Name5 = "options.txt";
+    public const string Name6 = "servers.dat";
+    public const string Name7 = "screenshots";
+    public const string Name8 = "resourcepacks";
+    public const string Name9 = "shaderpacks";
+    public const string Name10 = "icon.png";
+    public const string Name11 = "mods";
+    public const string Name12 = "saves";
+    public const string Name13 = "config";
+    public const string Name14 = "modfileinfo.json";
+    public const string Name15 = "logs";
+    public const string Name16 = "schematics";
+    public const string Name17 = "remove";
+    public const string Name18 = "backup";
+    public const string Name19 = "server.json";
+    public const string Name20 = "server.old.json";
+    public const string Name21 = "launch.json";
 
     /// <summary>
     /// 游戏实例列表
     /// </summary>
-    private readonly static Dictionary<string, GameSettingObj> InstallGames = new();
+    private readonly static Dictionary<string, GameSettingObj> s_installGames = new();
     /// <summary>
     /// 游戏实例组
     /// </summary>
-    private readonly static Dictionary<string, List<GameSettingObj>> GameGroups = new();
+    private readonly static Dictionary<string, List<GameSettingObj>> s_gameGroups = new();
 
     /// <summary>
     /// 基础路径
     /// </summary>
-    public static string BaseDir { get; private set; } = "";
+    public static string BaseDir { get; private set; }
 
     /// <summary>
     /// 获取所有游戏实例
@@ -57,19 +57,19 @@ public static class InstancesPath
     {
         get
         {
-            return new(InstallGames.Values);
+            return new(s_installGames.Values);
         }
     }
 
     /// <summary>
     /// 获取所有游戏实例组
     /// </summary>
-    public static Dictionary<string, List<GameSettingObj>> Groups => new(GameGroups);
+    public static Dictionary<string, List<GameSettingObj>> Groups => new(s_gameGroups);
 
     /// <summary>
     /// 是否没有游戏实例
     /// </summary>
-    public static bool IsNotGame => InstallGames.Count == 0;
+    public static bool IsNotGame => s_installGames.Count == 0;
 
     /// <summary>
     /// 添加游戏实例到组
@@ -78,20 +78,20 @@ public static class InstancesPath
     private static void AddToGroup(this GameSettingObj obj)
     {
         while (string.IsNullOrWhiteSpace(obj.UUID)
-            || InstallGames.ContainsKey(obj.UUID))
+            || s_installGames.ContainsKey(obj.UUID))
         {
             obj.UUID = Guid.NewGuid().ToString();
             obj.Save();
         }
-        InstallGames.Add(obj.UUID, obj);
+        s_installGames.Add(obj.UUID, obj);
 
         if (string.IsNullOrWhiteSpace(obj.GroupName))
         {
-            GameGroups[" "].Add(obj);
+            s_gameGroups[" "].Add(obj);
         }
         else
         {
-            if (GameGroups.TryGetValue(obj.GroupName, out var group))
+            if (s_gameGroups.TryGetValue(obj.GroupName, out var group))
             {
                 group.Add(obj);
             }
@@ -101,7 +101,7 @@ public static class InstancesPath
                 {
                     obj
                 };
-                GameGroups.Add(obj.GroupName, list);
+                s_gameGroups.Add(obj.GroupName, list);
             }
         }
     }
@@ -112,19 +112,19 @@ public static class InstancesPath
     /// <param name="obj"></param>
     private static void RemoveFromGroup(this GameSettingObj obj)
     {
-        InstallGames.Remove(obj.UUID);
+        s_installGames.Remove(obj.UUID);
 
         if (string.IsNullOrEmpty(obj.GroupName))
         {
-            GameGroups[" "].Remove(obj);
+            s_gameGroups[" "].Remove(obj);
         }
-        else if (GameGroups.TryGetValue(obj.GroupName, out var group))
+        else if (s_gameGroups.TryGetValue(obj.GroupName, out var group))
         {
             group.Remove(obj);
 
             if (!group.Any())
             {
-                GameGroups.Remove(obj.GroupName);
+                s_gameGroups.Remove(obj.GroupName);
             }
         }
     }
@@ -139,7 +139,7 @@ public static class InstancesPath
 
         Directory.CreateDirectory(BaseDir);
 
-        GameGroups.Add(" ", new List<GameSettingObj>());
+        s_gameGroups.Add(" ", new List<GameSettingObj>());
 
         var list = Directory.GetDirectories(BaseDir);
         foreach (var item in list)
@@ -191,7 +191,7 @@ public static class InstancesPath
         if (string.IsNullOrWhiteSpace(uuid))
             return null;
 
-        if (InstallGames.TryGetValue(uuid, out var item))
+        if (s_installGames.TryGetValue(uuid, out var item))
         {
             return item;
         }
@@ -209,7 +209,7 @@ public static class InstancesPath
         if (string.IsNullOrWhiteSpace(name))
             return null;
 
-        return InstallGames.Values.FirstOrDefault(a => a.Name == name);
+        return s_installGames.Values.FirstOrDefault(a => a.Name == name);
     }
 
     /// <summary>
@@ -458,7 +458,7 @@ public static class InstancesPath
     /// <returns>结果</returns>
     public static async Task<GameSettingObj?> CreateGame(this GameSettingObj game)
     {
-        if (InstallGames.ContainsKey(game.Name))
+        if (s_installGames.ContainsKey(game.Name))
         {
             if (ColorMCCore.GameOverwirte == null)
                 return null;
@@ -466,7 +466,7 @@ public static class InstancesPath
             if (await ColorMCCore.GameOverwirte.Invoke(game) == false)
                 return null;
 
-            if (InstallGames.Remove(game.Name, out var temp))
+            if (s_installGames.Remove(game.Name, out var temp))
             {
                 await Remove(temp);
             }
@@ -503,12 +503,12 @@ public static class InstancesPath
     /// <returns>结果</returns>
     public static bool AddGroup(string name)
     {
-        if (GameGroups.ContainsKey(name))
+        if (s_gameGroups.ContainsKey(name))
         {
             return false;
         }
 
-        GameGroups.Add(name, new());
+        s_gameGroups.Add(name, new());
 
         return true;
     }
@@ -523,11 +523,11 @@ public static class InstancesPath
         var group = obj.GroupName;
         if (string.IsNullOrWhiteSpace(group))
         {
-            GameGroups[" "].Remove(obj);
+            s_gameGroups[" "].Remove(obj);
         }
         else
         {
-            var list = GameGroups[group];
+            var list = s_gameGroups[group];
             if (list.Contains(obj))
             {
                 list.Remove(obj);
@@ -535,18 +535,18 @@ public static class InstancesPath
 
             if (list.Count == 0)
             {
-                GameGroups.Remove(group);
+                s_gameGroups.Remove(group);
             }
         }
 
         if (string.IsNullOrWhiteSpace(now))
         {
-            GameGroups[" "].Add(obj);
+            s_gameGroups[" "].Add(obj);
         }
         else
         {
             AddGroup(now);
-            GameGroups[now].Add(obj);
+            s_gameGroups[now].Add(obj);
         }
 
         obj.GroupName = now!;
@@ -820,7 +820,7 @@ public static class InstancesPath
                         if (game == null)
                             break;
 
-                        if (InstallGames.ContainsKey(game.Name))
+                        if (s_installGames.ContainsKey(game.Name))
                         {
                             break;
                         }

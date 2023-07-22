@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class Info4Control : UserControl
 {
-    private Action<bool>? call;
+    private Action<bool>? _call;
 
     public Info4Control()
     {
@@ -23,7 +23,7 @@ public partial class Info4Control : UserControl
         Button_Cancel.IsEnabled = false;
         await App.CrossFade300.Start(this, null, CancellationToken.None);
 
-        call?.Invoke(false);
+        _call?.Invoke(false);
     }
 
     private async void Confirm_Click(object? sender, RoutedEventArgs e)
@@ -32,7 +32,7 @@ public partial class Info4Control : UserControl
         Button_Cancel.IsEnabled = false;
         await App.CrossFade300.Start(this, null, CancellationToken.None);
 
-        call?.Invoke(true);
+        _call?.Invoke(true);
     }
 
     public async void Show(string title, Action<bool> res)
@@ -42,7 +42,7 @@ public partial class Info4Control : UserControl
         Button_Confirm.IsVisible = true;
         Button_Cancel.IsVisible = true;
         TextBlock_Text.Text = title;
-        call = res;
+        _call = res;
 
         await App.CrossFade300.Start(null, this, CancellationToken.None);
     }
@@ -57,7 +57,7 @@ public partial class Info4Control : UserControl
         Button_Cancel.IsVisible = true;
         TextBlock_Text.Text = title;
 
-        call = (res) =>
+        _call = (res) =>
         {
             reut = res;
             semaphore.Release();
@@ -70,7 +70,7 @@ public partial class Info4Control : UserControl
             semaphore.WaitOne();
         });
 
-        call = null;
+        _call = null;
 
         return reut;
     }
@@ -93,7 +93,7 @@ public partial class Info4Control : UserControl
         Button_Cancel.IsVisible = false;
         TextBlock_Text.Text = title;
 
-        call = (res) =>
+        _call = (res) =>
         {
             action.Invoke();
         };

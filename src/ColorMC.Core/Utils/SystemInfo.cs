@@ -12,8 +12,8 @@ public static class SystemInfo
     public static CultureInfo CultureInfo { get; private set; } = CultureInfo.InstalledUICulture;
     public static OsType Os { get; private set; } = OsType.Windows;
     public static ArchEnum SystemArch { get; private set; } = ArchEnum.x64;
-    public static string SystemName { get; private set; } = "";
-    public static string System { get; private set; } = "";
+    public static string SystemName { get; private set; }
+    public static string System { get; private set; }
     public static int ProcessorCount { get; private set; }
     public static bool IsArm { get; private set; }
 

@@ -18,8 +18,8 @@ public partial class ServerMotdControl : UserControl
     public static readonly StyledProperty<(string, ushort)> IPPortProperty =
         AvaloniaProperty.Register<ServerMotdControl, (string, ushort)>(nameof(IPPort));
 
-    private string? IP;
-    private ushort Port;
+    private string? _ip;
+    private ushort _port;
 
     public (string, ushort) IPPort
     {
@@ -27,8 +27,8 @@ public partial class ServerMotdControl : UserControl
         private set => SetValue(IPPortProperty, value);
     }
 
-    private bool FirstLine = true;
-    private readonly Random random = new();
+    private bool _firstLine = true;
+    private readonly Random _random = new();
 
     public ServerMotdControl()
     {
@@ -44,10 +44,10 @@ public partial class ServerMotdControl : UserControl
         if (e.Property == IPPortProperty)
         {
             var data = IPPort;
-            IP = data.Item1;
-            if (Port == 0)
+            _ip = data.Item1;
+            if (_port == 0)
             {
-                var ip = IP;
+                var ip = _ip;
                 if (ip == null)
                 {
                     return;
@@ -55,16 +55,16 @@ public partial class ServerMotdControl : UserControl
                 int index = ip.LastIndexOf(':');
                 if (index == -1)
                 {
-                    Port = 25565;
+                    _port = 25565;
                 }
                 else
                 {
-                    IP = ip[..index];
+                    _ip = ip[..index];
                     _ = ushort.TryParse(ip[(index + 1)..], out var port);
-                    Port = port;
+                    _port = port;
                 }
             }
-            Port = data.Item2;
+            _port = data.Item2;
             Update();
         }
     }
@@ -74,22 +74,16 @@ public partial class ServerMotdControl : UserControl
         Update();
     }
 
-    public void Load(string ip, ushort port)
-    {
-        IP = ip;
-        Port = port;
-    }
-
     private async void Update()
     {
         Grid1.IsVisible = true;
 
-        FirstLine = true;
+        _firstLine = true;
         StackPanel1.Children.Clear();
         StackPanel2.Children.Clear();
 
-        var ip = IP;
-        var port = Port;
+        var ip = _ip;
+        var port = _port;
         if (ip == null)
             return;
 
@@ -158,7 +152,7 @@ public partial class ServerMotdControl : UserControl
     {
         if (chat.Text == "\n")
         {
-            FirstLine = false;
+            _firstLine = false;
             return;
         }
 
@@ -204,7 +198,7 @@ public partial class ServerMotdControl : UserControl
 
             if (chat.Obfuscated)
             {
-                text.Text = new string((char)random.Next(33, 126), 1);
+                text.Text = new string((char)_random.Next(33, 126), 1);
             }
 
             AddText(text);
@@ -221,7 +215,7 @@ public partial class ServerMotdControl : UserControl
 
     public void AddText(TextBlock text)
     {
-        if (FirstLine)
+        if (_firstLine)
         {
             StackPanel1.Children.Add(text);
         }

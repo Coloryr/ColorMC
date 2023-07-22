@@ -12,76 +12,76 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout1
 {
-    private readonly IEnumerable<ModDisplayModel> List;
-    private readonly ModDisplayModel Obj;
-    private readonly Control Con;
-    private readonly GameEditTab4Model Model;
-    private readonly bool Single;
+    private readonly IEnumerable<ModDisplayModel> _list;
+    private readonly ModDisplayModel _obj;
+    private readonly Control _con;
+    private readonly GameEditTab4Model _model;
+    private readonly bool _single;
 
     public GameEditFlyout1(Control con, IList obj, GameEditTab4Model model)
     {
-        Con = con;
-        Model = model;
-        List = obj.Cast<ModDisplayModel>();
-        if (List.Count() == 1)
+        _con = con;
+        _model = model;
+        _list = obj.Cast<ModDisplayModel>();
+        if (_list.Count() == 1)
         {
-            Single = true;
-            Obj = List.First();
+            _single = true;
+            _obj = _list.First();
         }
 
         var fy = new FlyoutsControl(new()
         {
             (App.GetLanguage("GameEditWindow.Flyouts1.Text1"), true, Button1_Click),
             (App.GetLanguage("GameEditWindow.Flyouts1.Text2"), true, Button2_Click),
-            (App.GetLanguage("Button.OpFile"), Single, Button3_Click),
+            (App.GetLanguage("Button.OpFile"), _single, Button3_Click),
             (App.GetLanguage("GameEditWindow.Flyouts1.Text6"), true, Button7_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text3"), Single, Button4_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text4"), Single
-                && !string.IsNullOrWhiteSpace(Obj?.Url), Button5_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts1.Text5"), Single
-                && !string.IsNullOrWhiteSpace(Obj?.PID) && !string.IsNullOrWhiteSpace(Obj?.FID), Button6_Click),
+            (App.GetLanguage("GameEditWindow.Flyouts1.Text3"), _single, Button4_Click),
+            (App.GetLanguage("GameEditWindow.Flyouts1.Text4"), _single
+                && !string.IsNullOrWhiteSpace(_obj?.Url), Button5_Click),
+            (App.GetLanguage("GameEditWindow.Flyouts1.Text5"), _single
+                && !string.IsNullOrWhiteSpace(_obj?.PID) && !string.IsNullOrWhiteSpace(_obj?.FID), Button6_Click),
         }, con);
     }
 
     private void Button1_Click()
     {
-        if (Single)
+        if (_single)
         {
-            Model.DisE(Obj);
+            _model.DisE(_obj);
         }
         else
         {
-            foreach (var item in List)
+            foreach (var item in _list)
             {
-                Model.DisE(item);
+                _model.DisE(item);
             }
         }
     }
 
     private void Button2_Click()
     {
-        if (Single)
+        if (_single)
         {
-            Model.Delete(Obj);
+            _model.Delete(_obj);
         }
         else
         {
-            Model.Delete(List);
+            _model.Delete(_list);
         }
     }
 
     private void Button3_Click()
     {
-        BaseBinding.OpFile(Obj.Local);
+        BaseBinding.OpFile(_obj.Local);
     }
 
     private async void Button7_Click()
     {
         var list = new List<IStorageFile>();
-        var window = Con.GetVisualRoot();
+        var window = _con.GetVisualRoot();
         if (window is TopLevel top)
         {
-            foreach (var item in List)
+            foreach (var item in _list)
             {
                 var data = await top.StorageProvider.TryGetFileFromPathAsync(item.Local);
                 if (data == null)
@@ -89,22 +89,22 @@ public class GameEditFlyout1
 
                 list.Add(data);
             }
-            await BaseBinding.CopyFileClipboard(TopLevel.GetTopLevel(Con), list);
+            await BaseBinding.CopyFileClipboard(TopLevel.GetTopLevel(_con), list);
         }
     }
 
     private void Button4_Click()
     {
-        WebBinding.OpenMcmod(Obj);
+        WebBinding.OpenMcmod(_obj);
     }
 
     private void Button5_Click()
     {
-        BaseBinding.OpUrl(Obj.Url);
+        BaseBinding.OpUrl(_obj.Url);
     }
 
     private void Button6_Click()
     {
-        App.ShowAdd(Obj.Obj.Game, Obj);
+        App.ShowAdd(_obj.Obj.Game, _obj);
     }
 }

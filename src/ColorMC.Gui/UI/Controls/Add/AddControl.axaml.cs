@@ -14,15 +14,15 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddControl : UserControl, IUserControl, IAddWindow
 {
-    public GameSettingObj Obj { get; private set; }
-
-    private readonly AddControlModel model;
+    public GameSettingObj Obj { get; }
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public UserControl Con => throw new System.NotImplementedException();
 
     public string Title => throw new System.NotImplementedException();
+
+    private readonly AddControlModel _model;
 
     public AddControl() : this(new() { Empty = true })
     {
@@ -35,10 +35,10 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
         InitializeComponent();
 
-        model = new AddControlModel(this, obj);
-        model.PropertyChanged += Model_PropertyChanged;
+        _model = new AddControlModel(this, obj);
+        _model.PropertyChanged += Model_PropertyChanged;
 
-        DataContext = model;
+        DataContext = _model;
 
         DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
 
@@ -54,7 +54,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (model.OptifineDisplay == true)
+                if (_model.OptifineDisplay == true)
                 {
                     App.CrossFade300.Start(null, Grid2, CancellationToken.None);
                 }
@@ -68,7 +68,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (model.ModDownloadDisplay == true)
+                if (_model.ModDownloadDisplay == true)
                 {
                     App.CrossFade300.Start(null, Grid4, CancellationToken.None);
                 }
@@ -82,7 +82,7 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (model.VersionDisplay == true)
+                if (_model.VersionDisplay == true)
                 {
                     App.CrossFade300.Start(null, Grid1, CancellationToken.None);
                 }
@@ -103,13 +103,13 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
         {
-            model.VersionClose();
+            _model.VersionClose();
             e.Handled = true;
         }
     }
     private void DataGrid2_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        var item = model.Mod;
+        var item = _model.Mod;
         if (item != null)
         {
             item.Download = !item.Download;
@@ -118,37 +118,37 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     private async void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        await model.DownloadOptifine();
+        await _model.DownloadOptifine();
     }
 
     private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        await model.GoFile();
+        await _model.GoFile();
     }
 
     public void Closed()
     {
-        model.DisplayList.Clear();
+        _model.DisplayList.Clear();
 
         App.AddWindows.Remove(Obj.UUID);
 
-        if (model.Set)
-            model.Set = false;
+        if (_model.Set)
+            _model.Set = false;
     }
 
     public void SetSelect(FileItemModel last)
     {
-        model.SetSelect(last);
+        _model.SetSelect(last);
     }
 
     public void Install(FileItemModel item)
     {
-        model.Install();
+        _model.Install();
     }
 
     public void GoFile(SourceType type, string pid)
     {
-        model.GoFile(type, pid);
+        _model.GoFile(type, pid);
     }
 
     public void Opened()
@@ -157,34 +157,34 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
         DataGridFiles.SetFontColor();
 
-        model.display = true;
+        _model.Display = true;
     }
 
     public async Task GoSet()
     {
-        model.Set = true;
+        _model.Set = true;
 
-        model.Type = (int)FileType.Mod - 1;
-        model.DownloadSource = 0;
+        _model.Type = (int)FileType.Mod - 1;
+        _model.DownloadSource = 0;
         await Task.Run(() =>
         {
-            while (model.Set)
+            while (_model.Set)
                 Thread.Sleep(1000);
         });
     }
 
     public void Back()
     {
-        model.Back();
+        _model.Back();
     }
 
     public void Next()
     {
-        model.Next();
+        _model.Next();
     }
 
     public void GoTo(FileType type)
     {
-        model.GoTo(type);
+        _model.GoTo(type);
     }
 }

@@ -12,32 +12,35 @@ public static class UrlHelper
     public const string BMCLAPI = "https://bmclapi2.bangbang93.com/";
     public const string MCBBS = "https://download.mcbbs.net/";
 
+    public const string Authlib = "https://authlib-injector.yushi.moe/";
+
     public const string LittleSkin = "https://littleskin.cn/";
 
     public const string Nide8 = "https://auth.mc-user.com:233/";
     public const string Nide8Jar = "https://login.mc-user.com:233/index/jar";
 
     public const string CurseForgeDownload = "https://edge.forgecdn.net/";
-    public const string CurseForgeUrl = "https://api.curseforge.com/v1/";
+    public const string CurseForge = "https://api.curseforge.com/v1/";
 
-    public const string ModrinthUrl = "https://api.modrinth.com/v2/";
+    public const string ModrinthDownload = "https://cdn.modrinth.com/";
 
-    public const string OptifineUrl = "https://optifine.net/";
+    public const string Modrinth = "https://api.modrinth.com/v2/";
+    public const string Forge = "https://maven.minecraftforge.net/";
+    public const string Fabric = "https://maven.fabricmc.net/";
+    public const string FabricMeta = "https://meta.fabricmc.net/";
+    public const string Quilt = "https://maven.quiltmc.org/";
+    public const string QuiltMeta = "https://meta.quiltmc.org/";
+    public const string Optifine = "https://optifine.net/";
+    public const string NeoForge = "https://maven.neoforged.net/";
 
-    public const string NeoForgeUrl = "https://maven.neoforged.net/";
-
-    private static readonly string[] MojangUrl =
+    public const string MinecraftLib = "https://libraries.minecraft.net/";
+    public const string MinecraftResources = "https://resources.download.minecraft.net/";
+    public static readonly string[] Mojang =
     {
         "https://launchermeta.mojang.com/",
         "https://launcher.mojang.com/",
-        "https://piston-data.mojang.com"
+        "https://piston-data.mojang.com/"
     };
-
-    private const string MinecraftLibUrl = "https://libraries.minecraft.net/";
-
-    private const string ForgeUrl = "https://maven.minecraftforge.net/";
-
-    private const string FabricUrl = "https://maven.fabricmc.net/";
 
     public static readonly string[] MavenUrl =
     {
@@ -87,9 +90,9 @@ public static class UrlHelper
     {
         return local switch
         {
-            SourceLocal.BMCLAPI => "https://bmclapi2.bangbang93.com/mc/game/version_manifest_v2.json",
-            SourceLocal.MCBBS => "https://download.mcbbs.net/mc/game/version_manifest_v2.json",
-            _ => "http://launchermeta.mojang.com/mc/game/version_manifest_v2.json"
+            SourceLocal.BMCLAPI => $"{BMCLAPI}mc/game/version_manifest_v2.json",
+            SourceLocal.MCBBS => $"{MCBBS}mc/game/version_manifest_v2.json",
+            _ => $"{Mojang[0]}mc/game/version_manifest_v2.json"
         };
     }
 
@@ -109,7 +112,7 @@ public static class UrlHelper
             return url;
         }
 
-        foreach (var item in MojangUrl)
+        foreach (var item in Mojang)
         {
             url = url.Replace(item, to);
         }
@@ -133,7 +136,7 @@ public static class UrlHelper
             return url;
         }
 
-        url = url.Replace(MinecraftLibUrl, to);
+        url = url.Replace(MinecraftLib, to);
 
         return url;
     }
@@ -147,7 +150,7 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}assets/{uuid[..2]}/{uuid}",
             SourceLocal.MCBBS => $"{MCBBS}assets/{uuid[..2]}/{uuid}",
-            _ => $"https://resources.download.minecraft.net/{uuid[..2]}/{uuid}"
+            _ => $"{MinecraftResources}{uuid[..2]}/{uuid}"
         };
 
         return url;
@@ -162,7 +165,7 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/minecraftforge/forge/{mc}-{version}/",
             SourceLocal.MCBBS => $"{MCBBS}maven/net/minecraftforge/forge/{mc}-{version}/",
-            _ => $"https://maven.minecraftforge.net/net/minecraftforge/forge/{mc}-{version}/"
+            _ => $"{Forge}net/minecraftforge/forge/{mc}-{version}/"
         };
 
         return url;
@@ -177,7 +180,7 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}maven/net/neoforged/forge/{mc}-{version}/",
             SourceLocal.MCBBS => $"{MCBBS}maven/net/neoforged/forge/{mc}-{version}/",
-            _ => $"https://maven.neoforged.net/releases/net/neoforged/forge/{mc}-{version}/"
+            _ => $"{NeoForge}releases/net/neoforged/forge/{mc}-{version}/"
         };
 
         return url;
@@ -199,9 +202,7 @@ public static class UrlHelper
             return url;
         }
 
-        url = url.Replace(ForgeUrl, to);
-
-        return url;
+        return url.Replace(Forge, to);
     }
 
     /// <summary>
@@ -229,13 +230,13 @@ public static class UrlHelper
     /// <summary>
     /// Fabric地址
     /// </summary>
-    public static string FabricMeta(SourceLocal? local)
+    public static string GetFabricMeta(SourceLocal? local)
     {
         string? url = local switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}fabric-meta/v2/versions",
             SourceLocal.MCBBS => $"{MCBBS}fabric-meta/v2/versions",
-            _ => $"https://meta.fabricmc.net/v2/versions"
+            _ => $"{FabricMeta}v2/versions"
         };
 
         return url;
@@ -244,13 +245,13 @@ public static class UrlHelper
     /// <summary>
     /// Quilt地址
     /// </summary>
-    public static string QuiltMeta(SourceLocal? local)
+    public static string GetQuiltMeta(SourceLocal? local)
     {
         string? url = local switch
         {
             //SourceLocal.BMCLAPI => $"{BMCLAPI}quilt-meta/v3/versions",
             //SourceLocal.MCBBS => $"{MCBBS}quilt-meta/v3/versions",
-            _ => $"https://meta.quiltmc.org/v3/versions"
+            _ => $"{QuiltMeta}v3/versions"
         };
 
         return url;
@@ -271,7 +272,7 @@ public static class UrlHelper
         if (replace == null)
             return url;
 
-        return url.Replace("https://maven.fabricmc.net/", replace);
+        return url.Replace(Fabric, replace);
     }
 
     /// <summary>
@@ -289,7 +290,7 @@ public static class UrlHelper
         if (replace == null)
             return url;
 
-        return url.Replace("https://maven.quiltmc.org/repository/release/", replace);
+        return url.Replace($"{Quilt}repository/release/", replace);
     }
 
     /// <summary>
@@ -301,7 +302,7 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifacts.json",
             SourceLocal.MCBBS => $"{MCBBS}mirrors/authlib-injector/artifacts.json",
-            _ => $"https://authlib-injector.yushi.moe/artifacts.json"
+            _ => $"{Authlib}artifacts.json"
         };
     }
 
@@ -314,7 +315,7 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifact/{obj.build_number}.json",
             SourceLocal.MCBBS => $"{MCBBS}mirrors/authlib-injector/artifact/{obj.build_number}.json",
-            _ => $"https://authlib-injector.yushi.moe/artifact/{obj.build_number}.json"
+            _ => $"{Authlib}artifact/{obj.build_number}.json"
         };
     }
 
@@ -327,7 +328,7 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
             SourceLocal.MCBBS => $"{MCBBS}mirrors/authlib-injector/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar",
-            _ => $"https://authlib-injector.yushi.moe/artifact/{obj.build_number}/authlib-injector-{obj.version}.jar"
+            _ => $"{Authlib}artifact/{obj.build_number}/authlib-injector-{obj.version}.jar"
         };
     }
 
@@ -340,8 +341,7 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft",
             SourceLocal.MCBBS => $"{MCBBS}forge/minecraft",
-            //_ => "https://files.minecraftforge.net/net/minecraftforge/forge/"
-            _ => "https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml"
+            _ => $"{Forge}net/minecraftforge/forge/maven-metadata.xml"
         };
     }
 
@@ -354,8 +354,7 @@ public static class UrlHelper
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
             SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
-            //_ => $"https://files.minecraftforge.net/net/minecraftforge/forge/index_{version}.html"
-            _ => "https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml"
+            _ => $"{Forge}net/minecraftforge/forge/maven-metadata.xml"
         };
     }
 
@@ -365,8 +364,7 @@ public static class UrlHelper
         {
             //SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
             //SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
-            //_ => $"https://files.minecraftforge.net/net/minecraftforge/forge/index_{version}.html"
-            _ => $"{NeoForgeUrl}releases/net/neoforged/forge/maven-metadata.xml"
+            _ => $"{NeoForge}releases/net/neoforged/forge/maven-metadata.xml"
         };
     }
 
@@ -376,8 +374,7 @@ public static class UrlHelper
         {
             //SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
             //SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
-            //_ => $"https://files.minecraftforge.net/net/minecraftforge/forge/index_{version}.html"
-            _ => $"{NeoForgeUrl}releases/net/neoforged/forge/maven-metadata.xml"
+            _ => $"{NeoForge}releases/net/neoforged/forge/maven-metadata.xml"
         };
     }
 
@@ -391,19 +388,19 @@ public static class UrlHelper
         var random = new Random();
         if (BaseClient.Source == SourceLocal.Offical)
         {
-            if (old.StartsWith(ForgeUrl))
+            if (old.StartsWith(Forge))
             {
-                return (true, old.Replace(ForgeUrl,
+                return (true, old.Replace(Forge,
                     random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
-            else if (old.StartsWith(MinecraftLibUrl))
+            else if (old.StartsWith(MinecraftLib))
             {
-                return (true, old.Replace(MinecraftLibUrl,
+                return (true, old.Replace(MinecraftLib,
                    random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
-            else if (old.StartsWith(FabricUrl))
+            else if (old.StartsWith(Fabric))
             {
-                return (true, old.Replace(FabricUrl,
+                return (true, old.Replace(Fabric,
                    random.Next() % 2 == 0 ? $"{BMCLAPI}maven" : $"{MCBBS}maven"));
             }
         }
@@ -416,13 +413,13 @@ public static class UrlHelper
     /// </summary>
     /// <param name="local"></param>
     /// <returns></returns>
-    public static string Optifine(SourceLocal? local)
+    public static string GetOptifine(SourceLocal? local)
     {
         return local switch
         {
             SourceLocal.BMCLAPI => $"{BMCLAPI}optifine/versionList",
             SourceLocal.MCBBS => $"{MCBBS}optifine/versionList",
-            _ => "https://optifine.net/downloads"
+            _ => $"{Optifine}downloads"
         };
     }
 
@@ -454,11 +451,11 @@ public static class UrlHelper
         if (type == SourceType.CurseForge)
         {
             var fid1 = long.Parse(fid);
-            return $"https://edge.forgecdn.net/files/{fid1 / 1000}/{fid1 % 1000}/{file}";
+            return $"{CurseForgeDownload}files/{fid1 / 1000}/{fid1 % 1000}/{file}";
         }
         else if (type == SourceType.Modrinth)
         {
-            return $"https://cdn.modrinth.com/data/{pid}/versions/{fid}/{file}";
+            return $"{ModrinthDownload}data/{pid}/versions/{fid}/{file}";
         }
 
         return "";

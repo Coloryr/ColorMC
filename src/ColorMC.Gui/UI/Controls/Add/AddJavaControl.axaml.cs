@@ -14,14 +14,14 @@ public partial class AddJavaControl : UserControl, IUserControl
 
     public string Title => App.GetLanguage("AddJavaWindow.Title");
 
-    private readonly AddJavaControlModel model;
+    private readonly AddJavaControlModel _model;
 
     public AddJavaControl()
     {
         InitializeComponent();
 
-        model = new(this);
-        DataContext = model;
+        _model = new(this);
+        DataContext = _model;
 
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
     }
@@ -30,7 +30,7 @@ public partial class AddJavaControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        model.TypeIndex = 0;
+        _model.TypeIndex = 0;
     }
 
     public void Closed()
@@ -43,6 +43,6 @@ public partial class AddJavaControl : UserControl, IUserControl
         if (DataGrid1.SelectedItem is not JavaDownloadDisplayObj obj)
             return;
 
-        model.Install(obj);
+        _model.Install(obj);
     }
 }

@@ -1,8 +1,6 @@
 ﻿using ColorMC.Core.Helpers;
-using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using System.Buffers;
 using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Downloader;
@@ -13,21 +11,9 @@ namespace ColorMC.Core.Downloader;
 public static class DownloadManager
 {
     /// <summary>
-    /// 下载项目队列
+    /// 取消下载
     /// </summary>
-    private readonly static ConcurrentQueue<DownloadItemObj> Items = new();
-    /// <summary>
-    /// 项目名字
-    /// </summary>
-    private readonly static List<string> Name = new();
-    /// <summary>
-    /// 下载线程
-    /// </summary>
-    private readonly static List<DownloadThread> threads = new();
-    /// <summary>
-    /// 信号量
-    /// </summary>
-    private static Semaphore semaphore;
+    public static CancellationTokenSource Cancel { get; private set; } = new();
     /// <summary>
     /// 下载状态
     /// </summary>
@@ -35,7 +21,7 @@ public static class DownloadManager
     /// <summary>
     /// 缓存路径
     /// </summary>
-    public static string DownloadDir { get; private set; } = "";
+    public static string DownloadDir { get; private set; }
 
     /// <summary>
     /// 总下载数量
@@ -45,6 +31,19 @@ public static class DownloadManager
     /// 已下载数量
     /// </summary>
     public static int DoneSize { get; private set; }
+
+    /// <summary>
+    /// 下载项目队列
+    /// </summary>
+    private readonly static ConcurrentQueue<DownloadItemObj> s_items = new();
+    /// <summary>
+    /// 下载线程
+    /// </summary>
+    private readonly static List<DownloadThread> s_threads = new();
+    /// <summary>
+    /// 信号量
+    /// </summary>
+    private static Semaphore s_semaphore;
 
     /// <summary>
     /// 初始化
@@ -58,13 +57,13 @@ public static class DownloadManager
         Directory.CreateDirectory(DownloadDir);
         Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info1"),
             ConfigUtils.Config.Http.DownloadThread));
-        semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
-        threads.ForEach(a => a.Close());
-        threads.Clear();
+        s_semaphore = new(0, ConfigUtils.Config.Http.DownloadThread + 1);
+        s_threads.ForEach(a => a.Close());
+        s_threads.Clear();
         for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
         {
             DownloadThread thread = new(a);
-            threads.Add(thread);
+            s_threads.Add(thread);
         }
         Clear();
     }
@@ -74,8 +73,8 @@ public static class DownloadManager
     /// </summary>
     private static void Stop()
     {
-        threads.ForEach(a => a.Close());
-        threads.Clear();
+        Cancel.Cancel();
+        s_threads.ForEach(a => a.Close());
     }
 
     /// <summary>
@@ -83,10 +82,9 @@ public static class DownloadManager
     /// </summary>
     public static void DownloadStop()
     {
-        threads.ForEach(a => a.DownloadStop());
-
-        Name.Clear();
-        Items.Clear();
+        s_threads.ForEach(a => a.DownloadStop());
+        Cancel.Cancel();
+        s_items.Clear();
     }
 
     /// <summary>
@@ -94,7 +92,7 @@ public static class DownloadManager
     /// </summary>
     public static void DownloadPause()
     {
-        foreach (var item in threads)
+        foreach (var item in s_threads)
         {
             item.Pause();
         }
@@ -105,7 +103,7 @@ public static class DownloadManager
     /// </summary>
     public static void DownloadResume()
     {
-        foreach (var item in threads)
+        foreach (var item in s_threads)
         {
             item.Resume();
         }
@@ -117,8 +115,7 @@ public static class DownloadManager
     private static void Clear()
     {
         Logs.Info(LanguageHelper.Get("Core.Http.Info2"));
-        Name.Clear();
-        Items.Clear();
+        s_items.Clear();
         AllSize = 0;
         DoneSize = 0;
     }
@@ -130,6 +127,7 @@ public static class DownloadManager
     /// <returns>结果</returns>
     public static async Task<bool> Start(List<DownloadItemObj> list)
     {
+        List<string> names = new();
         if (State != CoreRunState.End)
             return false;
 
@@ -138,22 +136,24 @@ public static class DownloadManager
         ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Init);
         foreach (var item in list)
         {
-            if (Name.Contains(item.Name) || string.IsNullOrWhiteSpace(item.Url))
+            if (names.Contains(item.Name) || string.IsNullOrWhiteSpace(item.Url))
                 continue;
             ColorMCCore.DownloadItemStateUpdate?.Invoke(-1, item);
             item.Update = (index) =>
             {
                 ColorMCCore.DownloadItemStateUpdate?.Invoke(index, item);
             };
-            Items.Enqueue(item);
-            Name.Add(item.Name);
+            s_items.Enqueue(item);
+            names.Add(item.Name);
         }
 
         Logs.Info(LanguageHelper.Get("Core.Http.Info3"));
         DoneSize = 0;
-        AllSize = Items.Count;
+        AllSize = s_items.Count;
         ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Start);
-        foreach (var item in threads)
+        Cancel.Dispose();
+        Cancel = new();
+        foreach (var item in s_threads)
         {
             item.Start();
         }
@@ -161,7 +161,7 @@ public static class DownloadManager
         {
             for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
             {
-                semaphore.WaitOne();
+                s_semaphore.WaitOne();
             }
         });
 
@@ -176,7 +176,7 @@ public static class DownloadManager
     /// <returns></returns>
     public static DownloadItemObj? GetItem()
     {
-        if (Items.TryDequeue(out var item))
+        if (s_items.TryDequeue(out var item))
         {
             return item;
         }
@@ -197,7 +197,7 @@ public static class DownloadManager
     /// </summary>
     public static void ThreadDone()
     {
-        semaphore.Release();
+        s_semaphore.Release();
     }
 
     /// <summary>

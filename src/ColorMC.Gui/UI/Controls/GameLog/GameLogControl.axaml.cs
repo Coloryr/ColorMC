@@ -11,14 +11,14 @@ namespace ColorMC.Gui.UI.Controls.GameLog;
 
 public partial class GameLogControl : UserControl, IUserControl
 {
-    private readonly GameLogTabModel model;
-
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public UserControl Con => this;
 
     public string Title => string.Format(App.GetLanguage("GameLogWindow.Title"),
-            model.Obj.Name);
+            _model.Obj.Name);
+
+    private readonly GameLogTabModel _model;
 
     public GameLogControl() : this(new GameSettingObj { Empty = true })
     {
@@ -29,10 +29,10 @@ public partial class GameLogControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        model = new(this, obj);
-        DataContext = model;
+        _model = new(this, obj);
+        DataContext = _model;
 
-        model.PropertyChanged += Model_PropertyChanged;
+        _model.PropertyChanged += Model_PropertyChanged;
 
         TextEditor1.TextArea.Background = Brushes.Transparent;
 
@@ -41,7 +41,7 @@ public partial class GameLogControl : UserControl, IUserControl
     }
     public void ClearLog()
     {
-        model.Clear();
+        _model.Clear();
     }
 
     public void Log(string? data)
@@ -49,12 +49,12 @@ public partial class GameLogControl : UserControl, IUserControl
         if (data == null)
             return;
 
-        model.Log(data);
+        _model.Log(data);
     }
 
     public void Update()
     {
-        model.Load();
+        _model.Load();
     }
 
     public void Opened()
@@ -64,7 +64,7 @@ public partial class GameLogControl : UserControl, IUserControl
 
     public void Closed()
     {
-        App.GameLogWindows.Remove(model.Obj.UUID);
+        App.GameLogWindows.Remove(_model.Obj.UUID);
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -78,7 +78,7 @@ public partial class GameLogControl : UserControl, IUserControl
         }
         else if (e.PropertyName == "Insert")
         {
-            TextEditor1.AppendText(model.Temp);
+            TextEditor1.AppendText(_model.Temp);
         }
         else if (e.PropertyName == "Top")
         {
@@ -88,6 +88,6 @@ public partial class GameLogControl : UserControl, IUserControl
 
     private void TextEditor1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        model.SetNotAuto();
+        _model.SetNotAuto();
     }
 }

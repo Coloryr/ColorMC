@@ -5,11 +5,11 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class UrlFlyout
 {
-    private string Url;
+    private string _url;
 
     public UrlFlyout(Control con, string url)
     {
-        Url = url;
+        _url = url;
 
         var fy = new FlyoutsControl(new()
         {
@@ -19,6 +19,6 @@ public class UrlFlyout
 
     private void Button1_Click()
     {
-        BaseBinding.OpUrl(Url);
+        BaseBinding.OpUrl(_url);
     }
 }

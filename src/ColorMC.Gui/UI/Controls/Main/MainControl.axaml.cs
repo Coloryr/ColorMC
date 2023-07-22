@@ -16,7 +16,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class MainControl : UserControl, IUserControl
 {
-    private readonly MainModel model;
+    private readonly MainModel _model;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -28,9 +28,9 @@ public partial class MainControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        model = new(this);
-        model.PropertyChanged += Model_PropertyChanged;
-        DataContext = model;
+        _model = new(this);
+        _model.PropertyChanged += Model_PropertyChanged;
+        DataContext = _model;
 
         Grid3.PointerPressed += Grid3_PointerPressed;
         ScrollViewer1.PointerPressed += ScrollViewer1_PointerPressed;
@@ -48,15 +48,15 @@ public partial class MainControl : UserControl, IUserControl
         SizeChanged += MainControl_SizeChanged;
 
         var config = GuiConfigUtils.Config.Live2D;
-        model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
-        model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
+        _model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
+        _model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
     }
 
     private void MainControl_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
         var config = GuiConfigUtils.Config.Live2D;
-        model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
-        model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
+        _model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
+        _model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
     }
 
     private void Image1_PointerExited(object? sender, PointerEventArgs e)
@@ -83,7 +83,7 @@ public partial class MainControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (model.GroupEnable)
+                if (_model.GroupEnable)
                 {
                     App.CrossFade100.Start(null, StackPanel1, CancellationToken.None);
                 }
@@ -97,7 +97,7 @@ public partial class MainControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (model.SideDisplay)
+                if (_model.SideDisplay)
                 {
                     App.CrossFade100.Start(null, Grid1, CancellationToken.None);
                 }
@@ -121,7 +121,7 @@ public partial class MainControl : UserControl, IUserControl
     {
         if (e.GetCurrentPoint(ScrollViewer1).Properties.IsLeftButtonPressed)
         {
-            model.Select(null);
+            _model.Select(null);
         }
     }
 
@@ -199,18 +199,18 @@ public partial class MainControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        model.Open();
+        _model.Open();
     }
 
     private void Item_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        model.Launch();
+        _model.Launch();
     }
 
     public async Task<bool> Closing()
     {
         var windows = App.FindRoot(VisualRoot);
-        if (model.launch)
+        if (_model.launch)
         {
             var res = await windows.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info34"));
             if (res)
@@ -231,48 +231,48 @@ public partial class MainControl : UserControl, IUserControl
 
     public void GameClose(string uuid)
     {
-        model.GameClose(uuid);
+        _model.GameClose(uuid);
     }
 
     public void LoadMain()
     {
-        Dispatcher.UIThread.Post(model.Load);
+        Dispatcher.UIThread.Post(_model.Load);
     }
 
     public void MotdLoad()
     {
-        Dispatcher.UIThread.Post(model.MotdLoad);
+        Dispatcher.UIThread.Post(_model.MotdLoad);
     }
 
     public void IsDelete()
     {
-        Dispatcher.UIThread.Post(model.IsDelete);
+        Dispatcher.UIThread.Post(_model.IsDelete);
     }
 
     public void ChangeModel()
     {
-        model.ChangeModel();
+        _model.ChangeModel();
     }
 
     public void DeleteModel()
     {
-        model.DeleteModel();
+        _model.DeleteModel();
     }
 
     public void ChangeLive2DSize()
     {
         var config = GuiConfigUtils.Config.Live2D;
-        model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
-        model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
+        _model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
+        _model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
     }
 
     public void ShowMessage(string message)
     {
-        model.ShowMessage(message);
+        _model.ShowMessage(message);
     }
 
     public void MirrorChange()
     {
-        model.Mirror();
+        _model.Mirror();
     }
 }

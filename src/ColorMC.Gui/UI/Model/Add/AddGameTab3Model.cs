@@ -12,12 +12,12 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddGameTab3Model : AddGameControlModel
 {
-    private FilesPageViewModel FilesPageViewModel;
+    private FilesPageViewModel _model;
 
     [ObservableProperty]
-    private string local;
+    private string _local;
     [ObservableProperty]
-    private HierarchicalTreeDataGridSource<FileTreeNodeModel> files;
+    private HierarchicalTreeDataGridSource<FileTreeNodeModel> _files;
 
     public AddGameTab3Model(IUserControl con) : base(con)
     {
@@ -28,9 +28,9 @@ public partial class AddGameTab3Model : AddGameControlModel
     {
         if (Directory.Exists(value))
         {
-            FilesPageViewModel = new FilesPageViewModel(value, new()
+            _model = new FilesPageViewModel(value, new()
             { "assets", "libraries", "versions", "launcher_profiles.json" });
-            Files = FilesPageViewModel.Source;
+            Files = _model.Source;
         }
     }
 
@@ -45,7 +45,7 @@ public partial class AddGameTab3Model : AddGameControlModel
         }
 
         window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab3.Info1"));
-        var res = await GameBinding.AddGame(Name, Local, FilesPageViewModel.GetUnSelectItems(), Group);
+        var res = await GameBinding.AddGame(Name, Local, _model.GetUnSelectItems(), Group);
         window.ProgressInfo.Close();
 
         if (!res)

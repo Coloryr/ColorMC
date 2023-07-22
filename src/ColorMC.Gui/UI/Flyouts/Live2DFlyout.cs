@@ -7,12 +7,12 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class Live2DFlyout
 {
-    private readonly Live2dRender Live2D;
-    private readonly Control Con;
+    private readonly Live2dRender _live2D;
+    private readonly Control _con;
     public Live2DFlyout(Control con, Live2dRender live2d)
     {
-        Con = con;
-        Live2D = live2d;
+        _con = con;
+        _live2D = live2d;
 
         var fy = new FlyoutsControl(new()
         {
@@ -23,29 +23,29 @@ public class Live2DFlyout
 
     public void Button1_Click()
     {
-        var list = Live2D.GetMotions();
+        var list = _live2D.GetMotions();
         if (list.Count != 0)
         {
             var list1 = new List<(string, bool, Action)>();
             list.ForEach(item =>
             {
-                list1.Add((item, true, () => Live2D.PlayMotion(item)));
+                list1.Add((item, true, () => _live2D.PlayMotion(item)));
             });
-            _ = new FlyoutsControl(list1, Con);
+            _ = new FlyoutsControl(list1, _con);
         }
     }
 
     public void Button2_Click()
     {
-        var list = Live2D.GetExpressions();
+        var list = _live2D.GetExpressions();
         if (list.Count != 0)
         {
             var list1 = new List<(string, bool, Action)>();
             list.ForEach(item =>
             {
-                list1.Add((item, true, () => Live2D.PlayExpression(item)));
+                list1.Add((item, true, () => _live2D.PlayExpression(item)));
             });
-            _ = new FlyoutsControl(list1, Con);
+            _ = new FlyoutsControl(list1, _con);
         }
     }
 }

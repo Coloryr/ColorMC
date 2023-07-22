@@ -7,36 +7,36 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class ConfigFlyout1
 {
-    private readonly TreeDataGridRowSelectionModel<NbtNodeModel> List;
-    private readonly ConfigEditModel Model;
-    private readonly NbtNodeModel? Item;
+    private readonly TreeDataGridRowSelectionModel<NbtNodeModel> _list;
+    private readonly ConfigEditModel _model;
+    private readonly NbtNodeModel? _item;
 
     public ConfigFlyout1(Control con, ITreeDataGridSelection list, ConfigEditModel model)
     {
-        Model = model;
-        List = (list as TreeDataGridRowSelectionModel<NbtNodeModel>)!;
+        _model = model;
+        _list = (list as TreeDataGridRowSelectionModel<NbtNodeModel>)!;
 
-        if (List.Count == 0)
+        if (_list.Count == 0)
             return;
 
         bool delete = false, add = false, editKey = false, editValue = false;
 
-        if (List.Count == 1)
+        if (_list.Count == 1)
         {
-            Item = List.SelectedItem!;
+            _item = _list.SelectedItem!;
 
-            add = Item.NbtType switch
+            add = _item.NbtType switch
             {
                 NbtType.NbtList => true,
                 NbtType.NbtCompound => true,
                 _ => false
             };
 
-            editKey = !string.IsNullOrWhiteSpace(Item.Key);
-            if (Item.Top != null)
+            editKey = !string.IsNullOrWhiteSpace(_item.Key);
+            if (_item.Top != null)
             {
                 delete = true;
-                editValue = Item.NbtType switch
+                editValue = _item.NbtType switch
                 {
                     NbtType.NbtByte => true,
                     NbtType.NbtShort => true,
@@ -56,7 +56,7 @@ public class ConfigFlyout1
         {
             add = false;
             editKey = false;
-            foreach (var item in List.SelectedItems)
+            foreach (var item in _list.SelectedItems)
             {
                 if (item?.Top != null)
                 {
@@ -78,33 +78,33 @@ public class ConfigFlyout1
 
     private void Button1_Click()
     {
-        Model.AddItem(Item!);
+        _model.AddItem(_item!);
     }
 
     private void Button2_Click()
     {
-        if (Item == null)
+        if (_item == null)
         {
-            Model.Delete(List.SelectedItems);
+            _model.Delete(_list.SelectedItems);
         }
         else
         {
-            Model.Delete(Item!);
+            _model.Delete(_item!);
         }
     }
 
     private void Button3_Click()
     {
-        Model.SetKey(Item!);
+        _model.SetKey(_item!);
     }
 
     private void Button4_Click()
     {
-        Model.SetValue(Item!);
+        _model.SetValue(_item!);
     }
 
     private void Button5_Click()
     {
-        Model.Find();
+        _model.Find();
     }
 }

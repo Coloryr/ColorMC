@@ -19,7 +19,7 @@ public partial class FlyoutsControl : UserControl
             return Con;
         }
     }
-    private readonly SelfFlyout FlyoutBase;
+    private readonly SelfFlyout _flyoutBase;
     public FlyoutsControl(List<(string, bool, Action)>? list, Control? con)
     {
         InitializeComponent();
@@ -30,13 +30,13 @@ public partial class FlyoutsControl : UserControl
             {
                 Width = 100,
                 Height = 25,
-                Content = "²âÊÔTest"
+                Content = "Test"
             };
             StackPanel1.Children.Add(button);
         }
         else
         {
-            FlyoutBase = new(this);
+            _flyoutBase = new(this);
             foreach (var item in list)
             {
                 var button = new Button()
@@ -48,12 +48,12 @@ public partial class FlyoutsControl : UserControl
                 };
                 button.Click += (a, b) =>
                 {
-                    FlyoutBase.Hide();
+                    _flyoutBase.Hide();
                     item.Item3.Invoke();
                 };
                 StackPanel1.Children.Add(button);
             }
-            FlyoutBase.ShowAt(con!, true);
+            _flyoutBase.ShowAt(con!, true);
         }
     }
 

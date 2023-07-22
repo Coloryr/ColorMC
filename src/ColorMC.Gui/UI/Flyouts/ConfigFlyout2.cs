@@ -5,13 +5,13 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class ConfigFlyout2
 {
-    private readonly ConfigEditModel Model;
-    private readonly DataItem Item;
+    private readonly ConfigEditModel _model;
+    private readonly NbtDataItem _item;
 
-    public ConfigFlyout2(Control con, ConfigEditModel model, DataItem item)
+    public ConfigFlyout2(Control con, ConfigEditModel model, NbtDataItem item)
     {
-        Model = model;
-        Item = item;
+        _model = model;
+        _item = item;
 
         var fy = new FlyoutsControl(new()
         {
@@ -21,6 +21,6 @@ public class ConfigFlyout2
 
     public void Button1_Click()
     {
-        Model.DeleteItem(Item);
+        _model.DeleteItem(_item);
     }
 }

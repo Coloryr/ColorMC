@@ -7,13 +7,13 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout3
 {
-    private readonly ResourcepackDisplayObj Obj;
-    private readonly ResourcePackModel Model;
+    private readonly ResourcepackDisplayObj _obj;
+    private readonly ResourcePackModel _model;
 
     public GameEditFlyout3(Control con, ResourcePackModel model, ResourcepackDisplayObj obj)
     {
-        Obj = obj;
-        Model = model;
+        _obj = obj;
+        _model = model;
 
         var fy = new FlyoutsControl(new()
         {
@@ -24,11 +24,11 @@ public class GameEditFlyout3
 
     private void Button2_Click()
     {
-        Model.Delete(Obj);
+        _model.Delete(_obj);
     }
 
     private void Button1_Click()
     {
-        BaseBinding.OpFile(Obj.Local);
+        BaseBinding.OpFile(_obj.Local);
     }
 }

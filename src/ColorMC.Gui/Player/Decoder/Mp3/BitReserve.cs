@@ -13,8 +13,8 @@ public sealed class BitReserve
      * modulus operation on BUFSIZE.
      */
     private const int BUFSIZE_MASK = BUFSIZE - 1;
-    private readonly int[] buf = new int[BUFSIZE];
-    private int offset, bufByteIdx;
+    private readonly int[] _buf = new int[BUFSIZE];
+    private int _offset, _bufByteIdx;
 
     public int Hsstell { get; private set; }
 
@@ -29,13 +29,13 @@ public sealed class BitReserve
 
         int val = 0;
 
-        int pos = bufByteIdx;
+        int pos = _bufByteIdx;
         if (pos + N < BUFSIZE)
         {
             while (N-- > 0)
             {
                 val <<= 1;
-                val |= ((buf[pos++] != 0) ? 1 : 0);
+                val |= ((_buf[pos++] != 0) ? 1 : 0);
             }
         }
         else
@@ -43,11 +43,11 @@ public sealed class BitReserve
             while (N-- > 0)
             {
                 val <<= 1;
-                val |= ((buf[pos] != 0) ? 1 : 0);
+                val |= ((_buf[pos] != 0) ? 1 : 0);
                 pos = (pos + 1) & BUFSIZE_MASK;
             }
         }
-        bufByteIdx = pos;
+        _bufByteIdx = pos;
         return val;
     }
 
@@ -59,8 +59,8 @@ public sealed class BitReserve
     public int Hget1bit()
     {
         Hsstell++;
-        int val = buf[bufByteIdx];
-        bufByteIdx = (bufByteIdx + 1) & BUFSIZE_MASK;
+        int val = _buf[_bufByteIdx];
+        _bufByteIdx = (_bufByteIdx + 1) & BUFSIZE_MASK;
         return val;
     }
 
@@ -69,20 +69,20 @@ public sealed class BitReserve
      */
     public void Hputbuf(int val)
     {
-        int ofs = offset;
-        buf[ofs++] = val & 0x80;
-        buf[ofs++] = val & 0x40;
-        buf[ofs++] = val & 0x20;
-        buf[ofs++] = val & 0x10;
-        buf[ofs++] = val & 0x08;
-        buf[ofs++] = val & 0x04;
-        buf[ofs++] = val & 0x02;
-        buf[ofs++] = val & 0x01;
+        int ofs = _offset;
+        _buf[ofs++] = val & 0x80;
+        _buf[ofs++] = val & 0x40;
+        _buf[ofs++] = val & 0x20;
+        _buf[ofs++] = val & 0x10;
+        _buf[ofs++] = val & 0x08;
+        _buf[ofs++] = val & 0x04;
+        _buf[ofs++] = val & 0x02;
+        _buf[ofs++] = val & 0x01;
 
         if (ofs == BUFSIZE)
-            offset = 0;
+            _offset = 0;
         else
-            offset = ofs;
+            _offset = ofs;
 
     }
 
@@ -92,9 +92,9 @@ public sealed class BitReserve
     public void RewindNbits(int N)
     {
         Hsstell -= N;
-        bufByteIdx -= N;
-        if (bufByteIdx < 0)
-            bufByteIdx += BUFSIZE;
+        _bufByteIdx -= N;
+        if (_bufByteIdx < 0)
+            _bufByteIdx += BUFSIZE;
     }
 
     /**
@@ -104,8 +104,8 @@ public sealed class BitReserve
     {
         int bits = (N << 3);
         Hsstell -= bits;
-        bufByteIdx -= bits;
-        if (bufByteIdx < 0)
-            bufByteIdx += BUFSIZE;
+        _bufByteIdx -= bits;
+        if (_bufByteIdx < 0)
+            _bufByteIdx += BUFSIZE;
     }
 }

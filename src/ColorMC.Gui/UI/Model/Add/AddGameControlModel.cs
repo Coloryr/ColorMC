@@ -14,9 +14,9 @@ public abstract partial class AddGameControlModel : ObservableObject
     public ObservableCollection<string> GroupList { get; init; } = new();
 
     [ObservableProperty]
-    private string name;
+    private string _name;
     [ObservableProperty]
-    private string group;
+    private string _group;
 
     public AddGameControlModel(IUserControl con)
     {

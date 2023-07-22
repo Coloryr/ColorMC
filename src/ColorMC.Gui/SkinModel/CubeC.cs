@@ -6,7 +6,7 @@ public class CubeC
 {
     public const float Value = 0.5f;
 
-    private readonly float[] cube = new float[]
+    private readonly float[] _cube = new float[]
     {
         Value, Value, -Value, /* Back. */
         Value, -Value, -Value,
@@ -34,7 +34,7 @@ public class CubeC
         -Value, -Value, -Value,
     };
 
-    private readonly ushort[] cubeIndicies = new ushort[]
+    private readonly ushort[] _cubeIndicies = new ushort[]
     {
        0, 1, 2, 0, 2, 3,
        4, 5, 6, 4, 6, 7,
@@ -47,10 +47,10 @@ public class CubeC
     public float[] GetSquare(float multiplyX = 1.0f, float multiplyY = 1.0f, float multiplyZ = 1.0f,
         float addX = 0.0f, float addY = 0.0f, float addZ = 0.0f, float enlarge = 1.0f)
     {
-        var temp = new float[cube.Length];
+        var temp = new float[_cube.Length];
         for (int a = 0; a < temp.Length; a++)
         {
-            temp[a] = cube[a] * enlarge;
+            temp[a] = _cube[a] * enlarge;
             if (a % 3 == 0)
             {
                 temp[a] = temp[a] * multiplyX + addX;
@@ -70,10 +70,10 @@ public class CubeC
 
     public ushort[] GetSquareIndicies(int offset = 0)
     {
-        var temp = new ushort[cubeIndicies.Length];
+        var temp = new ushort[_cubeIndicies.Length];
         for (int a = 0; a < temp.Length; a++)
         {
-            temp[a] = (ushort)(cubeIndicies[a] + offset);
+            temp[a] = (ushort)(_cubeIndicies[a] + offset);
         }
 
         return temp;

@@ -11,7 +11,7 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class FabricAPI
 {
-    private static List<string>? SupportVersion;
+    private static List<string>? s_supportVersion;
 
     /// <summary>
     /// 获取元数据
@@ -20,7 +20,7 @@ public static class FabricAPI
     {
         try
         {
-            string url = UrlHelper.FabricMeta(local);
+            string url = UrlHelper.GetFabricMeta(local);
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
@@ -46,7 +46,7 @@ public static class FabricAPI
     {
         try
         {
-            string url = $"{UrlHelper.FabricMeta(local)}/loader/{mc}/{version}/profile/json";
+            string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}/{version}/profile/json";
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
@@ -71,7 +71,7 @@ public static class FabricAPI
     {
         try
         {
-            string url = $"{UrlHelper.FabricMeta(local)}/loader/{mc}";
+            string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}";
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
@@ -105,10 +105,10 @@ public static class FabricAPI
     {
         try
         {
-            if (SupportVersion != null)
-                return SupportVersion;
+            if (s_supportVersion != null)
+                return s_supportVersion;
 
-            string url = $"{UrlHelper.FabricMeta(local)}/game";
+            string url = $"{UrlHelper.GetFabricMeta(local)}/game";
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
@@ -126,7 +126,7 @@ public static class FabricAPI
                 list1.Add(item.version);
             }
 
-            SupportVersion = list1;
+            s_supportVersion = list1;
 
             return list1;
         }

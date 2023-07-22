@@ -7,11 +7,11 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout2
 {
-    private readonly WorldModel Model;
+    private readonly WorldModel _model;
 
     public GameEditFlyout2(Control con, WorldModel model)
     {
-        Model = model;
+        _model = model;
 
         _ = new FlyoutsControl(new()
         {
@@ -26,31 +26,31 @@ public class GameEditFlyout2
 
     private void Button6_Click()
     {
-        Model.Launch(Model.World);
+        _model.Launch(_model.World);
     }
 
     private void Button5_Click()
     {
-        App.ShowConfigEdit(Model.World.World);
+        App.ShowConfigEdit(_model.World.World);
     }
 
     private void Button4_Click()
     {
-        Model.Delete(Model.World);
+        _model.Delete(_model.World);
     }
 
     private void Button3_Click()
     {
-        Model.Backup(Model);
+        _model.Backup(_model);
     }
 
     private void Button2_Click()
     {
-        Model.Export(Model.World);
+        _model.Export(_model.World);
     }
 
     private void Button1_Click()
     {
-        BaseBinding.OpPath(Model.World.World);
+        BaseBinding.OpPath(_model.World.World);
     }
 }

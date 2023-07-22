@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class Live2dControl : UserControl
 {
-    private CancellationTokenSource cancel = new();
+    private CancellationTokenSource _cancel = new();
 
     public Live2dControl()
     {
@@ -39,8 +39,8 @@ public partial class Live2dControl : UserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                cancel.Cancel();
-                cancel = new();
+                _cancel.Cancel();
+                _cancel = new();
 
                 ShowMessage();
             });
@@ -88,16 +88,16 @@ public partial class Live2dControl : UserControl
         {
             return;
         }
-        await App.CrossFade300.Start(null, TextBox1, cancel.Token);
-        if (cancel.Token.IsCancellationRequested)
+        await App.CrossFade300.Start(null, TextBox1, _cancel.Token);
+        if (_cancel.Token.IsCancellationRequested)
         {
             return;
         }
         await Task.Delay(TimeSpan.FromSeconds(5));
-        if (cancel.Token.IsCancellationRequested)
+        if (_cancel.Token.IsCancellationRequested)
         {
             return;
         }
-        await App.CrossFade300.Start(TextBox1, null, cancel.Token);
+        await App.CrossFade300.Start(TextBox1, null, _cancel.Token);
     }
 }

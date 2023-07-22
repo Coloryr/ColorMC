@@ -18,17 +18,17 @@ public static class AssetsPath
     public const string Name2 = "objects";
     public const string Name3 = "skins";
 
-    private readonly static Dictionary<string, AssetsObj> Assets = new();
+    private readonly static Dictionary<string, AssetsObj> s_assets = new();
 
     /// <summary>
     /// 基础路径
     /// </summary>
-    public static string BaseDir { get; private set; } = "";
+    public static string BaseDir { get; private set; }
 
     /// <summary>
     /// 资源文件路径
     /// </summary>
-    public static string ObjectsDir { get; private set; } = "";
+    public static string ObjectsDir { get; private set; }
 
     /// <summary>
     /// 初始化
@@ -69,7 +69,7 @@ public static class AssetsPath
     /// <returns></returns>
     public static AssetsObj? GetIndex(this GameArgObj game)
     {
-        if (Assets.TryGetValue(game.assets, out var temp))
+        if (s_assets.TryGetValue(game.assets, out var temp))
         {
             return temp;
         }
@@ -80,7 +80,7 @@ public static class AssetsPath
         }
 
         var obj = JsonConvert.DeserializeObject<AssetsObj>(File.ReadAllText(file))!;
-        Assets.Add(game.assets, obj);
+        s_assets.Add(game.assets, obj);
         return obj;
     }
 

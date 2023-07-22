@@ -14,11 +14,11 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class ForgeAPI
 {
-    private static List<string>? SupportVersion;
-    private static readonly Dictionary<string, List<string>> ForgeVersion = new();
+    private static List<string>? s_supportVersion;
+    private static readonly Dictionary<string, List<string>> s_forgeVersion = new();
 
-    private static List<string>? NeoSupportVersion;
-    private static readonly Dictionary<string, List<string>> NeoForgeVersion = new();
+    private static List<string>? s_neoSupportVersion;
+    private static readonly Dictionary<string, List<string>> s_neoForgeVersion = new();
 
     /// <summary>
     /// 获取支持的版本
@@ -28,8 +28,8 @@ public static class ForgeAPI
     {
         try
         {
-            if ((neo ? NeoSupportVersion : SupportVersion) != null)
-                return neo ? NeoSupportVersion : SupportVersion;
+            if ((neo ? s_neoSupportVersion : s_supportVersion) != null)
+                return neo ? s_neoSupportVersion : s_supportVersion;
 
             if (local == SourceLocal.BMCLAPI
                 || local == SourceLocal.MCBBS)
@@ -47,9 +47,9 @@ public static class ForgeAPI
                     return null;
 
                 if (neo)
-                    NeoSupportVersion = obj;
+                    s_neoSupportVersion = obj;
                 else
-                    SupportVersion = obj;
+                    s_supportVersion = obj;
 
                 return obj;
             }
@@ -88,9 +88,9 @@ public static class ForgeAPI
                     }
 
                     if (neo)
-                        NeoSupportVersion = list;
+                        s_neoSupportVersion = list;
                     else
-                        SupportVersion = list;
+                        s_supportVersion = list;
 
                     return list;
                 }
@@ -184,11 +184,11 @@ public static class ForgeAPI
             }
             else
             {
-                if (!neo && ForgeVersion.TryGetValue(version, out var list1))
+                if (!neo && s_forgeVersion.TryGetValue(version, out var list1))
                 {
                     return list1;
                 }
-                else if (neo && NeoForgeVersion.TryGetValue(version, out list1))
+                else if (neo && s_neoForgeVersion.TryGetValue(version, out list1))
                 {
                     return list1;
                 }
@@ -216,11 +216,11 @@ public static class ForgeAPI
                 {
                     if (neo)
                     {
-                        NeoForgeVersion.Clear();
+                        s_neoForgeVersion.Clear();
                     }
                     else
                     {
-                        ForgeVersion.Clear();
+                        s_forgeVersion.Clear();
                     }
                     foreach (XmlNode item in node)
                     {
@@ -231,40 +231,40 @@ public static class ForgeAPI
 
                         if (neo)
                         {
-                            if (NeoForgeVersion.TryGetValue(mc, out var list2))
+                            if (s_neoForgeVersion.TryGetValue(mc, out var list2))
                             {
                                 list2.Add(version1);
                             }
                             else
                             {
                                 var list3 = new List<string>() { version1 };
-                                NeoForgeVersion.Add(mc, list3);
+                                s_neoForgeVersion.Add(mc, list3);
                             }
                         }
                         else
                         {
-                            if (ForgeVersion.TryGetValue(mc, out var list2))
+                            if (s_forgeVersion.TryGetValue(mc, out var list2))
                             {
                                 list2.Add(version1);
                             }
                             else
                             {
                                 var list3 = new List<string>() { version1 };
-                                ForgeVersion.Add(mc, list3);
+                                s_forgeVersion.Add(mc, list3);
                             }
                         }
                     }
 
                     if (neo)
                     {
-                        if (NeoForgeVersion.TryGetValue(version, out var list4))
+                        if (s_neoForgeVersion.TryGetValue(version, out var list4))
                         {
                             return list4;
                         }
                     }
                     else
                     {
-                        if (ForgeVersion.TryGetValue(version, out var list4))
+                        if (s_forgeVersion.TryGetValue(version, out var list4))
                         {
                             return list4;
                         }

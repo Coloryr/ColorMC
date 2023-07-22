@@ -10,32 +10,32 @@ namespace ColorMC.Gui.UI.Controls.ServerPack;
 
 public partial class ServerPackControl : UserControl, IUserControl
 {
-    private readonly Tab1Control tab1 = new();
-    private readonly Tab2Control tab2 = new();
-    private readonly Tab3Control tab3 = new();
-    private readonly Tab4Control tab4 = new();
+    private readonly Tab1Control _tab1 = new();
+    private readonly Tab2Control _tab2 = new();
+    private readonly Tab3Control _tab3 = new();
+    private readonly Tab4Control _tab4 = new();
 
-    private readonly ServerPackTab1Model model1;
-    private readonly ServerPackTab2Model model2;
-    private readonly ServerPackTab3Model model3;
-    private readonly ServerPackTab4Model model4;
+    private readonly ServerPackTab1Model _model1;
+    private readonly ServerPackTab2Model _model2;
+    private readonly ServerPackTab3Model _model3;
+    private readonly ServerPackTab4Model _model4;
 
-    private readonly ServerPackModel model;
+    private readonly ServerPackModel _model;
 
-    private bool switch1 = false;
+    private bool _switch1 = false;
 
-    private CancellationTokenSource cancel = new();
+    private CancellationTokenSource _cancel = new();
 
-    private int now;
+    private int _now;
 
-    public string GameName => model1.Obj.Game.Name;
+    public string GameName => _model1.Obj.Game.Name;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public UserControl Con => this;
 
     public string Title => string.Format(App.GetLanguage("ServerPackWindow.Title"),
-            model1.Obj.Game.Name);
+            _model1.Obj.Game.Name);
 
     public ServerPackControl() : this(new() { Empty = true })
     {
@@ -62,27 +62,27 @@ public partial class ServerPackControl : UserControl, IUserControl
                 GameBinding.SaveServerPack(pack);
             }
 
-            model = new(this, pack);
-            DataContext = model;
+            _model = new(this, pack);
+            DataContext = _model;
 
-            model1 = new(this, pack);
-            tab1.DataContext = model1;
+            _model1 = new(this, pack);
+            _tab1.DataContext = _model1;
 
-            model2 = new(this, pack);
-            tab2.DataContext = model2;
+            _model2 = new(this, pack);
+            _tab2.DataContext = _model2;
 
-            model3 = new(this, pack);
-            tab3.DataContext = model3;
+            _model3 = new(this, pack);
+            _tab3.DataContext = _model3;
 
-            model4 = new(this, pack);
-            tab4.DataContext = model4;
+            _model4 = new(this, pack);
+            _tab4.DataContext = _model4;
         }
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
-        Content1.Content = tab1;
+        Content1.Content = _tab1;
     }
 
     public void Opened()
@@ -107,52 +107,52 @@ public partial class ServerPackControl : UserControl, IUserControl
         switch (Tabs.SelectedIndex)
         {
             case 0:
-                Go(tab1);
-                model1.Load();
+                Go(_tab1);
+                _model1.Load();
                 break;
             case 1:
-                Go(tab2);
-                model2.Load();
+                Go(_tab2);
+                _model2.Load();
                 break;
             case 2:
-                Go(tab3);
-                model3.Load();
+                Go(_tab3);
+                _model3.Load();
                 break;
             case 3:
-                Go(tab4);
-                model4.Load();
+                Go(_tab4);
+                _model4.Load();
                 break;
         }
 
-        now = Tabs.SelectedIndex;
+        _now = Tabs.SelectedIndex;
     }
 
     private void Go(UserControl to)
     {
-        cancel.Cancel();
-        cancel.Dispose();
+        _cancel.Cancel();
+        _cancel.Dispose();
 
-        cancel = new();
+        _cancel = new();
 
         Tabs.IsEnabled = false;
 
-        if (!switch1)
+        if (!_switch1)
         {
             Content2.Content = to;
-            _ = App.PageSlide500.Start(Content1, Content2, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(Content1, Content2, _now < Tabs.SelectedIndex, _cancel.Token);
         }
         else
         {
             Content1.Content = to;
-            _ = App.PageSlide500.Start(Content2, Content1, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(Content2, Content1, _now < Tabs.SelectedIndex, _cancel.Token);
         }
 
-        switch1 = !switch1;
+        _switch1 = !_switch1;
         Tabs.IsEnabled = true;
     }
 
     public void Closed()
     {
-        App.ServerPackWindows.Remove(model1.Obj.Game.UUID);
+        App.ServerPackWindows.Remove(_model1.Obj.Game.UUID);
     }
 }

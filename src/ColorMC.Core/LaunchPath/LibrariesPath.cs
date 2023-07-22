@@ -12,9 +12,9 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class LibrariesPath
 {
-    private const string Name = "libraries";
-    public static string BaseDir { get; private set; } = "";
-    public static string NativeDir { get; private set; } = "";
+    public const string Name = "libraries";
+    public static string BaseDir { get; private set; }
+    public static string NativeDir { get; private set; }
 
     /// <summary>
     /// 初始化

@@ -16,10 +16,10 @@ public partial class AddGameTab2Model : AddGameControlModel
     public List<string> PackTypeList => GameBinding.GetPackType();
 
     [ObservableProperty]
-    private string local;
+    private string _local;
 
     [ObservableProperty]
-    private int type = -1;
+    private int _type = -1;
 
     public AddGameTab2Model(IUserControl con) : base(con)
     {

@@ -7,7 +7,7 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public class Language
 {
-    private readonly Dictionary<string, string> LanguageList = new();
+    private readonly Dictionary<string, string> _languageList = new();
 
     /// <summary>
     /// 加载语言
@@ -15,12 +15,12 @@ public class Language
     /// <param name="item"></param>
     public void Load(Stream item)
     {
-        LanguageList.Clear();
+        _languageList.Clear();
         using var steam = new StreamReader(item);
         var json = JObject.Parse(steam.ReadToEnd());
         foreach (JProperty item1 in json.Properties())
         {
-            LanguageList.Add(item1.Name, item1.Value.ToString());
+            _languageList.Add(item1.Name, item1.Value.ToString());
         }
     }
 
@@ -31,7 +31,7 @@ public class Language
     /// <returns></returns>
     public string GetLanguage(string key)
     {
-        if (LanguageList.TryGetValue(key, out var res1))
+        if (_languageList.TryGetValue(key, out var res1))
         {
             return res1;
         }
@@ -47,7 +47,7 @@ public class Language
     /// <returns></returns>
     public string GetLanguage(string key, out bool have)
     {
-        if (LanguageList.TryGetValue(key, out var res1))
+        if (_languageList.TryGetValue(key, out var res1))
         {
             have = true;
             return res1!;

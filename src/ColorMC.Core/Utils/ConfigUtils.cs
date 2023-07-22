@@ -12,7 +12,7 @@ public static class ConfigUtils
 {
     public static ConfigObj Config { get; set; }
 
-    private static string Name;
+    private static string s_local;
 
     /// <summary>
     /// 初始化
@@ -20,9 +20,9 @@ public static class ConfigUtils
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
-        Name = dir + "config.json";
+        s_local = dir + "config.json";
 
-        Load(Name);
+        Load(s_local);
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ public static class ConfigUtils
         ConfigSave.AddItem(new()
         {
             Name = "config.json",
-            Local = Name,
+            Local = s_local,
             Obj = Config
         });
     }

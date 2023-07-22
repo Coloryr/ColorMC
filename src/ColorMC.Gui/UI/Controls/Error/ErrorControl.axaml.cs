@@ -14,7 +14,7 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public string Title => App.GetLanguage("ErrorWindow.Title");
 
-    private readonly ErrorModel model;
+    private readonly ErrorModel _model;
 
     public ErrorControl()
     {
@@ -23,14 +23,14 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public ErrorControl(string? data, Exception? e, bool close) : this()
     {
-        model = new(this, data, e, close);
-        DataContext = model;
+        _model = new(this, data, e, close);
+        DataContext = _model;
     }
 
     public ErrorControl(string data, string e, bool close) : this()
     {
-        model = new(this, data, e, close);
-        DataContext = model;
+        _model = new(this, data, e, close);
+        DataContext = _model;
     }
 
     public void Opened()
@@ -40,7 +40,7 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Closed()
     {
-        if (model.Close || (App.IsHide && !BaseBinding.IsGameRuning()))
+        if (_model.Close || (App.IsHide && !BaseBinding.IsGameRuning()))
         {
             App.Close();
         }

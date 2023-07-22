@@ -15,8 +15,9 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddJavaControlModel : ObservableObject
 {
-    private readonly IUserControl Con;
-    private readonly List<JavaDownloadDisplayObj> List1 = new();
+    private readonly IUserControl _con;
+    private readonly List<JavaDownloadDisplayObj> _list1 = new();
+
     public ObservableCollection<JavaDownloadDisplayObj> JavaList { get; init; } = new();
     public ObservableCollection<string> SystemList { get; init; } = new();
     public ObservableCollection<string> VersionList { get; init; } = new();
@@ -24,40 +25,39 @@ public partial class AddJavaControlModel : ObservableObject
     public List<string> JavaTypeList => JavaBinding.GetJavaType();
 
     [ObservableProperty]
-    private string javaType;
+    private string _javaType;
     [ObservableProperty]
-    private string system;
+    private string _system;
     [ObservableProperty]
-    private string version;
+    private string _version;
     [ObservableProperty]
-    private string arch;
+    private string _arch;
     [ObservableProperty]
-    private int typeIndex = -1;
+    private int _typeIndex = -1;
     [ObservableProperty]
-    private int archIndex = -1;
+    private int _archIndex = -1;
     [ObservableProperty]
-    private bool display = true;
+    private bool _display = true;
 
-    private bool load = true;
-
+    private bool _load = true;
 
     public AddJavaControlModel(IUserControl con)
     {
-        Con = con;
+        _con = con;
 
         ColorMCCore.JavaUnzip = JavaUnzip;
     }
 
     async partial void OnJavaTypeChanged(string value)
     {
-        load = true;
+        _load = true;
         Switch();
         await Load();
     }
 
     partial void OnArchChanged(string value)
     {
-        if (load)
+        if (_load)
             return;
 
         Select();
@@ -65,7 +65,7 @@ public partial class AddJavaControlModel : ObservableObject
 
     async partial void OnSystemChanged(string value)
     {
-        if (load)
+        if (_load)
             return;
 
         if (TypeIndex == 0)
@@ -80,7 +80,7 @@ public partial class AddJavaControlModel : ObservableObject
 
     async partial void OnVersionChanged(string value)
     {
-        if (load)
+        if (_load)
             return;
 
         if (TypeIndex == 0)
@@ -96,12 +96,12 @@ public partial class AddJavaControlModel : ObservableObject
     [RelayCommand]
     public async Task Load()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("AddJavaWindow.Info4"));
 
-        load = true;
+        _load = true;
 
-        List1.Clear();
+        _list1.Clear();
         JavaList.Clear();
 
         var res = await JavaBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System), VersionList.IndexOf(Version));
@@ -122,7 +122,7 @@ public partial class AddJavaControlModel : ObservableObject
                 ArchList.AddRange(res.Arch);
             }
 
-            List1.AddRange(res.Item5!);
+            _list1.AddRange(res.Item5!);
 
             Select();
 
@@ -134,12 +134,12 @@ public partial class AddJavaControlModel : ObservableObject
             window.OkInfo.Show(App.GetLanguage("AddJavaWindow.Error1"));
         }
 
-        load = false;
+        _load = false;
     }
 
     public async void Install(JavaDownloadDisplayObj obj)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(string.Format(
             App.GetLanguage("AddJavaWindow.Info1"), obj.Name));
         if (!res)
@@ -178,7 +178,7 @@ public partial class AddJavaControlModel : ObservableObject
         bool version1 = !string.IsNullOrWhiteSpace(Version);
         bool os1 = !string.IsNullOrWhiteSpace(System);
 
-        var list1 = from item in List1
+        var list1 = from item in _list1
                     where (!arch1 || (item.Arch == Arch))
                     && (!version1 || (item.MainVersion == Version))
                     && (TypeIndex == 0 || !os1 || (item.Os == System))
@@ -199,7 +199,7 @@ public partial class AddJavaControlModel : ObservableObject
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var window = Con.Window;
+            var window = _con.Window;
             window.ProgressInfo.NextText(App.GetLanguage("AddJavaWindow.Info5"));
         });
     }

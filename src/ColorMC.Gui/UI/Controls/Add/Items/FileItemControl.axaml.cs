@@ -30,7 +30,6 @@ public partial class FileItemControl : UserControl
         Rectangle2.IsVisible = true;
     }
 
-
     private void FileItemControl_DoubleTapped(object? sender, RoutedEventArgs e)
     {
         if (DataContext is FileItemModel item)

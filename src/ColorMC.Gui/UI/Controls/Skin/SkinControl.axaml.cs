@@ -18,15 +18,15 @@ public enum MoveType
 
 public partial class SkinControl : UserControl, IUserControl
 {
-    private readonly SkinModel model;
+    private readonly SkinModel _model;
 
-    private readonly Timer timer;
-    private readonly Timer timer1;
-    private readonly Timer timer2;
-    private MoveType type;
+    private readonly Timer _timer;
+    private readonly Timer _timer1;
+    private readonly Timer _timer2;
+    private MoveType _type;
 
-    private float xdiff = 0;
-    private float ydiff = 0;
+    private float _xdiff = 0;
+    private float _ydiff = 0;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -38,10 +38,10 @@ public partial class SkinControl : UserControl, IUserControl
     {
         InitializeComponent();
 
-        model = new(this);
-        DataContext = model;
+        _model = new(this);
+        DataContext = _model;
 
-        Skin.SetModel(model);
+        Skin.SetModel(_model);
 
         Button2.Click += Button2_Click;
 
@@ -66,29 +66,29 @@ public partial class SkinControl : UserControl, IUserControl
         Button_3_1.PropertyChanged += Button_3_1_PropertyChanged;
         Button_3_2.PropertyChanged += Button_3_1_PropertyChanged;
 
-        timer = new(TimeSpan.FromMilliseconds(20))
+        _timer = new(TimeSpan.FromMilliseconds(20))
         {
             AutoReset = true
         };
-        timer.BeginInit();
-        timer.Elapsed += Timer_Elapsed;
-        timer.EndInit();
+        _timer.BeginInit();
+        _timer.Elapsed += Timer_Elapsed;
+        _timer.EndInit();
 
-        timer1 = new(TimeSpan.FromMilliseconds(20))
+        _timer1 = new(TimeSpan.FromMilliseconds(20))
         {
             AutoReset = true
         };
-        timer1.BeginInit();
-        timer1.Elapsed += Timer1_Elapsed;
-        timer1.EndInit();
+        _timer1.BeginInit();
+        _timer1.Elapsed += Timer1_Elapsed;
+        _timer1.EndInit();
 
-        timer2 = new(TimeSpan.FromMilliseconds(20))
+        _timer2 = new(TimeSpan.FromMilliseconds(20))
         {
             AutoReset = true
         };
-        timer2.BeginInit();
-        timer2.Elapsed += Timer2_Elapsed; ;
-        timer2.EndInit();
+        _timer2.BeginInit();
+        _timer2.Elapsed += Timer2_Elapsed; ;
+        _timer2.EndInit();
 
         App.SkinLoad += App_SkinLoad;
 
@@ -112,8 +112,8 @@ public partial class SkinControl : UserControl, IUserControl
     private void SkinTop_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var pro = e.GetCurrentPoint(this);
-        xdiff = (float)pro.Position.X;
-        ydiff = -(float)pro.Position.Y;
+        _xdiff = (float)pro.Position.X;
+        _ydiff = -(float)pro.Position.Y;
     }
 
     private void SkinTop_PointerMoved(object? sender, PointerEventArgs e)
@@ -121,21 +121,21 @@ public partial class SkinControl : UserControl, IUserControl
         var pro = e.GetCurrentPoint(this);
         if (pro.Properties.IsLeftButtonPressed)
         {
-            float y = (float)pro.Position.X - xdiff;
-            float x = (float)pro.Position.Y + ydiff;
+            float y = (float)pro.Position.X - _xdiff;
+            float x = (float)pro.Position.Y + _ydiff;
 
-            xdiff = (float)pro.Position.X;
-            ydiff = -(float)pro.Position.Y;
+            _xdiff = (float)pro.Position.X;
+            _ydiff = -(float)pro.Position.Y;
 
             Skin.Rot(x, y);
         }
         else if (pro.Properties.IsRightButtonPressed)
         {
-            float x = (float)pro.Position.X - xdiff;
-            float y = (float)pro.Position.Y + ydiff;
+            float x = (float)pro.Position.X - _xdiff;
+            float y = (float)pro.Position.Y + _ydiff;
 
-            xdiff = (float)pro.Position.X;
-            ydiff = -(float)pro.Position.Y;
+            _xdiff = (float)pro.Position.X;
+            _ydiff = -(float)pro.Position.Y;
 
             Skin.Pos(x / ((float)Bounds.Width / 8), -y / ((float)Bounds.Height / 8));
         }
@@ -143,7 +143,7 @@ public partial class SkinControl : UserControl, IUserControl
 
     private void Timer2_Elapsed(object? sender, ElapsedEventArgs e)
     {
-        switch (type)
+        switch (_type)
         {
             case MoveType.Up:
                 Skin.AddDis(0.05f);
@@ -162,17 +162,17 @@ public partial class SkinControl : UserControl, IUserControl
 
             if (button?.IsPressed == true)
             {
-                type = button.CommandParameter switch
+                _type = button.CommandParameter switch
                 {
                     "Up" => MoveType.Up,
                     "Down" => MoveType.Down,
                     _ => throw new Exception("MoveType Error")
                 };
-                timer2.Start();
+                _timer2.Start();
             }
             else
             {
-                timer2.Stop();
+                _timer2.Stop();
             }
         }
     }
@@ -185,7 +185,7 @@ public partial class SkinControl : UserControl, IUserControl
 
             if (button?.IsPressed == true)
             {
-                type = button.CommandParameter switch
+                _type = button.CommandParameter switch
                 {
                     "LeftUp" => MoveType.LeftUp,
                     "Up" => MoveType.Up,
@@ -197,18 +197,18 @@ public partial class SkinControl : UserControl, IUserControl
                     "RightDown" => MoveType.RightDown,
                     _ => throw new Exception("MoveType Error")
                 };
-                timer1.Start();
+                _timer1.Start();
             }
             else
             {
-                timer1.Stop();
+                _timer1.Stop();
             }
         }
     }
 
     private void Timer1_Elapsed(object? sender, ElapsedEventArgs e)
     {
-        switch (type)
+        switch (_type)
         {
             case MoveType.LeftUp:
                 Skin.Pos(-0.05f, 0.05f);
@@ -245,7 +245,7 @@ public partial class SkinControl : UserControl, IUserControl
 
             if (button?.IsPressed == true)
             {
-                type = button.CommandParameter switch
+                _type = button.CommandParameter switch
                 {
                     "LeftUp" => MoveType.LeftUp,
                     "Up" => MoveType.Up,
@@ -257,18 +257,18 @@ public partial class SkinControl : UserControl, IUserControl
                     "RightDown" => MoveType.RightDown,
                     _ => throw new Exception("MoveType Error")
                 };
-                timer.Start();
+                _timer.Start();
             }
             else
             {
-                timer.Stop();
+                _timer.Stop();
             }
         }
     }
 
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
-        switch (type)
+        switch (_type)
         {
             case MoveType.LeftUp:
                 Skin.Rot(-10, -10);
@@ -304,7 +304,7 @@ public partial class SkinControl : UserControl, IUserControl
 
     public void Update()
     {
-        if (model.IsLoad)
+        if (_model.IsLoad)
         {
             Skin.RequestNextFrameRendering();
         }

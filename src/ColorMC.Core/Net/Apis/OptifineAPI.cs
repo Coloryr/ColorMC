@@ -18,7 +18,7 @@ public static class OptifineAPI
     /// </summary>
     public static async Task<(SourceLocal?, List<OptifineObj>?)> GetOptifineVersion()
     {
-        string url = UrlHelper.Optifine(BaseClient.Source);
+        string url = UrlHelper.GetOptifine(BaseClient.Source);
         try
         {
             var type = BaseClient.Source;
@@ -131,7 +131,7 @@ public static class OptifineAPI
             var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
             if (list1 == null)
                 return null;
-            return UrlHelper.OptifineUrl + list1.First().Attributes["href"].Value;
+            return UrlHelper.Optifine + list1.First().Attributes["href"].Value;
         }
         catch (Exception e)
         {

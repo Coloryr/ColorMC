@@ -13,20 +13,20 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class VersionPath
 {
-    private const string Name = "versions";
+    public const string Name = "versions";
 
-    private const string Name1 = "forge";
-    private const string Name2 = "fabric";
-    private const string Name3 = "quilt";
-    private const string Name4 = "neoforged";
+    public const string Name1 = "forge";
+    public const string Name2 = "fabric";
+    public const string Name3 = "quilt";
+    public const string Name4 = "neoforged";
 
-    private readonly static Dictionary<string, GameArgObj> GameArgs = new();
-    private readonly static Dictionary<string, ForgeInstallObj> ForgeInstalls = new();
-    private readonly static Dictionary<string, ForgeInstallObj> NeoForgeInstalls = new();
-    private readonly static Dictionary<string, ForgeLaunchObj> ForgeLaunchs = new();
-    private readonly static Dictionary<string, ForgeLaunchObj> NeoForgeLaunchs = new();
-    private readonly static Dictionary<string, FabricLoaderObj> FabricLoaders = new();
-    private readonly static Dictionary<string, QuiltLoaderObj> QuiltLoaders = new();
+    private readonly static Dictionary<string, GameArgObj> s_gameArgs = new();
+    private readonly static Dictionary<string, ForgeInstallObj> s_forgeInstalls = new();
+    private readonly static Dictionary<string, ForgeInstallObj> s_neoForgeInstalls = new();
+    private readonly static Dictionary<string, ForgeLaunchObj> s_forgeLaunchs = new();
+    private readonly static Dictionary<string, ForgeLaunchObj> s_neoForgeLaunchs = new();
+    private readonly static Dictionary<string, FabricLoaderObj> s_fabricLoaders = new();
+    private readonly static Dictionary<string, QuiltLoaderObj> s_quiltLoaders = new();
 
     public static VersionObj? Versions { get; private set; }
 
@@ -35,7 +35,7 @@ public static class VersionPath
     public static string QuiltDir => BaseDir + "/" + Name3;
     public static string NeoForgeDir => BaseDir + "/" + Name4;
 
-    public static string BaseDir { get; private set; } = "";
+    public static string BaseDir { get; private set; }
 
     /// <summary>
     /// 初始化
@@ -143,7 +143,7 @@ public static class VersionPath
     /// <returns>游戏数据</returns>
     public static GameArgObj? GetGame(string version)
     {
-        if (GameArgs.TryGetValue(version, out var temp))
+        if (s_gameArgs.TryGetValue(version, out var temp))
         {
             return temp;
         }
@@ -155,7 +155,7 @@ public static class VersionPath
         }
 
         var obj = JsonConvert.DeserializeObject<GameArgObj>(File.ReadAllText(file))!;
-        GameArgs.Add(version, obj);
+        s_gameArgs.Add(version, obj);
         return obj;
     }
 
@@ -189,7 +189,7 @@ public static class VersionPath
     public static ForgeInstallObj? GetNeoForgeInstallObj(string mc, string version)
     {
         var key = $"{mc}-{version}";
-        if (ForgeInstalls.TryGetValue(key, out var temp))
+        if (s_forgeInstalls.TryGetValue(key, out var temp))
         {
             return temp;
         }
@@ -202,7 +202,7 @@ public static class VersionPath
         }
 
         var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file))!;
-        ForgeInstalls.Add(key, obj);
+        s_forgeInstalls.Add(key, obj);
         return obj;
     }
 
@@ -225,7 +225,7 @@ public static class VersionPath
     public static ForgeLaunchObj? GetNeoForgeObj(string mc, string version)
     {
         var key = $"{mc}-{version}";
-        if (NeoForgeLaunchs.TryGetValue(key, out var temp))
+        if (s_neoForgeLaunchs.TryGetValue(key, out var temp))
         {
             return temp;
         }
@@ -238,7 +238,7 @@ public static class VersionPath
         }
 
         var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file))!;
-        NeoForgeLaunchs.Add(key, obj);
+        s_neoForgeLaunchs.Add(key, obj);
         return obj;
     }
 
@@ -252,7 +252,7 @@ public static class VersionPath
     {
         var key = $"{mc}-{version}";
         string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}-install.json";
-        if (NeoForgeInstalls.TryGetValue(key, out var temp))
+        if (s_neoForgeInstalls.TryGetValue(key, out var temp))
         {
             return temp;
         }
@@ -263,7 +263,7 @@ public static class VersionPath
         }
 
         var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file))!;
-        NeoForgeInstalls.Add(key, obj);
+        s_neoForgeInstalls.Add(key, obj);
         return obj;
     }
 
@@ -286,7 +286,7 @@ public static class VersionPath
     public static ForgeLaunchObj? GetForgeObj(string mc, string version)
     {
         var key = $"{mc}-{version}";
-        if (ForgeLaunchs.TryGetValue(key, out var temp))
+        if (s_forgeLaunchs.TryGetValue(key, out var temp))
         {
             return temp;
         }
@@ -298,7 +298,7 @@ public static class VersionPath
         }
 
         var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file))!;
-        ForgeLaunchs.Add(key, obj);
+        s_forgeLaunchs.Add(key, obj);
         return obj;
     }
 
@@ -321,7 +321,7 @@ public static class VersionPath
     public static FabricLoaderObj? GetFabricObj(string mc, string version)
     {
         var key = $"{mc}-{version}";
-        if (FabricLoaders.TryGetValue(key, out var temp))
+        if (s_fabricLoaders.TryGetValue(key, out var temp))
         {
             return temp;
         }
@@ -333,7 +333,7 @@ public static class VersionPath
         }
 
         var obj = JsonConvert.DeserializeObject<FabricLoaderObj>(File.ReadAllText(file))!;
-        FabricLoaders.Add(key, obj);
+        s_fabricLoaders.Add(key, obj);
         return obj;
     }
 
@@ -356,7 +356,7 @@ public static class VersionPath
     public static QuiltLoaderObj? GetQuiltObj(string mc, string version)
     {
         var key = $"{mc}-{version}";
-        if (QuiltLoaders.TryGetValue(key, out var temp))
+        if (s_quiltLoaders.TryGetValue(key, out var temp))
         {
             return temp;
         }
@@ -368,7 +368,7 @@ public static class VersionPath
         }
 
         var obj = JsonConvert.DeserializeObject<QuiltLoaderObj>(File.ReadAllText(file))!;
-        QuiltLoaders.Add(key, obj);
+        s_quiltLoaders.Add(key, obj);
         return obj;
     }
 }

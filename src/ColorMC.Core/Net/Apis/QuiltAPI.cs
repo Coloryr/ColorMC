@@ -11,7 +11,7 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class QuiltAPI
 {
-    private static List<string>? SupportVersion;
+    private static List<string>? s_supportVersion;
 
     /// <summary>
     /// 获取支持的版本
@@ -20,10 +20,10 @@ public static class QuiltAPI
     {
         try
         {
-            if (SupportVersion != null)
-                return SupportVersion;
+            if (s_supportVersion != null)
+                return s_supportVersion;
 
-            string url = $"{UrlHelper.QuiltMeta(local)}/game";
+            string url = $"{UrlHelper.GetQuiltMeta(local)}/game";
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
@@ -42,7 +42,7 @@ public static class QuiltAPI
                 list1.Add(item.version);
             }
 
-            SupportVersion = list1;
+            s_supportVersion = list1;
 
             return list1;
         }
@@ -60,7 +60,7 @@ public static class QuiltAPI
     {
         try
         {
-            string url = UrlHelper.QuiltMeta(local);
+            string url = UrlHelper.GetQuiltMeta(local);
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
@@ -85,7 +85,7 @@ public static class QuiltAPI
     {
         try
         {
-            string url = $"{UrlHelper.FabricMeta(local)}/loader/{mc}";
+            string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}";
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {
@@ -121,7 +121,7 @@ public static class QuiltAPI
     {
         try
         {
-            string url = $"{UrlHelper.QuiltMeta(local)}/loader/{mc}/{version}/profile/json";
+            string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}/{version}/profile/json";
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {

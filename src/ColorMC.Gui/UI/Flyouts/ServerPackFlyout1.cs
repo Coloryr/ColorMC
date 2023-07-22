@@ -6,12 +6,12 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class ServerPackFlyout1
 {
-    private readonly ServerPackConfigDisplayObj Obj;
-    private readonly ServerPackTab4Model Model;
+    private readonly ServerPackConfigDisplayObj _obj;
+    private readonly ServerPackTab4Model _model;
     public ServerPackFlyout1(Control con, ServerPackTab4Model model, ServerPackConfigDisplayObj obj)
     {
-        Model = model;
-        Obj = obj;
+        _model = model;
+        _obj = obj;
 
         var fy = new FlyoutsControl(new()
         {
@@ -21,6 +21,6 @@ public class ServerPackFlyout1
 
     private void Button1_Click()
     {
-        Model.Delete(Obj);
+        _model.Delete(_obj);
     }
 }

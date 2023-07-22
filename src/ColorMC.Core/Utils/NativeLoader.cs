@@ -8,21 +8,21 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public static class NativeLoader
 {
-    private static IDynLoader loader;
+    private static IDynLoader s_loader;
 
     public static IDynLoader Loader
     {
         get
         {
-            if (loader != null)
-                return loader;
+            if (s_loader != null)
+                return s_loader;
 
             if (SystemInfo.Os == OsType.Windows)
-                loader = new Win32Loader();
+                s_loader = new Win32Loader();
             else
-                loader = new UnixLoader();
+                s_loader = new UnixLoader();
 
-            return loader;
+            return s_loader;
         }
     }
 }

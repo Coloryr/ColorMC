@@ -10,36 +10,36 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class GameEditControl : UserControl, IUserControl
 {
-    private bool switch1 = false;
+    private bool _switch1 = false;
 
-    private readonly Tab1Control tab1 = new();
-    private readonly Tab2Control tab2 = new();
-    private readonly Tab4Control tab4 = new();
-    private readonly Tab5Control tab5 = new();
-    private readonly Tab6Control tab6 = new();
-    private readonly Tab8Control tab8 = new();
-    private readonly Tab9Control tab9 = new();
-    private readonly Tab10Control tab10 = new();
-    private readonly Tab11Control tab11 = new();
-    private readonly Tab12Control tab12 = new();
+    private readonly Tab1Control _tab1 = new();
+    private readonly Tab2Control _tab2 = new();
+    private readonly Tab4Control _tab4 = new();
+    private readonly Tab5Control _tab5 = new();
+    private readonly Tab6Control _tab6 = new();
+    private readonly Tab8Control _tab8 = new();
+    private readonly Tab9Control _tab9 = new();
+    private readonly Tab10Control _tab10 = new();
+    private readonly Tab11Control _tab11 = new();
+    private readonly Tab12Control _tab12 = new();
 
-    private CancellationTokenSource cancel = new();
+    private CancellationTokenSource _cancel = new();
 
-    private readonly GameEditTab1Model model1;
-    private readonly GameEditTab2Model model2;
-    private readonly GameEditTab4Model model4;
-    private readonly GameEditTab5Model model5;
-    private readonly GameEditTab6Model model6;
-    private readonly GameEditTab8Model model8;
-    private readonly GameEditTab9Model model9;
-    private readonly GameEditTab10Model model10;
-    private readonly GameEditTab11Model model11;
-    private readonly GameEditTab12Model model12;
+    private readonly GameEditTab1Model _model1;
+    private readonly GameEditTab2Model _model2;
+    private readonly GameEditTab4Model _model4;
+    private readonly GameEditTab5Model _model5;
+    private readonly GameEditTab6Model _model6;
+    private readonly GameEditTab8Model _model8;
+    private readonly GameEditTab9Model _model9;
+    private readonly GameEditTab10Model _model10;
+    private readonly GameEditTab11Model _model11;
+    private readonly GameEditTab12Model _model12;
 
-    private int now;
+    private int _now;
 
-    public string GameName => model1.Obj.Name;
-    public string GameUUID => model1.Obj.UUID;
+    public string GameName => _model1.Obj.Name;
+    public string GameUUID => _model1.Obj.UUID;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -58,42 +58,42 @@ public partial class GameEditControl : UserControl, IUserControl
 
         if (!obj.Empty)
         {
-            model1 = new(this, obj);
-            tab1.DataContext = model1;
+            _model1 = new(this, obj);
+            _tab1.DataContext = _model1;
 
-            model2 = new(this, obj);
-            tab2.DataContext = model2;
+            _model2 = new(this, obj);
+            _tab2.DataContext = _model2;
 
-            model4 = new(this, obj);
-            tab4.DataContext = model4;
+            _model4 = new(this, obj);
+            _tab4.DataContext = _model4;
 
-            model5 = new(this, obj);
-            tab5.DataContext = model5;
+            _model5 = new(this, obj);
+            _tab5.DataContext = _model5;
 
-            model6 = new(this, obj);
-            tab6.DataContext = model6;
+            _model6 = new(this, obj);
+            _tab6.DataContext = _model6;
 
-            model8 = new(this, obj);
-            tab8.DataContext = model8;
+            _model8 = new(this, obj);
+            _tab8.DataContext = _model8;
 
-            model9 = new(this, obj);
-            tab9.DataContext = model9;
+            _model9 = new(this, obj);
+            _tab9.DataContext = _model9;
 
-            model10 = new(this, obj);
-            tab10.DataContext = model10;
+            _model10 = new(this, obj);
+            _tab10.DataContext = _model10;
 
-            model11 = new(this, obj);
-            tab11.DataContext = model11;
+            _model11 = new(this, obj);
+            _tab11.DataContext = _model11;
 
-            model12 = new(this, obj);
-            tab12.DataContext = model12;
+            _model12 = new(this, obj);
+            _tab12.DataContext = _model12;
         }
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
-        Content1.Content = tab1;
+        Content1.Content = _tab1;
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -142,70 +142,70 @@ public partial class GameEditControl : UserControl, IUserControl
         switch (Tabs.SelectedIndex)
         {
             case 0:
-                Go(tab1);
-                model1.Load();
+                Go(_tab1);
+                _model1.Load();
                 break;
             case 1:
-                Go(tab2);
-                model2.Load();
+                Go(_tab2);
+                _model2.Load();
                 break;
             case 2:
-                Go(tab4);
-                await model4.Load();
+                Go(_tab4);
+                await _model4.Load();
                 break;
             case 3:
-                Go(tab5);
-                await model5.Load();
+                Go(_tab5);
+                await _model5.Load();
                 break;
             case 4:
-                Go(tab8);
-                await model8.Load();
+                Go(_tab8);
+                await _model8.Load();
                 break;
             case 5:
-                Go(tab9);
-                await model9.Load();
+                Go(_tab9);
+                await _model9.Load();
                 break;
             case 6:
-                Go(tab10);
-                await model10.Load();
+                Go(_tab10);
+                await _model10.Load();
                 break;
             case 7:
-                Go(tab11);
-                model11.Load();
+                Go(_tab11);
+                _model11.Load();
                 break;
             case 8:
-                Go(tab12);
-                await model12.Load();
+                Go(_tab12);
+                await _model12.Load();
                 break;
             case 9:
-                Go(tab6);
-                model6.Load();
+                Go(_tab6);
+                _model6.Load();
                 break;
         }
 
-        now = Tabs.SelectedIndex;
+        _now = Tabs.SelectedIndex;
     }
 
     private void Go(UserControl to)
     {
-        cancel.Cancel();
-        cancel.Dispose();
+        _cancel.Cancel();
+        _cancel.Dispose();
 
-        cancel = new();
+        _cancel = new();
         Tabs.IsEnabled = false;
 
-        if (!switch1)
+        if (!_switch1)
         {
             Content2.Content = to;
-            _ = App.PageSlide500.Start(Content1, Content2, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(Content1, Content2, _now < Tabs.SelectedIndex, _cancel.Token);
         }
         else
         {
             Content1.Content = to;
-            _ = App.PageSlide500.Start(Content2, Content1, now < Tabs.SelectedIndex, cancel.Token);
+            _ = App.PageSlide500.Start(Content2, Content1, _now < Tabs.SelectedIndex, _cancel.Token);
         }
 
-        switch1 = !switch1;
+        _switch1 = !_switch1;
         Tabs.IsEnabled = true;
     }
 
@@ -216,6 +216,6 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Started()
     {
-        model1.GameStateChange();
+        _model1.GameStateChange();
     }
 }

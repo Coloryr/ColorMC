@@ -16,22 +16,21 @@ namespace ColorMC.Gui.Player;
 /// 音频播放
 /// </summary>
 public static class Media
-{
-    private static IPlayer? player;
+{    
+    private static string s_musicFile;
+    private static IPlayer? s_player;
 
-    private static CancellationTokenSource cancel = new();
+    private static CancellationTokenSource s_cancel = new();
 
     public static bool Decoding { get; private set; }
-
-    private static string MusicFile;
 
     public static float Volume
     {
         set
         {
-            if (player != null)
+            if (s_player != null)
             {
-                player.Volume = value;
+                s_player.Volume = value;
             }
         }
     }
@@ -48,11 +47,11 @@ public static class Media
 
         if (SystemInfo.Os == OsType.Windows)
         {
-            player = new NAudioPlayer();
+            s_player = new NAudioPlayer();
         }
         else
         {
-            player = new OpenalPlayer();
+            s_player = new OpenalPlayer();
         }
     }
 
@@ -71,27 +70,27 @@ public static class Media
             }
         });
 
-        player?.Close();
+        s_player?.Close();
     }
 
     /// <summary>
     /// 暂停
     /// </summary>
-    public static void Pause() => player?.Pause();
+    public static void Pause() => s_player?.Pause();
 
     /// <summary>
     /// 播放
     /// </summary>
-    public static void Play() => player?.Play();
+    public static void Play() => s_player?.Play();
 
     /// <summary>
     /// 停止
     /// </summary>
     public static void Stop()
     {
-        cancel.Cancel();
+        s_cancel.Cancel();
 
-        player?.Stop();
+        s_player?.Stop();
     }
 
     /// <summary>
@@ -101,7 +100,7 @@ public static class Media
     /// <returns></returns>
     public static async Task<(bool, string?)> PlayWAV(string filePath)
     {
-        if (player == null)
+        if (s_player == null)
             return (false, null);
 
         Stop();
@@ -114,7 +113,7 @@ public static class Media
             }
         });
 
-        cancel = new();
+        s_cancel = new();
 
         var file = File.OpenRead(filePath);
         var temp = new byte[4];
@@ -190,8 +189,8 @@ public static class Media
                     {
                         var length = Math.Min(less, pack);
                         file.Read(temp, 0, length);
-                        player?.Write(numChannels, bitsPerSample, temp, length, sampleRate);
-                        if (cancel.IsCancellationRequested)
+                        s_player?.Write(numChannels, bitsPerSample, temp, length, sampleRate);
+                        if (s_cancel.IsCancellationRequested)
                             break;
 
                         a += length;
@@ -218,7 +217,7 @@ public static class Media
     /// <returns></returns>
     public static async Task<(bool, string?)> PlayMp3(Stream stream)
     {
-        if (player == null)
+        if (s_player == null)
             return (false, null);
 
         Stop();
@@ -231,7 +230,7 @@ public static class Media
             }
         });
 
-        cancel = new();
+        s_cancel = new();
 
         var decoder = new Mp3Decoder(stream);
         if (!decoder.Load())
@@ -247,15 +246,15 @@ public static class Media
                 int count = 0;
                 while (true)
                 {
-                    if (cancel.IsCancellationRequested)
+                    if (s_cancel.IsCancellationRequested)
                         break;
                     var frame = decoder.DecodeFrame();
-                    if (frame == null || frame.len <= 0 || cancel.IsCancellationRequested)
+                    if (frame == null || frame.len <= 0 || s_cancel.IsCancellationRequested)
                     {
                         break;
                     }
 
-                    player?.Write(2, 16, frame.buff, frame.len, decoder.outputFrequency);
+                    s_player?.Write(2, 16, frame.buff, frame.len, decoder.outputFrequency);
                     count++;
                 }
                 decoder.Dispose();
@@ -265,7 +264,7 @@ public static class Media
             {
                 Logs.Error("mp3 decode error", e);
             }
-        }, cancel.Token);
+        }, s_cancel.Token);
 
         return (true, null);
     }
@@ -277,10 +276,10 @@ public static class Media
     /// <returns></returns>
     public static async Task<(bool, string?)> PlayMp3(string file)
     {
-        if (player == null)
+        if (s_player == null)
             return (false, null);
 
-        MusicFile = file;
+        s_musicFile = file;
 
         var reader = File.OpenRead(file);
         return await PlayMp3(reader);
@@ -293,7 +292,7 @@ public static class Media
     /// <returns></returns>
     public static async Task<(bool, string?)> PlayUrl(string url)
     {
-        if (player == null)
+        if (s_player == null)
             return (false, null);
 
         try
@@ -320,9 +319,9 @@ public static class Media
     /// </summary>
     public static void PlayEnd()
     {
-        if (!string.IsNullOrWhiteSpace(MusicFile))
+        if (!string.IsNullOrWhiteSpace(s_musicFile))
         {
-            _ = PlayMp3(MusicFile);
+            _ = PlayMp3(s_musicFile);
         }
     }
 }

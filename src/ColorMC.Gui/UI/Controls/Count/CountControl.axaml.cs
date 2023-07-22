@@ -7,20 +7,20 @@ namespace ColorMC.Gui.UI.Controls.Count;
 
 public partial class CountControl : UserControl, IUserControl
 {
-    private readonly CountModel model;
-
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("CountWindow.Title");
 
+    private readonly CountModel _model;
+
     public CountControl()
     {
         InitializeComponent();
 
-        model = new(this);
-        DataContext = model;
+        _model = new(this);
+        DataContext = _model;
     }
 
     public void Closed()

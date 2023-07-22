@@ -14,7 +14,7 @@ public static class JvmPath
     public const string Name1 = "java";
     public static Dictionary<string, JavaInfo> Jvms { get; } = new();
 
-    public static string BaseDir { get; private set; } = "";
+    public static string BaseDir { get; private set; }
 
     /// <summary>
     /// 初始化

@@ -8,10 +8,10 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class MainFlyout
 {
-    private readonly GameItemModel Obj;
+    private readonly GameItemModel _obj;
     public MainFlyout(Control con, GameItemModel obj)
     {
-        Obj = obj;
+        _obj = obj;
 
         var run = BaseBinding.IsGameRun(obj.Obj);
 
@@ -34,67 +34,67 @@ public class MainFlyout
     }
     private void Button3_Click()
     {
-        App.ShowGameEdit(Obj.Obj);
+        App.ShowGameEdit(_obj.Obj);
     }
 
     private void Button13_Click()
     {
-        Obj.Copy();
+        _obj.Copy();
     }
 
     private void Button12_Click()
     {
-        Obj.Rename();
+        _obj.Rename();
     }
 
     private void Button11_Click()
     {
-        App.ShowAdd(Obj.Obj, FileType.Mod);
+        App.ShowAdd(_obj.Obj, FileType.Mod);
     }
 
     private void Button10_Click()
     {
-        BaseBinding.StopGame(Obj.Obj);
+        BaseBinding.StopGame(_obj.Obj);
     }
 
     private async void Button9_Click()
     {
-        await GameBinding.SetGameIconFromFile(Obj.Con.Window, Obj.Obj);
-        Obj.Reload();
+        await GameBinding.SetGameIconFromFile(_obj.Con.Window, _obj.Obj);
+        _obj.Reload();
     }
 
     private void Button8_Click()
     {
-        App.ShowGameEdit(Obj.Obj, GameEditWindowType.Export);
+        App.ShowGameEdit(_obj.Obj, GameEditWindowType.Export);
     }
 
     private void Button7_Click()
     {
-        GameBinding.OpPath(Obj.Obj);
+        GameBinding.OpPath(_obj.Obj);
     }
 
     private void Button6_Click()
     {
-        Obj.DeleteGame();
+        _obj.DeleteGame();
     }
 
     private void Button5_Click()
     {
-        Obj.EditGroup();
+        _obj.EditGroup();
     }
 
     private void Button4_Click()
     {
-        App.ShowGameEdit(Obj.Obj, GameEditWindowType.World);
+        App.ShowGameEdit(_obj.Obj, GameEditWindowType.World);
     }
 
     private void Button2_Click()
     {
-        App.ShowGameEdit(Obj.Obj, GameEditWindowType.Mod);
+        App.ShowGameEdit(_obj.Obj, GameEditWindowType.Mod);
     }
 
     private void Button1_Click()
     {
-        App.ShowGameLog(Obj.Obj);
+        App.ShowGameLog(_obj.Obj);
     }
 }

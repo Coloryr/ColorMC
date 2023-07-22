@@ -6,16 +6,16 @@ namespace ColorMC.Gui.Player;
 
 public class OpenalPlayer : IPlayer
 {
-    private readonly int alSource;
-    private ALDevice device;
-    private ALContext context;
-    private bool IsPlay = false;
+    private readonly int _alSource;
+    private ALDevice _device;
+    private ALContext _context;
+    private bool _isPlay = false;
 
     public float Volume
     {
         set
         {
-            AL.Source(alSource, ALSourcef.Gain, value);
+            AL.Source(_alSource, ALSourcef.Gain, value);
         }
     }
 
@@ -24,12 +24,12 @@ public class OpenalPlayer : IPlayer
         // Get the default device, then go though all devices and select the AL soft device if it exists.
         string deviceName = ALC.GetString(ALDevice.Null, AlcGetString.DefaultDeviceSpecifier);
 
-        device = ALC.OpenDevice(deviceName);
+        _device = ALC.OpenDevice(deviceName);
         int temp = 0;
-        context = ALC.CreateContext(device, ref temp);
-        ALC.MakeContextCurrent(context);
+        _context = ALC.CreateContext(_device, ref temp);
+        ALC.MakeContextCurrent(_context);
 
-        AL.GenSource(out alSource);
+        AL.GenSource(out _alSource);
 
         CheckALError();
 
@@ -37,18 +37,18 @@ public class OpenalPlayer : IPlayer
         {
             while (true)
             {
-                AL.GetSource(alSource, ALGetSourcei.BuffersQueued, out int value);
-                AL.GetSource(alSource, ALGetSourcei.BuffersProcessed, out int value1);
+                AL.GetSource(_alSource, ALGetSourcei.BuffersQueued, out int value);
+                AL.GetSource(_alSource, ALGetSourcei.BuffersProcessed, out int value1);
                 if (value - value1 > 100)
                 {
-                    int temp = AL.SourceUnqueueBuffer(alSource);
+                    int temp = AL.SourceUnqueueBuffer(_alSource);
                     AL.DeleteBuffer(temp);
                     Thread.Sleep(10);
                 }
-                if (IsPlay && value == 0 && Media.Decoding == false &&
-                    AL.GetSourceState(alSource) == ALSourceState.Stopped)
+                if (_isPlay && value == 0 && Media.Decoding == false &&
+                    AL.GetSourceState(_alSource) == ALSourceState.Stopped)
                 {
-                    IsPlay = false;
+                    _isPlay = false;
                     Media.PlayEnd();
                 }
             }
@@ -57,11 +57,11 @@ public class OpenalPlayer : IPlayer
 
     public void Close()
     {
-        AL.DeleteSource(alSource);
+        AL.DeleteSource(_alSource);
 
         ALC.MakeContextCurrent(ALContext.Null);
-        ALC.DestroyContext(context);
-        ALC.CloseDevice(device);
+        ALC.DestroyContext(_context);
+        ALC.CloseDevice(_device);
     }
 
     public static void CheckALError()
@@ -75,23 +75,23 @@ public class OpenalPlayer : IPlayer
 
     public void Pause()
     {
-        AL.SourcePause(alSource);
+        AL.SourcePause(_alSource);
     }
 
     public void Play()
     {
-        AL.SourcePlay(alSource);
+        AL.SourcePlay(_alSource);
     }
 
     public void Stop()
     {
-        AL.Source(alSource, ALSourcef.Gain, 0);
-        AL.SourceStop(alSource);
+        AL.Source(_alSource, ALSourcef.Gain, 0);
+        AL.SourceStop(_alSource);
 
-        AL.GetSource(alSource, ALGetSourcei.BuffersQueued, out int value);
+        AL.GetSource(_alSource, ALGetSourcei.BuffersQueued, out int value);
         while (value > 0)
         {
-            int temp = AL.SourceUnqueueBuffer(alSource);
+            int temp = AL.SourceUnqueueBuffer(_alSource);
             AL.DeleteBuffer(temp);
             value--;
         }
@@ -130,12 +130,12 @@ public class OpenalPlayer : IPlayer
 
         AL.GenBuffer(out int alBuffer);
         AL.BufferData(alBuffer, format, new ReadOnlySpan<byte>(buff, 0, length), sampleRate);
-        AL.SourceQueueBuffer(alSource, alBuffer);
+        AL.SourceQueueBuffer(_alSource, alBuffer);
 
-        if (AL.GetSourceState(alSource) != ALSourceState.Playing)
+        if (AL.GetSourceState(_alSource) != ALSourceState.Playing)
         {
-            AL.SourcePlay(alSource);
-            IsPlay = true;
+            AL.SourcePlay(_alSource);
+            _isPlay = true;
         }
     }
 }

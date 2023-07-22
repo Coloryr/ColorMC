@@ -5,27 +5,27 @@ namespace ColorMC.Gui.Player;
 
 public class NAudioPlayer : IPlayer
 {
-    public float Volume { set => waveOut.Volume = value; }
+    public float Volume { set => _waveOut.Volume = value; }
 
-    private readonly WaveOutEvent waveOut;
-    private WaveFormat? wf;
-    private BufferedWaveProvider? bwp;
-    private bool init = false;
-    private bool stop = false;
-    private bool IsPlay = false;
+    private readonly WaveOutEvent _waveOut;
+    private WaveFormat? _wf;
+    private BufferedWaveProvider? _bwp;
+    private bool _init = false;
+    private bool _stop = false;
+    private bool _isPlay = false;
 
     public NAudioPlayer()
     {
-        waveOut = new();
+        _waveOut = new();
 
         new Thread(() =>
         {
             while (true)
             {
-                if (IsPlay && Media.Decoding == false &&
-                    bwp?.BufferedDuration.TotalSeconds == 0)
+                if (_isPlay && Media.Decoding == false &&
+                    _bwp?.BufferedDuration.TotalSeconds == 0)
                 {
-                    IsPlay = false;
+                    _isPlay = false;
                     Media.PlayEnd();
                 }
                 Thread.Sleep(100);
@@ -35,62 +35,62 @@ public class NAudioPlayer : IPlayer
 
     public void Close()
     {
-        waveOut.Dispose();
+        _waveOut.Dispose();
     }
 
     public void Pause()
     {
-        if (init && waveOut.PlaybackState != PlaybackState.Paused)
+        if (_init && _waveOut.PlaybackState != PlaybackState.Paused)
         {
-            waveOut.Pause();
+            _waveOut.Pause();
         }
     }
 
     public void Play()
     {
-        if (init)
+        if (_init)
         {
-            waveOut.Play();
+            _waveOut.Play();
         }
 
     }
 
     public void Stop()
     {
-        if (init)
+        if (_init)
         {
-            waveOut.Stop();
+            _waveOut.Stop();
         }
-        init = false;
-        wf = null;
-        bwp?.ClearBuffer();
-        bwp = null;
-        stop = true;
+        _init = false;
+        _wf = null;
+        _bwp?.ClearBuffer();
+        _bwp = null;
+        _stop = true;
     }
 
     public void Write(int numChannels, int bitsPerSample, byte[] buff, int length, int sampleRate)
     {
-        if (wf == null)
+        if (_wf == null)
         {
-            wf = new WaveFormat(sampleRate, bitsPerSample, numChannels);
-            bwp = new BufferedWaveProvider(wf);
-            waveOut.Init(bwp);
-            init = true;
-            stop = false;
+            _wf = new WaveFormat(sampleRate, bitsPerSample, numChannels);
+            _bwp = new BufferedWaveProvider(_wf);
+            _waveOut.Init(_bwp);
+            _init = true;
+            _stop = false;
         }
-        while (bwp?.BufferedDuration.TotalSeconds > 1)
+        while (_bwp?.BufferedDuration.TotalSeconds > 1)
         {
             Thread.Sleep(800);
         }
-        if (stop)
+        if (_stop)
         {
             return;
         }
-        bwp!.AddSamples(buff, 0, length);
-        if (waveOut.PlaybackState == PlaybackState.Stopped)
+        _bwp!.AddSamples(buff, 0, length);
+        if (_waveOut.PlaybackState == PlaybackState.Stopped)
         {
-            waveOut.Play();
-            IsPlay = true;
+            _waveOut.Play();
+            _isPlay = true;
         }
     }
 }

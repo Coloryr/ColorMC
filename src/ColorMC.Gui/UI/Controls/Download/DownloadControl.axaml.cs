@@ -12,20 +12,20 @@ namespace ColorMC.Gui.UI.Controls.Download;
 
 public partial class DownloadControl : UserControl, IUserControl
 {
-    private readonly DownloadModel model;
-
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("DownloadWindow.Title");
 
+    private readonly DownloadModel _model;
+
     public DownloadControl()
     {
         InitializeComponent();
 
-        model = new(this);
-        DataContext = model;
+        _model = new(this);
+        DataContext = _model;
 
         Button_P1.PointerExited += Button_P1_PointerLeave;
         Button_P.PointerEntered += Button_P_PointerEnter;
@@ -67,7 +67,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public void Closed()
     {
-        model.Close();
+        _model.Close();
 
         ColorMCCore.DownloadItemStateUpdate = null;
 
@@ -76,7 +76,7 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public void Load()
     {
-        model.Load();
+        _model.Load();
     }
 
     public async Task<bool> Closing()
