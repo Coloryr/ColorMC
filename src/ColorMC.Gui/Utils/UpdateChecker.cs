@@ -107,7 +107,7 @@ public static class UpdateChecker
         var res = await DownloadManager.Start(list);
         if (res)
         {
-            App.NeedClose = true;
+            App.IsClose = true;
             Thread.Sleep(500);
             Process.Start($"{(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
                     "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");

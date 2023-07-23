@@ -13,6 +13,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 public partial class Live2dControl : UserControl
 {
     private CancellationTokenSource _cancel = new();
+    private FpsTimer _renderTimer;
 
     public Live2dControl()
     {
@@ -23,6 +24,13 @@ public partial class Live2dControl : UserControl
         Live2dTop.PointerMoved += Live2dTop_PointerMoved;
 
         DataContextChanged += Live2dControl_DataContextChanged;
+
+        App.OnClose += App_OnClose;
+    }
+
+    private void App_OnClose()
+    {
+        _renderTimer.Close();
     }
 
     private void Live2dControl_DataContextChanged(object? sender, EventArgs e)
@@ -30,6 +38,24 @@ public partial class Live2dControl : UserControl
         if (DataContext is MainModel model)
         {
             model.PropertyChanged += Model_PropertyChanged;
+            _renderTimer = new(Live2d)
+            { 
+                FpsTick = (fps) => 
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        if (!Live2d.HaveModel && IsVisible)
+                        {
+                            IsVisible = false;
+                        }
+                        else if (Live2d.HaveModel && !IsVisible)
+                        {
+                            IsVisible = true;
+                        }
+                        Label1.Content = $"{fps}Fps";
+                    });
+                }
+            };
         }
     }
 

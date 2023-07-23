@@ -30,7 +30,7 @@ public static class ConfigSave
 
         t_thread = new(Run)
         {
-            Name = "ColorMC-Save"
+            Name = "ColorMC_Save"
         };
         s_run = true;
         t_thread.Start();

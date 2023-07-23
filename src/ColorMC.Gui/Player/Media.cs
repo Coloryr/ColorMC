@@ -53,6 +53,12 @@ public static class Media
         {
             s_player = new OpenalPlayer();
         }
+        App.OnClose += App_OnClose;
+    }
+
+    private static void App_OnClose()
+    {
+        Close();
     }
 
     /// <summary>

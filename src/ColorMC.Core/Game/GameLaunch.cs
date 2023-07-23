@@ -1417,6 +1417,9 @@ public static class Launch
             {
                 ColorMCCore.OnError?.Invoke("Error", e, false);
             }
-        }).Start();
+        })
+        {
+            Name = "ColorMC_Game"
+        }.Start();
     }
 }

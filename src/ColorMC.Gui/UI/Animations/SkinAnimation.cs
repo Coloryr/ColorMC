@@ -105,15 +105,5 @@ public class SkinAnimation
                 }
             }
         }
-
-        Task.Run(() =>
-        {
-            Thread.Sleep(15);
-            if (_run)
-            {
-                Dispatcher.UIThread.Invoke(_render.RequestNextFrameRendering);
-            }
-        });
-
     }
 }

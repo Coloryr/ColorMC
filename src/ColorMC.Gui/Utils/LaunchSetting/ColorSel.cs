@@ -107,43 +107,44 @@ public class ColorSel : INotifyPropertyChanged
         }
     }
 
-    private readonly Thread timer;
-    private bool rbg;
-    private bool run;
-    private double rbg_s = 1;
-    private double rbg_v = 1;
+    private readonly Thread t_tick;
+    private bool _rgb;
+    private bool _run;
+    private double _rgbS = 1;
+    private double _rgbV = 1;
 
     public ColorSel()
     {
-        timer = new(Tick)
+        t_tick = new(Tick)
         {
-            Name = "ColorMC-RGB"
+            Name = "ColorMC_RGB"
         };
-        run = true;
-        timer.Start();
+        _run = true;
+        t_tick.Start();
+        App.OnClose += App_OnClose;
     }
 
-    public void Close()
+    private void App_OnClose()
     {
-        run = false;
+        _run = false;
     }
 
     public void EnableRGB()
     {
-        if (rbg)
+        if (_rgb)
             return;
 
-        rbg = true;
+        _rgb = true;
 
-        rbg_s = (double)GuiConfigUtils.Config.RGBS / 100;
-        rbg_v = (double)GuiConfigUtils.Config.RGBV / 100;
+        _rgbS = (double)GuiConfigUtils.Config.RGBS / 100;
+        _rgbV = (double)GuiConfigUtils.Config.RGBV / 100;
 
         semaphore.Release();
     }
 
     public void DisableRGB()
     {
-        rbg = false;
+        _rgb = false;
     }
 
     private int now;
@@ -153,16 +154,16 @@ public class ColorSel : INotifyPropertyChanged
 
     private void Tick(object? obj)
     {
-        while (run)
+        while (_run)
         {
             semaphore.WaitOne();
-            while (rbg)
+            while (_rgb)
             {
                 now += 1;
                 now %= 360;
-                var temp = HsvColor.ToRgb(now, rbg_s, rbg_v);
+                var temp = HsvColor.ToRgb(now, _rgbS, _rgbV);
                 Color = new ImmutableSolidColorBrush(temp);
-                if (rbg_v >= 0.8)
+                if (_rgbV >= 0.8)
                 {
                     if (now == 190)
                     {
@@ -190,7 +191,7 @@ public class ColorSel : INotifyPropertyChanged
         get
         {
             if (key == "Main")
-                return rbg ? Color : MainColor;
+                return _rgb ? Color : MainColor;
             else if (key == "Back")
                 return BackColor;
             else if (key == "TranBack")
@@ -198,7 +199,7 @@ public class ColorSel : INotifyPropertyChanged
             else if (key == "Font")
                 return FontColor;
             else if (key == "ButtonFont")
-                return rbg ? Color1 : ButtonFont;
+                return _rgb ? Color1 : ButtonFont;
             else if (key == "Motd")
                 return MotdColor;
             else if (key == "MotdBack")

@@ -15,6 +15,10 @@
             Name="Live2dTop"
             Background="#00FFFFFF"
             Opacity="0" />
+        <Label
+            Name="Label1"
+            VerticalAlignment="Bottom"
+            Content="Fps" />
         <TextBox
             Name="TextBox1"
             Margin="0,0,0,50"

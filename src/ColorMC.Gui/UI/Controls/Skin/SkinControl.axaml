@@ -185,6 +185,13 @@
             </Label>
 
             <Label
+                Margin="130,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="{setting:Colors Bottom1}"
+                Content="{Binding NowFps}" />
+
+            <Label
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 HorizontalContentAlignment="Center"

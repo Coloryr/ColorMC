@@ -518,8 +518,8 @@ public partial class AddControlModel : ObservableObject
         DownloadSource = (int)type;
         await Task.Run(() =>
         {
-            while (!Display || _load)
-                Thread.Sleep(1000);
+            while ((!Display || _load) && !App.IsClose)
+                Thread.Sleep(100);
         });
 
         VersionDisplay = true;

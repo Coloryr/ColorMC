@@ -15,13 +15,13 @@ namespace ColorMC.Gui.UI.Model.GameLog;
 
 public partial class GameLogTabModel : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
     public GameSettingObj Obj { get; init; }
 
     public ObservableCollection<string> FileList { get; init; } = new();
 
     [ObservableProperty]
-    private TextDocument text;
+    private TextDocument _text;
 
     [ObservableProperty]
     private bool isGameRun;
@@ -37,10 +37,10 @@ public partial class GameLogTabModel : ObservableObject
 
     public GameLogTabModel(IUserControl con, GameSettingObj obj)
     {
-        Con = con;
+        _con = con;
         Obj = obj;
 
-        text = new();
+        _text = new();
 
         timer = new(TimeSpan.FromMilliseconds(100));
         timer.BeginInit();
@@ -74,7 +74,7 @@ public partial class GameLogTabModel : ObservableObject
             return;
         }
 
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameLogWindow.Info1"));
         var data = await GameBinding.ReadLog(Obj, value);
         window.ProgressInfo.Close();
@@ -111,7 +111,7 @@ public partial class GameLogTabModel : ObservableObject
 
         IsGameRun = true;
 
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await GameBinding.Launch(window, Obj);
         if (!res.Item1)
         {

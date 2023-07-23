@@ -414,17 +414,6 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 退出
-    /// </summary>
-    public static void Exit()
-    {
-        ColorMCCore.Close();
-        Media.Close();
-        GameCount.Close();
-        ColorSel.Instance.Close();
-    }
-
-    /// <summary>
     /// 游戏实例是否在运行
     /// </summary>
     /// <param name="obj">游戏实例</param>

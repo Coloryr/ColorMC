@@ -27,22 +27,20 @@ public class Live2dRender : OpenGlControlBase
     private MainModel _model;
     private bool _first = false;
 
-    public bool HaveModel => _lapp?.Live2dManager.GetModelNum() != 0;
+    public bool HaveModel 
+    {
+        get 
+        {
+            if (_lapp == null)
+            {
+                return false;
+            }
+            return _lapp.Live2dManager.GetModelNum() != 0;
+        }
+    }
 
     public Live2dRender()
     {
-        new Thread(() =>
-        {
-            while (true)
-            {
-                if (_render)
-                {
-                    Dispatcher.UIThread.Invoke(RequestNextFrameRendering);
-                }
-                Thread.Sleep(20);
-            }
-        }).Start();
-
         PointerPressed += Live2dRender_PointerPressed;
 
         DataContextChanged += Live2dRender_DataContextChanged;
@@ -143,14 +141,6 @@ public class Live2dRender : OpenGlControlBase
     {
         if (!_init)
             return;
-        if (!HaveModel && IsVisible)
-        {
-            IsVisible = false;
-        }
-        else if (HaveModel && !IsVisible)
-        {
-            IsVisible = true;
-        }
         if (_change)
         {
             _change = false;

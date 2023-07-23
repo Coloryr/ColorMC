@@ -20,7 +20,7 @@ public class NAudioPlayer : IPlayer
 
         new Thread(() =>
         {
-            while (true)
+            while (!App.IsClose)
             {
                 if (_isPlay && Media.Decoding == false &&
                     _bwp?.BufferedDuration.TotalSeconds == 0)
@@ -30,7 +30,10 @@ public class NAudioPlayer : IPlayer
                 }
                 Thread.Sleep(100);
             }
-        }).Start();
+        })
+        {
+            Name = "ColorMC_NAudio"
+        }.Start();
     }
 
     public void Close()

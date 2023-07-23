@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UI.Windows;
 using System;
@@ -24,6 +25,7 @@ public partial class SkinControl : UserControl, IUserControl
     private readonly Timer _timer1;
     private readonly Timer _timer2;
     private MoveType _type;
+    private FpsTimer _renderTimer;
 
     private float _xdiff = 0;
     private float _ydiff = 0;
@@ -300,6 +302,13 @@ public partial class SkinControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+        _renderTimer = new(Skin)
+        {
+            FpsTick = (fps) =>
+            {
+                Dispatcher.UIThread.Post(() => _model.Fps = fps);
+            }
+        };
     }
 
     public void Update()
@@ -313,6 +322,7 @@ public partial class SkinControl : UserControl, IUserControl
     public void Closed()
     {
         App.SkinLoad -= App_SkinLoad;
+        _renderTimer.Close();
 
         App.SkinWindow = null;
     }

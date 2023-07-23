@@ -25,6 +25,8 @@ public partial class SkinModel : ObservableObject
     private string info;
     [ObservableProperty]
     private string text;
+    [ObservableProperty]
+    private string _nowFps;
 
     [ObservableProperty]
     private bool haveSkin;
@@ -60,6 +62,15 @@ public partial class SkinModel : ObservableObject
     public Vector3 ArmRotate;
     public Vector3 LegRotate;
     public Vector3 HeadRotate;
+
+    public int Fps
+    {
+        set
+        {
+            NowFps = $"{value}Fps";
+        }
+    }
+
 
     public SkinModel(IUserControl con)
     {

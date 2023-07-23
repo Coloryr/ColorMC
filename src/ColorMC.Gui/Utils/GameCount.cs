@@ -30,7 +30,10 @@ public static class GameCount
         Local = Path.GetFullPath(local + Name);
 
         IsRun = true;
-        new Thread(Run).Start();
+        new Thread(Run)
+        {
+            Name = "ColorMC_Count"
+        }.Start();
 
         Read();
     }
@@ -114,7 +117,7 @@ public static class GameCount
     private static void Run()
     {
         int a = 0;
-        while (IsRun)
+        while (!App.IsClose)
         {
             if (BaseBinding.RunGames.Count > 0)
             {
@@ -154,7 +157,7 @@ public static class GameCount
                 }
                 a++;
             }
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
         }
     }
 
@@ -307,11 +310,6 @@ public static class GameCount
 
             Task.Run(Save);
         }
-    }
-
-    public static void Close()
-    {
-        IsRun = false;
     }
 
     public static void GameClose(string uuid)

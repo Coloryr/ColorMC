@@ -168,8 +168,8 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         _model.DownloadSource = 0;
         await Task.Run(() =>
         {
-            while (_model.Set)
-                Thread.Sleep(1000);
+            while (_model.Set && !App.IsClose)
+                Thread.Sleep(100);
         });
     }
 

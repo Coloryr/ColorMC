@@ -8,6 +8,7 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
@@ -55,9 +56,6 @@ public partial class App : Application
             Logs.Error(GetLanguage("Gui.Error25"), e.ExceptionObject as Exception);
         };
     }
-
-    public static bool NeedClose { get; set; }
-
     public static Window? LastWindow { get; set; }
 
     public static AllControl? AllWindow { get; set; }
@@ -86,6 +84,7 @@ public partial class App : Application
     public static event Action? PicUpdate;
     public static event Action? UserEdit;
     public static event Action? SkinLoad;
+    public static event Action? OnClose;
 
     public static Application ThisApp { get; private set; }
     public static IApplicationLifetime? Life { get; private set; }
@@ -96,10 +95,9 @@ public partial class App : Application
     public static WindowIcon? Icon { get; private set; }
 
     public static bool IsHide { get; private set; }
+    public static bool IsClose { get; set; }
 
     public static PlatformThemeVariant NowTheme { get; private set; }
-
-    public static event Action? OnStop;
 
     private static readonly Language Language = new();
 
@@ -107,7 +105,10 @@ public partial class App : Application
     {
         AvaloniaXamlLoader.Load(this);
 
-        StartLock();
+        if (ColorMCGui.RunType == RunType.Program)
+        {
+            StartLock();
+        }
     }
 
     public static string GetLanguage(string input)
@@ -195,22 +196,22 @@ public partial class App : Application
 
     public static void StartLock()
     {
-        if (ColorMCGui.RunType == RunType.Program)
+        new Thread(() =>
         {
-            new Thread(() =>
+            while (!IsClose)
             {
-                while (!NeedClose)
+                ColorMCGui.TestLock();
+                if (IsClose)
                 {
-                    ColorMCGui.TestLock();
-                    if (NeedClose)
-                    {
-                        return;
-                    }
-                    IsHide = false;
-                    Dispatcher.UIThread.Post(Show);
+                    return;
                 }
-            }).Start();
-        }
+                IsHide = false;
+                Dispatcher.UIThread.Post(Show);
+            }
+        })
+        {
+            Name = "ColorMC_Lock"
+        }.Start();
     }
 
     public static IBaseWindow FindRoot(object? con)
@@ -669,8 +670,10 @@ public partial class App : Application
 
     public static void Close()
     {
-        OnStop?.Invoke();
-        BaseBinding.Exit();
+        IsClose = true;
+        OnClose?.Invoke();
+        CloseAllWindow();
+        ColorMCCore.Close();
         (Life as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
         Environment.Exit(Environment.ExitCode);
     }
@@ -826,26 +829,39 @@ public partial class App : Application
             {
                 window1.Hide();
             }
-            (DownloadWindow?.GetVisualRoot() as Window)?.Close();
-            (UserWindow?.GetVisualRoot() as Window)?.Close();
-            (AddGameWindow?.GetVisualRoot() as Window)?.Close();
-            (AddModPackWindow?.GetVisualRoot() as Window)?.Close();
-            (SettingWindow?.GetVisualRoot() as Window)?.Close();
-            (SkinWindow?.GetVisualRoot() as Window)?.Close();
-            (AddJavaWindow?.GetVisualRoot() as Window)?.Close();
+            CloseAllWindow();
+        }
+    }
 
-            foreach (var item in GameEditWindows.Values)
-            {
-                (item.GetVisualRoot() as Window)?.Close();
-            }
-            foreach (var item in AddWindows.Values)
-            {
-                (item.GetVisualRoot() as Window)?.Close();
-            }
-            foreach (var item in ServerPackWindows.Values)
-            {
-                (item.GetVisualRoot() as Window)?.Close();
-            }
+    public static void CloseAllWindow()
+    {
+        (CountWindow?.GetVisualRoot() as Window)?.Close();
+        (AddJavaWindow?.GetVisualRoot() as Window)?.Close();
+        (SkinWindow?.GetVisualRoot() as Window)?.Close();
+        (SettingWindow?.GetVisualRoot() as Window)?.Close();
+        (AddModPackWindow?.GetVisualRoot() as Window)?.Close();
+        (AddGameWindow?.GetVisualRoot() as Window)?.Close();
+        (UserWindow?.GetVisualRoot() as Window)?.Close();
+        (DownloadWindow?.GetVisualRoot() as Window)?.Close();
+        foreach (var item in GameEditWindows.Values)
+        {
+            (item.GetVisualRoot() as Window)?.Close();
+        }
+        foreach (var item in ConfigEditWindows.Values)
+        {
+            (item.GetVisualRoot() as Window)?.Close();
+        }
+        foreach (var item in AddWindows.Values)
+        {
+            (item.GetVisualRoot() as Window)?.Close();
+        }
+        foreach (var item in ServerPackWindows.Values)
+        {
+            (item.GetVisualRoot() as Window)?.Close();
+        }
+        foreach (var item in GameLogWindows.Values)
+        {
+            (item.GetVisualRoot() as Window)?.Close();
         }
     }
 

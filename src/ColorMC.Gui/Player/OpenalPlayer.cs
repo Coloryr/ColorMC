@@ -35,7 +35,7 @@ public class OpenalPlayer : IPlayer
 
         new Thread(() =>
         {
-            while (true)
+            while (!App.IsClose)
             {
                 AL.GetSource(_alSource, ALGetSourcei.BuffersQueued, out int value);
                 AL.GetSource(_alSource, ALGetSourcei.BuffersProcessed, out int value1);
@@ -52,7 +52,10 @@ public class OpenalPlayer : IPlayer
                     Media.PlayEnd();
                 }
             }
-        }).Start();
+        })
+        {
+            Name = "ColorMC_OpenAL"
+        }.Start();
     }
 
     public void Close()
