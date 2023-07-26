@@ -1,5 +1,8 @@
 ﻿namespace ColorMC.Core.Objs;
 
+/// <summary>
+/// 启动错误
+/// </summary>
 public class LaunchException : Exception
 {
     public LaunchState State { get; private set; }

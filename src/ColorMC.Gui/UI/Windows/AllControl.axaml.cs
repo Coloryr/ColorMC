@@ -32,19 +32,19 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 {
     public IBaseWindow TopWindow => App.FindRoot(this);
 
-    private IUserControl BaseControl;
-    private IUserControl Now;
-    private readonly AllFlyout AllFlyout1;
-    private bool IsDialog;
+    private IUserControl _baseControl;
+    private IUserControl _nowControl;
+    private readonly AllFlyout _allFlyout;
+    private bool _isDialog;
 
-    private readonly Dictionary<IUserControl, Grid> Cons = new();
-    private readonly Dictionary<Grid, IUserControl> Cons1 = new();
-    private readonly Dictionary<Grid, Button> Switchs = new();
-    private readonly List<Button> List = new();
+    private readonly Dictionary<IUserControl, Grid> _cons = new();
+    private readonly Dictionary<Grid, IUserControl> _cons1 = new();
+    private readonly Dictionary<Grid, Button> _switchs = new();
+    private readonly List<Button> _buttonList = new();
 
     public IBaseWindow Window => this;
-    public IUserControl Con => Now;
-    UserControl IUserControl.Con => Now.Con;
+    public IUserControl Con => _nowControl;
+    UserControl IUserControl.Con => _nowControl.Con;
 
     Info3Control IBaseWindow.InputInfo => Info3;
     Info1Control IBaseWindow.ProgressInfo => Info1;
@@ -60,7 +60,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     {
         InitializeComponent();
 
-        AllFlyout1 = new(List);
+        _allFlyout = new(_buttonList);
 
         if (App.BackBitmap != null)
         {
@@ -135,34 +135,34 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     private void Button1_Click(object? sender, RoutedEventArgs e)
     {
-        AllFlyout1.ShowAt(this, true);
+        _allFlyout.ShowAt(this, true);
     }
 
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
-        if (Now == null)
+        if (_nowControl == null)
             return;
 
-        if (IsDialog)
+        if (_isDialog)
         {
             Grid1.Children.Clear();
-            IsDialog = false;
+            _isDialog = false;
         }
         else
         {
-            Close(Now);
+            Close(_nowControl);
         }
     }
 
     public void Add(IUserControl con)
     {
-        if (BaseControl == null)
+        if (_baseControl == null)
         {
-            BaseControl = con;
-            MainControl.Children.Add(BaseControl.Con);
+            _baseControl = con;
+            MainControl.Children.Add(_baseControl.Con);
             Dispatcher.UIThread.Post(() =>
             {
-                (BaseControl as IUserControl)?.Opened();
+                (_baseControl as IUserControl)?.Opened();
             });
         }
         else
@@ -175,7 +175,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
             };
             button.Click += (a, e) =>
             {
-                AllFlyout1.Hide();
+                _allFlyout.Hide();
                 Active(con);
             };
             var grid = new Grid
@@ -183,11 +183,11 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
                 IsVisible = false,
                 Background = ColorSel.TopBottomColor
             };
-            List.Add(button);
+            _buttonList.Add(button);
             grid.Children.Add(con.Con);
-            Switchs.Add(grid, button);
-            Cons.Add(con, grid);
-            Cons1.Add(grid, con);
+            _switchs.Add(grid, button);
+            _cons.Add(con, grid);
+            _cons1.Add(grid, con);
             MainControl.Children.Add(grid);
             App.CrossFade300.Start(null, grid, CancellationToken.None);
             Dispatcher.UIThread.Post(() =>
@@ -198,7 +198,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
         Up();
 
-        Now = con;
+        _nowControl = con;
     }
 
     private static string GetName(UserControl con)
@@ -253,10 +253,10 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     private void Up()
     {
-        if (Cons.Count > 0)
+        if (_cons.Count > 0)
         {
             Button2.IsVisible = true;
-            if (Cons.Count > 1)
+            if (_cons.Count > 1)
             {
                 Button1.IsVisible = true;
             }
@@ -276,18 +276,18 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     {
         foreach (Control item1 in MainControl.Children)
         {
-            if (item1 == BaseControl)
+            if (item1 == _baseControl)
                 continue;
 
             item1.ZIndex = 0;
         }
 
-        if (Cons.TryGetValue(con, out var item))
+        if (_cons.TryGetValue(con, out var item))
         {
             item.ZIndex = 1;
         }
 
-        Now = con;
+        _nowControl = con;
     }
 
     public async void Close(IUserControl con)
@@ -301,24 +301,24 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
             }
         }
 
-        if (Cons.Remove(con, out var item))
+        if (_cons.Remove(con, out var item))
         {
-            Cons1.Remove(item);
+            _cons1.Remove(item);
             MainControl.Children.Remove(item);
-            if (Switchs.Remove(item, out var item1))
+            if (_switchs.Remove(item, out var item1))
             {
-                List.Remove(item1);
+                _buttonList.Remove(item1);
             }
         }
 
         var item2 = MainControl.Children.Last();
         if (item2 is Grid grid)
         {
-            Now = Cons1[grid];
+            _nowControl = _cons1[grid];
         }
         else
         {
-            Now = BaseControl;
+            _nowControl = _baseControl;
         }
 
         Up();
@@ -330,7 +330,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     {
         Grid1.Children.Add(con);
 
-        IsDialog = true;
+        _isDialog = true;
     }
 
     private void Update()
@@ -353,9 +353,9 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     public async Task<bool> Closing(WindowClosingEventArgs _)
     {
-        if (Now is MainControl || Now is CustomControl)
+        if (_nowControl is MainControl || _nowControl is CustomControl)
             return false;
-        if (Now is not IUserControl now)
+        if (_nowControl is not IUserControl now)
             return false;
 
         return await now.Closing();
@@ -363,7 +363,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     public void HideAll()
     {
-        var list = new List<IUserControl>(Cons.Keys);
+        var list = new List<IUserControl>(_cons.Keys);
         list.ForEach(Close);
     }
 }

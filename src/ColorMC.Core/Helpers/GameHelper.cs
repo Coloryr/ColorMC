@@ -16,8 +16,10 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class GameHelper
 {
-    public static string ForgeWrapper =>
-        LibrariesPath.BaseDir + "/io/github/zekerzhayard/ForgeWrapper/mmc3/ForgeWrapper-mmc3.jar";
+    /// <summary>
+    /// ForgeWrapper位置
+    /// </summary>
+    public static string ForgeWrapper { get; private set; }
 
     /// <summary>
     /// 创建下载项目
@@ -65,6 +67,7 @@ public static class GameHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
+    /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeInster(string mc, string version)
     {
         return BuildForgeItem(mc, version, "installer");
@@ -75,6 +78,7 @@ public static class GameHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
+    /// <returns>下载项目</returns>
     public static DownloadItemObj BuildNeoForgeInster(string mc, string version)
     {
         return BuildNeoForgeItem(mc, version, "installer");
@@ -85,32 +89,51 @@ public static class GameHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
+    /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeUniversal(string mc, string version)
     {
         return BuildForgeItem(mc, version, "universal");
     }
 
+    /// <summary>
+    /// 创建NeoForge下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <returns>下载项目</returns>
     public static DownloadItemObj BuildNeoForgeUniversal(string mc, string version)
     {
         return BuildNeoForgeItem(mc, version, "universal");
     }
-
+    /// <summary>
+    /// 创建NeoForge下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeLauncher(string mc, string version)
     {
         return BuildForgeItem(mc, version, "launcher");
     }
+    /// <summary>
+    /// 创建NeoForge下载项目
+    /// </summary>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <returns>下载项目</returns>
     public static DownloadItemObj BuildNeoForgeLauncher(string mc, string version)
     {
         return BuildNeoForgeItem(mc, version, "launcher");
     }
 
     /// <summary>
-    /// 创建Forge运行库下载文件列表
+    /// 获取所有Forge的Lib列表
     /// </summary>
-    /// <param name="info">Forge启动数据</param>
+    /// <param name="info">forge信息</param>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
-    /// <returns></returns>
+    /// <param name="neo">是否为NeoForge</param>
+    /// <returns>下载项目列表</returns>
     public static List<DownloadItemObj> MakeForgeLibs(ForgeLaunchObj info, string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
@@ -122,21 +145,21 @@ public static class GameHelper
             list.Add(neo ?
                 BuildNeoForgeInster(mc, version) :
                 BuildForgeInster(mc, version));
-            list.Add(neo?
-                BuildNeoForgeUniversal(mc, version) : 
+            list.Add(neo ?
+                BuildNeoForgeUniversal(mc, version) :
                 BuildForgeUniversal(mc, version));
-            
+
             if (!CheckRule.IsGameLaunchVersion117(mc))
             {
-                list.Add(neo?
-                    BuildNeoForgeLauncher(mc, version):
+                list.Add(neo ?
+                    BuildNeoForgeLauncher(mc, version) :
                     BuildForgeLauncher(mc, version));
             }
         }
 
         foreach (var item1 in info.libraries)
         {
-            if (item1.name.StartsWith(neo ? 
+            if (item1.name.StartsWith(neo ?
                 "net.neoforged.forge:" : "net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item1.downloads.artifact.url))
             {
@@ -154,7 +177,7 @@ public static class GameHelper
                 {
                     Url = neo ?
                     UrlHelper.DownloadNeoForgeLib(item1.downloads.artifact.url,
-                        BaseClient.Source):
+                        BaseClient.Source) :
                     UrlHelper.DownloadForgeLib(item1.downloads.artifact.url,
                         BaseClient.Source),
                     Name = item1.name,
@@ -167,6 +190,14 @@ public static class GameHelper
         return list;
     }
 
+    /// <summary>
+    /// 获取所有Forge的Lib列表
+    /// </summary>
+    /// <param name="info">forge信息</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">forge版本</param>
+    /// <param name="neo">是否为NeoForge</param>
+    /// <returns>下载项目列表</returns>
     public static List<DownloadItemObj> MakeForgeLibs(ForgeInstallObj info, string mc, string version, bool neo)
     {
         var list = new List<DownloadItemObj>();
@@ -176,8 +207,8 @@ public static class GameHelper
             if (item.name.StartsWith(neo ? "net.neoforged.forge:" : "net.minecraftforge:forge:")
                 && string.IsNullOrWhiteSpace(item.downloads.artifact.url))
             {
-                var item1 = neo ? 
-                    BuildNeoForgeUniversal(mc, version) : 
+                var item1 = neo ?
+                    BuildNeoForgeUniversal(mc, version) :
                     BuildForgeUniversal(mc, version);
                 item1.SHA1 = item.downloads.artifact.sha1;
                 if (!File.Exists(item1.Local))
@@ -471,6 +502,8 @@ public static class GameHelper
     /// </summary>
     public static void ReadyForgeWrapper()
     {
+        ForgeWrapper = Path.GetFullPath(LibrariesPath.BaseDir +
+            "/io/github/zekerzhayard/ForgeWrapper/mmc3/ForgeWrapper-mmc3.jar");
         var file = new FileInfo(GameHelper.ForgeWrapper);
         if (!file.Exists)
         {
@@ -485,7 +518,7 @@ public static class GameHelper
     /// <summary>
     /// 创建游戏运行库项目
     /// </summary>
-    /// <param name="obj">游戏数据</param>
+    /// <param name="obj">下载项目列表</param>
     public static async Task<ConcurrentBag<DownloadItemObj>> MakeGameLibs(GameArgObj obj)
     {
         var list = new ConcurrentBag<DownloadItemObj>();
@@ -641,9 +674,10 @@ public static class GameHelper
     /// <summary>
     /// MMC配置转ColorMC
     /// </summary>
-    /// <param name="mmc"></param>
-    /// <param name="mmc1"></param>
-    /// <returns></returns>
+    /// <param name="mmc">MMC储存</param>
+    /// <param name="mmc1">MMC储存</param>
+    /// <param name="icon">图标输出</param>
+    /// <returns>游戏设置</returns>
     public static GameSettingObj ToColorMC(this MMCObj mmc, string mmc1, out string icon)
     {
         var list = Options.ReadOptions(mmc1, "=");
@@ -739,8 +773,8 @@ public static class GameHelper
     /// <summary>
     /// HMCL配置转ColorMC
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="obj">HMCL储存</param>
+    /// <returns>游戏实例</returns>
     public static GameSettingObj ToColorMC(this HMCLObj obj)
     {
         var game = new GameSettingObj()

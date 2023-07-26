@@ -21,19 +21,24 @@ public static class GameDownloadHelper
     /// 下载游戏
     /// </summary>
     /// <param name="obj">版本数据</param>
-    /// <returns></returns>
+    /// <returns>State下载状态
+    /// List下载项目列表</returns>
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> Download(VersionObj.Versions obj)
     {
         var list = new List<DownloadItemObj>();
 
         var obj1 = await GameAPI.GetGame(obj.url);
         if (obj1 == null)
+        {
             return (GetDownloadState.Init, null);
+        }
 
         VersionPath.AddGame(obj1);
         var obj2 = await GameAPI.GetAssets(obj1.assetIndex.url);
         if (obj2 == null)
+        {
             return (GetDownloadState.GetInfo, null);
+        }
 
         obj1.AddIndex(obj2);
         list.Add(new()
@@ -64,6 +69,9 @@ public static class GameDownloadHelper
     /// 获取Forge下载项目
     /// </summary>
     /// <param name="obj">游戏实例</param>
+    /// <param name="neo">是否为NeoForge</param>
+    /// <returns>State下载状态
+    /// List下载项目列表</returns>
     public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(GameSettingObj obj, bool neo)
     {
         return DownloadForge(obj.Version, obj.LoaderVersion!, neo);
@@ -74,13 +82,16 @@ public static class GameDownloadHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">forge版本</param>
+    /// <param name="neo">是否为NeoForge</param>
+    /// <returns>State下载状态
+    /// List下载项目列表</returns>
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
         bool v2 = CheckRule.GameLaunchVersion(version1);
 
-        var down = neo ? 
-            GameHelper.BuildNeoForgeInster(mc, version) :              
+        var down = neo ?
+            GameHelper.BuildNeoForgeInster(mc, version) :
             GameHelper.BuildForgeInster(mc, version);
         try
         {
@@ -122,7 +133,6 @@ public static class GameDownloadHelper
         //1.12.2以上
         if (find1 && find2)
         {
-
             ForgeLaunchObj info;
             try
             {
@@ -219,6 +229,8 @@ public static class GameDownloadHelper
     /// 获取Fabric下载项目
     /// </summary>
     /// <param name="obj">游戏实例</param>
+    /// <returns>State下载状态
+    /// List下载项目列表</returns>
     public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadFabric(GameSettingObj obj)
     {
         return DownloadFabric(obj.Version, obj.LoaderVersion);
@@ -229,6 +241,8 @@ public static class GameDownloadHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
+    /// <returns>State下载状态
+    /// List下载项目列表</returns>
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadFabric(string mc, string? version = null)
     {
         var list = new List<DownloadItemObj>();
@@ -283,6 +297,8 @@ public static class GameDownloadHelper
     /// 获取Quilt下载项目
     /// </summary>
     /// <param name="obj">游戏实例</param>
+    /// <returns>State下载状态
+    /// List下载项目列表</returns>
     public static Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadQuilt(GameSettingObj obj)
     {
         return DownloadQuilt(obj.Version, obj.LoaderVersion);
@@ -293,6 +309,8 @@ public static class GameDownloadHelper
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">quilt版本</param>
+    /// <returns>State下载状态
+    /// List下载项目列表</returns>
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadQuilt(string mc, string? version = null)
     {
         var list = new List<DownloadItemObj>();

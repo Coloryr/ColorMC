@@ -45,13 +45,10 @@ public static class ServerPack
 
         var path = obj.Game.GetModsPath();
 
-        if (old == null)
+        old ??= new()
         {
-            old = new()
-            {
-                Mod = new()
-            };
-        }
+            Mod = new()
+        };
 
         //区分新旧mod
         ServerModItemObj?[] list1 = obj.Mod.ToArray();
@@ -64,7 +61,9 @@ public static class ServerPack
             {
                 var item2 = list2[a];
                 if (item2 == null)
+                {
                     continue;
+                }
                 if (item2.Sha1 == item1?.Sha1 || item2.File == item1?.File)
                 {
                     list1[a] = null;
@@ -83,7 +82,9 @@ public static class ServerPack
         foreach (var item in list3)
         {
             if (item == null)
+            {
                 continue;
+            }
             if (item.Source == null)
             {
                 list5.Add(new()
@@ -112,7 +113,9 @@ public static class ServerPack
         foreach (var item in list4)
         {
             if (item == null)
+            {
                 continue;
+            }
 
             mods.Find(a => a.Sha1 == item.Sha1)?.Delete();
         }
@@ -178,9 +181,10 @@ public static class ServerPack
         }
 
         //开始下载
-        var res = await DownloadManager.Start(list5);
-        if (!res)
+        if (!await DownloadManager.Start(list5))
+        {
             return false;
+        }
 
         obj.Game.Save();
         obj.Save();
@@ -257,7 +261,7 @@ public static class ServerPack
     /// </summary>
     /// <param name="obj">服务器包</param>
     /// <param name="local">保存路径</param>
-    /// <returns>结果</returns>
+    /// <returns>创建结果</returns>
     public static async Task<bool> GenServerPack(this ServerPackObj obj, string local)
     {
         var obj1 = new ServerPackObj()
@@ -456,7 +460,7 @@ public static class ServerPack
     /// <param name="obj">游戏实例</param>
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, ServerPackObj?)> ServerPackCheck(this GameSettingObj obj, string url)
+    public static async Task<(bool Res, ServerPackObj? Obj)> ServerPackCheck(this GameSettingObj obj, string url)
     {
         var data = await BaseClient.GetString(url + "server.json");
         if (data.Item1 == false)
@@ -467,18 +471,20 @@ public static class ServerPack
         }
         var obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data.Item2!);
         if (obj1 == null)
+        {
             return (false, null);
+        }
 
         var obj2 = obj.GetServerPack();
         if (obj2 == null || obj1.Version != obj2.Version)
         {
             if (ColorMCCore.UpdateSelect == null)
-                return (false, null);
-            if (!obj1.ForceUpdate)
             {
-                var res1 = await ColorMCCore.UpdateSelect(obj1.Text);
-                if (res1)
-                    return (false, null);
+                return (false, null);
+            }
+            if (!obj1.ForceUpdate && await ColorMCCore.UpdateSelect(obj1.Text))
+            {
+                return (false, null);
             }
 
             obj2?.MoveToOld();

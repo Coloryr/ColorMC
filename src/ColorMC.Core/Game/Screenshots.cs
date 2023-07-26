@@ -11,8 +11,8 @@ public static class Screenshots
     /// <summary>
     /// 获取屏幕截图
     /// </summary>
-    /// <param name="game"></param>
-    /// <returns></returns>
+    /// <param name="game">游戏实例</param>
+    /// <returns>截图列表</returns>
     public static List<string> GetScreenshots(this GameSettingObj game)
     {
         var list = new List<string>();
@@ -30,7 +30,7 @@ public static class Screenshots
     /// <summary>
     /// 清理屏幕截图
     /// </summary>
-    /// <param name="game"></param>
+    /// <param name="game">游戏实例</param>
     public static void ClearScreenshots(this GameSettingObj game)
     {
         var dir = game.GetScreenshotsPath();

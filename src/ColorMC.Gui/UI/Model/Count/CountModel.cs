@@ -1,7 +1,6 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
@@ -53,7 +52,7 @@ public partial class CountModel : ObservableObject
     private string _gameTime1;
 
     private readonly List<GameSettingObj> _list = new();
-    
+
     public ObservableCollection<string> Game { get; init; } = new();
 
     public CountModel(IUserControl con)
@@ -77,11 +76,11 @@ public partial class CountModel : ObservableObject
             _countDone = data.LaunchDoneCount;
             _countError = data.LaunchErrorCount;
             _dateCount = _countToday = (from item in data.LaunchLogs.Values
-                                      from item1 in item
-                                      where item1.Time.Year == _date.Year &&
-                                      item1.Time.Month == _date.Month &&
-                                      item1.Time.Day == _date.Day
-                                      select item).Count();
+                                        from item1 in item
+                                        where item1.Time.Year == _date.Year &&
+                                        item1.Time.Month == _date.Month &&
+                                        item1.Time.Day == _date.Day
+                                        select item).Count();
             _time = $"{data.AllTime.TotalHours:0}:{data.AllTime.Minutes}:{data.AllTime.Seconds}";
             TimeSpan temp = TimeSpan.Zero;
             foreach (var item in data.GameRuns)

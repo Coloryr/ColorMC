@@ -34,7 +34,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -99,7 +98,7 @@ public partial class App : Application
 
     public static PlatformThemeVariant NowTheme { get; private set; }
 
-    private static readonly Language Language = new();
+    private static readonly Language s_language = new();
 
     public override void Initialize()
     {
@@ -113,7 +112,7 @@ public partial class App : Application
 
     public static string GetLanguage(string input)
     {
-        var data = Language.GetLanguage(input, out bool have);
+        var data = s_language.GetLanguage(input, out bool have);
         if (have)
             return data;
 
@@ -268,7 +267,7 @@ public partial class App : Application
         };
         using var item = assm.GetManifestResourceStream(name)!;
 
-        Language.Load(item);
+        s_language.Load(item);
     }
 
     public static void RemoveImage()

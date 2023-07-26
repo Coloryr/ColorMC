@@ -23,7 +23,7 @@ public static class LibrariesPath
     public static void Init(string dir)
     {
         BaseDir = dir + "/" + Name;
-        NativeDir = BaseDir + $"/native-{SystemInfo.Os}-{SystemInfo.SystemArch}".ToLower();
+        NativeDir = $"{BaseDir}/native-{SystemInfo.Os}-{SystemInfo.SystemArch}".ToLower();
 
         Directory.CreateDirectory(BaseDir);
         Directory.CreateDirectory(NativeDir);
@@ -49,7 +49,6 @@ public static class LibrariesPath
     public static async Task<List<DownloadItemObj>> CheckGameLib(this GameArgObj obj, CancellationToken cancel)
     {
         var list = new List<DownloadItemObj>();
-
         var list1 = await GameHelper.MakeGameLibs(obj);
 
         await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
@@ -95,8 +94,8 @@ public static class LibrariesPath
         }
 
         var forge = neo ?
-            VersionPath.GetNeoForgeObj(obj.Version, obj.LoaderVersion) :
-            VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion);
+            VersionPath.GetNeoForgeObj(obj.Version, obj.LoaderVersion!) :
+            VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion!);
         if (forge == null)
             return null;
 
@@ -153,7 +152,7 @@ public static class LibrariesPath
     /// <returns>丢失的库</returns>
     public static List<DownloadItemObj>? CheckFabricLib(this GameSettingObj obj, CancellationToken cancel)
     {
-        var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion);
+        var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion!);
         if (fabric == null)
             return null;
 
@@ -188,7 +187,7 @@ public static class LibrariesPath
     /// <returns>丢失的库</returns>
     public static List<DownloadItemObj>? CheckQuiltLib(this GameSettingObj obj, CancellationToken cancel)
     {
-        var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion);
+        var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion!);
         if (quilt == null)
             return null;
 

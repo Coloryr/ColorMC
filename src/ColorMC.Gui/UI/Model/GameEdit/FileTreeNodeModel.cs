@@ -19,7 +19,7 @@ public partial class FileTreeNodeModel : ObservableObject
     [ObservableProperty]
     private bool _hasChildren = true;
     [ObservableProperty]
-    private bool isExpanded;
+    private bool _isExpanded;
     [ObservableProperty]
     private bool _isChecked;
 
@@ -34,7 +34,7 @@ public partial class FileTreeNodeModel : ObservableObject
     {
         this._path = path;
         _name = isRoot ? path : System.IO.Path.GetFileName(Path);
-        isExpanded = isRoot;
+        _isExpanded = isRoot;
         _isChecked = true;
         IsDirectory = isDirectory;
         HasChildren = isDirectory;

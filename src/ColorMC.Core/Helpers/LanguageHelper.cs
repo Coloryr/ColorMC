@@ -10,7 +10,13 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class LanguageHelper
 {
+    /// <summary>
+    /// 语言储存
+    /// </summary>
     private static readonly Language s_language = new();
+    /// <summary>
+    /// 语言类型
+    /// </summary>
     private static LanguageType s_nowType;
 
     /// <summary>

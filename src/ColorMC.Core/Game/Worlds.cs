@@ -42,7 +42,9 @@ public static class Worlds
             foreach (var item1 in item.GetFiles())
             {
                 if (item1.Name != "level.dat")
+                {
                     continue;
+                }
 
                 try
                 {
@@ -175,12 +177,15 @@ public static class Worlds
     /// 获取世界数据包储存
     /// </summary>
     /// <param name="world">世界储存</param>
-    /// <returns></returns>
+    /// <returns>位置</returns>
     public static string GetWorldDataPacksPath(this WorldObj world)
     {
         return Path.GetFullPath($"{world.Local}/{Name1}");
     }
 
+    /// <summary>
+    /// 文件流处理
+    /// </summary>
     private class ZipFileStream : IStaticDataSource, IDisposable
     {
         private readonly MemoryStream Memory;
@@ -241,7 +246,7 @@ public static class Worlds
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="item1">文件</param>
-    /// <returns>结果</returns>
+    /// <returns>还原结果</returns>
     public static async Task<bool> UnzipBackupWorld(this GameSettingObj obj, FileInfo item1)
     {
         ZipEntry theEntry;
@@ -259,13 +264,17 @@ public static class Worlds
             }
         }
         if (!res)
+        {
             return false;
+        }
         var data = stream1.ToArray();
         var data1 = Encoding.UTF8.GetString(data);
         var info = JObject.Parse(data1);
         var name = info["name"]?.ToString();
         if (name == null)
+        {
             return false;
+        }
 
         var list1 = await obj.GetWorlds();
         var item = list1.FirstOrDefault(a => a.LevelName == name);

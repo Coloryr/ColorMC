@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -12,13 +13,13 @@ public static class GuiConfigUtils
 {
     public static GuiConfigObj Config { get; set; }
 
-    private static string Name;
+    private static string s_local;
 
     public static void Init(string dir)
     {
-        Name = dir + "gui.json";
+        s_local = dir + "gui.json";
 
-        Load(Name);
+        Load(s_local);
     }
 
     public static bool Load(string name, bool quit = false)
@@ -118,16 +119,17 @@ public static class GuiConfigUtils
 
     public static void SaveNow()
     {
-        File.WriteAllText(Name,
+        File.WriteAllText(s_local,
                     JsonConvert.SerializeObject(Config, Formatting.Indented));
     }
 
     public static void Save()
     {
+        Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
         ConfigSave.AddItem(new()
         {
             Name = "gui.json",
-            Local = Name,
+            Local = s_local,
             Obj = Config
         });
     }

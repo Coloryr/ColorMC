@@ -8,16 +8,20 @@ using ColorMC.Core.Utils;
 namespace ColorMC.Core.Game;
 
 /// <summary>
-/// 游戏登录类
+/// 账户登录类
 /// </summary>
-public static class BaseAuth
+public static class GameAuth
 {
     /// <summary>
     /// 从OAuth登录
     /// </summary>
-    /// <returns></returns>
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
-        string? Message, Exception? e)> LoginWithOAuth()
+    /// <returns>AuthState验证过程
+    /// LoginState登录状态
+    /// Obj账户
+    /// Message错误信息
+    /// Ex异常</returns>
+    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
+        string? Message, Exception? Ex)> LoginWithOAuth()
     {
         AuthState now = AuthState.OAuth;
         try
@@ -96,8 +100,12 @@ public static class BaseAuth
     /// 从OAuth刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    /// <returns></returns>
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+    /// <returns>AuthState验证过程
+    /// LoginState登录状态
+    /// Obj账户
+    /// Message错误信息
+    /// Ex异常</returns>
+    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
         string? Message, Exception? Ex)> RefreshWithOAuth(LoginObj obj)
     {
         AuthState now = AuthState.OAuth;
@@ -160,8 +168,12 @@ public static class BaseAuth
     /// <param name="server">服务器UUID</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
-    /// <returns></returns>
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+    /// <returns>AuthState验证过程
+    /// LoginState登录状态
+    /// Obj账户
+    /// Message错误信息
+    /// Ex异常</returns>
+    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
         string? Message, Exception? Ex)> LoginWithNide8(string server, string user, string pass)
     {
         try
@@ -189,17 +201,22 @@ public static class BaseAuth
     /// 从统一通行证刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    /// <returns></returns>
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+    /// <returns>AuthState验证过程
+    /// LoginState登录状态
+    /// Obj账户
+    /// Message错误信息
+    /// Ex异常</returns>
+    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
         string? Message, Exception? Ex)> RefreshWithNide8(LoginObj obj)
     {
         try
         {
             var (State, Obj, Msg) = await Nide8.Refresh(obj);
             if (State != LoginState.Done)
+            {
                 return (AuthState.Token, State, null,
                     LanguageHelper.Get("Core.Login.Error11") + " " + Msg, null);
-
+            }
             return (AuthState.Profile, LoginState.Done, Obj, null, null);
         }
         catch (Exception e)
@@ -216,8 +233,12 @@ public static class BaseAuth
     /// <param name="server">服务器地址</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
-    /// <returns></returns>
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+    /// <returns>AuthState验证过程
+    /// LoginState登录状态
+    /// Obj账户
+    /// Message错误信息
+    /// Ex异常</returns>
+    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
         string? Message, Exception? Ex)> LoginWithAuthlibInjector(string server, string user, string pass)
     {
         try
@@ -245,16 +266,22 @@ public static class BaseAuth
     /// 从外置登录刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    /// <returns></returns>
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+    /// <returns>AuthState验证过程
+    /// LoginState登录状态
+    /// Obj账户
+    /// Message错误信息
+    /// Ex异常</returns>
+    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
         string? Message, Exception? Ex)> RefreshWithAuthlibInjector(LoginObj obj)
     {
         try
         {
             var (State, Obj, Msg) = await AuthlibInjector.Refresh(obj);
             if (State != LoginState.Done)
+            {
                 return (AuthState.Token, State, null,
                     LanguageHelper.Get("Core.Login.Error15") + " " + Msg, null);
+            }
 
             return (AuthState.Token, State, Obj, null, null);
         }
@@ -272,8 +299,12 @@ public static class BaseAuth
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
     /// <param name="server">自定义皮肤站地址</param>
-    /// <returns></returns>
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+    /// <returns>AuthState验证过程
+    /// LoginState登录状态
+    /// Obj账户
+    /// Message错误信息
+    /// Ex异常</returns>
+    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
         string? Message, Exception? Ex)> LoginWithLittleSkin(string user, string pass, string? server = null)
     {
         try
@@ -301,16 +332,22 @@ public static class BaseAuth
     /// 从皮肤站刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    /// <returns></returns>
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj,
+    /// <returns>AuthState验证过程
+    /// LoginState登录状态
+    /// Obj账户
+    /// Message错误信息
+    /// Ex异常</returns>
+    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
         string? Message, Exception? Ex)> RefreshWithLittleSkin(LoginObj obj)
     {
         try
         {
             var (State, Obj, Msg) = await LittleSkin.Refresh(obj);
             if (State != LoginState.Done)
+            {
                 return (AuthState.Token, State, null,
                     LanguageHelper.Get("Core.Login.Error19") + " " + Msg, null);
+            }
 
             return (AuthState.Token, State, Obj, null, null);
         }
@@ -326,8 +363,13 @@ public static class BaseAuth
     /// 刷新登录登录
     /// </summary>
     /// <param name="obj">登录信息</param>
-    /// <returns>结果</returns>
-    public static async Task<(AuthState State, LoginState State1, LoginObj? Obj, string? Message, Exception? Ex)> RefreshToken(this LoginObj obj)
+    /// <returns>AuthState验证过程
+    /// LoginState登录状态
+    /// Obj账户
+    /// Message错误信息
+    /// Ex异常</returns>
+    public static async Task<(AuthState AuthState, LoginState LoginState, LoginObj? Obj,
+        string? Message, Exception? Ex)> RefreshToken(this LoginObj obj)
     {
         return obj.AuthType switch
         {

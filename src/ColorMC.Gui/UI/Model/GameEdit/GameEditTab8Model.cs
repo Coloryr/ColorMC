@@ -29,7 +29,7 @@ public partial class GameEditTab8Model : GameEditTabModel, ILoadFuntion<Resource
     [RelayCommand]
     public async Task Import()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await GameBinding.AddFile(window as TopLevel, Obj, FileType.Resourcepack);
         if (file == null)
             return;
@@ -53,7 +53,7 @@ public partial class GameEditTab8Model : GameEditTabModel, ILoadFuntion<Resource
     [RelayCommand]
     public async Task Load()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab8.Info3"));
         ResourcePackList.Clear();
 
@@ -61,7 +61,7 @@ public partial class GameEditTab8Model : GameEditTabModel, ILoadFuntion<Resource
         window.ProgressInfo.Close();
         foreach (var item in res)
         {
-            ResourcePackList.Add(new(Con, this, item));
+            ResourcePackList.Add(new(_con, this, item));
         }
     }
 

@@ -39,8 +39,8 @@ public partial class Live2dControl : UserControl
         {
             model.PropertyChanged += Model_PropertyChanged;
             _renderTimer = new(Live2d)
-            { 
-                FpsTick = (fps) => 
+            {
+                FpsTick = (fps) =>
                 {
                     Dispatcher.UIThread.Post(() =>
                     {

@@ -13,7 +13,7 @@ namespace ColorMC.Gui.UI.Model;
 public partial class ModDisplayModel : ObservableObject
 {
     [ObservableProperty]
-    public bool enable;
+    private bool _enable;
 
     public string Name { get; set; }
     public string Version => Obj.version + (IsNew ? " " + App.GetLanguage("Gui.Info8") : "");

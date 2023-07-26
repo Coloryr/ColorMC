@@ -2,14 +2,12 @@
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,66 +19,66 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingTab6Model : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
 
-    private readonly List<string> uuids = new();
+    private readonly List<string> _uuids = new();
 
     public ObservableCollection<string> GameList { get; init; } = new();
 
     public List<string> LoginList => UserBinding.GetLoginType();
 
     [ObservableProperty]
-    private Color color1;
+    private Color _color1;
     [ObservableProperty]
-    private Color color2;
+    private Color _color2;
 
     [ObservableProperty]
-    private string iP;
+    private string _iP;
     [ObservableProperty]
-    private string? fileUI;
+    private string? _fileUI;
     [ObservableProperty]
-    private string? serverUrl;
+    private string? _serverUrl;
     [ObservableProperty]
-    private string? music;
+    private string? _music;
     [ObservableProperty]
-    private string? loginUrl;
+    private string? _loginUrl;
 
     [ObservableProperty]
-    private ushort port;
+    private ushort _port;
 
     [ObservableProperty]
-    private bool enableMotd;
+    private bool _enableMotd;
     [ObservableProperty]
-    private bool enableJoin;
+    private bool _enableJoin;
     [ObservableProperty]
     private bool enableIP;
     [ObservableProperty]
-    private bool enableOneGame;
+    private bool _enableOneGame;
     [ObservableProperty]
-    private bool enableOneLogin;
+    private bool _enableOneLogin;
     [ObservableProperty]
-    private bool enableOneLoginUrl;
+    private bool _enableOneLoginUrl;
     [ObservableProperty]
-    private bool enableServerPack;
+    private bool _enableServerPack;
     [ObservableProperty]
-    private bool enableMusic;
+    private bool _enableMusic;
     [ObservableProperty]
-    private bool slowVolume;
+    private bool _slowVolume;
     [ObservableProperty]
-    private bool runPause;
+    private bool _runPause;
 
     [ObservableProperty]
-    private int game = -1;
+    private int _game = -1;
     [ObservableProperty]
-    private int volume;
+    private int _volume;
     [ObservableProperty]
-    private int login = -1;
+    private int _login = -1;
 
-    private bool load;
+    private bool _load;
 
     public SettingTab6Model(IUserControl con)
     {
-        Con = con;
+        _con = con;
     }
 
     partial void OnLoginUrlChanged(string? value)
@@ -197,7 +195,7 @@ public partial class SettingTab6Model : ObservableObject
     [RelayCommand]
     public async Task SelectUI()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await BaseBinding.OpFile(window, FileType.UI);
         if (res != null)
         {
@@ -214,7 +212,7 @@ public partial class SettingTab6Model : ObservableObject
     [RelayCommand]
     public void Test()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = FileUI;
         if (string.IsNullOrWhiteSpace(file))
         {
@@ -246,7 +244,7 @@ public partial class SettingTab6Model : ObservableObject
     [RelayCommand]
     public async Task Save()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var str = await BaseBinding.SaveFile(window, FileType.UI, null);
         if (str == null)
             return;
@@ -287,7 +285,7 @@ public partial class SettingTab6Model : ObservableObject
     [RelayCommand]
     public async Task SelectMusic()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Music);
         if (file == null)
         {
@@ -299,16 +297,16 @@ public partial class SettingTab6Model : ObservableObject
 
     public void Load()
     {
-        load = true;
+        _load = true;
 
         var list = from item in GameBinding.GetGames() select (item.UUID, item.Name);
         var list1 = new List<string>();
 
-        uuids.Clear();
+        _uuids.Clear();
         foreach (var (UUID, Name) in list)
         {
             list1.Add(Name);
-            uuids.Add(UUID);
+            _uuids.Add(UUID);
         }
 
         GameList.Clear();
@@ -340,7 +338,7 @@ public partial class SettingTab6Model : ObservableObject
             }
             else
             {
-                Game = uuids.IndexOf(config.GameName);
+                Game = _uuids.IndexOf(config.GameName);
             }
 
             Volume = config.Volume;
@@ -350,12 +348,12 @@ public partial class SettingTab6Model : ObservableObject
             EnableOneLogin = config.LockLogin;
         }
 
-        load = false;
+        _load = false;
     }
 
     private void SetMusic()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetMusic(EnableMusic, SlowVolume, Music, Volume, RunPause);
@@ -363,7 +361,7 @@ public partial class SettingTab6Model : ObservableObject
 
     private void SetLoginLock()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetLoginLock(EnableOneLogin, Login, LoginUrl!);
@@ -371,7 +369,7 @@ public partial class SettingTab6Model : ObservableObject
 
     private void SetServerPack()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetServerPack(EnableServerPack, ServerUrl);
@@ -379,7 +377,7 @@ public partial class SettingTab6Model : ObservableObject
 
     private void SetIP()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetMotd(IP, Port, EnableMotd,
@@ -388,9 +386,9 @@ public partial class SettingTab6Model : ObservableObject
 
     private void SetOneGame()
     {
-        if (load)
+        if (_load)
             return;
 
-        ConfigBinding.SetOneGame(EnableOneGame, Game == -1 ? null : uuids[Game]);
+        ConfigBinding.SetOneGame(EnableOneGame, Game == -1 ? null : _uuids[Game]);
     }
 }

@@ -17,44 +17,44 @@ namespace ColorMC.Gui.UI.Model.User;
 
 public partial class UsersModel : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
 
-    private bool cancel;
+    private bool _cancel;
 
     public List<string> UserTypeList { get; } = UserBinding.GetUserTypes();
     public ObservableCollection<UserDisplayObj> UserList { get; init; } = new();
 
     [ObservableProperty]
-    private UserDisplayObj? item;
+    private UserDisplayObj? _item;
 
     [ObservableProperty]
-    private int type;
+    private int _type;
 
     [ObservableProperty]
-    private bool enableName;
+    private bool _enableName;
     [ObservableProperty]
-    private bool enableUser;
+    private bool _enableUser;
     [ObservableProperty]
-    private bool enablePassword;
+    private bool _enablePassword;
     [ObservableProperty]
-    private bool enableType;
+    private bool _enableType;
     [ObservableProperty]
-    private bool isAdding;
+    private bool _isAdding;
     [ObservableProperty]
-    private bool displayAdd;
+    private bool _displayAdd;
 
     [ObservableProperty]
-    private string watermarkName;
+    private string _watermarkName;
     [ObservableProperty]
-    private string name;
+    private string _name;
     [ObservableProperty]
-    private string user;
+    private string _user;
     [ObservableProperty]
-    private string password;
+    private string _password;
 
     public UsersModel(IUserControl con)
     {
-        Con = con;
+        _con = con;
 
         Load();
     }
@@ -159,7 +159,7 @@ public partial class UsersModel : ObservableObject
     [RelayCommand]
     public async Task Add()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         bool ok = false;
         IsAdding = true;
         switch (Type)
@@ -182,13 +182,13 @@ public partial class UsersModel : ObservableObject
                 ok = true;
                 break;
             case 1:
-                cancel = false;
+                _cancel = false;
                 ColorMCCore.LoginOAuthCode = LoginOAuthCode;
                 window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info1"));
                 res = await UserBinding.AddUser(AuthType.OAuth, null);
                 window.ProgressInfo.Close();
                 window.InputInfo.Close();
-                if (cancel)
+                if (_cancel)
                     break;
                 if (!res.Item1)
                 {
@@ -323,7 +323,7 @@ public partial class UsersModel : ObservableObject
 
     public void Select()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         if (Item == null)
         {
             window.OkInfo.Show(App.GetLanguage("UserWindow.Error1"));
@@ -335,7 +335,7 @@ public partial class UsersModel : ObservableObject
 
     public void Select(UserDisplayObj item)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         UserBinding.SetLastUser(item.UUID, item.AuthType);
 
         window.NotifyInfo.Show(App.GetLanguage("UserWindow.Info5"));
@@ -369,7 +369,7 @@ public partial class UsersModel : ObservableObject
 
     public async void Refresh(UserDisplayObj obj)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info3"));
         var res = await UserBinding.ReLogin(obj.UUID, obj.AuthType);
         window.ProgressInfo.Close();
@@ -439,15 +439,15 @@ public partial class UsersModel : ObservableObject
 
     private async void LoginOAuthCode(string url, string code)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Close();
         window.InputInfo.Show(string.Format(App.GetLanguage("UserWindow.Info6"), url),
             string.Format(App.GetLanguage("UserWindow.Info7"), code), () =>
             {
-                cancel = true;
+                _cancel = true;
                 UserBinding.OAuthCancel();
             });
         BaseBinding.OpUrl(url);
-        await BaseBinding.CopyTextClipboard(TopLevel.GetTopLevel(Con.Con), code);
+        await BaseBinding.CopyTextClipboard(TopLevel.GetTopLevel(_con.Con), code);
     }
 }

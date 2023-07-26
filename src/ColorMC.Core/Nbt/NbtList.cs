@@ -1,20 +1,36 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// 列表类型的NBT标签
+/// </summary>
 public class NbtList : NbtBase, IEnumerable<NbtBase>
 {
-    public const byte Type = 9;
+    /// <summary>
+    /// NBT码
+    /// </summary>
+    public const NbtType Type = NbtType.NbtList;
 
     private new readonly List<NbtBase> Value = new();
+
+    /// <summary>
+    /// 储存的NBT类型
+    /// </summary>
     public NbtType InNbtType { get; set; }
 
+    /// <summary>
+    /// 数据操作
+    /// </summary>
     public NbtBase this[int index]
     {
         get => Value[index];
         set => Value[index] = value;
     }
 
+    /// <summary>
+    /// NBT数量
+    /// </summary>
     public int Count => Value.Count;
 
     public NbtList()
@@ -23,6 +39,10 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
         InNbtType = NbtType.NbtEnd;
     }
 
+    /// <summary>
+    /// 添加一个NBT标签
+    /// </summary>
+    /// <param name="nbt">NBT标签</param>
     public void Add(NbtBase nbt)
     {
         if (nbt.NbtType != InNbtType)
@@ -33,17 +53,25 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
         Value.Add(nbt);
     }
 
+    /// <summary>
+    /// 删除指定
+    /// </summary>
+    /// <param name="index">下标</param>
     public void RemoveAt(int index)
     {
         Value.RemoveAt(index);
     }
 
+    /// <summary>
+    /// 删除NBT标签
+    /// </summary>
+    /// <param name="item">NBT标签</param>
     public void Remove(NbtBase item)
     {
         Value.Remove(item);
     }
 
-    public override NbtList Read(DataInputStream stream)
+    internal override NbtList Read(DataInputStream stream)
     {
         var type = stream.ReadByte();
         InNbtType = (NbtType)type;
@@ -55,7 +83,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
 
         for (int a = 0; a < length; a++)
         {
-            var nbt = ById(type);
+            var nbt = ById((NbtType)type);
             nbt.Read(stream);
             Value.Add(nbt);
         }
@@ -63,7 +91,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
         return this;
     }
 
-    public override void Write(DataOutputStream stream)
+    internal override void Write(DataOutputStream stream)
     {
         if (Value.Count == 0)
         {

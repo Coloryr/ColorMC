@@ -21,7 +21,7 @@ public static class Mods
     /// 读取一个Mod文件
     /// </summary>
     /// <param name="zFile">Mod压缩包</param>
-    /// <returns></returns>
+    /// <returns>游戏Mod</returns>
     private static async Task<ModObj?> ReadMod(ZipFile zFile)
     {
         //forge 1.13以下
@@ -286,13 +286,16 @@ public static class Mods
         var files = info.GetFiles();
 
         //多线程同时检查
-        await Parallel.ForEachAsync(files, new ParallelOptions()
-        {
-            MaxDegreeOfParallelism = 1
-        }, async (item, cancel) =>
+        // await Parallel.ForEachAsync(files, new ParallelOptions()
+        // {
+        //     MaxDegreeOfParallelism = 1
+        // }, async (item, cancel) =>
+        await Parallel.ForEachAsync(files, async (item, cancel) =>
         {
             if (item.Extension is not (".zip" or ".jar" or ".disable"))
+            {
                 return;
+            }
 
             string sha1 = "";
             bool add = false;
@@ -361,11 +364,13 @@ public static class Mods
     /// <summary>
     /// 禁用Mod
     /// </summary>
-    /// <param name="mod"></param>
+    /// <param name="mod">游戏Mod</param>
     public static void Disable(this ModObj mod)
     {
         if (mod.Disable)
+        {
             return;
+        }
 
         var file = new FileInfo(mod.Local);
         mod.Disable = true;
@@ -377,11 +382,13 @@ public static class Mods
     /// <summary>
     /// 启用Mod
     /// </summary>
-    /// <param name="mod"></param>
+    /// <param name="mod">游戏Mod</param>
     public static void Enable(this ModObj mod)
     {
         if (!mod.Disable)
+        {
             return;
+        }
 
         var file = new FileInfo(mod.Local);
         mod.Disable = false;
@@ -393,7 +400,7 @@ public static class Mods
     /// <summary>
     /// 删除Mod
     /// </summary>
-    /// <param name="mod"></param>
+    /// <param name="mod">游戏Mod</param>
     public static void Delete(this ModObj mod)
     {
         File.Delete(mod.Local);
@@ -404,17 +411,22 @@ public static class Mods
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
-    public static bool AddMods(this GameSettingObj obj, List<string> file)
+    /// <returns>是否成功导入</returns>
+    public static async Task<bool> AddMods(this GameSettingObj obj, List<string> file)
     {
         if (file.Count == 0)
+        {
             return false;
+        }
         string path = obj.GetModsPath();
         bool ok = true;
-        Parallel.ForEach(file, (item) =>
+        await Task.Run(() => Parallel.ForEach(file, (item) =>
         {
             var info = new FileInfo(item);
             if (!info.Exists)
+            {
                 return;
+            }
 
             var info1 = new FileInfo(Path.GetFullPath(path + "/" + info.Name));
             if (info1.Exists)
@@ -432,9 +444,11 @@ public static class Mods
                 ok = false;
                 return;
             }
-        });
+        }));
         if (!ok)
+        {
             return false;
+        }
 
         return true;
     }
@@ -460,11 +474,14 @@ public static class Mods
     /// <summary>
     /// 作者分割
     /// </summary>
+    /// <returns>整理好的作者名</returns>
     private static List<string> ToStringList(this string obj)
     {
         List<string> list = new();
         if (obj == null)
+        {
             return list;
+        }
         foreach (var item in obj.Split(","))
         {
             list.Add(item.Trim());
@@ -475,6 +492,7 @@ public static class Mods
     /// <summary>
     /// 作者分割
     /// </summary>
+    /// <returns>整理好的作者名</returns>
     private static List<string> ToStringList(this JArray array)
     {
         List<string> list = new();
@@ -496,6 +514,7 @@ public static class Mods
     /// <summary>
     /// 作者分割
     /// </summary>
+    /// <returns>整理好的作者名</returns>
     private static List<string> ToStringList(this JObject array)
     {
         List<string> list = new();
@@ -512,7 +531,7 @@ public static class Mods
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="key">键名</param>
-    /// <returns></returns>
+    /// <returns>obj</returns>
     private static JContainer? FindKey(this JObject obj, string key)
     {
         foreach (var item in obj)
@@ -540,7 +559,7 @@ public static class Mods
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="key">键名</param>
-    /// <returns></returns>
+    /// <returns>obj</returns>
     private static JContainer? FindKey(this JArray obj, string key)
     {
         foreach (var item in obj)
@@ -549,7 +568,9 @@ public static class Mods
             {
                 var data = FindKey(obj1, key);
                 if (data != null)
+                {
                     return data.Parent;
+                }
             }
         }
 

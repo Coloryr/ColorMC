@@ -137,7 +137,9 @@ public static class DownloadManager
         foreach (var item in list)
         {
             if (names.Contains(item.Name) || string.IsNullOrWhiteSpace(item.Url))
+            {
                 continue;
+            }
             ColorMCCore.DownloadItemStateUpdate?.Invoke(-1, item);
             item.Update = (index) =>
             {

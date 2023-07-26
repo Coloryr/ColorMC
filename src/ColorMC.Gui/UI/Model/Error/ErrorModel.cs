@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Model.Error;
 public partial class ErrorModel : ObservableObject
 {
     private readonly IUserControl _con;
-    
+
     [ObservableProperty]
     private TextDocument _text;
 

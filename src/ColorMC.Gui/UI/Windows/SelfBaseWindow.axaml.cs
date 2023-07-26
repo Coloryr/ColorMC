@@ -25,7 +25,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     public IUserControl Main;
 
-    private bool SetClose;
+    private bool _isClose;
 
     public SelfBaseWindow() : this(null!)
     {
@@ -82,7 +82,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private void SelfBaseWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
-        if (Main == null || SetClose == true)
+        if (Main == null || _isClose == true)
             return;
 
         e.Cancel = true;
@@ -92,7 +92,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             var res = await Main.Closing();
             if (!res)
             {
-                SetClose = true;
+                _isClose = true;
                 Close();
             }
         });

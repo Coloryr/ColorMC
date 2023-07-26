@@ -18,33 +18,34 @@ namespace ColorMC.Gui.UI.Model.Main;
 public partial class GameItemModel : ObservableObject
 {
     public readonly IUserControl Con;
-    private readonly IMainTop Top;
 
     public GameSettingObj Obj { get; }
 
     [ObservableProperty]
-    private bool isSelect;
+    private bool _isSelect;
     [ObservableProperty]
-    private bool isLaunch;
+    private bool _isLaunch;
     [ObservableProperty]
-    private bool isLoad;
+    private bool _isLoad;
     [ObservableProperty]
-    private bool isDrop;
+    private bool _isDrop;
 
     [ObservableProperty]
-    private string tips;
+    private string _tips;
 
     [ObservableProperty]
-    private TextWrapping wrap = TextWrapping.NoWrap;
+    private TextWrapping _wrap = TextWrapping.NoWrap;
     [ObservableProperty]
-    private TextTrimming trim = TextTrimming.CharacterEllipsis;
+    private TextTrimming _trim = TextTrimming.CharacterEllipsis;
+
+    private readonly IMainTop _top;
 
     public string Name => Obj.Name;
     public Bitmap Pic => GetImage();
 
     public GameItemModel(IUserControl con, IMainTop top, GameSettingObj obj)
     {
-        Top = top;
+        _top = top;
         Con = con;
         Obj = obj;
     }
@@ -97,7 +98,7 @@ public partial class GameItemModel : ObservableObject
 
     public void SetSelect()
     {
-        Top.Select(this);
+        _top.Select(this);
     }
 
     public void Flyout(Control con)
@@ -110,7 +111,7 @@ public partial class GameItemModel : ObservableObject
         if (IsLaunch)
             return;
 
-        Top.Launch(this);
+        _top.Launch(this);
     }
 
     private Bitmap GetImage()
@@ -185,6 +186,6 @@ public partial class GameItemModel : ObservableObject
 
     public void EditGroup()
     {
-        Top.EditGroup(this);
+        _top.EditGroup(this);
     }
 }

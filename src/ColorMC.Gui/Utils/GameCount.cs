@@ -15,21 +15,21 @@ namespace ColorMC.Gui.Utils;
 public static class GameCount
 {
     private const string Name = "count.dat";
-    private static string Local;
-    private static bool IsSave;
-    private static bool IsRun;
+    private static string s_local;
+    private static bool s_isSave;
+    private static bool s_isRun;
 
-    private static readonly object Lock = new();
-    private readonly static Dictionary<string, DateTime> TimeList = new();
-    private readonly static Dictionary<string, TimeSpan> SpanTimeList = new();
+    private static readonly object s_lock = new();
+    private readonly static Dictionary<string, DateTime> s_timeList = new();
+    private readonly static Dictionary<string, TimeSpan> s_spanTimeList = new();
 
     public static CountObj Count { get; private set; }
 
     public static void Init(string local)
     {
-        Local = Path.GetFullPath(local + Name);
+        s_local = Path.GetFullPath(local + Name);
 
-        IsRun = true;
+        s_isRun = true;
         new Thread(Run)
         {
             Name = "ColorMC_Count"
@@ -40,67 +40,68 @@ public static class GameCount
 
     private static async void Read()
     {
-        if (File.Exists(Local))
+        if (!File.Exists(s_local))
         {
-            try
+            return;
+        }
+        try
+        {
+            if (await NbtBase.Read(s_local) is NbtCompound nbt)
             {
-                if (await NbtBase.Read(Local) is NbtCompound nbt)
+                Count = new()
                 {
-                    Count = new()
-                    {
-                        LaunchCount = (nbt.TryGet("LaunchCount") as NbtLong)!.Value,
-                        LaunchDoneCount = (nbt.TryGet("LaunchDoneCount") as NbtLong)!.Value,
-                        LaunchErrorCount = (nbt.TryGet("LaunchErrorCount") as NbtLong)!.Value,
-                        AllTime = TimeSpan.FromTicks((nbt.TryGet("AllTime") as NbtLong)!.Value),
-                        GameRuns = new(),
-                        LaunchLogs = new()
-                    };
+                    LaunchCount = (nbt.TryGet("LaunchCount") as NbtLong)!.Value,
+                    LaunchDoneCount = (nbt.TryGet("LaunchDoneCount") as NbtLong)!.Value,
+                    LaunchErrorCount = (nbt.TryGet("LaunchErrorCount") as NbtLong)!.Value,
+                    AllTime = TimeSpan.FromTicks((nbt.TryGet("AllTime") as NbtLong)!.Value),
+                    GameRuns = new(),
+                    LaunchLogs = new()
+                };
 
-                    var list = nbt.TryGet("GameRuns") as NbtList;
-                    foreach (var item in list!.Cast<NbtCompound>())
+                var list = nbt.TryGet("GameRuns") as NbtList;
+                foreach (var item in list!.Cast<NbtCompound>())
+                {
+                    var key = (item.TryGet("Key") as NbtString)!.Value;
+                    var list1 = item.TryGet("List") as NbtList;
+                    var list2 = new List<CountObj.GameTime>();
+                    foreach (var item1 in list1!.Cast<NbtCompound>())
                     {
-                        var key = (item.TryGet("Key") as NbtString)!.Value;
-                        var list1 = item.TryGet("List") as NbtList;
-                        var list2 = new List<CountObj.GameTime>();
-                        foreach (var item1 in list1!.Cast<NbtCompound>())
+                        var start = (item1.TryGet("StartTime") as NbtLong)!.Value;
+                        var stop = (item1.TryGet("StopTime") as NbtLong)!.Value;
+                        list2.Add(new()
                         {
-                            var start = (item1.TryGet("StartTime") as NbtLong)!.Value;
-                            var stop = (item1.TryGet("StopTime") as NbtLong)!.Value;
-                            list2.Add(new()
-                            {
-                                StartTime = new DateTime(start),
-                                StopTime = new DateTime(stop)
-                            });
-                        }
-                        Count.GameRuns.Add(key, list2);
+                            StartTime = new DateTime(start),
+                            StopTime = new DateTime(stop)
+                        });
                     }
+                    Count.GameRuns.Add(key, list2);
+                }
 
-                    list = nbt.TryGet("LaunchLogs") as NbtList;
-                    foreach (var item in list!.Cast<NbtCompound>())
+                list = nbt.TryGet("LaunchLogs") as NbtList;
+                foreach (var item in list!.Cast<NbtCompound>())
+                {
+                    var key = (item.TryGet("Key") as NbtString)!.Value;
+                    var list1 = item.TryGet("List") as NbtList;
+                    var list2 = new List<CountObj.LaunchLog>();
+                    foreach (var item1 in list1!.Cast<NbtCompound>())
                     {
-                        var key = (item.TryGet("Key") as NbtString)!.Value;
-                        var list1 = item.TryGet("List") as NbtList;
-                        var list2 = new List<CountObj.LaunchLog>();
-                        foreach (var item1 in list1!.Cast<NbtCompound>())
+                        var time = (item1.TryGet("Time") as NbtLong)!.Value;
+                        var error = (item1.TryGet("Error") as NbtByte)!.Value;
+                        list2.Add(new()
                         {
-                            var time = (item1.TryGet("Time") as NbtLong)!.Value;
-                            var error = (item1.TryGet("Error") as NbtByte)!.Value;
-                            list2.Add(new()
-                            {
-                                Time = new DateTime(time),
-                                Error = error == 1
-                            });
-                        }
-                        Count.LaunchLogs.Add(key, list2);
+                            Time = new DateTime(time),
+                            Error = error == 1
+                        });
                     }
+                    Count.LaunchLogs.Add(key, list2);
                 }
             }
-            catch (Exception e)
-            {
-                string text = App.GetLanguage("Gui.Error27");
-                Logs.Error(text, e);
-                App.ShowError(text, e);
-            }
+        }
+        catch (Exception e)
+        {
+            string text = App.GetLanguage("Gui.Error27");
+            Logs.Error(text, e);
+            App.ShowError(text, e);
         }
 
         if (Count == null)
@@ -110,7 +111,6 @@ public static class GameCount
                 GameRuns = new(),
                 LaunchLogs = new()
             };
-            Save();
         }
     }
 
@@ -119,56 +119,60 @@ public static class GameCount
         int a = 0;
         while (!App.IsClose)
         {
-            if (BaseBinding.RunGames.Count > 0)
+            Thread.Sleep(100);
+            if (BaseBinding.RunGames.Count <= 0)
             {
-                foreach (var item in new Dictionary<string, DateTime>(TimeList))
+                continue;
+            }
+
+            foreach (var item in new Dictionary<string, DateTime>(s_timeList))
+            {
+                var game = InstancesPath.GetGame(item.Key);
+                if (game == null)
                 {
-                    var game = InstancesPath.GetGame(item.Key);
-                    if (game == null)
-                        continue;
+                    continue;
+                }
 
-                    var time = DateTime.Now;
-                    var time1 = item.Value;
-                    var span = time - time1;
+                var time = DateTime.Now;
+                var time1 = item.Value;
+                var span = time - time1;
 
-                    lock (TimeList)
+                lock (s_timeList)
+                {
+                    if (s_timeList.ContainsKey(item.Key))
                     {
-                        if (TimeList.ContainsKey(item.Key))
-                        {
-                            TimeList[item.Key] = time;
-                        }
-                    }
-
-                    lock (SpanTimeList)
-                    {
-                        if (SpanTimeList.ContainsKey(item.Key))
-                        {
-                            SpanTimeList[item.Key] += span;
-                        }
-                    }
-
-                    game.LaunchData.GameTime += span;
-                    Count.AllTime += span;
-                    if (a >= 10)
-                    {
-                        a = 0;
-                        game.SaveLaunchData();
+                        s_timeList[item.Key] = time;
                     }
                 }
-                a++;
+
+                lock (s_spanTimeList)
+                {
+                    if (s_spanTimeList.ContainsKey(item.Key))
+                    {
+                        s_spanTimeList[item.Key] += span;
+                    }
+                }
+
+                game.LaunchData.GameTime += span;
+                Count.AllTime += span;
+                if (a >= 10)
+                {
+                    a = 0;
+                    game.SaveLaunchData();
+                }
             }
-            Thread.Sleep(100);
+            a++;
         }
     }
 
     public static void Save()
     {
-        lock (Lock)
+        lock (s_lock)
         {
-            if (IsSave)
+            if (s_isSave)
                 return;
 
-            IsSave = true;
+            s_isSave = true;
         }
         NbtCompound nbt = new()
         {
@@ -222,32 +226,32 @@ public static class GameCount
 
         nbt.Gzip = true;
 
-        nbt.Save(Local);
+        nbt.Save(s_local);
 
-        IsSave = false;
+        s_isSave = false;
     }
 
     public static void LaunchDone(string uuid)
     {
         var now = DateTime.Now;
-        lock (TimeList)
+        lock (s_timeList)
         {
-            if (TimeList.ContainsKey(uuid))
+            if (s_timeList.ContainsKey(uuid))
             {
-                TimeList[uuid] = now;
+                s_timeList[uuid] = now;
             }
             else
             {
-                TimeList.Add(uuid, now);
+                s_timeList.Add(uuid, now);
             }
 
-            if (SpanTimeList.ContainsKey(uuid))
+            if (s_spanTimeList.ContainsKey(uuid))
             {
-                SpanTimeList[uuid] = new TimeSpan(0);
+                s_spanTimeList[uuid] = new TimeSpan(0);
             }
             else
             {
-                SpanTimeList.Add(uuid, new TimeSpan(0));
+                s_spanTimeList.Add(uuid, new TimeSpan(0));
             }
         }
 
@@ -315,14 +319,14 @@ public static class GameCount
     public static void GameClose(string uuid)
     {
         var time = DateTime.Now;
-        lock (TimeList)
+        lock (s_timeList)
         {
-            TimeList.Remove(uuid);
+            s_timeList.Remove(uuid);
         }
 
-        lock (SpanTimeList)
+        lock (s_spanTimeList)
         {
-            if (SpanTimeList.Remove(uuid, out var span))
+            if (s_spanTimeList.Remove(uuid, out var span))
             {
                 var game = InstancesPath.GetGame(uuid);
                 if (game != null)

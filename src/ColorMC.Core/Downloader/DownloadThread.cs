@@ -11,9 +11,21 @@ namespace ColorMC.Core.Downloader;
 /// </summary>
 public class DownloadThread
 {
+    /// <summary>
+    /// 下载线程标号
+    /// </summary>
     private readonly int _index;
+    /// <summary>
+    /// 线程
+    /// </summary>
     private readonly Thread _thread;
+    /// <summary>
+    /// 启动信号量
+    /// </summary>
     private readonly Semaphore _semaphore = new(0, 2);
+    /// <summary>
+    /// 暂停信号量
+    /// </summary>
     private readonly Semaphore _semaphore1 = new(0, 2);
     private bool _pause = false;
     private bool _run = false;
@@ -107,14 +119,18 @@ public class DownloadThread
     {
         _semaphore.WaitOne();
         if (!_run)
+        {
             return;
+        }
         DownloadItemObj? item;
         while ((item = DownloadManager.GetItem()) != null)
         {
             ChckPause(item);
 
             if (DownloadManager.Cancel.IsCancellationRequested)
+            {
                 break;
+            }
 
             byte[]? buffer = null;
             FileInfo info = new(item.Local);
@@ -182,7 +198,9 @@ public class DownloadThread
             }
 
             if (DownloadManager.Cancel.IsCancellationRequested)
+            {
                 break;
+            }
 
             int time = 0;
 
@@ -193,11 +211,13 @@ public class DownloadThread
                     ChckPause(item);
 
                     if (DownloadManager.Cancel.IsCancellationRequested)
+                    {
                         break;
+                    }
 
                     //网络请求
                     var data = BaseClient.DownloadClient.GetAsync(item.Url,
-                        HttpCompletionOption.ResponseHeadersRead, 
+                        HttpCompletionOption.ResponseHeadersRead,
                         DownloadManager.Cancel.Token).Result;
                     item.AllSize = (long)data.Content.Headers.ContentLength!;
                     item.State = DownloadItemState.GetInfo;
@@ -221,7 +241,9 @@ public class DownloadThread
                         ChckPause(item);
 
                         if (DownloadManager.Cancel.IsCancellationRequested)
+                        {
                             break;
+                        }
 
                         item.State = DownloadItemState.Download;
                         item.NowSize += bytesRead;
@@ -231,7 +253,9 @@ public class DownloadThread
                     ChckPause(item);
 
                     if (DownloadManager.Cancel.IsCancellationRequested)
+                    {
                         break;
+                    }
 
                     //检查文件
                     if (ConfigUtils.Config.Http.CheckFile)
@@ -291,7 +315,9 @@ public class DownloadThread
                 catch (Exception e)
                 {
                     if (DownloadManager.Cancel.IsCancellationRequested)
+                    {
                         break;
+                    }
 
                     item.State = DownloadItemState.Error;
                     item.ErrorTime++;

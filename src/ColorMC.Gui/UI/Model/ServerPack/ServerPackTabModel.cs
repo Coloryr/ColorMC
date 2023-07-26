@@ -6,12 +6,12 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public abstract partial class ServerPackTabModel : ObservableObject
 {
-    protected IUserControl Con;
+    protected IUserControl _con;
     public ServerPackObj Obj { get; }
 
     public ServerPackTabModel(IUserControl con, ServerPackObj obj)
     {
-        Con = con;
+        _con = con;
         Obj = obj;
     }
 }

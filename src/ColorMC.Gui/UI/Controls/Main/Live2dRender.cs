@@ -1,7 +1,6 @@
 ﻿using Avalonia.Input;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
-using Avalonia.Threading;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
@@ -11,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -27,9 +25,9 @@ public class Live2dRender : OpenGlControlBase
     private MainModel _model;
     private bool _first = false;
 
-    public bool HaveModel 
+    public bool HaveModel
     {
-        get 
+        get
         {
             if (_lapp == null)
             {

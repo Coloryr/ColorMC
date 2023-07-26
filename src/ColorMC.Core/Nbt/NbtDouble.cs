@@ -1,9 +1,18 @@
-﻿namespace ColorMC.Core.Nbt;
+namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// Double类型的NBT标签
+/// </summary>
 public class NbtDouble : NbtBase
 {
-    public const byte Type = 6;
+    /// <summary>
+    /// NBT码
+    /// </summary>
+    public const NbtType Type = NbtType.NbtDouble;
 
+    /// <summary>
+    /// 数据
+    /// </summary>
     public new double Value { get; set; }
 
     public NbtDouble()
@@ -11,13 +20,13 @@ public class NbtDouble : NbtBase
         NbtType = NbtType.NbtDouble;
     }
 
-    public override NbtDouble Read(DataInputStream stream)
+    internal override NbtDouble Read(DataInputStream stream)
     {
         Value = stream.ReadDouble();
         return this;
     }
 
-    public override void Write(DataOutputStream stream)
+    internal override void Write(DataOutputStream stream)
     {
         stream.Write(Value);
     }

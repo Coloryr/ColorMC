@@ -8,65 +8,65 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingTab4Model : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
 
     public List<string> GCTypeList => JavaBinding.GetGCTypes();
 
     [ObservableProperty]
-    private string? preCmd;
+    private string? _preCmd;
     [ObservableProperty]
-    private string? postCmd;
+    private string? _postCmd;
     [ObservableProperty]
-    private string? gCArg;
+    private string? _gCArg;
     [ObservableProperty]
-    private string? javaAgent;
+    private string? _javaAgent;
     [ObservableProperty]
-    private string? jvmArg;
+    private string? _jvmArg;
     [ObservableProperty]
-    private string? gameArg;
+    private string? _gameArg;
 
     [ObservableProperty]
-    private bool checkCore;
+    private bool _checkCore;
     [ObservableProperty]
-    private bool checkAssets;
+    private bool _checkAssets;
     [ObservableProperty]
-    private bool checkLib;
+    private bool _checkLib;
     [ObservableProperty]
-    private bool checkMod;
+    private bool _checkMod;
     [ObservableProperty]
-    private bool checkCoreSha1;
+    private bool _checkCoreSha1;
     [ObservableProperty]
-    private bool checkAssetsSha1;
+    private bool _checkAssetsSha1;
     [ObservableProperty]
-    private bool checkLibSha1;
+    private bool _checkLibSha1;
     [ObservableProperty]
-    private bool checkModSha1;
+    private bool _checkModSha1;
     [ObservableProperty]
-    private bool preRun;
+    private bool _preRun;
     [ObservableProperty]
-    private bool postRun;
+    private bool _postRun;
     [ObservableProperty]
-    private bool fullScreen;
+    private bool _fullScreen;
     [ObservableProperty]
-    private bool close;
+    private bool _close;
 
     [ObservableProperty]
-    private int gC;
+    private int _gC;
 
     [ObservableProperty]
-    private uint minMemory;
+    private uint _minMemory;
     [ObservableProperty]
-    private uint maxMemory;
+    private uint _maxMemory;
     [ObservableProperty]
-    private uint width;
+    private uint _width;
     [ObservableProperty]
-    private uint height;
+    private uint _height;
 
-    private bool load = false;
+    private bool _load = false;
 
     public SettingTab4Model(IUserControl con)
     {
-        Con = con;
+        _con = con;
     }
 
     partial void OnMaxMemoryChanged(uint value)
@@ -181,7 +181,7 @@ public partial class SettingTab4Model : ObservableObject
 
     public void Load()
     {
-        load = true;
+        _load = true;
         var config = ConfigBinding.GetAllConfig();
         if (config.Item1 != null)
         {
@@ -216,12 +216,12 @@ public partial class SettingTab4Model : ObservableObject
         {
             Close = config.Item2.CloseBeforeLaunch;
         }
-        load = false;
+        _load = false;
     }
 
     private void SetMemory()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetMemory(MinMemory, MaxMemory);
@@ -229,7 +229,7 @@ public partial class SettingTab4Model : ObservableObject
 
     private void SetWindow()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetGameWindow(FullScreen, Width, Height);
@@ -237,7 +237,7 @@ public partial class SettingTab4Model : ObservableObject
 
     private void SetGc()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetGc((GCType)GC, GCArg);
@@ -245,7 +245,7 @@ public partial class SettingTab4Model : ObservableObject
 
     private void SetArg()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetRunArg(JavaAgent, JvmArg, GameArg);
@@ -253,7 +253,7 @@ public partial class SettingTab4Model : ObservableObject
 
     private void SetCommand()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetRunCommand(PreRun, PostRun, PreCmd, PostCmd);
@@ -261,7 +261,7 @@ public partial class SettingTab4Model : ObservableObject
 
     private void SetCheck()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetGameCheckConfig(CheckCore, CheckAssets, CheckLib, CheckMod,

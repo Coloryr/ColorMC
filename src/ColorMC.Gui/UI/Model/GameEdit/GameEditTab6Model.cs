@@ -27,7 +27,7 @@ public partial class GameEditTab6Model : GameEditTabModel
     [RelayCommand]
     public async Task Export()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab6.Info2"));
         var file = await BaseBinding.SaveFile(window, FileType.Game, new object[]
             { Obj, _model.GetUnSelectItems(), PackType.ColorMC });

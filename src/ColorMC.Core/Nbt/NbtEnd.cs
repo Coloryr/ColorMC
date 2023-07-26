@@ -1,20 +1,26 @@
-﻿namespace ColorMC.Core.Nbt;
+namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// 结束类型的NBT标签
+/// </summary>
 public class NbtEnd : NbtBase
 {
-    public const byte Type = 0;
+    /// <summary>
+    /// NBT码
+    /// </summary>
+    public const NbtType Type = NbtType.NbtEnd;
 
     public NbtEnd()
     {
         NbtType = NbtType.NbtEnd;
     }
 
-    public override NbtEnd Read(DataInputStream stream)
+    internal override NbtEnd Read(DataInputStream stream)
     {
         return this;
     }
 
-    public override void Write(DataOutputStream stream)
+    internal override void Write(DataOutputStream stream)
     {
 
     }

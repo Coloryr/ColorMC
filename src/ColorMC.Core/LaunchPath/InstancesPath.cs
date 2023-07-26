@@ -11,6 +11,9 @@ using System.Text;
 
 namespace ColorMC.Core.LaunchPath;
 
+/// <summary>
+/// 游戏实例路径
+/// </summary>
 public static class InstancesPath
 {
     public const string Name = "instances";
@@ -1144,7 +1147,7 @@ public static class InstancesPath
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="data"></param>
-    /// <returns></returns>
+    /// <returns>升级结果</returns>
     public static async Task<bool> UpdateModPack(this GameSettingObj obj, ModrinthVersionObj data)
     {
         var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];

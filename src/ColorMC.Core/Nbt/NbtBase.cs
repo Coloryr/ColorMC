@@ -72,13 +72,13 @@ public abstract class NbtBase
     /// </summary>
     /// <param name="stream"></param>
     /// <returns></returns>
-    public abstract NbtBase Read(DataInputStream stream);
+    internal abstract NbtBase Read(DataInputStream stream);
 
     /// <summary>
     /// 写标签
     /// </summary>
     /// <param name="stream"></param>
-    public abstract void Write(DataOutputStream stream);
+    internal abstract void Write(DataOutputStream stream);
 
     /// <summary>
     /// 转字符串
@@ -145,22 +145,11 @@ public abstract class NbtBase
     /// <summary>
     /// 取NBT
     /// </summary>
-    /// <param name="id">Id</param>
-    /// <returns></returns>
-    public static NbtBase ById(byte id)
-    {
-        var type = NbtTypes.VALUES[id];
-        return (Activator.CreateInstance(type) as NbtBase)!;
-    }
-
-    /// <summary>
-    /// 取NBT
-    /// </summary>
-    /// <param name="id">Id</param>
-    /// <returns></returns>
+    /// <param name="id">类型</param>
+    /// <returns>NBT标签</returns>
     public static NbtBase ById(NbtType id)
     {
-        var type = NbtTypes.VALUES1[id];
+        var type = NbtTypes.VALUES[id];
         return (Activator.CreateInstance(type) as NbtBase)!;
     }
 
@@ -188,13 +177,13 @@ public abstract class NbtBase
             steam2 = new DataInputStream(steam);
         }
 
-        var type = steam2.ReadByte();
-        if (type == 0)
+        var type = (NbtType)steam2.ReadByte();
+        if (type == NbtType.NbtEnd)
         {
             return new NbtEnd();
         }
 
-        if (type == 10)
+        if (type == NbtType.NbtCompound)
         {
             var temp = steam2.ReadShort();
             if (temp > 0)

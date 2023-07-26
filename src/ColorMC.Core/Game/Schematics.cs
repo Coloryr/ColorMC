@@ -63,7 +63,7 @@ public static class Schematic
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
-    /// <returns>结果</returns>
+    /// <returns>是否添加成功</returns>
     public static bool AddSchematic(this GameSettingObj obj, List<string> file)
     {
         var path = obj.GetSchematicsPath();
@@ -75,7 +75,9 @@ public static class Schematic
             var name = Path.GetFileName(item);
             var path1 = Path.GetFullPath(path + "/" + name);
             if (File.Exists(path1))
+            {
                 return;
+            }
 
             try
             {
@@ -89,7 +91,9 @@ public static class Schematic
         });
 
         if (!ok)
+        {
             return false;
+        }
 
         return true;
     }

@@ -29,107 +29,107 @@ public record FontDisplay
 
 public partial class SettingTab2Model : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
 
     public ObservableCollection<FontDisplay> FontList { get; init; } = new();
     public List<string> TranTypeList => BaseBinding.GetWindowTranTypes();
     public List<string> LanguageList => BaseBinding.GetLanguages();
 
     [ObservableProperty]
-    private FontDisplay? fontItem;
+    private FontDisplay? _fontItem;
 
     [ObservableProperty]
-    private Color mainColor;
+    private Color _mainColor;
 
     [ObservableProperty]
-    private Color lightBackColor;
+    private Color _lightBackColor;
     [ObservableProperty]
-    private Color lightTranColor;
+    private Color _lightTranColor;
     [ObservableProperty]
-    private Color lightFont1Color;
+    private Color _lightFont1Color;
     [ObservableProperty]
-    private Color lightFont2Color;
+    private Color _lightFont2Color;
 
     [ObservableProperty]
-    private Color darkBackColor;
+    private Color _darkBackColor;
     [ObservableProperty]
-    private Color darkTranColor;
+    private Color _darkTranColor;
     [ObservableProperty]
-    private Color darkFont1Color;
+    private Color _darkFont1Color;
     [ObservableProperty]
-    private Color darkFont2Color;
+    private Color _darkFont2Color;
 
     [ObservableProperty]
-    private bool windowMode;
+    private bool _windowMode;
     [ObservableProperty]
-    private bool isDefaultFont;
+    private bool _isDefaultFont;
     [ObservableProperty]
-    private bool enableFontList;
+    private bool _enableFontList;
     [ObservableProperty]
-    private bool enablePicResize;
+    private bool _enablePicResize;
     [ObservableProperty]
-    private bool isAutoColor;
+    private bool _isAutoColor;
     [ObservableProperty]
-    private bool isLightColor;
+    private bool _isLightColor;
     [ObservableProperty]
-    private bool isDarkColor;
+    private bool _isDarkColor;
     [ObservableProperty]
-    private bool enableRGB;
+    private bool _enableRGB;
     [ObservableProperty]
-    private bool enableWindowTran;
+    private bool _enableWindowTran;
     [ObservableProperty]
-    private bool enableWindowMode = true;
+    private bool _enableWindowMode = true;
     [ObservableProperty]
-    private bool coreInstall;
+    private bool _coreInstall;
     [ObservableProperty]
-    private bool mainWindowStateSave;
+    private bool _mainWindowStateSave;
     [ObservableProperty]
-    private bool mainWindowMirror;
+    private bool _mainWindowMirror;
 
     [ObservableProperty]
-    private int language;
+    private int _language;
     [ObservableProperty]
-    private int picEffect;
+    private int _picEffect;
     [ObservableProperty]
-    private int picTran;
+    private int _picTran;
     [ObservableProperty]
-    private int picResize;
+    private int _picResize;
     [ObservableProperty]
-    private int windowTranType;
+    private int _windowTranType;
     [ObservableProperty]
-    private int rgbV1;
+    private int _rgbV1;
     [ObservableProperty]
-    private int rgbV2;
+    private int _rgbV2;
     [ObservableProperty]
-    private int width;
+    private int _width;
     [ObservableProperty]
-    private int height;
+    private int _height;
     [ObservableProperty]
-    private int buttonCornerRadius;
+    private int _buttonCornerRadius;
 
     [ObservableProperty]
-    private string? pic;
+    private string? _pic;
     [ObservableProperty]
-    private string? live2DModel;
+    private string? _live2DModel;
 
     [ObservableProperty]
-    private string live2DCoreState;
+    private string _live2DCoreState;
 
-    private bool load = false;
+    private bool _load = false;
 
     public SettingTab2Model(IUserControl con)
     {
-        Con = con;
+        _con = con;
 
         if (SystemInfo.Os == OsType.Linux)
         {
-            enableWindowMode = false;
+            _enableWindowMode = false;
         }
     }
 
     partial void OnButtonCornerRadiusChanged(int value)
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetStyle(value);
@@ -137,7 +137,7 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnMainWindowStateSaveChanged(bool value)
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetWindowStateSave(MainWindowStateSave);
@@ -145,7 +145,7 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnMainWindowMirrorChanged(bool value)
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetMainWindow(MainWindowMirror);
@@ -153,7 +153,7 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnWidthChanged(int value)
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetLive2DSize(Width, Height);
@@ -161,7 +161,7 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnHeightChanged(int value)
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetLive2DSize(Width, Height);
@@ -214,7 +214,7 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnFontItemChanged(FontDisplay? value)
     {
-        if (load || value == null)
+        if (_load || value == null)
             return;
 
         OnPropertyChanged("Hide");
@@ -229,7 +229,7 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnEnableRGBChanged(bool value)
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetRgb(value);
@@ -237,7 +237,7 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnWindowModeChanged(bool value)
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetWindowMode(value);
@@ -245,7 +245,7 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnIsAutoColorChanged(bool value)
     {
-        if (load)
+        if (_load)
             return;
 
         if (value)
@@ -256,7 +256,7 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnIsLightColorChanged(bool value)
     {
-        if (load)
+        if (_load)
             return;
 
         if (value)
@@ -267,7 +267,7 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnIsDarkColorChanged(bool value)
     {
-        if (load)
+        if (_load)
             return;
 
         if (value)
@@ -278,12 +278,12 @@ public partial class SettingTab2Model : ObservableObject
 
     async partial void OnEnablePicResizeChanged(bool value)
     {
-        if (load)
+        if (_load)
             return;
 
         if (value)
         {
-            var window = Con.Window;
+            var window = _con.Window;
             window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
             await ConfigBinding.SetBackLimit(value, PicResize);
             window.ProgressInfo.Close();
@@ -301,7 +301,7 @@ public partial class SettingTab2Model : ObservableObject
             EnableFontList = true;
         }
 
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetFont(FontItem?.FontName, value);
@@ -309,10 +309,10 @@ public partial class SettingTab2Model : ObservableObject
 
     partial void OnLanguageChanged(int value)
     {
-        if (load)
+        if (_load)
             return;
 
-        var window = Con.Window;
+        var window = _con.Window;
         var type = (LanguageType)value;
         window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info1"));
         ConfigBinding.SetLanguage(type);
@@ -345,8 +345,8 @@ public partial class SettingTab2Model : ObservableObject
     [RelayCommand]
     public void ColorReset()
     {
-        var window = Con.Window;
-        load = true;
+        var window = _con.Window;
+        _load = true;
         ConfigBinding.ResetColor();
         MainColor = ColorSel.MainColor.ToColor();
         LightBackColor = Color.Parse(ColorSel.BackLigthColorStr);
@@ -357,14 +357,14 @@ public partial class SettingTab2Model : ObservableObject
         DarkTranColor = Color.Parse(ColorSel.Back1DarkColorStr);
         DarkFont1Color = Color.Parse(ColorSel.ButtonDarkFontStr);
         DarkFont2Color = Color.Parse(ColorSel.FontDarkColorStr);
-        load = false;
+        _load = false;
         window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info4"));
     }
 
     [RelayCommand]
     public async Task SetPicSize()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackLimit(EnablePicResize, PicResize);
         window.ProgressInfo.Close();
@@ -375,7 +375,7 @@ public partial class SettingTab2Model : ObservableObject
     [RelayCommand]
     public void SetPicTran()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         ConfigBinding.SetBackTran(PicTran);
         window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
     }
@@ -391,14 +391,14 @@ public partial class SettingTab2Model : ObservableObject
     [RelayCommand]
     public async Task OpenPic()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Pic);
 
         if (file != null)
         {
             Pic = file;
 
-            if (load)
+            if (_load)
                 return;
 
             await SetPic();
@@ -408,10 +408,10 @@ public partial class SettingTab2Model : ObservableObject
     [RelayCommand]
     public async Task SetPic()
     {
-        if (load)
+        if (_load)
             return;
 
-        var window = Con.Window;
+        var window = _con.Window;
         if (string.IsNullOrWhiteSpace(Pic))
         {
             window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
@@ -435,14 +435,14 @@ public partial class SettingTab2Model : ObservableObject
     [RelayCommand]
     public async Task OpenLive2D()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Live2D);
 
         if (file != null)
         {
             Live2DModel = file;
 
-            if (load)
+            if (_load)
                 return;
 
             SetLive2D();
@@ -452,10 +452,10 @@ public partial class SettingTab2Model : ObservableObject
     [RelayCommand]
     public void SetLive2D()
     {
-        if (load)
+        if (_load)
             return;
 
-        var window = Con.Window;
+        var window = _con.Window;
         if (string.IsNullOrWhiteSpace(Live2DModel))
         {
             window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab2.Error3"));
@@ -470,7 +470,7 @@ public partial class SettingTab2Model : ObservableObject
 
     public void Load()
     {
-        load = true;
+        _load = true;
 
         FontList.Clear();
         BaseBinding.GetFontList().ForEach(item =>
@@ -555,12 +555,12 @@ public partial class SettingTab2Model : ObservableObject
             CoreInstall = false;
         }
 
-        load = false;
+        _load = false;
     }
 
     private void ColorChange()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetColor(MainColor.ToString(),
@@ -572,10 +572,10 @@ public partial class SettingTab2Model : ObservableObject
 
     private void Save1()
     {
-        if (load)
+        if (_load)
             return;
 
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetWindowTran(EnableWindowTran, WindowTranType);
         window.ProgressInfo.Close();

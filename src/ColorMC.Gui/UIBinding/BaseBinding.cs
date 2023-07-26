@@ -42,8 +42,8 @@ public static class BaseBinding
     public readonly static Dictionary<string, StringBuilder> GameLogs = new();
     public static bool ISNewStart => ColorMCCore.NewStart;
 
-    private static IBaseWindow? Window;
-    private static CancellationTokenSource LaunchCancel = new();
+    private static IBaseWindow? _window;
+    private static CancellationTokenSource s_launchCancel = new();
 
     /// <summary>
     /// 初始化
@@ -85,19 +85,19 @@ public static class BaseBinding
 
     private static Task<bool> LaunchP(bool pre)
     {
-        if (Window == null)
+        if (_window == null)
         {
             return Task.Run(() => { return false; });
         }
 
         return Dispatcher.UIThread.InvokeAsync(() =>
-            Window.OkInfo.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
+            _window.OkInfo.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
             : App.GetLanguage("MainWindow.Info30")));
     }
 
     private static Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
     {
-        if (Window == null)
+        if (_window == null)
         {
             return Task.Run(() => { return false; });
         }
@@ -106,23 +106,23 @@ public static class BaseBinding
         {
             return state switch
             {
-                LaunchState.LostLib => await Window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info5")),
-                LaunchState.LostLoader => await Window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info6")),
-                LaunchState.LostLoginCore => await Window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info7")),
-                _ => await Window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info4")),
+                LaunchState.LostLib => await _window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info5")),
+                LaunchState.LostLoader => await _window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info6")),
+                LaunchState.LostLoginCore => await _window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info7")),
+                _ => await _window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info4")),
             };
         });
     }
 
     private static Task<bool> OfflineLaunch(LoginObj login)
     {
-        if (Window == null)
+        if (_window == null)
         {
             return Task.Run(() => { return false; });
         }
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return Window.OkInfo.ShowWait(string.Format(
+            return _window.OkInfo.ShowWait(string.Format(
                 App.GetLanguage("MainWindow.Info21"), login.UserName));
         });
     }
@@ -131,50 +131,50 @@ public static class BaseBinding
     {
         Dispatcher.UIThread.Post(() =>
         {
-            if (Window == null)
+            if (_window == null)
                 return;
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
                 switch (state)
                 {
                     case LaunchState.Login:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info8"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info8"));
                         break;
                     case LaunchState.Check:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info9"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info9"));
                         break;
                     case LaunchState.CheckVersion:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info10"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info10"));
                         break;
                     case LaunchState.CheckLib:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info11"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info11"));
                         break;
                     case LaunchState.CheckAssets:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info12"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info12"));
                         break;
                     case LaunchState.CheckLoader:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info13"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info13"));
                         break;
                     case LaunchState.CheckLoginCore:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info14"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info14"));
                         break;
                     case LaunchState.CheckMods:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info17"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info17"));
                         break;
                     case LaunchState.Download:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info15"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info15"));
                         break;
                     case LaunchState.JvmPrepare:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info16"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info16"));
                         break;
                     case LaunchState.LaunchPre:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info31"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info31"));
                         break;
                     case LaunchState.LaunchPost:
-                        Window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info32"));
+                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info32"));
                         break;
                     case LaunchState.End:
-                        Window.ProgressInfo.Close();
+                        _window.ProgressInfo.Close();
                         break;
                 }
             }
@@ -183,37 +183,37 @@ public static class BaseBinding
                 switch (state)
                 {
                     case LaunchState.Login:
-                        Window.Head.Title1 = App.GetLanguage("MainWindow.Info8");
+                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info8");
                         break;
                     case LaunchState.Check:
-                        Window.Head.Title1 = App.GetLanguage("MainWindow.Info9");
+                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info9");
                         break;
                     case LaunchState.CheckVersion:
-                        Window.Head.Title1 = App.GetLanguage("MainWindow.Info10");
+                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info10");
                         break;
                     case LaunchState.CheckLib:
-                        Window.Head.Title1 = App.GetLanguage("MainWindow.Info11");
+                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info11");
                         break;
                     case LaunchState.CheckAssets:
-                        Window.Head.Title1 = App.GetLanguage("MainWindow.Info12");
+                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info12");
                         break;
                     case LaunchState.CheckLoader:
-                        Window.Head.Title1 = App.GetLanguage("MainWindow.Info13");
+                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info13");
                         break;
                     case LaunchState.CheckLoginCore:
-                        Window.Head.Title1 = App.GetLanguage("MainWindow.Info14");
+                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info14");
                         break;
                     case LaunchState.CheckMods:
-                        Window.Head.Title1 = App.GetLanguage("MainWindow.Info17");
+                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info17");
                         break;
                     case LaunchState.Download:
-                        Window.Head.Title1 = App.GetLanguage("MainWindow.Info15");
+                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info15");
                         break;
                     case LaunchState.JvmPrepare:
-                        Window.Head.Title1 = App.GetLanguage("MainWindow.Info16");
+                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info16");
                         break;
                     case LaunchState.End:
-                        Window.Head.Title1 = "";
+                        _window.Head.Title1 = "";
                         break;
                 }
             }
@@ -434,7 +434,7 @@ public static class BaseBinding
     /// <param name="obj">游戏实例</param>
     public static void StopGame(GameSettingObj obj)
     {
-        LaunchCancel.Cancel();
+        s_launchCancel.Cancel();
         if (RunGames.TryGetValue(obj.UUID, out var item))
         {
             Task.Run(item.Kill);
@@ -489,8 +489,8 @@ public static class BaseBinding
     /// <returns>结果</returns>
     public static async Task<(bool, string?)> Launch(IBaseWindow window, GameSettingObj obj, LoginObj obj1, WorldObj? world = null)
     {
-        Window = window;
-        LaunchCancel = new();
+        _window = window;
+        s_launchCancel = new();
 
         if (Games.ContainsValue(obj))
         {
@@ -527,12 +527,12 @@ public static class BaseBinding
         //锁定账户
         UserBinding.AddLockUser(obj1);
 
-        var res = await Task.Run(async () => await Launch(obj, obj1, world, LaunchCancel.Token));
+        var res = await Task.Run(async () => await Launch(obj, obj1, world, s_launchCancel.Token));
 
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.End);
         Funtcions.RunGC();
 
-        if (LaunchCancel.IsCancellationRequested)
+        if (s_launchCancel.IsCancellationRequested)
             return (true, null);
 
         var p = res.Item1;
@@ -614,7 +614,7 @@ public static class BaseBinding
         return (p != null, res.Item2);
     }
 
-    private static async Task<(Process?, string?)> Launch(GameSettingObj obj, LoginObj obj1,  WorldObj? world, CancellationToken cancel)
+    private static async Task<(Process?, string?)> Launch(GameSettingObj obj, LoginObj obj1, WorldObj? world, CancellationToken cancel)
     {
         string? temp = null;
         try

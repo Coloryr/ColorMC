@@ -1,9 +1,19 @@
 ﻿namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// Long类型的NBT标签
+/// </summary>
 public class NbtLong : NbtBase
 {
-    public const int Type = 4;
+    /// <summary>
+    /// NBT码
+    /// </summary>
 
+    public const NbtType Type = NbtType.NbtLong;
+
+    /// <summary>
+    /// 数据
+    /// </summary>
     public new long Value { get; set; }
 
     public NbtLong()
@@ -11,13 +21,13 @@ public class NbtLong : NbtBase
         NbtType = NbtType.NbtLong;
     }
 
-    public override NbtLong Read(DataInputStream stream)
+    internal override NbtLong Read(DataInputStream stream)
     {
         Value = stream.ReadLong();
         return this;
     }
 
-    public override void Write(DataOutputStream stream)
+    internal override void Write(DataOutputStream stream)
     {
         stream.Write(Value);
     }

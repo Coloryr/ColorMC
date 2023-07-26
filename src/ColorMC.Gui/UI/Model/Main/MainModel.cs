@@ -1,11 +1,8 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using AvaloniaEdit.Utils;
-using ColorMC.Core;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -24,73 +21,73 @@ public partial class MainModel : ObservableObject, IMainTop
 {
     public readonly IUserControl Con;
 
-    private readonly Semaphore semaphore = new(0, 2);
+    public bool IsLaunch = false;
+    public bool IsFirst = true;
+
     public ObservableCollection<string> GroupList { get; init; } = new();
     public ObservableCollection<GamesModel> GameGroups { get; init; } = new();
 
+    private readonly Semaphore _semaphore = new(0, 2);
     private readonly Dictionary<string, GameItemModel> Launchs = new();
 
-    public bool launch = false;
-    public bool first = true;
-
-    private LoginObj? Obj1;
-    private bool isplay = true;
-    private bool isCancel;
+    private LoginObj? _user;
+    private bool _isplay = true;
+    private bool _isCancel;
 
     [ObservableProperty]
-    private int live2dWidth = 300;
+    private int _live2dWidth = 300;
     [ObservableProperty]
-    private int live2dHeight = 300;
+    private int _live2dHeight = 300;
 
     [ObservableProperty]
-    private (string, ushort) server;
+    private (string, ushort) _server;
 
     [ObservableProperty]
-    private string? groupItem;
+    private string? _groupItem;
     [ObservableProperty]
-    private string sideButton = "→";
+    private string _sideButton = "→";
     [ObservableProperty]
-    private string userName;
+    private string _userName;
     [ObservableProperty]
-    private string authType;
+    private string _authType;
     [ObservableProperty]
-    public string message;
+    private string _message;
 
     [ObservableProperty]
-    private bool groupEnable;
+    private bool _groupEnable;
     [ObservableProperty]
-    private bool isNotGame;
+    private bool _isNotGame;
     [ObservableProperty]
-    private bool motdDisplay;
+    private bool _motdDisplay;
     [ObservableProperty]
-    private bool isGameError;
+    private bool _isGameError;
     [ObservableProperty]
-    private bool isOneGame;
+    private bool _isOneGame;
     [ObservableProperty]
-    private bool sideDisplay = true;
+    private bool _sideDisplay = true;
     [ObservableProperty]
-    private bool enableButton1;
+    private bool _enableButton1;
     [ObservableProperty]
-    private bool enableButton2;
+    private bool _enableButton2;
     [ObservableProperty]
-    private bool isHeadLoad;
+    private bool _isHeadLoad;
     [ObservableProperty]
-    private bool musicDisplay;
+    private bool _musicDisplay;
 
     [ObservableProperty]
-    private GameItemModel? game;
+    private GameItemModel? _game;
     [ObservableProperty]
-    private GameItemModel? oneGame;
+    private GameItemModel? _oneGame;
 
     [ObservableProperty]
-    private Bitmap head = App.LoadIcon;
+    private Bitmap _head = App.LoadIcon;
 
     [ObservableProperty]
-    private Dock mirror1 = Dock.Left;
+    private Dock _mirror1 = Dock.Left;
     [ObservableProperty]
-    private HorizontalAlignment mirror2 = HorizontalAlignment.Left;
+    private HorizontalAlignment _mirror2 = HorizontalAlignment.Left;
     [ObservableProperty]
-    private HorizontalAlignment mirror3 = HorizontalAlignment.Right;
+    private HorizontalAlignment _mirror3 = HorizontalAlignment.Right;
 
     public MainModel(IUserControl con)
     {
@@ -132,7 +129,7 @@ public partial class MainModel : ObservableObject, IMainTop
     public void MusicPause()
     {
         var window = Con.Window;
-        if (isplay)
+        if (_isplay)
         {
             BaseBinding.MusicPause();
 
@@ -145,7 +142,7 @@ public partial class MainModel : ObservableObject, IMainTop
             window.SetTitle(App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33"));
         }
 
-        isplay = !isplay;
+        _isplay = !_isplay;
     }
 
     [RelayCommand]
@@ -211,15 +208,15 @@ public partial class MainModel : ObservableObject, IMainTop
     [RelayCommand]
     public void Confirm()
     {
-        isCancel = false;
-        semaphore.Release();
+        _isCancel = false;
+        _semaphore.Release();
     }
 
     [RelayCommand]
     public void Cancel()
     {
-        isCancel = true;
-        semaphore.Release();
+        _isCancel = true;
+        _semaphore.Release();
     }
 
     [RelayCommand]
@@ -249,8 +246,8 @@ public partial class MainModel : ObservableObject, IMainTop
 
         return Task.Run(() =>
         {
-            semaphore.WaitOne();
-            return (isCancel, GroupItem);
+            _semaphore.WaitOne();
+            return (_isCancel, GroupItem);
         });
     }
 
@@ -258,7 +255,7 @@ public partial class MainModel : ObservableObject, IMainTop
     {
         await Set(obj);
         GroupEnable = false;
-        if (isCancel)
+        if (_isCancel)
         {
             return;
         }
@@ -297,17 +294,17 @@ public partial class MainModel : ObservableObject, IMainTop
 
     public async void Load1()
     {
-        Obj1 = UserBinding.GetLastUser();
+        _user = UserBinding.GetLastUser();
 
-        if (Obj1 == null)
+        if (_user == null)
         {
             UserName = App.GetLanguage("MainWindow.Info36");
             AuthType = App.GetLanguage("MainWindow.Info35");
         }
         else
         {
-            UserName = Obj1.UserName;
-            AuthType = Obj1.AuthType.GetName();
+            UserName = _user.UserName;
+            AuthType = _user.AuthType.GetName();
         }
 
         IsHeadLoad = true;
@@ -346,7 +343,7 @@ public partial class MainModel : ObservableObject, IMainTop
         var config = ConfigBinding.GetAllConfig();
         if (config.Item2 != null && config.Item2.ServerCustom?.LockGame == true)
         {
-            first = true;
+            IsFirst = true;
             var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
             if (game != null)
             {
@@ -383,7 +380,7 @@ public partial class MainModel : ObservableObject, IMainTop
         {
             GameGroups.Clear();
             GroupList.Clear();
-            first = true;
+            IsFirst = true;
             var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
             if (game == null)
             {
@@ -404,9 +401,9 @@ public partial class MainModel : ObservableObject, IMainTop
             var list = GameBinding.GetGameGroups();
             var uuid = ConfigBinding.GetLastLaunch();
             GameItemModel? last = null;
-            if (first)
+            if (IsFirst)
             {
-                first = false;
+                IsFirst = false;
                 GamesModel? DefaultGroup = null;
 
                 foreach (var item in list)
@@ -483,11 +480,11 @@ public partial class MainModel : ObservableObject, IMainTop
 
     public async void Launch(GameItemModel obj)
     {
-        if (launch || obj.IsLaunch)
+        if (IsLaunch || obj.IsLaunch)
             return;
 
         var window = Con.Window;
-        launch = true;
+        IsLaunch = true;
         UpdateLaunch();
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
@@ -520,7 +517,7 @@ public partial class MainModel : ObservableObject, IMainTop
                 window.ProgressInfo.Show(App.GetLanguage("MainWindow.Info26"));
             }
         }
-        launch = false;
+        IsLaunch = false;
         UpdateLaunch();
     }
 
@@ -533,7 +530,7 @@ public partial class MainModel : ObservableObject, IMainTop
         }
         else
         {
-            if (BaseBinding.IsGameRun(Game.Obj) || launch)
+            if (BaseBinding.IsGameRun(Game.Obj) || IsLaunch)
             {
                 EnableButton1 = false;
             }

@@ -2,9 +2,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
-using HtmlAgilityPack;
 using Newtonsoft.Json;
-using System.Linq;
 using System.Xml;
 
 namespace ColorMC.Core.Net.Apis;
@@ -55,8 +53,8 @@ public static class ForgeAPI
             }
             else
             {
-                string url = neo ? 
-                    UrlHelper.NeoForgeVersion(SourceLocal.Offical):
+                string url = neo ?
+                    UrlHelper.NeoForgeVersion(SourceLocal.Offical) :
                     UrlHelper.ForgeVersion(SourceLocal.Offical);
                 var html = await BaseClient.GetString(url);
                 if (html.Item1 == false)
@@ -139,8 +137,6 @@ public static class ForgeAPI
             return null;
         }
     }
-
-
 
     /// <summary>
     /// 获取版本列表
@@ -259,6 +255,7 @@ public static class ForgeAPI
                     {
                         if (s_neoForgeVersion.TryGetValue(version, out var list4))
                         {
+                            list4.Reverse();
                             return list4;
                         }
                     }
@@ -266,6 +263,7 @@ public static class ForgeAPI
                     {
                         if (s_forgeVersion.TryGetValue(version, out var list4))
                         {
+                            list4.Reverse();
                             return list4;
                         }
                     }

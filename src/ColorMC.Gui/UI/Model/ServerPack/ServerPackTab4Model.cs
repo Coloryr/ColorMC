@@ -24,13 +24,13 @@ public partial class ServerPackTab4Model : ServerPackTabModel
     };
 
     [ObservableProperty]
-    private ServerPackConfigDisplayObj item;
+    private ServerPackConfigDisplayObj _item;
 
     [ObservableProperty]
-    private int funtion;
+    private int _funtion;
 
     [ObservableProperty]
-    private string? group;
+    private string? _group;
 
     public ServerPackTab4Model(IUserControl con, ServerPackObj obj) : base(con, obj)
     {

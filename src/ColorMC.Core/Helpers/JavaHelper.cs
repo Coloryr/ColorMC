@@ -44,7 +44,7 @@ public static class JavaHelper
     /// 获取Java信息
     /// </summary>
     /// <param name="path">路径</param>
-    /// <returns>信息</returns>
+    /// <returns>Java信息</returns>
     public static JavaInfo? GetJavaInfo(string path)
     {
         try

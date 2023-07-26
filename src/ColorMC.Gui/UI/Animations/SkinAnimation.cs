@@ -1,9 +1,6 @@
-﻿using Avalonia.Threading;
-using ColorMC.Gui.Objs;
+﻿using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Skin;
 using System.Numerics;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Animations;
 

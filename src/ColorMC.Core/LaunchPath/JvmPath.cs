@@ -49,7 +49,7 @@ public static class JvmPath
     /// <param name="sha256">验证</param>
     /// <param name="url">地址</param>
     /// <returns>结果</returns>
-    public static async Task<(CoreRunState, string?)> Install(string file, string name, string sha256, string url)
+    public static async Task<(CoreRunState Res, string? Message)> Install(string file, string name, string sha256, string url)
     {
         try
         {
@@ -83,7 +83,7 @@ public static class JvmPath
     /// <param name="sha256">校验</param>
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
-    private static async Task<(bool, string?)> Download(string name, string sha256, string url)
+    private static async Task<(bool Res, string? Local)> Download(string name, string sha256, string url)
     {
         var item = new DownloadItemObj()
         {

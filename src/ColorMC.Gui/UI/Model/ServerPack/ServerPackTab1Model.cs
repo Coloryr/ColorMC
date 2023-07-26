@@ -10,18 +10,18 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 public partial class ServerPackTab1Model : ServerPackTabModel
 {
     [ObservableProperty]
-    private string url;
+    private string _url;
     [ObservableProperty]
-    private string version;
+    private string _version;
     [ObservableProperty]
-    private string text;
+    private string _text;
     [ObservableProperty]
-    private string uI;
+    private string _uI;
 
     [ObservableProperty]
-    private bool forceUpdate;
+    private bool _forceUpdate;
 
-    private bool load;
+    private bool _load;
 
     public ServerPackTab1Model(IUserControl con, ServerPackObj obj) : base(con, obj)
     {
@@ -51,7 +51,7 @@ public partial class ServerPackTab1Model : ServerPackTabModel
     [RelayCommand]
     public async Task OpenUI()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await BaseBinding.OpFile(window, Core.Objs.FileType.UI);
         if (file == null)
             return;
@@ -61,7 +61,7 @@ public partial class ServerPackTab1Model : ServerPackTabModel
 
     public void Load()
     {
-        load = true;
+        _load = true;
 
         Url = Obj.Url;
         Version = Obj.Version;
@@ -69,12 +69,12 @@ public partial class ServerPackTab1Model : ServerPackTabModel
         UI = Obj.UI;
         ForceUpdate = Obj.ForceUpdate;
 
-        load = false;
+        _load = false;
     }
 
     private void Save()
     {
-        if (load)
+        if (_load)
             return;
 
         GameBinding.SaveServerPack(Obj);

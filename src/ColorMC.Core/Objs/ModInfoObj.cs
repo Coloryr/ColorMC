@@ -1,7 +1,7 @@
 ﻿namespace ColorMC.Core.Objs;
 
 /// <summary>
-/// ModPack信息
+/// Mod信息
 /// </summary>
 public record ModInfoObj
 {

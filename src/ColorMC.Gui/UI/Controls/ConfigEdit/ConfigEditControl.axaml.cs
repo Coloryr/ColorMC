@@ -18,9 +18,9 @@ public partial class ConfigEditControl : UserControl, IUserControl
 
     public UserControl Con => this;
 
-    public string Title 
-    { 
-        get 
+    public string Title
+    {
+        get
         {
             if (_model.World == null)
             {
@@ -32,7 +32,7 @@ public partial class ConfigEditControl : UserControl, IUserControl
                 return string.Format(App.GetLanguage("ConfigEditWindow.Title1"),
                     _model.Obj?.Name, _model.World?.LevelName);
             }
-        } 
+        }
     }
 
     public ConfigEditControl()

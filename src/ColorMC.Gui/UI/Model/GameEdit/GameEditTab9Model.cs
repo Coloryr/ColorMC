@@ -21,7 +21,7 @@ public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<Screensh
     [RelayCommand]
     public async Task Load()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab9.Info3"));
         ScreenshotList.Clear();
 
@@ -29,7 +29,7 @@ public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<Screensh
         window.ProgressInfo.Close();
         foreach (var item in res)
         {
-            ScreenshotList.Add(new(Con, this, item));
+            ScreenshotList.Add(new(_con, this, item));
         }
     }
 
@@ -42,7 +42,7 @@ public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<Screensh
     [RelayCommand]
     public async Task Clear()
     {
-        var Window = Con.Window;
+        var Window = _con.Window;
         var res = await Window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab9.Info2"), Obj.Name));
         if (!res)

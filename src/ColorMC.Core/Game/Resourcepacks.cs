@@ -40,7 +40,9 @@ public static class Resourcepacks
             }
             bool find = false;
             if (item.Extension is not (".zip" or ".disable"))
+            {
                 return;
+            }
             try
             {
                 using ZipFile zFile = new(item.FullName);
@@ -126,7 +128,9 @@ public static class Resourcepacks
             var name = Path.GetFileName(item);
             var local = Path.GetFullPath(path + "/" + name);
             if (File.Exists(local))
+            {
                 return false;
+            }
 
             await Task.Run(() =>
             {
@@ -141,7 +145,9 @@ public static class Resourcepacks
                 }
             });
             if (!ok)
+            {
                 return false;
+            }
         };
         return ok;
     }

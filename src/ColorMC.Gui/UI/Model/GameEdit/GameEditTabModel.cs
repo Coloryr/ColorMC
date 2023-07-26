@@ -6,13 +6,13 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public abstract partial class GameEditTabModel : ObservableObject
 {
-    protected IUserControl Con;
-    
+    protected IUserControl _con;
+
     public GameSettingObj Obj { get; init; }
 
     public GameEditTabModel(IUserControl con, GameSettingObj obj)
     {
-        Con = con;
+        _con = con;
         Obj = obj;
     }
 }

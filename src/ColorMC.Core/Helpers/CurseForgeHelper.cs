@@ -6,7 +6,7 @@ using System.Text;
 namespace ColorMC.Core.Helpers;
 
 /// <summary>
-/// CueseForge
+/// CueseForge处理
 /// </summary>
 public static class CurseForgeHelper
 {
@@ -20,11 +20,11 @@ public static class CurseForgeHelper
     }
 
     /// <summary>
-    /// 创建下载对象
+    /// 创建下载项目
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <param name="data">CurseForge数据</param>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>下载项目</returns>
     public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.Data data, GameSettingObj obj)
     {
         data.FixDownloadUrl();
@@ -43,7 +43,7 @@ public static class CurseForgeHelper
     /// 创建Mod信息
     /// </summary>
     /// <param name="data"></param>
-    /// <returns></returns>
+    /// <returns>Mod信息</returns>
     public static ModInfoObj MakeModInfo(this CurseForgeModObj.Data data)
     {
         data.FixDownloadUrl();
@@ -65,11 +65,13 @@ public static class CurseForgeHelper
     /// 获取作者名字
     /// </summary>
     /// <param name="authors"></param>
-    /// <returns></returns>
+    /// <returns>作者名字</returns>
     public static string GetString(this List<CurseForgeObjList.Data.Authors> authors)
     {
         if (authors == null || authors.Count == 0)
+        {
             return "";
+        }
         var builder = new StringBuilder();
         foreach (var item in authors)
         {

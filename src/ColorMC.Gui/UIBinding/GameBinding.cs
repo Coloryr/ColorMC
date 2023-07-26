@@ -564,14 +564,16 @@ public static class GameBinding
         mod.Delete();
     }
 
-    public static bool AddMods(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
+    public static Task<bool> AddMods(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
         foreach (var item in file)
         {
             var item1 = item.GetPath();
             if (item1 != null)
+            {
                 list.Add(item1);
+            }
         }
         return obj.AddMods(list);
     }
@@ -1182,7 +1184,7 @@ public static class GameBinding
                     App.GetLanguage("GameEditWindow.Tab4.Info8"), true);
                 if (res?.Any() == true)
                 {
-                    return AddMods(obj, res);
+                    return await AddMods(obj, res);
                 }
                 return null;
             case FileType.World:
@@ -1218,7 +1220,9 @@ public static class GameBinding
         }
         var list = data.GetFiles();
         if (list == null)
+        {
             return false;
+        }
         switch (type)
         {
             case FileType.Mod:
@@ -1227,20 +1231,24 @@ public static class GameBinding
                 {
                     var file = item.TryGetLocalPath();
                     if (string.IsNullOrWhiteSpace(file))
+                    {
                         continue;
+                    }
                     if (File.Exists(file) && file.ToLower().EndsWith(".jar"))
                     {
                         list1.Add(file);
                     }
                 }
 
-                return obj.AddMods(list1);
+                return await obj.AddMods(list1);
             case FileType.World:
                 foreach (var item in list)
                 {
                     var file = item.TryGetLocalPath();
                     if (string.IsNullOrWhiteSpace(file))
+                    {
                         continue;
+                    }
                     if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
                     {
                         return await obj.AddWorldZip(file);
@@ -1253,7 +1261,9 @@ public static class GameBinding
                 {
                     var file = item.TryGetLocalPath();
                     if (string.IsNullOrWhiteSpace(file))
+                    {
                         continue;
+                    }
                     if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
                     {
                         list1.Add(file);

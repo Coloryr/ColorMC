@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using ColorMC.Gui.UI.Model.Setting;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 

@@ -1,9 +1,18 @@
 namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// Byte类型的NBT标签
+/// </summary>
 public class NbtByte : NbtBase
 {
-    public const byte Type = 1;
+    /// <summary>
+    /// NBT码
+    /// </summary>
+    public const NbtType Type = NbtType.NbtByte;
 
+    /// <summary>
+    /// 数据
+    /// </summary>
     public new byte Value { get; set; }
 
     public NbtByte()
@@ -11,13 +20,13 @@ public class NbtByte : NbtBase
         NbtType = NbtType.NbtByte;
     }
 
-    public override NbtBase Read(DataInputStream stream)
+    internal override NbtBase Read(DataInputStream stream)
     {
         Value = stream.ReadByte();
         return this;
     }
 
-    public override void Write(DataOutputStream stream)
+    internal override void Write(DataOutputStream stream)
     {
         stream.Write(Value);
     }

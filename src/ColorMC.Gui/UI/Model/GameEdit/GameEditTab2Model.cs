@@ -336,7 +336,7 @@ public partial class GameEditTab2Model : GameEditTabModel
     [RelayCommand]
     public async Task Delete()
     {
-        var Window = Con.Window;
+        var Window = _con.Window;
         var res = await Window.OkInfo.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
         if (res)
         {
@@ -349,7 +349,7 @@ public partial class GameEditTab2Model : GameEditTabModel
     [RelayCommand]
     public async Task Open()
     {
-        var window = Con.Window;
+        var window = _con.Window;
 
         var file = await BaseBinding.OpFile(window, FileType.Java);
         if (file != null)

@@ -20,8 +20,9 @@ public static class UpdateChecker
     private const string url = $"https://colormc.coloryr.com/colormc/{ColorMCCore.TopVersion}/";
 
     public static readonly string[] WebSha1s = new string[4] { "", "", "", "" };
-    private static readonly string[] Sha1s = new string[4] { "", "", "", "" };
-    private static readonly string[] LocalPath = new string[4] { "", "", "", "" };
+    public static readonly string[] Sha1s = new string[4] { "", "", "", "" };
+    public static readonly string[] LocalPath = new string[4] { "", "", "", "" };
+
     public static void Init()
     {
         if (ColorMCGui.BaseSha1 == null)

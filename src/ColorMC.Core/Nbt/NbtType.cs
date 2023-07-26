@@ -1,5 +1,8 @@
 ﻿namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// NBT类型
+/// </summary>
 public enum NbtType : byte
 {
     NbtEnd = 0,
@@ -19,24 +22,7 @@ public enum NbtType : byte
 
 public static class NbtTypes
 {
-    public static readonly Dictionary<byte, Type> VALUES = new()
-    {
-        {NbtEnd.Type, typeof(NbtEnd) },
-        {NbtByte.Type, typeof(NbtByte) },
-        {NbtShort.Type, typeof(NbtShort) },
-        {NbtInt.Type, typeof(NbtInt) },
-        {NbtLong.Type, typeof(NbtLong) },
-        {NbtFloat.Type, typeof(NbtFloat) },
-        {NbtDouble.Type, typeof(NbtDouble) },
-        {NbtByteArray.Type, typeof(NbtByteArray) },
-        {NbtString.Type, typeof(NbtString) },
-        {NbtList.Type, typeof(NbtList) },
-        {NbtCompound.Type, typeof(NbtCompound) },
-        {NbtIntArray.Type, typeof(NbtIntArray) },
-        {NbtLongArray.Type, typeof(NbtLongArray) }
-    };
-
-    public static readonly Dictionary<NbtType, Type> VALUES1 = new()
+    public static readonly Dictionary<NbtType, Type> VALUES = new()
     {
         {NbtType.NbtEnd, typeof(NbtEnd) },
         {NbtType.NbtByte, typeof(NbtByte) },

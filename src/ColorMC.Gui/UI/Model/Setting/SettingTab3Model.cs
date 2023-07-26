@@ -11,44 +11,44 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingTab3Model : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
 
-    private bool load;
+    private bool _load;
 
     public List<string> SourceList => BaseBinding.GetDownloadSources();
 
     [ObservableProperty]
-    private int source;
+    private int _source;
     [ObservableProperty]
-    private int thread;
+    private int _thread;
 
     [ObservableProperty]
-    private string iP;
+    private string _iP;
     [ObservableProperty]
-    private ushort port;
+    private ushort _port;
     [ObservableProperty]
-    private string user;
+    private string _user;
     [ObservableProperty]
-    private string password;
+    private string _password;
 
     [ObservableProperty]
-    private bool isDownload;
+    private bool _isDownload;
     [ObservableProperty]
-    private bool loginProxy;
+    private bool _loginProxy;
     [ObservableProperty]
-    private bool downloadProxy;
+    private bool _downloadProxy;
     [ObservableProperty]
-    private bool gameProxy;
+    private bool _gameProxy;
     [ObservableProperty]
-    private bool checkFile;
+    private bool _checkFile;
     [ObservableProperty]
-    private bool checkUpdate;
+    private bool _checkUpdate;
     [ObservableProperty]
-    private bool autoDownload;
+    private bool _autoDownload;
 
     public SettingTab3Model(IUserControl con)
     {
-        Con = con;
+        _con = con;
     }
 
     partial void OnCheckFileChanged(bool value)
@@ -83,7 +83,7 @@ public partial class SettingTab3Model : ObservableObject
 
     partial void OnThreadChanged(int value)
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetDownloadThread(value);
@@ -91,7 +91,7 @@ public partial class SettingTab3Model : ObservableObject
 
     partial void OnSourceChanged(int value)
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetDownloadSource((SourceLocal)value);
@@ -118,7 +118,7 @@ public partial class SettingTab3Model : ObservableObject
     [RelayCommand]
     public async Task StartCheck()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab3.Info1"));
         var res = await UpdateChecker.CheckOne();
         window.ProgressInfo.Close();
@@ -149,7 +149,7 @@ public partial class SettingTab3Model : ObservableObject
 
     public void Load()
     {
-        load = true;
+        _load = true;
 
         IsDownload = BaseBinding.IsDownload;
 
@@ -172,12 +172,12 @@ public partial class SettingTab3Model : ObservableObject
             AutoDownload = config.Item1.Http.AutoDownload;
             CheckUpdate = config.Item1.Http.CheckUpdate;
         }
-        load = false;
+        _load = false;
     }
 
     private void SetCheck()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetDownloadCheck(CheckFile, AutoDownload, CheckUpdate);
@@ -185,7 +185,7 @@ public partial class SettingTab3Model : ObservableObject
 
     private void SetProxyEnable()
     {
-        if (load)
+        if (_load)
             return;
 
         ConfigBinding.SetDownloadProxyEnable(LoginProxy, DownloadProxy, GameProxy);

@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 namespace ColorMC.Core.LaunchPath;
 
 /// <summary>
-/// 资源文件夹
+/// 游戏资源管理
 /// </summary>
 public static class AssetsPath
 {
@@ -66,7 +66,7 @@ public static class AssetsPath
     /// 获取资源数据
     /// </summary>
     /// <param name="game">游戏数据</param>
-    /// <returns></returns>
+    /// <returns>资源数据</returns>
     public static AssetsObj? GetIndex(this GameArgObj game)
     {
         if (s_assets.TryGetValue(game.assets, out var temp))

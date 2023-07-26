@@ -5,6 +5,12 @@ using System;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 
+public static class Indexer
+{
+    public const string IndexerName = "Item";
+    public const string IndexerArrayName = "Item[]";
+}
+
 public class ColorsExtension : MarkupExtension
 {
     public ColorsExtension(string key)

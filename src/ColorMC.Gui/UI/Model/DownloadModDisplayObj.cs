@@ -10,11 +10,11 @@ public partial class DownloadModDisplayModel : ObservableObject
     /// 名字
     /// </summary>
     [ObservableProperty]
-    private string name;
+    private string _name;
     [ObservableProperty]
-    private bool download;
+    private bool _download;
     [ObservableProperty]
-    private int selectVersion;
+    private int _selectVersion;
 
     public List<string> Version => ModVersion;
 

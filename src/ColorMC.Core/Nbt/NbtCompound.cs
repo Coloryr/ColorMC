@@ -1,15 +1,25 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// 复合类型的NBT标签
+/// </summary>
 public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
 {
-    public const int Type = 10;
+    /// <summary>
+    /// NBT码
+    /// </summary>
+    public const NbtType Type = NbtType.NbtCompound;
 
-    private readonly Dictionary<string, NbtBase> Entries = new();
-
+    /// <summary>
+    /// NBT数量
+    /// </summary>
     public int Count => Entries.Count;
 
+    /// <summary>
+    /// 数据操作
+    /// </summary>
     public NbtBase this[string name]
     {
         get
@@ -22,11 +32,18 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
         }
     }
 
+    private readonly Dictionary<string, NbtBase> Entries = new();
+
     public NbtCompound()
     {
         NbtType = NbtType.NbtCompound;
     }
 
+    /// <summary>
+    /// 尝试获取NBT标签
+    /// </summary>
+    /// <param name="key">键</param>
+    /// <returns>NBT标签</returns>
     public NbtBase? TryGet(string key)
     {
         if (Entries.TryGetValue(key, out var value))
@@ -37,47 +54,72 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
         return null;
     }
 
+    /// <summary>
+    /// 添加标签
+    /// </summary>
+    /// <param name="key">键</param>
+    /// <param name="nbt">标签</param>
     public void Add(string key, NbtBase nbt)
     {
         Entries.Add(key, nbt);
     }
 
+    /// <summary>
+    /// 删除标签
+    /// </summary>
+    /// <param name="key">键</param>
     public void Remove(string key)
     {
         Entries.Remove(key);
     }
 
+    /// <summary>
+    /// 删除所有标签
+    /// </summary>
     public void Clear()
     {
         Entries.Clear();
     }
 
+    /// <summary>
+    /// 获取键列表
+    /// </summary>
     public List<string> GetKeys()
     {
-        return Entries.Keys.ToList();
+        return new(Entries.Keys.ToList());
     }
 
+    /// <summary>
+    /// 获取值列表
+    /// </summary>
     public List<NbtBase> GetValues()
     {
-        return Entries.Values.ToList();
+        return new(Entries.Values.ToList());
     }
 
+    /// <summary>
+    /// 是否存在键
+    /// </summary>
+    /// <param name="key">键</param>
     public bool HaveKey(string key)
     {
         return Entries.ContainsKey(key);
     }
 
-    public IEnumerator<KeyValuePair<string, NbtBase>> GetEnumerator()
+    /// <summary>
+    /// 修改键名
+    /// </summary>
+    /// <param name="old">旧名</param>
+    /// <param name="now">新名</param>
+    public void EditKey(string old, string now)
     {
-        return Entries.GetEnumerator();
+        if (Entries.Remove(old, out var value))
+        {
+            Entries.Add(now, value);
+        }
     }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return Entries.GetEnumerator();
-    }
-
-    public override NbtCompound Read(DataInputStream stream)
+    internal override NbtCompound Read(DataInputStream stream)
     {
         byte type;
         while ((type = stream.ReadByte()) != 0)
@@ -87,7 +129,7 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
             {
                 throw new Exception($"type out {key}:{type}");
             }
-            var nbt = ById(type);
+            var nbt = ById((NbtType)type);
             nbt.Read(stream);
             Entries.Add(key, nbt);
         }
@@ -95,7 +137,7 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
         return this;
     }
 
-    public override void Write(DataOutputStream stream)
+    internal override void Write(DataOutputStream stream)
     {
         foreach (var item in Entries)
         {
@@ -110,11 +152,13 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
         stream.Write((byte)0);
     }
 
-    public void EditKey(string old, string now)
+    public IEnumerator<KeyValuePair<string, NbtBase>> GetEnumerator()
     {
-        if (Entries.Remove(old, out var value))
-        {
-            Entries.Add(now, value);
-        }
+        return Entries.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return Entries.GetEnumerator();
     }
 }

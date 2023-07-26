@@ -17,7 +17,7 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("AddModPackWindow.Title");
-    
+
     private readonly AddModPackControlModel _model;
 
     public AddModPackControl()

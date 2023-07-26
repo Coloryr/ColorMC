@@ -16,18 +16,18 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingTab5Model : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
 
     [ObservableProperty]
-    private string? name;
+    private string? _name;
     [ObservableProperty]
-    private string? local;
+    private string? _local;
 
     public ObservableCollection<JavaDisplayObj> JavaList { get; init; } = new();
 
     public SettingTab5Model(IUserControl con)
     {
-        Con = con;
+        _con = con;
     }
 
     [RelayCommand]
@@ -45,7 +45,7 @@ public partial class SettingTab5Model : ObservableObject
     [RelayCommand]
     public void AddJava()
     {
-        var window = Con.Window;
+        var window = _con.Window;
 
         if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Local))
         {
@@ -80,7 +80,7 @@ public partial class SettingTab5Model : ObservableObject
     [RelayCommand]
     public async Task Select()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Java);
 
         if (file != null)
@@ -97,7 +97,7 @@ public partial class SettingTab5Model : ObservableObject
     [RelayCommand]
     public void OpenFile()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var list = JavaBinding.FindJava();
         if (list == null)
         {
@@ -120,7 +120,7 @@ public partial class SettingTab5Model : ObservableObject
     [RelayCommand]
     public async Task Delete()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
         if (!res)
             return;

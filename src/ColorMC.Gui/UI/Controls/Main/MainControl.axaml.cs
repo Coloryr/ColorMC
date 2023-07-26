@@ -6,7 +6,6 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
@@ -210,7 +209,7 @@ public partial class MainControl : UserControl, IUserControl
     public async Task<bool> Closing()
     {
         var windows = App.FindRoot(VisualRoot);
-        if (_model.launch)
+        if (_model.IsLaunch)
         {
             var res = await windows.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info34"));
             if (res)

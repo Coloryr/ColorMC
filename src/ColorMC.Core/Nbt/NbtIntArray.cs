@@ -1,9 +1,18 @@
-﻿namespace ColorMC.Core.Nbt;
+namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// IntArray类型的NBT标签
+/// </summary>
 public class NbtIntArray : NbtBase
 {
-    public const byte Type = 11;
+    /// <summary>
+    /// NBT码
+    /// </summary>
+    public const NbtType Type = NbtType.NbtIntArray;
 
+    /// <summary>
+    /// 数据
+    /// </summary>
     public new List<int> Value { get; set; }
 
     public NbtIntArray()
@@ -12,7 +21,7 @@ public class NbtIntArray : NbtBase
         Value ??= new();
     }
 
-    public override NbtIntArray Read(DataInputStream stream)
+    internal override NbtIntArray Read(DataInputStream stream)
     {
         var length = stream.ReadInt();
         var list = new byte[length * 4];
@@ -23,7 +32,7 @@ public class NbtIntArray : NbtBase
         return this;
     }
 
-    public override void Write(DataOutputStream stream)
+    internal override void Write(DataOutputStream stream)
     {
         stream.Write(Value.Count);
 

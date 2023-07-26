@@ -72,7 +72,7 @@ public partial class AddGameTab3Model : AddGameControlModel
         {
             Local = res;
         }
-        else 
+        else
         {
             var window = Con.Window;
             window.OkInfo.Show(string.Format(App.GetLanguage("AddGameWindow.Tab3.Error2"), res));

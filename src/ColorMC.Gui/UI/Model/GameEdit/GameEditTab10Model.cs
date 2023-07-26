@@ -32,7 +32,7 @@ public partial class GameEditTab10Model : GameEditTabModel
     [RelayCommand]
     public async Task Load()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         ServerList.Clear();
         ServerList.AddRange(await GameBinding.GetServers(Obj));
@@ -42,7 +42,7 @@ public partial class GameEditTab10Model : GameEditTabModel
     [RelayCommand]
     public async Task Add()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         await window.InputInfo.ShowInput(App.GetLanguage("GameEditWindow.Tab10.Info1"),
             App.GetLanguage("GameEditWindow.Tab10.Info2"), false);
         var res = window.InputInfo.Read();
@@ -60,7 +60,7 @@ public partial class GameEditTab10Model : GameEditTabModel
 
     public async void Delete(ServerInfoObj obj)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         GameBinding.DeleteServer(Obj, obj);
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         await Load();

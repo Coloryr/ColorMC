@@ -33,7 +33,7 @@ public static class AuthlibInjector
     public static async Task<(LoginState State, LoginObj? Obj, string? Msg)> Refresh(LoginObj obj)
     {
         if (await LoginOld.Validate(obj.Text1, obj))
-        { 
+        {
             return (LoginState.Done, obj, null);
         }
         return await LoginOld.Refresh(obj.Text1, obj);

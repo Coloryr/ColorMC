@@ -72,7 +72,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     [RelayCommand]
     public async Task Import()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await GameBinding.AddFile(window as Window, Obj, FileType.Mod);
 
         if (file == null)
@@ -91,7 +91,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     [RelayCommand]
     public async Task Check()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info10"));
         var res = await WebBinding.CheckModUpdate(Obj, _items);
         window.ProgressInfo.Close();
@@ -117,7 +117,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     [RelayCommand]
     public async Task Load()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
         _items.Clear();
         var res = await GameBinding.GetGameMods(Obj);
@@ -145,7 +145,7 @@ public partial class GameEditTab4Model : GameEditTabModel
     [RelayCommand]
     public async Task DependTest()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info15"));
         var res = await GameBinding.ModCheck(_items);
         window.ProgressInfo.Close();
@@ -166,7 +166,7 @@ public partial class GameEditTab4Model : GameEditTabModel
 
     public async void Delete(IEnumerable<ModDisplayModel> items)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count()));
         if (!res)
@@ -185,7 +185,7 @@ public partial class GameEditTab4Model : GameEditTabModel
 
     public async void Delete(ModDisplayModel item)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info4"), item.Name));
         if (!res)
@@ -210,7 +210,7 @@ public partial class GameEditTab4Model : GameEditTabModel
         {
             return;
         }
-        var window = Con.Window;
+        var window = _con.Window;
         var res = GameBinding.ModEnDi(item.Obj);
         if (!res)
         {
@@ -238,6 +238,10 @@ public partial class GameEditTab4Model : GameEditTabModel
             {
                 foreach (var item1 in list)
                 {
+                    if (!item1.Enable)
+                    {
+                        continue;
+                    }
                     GameBinding.ModEnDi(item1.Obj);
                     item1.LocalChange();
                     item1.Enable = !item1.Obj.Disable;

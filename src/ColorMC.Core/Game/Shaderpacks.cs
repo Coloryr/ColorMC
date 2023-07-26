@@ -31,7 +31,9 @@ public static class Shaderpacks
         Parallel.ForEach(info.GetFiles(), (item) =>
         {
             if (item.Extension is not ".zip")
+            {
                 return;
+            }
             var obj1 = new ShaderpackObj()
             {
                 Local = Path.GetFullPath(item.FullName)
@@ -69,7 +71,9 @@ public static class Shaderpacks
             var name1 = Path.GetFullPath(dir + "/" + name);
 
             if (File.Exists(name1))
+            {
                 return false;
+            }
 
             await Task.Run(() =>
             {
@@ -84,7 +88,9 @@ public static class Shaderpacks
                 }
             });
             if (!ok)
+            {
                 return false;
+            }
         }
         return true;
     }

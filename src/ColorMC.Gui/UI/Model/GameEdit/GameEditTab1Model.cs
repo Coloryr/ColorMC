@@ -279,7 +279,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task CheckModPackUpdate()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
         {
             window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error3"));
@@ -376,7 +376,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         await window.InputInfo.ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
         if (window.InputInfo.Cancel)
         {
@@ -405,7 +405,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task LoaderVersionLoad()
     {
-        var window = Con.Window;
+        var window = _con.Window;
 
         EnableLoader = false;
 
@@ -490,7 +490,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task LoaderReload()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info4"));
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(Obj.Version))
@@ -521,7 +521,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task GameVersionReload()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
         window.ProgressInfo.Close();
@@ -542,7 +542,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task Delete()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         if (BaseBinding.IsGameRun(Obj))
         {
             window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));

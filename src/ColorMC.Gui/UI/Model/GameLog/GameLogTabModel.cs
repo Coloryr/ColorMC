@@ -24,16 +24,16 @@ public partial class GameLogTabModel : ObservableObject
     private TextDocument _text;
 
     [ObservableProperty]
-    private bool isGameRun;
+    private bool _isGameRun;
     [ObservableProperty]
-    private bool isWordWrap = true;
+    private bool _isWordWrap = true;
     [ObservableProperty]
-    private bool isAuto = true;
+    private bool _isAuto = true;
     [ObservableProperty]
-    private string? file;
+    private string? _file;
 
-    public string Temp { get; private set; } = "";
-    private readonly Timer timer;
+    public string Temp { get; private set; }
+    private readonly Timer t_timer;
 
     public GameLogTabModel(IUserControl con, GameSettingObj obj)
     {
@@ -42,14 +42,14 @@ public partial class GameLogTabModel : ObservableObject
 
         _text = new();
 
-        timer = new(TimeSpan.FromMilliseconds(100));
-        timer.BeginInit();
-        timer.Elapsed += Timer_Elapsed;
-        timer.EndInit();
+        t_timer = new(TimeSpan.FromMilliseconds(100));
+        t_timer.BeginInit();
+        t_timer.Elapsed += Timer_Elapsed;
+        t_timer.EndInit();
 
         if (!obj.Empty)
         {
-            isGameRun = BaseBinding.IsGameRun(Obj);
+            _isGameRun = BaseBinding.IsGameRun(Obj);
 
             Load();
             Load1();
@@ -132,9 +132,9 @@ public partial class GameLogTabModel : ObservableObject
 
     public void Log(string data)
     {
-        if (!timer.Enabled)
+        if (!t_timer.Enabled)
         {
-            timer.Start();
+            t_timer.Start();
         }
         if (string.IsNullOrWhiteSpace(File))
         {

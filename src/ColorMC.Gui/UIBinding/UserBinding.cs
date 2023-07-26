@@ -24,7 +24,7 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class UserBinding
 {
-    private readonly static List<(AuthType, string)> LockUser = new();
+    private readonly static List<(AuthType, string)> s_lockUser = new();
     public static Image<Rgba32>? SkinImage { get; set; }
     public static Image<Rgba32>? CapeIamge { get; set; }
     public static Bitmap HeadBitmap { get; private set; }
@@ -85,11 +85,11 @@ public static class UserBinding
         }
         var (_, State1, Obj, Message, Ex) = type switch
         {
-            AuthType.OAuth => await BaseAuth.LoginWithOAuth(),
-            AuthType.Nide8 => await BaseAuth.LoginWithNide8(input1!, input2!, input3!),
-            AuthType.AuthlibInjector => await BaseAuth.LoginWithAuthlibInjector(input1!, input2!, input3!),
-            AuthType.LittleSkin => await BaseAuth.LoginWithLittleSkin(input1!, input2!),
-            AuthType.SelfLittleSkin => await BaseAuth.LoginWithLittleSkin(input1!, input2!, input3!),
+            AuthType.OAuth => await GameAuth.LoginWithOAuth(),
+            AuthType.Nide8 => await GameAuth.LoginWithNide8(input1!, input2!, input3!),
+            AuthType.AuthlibInjector => await GameAuth.LoginWithAuthlibInjector(input1!, input2!, input3!),
+            AuthType.LittleSkin => await GameAuth.LoginWithLittleSkin(input1!, input2!),
+            AuthType.SelfLittleSkin => await GameAuth.LoginWithLittleSkin(input1!, input2!, input3!),
             _ => (AuthState.Profile, LoginState.Error, null, null, null)
         };
 
@@ -107,7 +107,7 @@ public static class UserBinding
         }
         if (string.IsNullOrWhiteSpace(Obj?.UUID))
         {
-            BaseBinding.OpUrl("https://minecraft.net");
+            BaseBinding.OpUrl("https://minecraft.net/");
             return (false, App.GetLanguage("UserBinding.Info3"));
         }
         AuthDatabase.Save(Obj!);
@@ -150,7 +150,7 @@ public static class UserBinding
             return false;
         }
 
-        return (await obj.RefreshToken()).State1 == LoginState.Done;
+        return (await obj.RefreshToken()).LoginState == LoginState.Done;
     }
 
     public static void SetLastUser(string uuid, AuthType type)
@@ -179,20 +179,20 @@ public static class UserBinding
 
     public static void AddLockUser(LoginObj obj)
     {
-        if (!LockUser.Contains((obj.AuthType, obj.UUID)))
+        if (!s_lockUser.Contains((obj.AuthType, obj.UUID)))
         {
-            LockUser.Add((obj.AuthType, obj.UUID));
+            s_lockUser.Add((obj.AuthType, obj.UUID));
         }
     }
 
     public static void UnLockUser(LoginObj obj)
     {
-        LockUser.Remove((obj.AuthType, obj.UUID));
+        s_lockUser.Remove((obj.AuthType, obj.UUID));
     }
 
     public static bool IsLock(LoginObj obj)
     {
-        return LockUser.Contains((obj.AuthType, obj.UUID));
+        return s_lockUser.Contains((obj.AuthType, obj.UUID));
     }
 
     public static async Task LoadSkin()
@@ -336,6 +336,6 @@ public static class UserBinding
 
     public static void OAuthCancel()
     {
-        BaseAuth.CancelWithOAuth();
+        GameAuth.CancelWithOAuth();
     }
 }

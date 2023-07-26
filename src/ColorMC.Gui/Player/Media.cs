@@ -16,7 +16,7 @@ namespace ColorMC.Gui.Player;
 /// 音频播放
 /// </summary>
 public static class Media
-{    
+{
     private static string s_musicFile;
     private static IPlayer? s_player;
 

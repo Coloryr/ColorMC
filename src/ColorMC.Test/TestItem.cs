@@ -115,8 +115,8 @@ public static class TestItem
 
     public static void Item8()
     {
-        var login = BaseAuth.LoginWithOAuth().Result;
-        if (login.State1 != LoginState.Done)
+        var login = GameAuth.LoginWithOAuth().Result;
+        if (login.LoginState != LoginState.Done)
         {
             Console.WriteLine("登录错误");
         }
@@ -278,7 +278,7 @@ public static class TestItem
 
     public static void Item11()
     {
-        var login = BaseAuth.LoginWithNide8("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "123456").Result;
+        var login = GameAuth.LoginWithNide8("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "123456").Result;
         if (login.Obj == null)
         {
             Console.WriteLine("登录错误");

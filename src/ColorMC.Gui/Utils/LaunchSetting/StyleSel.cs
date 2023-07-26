@@ -1,16 +1,11 @@
 ﻿using Avalonia;
-using Avalonia.Media;
 using System.ComponentModel;
-using System.Linq;
 
 namespace ColorMC.Gui.Utils.LaunchSetting;
 
 public class StyleSel : INotifyPropertyChanged
 {
-    public static StyleSel Instance { get; set; } = new StyleSel();
-
-    private const string IndexerName = "Item";
-    private const string IndexerArrayName = "Item[]";
+    public readonly static StyleSel Instance = new StyleSel();
 
     private CornerRadius ButtonCornerRadius = new(3);
 
@@ -30,8 +25,8 @@ public class StyleSel : INotifyPropertyChanged
 
     private void Reload()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerName));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerArrayName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
     }
 
     public void Load()

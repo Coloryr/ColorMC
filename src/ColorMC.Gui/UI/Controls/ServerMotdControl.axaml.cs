@@ -161,7 +161,7 @@ public partial class ServerMotdControl : UserControl
             TextBlock text = new()
             {
                 Text = chat.Obfuscated ? " " : chat.Text,
-                Foreground = chat.Color == null ? Brushes.White 
+                Foreground = chat.Color == null ? Brushes.White
                     : Brush.Parse(FixColor(chat.Color))
             };
 

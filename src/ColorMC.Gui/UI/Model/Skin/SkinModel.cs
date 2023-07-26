@@ -12,49 +12,49 @@ namespace ColorMC.Gui.UI.Model.Skin;
 
 public partial class SkinModel : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
     public List<string> SkinTypeList { get; } = BaseBinding.GetSkinType();
     public List<string> SkinRotateList { get; } = BaseBinding.GetSkinRotateName();
 
     [ObservableProperty]
-    private int type;
+    private int _type;
     [ObservableProperty]
-    private int rotateType;
+    private int _rotateType;
 
     [ObservableProperty]
-    private string info;
+    private string _info;
     [ObservableProperty]
     private string text;
     [ObservableProperty]
     private string _nowFps;
 
     [ObservableProperty]
-    private bool haveSkin;
+    private bool _haveSkin;
     [ObservableProperty]
-    private bool enableAnimation = true;
+    private bool _enableAnimation = true;
     [ObservableProperty]
-    private bool enableCape = true;
+    private bool _enableCape = true;
     [ObservableProperty]
-    private bool enableTop = true;
+    private bool _enableTop = true;
     [ObservableProperty]
-    private bool enableZ;
+    private bool _enableZ;
 
     [ObservableProperty]
-    private SkinType steveModelType;
+    private SkinType _steveModelType;
 
     [ObservableProperty]
-    private float rotateX;
+    private float _rotateX;
     [ObservableProperty]
-    private float rotateY;
+    private float _rotateY;
     [ObservableProperty]
-    private float rotateZ;
+    private float _rotateZ;
 
     [ObservableProperty]
-    private float minX;
+    private float _minX;
     [ObservableProperty]
-    private float minY = -360;
+    private float _minY = -360;
     [ObservableProperty]
-    private float minZ;
+    private float _minZ;
 
     public bool IsLoad;
     public bool IsLoading;
@@ -74,7 +74,7 @@ public partial class SkinModel : ObservableObject
 
     public SkinModel(IUserControl con)
     {
-        Con = con;
+        _con = con;
     }
 
     partial void OnRotateXChanged(float value)
@@ -174,7 +174,7 @@ public partial class SkinModel : ObservableObject
 
     partial void OnTypeChanged(int value)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         if (Type == (int)SkinType.Unkonw)
         {
             window.OkInfo.Show(App.GetLanguage("SkinWindow.Info1"));
@@ -190,7 +190,7 @@ public partial class SkinModel : ObservableObject
     [RelayCommand]
     public async Task Save()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await BaseBinding.SaveFile(window, FileType.Skin, null);
         if (res == true)
         {
@@ -237,6 +237,6 @@ public partial class SkinModel : ObservableObject
     [RelayCommand]
     public void Edit()
     {
-        UserBinding.EditSkin(Con.Window);
+        UserBinding.EditSkin(_con.Window);
     }
 }

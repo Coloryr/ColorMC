@@ -16,7 +16,7 @@ public partial class ServerPackTab2Model : ServerPackTabModel
     public ObservableCollection<ServerPackModDisplayModel> ModList { get; init; } = new();
 
     [ObservableProperty]
-    private ServerPackModDisplayModel item;
+    private ServerPackModDisplayModel _item;
 
     public ServerPackTab2Model(IUserControl con, ServerPackObj obj) : base(con, obj)
     {
@@ -124,7 +124,7 @@ public partial class ServerPackTab2Model : ServerPackTabModel
                 PID = item.PID,
                 FID = item.FID,
                 Sha1 = item.Obj.Sha1,
-                Obj = item
+                Mod = item
             };
 
             if (item2.Check)

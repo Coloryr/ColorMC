@@ -6,18 +6,15 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 
 public class FontSel : INotifyPropertyChanged
 {
-    public static FontSel Instance { get; set; } = new FontSel();
+    public readonly static FontSel Instance = new FontSel();
 
-    private static FontFamily Font = new(ColorMCGui.Font);
-
-    private const string IndexerName = "Item";
-    private const string IndexerArrayName = "Item[]";
+    private static FontFamily s_font = new(ColorMCGui.Font);
 
     public FontFamily this[string key]
     {
         get
         {
-            return Font;
+            return s_font;
         }
     }
 
@@ -25,13 +22,13 @@ public class FontSel : INotifyPropertyChanged
 
     private void Reload()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerName));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerArrayName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
     }
 
     public static string GetFont()
     {
-        return Font.Name;
+        return s_font.Name;
     }
 
     public void Load()
@@ -40,12 +37,12 @@ public class FontSel : INotifyPropertyChanged
             && !string.IsNullOrWhiteSpace(GuiConfigUtils.Config.FontName)
             && FontManager.Current.SystemFonts.Any(a => a.Name == GuiConfigUtils.Config.FontName))
         {
-            Font = new(GuiConfigUtils.Config.FontName);
+            s_font = new(GuiConfigUtils.Config.FontName);
             Reload();
         }
         else
         {
-            Font = new(ColorMCGui.Font);
+            s_font = new(ColorMCGui.Font);
             Reload();
         }
     }

@@ -1,9 +1,18 @@
 ﻿namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// DoubleArray类型的NBT标签
+/// </summary>
 public class NbtLongArray : NbtBase
 {
-    public const byte Type = 12;
+    /// <summary>
+    /// NBT码
+    /// </summary>
+    public const NbtType Type = NbtType.NbtLongArray;
 
+    /// <summary>
+    /// 数据
+    /// </summary>
     public new List<long> Value { get; set; }
 
     public NbtLongArray()
@@ -12,7 +21,7 @@ public class NbtLongArray : NbtBase
         Value ??= new();
     }
 
-    public override NbtLongArray Read(DataInputStream stream)
+    internal override NbtLongArray Read(DataInputStream stream)
     {
         var length = stream.ReadInt();
         var list = new byte[length * 8];
@@ -24,7 +33,7 @@ public class NbtLongArray : NbtBase
         return this;
     }
 
-    public override void Write(DataOutputStream stream)
+    internal override void Write(DataOutputStream stream)
     {
         stream.Write(Value.Count);
 

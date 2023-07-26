@@ -2,6 +2,9 @@
 
 namespace ColorMC.Core.Objs.Minecraft;
 
+/// <summary>
+/// 游戏Mod
+/// </summary>
 public record ModObj
 {
     public string modid { get; set; }

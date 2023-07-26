@@ -17,7 +17,7 @@ public partial class ServerPackModel : ServerPackTabModel
     [RelayCommand]
     public async Task Gen()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         if (string.IsNullOrWhiteSpace(Obj.Url))
         {
             window.OkInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Error1"));

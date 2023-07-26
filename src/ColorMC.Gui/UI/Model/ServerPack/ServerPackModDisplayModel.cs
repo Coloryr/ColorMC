@@ -9,9 +9,9 @@ namespace ColorMC.Gui.UI.Model;
 public partial class ServerPackModDisplayModel : ObservableObject
 {
     [ObservableProperty]
-    private string url;
+    private string _url;
     [ObservableProperty]
-    private string? pID;
+    private string? _pID;
     [ObservableProperty]
     private string? fID;
     [ObservableProperty]
@@ -19,7 +19,7 @@ public partial class ServerPackModDisplayModel : ObservableObject
     [ObservableProperty]
     public bool check;
     [ObservableProperty]
-    public string fileName;
+    public string _fileName;
 
     public string Source
     {
@@ -40,6 +40,6 @@ public partial class ServerPackModDisplayModel : ObservableObject
         }
     }
 
-    public ModDisplayModel Obj;
-    public ResourcepackDisplayObj Obj1;
+    public ModDisplayModel Mod;
+    public ResourcepackDisplayObj Resourcepack;
 }

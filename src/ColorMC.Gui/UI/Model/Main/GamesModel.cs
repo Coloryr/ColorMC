@@ -11,27 +11,28 @@ namespace ColorMC.Gui.UI.Model.Main;
 public partial class GamesModel : ObservableObject
 {
     public readonly IUserControl Con;
-    private readonly IMainTop Top;
-    public ObservableCollection<GameItemModel> GameList { get; init; } = new();
 
-    private readonly Dictionary<string, GameItemModel> Items = new();
+    public ObservableCollection<GameItemModel> GameList { get; init; } = new();
 
     public string Header { get; }
     public string Key { get; }
 
     [ObservableProperty]
-    private bool expander = true;
+    private bool _expander = true;
+
+    private readonly IMainTop _top;
+    private readonly Dictionary<string, GameItemModel> _items = new();
 
     public GamesModel(IUserControl con, IMainTop top, string key, string name, List<GameSettingObj> list)
     {
-        Top = top;
+        _top = top;
         Con = con;
         GameList.Clear();
-        Items.Clear();
+        _items.Clear();
         foreach (var item in list)
         {
-            var model = new GameItemModel(Con, Top, item);
-            Items.Add(item.UUID, model);
+            var model = new GameItemModel(Con, _top, item);
+            _items.Add(item.UUID, model);
             GameList.Add(model);
         }
         Header = name;
@@ -42,7 +43,7 @@ public partial class GamesModel : ObservableObject
     {
         if (data.Get(BaseBinding.DrapType) is not GameItemModel c)
             return false;
-        if (Items.ContainsValue(c))
+        if (_items.ContainsValue(c))
             return false;
 
         return true;
@@ -55,7 +56,7 @@ public partial class GamesModel : ObservableObject
 
         c.IsDrop = false;
 
-        if (Items.ContainsValue(c))
+        if (_items.ContainsValue(c))
             return;
 
         GameBinding.MoveGameGroup(c.Obj, Key);
@@ -65,7 +66,7 @@ public partial class GamesModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(uuid))
             return null;
-        if (Items.TryGetValue(uuid, out var item))
+        if (_items.TryGetValue(uuid, out var item))
         {
             Expander = true;
             return item;
@@ -77,11 +78,11 @@ public partial class GamesModel : ObservableObject
     public void SetItems(List<GameSettingObj> list)
     {
         GameList.Clear();
-        Items.Clear();
+        _items.Clear();
         foreach (var item in list)
         {
-            var model = new GameItemModel(Con, Top, item);
-            Items.Add(item.UUID, model);
+            var model = new GameItemModel(Con, _top, item);
+            _items.Add(item.UUID, model);
             GameList.Add(model);
         }
     }

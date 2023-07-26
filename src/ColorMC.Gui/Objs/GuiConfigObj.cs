@@ -3,7 +3,7 @@ using ColorMC.Core.Objs;
 namespace ColorMC.Gui.Objs;
 
 public record StyleSetting
-{ 
+{
     /// <summary>
     /// 按钮圆角程度
     /// </summary>

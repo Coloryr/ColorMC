@@ -7,6 +7,9 @@ using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 网址处理
+/// </summary>
 public static class UrlHelper
 {
     public const string BMCLAPI = "https://bmclapi2.bangbang93.com/";
@@ -206,7 +209,7 @@ public static class UrlHelper
     }
 
     /// <summary>
-    /// Forge运行库地址
+    /// NeoForge运行库地址
     /// </summary>
     public static string DownloadNeoForgeLib(string url, SourceLocal? local)
     {
@@ -358,6 +361,9 @@ public static class UrlHelper
         };
     }
 
+    /// <summary>
+    /// NeoForge版本地址
+    /// </summary>
     public static string NeoForgeVersion(SourceLocal? local)
     {
         return local switch
@@ -368,6 +374,9 @@ public static class UrlHelper
         };
     }
 
+    /// <summary>
+    /// NeoForge版本地址
+    /// </summary>
     public static string NeoForgeVersions(string version, SourceLocal? local)
     {
         return local switch
@@ -411,8 +420,6 @@ public static class UrlHelper
     /// <summary>
     /// Optifine信息
     /// </summary>
-    /// <param name="local"></param>
-    /// <returns></returns>
     public static string GetOptifine(SourceLocal? local)
     {
         return local switch
@@ -426,9 +433,6 @@ public static class UrlHelper
     /// <summary>
     /// Optifine下载
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="local"></param>
-    /// <returns></returns>
     public static string OptifineDownload(OptifineListObj obj, SourceLocal? local)
     {
         return local switch
@@ -441,11 +445,6 @@ public static class UrlHelper
     /// <summary>
     /// 创建下载地址
     /// </summary>
-    /// <param name="type">资源来源</param>
-    /// <param name="pid"></param>
-    /// <param name="fid"></param>
-    /// <param name="file"></param>
-    /// <returns></returns>
     public static string MakeDownloadUrl(SourceType? type, string pid, string fid, string file)
     {
         if (type == SourceType.CurseForge)
@@ -464,10 +463,6 @@ public static class UrlHelper
     /// <summary>
     /// 创建下载地址
     /// </summary>
-    /// <param name="item"></param>
-    /// <param name="type"></param>
-    /// <param name="url"></param>
-    /// <returns></returns>
     public static string MakeUrl(ServerModItemObj item, FileType type, string url)
     {
         if (string.IsNullOrWhiteSpace(item.Projcet) || string.IsNullOrWhiteSpace(item.FileId))

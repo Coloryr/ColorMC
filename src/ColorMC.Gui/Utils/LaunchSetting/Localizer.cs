@@ -4,10 +4,7 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 
 public class Localizer : INotifyPropertyChanged
 {
-    public static Localizer Instance { get; set; } = new Localizer();
-
-    private const string IndexerName = "Item";
-    private const string IndexerArrayName = "Item[]";
+    public readonly static Localizer Instance = new Localizer();
 
     public string this[string key]
     {
@@ -21,7 +18,7 @@ public class Localizer : INotifyPropertyChanged
 
     public void Reload()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerName));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerArrayName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
     }
 }

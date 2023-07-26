@@ -1,28 +1,14 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Data;
-using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using ColorMC.Core;
-using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Custom;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System;
-using System.ComponentModel;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Custom;
@@ -125,7 +111,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
     public void Select(GameItemModel? model)
     {
-        
+
     }
 
     public void EditGroup(GameItemModel model)

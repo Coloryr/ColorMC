@@ -1,11 +1,20 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// ByteArray类型的NBT标签
+/// </summary>
 public class NbtByteArray : NbtBase, IEnumerable<byte>
 {
-    public const byte Type = 7;
+    /// <summary>
+    /// NBT码
+    /// </summary>
+    public const NbtType Type = NbtType.NbtByteArray;
 
+    /// <summary>
+    /// 数据
+    /// </summary>
     public new List<byte> Value { get; set; }
 
     public NbtByteArray()
@@ -24,7 +33,7 @@ public class NbtByteArray : NbtBase, IEnumerable<byte>
         return Value.GetEnumerator();
     }
 
-    public override NbtByteArray Read(DataInputStream stream)
+    internal override NbtByteArray Read(DataInputStream stream)
     {
         var length = stream.ReadInt();
         var list = new byte[length];
@@ -33,7 +42,7 @@ public class NbtByteArray : NbtBase, IEnumerable<byte>
         return this;
     }
 
-    public override void Write(DataOutputStream stream)
+    internal override void Write(DataOutputStream stream)
     {
         stream.Write(Value.Count);
         stream.Write(Value.ToArray());

@@ -15,7 +15,7 @@ public partial class ServerPackTab3Model : ServerPackTabModel
     public ObservableCollection<ServerPackModDisplayModel> ModList { get; init; } = new();
 
     [ObservableProperty]
-    private ServerPackModDisplayModel item;
+    private ServerPackModDisplayModel _item;
 
     public ServerPackTab3Model(IUserControl con, ServerPackObj obj) : base(con, obj)
     {
@@ -69,7 +69,7 @@ public partial class ServerPackTab3Model : ServerPackTabModel
                 FileName = file,
                 Check = item1 != null,
                 Sha1 = item.Pack.Sha1,
-                Obj1 = item
+                Resourcepack = item
             };
             if (item1 != null)
             {

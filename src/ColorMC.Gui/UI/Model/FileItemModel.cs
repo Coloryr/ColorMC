@@ -22,9 +22,9 @@ public partial class FileItemModel : ObservableObject
     [ObservableProperty]
     private bool isDownload = false;
     [ObservableProperty]
-    private bool nowDownload = false;
+    private bool _nowDownload = false;
     [ObservableProperty]
-    private bool isSelect;
+    private bool _isSelect;
 
     public FileItemModel(FileItemDisplayObj data)
     {

@@ -4,29 +4,29 @@ using ColorMC.Core.Objs.Minecraft;
 namespace ColorMC.Gui.Objs;
 
 /// <summary>
-/// ²ÄÖÊ°üÏÔÊ¾
+/// æè´¨åŒ…æ˜¾ç¤º
 /// </summary>
 public record ResourcepackDisplayObj
 {
     /// <summary>
-    /// Â·¾¶
+    /// è·¯å¾„
     /// </summary>
     public string Local { get; set; }
     /// <summary>
-    /// ÃèÊö
+    /// æè¿°
     /// </summary>
     public string Description { get; set; }
     /// <summary>
-    /// °ü°æ±¾
+    /// åŒ…ç‰ˆæœ¬
     /// </summary>
     public int PackFormat { get; set; }
     /// <summary>
-    /// Í¼±ê
+    /// å›¾æ ‡
     /// </summary>
     public Bitmap Icon { get; set; }
 
     /// <summary>
-    /// Êı¾İ
+    /// æ•°æ®
     /// </summary>
     public ResourcepackObj Pack;
 }

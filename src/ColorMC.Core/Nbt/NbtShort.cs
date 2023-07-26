@@ -1,9 +1,18 @@
 ﻿namespace ColorMC.Core.Nbt;
 
+/// <summary>
+/// Short类型的NBT标签
+/// </summary>
 public class NbtShort : NbtBase
 {
-    public const byte Type = 2;
+    /// <summary>
+    /// NBT码
+    /// </summary>
+    public const NbtType Type = NbtType.NbtShort;
 
+    /// <summary>
+    /// 数据
+    /// </summary>
     public new short Value { get; set; }
 
     public NbtShort()
@@ -11,13 +20,13 @@ public class NbtShort : NbtBase
         NbtType = NbtType.NbtShort;
     }
 
-    public override NbtShort Read(DataInputStream stream)
+    internal override NbtShort Read(DataInputStream stream)
     {
         Value = stream.ReadShort();
         return this;
     }
 
-    public override void Write(DataOutputStream stream)
+    internal override void Write(DataOutputStream stream)
     {
         stream.Write(Value);
     }

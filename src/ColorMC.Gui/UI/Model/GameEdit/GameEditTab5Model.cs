@@ -26,7 +26,7 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
     [RelayCommand]
     public async Task Backup()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var info = new DirectoryInfo(Obj.GetWorldBackupPath());
         if (!info.Exists)
         {
@@ -63,7 +63,7 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
     [RelayCommand]
     public async Task Import()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await GameBinding.AddFile(window as Window, Obj, FileType.World);
         if (file == null)
             return;
@@ -96,7 +96,7 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
     [RelayCommand]
     public async Task Load()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info5"));
         WorldList.Clear();
 
@@ -104,7 +104,7 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
         window.ProgressInfo.Close();
         foreach (var item in res)
         {
-            WorldList.Add(new(Con, this, item));
+            WorldList.Add(new(_con, this, item));
         }
     }
 

@@ -1,11 +1,7 @@
 ﻿using Avalonia.OpenGL.Controls;
 using Avalonia.Threading;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI;
 
@@ -21,7 +17,7 @@ public class FpsTimer
 
     private int _time;
     private bool _run;
-    
+
     public FpsTimer(OpenGlControlBase render)
     {
         _render = render;
@@ -29,7 +25,7 @@ public class FpsTimer
         _time = (int)((double)1000 / Fps);
         t_timer = new(Tick);
         t_timer.Change(0, 1000);
-        new Thread(() => 
+        new Thread(() =>
         {
             while (_run)
             {
@@ -44,7 +40,7 @@ public class FpsTimer
             }
         })
         {
-            Name = "ColorMC_Render_Timer"   
+            Name = "ColorMC_Render_Timer"
         }.Start();
     }
 

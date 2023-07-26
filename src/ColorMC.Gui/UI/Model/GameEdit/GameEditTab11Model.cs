@@ -33,7 +33,7 @@ public partial class GameEditTab11Model : GameEditTabModel
     [RelayCommand]
     public void Load()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         ShaderpackList.Clear();
         ShaderpackList.AddRange(GameBinding.GetShaderpacks(Obj));
@@ -42,7 +42,7 @@ public partial class GameEditTab11Model : GameEditTabModel
     [RelayCommand]
     public async Task Import()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await GameBinding.AddFile(window as Window, Obj, FileType.Shaderpack);
         if (res == null)
             return;
@@ -74,7 +74,7 @@ public partial class GameEditTab11Model : GameEditTabModel
 
     public void Delete(ShaderpackDisplayObj obj)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         obj.Shaderpack.Delete();
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         Load();

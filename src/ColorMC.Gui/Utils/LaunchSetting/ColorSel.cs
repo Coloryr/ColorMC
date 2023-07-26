@@ -11,15 +11,15 @@ namespace ColorMC.Gui.Utils.LaunchSetting;
 
 public class ColorSel : INotifyPropertyChanged
 {
-    private static readonly IBrush AppLightBackColor = Brush.Parse("#FFF3F3F3");
-    private static readonly IBrush AppLightBackColor1 = Brush.Parse("#EEEEEEEE");
-    private static readonly IBrush AppLightBackColor2 = Brush.Parse("#11FFFFFF");
-    private static readonly IBrush AppLightBackColor3 = Brush.Parse("#EEEEEE");
+    public static readonly IBrush AppLightBackColor = Brush.Parse("#FFF3F3F3");
+    public static readonly IBrush AppLightBackColor1 = Brush.Parse("#EEEEEEEE");
+    public static readonly IBrush AppLightBackColor2 = Brush.Parse("#11FFFFFF");
+    public static readonly IBrush AppLightBackColor3 = Brush.Parse("#EEEEEE");
 
-    private static readonly IBrush AppDarkBackColor = Brush.Parse("#FF202020");
-    private static readonly IBrush AppDarkBackColor1 = Brush.Parse("#EE202020");
-    private static readonly IBrush AppDarkBackColor2 = Brush.Parse("#11202020");
-    private static readonly IBrush AppDarkBackColor3 = Brush.Parse("#222222");
+    public static readonly IBrush AppDarkBackColor = Brush.Parse("#FF202020");
+    public static readonly IBrush AppDarkBackColor1 = Brush.Parse("#EE202020");
+    public static readonly IBrush AppDarkBackColor2 = Brush.Parse("#11202020");
+    public static readonly IBrush AppDarkBackColor3 = Brush.Parse("#222222");
 
     public const string MainColorStr = "#FF5ABED6";
 
@@ -45,10 +45,7 @@ public class ColorSel : INotifyPropertyChanged
     public static IBrush BottomTranColor { get; private set; } = AppLightBackColor2;
     public static IBrush BottomColor1 { get; private set; } = AppLightBackColor3;
 
-    public static ColorSel Instance { get; set; } = new ColorSel();
-
-    private const string IndexerName = "Item";
-    private const string IndexerArrayName = "Item[]";
+    public readonly static ColorSel Instance = new ColorSel();
 
     public void LoadMotd()
     {
@@ -223,7 +220,7 @@ public class ColorSel : INotifyPropertyChanged
 
     private void Reload()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerName));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(IndexerArrayName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerName));
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Indexer.IndexerArrayName));
     }
 }

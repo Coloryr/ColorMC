@@ -10,24 +10,24 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingTab1Model : ObservableObject
 {
-    private readonly IUserControl Con;
+    private readonly IUserControl _con;
 
     [ObservableProperty]
-    private string? local1;
+    private string? _local1;
     [ObservableProperty]
-    private string? local2;
+    private string? _local2;
     [ObservableProperty]
-    private string? local3;
+    private string? _local3;
 
     public SettingTab1Model(IUserControl con)
     {
-        Con = con;
+        _con = con;
     }
 
     [RelayCommand]
     public async Task Open1()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Config);
 
         if (file != null)
@@ -39,7 +39,7 @@ public partial class SettingTab1Model : ObservableObject
     [RelayCommand]
     public async Task Open2()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await BaseBinding.OpFile(window, FileType.AuthConfig);
 
         if (file != null)
@@ -51,7 +51,7 @@ public partial class SettingTab1Model : ObservableObject
     [RelayCommand]
     public async Task Open3()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var file = await BaseBinding.OpFile(window, FileType.Config);
 
         if (file != null)
@@ -63,7 +63,7 @@ public partial class SettingTab1Model : ObservableObject
     [RelayCommand]
     public void Import1()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var local = Local1;
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -96,7 +96,7 @@ public partial class SettingTab1Model : ObservableObject
     [RelayCommand]
     public void Import2()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var local = Local2;
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -128,7 +128,7 @@ public partial class SettingTab1Model : ObservableObject
     [RelayCommand]
     public void Import3()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var local = Local3;
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -161,7 +161,7 @@ public partial class SettingTab1Model : ObservableObject
     [RelayCommand]
     public async Task Reset()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info1"));
         if (!res)
             return;
@@ -173,7 +173,7 @@ public partial class SettingTab1Model : ObservableObject
     [RelayCommand]
     public async Task ClearUser()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await window.OkInfo.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info3"));
         if (!res)
             return;

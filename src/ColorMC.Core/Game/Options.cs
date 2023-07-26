@@ -1,7 +1,7 @@
 namespace ColorMC.Core.Game;
 
 /// <summary>
-/// 配置文件相关操作s
+/// 配置文件相关操作
 /// </summary>
 public static class Options
 {
@@ -10,7 +10,7 @@ public static class Options
     /// </summary>
     /// <param name="file">文件</param>
     /// <param name="sp">分隔符</param>
-    /// <returns></returns>
+    /// <returns>配置文件组</returns>
     public static Dictionary<string, string> ReadOptions(string file, string sp = ":")
     {
         var options = new Dictionary<string, string>();
@@ -19,8 +19,14 @@ public static class Options
         foreach (var item in lines)
         {
             if (string.IsNullOrWhiteSpace(item))
+            {
                 continue;
+            }
             var temp = item.Trim().Split(sp);
+            if (options.ContainsKey(temp[0]))
+            {
+                options.Remove(temp[0]);
+            }
             if (temp.Length == 1)
             {
                 options.Add(temp[0], "");

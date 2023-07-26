@@ -34,7 +34,7 @@ public partial class GameEditTab12Model : GameEditTabModel
     [RelayCommand]
     public async Task Load()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         SchematicList.Clear();
         SchematicList.AddRange(await GameBinding.GetSchematics(Obj));
@@ -44,7 +44,7 @@ public partial class GameEditTab12Model : GameEditTabModel
     [RelayCommand]
     public async Task Add()
     {
-        var window = Con.Window;
+        var window = _con.Window;
         var res = await GameBinding.AddFile(window as Window, Obj, FileType.Schematic);
 
         if (res == null)
@@ -71,7 +71,7 @@ public partial class GameEditTab12Model : GameEditTabModel
 
     public async void Delete(SchematicDisplayObj obj)
     {
-        var window = Con.Window;
+        var window = _con.Window;
         obj.Schematic.Delete();
         window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         await Load();

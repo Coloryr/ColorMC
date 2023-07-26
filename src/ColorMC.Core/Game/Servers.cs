@@ -9,7 +9,7 @@ using System.Collections.Concurrent;
 namespace ColorMC.Core.Game;
 
 /// <summary>
-/// 服务器存储操作
+/// 服务器列表存储操作
 /// </summary>
 public static class Servers
 {
@@ -23,12 +23,16 @@ public static class Servers
         ConcurrentBag<ServerInfoObj> list = new();
         string file = game.GetServersFile();
         if (!File.Exists(file))
+        {
             return list;
+        }
 
         try
         {
             if (await NbtBase.Read(file) is not NbtCompound tag)
+            {
                 return list;
+            }
 
             var nbtList = (tag["servers"] as NbtList)!;
             foreach (var item in nbtList)
