@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 
-namespace ColorMC.Gui.UI.Model.GameEdit;
+namespace ColorMC.Gui.UI.Model;
 
 public partial class FileTreeNodeModel : ObservableObject
 {
@@ -32,7 +32,7 @@ public partial class FileTreeNodeModel : ObservableObject
             bool isDirectory,
             bool isRoot = false)
     {
-        this._path = path;
+        _path = path;
         _name = isRoot ? path : System.IO.Path.GetFileName(Path);
         _isExpanded = isRoot;
         _isChecked = true;

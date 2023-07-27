@@ -70,7 +70,7 @@ public partial class App : Application
     public static CountControl? CountWindow { get; set; }
 
     public readonly static Dictionary<string, GameEditControl> GameEditWindows = new();
-    public readonly static Dictionary<string, ConfigEditControl> ConfigEditWindows = new();
+    public readonly static Dictionary<string, GameConfigEditControl> ConfigEditWindows = new();
     public readonly static Dictionary<string, AddControl> AddWindows = new();
     public readonly static Dictionary<string, ServerPackControl> ServerPackWindows = new();
     public readonly static Dictionary<string, GameLogControl> GameLogWindows = new();
@@ -872,7 +872,7 @@ public partial class App : Application
         }
         else
         {
-            var con = new ConfigEditControl(obj);
+            var con = new GameConfigEditControl(obj);
             ConfigEditWindows.Add(obj.UUID, con);
             AWindow(con);
         }
@@ -887,7 +887,7 @@ public partial class App : Application
         }
         else
         {
-            var con = new ConfigEditControl(obj);
+            var con = new GameConfigEditControl(obj);
             ConfigEditWindows.Add(key, con);
             AWindow(con);
         }

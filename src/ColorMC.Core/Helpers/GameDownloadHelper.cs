@@ -139,7 +139,6 @@ public static class GameDownloadHelper
                 var array = stream1.ToArray();
                 var data = Encoding.UTF8.GetString(stream1.ToArray());
                 info = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
-                File.WriteAllBytes($"{(neo ? VersionPath.NeoForgeDir : VersionPath.ForgeDir)}/{name}.json", array);
             }
             catch (Exception e)
             {
@@ -275,8 +274,7 @@ public static class GameDownloadHelper
             return (GetDownloadState.GetInfo, null);
         }
 
-        File.WriteAllText(Path.GetFullPath($"{VersionPath.FabricDir}/{meta1.id}.json"),
-            JsonConvert.SerializeObject(meta1));
+        VersionPath.AddGame(meta1, mc, version);
 
         foreach (var item in meta1.libraries)
         {

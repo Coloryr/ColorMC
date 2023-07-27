@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab10Model : GameEditTabModel
+public partial class GameEditTab10Model : GameEditModel
 {
     public ObservableCollection<ServerInfoObj> ServerList { get; init; } = new();
 
@@ -32,37 +32,36 @@ public partial class GameEditTab10Model : GameEditTabModel
     [RelayCommand]
     public async Task Load()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
+        Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         ServerList.Clear();
         ServerList.AddRange(await GameBinding.GetServers(Obj));
-        window.ProgressInfo.Close();
+        ProgressClose();
     }
 
     [RelayCommand]
     public async Task Add()
     {
-        var window = _con.Window;
-        await window.InputInfo.ShowInput(App.GetLanguage("GameEditWindow.Tab10.Info1"),
+        var (Cancel, Text1, Text2) = await ShowInput(
+            App.GetLanguage("GameEditWindow.Tab10.Info1"),
             App.GetLanguage("GameEditWindow.Tab10.Info2"), false);
-        var res = window.InputInfo.Read();
+        if (Cancel)
+            return;
 
-        if (string.IsNullOrWhiteSpace(res.Item1) || string.IsNullOrWhiteSpace(res.Item2))
+        if (string.IsNullOrWhiteSpace(Text1) || string.IsNullOrWhiteSpace(Text2))
         {
-            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Error1"));
+            Show(App.GetLanguage("GameEditWindow.Tab10.Error1"));
             return;
         }
 
-        GameBinding.AddServer(Obj, res.Item1, res.Item2);
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info3"));
+        GameBinding.AddServer(Obj, Text1, Text2);
+        Notify(App.GetLanguage("GameEditWindow.Tab10.Info3"));
         await Load();
     }
 
     public async void Delete(ServerInfoObj obj)
     {
-        var window = _con.Window;
         GameBinding.DeleteServer(Obj, obj);
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
+        Notify(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         await Load();
     }
 }

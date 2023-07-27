@@ -4,14 +4,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public abstract partial class ServerPackTabModel : ObservableObject
+public abstract partial class ServerPackTabModel : BaseModel
 {
-    protected IUserControl _con;
     public ServerPackObj Obj { get; }
 
-    public ServerPackTabModel(IUserControl con, ServerPackObj obj)
+    public ServerPackTabModel(IUserControl con, ServerPackObj obj) : base(con)
     {
-        _con = con;
         Obj = obj;
     }
 }

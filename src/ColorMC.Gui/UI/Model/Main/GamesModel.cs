@@ -8,10 +8,8 @@ using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
-public partial class GamesModel : ObservableObject
+public partial class GamesModel : BaseModel
 {
-    public readonly IUserControl Con;
-
     public ObservableCollection<GameItemModel> GameList { get; init; } = new();
 
     public string Header { get; }
@@ -23,15 +21,15 @@ public partial class GamesModel : ObservableObject
     private readonly IMainTop _top;
     private readonly Dictionary<string, GameItemModel> _items = new();
 
-    public GamesModel(IUserControl con, IMainTop top, string key, string name, List<GameSettingObj> list)
+    public GamesModel(IUserControl con, IMainTop top, string key, string name,
+        List<GameSettingObj> list) : base(con)
     {
         _top = top;
-        Con = con;
         GameList.Clear();
         _items.Clear();
         foreach (var item in list)
         {
-            var model = new GameItemModel(Con, _top, item);
+            var model = new GameItemModel(con, _top, item);
             _items.Add(item.UUID, model);
             GameList.Add(model);
         }
@@ -81,7 +79,7 @@ public partial class GamesModel : ObservableObject
         _items.Clear();
         foreach (var item in list)
         {
-            var model = new GameItemModel(Con, _top, item);
+            var model = new GameItemModel(Control, _top, item);
             _items.Add(item.UUID, model);
             GameList.Add(model);
         }

@@ -9,8 +9,8 @@ namespace ColorMC.Gui.UI.Animations;
 /// </summary>
 public class SkinAnimation
 {
-    private bool _run;
-    private bool _start;
+    public bool Run { get; set; }
+
     private int _frame = 0;
     private readonly SkinRender _render;
 
@@ -21,39 +21,16 @@ public class SkinAnimation
     public SkinAnimation(SkinRender render)
     {
         _render = render;
-        _run = true;
 
         Arm.X = 40;
     }
 
     /// <summary>
-    /// 停止
+    /// 进行动画演算
     /// </summary>
-    public void Stop()
-    {
-        _start = false;
-        _run = false;
-    }
-
-    /// <summary>
-    /// 开始
-    /// </summary>
-    public void Start()
-    {
-        _start = true;
-    }
-
-    /// <summary>
-    /// 暂停
-    /// </summary>
-    public void Pause()
-    {
-        _start = false;
-    }
-
     public void Tick()
     {
-        if (_start)
+        if (Run)
         {
             _frame++;
             if (_frame > 120)

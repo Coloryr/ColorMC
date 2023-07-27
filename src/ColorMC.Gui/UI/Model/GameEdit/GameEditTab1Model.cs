@@ -1,4 +1,5 @@
-﻿using AvaloniaEdit.Utils;
+﻿using Avalonia.Controls;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab1Model : GameEditTabModel
+public partial class GameEditTab1Model : GameEditModel
 {
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> LoaderVersionList { get; init; } = new();
@@ -279,49 +280,48 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task CheckModPackUpdate()
     {
-        var window = _con.Window;
         if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
         {
-            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error3"));
+            Show(App.GetLanguage("GameEditWindow.Tab1.Error3"));
             return;
         }
 
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info2"));
+        Progress(App.GetLanguage("GameEditWindow.Tab1.Info2"));
         if (Funtcions.CheckNotNumber(PID) || Funtcions.CheckNotNumber(FID))
         {
             var list = await ModrinthAPI.GetFileVersions(PID, Obj.Version, Obj.Loader);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
-                window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info3"));
+                Show(App.GetLanguage("GameEditWindow.Tab1.Info3"));
             }
             else if (list.Count == 0)
             {
-                window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info4"));
+                Notify(App.GetLanguage("GameEditWindow.Tab1.Info4"));
             }
             else if (list.First().id.ToString() == FID)
             {
-                window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info5"));
+                Notify(App.GetLanguage("GameEditWindow.Tab1.Info5"));
             }
             else
             {
-                var res = await window.OkInfo.ShowWait(App.GetLanguage("GameEditWindow.Tab1.Info6"));
+                var res = await ShowWait(App.GetLanguage("GameEditWindow.Tab1.Info6"));
                 if (!res)
                 {
                     return;
                 }
 
-                window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info8"));
+                Progress(App.GetLanguage("GameEditWindow.Tab1.Info8"));
                 var item = list.First();
                 res = await GameBinding.ModPackUpdate(Obj, item);
-                window.ProgressInfo.Close();
+                ProgressClose();
                 if (!res)
                 {
-                    window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error2"));
+                    Show(App.GetLanguage("GameEditWindow.Tab1.Error2"));
                 }
                 else
                 {
-                    window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info7"));
+                    Notify(App.GetLanguage("GameEditWindow.Tab1.Info7"));
                     FID = item.id.ToString();
                 }
             }
@@ -329,38 +329,38 @@ public partial class GameEditTab1Model : GameEditTabModel
         else
         {
             var list = await CurseForgeAPI.GetCurseForgeFiles(PID, Obj.Version);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
-                window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info3"));
+                Show(App.GetLanguage("GameEditWindow.Tab1.Info3"));
             }
             else if (list.data.Count == 0)
             {
-                window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info4"));
+                Notify(App.GetLanguage("GameEditWindow.Tab1.Info4"));
             }
             else if (list.data.First().id.ToString() == FID)
             {
-                window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info5"));
+                Notify(App.GetLanguage("GameEditWindow.Tab1.Info5"));
             }
             else
             {
-                var res = await window.OkInfo.ShowWait(App.GetLanguage("GameEditWindow.Tab1.Info6"));
+                var res = await ShowWait(App.GetLanguage("GameEditWindow.Tab1.Info6"));
                 if (!res)
                 {
                     return;
                 }
 
-                window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info8"));
+                Progress(App.GetLanguage("GameEditWindow.Tab1.Info8"));
                 var item = list.data.First();
                 res = await GameBinding.ModPackUpdate(Obj, item);
-                window.ProgressInfo.Close();
+                ProgressClose();
                 if (!res)
                 {
-                    window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error2"));
+                    Show(App.GetLanguage("GameEditWindow.Tab1.Error2"));
                 }
                 else
                 {
-                    window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Info7"));
+                    Notify(App.GetLanguage("GameEditWindow.Tab1.Info7"));
                     FID = item.id.ToString();
                 }
             }
@@ -376,27 +376,25 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var window = _con.Window;
-        await window.InputInfo.ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
-        if (window.InputInfo.Cancel)
+        var (Cancel, Text1) = await ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
+        if (Cancel)
         {
             return;
         }
 
-        var res = window.InputInfo.Read().Item1;
-        if (string.IsNullOrWhiteSpace(res))
+        if (string.IsNullOrWhiteSpace(Text1))
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error2"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Error2"));
             return;
         }
 
-        if (!GameBinding.AddGameGroup(res))
+        if (!GameBinding.AddGameGroup(Text1))
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error3"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Error3"));
             return;
         }
 
-        window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info6"));
+        Notify(App.GetLanguage("AddGameWindow.Tab1.Info6"));
 
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
@@ -405,22 +403,20 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task LoaderVersionLoad()
     {
-        var window = _con.Window;
-
         EnableLoader = false;
 
         if (SelectForge == true)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
             EnableNeoForge = false;
             EnableFabric = false;
             EnableQuilt = false;
 
             var list = await GameBinding.GetForgeVersion(Obj.Version);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
-                window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
                 return;
             }
 
@@ -430,16 +426,16 @@ public partial class GameEditTab1Model : GameEditTabModel
         }
         else if (SelectNeoForge == true)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
             EnableForge = false;
             EnableFabric = false;
             EnableQuilt = false;
 
             var list = await GameBinding.GetNeoForgeVersion(Obj.Version);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
-                window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
                 return;
             }
 
@@ -449,16 +445,16 @@ public partial class GameEditTab1Model : GameEditTabModel
         }
         else if (SelectFabric == true)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info2"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info2"));
             EnableNeoForge = false;
             EnableForge = false;
             EnableQuilt = false;
 
             var list = await GameBinding.GetFabricVersion(Obj.Version);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
-                window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
                 return;
             }
 
@@ -468,16 +464,16 @@ public partial class GameEditTab1Model : GameEditTabModel
         }
         else if (SelectQuilt == true)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info3"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
             EnableForge = false;
             EnableNeoForge = false;
             EnableFabric = false;
 
             var list = await GameBinding.GetQuiltVersion(Obj.Version);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
-                window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
                 return;
             }
 
@@ -490,8 +486,7 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task LoaderReload()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info4"));
+        Progress(App.GetLanguage("AddGameWindow.Tab1.Info4"));
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(Obj.Version))
         {
@@ -515,19 +510,18 @@ public partial class GameEditTab1Model : GameEditTabModel
         {
             EnableQuilt = true;
         }
-        window.ProgressInfo.Close();
+        ProgressClose();
     }
 
     [RelayCommand]
     public async Task GameVersionReload()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Info1"));
+        Progress(App.GetLanguage("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (!res)
         {
-            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Error1"));
+            Show(App.GetLanguage("GameEditWindow.Error1"));
             return;
         }
 
@@ -542,14 +536,13 @@ public partial class GameEditTab1Model : GameEditTabModel
     [RelayCommand]
     public async Task Delete()
     {
-        var window = _con.Window;
         if (BaseBinding.IsGameRun(Obj))
         {
-            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));
+            Show(App.GetLanguage("GameEditWindow.Tab1.Error1"));
             return;
         }
 
-        var res = await window.OkInfo.ShowWait(string.Format(
+        var res = await ShowWait(string.Format(
             App.GetLanguage("GameEditWindow.Tab1.Info1"), Obj.Name));
         if (!res)
             return;
@@ -557,10 +550,10 @@ public partial class GameEditTab1Model : GameEditTabModel
         var res1 = await GameBinding.DeleteGame(Obj);
         if (!res1)
         {
-            window.OkInfo.Show(App.GetLanguage("MainWindow.Info37"));
+            Show(App.GetLanguage("MainWindow.Info37"));
         }
 
-        window.Close();
+        Window.Close();
 
     }
 

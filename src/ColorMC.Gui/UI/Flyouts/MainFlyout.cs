@@ -59,7 +59,7 @@ public class MainFlyout
 
     private async void Button9_Click()
     {
-        await GameBinding.SetGameIconFromFile(_obj.Con.Window, _obj.Obj);
+        await GameBinding.SetGameIconFromFile(_obj.Window, _obj.Obj);
         _obj.Reload();
     }
 

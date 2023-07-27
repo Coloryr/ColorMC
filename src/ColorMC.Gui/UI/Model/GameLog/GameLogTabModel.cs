@@ -13,9 +13,8 @@ using System.Timers;
 
 namespace ColorMC.Gui.UI.Model.GameLog;
 
-public partial class GameLogTabModel : ObservableObject
+public partial class GameLogTabModel : BaseModel
 {
-    private readonly IUserControl _con;
     public GameSettingObj Obj { get; init; }
 
     public ObservableCollection<string> FileList { get; init; } = new();
@@ -35,9 +34,8 @@ public partial class GameLogTabModel : ObservableObject
     public string Temp { get; private set; }
     private readonly Timer t_timer;
 
-    public GameLogTabModel(IUserControl con, GameSettingObj obj)
+    public GameLogTabModel(IUserControl con, GameSettingObj obj) : base(con)
     {
-        _con = con;
         Obj = obj;
 
         _text = new();
@@ -74,13 +72,12 @@ public partial class GameLogTabModel : ObservableObject
             return;
         }
 
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameLogWindow.Info1"));
+        Progress(App.GetLanguage("GameLogWindow.Info1"));
         var data = await GameBinding.ReadLog(Obj, value);
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (data == null)
         {
-            window.OkInfo.Show(App.GetLanguage("GameLogWindow.Info2"));
+            Show(App.GetLanguage("GameLogWindow.Info2"));
             return;
         }
 
@@ -111,11 +108,10 @@ public partial class GameLogTabModel : ObservableObject
 
         IsGameRun = true;
 
-        var window = _con.Window;
-        var res = await GameBinding.Launch(window, Obj);
+        var res = await GameBinding.Launch(Window, Obj);
         if (!res.Item1)
         {
-            window.OkInfo.Show(res.Item2!);
+            Show(res.Item2!);
         }
         Load();
     }

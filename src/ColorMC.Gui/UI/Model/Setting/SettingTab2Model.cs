@@ -2,6 +2,7 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -16,24 +17,11 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public record FontDisplay
+public partial class SettingTab2Model : BaseModel
 {
-    public string FontName { get; init; }
-    public FontFamily FontFamily { get; init; }
-
-    public override string ToString()
-    {
-        return FontName;
-    }
-}
-
-public partial class SettingTab2Model : ObservableObject
-{
-    private readonly IUserControl _con;
-
     public ObservableCollection<FontDisplay> FontList { get; init; } = new();
-    public List<string> TranTypeList => BaseBinding.GetWindowTranTypes();
-    public List<string> LanguageList => BaseBinding.GetLanguages();
+    public List<string> TranTypeList => LanguageUtils.GetWindowTranTypes();
+    public List<string> LanguageList => LanguageUtils.GetLanguages();
 
     [ObservableProperty]
     private FontDisplay? _fontItem;
@@ -117,10 +105,8 @@ public partial class SettingTab2Model : ObservableObject
 
     private bool _load = false;
 
-    public SettingTab2Model(IUserControl con)
+    public SettingTab2Model(IUserControl con) : base(con)
     {
-        _con = con;
-
         if (SystemInfo.Os == OsType.Linux)
         {
             _enableWindowMode = false;
@@ -283,10 +269,9 @@ public partial class SettingTab2Model : ObservableObject
 
         if (value)
         {
-            var window = _con.Window;
-            window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+            Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
             await ConfigBinding.SetBackLimit(value, PicResize);
-            window.ProgressInfo.Close();
+            ProgressClose();
         }
     }
 
@@ -312,11 +297,10 @@ public partial class SettingTab2Model : ObservableObject
         if (_load)
             return;
 
-        var window = _con.Window;
         var type = (LanguageType)value;
-        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info1"));
+        Progress(App.GetLanguage("SettingWindow.Tab2.Info1"));
         ConfigBinding.SetLanguage(type);
-        window.ProgressInfo.Close();
+        ProgressClose();
     }
 
     partial void OnWindowTranTypeChanged(int value)
@@ -345,7 +329,6 @@ public partial class SettingTab2Model : ObservableObject
     [RelayCommand]
     public void ColorReset()
     {
-        var window = _con.Window;
         _load = true;
         ConfigBinding.ResetColor();
         MainColor = ColorSel.MainColor.ToColor();
@@ -358,26 +341,24 @@ public partial class SettingTab2Model : ObservableObject
         DarkFont1Color = Color.Parse(ColorSel.ButtonDarkFontStr);
         DarkFont2Color = Color.Parse(ColorSel.FontDarkColorStr);
         _load = false;
-        window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info4"));
+        Notify(App.GetLanguage("SettingWindow.Tab2.Info4"));
     }
 
     [RelayCommand]
     public async Task SetPicSize()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackLimit(EnablePicResize, PicResize);
-        window.ProgressInfo.Close();
+        ProgressClose();
 
-        window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
+        Notify(App.GetLanguage("Gui.Info3"));
     }
 
     [RelayCommand]
     public void SetPicTran()
     {
-        var window = _con.Window;
         ConfigBinding.SetBackTran(PicTran);
-        window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
+        Notify(App.GetLanguage("Gui.Info3"));
     }
 
     [RelayCommand]
@@ -391,8 +372,7 @@ public partial class SettingTab2Model : ObservableObject
     [RelayCommand]
     public async Task OpenPic()
     {
-        var window = _con.Window;
-        var file = await BaseBinding.OpFile(window, FileType.Pic);
+        var file = await BaseBinding.OpFile(Window, FileType.Pic);
 
         if (file != null)
         {
@@ -411,17 +391,16 @@ public partial class SettingTab2Model : ObservableObject
         if (_load)
             return;
 
-        var window = _con.Window;
         if (string.IsNullOrWhiteSpace(Pic))
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
+            Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
             return;
         }
-        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackPic(Pic, PicEffect);
-        window.ProgressInfo.Close();
+        ProgressClose();
 
-        window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
+        Notify(App.GetLanguage("Gui.Info3"));
     }
 
     [RelayCommand]
@@ -435,8 +414,7 @@ public partial class SettingTab2Model : ObservableObject
     [RelayCommand]
     public async Task OpenLive2D()
     {
-        var window = _con.Window;
-        var file = await BaseBinding.OpFile(window, FileType.Live2D);
+        var file = await BaseBinding.OpFile(Window, FileType.Live2D);
 
         if (file != null)
         {
@@ -455,17 +433,16 @@ public partial class SettingTab2Model : ObservableObject
         if (_load)
             return;
 
-        var window = _con.Window;
         if (string.IsNullOrWhiteSpace(Live2DModel))
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab2.Error3"));
+            Show(App.GetLanguage("SettingWindow.Tab2.Error3"));
             return;
         }
-        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
         ConfigBinding.SetLive2D(Live2DModel);
-        window.ProgressInfo.Close();
+        ProgressClose();
 
-        window.NotifyInfo.Show(App.GetLanguage("Gui.Info3"));
+        Notify(App.GetLanguage("Gui.Info3"));
     }
 
     public void Load()
@@ -575,9 +552,8 @@ public partial class SettingTab2Model : ObservableObject
         if (_load)
             return;
 
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab2.Info5"));
+        Progress(App.GetLanguage("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetWindowTran(EnableWindowTran, WindowTranType);
-        window.ProgressInfo.Close();
+        ProgressClose();
     }
 }

@@ -15,10 +15,8 @@ using System.Web;
 
 namespace ColorMC.Gui.UI.Model.User;
 
-public partial class UsersModel : ObservableObject
+public partial class UsersModel : BaseModel
 {
-    private readonly IUserControl _con;
-
     private bool _cancel;
 
     public List<string> UserTypeList { get; } = UserBinding.GetUserTypes();
@@ -52,10 +50,8 @@ public partial class UsersModel : ObservableObject
     [ObservableProperty]
     private string _password;
 
-    public UsersModel(IUserControl con)
+    public UsersModel(IUserControl con) : base(con)
     {
-        _con = con;
-
         Load();
     }
 
@@ -159,7 +155,6 @@ public partial class UsersModel : ObservableObject
     [RelayCommand]
     public async Task Add()
     {
-        var window = _con.Window;
         bool ok = false;
         IsAdding = true;
         switch (Type)
@@ -168,34 +163,34 @@ public partial class UsersModel : ObservableObject
                 var name = User;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
+                    Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
                 var res = await UserBinding.AddUser(AuthType.Offline, name, null);
                 if (!res.Item1)
                 {
-                    window.OkInfo.Show(res.Item2!);
+                    Show(res.Item2!);
                     break;
                 }
-                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
+                Notify(App.GetLanguage("Gui.Info4"));
                 Name = "";
                 ok = true;
                 break;
             case 1:
                 _cancel = false;
                 ColorMCCore.LoginOAuthCode = LoginOAuthCode;
-                window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info1"));
+                Progress(App.GetLanguage("UserWindow.Info1"));
                 res = await UserBinding.AddUser(AuthType.OAuth, null);
-                window.ProgressInfo.Close();
-                window.InputInfo.Close();
+                ProgressClose();
+                InputClose();
                 if (_cancel)
                     break;
                 if (!res.Item1)
                 {
-                    window.OkInfo.Show(res.Item2!);
+                    Show(res.Item2!);
                     break;
                 }
-                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
+                Notify(App.GetLanguage("Gui.Info4"));
                 Name = "";
                 ok = true;
                 break;
@@ -203,25 +198,25 @@ public partial class UsersModel : ObservableObject
                 var server = Name;
                 if (server?.Length != 32)
                 {
-                    window.OkInfo.Show(App.GetLanguage("UserWindow.Error3"));
+                    Show(App.GetLanguage("UserWindow.Error3"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(User) ||
                     string.IsNullOrWhiteSpace(Password))
                 {
-                    window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
+                    Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
-                window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info2"));
+                Progress(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.Nide8, server,
                     User, Password);
-                window.ProgressInfo.Close();
+                ProgressClose();
                 if (!res.Item1)
                 {
-                    window.OkInfo.Show(res.Item2!);
+                    Show(res.Item2!);
                     break;
                 }
-                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
+                Notify(App.GetLanguage("Gui.Info4"));
                 Name = "";
                 ok = true;
                 break;
@@ -229,25 +224,25 @@ public partial class UsersModel : ObservableObject
                 server = Name;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    window.OkInfo.Show(App.GetLanguage("UserWindow.Error4"));
+                    Show(App.GetLanguage("UserWindow.Error4"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
                 {
-                    window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
+                    Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
-                window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info2"));
+                Progress(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.AuthlibInjector, server,
                     User, Password);
-                window.ProgressInfo.Close();
+                ProgressClose();
                 if (!res.Item1)
                 {
-                    window.OkInfo.Show(res.Item2!);
+                    Show(res.Item2!);
                     break;
                 }
-                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
+                Notify(App.GetLanguage("Gui.Info4"));
                 Name = "";
                 ok = true;
                 break;
@@ -255,49 +250,49 @@ public partial class UsersModel : ObservableObject
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
                 {
-                    window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
+                    Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
-                window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info2"));
+                Progress(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.LittleSkin,
                     User, Password);
-                window.ProgressInfo.Close();
+                ProgressClose();
                 if (!res.Item1)
                 {
-                    window.OkInfo.Show(res.Item2!);
+                    Show(res.Item2!);
                     break;
                 }
-                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
+                Notify(App.GetLanguage("Gui.Info4"));
                 ok = true;
                 break;
             case 5:
                 server = Name;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    window.OkInfo.Show(App.GetLanguage("UserWindow.Error4"));
+                    Show(App.GetLanguage("UserWindow.Error4"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(User) ||
                    string.IsNullOrWhiteSpace(Password))
                 {
-                    window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
+                    Show(App.GetLanguage("Gui.Error8"));
                     break;
                 }
-                window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info2"));
+                Progress(App.GetLanguage("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.SelfLittleSkin,
                     User, Password, server);
-                window.ProgressInfo.Close();
+                ProgressClose();
                 if (!res.Item1)
                 {
-                    window.OkInfo.Show(res.Item2!);
+                    Show(res.Item2!);
                     break;
                 }
-                window.NotifyInfo.Show(App.GetLanguage("Gui.Info4"));
+                Notify(App.GetLanguage("Gui.Info4"));
                 Name = "";
                 ok = true;
                 break;
             default:
-                window.OkInfo.Show(App.GetLanguage("UserWindow.Error5"));
+                Show(App.GetLanguage("UserWindow.Error5"));
                 break;
         }
         if (ok)
@@ -323,10 +318,9 @@ public partial class UsersModel : ObservableObject
 
     public void Select()
     {
-        var window = _con.Window;
         if (Item == null)
         {
-            window.OkInfo.Show(App.GetLanguage("UserWindow.Error1"));
+            Show(App.GetLanguage("UserWindow.Error1"));
             return;
         }
 
@@ -335,10 +329,9 @@ public partial class UsersModel : ObservableObject
 
     public void Select(UserDisplayObj item)
     {
-        var window = _con.Window;
         UserBinding.SetLastUser(item.UUID, item.AuthType);
 
-        window.NotifyInfo.Show(App.GetLanguage("UserWindow.Info5"));
+        Notify(App.GetLanguage("UserWindow.Info5"));
         Load();
     }
 
@@ -369,13 +362,12 @@ public partial class UsersModel : ObservableObject
 
     public async void Refresh(UserDisplayObj obj)
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("UserWindow.Info3"));
+        Progress(App.GetLanguage("UserWindow.Info3"));
         var res = await UserBinding.ReLogin(obj.UUID, obj.AuthType);
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (!res)
         {
-            window.OkInfo.Show(App.GetLanguage("UserWindow.Error6"));
+            Show(App.GetLanguage("UserWindow.Error6"));
             var user = UserBinding.GetUser(obj.UUID, obj.AuthType);
             if (user == null)
                 return;
@@ -399,7 +391,7 @@ public partial class UsersModel : ObservableObject
         }
         else
         {
-            window.NotifyInfo.Show(App.GetLanguage("UserWindow.Info4"));
+            Notify(App.GetLanguage("UserWindow.Info4"));
         }
     }
 
@@ -439,15 +431,14 @@ public partial class UsersModel : ObservableObject
 
     private async void LoginOAuthCode(string url, string code)
     {
-        var window = _con.Window;
-        window.ProgressInfo.Close();
-        window.InputInfo.Show(string.Format(App.GetLanguage("UserWindow.Info6"), url),
+        ProgressClose();
+        ShowInput(string.Format(App.GetLanguage("UserWindow.Info6"), url),
             string.Format(App.GetLanguage("UserWindow.Info7"), code), () =>
             {
                 _cancel = true;
                 UserBinding.OAuthCancel();
             });
         BaseBinding.OpUrl(url);
-        await BaseBinding.CopyTextClipboard(TopLevel.GetTopLevel(_con.Con), code);
+        await BaseBinding.CopyTextClipboard(TopLevel.GetTopLevel(Control.Con), code);
     }
 }

@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:view="clr-namespace:ColorMC.Gui.UI.Model.Setting"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Model.Items"
     d:DesignHeight="850"
     d:DesignWidth="800"
     mc:Ignorable="d">

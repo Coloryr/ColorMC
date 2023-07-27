@@ -38,14 +38,12 @@ public partial class GameEditControl : UserControl, IUserControl
 
     private int _now;
 
-    public string GameName => _model1.Obj.Name;
-    public string GameUUID => _model1.Obj.UUID;
-
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public UserControl Con => this;
 
-    public string Title => string.Format(App.GetLanguage("GameEditWindow.Title"), GameName);
+    public string Title => 
+        string.Format(App.GetLanguage("GameEditWindow.Title"), _model1.Obj.Name);
 
     public GameEditControl() : this(new() { Empty = true })
     {
@@ -94,6 +92,46 @@ public partial class GameEditControl : UserControl, IUserControl
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         Content1.Content = _tab1;
+    }
+
+    public async void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.F5)
+        {
+            switch (Tabs.SelectedIndex)
+            {
+                //case 0:
+                //    _model1.Load();
+                //    break;
+                //case 1:
+                //    _model2.Load();
+                //    break;
+                case 2:
+                    await _model4.Load();
+                    break;
+                case 3:
+                    await _model5.Load();
+                    break;
+                case 4:
+                    await _model8.Load();
+                    break;
+                case 5:
+                    await _model9.Load();
+                    break;
+                case 6:
+                    await _model10.Load();
+                    break;
+                case 7:
+                    await _model11.Load();
+                    break;
+                case 8:
+                    await _model12.Load();
+                    break;
+                //case 9:
+                //    _model6.Load();
+                //    break;
+            }
+        }
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
@@ -171,7 +209,7 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case 7:
                 Go(_tab11);
-                _model11.Load();
+                await _model11.Load();
                 break;
             case 8:
                 Go(_tab12);
@@ -211,7 +249,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Closed()
     {
-        App.GameEditWindows.Remove(GameUUID);
+        App.GameEditWindows.Remove(_model1.Obj.UUID);
     }
 
     public void Started()

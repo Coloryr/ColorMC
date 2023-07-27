@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab12Model : GameEditTabModel
+public partial class GameEditTab12Model : GameEditModel
 {
     public ObservableCollection<SchematicDisplayObj> SchematicList { get; set; } = new();
 
@@ -34,29 +34,27 @@ public partial class GameEditTab12Model : GameEditTabModel
     [RelayCommand]
     public async Task Load()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
+        Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         SchematicList.Clear();
         SchematicList.AddRange(await GameBinding.GetSchematics(Obj));
-        window.ProgressInfo.Close();
+        ProgressClose();
     }
 
     [RelayCommand]
     public async Task Add()
     {
-        var window = _con.Window;
-        var res = await GameBinding.AddFile(window as Window, Obj, FileType.Schematic);
+        var res = await GameBinding.AddFile(Window, Obj, FileType.Schematic);
 
         if (res == null)
             return;
 
         if (res == false)
         {
-            window.NotifyInfo.Show(App.GetLanguage("Gui.Error12"));
+            Show(App.GetLanguage("Gui.Error12"));
             return;
         }
 
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab12.Info3"));
+        Show(App.GetLanguage("GameEditWindow.Tab12.Info3"));
         await Load();
     }
 
@@ -71,9 +69,8 @@ public partial class GameEditTab12Model : GameEditTabModel
 
     public async void Delete(SchematicDisplayObj obj)
     {
-        var window = _con.Window;
         obj.Schematic.Delete();
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
+        Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         await Load();
     }
 }

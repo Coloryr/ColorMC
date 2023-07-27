@@ -115,6 +115,7 @@ public partial class SettingControl : UserControl, IUserControl
                 break;
             case 6:
                 Go(_tab7);
+                _tab7.Start();
                 break;
         }
 

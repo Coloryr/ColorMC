@@ -1,6 +1,7 @@
 ﻿using Avalonia.Media.Imaging;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
@@ -10,6 +11,8 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class FileItemModel : ObservableObject
 {
+    private readonly IAddWindow _add;
+
     public Task<Bitmap?> Image => GetImage();
 
     public FileItemDisplayObj Data { get; init; }
@@ -26,9 +29,10 @@ public partial class FileItemModel : ObservableObject
     [ObservableProperty]
     private bool _isSelect;
 
-    public FileItemModel(FileItemDisplayObj data)
+    public FileItemModel(FileItemDisplayObj data, IAddWindow add)
     {
         Data = data;
+        _add = add;
 
         if (data == null)
             return;
@@ -50,5 +54,25 @@ public partial class FileItemModel : ObservableObject
         }
 
         return null;
+    }
+
+    public void Install()
+    {
+        _add.Install(this);
+    }
+
+    public void SetSelect()
+    {
+        _add.SetSelect(this);
+    }
+
+    public void Back()
+    {
+        _add.Back();
+    }
+
+    public void Next()
+    {
+        _add.Next();
     }
 }

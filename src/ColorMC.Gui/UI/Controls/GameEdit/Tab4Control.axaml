@@ -150,8 +150,8 @@
                 Margin="0,3,0,0"
                 AutoGenerateColumns="False"
                 Background="{setting:Colors TranBack}"
-                CanUserSortColumns="False"
                 CanUserResizeColumns="True"
+                CanUserSortColumns="False"
                 HorizontalScrollBarVisibility="Visible"
                 ItemsSource="{Binding ModList}"
                 SelectedItem="{Binding Item}"
@@ -164,6 +164,10 @@
                     <DataGridTextColumn
                         Binding="{Binding Name}"
                         Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text2}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding Modid}"
+                        Header="modid"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Version}"

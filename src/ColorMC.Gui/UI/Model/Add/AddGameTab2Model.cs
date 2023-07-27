@@ -62,15 +62,14 @@ public partial class AddGameTab2Model : AddGameControlModel
     [RelayCommand]
     public void Add()
     {
-        var window = Con.Window;
         if (BaseBinding.IsDownload)
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
             return;
         }
         if (Type == -1)
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Error3"));
+            Show(App.GetLanguage("AddGameWindow.Tab2.Error3"));
             return;
         }
 
@@ -97,8 +96,7 @@ public partial class AddGameTab2Model : AddGameControlModel
     [RelayCommand]
     public async Task SelectPack()
     {
-        var window = Con.Window;
-        var res = await BaseBinding.OpFile(window, FileType.ModPack);
+        var res = await BaseBinding.OpFile(Window, FileType.ModPack);
         if (!string.IsNullOrWhiteSpace(res))
         {
             Local = res;
@@ -107,29 +105,27 @@ public partial class AddGameTab2Model : AddGameControlModel
 
     private void PackUpdate(int size, int now)
     {
-        var window = Con.Window;
-        window.ProgressInfo.Progress((double)now / size);
+        ProgressUpdate((double)now / size);
     }
 
     private void PackState(CoreRunState state)
     {
-        var window = Con.Window;
         if (state == CoreRunState.Read)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Info1"));
+            Progress(App.GetLanguage("AddGameWindow.Tab2.Info1"));
         }
         else if (state == CoreRunState.Init)
         {
-            window.ProgressInfo.NextText(App.GetLanguage("AddGameWindow.Tab2.Info2"));
+            ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info2"));
         }
         else if (state == CoreRunState.GetInfo)
         {
-            window.ProgressInfo.NextText(App.GetLanguage("AddGameWindow.Tab2.Info3"));
+            ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info3"));
         }
         else if (state == CoreRunState.Download)
         {
-            window.ProgressInfo.NextText(App.GetLanguage("AddGameWindow.Tab2.Info4"));
-            window.ProgressInfo.Progress(-1);
+            ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info4"));
+            ProgressUpdate(-1);
         }
         else if (state == CoreRunState.End)
         {
@@ -142,25 +138,24 @@ public partial class AddGameTab2Model : AddGameControlModel
     {
         ColorMCCore.GameOverwirte = GameOverwirte;
 
-        var window = Con.Window;
         if (string.IsNullOrWhiteSpace(Local))
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Error2"));
+            Show(App.GetLanguage("AddGameWindow.Tab2.Error2"));
             return;
         }
 
-        window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Info6"));
+        Progress(App.GetLanguage("AddGameWindow.Tab2.Info6"));
         var res = await GameBinding.AddPack(Local, type, Name, Group);
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (!res.Item1)
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Error1"));
+            Show(App.GetLanguage("AddGameWindow.Tab2.Error1"));
             return;
         }
 
         App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Info5"));
         App.MainWindow?.LoadMain();
-        window.Close();
+        Window.Close();
     }
 
     public void AddFile(string file)
@@ -170,11 +165,10 @@ public partial class AddGameTab2Model : AddGameControlModel
 
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
-        var window = Con.Window;
-        window.ProgressInfo.Close();
-        var test = await window.OkInfo.ShowWait(
+        ProgressClose();
+        var test = await ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info2"), obj.Name));
-        window.ProgressInfo.Show();
+        Progress();
         return test;
     }
 }

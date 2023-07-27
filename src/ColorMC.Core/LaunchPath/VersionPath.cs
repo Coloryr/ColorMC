@@ -5,6 +5,7 @@ using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using System.Diagnostics.Metrics;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -30,10 +31,10 @@ public static class VersionPath
 
     public static VersionObj? Versions { get; private set; }
 
-    public static string ForgeDir => BaseDir + "/" + Name1;
-    public static string FabricDir => BaseDir + "/" + Name2;
-    public static string QuiltDir => BaseDir + "/" + Name3;
-    public static string NeoForgeDir => BaseDir + "/" + Name4;
+    private static string ForgeDir => BaseDir + "/" + Name1;
+    private static string FabricDir => BaseDir + "/" + Name2;
+    private static string QuiltDir => BaseDir + "/" + Name3;
+    private static string NeoForgeDir => BaseDir + "/" + Name4;
 
     public static string BaseDir { get; private set; }
 
@@ -134,6 +135,37 @@ public static class VersionPath
         }
         string file = $"{BaseDir}/{obj.id}.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(obj));
+    }
+
+    /// <summary>
+    /// 保存Fabric-Loader信息
+    /// </summary>
+    /// <param name="obj">信息</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">加载器版本</param>
+    public static void AddGame(FabricLoaderObj obj, string mc, string version)
+    {
+        File.WriteAllText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"),
+            JsonConvert.SerializeObject(obj));
+
+        var key = $"{mc}-{version}";
+        s_fabricLoaders.Add(key, obj);
+    }
+
+    public static void AddGame(ForgeLaunchObj obj, byte[] array, string mc, string version, bool neo)
+    {
+        string name = $"forge-{mc}-{version}";
+        File.WriteAllBytes($"{(neo ? NeoForgeDir : ForgeDir)}/{name}.json", array);
+
+        var key = $"{mc}-{version}";
+        if (neo)
+        {
+            s_neoForgeLaunchs.Add(key, obj);
+        }
+        else
+        {
+            s_forgeLaunchs.Add(key, obj);
+        }
     }
 
     /// <summary>
@@ -325,7 +357,7 @@ public static class VersionPath
         {
             return temp;
         }
-        string file = $"{BaseDir}/{Name2}/fabric-loader-{mc}-{version}.json";
+        string file = $"{BaseDir}/{Name2}/fabric-loader-{version}-{mc}.json";
 
         if (!File.Exists(file))
         {
@@ -360,7 +392,7 @@ public static class VersionPath
         {
             return temp;
         }
-        string file = $"{BaseDir}/{Name3}/quilt-loader-{mc}-{version}.json";
+        string file = $"{BaseDir}/{Name3}/quilt-loader-{version}-{mc}.json";
 
         if (!File.Exists(file))
         {

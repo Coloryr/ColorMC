@@ -1,12 +1,12 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.ConfigEdit.ConfigEditControl"
+    x:Class="ColorMC.Gui.UI.Controls.ConfigEdit.GameConfigEditControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:vm="using:ColorMC.Gui.UI.Model.ConfigEdit"
+    xmlns:vm="using:ColorMC.Gui.UI.Model"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">

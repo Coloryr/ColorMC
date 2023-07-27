@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public abstract partial class AddGameControlModel : ObservableObject
+public abstract partial class AddGameControlModel : BaseModel
 {
-    protected IUserControl Con;
     public ObservableCollection<string> GroupList { get; init; } = new();
 
     [ObservableProperty]
@@ -18,10 +17,8 @@ public abstract partial class AddGameControlModel : ObservableObject
     [ObservableProperty]
     private string _group;
 
-    public AddGameControlModel(IUserControl con)
+    public AddGameControlModel(IUserControl con) : base(con)
     {
-        Con = con;
-
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
     }
@@ -29,27 +26,25 @@ public abstract partial class AddGameControlModel : ObservableObject
     [RelayCommand]
     public async Task AddGroup()
     {
-        var window = Con.Window;
-        await window.InputInfo.ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
-        if (window.InputInfo.Cancel)
+        var (Cancel, Text) = await ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
+        if (Cancel)
         {
             return;
         }
 
-        var res = window.InputInfo.Read().Item1;
-        if (string.IsNullOrWhiteSpace(res))
+        if (string.IsNullOrWhiteSpace(Text))
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error2"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error2"));
             return;
         }
 
-        if (!GameBinding.AddGameGroup(res))
+        if (!GameBinding.AddGameGroup(Text))
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error3"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error3"));
             return;
         }
 
-        window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info6"));
+        Notify(App.GetLanguage("AddGameWindow.Tab1.Info6"));
 
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);

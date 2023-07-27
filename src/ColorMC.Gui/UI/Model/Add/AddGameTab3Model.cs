@@ -37,32 +37,31 @@ public partial class AddGameTab3Model : AddGameControlModel
     [RelayCommand]
     public async Task Add()
     {
-        var window = Con.Window;
         if (string.IsNullOrWhiteSpace(Name))
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error2"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error2"));
             return;
         }
 
-        window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab3.Info1"));
+        Progress(App.GetLanguage("AddGameWindow.Tab3.Info1"));
         var res = await GameBinding.AddGame(Name, Local, _model.GetUnSelectItems(), Group);
-        window.ProgressInfo.Close();
+        ProgressClose();
 
         if (!res)
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab3.Error1"));
+            Show(App.GetLanguage("AddGameWindow.Tab3.Error1"));
             return;
         }
 
         App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Info5"));
         App.MainWindow?.LoadMain();
-        window.Close();
+        Window.Close();
     }
 
     [RelayCommand]
     public async Task SelectLocal()
     {
-        var res = await BaseBinding.OpPath(Con.Window, FileType.Game);
+        var res = await BaseBinding.OpPath(Window, FileType.Game);
         if (string.IsNullOrWhiteSpace(res))
         {
             return;
@@ -74,8 +73,7 @@ public partial class AddGameTab3Model : AddGameControlModel
         }
         else
         {
-            var window = Con.Window;
-            window.OkInfo.Show(string.Format(App.GetLanguage("AddGameWindow.Tab3.Error2"), res));
+            Show(string.Format(App.GetLanguage("AddGameWindow.Tab3.Error2"), res));
         }
     }
 }

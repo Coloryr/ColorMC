@@ -1,17 +1,18 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Selection;
 using ColorMC.Core.Nbt;
-using ColorMC.Gui.UI.Model.ConfigEdit;
+using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.GameConfigEdit;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class ConfigFlyout1
 {
     private readonly TreeDataGridRowSelectionModel<NbtNodeModel> _list;
-    private readonly ConfigEditModel _model;
+    private readonly GameConfigEditModel _model;
     private readonly NbtNodeModel? _item;
 
-    public ConfigFlyout1(Control con, ITreeDataGridSelection list, ConfigEditModel model)
+    public ConfigFlyout1(Control con, ITreeDataGridSelection list, GameConfigEditModel model)
     {
         _model = model;
         _list = (list as TreeDataGridRowSelectionModel<NbtNodeModel>)!;

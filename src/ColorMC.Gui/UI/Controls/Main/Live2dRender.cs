@@ -18,7 +18,6 @@ public class Live2dRender : OpenGlControlBase
     private LAppDelegate _lapp;
 
     private DateTime _time;
-    private bool _render;
     private bool _change;
     private bool _delete;
     private bool _init = false;
@@ -67,7 +66,7 @@ public class Live2dRender : OpenGlControlBase
 
     private void ChangeModel()
     {
-        var window = _model.Con.Window;
+        var window = _model.Window;
         _lapp.Live2dManager.ReleaseAllModel();
         var model = GuiConfigUtils.Config.Live2D.Model;
         if (string.IsNullOrWhiteSpace(model))
@@ -151,7 +150,6 @@ public class Live2dRender : OpenGlControlBase
             _lapp.Live2dManager.ReleaseAllModel();
         }
         gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
-        _render = true;
         var now = DateTime.Now;
         float span = 0;
         if (_time.Ticks == 0)

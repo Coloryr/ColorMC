@@ -16,7 +16,7 @@ public static class Shaderpacks
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>光影包列表</returns>
-    public static List<ShaderpackObj> GetShaderpacks(this GameSettingObj game)
+    public static async Task<List<ShaderpackObj>> GetShaderpacks(this GameSettingObj game)
     {
         var list = new List<ShaderpackObj>();
         var dir = game.GetShaderpacksPath();
@@ -28,17 +28,20 @@ public static class Shaderpacks
             return list;
         }
 
-        Parallel.ForEach(info.GetFiles(), (item) =>
+        await Task.Run(() =>
         {
-            if (item.Extension is not ".zip")
+            Parallel.ForEach(info.GetFiles(), (item) =>
             {
-                return;
-            }
-            var obj1 = new ShaderpackObj()
-            {
-                Local = Path.GetFullPath(item.FullName)
-            };
-            list.Add(obj1);
+                if (item.Extension is not ".zip")
+                {
+                    return;
+                }
+                var obj1 = new ShaderpackObj()
+                {
+                    Local = Path.GetFullPath(item.FullName)
+                };
+                list.Add(obj1);
+            });
         });
 
         return list;

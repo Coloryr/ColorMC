@@ -60,8 +60,32 @@ public class SelfPageSlide : IPageTransition
                     {
                         new KeyFrame
                         {
-                            Setters = { new Setter { Property = translateProperty, Value = 0d } },
+                            Setters = 
+                            { 
+                                new Setter 
+                                { 
+                                    Property = translateProperty, 
+                                    Value = 0d 
+                                },
+                                new Setter
+                                {
+                                    Property = Visual.OpacityProperty,
+                                    Value = 1.0d
+                                }
+                            },
                             Cue = new Cue(0d)
+                        },
+                        new KeyFrame
+                        {
+                            Setters =
+                            {
+                                new Setter
+                                {
+                                    Property = Visual.OpacityProperty,
+                                    Value = 0d
+                                }
+                            },
+                            Cue = new Cue(0.5d)
                         },
                         new KeyFrame
                         {
@@ -99,13 +123,37 @@ public class SelfPageSlide : IPageTransition
                                 {
                                     Property = translateProperty,
                                     Value = end
+                                },
+                                new Setter
+                                {
+                                    Property = Visual.OpacityProperty,
+                                    Value = 0.0d
                                 }
                             },
                             Cue = new Cue(0d)
                         },
                         new KeyFrame
                         {
-                            Setters = { new Setter { Property = translateProperty, Value = 0d } },
+                            Setters =
+                            {
+                                new Setter
+                                {
+                                    Property = Visual.OpacityProperty,
+                                    Value = 0d
+                                }
+                            },
+                            Cue = new Cue(0.5d)
+                        },
+                        new KeyFrame
+                        {
+                            Setters = 
+                            { 
+                                new Setter 
+                                { 
+                                    Property = translateProperty, 
+                                    Value = 0d 
+                                }
+                            },
                             Cue = new Cue(1d)
                         }
                     },

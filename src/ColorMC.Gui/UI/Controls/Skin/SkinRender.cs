@@ -148,9 +148,9 @@ void main()
 
     public void SetModel(SkinModel model)
     {
-        this._model = model;
+        _model = model;
         model.PropertyChanged += Model_PropertyChanged;
-        _skina.Start();
+        _skina.Run = true;
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -962,7 +962,7 @@ void main()
 
     protected override void OnOpenGlDeinit(GlInterface gl)
     {
-        _skina.Stop();
+        _skina.Run = false;
 
         // Unbind everything
         gl.BindBuffer(GlConsts.GL_ARRAY_BUFFER, 0);
@@ -983,11 +983,11 @@ void main()
     {
         if (_model.EnableAnimation)
         {
-            _skina.Start();
+            _skina.Run = true;
         }
         else
         {
-            _skina.Pause();
+            _skina.Run = false;
         }
 
         RequestNextFrameRendering();

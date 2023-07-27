@@ -6,6 +6,7 @@ using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -17,19 +18,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Model.ConfigEdit;
+namespace ColorMC.Gui.UI.Model.GameConfigEdit;
 
-public partial class NbtDataItem : ObservableObject
+public partial class GameConfigEditModel : BaseModel
 {
-    [ObservableProperty]
-    private int key;
-    [ObservableProperty]
-    private object value;
-}
-
-public partial class ConfigEditModel : ObservableObject
-{
-    private readonly IUserControl _con;
     private readonly List<string> _items = new();
     private readonly Semaphore _semaphore = new(0, 2);
 
@@ -93,9 +85,8 @@ public partial class ConfigEditModel : ObservableObject
     [ObservableProperty]
     private NbtDataItem dataItem;
 
-    public ConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world)
+    public GameConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world) : base(con)
     {
-        _con = con;
         Obj = obj;
         World = world;
 
@@ -187,8 +178,7 @@ public partial class ConfigEditModel : ObservableObject
             }
         }
 
-        var window = _con.Window;
-        window.NotifyInfo.Show(App.GetLanguage("Gui.Info10"));
+        Notify(App.GetLanguage("Gui.Info10"));
     }
 
     [RelayCommand]
@@ -245,7 +235,6 @@ public partial class ConfigEditModel : ObservableObject
         if (model.NbtType == NbtType.NbtCompound)
         {
             var list = (model.Nbt as NbtCompound)!;
-            var window = _con.Window;
             Key = "";
             Type = 0;
             DisplayType = true;
@@ -258,12 +247,12 @@ public partial class ConfigEditModel : ObservableObject
                 return;
             if (string.IsNullOrWhiteSpace(Key))
             {
-                window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error1"));
+                Show(App.GetLanguage("ConfigEditWindow.Error1"));
                 return;
             }
             else if (list.HaveKey(Key))
             {
-                window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error2"));
+                Show(App.GetLanguage("ConfigEditWindow.Error2"));
                 return;
             }
 
@@ -280,8 +269,7 @@ public partial class ConfigEditModel : ObservableObject
         if (model.Top == null)
             return;
 
-        var window = _con.Window;
-        var res = await window.OkInfo.ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
+        var res = await ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
         if (!res)
             return;
 
@@ -292,8 +280,7 @@ public partial class ConfigEditModel : ObservableObject
     {
         var list1 = new List<NbtNodeModel?>(list);
 
-        var window = _con.Window;
-        var res = await window.OkInfo.ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
+        var res = await ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
         if (!res)
             return;
 
@@ -309,7 +296,6 @@ public partial class ConfigEditModel : ObservableObject
             return;
 
         var list = (model.Top.Nbt as NbtCompound)!;
-        var window = _con.Window;
         Key = model.Key!;
         DisplayType = false;
         Title = App.GetLanguage("ConfigEditWindow.Info5");
@@ -321,7 +307,7 @@ public partial class ConfigEditModel : ObservableObject
             return;
         if (string.IsNullOrWhiteSpace(Key))
         {
-            window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error1"));
+            Show(App.GetLanguage("ConfigEditWindow.Error1"));
             return;
         }
         else if (Key == model.Key)
@@ -330,7 +316,7 @@ public partial class ConfigEditModel : ObservableObject
         }
         else if (list.HaveKey(Key))
         {
-            window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error2"));
+            Show(App.GetLanguage("ConfigEditWindow.Error2"));
             return;
         }
 
@@ -442,7 +428,6 @@ public partial class ConfigEditModel : ObservableObject
         }
         else
         {
-            var window = _con.Window;
             Key = model.Nbt.Value.ToString();
             DisplayType = false;
             Title = App.GetLanguage("ConfigEditWindow.Info6");
@@ -454,7 +439,7 @@ public partial class ConfigEditModel : ObservableObject
                 return;
             if (string.IsNullOrWhiteSpace(Key))
             {
-                window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error1"));
+                Show(App.GetLanguage("ConfigEditWindow.Error1"));
                 return;
             }
 
@@ -464,7 +449,7 @@ public partial class ConfigEditModel : ObservableObject
             }
             catch
             {
-                window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error3"));
+                Show(App.GetLanguage("ConfigEditWindow.Error3"));
             }
         }
 
@@ -473,7 +458,6 @@ public partial class ConfigEditModel : ObservableObject
 
     public void DataEdit()
     {
-        var window = _con.Window;
         try
         {
             if (DataType == "Byte")
@@ -491,7 +475,7 @@ public partial class ConfigEditModel : ObservableObject
         }
         catch
         {
-            window.OkInfo.Show(App.GetLanguage("ConfigEditWindow.Error3"));
+            Show(App.GetLanguage("ConfigEditWindow.Error3"));
             DataItem.Value = 0;
             return;
         }
@@ -537,16 +521,14 @@ public partial class ConfigEditModel : ObservableObject
 
     public async void Find()
     {
-        var window = _con.Window;
-        await window.InputInfo.ShowOne(App.GetLanguage("ConfigEditWindow.Info3"), false);
-        if (window.InputInfo.Cancel)
+        var data = await ShowOne(App.GetLanguage("ConfigEditWindow.Info3"), false);
+        if (data.Cancel)
             return;
 
-        var data = window.InputInfo.Read().Item1;
-        if (string.IsNullOrWhiteSpace(data))
+        if (string.IsNullOrWhiteSpace(data.Text))
             return;
 
-        nbtView.Find(data);
+        nbtView.Find(data.Text);
     }
 
     private void Load1()

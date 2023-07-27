@@ -77,5 +77,10 @@
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="UI\Controls\GameConfigEdit\GameConfigEditControl.axaml.cs">
+      <DependentUpon>GameConfigEditControl.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 
 </Project>

@@ -890,10 +890,10 @@ public static class GameBinding
         return await obj.GetServerInfos();
     }
 
-    public static List<ShaderpackDisplayObj> GetShaderpacks(GameSettingObj obj)
+    public static async Task<List<ShaderpackDisplayObj>> GetShaderpacks(GameSettingObj obj)
     {
         var list = new List<ShaderpackDisplayObj>();
-        foreach (var item in obj.GetShaderpacks())
+        foreach (var item in await obj.GetShaderpacks())
         {
             list.Add(new()
             {
@@ -1149,6 +1149,11 @@ public static class GameBinding
     public static Task<bool> GenServerPack(ServerPackObj obj, string local)
     {
         return obj.GenServerPack(local);
+    }
+
+    public static Task<bool?> AddFile(IBaseWindow window, GameSettingObj obj, FileType type)
+    {
+        return AddFile(window as TopLevel, obj, type);
     }
 
     public static async Task<bool?> AddFile(TopLevel? window, GameSettingObj obj, FileType type)

@@ -12,6 +12,7 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class Tab4Control : UserControl
 {
+    private GameEditTab4Model _model;
     public Tab4Control()
     {
         InitializeComponent();
@@ -42,9 +43,19 @@ public partial class Tab4Control : UserControl
 
         LayoutUpdated += Tab5Control_LayoutUpdated;
 
+        DataContextChanged += Tab4Control_DataContextChanged;
+
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    private void Tab4Control_DataContextChanged(object? sender, EventArgs e)
+    {
+        if (DataContext is GameEditTab4Model model)
+        {
+            _model = model;
+        }
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -63,7 +74,7 @@ public partial class Tab4Control : UserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid2.IsVisible = false;
-        (DataContext as GameEditTab4Model)?.Drop(e.Data);
+        _model.Drop(e.Data);
     }
 
     private void DataGrid1_CellPointerPressed(object? sender,
@@ -75,14 +86,14 @@ public partial class Tab4Control : UserControl
 
             if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
             {
-                _ = new GameEditFlyout1(this, items, (DataContext as GameEditTab4Model)!);
+                _ = new GameEditFlyout1(this, items, _model);
             }
         });
     }
 
     private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        (DataContext as GameEditTab4Model)?.DisE();
+        _model.DisE();
     }
 
     private void Button_B1_PointerLeave(object? sender, PointerEventArgs e)

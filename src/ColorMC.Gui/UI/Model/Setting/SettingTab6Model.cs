@@ -17,10 +17,8 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab6Model : ObservableObject
+public partial class SettingTab6Model : BaseModel
 {
-    private readonly IUserControl _con;
-
     private readonly List<string> _uuids = new();
 
     public ObservableCollection<string> GameList { get; init; } = new();
@@ -76,9 +74,9 @@ public partial class SettingTab6Model : ObservableObject
 
     private bool _load;
 
-    public SettingTab6Model(IUserControl con)
+    public SettingTab6Model(IUserControl con) : base(con)
     {
-        _con = con;
+        
     }
 
     partial void OnLoginUrlChanged(string? value)
@@ -195,8 +193,7 @@ public partial class SettingTab6Model : ObservableObject
     [RelayCommand]
     public async Task SelectUI()
     {
-        var window = _con.Window;
-        var res = await BaseBinding.OpFile(window, FileType.UI);
+        var res = await BaseBinding.OpFile(Window, FileType.UI);
         if (res != null)
         {
             FileUI = res;
@@ -212,11 +209,10 @@ public partial class SettingTab6Model : ObservableObject
     [RelayCommand]
     public void Test()
     {
-        var window = _con.Window;
         var file = FileUI;
         if (string.IsNullOrWhiteSpace(file))
         {
-            window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
+           Show(App.GetLanguage("Gui.Error8"));
             return;
         }
 
@@ -225,7 +221,7 @@ public partial class SettingTab6Model : ObservableObject
             file = BaseBinding.GetRunDir() + file;
             if (!File.Exists(file))
             {
-                window.OkInfo.Show(App.GetLanguage("Gui.Error9"));
+               Show(App.GetLanguage("Gui.Error9"));
                 return;
             }
         }
@@ -244,18 +240,17 @@ public partial class SettingTab6Model : ObservableObject
     [RelayCommand]
     public async Task Save()
     {
-        var window = _con.Window;
-        var str = await BaseBinding.SaveFile(window, FileType.UI, null);
+        var str = await BaseBinding.SaveFile(Window, FileType.UI, null);
         if (str == null)
             return;
 
         if (str == false)
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab6.Error3"));
+           Show(App.GetLanguage("SettingWindow.Tab6.Error3"));
             return;
         }
 
-        window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab6.Info4"));
+        Notify(App.GetLanguage("SettingWindow.Tab6.Info4"));
     }
 
     [RelayCommand]
@@ -285,8 +280,7 @@ public partial class SettingTab6Model : ObservableObject
     [RelayCommand]
     public async Task SelectMusic()
     {
-        var window = _con.Window;
-        var file = await BaseBinding.OpFile(window, FileType.Music);
+        var file = await BaseBinding.OpFile(Window, FileType.Music);
         if (file == null)
         {
             return;

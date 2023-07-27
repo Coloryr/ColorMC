@@ -5,11 +5,14 @@ using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using System;
 
 namespace ColorMC.Gui.UI.Controls.Add.Items;
 
 public partial class FileItemControl : UserControl
 {
+    private FileItemModel _model;
+
     public FileItemControl()
     {
         InitializeComponent();
@@ -18,6 +21,16 @@ public partial class FileItemControl : UserControl
         DoubleTapped += FileItemControl_DoubleTapped;
         PointerEntered += FileItemControl_PointerEntered;
         PointerExited += FileItemControl_PointerExited;
+
+        DataContextChanged += FileItemControl_DataContextChanged;
+    }
+
+    private void FileItemControl_DataContextChanged(object? sender, EventArgs e)
+    {
+        if (DataContext is FileItemModel model)
+        {
+            _model = model;
+        }
     }
 
     private void FileItemControl_PointerExited(object? sender, PointerEventArgs e)
@@ -32,40 +45,32 @@ public partial class FileItemControl : UserControl
 
     private void FileItemControl_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        if (DataContext is FileItemModel item)
-        {
-            var window = App.FindRoot(VisualRoot);
-            (window.Con as IAddWindow)?.Install(item);
-        }
+        _model.Install();
     }
 
     private void FileItemControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is FileItemModel item)
+        _model.SetSelect();
+
+        var ev = e.GetCurrentPoint(this);
+        if (ev.Properties.IsRightButtonPressed)
         {
-            var window = App.FindRoot(VisualRoot);
-            (window.Con as IAddWindow)?.SetSelect(item);
+            var url = _model.Data?.GetUrl();
+            if (url == null)
+                return;
 
-            var ev = e.GetCurrentPoint(this);
-            if (ev.Properties.IsRightButtonPressed)
-            {
-                var url = item.Data?.GetUrl();
-                if (url == null)
-                    return;
-
-                _ = new UrlFlyout(this, url);
-                e.Handled = true;
-            }
-            else if (ev.Properties.IsXButton1Pressed)
-            {
-                (window.Con as IAddWindow)?.Back();
-                e.Handled = true;
-            }
-            else if (ev.Properties.IsXButton2Pressed)
-            {
-                (window.Con as IAddWindow)?.Next();
-                e.Handled = true;
-            }
+            _ = new UrlFlyout(this, url);
+            e.Handled = true;
+        }
+        else if (ev.Properties.IsXButton1Pressed)
+        {
+            _model.Back();
+            e.Handled = true;
+        }
+        else if (ev.Properties.IsXButton2Pressed)
+        {
+            _model.Next();
+            e.Handled = true;
         }
     }
 }

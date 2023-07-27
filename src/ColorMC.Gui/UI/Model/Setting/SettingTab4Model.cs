@@ -6,10 +6,8 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab4Model : ObservableObject
+public partial class SettingTab4Model : BaseModel
 {
-    private readonly IUserControl _con;
-
     public List<string> GCTypeList => JavaBinding.GetGCTypes();
 
     [ObservableProperty]
@@ -64,9 +62,9 @@ public partial class SettingTab4Model : ObservableObject
 
     private bool _load = false;
 
-    public SettingTab4Model(IUserControl con)
+    public SettingTab4Model(IUserControl con) : base(con)
     {
-        _con = con;
+       
     }
 
     partial void OnMaxMemoryChanged(uint value)

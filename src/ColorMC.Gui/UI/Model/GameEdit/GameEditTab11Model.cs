@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab11Model : GameEditTabModel
+public partial class GameEditTab11Model : GameEditModel
 {
     public ObservableCollection<ShaderpackDisplayObj> ShaderpackList { get; init; } = new();
 
@@ -31,30 +31,28 @@ public partial class GameEditTab11Model : GameEditTabModel
         BaseBinding.OpPath(Obj, PathType.ShaderpacksPath);
     }
     [RelayCommand]
-    public void Load()
+    public async Task Load()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info4"));
+        Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         ShaderpackList.Clear();
-        ShaderpackList.AddRange(GameBinding.GetShaderpacks(Obj));
-        window.ProgressInfo.Close();
+        ShaderpackList.AddRange(await GameBinding.GetShaderpacks(Obj));
+        ProgressClose();
     }
     [RelayCommand]
     public async Task Import()
     {
-        var window = _con.Window;
-        var res = await GameBinding.AddFile(window as Window, Obj, FileType.Shaderpack);
+        var res = await GameBinding.AddFile(Window, Obj, FileType.Shaderpack);
         if (res == null)
             return;
 
         if (res == false)
         {
-            window.NotifyInfo.Show(App.GetLanguage("Gui.Error12"));
+            Notify(App.GetLanguage("Gui.Error12"));
             return;
         }
 
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab11.Info3"));
-        Load();
+        Notify(App.GetLanguage("GameEditWindow.Tab11.Info3"));
+        await Load();
     }
 
     [RelayCommand]
@@ -68,15 +66,14 @@ public partial class GameEditTab11Model : GameEditTabModel
         var res = await GameBinding.AddFile(Obj, data, FileType.Shaderpack);
         if (res)
         {
-            Load();
+            await Load();
         }
     }
 
-    public void Delete(ShaderpackDisplayObj obj)
+    public async void Delete(ShaderpackDisplayObj obj)
     {
-        var window = _con.Window;
         obj.Shaderpack.Delete();
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
-        Load();
+        Notify(App.GetLanguage("GameEditWindow.Tab10.Info5"));
+        await Load();
     }
 }

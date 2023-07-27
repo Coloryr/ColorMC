@@ -17,10 +17,8 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
-public partial class MainModel : ObservableObject, IMainTop
+public partial class MainModel : BaseModel, IMainTop
 {
-    public readonly IUserControl Con;
-
     public bool IsLaunch = false;
     public bool IsFirst = true;
 
@@ -89,10 +87,8 @@ public partial class MainModel : ObservableObject, IMainTop
     [ObservableProperty]
     private HorizontalAlignment _mirror3 = HorizontalAlignment.Right;
 
-    public MainModel(IUserControl con)
+    public MainModel(IUserControl con) : base(con)
     {
-        Con = con;
-
         App.SkinLoad += App_SkinLoad;
 
         App.UserEdit += Load1;
@@ -128,18 +124,17 @@ public partial class MainModel : ObservableObject, IMainTop
     [RelayCommand]
     public void MusicPause()
     {
-        var window = Con.Window;
         if (_isplay)
         {
             BaseBinding.MusicPause();
 
-            window.SetTitle(App.GetLanguage("MainWindow.Title"));
+            Window.SetTitle(App.GetLanguage("MainWindow.Title"));
         }
         else
         {
             BaseBinding.MusicPlay();
 
-            window.SetTitle(App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33"));
+            Window.SetTitle(App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33"));
         }
 
         _isplay = !_isplay;
@@ -181,23 +176,21 @@ public partial class MainModel : ObservableObject, IMainTop
     [RelayCommand]
     public async Task AddGroup()
     {
-        var window = Con.Window;
-        await window.InputInfo.ShowOne(App.GetLanguage("MainWindow.Info1"), false);
-        if (window.InputInfo.Cancel)
+        var (Cancel, Text) = await ShowOne(App.GetLanguage("MainWindow.Info1"), false);
+        if (Cancel)
         {
             return;
         }
 
-        var res = window.InputInfo.Read().Item1;
-        if (string.IsNullOrWhiteSpace(res))
+        if (string.IsNullOrWhiteSpace(Text))
         {
-            window.OkInfo.Show(App.GetLanguage("MainWindow.Error3"));
+            Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
-        if (!GameBinding.AddGameGroup(res))
+        if (!GameBinding.AddGameGroup(Text))
         {
-            window.OkInfo.Show(App.GetLanguage("MainWindow.Error4"));
+            Show(App.GetLanguage("MainWindow.Error4"));
             return;
         }
 
@@ -325,8 +318,7 @@ public partial class MainModel : ObservableObject, IMainTop
 
         if (BaseBinding.CheckOldDir())
         {
-            var window = Con.Window;
-            window.OkInfo.Show(App.GetLanguage("MainWindow.Info27"));
+            Show(App.GetLanguage("MainWindow.Info27"));
         }
 
 #if !DEBUG
@@ -360,8 +352,7 @@ public partial class MainModel : ObservableObject, IMainTop
 
         if (config.Item2.ServerCustom?.PlayMusic == true)
         {
-            var window = Con.Window;
-            window.SetTitle(App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33"));
+            Window.SetTitle(App.GetLanguage("MainWindow.Title") + " " + App.GetLanguage("MainWindow.Info33"));
             MusicDisplay = true;
         }
         else
@@ -390,7 +381,7 @@ public partial class MainModel : ObservableObject, IMainTop
             else
             {
                 IsGameError = false;
-                OneGame = new(Con, this, game);
+                OneGame = new(Control, this, game);
                 IsOneGame = true;
             }
         }
@@ -410,7 +401,7 @@ public partial class MainModel : ObservableObject, IMainTop
                 {
                     if (item.Key == " ")
                     {
-                        DefaultGroup = new(Con, this, " ", App.GetLanguage("MainWindow.Info20"), item.Value);
+                        DefaultGroup = new(Control, this, " ", App.GetLanguage("MainWindow.Info20"), item.Value);
                         if (list.Count > 0)
                         {
                             DefaultGroup.Expander = false;
@@ -419,7 +410,7 @@ public partial class MainModel : ObservableObject, IMainTop
                     }
                     else
                     {
-                        var group = new GamesModel(Con, this, item.Key, item.Key, item.Value);
+                        var group = new GamesModel(Control, this, item.Key, item.Key, item.Value);
                         GameGroups.Add(group);
                         if (list.Count > 0)
                         {
@@ -452,7 +443,7 @@ public partial class MainModel : ObservableObject, IMainTop
                 }
                 foreach (var item in list)
                 {
-                    var group = new GamesModel(Con, this, item.Key, item.Key, item.Value);
+                    var group = new GamesModel(Control, this, item.Key, item.Key, item.Value);
                     GameGroups.Add(group);
                     if (list.Count > 0)
                     {
@@ -483,38 +474,37 @@ public partial class MainModel : ObservableObject, IMainTop
         if (IsLaunch || obj.IsLaunch)
             return;
 
-        var window = Con.Window;
         IsLaunch = true;
         UpdateLaunch();
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
-            window.ProgressInfo.Show(App.GetLanguage("MainWindow.Info3"));
+            Progress(App.GetLanguage("MainWindow.Info3"));
         }
         var item = Game!;
         var game = item.Obj;
         item.IsLaunch = false;
         item.IsLoad = true;
-        window.NotifyInfo.Show(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
-        var res = await GameBinding.Launch(window, game);
-        window.Head.Title1 = null;
+        Notify(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
+        var res = await GameBinding.Launch(Window, game);
+        Window.Head.Title1 = null;
         item.IsLoad = false;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
-            await window.ProgressInfo.CloseAsync();
+            await ProgressCloseAsync();
         }
         if (res.Item1 == false)
         {
-            window.OkInfo.Show(res.Item2!);
+            Show(res.Item2!);
         }
         else
         {
-            window.NotifyInfo.Show(App.GetLanguage("MainWindow.Info2"));
+            Notify(App.GetLanguage("MainWindow.Info2"));
             Launchs.Add(game.UUID, item);
             item.IsLaunch = true;
 
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
-                window.ProgressInfo.Show(App.GetLanguage("MainWindow.Info26"));
+                Progress(App.GetLanguage("MainWindow.Info26"));
             }
         }
         IsLaunch = false;

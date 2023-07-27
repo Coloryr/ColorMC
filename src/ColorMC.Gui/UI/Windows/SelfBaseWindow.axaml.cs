@@ -21,9 +21,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     Info6Control IBaseWindow.TextInfo => Info6;
     HeadControl IBaseWindow.Head => Head;
     Info5Control IBaseWindow.ComboInfo => Info5;
-    IUserControl IBaseWindow.Con => Main;
-
-    public IUserControl Main;
+   public IUserControl Con { get; set; }
 
     private bool _isClose;
 
@@ -34,7 +32,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     public SelfBaseWindow(IUserControl con)
     {
-        Main = con;
+        Con = con;
 
         InitializeComponent();
 
@@ -44,10 +42,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             Head.IsVisible = false;
         }
 
-        if (SystemInfo.Os == OsType.MacOS)
-        {
-            KeyDown += Window_KeyDown;
-        }
+        KeyDown += Window_KeyDown;
 
         Icon = App.Icon;
 
@@ -56,7 +51,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             Image_Back.Source = App.BackBitmap;
         }
 
-        if (Main is UserControl con1)
+        if (Con is UserControl con1)
         {
             MainControl.Children.Add(con1);
         }
@@ -82,14 +77,14 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private void SelfBaseWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
-        if (Main == null || _isClose == true)
+        if (Con == null || _isClose == true)
             return;
 
         e.Cancel = true;
 
         Dispatcher.UIThread.Post(async () =>
         {
-            var res = await Main.Closing();
+            var res = await Con.Closing();
             if (!res)
             {
                 _isClose = true;
@@ -140,7 +135,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     private void Window_KeyDown(object? sender, KeyEventArgs e)
     {
         var window = (sender as Window)!;
-        if (e.KeyModifiers == KeyModifiers.Control)
+        if (SystemInfo.Os == OsType.MacOS && e.KeyModifiers == KeyModifiers.Control)
         {
             switch (e.Key)
             {
@@ -158,18 +153,20 @@ public partial class SelfBaseWindow : Window, IBaseWindow
                     break;
             }
         }
+
+        Con.OnKeyDown(sender, e);
     }
 
     private void UserWindow_Opened(object? sender, EventArgs e)
     {
-        Main?.Opened();
+        Con?.Opened();
     }
 
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
         App.PicUpdate -= Update;
 
-        Main?.Closed();
+        Con?.Closed();
 
         MainControl.Children.Clear();
 
@@ -191,6 +188,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Grid1.Background = GuiConfigUtils.Config.WindowTran ?
                 ColorSel.BottomTranColor : ColorSel.BottomColor;
 
-        Main?.Update();
+        Con?.Update();
     }
 }

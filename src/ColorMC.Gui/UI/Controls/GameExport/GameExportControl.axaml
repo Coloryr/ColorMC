@@ -1,0 +1,30 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.GameExport.GameExportControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <DockPanel Background="{setting:Colors TranBack}">
+        <ScrollViewer
+            Name="ScrollViewer1"
+            VerticalAlignment="Top"
+            AllowAutoHide="True"
+            DockPanel.Dock="Top"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Disabled">
+            <TabControl Name="Tabs" Margin="-5,-5,-5,3">
+                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text1}" />
+                <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text2}" />
+            </TabControl>
+        </ScrollViewer>
+
+        <Panel ClipToBounds="True">
+            <ContentControl Name="Content1" />
+            <ContentControl Name="Content2" />
+        </Panel>
+    </DockPanel>
+</UserControl>

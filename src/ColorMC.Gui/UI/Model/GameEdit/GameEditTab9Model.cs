@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<ScreenshotModel>
+public partial class GameEditTab9Model : GameEditModel, ILoadFuntion<ScreenshotModel>
 {
     public ObservableCollection<ScreenshotModel> ScreenshotList { get; init; } = new();
 
@@ -21,15 +21,14 @@ public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<Screensh
     [RelayCommand]
     public async Task Load()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab9.Info3"));
+        Progress(App.GetLanguage("GameEditWindow.Tab9.Info3"));
         ScreenshotList.Clear();
 
         var res = await GameBinding.GetScreenshots(Obj);
-        window.ProgressInfo.Close();
+        ProgressClose();
         foreach (var item in res)
         {
-            ScreenshotList.Add(new(_con, this, item));
+            ScreenshotList.Add(new(Control, this, item));
         }
     }
 
@@ -42,8 +41,7 @@ public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<Screensh
     [RelayCommand]
     public async Task Clear()
     {
-        var Window = _con.Window;
-        var res = await Window.OkInfo.ShowWait(
+        var res = await ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab9.Info2"), Obj.Name));
         if (!res)
         {
@@ -51,7 +49,7 @@ public partial class GameEditTab9Model : GameEditTabModel, ILoadFuntion<Screensh
         }
 
         GameBinding.ClearScreenshots(Obj);
-        Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         await Load();
     }
 

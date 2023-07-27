@@ -17,7 +17,6 @@ public static class GameCount
     private const string Name = "count.dat";
     private static string s_local;
     private static bool s_isSave;
-    private static bool s_isRun;
 
     private static readonly object s_lock = new();
     private readonly static Dictionary<string, DateTime> s_timeList = new();
@@ -29,7 +28,6 @@ public static class GameCount
     {
         s_local = Path.GetFullPath(local + Name);
 
-        s_isRun = true;
         new Thread(Run)
         {
             Name = "ColorMC_Count"

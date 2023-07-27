@@ -17,13 +17,12 @@ using Timer = System.Timers.Timer;
 
 namespace ColorMC.Gui.UI.Model.Download;
 
-public partial class DownloadModel : ObservableObject
+public partial class DownloadModel : BaseModel
 {
     public ObservableCollection<DownloadDisplayModel> ItemList { get; init; } = new();
 
     public Dictionary<string, DownloadDisplayModel> List1 = new();
 
-    private readonly IUserControl _con;
     private long _count;
     private readonly Timer _timer;
 
@@ -40,10 +39,8 @@ public partial class DownloadModel : ObservableObject
     [ObservableProperty]
     private bool _isPause;
 
-    public DownloadModel(IUserControl con)
+    public DownloadModel(IUserControl con) : base(con)
     {
-        _con = con;
-
         ColorMCCore.DownloadItemStateUpdate = DownloadItemStateUpdate;
 
         _timer = new(TimeSpan.FromSeconds(1))
@@ -55,20 +52,19 @@ public partial class DownloadModel : ObservableObject
 
     partial void OnIsPauseChanged(bool value)
     {
-        var windows = _con.Window;
         if (!value)
         {
             BaseBinding.DownloadResume();
             Button = "P";
             Button1 = App.GetLanguage("DownloadWindow.Text1");
-            windows.NotifyInfo.Show(App.GetLanguage("DownloadWindow.Info3"));
+            Notify(App.GetLanguage("DownloadWindow.Info3"));
         }
         else
         {
             BaseBinding.DownloadPause();
             Button = "R";
             Button1 = App.GetLanguage("DownloadWindow.Info5");
-            windows.NotifyInfo.Show(App.GetLanguage("DownloadWindow.Info2"));
+            Notify(App.GetLanguage("DownloadWindow.Info2"));
         }
     }
 
@@ -81,8 +77,7 @@ public partial class DownloadModel : ObservableObject
     [RelayCommand]
     public async Task Stop()
     {
-        var windows = _con.Window;
-        var res = await windows.OkInfo.ShowWait(App.GetLanguage("DownloadWindow.Info1"));
+        var res = await ShowWait(App.GetLanguage("DownloadWindow.Info1"));
         if (res)
         {
             ItemList.Clear();

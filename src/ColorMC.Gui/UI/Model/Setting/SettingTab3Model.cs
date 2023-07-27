@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab3Model : ObservableObject
+public partial class SettingTab3Model : BaseModel
 {
-    private readonly IUserControl _con;
-
     private bool _load;
 
-    public List<string> SourceList => BaseBinding.GetDownloadSources();
+    public List<string> SourceList => LanguageUtils.GetDownloadSources();
 
     [ObservableProperty]
     private int _source;
@@ -46,9 +44,9 @@ public partial class SettingTab3Model : ObservableObject
     [ObservableProperty]
     private bool _autoDownload;
 
-    public SettingTab3Model(IUserControl con)
+    public SettingTab3Model(IUserControl con) : base(con)
     {
-        _con = con;
+        
     }
 
     partial void OnCheckFileChanged(bool value)
@@ -118,18 +116,17 @@ public partial class SettingTab3Model : ObservableObject
     [RelayCommand]
     public async Task StartCheck()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab3.Info1"));
+        Progress(App.GetLanguage("SettingWindow.Tab3.Info1"));
         var res = await UpdateChecker.CheckOne();
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (res.Item1 == null)
         {
-            window.OkInfo.Show(App.GetLanguage("Gui.Error21"));
+            Show(App.GetLanguage("Gui.Error21"));
             return;
         }
         else if (res.Item1 == true)
         {
-            var res1 = await window.TextInfo.ShowWait(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
+            var res1 = await TextInfo(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
             if (!res1)
             {
                 UpdateChecker.StartUpdate();
@@ -137,7 +134,7 @@ public partial class SettingTab3Model : ObservableObject
         }
         else
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab3.Info3"));
+            Show(App.GetLanguage("SettingWindow.Tab3.Info3"));
         }
     }
 

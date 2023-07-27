@@ -169,7 +169,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         {
             var button = new Button
             {
-                Content = GetName(con.Con),
+                Content = GetName(con),
                 Height = 25,
                 Width = 150
             };
@@ -201,54 +201,9 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         _nowControl = con;
     }
 
-    private static string GetName(UserControl con)
+    private static string GetName(IUserControl con)
     {
-        if (con is SettingControl)
-        {
-            return App.GetLanguage("SettingWindow.Title");
-        }
-        else if (con is UsersControl)
-        {
-            return App.GetLanguage("UserWindow.Title");
-        }
-        else if (con is AddControl con1)
-        {
-            return string.Format(App.GetLanguage("AddWindow.Title"), con1.Obj.Name);
-        }
-        else if (con is AddGameControl)
-        {
-            return App.GetLanguage("AddGameWindow.Title");
-        }
-        else if (con is AddJavaControl)
-        {
-            return App.GetLanguage("AddJavaWindow.Title");
-        }
-        else if (con is DownloadControl)
-        {
-            return App.GetLanguage("DownloadWindow.Title");
-        }
-        else if (con is SkinControl)
-        {
-            return App.GetLanguage("SkinWindow.Title");
-        }
-        else if (con is AddModPackControl)
-        {
-            return App.GetLanguage("AddModPackWindow.Title");
-        }
-        else if (con is ServerPackControl con2)
-        {
-            return string.Format(App.GetLanguage("ServerPackWindow.Title"), con2.GameName);
-        }
-        else if (con is GameEditControl con3)
-        {
-            return string.Format(App.GetLanguage("GameEditWindow.Title"), con3.GameName);
-        }
-        else if (con is ErrorControl)
-        {
-            return App.GetLanguage("ErrorWindow.Title");
-        }
-
-        return "";
+        return con.Title;
     }
 
     private void Up()

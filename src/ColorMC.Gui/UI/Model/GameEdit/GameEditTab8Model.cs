@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab8Model : GameEditTabModel, ILoadFuntion<ResourcePackModel>
+public partial class GameEditTab8Model : GameEditModel, ILoadFuntion<ResourcePackModel>
 {
     public ObservableCollection<ResourcePackModel> ResourcePackList { get; init; } = new();
 
@@ -29,18 +29,17 @@ public partial class GameEditTab8Model : GameEditTabModel, ILoadFuntion<Resource
     [RelayCommand]
     public async Task Import()
     {
-        var window = _con.Window;
-        var file = await GameBinding.AddFile(window as TopLevel, Obj, FileType.Resourcepack);
+        var file = await GameBinding.AddFile(Window, Obj, FileType.Resourcepack);
         if (file == null)
             return;
 
         if (file == false)
         {
-            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab8.Error1"));
+            Notify(App.GetLanguage("GameEditWindow.Tab8.Error1"));
             return;
         }
 
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        Notify(App.GetLanguage("GameEditWindow.Tab4.Info2"));
         await Load();
     }
 
@@ -53,15 +52,14 @@ public partial class GameEditTab8Model : GameEditTabModel, ILoadFuntion<Resource
     [RelayCommand]
     public async Task Load()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab8.Info3"));
+        Progress(App.GetLanguage("GameEditWindow.Tab8.Info3"));
         ResourcePackList.Clear();
 
         var res = await GameBinding.GetResourcepacks(Obj);
-        window.ProgressInfo.Close();
+        ProgressClose();
         foreach (var item in res)
         {
-            ResourcePackList.Add(new(_con, this, item));
+            ResourcePackList.Add(new(Control, this, item));
         }
     }
 

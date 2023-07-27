@@ -4,13 +4,14 @@ using Avalonia.Controls.Selection;
 using Avalonia.Data.Converters;
 using Avalonia.Threading;
 using ColorMC.Core.Nbt;
+using ColorMC.Gui.UI.Model.GameConfigEdit;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Model.ConfigEdit;
+namespace ColorMC.Gui.UI.Model;
 
 public class NbtPageViewModel : ObservableObject
 {

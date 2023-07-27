@@ -8,35 +8,31 @@ using System;
 
 namespace ColorMC.Gui.UI.Model.Error;
 
-public partial class ErrorModel : ObservableObject
+public partial class ErrorModel : BaseModel
 {
-    private readonly IUserControl _con;
-
     [ObservableProperty]
     private TextDocument _text;
 
     public bool Close { get; }
 
-    public ErrorModel(IUserControl con, string? data, Exception? e, bool close)
+    public ErrorModel(IUserControl con, string? data, Exception? e, bool close) : base(con)
     {
         _text = new TextDocument($"{data ?? ""}{Environment.NewLine}" +
             $"{(e == null ? "" : e.ToString())}");
 
-        _con = con;
         Close = close;
     }
 
-    public ErrorModel(IUserControl con, string data, string e, bool close)
+    public ErrorModel(IUserControl con, string data, string e, bool close) : base(con)
     {
         _text = new TextDocument($"{data}{Environment.NewLine}{e}");
-
-        _con = con;
+;
         Close = close;
     }
 
     [RelayCommand]
     public void Save()
     {
-        BaseBinding.SaveFile(_con.Window, FileType.Text, new[] { Text.Text });
+        BaseBinding.SaveFile(Window, FileType.Text, new[] { Text.Text });
     }
 }

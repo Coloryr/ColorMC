@@ -35,6 +35,14 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         Input1.KeyDown += Input1_KeyDown;
     }
 
+    public void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.F5)
+        {
+            _model.Reload1();
+        }
+    }
+
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "DisplayList")

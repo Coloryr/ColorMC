@@ -67,19 +67,18 @@ public partial class AddGameTab1Model : AddGameControlModel
         if (_change)
             return;
 
-        var window = Con.Window;
         if (value)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
             EnableFabric = false;
             EnableNeoForge = false;
             EnableQuilt = false;
 
             var list = await GameBinding.GetForgeVersion(Version);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
-                window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
                 return;
             }
 
@@ -102,19 +101,18 @@ public partial class AddGameTab1Model : AddGameControlModel
         if (_change)
             return;
 
-        var window = Con.Window;
         if (value)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
             EnableFabric = false;
             EnableForge = false;
             EnableQuilt = false;
 
             var list = await GameBinding.GetNeoForgeVersion(Version);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
-                window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
                 return;
             }
 
@@ -137,19 +135,19 @@ public partial class AddGameTab1Model : AddGameControlModel
         if (_change)
             return;
 
-        var window = Con.Window;
+
         if (value)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info2"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info2"));
             EnableForge = false;
             EnableNeoForge = false;
             EnableQuilt = false;
 
             var list = await GameBinding.GetFabricVersion(Version);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
-                window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
                 return;
             }
 
@@ -172,19 +170,18 @@ public partial class AddGameTab1Model : AddGameControlModel
         if (_change)
             return;
 
-        var window = Con.Window;
         if (value)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info3"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
             EnableForge = false;
             EnableNeoForge = false;
             EnableFabric = false;
 
             var list = await GameBinding.GetQuiltVersion(Version);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
-                window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
                 return;
             }
 
@@ -219,9 +216,8 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
-        var window = Con.Window;
-        window.ProgressInfo.Close();
-        var test = await window.OkInfo.ShowWait(
+        ProgressClose();
+        var test = await ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info2"), obj.Name));
         return test;
     }
@@ -238,16 +234,15 @@ public partial class AddGameTab1Model : AddGameControlModel
             return;
         }
 
-        var window = Con.Window;
         if (SelectForge == true)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
             EnableFabric = false;
             EnableNeoForge = false;
             EnableQuilt = false;
 
             var list = await GameBinding.GetForgeVersion(item);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
                 return;
@@ -259,13 +254,13 @@ public partial class AddGameTab1Model : AddGameControlModel
         }
         else if (SelectFabric == true)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info2"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info2"));
             EnableForge = false;
             EnableNeoForge = false;
             EnableQuilt = false;
 
             var list = await GameBinding.GetFabricVersion(item);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
                 return;
@@ -277,13 +272,13 @@ public partial class AddGameTab1Model : AddGameControlModel
         }
         else if (SelectQuilt == true)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info3"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
             EnableForge = false;
             EnableNeoForge = false;
             EnableFabric = false;
 
             var list = await GameBinding.GetQuiltVersion(item);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
                 return;
@@ -295,13 +290,13 @@ public partial class AddGameTab1Model : AddGameControlModel
         }
         else if (SelectNeoForge == true)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info3"));
+            Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
             EnableForge = false;
             EnableQuilt = false;
             EnableFabric = false;
 
             var list = await GameBinding.GetNeoForgeVersion(item);
-            window.ProgressInfo.Close();
+            ProgressClose();
             if (list == null)
             {
                 return;
@@ -318,24 +313,23 @@ public partial class AddGameTab1Model : AddGameControlModel
     {
         ColorMCCore.GameOverwirte = GameOverwirte;
 
-        var window = Con.Window;
         if (BaseBinding.IsDownload)
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
             return;
         }
 
         var name = Name;
         if (string.IsNullOrWhiteSpace(name))
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error6"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error6"));
             return;
         }
 
         string? version = Version;
         if (string.IsNullOrWhiteSpace(version))
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error7"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error7"));
             return;
         }
 
@@ -363,14 +357,14 @@ public partial class AddGameTab1Model : AddGameControlModel
         var res = await GameBinding.AddGame(name, version, loader, LoaderVersion, Group);
         if (!res)
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error5"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error5"));
         }
         else
         {
             App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info7"));
             App.MainWindow?.LoadMain();
 
-            window.Close();
+            Window.Close();
         }
     }
 
@@ -409,8 +403,7 @@ public partial class AddGameTab1Model : AddGameControlModel
             Name = item;
         }
 
-        var window = Con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info4"));
+        Progress(App.GetLanguage("AddGameWindow.Tab1.Info4"));
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(item))
         {
@@ -433,7 +426,7 @@ public partial class AddGameTab1Model : AddGameControlModel
         {
             EnableNeoForge = true;
         }
-        window.ProgressInfo.Close();
+        ProgressClose();
 
         _change = false;
     }
@@ -441,13 +434,12 @@ public partial class AddGameTab1Model : AddGameControlModel
     [RelayCommand]
     public async Task LoadVersion()
     {
-        var window = Con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Info1"));
+        Progress(App.GetLanguage("GameEditWindow.Info1"));
         var res = await GameBinding.ReloadVersion();
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (!res)
         {
-            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Error1"));
+            Show(App.GetLanguage("GameEditWindow.Error1"));
             return;
         }
 
@@ -456,49 +448,47 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     public async void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
     {
-        var window = Con.Window;
         if (BaseBinding.IsDownload)
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
             return;
         }
 
-        window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info8"));
+        Progress(App.GetLanguage("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallCurseForge(data, data1, Name, Group);
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (!res)
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error8"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error8"));
         }
         else
         {
             App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info7"));
             App.MainWindow?.LoadMain();
-            window.Close();
+            Window.Close();
         }
     }
 
     public async void Install(ModrinthVersionObj data, ModrinthSearchObj.Hit data1)
     {
-        var window = Con.Window;
         if (BaseBinding.IsDownload)
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
             return;
         }
 
-        window.ProgressInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info8"));
+        Progress(App.GetLanguage("AddGameWindow.Tab1.Info8"));
         var res = await GameBinding.InstallModrinth(data, data1, Name, Group);
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (!res)
         {
-            window.OkInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Error8"));
+            Show(App.GetLanguage("AddGameWindow.Tab1.Error8"));
         }
         else
         {
             App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab1.Info7"));
             App.MainWindow?.LoadMain();
-            window.Close();
+            Window.Close();
         }
     }
     private void Update()

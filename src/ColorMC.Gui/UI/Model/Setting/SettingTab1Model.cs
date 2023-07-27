@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab1Model : ObservableObject
+public partial class SettingTab1Model : BaseModel
 {
-    private readonly IUserControl _con;
-
     [ObservableProperty]
     private string? _local1;
     [ObservableProperty]
@@ -19,16 +17,15 @@ public partial class SettingTab1Model : ObservableObject
     [ObservableProperty]
     private string? _local3;
 
-    public SettingTab1Model(IUserControl con)
+    public SettingTab1Model(IUserControl con) : base(con)
     {
-        _con = con;
+        
     }
 
     [RelayCommand]
     public async Task Open1()
     {
-        var window = _con.Window;
-        var file = await BaseBinding.OpFile(window, FileType.Config);
+        var file = await BaseBinding.OpFile(Window, FileType.Config);
 
         if (file != null)
         {
@@ -39,8 +36,7 @@ public partial class SettingTab1Model : ObservableObject
     [RelayCommand]
     public async Task Open2()
     {
-        var window = _con.Window;
-        var file = await BaseBinding.OpFile(window, FileType.AuthConfig);
+        var file = await BaseBinding.OpFile(Window, FileType.AuthConfig);
 
         if (file != null)
         {
@@ -51,8 +47,7 @@ public partial class SettingTab1Model : ObservableObject
     [RelayCommand]
     public async Task Open3()
     {
-        var window = _con.Window;
-        var file = await BaseBinding.OpFile(window, FileType.Config);
+        var file = await BaseBinding.OpFile(Window, FileType.Config);
 
         if (file != null)
         {
@@ -63,123 +58,118 @@ public partial class SettingTab1Model : ObservableObject
     [RelayCommand]
     public void Import1()
     {
-        var window = _con.Window;
         var local = Local1;
         if (string.IsNullOrWhiteSpace(local))
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
+            Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
             return;
         }
-        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab1.Info5"));
+        Progress(App.GetLanguage("SettingWindow.Tab1.Info5"));
 
         try
         {
             var res = ConfigBinding.LoadConfig(local);
             if (!res)
             {
-                window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
+                Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
                 return;
             }
-            window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab1.Info6"));
+            Notify(App.GetLanguage("SettingWindow.Tab1.Info6"));
         }
         catch (Exception e1)
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
+            Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
             App.ShowError(App.GetLanguage("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {
-            window.ProgressInfo.Close();
+            ProgressClose();
         }
     }
 
     [RelayCommand]
     public void Import2()
     {
-        var window = _con.Window;
         var local = Local2;
         if (string.IsNullOrWhiteSpace(local))
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
+            Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
             return;
         }
-        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab1.Info8"));
+        Progress(App.GetLanguage("SettingWindow.Tab1.Info8"));
 
         try
         {
             var res = ConfigBinding.LoadAuthDatabase(local);
             if (!res)
             {
-                window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab1.Error4"));
+                Show(App.GetLanguage("SettingWindow.Tab1.Error4"));
                 return;
             }
-            window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab1.Info9"));
+            Notify(App.GetLanguage("SettingWindow.Tab1.Info9"));
         }
         catch (Exception)
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab1.Error5"));
+            Show(App.GetLanguage("SettingWindow.Tab1.Error5"));
         }
         finally
         {
-            window.ProgressInfo.Close();
+            ProgressClose();
         }
     }
 
     [RelayCommand]
     public void Import3()
     {
-        var window = _con.Window;
         var local = Local3;
         if (string.IsNullOrWhiteSpace(local))
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
+            Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
             return;
         }
-        window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab1.Info5"));
+        Progress(App.GetLanguage("SettingWindow.Tab1.Info5"));
 
         try
         {
             var res = ConfigBinding.LoadGuiConfig(local);
             if (!res)
             {
-                window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
+                Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
                 return;
             }
-            window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab1.Info6"));
+            Notify(App.GetLanguage("SettingWindow.Tab1.Info6"));
         }
         catch (Exception e1)
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
+            Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
             App.ShowError(App.GetLanguage("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {
-            window?.ProgressInfo.Close();
+            ProgressClose();
         }
     }
 
     [RelayCommand]
     public async Task Reset()
     {
-        var window = _con.Window;
-        var res = await window.OkInfo.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info1"));
+        var res = await ShowWait(App.GetLanguage("SettingWindow.Tab1.Info1"));
         if (!res)
             return;
 
         ConfigBinding.ResetConfig();
-        window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab1.Info2"));
+        Notify(App.GetLanguage("SettingWindow.Tab1.Info2"));
     }
 
     [RelayCommand]
     public async Task ClearUser()
     {
-        var window = _con.Window;
-        var res = await window.OkInfo.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info3"));
+        var res = await ShowWait(App.GetLanguage("SettingWindow.Tab1.Info3"));
         if (!res)
             return;
 
         UserBinding.ClearAllUser();
-        window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab1.Info4"));
+        Notify(App.GetLanguage("SettingWindow.Tab1.Info4"));
     }
 
     [RelayCommand]

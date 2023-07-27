@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldModel>
+public partial class GameEditTab5Model : GameEditModel, ILoadFuntion<WorldModel>
 {
     public ObservableCollection<WorldModel> WorldList { get; init; } = new();
 
@@ -26,7 +26,6 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
     [RelayCommand]
     public async Task Backup()
     {
-        var window = _con.Window;
         var info = new DirectoryInfo(Obj.GetWorldBackupPath());
         if (!info.Exists)
         {
@@ -39,42 +38,41 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
         {
             names.Add(item.Name);
         }
-        await window.ComboInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info9"), names);
-        if (window.ComboInfo.Cancel)
+        var res = await ShowCombo(App.GetLanguage("GameEditWindow.Tab5.Info9"), names);
+        if (res.Cancel)
             return;
-        var item1 = list[window.ComboInfo.Read().Item1];
-        var res = await window.OkInfo.ShowWait(App.GetLanguage("GameEditWindow.Tab5.Info10"));
-        if (!res)
+        var item1 = list[res.Index];
+        var res1 = await ShowWait(App.GetLanguage("GameEditWindow.Tab5.Info10"));
+        if (!res1)
             return;
 
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info11"));
-        res = await GameBinding.BackupWorld(Obj, item1);
-        window.ProgressInfo.Close();
-        if (!res)
+        Progress(App.GetLanguage("GameEditWindow.Tab5.Info11"));
+        res1 = await GameBinding.BackupWorld(Obj, item1);
+        ProgressClose();
+        if (!res1)
         {
-            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Error4"));
+            Show(App.GetLanguage("GameEditWindow.Tab5.Error4"));
         }
         else
         {
-            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info12"));
+            Notify(App.GetLanguage("GameEditWindow.Tab5.Info12"));
             await Load();
         }
     }
     [RelayCommand]
     public async Task Import()
     {
-        var window = _con.Window;
-        var file = await GameBinding.AddFile(window as Window, Obj, FileType.World);
+        var file = await GameBinding.AddFile(Window, Obj, FileType.World);
         if (file == null)
             return;
 
         if (file == false)
         {
-            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Error2"));
+            Notify(App.GetLanguage("GameEditWindow.Tab5.Error2"));
             return;
         }
 
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        Notify(App.GetLanguage("GameEditWindow.Tab4.Info2"));
         await Load();
     }
     [RelayCommand]
@@ -96,15 +94,14 @@ public partial class GameEditTab5Model : GameEditTabModel, ILoadFuntion<WorldMod
     [RelayCommand]
     public async Task Load()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info5"));
+        Progress(App.GetLanguage("GameEditWindow.Tab5.Info5"));
         WorldList.Clear();
 
         var res = await GameBinding.GetWorlds(Obj!);
-        window.ProgressInfo.Close();
+        ProgressClose();
         foreach (var item in res)
         {
-            WorldList.Add(new(_con, this, item));
+            WorldList.Add(new(Control, this, item));
         }
     }
 

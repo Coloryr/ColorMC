@@ -11,10 +11,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using static ColorMC.Core.Objs.Minecraft.GameArgObj.Downloads;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddModPackControlModel : ObservableObject
+public partial class AddModPackControlModel : ObservableObject, IAddWindow
 {
     private readonly IUserControl _con;
 
@@ -301,7 +302,7 @@ public partial class AddModPackControlModel : ObservableObject
         DisplayList.Clear();
         foreach (var item in data)
         {
-            DisplayList.Add(new(item));
+            DisplayList.Add(new(item, this));
         }
         OnPropertyChanged(nameof(DisplayList));
 
@@ -363,5 +364,36 @@ public partial class AddModPackControlModel : ObservableObject
 
         TextEnable = true;
         PageEnable = true;
+    }
+
+    public void Install(FileItemModel item)
+    {
+        SetSelect(item);
+        Install();
+    }
+
+    public void Back()
+    {
+        if (Page <= 0)
+            return;
+
+        Page -= 1;
+    }
+
+    public void Next()
+    {
+        Page += 1;
+    }
+
+    public void Reload1()
+    {
+        if (Display)
+        {
+            Load1();
+        }
+        else
+        {
+            Load();
+        }
     }
 }

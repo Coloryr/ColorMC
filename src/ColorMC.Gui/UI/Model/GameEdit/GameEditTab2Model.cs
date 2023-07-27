@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab2Model : GameEditTabModel
+public partial class GameEditTab2Model : GameEditModel
 {
     public List<string> GCTypeList => JavaBinding.GetGCTypes();
     public ObservableCollection<string> JvmList { get; init; } = new();
@@ -336,8 +336,7 @@ public partial class GameEditTab2Model : GameEditTabModel
     [RelayCommand]
     public async Task Delete()
     {
-        var Window = _con.Window;
-        var res = await Window.OkInfo.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
+        var res = await ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
         if (res)
         {
             GameBinding.DeleteConfig(Obj);
@@ -349,9 +348,7 @@ public partial class GameEditTab2Model : GameEditTabModel
     [RelayCommand]
     public async Task Open()
     {
-        var window = _con.Window;
-
-        var file = await BaseBinding.OpFile(window, FileType.Java);
+        var file = await BaseBinding.OpFile(Window, FileType.Java);
         if (file != null)
         {
             JvmLocal = file;

@@ -17,33 +17,32 @@ public partial class ServerPackModel : ServerPackTabModel
     [RelayCommand]
     public async Task Gen()
     {
-        var window = _con.Window;
         if (string.IsNullOrWhiteSpace(Obj.Url))
         {
-            window.OkInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Error1"));
+            Show(App.GetLanguage("ServerPackWindow.Tab1.Error1"));
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Obj.Version))
         {
-            window.OkInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Error2"));
+            Show(App.GetLanguage("ServerPackWindow.Tab1.Error2"));
             return;
         }
 
-        var local = await BaseBinding.OpPath(window, FileType.ServerPack);
+        var local = await BaseBinding.OpPath(Window, FileType.ServerPack);
         if (local == null)
             return;
 
-        window.ProgressInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
+        Progress(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
         var res = await GameBinding.GenServerPack(Obj, local);
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (res)
         {
-            window.NotifyInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Info2"));
+            Notify(App.GetLanguage("ServerPackWindow.Tab1.Info2"));
         }
         else
         {
-            window.OkInfo.Show(App.GetLanguage("ServerPackWindow.Tab1.Error3"));
+            Show(App.GetLanguage("ServerPackWindow.Tab1.Error3"));
         }
     }
 }

@@ -99,6 +99,14 @@ public partial class SkinControl : UserControl, IUserControl
         SkinTop.PointerWheelChanged += SkinTop_PointerWheelChanged;
     }
 
+    public async void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.F5)
+        {
+            await _model.Load();
+        }
+    }
+
     private void SkinTop_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         if (e.Delta.Y > 0)

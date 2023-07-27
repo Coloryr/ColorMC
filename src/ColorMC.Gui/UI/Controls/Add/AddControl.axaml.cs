@@ -12,15 +12,15 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
-public partial class AddControl : UserControl, IUserControl, IAddWindow
+public partial class AddControl : UserControl, IUserControl
 {
     public GameSettingObj Obj { get; }
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public UserControl Con => throw new System.NotImplementedException();
+    public UserControl Con => this;
 
-    public string Title => throw new System.NotImplementedException();
+    public string Title => string.Format(App.GetLanguage("AddWindow.Title"), Obj.Name);
 
     private readonly AddControlModel _model;
 
@@ -46,6 +46,14 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
         DataGrid2.DoubleTapped += DataGrid2_DoubleTapped;
 
         Grid1.PointerPressed += Grid1_PointerPressed;
+    }
+
+    public void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.F5)
+        {
+            _model.Reload();
+        }
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -136,16 +144,6 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
             _model.Set = false;
     }
 
-    public void SetSelect(FileItemModel last)
-    {
-        _model.SetSelect(last);
-    }
-
-    public void Install(FileItemModel item)
-    {
-        _model.Install();
-    }
-
     public void GoFile(SourceType type, string pid)
     {
         _model.GoFile(type, pid);
@@ -153,34 +151,16 @@ public partial class AddControl : UserControl, IUserControl, IAddWindow
 
     public void Opened()
     {
-        Window.SetTitle(string.Format(App.GetLanguage("AddWindow.Title"), Obj.Name));
+        Window.SetTitle(Title);
 
         DataGridFiles.SetFontColor();
 
         _model.Display = true;
     }
 
-    public async Task GoSet()
+    public Task GoSet()
     {
-        _model.Set = true;
-
-        _model.Type = (int)FileType.Mod - 1;
-        _model.DownloadSource = 0;
-        await Task.Run(() =>
-        {
-            while (_model.Set && !App.IsClose)
-                Thread.Sleep(100);
-        });
-    }
-
-    public void Back()
-    {
-        _model.Back();
-    }
-
-    public void Next()
-    {
-        _model.Next();
+        return _model.GoSet();
     }
 
     public void GoTo(FileType type)

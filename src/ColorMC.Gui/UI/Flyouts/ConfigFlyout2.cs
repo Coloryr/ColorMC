@@ -1,14 +1,15 @@
 ﻿using Avalonia.Controls;
-using ColorMC.Gui.UI.Model.ConfigEdit;
+using ColorMC.Gui.UI.Model.GameConfigEdit;
+using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 public class ConfigFlyout2
 {
-    private readonly ConfigEditModel _model;
+    private readonly GameConfigEditModel _model;
     private readonly NbtDataItem _item;
 
-    public ConfigFlyout2(Control con, ConfigEditModel model, NbtDataItem item)
+    public ConfigFlyout2(Control con, GameConfigEditModel model, NbtDataItem item)
     {
         _model = model;
         _item = item;

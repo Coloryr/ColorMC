@@ -5,14 +5,14 @@ using Avalonia.Threading;
 using AvaloniaEdit.Indentation.CSharp;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Gui.UI.Model.ConfigEdit;
+using ColorMC.Gui.UI.Model.GameConfigEdit;
 using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Controls.ConfigEdit;
 
-public partial class ConfigEditControl : UserControl, IUserControl
+public partial class GameConfigEditControl : UserControl, IUserControl
 {
-    private readonly ConfigEditModel _model;
+    private readonly GameConfigEditModel _model;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -35,7 +35,7 @@ public partial class ConfigEditControl : UserControl, IUserControl
         }
     }
 
-    public ConfigEditControl()
+    public GameConfigEditControl()
     {
         InitializeComponent();
 
@@ -52,13 +52,13 @@ public partial class ConfigEditControl : UserControl, IUserControl
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
     }
 
-    public ConfigEditControl(WorldObj world) : this()
+    public GameConfigEditControl(WorldObj world) : this()
     {
         _model = new(this, world.Game, world);
         DataContext = _model;
     }
 
-    public ConfigEditControl(GameSettingObj obj) : this()
+    public GameConfigEditControl(GameSettingObj obj) : this()
     {
         _model = new(this, obj, null);
         DataContext = _model;

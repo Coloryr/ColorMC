@@ -9,10 +9,8 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.Count;
 
-public partial class CountModel : ObservableObject
+public partial class CountModel : BaseModel
 {
-    private readonly IUserControl _con;
-
     [ObservableProperty]
     private long _count;
     [ObservableProperty]
@@ -55,10 +53,8 @@ public partial class CountModel : ObservableObject
 
     public ObservableCollection<string> Game { get; init; } = new();
 
-    public CountModel(IUserControl con)
+    public CountModel(IUserControl con) : base(con)
     {
-        _con = con;
-
         _date1 = _date = DateTime.Now;
         var data = Utils.GameCount.Count;
         if (data == null)

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab6Model : GameEditTabModel
+public partial class GameEditTab6Model : GameEditModel
 {
     private FilesPageViewModel _model;
 
@@ -27,21 +27,20 @@ public partial class GameEditTab6Model : GameEditTabModel
     [RelayCommand]
     public async Task Export()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab6.Info2"));
-        var file = await BaseBinding.SaveFile(window, FileType.Game, new object[]
+        Progress(App.GetLanguage("GameEditWindow.Tab6.Info2"));
+        var file = await BaseBinding.SaveFile(Window, FileType.Game, new object[]
             { Obj, _model.GetUnSelectItems(), PackType.ColorMC });
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (file == null)
             return;
 
         if (file == false)
         {
-            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab6.Error1"));
+            Show(App.GetLanguage("GameEditWindow.Tab6.Error1"));
         }
         else
         {
-            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab6.Info3"));
+            Notify(App.GetLanguage("GameEditWindow.Tab6.Info3"));
         }
     }
 

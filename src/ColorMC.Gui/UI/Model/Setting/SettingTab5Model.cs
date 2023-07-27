@@ -14,10 +14,8 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab5Model : ObservableObject
+public partial class SettingTab5Model : BaseModel
 {
-    private readonly IUserControl _con;
-
     [ObservableProperty]
     private string? _name;
     [ObservableProperty]
@@ -25,9 +23,9 @@ public partial class SettingTab5Model : ObservableObject
 
     public ObservableCollection<JavaDisplayObj> JavaList { get; init; } = new();
 
-    public SettingTab5Model(IUserControl con)
+    public SettingTab5Model(IUserControl con) : base(con)
     {
-        _con = con;
+        
     }
 
     [RelayCommand]
@@ -45,29 +43,26 @@ public partial class SettingTab5Model : ObservableObject
     [RelayCommand]
     public void AddJava()
     {
-        var window = _con.Window;
-
         if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Local))
         {
-            window.OkInfo.Show(App.GetLanguage("Gui.Error8"));
+            Show(App.GetLanguage("Gui.Error8"));
             return;
         }
 
         try
         {
-            window.ProgressInfo.Show(App.GetLanguage("SettingWindow.Tab5.Info1"));
+            Progress(App.GetLanguage("SettingWindow.Tab5.Info1"));
 
             var res = JavaBinding.AddJava(Name, Local);
+            ProgressClose();
             if (res.Item1 == null)
             {
-                window.ProgressInfo.Close();
-                window.OkInfo.Show(res.Item2!);
+                Show(res.Item2!);
                 return;
             }
 
             Name = "";
             Local = "";
-            window.ProgressInfo.Close();
 
             Load();
         }
@@ -80,8 +75,7 @@ public partial class SettingTab5Model : ObservableObject
     [RelayCommand]
     public async Task Select()
     {
-        var window = _con.Window;
-        var file = await BaseBinding.OpFile(window, FileType.Java);
+        var file = await BaseBinding.OpFile(Window, FileType.Java);
 
         if (file != null)
         {
@@ -97,17 +91,16 @@ public partial class SettingTab5Model : ObservableObject
     [RelayCommand]
     public void OpenFile()
     {
-        var window = _con.Window;
         var list = JavaBinding.FindJava();
         if (list == null)
         {
-            window.OkInfo.Show(App.GetLanguage("SettingWindow.Tab5.Error1"));
+            Show(App.GetLanguage("SettingWindow.Tab5.Error1"));
             return;
         }
 
         list.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
         Load();
-        window.NotifyInfo.Show(App.GetLanguage("SettingWindow.Tab5.Info4"));
+        Notify(App.GetLanguage("SettingWindow.Tab5.Info4"));
     }
 
     [RelayCommand]
@@ -120,8 +113,7 @@ public partial class SettingTab5Model : ObservableObject
     [RelayCommand]
     public async Task Delete()
     {
-        var window = _con.Window;
-        var res = await window.OkInfo.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
+        var res = await ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
         if (!res)
             return;
 

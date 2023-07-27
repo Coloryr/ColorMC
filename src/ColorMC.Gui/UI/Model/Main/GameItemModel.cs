@@ -15,10 +15,8 @@ using System.IO;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
-public partial class GameItemModel : ObservableObject
+public partial class GameItemModel : BaseModel
 {
-    public readonly IUserControl Con;
-
     public GameSettingObj Obj { get; }
 
     [ObservableProperty]
@@ -43,10 +41,9 @@ public partial class GameItemModel : ObservableObject
     public string Name => Obj.Name;
     public Bitmap Pic => GetImage();
 
-    public GameItemModel(IUserControl con, IMainTop top, GameSettingObj obj)
+    public GameItemModel(IUserControl con, IMainTop top, GameSettingObj obj) : base(con)
     {
         _top = top;
-        Con = con;
         Obj = obj;
     }
 
@@ -81,7 +78,7 @@ public partial class GameItemModel : ObservableObject
         dragData.Set(BaseBinding.DrapType, this);
         IsDrop = true;
 
-        if (Con.Window is TopLevel top)
+        if (Window is TopLevel top)
         {
             List<IStorageFolder> files = new();
             var item = await top.StorageProvider
@@ -129,58 +126,52 @@ public partial class GameItemModel : ObservableObject
 
     public async void Rename()
     {
-        var window = Con.Window;
-        await window.InputInfo.ShowEdit(App.GetLanguage("MainWindow.Info23"), Obj.Name);
-        if (window.InputInfo.Cancel)
+        var (Cancel, Text1, _) = await ShowEdit(App.GetLanguage("MainWindow.Info23"), Obj.Name);
+        if (Cancel)
             return;
-        var data = window.InputInfo.Read().Item1;
-        if (string.IsNullOrWhiteSpace(data))
+        if (string.IsNullOrWhiteSpace(Text1))
         {
-            window.OkInfo.Show(App.GetLanguage("MainWindow.Error3"));
+            Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
-        GameBinding.SetGameName(Obj, data);
+        GameBinding.SetGameName(Obj, Text1);
     }
 
     public async void Copy()
     {
-        var window = Con.Window;
-        await window.InputInfo.ShowEdit(App.GetLanguage("MainWindow.Info23"),
+        var (Cancel, Text1, _) = await ShowEdit(App.GetLanguage("MainWindow.Info23"),
             Obj.Name + App.GetLanguage("MainWindow.Info24"));
-        if (window.InputInfo.Cancel)
+        if (Cancel)
             return;
-        var data = window.InputInfo.Read().Item1;
-        if (string.IsNullOrWhiteSpace(data))
+        if (string.IsNullOrWhiteSpace(Text1))
         {
-            window.OkInfo.Show(App.GetLanguage("MainWindow.Error3"));
+            Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
-        var res = await GameBinding.CopyGame(Obj, data);
+        var res = await GameBinding.CopyGame(Obj, Text1);
         if (!res)
         {
-            window.OkInfo.Show(App.GetLanguage("MainWindow.Error5"));
+            Show(App.GetLanguage("MainWindow.Error5"));
             return;
         }
         else
         {
-            window.NotifyInfo.Show(App.GetLanguage("MainWindow.Info25"));
+            Notify(App.GetLanguage("MainWindow.Info25"));
         }
     }
 
     public async void DeleteGame()
     {
-        var window = Con.Window;
-        var res = await window.OkInfo.ShowWait(
-                 string.Format(App.GetLanguage("MainWindow.Info19"), Obj.Name));
+        var res = await ShowWait(string.Format(App.GetLanguage("MainWindow.Info19"), Obj.Name));
         if (!res)
             return;
 
         res = await GameBinding.DeleteGame(Obj);
         if (!res)
         {
-            window.OkInfo.Show(App.GetLanguage("MainWindow.Info37"));
+            Show(App.GetLanguage("MainWindow.Info37"));
         }
     }
 

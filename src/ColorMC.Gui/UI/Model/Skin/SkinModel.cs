@@ -2,6 +2,7 @@
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
@@ -10,11 +11,10 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Skin;
 
-public partial class SkinModel : ObservableObject
+public partial class SkinModel : BaseModel
 {
-    private readonly IUserControl _con;
-    public List<string> SkinTypeList { get; } = BaseBinding.GetSkinType();
-    public List<string> SkinRotateList { get; } = BaseBinding.GetSkinRotateName();
+    public List<string> SkinTypeList { get; } = LanguageUtils.GetSkinType();
+    public List<string> SkinRotateList { get; } = LanguageUtils.GetSkinRotateName();
 
     [ObservableProperty]
     private int _type;
@@ -72,9 +72,9 @@ public partial class SkinModel : ObservableObject
     }
 
 
-    public SkinModel(IUserControl con)
+    public SkinModel(IUserControl con) : base(con)
     {
-        _con = con;
+
     }
 
     partial void OnRotateXChanged(float value)
@@ -174,10 +174,9 @@ public partial class SkinModel : ObservableObject
 
     partial void OnTypeChanged(int value)
     {
-        var window = _con.Window;
         if (Type == (int)SkinType.Unkonw)
         {
-            window.OkInfo.Show(App.GetLanguage("SkinWindow.Info1"));
+            Show(App.GetLanguage("SkinWindow.Info1"));
             Type = (int)SteveModelType;
             return;
         }
@@ -190,11 +189,10 @@ public partial class SkinModel : ObservableObject
     [RelayCommand]
     public async Task Save()
     {
-        var window = _con.Window;
-        var res = await BaseBinding.SaveFile(window, FileType.Skin, null);
+        var res = await BaseBinding.SaveFile(Window, FileType.Skin, null);
         if (res == true)
         {
-            window.NotifyInfo.Show(App.GetLanguage("Gui.Info10"));
+            Notify(App.GetLanguage("Gui.Info10"));
         }
     }
 
@@ -237,6 +235,6 @@ public partial class SkinModel : ObservableObject
     [RelayCommand]
     public void Edit()
     {
-        UserBinding.EditSkin(_con.Window);
+        UserBinding.EditSkin(Window);
     }
 }

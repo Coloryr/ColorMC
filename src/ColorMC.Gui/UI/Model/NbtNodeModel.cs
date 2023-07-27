@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 
-namespace ColorMC.Gui.UI.Model.ConfigEdit;
+namespace ColorMC.Gui.UI.Model;
 
 public partial class NbtNodeModel : ObservableObject
 {

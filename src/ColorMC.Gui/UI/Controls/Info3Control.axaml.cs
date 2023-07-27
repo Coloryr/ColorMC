@@ -72,7 +72,8 @@ public partial class Info3Control : UserControl
         App.CrossFade300.Start(this, null, CancellationToken.None);
     }
 
-    public Task ShowInput(string title, string title1, bool password)
+    public async Task<(bool Cancel, string? Text1, string? Text2)> 
+        ShowInput(string title, string title1, bool password)
     {
         _display = true;
 
@@ -93,14 +94,16 @@ public partial class Info3Control : UserControl
         Button_Cancel.IsVisible = true;
 
         TextBox_Text1.PasswordChar = password ? '*' : (char)0;
-        App.CrossFade300.Start(null, this, CancellationToken.None);
+         _ = App.CrossFade300.Start(null, this, CancellationToken.None);
 
         _cancelCall = null;
 
-        return Task.Run(() =>
+         await Task.Run(() =>
         {
             _semaphore.WaitOne();
         });
+
+        return (Cancel, TextBox_Text.Text, TextBox_Text1.Text);
     }
 
     public void Show(string title, string title1)
@@ -153,7 +156,7 @@ public partial class Info3Control : UserControl
         App.CrossFade300.Start(null, this, CancellationToken.None);
     }
 
-    public Task ShowOne(string title, bool lock1 = true)
+    public async Task<(bool Cancel, string? Text)> ShowOne(string title, bool lock1 = true)
     {
         _display = true;
 
@@ -172,7 +175,7 @@ public partial class Info3Control : UserControl
             Button_Cancel.IsEnabled = false;
             Button_Cancel.IsVisible = false;
 
-            TextBox_Text1.PasswordChar = (char)0;
+            TextBox_Text1.PasswordChar = '\0';
         }
         else
         {
@@ -187,21 +190,22 @@ public partial class Info3Control : UserControl
             Button_Cancel.IsEnabled = true;
             Button_Cancel.IsVisible = true;
         }
-        App.CrossFade300.Start(null, this, CancellationToken.None);
+        _=App.CrossFade300.Start(null, this, CancellationToken.None);
 
         if (!lock1)
         {
             _cancelCall = null;
-            return Task.Run(() =>
+            await Task.Run(() =>
             {
                 _semaphore.WaitOne();
             });
         }
 
-        return Task.CompletedTask;
+        return (Cancel, TextBox_Text.Text);
     }
 
-    public Task ShowEdit(string title, string data)
+    public async Task<(bool Cancel, string? Text1, string? Text2)> 
+        ShowEdit(string title, string data)
     {
         _display = true;
 
@@ -211,17 +215,15 @@ public partial class Info3Control : UserControl
 
         TextBox_Text.Text = data;
         TextBox_Text.Watermark = title;
-        App.CrossFade300.Start(null, this, CancellationToken.None);
+        _ = App.CrossFade300.Start(null, this, CancellationToken.None);
 
         _cancelCall = null;
-        return Task.Run(() =>
-        {
-            _semaphore.WaitOne();
-        });
-    }
+        await Task.Run(() =>
+       {
+           _semaphore.WaitOne();
 
-    public (string?, string?) Read()
-    {
-        return (TextBox_Text.Text, TextBox_Text1.Text);
+       });
+
+        return (Cancel, TextBox_Text.Text, TextBox_Text1.Text);
     }
 }

@@ -4,6 +4,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
@@ -13,10 +14,10 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab4Model : GameEditTabModel
+public partial class GameEditTab4Model : GameEditModel
 {
     public ObservableCollection<ModDisplayModel> ModList { get; init; } = new();
-    public List<string> FilterList => BaseBinding.GetFilterName();
+    public List<string> FilterList => LanguageUtils.GetFilterName();
 
     private readonly List<ModDisplayModel> _items = new();
 
@@ -72,59 +73,56 @@ public partial class GameEditTab4Model : GameEditTabModel
     [RelayCommand]
     public async Task Import()
     {
-        var window = _con.Window;
-        var file = await GameBinding.AddFile(window as Window, Obj, FileType.Mod);
+        var file = await GameBinding.AddFile(Window, Obj, FileType.Mod);
 
         if (file == null)
             return;
 
         if (file == false)
         {
-            window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Error2"));
+            Progress(App.GetLanguage("GameEditWindow.Tab4.Error2"));
             return;
         }
 
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        Notify(App.GetLanguage("GameEditWindow.Tab4.Info2"));
         await Load();
     }
 
     [RelayCommand]
     public async Task Check()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info10"));
+        Progress(App.GetLanguage("GameEditWindow.Tab4.Info10"));
         var res = await WebBinding.CheckModUpdate(Obj, _items);
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (res.Count > 0)
         {
-            var res1 = await window.OkInfo.ShowWait(string.Format(
+            var res1 = await ShowWait(string.Format(
                 App.GetLanguage("GameEditWindow.Tab4.Info11"), res.Count));
             if (res1)
             {
-                window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info12"));
+                Progress(App.GetLanguage("GameEditWindow.Tab4.Info12"));
                 await WebBinding.DownloadMod(Obj, res);
-                window.ProgressInfo.Close();
+                ProgressClose();
 
                 await Load();
             }
         }
         else
         {
-            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info13"));
+           Show(App.GetLanguage("GameEditWindow.Tab4.Info13"));
         }
     }
 
     [RelayCommand]
     public async Task Load()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info1"));
+        Progress(App.GetLanguage("GameEditWindow.Tab4.Info1"));
         _items.Clear();
         var res = await GameBinding.GetGameMods(Obj);
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (res == null)
         {
-            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Error1"));
+           Show(App.GetLanguage("GameEditWindow.Tab4.Error1"));
             return;
         }
 
@@ -136,7 +134,7 @@ public partial class GameEditTab4Model : GameEditTabModel
         count = list.Count(a => a.Count() > 1);
         if (count > 0)
         {
-            window.OkInfo.Show(string.Format(App
+           Show(string.Format(App
                     .GetLanguage("GameEditWindow.Tab4.Info14"), count));
         }
         Load1();
@@ -145,13 +143,12 @@ public partial class GameEditTab4Model : GameEditTabModel
     [RelayCommand]
     public async Task DependTest()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info15"));
+        Progress(App.GetLanguage("GameEditWindow.Tab4.Info15"));
         var res = await GameBinding.ModCheck(_items);
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (res)
         {
-            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info16"));
+            Notify(App.GetLanguage("GameEditWindow.Tab4.Info16"));
         }
     }
 
@@ -166,8 +163,7 @@ public partial class GameEditTab4Model : GameEditTabModel
 
     public async void Delete(IEnumerable<ModDisplayModel> items)
     {
-        var window = _con.Window;
-        var res = await window.OkInfo.ShowWait(
+        var res = await ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count()));
         if (!res)
         {
@@ -180,13 +176,12 @@ public partial class GameEditTab4Model : GameEditTabModel
             ModList.Remove(item);
         });
 
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
     }
 
     public async void Delete(ModDisplayModel item)
     {
-        var window = _con.Window;
-        var res = await window.OkInfo.ShowWait(
+        var res = await ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info4"), item.Name));
         if (!res)
         {
@@ -196,7 +191,7 @@ public partial class GameEditTab4Model : GameEditTabModel
         GameBinding.DeleteMod(item.Obj);
         ModList.Remove(item);
 
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
     }
 
     public void DisE()
@@ -210,11 +205,10 @@ public partial class GameEditTab4Model : GameEditTabModel
         {
             return;
         }
-        var window = _con.Window;
         var res = GameBinding.ModEnDi(item.Obj);
         if (!res)
         {
-            window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Error3"));
+            Progress(App.GetLanguage("GameEditWindow.Tab4.Error3"));
         }
         else
         {
@@ -232,7 +226,7 @@ public partial class GameEditTab4Model : GameEditTabModel
                 return;
             }
 
-            res = await window.OkInfo.ShowWait(
+            res = await ShowWait(
                 string.Format(App.GetLanguage("GameEditWindow.Tab4.Info17"), list.Count));
             if (res)
             {
