@@ -25,7 +25,7 @@ public partial class SettingTab5Model : BaseModel
 
     public SettingTab5Model(IUserControl con) : base(con)
     {
-        
+
     }
 
     [RelayCommand]

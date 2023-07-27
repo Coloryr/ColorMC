@@ -64,7 +64,7 @@ public partial class SettingTab4Model : BaseModel
 
     public SettingTab4Model(IUserControl con) : base(con)
     {
-       
+
     }
 
     partial void OnMaxMemoryChanged(uint value)

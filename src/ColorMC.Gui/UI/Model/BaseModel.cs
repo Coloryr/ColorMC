@@ -1,10 +1,7 @@
-﻿using Avalonia.Controls;
-using ColorMC.Gui.UI.Windows;
+﻿using ColorMC.Gui.UI.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model;
@@ -87,7 +84,7 @@ public partial class BaseModel : ObservableObject
         return Control.Window.InputInfo.ShowOne(data, data1);
     }
 
-    public Task<(bool Cancel, string? Text1, string? Text2)> 
+    public Task<(bool Cancel, string? Text1, string? Text2)>
         ShowInput(string data, string data1, bool data2)
     {
         return Control.Window.InputInfo.ShowInput(data, data1, data2);
@@ -103,7 +100,7 @@ public partial class BaseModel : ObservableObject
         return Control.Window.ProgressInfo.CloseAsync();
     }
 
-    public Task<(bool Cancel, int Index, string? Item)> 
+    public Task<(bool Cancel, int Index, string? Item)>
         ShowCombo(string data, List<string> data1)
     {
         return Control.Window.ComboInfo.Show(data, data1);

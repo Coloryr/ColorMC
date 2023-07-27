@@ -76,7 +76,7 @@ public partial class SettingTab6Model : BaseModel
 
     public SettingTab6Model(IUserControl con) : base(con)
     {
-        
+
     }
 
     partial void OnLoginUrlChanged(string? value)
@@ -212,7 +212,7 @@ public partial class SettingTab6Model : BaseModel
         var file = FileUI;
         if (string.IsNullOrWhiteSpace(file))
         {
-           Show(App.GetLanguage("Gui.Error8"));
+            Show(App.GetLanguage("Gui.Error8"));
             return;
         }
 
@@ -221,7 +221,7 @@ public partial class SettingTab6Model : BaseModel
             file = BaseBinding.GetRunDir() + file;
             if (!File.Exists(file))
             {
-               Show(App.GetLanguage("Gui.Error9"));
+                Show(App.GetLanguage("Gui.Error9"));
                 return;
             }
         }
@@ -246,7 +246,7 @@ public partial class SettingTab6Model : BaseModel
 
         if (str == false)
         {
-           Show(App.GetLanguage("SettingWindow.Tab6.Error3"));
+            Show(App.GetLanguage("SettingWindow.Tab6.Error3"));
             return;
         }
 

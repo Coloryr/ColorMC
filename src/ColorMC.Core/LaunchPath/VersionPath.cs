@@ -5,7 +5,6 @@ using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
-using System.Diagnostics.Metrics;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -143,7 +142,7 @@ public static class VersionPath
     /// <param name="obj">信息</param>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">加载器版本</param>
-    public static void AddGame(FabricLoaderObj obj,string array, string mc, string version)
+    public static void AddGame(FabricLoaderObj obj, string array, string mc, string version)
     {
         File.WriteAllText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"), array);
 

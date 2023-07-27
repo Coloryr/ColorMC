@@ -3,7 +3,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Add;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System;
 

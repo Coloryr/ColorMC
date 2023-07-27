@@ -42,7 +42,7 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public UserControl Con => this;
 
-    public string Title => 
+    public string Title =>
         string.Format(App.GetLanguage("GameEditWindow.Title"), _model1.Obj.Name);
 
     public GameEditControl() : this(new() { Empty = true })
@@ -127,9 +127,9 @@ public partial class GameEditControl : UserControl, IUserControl
                 case 8:
                     await _model12.Load();
                     break;
-                //case 9:
-                //    _model6.Load();
-                //    break;
+                    //case 9:
+                    //    _model6.Load();
+                    //    break;
             }
         }
     }

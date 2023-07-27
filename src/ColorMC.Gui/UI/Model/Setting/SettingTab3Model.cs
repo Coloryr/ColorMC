@@ -46,7 +46,7 @@ public partial class SettingTab3Model : BaseModel
 
     public SettingTab3Model(IUserControl con) : base(con)
     {
-        
+
     }
 
     partial void OnCheckFileChanged(bool value)

@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -109,7 +108,7 @@ public partial class GameEditTab4Model : GameEditModel
         }
         else
         {
-           Show(App.GetLanguage("GameEditWindow.Tab4.Info13"));
+            Show(App.GetLanguage("GameEditWindow.Tab4.Info13"));
         }
     }
 
@@ -122,7 +121,7 @@ public partial class GameEditTab4Model : GameEditModel
         ProgressClose();
         if (res == null)
         {
-           Show(App.GetLanguage("GameEditWindow.Tab4.Error1"));
+            Show(App.GetLanguage("GameEditWindow.Tab4.Error1"));
             return;
         }
 
@@ -134,8 +133,8 @@ public partial class GameEditTab4Model : GameEditModel
         count = list.Count(a => a.Count() > 1);
         if (count > 0)
         {
-           Show(string.Format(App
-                    .GetLanguage("GameEditWindow.Tab4.Info14"), count));
+            Show(string.Format(App
+                     .GetLanguage("GameEditWindow.Tab4.Info14"), count));
         }
         Load1();
     }

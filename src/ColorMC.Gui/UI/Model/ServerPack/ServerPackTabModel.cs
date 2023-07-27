@@ -1,6 +1,5 @@
 ﻿using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 

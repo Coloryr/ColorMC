@@ -1,7 +1,6 @@
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Styling;
 using System;
@@ -51,11 +50,11 @@ public partial class Tab7Control : UserControl
                 },
                 new KeyFrame
                 {
-                    Setters = 
-                    { 
-                        new Setter 
-                        { 
-                            Property = OpacityProperty, 
+                    Setters =
+                    {
+                        new Setter
+                        {
+                            Property = OpacityProperty,
                             Value = 1.0d
                         } ,
                         new Setter

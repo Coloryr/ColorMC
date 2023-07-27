@@ -529,7 +529,7 @@ public partial class AddControlModel : BaseModel, IAddWindow
     }
 
     public async void Install1(FileDisplayObj data)
-    { 
+    {
         var type = SourceTypeList[DownloadSource];
         if (Set)
         {

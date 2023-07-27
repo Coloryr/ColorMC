@@ -21,7 +21,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     Info6Control IBaseWindow.TextInfo => Info6;
     HeadControl IBaseWindow.Head => Head;
     Info5Control IBaseWindow.ComboInfo => Info5;
-   public IUserControl Con { get; set; }
+    public IUserControl Con { get; set; }
 
     private bool _isClose;
 

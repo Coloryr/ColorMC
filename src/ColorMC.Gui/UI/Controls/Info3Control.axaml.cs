@@ -72,7 +72,7 @@ public partial class Info3Control : UserControl
         App.CrossFade300.Start(this, null, CancellationToken.None);
     }
 
-    public async Task<(bool Cancel, string? Text1, string? Text2)> 
+    public async Task<(bool Cancel, string? Text1, string? Text2)>
         ShowInput(string title, string title1, bool password)
     {
         _display = true;
@@ -94,14 +94,14 @@ public partial class Info3Control : UserControl
         Button_Cancel.IsVisible = true;
 
         TextBox_Text1.PasswordChar = password ? '*' : (char)0;
-         _ = App.CrossFade300.Start(null, this, CancellationToken.None);
+        _ = App.CrossFade300.Start(null, this, CancellationToken.None);
 
         _cancelCall = null;
 
-         await Task.Run(() =>
-        {
-            _semaphore.WaitOne();
-        });
+        await Task.Run(() =>
+       {
+           _semaphore.WaitOne();
+       });
 
         return (Cancel, TextBox_Text.Text, TextBox_Text1.Text);
     }
@@ -190,7 +190,7 @@ public partial class Info3Control : UserControl
             Button_Cancel.IsEnabled = true;
             Button_Cancel.IsVisible = true;
         }
-        _=App.CrossFade300.Start(null, this, CancellationToken.None);
+        _ = App.CrossFade300.Start(null, this, CancellationToken.None);
 
         if (!lock1)
         {
@@ -204,7 +204,7 @@ public partial class Info3Control : UserControl
         return (Cancel, TextBox_Text.Text);
     }
 
-    public async Task<(bool Cancel, string? Text1, string? Text2)> 
+    public async Task<(bool Cancel, string? Text1, string? Text2)>
         ShowEdit(string title, string data)
     {
         _display = true;

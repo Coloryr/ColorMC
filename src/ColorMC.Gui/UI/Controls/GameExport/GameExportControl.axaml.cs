@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using System.Threading;
 
@@ -19,7 +18,7 @@ public partial class GameExportControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
     public UserControl Con => this;
-    public string Title => 
+    public string Title =>
         string.Format(App.GetLanguage("GameEditWindow.Title"), "");
 
     public GameExportControl() : this(new() { Empty = true })
@@ -32,7 +31,7 @@ public partial class GameExportControl : UserControl, IUserControl
         InitializeComponent();
 
         if (!obj.Empty)
-        { 
+        {
         }
 
         //Tabs.SelectionChanged += Tabs_SelectionChanged;
@@ -48,7 +47,7 @@ public partial class GameExportControl : UserControl, IUserControl
         {
             switch (Tabs.SelectedIndex)
             {
-                
+
             }
         }
     }

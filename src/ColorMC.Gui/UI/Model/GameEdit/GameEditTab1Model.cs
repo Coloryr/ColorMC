@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using AvaloniaEdit.Utils;
+﻿using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;

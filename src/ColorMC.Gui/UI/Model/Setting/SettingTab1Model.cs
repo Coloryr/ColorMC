@@ -19,7 +19,7 @@ public partial class SettingTab1Model : BaseModel
 
     public SettingTab1Model(IUserControl con) : base(con)
     {
-        
+
     }
 
     [RelayCommand]

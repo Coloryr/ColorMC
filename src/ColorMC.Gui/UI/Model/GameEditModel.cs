@@ -1,6 +1,5 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model;
 

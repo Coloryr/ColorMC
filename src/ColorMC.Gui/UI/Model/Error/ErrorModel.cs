@@ -26,7 +26,7 @@ public partial class ErrorModel : BaseModel
     public ErrorModel(IUserControl con, string data, string e, bool close) : base(con)
     {
         _text = new TextDocument($"{data}{Environment.NewLine}{e}");
-;
+        ;
         Close = close;
     }
 

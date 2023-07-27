@@ -60,12 +60,12 @@ public class SelfPageSlide : IPageTransition
                     {
                         new KeyFrame
                         {
-                            Setters = 
-                            { 
-                                new Setter 
-                                { 
-                                    Property = translateProperty, 
-                                    Value = 0d 
+                            Setters =
+                            {
+                                new Setter
+                                {
+                                    Property = translateProperty,
+                                    Value = 0d
                                 },
                                 new Setter
                                 {
@@ -146,12 +146,12 @@ public class SelfPageSlide : IPageTransition
                         },
                         new KeyFrame
                         {
-                            Setters = 
-                            { 
-                                new Setter 
-                                { 
-                                    Property = translateProperty, 
-                                    Value = 0d 
+                            Setters =
+                            {
+                                new Setter
+                                {
+                                    Property = translateProperty,
+                                    Value = 0d
                                 }
                             },
                             Cue = new Cue(1d)

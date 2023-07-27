@@ -42,7 +42,7 @@ public partial class Info5Control : UserControl
         App.CrossFade300.Start(this, null, CancellationToken.None);
     }
 
-    public async Task<(bool Cancel, int Index, string? Item)> 
+    public async Task<(bool Cancel, int Index, string? Item)>
         Show(string title, List<string> list)
     {
         _display = true;
