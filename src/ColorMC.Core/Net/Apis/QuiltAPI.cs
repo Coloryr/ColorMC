@@ -117,7 +117,7 @@ public static class QuiltAPI
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
-    public static async Task<QuiltLoaderObj?> GetLoader(string mc, string version, SourceLocal? local = null)
+    public static async Task<string?> GetLoader(string mc, string version, SourceLocal? local = null)
     {
         try
         {
@@ -129,7 +129,7 @@ public static class QuiltAPI
                     new Exception(url), false);
                 return null;
             }
-            return JsonConvert.DeserializeObject<QuiltLoaderObj>(data.Item2!);
+            return data.Item2;
         }
         catch (Exception e)
         {

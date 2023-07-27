@@ -143,15 +143,22 @@ public static class VersionPath
     /// <param name="obj">信息</param>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">加载器版本</param>
-    public static void AddGame(FabricLoaderObj obj, string mc, string version)
+    public static void AddGame(FabricLoaderObj obj,string array, string mc, string version)
     {
-        File.WriteAllText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"),
-            JsonConvert.SerializeObject(obj));
+        File.WriteAllText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"), array);
 
         var key = $"{mc}-{version}";
         s_fabricLoaders.Add(key, obj);
     }
 
+    /// <summary>
+    /// 添加Forge启动信息
+    /// </summary>
+    /// <param name="obj">信息</param>
+    /// <param name="array">文本</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">加载器版本</param>
+    /// <param name="neo">是否为NeoForge</param>
     public static void AddGame(ForgeLaunchObj obj, byte[] array, string mc, string version, bool neo)
     {
         string name = $"forge-{mc}-{version}";
@@ -166,6 +173,38 @@ public static class VersionPath
         {
             s_forgeLaunchs.Add(key, obj);
         }
+    }
+
+    /// <summary>
+    /// 添加Forge安装信息
+    /// </summary>
+    /// <param name="obj">信息</param>
+    /// <param name="array">文本</param>
+    /// <param name="mc">游戏版本</param>
+    /// <param name="version">加载器版本</param>
+    /// <param name="neo">是否为NeoForge</param>
+    public static void AddGame(ForgeInstallObj obj, byte[] array, string mc, string version, bool neo)
+    {
+        string name = $"forge-{mc}-{version}-install";
+        File.WriteAllBytes($"{(neo ? NeoForgeDir : ForgeDir)}/{name}.json", array);
+
+        var key = $"{mc}-{version}";
+        if (neo)
+        {
+            s_neoForgeInstalls.Add(key, obj);
+        }
+        else
+        {
+            s_forgeInstalls.Add(key, obj);
+        }
+    }
+
+    public static void AddGame(QuiltLoaderObj obj, string data, string mc, string version)
+    {
+        File.WriteAllText(Path.GetFullPath($"{FabricDir}/{obj.id}.json"), data);
+
+        var key = $"{mc}-{version}";
+        s_quiltLoaders.Add(key, obj);
     }
 
     /// <summary>

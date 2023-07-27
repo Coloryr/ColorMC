@@ -42,7 +42,7 @@ public static class FabricAPI
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
-    public static async Task<FabricLoaderObj?> GetLoader(string mc, string version, SourceLocal? local = null)
+    public static async Task<string?> GetLoader(string mc, string version, SourceLocal? local = null)
     {
         try
         {
@@ -54,7 +54,7 @@ public static class FabricAPI
                     new Exception(url), false);
                 return null;
             }
-            return JsonConvert.DeserializeObject<FabricLoaderObj>(data.Item2!);
+            return data.Item2;
         }
         catch (Exception e)
         {

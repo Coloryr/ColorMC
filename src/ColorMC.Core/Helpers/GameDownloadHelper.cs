@@ -139,6 +139,7 @@ public static class GameDownloadHelper
                 var array = stream1.ToArray();
                 var data = Encoding.UTF8.GetString(stream1.ToArray());
                 info = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
+                VersionPath.AddGame(info, array, mc, version, neo);
             }
             catch (Exception e)
             {
@@ -154,7 +155,7 @@ public static class GameDownloadHelper
                 var array = stream2.ToArray();
                 var data = Encoding.UTF8.GetString(array);
                 info1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
-                File.WriteAllBytes($"{(neo ? VersionPath.NeoForgeDir : VersionPath.ForgeDir)}/{name}-install.json", array);
+                VersionPath.AddGame(info1, array, mc, version, neo);
             }
             catch (Exception e)
             {
@@ -210,7 +211,7 @@ public static class GameDownloadHelper
                     }
                 }
 
-                File.WriteAllText($"{VersionPath.ForgeDir}/{name}.json", JsonConvert.SerializeObject(info));
+                VersionPath.AddGame(info, array1, mc, version, neo);
 
                 list.AddRange(GameHelper.MakeForgeLibs(info, mc, version, neo));
             }
@@ -268,13 +269,18 @@ public static class GameDownloadHelper
 
         version = fabric.version;
 
-        FabricLoaderObj? meta1 = await FabricAPI.GetLoader(mc, version, BaseClient.Source);
+        var data = await FabricAPI.GetLoader(mc, version, BaseClient.Source);
+        if (data == null)
+        {
+            return (GetDownloadState.GetInfo, null);
+        }
+        var meta1 = JsonConvert.DeserializeObject<FabricLoaderObj>(data);
         if (meta1 == null)
         {
             return (GetDownloadState.GetInfo, null);
         }
 
-        VersionPath.AddGame(meta1, mc, version);
+        VersionPath.AddGame(meta1, data, mc, version);
 
         foreach (var item in meta1.libraries)
         {
@@ -335,14 +341,18 @@ public static class GameDownloadHelper
 
         version = quilt.version;
 
-        QuiltLoaderObj? meta1 = await QuiltAPI.GetLoader(mc, version, BaseClient.Source);
+        var data = await QuiltAPI.GetLoader(mc, version, BaseClient.Source);
+        if (data == null)
+        {
+            return (GetDownloadState.GetInfo, null);
+        }
+        var meta1 = JsonConvert.DeserializeObject<QuiltLoaderObj>(data);
         if (meta1 == null)
         {
             return (GetDownloadState.GetInfo, null);
         }
 
-        File.WriteAllText(Path.GetFullPath($"{VersionPath.QuiltDir}/{meta1.id}.json"),
-            JsonConvert.SerializeObject(meta1));
+        VersionPath.AddGame(meta1, data, mc, version);
 
         foreach (var item in meta1.libraries)
         {
