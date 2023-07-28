@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
+using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -16,16 +17,23 @@ using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.UI.Windows;
+using Heijden.DNS;
+using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Formats.Tar;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Image = SixLabors.ImageSharp.Image;
 
@@ -762,12 +770,6 @@ public static class GameBinding
             return Task.CompletedTask;
 
         return world.ExportWorldZip(file);
-    }
-
-    public static Task ExportGame(GameSettingObj obj,
-        string file, List<string> filter, PackType pack)
-    {
-        return obj.Export(file, filter, pack);
     }
 
     public static async Task<List<ResourcepackDisplayObj>> GetResourcepacks(GameSettingObj obj)
@@ -1511,5 +1513,174 @@ public static class GameBinding
         {
             win1.Update();
         }
+    }
+
+    public static async Task<bool?> Export(IUserControl window, GameExportModel model)
+    {
+        if (model.Type == PackType.ColorMC)
+        {
+            var file = await BaseBinding.OpSave(TopLevel.GetTopLevel(window.Con),
+                   App.GetLanguage("GameEditWindow.Tab6.Info1"), 
+                   ".zip", $"{model.Obj.Name}.zip");
+            if (file == null)
+                return null;
+
+            var name = file.GetPath();
+            if (name == null)
+                return null;
+
+            try
+            {
+                await ZipUtils.ZipFile(model.Obj.GetBasePath(),
+                    name, model.Files.GetUnSelectItems());
+                BaseBinding.OpFile(name);
+                return true;
+            }
+            catch (Exception e)
+            {
+                string temp = App.GetLanguage("GameEditWindow.Tab6.Error1");
+                App.ShowError(temp, e);
+                Logs.Error(temp, e);
+                return false;
+            }
+        }
+        else if (model.Type == PackType.CurseForge)
+        {
+            var file = await BaseBinding.OpSave(TopLevel.GetTopLevel(window.Con),
+               App.GetLanguage("GameEditWindow.Tab6.Info1"),
+               ".zip", $"{model.Obj.Name}-{model.Obj.Version}.zip");
+            if (file == null)
+                return null;
+
+            var name = file.GetPath();
+            if (name == null)
+                return null;
+
+            var obj = new CurseForgePackObj()
+            {
+                name = model.Name,
+                author = model.Author,
+                version = model.Version,
+                manifestType = "minecraftModpack",
+                manifestVersion = 1,
+                overrides = "overrides",
+                minecraft = new()
+                {
+                    version = model.Obj.Version,
+                    modLoaders = new()
+                },
+                files = new()
+            };
+
+            if (model.Obj.Loader != Loaders.Normal)
+            {
+                obj.minecraft.modLoaders.Add(new()
+                {
+                    id = $"{model.Obj.Loader.GetName().ToLower()}-{model.Obj.LoaderVersion}",
+                    primary = true
+                });
+            }
+
+            foreach (var item in model.Mods)
+            {
+                if (item.Export)
+                {
+                    obj.files.Add(new()
+                    {
+                        fileID = int.Parse(item.FID!),
+                        projectID = int.Parse(item.PID!),
+                        required = true
+                    });
+                }
+            }
+
+            var data = await CurseForgeAPI.GetModsInfo(obj.files);
+            StringBuilder html = new();
+            html.AppendLine("<ul>");
+            if (data != null)
+            {
+                foreach (var item in data.data)
+                {
+                    html.AppendLine($"<li><a href=\"{item.links.websiteUrl}\">{item.name} (by {item.authors.GetString()})</a></li>");
+                }
+            }
+            html.AppendLine("</ul>");
+
+            var crc = new Crc32();
+
+            try
+            {
+                using var s = new ZipOutputStream(File.Create(name));
+                s.SetLevel(9); // 0 - store only to 9 - means best compression
+
+                //manifest.json
+                {
+                    byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj, Formatting.Indented));
+                    var entry = new ZipEntry("manifest.json")
+                    {
+                        DateTime = DateTime.Now,
+                        Size = buffer.Length
+                    };
+                    crc.Reset();
+                    crc.Update(buffer);
+                    entry.Crc = crc.Value;
+                    await s.PutNextEntryAsync(entry);
+                    await s.WriteAsync(buffer);
+                }
+
+                //modlist.html
+                {
+                    byte[] buffer = Encoding.UTF8.GetBytes(html.ToString());
+                    var entry = new ZipEntry("modlist.html")
+                    {
+                        DateTime = DateTime.Now,
+                        Size = buffer.Length
+                    };
+                    crc.Reset();
+                    crc.Update(buffer);
+                    entry.Crc = crc.Value;
+                    await s.PutNextEntryAsync(entry);
+                    await s.WriteAsync(buffer);
+                }
+
+                {
+                    var path = model.Obj.GetGamePath();
+
+                    foreach (var item in model.Files.GetSelectItems())
+                    {
+                        var name1 = item[path.Length..];
+                        name1 = name1.Replace("\\", "/");
+                        if (!name1.StartsWith('/'))
+                        {
+                            name1 = '/' + name1;
+                        }
+                        name1 = "overrides/" + name1 ;
+                        byte[] buffer = File.ReadAllBytes(item);
+                        var entry = new ZipEntry(name1)
+                        {
+                            DateTime = DateTime.Now,
+                            Size = buffer.Length
+                        };
+                        crc.Reset();
+                        crc.Update(buffer);
+                        entry.Crc = crc.Value;
+                        await s.PutNextEntryAsync(entry);
+                        await s.WriteAsync(buffer);
+                    }
+                }
+
+                await s.FinishAsync(CancellationToken.None);
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                string temp = App.GetLanguage("GameEditWindow.Tab6.Error1");
+                App.ShowError(temp, e);
+                Logs.Error(temp, e);
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -240,6 +240,7 @@ public static class LanguageHelper
         {
             Loaders.Normal => "Normal",
             Loaders.Forge => "Forge",
+            Loaders.NeoForge => "NeoForge",
             Loaders.Fabric => "Fabric",
             Loaders.Quilt => "Quilt",
             _ => "Unkown"

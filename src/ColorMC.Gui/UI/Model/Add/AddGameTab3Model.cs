@@ -27,7 +27,7 @@ public partial class AddGameTab3Model : AddGameControlModel
     {
         if (Directory.Exists(value))
         {
-            _model = new FilesPageViewModel(value, new()
+            _model = new FilesPageViewModel(value, true, new()
             { "assets", "libraries", "versions", "launcher_profiles.json" });
             Files = _model.Source;
         }

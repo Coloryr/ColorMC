@@ -13,6 +13,7 @@ public partial class GameExportControl : UserControl, IUserControl
 
     private readonly Tab1Control _tab1 = new();
     private readonly Tab2Control _tab2 = new();
+    private readonly Tab3Control _tab3 = new();
 
     private CancellationTokenSource _cancel = new();
 
@@ -87,6 +88,7 @@ public partial class GameExportControl : UserControl, IUserControl
         Window.SetTitle(Title);
 
         await _model.LoadMod();
+        _model.LoadFile();
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -98,6 +100,9 @@ public partial class GameExportControl : UserControl, IUserControl
                 break;
             case 1:
                 Go(_tab2);
+                break;
+            case 2:
+                Go(_tab3);
                 break;
         }
 

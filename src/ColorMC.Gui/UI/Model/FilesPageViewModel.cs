@@ -13,7 +13,7 @@ public class FilesPageViewModel : ObservableObject
     private readonly FileTreeNodeModel _root;
     public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; }
 
-    public FilesPageViewModel(string obj, List<string>? unselect = null)
+    public FilesPageViewModel(string obj, bool check, List<string>? unselect = null)
     {
         Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(Array.Empty<FileTreeNodeModel>())
         {
@@ -28,7 +28,7 @@ public class FilesPageViewModel : ObservableObject
                     }),
                 new HierarchicalExpanderColumn<FileTreeNodeModel>(
                     new TemplateColumn<FileTreeNodeModel>(
-                        App.GetLanguage("GameEditWindow.Tab6.Info4"),
+                        App.GetLanguage("GameExportWindow.Info3"),
                         "FileNameCell",
                         null,
                         new GridLength(1, GridUnitType.Star),
@@ -46,7 +46,7 @@ public class FilesPageViewModel : ObservableObject
                     x => x.HasChildren,
                     x => x.IsExpanded),
                 new TextColumn<FileTreeNodeModel, long?>(
-                    App.GetLanguage("GameEditWindow.Tab6.Info5"),
+                    App.GetLanguage("GameExportWindow.Info4"),
                     x => x.Size,
                     options: new TextColumnOptions<FileTreeNodeModel>
                     {
@@ -54,7 +54,7 @@ public class FilesPageViewModel : ObservableObject
                         CompareDescending = FileTreeNodeModel.SortDescending(x => x.Size),
                     }),
                 new TextColumn<FileTreeNodeModel, DateTimeOffset?>(
-                    App.GetLanguage("GameEditWindow.Tab6.Info6"),
+                    App.GetLanguage("GameExportWindow.Info5"),
                     x => x.Modified,
                     options: new TextColumnOptions<FileTreeNodeModel>
                     {
@@ -66,7 +66,7 @@ public class FilesPageViewModel : ObservableObject
 
         Source.RowSelection!.SingleSelect = false;
 
-        _root = new FileTreeNodeModel(obj, true, true);
+        _root = new FileTreeNodeModel(obj, true, check, true);
         Source.Items = new[] { _root };
 
         if (unselect != null)
@@ -87,6 +87,11 @@ public class FilesPageViewModel : ObservableObject
     public List<string> GetUnSelectItems()
     {
         return _root.GetUnSelectItems();
+    }
+
+    public List<string> GetSelectItems()
+    {
+        return _root.GetSelectItems();
     }
 
 

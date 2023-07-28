@@ -222,10 +222,20 @@ public static class ModPackHelper
                 loaders = Loaders.Forge;
                 loaderversion = item.id.Replace("forge-", "");
             }
+            else if (item.id.StartsWith("neoforge"))
+            {
+                loaders = Loaders.NeoForge;
+                loaderversion = item.id.Replace("neoforge-", "");
+            }
             else if (item.id.StartsWith("fabric"))
             {
                 loaders = Loaders.Fabric;
                 loaderversion = item.id.Replace("fabric-", "");
+            }
+            else if (item.id.StartsWith("quilt"))
+            {
+                loaders = Loaders.Quilt;
+                loaderversion = item.id.Replace("quilt-", "");
             }
         }
         if (string.IsNullOrWhiteSpace(name))

@@ -766,24 +766,6 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 导出
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="file">导出路径</param>
-    /// <param name="filter">过滤文件</param>
-    /// <param name="type">压缩包类型</param>
-    public static Task Export(this GameSettingObj obj,
-        string file, List<string> filter, PackType type)
-    {
-        switch (type)
-        {
-            case PackType.ColorMC:
-                return ZipUtils.ZipFile(obj.GetBasePath(), file, filter);
-        }
-        return Task.CompletedTask;
-    }
-
-    /// <summary>
     /// 导入整合包
     /// </summary>
     /// <param name="dir">压缩包路径</param>

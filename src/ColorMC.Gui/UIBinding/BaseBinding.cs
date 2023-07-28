@@ -933,28 +933,6 @@ public static class BaseBinding
                     Logs.Error(App.GetLanguage("GameEditWindow.Tab5.Error1"), e);
                     return false;
                 }
-            case FileType.Game:
-                file = await OpSave(window,
-                    App.GetLanguage("GameEditWindow.Tab6.Info1"), ".zip", "game.zip");
-                if (file == null)
-                    break;
-
-                try
-                {
-                    var name = file.GetPath();
-                    if (name == null)
-                        return null;
-
-                    await GameBinding.ExportGame((arg![0] as GameSettingObj)!, name,
-                        (arg[1] as List<string>)!, (PackType)arg[2]);
-                    OpFile(name);
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(App.GetLanguage("GameEditWindow.Tab6.Error1"), e);
-                    return false;
-                }
             case FileType.UI:
                 file = await OpSave(window,
                     App.GetLanguage("SettingWindow.Tab6.Info1"), ".axaml", "ui.axaml");

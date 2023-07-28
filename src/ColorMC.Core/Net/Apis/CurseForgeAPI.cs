@@ -306,6 +306,36 @@ public static class CurseForgeAPI
     }
 
     /// <summary>
+    /// 获取Mod信息
+    /// </summary>
+    public static async Task<CurseForgeObjList?> GetModsInfo(List<CurseForgePackObj.Files> obj)
+    {
+        try
+        {
+            string temp = $"{UrlHelper.CurseForge}mods";
+            var arg1 = new { modIds = new List<long>(), filterPcOnly = true };
+            obj.ForEach(a => arg1.modIds.Add(a.projectID));
+            HttpRequestMessage httpRequest = new()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(temp),
+                Content = new StringContent(JsonConvert.SerializeObject(arg1), MediaTypeHeaderValue.Parse("application/json"))
+            };
+            httpRequest.Headers.Add("x-api-key", CurseForgeKEY);
+            var data = await BaseClient.DownloadClient.SendAsync(httpRequest);
+            var data1 = await data.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(data1))
+                return null;
+            return JsonConvert.DeserializeObject<CurseForgeObjList>(data1);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error6"), e);
+            return null;
+        }
+    }
+
+    /// <summary>
     /// 获取文件列表
     /// </summary>
     public static async Task<CurseForgeFileObj?> GetCurseForgeFiles(string id, string? mc, int page = 0, Loaders loader = Loaders.Normal)

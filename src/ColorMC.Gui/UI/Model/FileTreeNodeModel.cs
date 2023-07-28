@@ -30,12 +30,13 @@ public partial class FileTreeNodeModel : ObservableObject
     public FileTreeNodeModel(
             string path,
             bool isDirectory,
+            bool check = true,
             bool isRoot = false)
     {
         _path = path;
         _name = isRoot ? path : System.IO.Path.GetFileName(Path);
         _isExpanded = isRoot;
-        _isChecked = true;
+        _isChecked = check;
         IsDirectory = isDirectory;
         HasChildren = isDirectory;
 
@@ -47,7 +48,7 @@ public partial class FileTreeNodeModel : ObservableObject
         }
         else
         {
-            LoadChildren();
+            LoadChildren(check);
         }
     }
 
@@ -69,7 +70,7 @@ public partial class FileTreeNodeModel : ObservableObject
         }
     }
 
-    private void LoadChildren()
+    private void LoadChildren(bool check)
     {
         Children.Clear();
         if (!IsDirectory)
@@ -78,20 +79,21 @@ public partial class FileTreeNodeModel : ObservableObject
         }
 
         var options = new EnumerationOptions { IgnoreInaccessible = true };
-        var result = new ObservableCollection<FileTreeNodeModel>();
 
         foreach (var d in Directory.EnumerateDirectories(Path, "*", options))
         {
-            Children.Add(new FileTreeNodeModel(d, true));
+            Children.Add(new FileTreeNodeModel(d, true, check));
         }
 
         foreach (var f in Directory.EnumerateFiles(Path, "*", options))
         {
-            Children.Add(new FileTreeNodeModel(f, false));
+            Children.Add(new FileTreeNodeModel(f, false, check));
         }
 
         if (Children.Count == 0)
+        {
             HasChildren = false;
+        }
     }
 
     public static Comparison<FileTreeNodeModel?> SortAscending<T>(Func<FileTreeNodeModel, T> selector)
@@ -144,6 +146,25 @@ public partial class FileTreeNodeModel : ObservableObject
         }
 
         if (!IsChecked && !IsDirectory)
+        {
+            list.Add(System.IO.Path.GetFullPath(Path));
+        }
+
+        return list;
+    }
+
+    public List<string> GetSelectItems()
+    {
+        var list = new List<string>();
+        if (Children != null)
+        {
+            foreach (var item in Children)
+            {
+                list.AddRange(item.GetSelectItems());
+            }
+        }
+
+        if (IsChecked && !IsDirectory)
         {
             list.Add(System.IO.Path.GetFullPath(Path));
         }

@@ -15,40 +15,9 @@
                 Width="200"
                 Height="25"
                 Command="{Binding Export}"
-                Content="{setting:Localize GameExportWindow.Tab1.Text5}" />
+                Content="{setting:Localize GameExportWindow.Tab1.Text2}" />
         </StackPanel>
-        <!--<Panel DockPanel.Dock="Top">
-            <Label Content="{setting:Localize GameEditWindow.Tab6.Text1}" />
-            <Button
-                Width="160"
-                Height="25"
-                HorizontalAlignment="Right"
-                Content="{setting:Localize GameEditWindow.Tab6.Text2}"
-                IsEnabled="{Binding !IsGameRun}" />
-        </Panel>
-        <TreeDataGrid Margin="3" Source="{Binding Source}">
-            <TreeDataGrid.Resources>
-                <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
-                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
-                </DataTemplate>
-                <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
-                    <StackPanel Orientation="Horizontal">
-                        <Label
-                            Width="30"
-                            VerticalAlignment="Center"
-                            HorizontalContentAlignment="Center">
-                            <Label.Content>
-                                <MultiBinding Converter="{x:Static vm:FilesPageViewModel.FileIconConverter}">
-                                    <Binding Path="IsDirectory" />
-                                    <Binding Path="IsExpanded" />
-                                </MultiBinding>
-                            </Label.Content>
-                        </Label>
-                        <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
-                    </StackPanel>
-                </DataTemplate>
-            </TreeDataGrid.Resources>
-        </TreeDataGrid>-->
+
         <StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label
@@ -60,18 +29,24 @@
                     ItemsSource="{Binding ExportTypes}"
                     SelectedIndex="{Binding Type}" />
             </StackPanel>
-            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                <Label Content="{setting:Localize GameExportWindow.Tab1.Text2}" />
-                <Label Content="0" />
-            </StackPanel>
-            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                <Label Content="{setting:Localize GameExportWindow.Tab1.Text3}" />
-                <Label Content="0" />
-            </StackPanel>
-            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                <Label Content="{setting:Localize GameExportWindow.Tab1.Text4}" />
-                <Label Content="0" />
-            </StackPanel>
+            <TextBox
+                Margin="0,5,5,0"
+                Classes="input1"
+                IsEnabled="{Binding EnableInput1}"
+                Text="{Binding Name}"
+                Watermark="{setting:Localize GameExportWindow.Tab1.Text3}" />
+            <TextBox
+                Margin="0,5,0,0"
+                Classes="input1"
+                IsEnabled="{Binding EnableInput1}"
+                Text="{Binding Version}"
+                Watermark="{setting:Localize GameExportWindow.Tab1.Text4}" />
+            <TextBox
+                Margin="0,5,0,0"
+                Classes="input1"
+                IsEnabled="{Binding EnableInput1}"
+                Text="{Binding Author}"
+                Watermark="{setting:Localize GameExportWindow.Tab1.Text5}" />
         </StackPanel>
     </DockPanel>
 </UserControl>
