@@ -5,8 +5,73 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    Welcome to Avalonia!
+    <DockPanel Margin="5,0,5,5">
+        <StackPanel DockPanel.Dock="Bottom">
+            <Button
+                Width="200"
+                Height="25"
+                Command="{Binding Export}"
+                Content="{setting:Localize GameExportWindow.Tab1.Text5}" />
+        </StackPanel>
+        <!--<Panel DockPanel.Dock="Top">
+            <Label Content="{setting:Localize GameEditWindow.Tab6.Text1}" />
+            <Button
+                Width="160"
+                Height="25"
+                HorizontalAlignment="Right"
+                Content="{setting:Localize GameEditWindow.Tab6.Text2}"
+                IsEnabled="{Binding !IsGameRun}" />
+        </Panel>
+        <TreeDataGrid Margin="3" Source="{Binding Source}">
+            <TreeDataGrid.Resources>
+                <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
+                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+                </DataTemplate>
+                <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="30"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center">
+                            <Label.Content>
+                                <MultiBinding Converter="{x:Static vm:FilesPageViewModel.FileIconConverter}">
+                                    <Binding Path="IsDirectory" />
+                                    <Binding Path="IsExpanded" />
+                                </MultiBinding>
+                            </Label.Content>
+                        </Label>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </TreeDataGrid.Resources>
+        </TreeDataGrid>-->
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize GameExportWindow.Tab1.Text1}" />
+                <ComboBox
+                    Width="200"
+                    ItemsSource="{Binding ExportTypes}"
+                    SelectedIndex="{Binding Type}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                <Label Content="{setting:Localize GameExportWindow.Tab1.Text2}" />
+                <Label Content="0" />
+            </StackPanel>
+            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                <Label Content="{setting:Localize GameExportWindow.Tab1.Text3}" />
+                <Label Content="0" />
+            </StackPanel>
+            <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                <Label Content="{setting:Localize GameExportWindow.Tab1.Text4}" />
+                <Label Content="0" />
+            </StackPanel>
+        </StackPanel>
+    </DockPanel>
 </UserControl>

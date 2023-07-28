@@ -277,6 +277,12 @@ public partial class GameEditTab1Model : GameEditModel
     }
 
     [RelayCommand]
+    public void ExportGame()
+    {
+        App.ShowGameExport(Obj);
+    }
+
+    [RelayCommand]
     public async Task CheckModPackUpdate()
     {
         if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))

@@ -492,7 +492,9 @@ public static class GameBinding
         var list = new List<ModDisplayModel>();
         var list1 = await obj.GetMods();
         if (list1 == null)
+        {
             return list;
+        }
 
         list1.ForEach(item =>
         {

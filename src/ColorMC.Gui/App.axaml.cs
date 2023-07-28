@@ -23,6 +23,7 @@ using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Controls.GameEdit;
+using ColorMC.Gui.UI.Controls.GameExport;
 using ColorMC.Gui.UI.Controls.GameLog;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.ServerPack;
@@ -74,10 +75,11 @@ public partial class App : Application
     public readonly static Dictionary<string, AddControl> AddWindows = new();
     public readonly static Dictionary<string, ServerPackControl> ServerPackWindows = new();
     public readonly static Dictionary<string, GameLogControl> GameLogWindows = new();
+    public readonly static Dictionary<string, GameExportControl> GameExportWindows = new();
 
-    public static readonly CrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
-    public static readonly CrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
-    public static readonly CrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));
+    public static readonly SelfCrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
+    public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
+    public static readonly SelfCrossFade CrossFade100 = new(TimeSpan.FromMilliseconds(100));
     public static readonly SelfPageSlide PageSlide500 = new(TimeSpan.FromMilliseconds(500));
 
     public static event Action? PicUpdate;
@@ -634,6 +636,20 @@ public partial class App : Application
         {
             CountWindow = new();
             AWindow(CountWindow);
+        }
+    }
+
+    public static void ShowGameExport(GameSettingObj obj)
+    {
+        if (GameExportWindows.TryGetValue(obj.UUID, out var value))
+        {
+            value.Window.Activate();
+        }
+        else
+        {
+            var con = new GameExportControl(obj);
+            GameExportWindows.Add(obj.UUID, con);
+            AWindow(con);
         }
     }
 

@@ -1,0 +1,98 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.GameExport.Tab2Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <DockPanel Margin="5,0,5,5">
+        <DockPanel DockPanel.Dock="Top">
+            <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
+                <Button
+                    Name="Button_R"
+                    Width="25"
+                    Height="25"
+                    Command="{Binding LoadMod}"
+                    Content="R" />
+                <Button
+                    Name="Button_R1"
+                    Width="100"
+                    Height="25"
+                    Command="{Binding LoadMod}"
+                    Content="{setting:Localize Button.Refash}"
+                    IsVisible="False"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text55}"
+                    ToolTip.VerticalOffset="-30" />
+            </Panel>
+            <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
+                <Button
+                    Name="Button_O"
+                    Width="25"
+                    Height="25"
+                    Command="{Binding OpenMod}"
+                    Content="O" />
+                <Button
+                    Name="Button_O1"
+                    Width="100"
+                    Height="25"
+                    Command="{Binding OpenMod}"
+                    Content="{setting:Localize Button.OpFile}"
+                    IsVisible="False"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
+            </Panel>
+            <Label VerticalAlignment="Center" Content="{setting:Localize GameEditWindow.Tab4.Text2}" />
+            <ComboBox
+                Width="150"
+                Margin="5,0,0,0"
+                VerticalAlignment="Center"
+                ItemsSource="{Binding FilterList}"
+                SelectedIndex="{Binding Filter}" />
+            <TextBox
+                Margin="5,0,0,0"
+                Classes="input1"
+                Text="{Binding Text}"
+                Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
+        </DockPanel>
+
+        <DataGrid
+            Name="DataGrid1"
+            Margin="0,3,0,0"
+            AutoGenerateColumns="False"
+            Background="{setting:Colors TranBack}"
+            CanUserResizeColumns="True"
+            CanUserSortColumns="False"
+            HorizontalScrollBarVisibility="Visible"
+            ItemsSource="{Binding Mods}"
+            SelectedItem="{Binding SelectMod}"
+            VerticalScrollBarVisibility="Visible">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn
+                    Binding="{Binding Export}"
+                    Header="{setting:Localize GameExportWindow.Tab2.DataGrid.Text1}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Name}"
+                    Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text2}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Modid}"
+                    Header="modid"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Source}"
+                    Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text8}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}" />
+                <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}" />
+                <DataGridTextColumn
+                    Binding="{Binding Local}"
+                    Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text4}"
+                    IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

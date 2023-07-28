@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel : ServerPackTabModel
+public partial class ServerPackModel : ServerPackBaseModel
 {
     public ServerPackModel(IUserControl con, ServerPackObj obj) : base(con, obj)
     {

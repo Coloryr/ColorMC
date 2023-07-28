@@ -65,7 +65,7 @@ public class MainFlyout
 
     private void Button8_Click()
     {
-        App.ShowGameEdit(_obj.Obj, GameEditWindowType.Export);
+        App.ShowGameExport(_obj.Obj);
     }
 
     private void Button7_Click()

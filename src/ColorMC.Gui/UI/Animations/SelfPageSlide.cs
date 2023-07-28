@@ -57,49 +57,49 @@ public class SelfPageSlide : IPageTransition
                 Easing = SlideEasing,
                 FillMode = FillMode.Forward,
                 Children =
+                {
+                    new KeyFrame
                     {
-                        new KeyFrame
+                        Setters =
                         {
-                            Setters =
+                            new Setter
                             {
-                                new Setter
-                                {
-                                    Property = translateProperty,
-                                    Value = 0d
-                                },
-                                new Setter
-                                {
-                                    Property = Visual.OpacityProperty,
-                                    Value = 1.0d
-                                }
+                                Property = translateProperty,
+                                Value = 0d
                             },
-                            Cue = new Cue(0d)
+                            new Setter
+                            {
+                                Property = Visual.OpacityProperty,
+                                Value = 1.0d
+                            }
                         },
-                        new KeyFrame
-                        {
-                            Setters =
-                            {
-                                new Setter
-                                {
-                                    Property = Visual.OpacityProperty,
-                                    Value = 0d
-                                }
-                            },
-                            Cue = new Cue(0.5d)
-                        },
-                        new KeyFrame
-                        {
-                            Setters =
-                            {
-                                new Setter
-                                {
-                                    Property = translateProperty,
-                                    Value = end
-                                }
-                            },
-                            Cue = new Cue(1d)
-                        }
+                        Cue = new Cue(0d)
                     },
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter
+                            {
+                                Property = Visual.OpacityProperty,
+                                Value = 0d
+                            }
+                        },
+                        Cue = new Cue(0.5d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter
+                            {
+                                Property = translateProperty,
+                                Value = end
+                            }
+                        },
+                        Cue = new Cue(1d)
+                    }
+                },
                 Duration = Duration
             };
             tasks.Add(animation.RunAsync(from, cancellationToken));
@@ -114,49 +114,49 @@ public class SelfPageSlide : IPageTransition
                 FillMode = FillMode.Forward,
                 Easing = SlideEasing,
                 Children =
+                {
+                    new KeyFrame
                     {
-                        new KeyFrame
+                        Setters =
                         {
-                            Setters =
+                            new Setter
                             {
-                                new Setter
-                                {
-                                    Property = translateProperty,
-                                    Value = end
-                                },
-                                new Setter
-                                {
-                                    Property = Visual.OpacityProperty,
-                                    Value = 0.0d
-                                }
+                                Property = translateProperty,
+                                Value = end
                             },
-                            Cue = new Cue(0d)
+                            new Setter
+                            {
+                                Property = Visual.OpacityProperty,
+                                Value = 0.0d
+                            }
                         },
-                        new KeyFrame
-                        {
-                            Setters =
-                            {
-                                new Setter
-                                {
-                                    Property = Visual.OpacityProperty,
-                                    Value = 0d
-                                }
-                            },
-                            Cue = new Cue(0.5d)
-                        },
-                        new KeyFrame
-                        {
-                            Setters =
-                            {
-                                new Setter
-                                {
-                                    Property = translateProperty,
-                                    Value = 0d
-                                }
-                            },
-                            Cue = new Cue(1d)
-                        }
+                        Cue = new Cue(0d)
                     },
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter
+                            {
+                                Property = Visual.OpacityProperty,
+                                Value = 0d
+                            }
+                        },
+                        Cue = new Cue(0.5d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter
+                            {
+                                Property = translateProperty,
+                                Value = 0d
+                            }
+                        },
+                        Cue = new Cue(1d)
+                    }
+                },
                 Duration = Duration
             };
             tasks.Add(animation.RunAsync(to, cancellationToken));

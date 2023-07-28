@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackTab3Model : ServerPackTabModel
+public partial class ServerPackTab3Model : ServerPackBaseModel
 {
     public ObservableCollection<ServerPackModDisplayModel> ModList { get; init; } = new();
 

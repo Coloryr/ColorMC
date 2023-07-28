@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackTab4Model : ServerPackTabModel
+public partial class ServerPackTab4Model : ServerPackBaseModel
 {
     public ObservableCollection<ServerPackConfigDisplayObj> ConfigList = new();
     public ObservableCollection<string> NameList = new();

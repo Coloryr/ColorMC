@@ -13,16 +13,7 @@ public enum SettingType
 /// </summary>
 public enum GameEditWindowType
 {
-    Normal, Mod, World, Export
-}
-
-/// <summary>
-/// 控件类型
-/// </summary>
-public enum ViewType
-{
-    Button, Label, ServerMotd,
-    GameItem, UsearHead, StackPanel, Grid, Image, Expander
+    Normal, Mod, World
 }
 
 public enum SkinType

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackTab1Model : ServerPackTabModel
+public partial class ServerPackTab1Model : ServerPackBaseModel
 {
     [ObservableProperty]
     private string _url;

@@ -4,25 +4,23 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model;
 
 /// <summary>
 /// Mod项目
 /// </summary>
-public partial class ModExportModel : ObservableObject
+public partial class ModDisplayModel : ObservableObject
 {
     [ObservableProperty]
-    private bool _export;
-    [ObservableProperty]
-    private string? _pID;
-    [ObservableProperty]
-    private string? _fID;
+    private bool _enable;
 
-    public string Name => Obj.name;
+    public string Name { get; set; }
     public string Modid => Obj.modid;
+    public string Version => Obj.version + (IsNew ? " " + App.GetLanguage("Gui.Info8") : "");
     public string Local => Obj.Local;
+    public string Author => Obj.authorList.MakeString();
+    public string? Url => Obj.url;
     public string Loader => Obj.Loader.GetName();
     public string Source
     {
@@ -35,16 +33,15 @@ public partial class ModExportModel : ObservableObject
         }
     }
 
-    partial void OnPIDChanged(string? value)
-    {
-        OnPropertyChanged(new PropertyChangedEventArgs(nameof(Source)));
-    }
+    public string? PID => Obj1?.ModId;
+    public string? FID => Obj1?.FileId;
 
-    partial void OnFIDChanged(string? value)
-    {
-        OnPropertyChanged(new PropertyChangedEventArgs(nameof(Source)));
-    }
-
+    public bool IsNew;
     public ModInfoObj? Obj1;
     public ModObj Obj;
+
+    public void LocalChange()
+    {
+        OnPropertyChanged(nameof(Local));
+    }
 }

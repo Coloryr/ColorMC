@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackTab2Model : ServerPackTabModel
+public partial class ServerPackTab2Model : ServerPackBaseModel
 {
     public ObservableCollection<ServerPackModDisplayModel> ModList { get; init; } = new();
 

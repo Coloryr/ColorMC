@@ -16,7 +16,6 @@ public partial class GameEditControl : UserControl, IUserControl
     private readonly Tab2Control _tab2 = new();
     private readonly Tab4Control _tab4 = new();
     private readonly Tab5Control _tab5 = new();
-    private readonly Tab6Control _tab6 = new();
     private readonly Tab8Control _tab8 = new();
     private readonly Tab9Control _tab9 = new();
     private readonly Tab10Control _tab10 = new();
@@ -29,7 +28,6 @@ public partial class GameEditControl : UserControl, IUserControl
     private readonly GameEditTab2Model _model2;
     private readonly GameEditTab4Model _model4;
     private readonly GameEditTab5Model _model5;
-    private readonly GameEditTab6Model _model6;
     private readonly GameEditTab8Model _model8;
     private readonly GameEditTab9Model _model9;
     private readonly GameEditTab10Model _model10;
@@ -67,9 +65,6 @@ public partial class GameEditControl : UserControl, IUserControl
 
             _model5 = new(this, obj);
             _tab5.DataContext = _model5;
-
-            _model6 = new(this, obj);
-            _tab6.DataContext = _model6;
 
             _model8 = new(this, obj);
             _tab8.DataContext = _model8;
@@ -127,9 +122,6 @@ public partial class GameEditControl : UserControl, IUserControl
                 case 8:
                     await _model12.Load();
                     break;
-                    //case 9:
-                    //    _model6.Load();
-                    //    break;
             }
         }
     }
@@ -168,9 +160,6 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case GameEditWindowType.World:
                 Tabs.SelectedIndex = 3;
-                break;
-            case GameEditWindowType.Export:
-                Tabs.SelectedIndex = 9;
                 break;
         }
     }
@@ -214,10 +203,6 @@ public partial class GameEditControl : UserControl, IUserControl
             case 8:
                 Go(_tab12);
                 await _model12.Load();
-                break;
-            case 9:
-                Go(_tab6);
-                _model6.Load();
                 break;
         }
 
