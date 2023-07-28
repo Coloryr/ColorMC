@@ -30,7 +30,6 @@ public partial class ModExportModel : ObservableObject
 
     public string Name => Obj.name;
     public string Modid => Obj.modid;
-    public string Local => Obj.Local;
     public string Loader => Obj.Loader.GetName();
     public SourceType? Source
     {

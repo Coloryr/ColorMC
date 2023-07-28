@@ -407,20 +407,21 @@ public static class ModPackHelper
         }
 
         //获取版本数据
-        if (!string.IsNullOrWhiteSpace(info.dependencies.forge))
+
+        if (info.dependencies.TryGetValue("forge", out var version))
         {
             obj.Loader = Loaders.Forge;
-            obj.LoaderVersion = info.dependencies.forge;
+            obj.LoaderVersion = version;
         }
-        else if (!string.IsNullOrWhiteSpace(info.dependencies.fabric_loader))
+        else if (info.dependencies.TryGetValue("fabric-loader", out version))
         {
             obj.Loader = Loaders.Fabric;
-            obj.LoaderVersion = info.dependencies.fabric_loader;
+            obj.LoaderVersion = version;
         }
-        else if (!string.IsNullOrWhiteSpace(info.dependencies.quilt_loader))
+        else if (info.dependencies.TryGetValue("quilt-loader", out version))
         {
             obj.Loader = Loaders.Quilt;
-            obj.LoaderVersion = info.dependencies.quilt_loader;
+            obj.LoaderVersion = version;
         }
 
         int length = "overrides".Length;
@@ -565,20 +566,20 @@ public static class ModPackHelper
         //获取版本数据
         Loaders loaders = Loaders.Normal;
         string loaderversion = "";
-        if (!string.IsNullOrWhiteSpace(info.dependencies.forge))
+        if (info.dependencies.TryGetValue("forge", out var version))
         {
             loaders = Loaders.Forge;
-            loaderversion = info.dependencies.forge;
+            loaderversion = version;
         }
-        else if (!string.IsNullOrWhiteSpace(info.dependencies.fabric_loader))
+        else if (info.dependencies.TryGetValue("fabric-loader", out version))
         {
             loaders = Loaders.Fabric;
-            loaderversion = info.dependencies.fabric_loader;
+            loaderversion = version;
         }
-        else if (!string.IsNullOrWhiteSpace(info.dependencies.quilt_loader))
+        else if (info.dependencies.TryGetValue("quilt-loader", out version))
         {
             loaders = Loaders.Quilt;
-            loaderversion = info.dependencies.quilt_loader;
+            loaderversion = version;
         }
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -590,7 +591,7 @@ public static class ModPackHelper
         {
             GroupName = group,
             Name = name,
-            Version = info.dependencies.minecraft,
+            Version = info.dependencies["minecraft"],
             ModPack = true,
             ModPackType = SourceType.Modrinth,
             Loader = loaders,

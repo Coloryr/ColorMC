@@ -15,7 +15,7 @@ public partial class FileTreeNodeModel : ObservableObject
     [ObservableProperty]
     private long? _size;
     [ObservableProperty]
-    private DateTimeOffset? _modified;
+    private string? _modified;
     [ObservableProperty]
     private bool _hasChildren = true;
     [ObservableProperty]
@@ -44,7 +44,7 @@ public partial class FileTreeNodeModel : ObservableObject
         {
             var info = new FileInfo(path);
             Size = info.Length;
-            Modified = info.LastWriteTimeUtc;
+            _modified = info.LastWriteTimeUtc.ToString("yyyy/MM/dd HH:mm:ss");
         }
         else
         {

@@ -53,7 +53,7 @@ public class FilesPageViewModel : ObservableObject
                         CompareAscending = FileTreeNodeModel.SortAscending(x => x.Size),
                         CompareDescending = FileTreeNodeModel.SortDescending(x => x.Size),
                     }),
-                new TextColumn<FileTreeNodeModel, DateTimeOffset?>(
+                new TextColumn<FileTreeNodeModel, string?>(
                     App.GetLanguage("GameExportWindow.Info5"),
                     x => x.Modified,
                     options: new TextColumnOptions<FileTreeNodeModel>

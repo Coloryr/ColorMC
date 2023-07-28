@@ -717,6 +717,7 @@
 	"GameExportWindow.Tab1.Text3": "整合包名字",
 	"GameExportWindow.Tab1.Text4": "整合包版本",
 	"GameExportWindow.Tab1.Text5": "作者",
+	"GameExportWindow.Tab1.Text6": "描述",
 	"GameExportWindow.Tab2.DataGrid.Text1": "在线下载",
 	"GameExportWindow.Info1": "正在导出实例",
 	"GameExportWindow.Info2": "实例导出成功",

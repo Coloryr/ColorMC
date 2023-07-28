@@ -44,9 +44,15 @@
             <TextBox
                 Margin="0,5,0,0"
                 Classes="input1"
-                IsEnabled="{Binding EnableInput1}"
+                IsEnabled="{Binding EnableInput3}"
                 Text="{Binding Author}"
                 Watermark="{setting:Localize GameExportWindow.Tab1.Text5}" />
+            <TextBox
+                Margin="0,5,0,0"
+                Classes="input1"
+                IsEnabled="{Binding EnableInput2}"
+                Text="{Binding Summary}"
+                Watermark="{setting:Localize GameExportWindow.Tab1.Text6}" />
         </StackPanel>
     </DockPanel>
 </UserControl>

@@ -1680,7 +1680,115 @@ public static class GameBinding
                 return false;
             }
         }
+        else if (model.Type == PackType.Modrinth)
+        {
+            var file = await BaseBinding.OpSave(TopLevel.GetTopLevel(window.Con),
+               App.GetLanguage("GameEditWindow.Tab6.Info1"),
+               ".zip", $"{model.Obj.Name}-{model.Obj.Version}.mrpack");
+            if (file == null)
+                return null;
 
+            var name = file.GetPath();
+            if (name == null)
+                return null;
+
+            var obj = new ModrinthPackObj()
+            {
+                formatVersion= 1,
+                name = model.Name,
+                versionId = model.Version,
+                summary = model.Summary,
+                files = new(),
+                dependencies = new()
+            };
+
+            obj.dependencies.Add("minecraft", model.Obj.Version);
+            switch (model.Obj.Loader)
+            {
+                case Loaders.Forge:
+                case Loaders.NeoForge:
+                    obj.dependencies.Add("forge", model.Obj.LoaderVersion!);
+                    break;
+                case Loaders.Fabric:
+                    obj.dependencies.Add("fabric-loader", model.Obj.LoaderVersion!);
+                    break;
+                case Loaders.Quilt:
+                    obj.dependencies.Add("quilt-loader", model.Obj.LoaderVersion!);
+                    break;
+            }
+
+            //foreach (var item in model.Mods)
+            //{
+            //    if (item.Export)
+            //    {
+            //        obj.files.Add(new()
+            //        {
+            //            fileID = int.Parse(item.FID!),
+            //            projectID = int.Parse(item.PID!),
+            //            required = true
+            //        });
+            //    }
+            //}
+
+            var crc = new Crc32();
+
+            try
+            {
+                using var s = new ZipOutputStream(File.Create(name));
+                s.SetLevel(9); // 0 - store only to 9 - means best compression
+
+                //manifest.json
+                {
+                    byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj, Formatting.Indented));
+                    var entry = new ZipEntry("modrinth.index.json")
+                    {
+                        DateTime = DateTime.Now,
+                        Size = buffer.Length
+                    };
+                    crc.Reset();
+                    crc.Update(buffer);
+                    entry.Crc = crc.Value;
+                    await s.PutNextEntryAsync(entry);
+                    await s.WriteAsync(buffer);
+                }
+
+                {
+                    var path = model.Obj.GetGamePath();
+
+                    foreach (var item in model.Files.GetSelectItems())
+                    {
+                        var name1 = item[path.Length..];
+                        name1 = name1.Replace("\\", "/");
+                        if (!name1.StartsWith('/'))
+                        {
+                            name1 = '/' + name1;
+                        }
+                        name1 = "overrides/" + name1;
+                        byte[] buffer = File.ReadAllBytes(item);
+                        var entry = new ZipEntry(name1)
+                        {
+                            DateTime = DateTime.Now,
+                            Size = buffer.Length
+                        };
+                        crc.Reset();
+                        crc.Update(buffer);
+                        entry.Crc = crc.Value;
+                        await s.PutNextEntryAsync(entry);
+                        await s.WriteAsync(buffer);
+                    }
+                }
+
+                await s.FinishAsync(CancellationToken.None);
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                string temp = App.GetLanguage("GameEditWindow.Tab6.Error1");
+                App.ShowError(temp, e);
+                Logs.Error(temp, e);
+                return false;
+            }
+        }
         return true;
     }
 }

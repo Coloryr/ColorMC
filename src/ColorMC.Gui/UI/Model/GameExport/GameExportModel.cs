@@ -23,7 +23,6 @@ public partial class GameExportModel : GameEditModel
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
 
-    public List<string> FilterList => LanguageUtils.GetFilter1Name();
     public List<string> ExportTypes => LanguageUtils.GetExportName();
 
     public ObservableCollection<ModExportModel> Mods { get; } = new();
@@ -42,12 +41,22 @@ public partial class GameExportModel : GameEditModel
     private string _version;
     [ObservableProperty]
     private string _author;
+    [ObservableProperty]
+    private string _summary;
 
     [ObservableProperty]
-    private int _filter;
+    private bool _cfEx;
+    [ObservableProperty]
+    private bool _moEx;
 
     [ObservableProperty]
     private bool _enableInput1;
+
+    [ObservableProperty]
+    private bool _enableInput2;
+
+    [ObservableProperty]
+    private bool _enableInput3;
 
     public readonly List<ModExportModel> Items = new();
 
@@ -58,9 +67,24 @@ public partial class GameExportModel : GameEditModel
 
     async partial void OnTypeChanged(PackType value)
     {
+        CfEx = value == PackType.CurseForge;
+        MoEx = value == PackType.Modrinth;
+
         EnableInput1 = value switch
         {
             PackType.CurseForge => true,
+            PackType.Modrinth => true,
+            _ => false
+        };
+
+        EnableInput3 = value switch
+        {
+            PackType.CurseForge => true,
+            _ => false
+        };
+
+        EnableInput2 = value switch
+        {
             PackType.Modrinth => true,
             _ => false
         };
@@ -160,23 +184,11 @@ public partial class GameExportModel : GameEditModel
         else
         {
             string fil = Text.ToLower();
-            switch (Filter)
-            {
-                case 0:
-                    var list = from item in Items
-                               where item.Name.ToLower().Contains(fil)
-                               select item;
-                    Mods.Clear();
-                    Mods.AddRange(list);
-                    break;
-                case 1:
-                    list = from item in Items
-                           where item.Local.ToLower().Contains(fil)
-                           select item;
-                    Mods.Clear();
-                    Mods.AddRange(list);
-                    break;
-            }
+            var list = from item in Items
+                       where item.Name.ToLower().Contains(fil)
+                       select item;
+            Mods.Clear();
+            Mods.AddRange(list);
         }
     }
 
