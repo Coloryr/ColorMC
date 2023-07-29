@@ -53,7 +53,8 @@
 
                 <Slider
                     Width="200"
-                    Margin="5,0,0,0"
+                    Height="40"
+                    Margin="5,-8,0,0"
                     HorizontalAlignment="Left"
                     Foreground="{setting:Colors Main}"
                     IsSnapToTickEnabled="True"
@@ -68,7 +69,34 @@
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Content="{Binding ButtonCornerRadius, StringFormat='{}{0}'}" />
+            </StackPanel>
 
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab2.Text41}" />
+
+                <Slider
+                    Width="200"
+                    Height="40"
+                    Margin="5,-8,0,0"
+                    HorizontalAlignment="Left"
+                    Foreground="{setting:Colors Main}"
+                    IsSnapToTickEnabled="True"
+                    LargeChange="1"
+                    Maximum="2000"
+                    Minimum="0"
+                    SmallChange="1"
+                    TickFrequency="1"
+                    Value="{Binding AmTime}" />
+                <Label
+                    Width="40"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{Binding AmTime, StringFormat='{}{0}'}" />
+
+                <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text42}" IsChecked="{Binding AmFade}" />
             </StackPanel>
 
             <!--  语言  -->
@@ -159,7 +187,8 @@
                 <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text4}" />
                 <Slider
                     Width="200"
-                    Margin="5,0,0,0"
+                    Height="40"
+                    Margin="5,-8,0,0"
                     HorizontalAlignment="Left"
                     Foreground="{setting:Colors Main}"
                     IsSnapToTickEnabled="True"
@@ -177,15 +206,19 @@
                 <Button
                     Width="80"
                     Height="25"
-                    Margin="10"
+                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Command="{Binding SetPic}"
                     Content="{setting:Localize Button.Set}" />
 
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text5}" />
+                <Label
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Content="{setting:Localize SettingWindow.Tab2.Text5}" />
                 <Slider
                     Width="200"
-                    Margin="5,0,0,0"
+                    Height="40"
+                    Margin="5,-8,0,0"
                     HorizontalAlignment="Left"
                     Foreground="{setting:Colors Main}"
                     IsSnapToTickEnabled="True"
@@ -203,7 +236,7 @@
                 <Button
                     Width="80"
                     Height="25"
-                    Margin="10"
+                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Command="{Binding SetPicTran}"
                     Content="{setting:Localize Button.Set}" />
@@ -216,7 +249,8 @@
                     IsChecked="{Binding EnablePicResize}" />
                 <Slider
                     Width="200"
-                    Margin="5,0,0,0"
+                    Height="40"
+                    Margin="5,-8,0,0"
                     HorizontalAlignment="Left"
                     Foreground="{setting:Colors Main}"
                     IsEnabled="{Binding EnablePicResize}"
@@ -235,7 +269,7 @@
                 <Button
                     Width="80"
                     Height="25"
-                    Margin="10"
+                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Content="{setting:Localize Button.Set}"
                     IsEnabled="{Binding EnablePicResize}" />
@@ -371,7 +405,8 @@
                 <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text34}" />
                 <Slider
                     Width="200"
-                    Margin="5,0,0,0"
+                    Height="40"
+                    Margin="5,-8,0,0"
                     HorizontalAlignment="Left"
                     Foreground="{setting:Colors Main}"
                     IsSnapToTickEnabled="True"
@@ -390,7 +425,8 @@
                 <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text35}" />
                 <Slider
                     Width="200"
-                    Margin="5,0,0,0"
+                    Height="40"
+                    Margin="5,-8,0,0"
                     HorizontalAlignment="Left"
                     Foreground="{setting:Colors Main}"
                     IsSnapToTickEnabled="True"
@@ -412,7 +448,8 @@
                 <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text14}" />
                 <Slider
                     Width="200"
-                    Margin="5,0,0,0"
+                    Height="40"
+                    Margin="5,-8,0,0"
                     HorizontalAlignment="Left"
                     Foreground="{setting:Colors Main}"
                     IsEnabled="{Binding EnableRGB}"
@@ -434,7 +471,8 @@
                     Content="{setting:Localize SettingWindow.Tab2.Text15}" />
                 <Slider
                     Width="200"
-                    Margin="5,0,0,0"
+                    Height="40"
+                    Margin="5,-8,0,0"
                     HorizontalAlignment="Left"
                     Foreground="{setting:Colors Main}"
                     IsEnabled="{Binding EnableRGB}"

@@ -42,6 +42,7 @@
 
     <Style Selector="TabItem">
         <Setter Property="FontSize" Value="22" />
+        <Setter Property="Padding" Value="8,0,8,0" />
     </Style>
 
     <Style Selector="TabItem /template/ Border#select_pipe">

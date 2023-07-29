@@ -73,6 +73,8 @@ public partial class SettingTab2Model : BaseModel
     private bool _mainWindowStateSave;
     [ObservableProperty]
     private bool _mainWindowMirror;
+    [ObservableProperty]
+    private bool _amFade;
 
     [ObservableProperty]
     private int _language;
@@ -94,6 +96,8 @@ public partial class SettingTab2Model : BaseModel
     private int _height;
     [ObservableProperty]
     private int _buttonCornerRadius;
+    [ObservableProperty]
+    private int _amTime;
 
     [ObservableProperty]
     private string? _pic;
@@ -113,12 +117,28 @@ public partial class SettingTab2Model : BaseModel
         }
     }
 
+    partial void OnAmFadeChanged(bool value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetStyle1(AmTime, AmFade);
+    }
+
+    partial void OnAmTimeChanged(int value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetStyle1(AmTime, AmFade);
+    }
+
     partial void OnButtonCornerRadiusChanged(int value)
     {
         if (_load)
             return;
 
-        ConfigBinding.SetStyle(value);
+        ConfigBinding.SetStyle(ButtonCornerRadius);
     }
 
     partial void OnMainWindowStateSaveChanged(bool value)
@@ -504,6 +524,8 @@ public partial class SettingTab2Model : BaseModel
             MainWindowStateSave = config.Item2.Gui.WindowStateSave;
 
             ButtonCornerRadius = config.Item2.Style.ButtonCornerRadius;
+            AmTime = config.Item2.Style.AmTime;
+            AmFade = config.Item2.Style.AmFade;
 
             Live2DModel = config.Item2.Live2D.Model;
             Height = config.Item2.Live2D.Height;

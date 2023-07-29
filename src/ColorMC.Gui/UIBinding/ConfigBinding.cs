@@ -6,6 +6,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -577,5 +578,15 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         StyleSel.Instance.Load();
+    }
+
+    public static void SetStyle1(int value, bool value1)
+    {
+        GuiConfigUtils.Config.Style ??= new();
+        GuiConfigUtils.Config.Style.AmTime = value;
+        GuiConfigUtils.Config.Style.AmFade = value1;
+        GuiConfigUtils.Save();
+
+        BaseBinding.LoadStyle();
     }
 }

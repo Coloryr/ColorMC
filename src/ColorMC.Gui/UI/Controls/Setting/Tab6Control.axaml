@@ -170,7 +170,8 @@
                     Content="{setting:Localize SettingWindow.Tab6.Text18}" />
                 <Slider
                     Width="200"
-                    Margin="5,0,0,0"
+                    Height="40"
+                    Margin="5,-8,0,0"
                     HorizontalAlignment="Left"
                     Foreground="{setting:Colors Main}"
                     IsEnabled="{Binding EnableMusic}"

@@ -8,6 +8,14 @@ public record StyleSetting
     /// 按钮圆角程度
     /// </summary>
     public int ButtonCornerRadius { get; set; }
+    /// <summary>
+    /// 页面切换动画时间
+    /// </summary>
+    public int AmTime { get; set; }
+    /// <summary>
+    /// 过度淡化
+    /// </summary>
+    public bool AmFade { get; set; }
 }
 
 public record MainWindowSetting

@@ -81,6 +81,13 @@ public static class BaseBinding
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
         StyleSel.Instance.Load();
+        LoadStyle();
+    }
+
+    public static void LoadStyle()
+    {
+        App.PageSlide500.Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime);
+        App.PageSlide500.Fade = GuiConfigUtils.Config.Style.AmFade;
     }
 
     private static Task<bool> LaunchP(bool pre)
@@ -771,7 +778,7 @@ public static class BaseBinding
     /// <returns>路径</returns>
     public static async Task<string?> OpPath(IBaseWindow window, FileType type)
     {
-        if (window is TopLevel top)
+        if (App.FindRoot(window) is TopLevel top)
         {
             return await OpPath(top, type);
         }
@@ -1008,13 +1015,9 @@ public static class BaseBinding
     /// <returns>路径</returns>
     public static async Task<string?> OpFile(IBaseWindow window, FileType type)
     {
-        if (window is TopLevel top)
+        if (App.FindRoot(window) is TopLevel top)
         {
             return await OpFile(top, type);
-        }
-        else if (window is AllControl all)
-        {
-            return await OpFile(all.TopWindow, type);
         }
 
         return null;

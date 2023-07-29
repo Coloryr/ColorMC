@@ -16,7 +16,7 @@
             DockPanel.Dock="Top"
             HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Disabled">
-            <TabControl Name="Tabs" Margin="-5,-5,-5,3">
+            <TabControl Name="Tabs" Margin="0,-5,0,3">
                 <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text1}" />
                 <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text2}" />
                 <TabItem Header="{setting:Localize GameEditWindow.Tabs.Text4}" />

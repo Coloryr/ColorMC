@@ -114,7 +114,7 @@ public partial class Live2dControl : UserControl
         {
             return;
         }
-        await App.CrossFade300.Start(null, TextBox1, _cancel.Token);
+        await App.CrossFade300.Start(null, Border1, _cancel.Token);
         if (_cancel.Token.IsCancellationRequested)
         {
             return;
@@ -124,6 +124,6 @@ public partial class Live2dControl : UserControl
         {
             return;
         }
-        await App.CrossFade300.Start(TextBox1, null, _cancel.Token);
+        await App.CrossFade300.Start(Border1, null, _cancel.Token);
     }
 }

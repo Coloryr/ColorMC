@@ -36,6 +36,8 @@ public class SelfPageSlide : IPageTransition
     /// </summary>
     public Easing SlideEasing { get; set; } = new CircularEaseInOut();
 
+    public bool Fade { get; set; }
+
     /// <inheritdoc />
     public virtual async Task Start(Visual? from, Visual? to, bool forward, CancellationToken cancellationToken)
     {
@@ -52,7 +54,7 @@ public class SelfPageSlide : IPageTransition
         if (from != null)
         {
             double end = forward ? -distance : distance;
-            var animation = new Animation
+            var animation = Fade ? new Animation
             {
                 Easing = SlideEasing,
                 FillMode = FillMode.Forward,
@@ -85,7 +87,7 @@ public class SelfPageSlide : IPageTransition
                                 Value = 0d
                             }
                         },
-                        Cue = new Cue(0.5d)
+                        Cue = new Cue(0.3d)
                     },
                     new KeyFrame
                     {
@@ -95,6 +97,53 @@ public class SelfPageSlide : IPageTransition
                             {
                                 Property = translateProperty,
                                 Value = end
+                            },
+                            new Setter
+                            {
+                                Property = Visual.OpacityProperty,
+                                Value = 0d
+                            }
+                        },
+                        Cue = new Cue(1d)
+                    }
+                },
+                Duration = Duration
+            } : new Animation
+            {
+                Easing = SlideEasing,
+                FillMode = FillMode.Forward,
+                Children =
+                {
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter
+                            {
+                                Property = translateProperty,
+                                Value = 0d
+                            },
+                            new Setter
+                            {
+                                Property = Visual.OpacityProperty,
+                                Value = 1.0d
+                            }
+                        },
+                        Cue = new Cue(0d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter
+                            {
+                                Property = translateProperty,
+                                Value = end
+                            },
+                            new Setter
+                            {
+                                Property = Visual.OpacityProperty,
+                                Value = 1.0d
                             }
                         },
                         Cue = new Cue(1d)
@@ -109,7 +158,7 @@ public class SelfPageSlide : IPageTransition
         {
             to.IsVisible = true;
             double end = forward ? distance : -distance;
-            var animation = new Animation
+            var animation = Fade ? new Animation
             {
                 FillMode = FillMode.Forward,
                 Easing = SlideEasing,
@@ -139,10 +188,10 @@ public class SelfPageSlide : IPageTransition
                             new Setter
                             {
                                 Property = Visual.OpacityProperty,
-                                Value = 0d
+                                Value = 1d
                             }
                         },
-                        Cue = new Cue(0.5d)
+                        Cue = new Cue(0.3d)
                     },
                     new KeyFrame
                     {
@@ -152,6 +201,53 @@ public class SelfPageSlide : IPageTransition
                             {
                                 Property = translateProperty,
                                 Value = 0d
+                            },
+                            new Setter
+                            {
+                                Property = Visual.OpacityProperty,
+                                Value = 1d
+                            }
+                        },
+                        Cue = new Cue(1d)
+                    },
+                },
+                Duration = Duration
+            } : new Animation
+            {
+                FillMode = FillMode.Forward,
+                Easing = SlideEasing,
+                Children =
+                {
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter
+                            {
+                                Property = translateProperty,
+                                Value = end
+                            },
+                            new Setter
+                            {
+                                Property = Visual.OpacityProperty,
+                                Value = 1.0d
+                            }
+                        },
+                        Cue = new Cue(0d)
+                    },
+                    new KeyFrame
+                    {
+                        Setters =
+                        {
+                            new Setter
+                            {
+                                Property = translateProperty,
+                                Value = 0d
+                            },
+                            new Setter
+                            {
+                                Property = Visual.OpacityProperty,
+                                Value = 1.0d
                             }
                         },
                         Cue = new Cue(1d)

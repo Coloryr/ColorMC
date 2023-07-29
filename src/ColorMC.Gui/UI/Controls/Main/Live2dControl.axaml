@@ -19,16 +19,21 @@
             Name="Label1"
             VerticalAlignment="Bottom"
             Content="Fps" />
-        <TextBox
-            Name="TextBox1"
+
+        <Border
+            Name="Border1"
             Margin="0,0,0,50"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
             Background="{setting:Colors Back}"
+            BorderBrush="Black"
+            BorderThickness="1"
             CornerRadius="30"
-            Foreground="{setting:Colors Font}"
-            IsReadOnly="True"
-            IsVisible="False"
-            Text="{Binding Message}" />
+            IsVisible="False">
+            <TextBlock
+                Margin="5"
+                Foreground="{setting:Colors Font}"
+                Text="{Binding Message}" />
+        </Border>
     </Panel>
 </UserControl>

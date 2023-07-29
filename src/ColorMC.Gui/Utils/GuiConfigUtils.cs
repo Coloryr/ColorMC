@@ -138,7 +138,8 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            ButtonCornerRadius = 3
+            ButtonCornerRadius = 3,
+            AmTime = 500
         };
     }
 
