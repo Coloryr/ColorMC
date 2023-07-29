@@ -6,6 +6,7 @@ namespace ColorMC.Gui.UI.Windows;
 
 public interface IBaseWindow
 {
+    public TopLevel? TopLevel { get; }
     public Info3Control InputInfo { get; }
     public Info1Control ProgressInfo { get; }
     public Info4Control OkInfo { get; }

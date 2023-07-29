@@ -3,6 +3,7 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UIBinding;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace ColorMC.Gui.Utils;
 public static class UpdateChecker
 {
     //private const string url = $"http://localhost/colormc/{ColorMCCore.TopVersion}/";
+    private const string _baseUrl = $"https://colormc.coloryr.com/colormc/";
     private const string url = $"https://colormc.coloryr.com/colormc/{ColorMCCore.TopVersion}/";
 
     public static readonly string[] WebSha1s = new string[4] { "", "", "", "" };
@@ -51,10 +53,28 @@ public static class UpdateChecker
     {
         try
         {
-            var data = await CheckOne();
-            if (data.Item1 == true)
+            var data = await BaseClient.DownloadClient.GetStringAsync(_baseUrl + "index.json");
+            var obj = JObject.Parse(data);
+            if (obj == null)
             {
-                var res = await App.HaveUpdate(data.Item2!);
+                App.ShowError(App.GetLanguage("Gui.Error21"), "Json Error");
+                return;
+            }
+
+            if (obj.TryGetValue("Version", out var temp) 
+                && ColorMCCore.TopVersion != temp.ToString())
+            {
+                var res = await App.HaveUpdate(obj["Text"]?.ToString());
+                if (!res)
+                {
+                    BaseBinding.OpUrl("https://colormc.coloryr.com/");
+                }
+                return;
+            }
+            var data1 = await CheckOne();
+            if (data1.Item1 == true)
+            {
+                var res = await App.HaveUpdate(data1.Item2!);
                 if (!res)
                 {
                     StartUpdate();

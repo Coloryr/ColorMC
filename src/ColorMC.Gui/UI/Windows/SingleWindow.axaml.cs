@@ -9,6 +9,8 @@ using System;
 namespace ColorMC.Gui.UI.Windows;
 public partial class SingleWindow : Window, IBaseWindow
 {
+    public TopLevel? TopLevel => this;
+
     public AllControl window1;
 
     Info3Control IBaseWindow.InputInfo => window1.Info3;

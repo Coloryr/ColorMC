@@ -14,6 +14,7 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class SelfBaseWindow : Window, IBaseWindow
 {
+    public TopLevel? TopLevel => this;
     Info3Control IBaseWindow.InputInfo => Info3;
     Info1Control IBaseWindow.ProgressInfo => Info1;
     Info4Control IBaseWindow.OkInfo => Info;

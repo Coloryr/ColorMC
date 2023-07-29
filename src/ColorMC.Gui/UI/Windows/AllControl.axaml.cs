@@ -22,7 +22,7 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class AllControl : UserControl, IUserControl, IBaseWindow
 {
-    public IBaseWindow TopWindow => App.FindRoot(this);
+    public TopLevel? TopLevel => TopLevel.GetTopLevel(this);
 
     private IUserControl _baseControl;
     private IUserControl _nowControl;

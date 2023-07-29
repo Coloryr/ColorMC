@@ -778,7 +778,8 @@ public static class BaseBinding
     /// <returns>路径</returns>
     public static async Task<string?> OpPath(IBaseWindow window, FileType type)
     {
-        if (App.FindRoot(window) is TopLevel top)
+        var top = window.TopLevel;
+        if (top != null)
         {
             return await OpPath(top, type);
         }
@@ -1015,7 +1016,8 @@ public static class BaseBinding
     /// <returns>路径</returns>
     public static async Task<string?> OpFile(IBaseWindow window, FileType type)
     {
-        if (App.FindRoot(window) is TopLevel top)
+        var top = window.TopLevel;
+        if (top != null)
         {
             return await OpFile(top, type);
         }
