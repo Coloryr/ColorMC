@@ -11,13 +11,13 @@
     <DockPanel>
         <Panel DockPanel.Dock="Bottom">
             <Button
-                Width="190"
+                Width="150"
                 Height="25"
                 Margin="5"
                 Command="{Binding AddPack}"
                 Content="{setting:Localize AddGameWindow.Tab1.Text10}" />
             <Button
-                Width="80"
+                Width="100"
                 Height="25"
                 Margin="5"
                 HorizontalAlignment="Right"

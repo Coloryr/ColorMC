@@ -149,6 +149,11 @@ public partial class GameEditControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+
+        _tab4.Opened();
+        _tab10.Opened();
+        _tab11.Opened();
+        _tab12.Opened();
     }
 
     public void SetType(GameEditWindowType type)

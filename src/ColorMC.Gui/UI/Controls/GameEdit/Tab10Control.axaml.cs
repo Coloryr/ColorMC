@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
+using ColorMC.Gui.Utils;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
@@ -31,6 +32,11 @@ public partial class Tab10Control : UserControl
                 _ = new GameEditFlyout5(this, (DataContext as GameEditTab10Model)!);
             });
         }
+    }
+
+    public void Opened()
+    {
+        DataGrid1.SetFontColor();
     }
 
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)

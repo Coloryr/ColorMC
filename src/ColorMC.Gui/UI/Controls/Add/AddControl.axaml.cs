@@ -154,6 +154,8 @@ public partial class AddControl : UserControl, IUserControl
         Window.SetTitle(Title);
 
         DataGridFiles.SetFontColor();
+        DataGrid1.SetFontColor();
+        DataGrid2.SetFontColor();
 
         _model.Display = true;
     }

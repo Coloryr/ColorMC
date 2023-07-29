@@ -44,7 +44,7 @@
                     Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
 
                 <Button
-                    Width="80"
+                    Width="100"
                     Height="25"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"

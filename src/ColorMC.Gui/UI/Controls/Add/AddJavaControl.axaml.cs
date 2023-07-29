@@ -3,6 +3,7 @@ using Avalonia.Input;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
@@ -39,6 +40,8 @@ public partial class AddJavaControl : UserControl, IUserControl
         Window.SetTitle(Title);
 
         _model.TypeIndex = 0;
+
+        DataGrid1.SetFontColor();
     }
 
     public void Closed()

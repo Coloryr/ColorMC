@@ -37,7 +37,7 @@ public partial class AddJavaControlModel : ObservableObject
     [ObservableProperty]
     private int _archIndex = -1;
     [ObservableProperty]
-    private bool _display = true;
+    private bool _display = false;
 
     private bool _load = true;
 

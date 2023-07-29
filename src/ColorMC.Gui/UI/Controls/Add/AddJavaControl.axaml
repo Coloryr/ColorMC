@@ -17,7 +17,6 @@
                 Content="{setting:Localize AddJavaWindow.Text1}" />
             <ComboBox
                 Width="120"
-                Height="30"
                 ItemsSource="{Binding JavaTypeList}"
                 SelectedIndex="{Binding TypeIndex}"
                 SelectedItem="{Binding JavaType}" />
@@ -28,7 +27,6 @@
                 Content="{setting:Localize AddJavaWindow.Text2}" />
             <ComboBox
                 Width="120"
-                Height="30"
                 ItemsSource="{Binding SystemList}"
                 SelectedItem="{Binding System}" />
 
@@ -38,7 +36,6 @@
                 Content="{setting:Localize AddJavaWindow.Text3}" />
             <ComboBox
                 Width="70"
-                Height="30"
                 ItemsSource="{Binding VersionList}"
                 SelectedItem="{Binding Version}" />
 
@@ -48,13 +45,12 @@
                 Content="{setting:Localize AddJavaWindow.Text4}" />
             <ComboBox
                 Width="100"
-                Height="30"
                 ItemsSource="{Binding ArchList}"
                 SelectedIndex="{Binding ArchIndex}"
                 SelectedItem="{Binding Arch}" />
 
             <Button
-                Width="80"
+                Width="100"
                 Height="30"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"

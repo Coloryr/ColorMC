@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Model.GameExport;
+using ColorMC.Gui.Utils;
 using System;
 
 namespace ColorMC.Gui.UI.Controls.GameExport;
@@ -16,6 +17,11 @@ public partial class Tab4Control : UserControl
         DataGrid1.CellPointerPressed += DataGrid1_Pressed;
 
         DataContextChanged += Tab4Control_DataContextChanged;
+    }
+
+    public void Opened()
+    {
+        DataGrid1.SetFontColor();
     }
 
     private void Tab4Control_DataContextChanged(object? sender, EventArgs e)

@@ -77,6 +77,9 @@ public partial class GameExportControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
+        _tab2.Opened();
+        _tab4.Opened();
+
         await _model.LoadMod();
         _model.LoadFile();
     }

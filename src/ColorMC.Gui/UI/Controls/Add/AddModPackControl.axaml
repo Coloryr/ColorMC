@@ -45,7 +45,7 @@
                         SelectedIndex="{Binding Categorie}" />
                     <Label
                         Width="80"
-                        Margin="10,5,5,5"
+                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize Text.GameVersion}" />
                     <ComboBox
@@ -88,7 +88,7 @@
                         SelectedIndex="{Binding SortType}" />
                     <Label
                         Width="80"
-                        Margin="10,5,5,5"
+                        Margin="5"
                         VerticalAlignment="Center"
                         Content="{setting:Localize AddModPackWindow.Text5}" />
                     <NumericUpDown
@@ -191,8 +191,8 @@
             <DataGrid
                 Name="DataGridFiles"
                 Background="{setting:Colors TranBack}"
-                ItemsSource="{Binding FileList}"
                 CanUserResizeColumns="True"
+                ItemsSource="{Binding FileList}"
                 SelectedItem="{Binding Item}">
                 <DataGrid.Columns>
                     <DataGridTextColumn

@@ -41,13 +41,16 @@ public partial class Tab4Control : UserControl
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
-        LayoutUpdated += Tab5Control_LayoutUpdated;
-
         DataContextChanged += Tab4Control_DataContextChanged;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    public void Opened()
+    {
+        DataGrid1.SetFontColor();
     }
 
     private void Tab4Control_DataContextChanged(object? sender, EventArgs e)
@@ -177,10 +180,5 @@ public partial class Tab4Control : UserControl
     {
         Button_O.IsVisible = false;
         App.CrossFade100.Start(null, Button_O1);
-    }
-
-    private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)
-    {
-        DataGrid1.SetFontColor();
     }
 }

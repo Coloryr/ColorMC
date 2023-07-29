@@ -88,6 +88,10 @@ public partial class ServerPackControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+
+        _tab2.Opened();
+        _tab3.Opened();
+        _tab4.Opened();
     }
 
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)

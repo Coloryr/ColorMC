@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
+using ColorMC.Gui.Utils;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
@@ -27,6 +28,11 @@ public partial class Tab12Control : UserControl
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    public void Opened()
+    {
+        DataGrid1.SetFontColor();
     }
 
     private void DragEnter(object? sender, DragEventArgs e)

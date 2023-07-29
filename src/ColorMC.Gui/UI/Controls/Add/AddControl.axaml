@@ -93,7 +93,7 @@
                         SelectedIndex="{Binding Categorie}" />
 
                     <TextBox
-                        Width="200"
+                        Width="180"
                         Height="30"
                         Margin="5,0,5,0"
                         Classes="input1"
@@ -105,7 +105,7 @@
                     </TextBox>
 
                     <Button
-                        Width="80"
+                        Width="100"
                         Height="30"
                         Margin="5,0,5,0"
                         Command="{Binding GetList}"
@@ -205,8 +205,8 @@
             <DataGrid
                 Name="DataGridFiles"
                 Background="{setting:Colors TranBack}"
-                ItemsSource="{Binding FileList}"
                 CanUserResizeColumns="True"
+                ItemsSource="{Binding FileList}"
                 SelectedItem="{Binding File}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
@@ -280,8 +280,8 @@
             <DataGrid
                 Name="DataGrid1"
                 Background="{setting:Colors TranBack}"
-                ItemsSource="{Binding DownloadOptifineList}"
                 CanUserResizeColumns="True"
+                ItemsSource="{Binding DownloadOptifineList}"
                 SelectedItem="{Binding OptifineItem}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
@@ -345,8 +345,8 @@
             <DataGrid
                 Name="DataGrid2"
                 Background="{setting:Colors TranBack}"
-                ItemsSource="{Binding DownloadModList}"
                 CanUserResizeColumns="True"
+                ItemsSource="{Binding DownloadModList}"
                 SelectedItem="{Binding Mod}">
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Binding="{Binding Download}" Header="{setting:Localize AddWindow.DataGrid.Text1}" />

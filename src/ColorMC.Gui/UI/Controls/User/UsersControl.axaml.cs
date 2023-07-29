@@ -82,7 +82,7 @@ public partial class UsersControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        Dispatcher.UIThread.Post(DataGrid_User.SetFontColor);
+        DataGrid_User.SetFontColor();
     }
 
     public void Closed()

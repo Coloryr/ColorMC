@@ -48,5 +48,6 @@ public abstract partial class AddGameControlModel : BaseModel
 
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
+        Group = Text;
     }
 }

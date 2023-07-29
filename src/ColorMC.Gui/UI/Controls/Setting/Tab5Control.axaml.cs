@@ -14,10 +14,12 @@ public partial class Tab5Control : UserControl
         InitializeComponent();
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
-
-        LayoutUpdated += Tab5Control_LayoutUpdated;
     }
 
+    public void Opened()
+    {
+        DataGrid1.SetFontColor();
+    }
 
     private void DataGrid1_CellPointerPressed(object? sender,
         DataGridCellPointerPressedEventArgs e)
@@ -29,10 +31,5 @@ public partial class Tab5Control : UserControl
                 (DataContext as SettingTab5Model)?.Flyout(this, DataGrid1.SelectedItems);
             });
         }
-    }
-
-    private void Tab5Control_LayoutUpdated(object? sender, EventArgs e)
-    {
-        DataGrid1.SetFontColor();
     }
 }

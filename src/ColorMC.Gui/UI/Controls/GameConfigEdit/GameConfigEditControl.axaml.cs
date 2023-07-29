@@ -7,6 +7,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
 using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.ConfigEdit;
 
@@ -105,6 +106,8 @@ public partial class GameConfigEditControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+
+        DataGrid1.SetFontColor();
     }
 
     public void Update()
