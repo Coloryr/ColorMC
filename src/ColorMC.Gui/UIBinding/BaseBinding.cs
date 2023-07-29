@@ -413,7 +413,7 @@ public static class BaseBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="obj1">保存的账户</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, string?)> Launch(IBaseWindow window, 
+    public static async Task<(bool, string?)> Launch(IBaseWindow window,
         GameSettingObj obj, LoginObj obj1, WorldObj? world = null)
     {
         _window = window;
@@ -541,7 +541,7 @@ public static class BaseBinding
         return (p != null, res.Item2);
     }
 
-    private static async Task<(Process?, string?)> Launch(GameSettingObj obj, 
+    private static async Task<(Process?, string?)> Launch(GameSettingObj obj,
         LoginObj obj1, WorldObj? world, CancellationToken cancel)
     {
         string? temp = null;

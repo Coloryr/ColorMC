@@ -6,7 +6,6 @@ using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.Utils;
 using System;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

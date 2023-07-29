@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
-using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -19,7 +18,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.UI.Windows;
-using Heijden.DNS;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
@@ -29,7 +27,6 @@ using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Formats.Tar;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -1526,7 +1523,7 @@ public static class GameBinding
         if (model.Type == PackType.ColorMC)
         {
             var file = await BaseBinding.OpSave(win,
-                   App.GetLanguage("GameEditWindow.Tab6.Info1"), 
+                   App.GetLanguage("GameEditWindow.Tab6.Info1"),
                    ".zip", $"{model.Obj.Name}.zip");
             if (file == null)
                 return null;
@@ -1660,7 +1657,7 @@ public static class GameBinding
                         {
                             name1 = '/' + name1;
                         }
-                        name1 = "overrides/" + name1 ;
+                        name1 = "overrides/" + name1;
                         byte[] buffer = File.ReadAllBytes(item);
                         var entry = new ZipEntry(name1)
                         {
@@ -1700,7 +1697,7 @@ public static class GameBinding
 
             var obj = new ModrinthPackObj()
             {
-                formatVersion= 1,
+                formatVersion = 1,
                 name = model.Name,
                 versionId = model.Version,
                 summary = model.Summary,
@@ -1731,12 +1728,12 @@ public static class GameBinding
                     {
                         path = item.Obj1!.Name,
                         hashes = new()
-                        { 
+                        {
                             sha1 = item.Sha1,
                             sha512 = item.Sha512
                         },
                         downloads = new()
-                        { 
+                        {
                             item.Url
                         },
                         fileSize = item.FileSize

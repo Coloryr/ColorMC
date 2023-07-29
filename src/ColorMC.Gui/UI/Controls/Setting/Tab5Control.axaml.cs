@@ -2,7 +2,6 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.Utils;
-using System;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 

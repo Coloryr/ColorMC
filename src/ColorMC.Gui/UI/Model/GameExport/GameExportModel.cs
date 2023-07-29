@@ -1,21 +1,19 @@
 ﻿using Avalonia.Controls;
+using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
-using ColorMC.Core.LaunchPath;
 using System.Collections.Generic;
-using ColorMC.Gui.Utils;
 using System.Collections.ObjectModel;
-using ColorMC.Core.Game;
-using System.Collections;
-using System.Linq;
-using AvaloniaEdit.Utils;
-using ColorMC.Core.Utils;
 using System.IO;
-using SkiaSharp;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameExport;
 
@@ -82,7 +80,7 @@ public partial class GameExportModel : GameEditModel
 
     public GameExportModel(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
-        
+
     }
 
     async partial void OnTypeChanged(PackType value)
@@ -306,7 +304,7 @@ public partial class GameExportModel : GameEditModel
     }
 
     public void CellPressd()
-    { 
-        
+    {
+
     }
 }

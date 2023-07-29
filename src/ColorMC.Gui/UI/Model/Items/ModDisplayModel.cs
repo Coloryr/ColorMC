@@ -4,7 +4,6 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model;
 

@@ -61,7 +61,7 @@ public static class UpdateChecker
                 return;
             }
 
-            if (obj.TryGetValue("Version", out var temp) 
+            if (obj.TryGetValue("Version", out var temp)
                 && ColorMCCore.TopVersion != temp.ToString())
             {
                 var res = await App.HaveUpdate(obj["Text"]?.ToString());

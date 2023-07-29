@@ -8,7 +8,6 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;

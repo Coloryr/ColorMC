@@ -7,7 +7,6 @@ using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using System.ComponentModel;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Add;

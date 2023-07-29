@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace ColorMC.Core.Objs.Modrinth;
+﻿namespace ColorMC.Core.Objs.Modrinth;
 
 public record ModrinthPackObj
 {
