@@ -9,7 +9,7 @@ public record ModrinthPackObj
         public record Hash
         {
             public string sha1 { get; set; }
-            public string sha256 { get; set; }
+            public string sha512 { get; set; }
         }
         public string path { get; set; }
         public Hash hashes { get; set; }

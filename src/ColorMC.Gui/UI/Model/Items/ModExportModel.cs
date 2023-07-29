@@ -62,9 +62,14 @@ public partial class ModExportModel : ObservableObject
         }
         else if (Type == PackType.Modrinth)
         {
-            Export = Source == SourceType.Modrinth;
+            Export = Source != null;
         }
     }
+
+    public string Sha1;
+    public string Sha512;
+    public string Url;
+    public long FileSize;
 
     public PackType Type;
     public ModInfoObj? Obj1;

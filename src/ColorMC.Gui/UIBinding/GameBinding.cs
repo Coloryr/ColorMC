@@ -1517,9 +1517,15 @@ public static class GameBinding
 
     public static async Task<bool?> Export(IUserControl window, GameExportModel model)
     {
+        var win = TopLevel.GetTopLevel(window.Con);
+        if (win == null)
+        {
+            return false;
+        }
+
         if (model.Type == PackType.ColorMC)
         {
-            var file = await BaseBinding.OpSave(TopLevel.GetTopLevel(window.Con),
+            var file = await BaseBinding.OpSave(win,
                    App.GetLanguage("GameEditWindow.Tab6.Info1"), 
                    ".zip", $"{model.Obj.Name}.zip");
             if (file == null)
@@ -1546,9 +1552,9 @@ public static class GameBinding
         }
         else if (model.Type == PackType.CurseForge)
         {
-            var file = await BaseBinding.OpSave(TopLevel.GetTopLevel(window.Con),
+            var file = await BaseBinding.OpSave(win,
                App.GetLanguage("GameEditWindow.Tab6.Info1"),
-               ".zip", $"{model.Obj.Name}-{model.Obj.Version}.zip");
+               ".zip", $"{model.Name}-{model.Version}.zip");
             if (file == null)
                 return null;
 
@@ -1611,7 +1617,7 @@ public static class GameBinding
             try
             {
                 using var s = new ZipOutputStream(File.Create(name));
-                s.SetLevel(9); // 0 - store only to 9 - means best compression
+                s.SetLevel(9);
 
                 //manifest.json
                 {
@@ -1682,9 +1688,9 @@ public static class GameBinding
         }
         else if (model.Type == PackType.Modrinth)
         {
-            var file = await BaseBinding.OpSave(TopLevel.GetTopLevel(window.Con),
+            var file = await BaseBinding.OpSave(win,
                App.GetLanguage("GameEditWindow.Tab6.Info1"),
-               ".zip", $"{model.Obj.Name}-{model.Obj.Version}.mrpack");
+               ".zip", $"{model.Name}-{model.Version}.mrpack");
             if (file == null)
                 return null;
 
@@ -1717,25 +1723,51 @@ public static class GameBinding
                     break;
             }
 
-            //foreach (var item in model.Mods)
-            //{
-            //    if (item.Export)
-            //    {
-            //        obj.files.Add(new()
-            //        {
-            //            fileID = int.Parse(item.FID!),
-            //            projectID = int.Parse(item.PID!),
-            //            required = true
-            //        });
-            //    }
-            //}
+            foreach (var item in model.Mods)
+            {
+                if (item.Source != null)
+                {
+                    obj.files.Add(new()
+                    {
+                        path = item.Obj1!.Name,
+                        hashes = new()
+                        { 
+                            sha1 = item.Sha1,
+                            sha512 = item.Sha512
+                        },
+                        downloads = new()
+                        { 
+                            item.Url
+                        },
+                        fileSize = item.FileSize
+                    });
+                }
+            }
+
+            foreach (var item in model.OtherFiles)
+            {
+                obj.files.Add(new()
+                {
+                    path = item.Path,
+                    hashes = new()
+                    {
+                        sha1 = item.Sha1,
+                        sha512 = item.Sha512
+                    },
+                    downloads = new()
+                    {
+                        item.Url
+                    },
+                    fileSize = item.FileSize
+                });
+            }
 
             var crc = new Crc32();
 
             try
             {
                 using var s = new ZipOutputStream(File.Create(name));
-                s.SetLevel(9); // 0 - store only to 9 - means best compression
+                s.SetLevel(9);
 
                 //manifest.json
                 {

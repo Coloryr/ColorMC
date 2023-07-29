@@ -13,11 +13,17 @@ using ColorMC.Core.Game;
 using System.Collections;
 using System.Linq;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Utils;
+using System.IO;
+using SkiaSharp;
 
 namespace ColorMC.Gui.UI.Model.GameExport;
 
 public partial class GameExportModel : GameEditModel
 {
+    /// <summary>
+    /// 导出的文件列表
+    /// </summary>
     public FilesPageViewModel Files;
 
     [ObservableProperty]
@@ -25,13 +31,27 @@ public partial class GameExportModel : GameEditModel
 
     public List<string> ExportTypes => LanguageUtils.GetExportName();
 
+    /// <summary>
+    /// 在线下载的Mod列表
+    /// </summary>
     public ObservableCollection<ModExportModel> Mods { get; } = new();
+    /// <summary>
+    /// 在线下载的文件列表
+    /// </summary>
+    public ObservableCollection<ModExport1Model> OtherFiles { get; } = new();
+
+    /// <summary>
+    /// 待选择的文件列表
+    /// </summary>
+    public ObservableCollection<string> FileList { get; } = new();
 
     [ObservableProperty]
     private PackType _type;
 
     [ObservableProperty]
     private ModExportModel? _selectMod;
+    [ObservableProperty]
+    private ModExport1Model? _selectFile;
 
     [ObservableProperty]
     private string _text;
@@ -43,6 +63,8 @@ public partial class GameExportModel : GameEditModel
     private string _author;
     [ObservableProperty]
     private string _summary;
+    [ObservableProperty]
+    private string _fileName;
 
     [ObservableProperty]
     private bool _cfEx;
@@ -51,10 +73,8 @@ public partial class GameExportModel : GameEditModel
 
     [ObservableProperty]
     private bool _enableInput1;
-
     [ObservableProperty]
     private bool _enableInput2;
-
     [ObservableProperty]
     private bool _enableInput3;
 
@@ -67,6 +87,8 @@ public partial class GameExportModel : GameEditModel
 
     async partial void OnTypeChanged(PackType value)
     {
+        Progress(App.GetLanguage("GameExportWindow.Info6"));
+
         CfEx = value == PackType.CurseForge;
         MoEx = value == PackType.Modrinth;
 
@@ -77,20 +99,19 @@ public partial class GameExportModel : GameEditModel
             _ => false
         };
 
-        EnableInput3 = value switch
-        {
-            PackType.CurseForge => true,
-            _ => false
-        };
-
-        EnableInput2 = value switch
-        {
-            PackType.Modrinth => true,
-            _ => false
-        };
-
         LoadFile();
         await LoadMod();
+        if (MoEx)
+        {
+            await Load2();
+        }
+
+        ProgressClose();
+    }
+
+    partial void OnTextChanged(string value)
+    {
+        Load1();
     }
 
     [RelayCommand]
@@ -120,6 +141,11 @@ public partial class GameExportModel : GameEditModel
                 continue;
             }
 
+            var info = new FileInfo(item.Local);
+            using var stream = File.OpenRead(item.Local);
+
+            var sha512 = await Funtcions.GenSha512Async(stream);
+
             var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
             if (item1 != null)
             {
@@ -127,7 +153,11 @@ public partial class GameExportModel : GameEditModel
                 {
                     Type = Type,
                     Obj = item,
-                    Obj1 = item1
+                    Obj1 = item1,
+                    Sha1 = item1.SHA1!,
+                    Sha512 = sha512,
+                    Url = item1.Url,
+                    FileSize = info.Length
                 };
                 obj1.Reload();
                 Items.Add(obj1);
@@ -162,7 +192,9 @@ public partial class GameExportModel : GameEditModel
         var file = await GameBinding.Export(Control, this);
         ProgressClose();
         if (file == null)
+        {
             return;
+        }
 
         if (file == false)
         {
@@ -172,6 +204,32 @@ public partial class GameExportModel : GameEditModel
         {
             Notify(App.GetLanguage("GameExportWindow.Info2"));
         }
+    }
+
+    [RelayCommand]
+    public async Task AddFile()
+    {
+        if (string.IsNullOrWhiteSpace(FileName))
+        {
+            return;
+        }
+
+        var info = new FileInfo(Obj.GetGamePath() + "/" + FileName);
+        using var stream = File.OpenRead(info.FullName);
+
+        var sha1 = await Funtcions.GenSha1Async(stream);
+        stream.Seek(0, SeekOrigin.Begin);
+        var obj1 = new ModExport1Model()
+        {
+            Path = FileName,
+            Type = Type,
+            Sha1 = sha1,
+            Sha512 = await Funtcions.GenSha512Async(stream),
+            Url = "",
+            FileSize = info.Length
+        };
+        OtherFiles.Add(obj1);
+        FileList.Remove(FileName);
     }
 
     public void Load1()
@@ -192,6 +250,47 @@ public partial class GameExportModel : GameEditModel
         }
     }
 
+    public async Task Load2()
+    {
+        FileList.Clear();
+        OtherFiles.Clear();
+
+        var path = Obj.GetGamePath();
+
+        var list = PathC.GetAllFile(path);
+        foreach (var item in list)
+        {
+            var path1 = item.FullName[(path.Length + 1)..].Replace("\\", "/");
+            if (path1.StartsWith("mods"))
+            {
+                continue;
+            }
+
+            using var stream = File.OpenRead(item.FullName);
+
+            var sha1 = await Funtcions.GenSha1Async(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == sha1);
+            if (item1 != null)
+            {
+                var obj1 = new ModExport1Model()
+                {
+                    Path = path1,
+                    Type = Type,
+                    Sha1 = item1.SHA1!,
+                    Sha512 = await Funtcions.GenSha512Async(stream),
+                    Url = item1.Url,
+                    FileSize = item.Length
+                };
+                OtherFiles.Add(obj1);
+            }
+            else
+            {
+                FileList.Add(path1);
+            }
+        }
+    }
+
     public void LoadFile()
     {
         if (Type == PackType.CurseForge || Type == PackType.Modrinth)
@@ -204,5 +303,10 @@ public partial class GameExportModel : GameEditModel
         }
 
         Source = Files.Source;
+    }
+
+    public void CellPressd()
+    { 
+        
     }
 }

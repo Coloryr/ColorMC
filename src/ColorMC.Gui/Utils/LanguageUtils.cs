@@ -34,8 +34,8 @@ public static class LanguageUtils
         App.GetLanguage("BaseBinding.Export.Item1"),
         App.GetLanguage("BaseBinding.Export.Item2"),
         App.GetLanguage("BaseBinding.Export.Item3"),
-        App.GetLanguage("BaseBinding.Export.Item4"),
-        App.GetLanguage("BaseBinding.Export.Item5")
+        //App.GetLanguage("BaseBinding.Export.Item4"),
+        //App.GetLanguage("BaseBinding.Export.Item5")
     };
 
     public static List<string> GetSkinType()

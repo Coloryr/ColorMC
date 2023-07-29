@@ -59,8 +59,6 @@
             CanUserResizeColumns="True"
             CanUserSortColumns="False"
             HorizontalScrollBarVisibility="Visible"
-            IsEnabled="{Binding CfEx}"
-            IsVisible="{Binding CfEx, FallbackValue=false}"
             ItemsSource="{Binding Mods}"
             SelectedItem="{Binding SelectMod}"
             VerticalScrollBarVisibility="Visible">
@@ -85,41 +83,5 @@
                 <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}" />
             </DataGrid.Columns>
         </DataGrid>
-
-        <DataGrid
-            Name="DataGrid2"
-            Margin="0,3,0,0"
-            AutoGenerateColumns="False"
-            Background="{setting:Colors TranBack}"
-            CanUserResizeColumns="True"
-            CanUserSortColumns="False"
-            HorizontalScrollBarVisibility="Visible"
-            IsEnabled="{Binding CfEx}"
-            IsVisible="{Binding CfEx, FallbackValue=false}"
-            ItemsSource="{Binding Mods}"
-            SelectedItem="{Binding SelectMod}"
-            VerticalScrollBarVisibility="Visible">
-            <DataGrid.Columns>
-                <DataGridCheckBoxColumn
-                    Binding="{Binding Export}"
-                    Header="{setting:Localize GameExportWindow.Tab2.DataGrid.Text1}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Name}"
-                    Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text2}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Modid}"
-                    Header="modid"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Binding="{Binding Source}"
-                    Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text8}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text9}" />
-                <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text10}" />
-            </DataGrid.Columns>
-        </DataGrid>
-
     </DockPanel>
 </UserControl>

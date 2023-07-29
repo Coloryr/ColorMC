@@ -26,7 +26,7 @@ internal static class GuiLoad
 
 public static class Program
 {
-    public const string TopVersion = "A19.2";
+    public const string TopVersion = "A19.3";
 
     public static readonly string[] BaseSha1 = new[]
     {

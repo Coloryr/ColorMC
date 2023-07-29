@@ -142,6 +142,22 @@ public static partial class Funtcions
         }
         return text.ToString().ToLower();
     }
+
+    /// <summary>
+    /// 获取SHA512值
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <returns></returns>
+    public static async Task<string> GenSha512Async(Stream stream)
+    {
+        var text = new StringBuilder();
+        foreach (byte item in await SHA512.HashDataAsync(stream))
+        {
+            text.AppendFormat("{0:x2}", item);
+        }
+        return text.ToString().ToLower();
+    }
+
     /// <summary>
     /// 新的UUID
     /// </summary>

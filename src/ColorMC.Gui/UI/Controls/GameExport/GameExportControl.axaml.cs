@@ -14,6 +14,7 @@ public partial class GameExportControl : UserControl, IUserControl
     private readonly Tab1Control _tab1 = new();
     private readonly Tab2Control _tab2 = new();
     private readonly Tab3Control _tab3 = new();
+    private readonly Tab4Control _tab4 = new();
 
     private CancellationTokenSource _cancel = new();
 
@@ -103,6 +104,9 @@ public partial class GameExportControl : UserControl, IUserControl
                 break;
             case 2:
                 Go(_tab3);
+                break;
+            case 3:
+                Go(_tab4);
                 break;
         }
 
