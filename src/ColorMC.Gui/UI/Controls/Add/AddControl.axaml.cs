@@ -64,11 +64,11 @@ public partial class AddControl : UserControl, IUserControl
             {
                 if (_model.OptifineDisplay == true)
                 {
-                    App.CrossFade300.Start(null, Grid2, CancellationToken.None);
+                    App.CrossFade300.Start(null, Grid2);
                 }
                 else
                 {
-                    App.CrossFade300.Start(Grid2, null, CancellationToken.None);
+                    App.CrossFade300.Start(Grid2, null);
                 }
             });
         }
@@ -78,11 +78,11 @@ public partial class AddControl : UserControl, IUserControl
             {
                 if (_model.ModDownloadDisplay == true)
                 {
-                    App.CrossFade300.Start(null, Grid4, CancellationToken.None);
+                    App.CrossFade300.Start(null, Grid4);
                 }
                 else
                 {
-                    App.CrossFade300.Start(Grid4, null, CancellationToken.None);
+                    App.CrossFade300.Start(Grid4, null);
                 }
             });
         }
@@ -92,11 +92,11 @@ public partial class AddControl : UserControl, IUserControl
             {
                 if (_model.VersionDisplay == true)
                 {
-                    App.CrossFade300.Start(null, Grid1, CancellationToken.None);
+                    App.CrossFade300.Start(null, Grid1);
                 }
                 else
                 {
-                    App.CrossFade300.Start(Grid1, null, CancellationToken.None);
+                    App.CrossFade300.Start(Grid1, null);
                 }
             });
         }

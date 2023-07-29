@@ -356,7 +356,7 @@ public static class BaseBinding
         s_launchCancel.Cancel();
         if (RunGames.TryGetValue(obj.UUID, out var item))
         {
-            Task.Run(item.Kill);
+            Task.Run(() => item.Kill(true));
         }
     }
 
@@ -406,7 +406,8 @@ public static class BaseBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="obj1">保存的账户</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, string?)> Launch(IBaseWindow window, GameSettingObj obj, LoginObj obj1, WorldObj? world = null)
+    public static async Task<(bool, string?)> Launch(IBaseWindow window, 
+        GameSettingObj obj, LoginObj obj1, WorldObj? world = null)
     {
         _window = window;
         s_launchCancel = new();
@@ -533,7 +534,8 @@ public static class BaseBinding
         return (p != null, res.Item2);
     }
 
-    private static async Task<(Process?, string?)> Launch(GameSettingObj obj, LoginObj obj1, WorldObj? world, CancellationToken cancel)
+    private static async Task<(Process?, string?)> Launch(GameSettingObj obj, 
+        LoginObj obj1, WorldObj? world, CancellationToken cancel)
     {
         string? temp = null;
         try

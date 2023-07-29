@@ -55,11 +55,11 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
             {
                 if (_model.Display)
                 {
-                    App.CrossFade300.Start(null, Grid1, CancellationToken.None);
+                    App.CrossFade300.Start(null, Grid1);
                 }
                 else
                 {
-                    App.CrossFade300.Start(Grid1, null, CancellationToken.None);
+                    App.CrossFade300.Start(Grid1, null);
                 }
             });
         }

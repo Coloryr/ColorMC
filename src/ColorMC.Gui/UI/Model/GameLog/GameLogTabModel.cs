@@ -31,7 +31,7 @@ public partial class GameLogTabModel : BaseModel
     [ObservableProperty]
     private string? _file;
 
-    public string Temp { get; private set; }
+    public string Temp { get; private set; } = "";
     private readonly Timer t_timer;
 
     public GameLogTabModel(IUserControl con, GameSettingObj obj) : base(con)

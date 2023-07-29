@@ -64,48 +64,48 @@ public partial class Tab11Control : UserControl
 
     private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(Button_A1, null, CancellationToken.None);
+        App.CrossFade100.Start(Button_A1, null);
         Button_A.IsVisible = true;
     }
 
     private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
     {
         Button_A.IsVisible = false;
-        App.CrossFade100.Start(null, Button_A1, CancellationToken.None);
+        App.CrossFade100.Start(null, Button_A1);
     }
     private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(Button_R1, null, CancellationToken.None);
+        App.CrossFade100.Start(Button_R1, null);
         Button_R.IsVisible = true;
     }
 
     private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
     {
         Button_R.IsVisible = false;
-        App.CrossFade100.Start(null, Button_R1, CancellationToken.None);
+        App.CrossFade100.Start(null, Button_R1);
     }
 
     private void Button_O1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(Button_O1, null, CancellationToken.None);
+        App.CrossFade100.Start(Button_O1, null);
         Button_O.IsVisible = true;
     }
 
     private void Button_O_PointerEnter(object? sender, PointerEventArgs e)
     {
         Button_O.IsVisible = false;
-        App.CrossFade100.Start(null, Button_O1, CancellationToken.None);
+        App.CrossFade100.Start(null, Button_O1);
     }
 
     private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
     {
-        App.CrossFade100.Start(Button_I1, null, CancellationToken.None);
+        App.CrossFade100.Start(Button_I1, null);
         Button_I.IsVisible = true;
     }
 
     private void Button_I_PointerEnter(object? sender, PointerEventArgs e)
     {
         Button_I.IsVisible = false;
-        App.CrossFade100.Start(null, Button_I1, CancellationToken.None);
+        App.CrossFade100.Start(null, Button_I1);
     }
 }

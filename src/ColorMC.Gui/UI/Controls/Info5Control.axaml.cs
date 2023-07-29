@@ -39,7 +39,7 @@ public partial class Info5Control : UserControl
         if (!_display)
             return;
 
-        App.CrossFade300.Start(this, null, CancellationToken.None);
+        App.CrossFade300.Start(this, null);
     }
 
     public async Task<(bool Cancel, int Index, string? Item)>
@@ -51,7 +51,7 @@ public partial class Info5Control : UserControl
         ComboBox1.ItemsSource = list;
         ComboBox1.SelectedIndex = 0;
 
-        _ = App.CrossFade300.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this);
 
         await Task.Run(() =>
         {

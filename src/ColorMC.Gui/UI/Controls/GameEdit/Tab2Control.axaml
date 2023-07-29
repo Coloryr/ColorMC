@@ -45,16 +45,20 @@
 
             <CheckBox Content="{setting:Localize GameEditWindow.Tab2.Text31}" IsChecked="{Binding PerRun}" />
             <TextBox
+                Height="100"
                 Margin="0,5,0,0"
-                Classes="input1"
+                AcceptsReturn="True"
+                Classes="input2"
                 IsEnabled="{Binding PerRun}"
                 Text="{Binding PerRunCmd}"
                 Watermark="{setting:Localize GameEditWindow.Tab2.Text30}" />
 
             <CheckBox Content="{setting:Localize GameEditWindow.Tab2.Text29}" IsChecked="{Binding PostRun}" />
             <TextBox
+                Height="100"
                 Margin="0,5,0,0"
-                Classes="input1"
+                AcceptsReturn="True"
+                Classes="input2"
                 IsEnabled="{Binding PostRun}"
                 Text="{Binding PostRunCmd}"
                 Watermark="{setting:Localize GameEditWindow.Tab2.Text30}" />

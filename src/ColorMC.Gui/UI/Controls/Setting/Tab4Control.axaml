@@ -66,8 +66,10 @@
             </StackPanel>
 
             <TextBox
+                Height="100"
                 Margin="0,5,0,0"
-                Classes="input1"
+                AcceptsReturn="True"
+                Classes="input2"
                 IsEnabled="{Binding PreRun}"
                 Text="{Binding PreCmd}"
                 Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
@@ -82,8 +84,10 @@
                 <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PostRun}" />
             </StackPanel>
             <TextBox
+                Height="100"
                 Margin="0,5,0,0"
-                Classes="input1"
+                AcceptsReturn="True"
+                Classes="input2"
                 IsEnabled="{Binding PostRun}"
                 Text="{Binding PostCmd}"
                 Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />

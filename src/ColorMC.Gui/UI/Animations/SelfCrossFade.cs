@@ -113,6 +113,11 @@ public class SelfCrossFade : IPageTransition
         set => _fadeOutAnimation.Easing = value;
     }
 
+    public async void Start(Visual? from, Visual? to)
+    {
+        await Start(from, to, CancellationToken.None);
+    }
+
     /// <inheritdoc cref="Start(Visual, Visual, CancellationToken)" />
     public async Task Start(Visual? from, Visual? to, CancellationToken cancellationToken)
     {

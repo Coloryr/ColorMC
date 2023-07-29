@@ -26,6 +26,49 @@ public static class Launch
     /// </summary>
     private static CancellationToken s_cancel;
 
+    public static void CmdRun(GameSettingObj obj, string path, string cmd)
+    {
+        cmd = cmd.Replace("%INST_JAVA%", path)
+            .Replace("%APPDATA%", obj.GetGamePath());
+        var args = cmd.Split('\n');
+        var file = args[0].Trim();
+        if (file.StartsWith("./") || file.StartsWith("../"))
+        {
+            file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
+        }
+        var arglist = new List<string>();
+
+        var info = new ProcessStartInfo(file)
+        {
+            WorkingDirectory = obj.GetGamePath(),
+            RedirectStandardError = true,
+            RedirectStandardOutput = true
+        };
+        for (int a = 1; a < args.Length; a++)
+        {
+            info.ArgumentList.Add(args[a].Trim());
+        }
+        info.EnvironmentVariables.Add("INST_JAVA", path);
+        using var p = new Process()
+        {
+            EnableRaisingEvents = true,
+            StartInfo = info
+        };
+        p.OutputDataReceived += (a, b) =>
+        {
+            ColorMCCore.GameLog?.Invoke(obj, b.Data);
+        };
+        p.ErrorDataReceived += (a, b) =>
+        {
+            ColorMCCore.GameLog?.Invoke(obj, b.Data);
+        };
+
+        p.Start();
+        p.BeginOutputReadLine();
+        p.BeginErrorReadLine();
+        p.WaitForExit();
+    }
+
     /// <summary>
     /// 检查游戏文件
     /// </summary>
@@ -1202,44 +1245,7 @@ public static class Launch
                 {
                     stopwatch.Start();
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
-                    var args = start.Split(' ');
-                    var file = args[0];
-                    if (file.StartsWith("./") || file.StartsWith("../"))
-                    {
-                        file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
-                    }
-                    var arglist = new List<string>();
-
-                    var info = new ProcessStartInfo(file)
-                    {
-                        WorkingDirectory = obj.GetGamePath(),
-                        RedirectStandardError = true,
-                        RedirectStandardOutput = true
-                    };
-                    for (int a = 1; a < args.Length; a++)
-                    {
-                        info.ArgumentList.Add(args[a]);
-                    }
-                    info.EnvironmentVariables.Add("INST_JAVA", path);
-                    var p = new Process()
-                    {
-                        EnableRaisingEvents = true,
-                        StartInfo = info
-                    };
-                    p.OutputDataReceived += (a, b) =>
-                    {
-                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
-                    };
-                    p.ErrorDataReceived += (a, b) =>
-                    {
-                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
-                    };
-
-                    p.Start();
-                    p.BeginOutputReadLine();
-                    p.BeginErrorReadLine();
-                    p.WaitForExit();
-
+                    CmdRun(obj, path, start);
                     stopwatch.Stop();
                     string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                         obj.Name, stopwatch.Elapsed.ToString());
@@ -1305,8 +1311,8 @@ public static class Launch
             EnableRaisingEvents = true
         };
         process.StartInfo.FileName = path;
-        process.StartInfo.WorkingDirectory = InstancesPath.GetGamePath(obj);
-        process.StartInfo.Environment.Add("APPDATA", InstancesPath.GetGamePath(obj));
+        process.StartInfo.WorkingDirectory = obj.GetGamePath();
+        process.StartInfo.Environment.Add("APPDATA", obj.GetGamePath());
         Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
         foreach (var item in arg)
         {
@@ -1345,50 +1351,13 @@ public static class Launch
                 {
                     stopwatch.Start();
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPost);
-                    var args = start.Split(' ');
-                    var file = args[0];
-                    if (file.StartsWith("./") || file.StartsWith("../"))
-                    {
-                        file = Path.GetFullPath(obj.GetBasePath() + "/" + file);
-                    }
-                    var arglist = new List<string>();
-
-                    var info = new ProcessStartInfo(file)
-                    {
-                        WorkingDirectory = obj.GetGamePath(),
-                        RedirectStandardError = true,
-                        RedirectStandardOutput = true
-                    };
-                    for (int a = 1; a < args.Length; a++)
-                    {
-                        info.ArgumentList.Add(args[a]);
-                    }
-                    info.EnvironmentVariables.Add("INST_JAVA", path);
-                    var p = new Process()
-                    {
-                        EnableRaisingEvents = true,
-                        StartInfo = info
-                    };
-                    p.OutputDataReceived += (a, b) =>
-                    {
-                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
-                    };
-                    p.ErrorDataReceived += (a, b) =>
-                    {
-                        ColorMCCore.GameLog?.Invoke(obj, b.Data);
-                    };
-
-                    p.Start();
-                    p.BeginOutputReadLine();
-                    p.BeginErrorReadLine();
-                    p.WaitForExit();
+                    CmdRun(obj, path, start);
+                    stopwatch.Stop();
+                    string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info9"),
+                        obj.Name, stopwatch.Elapsed.ToString());
+                    ColorMCCore.GameLog?.Invoke(obj, temp1);
+                    Logs.Info(temp1);
                 }
-
-                stopwatch.Stop();
-                string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info9"),
-                    obj.Name, stopwatch.Elapsed.ToString());
-                ColorMCCore.GameLog?.Invoke(obj, temp1);
-                Logs.Info(temp1);
             }
             else
             {

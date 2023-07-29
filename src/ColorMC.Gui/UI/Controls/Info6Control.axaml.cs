@@ -39,7 +39,7 @@ public partial class Info6Control : UserControl
         if (!_display)
             return;
 
-        App.CrossFade300.Start(this, null, CancellationToken.None);
+        App.CrossFade300.Start(this, null);
     }
 
     public async Task<bool> ShowWait(string title, string data)
@@ -49,7 +49,7 @@ public partial class Info6Control : UserControl
         Label1.Content = title;
         TextBox1.Text = data;
 
-        _ = App.CrossFade300.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this);
 
         await Task.Run(() =>
         {

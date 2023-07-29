@@ -99,7 +99,7 @@ public static class ModPackHelper
 
         //获取Mod信息
         var list = await GetCurseForgeModInfo(obj1, info, true);
-        if (!list.Item1)
+        if (!list.Res)
         {
             return false;
         }
@@ -153,7 +153,7 @@ public static class ModPackHelper
         var list1 = new List<DownloadItemObj>();
         foreach (var item in addlist)
         {
-            list1.Add(list.Item2.First(a => a.SHA1 == item.SHA1));
+            list1.Add(list.List.First(a => a.SHA1 == item.SHA1));
             obj.Mods.Add(item.ModId, item);
         }
 
@@ -282,7 +282,7 @@ public static class ModPackHelper
 
         //获取Mod信息
         var list = await GetCurseForgeModInfo(game, info, true);
-        if (!list.Item1)
+        if (!list.Res)
         {
             return (false, game);
         }
@@ -291,7 +291,7 @@ public static class ModPackHelper
 
         ColorMCCore.PackState?.Invoke(CoreRunState.Download);
 
-        var res2 = await DownloadManager.Start(list.Item2.ToList());
+        var res2 = await DownloadManager.Start(list.List.ToList());
         if (!res2)
         {
             return (false, game);

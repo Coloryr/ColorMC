@@ -84,11 +84,11 @@ public partial class MainControl : UserControl, IUserControl
             {
                 if (_model.GroupEnable)
                 {
-                    App.CrossFade100.Start(null, StackPanel1, CancellationToken.None);
+                    App.CrossFade100.Start(null, StackPanel1);
                 }
                 else
                 {
-                    App.CrossFade100.Start(StackPanel1, null, CancellationToken.None);
+                    App.CrossFade100.Start(StackPanel1, null);
                 }
             });
         }
@@ -98,11 +98,11 @@ public partial class MainControl : UserControl, IUserControl
             {
                 if (_model.SideDisplay)
                 {
-                    App.CrossFade100.Start(null, Grid1, CancellationToken.None);
+                    App.CrossFade100.Start(null, Grid1);
                 }
                 else
                 {
-                    App.CrossFade100.Start(Grid1, null, CancellationToken.None);
+                    App.CrossFade100.Start(Grid1, null);
                 }
             });
         }

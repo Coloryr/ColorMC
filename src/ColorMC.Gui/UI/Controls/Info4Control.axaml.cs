@@ -98,6 +98,6 @@ public partial class Info4Control : UserControl
             action.Invoke();
         };
 
-        App.CrossFade300.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this);
     }
 }

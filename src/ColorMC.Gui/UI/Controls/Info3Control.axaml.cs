@@ -69,7 +69,7 @@ public partial class Info3Control : UserControl
 
         _display = false;
 
-        App.CrossFade300.Start(this, null, CancellationToken.None);
+        App.CrossFade300.Start(this, null);
     }
 
     public async Task<(bool Cancel, string? Text1, string? Text2)>
@@ -94,7 +94,7 @@ public partial class Info3Control : UserControl
         Button_Cancel.IsVisible = true;
 
         TextBox_Text1.PasswordChar = password ? '*' : (char)0;
-        _ = App.CrossFade300.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this);
 
         _cancelCall = null;
 
@@ -127,7 +127,7 @@ public partial class Info3Control : UserControl
 
         TextBox_Text1.PasswordChar = (char)0;
 
-        App.CrossFade300.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this);
     }
 
     public void Show(string title, string title1, Action cancel)
@@ -153,7 +153,7 @@ public partial class Info3Control : UserControl
 
         TextBox_Text1.PasswordChar = (char)0;
 
-        App.CrossFade300.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this);
     }
 
     public async Task<(bool Cancel, string? Text)> ShowOne(string title, bool lock1 = true)
@@ -190,7 +190,7 @@ public partial class Info3Control : UserControl
             Button_Cancel.IsEnabled = true;
             Button_Cancel.IsVisible = true;
         }
-        _ = App.CrossFade300.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this);
 
         if (!lock1)
         {
@@ -215,7 +215,7 @@ public partial class Info3Control : UserControl
 
         TextBox_Text.Text = data;
         TextBox_Text.Watermark = title;
-        _ = App.CrossFade300.Start(null, this, CancellationToken.None);
+        App.CrossFade300.Start(null, this);
 
         _cancelCall = null;
         await Task.Run(() =>

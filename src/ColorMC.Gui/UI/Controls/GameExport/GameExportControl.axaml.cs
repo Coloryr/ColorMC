@@ -53,17 +53,6 @@ public partial class GameExportControl : UserControl, IUserControl
         Content1.Content = _tab1;
     }
 
-    public async void OnKeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.F5)
-        {
-            switch (Tabs.SelectedIndex)
-            {
-
-            }
-        }
-    }
-
     private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
         if (e.Delta.Y > 0)
