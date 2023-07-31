@@ -40,6 +40,12 @@ public static class GameCount
     {
         if (!File.Exists(s_local))
         {
+            Count = new()
+            {
+                GameRuns = new(),
+                LaunchLogs = new()
+            };
+            Save();
             return;
         }
         try
