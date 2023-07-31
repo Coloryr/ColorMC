@@ -11,7 +11,33 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <Panel Margin="5,0,5,5">
+        <DockPanel Margin="5,0,5,5">
+            <StackPanel
+                Margin="0,3,0,0"
+                DockPanel.Dock="Top"
+                Orientation="Horizontal">
+                <Button
+                    Width="100"
+                    Height="25"
+                    Command="{Binding Open}"
+                    Content="{setting:Localize Button.OpFile}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Command="{Binding Add}"
+                    Content="{setting:Localize Button.Input}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text63}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Command="{Binding Load}"
+                    Content="{setting:Localize Button.Refash}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text64}"
+                    ToolTip.VerticalOffset="-30" />
+            </StackPanel>
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
@@ -50,64 +76,8 @@
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel
-                Margin="0,3,0,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Orientation="Horizontal">
-                <Panel>
-                    <Button
-                        Name="Button_O"
-                        Width="25"
-                        Height="25"
-                        Command="{Binding Open}"
-                        Content="O" />
-                    <Button
-                        Name="Button_O1"
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Open}"
-                        Content="{setting:Localize Button.OpFile}"
-                        IsVisible="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                        ToolTip.VerticalOffset="-30" />
-                </Panel>
-                <Panel Margin="5,0,0,0">
-                    <Button
-                        Name="Button_A"
-                        Width="25"
-                        Height="25"
-                        Command="{Binding Add}"
-                        Content="I" />
-                    <Button
-                        Name="Button_A1"
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Add}"
-                        Content="{setting:Localize Button.Input}"
-                        IsVisible="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text63}"
-                        ToolTip.VerticalOffset="-30" />
-                </Panel>
-                <Panel Margin="5,0,0,0">
-                    <Button
-                        Name="Button_R"
-                        Width="25"
-                        Height="25"
-                        Command="{Binding Load}"
-                        Content="R" />
-                    <Button
-                        Name="Button_R1"
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Load}"
-                        Content="{setting:Localize Button.Refash}"
-                        IsVisible="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text64}"
-                        ToolTip.VerticalOffset="-30" />
-                </Panel>
-            </StackPanel>
-        </Panel>
+
+        </DockPanel>
         <Panel
             Name="Grid2"
             Background="{setting:Colors TopBottom}"

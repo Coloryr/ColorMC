@@ -41,6 +41,15 @@ public static partial class Funtcions
     }
 
     /// <summary>
+    /// 时间戳
+    /// </summary>
+    public static int GetTime()
+    {
+        var tick = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0)).Ticks;
+        return (int)(tick / 10000000);
+    }
+
+    /// <summary>
     /// 获取MD5值
     /// </summary>
     /// <param name="data"></param>

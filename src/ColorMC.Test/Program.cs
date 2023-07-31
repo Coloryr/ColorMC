@@ -26,9 +26,9 @@ internal class Program
         ColorMCCore.AuthStateUpdate = AuthStateUpdate;
         ColorMCCore.GameLog = Log;
 
-        //TestItem.Item26();
+        TestItem.Item27();
 
-        GetSha1();
+        //GetSha1();
 
         Console.ReadLine();
     }

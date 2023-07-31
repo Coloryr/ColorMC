@@ -19,10 +19,11 @@ public class NbtPageViewModel : ObservableObject
     public NbtBase Nbt { get; }
     public HierarchicalTreeDataGridSource<NbtNodeModel> Source { get; }
 
-    public NbtPageViewModel(NbtCompound nbt)
+    public NbtPageViewModel(NbtBase nbt)
     {
         Nbt = nbt;
-        Source = new HierarchicalTreeDataGridSource<NbtNodeModel>(Array.Empty<NbtNodeModel>())
+        _root = new NbtNodeModel(null, nbt, null);
+        Source = new HierarchicalTreeDataGridSource<NbtNodeModel>(new[] { _root })
         {
             Columns =
             {
@@ -49,9 +50,6 @@ public class NbtPageViewModel : ObservableObject
         };
 
         Source.RowSelection!.SingleSelect = false;
-
-        _root = new NbtNodeModel(null, nbt, null);
-        Source.Items = new[] { _root };
     }
 
     public async void Find(string name)

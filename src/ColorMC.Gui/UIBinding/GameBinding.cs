@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
+using ColorMC.Core.Chunk;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -616,7 +617,7 @@ public static class GameBinding
         var list1 = PathC.GetAllFile(obj.Local);
         foreach (var item in list1)
         {
-            if (item.Extension is ".mca" or ".png" or ".lock")
+            if (item.Extension is ".png" or ".lock")
                 continue;
             list.Add(item.FullName[dir..]);
         }
@@ -645,6 +646,20 @@ public static class GameBinding
         }
 
         return list;
+    }
+
+    public static async Task<ChunkData> ReadMca(WorldObj obj, string name)
+    {
+        var dir = obj.Local;
+
+        return await ChunkMca.Read(Path.GetFullPath(dir + "/" + name));
+    }
+
+    public static async Task<ChunkData> ReadMca(GameSettingObj obj, string name)
+    {
+        var dir = obj.GetGamePath();
+
+        return await ChunkMca.Read(Path.GetFullPath(dir + "/" + name));
     }
 
     public static async Task<NbtBase> ReadNbt(WorldObj obj, string name)

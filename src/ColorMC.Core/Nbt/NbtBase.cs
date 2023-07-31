@@ -1,4 +1,5 @@
 using ColorMC.Core.Helpers;
+using System.IO;
 using System.IO.Compression;
 
 namespace ColorMC.Core.Nbt;
@@ -13,9 +14,9 @@ public abstract class NbtBase
     /// </summary>
     public NbtType NbtType { get; protected init; }
     /// <summary>
-    /// 是否为Gzip
+    /// 压缩类型
     /// </summary>
-    public bool Gzip { get; set; }
+    public ZipType ZipType { get; set; }
     /// <summary>
     /// 取值
     /// </summary>
@@ -142,6 +143,11 @@ public abstract class NbtBase
         await Save(this, file);
     }
 
+    public void Save(Stream stream)
+    {
+        Save(this, stream);
+    }
+
     /// <summary>
     /// 取NBT
     /// </summary>
@@ -153,31 +159,30 @@ public abstract class NbtBase
         return (Activator.CreateInstance(type) as NbtBase)!;
     }
 
-    /// <summary>
-    /// 读NBT
-    /// </summary>
-    /// <param name="file">文件名</param>
-    /// <returns></returns>
-    public static async Task<NbtBase> Read(string file)
+    public static async Task<NbtBase> Read(Stream stream)
     {
-        using var steam = File.OpenRead(file);
-        DataInputStream steam2;
+        DataInputStream stream2;
         var data = new byte[2];
-        await steam.ReadExactlyAsync(data);
-        steam.Seek(0, SeekOrigin.Begin);
-        bool gzip = false;
+        await stream.ReadExactlyAsync(data);
+        stream.Seek(0, SeekOrigin.Begin);
+        ZipType zip = ZipType.None;
         if (data[0] == 0x1F && data[1] == 0x8B)
         {
-            var steam1 = new GZipStream(steam, CompressionMode.Decompress);
-            steam2 = new DataInputStream(steam1);
-            gzip = true;
+            var steam1 = new GZipStream(stream, CompressionMode.Decompress);
+            stream2 = new DataInputStream(steam1);
+            zip = ZipType.GZip;
+        }
+        else if (data[0] == 0x78 && (data[1] is 0x01 or 0x9C or 0xDA))
+        {
+            var steam1 = new ZLibStream(stream, CompressionMode.Decompress);
+            stream2 = new DataInputStream(steam1);
+            zip = ZipType.Zlib;
         }
         else
         {
-            steam2 = new DataInputStream(steam);
+            stream2 = new DataInputStream(stream);
         }
-
-        var type = (NbtType)steam2.ReadByte();
+        var type = (NbtType)stream2.ReadByte();
         if (type == NbtType.NbtEnd)
         {
             return new NbtEnd();
@@ -185,21 +190,50 @@ public abstract class NbtBase
 
         if (type == NbtType.NbtCompound)
         {
-            var temp = steam2.ReadShort();
+            var temp = stream2.ReadShort();
             if (temp > 0)
             {
                 var temp1 = new byte[temp];
-                steam2.Read(temp1);
+                stream2.Read(temp1);
             }
         }
+
         var nbt = ById(type);
-        nbt.Gzip = gzip;
+        nbt.ZipType = zip;
+        nbt.Read(stream2);
 
-        nbt.Read(steam2);
-
-        steam2.Dispose();
+        stream2.Dispose();
 
         return nbt;
+    }
+
+    /// <summary>
+    /// 读NBT
+    /// </summary>
+    /// <param name="file">文件名</param>
+    /// <returns></returns>
+    public static async Task<NbtBase> Read(string file)
+    {
+        using var stream = File.OpenRead(file);
+        return await Read(stream);
+    }
+
+    public static void Save(NbtBase nbt, Stream stream)
+    {
+        DataOutputStream steam2 = nbt.ZipType switch
+        {
+            ZipType.GZip => new DataOutputStream(new GZipStream(stream, CompressionLevel.Optimal)),
+            ZipType.Zlib => new DataOutputStream(new ZLibStream(stream, CompressionLevel.Optimal)),
+            _ => new DataOutputStream(stream)
+        };
+
+        steam2.Write((byte)nbt.NbtType);
+        if (nbt.NbtType != NbtType.NbtEnd)
+        {
+            steam2.Write("");
+            nbt.Write(steam2);
+        }
+        steam2.Dispose();
     }
 
     /// <summary>
@@ -211,25 +245,8 @@ public abstract class NbtBase
     {
         return Task.Run(() =>
         {
-            using var steam = File.Create(file);
-            DataOutputStream steam2;
-            if (nbt.Gzip)
-            {
-                var steam1 = new GZipStream(steam, CompressionMode.Compress);
-                steam2 = new DataOutputStream(steam1);
-            }
-            else
-            {
-                steam2 = new DataOutputStream(steam);
-            }
-
-            steam2.Write((byte)nbt.NbtType);
-            if (nbt.NbtType != NbtType.NbtEnd)
-            {
-                steam2.Write("");
-                nbt.Write(steam2);
-            }
-            steam2.Dispose();
+            using var stream = File.Create(file);
+            Save(nbt, stream);
         });
     }
 }

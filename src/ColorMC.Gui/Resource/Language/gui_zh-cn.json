@@ -684,6 +684,8 @@
 	"ConfigEditWindow.Text2": "保存修改",
 	"ConfigEditWindow.Text3": "刷新列表",
 	"ConfigEditWindow.Text4": "数据类型：",
+	"ConfigEditWindow.Text5": "查找坐标",
+	"ConfigEditWindow.Text6": "查找实体",
 	"ConfigEditWindow.DataGrid.Text1": "标号",
 	"ConfigEditWindow.DataGrid.Text2": "值",
 	"ConfigEditWindow.Flyouts1.Text1": "添加",

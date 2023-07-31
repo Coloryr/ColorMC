@@ -20,6 +20,13 @@ public enum NbtType : byte
     NbtLongArray = 12
 }
 
+public enum ZipType
+{
+    None,
+    GZip,
+    Zlib
+}
+
 public static class NbtTypes
 {
     public static readonly Dictionary<NbtType, Type> VALUES = new()

@@ -11,126 +11,67 @@
     mc:Ignorable="d">
     <Panel>
         <DockPanel Margin="5,0,5,5">
+            <StackPanel
+                Margin="0,0,0,5"
+                DockPanel.Dock="Top"
+                Orientation="Horizontal">
+                <Button
+                    Width="100"
+                    Height="25"
+                    Command="{Binding Import}"
+                    Content="{setting:Localize Button.Input}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text57}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Add}"
+                    Content="{setting:Localize Button.Add}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text56}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Load}"
+                    Content="{setting:Localize Button.Refash}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text55}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Check}"
+                    Content="{setting:Localize GameEditWindow.Tab4.Text3}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text54}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding StartSet}"
+                    Content="{setting:Localize GameEditWindow.Tab4.Text4}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text53}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding DependTest}"
+                    Content="{setting:Localize GameEditWindow.Tab4.Text5}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text52}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding Open}"
+                    Content="{setting:Localize Button.OpFile}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
+            </StackPanel>
             <DockPanel DockPanel.Dock="Top">
-                <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
-                    <Button
-                        Name="Button_I"
-                        Width="25"
-                        Height="25"
-                        Command="{Binding Import}"
-                        Content="I" />
-                    <Button
-                        Name="Button_I1"
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Import}"
-                        Content="{setting:Localize Button.Input}"
-                        IsVisible="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text57}"
-                        ToolTip.VerticalOffset="-30" />
-                </Panel>
-                <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
-                    <Button
-                        Name="Button_A"
-                        Width="25"
-                        Height="25"
-                        Command="{Binding Add}"
-                        Content="A" />
-                    <Button
-                        Name="Button_A1"
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Add}"
-                        Content="{setting:Localize Button.Add}"
-                        IsVisible="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text56}"
-                        ToolTip.VerticalOffset="-30" />
-                </Panel>
-                <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
-                    <Button
-                        Name="Button_R"
-                        Width="25"
-                        Height="25"
-                        Command="{Binding Load}"
-                        Content="R" />
-                    <Button
-                        Name="Button_R1"
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Load}"
-                        Content="{setting:Localize Button.Refash}"
-                        IsVisible="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text55}"
-                        ToolTip.VerticalOffset="-30" />
-                </Panel>
-                <Grid Margin="5,0,0,0" DockPanel.Dock="Right">
-                    <Button
-                        Name="Button_C"
-                        Width="25"
-                        Height="25"
-                        Command="{Binding Check}"
-                        Content="C" />
-                    <Button
-                        Name="Button_C1"
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Check}"
-                        Content="{setting:Localize GameEditWindow.Tab4.Text3}"
-                        IsVisible="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text54}"
-                        ToolTip.VerticalOffset="-30" />
-                </Grid>
-                <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
-                    <Button
-                        Name="Button_B"
-                        Width="25"
-                        Height="25"
-                        Command="{Binding StartSet}"
-                        Content="B" />
-                    <Button
-                        Name="Button_B1"
-                        Width="100"
-                        Height="25"
-                        Command="{Binding StartSet}"
-                        Content="{setting:Localize GameEditWindow.Tab4.Text4}"
-                        IsVisible="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text53}"
-                        ToolTip.VerticalOffset="-30" />
-                </Panel>
-                <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
-                    <Button
-                        Name="Button_D"
-                        Width="25"
-                        Height="25"
-                        Command="{Binding DependTest}"
-                        Content="D" />
-                    <Button
-                        Name="Button_D1"
-                        Width="100"
-                        Height="25"
-                        Command="{Binding DependTest}"
-                        Content="{setting:Localize GameEditWindow.Tab4.Text5}"
-                        IsVisible="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text52}"
-                        ToolTip.VerticalOffset="-30" />
-                </Panel>
-                <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
-                    <Button
-                        Name="Button_O"
-                        Width="25"
-                        Height="25"
-                        Command="{Binding Open}"
-                        Content="O" />
-                    <Button
-                        Name="Button_O1"
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Open}"
-                        Content="{setting:Localize Button.OpFile}"
-                        IsVisible="False"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                        ToolTip.VerticalOffset="-30" />
-                </Panel>
                 <Label VerticalAlignment="Center" Content="{setting:Localize GameEditWindow.Tab4.Text2}" />
                 <ComboBox
                     Width="150"

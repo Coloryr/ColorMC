@@ -13,18 +13,6 @@ public partial class Tab11Control : UserControl
     {
         InitializeComponent();
 
-        Button_A1.PointerExited += Button_A1_PointerLeave;
-        Button_A.PointerEntered += Button_A_PointerEnter;
-
-        Button_R1.PointerExited += Button_R1_PointerLeave;
-        Button_R.PointerEntered += Button_R_PointerEnter;
-
-        Button_O1.PointerExited += Button_O1_PointerLeave;
-        Button_O.PointerEntered += Button_O_PointerEnter;
-
-        Button_I1.PointerExited += Button_I1_PointerLeave;
-        Button_I.PointerEntered += Button_I_PointerEnter;
-
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
@@ -65,52 +53,5 @@ public partial class Tab11Control : UserControl
                 _ = new GameEditFlyout6(this, (DataContext as GameEditTab11Model)!);
             });
         }
-    }
-
-    private void Button_A1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        App.CrossFade100.Start(Button_A1, null);
-        Button_A.IsVisible = true;
-    }
-
-    private void Button_A_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Button_A.IsVisible = false;
-        App.CrossFade100.Start(null, Button_A1);
-    }
-    private void Button_R1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        App.CrossFade100.Start(Button_R1, null);
-        Button_R.IsVisible = true;
-    }
-
-    private void Button_R_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Button_R.IsVisible = false;
-        App.CrossFade100.Start(null, Button_R1);
-    }
-
-    private void Button_O1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        App.CrossFade100.Start(Button_O1, null);
-        Button_O.IsVisible = true;
-    }
-
-    private void Button_O_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Button_O.IsVisible = false;
-        App.CrossFade100.Start(null, Button_O1);
-    }
-
-    private void Button_I1_PointerLeave(object? sender, PointerEventArgs e)
-    {
-        App.CrossFade100.Start(Button_I1, null);
-        Button_I.IsVisible = true;
-    }
-
-    private void Button_I_PointerEnter(object? sender, PointerEventArgs e)
-    {
-        Button_I.IsVisible = false;
-        App.CrossFade100.Start(null, Button_I1);
     }
 }

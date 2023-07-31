@@ -228,7 +228,7 @@ public static class GameCount
         }
         nbt.Add("LaunchLogs", list);
 
-        nbt.Gzip = true;
+        nbt.ZipType = ZipType.GZip;
 
         nbt.Save(s_local);
 

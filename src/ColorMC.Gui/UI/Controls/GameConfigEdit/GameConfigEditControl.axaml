@@ -12,12 +12,10 @@
     mc:Ignorable="d">
     <Panel>
         <DockPanel Margin="5">
-            <DockPanel DockPanel.Dock="Top">
-                <ComboBox
-                    Width="250"
-                    ItemsSource="{Binding FileList}"
-                    SelectedIndex="{Binding Select}"
-                    SelectedItem="{Binding File}" />
+            <StackPanel
+                Margin="0,0,0,5"
+                DockPanel.Dock="Top"
+                Orientation="Horizontal">
                 <Button
                     Width="85"
                     Height="25"
@@ -25,7 +23,6 @@
                     VerticalAlignment="Center"
                     Command="{Binding Open}"
                     Content="{setting:Localize Button.OpFile}"
-                    DockPanel.Dock="Right"
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
@@ -35,7 +32,6 @@
                     VerticalAlignment="Center"
                     Command="{Binding Save}"
                     Content="{setting:Localize ConfigEditWindow.Text2}"
-                    DockPanel.Dock="Right"
                     ToolTip.Tip="{setting:Localize ToolTip.Text40}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
@@ -45,9 +41,32 @@
                     VerticalAlignment="Center"
                     Command="{Binding Load}"
                     Content="{setting:Localize ConfigEditWindow.Text3}"
-                    DockPanel.Dock="Right"
                     ToolTip.Tip="{setting:Localize ToolTip.Text41}"
                     ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="85"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Command="{Binding FindPos}"
+                    Content="{setting:Localize ConfigEditWindow.Text5}"
+                    IsVisible="{Binding IsWorld}" />
+                <Button
+                    Width="85"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    Command="{Binding FindEntity}"
+                    Content="{setting:Localize ConfigEditWindow.Text6}"
+                    IsVisible="{Binding IsWorld}" />
+            </StackPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <ComboBox
+                    Width="250"
+                    ItemsSource="{Binding FileList}"
+                    SelectedIndex="{Binding Select}"
+                    SelectedItem="{Binding File}" />
+
                 <TextBox
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
@@ -98,7 +117,7 @@
             </Panel>
         </DockPanel>
 
-        <Panel IsVisible="{Binding DisplayAdd}">
+        <Panel IsVisible="{Binding DisplayAdd, FallbackValue=false}">
             <Border Background="{setting:Colors TopBottom}" />
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label
@@ -138,7 +157,7 @@
             </StackPanel>
         </Panel>
 
-        <Panel IsVisible="{Binding DisplayEdit}">
+        <Panel IsVisible="{Binding DisplayEdit, FallbackValue=false}">
             <Border Background="{setting:Colors TopBottom}" />
             <DockPanel>
                 <Panel DockPanel.Dock="Top">

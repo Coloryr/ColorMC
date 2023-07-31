@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Downloader;
+﻿using ColorMC.Core.Chunk;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -451,5 +452,11 @@ public static class TestItem
     public static void Item26()
     {
         var list = ForgeAPI.GetSupportVersion(false).Result;
+    }
+
+    public static void Item27()
+    {
+        var data = ChunkMca.Read(@"F:\minecraft\ColorMC\minecraft\instances\game\.minecraft\saves\新的世界\region\r.-1.0.mca").Result;
+        ChunkMca.Write(data, "r.-1.0.mca");
     }
 }

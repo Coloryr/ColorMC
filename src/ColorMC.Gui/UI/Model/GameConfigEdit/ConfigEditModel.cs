@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Chunk;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
@@ -85,10 +86,17 @@ public partial class GameConfigEditModel : BaseModel
     [ObservableProperty]
     private NbtDataItem dataItem;
 
+    [ObservableProperty]
+    private bool _isWorld;
+
+    private ChunkData? _chunk;
+
     public GameConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world) : base(con)
     {
         Obj = obj;
         World = world;
+
+        _isWorld = World != null;
 
         text = new();
     }
@@ -103,6 +111,7 @@ public partial class GameConfigEditModel : BaseModel
         if (string.IsNullOrWhiteSpace(value))
             return;
 
+        _chunk = null;
         var info = new FileInfo(value);
         if (info.Extension is ".dat" or ".dat_old")
         {
@@ -126,6 +135,27 @@ public partial class GameConfigEditModel : BaseModel
             nbtView = new(nbt1);
             Source = nbtView.Source;
         }
+        else if (info.Extension is ".mca")
+        {
+            NbtEnable = true;
+
+            if (World != null)
+            {
+                _chunk = await GameBinding.ReadMca(World, value);
+            }
+            else
+            {
+                _chunk = await GameBinding.ReadMca(Obj, value);
+            }
+
+            if (_chunk.Nbt is not NbtList nbt1)
+            {
+                return;
+            }
+
+            nbtView = new(nbt1);
+            Source = nbtView.Source;
+        }
         else
         {
             NbtEnable = false;
@@ -142,6 +172,18 @@ public partial class GameConfigEditModel : BaseModel
 
             Text = new(text);
         }
+    }
+
+    [RelayCommand]
+    public void FindEntity()
+    { 
+        
+    }
+
+    [RelayCommand]
+    public void FindPos()
+    { 
+        
     }
 
     [RelayCommand]
