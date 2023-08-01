@@ -92,17 +92,19 @@ public partial class GameConfigEditModel : BaseModel
     [ObservableProperty]
     private bool _displayFindPos;
     [ObservableProperty]
-    private string _blockName;
+    private bool _displayFindEntity;
+    [ObservableProperty]
+    private string _posName;
     [ObservableProperty]
     private string _chunk;
     [ObservableProperty]
     private string _chunkFile;
     [ObservableProperty]
-    private int _blockX;
+    private int _posX;
     [ObservableProperty]
-    private int _blockY;
+    private int _posY;
     [ObservableProperty]
-    private int _blockZ;
+    private int _posZ;
 
     public int TurnTo;
 
@@ -118,17 +120,17 @@ public partial class GameConfigEditModel : BaseModel
         text = new();
     }
 
-    partial void OnBlockXChanged(int value)
+    partial void OnPosXChanged(int value)
     {
         PosChange();
     }
 
-    partial void OnBlockYChanged(int value)
+    partial void OnPosYChanged(int value)
     {
         PosChange();
     }
 
-    partial void OnBlockZChanged(int value)
+    partial void OnPosZChanged(int value)
     {
         PosChange();
     }
@@ -210,17 +212,97 @@ public partial class GameConfigEditModel : BaseModel
 
     [RelayCommand]
     public void FindEntity()
-    { 
-        
+    {
+        DisplayFindPos = false;
+        DisplayFindEntity = true;
+       
+        PosClear();
+        PosChange();
+    }
+
+    [RelayCommand]
+    public void FindEntityCancel()
+    {
+        DisplayFindEntity = false;
+    }
+
+    [RelayCommand]
+    public async Task FindEntityStart()
+    {
+        var chunkflie = "entities/" + ChunkFile;
+        if (FileList.Contains(chunkflie))
+        {
+            File = chunkflie;
+            var (X, Z) = ChunkUtils.PosToChunk(PosX, PosZ);
+            await Task.Run(() =>
+            {
+                while (_chunkData == null)
+                {
+                    Thread.Sleep(200);
+                }
+            });
+            ChunkNbt? nbt = null;
+            foreach (ChunkNbt item in _chunkData.Nbt.Cast<ChunkNbt>())
+            {
+                if (item.X == X && item.Z == Z)
+                {
+                    nbt = item;
+                    break;
+                }
+            }
+            if (nbt == null)
+            {
+                Show(string.Format(App.GetLanguage("ConfigEditWindow.Error7"), Chunk));
+                return;
+            }
+
+            var model = nbtView.Select(nbt);
+            if (model != null)
+            {
+                if (!string.IsNullOrWhiteSpace(PosName))
+                {
+                    NbtBase? nbt2 = null;
+                    if (nbt.TryGet("Entities") is NbtList nbt1 && nbt1.Count > 0)
+                    {
+                        foreach (NbtCompound item in nbt1.Cast<NbtCompound>())
+                        {
+                            if (item.TryGet("id") is NbtString id && id.Value.Contains(PosName))
+                            {
+                                nbt2 = item;
+                                break;
+                            }
+                        }
+                    }
+                    if (nbt2 != null)
+                    {
+                        model = nbtView.Find(model, nbt2);
+                        if (model != null)
+                        {
+                            nbtView.Select(model);
+                        }
+                    }
+                    else
+                    {
+                        Show(string.Format(App.GetLanguage("ConfigEditWindow.Error9"), PosName));
+                    }
+                }
+            }
+
+            DisplayFindEntity = false;
+        }
+        else
+        {
+            Show(string.Format(App.GetLanguage("ConfigEditWindow.Error8"), chunkflie));
+        }
     }
 
     [RelayCommand]
     public void FindBlock()
     {
+        DisplayFindEntity = false;
         DisplayFindPos = true;
-        BlockX = 0;
-        BlockY = 0;
-        BlockZ = 0;
+
+        PosClear();
         PosChange();
     }
 
@@ -237,7 +319,7 @@ public partial class GameConfigEditModel : BaseModel
         if (FileList.Contains(chunkflie))
         {
             File = chunkflie;
-            var (X, Z) = ChunkUtils.PosToChunk(BlockX, BlockZ);
+            var (X, Z) = ChunkUtils.PosToChunk(PosX, PosZ);
             await Task.Run(() =>
             {
                 while (_chunkData == null)
@@ -259,7 +341,39 @@ public partial class GameConfigEditModel : BaseModel
                 Show(string.Format(App.GetLanguage("ConfigEditWindow.Error4"), Chunk));
                 return;
             }
-            nbtView.Select(nbt);
+
+            var model = nbtView.Select(nbt);
+            if (model != null)
+            {
+                if (!string.IsNullOrWhiteSpace(PosName))
+                {
+                    NbtBase? nbt2 = null;
+                    if (nbt.TryGet("block_entities") is NbtList nbt1 && nbt1.Count > 0)
+                    {
+                        foreach (NbtCompound item in nbt1.Cast<NbtCompound>())
+                        {
+                            if (item.TryGet("id") is NbtString id && id.Value.Contains(PosName))
+                            {
+                                nbt2 = item;
+                                break;
+                            }
+                        }
+                    }
+                    if (nbt2 != null)
+                    {
+                        model = nbtView.Find(model, nbt2);
+                        if (model != null)
+                        {
+                            nbtView.Select(model);
+                        }
+                    }
+                    else
+                    {
+                        Show(string.Format(App.GetLanguage("ConfigEditWindow.Error6"), PosName));
+                    }
+                }
+            }
+
             DisplayFindPos = false;
         }
         else
@@ -691,10 +805,17 @@ public partial class GameConfigEditModel : BaseModel
         }
     }
 
+    private void PosClear()
+    {
+        PosName = "";
+        PosX = 0;
+        PosY = 0;
+        PosZ = 0;
+    }
+
     private void PosChange()
     {
-        BlockName = "";
-        var pos1 = ChunkUtils.PosToChunk(BlockX, BlockZ);
+        var pos1 = ChunkUtils.PosToChunk(PosX, PosZ);
         Chunk = $"({pos1.X},{pos1.Z})";
         var pos2 = ChunkUtils.ChunkToRegion(pos1.X, pos1.Z);
         ChunkFile = $"r.{pos2.X}.{pos2.Z}.mca";

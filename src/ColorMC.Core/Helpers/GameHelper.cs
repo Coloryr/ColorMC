@@ -8,6 +8,7 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Concurrent;
+using System.Text;
 
 namespace ColorMC.Core.Helpers;
 
@@ -754,9 +755,52 @@ public static class GameHelper
         }
         if (list.TryGetValue("PreLaunchCommand", out item1))
         {
+            var temp = Funtcions.ArgParse(item1);
             game.JvmArg ??= new();
             game.JvmArg.LaunchPre = true;
-            game.JvmArg.LaunchPreData = item1;
+            var data = new StringBuilder();
+            foreach (var item in temp)
+            {
+                string item3 = item;
+                if (item3.StartsWith('"'))
+                {
+                    item3 = item3[1..];
+                }
+                if (item3.EndsWith('"'))
+                {
+                    item3 = item3[..^1];
+                }
+
+                if (item3 == "$INST_JAVA")
+                {
+                    data.AppendLine(Launch.JAVA_LOCAL);
+                }
+                else if (item3 == "$INST_NAME")
+                {
+                    data.AppendLine(Launch.GAME_NAME);
+                }
+                else if (item3 == "$INST_DIR")
+                {
+                    data.AppendLine(Launch.GAME_DIR);
+                }
+                else if (item3 == "$INST_MC_DIR")
+                {
+                    data.AppendLine(Launch.GAME_DIR);
+                }
+                else if (item3 == "$INST_ID")
+                {
+                    data.AppendLine(Launch.GAME_UUID);
+                }
+                else if (item3 == "$INST_JAVA_ARGS")
+                {
+                    data.AppendLine(Launch.JAVA_ARG);
+                }
+                else
+                {
+                    data.AppendLine(item3);
+                }
+            }
+            game.JvmArg.LaunchPreData = data.ToString();
         }
         if (list.TryGetValue("iconKey", out item1))
         {

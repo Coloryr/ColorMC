@@ -21,15 +21,57 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Launch
 {
+    public const string JAVA_LOCAL = "%JAVA_LOCAL%";
+    public const string JAVA_ARG = "%JAVA_ARG%";
+    public const string LAUNCH_DIR = "%LAUNCH_DIR%";
+    public const string GAME_NAME = "%GAME_NAME%";
+    public const string GAME_UUID = "%GAME_UUID%";
+    public const string GAME_DIR = "%GAME_DIR%";
+    public const string GAME_BASE_DIR = "%GAME_BASE_DIR%";
+
     /// <summary>
     /// 取消启动
     /// </summary>
     private static CancellationToken s_cancel;
 
-    public static void CmdRun(GameSettingObj obj, string path, string cmd)
+    private static string GetString(this List<string> arg)
     {
-        cmd = cmd.Replace("%INST_JAVA%", path)
-            .Replace("%APPDATA%", obj.GetGamePath());
+        var data = new StringBuilder();
+        foreach (var item in arg)
+        {
+            data.AppendLine(item);
+        }
+
+        return data.ToString();
+    }
+
+    /// <summary>
+    /// 替换参数
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="jvm">JAVA位置</param>
+    /// <param name="arg">JVM参数</param>
+    /// <param name="item">命令</param>
+    /// <returns></returns>
+    public static string ReplaceArg(this GameSettingObj obj, string jvm, List<string> arg, string item)
+    {
+        return item
+                .Replace(GAME_NAME, obj.Name)
+                .Replace(GAME_UUID, obj.UUID)
+                .Replace(GAME_DIR, obj.GetGamePath())
+                .Replace(GAME_BASE_DIR, obj.GetBasePath())
+                .Replace(LAUNCH_DIR, ColorMCCore.BaseDir)
+                .Replace(JAVA_LOCAL, jvm)
+                .Replace(JAVA_ARG, arg.GetString());
+    }
+
+    /// <summary>
+    /// 执行命令
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="cmd">命令</param>
+    public static void CmdRun(GameSettingObj obj, string cmd)
+    {
         var args = cmd.Split('\n');
         var file = args[0].Trim();
         if (file.StartsWith("./") || file.StartsWith("../"))
@@ -48,7 +90,6 @@ public static class Launch
         {
             info.ArgumentList.Add(args[a].Trim());
         }
-        info.EnvironmentVariables.Add("INST_JAVA", path);
         using var p = new Process()
         {
             EnableRaisingEvents = true,
@@ -1229,44 +1270,6 @@ public static class Launch
             return null;
         }
 
-        //启动前运行
-        if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
-            || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
-        {
-            var start = obj.JvmArg?.LaunchPreData;
-            if (string.IsNullOrWhiteSpace(start))
-            {
-                start = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
-            }
-            if (!string.IsNullOrWhiteSpace(start))
-            {
-                var res1 = await ColorMCCore.LaunchP.Invoke(true);
-                if (res1)
-                {
-                    stopwatch.Start();
-                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
-                    CmdRun(obj, path, start);
-                    stopwatch.Stop();
-                    string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
-                        obj.Name, stopwatch.Elapsed.ToString());
-                    ColorMCCore.GameLog?.Invoke(obj, temp1);
-                    Logs.Info(temp1);
-                }
-            }
-            else
-            {
-                string temp2 = string.Format(LanguageHelper.Get("Core.Launch.Info10"),
-                obj.Name);
-                ColorMCCore.GameLog?.Invoke(obj, temp2);
-                Logs.Info(temp2);
-            }
-        }
-
-        if (s_cancel.IsCancellationRequested)
-        {
-            return null;
-        }
-
         //准备Jvm参数
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JvmPrepare);
 
@@ -1299,6 +1302,45 @@ public static class Launch
             return null;
         }
 
+        //启动前运行
+        if (ColorMCCore.LaunchP != null && (obj.JvmArg?.LaunchPre == true
+            || ConfigUtils.Config.DefaultJvmArg.LaunchPre))
+        {
+            var start = obj.JvmArg?.LaunchPreData;
+            if (string.IsNullOrWhiteSpace(start))
+            {
+                start = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
+            }
+            if (!string.IsNullOrWhiteSpace(start))
+            {
+                var res1 = await ColorMCCore.LaunchP.Invoke(true);
+                if (res1)
+                {
+                    stopwatch.Start();
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPre);
+                    start = ReplaceArg(obj, path, arg, start);
+                    CmdRun(obj, start);
+                    stopwatch.Stop();
+                    string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
+                        obj.Name, stopwatch.Elapsed.ToString());
+                    ColorMCCore.GameLog?.Invoke(obj, temp1);
+                    Logs.Info(temp1);
+                }
+            }
+            else
+            {
+                string temp2 = string.Format(LanguageHelper.Get("Core.Launch.Info10"),
+                obj.Name);
+                ColorMCCore.GameLog?.Invoke(obj, temp2);
+                Logs.Info(temp2);
+            }
+        }
+
+        if (s_cancel.IsCancellationRequested)
+        {
+            return null;
+        }
+
         if (SystemInfo.Os == OsType.Android)
         {
             NativeLaunch(jvm!, arg);
@@ -1312,7 +1354,6 @@ public static class Launch
         };
         process.StartInfo.FileName = path;
         process.StartInfo.WorkingDirectory = obj.GetGamePath();
-        process.StartInfo.Environment.Add("APPDATA", obj.GetGamePath());
         Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
         foreach (var item in arg)
         {
@@ -1351,7 +1392,8 @@ public static class Launch
                 {
                     stopwatch.Start();
                     ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LaunchPost);
-                    CmdRun(obj, path, start);
+                    start = ReplaceArg(obj, path, arg, start);
+                    CmdRun(obj, start);
                     stopwatch.Stop();
                     string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info9"),
                         obj.Name, stopwatch.Elapsed.ToString());

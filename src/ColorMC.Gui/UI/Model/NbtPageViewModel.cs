@@ -63,16 +63,45 @@ public class NbtPageViewModel : ObservableObject
         Select(data);
     }
 
-    public void Select(ChunkNbt nbt)
+    public NbtNodeModel? Find(NbtNodeModel from, NbtBase nbt)
+    {
+        NbtNodeModel? model = null;
+        foreach (var item in from.Children)
+        {
+            if (model == null)
+            {
+                if (item.Nbt == nbt)
+                {
+                    item.Expand();
+                    model = item;
+                    break;
+                }
+                else if (item.HasChildren)
+                {
+                    model = Find(item, nbt);
+                }
+            }
+            else
+            {
+                item.UnExpand();
+            }
+        }
+
+        return model;
+    }
+
+    public NbtNodeModel? Select(ChunkNbt nbt)
     {
         NbtNodeModel? data = _root.Find(nbt);
         if (data == null)
-            return;
+            return null;
 
         Select(data);
+
+        return data;
     }
 
-    private void Select(NbtNodeModel data)
+    public void Select(NbtNodeModel data)
     {
         var list = new List<int>();
         NbtNodeModel? top = data.Top;

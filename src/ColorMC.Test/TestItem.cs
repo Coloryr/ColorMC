@@ -482,4 +482,10 @@ public static class TestItem
         }
 
     }
+
+    public static void Item28()
+    {
+        string temp = "\"$INST_JAVA\" -jar packwiz-installer-bootstrap.jar --bootstrap-main-jar packwiz-installer.jar --bootstrap-no-update \"https://archive.teacon.cn/2023/packwiz/prod/pack.toml\"";
+        var list = Funtcions.ArgParse(temp);
+    }
 }

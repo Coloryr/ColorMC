@@ -229,6 +229,80 @@ public static partial class Funtcions
 
         return input[(temp + start.Length)..temp1];
     }
+
+    public static IEnumerable<string> ArgParse(string input)
+    {
+        char quoteChar = '"';
+        char escapeChar = '\\';
+        bool insideQuote = false;
+        bool insideEscape = false;
+
+        StringBuilder currentArg = new();
+
+        int currentArgCharCount = 0;
+
+        for (int i = 0; i < input.Length; i++)
+        {
+            char c = input[i];
+            if (c == quoteChar)
+            {
+                currentArgCharCount++;
+
+                if (insideEscape)
+                {
+                    currentArg.Append(c);  
+                    insideEscape = false;
+                }
+                else if (insideQuote)
+                {
+                    insideQuote = false;
+                }
+                else
+                {
+                    insideQuote = true;
+                }
+            }
+            else if (c == escapeChar)
+            {
+                currentArgCharCount++;
+
+                if (insideEscape)
+                    currentArg.Append(escapeChar + escapeChar);
+
+                insideEscape = !insideEscape;
+            }
+            else if (char.IsWhiteSpace(c))
+            {
+                if (insideQuote)
+                {
+                    currentArgCharCount++;
+                    currentArg.Append(c);
+                }
+                else
+                {
+                    if (currentArgCharCount > 0)
+                        yield return currentArg.ToString();
+
+                    currentArgCharCount = 0;
+                    currentArg.Clear();
+                }
+            }
+            else
+            {
+                currentArgCharCount++;
+                if (insideEscape)
+                {
+                    currentArg.Append(escapeChar);
+                    currentArgCharCount = 0;
+                    insideEscape = false;
+                }
+                currentArg.Append(c);
+            }
+        }
+
+        if (currentArgCharCount > 0)
+            yield return currentArg.ToString();
+    }
 }
 
 public static class ZipUtils
