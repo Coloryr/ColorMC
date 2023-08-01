@@ -1,3 +1,4 @@
+using ColorMC.Core.Chunk;
 using ColorMC.Core.Helpers;
 using System.IO;
 using System.IO.Compression;
@@ -159,7 +160,7 @@ public abstract class NbtBase
         return (Activator.CreateInstance(type) as NbtBase)!;
     }
 
-    public static async Task<NbtBase> Read(Stream stream)
+    public static async Task<NbtBase> Read(Stream stream, bool chunk = false)
     {
         DataInputStream stream2;
         var data = new byte[2];
@@ -198,7 +199,16 @@ public abstract class NbtBase
             }
         }
 
-        var nbt = ById(type);
+        NbtBase nbt;
+
+        if (chunk)
+        {
+            nbt = new ChunkNbt();
+        }
+        else
+        {
+            nbt = ById(type);
+        }
         nbt.ZipType = zip;
         nbt.Read(stream2);
 

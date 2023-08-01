@@ -3,6 +3,7 @@ using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Data.Converters;
 using Avalonia.Threading;
+using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
@@ -15,13 +16,14 @@ namespace ColorMC.Gui.UI.Model;
 public class NbtPageViewModel : ObservableObject
 {
     private readonly NbtNodeModel _root;
-
+    private readonly Action<int> _turn;
     public NbtBase Nbt { get; }
     public HierarchicalTreeDataGridSource<NbtNodeModel> Source { get; }
 
-    public NbtPageViewModel(NbtBase nbt)
+    public NbtPageViewModel(NbtBase nbt, Action<int> turn)
     {
         Nbt = nbt;
+        _turn = turn;
         _root = new NbtNodeModel(null, nbt, null);
         Source = new HierarchicalTreeDataGridSource<NbtNodeModel>(new[] { _root })
         {
@@ -52,13 +54,26 @@ public class NbtPageViewModel : ObservableObject
         Source.RowSelection!.SingleSelect = false;
     }
 
-    public async void Find(string name)
+    public void Find(string name)
     {
-        NbtNodeModel? data = null;
-        await Task.Run(() => data = _root.Find(name));
+        NbtNodeModel? data = _root.Find(name);
         if (data == null)
             return;
 
+        Select(data);
+    }
+
+    public void Select(ChunkNbt nbt)
+    {
+        NbtNodeModel? data = _root.Find(nbt);
+        if (data == null)
+            return;
+
+        Select(data);
+    }
+
+    private void Select(NbtNodeModel data)
+    {
         var list = new List<int>();
         NbtNodeModel? top = data.Top;
         NbtNodeModel? down = data;
@@ -76,13 +91,16 @@ public class NbtPageViewModel : ObservableObject
         Dispatcher.UIThread.Post(() =>
         {
             var list = (Source.Selection as TreeDataGridRowSelectionModel<NbtNodeModel>)!;
-            int a;
-            for (a = 0; a < Source.Rows.Count; a++)
-            {
-                if (Source.Rows[a].Model == data)
-                    break;
-            }
             list.SelectedIndex = new(list1);
+
+            var temp = 0;
+
+            foreach(var item in list1)
+            {
+                temp += item;
+            }
+
+            _turn.Invoke(temp);
         });
     }
 

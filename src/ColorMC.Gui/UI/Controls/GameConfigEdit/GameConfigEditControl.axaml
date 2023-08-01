@@ -17,16 +17,15 @@
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
                 <Button
-                    Width="85"
+                    Width="100"
                     Height="25"
-                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Command="{Binding Open}"
                     Content="{setting:Localize Button.OpFile}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
-                    Width="85"
+                    Width="100"
                     Height="25"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
@@ -35,7 +34,7 @@
                     ToolTip.Tip="{setting:Localize ToolTip.Text40}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
-                    Width="85"
+                    Width="100"
                     Height="25"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
@@ -44,15 +43,15 @@
                     ToolTip.Tip="{setting:Localize ToolTip.Text41}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
-                    Width="85"
+                    Width="100"
                     Height="25"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    Command="{Binding FindPos}"
+                    Command="{Binding FindBlock}"
                     Content="{setting:Localize ConfigEditWindow.Text5}"
                     IsVisible="{Binding IsWorld}" />
                 <Button
-                    Width="85"
+                    Width="100"
                     Height="25"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
@@ -199,6 +198,93 @@
                             IsReadOnly="False" />
                     </DataGrid.Columns>
                 </DataGrid>
+            </DockPanel>
+        </Panel>
+        <Panel IsVisible="{Binding DisplayFindPos, FallbackValue=true}">
+            <Border Background="{setting:Colors TopBottom}" />
+            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel DockPanel.Dock="Top">
+                    <Label
+                        Margin="5"
+                        HorizontalAlignment="Center"
+                        Content="{setting:Localize ConfigEditWindow.Text5}" />
+                    <DockPanel>
+                        <Label
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize ConfigEditWindow.Text7}" />
+                        <TextBox Classes="input1" Text="{Binding BlockName}" />
+                    </DockPanel>
+                    <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                        <Label
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Content="X" />
+                        <NumericUpDown
+                            Width="140"
+                            FormatString="N0"
+                            Value="{Binding BlockX}" />
+
+                        <Label
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Center"
+                            Content="Y" />
+                        <NumericUpDown
+                            Width="140"
+                            FormatString="N0"
+                            Value="{Binding BlockY}" />
+                        <Label
+                            Margin="5,0,5,0"
+                            VerticalAlignment="Center"
+                            Content="Z" />
+                        <NumericUpDown
+                            Width="140"
+                            FormatString="N0"
+                            Value="{Binding BlockZ}" />
+                    </StackPanel>
+
+                    <StackPanel
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Label
+                            Margin="0,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize ConfigEditWindow.Text8}" />
+                        <Label
+                            Margin="0,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{Binding Chunk}" />
+
+                        <Label
+                            Margin="0,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize ConfigEditWindow.Text9}" />
+                        <Label
+                            Margin="0,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{Binding ChunkFile}" />
+                    </StackPanel>
+
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5"
+                            Command="{Binding FindBlockCancel}"
+                            Content="{setting:Localize Button.Cancel}" />
+
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5"
+                            Command="{Binding FindBlockStart}"
+                            Content="{setting:Localize ConfigEditWindow.Text10}" />
+                    </StackPanel>
+                </StackPanel>
             </DockPanel>
         </Panel>
     </Panel>

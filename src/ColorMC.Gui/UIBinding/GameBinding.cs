@@ -603,7 +603,7 @@ public static class GameBinding
         var list1 = PathC.GetAllFile(con);
         foreach (var item in list1)
         {
-            list.Add(item.FullName[dir..]);
+            list.Add(item.FullName[dir..].Replace("\\", "/"));
         }
 
         return list;
@@ -619,7 +619,7 @@ public static class GameBinding
         {
             if (item.Extension is ".png" or ".lock")
                 continue;
-            list.Add(item.FullName[dir..]);
+            list.Add(item.FullName[dir..].Replace("\\", "/"));
         }
 
         return list;
@@ -716,6 +716,20 @@ public static class GameBinding
         var dir = obj.GetGamePath();
 
         nbt.Save(Path.GetFullPath(dir + "/" + file));
+    }
+
+    public static void SaveMcaFile(WorldObj obj, string file, ChunkData data)
+    {
+        var dir = obj.Local;
+
+        data.Save(Path.GetFullPath(dir + "/" + file));
+    }
+
+    public static void SaveMcaFile(GameSettingObj obj, string file, ChunkData data)
+    {
+        var dir = obj.GetGamePath();
+
+        data.Save(Path.GetFullPath(dir + "/" + file));
     }
 
     public static Task<List<string>?> GetForgeVersion(string version)

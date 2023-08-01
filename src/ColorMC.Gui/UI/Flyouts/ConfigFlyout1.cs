@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Selection;
+using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
@@ -33,7 +34,6 @@ public class ConfigFlyout1
                 _ => false
             };
 
-            editKey = !string.IsNullOrWhiteSpace(_item.Key);
             if (_item.Top != null)
             {
                 delete = true;
@@ -51,6 +51,18 @@ public class ConfigFlyout1
                     NbtType.NbtLongArray => true,
                     _ => false
                 };
+            }
+
+            if (_item.Top?.Nbt is ChunkNbt
+                && _item.Key is "xPos" or "yPos" or "zPos")
+            {
+                editKey = false;
+                delete = false;
+                editValue = false;
+            }
+            else
+            {
+                editKey = !string.IsNullOrWhiteSpace(_item.Key);
             }
         }
         else

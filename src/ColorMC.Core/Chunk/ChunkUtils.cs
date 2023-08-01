@@ -8,12 +8,12 @@ namespace ColorMC.Core.Chunk;
 
 public static class ChunkUtils
 {
-    public static (int, int) PosToChunk(int x, int z)
+    public static (int X, int Z) PosToChunk(int x, int z)
     {
         return (x >> 4, z >> 4);
     }
 
-    public static (int, int) ChunkToRegion(int x, int z)
+    public static (int X, int Z) ChunkToRegion(int x, int z)
     {
         return (x >> 5, z >> 5);
     }
@@ -29,7 +29,7 @@ public static class ChunkUtils
         return y << 8 | z << 4 | x;
     }
 
-    public static int ChunkPosToHeadPos(int x, int z)
+    public static int ChunkToHeadPos(int x, int z)
     {
         return (x & 31) + (z & 31) * 32;
     }

@@ -10,6 +10,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using System.Diagnostics;
+using System.IO.Compression;
 
 namespace ColorMC.Test;
 
@@ -456,7 +457,29 @@ public static class TestItem
 
     public static void Item27()
     {
-        var data = ChunkMca.Read(@"F:\minecraft\ColorMC\minecraft\instances\game\.minecraft\saves\新的世界\region\r.-1.0.mca").Result;
-        ChunkMca.Write(data, "r.-1.0.mca");
+        //var data = ChunkMca.Read(@"F:\minecraft\ColorMC\minecraft\instances\game\.minecraft\saves\新的世界\region\r.-2.1.mca").Result;
+        //ChunkMca.Write(data, "r.-2.1.mca");
+
+        {
+            using var temp = File.Open(@"F:\minecraft\ColorMC\minecraft\instances\game\.minecraft\saves\新的世界\region\r.-2.1.mca", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            temp.Seek(0x6005, SeekOrigin.Begin);
+            var temp1 = new byte[0x168];
+            temp.ReadExactly(temp1);
+            using var temp2 = new ZLibStream(new MemoryStream(temp1), CompressionMode.Decompress);
+            MemoryStream decompressed = new MemoryStream();
+            temp2.CopyTo(decompressed);
+            File.WriteAllBytes("a.data", decompressed.ToArray());
+        }
+        {
+            using var temp = File.Open("r.-2.1.mca", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            temp.Seek(0x2005, SeekOrigin.Begin);
+            var temp1 = new byte[0x16F];
+            temp.ReadExactly(temp1);
+            using var temp2 = new ZLibStream(new MemoryStream(temp1), CompressionMode.Decompress);
+            MemoryStream decompressed = new MemoryStream();
+            temp2.CopyTo(decompressed);
+            File.WriteAllBytes("2.data", decompressed.ToArray());
+        }
+
     }
 }

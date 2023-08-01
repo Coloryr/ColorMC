@@ -321,7 +321,7 @@ public partial class MainModel : BaseModel, IMainTop
             Show(App.GetLanguage("MainWindow.Info27"));
         }
 
-#if DEBUG
+#if !DEBUG
         if (ConfigBinding.GetAllConfig().Item1?.Http?.CheckUpdate == true)
         {
             UpdateChecker.Check();

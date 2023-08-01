@@ -89,7 +89,24 @@ public partial class GameConfigEditModel : BaseModel
     [ObservableProperty]
     private bool _isWorld;
 
-    private ChunkData? _chunk;
+    [ObservableProperty]
+    private bool _displayFindPos;
+    [ObservableProperty]
+    private string _blockName;
+    [ObservableProperty]
+    private string _chunk;
+    [ObservableProperty]
+    private string _chunkFile;
+    [ObservableProperty]
+    private int _blockX;
+    [ObservableProperty]
+    private int _blockY;
+    [ObservableProperty]
+    private int _blockZ;
+
+    public int TurnTo;
+
+    private ChunkData _chunkData;
 
     public GameConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world) : base(con)
     {
@@ -99,6 +116,21 @@ public partial class GameConfigEditModel : BaseModel
         _isWorld = World != null;
 
         text = new();
+    }
+
+    partial void OnBlockXChanged(int value)
+    {
+        PosChange();
+    }
+
+    partial void OnBlockYChanged(int value)
+    {
+        PosChange();
+    }
+
+    partial void OnBlockZChanged(int value)
+    {
+        PosChange();
     }
 
     partial void OnNameChanged(string? value)
@@ -111,7 +143,8 @@ public partial class GameConfigEditModel : BaseModel
         if (string.IsNullOrWhiteSpace(value))
             return;
 
-        _chunk = null;
+        Progress(App.GetLanguage("ConfigEditWindow.Info7"));
+        _chunkData = null;
         var info = new FileInfo(value);
         if (info.Extension is ".dat" or ".dat_old")
         {
@@ -132,7 +165,7 @@ public partial class GameConfigEditModel : BaseModel
                 return;
             }
 
-            nbtView = new(nbt1);
+            nbtView = new(nbt1, Turn);
             Source = nbtView.Source;
         }
         else if (info.Extension is ".mca")
@@ -141,19 +174,19 @@ public partial class GameConfigEditModel : BaseModel
 
             if (World != null)
             {
-                _chunk = await GameBinding.ReadMca(World, value);
+                _chunkData = await GameBinding.ReadMca(World, value);
             }
             else
             {
-                _chunk = await GameBinding.ReadMca(Obj, value);
+                _chunkData = await GameBinding.ReadMca(Obj, value);
             }
 
-            if (_chunk.Nbt is not NbtList nbt1)
+            if (_chunkData.Nbt is not NbtList nbt1)
             {
                 return;
             }
 
-            nbtView = new(nbt1);
+            nbtView = new(nbt1, Turn);
             Source = nbtView.Source;
         }
         else
@@ -172,6 +205,7 @@ public partial class GameConfigEditModel : BaseModel
 
             Text = new(text);
         }
+        ProgressClose();
     }
 
     [RelayCommand]
@@ -181,9 +215,57 @@ public partial class GameConfigEditModel : BaseModel
     }
 
     [RelayCommand]
-    public void FindPos()
-    { 
-        
+    public void FindBlock()
+    {
+        DisplayFindPos = true;
+        BlockX = 0;
+        BlockY = 0;
+        BlockZ = 0;
+        PosChange();
+    }
+
+    [RelayCommand]
+    public void FindBlockCancel()
+    {
+        DisplayFindPos =  false;
+    }
+
+    [RelayCommand]
+    public async Task FindBlockStart()
+    {
+        var chunkflie = "region/" + ChunkFile;
+        if (FileList.Contains(chunkflie))
+        {
+            File = chunkflie;
+            var (X, Z) = ChunkUtils.PosToChunk(BlockX, BlockZ);
+            await Task.Run(() =>
+            {
+                while (_chunkData == null)
+                {
+                    Thread.Sleep(200);
+                }
+            });
+            ChunkNbt? nbt = null;
+            foreach (ChunkNbt item in _chunkData.Nbt.Cast<ChunkNbt>())
+            {
+                if (item.X == X && item.Z == Z)
+                {
+                    nbt = item;
+                    break;
+                }
+            }
+            if (nbt == null)
+            {
+                Show(string.Format(App.GetLanguage("ConfigEditWindow.Error4"), Chunk));
+                return;
+            }
+            nbtView.Select(nbt);
+            DisplayFindPos = false;
+        }
+        else
+        {
+            Show(string.Format(App.GetLanguage("ConfigEditWindow.Error5"), chunkflie));
+        }
     }
 
     [RelayCommand]
@@ -206,6 +288,17 @@ public partial class GameConfigEditModel : BaseModel
             else
             {
                 GameBinding.SaveNbtFile(Obj, File, nbtView.Nbt);
+            }
+        }
+        else if (info.Extension is ".mca")
+        {
+            if (World != null)
+            {
+                GameBinding.SaveMcaFile(World, File, _chunkData);
+            }
+            else
+            {
+                GameBinding.SaveMcaFile(Obj, File, _chunkData);
             }
         }
         else
@@ -598,4 +691,18 @@ public partial class GameConfigEditModel : BaseModel
         }
     }
 
+    private void PosChange()
+    {
+        BlockName = "";
+        var pos1 = ChunkUtils.PosToChunk(BlockX, BlockZ);
+        Chunk = $"({pos1.X},{pos1.Z})";
+        var pos2 = ChunkUtils.ChunkToRegion(pos1.X, pos1.Z);
+        ChunkFile = $"r.{pos2.X}.{pos2.Z}.mca";
+    }
+
+    private void Turn(int value)
+    {
+        TurnTo = value;
+        OnPropertyChanged("TurnTo");
+    }
 }

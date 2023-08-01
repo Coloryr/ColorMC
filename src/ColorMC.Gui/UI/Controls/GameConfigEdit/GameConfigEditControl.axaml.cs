@@ -8,6 +8,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.ConfigEdit;
 
@@ -57,12 +58,22 @@ public partial class GameConfigEditControl : UserControl, IUserControl
     {
         _model = new(this, world.Game, world);
         DataContext = _model;
+        _model.PropertyChanged += Model_PropertyChanged;
     }
 
     public GameConfigEditControl(GameSettingObj obj) : this()
     {
         _model = new(this, obj, null);
         DataContext = _model;
+        _model.PropertyChanged += Model_PropertyChanged;
+    }
+
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "TurnTo")
+        {
+            NbtViewer.Scroll.Offset = new(0, _model.TurnTo * 25);
+        }
     }
 
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
@@ -108,10 +119,7 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         Window.SetTitle(Title);
 
         DataGrid1.SetFontColor();
-    }
 
-    public void Update()
-    {
         _model.Load();
     }
 

@@ -1,4 +1,6 @@
-﻿using ColorMC.Core.Nbt;
+﻿using Avalonia.Threading;
+using ColorMC.Core.Chunk;
+using ColorMC.Core.Nbt;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 
@@ -8,7 +10,7 @@ public partial class NbtNodeModel : ObservableObject
 {
     public readonly NbtBase Nbt;
 
-    public string? Name => Key == null ? Nbt.ToString() : $"{Key}: {Nbt}";
+    public string? Name => GetName();
     public string? Key { get; set; }
     public NbtType NbtType => Nbt.NbtType;
 
@@ -29,6 +31,21 @@ public partial class NbtNodeModel : ObservableObject
         Key = key;
         Top = top;
         LoadChildren();
+    }
+
+    private string? GetName()
+    {
+        if (Nbt is ChunkNbt chunk)
+        {
+            return $"({chunk.X}, {chunk.Z})";
+        }
+        else if (Key == null)
+        {
+            return Nbt.ToString();
+        }
+        else 
+
+        return $"{Key}: {Nbt}";
     }
 
     public void Add(string key, NbtType type)
@@ -91,7 +108,9 @@ public partial class NbtNodeModel : ObservableObject
     public NbtNodeModel? Find(string name)
     {
         if (name.ToLower() == Key?.ToLower())
+        {
             return this;
+        }
 
         if (HasChildren)
         {
@@ -106,6 +125,25 @@ public partial class NbtNodeModel : ObservableObject
         }
 
         return null;
+    }
+
+    public NbtNodeModel? Find(NbtBase nbt)
+    {
+        NbtNodeModel? model = null;
+        foreach (var item in Children)
+        {
+            if (item.Nbt == nbt)
+            {
+                item.Expand();
+                model = item;
+            }
+            else
+            {
+                item.UnExpand();
+            }
+        }
+
+        return model;
     }
 
     private void LoadChildren()
@@ -141,6 +179,12 @@ public partial class NbtNodeModel : ObservableObject
         {
             IsExpanded = true;
         }
+    }
+
+    public void UnExpand()
+    {
+        IsExpanded = false;
+        OnPropertyChanged(nameof(IsExpanded));
     }
 
     public void Expand()
