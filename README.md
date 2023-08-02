@@ -3,6 +3,9 @@
 [English](./README_EN.md)
 
 全新的MC启动器  
+
+[用户手册](./guide/Main.md)
+
 ![](/image/run.png)  
 ![](/image/GIF.gif)  
 ![](/image/GIF1.gif)  
