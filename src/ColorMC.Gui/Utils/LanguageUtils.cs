@@ -24,8 +24,8 @@ public static class LanguageUtils
     /// <returns>选项</returns>
     public static List<string> GetFilterName() => new()
     {
-        App.GetLanguage("BaseBinding.Filter.Item1"),
-        App.GetLanguage("BaseBinding.Filter.Item2"),
+        App.GetLanguage("Text.Name"),
+        App.GetLanguage("Text.FileName"),
         App.GetLanguage("BaseBinding.Filter.Item3")
     };
 

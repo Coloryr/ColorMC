@@ -31,8 +31,6 @@ public partial class DownloadModel : BaseModel
     [ObservableProperty]
     private string _now;
     [ObservableProperty]
-    private string _button = "P";
-    [ObservableProperty]
     private string _button1 = App.GetLanguage("DownloadWindow.Text1");
     [ObservableProperty]
     private double _value = 0;
@@ -55,14 +53,12 @@ public partial class DownloadModel : BaseModel
         if (!value)
         {
             BaseBinding.DownloadResume();
-            Button = "P";
             Button1 = App.GetLanguage("DownloadWindow.Text1");
             Notify(App.GetLanguage("DownloadWindow.Info3"));
         }
         else
         {
             BaseBinding.DownloadPause();
-            Button = "R";
             Button1 = App.GetLanguage("DownloadWindow.Info5");
             Notify(App.GetLanguage("DownloadWindow.Info2"));
         }

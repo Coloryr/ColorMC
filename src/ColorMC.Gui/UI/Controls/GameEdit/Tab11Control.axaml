@@ -58,11 +58,11 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize GameEditWindow.Tab6.Info4}"
+                        Header="{setting:Localize Text.FileName}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Local}"
-                        Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text4}"
+                        Header="{setting:Localize Text.Path}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>

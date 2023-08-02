@@ -53,7 +53,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Binding="{Binding Group}"
-                    Header="{setting:Localize ServerPackWindow.Tab4.DataGrid.Text1}"
+                    Header="{setting:Localize Text.Name}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Type}"

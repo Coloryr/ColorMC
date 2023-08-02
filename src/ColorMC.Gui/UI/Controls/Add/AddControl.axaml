@@ -98,7 +98,7 @@
                         Margin="5,0,5,0"
                         Classes="input1"
                         Text="{Binding Name}"
-                        Watermark="{setting:Localize AddModPackWindow.Text3}">
+                        Watermark="{setting:Localize Text.Name}">
                         <TextBox.KeyBindings>
                             <KeyBinding Command="{Binding GetNameList}" Gesture="Enter" />
                         </TextBox.KeyBindings>
@@ -211,7 +211,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize AddModPackWindow.DataGrid.Text1}"
+                        Header="{setting:Localize Text.Name}"
                         IsReadOnly="True" />
                     <DataGridCheckBoxColumn
                         Binding="{Binding IsDownload}"

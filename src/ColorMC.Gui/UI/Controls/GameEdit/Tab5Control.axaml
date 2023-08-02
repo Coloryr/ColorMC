@@ -18,8 +18,15 @@
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
                 <Button
+                    Width="120"
+                    Height="25"
+                    Command="{Binding EditWorld}"
+                    Content="{setting:Localize GameEditWindow.Tab5.Text3}" />
+
+                <Button
                     Width="100"
                     Height="25"
+                    Margin="5,0,0,0"
                     Command="{Binding Backup}"
                     Content="{setting:Localize GameEditWindow.Tab5.Text2}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text42}"

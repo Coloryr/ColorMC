@@ -11,39 +11,21 @@
     mc:Ignorable="d">
     <DockPanel Margin="3">
         <DockPanel DockPanel.Dock="Top">
-            <Panel Margin="5,0,0,0" DockPanel.Dock="Right">
-                <Button
-                    Name="Button_P"
-                    Width="20"
-                    Height="25"
-                    Command="{Binding Pause}"
-                    Content="{Binding Button}" />
-                <Button
-                    Name="Button_P1"
-                    Width="100"
-                    Height="25"
-                    Command="{Binding Pause}"
-                    Content="{Binding Button1}"
-                    IsVisible="False" />
-            </Panel>
-            <Panel DockPanel.Dock="Right">
-                <Button
-                    Name="Button_S"
-                    Width="20"
-                    Height="25"
-                    Command="{Binding Stop}"
-                    Content="S" />
-                <Button
-                    Name="Button_S1"
-                    Width="100"
-                    Height="25"
-                    Command="{Binding Stop}"
-                    Content="{setting:Localize DownloadWindow.Text2}"
-                    IsVisible="False" />
-            </Panel>
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,0,0,0"
+                Command="{Binding Pause}"
+                Content="{Binding Button1}"
+                DockPanel.Dock="Right" />
+            <Button
+                Width="100"
+                Height="25"
+                Command="{Binding Stop}"
+                Content="{setting:Localize DownloadWindow.Text2}"
+                DockPanel.Dock="Right" />
             <Label Content="{setting:Localize DownloadWindow.Text3}" />
             <Label
-                MinWidth="90"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 HorizontalContentAlignment="Right"
@@ -51,7 +33,6 @@
                 Content="{Binding Speed}"
                 DockPanel.Dock="Right" />
             <Label
-                MinWidth="90"
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
                 HorizontalContentAlignment="Right"
@@ -79,7 +60,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize DownloadWindow.DataGrid.Text1}"
+                        Header="{setting:Localize Text.Name}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding State}"

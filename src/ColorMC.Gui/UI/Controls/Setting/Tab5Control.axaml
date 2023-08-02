@@ -83,7 +83,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text1}"
+                        Header="{setting:Localize Text.Name}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding MajorVersion}"
@@ -103,7 +103,7 @@
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Path}"
-                        Header="{setting:Localize SettingWindow.Tab5.DataGrid.Text2}"
+                        Header="{setting:Localize Text.Path}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>

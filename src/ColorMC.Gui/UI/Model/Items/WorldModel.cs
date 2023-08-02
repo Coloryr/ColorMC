@@ -106,16 +106,4 @@ public partial class WorldModel : BaseModel
             Show(res.Item2!);
         }
     }
-
-    public async void EditWorld(WorldDisplayObj world)
-    {
-        App.ShowGameLog(world.World.Game);
-        Progress("正在打开中");
-        var res = await ToolPath.OpenMapEdit(world.World);
-        ProgressClose();
-        if (!res.Item1)
-        {
-            Show(res.Item2!);
-        }
-    }
 }

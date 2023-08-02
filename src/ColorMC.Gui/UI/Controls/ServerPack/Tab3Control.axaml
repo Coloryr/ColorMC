@@ -33,7 +33,7 @@
                 <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text1}" />
                 <DataGridTextColumn
                     Binding="{Binding FileName}"
-                    Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text2}"
+                    Header="{setting:Localize Text.FileName}"
                     IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding Url}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text3}" />
                 <DataGridTextColumn

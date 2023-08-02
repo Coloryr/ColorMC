@@ -74,7 +74,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize AddJavaWindow.DataGrid.Text1}"
+                        Header="{setting:Localize Text.Name}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Arch}"

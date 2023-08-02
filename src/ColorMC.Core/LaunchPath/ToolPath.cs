@@ -41,7 +41,7 @@ public class ToolPath
         };
     }
 
-    public static async Task<(bool, string?)> OpenMapEdit(WorldObj obj)
+    public static async Task<(bool, string?)> OpenMapEdit()
     {
         var item = GetMcaselectorDownloadItem();
         if (!File.Exists(item.Local))
@@ -61,30 +61,16 @@ public class ToolPath
 
         var info = new ProcessStartInfo(java.Path)
         {
-            WorkingDirectory = obj.Game.GetBasePath(),
             RedirectStandardError = true,
             RedirectStandardOutput = true
         };
         info.ArgumentList.Add("-jar");
         info.ArgumentList.Add(Path.GetFullPath(item.Local));
-        info.ArgumentList.Add("--mode");
-        info.ArgumentList.Add("import");
-        info.ArgumentList.Add("--world ");
-        info.ArgumentList.Add(obj.Local);
 
-        using var p = new Process()
+        var p = new Process()
         {
             EnableRaisingEvents = true,
             StartInfo = info
-        };
-
-        p.OutputDataReceived += (a, b) =>
-        {
-            ColorMCCore.GameLog?.Invoke(obj.Game, b.Data);
-        };
-        p.ErrorDataReceived += (a, b) =>
-        {
-            ColorMCCore.GameLog?.Invoke(obj.Game, b.Data);
         };
 
         p.Start();

@@ -69,7 +69,7 @@
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Name}"
-                    Header="{setting:Localize GameEditWindow.Tab4.DataGrid.Text2}"
+                    Header="{setting:Localize Text.Name}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding Modid}"

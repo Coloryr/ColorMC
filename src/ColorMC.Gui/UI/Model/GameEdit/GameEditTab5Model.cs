@@ -1,6 +1,7 @@
 ﻿using Avalonia.Input;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
@@ -101,6 +102,17 @@ public partial class GameEditTab5Model : GameEditModel, ILoadFuntion<WorldModel>
         foreach (var item in res)
         {
             WorldList.Add(new(Control, this, item));
+        }
+    }
+    [RelayCommand]
+    public async Task EditWorld()
+    {
+        Progress(App.GetLanguage("GameEditWindow.Tab5.Info13"));
+        var res = await ToolPath.OpenMapEdit();
+        ProgressClose();
+        if (!res.Item1)
+        {
+            Show(res.Item2!);
         }
     }
 

@@ -26,6 +26,7 @@
                 <Button
                     Width="100"
                     Height="25"
+                    Margin="5,0,0,0"
                     Command="{Binding Load}"
                     Content="{setting:Localize Button.Refash}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text59}"
@@ -41,7 +42,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize DownloadWindow.DataGrid.Text1}"
+                        Header="{setting:Localize Text.Name}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding IP}"

@@ -34,7 +34,7 @@
                 <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text1}" />
                 <DataGridTextColumn
                     Binding="{Binding FileName}"
-                    Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text2}"
+                    Header="{setting:Localize Text.FileName}"
                     IsReadOnly="True" />
                 <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text3}" />
                 <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize ServerPackWindow.Tab2.DataGrid.Text4}" />

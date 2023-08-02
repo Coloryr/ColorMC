@@ -26,6 +26,7 @@
                 <Button
                     Width="100"
                     Height="25"
+                    Margin="5,0,0,0"
                     Command="{Binding Add}"
                     Content="{setting:Localize Button.Input}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text63}"
@@ -33,6 +34,7 @@
                 <Button
                     Width="100"
                     Height="25"
+                    Margin="5,0,0,0"
                     Command="{Binding Load}"
                     Content="{setting:Localize Button.Refash}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text64}"
@@ -48,7 +50,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text1}"
+                        Header="{setting:Localize Text.Name}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Author}"
@@ -72,7 +74,7 @@
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Local}"
-                        Header="{setting:Localize GameEditWindow.Tab12.DataGrid.Text7}"
+                        Header="{setting:Localize Text.Path}"
                         IsReadOnly="True" />
                 </DataGrid.Columns>
             </DataGrid>

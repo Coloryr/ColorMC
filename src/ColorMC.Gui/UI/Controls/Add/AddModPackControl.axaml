@@ -72,7 +72,7 @@
                         Classes="input1"
                         IsEnabled="{Binding TextEnable}"
                         Text="{Binding Text}"
-                        Watermark="{setting:Localize AddModPackWindow.Text3}" />
+                        Watermark="{setting:Localize Text.Name}" />
                     <Label
                         Width="50"
                         Margin="5"
@@ -197,7 +197,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"
-                        Header="{setting:Localize AddModPackWindow.DataGrid.Text1}"
+                        Header="{setting:Localize Text.Name}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Size}"

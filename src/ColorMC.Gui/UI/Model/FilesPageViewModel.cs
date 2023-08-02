@@ -28,7 +28,7 @@ public class FilesPageViewModel : ObservableObject
                     }),
                 new HierarchicalExpanderColumn<FileTreeNodeModel>(
                     new TemplateColumn<FileTreeNodeModel>(
-                        App.GetLanguage("GameExportWindow.Info3"),
+                        App.GetLanguage("Text.FileName"),
                         "FileNameCell",
                         null,
                         new GridLength(1, GridUnitType.Star),
