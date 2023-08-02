@@ -71,7 +71,7 @@ public static class TestItem
     {
         using FileStream stream2 = new("E:\\code\\ColorMC\\ColorMC.Test\\bin\\Debug\\net7.0\\minecraft\\assets\\objects\\0c\\0cd209ea16b052a2f445a275380046615d20775e", FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
         stream2.Seek(0, SeekOrigin.Begin);
-        string sha1 = Funtcions.GenSha1(stream2);
+        string sha1 = Funtions.GenSha1(stream2);
     }
 
     public static void Item6()
@@ -486,6 +486,18 @@ public static class TestItem
     public static void Item28()
     {
         string temp = "\"$INST_JAVA\" -jar packwiz-installer-bootstrap.jar --bootstrap-main-jar packwiz-installer.jar --bootstrap-no-update \"https://archive.teacon.cn/2023/packwiz/prod/pack.toml\"";
-        var list = Funtcions.ArgParse(temp);
+        var list = Funtions.ArgParse(temp);
+    }
+
+    public static void Item29()
+    {
+        byte a = 0x98;
+        string temp = Funtions.ToHex(a);
+        short b = 0x18A8;
+        temp = Funtions.ToHex(b);
+        int c = 0x18A66098;
+        temp = Funtions.ToHex(c);
+        long d = 0x18A6609aaa8;
+        temp = Funtions.ToHex(d);
     }
 }

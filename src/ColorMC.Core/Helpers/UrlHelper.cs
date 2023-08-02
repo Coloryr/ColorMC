@@ -485,7 +485,7 @@ public static class UrlHelper
                 return "";
             }
         }
-        else if (Funtcions.CheckNotNumber(item.Projcet) || Funtcions.CheckNotNumber(item.FileId))
+        else if (Funtions.CheckNotNumber(item.Projcet) || Funtions.CheckNotNumber(item.FileId))
         {
             return MakeDownloadUrl(SourceType.Modrinth, item.Projcet,
                 item.FileId, item.File);

@@ -40,7 +40,7 @@ public static class UpdateChecker
             if (File.Exists(LocalPath[a]))
             {
                 using var file = File.OpenRead(LocalPath[a]);
-                Sha1s[a] = Funtcions.GenSha1(file);
+                Sha1s[a] = Funtions.GenSha1(file);
             }
             else
             {

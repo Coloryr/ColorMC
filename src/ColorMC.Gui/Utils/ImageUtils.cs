@@ -27,7 +27,7 @@ public static class ImageUtils
         {
             Directory.CreateDirectory(Local);
         }
-        var sha1 = Funtcions.GenSha256(url);
+        var sha1 = Funtions.GenSha256(url);
         if (File.Exists(Local + sha1))
         {
             return new Bitmap(Local + sha1);

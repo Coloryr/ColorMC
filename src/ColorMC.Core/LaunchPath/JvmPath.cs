@@ -280,4 +280,42 @@ public static class JvmPath
         ConfigUtils.Config.JavaList.Clear();
         ConfigUtils.Save();
     }
+
+    /// <summary>
+    /// 找到合适的Java
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>Java信息</returns>
+    public static JavaInfo? FindJava(int jv)
+    {
+        var list = Jvms.Where(a => a.Value.MajorVersion == jv)
+            .Select(a => a.Value);
+
+        if (!list.Any())
+        {
+            if (jv > 8)
+            {
+                list = Jvms.Where(a => a.Value.MajorVersion >= jv)
+                .Select(a => a.Value);
+                if (!list.Any())
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+        var find = list.Where(a => a.Arch == SystemInfo.SystemArch);
+        int max;
+        if (find.Any())
+        {
+            max = find.Max(a => a.MajorVersion);
+            return find.Where(x => x.MajorVersion == max).FirstOrDefault();
+        }
+
+        max = list.Max(a => a.MajorVersion);
+        return list.Where(x => x.MajorVersion == max).FirstOrDefault();
+    }
 }

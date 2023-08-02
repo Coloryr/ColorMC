@@ -302,7 +302,7 @@ public static class Mods
             try
             {
                 using var filestream = File.OpenRead(item.FullName);
-                sha1 = Funtcions.GenSha1(filestream);
+                sha1 = Funtions.GenSha1(filestream);
                 filestream.Seek(0, SeekOrigin.Begin);
 
                 //Mod 资源包

@@ -457,7 +457,7 @@ public static class BaseBinding
         var res = await Task.Run(async () => await Launch(obj, obj1, world, s_launchCancel.Token));
 
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.End);
-        Funtcions.RunGC();
+        Funtions.RunGC();
 
         if (s_launchCancel.IsCancellationRequested)
             return (true, null);
@@ -630,7 +630,11 @@ public static class BaseBinding
     /// <param name="d">日志</param>
     public static void PLog(GameSettingObj obj, string? d)
     {
-        GameLogs[obj.UUID].Append(d).Append(Environment.NewLine);
+        if (GameLogs.TryGetValue(obj.UUID, out var log))
+        {
+            log.Append(d).Append(Environment.NewLine);
+        }
+        
         if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
         {
             win.Log(d);

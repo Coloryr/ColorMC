@@ -111,7 +111,7 @@ public static class AssetsPath
             if (!ConfigUtils.Config.GameCheck.CheckAssetsSha1)
                 return;
             using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-            var sha1 = await Funtcions.GenSha1Async(stream);
+            var sha1 = await Funtions.GenSha1Async(stream);
             if (item.Value.hash != sha1)
             {
                 list.Add((item.Key, item.Value.hash));

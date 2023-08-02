@@ -129,6 +129,7 @@ public static class ColorMCCore
         Logs.Init(dir);
         ConfigSave.Init();
         JvmPath.Init(dir);
+        ToolPath.Init(dir);
         ConfigUtils.Init(dir);
         BaseClient.Init();
         LocalMaven.Init(dir);

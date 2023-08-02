@@ -221,7 +221,7 @@ public static class GameHelper
                 {
                     using var stream1 = new FileStream(item1.Local, FileMode.Open, FileAccess.ReadWrite,
                    FileShare.ReadWrite);
-                    var sha11 = Funtcions.GenSha1(stream1);
+                    var sha11 = Funtions.GenSha1(stream1);
                     if (sha11 != item1.SHA1)
                     {
                         list.Add(item1);
@@ -252,7 +252,7 @@ public static class GameHelper
             }
             using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
-            var sha1 = Funtcions.GenSha1(stream);
+            var sha1 = Funtions.GenSha1(stream);
             if (item.downloads.artifact.sha1 != sha1)
             {
                 list.Add(new()
@@ -755,7 +755,7 @@ public static class GameHelper
         }
         if (list.TryGetValue("PreLaunchCommand", out item1))
         {
-            var temp = Funtcions.ArgParse(item1);
+            var temp = Funtions.ArgParse(item1);
             game.JvmArg ??= new();
             game.JvmArg.LaunchPre = true;
             var data = new StringBuilder();

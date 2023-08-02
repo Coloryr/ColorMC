@@ -142,7 +142,7 @@ public partial class GameExportModel : GameEditModel
             var info = new FileInfo(item.Local);
             using var stream = File.OpenRead(item.Local);
 
-            var sha512 = await Funtcions.GenSha512Async(stream);
+            var sha512 = await Funtions.GenSha512Async(stream);
 
             var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
             if (item1 != null)
@@ -215,14 +215,14 @@ public partial class GameExportModel : GameEditModel
         var info = new FileInfo(Obj.GetGamePath() + "/" + FileName);
         using var stream = File.OpenRead(info.FullName);
 
-        var sha1 = await Funtcions.GenSha1Async(stream);
+        var sha1 = await Funtions.GenSha1Async(stream);
         stream.Seek(0, SeekOrigin.Begin);
         var obj1 = new ModExport1Model()
         {
             Path = FileName,
             Type = Type,
             Sha1 = sha1,
-            Sha512 = await Funtcions.GenSha512Async(stream),
+            Sha512 = await Funtions.GenSha512Async(stream),
             Url = "",
             FileSize = info.Length
         };
@@ -266,7 +266,7 @@ public partial class GameExportModel : GameEditModel
 
             using var stream = File.OpenRead(item.FullName);
 
-            var sha1 = await Funtcions.GenSha1Async(stream);
+            var sha1 = await Funtions.GenSha1Async(stream);
             stream.Seek(0, SeekOrigin.Begin);
             var item1 = Obj.Mods.Values.FirstOrDefault(a => a.SHA1 == sha1);
             if (item1 != null)
@@ -276,7 +276,7 @@ public partial class GameExportModel : GameEditModel
                     Path = path1,
                     Type = Type,
                     Sha1 = item1.SHA1!,
-                    Sha512 = await Funtcions.GenSha512Async(stream),
+                    Sha512 = await Funtions.GenSha512Async(stream),
                     Url = item1.Url,
                     FileSize = item.Length
                 };

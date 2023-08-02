@@ -9,7 +9,7 @@ public record WorldDisplayObj
 {
     public string Name => World.LevelName;
     public string Mode => LanguageHelper.GetNameWithGameType(World.GameType);
-    public string Time => Funtcions.MillisecondsToDataTime(World.LastPlayed).ToString();
+    public string Time => Funtions.MillisecondsToDataTime(World.LastPlayed).ToString();
     public string Local => World.Local;
     public string Difficulty => LanguageHelper.GetNameWithDifficulty(World.Difficulty);
     public bool Hardcore => World.Hardcore == 1;

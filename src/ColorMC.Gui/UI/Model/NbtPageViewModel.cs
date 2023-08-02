@@ -120,6 +120,7 @@ public class NbtPageViewModel : ObservableObject
         Dispatcher.UIThread.Post(() =>
         {
             var list = (Source.Selection as TreeDataGridRowSelectionModel<NbtNodeModel>)!;
+            list.SelectedIndex = new();
             list.SelectedIndex = new(list1);
 
             var temp = 0;

@@ -19,7 +19,7 @@ public static class ChunkMca
             return;
         stream.Seek(8192, SeekOrigin.Begin);
         int now = 8192;
-        int time = Funtcions.GetTime();
+        int time = Funtions.GetTime();
         foreach (var item in data.Pos)
         {
             if (item == null)

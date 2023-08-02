@@ -37,7 +37,7 @@ public partial class ModExportModel : ObservableObject
         {
             if (string.IsNullOrWhiteSpace(PID) || string.IsNullOrWhiteSpace(FID))
                 return null;
-            return Funtcions.CheckNotNumber(PID) || Funtcions.CheckNotNumber(FID) ?
+            return Funtions.CheckNotNumber(PID) || Funtions.CheckNotNumber(FID) ?
                 SourceType.Modrinth : SourceType.CurseForge;
         }
     }

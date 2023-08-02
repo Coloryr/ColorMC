@@ -177,7 +177,7 @@ public static class Launch
                     using FileStream stream2 = new(file, FileMode.Open, FileAccess.ReadWrite,
                         FileShare.ReadWrite);
                     stream2.Seek(0, SeekOrigin.Begin);
-                    string sha1 = Funtcions.GenSha1(stream2);
+                    string sha1 = Funtions.GenSha1(stream2);
                     if (sha1 != game.downloads.client.sha1)
                     {
                         list.Add(new()
@@ -421,45 +421,7 @@ public static class Launch
         return list;
     }
 
-    /// <summary>
-    /// 找到合适的Java
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns>Java信息</returns>
-    private static JavaInfo? FindJava(GameSettingObj obj)
-    {
-        var game = VersionPath.GetGame(obj.Version)!;
-        var jv = game.javaVersion.majorVersion;
-        var list = JvmPath.Jvms.Where(a => a.Value.MajorVersion == jv)
-            .Select(a => a.Value);
 
-        if (!list.Any())
-        {
-            if (jv > 8)
-            {
-                list = JvmPath.Jvms.Where(a => a.Value.MajorVersion >= jv)
-                .Select(a => a.Value);
-                if (!list.Any())
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-        var find = list.Where(a => a.Arch == SystemInfo.SystemArch);
-        int max;
-        if (find.Any())
-        {
-            max = find.Max(a => a.MajorVersion);
-            return find.Where(x => x.MajorVersion == max).FirstOrDefault();
-        }
-
-        max = list.Max(a => a.MajorVersion);
-        return list.Where(x => x.MajorVersion == max).FirstOrDefault();
-    }
 
     /// <summary>
     /// V1版Jvm参数
@@ -735,19 +697,19 @@ public static class Launch
         {
             var res = await BaseClient.GetString(login.Text1);
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
-            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res.Item2!)}");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtions.GenBase64(res.Item2!)}");
         }
         else if (login.AuthType == AuthType.LittleSkin)
         {
             var res = await BaseClient.GetString($"{UrlHelper.LittleSkin}api/yggdrasil");
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
-            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res.Item2!)}");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtions.GenBase64(res.Item2!)}");
         }
         else if (login.AuthType == AuthType.SelfLittleSkin)
         {
             var res = await BaseClient.GetString($"{login.Text1}/api/yggdrasil");
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
-            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtcions.GenBase64(res.Item2!)}");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtions.GenBase64(res.Item2!)}");
         }
 
         return jvmHead;
@@ -1253,7 +1215,9 @@ public static class Launch
         JavaInfo? jvm = null;
         if (string.IsNullOrWhiteSpace(path))
         {
-            jvm = JvmPath.GetInfo(obj.JvmName) ?? FindJava(obj);
+            var game = VersionPath.GetGame(obj.Version)!;
+            var jv = game.javaVersion.majorVersion;
+            jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
             if (jvm == null)
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);

@@ -65,7 +65,7 @@ public static class LibrariesPath
                 return;
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
                 FileShare.Read);
-            var sha1 = await Funtcions.GenSha1Async(stream);
+            var sha1 = await Funtions.GenSha1Async(stream);
             if (!string.IsNullOrWhiteSpace(item.SHA1) && item.SHA1 != sha1)
             {
                 list.Add(item);
@@ -135,7 +135,7 @@ public static class LibrariesPath
                 return;
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
-            var sha1 = await Funtcions.GenSha1Async(stream);
+            var sha1 = await Funtions.GenSha1Async(stream);
             if (item.SHA1 != sha1)
             {
                 list.Add(item);

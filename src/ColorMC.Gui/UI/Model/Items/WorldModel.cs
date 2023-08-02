@@ -1,20 +1,21 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class WorldModel : ObservableObject
+public partial class WorldModel : BaseModel
 {
     public WorldDisplayObj World { get; }
 
     private readonly ILoadFuntion<WorldModel> _top;
-    private readonly IUserControl _con;
 
     [ObservableProperty]
     private bool _isSelect;
@@ -27,9 +28,9 @@ public partial class WorldModel : ObservableObject
     public string Hardcore => World.Hardcore.ToString();
     public Bitmap Pic => World.Pic ?? App.GameIcon;
 
-    public WorldModel(IUserControl con, ILoadFuntion<WorldModel> top, WorldDisplayObj world)
+    public WorldModel(IUserControl con, ILoadFuntion<WorldModel> top, 
+        WorldDisplayObj world) : base(con)
     {
-        _con = con;
         _top = top;
         World = world;
     }
@@ -46,8 +47,7 @@ public partial class WorldModel : ObservableObject
 
     public async void Delete(WorldDisplayObj obj)
     {
-        var window = _con.Window;
-        var res = await window!.OkInfo.ShowWait(
+        var res = await ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab5.Info1"), obj.Name));
         if (!res)
         {
@@ -55,43 +55,41 @@ public partial class WorldModel : ObservableObject
         }
 
         GameBinding.DeleteWorld(obj.World);
-        window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
         await _top.Load();
     }
 
     public async void Export(WorldDisplayObj obj)
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info4"));
-        var file = await BaseBinding.SaveFile(window as TopLevel, FileType.World, new object[]
+        Progress(App.GetLanguage("GameEditWindow.Tab5.Info4"));
+        var file = await BaseBinding.SaveFile(Window, FileType.World, new object[]
             { obj });
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (file == null)
             return;
 
         if (file == false)
         {
-            window.OkInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Error1"));
+            Show(App.GetLanguage("GameEditWindow.Tab5.Error1"));
         }
         else
         {
-            window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info3"));
+            Notify(App.GetLanguage("GameEditWindow.Tab5.Info3"));
         }
     }
 
     public async void Backup(WorldModel obj)
     {
-        var Window = _con.Window;
-        Window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info7"));
+        Progress(App.GetLanguage("GameEditWindow.Tab5.Info7"));
         var res = await GameBinding.BackupWorld(obj.World.World);
-        Window.ProgressInfo.Close();
+        ProgressClose();
         if (res)
         {
-            Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Info8"));
+            Notify(App.GetLanguage("GameEditWindow.Tab5.Info8"));
         }
         else
         {
-            Window.ProgressInfo.Show(App.GetLanguage("GameEditWindow.Tab5.Error3"));
+            Show(App.GetLanguage("GameEditWindow.Tab5.Error3"));
         }
     }
 
@@ -102,11 +100,22 @@ public partial class WorldModel : ObservableObject
             return;
         }
 
-        var window = _con.Window;
-        var res = await GameBinding.Launch(window, world.World.Game, world.World);
+        var res = await GameBinding.Launch(Window, world.World.Game, world.World);
         if (!res.Item1)
         {
-            window.OkInfo.Show(res.Item2!);
+            Show(res.Item2!);
+        }
+    }
+
+    public async void EditWorld(WorldDisplayObj world)
+    {
+        App.ShowGameLog(world.World.Game);
+        Progress("正在打开中");
+        var res = await ToolPath.OpenMapEdit(world.World);
+        ProgressClose();
+        if (!res.Item1)
+        {
+            Show(res.Item2!);
         }
     }
 }

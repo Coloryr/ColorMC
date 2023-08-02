@@ -368,7 +368,7 @@ public static class ServerPack
                             {
                                 FileName = file.Name,
                                 Group = item.Group,
-                                Sha1 = Funtcions.GenSha1(stream),
+                                Sha1 = Funtions.GenSha1(stream),
                                 Zip = item.Zip,
                                 Url = item.Url,
                                 Dir = true
@@ -395,7 +395,7 @@ public static class ServerPack
                                 {
                                     Group = item.Group,
                                     FileName = name,
-                                    Sha1 = Funtcions.GenSha1(stream),
+                                    Sha1 = Funtions.GenSha1(stream),
                                     Url = item.Url + name,
                                     Zip = false,
                                     Dir = false
@@ -418,7 +418,7 @@ public static class ServerPack
                         {
                             Group = "",
                             FileName = item.Group,
-                            Sha1 = Funtcions.GenSha1(stream),
+                            Sha1 = Funtions.GenSha1(stream),
                             Url = item.Url,
                             Zip = item.Zip,
                             Dir = false

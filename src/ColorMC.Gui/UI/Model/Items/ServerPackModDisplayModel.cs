@@ -29,7 +29,7 @@ public partial class ServerPackModDisplayModel : ObservableObject
             {
                 return "";
             }
-            else if (Funtcions.CheckNotNumber(PID) || Funtcions.CheckNotNumber(FID))
+            else if (Funtions.CheckNotNumber(PID) || Funtions.CheckNotNumber(FID))
             {
                 return SourceType.Modrinth.GetName();
             }

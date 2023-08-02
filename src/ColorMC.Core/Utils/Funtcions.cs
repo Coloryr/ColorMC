@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace ColorMC.Core.Utils;
 
-public static partial class Funtcions
+public static partial class Funtions
 {
     [GeneratedRegex("[^0-9]+")]
     private static partial Regex Regex1();
@@ -302,6 +302,70 @@ public static partial class Funtcions
 
         if (currentArgCharCount > 0)
             yield return currentArg.ToString();
+    }
+
+    public static string ToHex(byte temp)
+    {
+        var builder = new StringBuilder();
+        for (int a = 0; a < 8; a++)
+        {
+            if (a > 0 && a % 4 == 0)
+            {
+                builder.Append(' ');
+            }
+            builder.Append((temp & 0x80) != 0 ? '1' : '0');
+            temp <<= 1;
+        }
+
+        return builder.ToString();
+    }
+
+    public static string ToHex(short temp)
+    {
+        var builder = new StringBuilder();
+        for (int a = 0; a < 16; a++)
+        {
+            if (a > 0 && a % 4 == 0)
+            {
+                builder.Append(' ');
+            }
+            builder.Append((temp & 0x8000) != 0 ? '1' : '0');
+            temp <<= 1;
+        }
+
+        return builder.ToString();
+    }
+
+    public static string ToHex(int temp)
+    {
+        var builder = new StringBuilder();
+        for (int a = 0; a < 32; a++)
+        {
+            if (a > 0 && a % 4 == 0)
+            {
+                builder.Append(' ');
+            }
+            builder.Append((temp & 0x80000000) != 0 ? '1' : '0');
+            temp <<= 1;
+        }
+
+        return builder.ToString();
+    }
+
+    public static string ToHex(long temp)
+    {
+        var builder = new StringBuilder();
+        for (int a = 0; a < 64; a++)
+        {
+            if (a > 0 && a % 4 == 0)
+            {
+                builder.Append(' ');
+            }
+            builder.Append((temp & -9223372036854775808) != 0 ? '1' : '0');
+            temp <<= 1;
+        }
+
+        return builder.ToString();
     }
 }
 
