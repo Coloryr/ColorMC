@@ -143,6 +143,24 @@
                     Command="{Binding StartUpdate}"
                     Content="{setting:Localize SettingWindow.Tab3.Text17}" />
             </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{setting:Localize SettingWindow.Tab3.Text20}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,0,0,0"
+                    Command="{Binding GameCloudConnect}"
+                    Content="{setting:Localize SettingWindow.Tab3.Text22}" />
+                <Label Margin="5,0,0,0" Content="{Binding ServerInfo}" />
+            </StackPanel>
+            <TextBox
+                Height="100"
+                Margin="0,5,0,0"
+                AcceptsReturn="True"
+                Classes="input2"
+                Text="{Binding ServerKey}"
+                Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
         </StackPanel>
     </DockPanel>
 </UserControl>

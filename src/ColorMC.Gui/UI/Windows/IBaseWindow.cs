@@ -17,7 +17,7 @@ public interface IBaseWindow
     public IUserControl Con { get; }
     public void SetTitle(string data);
 
-    virtual public void Close()
+    public void Close()
     {
         if (ConfigBinding.WindowMode())
         {

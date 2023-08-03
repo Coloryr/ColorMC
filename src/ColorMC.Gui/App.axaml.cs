@@ -21,6 +21,7 @@ using ColorMC.Gui.UI.Controls.Count;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Controls.Error;
+using ColorMC.Gui.UI.Controls.GameCloud;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.GameExport;
 using ColorMC.Gui.UI.Controls.GameLog;
@@ -75,6 +76,7 @@ public partial class App : Application
     public readonly static Dictionary<string, ServerPackControl> ServerPackWindows = new();
     public readonly static Dictionary<string, GameLogControl> GameLogWindows = new();
     public readonly static Dictionary<string, GameExportControl> GameExportWindows = new();
+    public readonly static Dictionary<string, GameCloudControl> GameCloudWindows = new();
 
     public static readonly SelfCrossFade CrossFade300 = new(TimeSpan.FromMilliseconds(300));
     public static readonly SelfCrossFade CrossFade200 = new(TimeSpan.FromMilliseconds(200));
@@ -625,6 +627,50 @@ public partial class App : Application
         }
     }
 
+    public static void ShowConfigEdit(GameSettingObj obj)
+    {
+        if (ConfigEditWindows.TryGetValue(obj.UUID, out var win1))
+        {
+            win1.Window.Activate();
+        }
+        else
+        {
+            var con = new GameConfigEditControl(obj);
+            ConfigEditWindows.Add(obj.UUID, con);
+            AWindow(con);
+        }
+    }
+
+    public static void ShowConfigEdit(WorldObj obj)
+    {
+        string key = obj.Game.UUID + ":" + obj.LevelName;
+        if (ConfigEditWindows.TryGetValue(key, out var win1))
+        {
+            win1.Window.Activate();
+        }
+        else
+        {
+            var con = new GameConfigEditControl(obj);
+            ConfigEditWindows.Add(key, con);
+            AWindow(con);
+        }
+    }
+
+    public static void ShowGameCloud(GameSettingObj obj)
+    {
+        string key = obj.UUID;
+        if (GameCloudWindows.TryGetValue(key, out var win1))
+        {
+            win1.Window.Activate();
+        }
+        else
+        {
+            var con = new GameCloudControl(obj);
+            GameCloudWindows.Add(key, con);
+            AWindow(con);
+        }
+    }
+
     public static void ShowCount()
     {
         if (CountWindow != null)
@@ -680,6 +726,26 @@ public partial class App : Application
         {
             Dispatcher.UIThread.Post(win1.Window.Close);
         }
+        if (GameCloudWindows.TryGetValue(obj.UUID, out var win2))
+        {
+            Dispatcher.UIThread.Post(win2.Window.Close);
+        }
+        if (GameExportWindows.TryGetValue(obj.UUID, out var win3))
+        {
+            Dispatcher.UIThread.Post(win3.Window.Close);
+        }
+        if (ServerPackWindows.TryGetValue(obj.UUID, out var win4))
+        {
+            Dispatcher.UIThread.Post(win4.Window.Close);
+        }
+        foreach (var item in ConfigEditWindows)
+        {
+            if (item.Key.StartsWith(obj.UUID))
+            {
+                Dispatcher.UIThread.Post(item.Value.Window.Close);
+            }
+        }
+        
     }
 
     public static void Close()
@@ -763,14 +829,14 @@ public partial class App : Application
         WindowTransparencyLevel.Mica
     };
 
-    public static Task<bool> HaveUpdate(string data)
+    public static Task<bool> HaveUpdate(string? data)
     {
         var window = GetMainWindow();
         if (window == null)
         {
             return Task.FromResult(false);
         }
-
+        data ??= "";
         return window.TextInfo.ShowWait(GetLanguage("Gui.Info5"), data);
     }
 
@@ -877,34 +943,13 @@ public partial class App : Application
         {
             (item.GetVisualRoot() as Window)?.Close();
         }
-    }
-
-    public static void ShowConfigEdit(GameSettingObj obj)
-    {
-        if (ConfigEditWindows.TryGetValue(obj.UUID, out var win1))
+        foreach (var item in GameExportWindows.Values)
         {
-            win1.Window.Activate();
+            (item.GetVisualRoot() as Window)?.Close();
         }
-        else
+        foreach (var item in GameCloudWindows.Values)
         {
-            var con = new GameConfigEditControl(obj);
-            ConfigEditWindows.Add(obj.UUID, con);
-            AWindow(con);
-        }
-    }
-
-    public static void ShowConfigEdit(WorldObj obj)
-    {
-        string key = obj.Game.UUID + ":" + obj.LevelName;
-        if (ConfigEditWindows.TryGetValue(key, out var win1))
-        {
-            win1.Window.Activate();
-        }
-        else
-        {
-            var con = new GameConfigEditControl(obj);
-            ConfigEditWindows.Add(key, con);
-            AWindow(con);
+            (item.GetVisualRoot() as Window)?.Close();
         }
     }
 }

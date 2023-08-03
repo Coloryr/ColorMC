@@ -6,7 +6,6 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
@@ -116,7 +115,7 @@ public partial class GameConfigEditModel : BaseModel
 
     public int TurnTo;
 
-    private ChunkData _chunkData;
+    private ChunkData? _chunkData;
 
     public GameConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world) : base(con)
     {
@@ -270,7 +269,7 @@ public partial class GameConfigEditModel : BaseModel
                 }
             });
             ChunkNbt? nbt = null;
-            foreach (ChunkNbt item in _chunkData.Nbt.Cast<ChunkNbt>())
+            foreach (ChunkNbt item in _chunkData!.Nbt.Cast<ChunkNbt>())
             {
                 if (item.X == X && item.Z == Z)
                 {
@@ -355,11 +354,11 @@ public partial class GameConfigEditModel : BaseModel
         {
             if (World != null)
             {
-                GameBinding.SaveMcaFile(World, File, _chunkData);
+                GameBinding.SaveMcaFile(World, File, _chunkData!);
             }
             else
             {
-                GameBinding.SaveMcaFile(Obj, File, _chunkData);
+                GameBinding.SaveMcaFile(Obj, File, _chunkData!);
             }
         }
         else
@@ -732,10 +731,10 @@ public partial class GameConfigEditModel : BaseModel
 
     private void PosChange()
     {
-        var pos1 = ChunkUtils.PosToChunk(PosX, PosZ);
-        Chunk = $"({pos1.X},{pos1.Z})";
-        var pos2 = ChunkUtils.ChunkToRegion(pos1.X, pos1.Z);
-        ChunkFile = $"r.{pos2.X}.{pos2.Z}.mca";
+        var (X, Z) = ChunkUtils.PosToChunk(PosX, PosZ);
+        Chunk = $"({X},{Z})";
+        (X, Z) = ChunkUtils.ChunkToRegion(X, Z);
+        ChunkFile = $"r.{X}.{Z}.mca";
     }
 
     private void Turn(int value)

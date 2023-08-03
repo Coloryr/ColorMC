@@ -72,7 +72,7 @@ public partial class GameConfigEditControl : UserControl, IUserControl
     {
         if (e.PropertyName == "TurnTo")
         {
-            NbtViewer.Scroll.Offset = new(0, _model.TurnTo * 25);
+            NbtViewer.Scroll!.Offset = new(0, _model.TurnTo * 25);
         }
     }
 

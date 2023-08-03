@@ -201,6 +201,9 @@
 	"SettingWindow.Tab3.Text17": "强制下载更新",
 	"SettingWindow.Tab3.Text18": "打开图片缓存文件夹",
 	"SettingWindow.Tab3.Text19": "自动补全",
+	"SettingWindow.Tab3.Text20": "云同步设置",
+	"SettingWindow.Tab3.Text21": "服务器密钥",
+	"SettingWindow.Tab3.Text22": "验证密钥",
 	"SettingWindow.Tab3.Info1": "正在进行更新检查",
 	"SettingWindow.Tab3.Info2": "检测到新版本，是否要更新",
 	"SettingWindow.Tab3.Info3": "已经是最新版了",
@@ -734,6 +737,12 @@
 	"GameExportWindow.Info6": "正在读取信息",
 	"GameExportWindow.Error1": "实例导出失败",
 	"GameExportWindow.Error2": "没有输入名字和版本",
+	"GameCloudWindow.Title": "游戏实例云同步 {0}",
+	"GameCloudWindow.Tabs.Text1": "总体设置",
+	"GameCloudWindow.Tabs.Text2": "配置文件",
+	"GameCloudWindow.Tabs.Text3": "地图列表",
+	"GameCloudWindow.Tab1.Text1": "启用云同步",
+	"GameCloudWindow.Tab1.Text2": "游戏实例UUID",
 	"Live2DFlyout.Text1": "播放动画",
 	"Live2DFlyout.Text2": "切换表情",
 	"ServerMotdControl.Text1": "玩家数量：",
@@ -913,5 +922,8 @@
 	"Button.Add": "添加",
 	"Live2D.Text1": "欢迎回来喵",
 	"Live2D.Text2": "游戏启动了喵",
-	"Live2D.Text3": "游戏崩溃了喵"
+	"Live2D.Text3": "游戏崩溃了喵",
+	"GameCloud.Info1": "使用空间 {0}/{1} Mb",
+	"GameCloud.Error1": "云同步服务器验证错误",
+	"GameCloud.Error2": "无法链接云同步服务器"
 }

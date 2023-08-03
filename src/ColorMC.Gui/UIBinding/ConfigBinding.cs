@@ -6,6 +6,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
+using System;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
@@ -587,5 +588,11 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         BaseBinding.LoadStyle();
+    }
+
+    public static void SetServerKey(string value)
+    {
+        GuiConfigUtils.Config.ServerKey = value;
+        GuiConfigUtils.Save();
     }
 }

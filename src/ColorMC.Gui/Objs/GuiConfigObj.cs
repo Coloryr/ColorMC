@@ -312,4 +312,8 @@ public record GuiConfigObj
     /// 样式设置
     /// </summary>
     public StyleSetting Style { get; set; }
+    /// <summary>
+    /// 服务器云同步密钥
+    /// </summary>
+    public string ServerKey { get; set; }
 }

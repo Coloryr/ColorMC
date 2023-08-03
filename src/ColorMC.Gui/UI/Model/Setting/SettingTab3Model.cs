@@ -28,6 +28,10 @@ public partial class SettingTab3Model : BaseModel
     private string _user;
     [ObservableProperty]
     private string _password;
+    [ObservableProperty]
+    private string _serverKey;
+    [ObservableProperty]
+    private string _serverInfo;
 
     [ObservableProperty]
     private bool _isDownload;
@@ -47,6 +51,14 @@ public partial class SettingTab3Model : BaseModel
     public SettingTab3Model(IUserControl con) : base(con)
     {
 
+    }
+
+    partial void OnServerKeyChanged(string value)
+    {
+        if (_load)
+            return;
+
+        ConfigBinding.SetServerKey(value);
     }
 
     partial void OnCheckFileChanged(bool value)
@@ -93,6 +105,13 @@ public partial class SettingTab3Model : BaseModel
             return;
 
         ConfigBinding.SetDownloadSource((SourceLocal)value);
+    }
+
+    [RelayCommand]
+    public async Task GameCloudConnect()
+    {
+        await GameCloudUtils.Init();
+        ServerInfo = GameCloudUtils.Info;
     }
 
     [RelayCommand]
@@ -168,6 +187,9 @@ public partial class SettingTab3Model : BaseModel
             CheckFile = config.Item1.Http.CheckFile;
             AutoDownload = config.Item1.Http.AutoDownload;
             CheckUpdate = config.Item1.Http.CheckUpdate;
+
+            ServerKey = config.Item2.ServerKey;
+            ServerInfo = GameCloudUtils.Info;
         }
         _load = false;
     }

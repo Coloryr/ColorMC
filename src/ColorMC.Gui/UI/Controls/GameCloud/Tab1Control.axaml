@@ -1,0 +1,22 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.GameCloud.Tab1Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <StackPanel Margin="5,0,5,5">
+        <CheckBox Content="{setting:Localize GameCloudWindow.Tab1.Text1}" IsChecked="{Binding Enable}" />
+        <StackPanel IsEnabled="{Binding Enable}">
+            <TextBox
+                Margin="0,5,5,0"
+                Classes="input1"
+                IsReadOnly="True"
+                Text="{Binding UUID}"
+                Watermark="{setting:Localize GameCloudWindow.Tab1.Text2}" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

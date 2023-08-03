@@ -48,7 +48,7 @@ public static class BaseBinding
     /// <summary>
     /// 初始化
     /// </summary>
-    public static void Init()
+    public static async void Init()
     {
         ColorMCCore.OnError = ShowError;
         ColorMCCore.DownloaderUpdate = DownloaderUpdate;
@@ -68,6 +68,7 @@ public static class BaseBinding
             GameCount.Init(ColorMCGui.RunDir);
             ImageUtils.Init(ColorMCGui.RunDir);
             UpdateChecker.Init();
+            await GameCloudUtils.Init();
 
             try
             {
@@ -1202,21 +1203,21 @@ public static class BaseBinding
 
             try
             {
-                var res = await obj.ServerPackCheck(config.ServerUrl);
-                if (res.Res && !string.IsNullOrWhiteSpace(res.Obj?.UI))
+                var (Res, Obj) = await obj.ServerPackCheck(config.ServerUrl);
+                if (Res && !string.IsNullOrWhiteSpace(Obj?.UI))
                 {
-                    GuiConfigUtils.Config.ServerCustom.UIFile = res.Obj.UI;
+                    GuiConfigUtils.Config.ServerCustom.UIFile = Obj.UI;
                     GuiConfigUtils.Save();
                 }
 
-                if (res.Res)
+                if (Res)
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
                         window.OkInfo.ShowOk(App.GetLanguage("Gui.Info13"), App.Close);
                     });
                 }
-                else if (res.Obj != null)
+                else if (Obj != null)
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
