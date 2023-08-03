@@ -889,6 +889,8 @@
 	"ToolTip.Text62": "重新读取光影包列表",
 	"ToolTip.Text63": "从现有文件导入结构文件",
 	"ToolTip.Text64": "重新读取结构文件列表",
+	"ToolTip.Text65": "打开游戏实例日志窗口",
+	"ToolTip.Text66": "打开游戏实例导出窗口",
 	"Tips.Text1": "双击可启动实例，右键可以打开实例下拉菜单\n实例添加于{0}\n最后启动于{1}\n上次游戏时间{2}\n总游戏时间{3}",
 	"Tips.Text2": "双击可切换账户，右键可以打开账户菜单",
 	"Text.ForgeVersion": "Forge版本",

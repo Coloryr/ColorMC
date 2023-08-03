@@ -26,7 +26,7 @@
             </StackPanel>
             <DockPanel Margin="0,5,0,0">
                 <Button
-                    Width="80"
+                    Width="100"
                     Height="25"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"

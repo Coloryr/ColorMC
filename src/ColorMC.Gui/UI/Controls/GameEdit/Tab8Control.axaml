@@ -17,7 +17,7 @@
                 DockPanel.Dock="Top"
                 Orientation="Horizontal">
                 <Button
-                    Width="85"
+                    Width="100"
                     Height="25"
                     HorizontalAlignment="Right"
                     Command="{Binding Open}"

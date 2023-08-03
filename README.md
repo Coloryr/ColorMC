@@ -1,8 +1,8 @@
-# ColorMC
+# ColorMC 全新的MC启动器
 
 [English](./README_EN.md)
 
-全新的MC启动器  
+使用dotnet7作为运行环境，XAML作为前端语言，C#作为后端语言
 
 [用户手册](./guide/Main.md)
 
@@ -60,27 +60,28 @@ $ dotnet run
 ```
 
 ## 项目说明
+- ColorMC.Android 安卓程序
 - ColorMC.Core 启动器底层核心
 - ColorMC.Cmd CLI模式 (已放弃)
 - ColorMC.Gui Gui模式
 - ColorMC.Launcher 启动器
 - ColorMC.Test 用于启动器核心测试
 
-## 引用的项目
+## 依赖/引用的项目
 
 [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia) 跨平台UI框架  
+[CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM工具  
 [Heijden.Dns.Portable](https://github.com/softlion/Heijden.Dns) DNS解析  
 [HtmlAgilityPack](https://html-agility-pack.net/) HTML解析器  
 [Jint](https://github.com/sebastienros/jint) JS解析执行器  
+[NAudio](https://github.com/naudio/NAudio) Windows音频播放  
 [Newtonsoft.Json](https://www.newtonsoft.com/json) JSON解析器  
+[OpenTK.OpenAL](https://opentk.net/) openal音频  
 [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
-[Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
-[OpenTK](https://opentk.net/) openal音频  
 [SixLabors](https://sixlabors.com/) 图片处理  
-[CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) MVVM工具  
-[NAudio](https://github.com/naudio/NAudio) Windows音频播放
+[Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
 
 ## 使用的IDE
 
 [Visual Studio Code](https://code.visualstudio.com/)  
-[Visual Studio](https://visualstudio.microsoft.com/)
+[Visual Studio 2022](https://visualstudio.microsoft.com/)

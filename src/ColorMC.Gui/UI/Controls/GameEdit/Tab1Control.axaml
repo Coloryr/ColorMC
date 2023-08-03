@@ -192,7 +192,7 @@
                 Margin="0,5,5,5"
                 Command="{Binding ExportGame}"
                 Content="{setting:Localize GameEditWindow.Tab1.Text11}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text66}"
                 ToolTip.VerticalOffset="-30" />
             <Button
                 Width="120"
@@ -200,7 +200,7 @@
                 Margin="0,5,5,5"
                 Command="{Binding OpenGameLog}"
                 Content="{setting:Localize GameEditWindow.Tab1.Text7}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text47}"
+                ToolTip.Tip="{setting:Localize ToolTip.Text65}"
                 ToolTip.VerticalOffset="-30" />
             <Button
                 Width="120"
