@@ -175,6 +175,20 @@ void main()
         {
             Dispatcher.UIThread.Post(RequestNextFrameRendering);
         }
+        else if (e.PropertyName == "Pos")
+        {
+            _xy.X += _model.X;
+            _xy.Y += _model.Y;
+        }
+        else if (e.PropertyName == "Dis")
+        {
+            _dis += _model.X;
+        }
+        else if (e.PropertyName == "Rot")
+        {
+            _rotXY.X += _model.X;
+            _rotXY.Y += _model.Y;
+        }
     }
 
     private string GetShader(bool fragment, string shader)

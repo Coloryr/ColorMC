@@ -1,10 +1,12 @@
-﻿using ColorMC.Core.Objs;
+﻿using Avalonia.Controls;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -63,6 +65,9 @@ public partial class SkinModel : BaseModel
     public Vector3 LegRotate;
     public Vector3 HeadRotate;
 
+    public float X;
+    public float Y;
+
     public int Fps
     {
         set
@@ -70,7 +75,6 @@ public partial class SkinModel : BaseModel
             NowFps = $"{value}Fps";
         }
     }
-
 
     public SkinModel(IUserControl con) : base(con)
     {
@@ -184,6 +188,104 @@ public partial class SkinModel : BaseModel
         {
             SteveModelType = (SkinType)Type;
         }
+    }
+
+    [RelayCommand]
+    public void Move(object comm)
+    {
+        switch (comm)
+        {
+            case MoveType.LeftUp:
+                X = -0.05f;
+                Y = 0.05f;
+                break;
+            case MoveType.Up:
+                X = 0;
+                Y = 0.05f;
+                break;
+            case MoveType.RightUp:
+                X = 0.05f;
+                Y = 0.05f;
+                break;
+            case MoveType.Left:
+                X = -0.05f;
+                Y = 0;
+                break;
+            case MoveType.Right:
+                X = 0.05f;
+                Y = 0;
+                break;
+            case MoveType.LeftDown:
+                X = -0.05f;
+                Y = -0.05f;
+                break;
+            case MoveType.Down:
+                X = 0;
+                Y = -0.05f;
+                break;
+            case MoveType.RightDown:
+                X = 0.05f;
+                Y = -0.05f;
+                break;
+        }
+        OnPropertyChanged("Pos");
+    }
+
+    [RelayCommand]
+    public void Rot(object comm)
+    {
+        switch (comm)
+        {
+            case MoveType.LeftUp:
+                X = -10;
+                Y = -10;
+                break;
+            case MoveType.Up:
+                X = -10;
+                Y = 0;
+                break;
+            case MoveType.RightUp:
+                X = -10;
+                Y = 10;
+                break;
+            case MoveType.Left:
+                X = 0;
+                Y = -10;
+                break;
+            case MoveType.Right:
+                X = 0;
+                Y = 10;
+                break;
+            case MoveType.LeftDown:
+                X = 10;
+                Y = -10;
+                break;
+            case MoveType.Down:
+                X = 10;
+                Y = 0;
+                break;
+            case MoveType.RightDown:
+                X = 10;
+                Y = 10;
+                break;
+        }
+        OnPropertyChanged("Rot");
+    }
+
+    [RelayCommand]
+    public void Scoll(object comm)
+    {
+        switch (comm)
+        {
+            case MoveType.Up:
+                X = 0.05f;
+                break;
+            case MoveType.Down:
+                X = -0.05f;
+                break;
+        }
+
+        OnPropertyChanged("Dis");
     }
 
     [RelayCommand]

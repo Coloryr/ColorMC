@@ -1,0 +1,52 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel Background="Black">
+                <RepeatButton
+                    Width="80"
+                    Height="40"
+                    Content="123" />
+                <RepeatButton
+                    Width="80"
+                    Height="40"
+                    Content="123"
+                    IsEnabled="False" />
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="RepeatButton">
+        <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{setting:Style ButtonCornerRadius}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BorderBrush" Value="{setting:Colors Bottom}" />
+    </Style>
+
+    <Style Selector="RepeatButton:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.95)" />
+    </Style>
+
+    <Style Selector="RepeatButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#FFDDDDDD" />
+        <Setter Property="Foreground" Value="{setting:Colors Font}" />
+    </Style>
+
+    <Style Selector="RepeatButton:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#FFAAAAAA" />
+    </Style>
+
+    <Style Selector="RepeatButton">
+        <Setter Property="Background" Value="{setting:Colors Main}" />
+    </Style>
+
+    <Style Selector="RepeatButton:disabled /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#FF666666" />
+        <Setter Property="Foreground" Value="#FFCDCDCD" />
+    </Style>
+</Styles>

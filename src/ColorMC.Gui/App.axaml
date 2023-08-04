@@ -2,10 +2,10 @@
     x:Class="ColorMC.Gui.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Application.Resources />
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="/Style/Button.axaml" />
+        <StyleInclude Source="/Style/RepeatButton.axaml" />
         <StyleInclude Source="/Style/Tab.axaml" />
         <StyleInclude Source="/Style/TextBox.axaml" />
         <StyleInclude Source="/Style/ComboBox.axaml" />

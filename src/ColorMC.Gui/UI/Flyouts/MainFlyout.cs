@@ -3,6 +3,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
@@ -25,12 +26,19 @@ public class MainFlyout
             (App.GetLanguage("Button.OpFile"), true, Button7_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text7"), true, Button5_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text8"), true, Button9_Click),
+            (App.GetLanguage("MainWindow.Flyouts.Text14"), GameCloudUtils.Connect, Button14_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text10"), !run, Button12_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text9"), !run, Button8_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text11"), !run, Button6_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text12"), !run, Button13_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text13"), run, Button10_Click)
+            
         }, con);
+    }
+
+    private void Button14_Click()
+    {
+        App.ShowGameCloud(_obj.Obj);
     }
     private void Button3_Click()
     {

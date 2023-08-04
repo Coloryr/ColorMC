@@ -110,7 +110,7 @@ public partial class SettingTab3Model : BaseModel
     [RelayCommand]
     public async Task GameCloudConnect()
     {
-        await GameCloudUtils.Init();
+        await GameCloudUtils.StartConnect();
         ServerInfo = GameCloudUtils.Info;
     }
 
@@ -170,25 +170,27 @@ public partial class SettingTab3Model : BaseModel
         IsDownload = BaseBinding.IsDownload;
 
         var config = ConfigBinding.GetAllConfig();
-        if (config.Item1 != null)
+        if (config.Item1 is { } con)
         {
-            Source = (int)config.Item1.Http.Source;
+            Source = (int)con.Http.Source;
 
-            Thread = config.Item1.Http.DownloadThread;
+            Thread = con.Http.DownloadThread;
 
-            IP = config.Item1.Http.ProxyIP;
-            Port = config.Item1.Http.ProxyPort;
-            User = config.Item1.Http.ProxyUser;
-            Password = config.Item1.Http.ProxyPassword;
+            IP = con.Http.ProxyIP;
+            Port = con.Http.ProxyPort;
+            User = con.Http.ProxyUser;
+            Password = con.Http.ProxyPassword;
 
-            LoginProxy = config.Item1.Http.LoginProxy;
-            DownloadProxy = config.Item1.Http.DownloadProxy;
-            GameProxy = config.Item1.Http.GameProxy;
-            CheckFile = config.Item1.Http.CheckFile;
-            AutoDownload = config.Item1.Http.AutoDownload;
-            CheckUpdate = config.Item1.Http.CheckUpdate;
-
-            ServerKey = config.Item2.ServerKey;
+            LoginProxy = con.Http.LoginProxy;
+            DownloadProxy = con.Http.DownloadProxy;
+            GameProxy = con.Http.GameProxy;
+            CheckFile = con.Http.CheckFile;
+            AutoDownload = con.Http.AutoDownload;
+            CheckUpdate = con.Http.CheckUpdate;
+        }
+        if (config.Item2 is { } con1)
+        {
+            ServerKey = con1.ServerKey;
             ServerInfo = GameCloudUtils.Info;
         }
         _load = false;

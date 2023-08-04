@@ -9,8 +9,24 @@ namespace ColorMC.Test;
 
 internal class Program
 {
+    public static async void Run()
+    {
+        using HttpClient client = new HttpClient();
+        var data = await client.GetStringAsync("http://www.baidu.com");
+        Console.WriteLine("Task");
+    }
+
+    public static void Test()
+    {
+        Run();
+
+        Console.WriteLine("Run");
+    }
+
     static void Main(string[] args)
     {
+        Test();
+
         Console.WriteLine("Hello, World!");
 
         ColorMCCore.Init(AppContext.BaseDirectory);

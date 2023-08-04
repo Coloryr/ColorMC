@@ -64,10 +64,11 @@ public static class BaseBinding
 
         if (ColorMCGui.RunType == RunType.Program)
         {
-            GameCount.Init(ColorMCGui.RunDir);
+            GameCountUtils.Init(ColorMCGui.RunDir);
             ImageUtils.Init(ColorMCGui.RunDir);
             UpdateChecker.Init();
-            await GameCloudUtils.Init();
+            GameCloudUtils.Init(ColorMCGui.RunDir);
+            await GameCloudUtils.StartConnect();
 
             try
             {
@@ -412,7 +413,7 @@ public static class BaseBinding
 
             p.Exited += (a, b) =>
             {
-                GameCount.GameClose(obj.UUID);
+                GameCountUtils.GameClose(obj.UUID);
                 RunGames.Remove(obj.UUID);
                 UserBinding.UnLockUser(obj1);
                 App.MainWindow?.GameClose(obj.UUID);
@@ -439,7 +440,7 @@ public static class BaseBinding
 
             Games.Add(p, obj);
             RunGames.Add(obj.UUID, p);
-            GameCount.LaunchDone(obj.UUID);
+            GameCountUtils.LaunchDone(obj.UUID);
             GameBinding.GameStateUpdate(obj);
         }
         else

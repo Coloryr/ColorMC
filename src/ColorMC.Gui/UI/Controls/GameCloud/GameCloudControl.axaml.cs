@@ -75,6 +75,8 @@ public partial class GameCloudControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+
+        _model.Load();
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)

@@ -56,7 +56,7 @@ public partial class CountModel : BaseModel
     public CountModel(IUserControl con) : base(con)
     {
         _date1 = _date = DateTime.Now;
-        var data = Utils.GameCount.Count;
+        var data = Utils.GameCountUtils.Count;
         if (data == null)
         {
             _count = 0;
@@ -107,7 +107,7 @@ public partial class CountModel : BaseModel
 
     partial void OnDateChanged(DateTime value)
     {
-        var data = Utils.GameCount.Count;
+        var data = Utils.GameCountUtils.Count;
         if (data == null)
         {
             DateCount = 0;
@@ -125,7 +125,7 @@ public partial class CountModel : BaseModel
 
     partial void OnDate1Changed(DateTime value)
     {
-        var data = Utils.GameCount.Count;
+        var data = Utils.GameCountUtils.Count;
         if (data == null)
         {
             TimeDate = "";
@@ -158,7 +158,7 @@ public partial class CountModel : BaseModel
         if (_list.Count == 0)
             return;
 
-        var data = Utils.GameCount.Count;
+        var data = Utils.GameCountUtils.Count;
         if (data == null)
         {
             return;

@@ -2,6 +2,7 @@
     x:Class="ColorMC.Gui.UI.Controls.Skin.SkinControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:arg="clr-namespace:ColorMC.Gui.Objs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
@@ -21,156 +22,192 @@
                 VerticalAlignment="Top"
                 ColumnDefinitions="*,*,*"
                 RowDefinitions="*,*,*">
-                <Button
-                    Name="Button_1_1"
+                <RepeatButton
                     Grid.Row="0"
                     Grid.Column="0"
                     Width="40"
                     Height="40"
-                    CommandParameter="LeftUp"
-                    Content="↖" />
-                <Button
-                    Name="Button_1_2"
+                    Command="{Binding Move}"
+                    CommandParameter="{x:Static arg:MoveType.LeftUp}"
+                    Content="↖"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="0"
                     Grid.Column="1"
                     Width="40"
                     Height="40"
-                    CommandParameter="Up"
-                    Content="↑" />
-                <Button
-                    Name="Button_1_3"
+                    Command="{Binding Move}"
+                    CommandParameter="{x:Static arg:MoveType.Up}"
+                    Content="↑"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="0"
                     Grid.Column="2"
                     Width="40"
                     Height="40"
-                    CommandParameter="RightUp"
-                    Content="↗" />
-                <Button
-                    Name="Button_1_4"
+                    Command="{Binding Move}"
+                    CommandParameter="{x:Static arg:MoveType.RightUp}"
+                    Content="↗"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="1"
                     Grid.Column="0"
                     Width="40"
                     Height="40"
-                    CommandParameter="Left"
-                    Content="←" />
-                <Button
-                    Name="Button_1_5"
+                    Command="{Binding Move}"
+                    CommandParameter="{x:Static arg:MoveType.Left}"
+                    Content="←"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="1"
                     Grid.Column="2"
                     Width="40"
                     Height="40"
-                    CommandParameter="Right"
-                    Content="→" />
-                <Button
-                    Name="Button_1_6"
+                    Command="{Binding Move}"
+                    CommandParameter="{x:Static arg:MoveType.Right}"
+                    Content="→"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="3"
                     Grid.Column="0"
                     Width="40"
                     Height="40"
-                    CommandParameter="LeftDown"
-                    Content="↙" />
-                <Button
-                    Name="Button_1_7"
+                    Command="{Binding Move}"
+                    CommandParameter="{x:Static arg:MoveType.LeftDown}"
+                    Content="↙"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="3"
                     Grid.Column="1"
                     Width="40"
                     Height="40"
-                    CommandParameter="Down"
-                    Content="↓" />
-                <Button
-                    Name="Button_1_8"
+                    Command="{Binding Move}"
+                    CommandParameter="{x:Static arg:MoveType.Down}"
+                    Content="↓"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="3"
                     Grid.Column="2"
                     Width="40"
                     Height="40"
-                    CommandParameter="RightDown"
-                    Content="↘" />
+                    Command="{Binding Move}"
+                    CommandParameter="{x:Static arg:MoveType.RightDown}"
+                    Content="↘"
+                    Delay="100"
+                    Interval="20" />
             </Grid>
             <Grid
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 ColumnDefinitions="*,*,*"
                 RowDefinitions="*,*,*">
-                <Button
-                    Name="Button_2_1"
+                <RepeatButton
                     Grid.Row="0"
                     Grid.Column="0"
                     Width="40"
                     Height="40"
-                    CommandParameter="LeftUp"
-                    Content="↖" />
-                <Button
-                    Name="Button_2_2"
+                    Command="{Binding Rot}"
+                    CommandParameter="{x:Static arg:MoveType.LeftUp}"
+                    Content="↖"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="0"
                     Grid.Column="1"
                     Width="40"
                     Height="40"
-                    CommandParameter="Up"
-                    Content="↑" />
-                <Button
-                    Name="Button_2_3"
+                    Command="{Binding Rot}"
+                    CommandParameter="{x:Static arg:MoveType.Up}"
+                    Content="↑"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="0"
                     Grid.Column="2"
                     Width="40"
                     Height="40"
-                    CommandParameter="RightUp"
-                    Content="↗" />
-                <Button
-                    Name="Button_2_4"
+                    Command="{Binding Rot}"
+                    CommandParameter="{x:Static arg:MoveType.RightUp}"
+                    Content="↗"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="1"
                     Grid.Column="0"
                     Width="40"
                     Height="40"
-                    CommandParameter="Left"
-                    Content="←" />
-                <Button
-                    Name="Button_2_5"
+                    Command="{Binding Rot}"
+                    CommandParameter="{x:Static arg:MoveType.Left}"
+                    Content="←"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="1"
                     Grid.Column="2"
                     Width="40"
                     Height="40"
-                    CommandParameter="Right"
-                    Content="→" />
-                <Button
-                    Name="Button_2_6"
+                    Command="{Binding Rot}"
+                    CommandParameter="{x:Static arg:MoveType.Right}"
+                    Content="→"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="3"
                     Grid.Column="0"
                     Width="40"
                     Height="40"
-                    CommandParameter="LeftDown"
-                    Content="↙" />
-                <Button
-                    Name="Button_2_7"
+                    Command="{Binding Rot}"
+                    CommandParameter="{x:Static arg:MoveType.LeftDown}"
+                    Content="↙"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="3"
                     Grid.Column="1"
                     Width="40"
                     Height="40"
-                    CommandParameter="Down"
-                    Content="↓" />
-                <Button
-                    Name="Button_2_8"
+                    Command="{Binding Rot}"
+                    CommandParameter="{x:Static arg:MoveType.Down}"
+                    Content="↓"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Grid.Row="3"
                     Grid.Column="2"
                     Width="40"
                     Height="40"
-                    CommandParameter="RightDown"
-                    Content="↘" />
+                    Command="{Binding Rot}"
+                    CommandParameter="{x:Static arg:MoveType.RightDown}"
+                    Content="↘"
+                    Delay="100"
+                    Interval="20" />
             </Grid>
             <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
-                <Button
-                    Name="Button_3_1"
+                <RepeatButton
                     Width="40"
                     Height="40"
                     HorizontalAlignment="Center"
-                    CommandParameter="Up"
-                    Content="↑" />
-                <Button
-                    Name="Button_3_2"
+                    Command="{Binding Scoll}"
+                    CommandParameter="{x:Static arg:MoveType.Up}"
+                    Content="↑"
+                    Delay="100"
+                    Interval="20" />
+                <RepeatButton
                     Width="40"
                     Height="40"
                     HorizontalAlignment="Center"
-                    CommandParameter="Down"
-                    Content="↓" />
+                    Command="{Binding Scoll}"
+                    CommandParameter="{x:Static arg:MoveType.Down}"
+                    Content="↓"
+                    Delay="100"
+                    Interval="20" />
             </StackPanel>
 
             <Label
@@ -200,7 +237,7 @@
                 Content="{Binding Text}"
                 FontSize="20"
                 Foreground="{setting:Colors Font}"
-                IsVisible="{Binding !HaveSkin}" />
+                IsVisible="{Binding !HaveSkin, FallbackValue=false}" />
         </Panel>
 
         <ScrollViewer Grid.Column="1">

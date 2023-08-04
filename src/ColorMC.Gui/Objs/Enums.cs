@@ -62,3 +62,17 @@ public enum RunType
 {
     Program, AppBuilder
 }
+
+public enum MoveType
+{
+    LeftUp, Up, RightUp,
+    Left, Right,
+    LeftDown, Down, RightDown
+}
+
+public enum AddSaveState
+{
+    Error = 0,
+    Exist,
+    OK
+}

@@ -696,4 +696,19 @@ public static class WebBinding
 
         return list1;
     }
+
+    public static Task<bool?> CheckCloud(GameSettingObj obj)
+    {
+        return GameCloudUtils.HaveCloud(obj.UUID);
+    }
+
+    public static Task<AddSaveState?> StartCloud(GameSettingObj obj)
+    {
+        return GameCloudUtils.StartCloud(obj.UUID);
+    }
+
+    public static Task<bool?> StopCloud(GameSettingObj obj)
+    {
+        return GameCloudUtils.StopCloud(obj.UUID);
+    }
 }

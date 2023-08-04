@@ -9,14 +9,29 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <StackPanel Margin="5,0,5,5">
-        <CheckBox Content="{setting:Localize GameCloudWindow.Tab1.Text1}" IsChecked="{Binding Enable}" />
+        <StackPanel Orientation="Horizontal">
+            <Button
+                Width="100"
+                Height="25"
+                Command="{Binding MakeEnable}"
+                Content="{setting:Localize GameCloudWindow.Tab1.Text1}"
+                IsEnabled="{Binding !Enable}" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,0,0,0"
+                Command="{Binding MakeDisable}"
+                Content="{setting:Localize GameCloudWindow.Tab1.Text3}"
+                IsEnabled="{Binding Enable}" />
+        </StackPanel>
         <StackPanel IsEnabled="{Binding Enable}">
+            <Label Content="{setting:Localize GameCloudWindow.Tab1.Text2}" />
             <TextBox
                 Margin="0,5,5,0"
                 Classes="input1"
+                IsEnabled="False"
                 IsReadOnly="True"
-                Text="{Binding UUID}"
-                Watermark="{setting:Localize GameCloudWindow.Tab1.Text2}" />
+                Text="{Binding UUID}" />
         </StackPanel>
     </StackPanel>
 </UserControl>
