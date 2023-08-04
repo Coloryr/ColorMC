@@ -75,14 +75,14 @@ public static class ColorMCGui
         }
         catch (Exception e)
         {
-            BaseBinding.OpFile(Logs.SaveCrash("Gui Crash", e));
+            PathBinding.OpFile(Logs.SaveCrash("Gui Crash", e));
             App.Close();
         }
     }
 
     private static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
-        BaseBinding.OpFile(Logs.SaveCrash("Gui Crash", e.Exception));
+        PathBinding.OpFile(Logs.SaveCrash("Gui Crash", e.Exception));
     }
 
     public static void StartPhone(string local)

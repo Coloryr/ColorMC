@@ -28,7 +28,7 @@ public partial class GameEditTab8Model : GameEditModel, ILoadFuntion<ResourcePac
     [RelayCommand]
     public async Task Import()
     {
-        var file = await GameBinding.AddFile(Window, Obj, FileType.Resourcepack);
+        var file = await PathBinding.AddFile(Window, Obj, FileType.Resourcepack);
         if (file == null)
             return;
 
@@ -45,7 +45,7 @@ public partial class GameEditTab8Model : GameEditModel, ILoadFuntion<ResourcePac
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpPath(Obj, PathType.ResourcepackPath);
+        PathBinding.OpPath(Obj, PathType.ResourcepackPath);
     }
 
     [RelayCommand]

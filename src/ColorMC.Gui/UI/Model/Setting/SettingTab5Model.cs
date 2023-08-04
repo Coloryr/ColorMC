@@ -37,7 +37,7 @@ public partial class SettingTab5Model : BaseModel
     [RelayCommand]
     public void OpenPath()
     {
-        BaseBinding.OpenDownloadJavaPath();
+        PathBinding.OpPath(PathType.JavaPath);
     }
 
     [RelayCommand]
@@ -75,7 +75,7 @@ public partial class SettingTab5Model : BaseModel
     [RelayCommand]
     public async Task Select()
     {
-        var file = await BaseBinding.OpFile(Window, FileType.Java);
+        var file = await PathBinding.SelectFile(Window, FileType.Java);
 
         if (file != null)
         {

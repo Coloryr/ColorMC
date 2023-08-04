@@ -332,7 +332,7 @@ public partial class GameConfigEditModel : BaseModel
     public void Open()
     {
         var dir = Obj.GetGamePath();
-        BaseBinding.OpFile(Path.GetFullPath(dir + "/" + File));
+        PathBinding.OpFile(Path.GetFullPath(dir + "/" + File));
     }
 
     [RelayCommand]

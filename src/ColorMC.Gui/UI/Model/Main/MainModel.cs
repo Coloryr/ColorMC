@@ -316,11 +316,6 @@ public partial class MainModel : BaseModel, IMainTop
         Load();
         Load1();
 
-        if (BaseBinding.CheckOldDir())
-        {
-            Show(App.GetLanguage("MainWindow.Info27"));
-        }
-
 #if !DEBUG
         if (ConfigBinding.GetAllConfig().Item1?.Http?.CheckUpdate == true)
         {

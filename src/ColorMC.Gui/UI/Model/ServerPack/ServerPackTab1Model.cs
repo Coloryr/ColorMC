@@ -51,7 +51,7 @@ public partial class ServerPackTab1Model : ServerPackBaseModel
     [RelayCommand]
     public async Task OpenUI()
     {
-        var file = await BaseBinding.OpFile(Window, Core.Objs.FileType.UI);
+        var file = await PathBinding.SelectFile(Window, Core.Objs.FileType.UI);
         if (file == null)
             return;
 

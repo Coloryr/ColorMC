@@ -348,7 +348,7 @@ public partial class GameEditTab2Model : GameEditModel
     [RelayCommand]
     public async Task Open()
     {
-        var file = await BaseBinding.OpFile(Window, FileType.Java);
+        var file = await PathBinding.SelectFile(Window, FileType.Java);
         if (file != null)
         {
             JvmLocal = file;

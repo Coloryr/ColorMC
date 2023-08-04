@@ -34,6 +34,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ColorMC.Gui.Utils;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
@@ -161,48 +162,6 @@ public static class GameBinding
         return InstancesPath.Groups;
     }
 
-    public static List<string> GetCurseForgeSortTypes()
-    {
-        return new List<string>()
-        {
-            CurseForgeSortField.Featured.GetName(),
-            CurseForgeSortField.Popularity.GetName(),
-            CurseForgeSortField.LastUpdated.GetName(),
-            CurseForgeSortField.Name.GetName(),
-            CurseForgeSortField.TotalDownloads.GetName()
-        };
-    }
-
-    public static List<string> GetModrinthSortTypes()
-    {
-        return new List<string>()
-        {
-            MSortingObj.Relevance.GetName(),
-            MSortingObj.Downloads.GetName(),
-            MSortingObj.Follows.GetName(),
-            MSortingObj.Newest.GetName(),
-            MSortingObj.Updated.GetName()
-        };
-    }
-
-    public static List<string> GetSortOrder()
-    {
-        return new()
-        {
-            App.GetLanguage("GameBinding.SortOrder.Item1"),
-            App.GetLanguage("GameBinding.SortOrder.Item2")
-        };
-    }
-
-    public static List<string> GetSourceList()
-    {
-        return new()
-        {
-            SourceType.CurseForge.GetName(),
-            SourceType.Modrinth.GetName()
-        };
-    }
-
     public static Task<List<string>?> GetCurseForgeGameVersions()
     {
         return CurseForgeAPI.GetGameVersions();
@@ -322,33 +281,18 @@ public static class GameBinding
 
     public static async Task SetGameIconFromFile(IBaseWindow win, GameSettingObj obj)
     {
-        if (win is TopLevel top)
-        {
-            await SetGameIconFromFile(top, obj);
-        }
-    }
-
-    public static async Task SetGameIconFromFile(TopLevel win, GameSettingObj obj)
-    {
         try
         {
-            var file = await BaseBinding.OpFile(win,
-                App.GetLanguage("GameBinding.Info2"),
-                new string[] { "*.png", "*.jpg", "*.bmp" },
-                App.GetLanguage("GameBinding.Info3"));
-            if (file?.Any() == true)
+            var file = await PathBinding.SelectFile(win, FileType.Icon);
+            if (file != null)
             {
-                var item = file[0];
-                var name = item.GetPath();
-                if (name == null)
-                    return;
-                var info = await Image.IdentifyAsync(name);
+                var info = await Image.IdentifyAsync(file);
                 if (info.Width != info.Height || info.Width > 200 || info.Height > 200)
                 {
-                    (win as IBaseWindow)?.OkInfo.Show(App.GetLanguage("GameBinding.Error6"));
+                    win.OkInfo.Show(App.GetLanguage("GameBinding.Error6"));
                     return;
                 }
-                var data = await File.ReadAllBytesAsync(name);
+                var data = await File.ReadAllBytesAsync(file);
                 await File.WriteAllBytesAsync(obj.GetIconFile(), data);
             }
         }
@@ -780,7 +724,7 @@ public static class GameBinding
         var res = await obj.AddWorldZip(file);
         if (!res)
         {
-            BaseBinding.OpFile(file);
+            PathBinding.OpFile(file);
         }
 
         return res;
@@ -913,7 +857,7 @@ public static class GameBinding
 
     public static void OpPath(GameSettingObj obj)
     {
-        BaseBinding.OpPath(obj, PathType.GamePath);
+        PathBinding.OpPath(obj, PathType.GamePath);
     }
 
     public static async Task<IEnumerable<ServerInfoObj>> GetServers(GameSettingObj obj)
@@ -1182,163 +1126,6 @@ public static class GameBinding
         return obj.GenServerPack(local);
     }
 
-    public static Task<bool?> AddFile(IBaseWindow window, GameSettingObj obj, FileType type)
-    {
-        return AddFile(window as TopLevel, obj, type);
-    }
-
-    public static async Task<bool?> AddFile(TopLevel? window, GameSettingObj obj, FileType type)
-    {
-        if (window == null)
-            return false;
-        switch (type)
-        {
-            case FileType.Schematic:
-                var res = await BaseBinding.OpFile(window,
-                      App.GetLanguage("GameEditWindow.Tab12.Info1"),
-                      new string[] { "*" + Schematic.Name1, "*" + Schematic.Name2 },
-                      App.GetLanguage("GameEditWindow.Tab12.Info2"), true);
-                if (res?.Any() == true)
-                {
-                    return AddSchematic(obj, res);
-                }
-                return null;
-            case FileType.Shaderpack:
-                res = await BaseBinding.OpFile(window,
-                    App.GetLanguage("GameEditWindow.Tab11.Info1"),
-                    new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab11.Info2"), true);
-                if (res?.Any() == true)
-                {
-                    return await AddShaderpack(obj, res);
-                }
-                return null;
-            case FileType.Mod:
-                res = await BaseBinding.OpFile(window,
-                    App.GetLanguage("GameEditWindow.Tab4.Info7"),
-                    new string[] { "*.jar" },
-                    App.GetLanguage("GameEditWindow.Tab4.Info8"), true);
-                if (res?.Any() == true)
-                {
-                    return await AddMods(obj, res);
-                }
-                return null;
-            case FileType.World:
-                res = await BaseBinding.OpFile(window!,
-                    App.GetLanguage("GameEditWindow.Tab5.Info2"),
-                    new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab5.Info6"));
-                if (res?.Any() == true)
-                {
-                    return await AddWorld(obj, res[0].GetPath());
-                }
-                return null;
-            case FileType.Resourcepack:
-                res = await BaseBinding.OpFile(window,
-                    App.GetLanguage("GameEditWindow.Tab8.Info2"),
-                    new string[] { "*.zip" },
-                    App.GetLanguage("GameEditWindow.Tab8.Info5"), true);
-                if (res?.Any() == true)
-                {
-                    return await AddResourcepack(obj, res);
-                }
-                return null;
-        }
-
-        return null;
-    }
-
-    public static async Task<bool> AddFile(GameSettingObj obj, IDataObject data, FileType type)
-    {
-        if (!data.Contains(DataFormats.Files))
-        {
-            return false;
-        }
-        var list = data.GetFiles();
-        if (list == null)
-        {
-            return false;
-        }
-        switch (type)
-        {
-            case FileType.Mod:
-                var list1 = new List<string>();
-                foreach (var item in list)
-                {
-                    var file = item.TryGetLocalPath();
-                    if (string.IsNullOrWhiteSpace(file))
-                    {
-                        continue;
-                    }
-                    if (File.Exists(file) && file.ToLower().EndsWith(".jar"))
-                    {
-                        list1.Add(file);
-                    }
-                }
-
-                return await obj.AddMods(list1);
-            case FileType.World:
-                foreach (var item in list)
-                {
-                    var file = item.TryGetLocalPath();
-                    if (string.IsNullOrWhiteSpace(file))
-                    {
-                        continue;
-                    }
-                    if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
-                    {
-                        return await obj.AddWorldZip(file);
-                    }
-                }
-                return false;
-            case FileType.Resourcepack:
-                list1 = new List<string>();
-                foreach (var item in list)
-                {
-                    var file = item.TryGetLocalPath();
-                    if (string.IsNullOrWhiteSpace(file))
-                    {
-                        continue;
-                    }
-                    if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
-                    {
-                        list1.Add(file);
-                    }
-                }
-                return await obj.AddResourcepack(list1);
-            case FileType.Shaderpack:
-                list1 = new List<string>();
-                foreach (var item in list)
-                {
-                    var file = item.TryGetLocalPath();
-                    if (string.IsNullOrWhiteSpace(file))
-                        continue;
-                    if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
-                    {
-                        list1.Add(file);
-                    }
-                }
-                return await obj.AddShaderpack(list1);
-            case FileType.Schematic:
-                list1 = new List<string>();
-                foreach (var item in list)
-                {
-                    var file = item.TryGetLocalPath();
-                    if (string.IsNullOrWhiteSpace(file))
-                        continue;
-                    var file1 = file.ToLower();
-                    if (File.Exists(file) &&
-                        (file1.EndsWith(Schematic.Name1) || file1.EndsWith(Schematic.Name2)))
-                    {
-                        list1.Add(file);
-                    }
-                }
-                return obj.AddSchematic(list1);
-        }
-
-        return false;
-    }
-
     public static async void CopyServer(TopLevel? top, ServerInfoObj obj)
     {
         await BaseBinding.CopyTextClipboard(top, $"{obj.Name}\n{obj.IP}");
@@ -1541,313 +1328,95 @@ public static class GameBinding
             win1.Update();
         }
     }
-
-    public static async Task<bool?> Export(IUserControl window, GameExportModel model)
+    
+    public static async Task<bool> AddFile(GameSettingObj obj, IDataObject data, FileType type)
     {
-        var win = TopLevel.GetTopLevel(window.Con);
-        if (win == null)
+        if (!data.Contains(DataFormats.Files))
         {
             return false;
         }
-
-        if (model.Type == PackType.ColorMC)
+        var list = data.GetFiles();
+        if (list == null)
         {
-            var file = await BaseBinding.OpSave(win,
-                   App.GetLanguage("GameEditWindow.Tab6.Info1"),
-                   ".zip", $"{model.Obj.Name}.zip");
-            if (file == null)
-                return null;
-
-            var name = file.GetPath();
-            if (name == null)
-                return null;
-
-            try
-            {
-                await ZipUtils.ZipFile(model.Obj.GetBasePath(),
-                    name, model.Files.GetUnSelectItems());
-                BaseBinding.OpFile(name);
-                return true;
-            }
-            catch (Exception e)
-            {
-                string temp = App.GetLanguage("GameEditWindow.Tab6.Error1");
-                App.ShowError(temp, e);
-                Logs.Error(temp, e);
-                return false;
-            }
+            return false;
         }
-        else if (model.Type == PackType.CurseForge)
+        switch (type)
         {
-            var file = await BaseBinding.OpSave(win,
-               App.GetLanguage("GameEditWindow.Tab6.Info1"),
-               ".zip", $"{model.Name}-{model.Version}.zip");
-            if (file == null)
-                return null;
-
-            var name = file.GetPath();
-            if (name == null)
-                return null;
-
-            var obj = new CurseForgePackObj()
-            {
-                name = model.Name,
-                author = model.Author,
-                version = model.Version,
-                manifestType = "minecraftModpack",
-                manifestVersion = 1,
-                overrides = "overrides",
-                minecraft = new()
+            case FileType.Mod:
+                var list1 = new List<string>();
+                foreach (var item in list)
                 {
-                    version = model.Obj.Version,
-                    modLoaders = new()
-                },
-                files = new()
-            };
-
-            if (model.Obj.Loader != Loaders.Normal)
-            {
-                obj.minecraft.modLoaders.Add(new()
-                {
-                    id = $"{model.Obj.Loader.GetName().ToLower()}-{model.Obj.LoaderVersion}",
-                    primary = true
-                });
-            }
-
-            foreach (var item in model.Mods)
-            {
-                if (item.Export)
-                {
-                    obj.files.Add(new()
+                    var file = item.TryGetLocalPath();
+                    if (string.IsNullOrWhiteSpace(file))
                     {
-                        fileID = int.Parse(item.FID!),
-                        projectID = int.Parse(item.PID!),
-                        required = true
-                    });
-                }
-            }
-
-            var data = await CurseForgeAPI.GetModsInfo(obj.files);
-            StringBuilder html = new();
-            html.AppendLine("<ul>");
-            if (data != null)
-            {
-                foreach (var item in data.data)
-                {
-                    html.AppendLine($"<li><a href=\"{item.links.websiteUrl}\">{item.name} (by {item.authors.GetString()})</a></li>");
-                }
-            }
-            html.AppendLine("</ul>");
-
-            var crc = new Crc32();
-
-            try
-            {
-                using var s = new ZipOutputStream(File.Create(name));
-                s.SetLevel(9);
-
-                //manifest.json
-                {
-                    byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj, Formatting.Indented));
-                    var entry = new ZipEntry("manifest.json")
+                        continue;
+                    }
+                    if (File.Exists(file) && file.ToLower().EndsWith(".jar"))
                     {
-                        DateTime = DateTime.Now,
-                        Size = buffer.Length
-                    };
-                    crc.Reset();
-                    crc.Update(buffer);
-                    entry.Crc = crc.Value;
-                    await s.PutNextEntryAsync(entry);
-                    await s.WriteAsync(buffer);
-                }
-
-                //modlist.html
-                {
-                    byte[] buffer = Encoding.UTF8.GetBytes(html.ToString());
-                    var entry = new ZipEntry("modlist.html")
-                    {
-                        DateTime = DateTime.Now,
-                        Size = buffer.Length
-                    };
-                    crc.Reset();
-                    crc.Update(buffer);
-                    entry.Crc = crc.Value;
-                    await s.PutNextEntryAsync(entry);
-                    await s.WriteAsync(buffer);
-                }
-
-                {
-                    var path = model.Obj.GetGamePath();
-
-                    foreach (var item in model.Files.GetSelectItems())
-                    {
-                        var name1 = item[path.Length..];
-                        name1 = name1.Replace("\\", "/");
-                        if (!name1.StartsWith('/'))
-                        {
-                            name1 = '/' + name1;
-                        }
-                        name1 = "overrides/" + name1;
-                        byte[] buffer = File.ReadAllBytes(item);
-                        var entry = new ZipEntry(name1)
-                        {
-                            DateTime = DateTime.Now,
-                            Size = buffer.Length
-                        };
-                        crc.Reset();
-                        crc.Update(buffer);
-                        entry.Crc = crc.Value;
-                        await s.PutNextEntryAsync(entry);
-                        await s.WriteAsync(buffer);
+                        list1.Add(file);
                     }
                 }
 
-                await s.FinishAsync(CancellationToken.None);
-                s.Close();
-            }
-            catch (Exception e)
-            {
-                string temp = App.GetLanguage("GameEditWindow.Tab6.Error1");
-                App.ShowError(temp, e);
-                Logs.Error(temp, e);
-                return false;
-            }
-        }
-        else if (model.Type == PackType.Modrinth)
-        {
-            var file = await BaseBinding.OpSave(win,
-               App.GetLanguage("GameEditWindow.Tab6.Info1"),
-               ".zip", $"{model.Name}-{model.Version}.mrpack");
-            if (file == null)
-                return null;
-
-            var name = file.GetPath();
-            if (name == null)
-                return null;
-
-            var obj = new ModrinthPackObj()
-            {
-                formatVersion = 1,
-                name = model.Name,
-                versionId = model.Version,
-                summary = model.Summary,
-                files = new(),
-                dependencies = new()
-            };
-
-            obj.dependencies.Add("minecraft", model.Obj.Version);
-            switch (model.Obj.Loader)
-            {
-                case Loaders.Forge:
-                case Loaders.NeoForge:
-                    obj.dependencies.Add("forge", model.Obj.LoaderVersion!);
-                    break;
-                case Loaders.Fabric:
-                    obj.dependencies.Add("fabric-loader", model.Obj.LoaderVersion!);
-                    break;
-                case Loaders.Quilt:
-                    obj.dependencies.Add("quilt-loader", model.Obj.LoaderVersion!);
-                    break;
-            }
-
-            foreach (var item in model.Mods)
-            {
-                if (item.Source != null)
+                return await obj.AddMods(list1);
+            case FileType.World:
+                foreach (var item in list)
                 {
-                    obj.files.Add(new()
+                    var file = item.TryGetLocalPath();
+                    if (string.IsNullOrWhiteSpace(file))
                     {
-                        path = item.Obj1!.Name,
-                        hashes = new()
-                        {
-                            sha1 = item.Sha1,
-                            sha512 = item.Sha512
-                        },
-                        downloads = new()
-                        {
-                            item.Url
-                        },
-                        fileSize = item.FileSize
-                    });
-                }
-            }
-
-            foreach (var item in model.OtherFiles)
-            {
-                obj.files.Add(new()
-                {
-                    path = item.Path,
-                    hashes = new()
+                        continue;
+                    }
+                    if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
                     {
-                        sha1 = item.Sha1,
-                        sha512 = item.Sha512
-                    },
-                    downloads = new()
-                    {
-                        item.Url
-                    },
-                    fileSize = item.FileSize
-                });
-            }
-
-            var crc = new Crc32();
-
-            try
-            {
-                using var s = new ZipOutputStream(File.Create(name));
-                s.SetLevel(9);
-
-                //manifest.json
-                {
-                    byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj, Formatting.Indented));
-                    var entry = new ZipEntry("modrinth.index.json")
-                    {
-                        DateTime = DateTime.Now,
-                        Size = buffer.Length
-                    };
-                    crc.Reset();
-                    crc.Update(buffer);
-                    entry.Crc = crc.Value;
-                    await s.PutNextEntryAsync(entry);
-                    await s.WriteAsync(buffer);
-                }
-
-                {
-                    var path = model.Obj.GetGamePath();
-
-                    foreach (var item in model.Files.GetSelectItems())
-                    {
-                        var name1 = item[path.Length..];
-                        name1 = name1.Replace("\\", "/");
-                        if (!name1.StartsWith('/'))
-                        {
-                            name1 = '/' + name1;
-                        }
-                        name1 = "overrides/" + name1;
-                        byte[] buffer = File.ReadAllBytes(item);
-                        var entry = new ZipEntry(name1)
-                        {
-                            DateTime = DateTime.Now,
-                            Size = buffer.Length
-                        };
-                        crc.Reset();
-                        crc.Update(buffer);
-                        entry.Crc = crc.Value;
-                        await s.PutNextEntryAsync(entry);
-                        await s.WriteAsync(buffer);
+                        return await obj.AddWorldZip(file);
                     }
                 }
-
-                await s.FinishAsync(CancellationToken.None);
-                s.Close();
-            }
-            catch (Exception e)
-            {
-                string temp = App.GetLanguage("GameEditWindow.Tab6.Error1");
-                App.ShowError(temp, e);
-                Logs.Error(temp, e);
                 return false;
-            }
+            case FileType.Resourcepack:
+                list1 = new List<string>();
+                foreach (var item in list)
+                {
+                    var file = item.TryGetLocalPath();
+                    if (string.IsNullOrWhiteSpace(file))
+                    {
+                        continue;
+                    }
+                    if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
+                    {
+                        list1.Add(file);
+                    }
+                }
+                return await obj.AddResourcepack(list1);
+            case FileType.Shaderpack:
+                list1 = new List<string>();
+                foreach (var item in list)
+                {
+                    var file = item.TryGetLocalPath();
+                    if (string.IsNullOrWhiteSpace(file))
+                        continue;
+                    if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
+                    {
+                        list1.Add(file);
+                    }
+                }
+                return await obj.AddShaderpack(list1);
+            case FileType.Schematic:
+                list1 = new List<string>();
+                foreach (var item in list)
+                {
+                    var file = item.TryGetLocalPath();
+                    if (string.IsNullOrWhiteSpace(file))
+                        continue;
+                    var file1 = file.ToLower();
+                    if (File.Exists(file) &&
+                        (file1.EndsWith(Schematic.Name1) || file1.EndsWith(Schematic.Name2)))
+                    {
+                        list1.Add(file);
+                    }
+                }
+                return obj.AddSchematic(list1);
         }
-        return true;
+
+        return false;
     }
 }

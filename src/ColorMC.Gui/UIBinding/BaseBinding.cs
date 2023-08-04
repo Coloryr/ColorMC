@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
@@ -29,7 +29,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static ColorMC.Core.Game.Launch;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -42,7 +41,7 @@ public static class BaseBinding
     public readonly static Dictionary<string, StringBuilder> GameLogs = new();
     public static bool ISNewStart => ColorMCCore.NewStart;
 
-    private static IBaseWindow? _window;
+    private static IBaseWindow? s_window;
     private static CancellationTokenSource s_launchCancel = new();
 
     /// <summary>
@@ -54,7 +53,7 @@ public static class BaseBinding
         ColorMCCore.DownloaderUpdate = DownloaderUpdate;
         ColorMCCore.ProcessLog = PLog;
         ColorMCCore.GameLog = PLog;
-        ColorMCCore.LanguageReload = Change;
+        ColorMCCore.LanguageReload = ChangeLanguage;
         ColorMCCore.NoJava = NoJava;
         ColorMCCore.UpdateSelect = PackUpdate;
         ColorMCCore.UpdateState = UpdateState;
@@ -93,19 +92,19 @@ public static class BaseBinding
 
     private static Task<bool> LaunchP(bool pre)
     {
-        if (_window == null)
+        if (s_window == null)
         {
             return Task.Run(() => { return false; });
         }
 
         return Dispatcher.UIThread.InvokeAsync(() =>
-            _window.OkInfo.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
+            s_window.OkInfo.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
             : App.GetLanguage("MainWindow.Info30")));
     }
 
     private static Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
     {
-        if (_window == null)
+        if (s_window == null)
         {
             return Task.Run(() => { return false; });
         }
@@ -114,23 +113,23 @@ public static class BaseBinding
         {
             return state switch
             {
-                LaunchState.LostLib => await _window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info5")),
-                LaunchState.LostLoader => await _window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info6")),
-                LaunchState.LostLoginCore => await _window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info7")),
-                _ => await _window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info4")),
+                LaunchState.LostLib => await s_window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info5")),
+                LaunchState.LostLoader => await s_window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info6")),
+                LaunchState.LostLoginCore => await s_window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info7")),
+                _ => await s_window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info4")),
             };
         });
     }
 
     private static Task<bool> OfflineLaunch(LoginObj login)
     {
-        if (_window == null)
+        if (s_window == null)
         {
             return Task.Run(() => { return false; });
         }
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return _window.OkInfo.ShowWait(string.Format(
+            return s_window.OkInfo.ShowWait(string.Format(
                 App.GetLanguage("MainWindow.Info21"), login.UserName));
         });
     }
@@ -139,50 +138,50 @@ public static class BaseBinding
     {
         Dispatcher.UIThread.Post(() =>
         {
-            if (_window == null)
+            if (s_window == null)
                 return;
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
                 switch (state)
                 {
                     case LaunchState.Login:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info8"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info8"));
                         break;
                     case LaunchState.Check:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info9"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info9"));
                         break;
                     case LaunchState.CheckVersion:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info10"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info10"));
                         break;
                     case LaunchState.CheckLib:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info11"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info11"));
                         break;
                     case LaunchState.CheckAssets:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info12"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info12"));
                         break;
                     case LaunchState.CheckLoader:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info13"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info13"));
                         break;
                     case LaunchState.CheckLoginCore:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info14"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info14"));
                         break;
                     case LaunchState.CheckMods:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info17"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info17"));
                         break;
                     case LaunchState.Download:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info15"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info15"));
                         break;
                     case LaunchState.JvmPrepare:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info16"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info16"));
                         break;
                     case LaunchState.LaunchPre:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info31"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info31"));
                         break;
                     case LaunchState.LaunchPost:
-                        _window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info32"));
+                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info32"));
                         break;
                     case LaunchState.End:
-                        _window.ProgressInfo.Close();
+                        s_window.ProgressInfo.Close();
                         break;
                 }
             }
@@ -191,37 +190,37 @@ public static class BaseBinding
                 switch (state)
                 {
                     case LaunchState.Login:
-                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info8");
+                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info8");
                         break;
                     case LaunchState.Check:
-                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info9");
+                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info9");
                         break;
                     case LaunchState.CheckVersion:
-                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info10");
+                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info10");
                         break;
                     case LaunchState.CheckLib:
-                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info11");
+                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info11");
                         break;
                     case LaunchState.CheckAssets:
-                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info12");
+                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info12");
                         break;
                     case LaunchState.CheckLoader:
-                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info13");
+                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info13");
                         break;
                     case LaunchState.CheckLoginCore:
-                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info14");
+                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info14");
                         break;
                     case LaunchState.CheckMods:
-                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info17");
+                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info17");
                         break;
                     case LaunchState.Download:
-                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info15");
+                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info15");
                         break;
                     case LaunchState.JvmPrepare:
-                        _window.Head.Title1 = App.GetLanguage("MainWindow.Info16");
+                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info16");
                         break;
                     case LaunchState.End:
-                        _window.Head.Title1 = "";
+                        s_window.Head.Title1 = "";
                         break;
                 }
             }
@@ -290,66 +289,17 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 打开文件
-    /// </summary>
-    /// <param name="window">窗口</param>
-    /// <param name="title">标题</param>
-    /// <param name="ext">后缀</param>
-    /// <param name="name">名字</param>
-    /// <param name="multiple">多选</param>
-    /// <param name="storage">首选路径</param>
-    /// <returns></returns>
-    public static async Task<IReadOnlyList<IStorageFile>?> OpFile(TopLevel? window, string title,
-        string[] ext, string name, bool multiple = false, DirectoryInfo? storage = null)
-    {
-        if (window == null)
-            return null;
-
-        var defaultFolder = storage == null ? null : await window.StorageProvider.TryGetFolderFromPathAsync(storage.FullName);
-
-        return await window.StorageProvider.OpenFilePickerAsync(new()
-        {
-            Title = title,
-            AllowMultiple = multiple,
-            SuggestedStartLocation = defaultFolder,
-            FileTypeFilter = new List<FilePickerFileType>()
-            {
-                new(name)
-                {
-                     Patterns = new List<string>(ext)
-                }
-            }
-        });
-    }
-
-    /// <summary>
-    /// 保存文件
-    /// </summary>
-    /// <param name="window">窗口</param>
-    /// <param name="title">标题</param>
-    /// <param name="ext">后缀</param>
-    /// <param name="name">名字</param>
-    /// <returns>文件路径</returns>
-    public static Task<IStorageFile?> OpSave(TopLevel window, string title, string ext, string name)
-    {
-        return window.StorageProvider.SaveFilePickerAsync(new()
-        {
-            Title = title,
-            DefaultExtension = ext,
-            SuggestedFileName = name
-        });
-    }
-
-    /// <summary>
     /// 游戏实例是否在运行
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>状态</returns>
     public static bool IsGameRun(GameSettingObj obj)
     {
         return RunGames.ContainsKey(obj.UUID);
     }
 
+    /// <summary>
+    /// 是否有游戏在运行
+    /// </summary>
     public static bool IsGameRuning()
     {
         return RunGames.Count > 0;
@@ -369,46 +319,6 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 打开二进制运行路径
-    /// </summary>
-    public static void OpenRunDir()
-    {
-        OpPath(AppContext.BaseDirectory);
-    }
-
-    /// <summary>
-    /// 打开基础运行路径
-    /// </summary>
-    public static void OpenBaseDir()
-    {
-        OpPath(ColorMCCore.BaseDir);
-    }
-
-    /// <summary>
-    /// 打开下载路径
-    /// </summary>
-    public static void OpenDownloadPath()
-    {
-        OpPath(DownloadManager.DownloadDir);
-    }
-
-    /// <summary>
-    /// 打开Java下载路径
-    /// </summary>
-    public static void OpenDownloadJavaPath()
-    {
-        OpPath(Path.GetFullPath(JvmPath.BaseDir + JvmPath.Name1));
-    }
-
-    /// <summary>
-    /// 打开图片路径
-    /// </summary>
-    public static void OpenPicPath()
-    {
-        OpPath(ImageUtils.Local);
-    }
-
-    /// <summary>
     /// 启动游戏
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -417,7 +327,7 @@ public static class BaseBinding
     public static async Task<(bool, string?)> Launch(IBaseWindow window,
         GameSettingObj obj, LoginObj obj1, WorldObj? world = null)
     {
-        _window = window;
+        s_window = window;
         s_launchCancel = new();
 
         if (Games.ContainsValue(obj))
@@ -542,6 +452,14 @@ public static class BaseBinding
         return (p != null, res.Item2);
     }
 
+    /// <summary>
+    /// 启动游戏
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="obj1">登陆的账户</param>
+    /// <param name="world">需要运行的世界</param>
+    /// <param name="cancel">取消启动</param>
+    /// <returns>进程信息</returns>
     private static async Task<(Process?, string?)> Launch(GameSettingObj obj,
         LoginObj obj1, WorldObj? world, CancellationToken cancel)
     {
@@ -554,7 +472,7 @@ public static class BaseBinding
             {
                 if (p != null && p.Id != 0)
                 {
-                    p.Kill();
+                    p.Kill(true);
                 }
             }
             else
@@ -606,6 +524,21 @@ public static class BaseBinding
     }
 
     /// <summary>
+    /// 获取下载状态
+    /// </summary>
+    /// <returns>状态</returns>
+    public static (int, int) GetDownloadSize()
+    {
+        return (DownloadManager.AllSize, DownloadManager.DoneSize);
+    }
+
+    /// <summary>
+    /// 是否正在下载
+    /// </summary>
+    public static bool IsDownload
+        => DownloadManager.State != CoreRunState.End;
+
+    /// <summary>
     /// 进程日志回调
     /// </summary>
     /// <param name="p">进程</param>
@@ -635,7 +568,7 @@ public static class BaseBinding
         {
             log.Append(d).Append(Environment.NewLine);
         }
-        
+
         if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
         {
             win.Log(d);
@@ -657,174 +590,10 @@ public static class BaseBinding
     /// 语言调整回调
     /// </summary>
     /// <param name="type">语言类型</param>
-    private static void Change(LanguageType type)
+    private static void ChangeLanguage(LanguageType type)
     {
         App.LoadLanguage(type);
         Localizer.Instance.Reload();
-    }
-
-    /// <summary>
-    /// 获取下载状态
-    /// </summary>
-    /// <returns>状态</returns>
-    public static (int, int) GetDownloadSize()
-    {
-        return (DownloadManager.AllSize, DownloadManager.DoneSize);
-    }
-
-    /// <summary>
-    /// 是否正在下载
-    /// </summary>
-    public static bool IsDownload
-        => DownloadManager.State != CoreRunState.End;
-
-    /// <summary>
-    /// 在资源管理器打开文件
-    /// </summary>
-    /// <param name="item">文件</param>
-    public static void OpFile(string item)
-    {
-        switch (SystemInfo.Os)
-        {
-            case OsType.Windows:
-                Process.Start("explorer",
-                    $@"/select,{item}");
-                break;
-            case OsType.Linux:
-                try
-                {
-                    Process.Start("nautilus",
-                        '"' + item + '"');
-                }
-                catch
-                {
-                    Process.Start("dolphin",
-                        '"' + item + '"');
-                }
-                break;
-            case OsType.MacOS:
-                var file1 = new FileInfo(item);
-                Process.Start("open", '"' + file1.Directory?.FullName + '"');
-                break;
-        }
-    }
-    /// <summary>
-    /// 在资源管理器打开路径
-    /// </summary>
-    /// <param name="item">路径</param>
-    private static void OpPath(string item)
-    {
-        switch (SystemInfo.Os)
-        {
-            case OsType.Windows:
-                Process.Start("explorer",
-                    $"{item}");
-                break;
-            case OsType.Linux:
-                Process.Start("xdg-open",
-                    '"' + item + '"');
-                break;
-            case OsType.MacOS:
-                Process.Start("open",
-                    '"' + item + '"');
-                break;
-        }
-    }
-
-    /// <summary>
-    /// 打开路径
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="type">路径类型</param>
-    public static void OpPath(GameSettingObj obj, PathType type)
-    {
-        switch (type)
-        {
-            case PathType.ShaderpacksPath:
-                OpPath(obj.GetShaderpacksPath());
-                break;
-            case PathType.ResourcepackPath:
-                OpPath(obj.GetResourcepacksPath());
-                break;
-            case PathType.WorldBackPath:
-                OpPath(obj.GetWorldBackupPath());
-                break;
-            case PathType.SavePath:
-                OpPath(obj.GetSavesPath());
-                break;
-            case PathType.GamePath:
-                OpPath(obj.GetGamePath());
-                break;
-            case PathType.SchematicsPath:
-                OpPath(obj.GetSchematicsPath());
-                break;
-            case PathType.ScreenshotsPath:
-                OpPath(obj.GetScreenshotsPath());
-                break;
-            case PathType.ModPath:
-                OpPath(obj.GetModsPath());
-                break;
-            case PathType.BasePath:
-                OpPath(obj.GetBasePath());
-                break;
-        }
-    }
-
-    public static void OpPath(WorldObj obj)
-    {
-        OpPath(obj.Local);
-    }
-
-    /// <summary>
-    /// 打开路径
-    /// </summary>
-    /// <param name="window">窗口</param>
-    /// <param name="type">类型</param>
-    /// <returns>路径</returns>
-    public static async Task<string?> OpPath(IBaseWindow window, FileType type)
-    {
-        var top = window.TopLevel;
-        if (top != null)
-        {
-            return await OpPath(top, type);
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// 选择路径
-    /// </summary>
-    /// <param name="window">窗口</param>
-    /// <param name="type">类型</param>
-    /// <returns>路径</returns>
-    public static async Task<string?> OpPath(TopLevel window, FileType type)
-    {
-        switch (type)
-        {
-            case FileType.ServerPack:
-                var res = await window.StorageProvider.OpenFolderPickerAsync(new()
-                {
-                    Title = App.GetLanguage("Gui.Info11")
-                });
-                if (res?.Any() == true)
-                {
-                    return res[0].GetPath();
-                }
-                break;
-            case FileType.Game:
-                res = await window.StorageProvider.OpenFolderPickerAsync(new()
-                {
-                    Title = App.GetLanguage("Gui.Info24")
-                });
-                if (res?.Any() == true)
-                {
-                    return res[0].GetPath();
-                }
-                break;
-        }
-
-        return null;
     }
 
     /// <summary>
@@ -861,305 +630,12 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 目录转字符串
-    /// </summary>
-    /// <param name="file">路径</param>
-    /// <returns>路径字符串</returns>
-    public static string? GetPath(this IStorageFolder file)
-    {
-        return file.TryGetLocalPath();
-    }
-    /// <summary>
-    /// 文件转字符串
-    /// </summary>
-    /// <param name="file">文件</param>
-    /// <returns>路径字符串</returns>
-    public static string? GetPath(this IStorageFile file)
-    {
-        return file.TryGetLocalPath();
-    }
-    /// <summary>
-    /// 文件转字符串
-    /// </summary>
-    /// <param name="file">文件</param>
-    /// <returns>路径字符串</returns>
-    public static string? GetPath(this IStorageItem file)
-    {
-        return file.TryGetLocalPath();
-    }
-    /// <summary>
     /// 获取字体列表
     /// </summary>
     /// <returns></returns>
     public static List<FontFamily> GetFontList()
     {
         return FontManager.Current.SystemFonts.ToList();
-    }
-
-    /// <summary>
-    /// 保存文件
-    /// </summary>
-    /// <param name="window">窗口</param>
-    /// <param name="type">类型</param>
-    /// <param name="arg">参数</param>
-    /// <returns>结果</returns>
-    public static Task<bool?> SaveFile(IBaseWindow? window, FileType type, object[]? arg)
-    {
-        return SaveFile(window as TopLevel, type, arg);
-    }
-
-    public static byte[] GetFile(string name)
-    {
-        var assm = Assembly.GetExecutingAssembly();
-        var item = assm.GetManifestResourceStream(name);
-        using MemoryStream stream = new();
-        item!.CopyTo(stream);
-        return stream.ToArray();
-    }
-
-    /// <summary>
-    /// 保存文件
-    /// </summary>
-    /// <param name="window">窗口</param>
-    /// <param name="type">类型</param>
-    /// <param name="arg">参数</param>
-    /// <returns>结果</returns>
-    public static async Task<bool?> SaveFile(TopLevel? window, FileType type, object[]? arg)
-    {
-        if (window == null)
-            return false;
-
-        switch (type)
-        {
-            case FileType.World:
-                var file = await OpSave(window,
-                    App.GetLanguage("GameEditWindow.Tab5.Info2"), ".zip", "world.zip");
-                if (file == null)
-                    break;
-
-                try
-                {
-                    await GameBinding.ExportWorld((arg![0] as WorldDisplayObj)!.World,
-                        file.GetPath());
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(App.GetLanguage("GameEditWindow.Tab5.Error1"), e);
-                    return false;
-                }
-            case FileType.UI:
-                file = await OpSave(window,
-                    App.GetLanguage("SettingWindow.Tab6.Info1"), ".axaml", "ui.axaml");
-                if (file == null)
-                    break;
-
-                try
-                {
-                    var name = file.GetPath();
-                    if (name == null)
-                        return null;
-                    if (File.Exists(name))
-                    {
-                        File.Delete(name);
-                    }
-
-                    File.WriteAllBytes(name, GetFile("ColorMC.Gui.Resource.UI.UI.axaml"));
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(App.GetLanguage("SettingWindow.Tab6.Error3"), e);
-                    return false;
-                }
-            case FileType.Skin:
-                file = await OpSave(window,
-                    App.GetLanguage("Gui.Info9"), ".png", "skin.png");
-                if (file == null)
-                    break;
-
-                try
-                {
-                    var name = file.GetPath();
-                    await UserBinding.SkinImage.SaveAsPngAsync(name);
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(App.GetLanguage("SettingWindow.Tab6.Error3"), e);
-                    return false;
-                }
-            case FileType.Text:
-                file = await OpSave(window,
-                    App.GetLanguage("Gui.Info21"), ".txt", "log.txt");
-                if (file == null)
-                    break;
-
-                try
-                {
-                    var name = file.GetPath();
-                    if (name == null)
-                        return false;
-                    await File.WriteAllTextAsync(name, arg![0] as string);
-                    return true;
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(App.GetLanguage("SettingWindow.Tab6.Error3"), e);
-                    return false;
-                }
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// 打开文件
-    /// </summary>
-    /// <param name="window">窗口</param>
-    /// <param name="type">类型</param>
-    /// <returns>路径</returns>
-    public static async Task<string?> OpFile(IBaseWindow window, FileType type)
-    {
-        var top = window.TopLevel;
-        if (top != null)
-        {
-            return await OpFile(top, type);
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// 打开文件
-    /// </summary>
-    /// <param name="window">窗口</param>
-    /// <param name="type">类型</param>
-    /// <returns>路径</returns>
-    public static async Task<string?> OpFile(TopLevel? window, FileType type)
-    {
-        switch (type)
-        {
-            case FileType.Java:
-                var res = await OpFile(window,
-                    App.GetLanguage("SettingWindow.Tab5.Info2"),
-                    new string[] { SystemInfo.Os == OsType.Windows ? "*.exe" : "" },
-                    App.GetLanguage("SettingWindow.Tab5.Info2"),
-                    storage: JavaBinding.GetSuggestedStartLocation());
-                if (res?.Any() == true)
-                {
-                    var file = res[0].GetPath();
-                    if (file == null)
-                        return null;
-                    if (SystemInfo.Os == OsType.Windows && file.EndsWith("java.exe"))
-                    {
-                        var file1 = file[..^4] + "w.exe";
-                        if (File.Exists(file1))
-                            return file1;
-                    }
-
-                    return file;
-                }
-                break;
-            case FileType.Config:
-                res = await OpFile(window,
-                    App.GetLanguage("SettingWindow.Tab1.Info7"),
-                    new string[] { "*.json" },
-                    App.GetLanguage("SettingWindow.Tab1.Info11"));
-                if (res?.Any() == true)
-                {
-                    return res[0].GetPath();
-                }
-                break;
-            case FileType.AuthConfig:
-                res = await OpFile(window,
-                    App.GetLanguage("SettingWindow.Tab1.Info10"),
-                    new string[] { "*.json" },
-                    App.GetLanguage("SettingWindow.Tab1.Info12"));
-                if (res?.Any() == true)
-                {
-                    return res[0].GetPath();
-                }
-                break;
-            case FileType.ModPack:
-                res = await OpFile(window,
-                    App.GetLanguage("Gui.Info22"),
-                    new string[] { "*.zip", "*.mrpack" },
-                    App.GetLanguage("Gui.Info23"));
-                if (res?.Any() == true)
-                {
-                    return res[0].GetPath();
-                }
-                break;
-            case FileType.Pic:
-                res = await OpFile(window, App.GetLanguage("SettingWindow.Tab2.Info3"),
-                    new string[] { "*.png", "*.jpg", "*.bmp" },
-                    App.GetLanguage("SettingWindow.Tab2.Info6"));
-                if (res?.Any() == true)
-                {
-                    return res[0].GetPath();
-                }
-                break;
-            case FileType.UI:
-                res = await OpFile(window,
-                    App.GetLanguage("SettingWindow.Tab6.Info2"),
-                    new string[] { "*.axaml" },
-                    App.GetLanguage("SettingWindow.Tab6.Info3"));
-                if (res?.Any() == true)
-                {
-                    return res[0].GetPath();
-                }
-                break;
-            case FileType.Music:
-                res = await OpFile(window,
-                    App.GetLanguage("SettingWindow.Tab6.Info5"),
-                    new string[] { "*.mp3", "*.wav" },
-                    App.GetLanguage("SettingWindow.Tab6.Info6"));
-                if (res?.Any() == true)
-                {
-                    return res[0].GetPath();
-                }
-                break;
-            case FileType.Live2D:
-                res = await OpFile(window,
-                    App.GetLanguage("SettingWindow.Tab2.Info7"),
-                    new string[] { "*.model3.json" },
-                    App.GetLanguage("SettingWindow.Tab2.Info8"));
-                if (res?.Any() == true)
-                {
-                    return res[0].GetPath();
-                }
-                break;
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// A14到A15路径处理
-    /// </summary>
-    public static bool CheckOldDir()
-    {
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            if (Directory.Exists($"{AppContext.BaseDirectory}minecraft/"))
-            {
-                OpPath(AppContext.BaseDirectory);
-                OpPath(InstancesPath.BaseDir);
-                return true;
-            }
-        }
-        else if (SystemInfo.Os == OsType.MacOS)
-        {
-            if (Directory.Exists("/Users/ColorMC/"))
-            {
-                OpPath("/Users/ColorMC/");
-                OpPath(InstancesPath.BaseDir);
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /// <summary>
@@ -1178,6 +654,9 @@ public static class BaseBinding
         DownloadManager.DownloadPause();
     }
 
+    /// <summary>
+    /// 继续下载
+    /// </summary>
     public static void DownloadResume()
     {
         DownloadManager.DownloadResume();

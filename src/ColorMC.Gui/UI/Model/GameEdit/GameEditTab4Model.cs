@@ -55,7 +55,7 @@ public partial class GameEditTab4Model : GameEditModel
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpPath(Obj, PathType.ModPath);
+        PathBinding.OpPath(Obj, PathType.ModPath);
     }
 
     [RelayCommand]
@@ -72,7 +72,7 @@ public partial class GameEditTab4Model : GameEditModel
     [RelayCommand]
     public async Task Import()
     {
-        var file = await GameBinding.AddFile(Window, Obj, FileType.Mod);
+        var file = await PathBinding.AddFile(Window, Obj, FileType.Mod);
 
         if (file == null)
             return;

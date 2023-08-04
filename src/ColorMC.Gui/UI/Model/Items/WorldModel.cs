@@ -62,7 +62,7 @@ public partial class WorldModel : BaseModel
     public async void Export(WorldDisplayObj obj)
     {
         Progress(App.GetLanguage("GameEditWindow.Tab5.Info4"));
-        var file = await BaseBinding.SaveFile(Window, FileType.World, new object[]
+        var file = await PathBinding.SaveFile(Window, FileType.World, new object[]
             { obj });
         ProgressClose();
         if (file == null)

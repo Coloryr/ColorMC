@@ -38,10 +38,10 @@ public partial class GameEditTab5Model : GameEditModel, ILoadFuntion<WorldModel>
         {
             names.Add(item.Name);
         }
-        var res = await ShowCombo(App.GetLanguage("GameEditWindow.Tab5.Info9"), names);
-        if (res.Cancel)
+        var (cancel, index, _) = await ShowCombo(App.GetLanguage("GameEditWindow.Tab5.Info9"), names);
+        if (cancel)
             return;
-        var item1 = list[res.Index];
+        var item1 = list[index];
         var res1 = await ShowWait(App.GetLanguage("GameEditWindow.Tab5.Info10"));
         if (!res1)
             return;
@@ -62,7 +62,7 @@ public partial class GameEditTab5Model : GameEditModel, ILoadFuntion<WorldModel>
     [RelayCommand]
     public async Task Import()
     {
-        var file = await GameBinding.AddFile(Window, Obj, FileType.World);
+        var file = await PathBinding.AddFile(Window, Obj, FileType.World);
         if (file == null)
             return;
 
@@ -78,7 +78,7 @@ public partial class GameEditTab5Model : GameEditModel, ILoadFuntion<WorldModel>
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpPath(Obj, PathType.SavePath);
+        PathBinding.OpPath(Obj, PathType.SavePath);
     }
     [RelayCommand]
     public void Add()
@@ -89,7 +89,7 @@ public partial class GameEditTab5Model : GameEditModel, ILoadFuntion<WorldModel>
     [RelayCommand]
     public void OpenBackup()
     {
-        BaseBinding.OpPath(Obj, PathType.WorldBackPath);
+        PathBinding.OpPath(Obj, PathType.WorldBackPath);
     }
     [RelayCommand]
     public async Task Load()

@@ -267,31 +267,21 @@ public static class UserBinding
         App.OnSkinLoad();
     }
 
-    public static void EditSkin(IBaseWindow window)
-    {
-        if (window is TopLevel top)
-        {
-            EditSkin(top);
-        }
-    }
-
-    public static async void EditSkin(TopLevel window)
+    public static async void EditSkin(IBaseWindow window)
     {
         var obj = GetLastUser();
         if (obj == null)
+        {
             return;
+        }
 
         switch (obj.AuthType)
         {
             case AuthType.Offline:
-                var file = await BaseBinding.OpFile(window,
-                    App.GetLanguage("UserBinding.Info1"),
-                    new string[] { "*.png" },
-                    App.GetLanguage("UserBinding.Info2"));
-                if (file?.Any() == true)
+                var file = await PathBinding.SelectFile(window, FileType.Head);
+                if (file != null)
                 {
-                    var item = file[0];
-                    obj.SaveSkin(item.GetPath());
+                    obj.SaveSkin(file);
                 }
                 break;
             case AuthType.OAuth:

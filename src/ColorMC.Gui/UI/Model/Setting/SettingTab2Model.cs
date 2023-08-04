@@ -331,7 +331,7 @@ public partial class SettingTab2Model : BaseModel
     [RelayCommand]
     public void OpenRunDir()
     {
-        BaseBinding.OpenRunDir();
+        PathBinding.OpPath(PathType.RunPath);
     }
 
     [RelayCommand]
@@ -392,7 +392,7 @@ public partial class SettingTab2Model : BaseModel
     [RelayCommand]
     public async Task OpenPic()
     {
-        var file = await BaseBinding.OpFile(Window, FileType.Pic);
+        var file = await PathBinding.SelectFile(Window, FileType.Pic);
 
         if (file != null)
         {
@@ -434,7 +434,7 @@ public partial class SettingTab2Model : BaseModel
     [RelayCommand]
     public async Task OpenLive2D()
     {
-        var file = await BaseBinding.OpFile(Window, FileType.Live2D);
+        var file = await PathBinding.SelectFile(Window, FileType.Live2D);
 
         if (file != null)
         {

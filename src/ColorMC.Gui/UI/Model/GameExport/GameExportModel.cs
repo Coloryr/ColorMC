@@ -187,7 +187,7 @@ public partial class GameExportModel : GameEditModel
         }
 
         Progress(App.GetLanguage("GameExportWindow.Info1"));
-        var file = await GameBinding.Export(Control, this);
+        var file = await PathBinding.Export(Window, this);
         ProgressClose();
         if (file == null)
         {

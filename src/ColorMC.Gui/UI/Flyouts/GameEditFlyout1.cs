@@ -72,7 +72,7 @@ public class GameEditFlyout1
 
     private void Button3_Click()
     {
-        BaseBinding.OpFile(_obj.Local);
+        PathBinding.OpFile(_obj.Local);
     }
 
     private async void Button7_Click()

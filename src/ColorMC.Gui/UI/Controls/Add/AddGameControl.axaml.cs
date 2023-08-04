@@ -7,6 +7,7 @@ using ColorMC.Gui.UI.Controls.Add.AddGame;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using System.Linq;
 using System.Threading;
 
@@ -77,7 +78,7 @@ public partial class AddGameControl : UserControl, IUserControl
             if (files == null || files.Count() > 1)
                 return;
 
-            var item = BaseBinding.GetPath(files.First());
+            var item = files.First().GetPath();
             if (item?.EndsWith(".zip") == true || item?.EndsWith(".mrpack") == true)
             {
                 Tabs.SelectedIndex = 1;

@@ -20,7 +20,7 @@ public class GameEditFlyout7
 
     private void Button1_Click()
     {
-        BaseBinding.OpFile(_model.Item!.Local);
+        PathBinding.OpFile(_model.Item!.Local);
     }
 
     private void Button2_Click()

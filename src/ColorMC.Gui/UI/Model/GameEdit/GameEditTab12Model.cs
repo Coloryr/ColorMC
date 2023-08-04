@@ -27,7 +27,7 @@ public partial class GameEditTab12Model : GameEditModel
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpPath(Obj, PathType.SchematicsPath);
+        PathBinding.OpPath(Obj, PathType.SchematicsPath);
     }
 
     [RelayCommand]
@@ -42,7 +42,7 @@ public partial class GameEditTab12Model : GameEditModel
     [RelayCommand]
     public async Task Add()
     {
-        var res = await GameBinding.AddFile(Window, Obj, FileType.Schematic);
+        var res = await PathBinding.AddFile(Window, Obj, FileType.Schematic);
 
         if (res == null)
             return;

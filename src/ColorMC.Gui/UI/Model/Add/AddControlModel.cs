@@ -7,6 +7,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -168,7 +169,7 @@ public partial class AddControlModel : BaseModel, IAddWindow
         var type = SourceTypeList[DownloadSource];
         if (type == SourceType.CurseForge)
         {
-            SortTypeList.AddRange(GameBinding.GetCurseForgeSortTypes());
+            SortTypeList.AddRange(LanguageUtils.GetCurseForgeSortTypes());
 
             Progress(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetCurseForgeGameVersions();
@@ -219,7 +220,7 @@ public partial class AddControlModel : BaseModel, IAddWindow
         }
         else if (type == SourceType.Modrinth)
         {
-            SortTypeList.AddRange(GameBinding.GetModrinthSortTypes());
+            SortTypeList.AddRange(LanguageUtils.GetModrinthSortTypes());
 
             Progress(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetModrinthGameVersions();

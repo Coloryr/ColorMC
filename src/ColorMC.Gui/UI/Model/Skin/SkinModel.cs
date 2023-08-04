@@ -189,7 +189,7 @@ public partial class SkinModel : BaseModel
     [RelayCommand]
     public async Task Save()
     {
-        var res = await BaseBinding.SaveFile(Window, FileType.Skin, null);
+        var res = await PathBinding.SaveFile(Window, FileType.Skin, null);
         if (res == true)
         {
             Notify(App.GetLanguage("Gui.Info10"));

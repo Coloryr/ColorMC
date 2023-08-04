@@ -60,7 +60,7 @@ public partial class AddGameTab3Model : AddGameControlModel
     [RelayCommand]
     public async Task SelectLocal()
     {
-        var res = await BaseBinding.OpPath(Window, FileType.Game);
+        var res = await PathBinding.SelectPath(Window, FileType.Game);
         if (string.IsNullOrWhiteSpace(res))
         {
             return;

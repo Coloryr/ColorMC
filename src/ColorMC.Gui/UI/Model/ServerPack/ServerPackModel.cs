@@ -29,7 +29,7 @@ public partial class ServerPackModel : ServerPackBaseModel
             return;
         }
 
-        var local = await BaseBinding.OpPath(Window, FileType.ServerPack);
+        var local = await PathBinding.SelectPath(Window, FileType.ServerPack);
         if (local == null)
             return;
 

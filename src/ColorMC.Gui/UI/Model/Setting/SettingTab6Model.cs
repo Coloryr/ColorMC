@@ -193,7 +193,7 @@ public partial class SettingTab6Model : BaseModel
     [RelayCommand]
     public async Task SelectUI()
     {
-        var res = await BaseBinding.OpFile(Window, FileType.UI);
+        var res = await PathBinding.SelectFile(Window, FileType.UI);
         if (res != null)
         {
             FileUI = res;
@@ -240,7 +240,7 @@ public partial class SettingTab6Model : BaseModel
     [RelayCommand]
     public async Task Save()
     {
-        var str = await BaseBinding.SaveFile(Window, FileType.UI, null);
+        var str = await PathBinding.SaveFile(Window, FileType.UI, null);
         if (str == null)
             return;
 
@@ -280,7 +280,7 @@ public partial class SettingTab6Model : BaseModel
     [RelayCommand]
     public async Task SelectMusic()
     {
-        var file = await BaseBinding.OpFile(Window, FileType.Music);
+        var file = await PathBinding.SelectFile(Window, FileType.Music);
         if (file == null)
         {
             return;

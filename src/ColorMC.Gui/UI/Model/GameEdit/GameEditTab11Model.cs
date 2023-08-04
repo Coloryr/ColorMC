@@ -27,7 +27,7 @@ public partial class GameEditTab11Model : GameEditModel
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpPath(Obj, PathType.ShaderpacksPath);
+        PathBinding.OpPath(Obj, PathType.ShaderpacksPath);
     }
     [RelayCommand]
     public async Task Load()
@@ -40,7 +40,7 @@ public partial class GameEditTab11Model : GameEditModel
     [RelayCommand]
     public async Task Import()
     {
-        var res = await GameBinding.AddFile(Window, Obj, FileType.Shaderpack);
+        var res = await PathBinding.AddFile(Window, Obj, FileType.Shaderpack);
         if (res == null)
             return;
 

@@ -25,7 +25,7 @@ public partial class SettingTab1Model : BaseModel
     [RelayCommand]
     public async Task Open1()
     {
-        var file = await BaseBinding.OpFile(Window, FileType.Config);
+        var file = await PathBinding.SelectFile(Window, FileType.Config);
 
         if (file != null)
         {
@@ -36,7 +36,7 @@ public partial class SettingTab1Model : BaseModel
     [RelayCommand]
     public async Task Open2()
     {
-        var file = await BaseBinding.OpFile(Window, FileType.AuthConfig);
+        var file = await PathBinding.SelectFile(Window, FileType.AuthConfig);
 
         if (file != null)
         {
@@ -47,7 +47,7 @@ public partial class SettingTab1Model : BaseModel
     [RelayCommand]
     public async Task Open3()
     {
-        var file = await BaseBinding.OpFile(Window, FileType.Config);
+        var file = await PathBinding.SelectFile(Window, FileType.Config);
 
         if (file != null)
         {
@@ -175,6 +175,6 @@ public partial class SettingTab1Model : BaseModel
     [RelayCommand]
     public void Open()
     {
-        BaseBinding.OpenBaseDir();
+        PathBinding.OpPath(PathType.BasePath);
     }
 }

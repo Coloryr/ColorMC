@@ -1,5 +1,7 @@
 ﻿using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
 using System.Collections.Generic;
 
@@ -105,5 +107,47 @@ public static class LanguageUtils
         };
 
         return list;
+    }
+
+    public static List<string> GetCurseForgeSortTypes()
+    {
+        return new List<string>()
+        {
+            CurseForgeSortField.Featured.GetName(),
+            CurseForgeSortField.Popularity.GetName(),
+            CurseForgeSortField.LastUpdated.GetName(),
+            CurseForgeSortField.Name.GetName(),
+            CurseForgeSortField.TotalDownloads.GetName()
+        };
+    }
+
+    public static List<string> GetModrinthSortTypes()
+    {
+        return new List<string>()
+        {
+            MSortingObj.Relevance.GetName(),
+            MSortingObj.Downloads.GetName(),
+            MSortingObj.Follows.GetName(),
+            MSortingObj.Newest.GetName(),
+            MSortingObj.Updated.GetName()
+        };
+    }
+
+    public static List<string> GetSortOrder()
+    {
+        return new()
+        {
+            App.GetLanguage("GameBinding.SortOrder.Item1"),
+            App.GetLanguage("GameBinding.SortOrder.Item2")
+        };
+    }
+
+    public static List<string> GetSourceList()
+    {
+        return new()
+        {
+            SourceType.CurseForge.GetName(),
+            SourceType.Modrinth.GetName()
+        };
     }
 }

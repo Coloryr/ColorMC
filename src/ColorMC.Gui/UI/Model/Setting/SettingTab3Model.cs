@@ -117,13 +117,13 @@ public partial class SettingTab3Model : BaseModel
     [RelayCommand]
     public void OpenDownload()
     {
-        BaseBinding.OpenDownloadPath();
+        PathBinding.OpPath(PathType.DownloadPath);
     }
 
     [RelayCommand]
     public void OpenPic()
     {
-        BaseBinding.OpenPicPath();
+        PathBinding.OpPath(PathType.PicPath);
     }
 
     [RelayCommand]

@@ -25,6 +25,6 @@ public class GameEditFlyout4
 
     private void Button1_Click()
     {
-        BaseBinding.OpFile(_model.Screenshot.Local);
+        PathBinding.OpFile(_model.Screenshot.Local);
     }
 }

@@ -5,6 +5,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Error;
 
@@ -26,13 +27,12 @@ public partial class ErrorModel : BaseModel
     public ErrorModel(IUserControl con, string data, string e, bool close) : base(con)
     {
         _text = new TextDocument($"{data}{Environment.NewLine}{e}");
-        ;
         Close = close;
     }
 
     [RelayCommand]
-    public void Save()
+    public async Task Save()
     {
-        BaseBinding.SaveFile(Window, FileType.Text, new[] { Text.Text });
+        await PathBinding.SaveFile(Window, FileType.Text, new[] { Text.Text });
     }
 }

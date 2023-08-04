@@ -29,6 +29,6 @@ public class GameEditFlyout3
 
     private void Button1_Click()
     {
-        BaseBinding.OpFile(_obj.Local);
+        PathBinding.OpFile(_obj.Local);
     }
 }
