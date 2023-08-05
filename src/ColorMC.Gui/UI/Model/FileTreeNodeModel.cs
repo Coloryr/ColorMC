@@ -23,18 +23,22 @@ public partial class FileTreeNodeModel : ObservableObject
     [ObservableProperty]
     private bool _isChecked;
 
+    private FileTreeNodeModel _par;
+
     public ObservableCollection<FileTreeNodeModel> Children { get; init; } = new();
 
     public bool IsDirectory { get; init; }
 
     public FileTreeNodeModel(
-            string path,
-            bool isDirectory,
-            bool check = true,
-            bool isRoot = false)
+        FileTreeNodeModel? par,
+        string path,
+        bool isDirectory,
+        bool check = true,
+        bool isRoot = false)
     {
-        _path = path;
-        _name = isRoot ? path : System.IO.Path.GetFileName(Path);
+        _par = par ?? this;
+        _path = System.IO.Path.GetFullPath(path + (isDirectory ? "/" : ""));
+        _name = isRoot ? path : System.IO.Path.GetFileName(path);
         _isExpanded = isRoot;
         _isChecked = check;
         IsDirectory = isDirectory;
@@ -60,6 +64,7 @@ public partial class FileTreeNodeModel : ObservableObject
             {
                 item.IsChecked = true;
             }
+            _par.IsAllCheck();
         }
         else if (IsChecked == false)
         {
@@ -82,12 +87,12 @@ public partial class FileTreeNodeModel : ObservableObject
 
         foreach (var d in Directory.EnumerateDirectories(Path, "*", options))
         {
-            Children.Add(new FileTreeNodeModel(d, true, check));
+            Children.Add(new FileTreeNodeModel(this, d, true, check));
         }
 
         foreach (var f in Directory.EnumerateFiles(Path, "*", options))
         {
-            Children.Add(new FileTreeNodeModel(f, false, check));
+            Children.Add(new FileTreeNodeModel(this, f, false, check));
         }
 
         if (Children.Count == 0)
@@ -164,11 +169,48 @@ public partial class FileTreeNodeModel : ObservableObject
             }
         }
 
-        if (IsChecked && !IsDirectory)
+        if (IsChecked)
         {
             list.Add(System.IO.Path.GetFullPath(Path));
         }
 
         return list;
+    }
+
+    public bool Select(string item)
+    {
+        if (Path == item)
+        {
+            IsChecked = true;
+            return true;
+        }
+        if (Children != null)
+        {
+            foreach (var item1 in Children)
+            {
+                if (item1.Select(item))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void IsAllCheck()
+    {
+        if (Children == null)
+        {
+            return;
+        }
+        foreach (var item in Children)
+        {
+            if (!item.IsChecked)
+            {
+                return;
+            }
+        }
+
+        IsChecked = true;
     }
 }

@@ -15,7 +15,8 @@ public class FilesPageViewModel : ObservableObject
 
     public FilesPageViewModel(string obj, bool check, List<string>? unselect = null)
     {
-        Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(Array.Empty<FileTreeNodeModel>())
+        _root = new FileTreeNodeModel(null, obj, true, check, true);
+        Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(_root)
         {
             Columns =
             {
@@ -66,9 +67,6 @@ public class FilesPageViewModel : ObservableObject
 
         Source.RowSelection!.SingleSelect = false;
 
-        _root = new FileTreeNodeModel(obj, true, check, true);
-        Source.Items = new[] { _root };
-
         if (unselect != null)
         {
             foreach (var item in unselect)
@@ -94,6 +92,13 @@ public class FilesPageViewModel : ObservableObject
         return _root.GetSelectItems();
     }
 
+    public void SetSelectItems(List<string> config)
+    {
+        foreach (var item in config)
+        {
+            _root.Select(item);
+        }
+    }
 
     private static IconConverter? s_iconConverter;
     public static IMultiValueConverter FileIconConverter

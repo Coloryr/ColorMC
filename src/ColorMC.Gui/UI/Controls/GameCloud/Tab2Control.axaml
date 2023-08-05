@@ -4,8 +4,47 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    Welcome to Avalonia!
+    <DockPanel Margin="5,0,5,5" IsEnabled="{Binding Enable}">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button
+                Width="100"
+                Height="25"
+                Command="{Binding UploadConfig}"
+                Content="{setting:Localize GameCloudWindow.Tab2.Text1}" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,0,0,0"
+                Command="{Binding DownloadConfig}"
+                Content="{setting:Localize GameCloudWindow.Tab2.Text2}" />
+        </StackPanel>
+        <TreeDataGrid Margin="3" Source="{Binding Source}">
+            <TreeDataGrid.Resources>
+                <DataTemplate x:Key="FileNameCell1" DataType="vm:FileTreeNodeModel">
+                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+                </DataTemplate>
+                <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="30"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center">
+                            <Label.Content>
+                                <MultiBinding Converter="{x:Static vm:FilesPageViewModel.FileIconConverter}">
+                                    <Binding Path="IsDirectory" />
+                                    <Binding Path="IsExpanded" />
+                                </MultiBinding>
+                            </Label.Content>
+                        </Label>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </TreeDataGrid.Resources>
+        </TreeDataGrid>
+    </DockPanel>
 </UserControl>

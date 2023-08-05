@@ -432,7 +432,7 @@ public static class ZipUtils
         if (strFile[^1] != Path.DirectorySeparatorChar)
             strFile += Path.DirectorySeparatorChar;
         using var s = new ZipOutputStream(File.Create(strZip));
-        s.SetLevel(9); // 0 - store only to 9 - means best compression
+        s.SetLevel(9);
         await Zip(strFile, s, strFile, filter);
         await s.FinishAsync(CancellationToken.None);
         s.Close();
@@ -461,6 +461,44 @@ public static class ZipUtils
                 byte[] buffer = new byte[fs.Length];
                 await fs.ReadAsync(buffer);
                 string tempfile = file[(staticFile.LastIndexOf("\\") + 1)..];
+                var entry = new ZipEntry(tempfile)
+                {
+                    DateTime = DateTime.Now,
+                    Size = fs.Length
+                };
+                crc.Reset();
+                crc.Update(buffer);
+                entry.Crc = crc.Value;
+                await s.PutNextEntryAsync(entry);
+                await s.WriteAsync(buffer);
+            }
+        }
+    }
+
+    public static async Task ZipFile(string strZip, List<string> list, string basepath)
+    {
+        using var s = new ZipOutputStream(File.Create(strZip));
+        s.SetLevel(9);
+        var crc = new Crc32();
+
+        foreach (var item in list)
+        {
+            string tempfile = item[(basepath.Length + 1)..];
+            if (Directory.Exists(item))
+            {
+                var entry = new ZipEntry(tempfile + "/")
+                {
+                    DateTime = DateTime.Now
+                };
+                await s.PutNextEntryAsync(entry);
+            }
+            else
+            {
+                using var fs = File.OpenRead(item);
+
+                byte[] buffer = new byte[fs.Length];
+                await fs.ReadAsync(buffer);
+                
                 var entry = new ZipEntry(tempfile)
                 {
                     DateTime = DateTime.Now,
@@ -509,7 +547,7 @@ public static class ZipUtils
 
                 if (fileName != string.Empty)
                 {
-                    using FileStream streamWriter = File.Create(filename);
+                    using var streamWriter = File.Create(filename);
 
                     s.CopyTo(streamWriter);
                 }

@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace ColorMC.Gui.UI.Controls.GameCloud
+namespace ColorMC.Gui.UI.Controls.GameCloud;
+
+public partial class Tab2Control : UserControl
 {
-    public partial class Tab2Control : UserControl
+    public Tab2Control()
     {
-        public Tab2Control()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -32,6 +32,14 @@
                 IsEnabled="False"
                 IsReadOnly="True"
                 Text="{Binding UUID}" />
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{setting:Localize GameCloudWindow.Tab1.Text4}" />
+                <Label Content="{Binding ConfigTime}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{setting:Localize GameCloudWindow.Tab1.Text5}" />
+                <Label Content="{Binding LocalConfigTime}" />
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </UserControl>

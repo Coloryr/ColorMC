@@ -464,10 +464,14 @@ public static class InstancesPath
         if (s_installGames.ContainsKey(game.Name))
         {
             if (ColorMCCore.GameOverwirte == null)
+            {
                 return null;
+            }
 
             if (await ColorMCCore.GameOverwirte.Invoke(game) == false)
+            {
                 return null;
+            }
 
             if (s_installGames.Remove(game.Name, out var temp))
             {
@@ -583,7 +587,8 @@ public static class InstancesPath
             PID = obj.PID,
             ModPackType = obj.ModPackType,
             AdvanceJvm = obj.AdvanceJvm,
-            GameType = obj.GameType
+            GameType = obj.GameType,
+            Icon = obj.Icon
         };
     }
 

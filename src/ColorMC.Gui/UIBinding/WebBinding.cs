@@ -697,7 +697,7 @@ public static class WebBinding
         return list1;
     }
 
-    public static Task<bool?> CheckCloud(GameSettingObj obj)
+    public static Task<(bool?, string?)> CheckCloud(GameSettingObj obj)
     {
         return GameCloudUtils.HaveCloud(obj.UUID);
     }

@@ -1,22 +1,42 @@
-﻿using ColorMC.Core.Objs;
+﻿using Avalonia.Controls;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using ColorMC.Core.LaunchPath;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ColorMC.Core.Utils;
+using System.IO;
+using ICSharpCode.SharpZipLib.Zip;
+using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.GameCloud;
 
 public partial class GameCloudModel : GameEditModel
 {
+    /// <summary>
+    /// 导出的文件列表
+    /// </summary>
+    public FilesPageViewModel Files;
+
+    [ObservableProperty]
+    private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
+
     [ObservableProperty]
     private bool _enable;
+    [ObservableProperty]
+    private string _configTime;
+    [ObservableProperty]
+    private string _localConfigTime;
+
+    public ObservableCollection<WorldCloudModel> WorldCloudList { get; } = new();
 
     public string UUID => Obj.UUID;
 
@@ -88,6 +108,93 @@ public partial class GameCloudModel : GameEditModel
         Enable = false;
     }
 
+    [RelayCommand]
+    public async Task UploadConfig()
+    {
+        Progress("正在打包");
+        var files = Files.GetSelectItems();
+        var data = GameCloudUtils.GetCloudData(Obj);
+        string dir = Obj.GetBasePath();
+        data.Config.Clear();
+        foreach (var item in files)
+        {
+            data.Config.Add(item[(dir.Length + 1)..]);
+        }
+        string name = Path.GetFullPath(dir + "/config.zip");
+        files.Remove(name);
+        await ZipUtils.ZipFile(name, files, dir);
+        ProgressUpdate("上传中");
+        await GameCloudUtils.UploadConfig(Obj.UUID, name);
+        File.Delete(name);
+        await LoadCloud();
+        data.ConfigTime = DateTime.Parse(ConfigTime);
+        LocalConfigTime = ConfigTime;
+        GameCloudUtils.Save();
+        ProgressClose();
+    }
+
+    [RelayCommand]
+    public async Task DownloadConfig()
+    {
+        Progress("正在下载");
+        var data = GameCloudUtils.GetCloudData(Obj);
+        string dir = Obj.GetBasePath();
+        string name = Path.GetFullPath(dir + "/config.zip");
+        var res = await GameCloudUtils.DownloadConfig(Obj.UUID, name);
+        if (res != true)
+        {
+            ProgressClose();
+            Show("同步失败");
+            return;
+        }
+        ProgressUpdate("解压中");
+        data.Config.Clear();
+        await Task.Run(() =>
+        {
+            using ZipInputStream s = new(File.OpenRead(name));
+            ZipEntry theEntry;
+            while ((theEntry = s.GetNextEntry()) != null)
+            {
+                string filename = $"{dir}/{theEntry.Name}";
+                data.Config.Add(theEntry.Name);
+
+                var directoryName = Path.GetDirectoryName(filename);
+                string fileName = Path.GetFileName(theEntry.Name);
+
+                if (directoryName?.Length > 0)
+                {
+                    Directory.CreateDirectory(directoryName);
+                }
+
+                if (fileName != string.Empty)
+                {
+                    using var streamWriter = File.Create(filename);
+
+                    s.CopyTo(streamWriter);
+                }
+            }
+        });
+        await LoadCloud();
+        data.ConfigTime = DateTime.Parse(ConfigTime);
+        LocalConfigTime = ConfigTime;
+        GameCloudUtils.Save();
+        ProgressClose();
+    }
+
+    public async Task LoadCloud()
+    {
+        Progress("检查云同步中");
+        var res = await WebBinding.CheckCloud(Obj);
+        ProgressClose();
+        if (res.Item1 == null)
+        {
+            ShowOk("云服务器错误", Window.Close);
+            return;
+        }
+        Enable = (bool)res.Item1;
+        ConfigTime = res.Item2 ?? "没有同步";
+    }
+
     public async void Load()
     {
         if (!GameCloudUtils.Connect)
@@ -95,14 +202,21 @@ public partial class GameCloudModel : GameEditModel
             ShowOk("云服务器未链接", Window.Close);
             return;
         }
-        Progress("检查云同步中");
-        var res = await WebBinding.CheckCloud(Obj);
-        ProgressClose();
-        if (res == null)
+        await LoadCloud();
+
+        string dir = Obj.GetBasePath();
+        Files = new FilesPageViewModel(dir, false);
+
+        var data = GameCloudUtils.GetCloudData(Obj);
+        LocalConfigTime = data.ConfigTime.ToString();
+
+        var list = new List<string>();
+        foreach (var item in data.Config)
         {
-            ShowOk("云服务器错误", Window.Close);
-            return;
+            list.Add(Path.GetFullPath(dir + "/" + item));
         }
-        Enable = (bool)res;
+        Files.SetSelectItems(list);
+
+        Source = Files.Source;
     }
 }

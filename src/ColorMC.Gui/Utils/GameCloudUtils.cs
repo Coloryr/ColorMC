@@ -1,10 +1,12 @@
 ﻿using ColorMC.Core;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,17 +42,33 @@ public static class GameCloudUtils
             {
                 s_datas = JsonConvert.DeserializeObject<Dictionary<string, CloudDataObj>>
                     (File.ReadAllText(s_file))!;
+                var games = InstancesPath.Games;
+                bool save = false;
+                foreach (var item in new List<string>(s_datas.Keys))
+                {
+                    if (games.Any(a => a.UUID == item))
+                    {
+                        continue;
+                    }
+
+                    s_datas.Remove(item);
+                    save = true;
+                }
+                if (save)
+                {
+                    Save();
+                }
             }
             catch (Exception e)
             {
                 Logs.Error("load error", e);
             }
+        }
 
-            if (s_datas == null)
-            {
-                s_datas = new();
-                Save();
-            }
+        if (s_datas == null)
+        {
+            s_datas = new();
+            Save();
         }
     }
 
@@ -62,6 +80,19 @@ public static class GameCloudUtils
             Local = s_file,
             Obj = s_datas
         });
+    }
+
+    public static CloudDataObj GetCloudData(GameSettingObj obj)
+    {
+        if (s_datas.TryGetValue(obj.UUID, out var temp))
+        {
+            return temp;
+        }
+
+        var obj1 = new CloudDataObj();
+        s_datas.Add(obj.UUID, obj1);
+        Save();
+        return obj1;
     }
 
     public static async Task StartConnect()
@@ -134,13 +165,13 @@ public static class GameCloudUtils
         }
     }
 
-    public static async Task<bool?> HaveCloud(string uuid)
+    public static async Task<(bool?, string?)> HaveCloud(string uuid)
     {
         try
         {
             if (!Connect)
             {
-                return null;
+                return (null, null);
             }
 
             var requ = new HttpRequestMessage(HttpMethod.Post,
@@ -155,19 +186,19 @@ public static class GameCloudUtils
             {
                 var data = await res.Content.ReadAsStringAsync();
                 var obj = JObject.Parse(data);
-                if (obj.TryGetValue("res", out var res1))
+                if (obj.TryGetValue("res", out var res1) && (int)res1 == 100)
                 {
-                    return (bool?)res1;
+                    return ((bool?)obj["data"], (string?)obj["time"]);
                 }
             }
 
-            return null;
+            return (null, null);
         }
         catch (Exception e)
         {
             Logs.Error("cloud error", e);
             App.ShowError("cloud error", e);
-            return null;
+            return (null, null);
         }
     }
 
@@ -192,9 +223,9 @@ public static class GameCloudUtils
             {
                 var data = await res.Content.ReadAsStringAsync();
                 var obj = JObject.Parse(data);
-                if (obj.TryGetValue("res", out var res1))
+                if (obj.TryGetValue("res", out var res1) && (int)res1 == 100)
                 {
-                    return (AddSaveState?)(int)res1;
+                    return (AddSaveState)(int)obj["data"]!;
                 }
             }
 
@@ -229,9 +260,9 @@ public static class GameCloudUtils
             {
                 var data = await res.Content.ReadAsStringAsync();
                 var obj = JObject.Parse(data);
-                if (obj.TryGetValue("res", out var res1))
+                if (obj.TryGetValue("res", out var res1) && (int)res1 == 100)
                 {
-                    return (bool?)res1;
+                    return (bool?)obj["data"];
                 }
             }
 
@@ -245,8 +276,77 @@ public static class GameCloudUtils
         }
     }
 
-    public static CloudDataObj GetCloudData(GameSettingObj obj)
+    public static async Task<bool?> UploadConfig(string uuid, string path)
     {
-        
+        if (!Connect)
+        {
+            return null;
+        }
+
+        try
+        {
+            var requ = new HttpRequestMessage(HttpMethod.Post,
+            new Uri(s_server + "/uploadconfig"));
+            requ.Headers.Add("ColorMC", ColorMCCore.Version);
+            requ.Headers.Add("serverkey", s_serverkey);
+            requ.Headers.Add("clientkey", s_clientkey);
+            requ.Headers.Add("uuid", uuid);
+            using var stream = File.OpenRead(path);
+            requ.Content = new StreamContent(stream);
+
+            var res = await BaseClient.LoginClient.SendAsync(requ);
+            if (res.IsSuccessStatusCode)
+            {
+                var data = await res.Content.ReadAsStringAsync();
+                var obj = JObject.Parse(data);
+                if (obj.TryGetValue("res", out var res1) && (int)res1 == 100)
+                {
+                    return true;
+                }
+            }
+
+            return null;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("cloud error", e);
+            App.ShowError("cloud error", e);
+            return null;
+        }
+    }
+
+    public static async Task<bool?> DownloadConfig(string uuid, string name)
+    {
+        if (!Connect)
+        {
+            return null;
+        }
+
+        try
+        {
+            var requ = new HttpRequestMessage(HttpMethod.Post,
+            new Uri(s_server + "/downloadconfig"));
+            requ.Headers.Add("ColorMC", ColorMCCore.Version);
+            requ.Headers.Add("serverkey", s_serverkey);
+            requ.Headers.Add("clientkey", s_clientkey);
+            requ.Headers.Add("uuid", uuid);
+
+            var res = await BaseClient.LoginClient.SendAsync(requ);
+            if (res.IsSuccessStatusCode)
+            {
+                using var data = res.Content.ReadAsStream();
+                using var stream = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+                await data.CopyToAsync(stream);
+                return true;
+            }
+
+            return null;
+        }
+        catch (Exception e)
+        {
+            Logs.Error("cloud error", e);
+            App.ShowError("cloud error", e);
+            return null;
+        }
     }
 }

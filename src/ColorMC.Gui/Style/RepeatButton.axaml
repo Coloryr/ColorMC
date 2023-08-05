@@ -28,7 +28,11 @@
         <Setter Property="BorderBrush" Value="{setting:Colors Bottom}" />
     </Style>
 
-    <Style Selector="RepeatButton:pressed">
+    <Style Selector="RepeatButton /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <!--<Style Selector="RepeatButton:pressed">
         <Setter Property="RenderTransform" Value="scale(0.95)" />
     </Style>
 
@@ -48,5 +52,5 @@
     <Style Selector="RepeatButton:disabled /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="#FF666666" />
         <Setter Property="Foreground" Value="#FFCDCDCD" />
-    </Style>
+    </Style>-->
 </Styles>
