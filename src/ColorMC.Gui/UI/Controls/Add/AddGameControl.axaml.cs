@@ -78,7 +78,7 @@ public partial class AddGameControl : UserControl, IUserControl
             if (files == null || files.Count() > 1)
                 return;
 
-            var item = files.First().GetPath();
+            var item = files.ToList()[0].GetPath();
             if (item?.EndsWith(".zip") == true || item?.EndsWith(".mrpack") == true)
             {
                 Tabs.SelectedIndex = 1;

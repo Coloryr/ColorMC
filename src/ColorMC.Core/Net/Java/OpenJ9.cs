@@ -40,7 +40,7 @@ public static class OpenJ9
             return (null, null, null, null);
         }
 
-        var node = nodes.First();
+        var node = nodes.ToList()[0];
         var nodes1 = node.SelectNodes("option")
             .Where(x => x.Attributes["class"]?.Value == "bx--select-option");
 
@@ -59,7 +59,7 @@ public static class OpenJ9
         {
             return (null, null, null, null);
         }
-        node = nodes.First();
+        node = nodes.ToList()[0];
         nodes1 = node.SelectNodes("option");
 
         var system = new List<string>()
@@ -80,7 +80,7 @@ public static class OpenJ9
         {
             return (null, null, null, null);
         }
-        node = nodes.First();
+        node = nodes.ToList()[0];
         nodes1 = node.SelectNodes("option");
 
         var arch = new List<string>()

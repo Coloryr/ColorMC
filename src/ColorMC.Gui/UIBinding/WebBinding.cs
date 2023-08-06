@@ -638,7 +638,7 @@ public static class WebBinding
                    game.Version, game.Loader, FileType.Mod);
                 if (list1 == null || list1.Count == 0)
                     return;
-                var item1 = list1.First();
+                var item1 = list1[0];
                 if (item1.ID1 != item.FID)
                 {
                     switch (type1)

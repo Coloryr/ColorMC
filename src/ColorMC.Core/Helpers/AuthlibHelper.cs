@@ -110,7 +110,7 @@ public static class AuthlibHelper
         }
         var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!)
             ?? throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
-        var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).First();
+        var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).ToList()[0];
 
         var info = await BaseClient.GetString(UrlHelper.AuthlibInjector(item, BaseClient.Source));
         if (info.Item1 == false)

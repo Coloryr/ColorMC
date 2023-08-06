@@ -460,7 +460,7 @@ public static class CurseForgeAPI
             list.Add(((res2.Data.name, res2.Data.id.ToString(), !opt), res1.data));
             ids.Add(item.modId);
 
-            foreach (var item3 in await GetModDependencies(res1.data.First(), mc, loader, opt, ids))
+            foreach (var item3 in await GetModDependencies(res1.data[0], mc, loader, opt, ids))
             {
                 list.Add(item3);
             }

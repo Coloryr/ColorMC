@@ -38,7 +38,7 @@ public static class Mods
                 var obj2 = obj1.GetValue("modList") as JArray;
                 if (obj2?.Count > 0)
                 {
-                    var obj3 = obj2.First().ToObject<ModObj>()!;
+                    var obj3 = obj2[0].ToObject<ModObj>()!;
                     obj3.name ??= "";
                     obj3.modid ??= "";
                     obj3.V2 = false;
@@ -51,7 +51,7 @@ public static class Mods
                 var obj1 = JArray.Parse(data);
                 if (obj1?.Count > 0)
                 {
-                    var obj3 = obj1.First().ToObject<ModObj>()!;
+                    var obj3 = obj1[0].ToObject<ModObj>()!;
                     obj3.name ??= "";
                     obj3.modid ??= "";
                     obj3.V2 = false;

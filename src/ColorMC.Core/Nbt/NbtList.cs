@@ -99,7 +99,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
         }
         else
         {
-            InNbtType = Value.First().NbtType;
+            InNbtType = Value[0].NbtType;
         }
 
         stream.Write((byte)InNbtType);

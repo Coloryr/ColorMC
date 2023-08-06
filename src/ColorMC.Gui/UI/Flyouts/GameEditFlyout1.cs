@@ -26,7 +26,7 @@ public class GameEditFlyout1
         if (_list.Count() == 1)
         {
             _single = true;
-            _obj = _list.First();
+            _obj = _list.ToList()[0];
         }
 
         var fy = new FlyoutsControl(new()

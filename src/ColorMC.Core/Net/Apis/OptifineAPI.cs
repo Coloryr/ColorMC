@@ -131,7 +131,7 @@ public static class OptifineAPI
             var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
             if (list1 == null)
                 return null;
-            return UrlHelper.Optifine + list1.First().Attributes["href"].Value;
+            return UrlHelper.Optifine + list1[0].Attributes["href"].Value;
         }
         catch (Exception e)
         {

@@ -304,7 +304,7 @@ public partial class GameEditTab1Model : GameEditModel
             {
                 Notify(App.GetLanguage("GameEditWindow.Tab1.Info4"));
             }
-            else if (list.First().id.ToString() == FID)
+            else if (list[0].id.ToString() == FID)
             {
                 Notify(App.GetLanguage("GameEditWindow.Tab1.Info5"));
             }
@@ -317,7 +317,7 @@ public partial class GameEditTab1Model : GameEditModel
                 }
 
                 Progress(App.GetLanguage("GameEditWindow.Tab1.Info8"));
-                var item = list.First();
+                var item = list[0];
                 res = await GameBinding.ModPackUpdate(Obj, item);
                 ProgressClose();
                 if (!res)
@@ -343,7 +343,7 @@ public partial class GameEditTab1Model : GameEditModel
             {
                 Notify(App.GetLanguage("GameEditWindow.Tab1.Info4"));
             }
-            else if (list.data.First().id.ToString() == FID)
+            else if (list.data[0].id.ToString() == FID)
             {
                 Notify(App.GetLanguage("GameEditWindow.Tab1.Info5"));
             }
@@ -356,7 +356,7 @@ public partial class GameEditTab1Model : GameEditModel
                 }
 
                 Progress(App.GetLanguage("GameEditWindow.Tab1.Info8"));
-                var item = list.data.First();
+                var item = list.data[0];
                 res = await GameBinding.ModPackUpdate(Obj, item);
                 ProgressClose();
                 if (!res)

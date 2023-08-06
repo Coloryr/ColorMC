@@ -504,7 +504,7 @@ public static class GameHelper
     public static void ReadyForgeWrapper()
     {
         ForgeWrapper = Path.GetFullPath(LibrariesPath.BaseDir +
-            "/io/github/zekerzhayard/ForgeWrapper/mmc3/ForgeWrapper-mmc3.jar");
+            "/io/github/zekerzhayard/ForgeWrapper/1.5.6/ForgeWrapper-1.5.6.jar");
         var file = new FileInfo(GameHelper.ForgeWrapper);
         if (!file.Exists)
         {
@@ -512,7 +512,7 @@ public static class GameHelper
             {
                 Directory.CreateDirectory(file.DirectoryName!);
             }
-            File.WriteAllBytes(file.FullName, Resource1.ForgeWrapper_mmc3);
+            File.WriteAllBytes(file.FullName, Resource1.ForgeWrapper_1_5_6);
         }
     }
 

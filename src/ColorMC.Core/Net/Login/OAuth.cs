@@ -198,7 +198,7 @@ public static class OAuthAPI
         });
         var xblToken = json.GetValue("Token")?.ToString();
         var list = json["DisplayClaims"]?["xui"] as JArray;
-        var xblUhs = (list?.First() as JObject)?.GetValue("uhs")?.ToString();
+        var xblUhs = (list?[0] as JObject)?.GetValue("uhs")?.ToString();
 
         if (string.IsNullOrWhiteSpace(xblToken) ||
             string.IsNullOrWhiteSpace(xblUhs))
@@ -228,7 +228,7 @@ public static class OAuthAPI
         });
         var xstsToken = json.GetValue("Token")?.ToString();
         var list = json["DisplayClaims"]?["xui"] as JArray;
-        var xstsUhs = (list?.First() as JObject)?.GetValue("uhs")?.ToString();
+        var xstsUhs = (list?[0] as JObject)?.GetValue("uhs")?.ToString();
 
         if (string.IsNullOrWhiteSpace(xstsToken) ||
             string.IsNullOrWhiteSpace(xstsUhs))

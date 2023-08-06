@@ -80,6 +80,7 @@ $ dotnet run
 [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) 压缩包处理  
 [SixLabors](https://sixlabors.com/) 图片处理  
 [Tomlyn](https://github.com/xoofx/Tomlyn) TOML解析器  
+[ForgeWrapper](https://github.com/ZekerZhayard/ForgeWrapper) Forge启动器  
 
 ## 使用的IDE
 

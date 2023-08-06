@@ -27,13 +27,13 @@ public static class McModAPI
                     .Where(x => x.Attributes["class"]?.Value == "result-item");
             foreach (var item in nodes)
             {
-                var head = item.SelectNodes("div/a").First();
+                var head = item.SelectNodes("div/a")[0];
                 var url1 = head.Attributes["href"]?.Value!;
                 if (filter == 0 && !url1.StartsWith("https://www.mcmod.cn/class"))
                 {
                     continue;
                 }
-                var body = item.SelectNodes("div").Where(a => a.Attributes["class"]?.Value == "body").First();
+                var body = item.SelectNodes("div").Where(a => a.Attributes["class"]?.Value == "body").ToList()[0];
                 var time = item.SelectNodes("div/span/span");
                 var time1 = "";
                 bool next = false;

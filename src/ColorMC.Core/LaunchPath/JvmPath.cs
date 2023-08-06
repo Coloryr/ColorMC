@@ -206,7 +206,7 @@ public static class JvmPath
         }
 
         Jvms.Remove(name);
-        var item = ConfigUtils.Config.JavaList.Where(a => a.Name == name).First();
+        var item = ConfigUtils.Config.JavaList.Where(a => a.Name == name).ToList()[0];
         ConfigUtils.Config.JavaList.Remove(item);
         ConfigUtils.Save();
     }

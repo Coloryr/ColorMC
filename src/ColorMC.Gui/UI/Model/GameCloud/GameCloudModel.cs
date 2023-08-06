@@ -16,6 +16,7 @@ using ColorMC.Core.Utils;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.ObjectModel;
+using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Model.GameCloud;
 

@@ -172,7 +172,7 @@ public partial class MainControl : UserControl, IUserControl
             if (files == null || files.Count() > 1)
                 return;
 
-            var item = files.First().GetPath();
+            var item = files.ToList()[0].GetPath();
             if (item == null)
                 return;
             if (item.EndsWith(".zip") || item.EndsWith(".mrpack"))

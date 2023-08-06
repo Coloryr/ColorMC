@@ -1,3 +1,5 @@
+//#define AOT
+
 using Avalonia;
 using ColorMC.Gui;
 using System;
@@ -26,7 +28,7 @@ internal static class GuiLoad
 
 public static class Program
 {
-    public const string TopVersion = "A19.3";
+    public const string TopVersion = "A20";
 
     public static readonly string[] BaseSha1 = new[]
     {
@@ -74,11 +76,9 @@ public static class Program
 
         Console.WriteLine($"CheckDir:{LoadDir}");
 
-#if DEBUG
+#if AOT || DEBUG
         GuiLoad.Run(args);
-        return;
 #else
-
         Load();
 
         try
@@ -95,10 +95,15 @@ public static class Program
 
     public static AppBuilder BuildAvaloniaApp()
     {
+#if AOT
+        return ColorMCGui.BuildAvaloniaApp();
+#else
         Load();
         return BuildApp();
+#endif
     }
 
+#if !AOT
     private static bool NotHaveDll()
     {
         return !File.Exists($"{LoadDir}ColorMC.Core.dll")
@@ -130,9 +135,9 @@ public static class Program
 
             var item = context.Assemblies
                                 .Where(x => x.GetName().Name == "ColorMC.Core")
-                                .First();
+                                .ToList()[0];
 
-            var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Core.ColorMCCore").First();
+            var mis = item.GetTypes().Where(x => x.FullName == "ColorMC.Core.ColorMCCore").ToList()[0];
 
             var temp = mis.GetField("Version");
             var version = temp?.GetValue(null) as string;
@@ -159,9 +164,9 @@ public static class Program
 
             var item1 = context.Assemblies
                            .Where(x => x.GetName().Name == "ColorMC.Gui")
-                           .First();
+                           .ToList()[0];
 
-            var mis1 = item1.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ColorMCGui").First();
+            var mis1 = item1.GetTypes().Where(x => x.FullName == "ColorMC.Gui.ColorMCGui").ToList()[0];
 
             MainCall = (Delegate.CreateDelegate(typeof(IN),
                     mis1.GetMethod("Main")!) as IN)!;
@@ -173,4 +178,5 @@ public static class Program
                     mis1.GetMethod("SetBaseSha1")!) as IN)!;
         }
     }
+#endif
 }

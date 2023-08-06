@@ -319,7 +319,7 @@ public static class UserBinding
     {
         if (AuthDatabase.Auths.Count == 1)
         {
-            var item = AuthDatabase.Auths.First();
+            var item = AuthDatabase.Auths.ToList()[0];
             SetLastUser(item.Key.Item1, item.Key.Item2);
         }
     }
