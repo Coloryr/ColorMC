@@ -18,85 +18,8 @@ using System.Runtime.InteropServices;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 
-internal record VAOItem
-{
-    public int VertexBufferObject;
-    public int IndexBufferObject;
-    public int VertexArrayObject;
-}
-
-internal record ModelVAO
-{
-    public VAOItem Head = new();
-    public VAOItem Body = new();
-    public VAOItem LeftArm = new();
-    public VAOItem RightArm = new();
-    public VAOItem LeftLeg = new();
-    public VAOItem RightLeg = new();
-    public VAOItem Cape = new();
-}
-
-[StructLayout(LayoutKind.Sequential, Pack = 4)]
-internal struct Vertex
-{
-    public Vector3 Position;
-    public Vector2 UV;
-    public Vector3 Normal;
-}
-
 public class SkinRender : OpenGlControlBase
 {
-    public const string VertexShaderSource =
-@"attribute vec3 a_position;
-attribute vec2 a_texCoord;
-attribute vec3 a_normal;
-
-uniform mat4 model;
-uniform mat4 projection;
-uniform mat4 view;
-uniform mat4 self;
-
-varying vec3 normalIn;
-varying vec2 texIn;
-varying vec3 fragPosIn;
-
-void main()
-{
-    texIn = a_texCoord;
-
-    mat4 temp = view * model * self;
-
-    fragPosIn = vec3(model * vec4(a_position, 1.0));
-    normalIn = normalize(vec3(model * vec4(a_normal, 1.0)));
-    gl_Position = projection * temp * vec4(a_position, 1.0);
-}
-";
-
-    public const string FragmentShaderSource =
-@"uniform sampler2D texture0;
-varying vec3 fragPosIn;
-varying vec3 normalIn;
-varying vec2 texIn;
-//DECLAREGLFRAG
-void main()
-{
-    vec3 lightColor = vec3(1.0, 1.0, 1.0);
-    float ambientStrength = 0.15;
-    vec3 lightPos = vec3(0, 1, 5);
-    
-    vec3 ambient = ambientStrength * lightColor;
-
-    vec3 norm = normalize(normalIn);
-    vec3 lightDir = normalize(lightPos - fragPosIn);
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
-
-    vec3 result = (ambient + diffuse);
-    gl_FragColor = texture2D(texture0, texIn) * vec4(result, 1.0);
-    //gl_FragColor = texture2D(texture0, texIn);
-}
-";
-
     private bool _haveCape = false;
     private bool _switchModel = false;
     private bool _switchSkin = false;
@@ -191,32 +114,6 @@ void main()
         }
     }
 
-    private string GetShader(bool fragment, string shader)
-    {
-        var version = (GlVersion.Type == GlProfileType.OpenGL ?
-            RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? 150 : 120 :
-            100);
-        var data = "#version " + version + "\n";
-        if (GlVersion.Type == GlProfileType.OpenGLES)
-            data += "precision mediump float;\n";
-        if (version >= 150)
-        {
-            shader = shader.Replace("attribute", "in");
-            if (fragment)
-                shader = shader
-                    .Replace("varying", "in")
-                    .Replace("//DECLAREGLFRAG", "out vec4 outFragColor;")
-                    .Replace("gl_FragColor", "outFragColor")
-                    .Replace("texture2D", "texture");
-            else
-                shader = shader.Replace("varying", "out");
-        }
-
-        data += shader;
-
-        return data;
-    }
-
     public void Rot(float x, float y)
     {
         _rotXY.X += x;
@@ -266,7 +163,7 @@ void main()
         _model.Info = $"Renderer: {gl.GetString(GlConsts.GL_RENDERER)} Version: {gl.GetString(GlConsts.GL_VERSION)}";
 
         _vertexShader = gl.CreateShader(GlConsts.GL_VERTEX_SHADER);
-        var smg = gl.CompileShaderAndGetError(_vertexShader, GetShader(false, VertexShaderSource));
+        var smg = gl.CompileShaderAndGetError(_vertexShader, Shader.VertexShader(GlVersion,false));
         if (smg != null)
         {
             App.ShowError(App.GetLanguage("SkinWindow.Error2"),
@@ -274,7 +171,7 @@ void main()
         }
 
         _fragmentShader = gl.CreateShader(GlConsts.GL_FRAGMENT_SHADER);
-        smg = gl.CompileShaderAndGetError(_fragmentShader, GetShader(true, FragmentShaderSource));
+        smg = gl.CompileShaderAndGetError(_fragmentShader, Shader.VertexShader(GlVersion, true));
         if (smg != null)
         {
             App.ShowError(App.GetLanguage("SkinWindow.Error2"),

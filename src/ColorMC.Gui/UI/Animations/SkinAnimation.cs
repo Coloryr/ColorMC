@@ -9,10 +9,10 @@ namespace ColorMC.Gui.UI.Animations;
 /// </summary>
 public class SkinAnimation
 {
-    public bool Run { get; set; }
-
     private int _frame = 0;
     private readonly SkinRender _render;
+
+    public bool Run { get; set; }
 
     public Vector3 Arm;
     public Vector3 Leg;

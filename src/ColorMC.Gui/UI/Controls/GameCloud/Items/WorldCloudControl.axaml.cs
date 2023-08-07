@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace ColorMC.Gui.UI.Controls.GameCloud.Items
+namespace ColorMC.Gui.UI.Controls.GameCloud.Items;
+
+public partial class WorldCloudControl : UserControl
 {
-    public partial class WorldCloudControl : UserControl
+    public WorldCloudControl()
     {
-        public WorldCloudControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

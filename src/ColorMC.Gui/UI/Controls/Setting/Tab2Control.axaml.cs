@@ -18,7 +18,10 @@ public partial class Tab2Control : UserControl
 
     public void OnDataContext_Change(object? sender, EventArgs e)
     {
-        (DataContext as SettingTab2Model)!.PropertyChanged += Tab2Control_PropertyChanged;
+        if (DataContext is SettingTab2Model model)
+        {
+            model.PropertyChanged += Tab2Control_PropertyChanged;
+        }
     }
 
     private void Tab2Control_PropertyChanged(object? sender, PropertyChangedEventArgs e)
