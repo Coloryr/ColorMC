@@ -6,7 +6,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -144,7 +143,7 @@ public static class GameCloudUtils
 
     private static async Task Check()
     {
-        var requ = new HttpRequestMessage(HttpMethod.Post, 
+        var requ = new HttpRequestMessage(HttpMethod.Post,
             new Uri(s_server + "/check"));
         requ.Headers.Add("ColorMC", ColorMCCore.Version);
         requ.Headers.Add("serverkey", s_serverkey);
@@ -155,7 +154,7 @@ public static class GameCloudUtils
         {
             var data = await res.Content.ReadAsStringAsync();
             var obj = JObject.Parse(data);
-            if (!obj.TryGetValue("res",out var res1) || (int)res1 != 100)
+            if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
             {
                 Info = App.GetLanguage("GameCloud.Error1");
                 return;

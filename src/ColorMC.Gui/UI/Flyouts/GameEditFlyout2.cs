@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;

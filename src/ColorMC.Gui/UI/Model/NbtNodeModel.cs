@@ -1,5 +1,4 @@
-﻿using Avalonia.Threading;
-using ColorMC.Core.Chunk;
+﻿using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
@@ -43,9 +42,9 @@ public partial class NbtNodeModel : ObservableObject
         {
             return Nbt.ToString();
         }
-        else 
+        else
 
-        return $"{Key}: {Nbt}";
+            return $"{Key}: {Nbt}";
     }
 
     public void Add(string key, NbtType type)

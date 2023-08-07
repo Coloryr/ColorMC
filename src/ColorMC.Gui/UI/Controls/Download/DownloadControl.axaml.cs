@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Input;
 using ColorMC.Core;
 using ColorMC.Gui.UI.Model.Download;
 using ColorMC.Gui.UI.Windows;

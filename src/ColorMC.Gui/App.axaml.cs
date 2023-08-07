@@ -745,7 +745,7 @@ public partial class App : Application
                 Dispatcher.UIThread.Post(item.Value.Window.Close);
             }
         }
-        
+
     }
 
     public static void Close()

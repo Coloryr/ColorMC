@@ -32,7 +32,7 @@ public class MainFlyout
             (App.GetLanguage("MainWindow.Flyouts.Text11"), !run, Button6_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text12"), !run, Button13_Click),
             (App.GetLanguage("MainWindow.Flyouts.Text13"), run, Button10_Click)
-            
+
         }, con);
     }
 

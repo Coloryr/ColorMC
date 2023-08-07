@@ -9,7 +9,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model;
 
@@ -125,7 +124,7 @@ public class NbtPageViewModel : ObservableObject
 
             var temp = 0;
 
-            foreach(var item in list1)
+            foreach (var item in list1)
             {
                 temp += item;
             }

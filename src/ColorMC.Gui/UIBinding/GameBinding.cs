@@ -17,12 +17,8 @@ using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Model.GameEdit;
-using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.UI.Windows;
-using ICSharpCode.SharpZipLib.Checksum;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
+using ColorMC.Gui.Utils;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -32,9 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using ColorMC.Gui.Utils;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
@@ -1328,7 +1322,7 @@ public static class GameBinding
             win1.Update();
         }
     }
-    
+
     public static async Task<bool> AddFile(GameSettingObj obj, IDataObject data, FileType type)
     {
         if (!data.Contains(DataFormats.Files))

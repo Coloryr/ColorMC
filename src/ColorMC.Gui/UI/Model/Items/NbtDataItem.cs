@@ -37,7 +37,7 @@ public partial class NbtDataItem : ObservableObject
             if (_hex)
             {
                 var temp = str.Trim().Replace(" ", "");
-                foreach(var item in temp)
+                foreach (var item in temp)
                 {
                     if (item is not ('0' or '1'))
                     {
@@ -59,7 +59,7 @@ public partial class NbtDataItem : ObservableObject
             {
                 _valueSave = byte.Parse(outdata);
             }
-            else if(_valueSave is int)
+            else if (_valueSave is int)
             {
                 _valueSave = int.Parse(outdata);
             }

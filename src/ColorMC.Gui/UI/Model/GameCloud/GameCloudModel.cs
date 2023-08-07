@@ -1,22 +1,20 @@
 ﻿using Avalonia.Controls;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ColorMC.Core.LaunchPath;
+using ICSharpCode.SharpZipLib.Zip;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ColorMC.Core.Utils;
-using System.IO;
-using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.ObjectModel;
-using ColorMC.Gui.UI.Model.Items;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameCloud;
 
@@ -104,7 +102,7 @@ public partial class GameCloudModel : GameEditModel
             Show("云同步关闭失败");
             return;
         }
-         
+
         Notify("同步已关闭");
         Enable = false;
     }

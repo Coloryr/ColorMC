@@ -1,13 +1,11 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -28,7 +26,7 @@ public partial class WorldModel : BaseModel
     public string Hardcore => World.Hardcore.ToString();
     public Bitmap Pic => World.Pic ?? App.GameIcon;
 
-    public WorldModel(IUserControl con, ILoadFuntion<WorldModel> top, 
+    public WorldModel(IUserControl con, ILoadFuntion<WorldModel> top,
         WorldDisplayObj world) : base(con)
     {
         _top = top;

@@ -163,7 +163,7 @@ public class SkinRender : OpenGlControlBase
         _model.Info = $"Renderer: {gl.GetString(GlConsts.GL_RENDERER)} Version: {gl.GetString(GlConsts.GL_VERSION)}";
 
         _vertexShader = gl.CreateShader(GlConsts.GL_VERTEX_SHADER);
-        var smg = gl.CompileShaderAndGetError(_vertexShader, Shader.VertexShader(GlVersion,false));
+        var smg = gl.CompileShaderAndGetError(_vertexShader, Shader.VertexShader(GlVersion, false));
         if (smg != null)
         {
             App.ShowError(App.GetLanguage("SkinWindow.Error2"),

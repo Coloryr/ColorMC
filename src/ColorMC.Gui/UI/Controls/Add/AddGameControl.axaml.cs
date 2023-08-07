@@ -6,7 +6,6 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Controls.Add.AddGame;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using System.Linq;
 using System.Threading;
