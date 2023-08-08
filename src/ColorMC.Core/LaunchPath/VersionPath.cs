@@ -117,7 +117,9 @@ public static class VersionPath
     public static void SaveVersions()
     {
         if (Versions == null)
+        {
             return;
+        }
         string file = BaseDir + "/version.json";
         File.WriteAllText(file, JsonConvert.SerializeObject(Versions));
     }

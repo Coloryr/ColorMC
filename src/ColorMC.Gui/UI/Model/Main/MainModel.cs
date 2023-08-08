@@ -87,6 +87,9 @@ public partial class MainModel : BaseModel, IMainTop
     [ObservableProperty]
     private HorizontalAlignment _mirror3 = HorizontalAlignment.Right;
 
+    [ObservableProperty]
+    private bool _render;
+
     public MainModel(IUserControl con) : base(con)
     {
         App.SkinLoad += App_SkinLoad;

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab12Model : GameEditModel
+public partial class GameEditTab12Model : GameModel
 {
     public ObservableCollection<SchematicDisplayObj> SchematicList { get; set; } = new();
 

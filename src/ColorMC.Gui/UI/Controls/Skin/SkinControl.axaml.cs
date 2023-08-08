@@ -92,6 +92,11 @@ public partial class SkinControl : UserControl, IUserControl
         }
     }
 
+    public void WindowStateChange(WindowState state)
+    {
+        _renderTimer.Pause = state != WindowState.Minimized;
+    }
+
     public void Opened()
     {
         Window.SetTitle(Title);

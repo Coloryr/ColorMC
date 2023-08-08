@@ -67,7 +67,6 @@ public static class ConfigBinding
     /// <summary>
     /// 设置RGB模式
     /// </summary>
-    /// <param name="enable"></param>
     public static void SetRgb(bool enable)
     {
         GuiConfigUtils.Config.RGB = enable;
@@ -79,8 +78,6 @@ public static class ConfigBinding
     /// <summary>
     /// 设置RGB值
     /// </summary>
-    /// <param name="v1"></param>
-    /// <param name="v2"></param>
     public static void SetRgb(int v1, int v2)
     {
         GuiConfigUtils.Config.RGBS = v1;
@@ -92,15 +89,6 @@ public static class ConfigBinding
     /// <summary>
     /// 设置启动器颜色
     /// </summary>
-    /// <param name="main"></param>
-    /// <param name="back"></param>
-    /// <param name="back1"></param>
-    /// <param name="font1"></param>
-    /// <param name="font2"></param>
-    /// <param name="back2"></param>
-    /// <param name="back3"></param>
-    /// <param name="font3"></param>
-    /// <param name="font4"></param>
     public static void SetColor(string main, string back, string back1, string font1, string font2, string back2, string back3, string font3, string font4)
     {
         GuiConfigUtils.Config.ColorMain = main;
@@ -208,7 +196,9 @@ public static class ConfigBinding
     public static void SetDownloadSource(SourceLocal value)
     {
         if (DownloadManager.State != CoreRunState.End)
+        {
             return;
+        }
 
         ConfigUtils.Config.Http ??= new();
         ConfigUtils.Config.Http.Source = value;
@@ -232,7 +222,9 @@ public static class ConfigBinding
     public static void SetDownloadProxy(string ip, ushort port, string user, string password)
     {
         if (DownloadManager.State != CoreRunState.End)
+        {
             return;
+        }
 
         ConfigUtils.Config.Http ??= new();
         ConfigUtils.Config.Http.ProxyIP = ip;
@@ -247,7 +239,9 @@ public static class ConfigBinding
     public static void SetDownloadProxyEnable(bool v1, bool v2, bool v3)
     {
         if (DownloadManager.State != CoreRunState.End)
+        {
             return;
+        }
 
         ConfigUtils.Config.Http ??= new();
         ConfigUtils.Config.Http.LoginProxy = v1;
@@ -261,7 +255,9 @@ public static class ConfigBinding
     public static void SetDownloadCheck(bool v1, bool v2, bool v3)
     {
         if (DownloadManager.State != CoreRunState.End)
+        {
             return;
+        }
 
         ConfigUtils.Config.Http ??= new();
         ConfigUtils.Config.Http.CheckFile = v1;

@@ -12,6 +12,7 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class Live2dControl : UserControl
 {
+    private MainModel _model;
     private CancellationTokenSource _cancel = new();
     private FpsTimer _renderTimer;
 
@@ -37,6 +38,7 @@ public partial class Live2dControl : UserControl
     {
         if (DataContext is MainModel model)
         {
+            _model = model;
             model.PropertyChanged += Model_PropertyChanged;
             _renderTimer = new(Live2d)
             {
@@ -70,6 +72,10 @@ public partial class Live2dControl : UserControl
 
                 ShowMessage();
             });
+        }
+        else if (e.PropertyName == "Render")
+        {
+            _renderTimer.Pause = !_model.Render;
         }
     }
 

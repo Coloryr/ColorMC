@@ -22,7 +22,7 @@
     TransparencyBackgroundFallback="Transparent"
     mc:Ignorable="d">
     <DockPanel>
-        <views:HeadControl Name="Head" DockPanel.Dock="Top" />
+        <views:HeadControl Name="WinHead" DockPanel.Dock="Top" />
         <Grid Name="Grid1">
             <Image Name="Image_Back" Stretch="UniformToFill" />
 

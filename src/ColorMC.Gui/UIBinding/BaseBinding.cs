@@ -233,7 +233,9 @@ public static class BaseBinding
     public static async Task CopyTextClipboard(TopLevel? level, string text)
     {
         if (level?.Clipboard is { } clipboard)
+        {
             await clipboard.SetTextAsync(text);
+        }
     }
 
     /// <summary>
@@ -256,15 +258,13 @@ public static class BaseBinding
     /// <param name="info">信息</param>
     public static void UpdateState(string info)
     {
-        var window = App.GetMainWindow();
-        if (window == null)
+        if (App.GetMainWindow() is { } win)
         {
-            return;
+            Dispatcher.UIThread.Post(() =>
+            {
+                win.ProgressInfo.Show(info);
+            });
         }
-        Dispatcher.UIThread.Post(() =>
-        {
-            window.ProgressInfo.Show(info);
-        });
     }
 
     /// <summary>
@@ -370,11 +370,11 @@ public static class BaseBinding
         Funtions.RunGC();
 
         if (s_launchCancel.IsCancellationRequested)
+        {
             return (true, null);
+        }
 
-        var p = res.Item1;
-
-        if (p != null)
+        if (res.Item1 is { } pr)
         {
             obj.LaunchData.LastTime = DateTime.Now;
             obj.SaveLaunchData();
@@ -385,10 +385,12 @@ public static class BaseBinding
                     Task.Delay(1000);
                     try
                     {
-                        p.WaitForInputIdle();
+                        pr.WaitForInputIdle();
 
-                        if (p.HasExited)
+                        if (pr.HasExited)
+                        {
                             return;
+                        }
 
                         Dispatcher.UIThread.Post(() =>
                         {
@@ -409,13 +411,13 @@ public static class BaseBinding
 
             App.MainWindow?.ShowMessage(App.GetLanguage("Live2D.Text2"));
 
-            p.Exited += (a, b) =>
+            pr.Exited += (a, b) =>
             {
                 GameCountUtils.GameClose(obj.UUID);
                 RunGames.Remove(obj.UUID);
                 UserBinding.UnLockUser(obj1);
                 App.MainWindow?.GameClose(obj.UUID);
-                Games.Remove(p);
+                Games.Remove(pr);
                 if (a is Process p1 && p1.ExitCode != 0)
                 {
                     Dispatcher.UIThread.Post(() =>
@@ -432,12 +434,12 @@ public static class BaseBinding
                         App.Close();
                     }
                 }
-                p.Dispose();
+                pr.Dispose();
                 GameBinding.GameStateUpdate(obj);
             };
 
-            Games.Add(p, obj);
-            RunGames.Add(obj.UUID, p);
+            Games.Add(pr, obj);
+            RunGames.Add(obj.UUID, pr);
             GameCountUtils.LaunchDone(obj.UUID);
             GameBinding.GameStateUpdate(obj);
         }
@@ -448,7 +450,7 @@ public static class BaseBinding
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdate;
 
-        return (p != null, res.Item2);
+        return (res.Item1 != null, res.Item2);
     }
 
     /// <summary>
@@ -545,7 +547,9 @@ public static class BaseBinding
     public static void PLog(Process? p, string? d)
     {
         if (p == null)
+        {
             return;
+        }
         if (Games.TryGetValue(p, out var obj))
         {
             GameLogs[obj.UUID].Append(d).Append(Environment.NewLine);
@@ -671,7 +675,9 @@ public static class BaseBinding
         if (config.ServerPack)
         {
             if (string.IsNullOrWhiteSpace(config.ServerUrl))
+            {
                 return;
+            }
 
             var window = App.GetMainWindow();
             if (window == null)
@@ -841,5 +847,32 @@ public static class BaseBinding
     public static void OpenLive2DCore()
     {
         OpUrl("https://www.live2d.com/download/cubism-sdk/download-native/");
+    }
+
+    public static (bool, string?) TestCustomWindow(string file)
+    {
+        if (!File.Exists(file))
+        {
+            file = GetRunDir() + file;
+            if (!File.Exists(file))
+            {
+                return (false, App.GetLanguage("Gui.Error9"));
+            }
+        }
+
+        try
+        {
+            App.ShowCustom(file);
+        }
+        catch (Exception ex)
+        {
+            var data = App.GetLanguage("SettingWindow.Tab6.Error2");
+            Logs.Error(data, ex);
+            App.ShowError(data, ex);
+
+            return (false, data);
+        }
+
+        return (true, null);
     }
 }

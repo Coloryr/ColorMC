@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI;
 public class FpsTimer
 {
     private readonly OpenGlControlBase _render;
-    private readonly Timer t_timer;
+    private readonly Timer _timer;
 
     public int Fps { get; set; } = 60;
     public Action<int>? FpsTick { private get; init; }
@@ -23,8 +23,8 @@ public class FpsTimer
         _render = render;
         _run = true;
         _time = (int)((double)1000 / Fps);
-        t_timer = new(Tick);
-        t_timer.Change(0, 1000);
+        _timer = new(Tick);
+        _timer.Change(0, 1000);
         new Thread(() =>
         {
             while (_run)
@@ -64,6 +64,6 @@ public class FpsTimer
     public void Close()
     {
         _run = false;
-        t_timer.Dispose();
+        _timer.Dispose();
     }
 }

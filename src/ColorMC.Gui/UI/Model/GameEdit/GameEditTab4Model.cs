@@ -3,7 +3,6 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
@@ -13,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab4Model : GameEditModel
+public partial class GameEditTab4Model : GameModel
 {
     public ObservableCollection<ModDisplayModel> ModList { get; init; } = new();
-    public List<string> FilterList => LanguageUtils.GetFilterName();
+    public List<string> FilterList { get; init; } = LanguageBinding.GetFilterName();
 
     private readonly List<ModDisplayModel> _items = new();
 

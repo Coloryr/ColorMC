@@ -29,14 +29,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ICSharpCode.SharpZipLib.Zip;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class GameBinding
 {
-    public static bool IsNotGame
-        => InstancesPath.IsNotGame;
+    public static bool IsNotGame => InstancesPath.IsNotGame;
     public static List<GameSettingObj> GetGames()
     {
         return InstancesPath.Games;
@@ -46,7 +46,9 @@ public static class GameBinding
     {
         var list = new List<string>();
         if (VersionPath.Versions == null)
+        {
             return list;
+        }
 
         foreach (var item in VersionPath.Versions.versions)
         {
@@ -982,31 +984,6 @@ public static class GameBinding
         return obj.AddSchematic(list);
     }
 
-    public static List<string> GetPackType()
-    {
-        return new()
-        {
-            PackType.ColorMC.GetName(),
-            PackType.CurseForge.GetName(),
-            PackType.Modrinth.GetName(),
-            PackType.MMC.GetName(),
-            PackType.HMCL.GetName(),
-        };
-    }
-
-    public static List<string> GetAddType()
-    {
-        return new()
-        {
-            FileType.Mod.GetName(),
-            FileType.World.GetName(),
-            FileType.Shaderpack.GetName(),
-            FileType.Resourcepack.GetName(),
-            FileType.DataPacks.GetName(),
-            FileType.Optifne.GetName()
-        };
-    }
-
     public static void SetModInfo(GameSettingObj obj, CurseForgeModObj.Data? data)
     {
         if (data == null)
@@ -1412,5 +1389,38 @@ public static class GameBinding
         }
 
         return false;
+    }
+
+    public static PackType CheckType(string local)
+    {
+        if (File.Exists(local))
+        {
+            if (local.EndsWith(".mrpack"))
+            {
+                return PackType.Modrinth;
+            }
+            if (local.EndsWith(".zip"))
+            {
+                using ZipFile zFile = new(local);
+                if (zFile.GetEntry("game.json") != null)
+                {
+                    return PackType.ColorMC;
+                }
+                else if (zFile.GetEntry("mcbbs.packmeta") != null)
+                {
+                    return PackType.HMCL;
+                }
+                else if (zFile.GetEntry("instance.cfg") != null)
+                {
+                    return PackType.MMC;
+                }
+                else if (zFile.GetEntry("manifest.json") != null)
+                {
+                    return PackType.CurseForge;
+                }
+            }
+        }
+
+        return PackType.ColorMC;
     }
 }

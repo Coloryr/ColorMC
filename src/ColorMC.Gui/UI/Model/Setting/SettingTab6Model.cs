@@ -23,7 +23,7 @@ public partial class SettingTab6Model : BaseModel
 
     public ObservableCollection<string> GameList { get; init; } = new();
 
-    public List<string> LoginList => UserBinding.GetLoginType();
+    public List<string> LoginList { get; init; } = UserBinding.GetLoginType();
 
     [ObservableProperty]
     private Color _color1;
@@ -209,31 +209,15 @@ public partial class SettingTab6Model : BaseModel
     [RelayCommand]
     public void Test()
     {
-        var file = FileUI;
-        if (string.IsNullOrWhiteSpace(file))
+        if (string.IsNullOrWhiteSpace(FileUI))
         {
             Show(App.GetLanguage("Gui.Error8"));
             return;
         }
-
-        if (!File.Exists(file))
+        var res = BaseBinding.TestCustomWindow(FileUI);
+        if (!res.Item1)
         {
-            file = BaseBinding.GetRunDir() + file;
-            if (!File.Exists(file))
-            {
-                Show(App.GetLanguage("Gui.Error9"));
-                return;
-            }
-        }
-        try
-        {
-            App.ShowCustom(file);
-        }
-        catch (Exception ex)
-        {
-            var data = App.GetLanguage("SettingWindow.Tab6.Error2");
-            Logs.Error(data, ex);
-            App.ShowError(data, ex);
+            Show(res.Item2!);
         }
     }
 
@@ -306,9 +290,7 @@ public partial class SettingTab6Model : BaseModel
         GameList.Clear();
         GameList.AddRange(list1);
 
-        var config = ConfigBinding.GetAllConfig().Item2?.ServerCustom;
-
-        if (config != null)
+        if (ConfigBinding.GetAllConfig().Item2?.ServerCustom is { } config)
         {
             IP = config.IP;
             Port = config.Port;

@@ -7,7 +7,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -19,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddControlModel : BaseModel, IAddWindow
+public partial class AddControlModel : GameModel, IAddWindow
 {
     public readonly List<SourceType> SourceTypeList = new();
     public readonly Dictionary<int, string> Categories = new();
@@ -31,12 +30,11 @@ public partial class AddControlModel : BaseModel, IAddWindow
     private (DownloadItemObj, ModInfoObj) _modsave;
     private bool _load = false;
 
-    public GameSettingObj Obj { get; private set; }
     public bool Display { get; set; }
 
     public ObservableCollection<OptifineDisplayObj> DownloadOptifineList { get; init; } = new();
     public ObservableCollection<DownloadModDisplayModel> DownloadModList { get; init; } = new();
-    public List<string> TypeList => GameBinding.GetAddType();
+    public List<string> TypeList => LanguageBinding.GetAddType();
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
     public ObservableCollection<FileItemModel> DisplayList { get; init; } = new();
@@ -92,9 +90,9 @@ public partial class AddControlModel : BaseModel, IAddWindow
     [ObservableProperty]
     private string? _gameVersionDownload;
 
-    public AddControlModel(IUserControl con, GameSettingObj obj) : base(con)
+    public AddControlModel(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
-        Obj = obj;
+        
     }
     partial void OnTypeChanged(int value)
     {
@@ -169,7 +167,7 @@ public partial class AddControlModel : BaseModel, IAddWindow
         var type = SourceTypeList[DownloadSource];
         if (type == SourceType.CurseForge)
         {
-            SortTypeList.AddRange(LanguageUtils.GetCurseForgeSortTypes());
+            SortTypeList.AddRange(LanguageBinding.GetCurseForgeSortTypes());
 
             Progress(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetCurseForgeGameVersions();
@@ -220,7 +218,7 @@ public partial class AddControlModel : BaseModel, IAddWindow
         }
         else if (type == SourceType.Modrinth)
         {
-            SortTypeList.AddRange(LanguageUtils.GetModrinthSortTypes());
+            SortTypeList.AddRange(LanguageBinding.GetModrinthSortTypes());
 
             Progress(App.GetLanguage("AddModPackWindow.Info4"));
             var list = await GameBinding.GetModrinthGameVersions();

@@ -4,7 +4,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -13,7 +12,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddGameTab2Model : AddGameControlModel
 {
-    public List<string> PackTypeList => GameBinding.GetPackType();
+    public List<string> PackTypeList { get; init; } = LanguageBinding.GetPackType();
 
     [ObservableProperty]
     private string _local;
@@ -29,34 +28,14 @@ public partial class AddGameTab2Model : AddGameControlModel
 
     partial void OnLocalChanged(string value)
     {
-        if (File.Exists(value))
+        Type = GameBinding.CheckType(value) switch
         {
-            if (value.EndsWith(".mrpack"))
-            {
-                Type = 2;
-                return;
-            }
-            if (value.EndsWith(".zip"))
-            {
-                using ZipFile zFile = new(value);
-                if (zFile.GetEntry("game.json") != null)
-                {
-                    Type = 0;
-                }
-                else if (zFile.GetEntry("mcbbs.packmeta") != null)
-                {
-                    Type = 4;
-                }
-                else if (zFile.GetEntry("instance.cfg") != null)
-                {
-                    Type = 3;
-                }
-                else if (zFile.GetEntry("manifest.json") != null)
-                {
-                    Type = 1;
-                }
-            }
-        }
+            PackType.CurseForge => 1,
+            PackType.Modrinth => 2,
+            PackType.MMC => 3,
+            PackType.HMCL => 4,
+            _ => 0
+        };
     }
 
     [RelayCommand]

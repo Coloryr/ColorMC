@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab8Model : GameEditModel, ILoadFuntion<ResourcePackModel>
+public partial class GameEditTab8Model : GameModel, ILoadFuntion<ResourcePackModel>
 {
     public ObservableCollection<ResourcePackModel> ResourcePackList { get; init; } = new();
 

@@ -177,9 +177,9 @@ public partial class App : Application
             if (SystemInfo.Os == OsType.Android)
             {
                 (Life as ISingleViewApplicationLifetime)!.MainView = AllWindow;
-                AllWindow.Head.Max = false;
-                AllWindow.Head.Min = false;
-                AllWindow.Head.Clo = false;
+                AllWindow.WinHead.Max = false;
+                AllWindow.WinHead.Min = false;
+                AllWindow.WinHead.Clo = false;
                 AllWindow.Opened();
             }
 

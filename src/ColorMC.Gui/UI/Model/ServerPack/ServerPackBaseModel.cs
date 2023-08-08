@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Windows;
 
-namespace ColorMC.Gui.UI.Model;
+namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public abstract partial class ServerPackBaseModel : BaseModel
 {

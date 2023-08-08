@@ -15,13 +15,9 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public partial class ServerPackTab4Model : ServerPackBaseModel
 {
-    public ObservableCollection<ServerPackConfigDisplayObj> ConfigList = new();
-    public ObservableCollection<string> NameList = new();
-    public List<string> FuntionList = new()
-    {
-        App.GetLanguage("ServerPackWindow.Tab4.Item1"),
-        App.GetLanguage("ServerPackWindow.Tab4.Item2")
-    };
+    public ObservableCollection<ServerPackConfigDisplayObj> ConfigList { get; init; } = new();
+    public ObservableCollection<string> NameList { get; init; } = new();
+    public List<string> FuntionList { get; init; } = LanguageBinding.GetFontName();
 
     [ObservableProperty]
     private ServerPackConfigDisplayObj _item;

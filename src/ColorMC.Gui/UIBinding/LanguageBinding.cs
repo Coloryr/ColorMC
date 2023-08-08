@@ -3,51 +3,46 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UIBinding;
 using System.Collections.Generic;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Gui.UIBinding;
 
-public static class LanguageUtils
+public static class LanguageBinding
 {
-    public static string GetName(this SkinType type)
-    {
-        return type switch
-        {
-            SkinType.Old => App.GetLanguage("SkinType.Old"),
-            SkinType.New => App.GetLanguage("SkinType.New"),
-            SkinType.NewSlim => App.GetLanguage("SkinType.New_Slim"),
-            _ => App.GetLanguage("SkinType.Other")
-        };
-    }
-
     /// <summary>
     /// 获取过滤器选项
     /// </summary>
     /// <returns>选项</returns>
-    public static List<string> GetFilterName() => new()
-    {
-        App.GetLanguage("Text.Name"),
-        App.GetLanguage("Text.FileName"),
-        App.GetLanguage("BaseBinding.Filter.Item3")
-    };
+    public static List<string> GetFilterName()
+    { 
+        return new()
+        {
+            App.GetLanguage("Text.Name"),
+            App.GetLanguage("Text.FileName"),
+            App.GetLanguage("BaseBinding.Filter.Item3")
+        };
+    }
 
-    public static List<string> GetExportName() => new()
-    {
-        App.GetLanguage("BaseBinding.Export.Item1"),
-        App.GetLanguage("BaseBinding.Export.Item2"),
-        App.GetLanguage("BaseBinding.Export.Item3"),
-        //App.GetLanguage("BaseBinding.Export.Item4"),
-        //App.GetLanguage("BaseBinding.Export.Item5")
-    };
+    public static List<string> GetExportName()
+    { 
+        return new()
+        {
+            App.GetLanguage("BaseBinding.Export.Item1"),
+            App.GetLanguage("BaseBinding.Export.Item2"),
+            App.GetLanguage("BaseBinding.Export.Item3"),
+            //App.GetLanguage("BaseBinding.Export.Item4"),
+            //App.GetLanguage("BaseBinding.Export.Item5")
+        };
+    }
 
     public static List<string> GetSkinType()
     {
         var list = new List<string>()
         {
-            SkinType.Old.GetName(),
-            SkinType.New.GetName(),
-            SkinType.NewSlim.GetName(),
-            SkinType.Unkonw.GetName(),
+            App.GetLanguage("SkinType.Old"),
+            App.GetLanguage("SkinType.New"),
+            App.GetLanguage("SkinType.New_Slim")
         };
 
         return list;
@@ -56,12 +51,15 @@ public static class LanguageUtils
     /// 获取旋转选项
     /// </summary>
     /// <returns>选项</returns>
-    public static List<string> GetSkinRotateName() => new()
-    {
-        App.GetLanguage("BaseBinding.SkinRotate.Item1"),
-        App.GetLanguage("BaseBinding.SkinRotate.Item2"),
-        App.GetLanguage("BaseBinding.SkinRotate.Item3")
-    };
+    public static List<string> GetSkinRotateName()
+    { 
+        return new()
+        {
+            App.GetLanguage("BaseBinding.SkinRotate.Item1"),
+            App.GetLanguage("BaseBinding.SkinRotate.Item2"),
+            App.GetLanguage("BaseBinding.SkinRotate.Item3")
+        };
+    }
 
     /// <summary>
     /// 获取下载源选项
@@ -69,14 +67,12 @@ public static class LanguageUtils
     /// <returns>选项</returns>
     public static List<string> GetDownloadSources()
     {
-        var list = new List<string>
+        return new()
         {
             SourceLocal.Offical.GetName(),
             SourceLocal.BMCLAPI.GetName(),
             SourceLocal.MCBBS.GetName()
         };
-
-        return list;
     }
 
     /// <summary>
@@ -100,18 +96,16 @@ public static class LanguageUtils
     /// <returns>选项</returns>
     public static List<string> GetLanguages()
     {
-        var list = new List<string>
+        return new()
         {
             LanguageType.zh_cn.GetName(),
             LanguageType.en_us.GetName()
         };
-
-        return list;
     }
 
     public static List<string> GetCurseForgeSortTypes()
     {
-        return new List<string>()
+        return new()
         {
             CurseForgeSortField.Featured.GetName(),
             CurseForgeSortField.Popularity.GetName(),
@@ -123,7 +117,7 @@ public static class LanguageUtils
 
     public static List<string> GetModrinthSortTypes()
     {
-        return new List<string>()
+        return new()
         {
             MSortingObj.Relevance.GetName(),
             MSortingObj.Downloads.GetName(),
@@ -148,6 +142,60 @@ public static class LanguageUtils
         {
             SourceType.CurseForge.GetName(),
             SourceType.Modrinth.GetName()
+        };
+    }
+
+    public static List<string> GetPackType()
+    {
+        return new()
+        {
+            PackType.ColorMC.GetName(),
+            PackType.CurseForge.GetName(),
+            PackType.Modrinth.GetName(),
+            PackType.MMC.GetName(),
+            PackType.HMCL.GetName(),
+        };
+    }
+
+    public static List<string> GetAddType()
+    {
+        return new()
+        {
+            FileType.Mod.GetName(),
+            FileType.World.GetName(),
+            FileType.Shaderpack.GetName(),
+            FileType.Resourcepack.GetName(),
+            FileType.DataPacks.GetName(),
+            FileType.Optifne.GetName()
+        };
+    }
+
+    public static List<string> GetNbtName()
+    {
+        return new()
+        {
+            "NbtEnd",
+            "NbtByte",
+            "NbtShort",
+            "NbtInt",
+            "NbtLong",
+            "NbtFloat",
+            "NbtDouble",
+            "NbtByteArray",
+            "NbtString",
+            "NbtList",
+            "NbtCompound",
+            "NbtIntArray",
+            "NbtLongArray",
+        };
+    }
+
+    public static List<string> GetFontName()
+    {
+        return new()
+        {
+            App.GetLanguage("ServerPackWindow.Tab4.Item1"),
+            App.GetLanguage("ServerPackWindow.Tab4.Item2")
         };
     }
 }

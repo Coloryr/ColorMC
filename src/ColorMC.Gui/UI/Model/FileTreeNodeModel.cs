@@ -8,6 +8,9 @@ namespace ColorMC.Gui.UI.Model;
 
 public partial class FileTreeNodeModel : ObservableObject
 {
+    public ObservableCollection<FileTreeNodeModel> Children { get; init; } = new();
+    public bool IsDirectory { get; init; }
+
     [ObservableProperty]
     private string _path;
     [ObservableProperty]
@@ -23,11 +26,7 @@ public partial class FileTreeNodeModel : ObservableObject
     [ObservableProperty]
     private bool _isChecked;
 
-    private FileTreeNodeModel _par;
-
-    public ObservableCollection<FileTreeNodeModel> Children { get; init; } = new();
-
-    public bool IsDirectory { get; init; }
+    private readonly FileTreeNodeModel _par;
 
     public FileTreeNodeModel(
         FileTreeNodeModel? par,

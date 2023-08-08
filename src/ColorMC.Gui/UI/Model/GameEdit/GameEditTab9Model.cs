@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab9Model : GameEditModel, ILoadFuntion<ScreenshotModel>
+public partial class GameEditTab9Model : GameModel, ILoadFuntion<ScreenshotModel>
 {
     public ObservableCollection<ScreenshotModel> ScreenshotList { get; init; } = new();
 

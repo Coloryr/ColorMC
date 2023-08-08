@@ -5,7 +5,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class WorldCloudModel : BaseModel
 {
-    public WorldObj World { get; }
+    public WorldObj World { get; init; }
 
     public WorldCloudModel(IUserControl con, WorldObj world) : base(con)
     {

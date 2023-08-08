@@ -52,11 +52,6 @@ public static class GuiConfigUtils
 
             if (Config.ServerCustom == null)
             {
-                if (quit)
-                {
-                    return false;
-                }
-
                 Config.ServerCustom = MakeServerCustomConfig();
                 save = true;
             }
@@ -64,11 +59,6 @@ public static class GuiConfigUtils
                 || Config.Render.Windows == null
                 || Config.Render.X11 == null)
             {
-                if (quit)
-                {
-                    return false;
-                }
-
                 Config.Render = MakeRenderConfig();
                 save = true;
             }

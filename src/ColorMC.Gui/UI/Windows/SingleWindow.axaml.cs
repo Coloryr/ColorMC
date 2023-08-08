@@ -13,21 +13,21 @@ public partial class SingleWindow : Window, IBaseWindow
 
     public AllControl window1;
 
-    Info3Control IBaseWindow.InputInfo => window1.Info3;
+    public Info3Control InputInfo => window1.Info3;
 
-    Info1Control IBaseWindow.ProgressInfo => window1.Info1;
+    public Info1Control ProgressInfo => window1.Info1;
 
-    Info4Control IBaseWindow.OkInfo => window1.Info;
+    public Info4Control OkInfo => window1.Info;
 
-    Info2Control IBaseWindow.NotifyInfo => window1.Info2;
+    public Info2Control NotifyInfo => window1.Info2;
 
-    Info5Control IBaseWindow.ComboInfo => window1.Info5;
+    public Info5Control ComboInfo => window1.Info5;
 
-    Info6Control IBaseWindow.TextInfo => window1.Info6;
+    public Info6Control TextInfo => window1.Info6;
 
-    HeadControl IBaseWindow.Head => window1.Head;
+    public HeadControl Head => window1.WinHead;
 
-    IUserControl IBaseWindow.Con => window1.Con;
+    public IUserControl ICon => window1.ICon;
 
     public SingleWindow(AllControl window) : this()
     {
@@ -60,7 +60,7 @@ public partial class SingleWindow : Window, IBaseWindow
         if (window1 == null)
             return;
 
-        var res = await window1.Closing(e);
+        var res = await window1.Closing();
         if (res)
         {
             e.Cancel = true;

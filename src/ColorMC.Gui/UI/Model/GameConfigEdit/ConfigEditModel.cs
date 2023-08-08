@@ -21,34 +21,18 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameConfigEdit;
 
-public partial class GameConfigEditModel : BaseModel
+public partial class GameConfigEditModel : GameModel
 {
     private readonly List<string> _items = new();
     private readonly Semaphore _semaphore = new(0, 2);
 
-    public GameSettingObj Obj { get; init; }
     public WorldObj? World { get; init; }
     public bool Cancel { get; set; }
 
     public ObservableCollection<string> FileList { get; init; } = new();
     public ObservableCollection<NbtDataItem> DataList { get; init; } = new();
 
-    public List<string> TypeSource { get; init; } = new()
-    {
-        "NbtEnd",
-        "NbtByte",
-        "NbtShort",
-        "NbtInt",
-        "NbtLong",
-        "NbtFloat",
-        "NbtDouble",
-        "NbtByteArray",
-        "NbtString",
-        "NbtList",
-        "NbtCompound",
-        "NbtIntArray",
-        "NbtLongArray",
-    };
+    public List<string> TypeSource { get; init; } = LanguageBinding.GetNbtName();
 
     private NbtPageViewModel _nbtView;
 
@@ -117,9 +101,8 @@ public partial class GameConfigEditModel : BaseModel
 
     private ChunkData? _chunkData;
 
-    public GameConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world) : base(con)
+    public GameConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world) : base(con, obj)
     {
-        Obj = obj;
         World = world;
 
         _isWorld = World != null;
@@ -158,7 +141,9 @@ public partial class GameConfigEditModel : BaseModel
     async partial void OnFileChanged(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
+        {
             return;
+        }
 
         Progress(App.GetLanguage("ConfigEditWindow.Info7"));
         _chunkData = null;
@@ -439,7 +424,9 @@ public partial class GameConfigEditModel : BaseModel
             await Task.Run(_semaphore.WaitOne);
             DisplayAdd = false;
             if (Cancel)
+            {
                 return;
+            }
             if (string.IsNullOrWhiteSpace(Key))
             {
                 Show(App.GetLanguage("ConfigEditWindow.Error1"));
@@ -477,7 +464,9 @@ public partial class GameConfigEditModel : BaseModel
 
         var res = await ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
         if (!res)
+        {
             return;
+        }
 
         foreach (var item in list1)
         {
@@ -488,7 +477,9 @@ public partial class GameConfigEditModel : BaseModel
     public async void SetKey(NbtNodeModel model)
     {
         if (model.Top == null)
+        {
             return;
+        }
 
         var list = (model.Top.Nbt as NbtCompound)!;
         Key = model.Key!;
@@ -499,7 +490,9 @@ public partial class GameConfigEditModel : BaseModel
         await Task.Run(_semaphore.WaitOne);
         DisplayAdd = false;
         if (Cancel)
+        {
             return;
+        }
         if (string.IsNullOrWhiteSpace(Key))
         {
             Show(App.GetLanguage("ConfigEditWindow.Error1"));
@@ -538,7 +531,9 @@ public partial class GameConfigEditModel : BaseModel
             foreach (var item in DataList)
             {
                 if (item.Key == 0)
+                {
                     continue;
+                }
 
                 list.Value.Add((byte)item.GetValue());
             }
@@ -562,7 +557,9 @@ public partial class GameConfigEditModel : BaseModel
             foreach (var item in DataList)
             {
                 if (item.Key == 0)
+                {
                     continue;
+                }
 
                 list.Value.Add((int)item.GetValue());
             }
@@ -586,7 +583,9 @@ public partial class GameConfigEditModel : BaseModel
             foreach (var item in DataList)
             {
                 if (item.Key == 0)
+                {
                     continue;
+                }
 
                 list.Value.Add((long)item.GetValue());
             }
@@ -601,7 +600,9 @@ public partial class GameConfigEditModel : BaseModel
             await Task.Run(_semaphore.WaitOne);
             DisplayAdd = false;
             if (Cancel)
+            {
                 return;
+            }
             if (string.IsNullOrWhiteSpace(Key))
             {
                 Show(App.GetLanguage("ConfigEditWindow.Error1"));
@@ -674,7 +675,9 @@ public partial class GameConfigEditModel : BaseModel
     public void DeleteItem(NbtDataItem item)
     {
         if (item.Key == 0)
+        {
             return;
+        }
 
         DataList.Remove(item);
         int a = 1;
@@ -688,10 +691,14 @@ public partial class GameConfigEditModel : BaseModel
     {
         var data = await ShowOne(App.GetLanguage("ConfigEditWindow.Info3"), false);
         if (data.Cancel)
+        {
             return;
+        }
 
         if (string.IsNullOrWhiteSpace(data.Text))
+        {
             return;
+        }
 
         _nbtView.Find(data.Text);
     }

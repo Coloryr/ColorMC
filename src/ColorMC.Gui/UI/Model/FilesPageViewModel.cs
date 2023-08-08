@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Model;
 public class FilesPageViewModel : ObservableObject
 {
     private readonly FileTreeNodeModel _root;
-    public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; }
+    public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; init; }
 
     public FilesPageViewModel(string obj, bool check, List<string>? unselect = null)
     {

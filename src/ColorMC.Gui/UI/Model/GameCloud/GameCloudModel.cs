@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameCloud;
 
-public partial class GameCloudModel : GameEditModel
+public partial class GameCloudModel : GameModel
 {
     /// <summary>
     /// 导出的文件列表

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab5Model : GameEditModel, ILoadFuntion<WorldModel>
+public partial class GameEditTab5Model : GameModel, ILoadFuntion<WorldModel>
 {
     public ObservableCollection<WorldModel> WorldList { get; init; } = new();
 

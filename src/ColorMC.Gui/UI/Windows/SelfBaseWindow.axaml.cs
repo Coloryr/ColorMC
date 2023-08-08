@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -15,14 +16,14 @@ namespace ColorMC.Gui.UI.Windows;
 public partial class SelfBaseWindow : Window, IBaseWindow
 {
     public TopLevel? TopLevel => this;
-    Info3Control IBaseWindow.InputInfo => Info3;
-    Info1Control IBaseWindow.ProgressInfo => Info1;
-    Info4Control IBaseWindow.OkInfo => Info;
-    Info2Control IBaseWindow.NotifyInfo => Info2;
-    Info6Control IBaseWindow.TextInfo => Info6;
-    HeadControl IBaseWindow.Head => Head;
-    Info5Control IBaseWindow.ComboInfo => Info5;
-    public IUserControl Con { get; set; }
+    public Info3Control InputInfo => Info3;
+    public Info1Control ProgressInfo => Info1;
+    public Info4Control OkInfo => Info;
+    public Info2Control NotifyInfo => Info2;
+    public Info6Control TextInfo => Info6;
+    public HeadControl Head => WinHead;
+    public Info5Control ComboInfo => Info5;
+    public IUserControl ICon { get; set; }
 
     private bool _isClose;
 
@@ -33,7 +34,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     public SelfBaseWindow(IUserControl con)
     {
-        Con = con;
+        ICon = con;
 
         InitializeComponent();
 
@@ -52,7 +53,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             Image_Back.Source = App.BackBitmap;
         }
 
-        if (Con is UserControl con1)
+        if (ICon is UserControl con1)
         {
             MainControl.Children.Add(con1);
         }
@@ -61,6 +62,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Opened += UserWindow_Opened;
         Activated += Window_Activated;
         Closing += SelfBaseWindow_Closing;
+        PropertyChanged += SelfBaseWindow_PropertyChanged;
 
         App.PicUpdate += Update;
 
@@ -76,16 +78,24 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Update();
     }
 
+    private void SelfBaseWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Property == WindowStateProperty)
+        {
+            ICon.WindowStateChange(WindowState);
+        }
+    }
+
     private void SelfBaseWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
-        if (Con == null || _isClose == true)
+        if (ICon == null || _isClose == true)
             return;
 
         e.Cancel = true;
 
         Dispatcher.UIThread.Post(async () =>
         {
-            var res = await Con.Closing();
+            var res = await ICon.Closing();
             if (!res)
             {
                 _isClose = true;
@@ -135,7 +145,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private void Window_KeyDown(object? sender, KeyEventArgs e)
     {
-        var window = (sender as Window)!;
         if (SystemInfo.Os == OsType.MacOS && e.KeyModifiers == KeyModifiers.Control)
         {
             switch (e.Key)
@@ -147,27 +156,27 @@ public partial class SelfBaseWindow : Window, IBaseWindow
                     App.Close();
                     break;
                 case Key.M:
-                    window.WindowState = WindowState.Minimized;
+                    WindowState = WindowState.Minimized;
                     break;
                 case Key.W:
-                    window.Close();
+                    Close();
                     break;
             }
         }
 
-        Con.OnKeyDown(sender, e);
+        ICon.OnKeyDown(sender, e);
     }
 
     private void UserWindow_Opened(object? sender, EventArgs e)
     {
-        Con?.Opened();
+        ICon?.Opened();
     }
 
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
         App.PicUpdate -= Update;
 
-        Con?.Closed();
+        ICon?.Closed();
 
         MainControl.Children.Clear();
 
@@ -178,10 +187,12 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         Funtions.RunGC();
     }
+
     private void Window_Activated(object? sender, EventArgs e)
     {
         App.LastWindow = this;
     }
+
     private void Update()
     {
         App.UpdateWindow(this, Image_Back);
@@ -189,6 +200,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Grid1.Background = GuiConfigUtils.Config.WindowTran ?
                 ColorSel.BottomTranColor : ColorSel.BottomColor;
 
-        Con?.Update();
+        ICon?.Update();
     }
 }

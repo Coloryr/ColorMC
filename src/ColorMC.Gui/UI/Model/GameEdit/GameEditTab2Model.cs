@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab2Model : GameEditModel
+public partial class GameEditTab2Model : GameModel
 {
-    public List<string> GCTypeList => JavaBinding.GetGCTypes();
+    public List<string> GCTypeList { get; init; } = JavaBinding.GetGCTypes();
     public ObservableCollection<string> JvmList { get; init; } = new();
 
     [ObservableProperty]

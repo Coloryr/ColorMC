@@ -13,7 +13,7 @@ public partial class SettingTab3Model : BaseModel
 {
     private bool _load;
 
-    public List<string> SourceList => LanguageUtils.GetDownloadSources();
+    public List<string> SourceList { get; init; } = LanguageBinding.GetDownloadSources();
 
     [ObservableProperty]
     private int _source;

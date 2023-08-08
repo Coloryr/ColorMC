@@ -20,8 +20,8 @@ namespace ColorMC.Gui.UI.Model.Setting;
 public partial class SettingTab2Model : BaseModel
 {
     public ObservableCollection<FontDisplay> FontList { get; init; } = new();
-    public List<string> TranTypeList => LanguageUtils.GetWindowTranTypes();
-    public List<string> LanguageList => LanguageUtils.GetLanguages();
+    public List<string> TranTypeList { get; init; } = LanguageBinding.GetWindowTranTypes();
+    public List<string> LanguageList { get; init; } = LanguageBinding.GetLanguages();
 
     [ObservableProperty]
     private FontDisplay? _fontItem;
@@ -77,7 +77,7 @@ public partial class SettingTab2Model : BaseModel
     private bool _amFade;
 
     [ObservableProperty]
-    private int _language;
+    private LanguageType _language;
     [ObservableProperty]
     private int _picEffect;
     [ObservableProperty]
@@ -312,14 +312,13 @@ public partial class SettingTab2Model : BaseModel
         ConfigBinding.SetFont(FontItem?.FontName, value);
     }
 
-    partial void OnLanguageChanged(int value)
+    partial void OnLanguageChanged(LanguageType value)
     {
         if (_load)
             return;
 
-        var type = (LanguageType)value;
         Progress(App.GetLanguage("SettingWindow.Tab2.Info1"));
-        ConfigBinding.SetLanguage(type);
+        ConfigBinding.SetLanguage(value);
         ProgressClose();
     }
 
@@ -480,19 +479,19 @@ public partial class SettingTab2Model : BaseModel
         });
 
         var config = ConfigBinding.GetAllConfig();
-        if (config.Item2 != null)
+        if (config.Item2 is { } con)
         {
-            Pic = config.Item2.BackImage;
-            PicEffect = config.Item2.BackEffect;
-            PicTran = config.Item2.BackTran;
-            RgbV1 = config.Item2.RGBS;
-            RgbV2 = config.Item2.RGBV;
-            PicResize = config.Item2.BackLimitValue;
-            WindowTranType = config.Item2.WindowTranType;
+            Pic = con.BackImage;
+            PicEffect = con.BackEffect;
+            PicTran = con.BackTran;
+            RgbV1 = con.RGBS;
+            RgbV2 = con.RGBV;
+            PicResize = con.BackLimitValue;
+            WindowTranType = con.WindowTranType;
 
-            FontItem = FontList.FirstOrDefault(a => a.FontName == config.Item2.FontName);
+            FontItem = FontList.FirstOrDefault(a => a.FontName == con.FontName);
 
-            switch (config.Item2.ColorType)
+            switch (con.ColorType)
             {
                 case ColorType.Auto:
                     IsAutoColor = true;
@@ -504,36 +503,36 @@ public partial class SettingTab2Model : BaseModel
                     IsDarkColor = true;
                     break;
             }
-            MainColor = Color.Parse(config.Item2.ColorMain);
-            LightBackColor = Color.Parse(config.Item2.ColorLight.ColorBack);
-            LightTranColor = Color.Parse(config.Item2.ColorLight.ColorTranBack);
-            LightFont1Color = Color.Parse(config.Item2.ColorLight.ColorFont1);
-            LightFont2Color = Color.Parse(config.Item2.ColorLight.ColorFont2);
-            DarkBackColor = Color.Parse(config.Item2.ColorDark.ColorBack);
-            DarkTranColor = Color.Parse(config.Item2.ColorDark.ColorTranBack);
-            DarkFont1Color = Color.Parse(config.Item2.ColorDark.ColorFont1);
-            DarkFont2Color = Color.Parse(config.Item2.ColorDark.ColorFont2);
-            EnableRGB = config.Item2.RGB;
-            IsDefaultFont = config.Item2.FontDefault;
+            MainColor = Color.Parse(con.ColorMain);
+            LightBackColor = Color.Parse(con.ColorLight.ColorBack);
+            LightTranColor = Color.Parse(con.ColorLight.ColorTranBack);
+            LightFont1Color = Color.Parse(con.ColorLight.ColorFont1);
+            LightFont2Color = Color.Parse(con.ColorLight.ColorFont2);
+            DarkBackColor = Color.Parse(con.ColorDark.ColorBack);
+            DarkTranColor = Color.Parse(con.ColorDark.ColorTranBack);
+            DarkFont1Color = Color.Parse(con.ColorDark.ColorFont1);
+            DarkFont2Color = Color.Parse(con.ColorDark.ColorFont2);
+            EnableRGB = con.RGB;
+            IsDefaultFont = con.FontDefault;
             EnableFontList = !IsDefaultFont;
-            WindowMode = config.Item2.WindowMode;
-            EnablePicResize = config.Item2.BackLimit;
-            EnableWindowTran = config.Item2.WindowTran;
+            WindowMode = con.WindowMode;
+            EnablePicResize = con.BackLimit;
+            EnableWindowTran = con.WindowTran;
 
-            MainWindowMirror = config.Item2.Gui.WindowMirror;
-            MainWindowStateSave = config.Item2.Gui.WindowStateSave;
+            MainWindowMirror = con.Gui.WindowMirror;
+            MainWindowStateSave = con.Gui.WindowStateSave;
 
-            ButtonCornerRadius = config.Item2.Style.ButtonCornerRadius;
-            AmTime = config.Item2.Style.AmTime;
-            AmFade = config.Item2.Style.AmFade;
+            ButtonCornerRadius = con.Style.ButtonCornerRadius;
+            AmTime = con.Style.AmTime;
+            AmFade = con.Style.AmFade;
 
-            Live2DModel = config.Item2.Live2D.Model;
-            Height = config.Item2.Live2D.Height;
-            Width = config.Item2.Live2D.Width;
+            Live2DModel = con.Live2D.Model;
+            Height = con.Live2D.Height;
+            Width = con.Live2D.Width;
         }
-        if (config.Item1 != null)
+        if (config.Item1 is { } con1)
         {
-            Language = (int)config.Item1.Language;
+            Language = con1.Language;
         }
 
         try

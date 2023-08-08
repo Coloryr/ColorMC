@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 
-public static class Shader
+public static class SkinShader
 {
     private const string VertexShaderSource =
 @"attribute vec3 a_position;

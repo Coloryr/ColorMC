@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab1Model : GameEditModel
+public partial class GameEditTab1Model : GameModel
 {
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> LoaderVersionList { get; init; } = new();

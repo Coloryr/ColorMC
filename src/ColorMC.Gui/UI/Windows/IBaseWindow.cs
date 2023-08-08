@@ -14,14 +14,14 @@ public interface IBaseWindow
     public Info5Control ComboInfo { get; }
     public Info6Control TextInfo { get; }
     public HeadControl Head { get; }
-    public IUserControl Con { get; }
+    public IUserControl ICon { get; }
     public void SetTitle(string data);
 
     public void Close()
     {
         if (ConfigBinding.WindowMode())
         {
-            App.AllWindow?.Close(Con);
+            App.AllWindow?.Close(ICon);
         }
         else if (this is Window window)
         {
@@ -33,7 +33,7 @@ public interface IBaseWindow
     {
         if (ConfigBinding.WindowMode())
         {
-            App.AllWindow?.Add(Con);
+            App.AllWindow?.Add(ICon);
         }
         else if (this is Window window)
         {
@@ -45,7 +45,7 @@ public interface IBaseWindow
     {
         if (ConfigBinding.WindowMode())
         {
-            App.AllWindow?.Active(Con);
+            App.AllWindow?.Active(ICon);
         }
         else if (this is Window window)
         {

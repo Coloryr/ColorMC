@@ -5,7 +5,6 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
@@ -19,7 +18,7 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
 {
     private readonly IUserControl _con;
 
-    public List<string> SourceList => LanguageUtils.GetSourceList();
+    public List<string> SourceList => LanguageBinding.GetSourceList();
     public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> CategorieList { get; init; } = new();
@@ -137,8 +136,8 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
             case 0:
             case 1:
                 SortTypeList.AddRange(Source == 0 ?
-                    LanguageUtils.GetCurseForgeSortTypes() :
-                    LanguageUtils.GetModrinthSortTypes());
+                    LanguageBinding.GetCurseForgeSortTypes() :
+                    LanguageBinding.GetModrinthSortTypes());
 
                 window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
                 var list = Source == 0 ?

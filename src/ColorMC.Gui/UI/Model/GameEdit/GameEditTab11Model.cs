@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab11Model : GameEditModel
+public partial class GameEditTab11Model : GameModel
 {
     public ObservableCollection<ShaderpackDisplayObj> ShaderpackList { get; init; } = new();
 

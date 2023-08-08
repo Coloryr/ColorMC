@@ -34,18 +34,19 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     private readonly List<Button> _buttonList = new();
 
     public IBaseWindow Window => this;
-    public IUserControl Con => _nowControl;
-    UserControl IUserControl.Con => _nowControl.Con;
 
-    Info3Control IBaseWindow.InputInfo => Info3;
-    Info1Control IBaseWindow.ProgressInfo => Info1;
-    Info4Control IBaseWindow.OkInfo => Info;
-    Info2Control IBaseWindow.NotifyInfo => Info2;
-    Info5Control IBaseWindow.ComboInfo => Info5;
-    Info6Control IBaseWindow.TextInfo => Info6;
-    HeadControl IBaseWindow.Head => Head;
+    public IUserControl ICon => _nowControl;
+    public UserControl Con => _nowControl.Con;
 
-    public string Title => "";
+    public Info3Control InputInfo => Info3;
+    public Info1Control ProgressInfo => Info1;
+    public Info4Control OkInfo => Info;
+    public Info2Control NotifyInfo => Info2;
+    public Info5Control ComboInfo => Info5;
+    public Info6Control TextInfo => Info6;
+    public HeadControl Head => WinHead;
+
+    public string Title => _nowControl.Title;
 
     public AllControl()
     {
@@ -153,7 +154,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
             MainControl.Children.Add(_baseControl.Con);
             Dispatcher.UIThread.Post(() =>
             {
-                (_baseControl as IUserControl)?.Opened();
+                _baseControl.Opened();
             });
         }
         else
@@ -181,10 +182,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
             _cons1.Add(grid, con);
             MainControl.Children.Add(grid);
             App.CrossFade300.Start(null, grid);
-            Dispatcher.UIThread.Post(() =>
-            {
-                (con as IUserControl)?.Opened();
-            });
+            Dispatcher.UIThread.Post(con.Opened);
         }
 
         Up();
@@ -238,13 +236,10 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     public async void Close(IUserControl con)
     {
-        if (con is IUserControl con1)
+        var res = await con.Closing();
+        if (res)
         {
-            var res = await con1.Closing();
-            if (res)
-            {
-                return;
-            }
+            return;
         }
 
         if (_cons.Remove(con, out var item))
@@ -297,7 +292,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         Head.Title = data;
     }
 
-    public async Task<bool> Closing(WindowClosingEventArgs _)
+    public async Task<bool> Closing()
     {
         if (_nowControl is MainControl || _nowControl is CustomControl)
             return false;

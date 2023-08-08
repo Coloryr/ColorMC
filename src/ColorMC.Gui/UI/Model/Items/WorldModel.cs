@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class WorldModel : BaseModel
 {
-    public WorldDisplayObj World { get; }
+    public WorldDisplayObj World { get; init; }
 
     private readonly ILoadFuntion<WorldModel> _top;
 

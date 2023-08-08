@@ -10,10 +10,10 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class ScreenshotModel : ObservableObject
 {
-    public ScreenshotDisplayObj Screenshot { get; }
+    public ScreenshotDisplayObj Screenshot { get; init; }
 
-    private ILoadFuntion<ScreenshotModel> _top;
-    private IUserControl _con;
+    private readonly ILoadFuntion<ScreenshotModel> _top;
+    private readonly IUserControl _con;
 
     [ObservableProperty]
     private bool _isSelect;

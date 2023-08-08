@@ -6,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameExport;
 
-public partial class GameExportModel : GameEditModel
+public partial class GameExportModel : GameModel
 {
     /// <summary>
     /// 导出的文件列表
@@ -27,21 +26,21 @@ public partial class GameExportModel : GameEditModel
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
 
-    public List<string> ExportTypes => LanguageUtils.GetExportName();
+    public List<string> ExportTypes { get; init; } = LanguageBinding.GetExportName();
 
     /// <summary>
     /// 在线下载的Mod列表
     /// </summary>
-    public ObservableCollection<ModExportModel> Mods { get; } = new();
+    public ObservableCollection<ModExportModel> Mods { get; init; } = new();
     /// <summary>
     /// 在线下载的文件列表
     /// </summary>
-    public ObservableCollection<ModExport1Model> OtherFiles { get; } = new();
+    public ObservableCollection<ModExport1Model> OtherFiles { get; init; } = new();
 
     /// <summary>
     /// 待选择的文件列表
     /// </summary>
-    public ObservableCollection<string> FileList { get; } = new();
+    public ObservableCollection<string> FileList { get; init; } = new();
 
     [ObservableProperty]
     private PackType _type;

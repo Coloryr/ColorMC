@@ -17,9 +17,7 @@ namespace ColorMC.Gui.UI.Model.User;
 
 public partial class UsersModel : BaseModel
 {
-    private bool _cancel;
-
-    public List<string> UserTypeList { get; } = UserBinding.GetUserTypes();
+    public List<string> UserTypeList { get; init; } = UserBinding.GetUserTypes();
     public ObservableCollection<UserDisplayObj> UserList { get; init; } = new();
 
     [ObservableProperty]
@@ -49,6 +47,8 @@ public partial class UsersModel : BaseModel
     private string _user;
     [ObservableProperty]
     private string _password;
+
+    private bool _cancel;
 
     public UsersModel(IUserControl con) : base(con)
     {

@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingTab4Model : BaseModel
 {
-    public List<string> GCTypeList => JavaBinding.GetGCTypes();
+    public List<string> GCTypeList { get; init; } = JavaBinding.GetGCTypes();
 
     [ObservableProperty]
     private string? _preCmd;
@@ -49,7 +49,7 @@ public partial class SettingTab4Model : BaseModel
     private bool _close;
 
     [ObservableProperty]
-    private int _gC;
+    private GCType _gC;
 
     [ObservableProperty]
     private uint _minMemory;
@@ -127,7 +127,7 @@ public partial class SettingTab4Model : BaseModel
         SetCommand();
     }
 
-    partial void OnGCChanged(int value)
+    partial void OnGCChanged(GCType value)
     {
         SetGc();
     }
@@ -181,38 +181,38 @@ public partial class SettingTab4Model : BaseModel
     {
         _load = true;
         var config = ConfigBinding.GetAllConfig();
-        if (config.Item1 != null)
+        if (config.Item1 is { } con)
         {
-            GC = (int)(config.Item1.DefaultJvmArg.GC ?? 0);
+            GC = (con.DefaultJvmArg.GC ?? GCType.G1GC);
 
-            MinMemory = config.Item1.DefaultJvmArg.MinMemory ?? 512;
-            MaxMemory = config.Item1.DefaultJvmArg.MaxMemory ?? 4096;
-            Width = config.Item1.Window.Width ?? 1280;
-            Height = config.Item1.Window.Height ?? 720;
+            MinMemory = con.DefaultJvmArg.MinMemory ?? 512;
+            MaxMemory = con.DefaultJvmArg.MaxMemory ?? 4096;
+            Width = con.Window.Width ?? 1280;
+            Height = con.Window.Height ?? 720;
 
-            GCArg = config.Item1.DefaultJvmArg.GCArgument;
-            JavaAgent = config.Item1.DefaultJvmArg.JavaAgent;
-            JvmArg = config.Item1.DefaultJvmArg.JvmArgs;
-            GameArg = config.Item1.DefaultJvmArg.GameArgs;
-            PostCmd = config.Item1.DefaultJvmArg.LaunchPostData;
-            PreCmd = config.Item1.DefaultJvmArg.LaunchPreData;
+            GCArg = con.DefaultJvmArg.GCArgument;
+            JavaAgent = con.DefaultJvmArg.JavaAgent;
+            JvmArg = con.DefaultJvmArg.JvmArgs;
+            GameArg = con.DefaultJvmArg.GameArgs;
+            PostCmd = con.DefaultJvmArg.LaunchPostData;
+            PreCmd = con.DefaultJvmArg.LaunchPreData;
 
-            FullScreen = config.Item1.Window.FullScreen ?? false;
-            CheckCore = config.Item1.GameCheck.CheckCore;
-            CheckAssets = config.Item1.GameCheck.CheckAssets;
-            CheckLib = config.Item1.GameCheck.CheckLib;
-            CheckMod = config.Item1.GameCheck.CheckMod;
-            CheckCoreSha1 = config.Item1.GameCheck.CheckCoreSha1;
-            CheckAssetsSha1 = config.Item1.GameCheck.CheckAssetsSha1;
-            CheckLibSha1 = config.Item1.GameCheck.CheckLibSha1;
-            CheckModSha1 = config.Item1.GameCheck.CheckModSha1;
-            PostRun = config.Item1.DefaultJvmArg.LaunchPost;
-            PreRun = config.Item1.DefaultJvmArg.LaunchPre;
+            FullScreen = con.Window.FullScreen ?? false;
+            CheckCore = con.GameCheck.CheckCore;
+            CheckAssets = con.GameCheck.CheckAssets;
+            CheckLib = con.GameCheck.CheckLib;
+            CheckMod = con.GameCheck.CheckMod;
+            CheckCoreSha1 = con.GameCheck.CheckCoreSha1;
+            CheckAssetsSha1 = con.GameCheck.CheckAssetsSha1;
+            CheckLibSha1 = con.GameCheck.CheckLibSha1;
+            CheckModSha1 = con.GameCheck.CheckModSha1;
+            PostRun = con.DefaultJvmArg.LaunchPost;
+            PreRun = con.DefaultJvmArg.LaunchPre;
         }
 
-        if (config.Item2 != null)
+        if (config.Item2 is { } con1)
         {
-            Close = config.Item2.CloseBeforeLaunch;
+            Close = con1.CloseBeforeLaunch;
         }
         _load = false;
     }

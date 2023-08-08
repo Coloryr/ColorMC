@@ -182,6 +182,11 @@ public partial class MainControl : UserControl, IUserControl
         }
     }
 
+    public void WindowStateChange(WindowState state)
+    {
+        _model.Render = state != WindowState.Minimized;
+    }
+
     public void Closed()
     {
         ColorMCCore.GameLaunch = null;

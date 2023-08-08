@@ -2,7 +2,6 @@
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
@@ -13,8 +12,8 @@ namespace ColorMC.Gui.UI.Model.Skin;
 
 public partial class SkinModel : BaseModel
 {
-    public List<string> SkinTypeList { get; } = LanguageUtils.GetSkinType();
-    public List<string> SkinRotateList { get; } = LanguageUtils.GetSkinRotateName();
+    public List<string> SkinTypeList { get; init; } = LanguageBinding.GetSkinType();
+    public List<string> SkinRotateList { get; init; } = LanguageBinding.GetSkinRotateName();
 
     [ObservableProperty]
     private int _type;

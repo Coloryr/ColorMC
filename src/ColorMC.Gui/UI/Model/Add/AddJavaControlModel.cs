@@ -22,7 +22,7 @@ public partial class AddJavaControlModel : ObservableObject
     public ObservableCollection<string> SystemList { get; init; } = new();
     public ObservableCollection<string> VersionList { get; init; } = new();
     public ObservableCollection<string> ArchList { get; init; } = new();
-    public List<string> JavaTypeList => JavaBinding.GetJavaType();
+    public List<string> JavaTypeList { get; init; } = JavaBinding.GetJavaType();
 
     [ObservableProperty]
     private string _javaType;

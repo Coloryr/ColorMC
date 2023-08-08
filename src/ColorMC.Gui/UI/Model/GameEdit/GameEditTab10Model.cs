@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab10Model : GameEditModel
+public partial class GameEditTab10Model : GameModel
 {
     public ObservableCollection<ServerInfoObj> ServerList { get; init; } = new();
 
@@ -45,7 +45,9 @@ public partial class GameEditTab10Model : GameEditModel
             App.GetLanguage("GameEditWindow.Tab10.Info1"),
             App.GetLanguage("GameEditWindow.Tab10.Info2"), false);
         if (Cancel)
+        {
             return;
+        }
 
         if (string.IsNullOrWhiteSpace(Text1) || string.IsNullOrWhiteSpace(Text2))
         {

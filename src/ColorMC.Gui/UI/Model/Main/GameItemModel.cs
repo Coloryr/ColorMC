@@ -15,10 +15,8 @@ using System.IO;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
-public partial class GameItemModel : BaseModel
+public partial class GameItemModel : GameModel
 {
-    public GameSettingObj Obj { get; }
-
     [ObservableProperty]
     private bool _isSelect;
     [ObservableProperty]
@@ -41,10 +39,9 @@ public partial class GameItemModel : BaseModel
     public string Name => Obj.Name;
     public Bitmap Pic => GetImage();
 
-    public GameItemModel(IUserControl con, IMainTop top, GameSettingObj obj) : base(con)
+    public GameItemModel(IUserControl con, IMainTop top, GameSettingObj obj) : base(con, obj)
     {
         _top = top;
-        Obj = obj;
     }
 
     partial void OnIsSelectChanged(bool value)

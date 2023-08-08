@@ -17,7 +17,7 @@ public class NbtPageViewModel : ObservableObject
     private readonly NbtNodeModel _root;
     private readonly Action<int> _turn;
     public NbtBase Nbt { get; }
-    public HierarchicalTreeDataGridSource<NbtNodeModel> Source { get; }
+    public HierarchicalTreeDataGridSource<NbtNodeModel> Source { get; init; }
 
     public NbtPageViewModel(NbtBase nbt, Action<int> turn)
     {
