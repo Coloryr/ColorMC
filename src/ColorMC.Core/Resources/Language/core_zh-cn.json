@@ -106,6 +106,7 @@
   "Core.Game.Error10": "游戏实例:文件删除错误",
   "Core.Game.Error11": "游戏实例:还原世界错误",
   "Core.Game.Error12": "游戏实例:结构文件读取错误",
+  "Core.Game.Error13": "游戏实例:复制文件错误",
   "Core.Game.Info": "{0} 个成员",
   "Core.ServerPack.Info1": "正在下载服务器更新",
   "Core.ServerPack.Error1": "服务器包生成失败",

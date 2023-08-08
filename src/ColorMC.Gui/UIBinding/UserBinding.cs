@@ -76,8 +76,8 @@ public static class UserBinding
             AuthDatabase.Save(new()
             {
                 UserName = input1!,
-                ClientToken = Funtions.NewUUID(),
-                UUID = Funtions.GenMd5(Encoding.UTF8.GetBytes(input1!.ToLower())),
+                ClientToken = FuntionUtils.NewUUID(),
+                UUID = FuntionUtils.GenMd5(Encoding.UTF8.GetBytes(input1!.ToLower())),
                 AuthType = AuthType.Offline
             });
             return (true, null);

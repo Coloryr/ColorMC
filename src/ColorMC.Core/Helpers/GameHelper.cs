@@ -138,7 +138,7 @@ public static class GameHelper
     public static List<DownloadItemObj> MakeForgeLibs(ForgeLaunchObj info, string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
-        var v2 = CheckRule.GameLaunchVersion(version1);
+        var v2 = CheckRuleUtils.GameLaunchVersion(version1);
         var list = new List<DownloadItemObj>();
 
         if (v2)
@@ -150,7 +150,7 @@ public static class GameHelper
                 BuildNeoForgeUniversal(mc, version) :
                 BuildForgeUniversal(mc, version));
 
-            if (!CheckRule.IsGameLaunchVersion117(mc))
+            if (!CheckRuleUtils.IsGameLaunchVersion117(mc))
             {
                 list.Add(neo ?
                     BuildNeoForgeLauncher(mc, version) :
@@ -221,7 +221,7 @@ public static class GameHelper
                 {
                     using var stream1 = new FileStream(item1.Local, FileMode.Open, FileAccess.ReadWrite,
                    FileShare.ReadWrite);
-                    var sha11 = Funtions.GenSha1(stream1);
+                    var sha11 = FuntionUtils.GenSha1(stream1);
                     if (sha11 != item1.SHA1)
                     {
                         list.Add(item1);
@@ -252,7 +252,7 @@ public static class GameHelper
             }
             using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
-            var sha1 = Funtions.GenSha1(stream);
+            var sha1 = FuntionUtils.GenSha1(stream);
             if (item.downloads.artifact.sha1 != sha1)
             {
                 list.Add(new()
@@ -527,7 +527,7 @@ public static class GameHelper
         var natives = new ConcurrentDictionary<string, string>();
         Parallel.ForEach(obj.libraries, (item1, cancel) =>
         {
-            bool download = CheckRule.CheckAllow(item1.rules);
+            bool download = CheckRuleUtils.CheckAllow(item1.rules);
             if (!download)
                 return;
 
@@ -755,7 +755,7 @@ public static class GameHelper
         }
         if (list.TryGetValue("PreLaunchCommand", out item1))
         {
-            var temp = Funtions.ArgParse(item1);
+            var temp = FuntionUtils.ArgParse(item1);
             game.JvmArg ??= new();
             game.JvmArg.LaunchPre = true;
             var data = new StringBuilder();

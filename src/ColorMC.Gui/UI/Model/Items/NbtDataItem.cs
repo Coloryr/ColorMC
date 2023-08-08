@@ -82,15 +82,15 @@ public partial class NbtDataItem : ObservableObject
         {
             if (_valueSave is byte a)
             {
-                Value = Funtions.ToHex(a);
+                Value = FuntionUtils.ToHex(a);
             }
             else if (_valueSave is int b)
             {
-                Value = Funtions.ToHex(b);
+                Value = FuntionUtils.ToHex(b);
             }
             else if (_valueSave is long c)
             {
-                Value = Funtions.ToHex(c);
+                Value = FuntionUtils.ToHex(c);
             }
         }
         else

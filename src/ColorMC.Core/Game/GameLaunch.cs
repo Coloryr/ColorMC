@@ -177,7 +177,7 @@ public static class Launch
                     using FileStream stream2 = new(file, FileMode.Open, FileAccess.ReadWrite,
                         FileShare.ReadWrite);
                     stream2.Seek(0, SeekOrigin.Begin);
-                    string sha1 = Funtions.GenSha1(stream2);
+                    string sha1 = FuntionUtils.GenSha1(stream2);
                     if (sha1 != game.downloads.client.sha1)
                     {
                         list.Add(new()
@@ -456,7 +456,7 @@ public static class Launch
                 {
                     continue;
                 }
-                if (!CheckRule.CheckAllow(obj2.rules))
+                if (!CheckRuleUtils.CheckAllow(obj2.rules))
                 {
                     continue;
                 }
@@ -697,19 +697,19 @@ public static class Launch
         {
             var res = await BaseClient.GetString(login.Text1);
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
-            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtions.GenBase64(res.Item2!)}");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={FuntionUtils.GenBase64(res.Item2!)}");
         }
         else if (login.AuthType == AuthType.LittleSkin)
         {
             var res = await BaseClient.GetString($"{UrlHelper.LittleSkin}api/yggdrasil");
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
-            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtions.GenBase64(res.Item2!)}");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={FuntionUtils.GenBase64(res.Item2!)}");
         }
         else if (login.AuthType == AuthType.SelfLittleSkin)
         {
             var res = await BaseClient.GetString($"{login.Text1}/api/yggdrasil");
             jvmHead.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
-            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={Funtions.GenBase64(res.Item2!)}");
+            jvmHead.Add($"-Dauthlibinjector.yggdrasil.prefetched={FuntionUtils.GenBase64(res.Item2!)}");
         }
 
         return jvmHead;
@@ -774,7 +774,7 @@ public static class Launch
             if (obj.StartServer != null && !string.IsNullOrWhiteSpace(obj.StartServer.IP)
                 && obj.StartServer.Port != null)
             {
-                if (CheckRule.IsGameLaunchVersion120(obj.Version))
+                if (CheckRuleUtils.IsGameLaunchVersion120(obj.Version))
                 {
                     gameArg.Add($"--quickPlayMultiplayer");
                     if (obj.StartServer.Port > 0)
@@ -893,7 +893,7 @@ public static class Launch
         {
             if (item.Later == null)
             {
-                list.AddOrUpdate(PathC.MakeVersionObj(item.Name), item.Local);
+                list.AddOrUpdate(PathCUtils.MakeVersionObj(item.Name), item.Local);
             }
         }
 
@@ -906,7 +906,7 @@ public static class Launch
             var list2 = GameHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!,
                 obj.Loader == Loaders.NeoForge);
 
-            list2.ForEach(a => list.AddOrUpdate(PathC.MakeVersionObj(a.Name), a.Local));
+            list2.ForEach(a => list.AddOrUpdate(PathCUtils.MakeVersionObj(a.Name), a.Local));
 
             if (v2)
             {
@@ -918,8 +918,8 @@ public static class Launch
             var fabric = obj.GetFabricObj()!;
             foreach (var item in fabric.libraries)
             {
-                var name = PathC.ToName(item.name);
-                list.AddOrUpdate(PathC.MakeVersionObj(name.Name),
+                var name = PathCUtils.ToName(item.name);
+                list.AddOrUpdate(PathCUtils.MakeVersionObj(name.Name),
                     Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
             }
         }
@@ -928,8 +928,8 @@ public static class Launch
             var quilt = obj.GetQuiltObj()!;
             foreach (var item in quilt.libraries)
             {
-                var name = PathC.ToName(item.name);
-                list.AddOrUpdate(PathC.MakeVersionObj(name.Name),
+                var name = PathCUtils.ToName(item.name);
+                list.AddOrUpdate(PathCUtils.MakeVersionObj(name.Name),
                     Path.GetFullPath($"{LibrariesPath.BaseDir}/{name.Path}"));
             }
         }
@@ -1037,7 +1037,7 @@ public static class Launch
     {
         var list = new List<string>();
         var version = VersionPath.GetGame(obj.Version)!;
-        var v2 = CheckRule.GameLaunchVersion(version);
+        var v2 = CheckRuleUtils.GameLaunchVersion(version);
 
         list.AddRange(await JvmArg(obj, v2, login));
 

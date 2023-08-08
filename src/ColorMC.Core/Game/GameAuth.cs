@@ -179,7 +179,7 @@ public static class GameAuth
         try
         {
             ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
-            var (State, Obj, Msg) = await Nide8.Authenticate(server, Funtions.NewUUID(), user, pass);
+            var (State, Obj, Msg) = await Nide8.Authenticate(server, FuntionUtils.NewUUID(), user, pass);
             if (State != LoginState.Done)
             {
                 return (AuthState.Token, State, null,
@@ -244,7 +244,7 @@ public static class GameAuth
         try
         {
             ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
-            var (State, Obj, Msg) = await AuthlibInjector.Authenticate(Funtions.NewUUID(), user, pass, server);
+            var (State, Obj, Msg) = await AuthlibInjector.Authenticate(FuntionUtils.NewUUID(), user, pass, server);
             if (State != LoginState.Done)
             {
                 return (AuthState.Token, State, null,
@@ -310,7 +310,7 @@ public static class GameAuth
         try
         {
             ColorMCCore.AuthStateUpdate?.Invoke(AuthState.Token);
-            var (State, Obj, Msg) = await LittleSkin.Authenticate(Funtions.NewUUID(), user, pass, server);
+            var (State, Obj, Msg) = await LittleSkin.Authenticate(FuntionUtils.NewUUID(), user, pass, server);
             if (State != LoginState.Done)
             {
                 return (AuthState.Token, State, null,

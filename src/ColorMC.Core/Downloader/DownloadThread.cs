@@ -151,7 +151,7 @@ public class DownloadThread
                             using FileStream stream2 = new(item.Local, FileMode.Open,
                                 FileAccess.Read, FileShare.Read);
                             stream2.Seek(0, SeekOrigin.Begin);
-                            string sha1 = Funtions.GenSha1(stream2);
+                            string sha1 = FuntionUtils.GenSha1(stream2);
                             if (sha1 == item.SHA1)
                             {
                                 item.State = DownloadItemState.Action;
@@ -170,7 +170,7 @@ public class DownloadThread
                             using FileStream stream2 = new(item.Local, FileMode.Open,
                                 FileAccess.Read, FileShare.Read);
                             stream2.Seek(0, SeekOrigin.Begin);
-                            string sha1 = Funtions.GenSha256(stream2);
+                            string sha1 = FuntionUtils.GenSha256(stream2);
                             if (sha1 == item.SHA256)
                             {
                                 item.State = DownloadItemState.Action;
@@ -263,7 +263,7 @@ public class DownloadThread
                         stream.Seek(0, SeekOrigin.Begin);
                         if (!string.IsNullOrWhiteSpace(item.SHA1))
                         {
-                            string sha1 = Funtions.GenSha1(stream);
+                            string sha1 = FuntionUtils.GenSha1(stream);
                             if (sha1 != item.SHA1)
                             {
                                 item.State = DownloadItemState.Error;
@@ -275,7 +275,7 @@ public class DownloadThread
                         }
                         if (!string.IsNullOrWhiteSpace(item.SHA256))
                         {
-                            string sha1 = Funtions.GenSha256(stream);
+                            string sha1 = FuntionUtils.GenSha256(stream);
                             if (sha1 != item.SHA256)
                             {
                                 item.State = DownloadItemState.Error;

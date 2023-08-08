@@ -185,7 +185,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             App.LastWindow = null;
         }
 
-        Funtions.RunGC();
+        FuntionUtils.RunGC();
     }
 
     private void Window_Activated(object? sender, EventArgs e)

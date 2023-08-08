@@ -115,10 +115,10 @@ public static class JvmPath
     {
         return SystemInfo.Os switch
         {
-            OsType.Windows => PathC.GetFile(path, "javaw.exe"),
-            OsType.Linux => PathC.GetFile(path, "java"),
-            OsType.Android => PathC.GetFile(path, "java"),
-            OsType.MacOS => PathC.GetFile(path, "java"),
+            OsType.Windows => PathCUtils.GetFile(path, "javaw.exe"),
+            OsType.Linux => PathCUtils.GetFile(path, "java"),
+            OsType.Android => PathCUtils.GetFile(path, "java"),
+            OsType.MacOS => PathCUtils.GetFile(path, "java"),
             _ => null,
         };
     }

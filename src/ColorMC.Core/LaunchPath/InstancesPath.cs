@@ -605,7 +605,7 @@ public static class InstancesPath
         obj1 = await CreateGame(obj1);
         if (obj1 != null)
         {
-            await PathC.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
+            await PathCUtils.CopyFiles(GetGamePath(obj), GetGamePath(obj1));
             string file = obj.GetIconFile();
             if (File.Exists(file))
             {
@@ -693,7 +693,7 @@ public static class InstancesPath
                 return;
             }
 
-            var list = PathC.GetAllFile(obj.GetModsPath());
+            var list = PathCUtils.GetAllFile(obj.GetModsPath());
             var remove = new List<string>();
             foreach (var item in obj.Mods)
             {
@@ -767,7 +767,7 @@ public static class InstancesPath
     public static Task<bool> Remove(this GameSettingObj obj)
     {
         obj.RemoveFromGroup();
-        return PathC.DeleteFiles(obj.GetBasePath());
+        return PathCUtils.DeleteFiles(obj.GetBasePath());
     }
 
     /// <summary>
@@ -1160,5 +1160,34 @@ public static class InstancesPath
         }
 
         return res;
+    }
+
+    public static async Task<(bool, Exception?)> CopyFile(this GameSettingObj obj, string local, List<string> unselect)
+    {
+        try
+        {
+            local = Path.GetFullPath(local);
+            var list = PathCUtils.GetAllFile(local);
+            list.RemoveAll(item => unselect.Contains(item.FullName));
+            int basel = local.Length;
+            var local1 = obj.GetGamePath();
+            await Task.Run(() =>
+            {
+                foreach (var item in list)
+                {
+                    var path = item.FullName[basel..];
+                    var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
+                    info.Directory?.Create();
+                    File.Copy(item.FullName, info.FullName);
+                }
+            });
+            return (true, null);
+        }
+        catch (Exception e)
+        {
+            string temp = LanguageHelper.Get("Core.Game.Error13");
+            Logs.Error(temp, e);
+            return (false, e);
+        }
     }
 }

@@ -367,7 +367,7 @@ public static class BaseBinding
         var res = await Task.Run(async () => await Launch(obj, obj1, world, s_launchCancel.Token));
 
         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.End);
-        Funtions.RunGC();
+        FuntionUtils.RunGC();
 
         if (s_launchCancel.IsCancellationRequested)
         {

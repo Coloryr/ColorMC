@@ -33,29 +33,29 @@ public static class SkinUtil
     {
         var scale = image.Width / 64;
         return (Check(image, 50 * scale, 16 * scale, 2 * scale, 4 * scale,
-            SixLabors.ImageSharp.Color.Transparent) ||
+            Color.Transparent) ||
                 Check(image, 54 * scale, 20 * scale, 2 * scale, 12 * scale,
-                SixLabors.ImageSharp.Color.Transparent) ||
+                Color.Transparent) ||
                 Check(image, 42 * scale, 48 * scale, 2 * scale, 4 * scale,
-                SixLabors.ImageSharp.Color.Transparent) ||
+                Color.Transparent) ||
                 Check(image, 46 * scale, 52 * scale, 2 * scale, 12 * scale,
-                SixLabors.ImageSharp.Color.Transparent)) ||
+                Color.Transparent)) ||
                 (Check(image, 50 * scale, 16 * scale, 2 * scale, 4 * scale,
-                SixLabors.ImageSharp.Color.White) &&
+                Color.White) &&
                         Check(image, 54 * scale, 20 * scale, 2 * scale, 12 * scale,
-                        SixLabors.ImageSharp.Color.White) &&
+                        Color.White) &&
                         Check(image, 42 * scale, 48 * scale, 2 * scale, 4 * scale,
-                        SixLabors.ImageSharp.Color.White) &&
+                        Color.White) &&
                         Check(image, 46 * scale, 52 * scale, 2 * scale, 12 * scale,
-                        SixLabors.ImageSharp.Color.White)) ||
+                        Color.White)) ||
                 (Check(image, 50 * scale, 16 * scale, 2 * scale, 4 * scale,
-                SixLabors.ImageSharp.Color.Black) &&
+                Color.Black) &&
                         Check(image, 54 * scale, 20 * scale, 2 * scale, 12 * scale,
-                        SixLabors.ImageSharp.Color.Black) &&
+                        Color.Black) &&
                         Check(image, 42 * scale, 48 * scale, 2 * scale, 4 * scale,
-                        SixLabors.ImageSharp.Color.Black) &&
+                        Color.Black) &&
                         Check(image, 46 * scale, 52 * scale, 2 * scale, 12 * scale,
-                        SixLabors.ImageSharp.Color.Black));
+                        Color.Black));
     }
 
     private static bool Check(Image<Rgba32> image, int x, int y, int w, int h, Rgba32 color)

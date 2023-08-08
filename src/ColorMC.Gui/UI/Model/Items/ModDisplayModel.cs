@@ -28,7 +28,7 @@ public partial class ModDisplayModel : ObservableObject
         {
             if (string.IsNullOrWhiteSpace(PID) || string.IsNullOrWhiteSpace(FID))
                 return "";
-            return Funtions.CheckNotNumber(PID) || Funtions.CheckNotNumber(FID) ?
+            return FuntionUtils.CheckNotNumber(PID) || FuntionUtils.CheckNotNumber(FID) ?
                 SourceType.Modrinth.GetName() : SourceType.CurseForge.GetName();
         }
     }

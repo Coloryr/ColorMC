@@ -65,7 +65,7 @@ public static class LibrariesPath
                 return;
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
                 FileShare.Read);
-            var sha1 = await Funtions.GenSha1Async(stream);
+            var sha1 = await FuntionUtils.GenSha1Async(stream);
             if (!string.IsNullOrWhiteSpace(item.SHA1) && item.SHA1 != sha1)
             {
                 list.Add(item);
@@ -87,7 +87,7 @@ public static class LibrariesPath
     public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLib(this GameSettingObj obj, bool neo, CancellationToken cancel)
     {
         var version1 = VersionPath.GetGame(obj.Version)!;
-        var v2 = CheckRule.GameLaunchVersion(version1);
+        var v2 = CheckRuleUtils.GameLaunchVersion(version1);
         if (v2)
         {
             GameHelper.ReadyForgeWrapper();
@@ -135,7 +135,7 @@ public static class LibrariesPath
                 return;
             using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
                 FileShare.ReadWrite);
-            var sha1 = await Funtions.GenSha1Async(stream);
+            var sha1 = await FuntionUtils.GenSha1Async(stream);
             if (item.SHA1 != sha1)
             {
                 list.Add(item);
@@ -163,7 +163,7 @@ public static class LibrariesPath
             if (cancel.IsCancellationRequested)
                 break;
 
-            var name = PathC.ToName(item.name);
+            var name = PathCUtils.ToName(item.name);
             string file = $"{BaseDir}/{name.Path}";
             if (!File.Exists(file))
             {
@@ -198,7 +198,7 @@ public static class LibrariesPath
             if (cancel.IsCancellationRequested)
                 return null;
 
-            var name = PathC.ToName(item.name);
+            var name = PathCUtils.ToName(item.name);
             string file = $"{BaseDir}/{name.Path}";
             if (!File.Exists(file))
             {

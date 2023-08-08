@@ -30,7 +30,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
-using Image = SixLabors.ImageSharp.Image;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -112,35 +111,12 @@ public static class GameBinding
             return false;
         }
 
-        var res = await Task.Run(() =>
-        {
-            try
-            {
-                local = Path.GetFullPath(local);
-                var list = PathC.GetAllFile(local);
-                list.RemoveAll(item => unselect.Contains(item.FullName));
-                int basel = local.Length;
-                var local1 = game.GetGamePath();
-                foreach (var item in list)
-                {
-                    var path = item.FullName[basel..];
-                    var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
-                    info.Directory?.Create();
-                    File.Copy(item.FullName, info.FullName);
-                }
-                return true;
-            }
-            catch (Exception e)
-            {
-                Logs.Error(App.GetLanguage("Gui.Error26"), e);
-                App.ShowError(App.GetLanguage("Gui.Error26"), e);
-                return false;
-            }
-        });
+        var res = await game.CopyFile(local, unselect);
 
-        if (!res)
+        if (!res.Item1)
         {
             await game.Remove();
+            App.ShowError(App.GetLanguage("Gui.Error26"), res.Item2);
         }
 
         App.ShowGameEdit(game);
@@ -282,7 +258,7 @@ public static class GameBinding
             var file = await PathBinding.SelectFile(win, FileType.Icon);
             if (file != null)
             {
-                var info = await Image.IdentifyAsync(file);
+                var info = await SixLabors.ImageSharp.Image.IdentifyAsync(file);
                 if (info.Width != info.Height || info.Width > 200 || info.Height > 200)
                 {
                     win.OkInfo.Show(App.GetLanguage("GameBinding.Error6"));
@@ -311,7 +287,7 @@ public static class GameBinding
             var have = AuthDatabase.Auths.Keys.Any(a => a.Item2 == AuthType.OAuth);
             if (!have)
             {
-                BaseBinding.OpUrl("https://www.minecraft.net/");
+                BaseBinding.OpUrl(UrlHelper.Minecraft);
                 return (null, App.GetLanguage("GameBinding.Error7"));
             }
         }
@@ -445,23 +421,12 @@ public static class GameBinding
 
         list1.ForEach(item =>
         {
-            ModDisplayModel obj1;
-            if (item.ReadFail)
+            var obj1 = new ModDisplayModel()
             {
-                obj1 = new ModDisplayModel()
-                {
-                    Name = App.GetLanguage("GameEditWindow.Tab4.Info5"),
-                    Obj = item
-                };
-            }
-            else
-            {
-                obj1 = new ModDisplayModel()
-                {
-                    Name = item.name,
-                    Obj = item
-                };
-            }
+                Name = item.ReadFail ? App.GetLanguage("GameEditWindow.Tab4.Info5")
+                : item.name,
+                Obj = item
+            };
 
             var item1 = obj.Mods.Values.FirstOrDefault(a => a.SHA1 == item.Sha1);
             if (item1 != null)
@@ -541,7 +506,7 @@ public static class GameBinding
         list.Add(obj.GetOptionsFile()[dir..]);
         string con = obj.GetConfigPath();
 
-        var list1 = PathC.GetAllFile(con);
+        var list1 = Core.Utils.PathCUtils.GetAllFile(con);
         foreach (var item in list1)
         {
             list.Add(item.FullName[dir..].Replace("\\", "/"));
@@ -555,7 +520,7 @@ public static class GameBinding
         var list = new List<string>();
         var dir = obj.Local.Length + 1;
 
-        var list1 = PathC.GetAllFile(obj.Local);
+        var list1 = Core.Utils.PathCUtils.GetAllFile(obj.Local);
         foreach (var item in list1)
         {
             if (item.Extension is ".png" or ".lock")
@@ -792,7 +757,9 @@ public static class GameBinding
         {
             var item1 = item.GetPath();
             if (item1 != null)
+            {
                 list.Add(item1);
+            }
         }
         return obj.AddResourcepack(list);
     }
@@ -815,7 +782,7 @@ public static class GameBinding
 
         await Parallel.ForEachAsync(list1, async (item, cancel) =>
         {
-            using var image = Image.Load(item);
+            using var image = SixLabors.ImageSharp.Image.Load(item);
             image.Mutate(p =>
             {
                 p.Resize(200, 120);
@@ -931,7 +898,9 @@ public static class GameBinding
         {
             var item1 = item.GetPath();
             if (item1 != null)
+            {
                 list.Add(item1);
+            }
         }
 
         return obj.AddShaderpack(list);
@@ -978,7 +947,9 @@ public static class GameBinding
         {
             var item1 = item.GetPath();
             if (item1 != null)
+            {
                 list.Add(item1);
+            }
         }
 
         return obj.AddSchematic(list);
@@ -1015,7 +986,9 @@ public static class GameBinding
     public static void SetModInfo(GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
+        {
             return;
+        }
 
         var file = data.files.FirstOrDefault(a => a.primary) ?? data.files[0];
         var obj1 = new ModInfoObj()
@@ -1071,11 +1044,14 @@ public static class GameBinding
     public static async Task<bool> CopyGame(GameSettingObj obj, string data)
     {
         if (BaseBinding.IsGameRun(obj))
+        {
             return false;
+        }
 
-        var res = await obj.Copy(data);
-        if (res == null)
+        if (await obj.Copy(data) == null)
+        {
             return false;
+        }
 
         App.MainWindow?.LoadMain();
 
@@ -1133,7 +1109,9 @@ public static class GameBinding
             Parallel.ForEach(mod, item =>
             {
                 if (item == null)
+                {
                     return;
+                }
 
                 var list1 = new List<string>();
                 if (item.Obj.requiredMods != null)
@@ -1187,22 +1165,6 @@ public static class GameBinding
 
             return true;
         });
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="list"></param>
-    /// <returns></returns>
-    private static string GetString(this List<string> list)
-    {
-        var str = new StringBuilder();
-        foreach (var item in list)
-        {
-            str.Append(item).Append(',');
-        }
-
-        return str.ToString()[..^1];
     }
 
     public static List<string> GetLogList(GameSettingObj obj)

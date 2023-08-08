@@ -88,7 +88,7 @@ public static class GameDownloadHelper
     public static async Task<(GetDownloadState State, List<DownloadItemObj>? List)> DownloadForge(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetGame(mc)!;
-        bool v2 = CheckRule.GameLaunchVersion(version1);
+        bool v2 = CheckRuleUtils.GameLaunchVersion(version1);
 
         var down = neo ?
             GameHelper.BuildNeoForgeInster(mc, version) :
@@ -195,7 +195,7 @@ public static class GameDownloadHelper
                     }
                     else if (!string.IsNullOrWhiteSpace(item.url))
                     {
-                        var path = PathC.ToName(item.name);
+                        var path = PathCUtils.ToName(item.name);
                         info.libraries.Add(new()
                         {
                             name = item.name,
@@ -284,7 +284,7 @@ public static class GameDownloadHelper
 
         foreach (var item in meta1.libraries)
         {
-            var name = PathC.ToName(item.name);
+            var name = PathCUtils.ToName(item.name);
             list.Add(new()
             {
                 Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),
@@ -356,7 +356,7 @@ public static class GameDownloadHelper
 
         foreach (var item in meta1.libraries)
         {
-            var name = PathC.ToName(item.name);
+            var name = PathCUtils.ToName(item.name);
             list.Add(new()
             {
                 Url = UrlHelper.DownloadQuilt(item.url + name.Path, BaseClient.Source),

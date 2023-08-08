@@ -282,7 +282,7 @@ public static class Worlds
         if (item != null)
         {
             local = item.Local;
-            await PathC.DeleteFiles(item.Local);
+            await PathCUtils.DeleteFiles(item.Local);
         }
         else
         {

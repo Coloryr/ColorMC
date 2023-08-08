@@ -631,7 +631,7 @@ public static class WebBinding
                 if (string.IsNullOrWhiteSpace(item.PID) || string.IsNullOrWhiteSpace(item.FID))
                     return;
 
-                var type1 = Funtions.CheckNotNumber(item.PID) || Funtions.CheckNotNumber(item.FID) ?
+                var type1 = FuntionUtils.CheckNotNumber(item.PID) || FuntionUtils.CheckNotNumber(item.FID) ?
                    SourceType.Modrinth : SourceType.CurseForge;
 
                 var list1 = await GetPackFile(type1, item.PID, 0,

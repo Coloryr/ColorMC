@@ -668,8 +668,8 @@ public static class ModPackHelper
             }
             else
             {
-                modid = Funtions.GetString(url, "data/", "/ver");
-                fileid = Funtions.GetString(url, "versions/", "/");
+                modid = FuntionUtils.GetString(url, "data/", "/ver");
+                fileid = FuntionUtils.GetString(url, "versions/", "/");
             }
 
             var item11 = item.MakeDownloadObj(obj);

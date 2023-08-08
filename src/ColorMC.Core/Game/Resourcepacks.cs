@@ -36,7 +36,7 @@ public static class Resourcepacks
             string sha1;
             {
                 using var stream = File.OpenRead(item.FullName);
-                sha1 = Funtions.GenSha1(stream);
+                sha1 = FuntionUtils.GenSha1(stream);
             }
             bool find = false;
             if (item.Extension is not (".zip" or ".disable"))

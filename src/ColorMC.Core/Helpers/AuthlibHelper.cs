@@ -77,7 +77,7 @@ public static class AuthlibHelper
             if (!string.IsNullOrWhiteSpace(sha1))
             {
                 using var stream = File.OpenRead(NowNide8Injector);
-                var sha11 = Funtions.GenSha1(stream);
+                var sha11 = FuntionUtils.GenSha1(stream);
                 if (sha11 != sha1)
                 {
                     return item;
@@ -150,7 +150,7 @@ public static class AuthlibHelper
                 if (!string.IsNullOrWhiteSpace(sha256))
                 {
                     using var stream = File.OpenRead(NowAuthlibInjector);
-                    var sha2561 = Funtions.GenSha256(stream);
+                    var sha2561 = FuntionUtils.GenSha256(stream);
                     if (sha256 != sha2561)
                     {
                         return item1;
@@ -170,7 +170,7 @@ public static class AuthlibHelper
             if (item != null && !string.IsNullOrWhiteSpace(item.SHA256))
             {
                 using var stream = File.OpenRead(NowAuthlibInjector);
-                var sha2561 = Funtions.GenSha256(stream);
+                var sha2561 = FuntionUtils.GenSha256(stream);
                 if (item.SHA256 != sha2561)
                 {
                     var obj1 = await GetAuthlibInjectorObj();

@@ -294,7 +294,7 @@ public partial class App : Application
 
         OnPicUpdate();
 
-        Funtions.RunGC();
+        FuntionUtils.RunGC();
     }
 
     public static void DownloaderUpdate(CoreRunState state)
@@ -550,7 +550,7 @@ public partial class App : Application
 
     public static void ShowAdd(GameSettingObj obj, ModDisplayModel obj1)
     {
-        var type1 = Funtions.CheckNotNumber(obj1.PID) || Funtions.CheckNotNumber(obj1.FID) ?
+        var type1 = FuntionUtils.CheckNotNumber(obj1.PID) || FuntionUtils.CheckNotNumber(obj1.FID) ?
             SourceType.Modrinth : SourceType.CurseForge;
 
         if (AddWindows.TryGetValue(obj.UUID, out var value))

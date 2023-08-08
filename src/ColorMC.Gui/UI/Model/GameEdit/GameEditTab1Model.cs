@@ -291,7 +291,7 @@ public partial class GameEditTab1Model : GameModel
         }
 
         Progress(App.GetLanguage("GameEditWindow.Tab1.Info2"));
-        if (Funtions.CheckNotNumber(PID) || Funtions.CheckNotNumber(FID))
+        if (FuntionUtils.CheckNotNumber(PID) || FuntionUtils.CheckNotNumber(FID))
         {
             var list = await ModrinthAPI.GetFileVersions(PID, Obj.Version, Obj.Loader);
             ProgressClose();

@@ -36,6 +36,7 @@ public static class UrlHelper
     public const string Optifine = "https://optifine.net/";
     public const string NeoForge = "https://maven.neoforged.net/";
 
+    public const string Minecraft = "https://www.minecraft.net/";
     public const string MinecraftLib = "https://libraries.minecraft.net/";
     public const string MinecraftResources = "https://resources.download.minecraft.net/";
     public static readonly string[] Mojang =
@@ -485,7 +486,7 @@ public static class UrlHelper
                 return "";
             }
         }
-        else if (Funtions.CheckNotNumber(item.Projcet) || Funtions.CheckNotNumber(item.FileId))
+        else if (FuntionUtils.CheckNotNumber(item.Projcet) || FuntionUtils.CheckNotNumber(item.FileId))
         {
             return MakeDownloadUrl(SourceType.Modrinth, item.Projcet,
                 item.FileId, item.File);
