@@ -67,6 +67,20 @@ public static class Servers
         game.SaveServer(list);
     }
 
+    public static async void RemoveServer(this GameSettingObj game, string name, string ip)
+    {
+        var list = (await game.GetServerInfos()).ToList();
+        foreach (var item in list)
+        {
+            if (item.Name == name && item.IP == ip)
+            {
+                list.Remove(item);
+                break;
+            }
+        }
+        game.SaveServer(list);
+    }
+
     /// <summary>
     /// 保存服务器列表
     /// </summary>

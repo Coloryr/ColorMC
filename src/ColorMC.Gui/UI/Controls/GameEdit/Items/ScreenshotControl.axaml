@@ -2,6 +2,7 @@
     x:Class="ColorMC.Gui.UI.Controls.GameEdit.Items.ScreenshotControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="clr-namespace:ColorMC.Gui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
@@ -23,7 +24,7 @@
             <Image
                 Width="200"
                 Height="120"
-                Source="{Binding Pic}"
+                Source="{Binding Image^, FallbackValue={x:Static app:App.LoadIcon}}"
                 Stretch="UniformToFill" />
             <Label HorizontalAlignment="Center" Content="{Binding Name}" />
         </StackPanel>

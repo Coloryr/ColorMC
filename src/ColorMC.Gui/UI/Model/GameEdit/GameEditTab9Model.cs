@@ -24,7 +24,7 @@ public partial class GameEditTab9Model : GameModel, ILoadFuntion<ScreenshotModel
         Progress(App.GetLanguage("GameEditWindow.Tab9.Info3"));
         ScreenshotList.Clear();
 
-        var res = await GameBinding.GetScreenshots(Obj);
+        var res = GameBinding.GetScreenshots(Obj);
         ProgressClose();
         foreach (var item in res)
         {

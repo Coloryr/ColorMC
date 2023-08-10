@@ -55,14 +55,18 @@ public partial class GameEditTab10Model : GameModel
             return;
         }
 
-        GameBinding.AddServer(Obj, Text1, Text2);
+        Progress(App.GetLanguage("GameEditWindow.Tab10.Info6"));
+        await GameBinding.AddServer(Obj, Text1, Text2);
+        ProgressClose();
         Notify(App.GetLanguage("GameEditWindow.Tab10.Info3"));
         await Load();
     }
 
     public async void Delete(ServerInfoObj obj)
     {
-        GameBinding.DeleteServer(Obj, obj);
+        Progress(App.GetLanguage("GameEditWindow.Tab10.Info6"));
+        await GameBinding.DeleteServer(Obj, obj);
+        ProgressClose();
         Notify(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         await Load();
     }

@@ -49,12 +49,17 @@ public partial class Live2dControl : UserControl
                         if (!Live2d.HaveModel && IsVisible)
                         {
                             IsVisible = false;
+                            _renderTimer.Pause = true;
                         }
                         else if (Live2d.HaveModel && !IsVisible)
                         {
                             IsVisible = true;
+                            _renderTimer.Pause = false;
                         }
-                        Label1.Content = $"{fps}Fps";
+                        if (IsVisible)
+                        {
+                            Label1.Content = $"{fps}Fps";
+                        }
                     });
                 }
             };
@@ -76,6 +81,10 @@ public partial class Live2dControl : UserControl
         else if (e.PropertyName == "Render")
         {
             _renderTimer.Pause = !_model.Render;
+        }
+        else if (e.PropertyName == "ModelChange")
+        {
+            _renderTimer.Pause = false;
         }
     }
 

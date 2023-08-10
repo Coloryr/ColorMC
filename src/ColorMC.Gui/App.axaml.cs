@@ -193,6 +193,15 @@ public partial class App : Application
 
         Dispatcher.UIThread.Post(() => _ = LoadImage());
 
+        //new Thread(() =>
+        //{
+        //    while (true)
+        //    {
+        //        Thread.Sleep(1000);
+        //        Dispatcher.UIThread.Invoke(GC.Collect);
+        //    }
+        //}).Start();
+
         base.OnFrameworkInitializationCompleted();
     }
 

@@ -46,15 +46,18 @@ public class FpsTimer
 
     private void Tick(object? state)
     {
-        if (NowFps != Fps && _time > 1)
+        if (!Pause)
         {
-            if (NowFps > Fps)
+            if (NowFps != Fps && _time > 1)
             {
-                _time++;
-            }
-            else
-            {
-                _time--;
+                if (NowFps > Fps)
+                {
+                    _time++;
+                }
+                else
+                {
+                    _time--;
+                }
             }
         }
         FpsTick?.Invoke(NowFps);

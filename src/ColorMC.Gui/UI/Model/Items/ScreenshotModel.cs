@@ -1,10 +1,18 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -19,13 +27,42 @@ public partial class ScreenshotModel : ObservableObject
     private bool _isSelect;
 
     public string Name => Screenshot.Name;
-    public Bitmap Pic => Screenshot.Image;
+
+    public Task<Bitmap> Image => GetImage();
 
     public ScreenshotModel(IUserControl con, ILoadFuntion<ScreenshotModel> top, ScreenshotDisplayObj obj)
     {
         _con = con;
         _top = top;
         Screenshot = obj;
+    }
+
+    public void Load()
+    {
+        using var image = SixLabors.ImageSharp.Image.Load
+                 (Screenshot.Local);
+        var stream = new MemoryStream();
+        Bitmap bitmap = null!;
+        //image.Mutate(p =>
+        //{
+        //    p.Resize(200, 120);
+        //});
+    }
+
+    private async Task<Bitmap> GetImage()
+    {
+        await Task.Run(Load);
+
+        
+
+        //image.SaveAsBmp(stream);
+        //image.Dispose();
+
+        //stream.Seek(0, SeekOrigin.Begin);
+        //bitmap = new Bitmap(stream);
+        //stream.Dispose();
+
+        return null;
     }
 
     public void Select()

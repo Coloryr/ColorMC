@@ -774,31 +774,21 @@ public static class GameBinding
         obj.ClearScreenshots();
     }
 
-    public static async Task<List<ScreenshotDisplayObj>>
-        GetScreenshots(GameSettingObj obj)
+    public static List<ScreenshotDisplayObj> GetScreenshots(GameSettingObj obj)
     {
         var list = new List<ScreenshotDisplayObj>();
         var list1 = obj.GetScreenshots();
 
-        await Parallel.ForEachAsync(list1, async (item, cancel) =>
+        foreach (var item in list1)
         {
-            using var image = SixLabors.ImageSharp.Image.Load(item);
-            image.Mutate(p =>
-            {
-                p.Resize(200, 120);
-            });
-            using var stream = new MemoryStream();
-            await image.SaveAsPngAsync(stream, cancel);
-            stream.Seek(0, SeekOrigin.Begin);
             var obj1 = new ScreenshotDisplayObj()
             {
                 Local = item,
-                Image = new(stream),
                 Name = Path.GetFileName(item)
             };
 
             list.Add(obj1);
-        });
+        }
 
         return list;
     }
@@ -844,18 +834,20 @@ public static class GameBinding
         return list;
     }
 
-    public static void AddServer(GameSettingObj obj, string name, string ip)
+    public static Task AddServer(GameSettingObj obj, string name, string ip)
     {
-        obj.AddServer(name, ip);
+        return Task.Run(() =>
+        {
+            obj.AddServer(name, ip);
+        });
     }
 
-    public static async void DeleteServer(GameSettingObj obj, ServerInfoObj server)
+    public static Task DeleteServer(GameSettingObj obj, ServerInfoObj server)
     {
-        var list = await obj.GetServerInfos();
-        var list1 = list.ToList();
-        var item = list1.First(a => a.Name == server.Name && a.IP == server.IP);
-        list1.Remove(item);
-        obj.SaveServer(list);
+        return Task.Run(() =>
+        {
+            obj.RemoveServer(server.Name, server.IP);
+        });
     }
 
     public static Task<List<string>?> GetForgeSupportVersion()

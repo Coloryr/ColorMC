@@ -109,14 +109,6 @@ public partial class SkinControl : UserControl, IUserControl
         };
     }
 
-    public void Update()
-    {
-        if (_model.IsLoad)
-        {
-            Skin.RequestNextFrameRendering();
-        }
-    }
-
     public void Closed()
     {
         App.SkinLoad -= App_SkinLoad;

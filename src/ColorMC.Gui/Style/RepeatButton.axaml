@@ -18,7 +18,7 @@
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="RepeatButton">
+    <!--<Style Selector="RepeatButton">
         <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -32,7 +32,7 @@
         <Setter Property="Foreground" Value="White" />
     </Style>
 
-    <!--<Style Selector="RepeatButton:pressed">
+    <Style Selector="RepeatButton:pressed">
         <Setter Property="RenderTransform" Value="scale(0.95)" />
     </Style>
 
