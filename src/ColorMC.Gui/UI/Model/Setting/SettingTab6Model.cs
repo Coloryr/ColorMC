@@ -367,4 +367,10 @@ public partial class SettingTab6Model : BaseModel
 
         ConfigBinding.SetOneGame(EnableOneGame, Game == -1 ? null : _uuids[Game]);
     }
+
+    public override void Close()
+    {
+        _uuids.Clear();
+        GameList.Clear();
+    }
 }

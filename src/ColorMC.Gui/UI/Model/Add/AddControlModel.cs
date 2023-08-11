@@ -3,6 +3,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Core.Objs.Optifine;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -23,7 +24,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     public readonly List<SourceType> SourceTypeList = new();
     public readonly Dictionary<int, string> Categories = new();
     public readonly List<DownloadModDisplayModel> ModList = new();
-    public readonly List<OptifineDisplayObj> OptifineList = new();
+    public readonly List<OptifineObj> OptifineList = new();
 
     private FileType _now;
     private FileItemModel? _last;
@@ -32,7 +33,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     public bool Display { get; set; }
 
-    public ObservableCollection<OptifineDisplayObj> DownloadOptifineList { get; init; } = new();
+    public ObservableCollection<OptifineObj> DownloadOptifineList { get; init; } = new();
     public ObservableCollection<DownloadModDisplayModel> DownloadModList { get; init; } = new();
     public List<string> TypeList => LanguageBinding.GetAddType();
     public ObservableCollection<string> GameVersionList { get; init; } = new();
@@ -43,7 +44,7 @@ public partial class AddControlModel : GameModel, IAddWindow
     public ObservableCollection<string> CategorieList { get; init; } = new();
 
     [ObservableProperty]
-    private OptifineDisplayObj? _optifineItem;
+    private OptifineObj? _optifineItem;
     [ObservableProperty]
     private FileDisplayObj? _file;
     [ObservableProperty]
@@ -361,7 +362,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
         GameVersionList.Add("");
         GameVersionList.AddRange(from item2 in list
-                                 group item2 by item2.MC into newgroup
+                                 group item2 by item2.MCVersion into newgroup
                                  select newgroup.Key);
 
         DownloadOptifineList.Clear();
@@ -373,7 +374,7 @@ public partial class AddControlModel : GameModel, IAddWindow
         else
         {
             DownloadOptifineList.AddRange(from item1 in OptifineList
-                                          where item1.MC == item
+                                          where item1.MCVersion == item
                                           select item1);
         }
     }
@@ -565,7 +566,7 @@ public partial class AddControlModel : GameModel, IAddWindow
             }
 
             var world = new List<string>();
-            list.ForEach(item => world.Add(item.World.LevelName));
+            list.ForEach(item => world.Add(item.LevelName));
             var res1 = await ShowCombo(App.GetLanguage("AddWindow.Info7"), world);
             if (res1.Cancel)
                 return;
@@ -575,10 +576,10 @@ public partial class AddControlModel : GameModel, IAddWindow
             {
                 res = type switch
                 {
-                    SourceType.CurseForge => await WebBinding.Download(item.World,
-                    data.Data as CurseForgeModObj.Data),
-                    SourceType.Modrinth => await WebBinding.Download(item.World,
-                    data.Data as ModrinthVersionObj),
+                    SourceType.CurseForge => await WebBinding.Download(item,
+                        data.Data as CurseForgeModObj.Data),
+                    SourceType.Modrinth => await WebBinding.Download(item,
+                        data.Data as ModrinthVersionObj),
                     _ => false
                 };
                 IsDownload = false;
@@ -879,5 +880,10 @@ public partial class AddControlModel : GameModel, IAddWindow
     {
         SetSelect(item);
         Install();
+    }
+
+    public override void Close()
+    {
+        throw new NotImplementedException();
     }
 }

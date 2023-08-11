@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Error;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -13,6 +14,8 @@ public partial class ErrorControl : UserControl, IUserControl
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("ErrorWindow.Title");
+
+    public BaseModel Model => _model;
 
     private readonly ErrorModel _model;
 
@@ -40,7 +43,7 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Closed()
     {
-        if (_model.Close || (App.IsHide && !BaseBinding.IsGameRuning()))
+        if (_model.NeedClose || (App.IsHide && !BaseBinding.IsGameRuning()))
         {
             App.Close();
         }

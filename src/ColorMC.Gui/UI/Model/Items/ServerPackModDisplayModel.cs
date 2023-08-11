@@ -1,12 +1,13 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model;
 
-public partial class ServerPackModDisplayModel : ObservableObject
+public partial class ServerPackItemModel : ObservableObject
 {
     [ObservableProperty]
     private string _url;
@@ -41,5 +42,5 @@ public partial class ServerPackModDisplayModel : ObservableObject
     }
 
     public ModDisplayModel Mod;
-    public ResourcepackDisplayObj Resourcepack;
+    public ResourcepackObj Resourcepack;
 }

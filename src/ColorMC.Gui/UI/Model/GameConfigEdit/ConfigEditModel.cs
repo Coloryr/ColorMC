@@ -749,4 +749,10 @@ public partial class GameConfigEditModel : GameModel
         TurnTo = value;
         OnPropertyChanged("TurnTo");
     }
+
+    public override void Close()
+    {
+        _nbtView = null!;
+        _source = null!;
+    }
 }

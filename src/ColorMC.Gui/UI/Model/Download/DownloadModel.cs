@@ -89,11 +89,6 @@ public partial class DownloadModel : BaseModel
         Speed = UIUtils.MakeSpeedSize(now);
     }
 
-    public void Close()
-    {
-        _timer.Dispose();
-    }
-
     public void DownloadItemStateUpdate(int index, DownloadItemObj item)
     {
         if (item.State == DownloadItemState.Init)
@@ -110,10 +105,11 @@ public partial class DownloadModel : BaseModel
             return;
         }
 
-        if (!List1.ContainsKey(item.Name))
+        if (!List1.TryGetValue(item.Name, out DownloadDisplayModel? value))
+        {
             return;
-
-        List1[item.Name].State = item.State.GetName();
+        }
+        value.State = item.State.GetName();
 
         if (item.State == DownloadItemState.Done
             && List1.TryGetValue(item.Name, out var item1))
@@ -124,18 +120,18 @@ public partial class DownloadModel : BaseModel
         }
         else if (item.State == DownloadItemState.GetInfo)
         {
-            List1[item.Name].AllSize = $"{(double)item.AllSize / 1000 / 1000:0.##}";
+            value.AllSize = $"{(double)item.AllSize / 1000 / 1000:0.##}";
         }
         else if (item.State == DownloadItemState.Download)
         {
-            long temp = List1[item.Name].Last;
-            List1[item.Name].NowSize = $"{(double)item.NowSize / item.AllSize * 100:0.##} %";
-            List1[item.Name].Last = item.NowSize;
+            long temp = value.Last;
+            value.NowSize = $"{(double)item.NowSize / item.AllSize * 100:0.##} %";
+            value.Last = item.NowSize;
             _count += item.NowSize - temp;
         }
         else if (item.State == DownloadItemState.Error)
         {
-            List1[item.Name].ErrorTime = item.ErrorTime;
+            value.ErrorTime = item.ErrorTime;
         }
     }
 
@@ -144,5 +140,10 @@ public partial class DownloadModel : BaseModel
         var data = BaseBinding.GetDownloadSize();
         Value = (double)data.Item2 / data.Item1 * 100;
         Now = $"{data.Item2}/{data.Item1}";
+    }
+
+    public override void Close()
+    {
+        _timer.Dispose();
     }
 }

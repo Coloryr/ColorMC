@@ -1,14 +1,17 @@
 using Avalonia.Input;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab8Model : GameModel, ILoadFuntion<ResourcePackModel>
+public partial class GameEditTab8Model : GameModel
 {
     public ObservableCollection<ResourcePackModel> ResourcePackList { get; init; } = new();
 
@@ -58,8 +61,22 @@ public partial class GameEditTab8Model : GameModel, ILoadFuntion<ResourcePackMod
         ProgressClose();
         foreach (var item in res)
         {
-            ResourcePackList.Add(new(Control, this, item));
+            ResourcePackList.Add(new(this, item));
         }
+    }
+
+    public async void Delete(ResourcepackObj obj)
+    {
+        var res = await ShowWait(
+            string.Format(App.GetLanguage("GameEditWindow.Tab8.Info1"), obj.Local));
+        if (!res)
+        {
+            return;
+        }
+
+        GameBinding.DeleteResourcepack(obj);
+        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        await Load();
     }
 
     public async void Drop(IDataObject data)
@@ -79,5 +96,11 @@ public partial class GameEditTab8Model : GameModel, ILoadFuntion<ResourcePackMod
         }
         _last = item;
         _last.IsSelect = true;
+    }
+
+    public override void Close()
+    {
+        ResourcePackList.Clear();
+        _last = null;
     }
 }

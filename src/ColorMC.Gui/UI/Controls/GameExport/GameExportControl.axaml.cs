@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.UI.Windows;
 using System.Threading;
@@ -28,6 +29,8 @@ public partial class GameExportControl : UserControl, IUserControl
     public UserControl Con => this;
     public string Title =>
         string.Format(App.GetLanguage("GameExportWindow.Title"), Obj.Name);
+
+    public BaseModel Model => _model;
 
     public GameExportControl() : this(new() { Empty = true })
     {

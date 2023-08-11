@@ -576,4 +576,11 @@ public partial class MainModel : BaseModel, IMainTop
             SideButton = config.Item2.Gui.WindowMirror ? "←" : "→";
         }
     }
+
+    public override void Close()
+    {
+        GroupList.Clear();
+        GameGroups.Clear();
+        Launchs.Clear();
+    }
 }

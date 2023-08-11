@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Windows;
 using System.Threading;
@@ -42,6 +43,31 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public string Title =>
         string.Format(App.GetLanguage("GameEditWindow.Title"), _model1.Obj.Name);
+
+    public BaseModel Model => throw new System.NotImplementedException();
+
+    public class TopModel : BaseModel
+    {
+        private GameEditControl _con;
+        public TopModel(GameEditControl con) : base(con)
+        {
+            _con = con;
+        }
+
+        public override void Close()
+        {
+            _con._model1.Close();
+            _con._model2.Close();
+            _con._model4.Close();
+            _con._model5.Close();
+            _con._model8.Close();
+            _con._model9.Close();
+            _con._model10.Close();
+            _con._model11.Close();
+            _con._model12.Close();
+            _con = null!;
+        }
+    }
 
     public GameEditControl() : this(new() { Empty = true })
     {
@@ -111,7 +137,7 @@ public partial class GameEditControl : UserControl, IUserControl
                     await _model8.Load();
                     break;
                 case 5:
-                    await _model9.Load();
+                    _model9.Load();
                     break;
                 case 6:
                     await _model10.Load();
@@ -195,7 +221,7 @@ public partial class GameEditControl : UserControl, IUserControl
                 break;
             case 5:
                 Go(_tab9);
-                await _model9.Load();
+                _model9.Load();
                 break;
             case 6:
                 Go(_tab10);

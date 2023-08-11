@@ -497,4 +497,10 @@ public partial class AddGameTab1Model : AddGameControlModel
         GameVersionList.AddRange(GameBinding.GetGameVersion(SelectRelease,
             SelectSnapshot, SelectOther));
     }
+
+    public override void Close()
+    {
+        GameVersionList.Clear();
+        LoaderVersionList.Clear();
+    }
 }

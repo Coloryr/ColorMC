@@ -660,4 +660,11 @@ public partial class GameEditTab1Model : GameModel
 
         _load = false;
     }
+
+    public override void Close()
+    {
+        GameVersionList.Clear();
+        LoaderVersionList.Clear();
+        GroupList.Clear();
+    }
 }

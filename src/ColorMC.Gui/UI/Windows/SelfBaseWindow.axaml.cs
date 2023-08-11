@@ -181,7 +181,9 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         App.PicUpdate -= Update;
 
+        DataContext = null;
         ICon?.Closed();
+        ICon?.Model.TopClose();
 
         MainControl.Children.Clear();
 

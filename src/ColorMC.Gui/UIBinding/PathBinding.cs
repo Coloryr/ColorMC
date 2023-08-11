@@ -253,7 +253,7 @@ public static class PathBinding
 
                 try
                 {
-                    await GameBinding.ExportWorld((arg![0] as WorldDisplayObj)!.World,
+                    await GameBinding.ExportWorld((arg![0] as WorldObj)!,
                         file.GetPath());
                     return true;
                 }

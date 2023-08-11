@@ -167,4 +167,9 @@ public partial class GameLogTabModel : GameModel
             OnPropertyChanged("End");
         }
     }
+
+    public override void Close()
+    {
+        FileList.Clear();
+    }
 }

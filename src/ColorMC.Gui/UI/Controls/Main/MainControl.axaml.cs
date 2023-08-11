@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -21,6 +22,8 @@ public partial class MainControl : UserControl, IUserControl
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("MainWindow.Title");
+
+    public BaseModel Model => _model;
 
     public MainControl()
     {

@@ -15,12 +15,12 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public partial class ServerPackTab4Model : ServerPackBaseModel
 {
-    public ObservableCollection<ServerPackConfigDisplayObj> ConfigList { get; init; } = new();
+    public ObservableCollection<ServerPackConfigObj> ConfigList { get; init; } = new();
     public ObservableCollection<string> NameList { get; init; } = new();
     public List<string> FuntionList { get; init; } = LanguageBinding.GetFontName();
 
     [ObservableProperty]
-    private ServerPackConfigDisplayObj _item;
+    private ServerPackConfigObj _item;
 
     [ObservableProperty]
     private int _funtion;
@@ -100,7 +100,7 @@ public partial class ServerPackTab4Model : ServerPackBaseModel
             var item1 = Obj.Config?.FirstOrDefault(a => a.Group == item);
             if (item1 != null)
             {
-                var item2 = new ServerPackConfigDisplayObj()
+                var item2 = new ServerPackConfigObj()
                 {
                     Group = item,
                     Type = GetType(item1),
@@ -138,7 +138,7 @@ public partial class ServerPackTab4Model : ServerPackBaseModel
             return App.GetLanguage("ServerPackWindow.Tab4.Item2");
     }
 
-    public void Delete(ServerPackConfigDisplayObj obj)
+    public void Delete(ServerPackConfigObj obj)
     {
         var item1 = Obj.Config?.FirstOrDefault(a => a.Group == obj.Group);
         if (item1 != null)
@@ -146,5 +146,12 @@ public partial class ServerPackTab4Model : ServerPackBaseModel
             Obj.Config?.Remove(item1);
             Load();
         }
+    }
+
+    public override void Close()
+    {
+        ConfigList.Clear();
+        NameList.Clear();
+        _item = null;
     }
 }

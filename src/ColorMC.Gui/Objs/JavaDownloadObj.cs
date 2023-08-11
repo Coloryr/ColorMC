@@ -3,7 +3,7 @@ namespace ColorMC.Gui.Objs;
 /// <summary>
 /// Java下载项目
 /// </summary>
-public record JavaDownloadDisplayObj
+public record JavaDownloadObj
 {
     /// <summary>
     /// 名字

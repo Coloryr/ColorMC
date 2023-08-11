@@ -4,6 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Model.Main;
+using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,9 +12,9 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Custom;
 
-public partial class CustomControlPanelModel : ObservableObject
+public partial class CustomControlPanelModel : BaseModel
 {
-    private readonly CustomControl _con;
+    private readonly IMainTop _top;
 
     [ObservableProperty]
     private GameItemModel _game;
@@ -29,10 +30,9 @@ public partial class CustomControlPanelModel : ObservableObject
     [ObservableProperty]
     private (string, ushort) _server;
 
-    public CustomControlPanelModel(CustomControl con, GameSettingObj obj)
+    public CustomControlPanelModel(CustomControl con, GameSettingObj obj) : base(con)
     {
-        _con = con;
-
+        _top = con;
         _game = new(con, con, obj);
 
         App.UserEdit += App_UserEdit;
@@ -42,7 +42,7 @@ public partial class CustomControlPanelModel : ObservableObject
     [RelayCommand]
     public void Launch()
     {
-        _con.Launch(Game);
+        _top.Launch(Game);
     }
 
     [RelayCommand]
@@ -74,29 +74,28 @@ public partial class CustomControlPanelModel : ObservableObject
         if (IsLaunch || obj.IsLaunch)
             return;
 
-        var window = _con.Window;
         IsLaunch = true;
-        window.ProgressInfo.Show(App.GetLanguage("MainWindow.Info3"));
+        Progress(App.GetLanguage("MainWindow.Info3"));
         var item = Game;
         var game = item.Obj;
         item.IsLaunch = false;
         item.IsLoad = true;
-        window.NotifyInfo.Show(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
-        var res = await GameBinding.Launch(window, game);
-        window.Head.Title1 = null;
+        Notify(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
+        var res = await GameBinding.Launch(Window, game);
+        Window.Head.Title1 = null;
         item.IsLoad = false;
-        await window.ProgressInfo.CloseAsync();
+        await ProgressCloseAsync();
         if (res.Item1 == false)
         {
-            window.OkInfo.Show(res.Item2!);
+            Show(res.Item2!);
         }
         else
         {
-            window.NotifyInfo.Show(App.GetLanguage("MainWindow.Info2"));
+            Notify(App.GetLanguage("MainWindow.Info2"));
 
             item.IsLaunch = true;
 
-            window.ProgressInfo.Show(App.GetLanguage("MainWindow.Info26"));
+            Progress(App.GetLanguage("MainWindow.Info26"));
         }
         IsLaunch = false;
     }
@@ -128,5 +127,10 @@ public partial class CustomControlPanelModel : ObservableObject
     {
         var config = ConfigBinding.GetAllConfig();
         Server = (config.Item2.ServerCustom.IP, config.Item2.ServerCustom.Port);
+    }
+
+    public override void Close()
+    {
+        _game = null;
     }
 }

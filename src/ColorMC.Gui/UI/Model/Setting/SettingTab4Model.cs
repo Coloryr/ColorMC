@@ -46,7 +46,7 @@ public partial class SettingTab4Model : BaseModel
     [ObservableProperty]
     private bool _fullScreen;
     [ObservableProperty]
-    private bool _close;
+    private bool _closeBefore;
 
     [ObservableProperty]
     private GCType _gC;
@@ -212,7 +212,7 @@ public partial class SettingTab4Model : BaseModel
 
         if (config.Item2 is { } con1)
         {
-            Close = con1.CloseBeforeLaunch;
+            CloseBefore = con1.CloseBeforeLaunch;
         }
         _load = false;
     }
@@ -264,5 +264,10 @@ public partial class SettingTab4Model : BaseModel
 
         ConfigBinding.SetGameCheckConfig(CheckCore, CheckAssets, CheckLib, CheckMod,
             CheckCoreSha1, CheckAssetsSha1, CheckLibSha1, CheckModSha1);
+    }
+
+    public override void Close()
+    {
+        
     }
 }

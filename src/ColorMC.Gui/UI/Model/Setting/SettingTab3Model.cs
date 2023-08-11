@@ -211,4 +211,9 @@ public partial class SettingTab3Model : BaseModel
 
         ConfigBinding.SetDownloadProxyEnable(LoginProxy, DownloadProxy, GameProxy);
     }
+
+    public override void Close()
+    {
+        
+    }
 }

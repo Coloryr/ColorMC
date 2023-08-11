@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using ColorMC.Core;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Download;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -15,6 +16,8 @@ public partial class DownloadControl : UserControl, IUserControl
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("DownloadWindow.Title");
+
+    public BaseModel Model => _model;
 
     private readonly DownloadModel _model;
 

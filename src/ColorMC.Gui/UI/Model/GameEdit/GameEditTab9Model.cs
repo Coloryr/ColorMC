@@ -3,11 +3,12 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab9Model : GameModel, ILoadFuntion<ScreenshotModel>
+public partial class GameEditTab9Model : GameModel
 {
     public ObservableCollection<ScreenshotModel> ScreenshotList { get; init; } = new();
 
@@ -19,7 +20,7 @@ public partial class GameEditTab9Model : GameModel, ILoadFuntion<ScreenshotModel
     }
 
     [RelayCommand]
-    public async Task Load()
+    public void Load()
     {
         Progress(App.GetLanguage("GameEditWindow.Tab9.Info3"));
         ScreenshotList.Clear();
@@ -28,7 +29,7 @@ public partial class GameEditTab9Model : GameModel, ILoadFuntion<ScreenshotModel
         ProgressClose();
         foreach (var item in res)
         {
-            ScreenshotList.Add(new(Control, this, item));
+            ScreenshotList.Add(new(this, item));
         }
     }
 
@@ -50,7 +51,21 @@ public partial class GameEditTab9Model : GameModel, ILoadFuntion<ScreenshotModel
 
         GameBinding.ClearScreenshots(Obj);
         Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        await Load();
+        Load();
+    }
+
+    public async void Delete(ScreenshotModel obj)
+    {
+        var res = await ShowWait(
+            string.Format(App.GetLanguage("GameEditWindow.Tab9.Info1"), obj.Screenshot));
+        if (!res)
+        {
+            return;
+        }
+
+        GameBinding.DeleteScreenshot(obj.Screenshot);
+        Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Load();
     }
 
     public void SetSelect(ScreenshotModel item)
@@ -61,5 +76,11 @@ public partial class GameEditTab9Model : GameModel, ILoadFuntion<ScreenshotModel
         }
         _last = item;
         _last.IsSelect = true;
+    }
+
+    public override void Close()
+    {
+        ScreenshotList.Clear();
+        _last = null;
     }
 }

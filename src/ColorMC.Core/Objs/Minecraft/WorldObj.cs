@@ -45,7 +45,7 @@ public record WorldObj
     /// <summary>
     /// 图标
     /// </summary>
-    public byte[] Icon { get; set; }
+    public string Icon { get; set; }
     /// <summary>
     /// 是否损坏
     /// </summary>

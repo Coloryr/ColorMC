@@ -84,4 +84,9 @@ public partial class GamesModel : BaseModel
             GameList.Add(model);
         }
     }
+
+    public override void Close()
+    {
+        GameList.Clear();
+    }
 }

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UI.Windows;
 using System.Threading;
@@ -37,9 +38,33 @@ public partial class SettingControl : UserControl, IUserControl
 
     public string Title => App.GetLanguage("SettingWindow.Title");
 
+    public class TopModel : BaseModel
+    {
+        private SettingControl _con;
+        public TopModel(SettingControl con) : base(con)
+        {
+            _con = con;
+        }
+
+        public override void Close()
+        {
+            _con._model1.Close();
+            _con._model2.Close();
+            _con._model3.Close();
+            _con._model4.Close();
+            _con._model5.Close();
+            _con._model6.Close();
+            _con = null!;
+        }
+    }
+
+    public BaseModel Model { get; }
+
     public SettingControl()
     {
         InitializeComponent();
+
+        Model = new TopModel(this);
 
         _model1 = new(this);
         _tab1.DataContext = _model1;

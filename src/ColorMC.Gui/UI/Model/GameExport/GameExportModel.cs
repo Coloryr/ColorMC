@@ -21,7 +21,7 @@ public partial class GameExportModel : GameModel
     /// <summary>
     /// 导出的文件列表
     /// </summary>
-    public FilesPageViewModel Files;
+    public FilesPageViewModel Files { get; private set; }
 
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
@@ -305,5 +305,13 @@ public partial class GameExportModel : GameModel
     public void CellPressd()
     {
 
+    }
+
+    public override void Close()
+    {
+        Mods.Clear();
+        OtherFiles.Clear();
+        Files = null;
+        _source = null;
     }
 }

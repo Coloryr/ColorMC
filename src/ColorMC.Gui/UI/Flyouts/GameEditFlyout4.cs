@@ -20,11 +20,11 @@ public class GameEditFlyout4
 
     private void Button2_Click()
     {
-        _model.Delete();
+        _model.Top.Delete(_model);
     }
 
     private void Button1_Click()
     {
-        PathBinding.OpFile(_model.Screenshot.Local);
+        PathBinding.OpFile(_model.Screenshot);
     }
 }

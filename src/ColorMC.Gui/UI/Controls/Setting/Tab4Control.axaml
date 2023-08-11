@@ -80,7 +80,7 @@
                 <CheckBox
                     Margin="0,0,5,0"
                     Content="{setting:Localize SettingWindow.Tab4.Text18}"
-                    IsChecked="{Binding Close}" />
+                    IsChecked="{Binding CloseBefore}" />
                 <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PostRun}" />
             </StackPanel>
             <TextBox

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
@@ -14,6 +15,8 @@ public partial class AddJavaControl : UserControl, IUserControl
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("AddJavaWindow.Title");
+
+    public BaseModel Model => _model;
 
     private readonly AddJavaControlModel _model;
 
@@ -51,7 +54,7 @@ public partial class AddJavaControl : UserControl, IUserControl
 
     private void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        if (DataGrid1.SelectedItem is not JavaDownloadDisplayObj obj)
+        if (DataGrid1.SelectedItem is not JavaDownloadObj obj)
             return;
 
         _model.Install(obj);

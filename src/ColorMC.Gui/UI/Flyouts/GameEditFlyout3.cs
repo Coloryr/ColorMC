@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
@@ -7,14 +8,14 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout3
 {
-    private readonly ResourcepackDisplayObj _obj;
-    private readonly ResourcePackModel _model;
+    private readonly ResourcepackObj _obj;
+    private readonly GameEditTab8Model _top;
 
-    public GameEditFlyout3(Control con, ResourcePackModel model, ResourcepackDisplayObj obj)
+    public GameEditFlyout3(Control con, ResourcePackModel model)
     {
-        _obj = obj;
-        _model = model;
-
+        _top = model.Top;
+        _obj = model.Pack;
+        
         var fy = new FlyoutsControl(new()
         {
             (App.GetLanguage("Button.OpFile"), true, Button1_Click),
@@ -24,7 +25,7 @@ public class GameEditFlyout3
 
     private void Button2_Click()
     {
-        _model.Delete(_obj);
+        _top.Delete(_obj);
     }
 
     private void Button1_Click()

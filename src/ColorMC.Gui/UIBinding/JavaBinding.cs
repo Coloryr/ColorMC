@@ -119,7 +119,7 @@ public static class JavaBinding
         return res;
     }
 
-    public static async Task<(bool, string?)> DownloadJava(JavaDownloadDisplayObj obj)
+    public static async Task<(bool, string?)> DownloadJava(JavaDownloadObj obj)
     {
         var res = await JvmPath.Install(obj.File, obj.Name, obj.Sha256, obj.Url);
         if (res.Item1 != CoreRunState.Init)
@@ -162,7 +162,7 @@ public static class JavaBinding
         return JavaType;
     }
 
-    public static async Task<(bool, List<string>? Arch, List<string>? Os, List<string>? MainVersion, List<JavaDownloadDisplayObj>?)> GetJavaList(int type, int os, int mainversion)
+    public static async Task<(bool, List<string>? Arch, List<string>? Os, List<string>? MainVersion, List<JavaDownloadObj>?)> GetJavaList(int type, int os, int mainversion)
     {
         if (mainversion == -1)
             mainversion = 0;
@@ -209,7 +209,7 @@ public static class JavaBinding
     }
 
     private static async Task<(bool, List<string>? Arch, List<string>? Os, List<string>? MainVersion,
-        List<JavaDownloadDisplayObj>?)> GetZuluList()
+        List<JavaDownloadObj>?)> GetZuluList()
     {
         try
         {
@@ -246,7 +246,7 @@ public static class JavaBinding
                         orderby newGroup.Key descending
                         select newGroup.Key.ToString());
 
-            var list1 = new List<JavaDownloadDisplayObj>();
+            var list1 = new List<JavaDownloadObj>();
             foreach (var item in list)
             {
                 if (item.name.EndsWith(".deb") || item.name.EndsWith(".rpm") || item.name.EndsWith(".msi") || item.name.EndsWith(".dmg"))
@@ -285,7 +285,7 @@ public static class JavaBinding
         return a[..^1];
     }
 
-    private static async Task<(bool, List<string>? Arch, List<JavaDownloadDisplayObj>?)>
+    private static async Task<(bool, List<string>? Arch, List<JavaDownloadObj>?)>
         GetAdoptiumList(int mainversion, int os)
     {
         try
@@ -306,7 +306,7 @@ public static class JavaBinding
                           orderby newGroup.Key descending
                           select newGroup.Key);
 
-            var list3 = new List<JavaDownloadDisplayObj>();
+            var list3 = new List<JavaDownloadObj>();
             foreach (var item in list)
             {
                 if (item.binary.image_type == "debugimage")
@@ -334,7 +334,7 @@ public static class JavaBinding
         }
     }
 
-    private static void AddDragonwell(List<JavaDownloadDisplayObj> list, DragonwellObj.Item item)
+    private static void AddDragonwell(List<JavaDownloadObj> list, DragonwellObj.Item item)
     {
         string main = "8";
         string version = item.version8;
@@ -527,7 +527,7 @@ public static class JavaBinding
         }
     }
 
-    private static async Task<List<JavaDownloadDisplayObj>?> GetDragonwellList()
+    private static async Task<List<JavaDownloadObj>?> GetDragonwellList()
     {
         try
         {
@@ -537,7 +537,7 @@ public static class JavaBinding
                 return null;
             }
 
-            var list1 = new List<JavaDownloadDisplayObj>();
+            var list1 = new List<JavaDownloadObj>();
 
             AddDragonwell(list1, list.extended);
             AddDragonwell(list1, list.standard);
@@ -552,7 +552,7 @@ public static class JavaBinding
     }
 
     private static async Task<(bool ok, List<string>? Arch, List<string>? Os,
-        List<string>? MainVersion, List<JavaDownloadDisplayObj>?)> GetOpenJ9List()
+        List<string>? MainVersion, List<JavaDownloadObj>?)> GetOpenJ9List()
     {
         try
         {
@@ -561,7 +561,7 @@ public static class JavaBinding
             {
                 return (false, null, null, null, null);
             }
-            var list1 = new List<JavaDownloadDisplayObj>();
+            var list1 = new List<JavaDownloadObj>();
 
             foreach (var item in Data!)
             {

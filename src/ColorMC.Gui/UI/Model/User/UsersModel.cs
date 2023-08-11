@@ -441,4 +441,9 @@ public partial class UsersModel : BaseModel
         BaseBinding.OpUrl(url);
         await BaseBinding.CopyTextClipboard(TopLevel.GetTopLevel(Control.Con), code);
     }
+
+    public override void Close()
+    {
+        UserList.Clear();
+    }
 }

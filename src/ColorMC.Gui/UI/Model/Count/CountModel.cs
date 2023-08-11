@@ -216,4 +216,9 @@ public partial class CountModel : BaseModel
             GameCountToday = count4;
         }
     }
+
+    public override void Close()
+    {
+        
+    }
 }

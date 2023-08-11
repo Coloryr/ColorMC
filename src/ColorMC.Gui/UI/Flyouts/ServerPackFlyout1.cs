@@ -6,9 +6,9 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class ServerPackFlyout1
 {
-    private readonly ServerPackConfigDisplayObj _obj;
+    private readonly ServerPackConfigObj _obj;
     private readonly ServerPackTab4Model _model;
-    public ServerPackFlyout1(Control con, ServerPackTab4Model model, ServerPackConfigDisplayObj obj)
+    public ServerPackFlyout1(Control con, ServerPackTab4Model model, ServerPackConfigObj obj)
     {
         _model = model;
         _obj = obj;

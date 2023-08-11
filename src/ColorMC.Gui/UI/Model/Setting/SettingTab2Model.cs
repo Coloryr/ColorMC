@@ -577,4 +577,10 @@ public partial class SettingTab2Model : BaseModel
         ConfigBinding.SetWindowTran(EnableWindowTran, WindowTranType);
         ProgressClose();
     }
+
+    public override void Close()
+    {
+        FontList.Clear();
+        _fontItem = null;
+    }
 }

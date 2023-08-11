@@ -12,5 +12,8 @@ public partial class WorldCloudModel : BaseModel
         World = world;
     }
 
-
+    public override void Close()
+    {
+        
+    }
 }

@@ -9,6 +9,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
@@ -47,6 +48,8 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     public HeadControl Head => WinHead;
 
     public string Title => _nowControl.Title;
+
+    public BaseModel Model => ICon.Model;
 
     public AllControl()
     {
@@ -265,6 +268,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         Up();
 
         con.Closed();
+        con.Model.TopClose();
     }
 
     public void ShowDialog(UserControl con)

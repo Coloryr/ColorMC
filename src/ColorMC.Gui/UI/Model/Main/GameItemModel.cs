@@ -37,11 +37,12 @@ public partial class GameItemModel : GameModel
     private readonly IMainTop _top;
 
     public string Name => Obj.Name;
-    public Bitmap Pic => GetImage();
+    public Bitmap Pic { get; }
 
     public GameItemModel(IUserControl con, IMainTop top, GameSettingObj obj) : base(con, obj)
     {
         _top = top;
+        Pic = GetImage();
     }
 
     partial void OnIsSelectChanged(bool value)
@@ -103,7 +104,9 @@ public partial class GameItemModel : GameModel
     public void Launch()
     {
         if (IsLaunch)
+        {
             return;
+        }
 
         _top.Launch(this);
     }
@@ -125,7 +128,9 @@ public partial class GameItemModel : GameModel
     {
         var (Cancel, Text1, _) = await ShowEdit(App.GetLanguage("MainWindow.Info23"), Obj.Name);
         if (Cancel)
+        {
             return;
+        }
         if (string.IsNullOrWhiteSpace(Text1))
         {
             Show(App.GetLanguage("MainWindow.Error3"));
@@ -140,7 +145,9 @@ public partial class GameItemModel : GameModel
         var (Cancel, Text1, _) = await ShowEdit(App.GetLanguage("MainWindow.Info23"),
             Obj.Name + App.GetLanguage("MainWindow.Info24"));
         if (Cancel)
+        {
             return;
+        }
         if (string.IsNullOrWhiteSpace(Text1))
         {
             Show(App.GetLanguage("MainWindow.Error3"));
@@ -163,7 +170,9 @@ public partial class GameItemModel : GameModel
     {
         var res = await ShowWait(string.Format(App.GetLanguage("MainWindow.Info19"), Obj.Name));
         if (!res)
+        {
             return;
+        }
 
         res = await GameBinding.DeleteGame(Obj);
         if (!res)
@@ -175,5 +184,10 @@ public partial class GameItemModel : GameModel
     public void EditGroup()
     {
         _top.EditGroup(this);
+    }
+
+    public override void Close()
+    {
+        Pic.Dispose();
     }
 }

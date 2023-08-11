@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using AvaloniaEdit.Indentation.CSharp;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
@@ -36,6 +37,8 @@ public partial class GameConfigEditControl : UserControl, IUserControl
             }
         }
     }
+
+    public BaseModel Model => _model;
 
     public GameConfigEditControl()
     {

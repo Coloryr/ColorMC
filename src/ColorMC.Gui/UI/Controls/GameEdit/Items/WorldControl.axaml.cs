@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit.Items;
@@ -33,7 +34,7 @@ public partial class WorldControl : UserControl
             model.Select();
             if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
             {
-                model.Flyout(this);
+                _ = new GameEditFlyout2(this, model);
             }
         }
     }

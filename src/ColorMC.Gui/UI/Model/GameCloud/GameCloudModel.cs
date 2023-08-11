@@ -23,7 +23,7 @@ public partial class GameCloudModel : GameModel
     /// <summary>
     /// 导出的文件列表
     /// </summary>
-    public FilesPageViewModel Files;
+    private FilesPageViewModel _files;
 
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
@@ -111,7 +111,7 @@ public partial class GameCloudModel : GameModel
     public async Task UploadConfig()
     {
         Progress("正在打包");
-        var files = Files.GetSelectItems();
+        var files = _files.GetSelectItems();
         var data = GameCloudUtils.GetCloudData(Obj);
         string dir = Obj.GetBasePath();
         data.Config.Clear();
@@ -204,7 +204,7 @@ public partial class GameCloudModel : GameModel
         await LoadCloud();
 
         string dir = Obj.GetBasePath();
-        Files = new FilesPageViewModel(dir, false);
+        _files = new FilesPageViewModel(dir, false);
 
         var data = GameCloudUtils.GetCloudData(Obj);
         LocalConfigTime = data.ConfigTime.ToString();
@@ -214,8 +214,14 @@ public partial class GameCloudModel : GameModel
         {
             list.Add(Path.GetFullPath(dir + "/" + item));
         }
-        Files.SetSelectItems(list);
+        _files.SetSelectItems(list);
 
-        Source = Files.Source;
+        Source = _files.Source;
+    }
+
+    public override void Close()
+    {
+        _files = null!;
+        _source = null!;
     }
 }

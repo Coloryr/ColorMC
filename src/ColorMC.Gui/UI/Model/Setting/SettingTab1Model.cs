@@ -177,4 +177,9 @@ public partial class SettingTab1Model : BaseModel
     {
         PathBinding.OpPath(PathType.BasePath);
     }
+
+    public override void Close()
+    {
+        
+    }
 }

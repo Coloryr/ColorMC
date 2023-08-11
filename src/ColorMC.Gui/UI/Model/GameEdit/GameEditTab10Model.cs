@@ -70,4 +70,9 @@ public partial class GameEditTab10Model : GameModel
         Notify(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         await Load();
     }
+
+    public override void Close()
+    {
+        ServerList.Clear();
+    }
 }

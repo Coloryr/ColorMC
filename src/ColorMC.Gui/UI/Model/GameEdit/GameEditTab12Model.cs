@@ -1,8 +1,7 @@
 ﻿using Avalonia.Input;
 using AvaloniaEdit.Utils;
-using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,10 +13,10 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class GameEditTab12Model : GameModel
 {
-    public ObservableCollection<SchematicDisplayObj> SchematicList { get; set; } = new();
+    public ObservableCollection<SchematicObj> SchematicList { get; set; } = new();
 
     [ObservableProperty]
-    private SchematicDisplayObj? _item;
+    private SchematicObj? _item;
 
     public GameEditTab12Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
@@ -66,10 +65,16 @@ public partial class GameEditTab12Model : GameModel
         }
     }
 
-    public async void Delete(SchematicDisplayObj obj)
+    public async void Delete(SchematicObj obj)
     {
-        obj.Schematic.Delete();
+        GameBinding.DeleteSchematic(obj);
         Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         await Load();
+    }
+
+    public override void Close()
+    {
+        SchematicList.Clear();
+        _item = null;
     }
 }

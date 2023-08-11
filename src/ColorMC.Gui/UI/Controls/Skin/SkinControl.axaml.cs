@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UI.Windows;
 
@@ -21,6 +22,8 @@ public partial class SkinControl : UserControl, IUserControl
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("SkinWindow.Title");
+
+    public BaseModel Model => _model;
 
     public SkinControl()
     {

@@ -278,4 +278,11 @@ public partial class GameEditTab4Model : GameModel
             }
         }
     }
+
+    public override void Close()
+    {
+        ModList.Clear();
+        _items.Clear();
+        _item = null;
+    }
 }

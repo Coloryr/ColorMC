@@ -150,4 +150,9 @@ public partial class AddGameTab2Model : AddGameControlModel
         Progress();
         return test;
     }
+
+    public override void Close()
+    {
+        
+    }
 }

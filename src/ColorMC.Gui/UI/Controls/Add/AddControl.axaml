@@ -285,11 +285,11 @@
                 SelectedItem="{Binding OptifineItem}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
-                        Binding="{Binding MC}"
+                        Binding="{Binding Version}"
                         Header="{setting:Localize Text.GameVersion}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
-                        Binding="{Binding Version}"
+                        Binding="{Binding MCVersion}"
                         Header="{setting:Localize Text.Version}"
                         IsReadOnly="True" />
                     <DataGridTextColumn

@@ -1,6 +1,7 @@
 ﻿using Avalonia.Input;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab5Model : GameModel, ILoadFuntion<WorldModel>
+public partial class GameEditTab5Model : GameModel
 {
     public ObservableCollection<WorldModel> WorldList { get; init; } = new();
 
@@ -100,7 +101,7 @@ public partial class GameEditTab5Model : GameModel, ILoadFuntion<WorldModel>
         ProgressClose();
         foreach (var item in res)
         {
-            WorldList.Add(new(Control, this, item));
+            WorldList.Add(new(this, item));
         }
     }
     [RelayCommand]
@@ -132,5 +133,77 @@ public partial class GameEditTab5Model : GameModel, ILoadFuntion<WorldModel>
         }
         _last = item;
         _last.IsSelect = true;
+    }
+
+    public async void Delete(WorldModel obj)
+    {
+        var res = await ShowWait(
+            string.Format(App.GetLanguage("GameEditWindow.Tab5.Info1"), obj.Name));
+        if (!res)
+        {
+            return;
+        }
+
+        GameBinding.DeleteWorld(obj.World);
+        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        await Load();
+    }
+
+    public async void Export(WorldModel obj)
+    {
+        Progress(App.GetLanguage("GameEditWindow.Tab5.Info4"));
+        var file = await PathBinding.SaveFile(Window, FileType.World, new object[]
+            { obj });
+        ProgressClose();
+        if (file == null)
+            return;
+
+        if (file == false)
+        {
+            Show(App.GetLanguage("GameEditWindow.Tab5.Error1"));
+        }
+        else
+        {
+            Notify(App.GetLanguage("GameEditWindow.Tab5.Info3"));
+        }
+    }
+
+    public async void Backup(WorldModel obj)
+    {
+        Progress(App.GetLanguage("GameEditWindow.Tab5.Info7"));
+        var res = await GameBinding.BackupWorld(obj.World);
+        ProgressClose();
+        if (res)
+        {
+            Notify(App.GetLanguage("GameEditWindow.Tab5.Info8"));
+        }
+        else
+        {
+            Show(App.GetLanguage("GameEditWindow.Tab5.Error3"));
+        }
+    }
+
+    public async void Launch(WorldModel world)
+    {
+        if (BaseBinding.IsGameRun(world.World.Game))
+        {
+            return;
+        }
+
+        var res = await GameBinding.Launch(Window, world.World.Game, world.World);
+        if (!res.Item1)
+        {
+            Show(res.Item2!);
+        }
+    }
+
+    public override void Close()
+    {
+        foreach (var item in WorldList)
+        {
+            item.Close();
+        }
+        WorldList.Clear();
+        _last = null;
     }
 }

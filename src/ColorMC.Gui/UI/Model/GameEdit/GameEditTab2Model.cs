@@ -468,4 +468,9 @@ public partial class GameEditTab2Model : GameModel
 
         _load = false;
     }
+
+    public override void Close()
+    {
+        JvmList.Clear();
+    }
 }

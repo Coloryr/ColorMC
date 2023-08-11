@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
@@ -20,6 +21,8 @@ public partial class AddControl : UserControl, IUserControl
     public UserControl Con => this;
 
     public string Title => string.Format(App.GetLanguage("AddWindow.Title"), Obj.Name);
+
+    public BaseModel Model => _model;
 
     private readonly AddControlModel _model;
 

@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
@@ -16,6 +17,8 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("AddModPackWindow.Title");
+
+    public BaseModel Model => _model;
 
     private readonly AddModPackControlModel _model;
 

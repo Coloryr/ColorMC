@@ -13,10 +13,3 @@ public record UserDisplayObj
 
     public AuthType AuthType { get; set; }
 }
-
-public record UserDisplayObj1
-{
-    public string Name { get; set; }
-    public string Info { get; set; }
-    public AuthType Type { get; set; }
-}

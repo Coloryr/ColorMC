@@ -3,6 +3,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameLog;
 using ColorMC.Gui.UI.Windows;
 using System.ComponentModel;
@@ -17,6 +18,8 @@ public partial class GameLogControl : UserControl, IUserControl
 
     public string Title => string.Format(App.GetLanguage("GameLogWindow.Title"),
             _model.Obj.Name);
+
+    public BaseModel Model => _model;
 
     private readonly GameLogTabModel _model;
 

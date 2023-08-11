@@ -4,6 +4,7 @@ using ColorMC.Core;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Controls.Add.AddGame;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
@@ -34,9 +35,29 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public string Title => App.GetLanguage("AddGameWindow.Title");
 
+    public class TopModel : BaseModel
+    {
+        private AddGameControl _con;
+        public TopModel(AddGameControl con) : base(con)
+        {
+            _con = con;
+        }
+
+        public override void Close()
+        {
+            _con._model1.Close();
+            _con._model2.Close();
+            _con._model3.Close();
+        }
+    }
+
+    public BaseModel Model {get;}
+
     public AddGameControl()
     {
         InitializeComponent();
+
+        Model = new TopModel(this);
 
         _model1 = new(this);
         _model2 = new(this);

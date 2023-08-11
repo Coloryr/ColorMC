@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameCloud;
 using ColorMC.Gui.UI.Windows;
 using System.Threading;
@@ -27,6 +28,8 @@ public partial class GameCloudControl : UserControl, IUserControl
     public UserControl Con => this;
     public string Title =>
         string.Format(App.GetLanguage("GameCloudWindow.Title"), Obj.Name);
+
+    public BaseModel Model => _model;
 
     public GameCloudControl() : this(new() { Empty = true })
     {

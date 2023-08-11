@@ -336,4 +336,9 @@ public partial class SkinModel : BaseModel
     {
         UserBinding.EditSkin(Window);
     }
+
+    public override void Close()
+    {
+        
+    }
 }

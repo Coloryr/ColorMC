@@ -21,6 +21,8 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
     public string Title { get; set; }
 
+    public BaseModel Model => _model;
+
     private CustomControlPanelModel _model;
 
     public CustomControl()

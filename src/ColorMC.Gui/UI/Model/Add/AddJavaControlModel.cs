@@ -13,12 +13,11 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddJavaControlModel : ObservableObject
+public partial class AddJavaControlModel : BaseModel
 {
-    private readonly IUserControl _con;
-    private readonly List<JavaDownloadDisplayObj> _list1 = new();
+    private readonly List<JavaDownloadObj> _list1 = new();
 
-    public ObservableCollection<JavaDownloadDisplayObj> JavaList { get; init; } = new();
+    public ObservableCollection<JavaDownloadObj> JavaList { get; init; } = new();
     public ObservableCollection<string> SystemList { get; init; } = new();
     public ObservableCollection<string> VersionList { get; init; } = new();
     public ObservableCollection<string> ArchList { get; init; } = new();
@@ -41,10 +40,8 @@ public partial class AddJavaControlModel : ObservableObject
 
     private bool _load = true;
 
-    public AddJavaControlModel(IUserControl con)
+    public AddJavaControlModel(IUserControl con) : base(con)
     {
-        _con = con;
-
         ColorMCCore.JavaUnzip = JavaUnzip;
     }
 
@@ -96,8 +93,7 @@ public partial class AddJavaControlModel : ObservableObject
     [RelayCommand]
     public async Task Load()
     {
-        var window = _con.Window;
-        window.ProgressInfo.Show(App.GetLanguage("AddJavaWindow.Info4"));
+        Progress(App.GetLanguage("AddJavaWindow.Info4"));
 
         _load = true;
 
@@ -126,38 +122,39 @@ public partial class AddJavaControlModel : ObservableObject
 
             Select();
 
-            window.ProgressInfo.Close();
+            ProgressClose();
         }
         else
         {
-            window.ProgressInfo.Close();
-            window.OkInfo.Show(App.GetLanguage("AddJavaWindow.Error1"));
+            ProgressClose();
+            Show(App.GetLanguage("AddJavaWindow.Error1"));
         }
 
         _load = false;
     }
 
-    public async void Install(JavaDownloadDisplayObj obj)
+    public async void Install(JavaDownloadObj obj)
     {
-        var window = _con.Window;
-        var res = await window.OkInfo.ShowWait(string.Format(
+        var res = await ShowWait(string.Format(
             App.GetLanguage("AddJavaWindow.Info1"), obj.Name));
         if (!res)
+        {
             return;
+        }
 
         if (ConfigBinding.GetAllConfig().Item2?.WindowMode != true)
         {
-            window.ProgressInfo.Show(App.GetLanguage("AddJavaWindow.Info2"));
+            Progress(App.GetLanguage("AddJavaWindow.Info2"));
         }
         var res1 = await JavaBinding.DownloadJava(obj);
-        window.ProgressInfo.Close();
+        ProgressClose();
         if (!res1.Item1)
         {
-            window.OkInfo.Show(res1.Item2!);
+            Show(res1.Item2!);
             return;
         }
 
-        window.NotifyInfo.Show(App.GetLanguage("AddJavaWindow.Info3"));
+        Notify(App.GetLanguage("AddJavaWindow.Info3"));
     }
 
     private void Switch()
@@ -199,8 +196,13 @@ public partial class AddJavaControlModel : ObservableObject
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var window = _con.Window;
-            window.ProgressInfo.NextText(App.GetLanguage("AddJavaWindow.Info5"));
+            ProgressUpdate(App.GetLanguage("AddJavaWindow.Info5"));
         });
+    }
+
+    public override void Close()
+    {
+        _list1.Clear();
+        JavaList.Clear();
     }
 }

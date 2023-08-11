@@ -18,75 +18,45 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class ScreenshotModel : ObservableObject
 {
-    public ScreenshotDisplayObj Screenshot { get; init; }
+    public readonly string Screenshot;
 
-    private readonly ILoadFuntion<ScreenshotModel> _top;
-    private readonly IUserControl _con;
+    public readonly GameEditTab9Model Top;
 
     [ObservableProperty]
     private bool _isSelect;
 
-    public string Name => Screenshot.Name;
+    public string Name { get; }
 
     public Task<Bitmap> Image => GetImage();
 
-    public ScreenshotModel(IUserControl con, ILoadFuntion<ScreenshotModel> top, ScreenshotDisplayObj obj)
+    public ScreenshotModel(GameEditTab9Model top, string obj)
     {
-        _con = con;
-        _top = top;
+        Top = top;
         Screenshot = obj;
-    }
-
-    public void Load()
-    {
-        using var image = SixLabors.ImageSharp.Image.Load
-                 (Screenshot.Local);
-        var stream = new MemoryStream();
-        Bitmap bitmap = null!;
-        //image.Mutate(p =>
-        //{
-        //    p.Resize(200, 120);
-        //});
+        Name = Path.GetFileName(Screenshot);
     }
 
     private async Task<Bitmap> GetImage()
     {
-        await Task.Run(Load);
+        return await Task.Run(() =>
+        {
+            using var image = SixLabors.ImageSharp.Image.Load
+                     (Screenshot);
+            using var stream = new MemoryStream();
+            image.Mutate(p =>
+            {
+                p.Resize(200, 120);
+            });
 
-        
+            image.SaveAsBmp(stream);
 
-        //image.SaveAsBmp(stream);
-        //image.Dispose();
-
-        //stream.Seek(0, SeekOrigin.Begin);
-        //bitmap = new Bitmap(stream);
-        //stream.Dispose();
-
-        return null;
+            stream.Seek(0, SeekOrigin.Begin);
+            return new Bitmap(stream);
+        });
     }
 
     public void Select()
     {
-        _top.SetSelect(this);
-    }
-
-    public void Flyout(Control con)
-    {
-        _ = new GameEditFlyout4(con, this);
-    }
-
-    public async void Delete()
-    {
-        var Window = _con.Window;
-        var res = await Window.OkInfo.ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab9.Info1"), Screenshot.Local));
-        if (!res)
-        {
-            return;
-        }
-
-        GameBinding.DeleteScreenshot(Screenshot.Local);
-        Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        await _top.Load();
+        Top.SetSelect(this);
     }
 }

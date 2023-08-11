@@ -1,107 +1,52 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class WorldModel : BaseModel
+public partial class WorldModel : ObservableObject
 {
-    public WorldDisplayObj World { get; init; }
-
-    private readonly ILoadFuntion<WorldModel> _top;
+    public readonly WorldObj World;
+    public readonly GameEditTab5Model Top;
 
     [ObservableProperty]
     private bool _isSelect;
 
-    public string Name => World.Name;
-    public string Mode => World.Mode;
-    public string Time => World.Time;
+    public string Name => World.LevelName;
+    public string Mode => LanguageHelper.GetNameWithGameType(World.GameType);
+    public string Time => FuntionUtils.MillisecondsToDataTime(World.LastPlayed).ToString();
     public string Local => World.Local;
-    public string Difficulty => World.Difficulty;
-    public string Hardcore => World.Hardcore.ToString();
-    public Bitmap Pic => World.Pic ?? App.GameIcon;
+    public string Difficulty => LanguageHelper.GetNameWithDifficulty(World.Difficulty);
+    public string Hardcore => World.Hardcore == 1 ? "True" : "False";
+    public Bitmap Pic { get; }
 
-    public WorldModel(IUserControl con, ILoadFuntion<WorldModel> top,
-        WorldDisplayObj world) : base(con)
+    public WorldModel(GameEditTab5Model top, WorldObj world)
     {
-        _top = top;
+        Top = top;
         World = world;
+        Pic = World.Icon != null ? new Bitmap(World.Icon) : App.GameIcon;
+    }
+
+    public void Close()
+    {
+        if (Pic != App.GameIcon)
+        {
+            Pic.Dispose();
+        }
     }
 
     public void Select()
     {
-        _top.SetSelect(this);
-    }
-
-    public void Flyout(Control con)
-    {
-        _ = new GameEditFlyout2(con, this);
-    }
-
-    public async void Delete(WorldDisplayObj obj)
-    {
-        var res = await ShowWait(
-            string.Format(App.GetLanguage("GameEditWindow.Tab5.Info1"), obj.Name));
-        if (!res)
-        {
-            return;
-        }
-
-        GameBinding.DeleteWorld(obj.World);
-        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        await _top.Load();
-    }
-
-    public async void Export(WorldDisplayObj obj)
-    {
-        Progress(App.GetLanguage("GameEditWindow.Tab5.Info4"));
-        var file = await PathBinding.SaveFile(Window, FileType.World, new object[]
-            { obj });
-        ProgressClose();
-        if (file == null)
-            return;
-
-        if (file == false)
-        {
-            Show(App.GetLanguage("GameEditWindow.Tab5.Error1"));
-        }
-        else
-        {
-            Notify(App.GetLanguage("GameEditWindow.Tab5.Info3"));
-        }
-    }
-
-    public async void Backup(WorldModel obj)
-    {
-        Progress(App.GetLanguage("GameEditWindow.Tab5.Info7"));
-        var res = await GameBinding.BackupWorld(obj.World.World);
-        ProgressClose();
-        if (res)
-        {
-            Notify(App.GetLanguage("GameEditWindow.Tab5.Info8"));
-        }
-        else
-        {
-            Show(App.GetLanguage("GameEditWindow.Tab5.Error3"));
-        }
-    }
-
-    public async void Launch(WorldDisplayObj world)
-    {
-        if (BaseBinding.IsGameRun(world.World.Game))
-        {
-            return;
-        }
-
-        var res = await GameBinding.Launch(Window, world.World.Game, world.World);
-        if (!res.Item1)
-        {
-            Show(res.Item2!);
-        }
+        Top.SetSelect(this);
     }
 }

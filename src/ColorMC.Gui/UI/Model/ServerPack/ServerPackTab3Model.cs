@@ -12,10 +12,10 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public partial class ServerPackTab3Model : ServerPackBaseModel
 {
-    public ObservableCollection<ServerPackModDisplayModel> ModList { get; init; } = new();
+    public ObservableCollection<ServerPackItemModel> ModList { get; init; } = new();
 
     [ObservableProperty]
-    private ServerPackModDisplayModel _item;
+    private ServerPackItemModel _item;
 
     public ServerPackTab3Model(IUserControl con, ServerPackObj obj) : base(con, obj)
     {
@@ -52,23 +52,23 @@ public partial class ServerPackTab3Model : ServerPackBaseModel
         ModList.Clear();
         var mods = await GameBinding.GetResourcepacks(Obj.Game);
 
-        Obj.Resourcepack?.RemoveAll(a => mods.Find(b => a.Sha1 == b.Pack.Sha1) == null);
+        Obj.Resourcepack?.RemoveAll(a => mods.Find(b => a.Sha1 == b.Sha1) == null);
 
         mods.ForEach(item =>
         {
-            if (item.Pack.Broken)
+            if (item.Broken)
                 return;
 
-            string file = Path.GetFileName(item.Pack.Local);
+            string file = Path.GetFileName(item.Local);
 
-            var item1 = Obj.Resourcepack?.FirstOrDefault(a => a.Sha1 == item.Pack.Sha1
+            var item1 = Obj.Resourcepack?.FirstOrDefault(a => a.Sha1 == item.Sha1
                         && a.File == file);
 
-            var item2 = new ServerPackModDisplayModel()
+            var item2 = new ServerPackItemModel()
             {
                 FileName = file,
                 Check = item1 != null,
-                Sha1 = item.Pack.Sha1,
+                Sha1 = item.Sha1,
                 Resourcepack = item
             };
             if (item1 != null)
@@ -89,7 +89,7 @@ public partial class ServerPackTab3Model : ServerPackBaseModel
         GameBinding.SaveServerPack(Obj);
     }
 
-    private void ItemEdit(ServerPackModDisplayModel obj)
+    private void ItemEdit(ServerPackItemModel obj)
     {
         var item = Obj.Resourcepack?.FirstOrDefault(a => a.Sha1 == obj.Sha1
                         && a.File == obj.FileName);
@@ -123,5 +123,10 @@ public partial class ServerPackTab3Model : ServerPackBaseModel
         }
 
         GameBinding.SaveServerPack(Obj);
+    }
+
+    public override void Close()
+    {
+        throw new System.NotImplementedException();
     }
 }

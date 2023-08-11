@@ -13,10 +13,10 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public partial class ServerPackTab2Model : ServerPackBaseModel
 {
-    public ObservableCollection<ServerPackModDisplayModel> ModList { get; init; } = new();
+    public ObservableCollection<ServerPackItemModel> ModList { get; init; } = new();
 
     [ObservableProperty]
-    private ServerPackModDisplayModel _item;
+    private ServerPackItemModel _item;
 
     public ServerPackTab2Model(IUserControl con, ServerPackObj obj) : base(con, obj)
     {
@@ -48,7 +48,7 @@ public partial class ServerPackTab2Model : ServerPackBaseModel
         ItemEdit(Item);
     }
 
-    private void ItemEdit(ServerPackModDisplayModel obj)
+    private void ItemEdit(ServerPackItemModel obj)
     {
         var item = Obj.Mod?.FirstOrDefault(a => a.Sha1 == obj.Sha1
                         && a.File == obj.FileName);
@@ -117,7 +117,7 @@ public partial class ServerPackTab2Model : ServerPackBaseModel
             var item1 = Obj.Mod?.FirstOrDefault(a => a.Sha1 == item.Obj.Sha1
                         && a.File == file);
 
-            var item2 = new ServerPackModDisplayModel()
+            var item2 = new ServerPackItemModel()
             {
                 FileName = file,
                 Check = item1 != null,
@@ -148,5 +148,11 @@ public partial class ServerPackTab2Model : ServerPackBaseModel
         });
 
         GameBinding.SaveServerPack(Obj);
+    }
+
+    public override void Close()
+    {
+        ModList.Clear();
+        _item = null;
     }
 }

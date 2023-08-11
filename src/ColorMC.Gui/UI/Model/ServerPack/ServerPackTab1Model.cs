@@ -78,4 +78,9 @@ public partial class ServerPackTab1Model : ServerPackBaseModel
 
         GameBinding.SaveServerPack(Obj);
     }
+
+    public override void Close()
+    {
+        
+    }
 }

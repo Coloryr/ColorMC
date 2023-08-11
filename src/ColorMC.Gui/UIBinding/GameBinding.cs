@@ -653,27 +653,9 @@ public static class GameBinding
         return QuiltAPI.GetLoaders(version, BaseClient.Source);
     }
 
-    public static async Task<List<WorldDisplayObj>> GetWorlds(GameSettingObj obj)
+    public static Task<List<WorldObj>> GetWorlds(GameSettingObj obj)
     {
-        var list = new List<WorldDisplayObj>();
-        var res = await obj.GetWorlds();
-        foreach (var item in res)
-        {
-            var obj1 = new WorldDisplayObj()
-            {
-                World = item
-            };
-            if (item.Icon != null)
-            {
-                using MemoryStream stream = new();
-                await stream.WriteAsync(item.Icon);
-                stream.Seek(0, SeekOrigin.Begin);
-                obj1.Pic = new Avalonia.Media.Imaging.Bitmap(stream);
-            }
-            list.Add(obj1);
-        }
-
-        return list;
+        return obj.GetWorlds();
     }
 
     public static async Task<bool> AddWorld(GameSettingObj obj, string? file)
@@ -704,45 +686,9 @@ public static class GameBinding
         return world.ExportWorldZip(file);
     }
 
-    public static async Task<List<ResourcepackDisplayObj>> GetResourcepacks(GameSettingObj obj)
+    public static Task<List<ResourcepackObj>> GetResourcepacks(GameSettingObj obj)
     {
-        var list = new List<ResourcepackDisplayObj>();
-        var list1 = await obj.GetResourcepacks();
-        var path = obj.GetGamePath();
-
-        foreach (var item in list1)
-        {
-            if (item.Broken)
-            {
-                list.Add(new()
-                {
-                    Local = item.Local,
-                    Pack = item
-                });
-            }
-            else
-            {
-                var obj1 = new ResourcepackDisplayObj()
-                {
-                    Local = item.Local.Replace(path, ""),
-                    PackFormat = item.pack_format,
-                    Description = item.description,
-                    Pack = item
-                };
-
-                if (item.Icon != null)
-                {
-                    using MemoryStream stream = new();
-                    await stream.WriteAsync(item.Icon);
-                    stream.Seek(0, SeekOrigin.Begin);
-                    obj1.Icon = new Avalonia.Media.Imaging.Bitmap(stream);
-                }
-
-                list.Add(obj1);
-            }
-        }
-
-        return list;
+        return obj.GetResourcepacks();
     }
 
     public static void DeleteResourcepack(ResourcepackObj obj)
@@ -774,23 +720,9 @@ public static class GameBinding
         obj.ClearScreenshots();
     }
 
-    public static List<ScreenshotDisplayObj> GetScreenshots(GameSettingObj obj)
+    public static List<string> GetScreenshots(GameSettingObj obj)
     {
-        var list = new List<ScreenshotDisplayObj>();
-        var list1 = obj.GetScreenshots();
-
-        foreach (var item in list1)
-        {
-            var obj1 = new ScreenshotDisplayObj()
-            {
-                Local = item,
-                Name = Path.GetFileName(item)
-            };
-
-            list.Add(obj1);
-        }
-
-        return list;
+        return obj.GetScreenshots();
     }
 
     public static async Task<bool> DeleteGame(GameSettingObj obj)
@@ -818,20 +750,9 @@ public static class GameBinding
         return await obj.GetServerInfos();
     }
 
-    public static async Task<List<ShaderpackDisplayObj>> GetShaderpacks(GameSettingObj obj)
+    public static Task<List<ShaderpackObj>> GetShaderpacks(GameSettingObj obj)
     {
-        var list = new List<ShaderpackDisplayObj>();
-        foreach (var item in await obj.GetShaderpacks())
-        {
-            list.Add(new()
-            {
-                Name = Path.GetFileName(item.Local),
-                Local = item.Local,
-                Shaderpack = item
-            });
-        }
-
-        return list;
+        return obj.GetShaderpacks();
     }
 
     public static Task AddServer(GameSettingObj obj, string name, string ip)
@@ -898,10 +819,15 @@ public static class GameBinding
         return obj.AddShaderpack(list);
     }
 
-    public static async Task<List<SchematicDisplayObj>> GetSchematics(GameSettingObj obj)
+    public static void DeleteShaderpack(ShaderpackObj obj)
+    {
+        obj.Delete();
+    }
+
+    public static async Task<List<SchematicObj>> GetSchematics(GameSettingObj obj)
     {
         var list = await obj.GetSchematics();
-        var list1 = new List<SchematicDisplayObj>();
+        var list1 = new List<SchematicObj>();
         foreach (var item in list)
         {
             if (item.Broken)
@@ -910,22 +836,11 @@ public static class GameBinding
                 {
                     Name = App.GetLanguage("Gui.Error14"),
                     Local = item.Local,
-                    Schematic = item
                 });
             }
             else
             {
-                list1.Add(new()
-                {
-                    Name = item.Name,
-                    Local = item.Local,
-                    Width = item.Width,
-                    Height = item.Height,
-                    Length = item.Length,
-                    Author = item.Author,
-                    Description = item.Description,
-                    Schematic = item
-                });
+                list1.Add(item);
             }
         }
 
@@ -945,6 +860,11 @@ public static class GameBinding
         }
 
         return obj.AddSchematic(list);
+    }
+
+    public static void DeleteSchematic(SchematicObj obj)
+    {
+        obj.Delete();
     }
 
     public static void SetModInfo(GameSettingObj obj, CurseForgeModObj.Data? data)

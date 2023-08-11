@@ -2,6 +2,7 @@
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -14,10 +15,10 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 
 public partial class GameEditTab11Model : GameModel
 {
-    public ObservableCollection<ShaderpackDisplayObj> ShaderpackList { get; init; } = new();
+    public ObservableCollection<ShaderpackObj> ShaderpackList { get; init; } = new();
 
     [ObservableProperty]
-    private ShaderpackDisplayObj? _item;
+    private ShaderpackObj? _item;
 
     public GameEditTab11Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
@@ -69,10 +70,15 @@ public partial class GameEditTab11Model : GameModel
         }
     }
 
-    public async void Delete(ShaderpackDisplayObj obj)
+    public async void Delete(ShaderpackObj obj)
     {
-        obj.Shaderpack.Delete();
+        GameBinding.DeleteShaderpack(obj);
         Notify(App.GetLanguage("GameEditWindow.Tab10.Info5"));
         await Load();
+    }
+
+    public override void Close()
+    {
+        ShaderpackList.Clear();
     }
 }

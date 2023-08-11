@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.ServerPack;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -36,6 +37,8 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public string Title => string.Format(App.GetLanguage("ServerPackWindow.Title"),
             _model1.Obj.Game.Name);
+
+    public BaseModel Model => _model;
 
     public ServerPackControl() : this(new() { Empty = true })
     {

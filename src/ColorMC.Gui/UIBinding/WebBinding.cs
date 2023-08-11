@@ -9,6 +9,7 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Core.Objs.Optifine;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
@@ -594,31 +595,15 @@ public static class WebBinding
         return null;
     }
 
-    public static async Task<List<OptifineDisplayObj>?> GetOptifine()
+    public static async Task<List<OptifineObj>?> GetOptifine()
     {
         var res = await OptifineAPI.GetOptifineVersion();
-        if (res.Item1 == null)
-            return null;
-
-        var list = new List<OptifineDisplayObj>();
-        res.Item2!.ForEach(item =>
-        {
-            list.Add(new()
-            {
-                MC = item.MCVersion,
-                Version = item.Version,
-                Forge = item.Forge,
-                Date = item.Date,
-                Data = item
-            });
-        });
-
-        return list;
+        return res.Item2;
     }
 
-    public static Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineDisplayObj item)
+    public static Task<(bool, string?)> DownloadOptifine(GameSettingObj obj, OptifineObj item)
     {
-        return OptifineAPI.DownloadOptifine(obj, item.Data);
+        return OptifineAPI.DownloadOptifine(obj, item);
     }
 
     public static async Task<List<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)

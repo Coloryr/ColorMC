@@ -3,7 +3,7 @@ namespace ColorMC.Gui.Objs;
 /// <summary>
 /// 服务器包配置显示
 /// </summary>
-public record ServerPackConfigDisplayObj
+public record ServerPackConfigObj
 {
     /// <summary>
     /// 组名

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model;
 
-public partial class BaseModel : ObservableObject
+public abstract partial class BaseModel : ObservableObject
 {
-    protected readonly IUserControl Control;
+    public IUserControl Control { get; private set; }
 
     public IBaseWindow Window => Control.Window;
 
@@ -105,4 +105,12 @@ public partial class BaseModel : ObservableObject
     {
         return Control.Window.ComboInfo.Show(data, data1);
     }
+
+    public void TopClose()
+    {
+        Control = null!;
+        Close();
+    }
+
+    public abstract void Close();
 }

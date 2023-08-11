@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.User;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
@@ -20,6 +21,8 @@ public partial class UsersControl : UserControl, IUserControl
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("UserWindow.Title");
+
+    public BaseModel Model => _model;
 
     public UsersControl()
     {

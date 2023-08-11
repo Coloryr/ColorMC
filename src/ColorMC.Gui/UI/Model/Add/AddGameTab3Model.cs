@@ -75,4 +75,10 @@ public partial class AddGameTab3Model : AddGameControlModel
             Show(string.Format(App.GetLanguage("AddGameWindow.Tab3.Error2"), res));
         }
     }
+
+    public override void Close()
+    {
+        _model = null;
+        _files = null;
+    }
 }

@@ -14,10 +14,8 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddModPackControlModel : ObservableObject, IAddWindow
+public partial class AddModPackControlModel : BaseModel, IAddWindow
 {
-    private readonly IUserControl _con;
-
     public List<string> SourceList => LanguageBinding.GetSourceList();
     public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
     public ObservableCollection<string> GameVersionList { get; init; } = new();
@@ -65,9 +63,9 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
     [ObservableProperty]
     private bool _emptyDisplay = true;
 
-    public AddModPackControlModel(IUserControl con)
+    public AddModPackControlModel(IUserControl con) : base(con)
     {
-        _con = con;
+        
     }
 
     partial void OnGameVersion1Changed(string? value)
@@ -130,7 +128,6 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
         DisplayList.Clear();
         OnPropertyChanged(nameof(DisplayList));
 
-        var window = _con.Window;
         switch (Source)
         {
             case 0:
@@ -139,22 +136,22 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
                     LanguageBinding.GetCurseForgeSortTypes() :
                     LanguageBinding.GetModrinthSortTypes());
 
-                window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info4"));
+                Progress(App.GetLanguage("AddModPackWindow.Info4"));
                 var list = Source == 0 ?
                     await GameBinding.GetCurseForgeGameVersions() :
                     await GameBinding.GetModrinthGameVersions();
                 if (list == null)
                 {
-                    window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
+                    ShowOk(App.GetLanguage("AddModPackWindow.Error4"), Window.Close);
                     return;
                 }
                 var list1 = Source == 0 ?
                     await GameBinding.GetCurseForgeCategories() :
                     await GameBinding.GetModrinthCategories();
-                window.ProgressInfo.Close();
+                ProgressClose();
                 if (list1 == null)
                 {
-                    window.OkInfo.ShowOk(App.GetLanguage("AddModPackWindow.Error4"), window.Close);
+                    ShowOk(App.GetLanguage("AddModPackWindow.Error4"), Window.Close);
                     return;
                 }
                 GameVersionList.AddRange(list);
@@ -191,8 +188,7 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
     {
         if (_last == null)
         {
-            var window = _con.Window;
-            window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error1"));
+            Show(App.GetLanguage("AddModPackWindow.Error1"));
             return;
         }
 
@@ -229,8 +225,7 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
         if (Item == null)
             return;
 
-        var window = _con.Window;
-        var res = await window.OkInfo.ShowWait(
+        var res = await ShowWait(
             string.Format(App.GetLanguage("AddModPackWindow.Info1"), Item.Name));
         if (res)
         {
@@ -270,30 +265,28 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
                 (data.Data as ModrinthVersionObj)!,
                 (_last!.Data?.Data as ModrinthSearchObj.Hit)!);
         }
-        var window = _con.Window;
-        window.Close();
+        Window.Close();
     }
 
     private async void Load()
     {
-        var window = _con.Window;
         if (Source == 2 && Categorie == 4
             && Text?.Length < 3)
         {
-            window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error6"));
+            Show(App.GetLanguage("AddModPackWindow.Error6"));
             Unlock();
             return;
         }
 
-        window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info2"));
+        Progress(App.GetLanguage("AddModPackWindow.Info2"));
         var data = await WebBinding.GetPackList((SourceType)Source,
             GameVersion, Text, Page, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
 
         if (data == null)
         {
-            window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error2"));
-            window.ProgressInfo.Close();
+            Show(App.GetLanguage("AddModPackWindow.Error2"));
+            ProgressClose();
             Unlock();
             return;
         }
@@ -309,7 +302,7 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
 
         EmptyDisplay = DisplayList.Count == 0;
 
-        window.ProgressInfo.Close();
+        ProgressClose();
         Unlock();
     }
 
@@ -318,9 +311,8 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
         if (Display == false)
             return;
 
-        var window = _con.Window;
         FileList.Clear();
-        window.ProgressInfo.Show(App.GetLanguage("AddModPackWindow.Info3"));
+        Show(App.GetLanguage("AddModPackWindow.Info3"));
         List<FileDisplayObj>? list = null;
         if (Source == 0)
         {
@@ -338,13 +330,13 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
         }
         if (list == null)
         {
-            window.OkInfo.Show(App.GetLanguage("AddModPackWindow.Error3"));
-            window.ProgressInfo.Close();
+            Show(App.GetLanguage("AddModPackWindow.Error3"));
+            ProgressClose();
             return;
         }
         FileList.AddRange(list);
 
-        window.ProgressInfo.Close();
+        ProgressClose();
     }
 
     private void Lock()
@@ -394,5 +386,10 @@ public partial class AddModPackControlModel : ObservableObject, IAddWindow
         {
             Load();
         }
+    }
+
+    public override void Close()
+    {
+        FileList.Clear();
     }
 }

@@ -125,4 +125,9 @@ public partial class SettingTab5Model : BaseModel
     {
         _ = new SettingFlyout1(con, this, list);
     }
+
+    public override void Close()
+    {
+        JavaList.Clear();
+    }
 }

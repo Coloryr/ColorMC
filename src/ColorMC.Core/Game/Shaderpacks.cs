@@ -38,7 +38,8 @@ public static class Shaderpacks
                 }
                 var obj1 = new ShaderpackObj()
                 {
-                    Local = Path.GetFullPath(item.FullName)
+                    Local = Path.GetFullPath(item.FullName),
+                    Name = Path.GetFileName(item.FullName)
                 };
                 list.Add(obj1);
             });
