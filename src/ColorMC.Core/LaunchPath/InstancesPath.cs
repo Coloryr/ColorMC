@@ -6,8 +6,8 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -125,7 +125,7 @@ public static class InstancesPath
         {
             group.Remove(obj);
 
-            if (!group.Any())
+            if (group.Count == 0)
             {
                 s_gameGroups.Remove(obj.GroupName);
             }
@@ -155,7 +155,7 @@ public static class InstancesPath
                 var file2 = Path.GetFullPath(item + "/" + "instance.cfg");
                 if (File.Exists(file1) && File.Exists(file2))
                 {
-                    var mmc = JsonConvert.DeserializeObject<MMCObj>(File.ReadAllText(file1));
+                    var mmc = JsonSerializer.Deserialize<MMCObj>(File.ReadAllText(file1));
                     if (mmc == null)
                         break;
 
@@ -167,7 +167,7 @@ public static class InstancesPath
             else
             {
                 var data1 = File.ReadAllText(file);
-                game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
+                game = JsonSerializer.Deserialize<GameSettingObj>(data1);
             }
             if (game != null)
             {
@@ -677,7 +677,7 @@ public static class InstancesPath
 
         try
         {
-            var res = JsonConvert.DeserializeObject<Dictionary<string, ModInfoObj>>(
+            var res = JsonSerializer.Deserialize<Dictionary<string, ModInfoObj>>(
             File.ReadAllText(file));
             if (res == null)
             {
@@ -745,7 +745,7 @@ public static class InstancesPath
 
         try
         {
-            var res = JsonConvert.DeserializeObject<LaunchDataObj>(
+            var res = JsonSerializer.Deserialize<LaunchDataObj>(
             File.ReadAllText(file))!;
             obj.LaunchData = res;
         }
@@ -804,7 +804,7 @@ public static class InstancesPath
                         if (!find)
                             break;
 
-                        game = JsonConvert.DeserializeObject<GameSettingObj>
+                        game = JsonSerializer.Deserialize<GameSettingObj>
                             (Encoding.UTF8.GetString(stream1.ToArray()));
 
                         if (game == null)
@@ -882,7 +882,7 @@ public static class InstancesPath
                         if (!find || !find1)
                             break;
 
-                        var mmc = JsonConvert.DeserializeObject<MMCObj>
+                        var mmc = JsonSerializer.Deserialize<MMCObj>
                             (Encoding.UTF8.GetString(stream1.ToArray()));
                         if (mmc == null)
                             break;
@@ -963,7 +963,7 @@ public static class InstancesPath
                         if (!find)
                             break;
 
-                        var obj = JsonConvert.DeserializeObject<HMCLObj>
+                        var obj = JsonSerializer.Deserialize<HMCLObj>
                             (Encoding.UTF8.GetString(stream1.ToArray()));
 
                         if (obj == null)
@@ -988,7 +988,7 @@ public static class InstancesPath
 
                         if (find1)
                         {
-                            var obj1 = JsonConvert.DeserializeObject<CurseForgePackObj>
+                            var obj1 = JsonSerializer.Deserialize<CurseForgePackObj>
                                 (Encoding.UTF8.GetString(stream2.ToArray()));
                             if (obj1 != null)
                             {

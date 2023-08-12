@@ -2,7 +2,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Xml;
 
 namespace ColorMC.Core.Net.Apis;
@@ -40,7 +40,7 @@ public static class ForgeAPI
                         new Exception(url), false);
                     return null;
                 }
-                var obj = JsonConvert.DeserializeObject<List<string>>(data.Item2!);
+                var obj = JsonSerializer.Deserialize<List<string>>(data.Item2!);
                 if (obj == null)
                     return null;
 
@@ -160,7 +160,7 @@ public static class ForgeAPI
                         new Exception(url), false);
                     return null;
                 }
-                var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data.Item2!);
+                var obj = JsonSerializer.Deserialize<List<ForgeVersionObj1>>(data.Item2!);
                 if (obj == null)
                     return null;
 

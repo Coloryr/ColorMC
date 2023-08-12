@@ -754,5 +754,7 @@ public partial class GameConfigEditModel : GameModel
     {
         _nbtView = null!;
         _source = null!;
+        _chunkData = null;
+        DataList.Clear();
     }
 }

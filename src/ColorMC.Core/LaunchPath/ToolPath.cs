@@ -1,13 +1,7 @@
 ﻿using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Minecraft;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -35,9 +29,9 @@ public class ToolPath
     {
         return new()
         {
-             Name = "mcaselector-2.2.2", 
-             Local = $"{BaseDir}/mcaselector-2.2.2.jar",
-             Url = "https://github.com/Querz/mcaselector/releases/download/2.2.2/mcaselector-2.2.2.jar"
+            Name = "mcaselector-2.2.2",
+            Local = $"{BaseDir}/mcaselector-2.2.2.jar",
+            Url = "https://github.com/Querz/mcaselector/releases/download/2.2.2/mcaselector-2.2.2.jar"
         };
     }
 

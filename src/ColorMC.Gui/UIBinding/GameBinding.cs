@@ -15,13 +15,12 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
+using ICSharpCode.SharpZipLib.Zip;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -29,7 +28,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ICSharpCode.SharpZipLib.Zip;
 
 namespace ColorMC.Gui.UIBinding;
 

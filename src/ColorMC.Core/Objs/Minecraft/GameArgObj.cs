@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Minecraft;
 
@@ -66,15 +66,15 @@ public record GameArgObj
             }
             public record Classifiers
             {
-                [JsonProperty("natives-linux")]
+                [JsonPropertyName("natives-linux")]
                 public Artifact natives_linux { get; set; }
-                [JsonProperty("natives-osx")]
+                [JsonPropertyName("natives-osx")]
                 public Artifact natives_osx { get; set; }
-                [JsonProperty("natives-windows")]
+                [JsonPropertyName("natives-windows")]
                 public Artifact natives_windows { get; set; }
-                [JsonProperty("natives-windows-32")]
+                [JsonPropertyName("natives-windows-32")]
                 public Artifact natives_windows_32 { get; set; }
-                [JsonProperty("natives-windows-64")]
+                [JsonPropertyName("natives-windows-64")]
                 public Artifact natives_windows_64 { get; set; }
             }
             public Classifiers classifiers { get; set; }

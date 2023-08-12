@@ -4,7 +4,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Optifine;
 using HtmlAgilityPack;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -80,7 +80,7 @@ public static class OptifineAPI
             }
             else
             {
-                var list1 = JsonConvert.DeserializeObject<List<OptifineListObj>>(data.Item2!);
+                var list1 = JsonSerializer.Deserialize<List<OptifineListObj>>(data.Item2!);
 
                 if (list1 == null)
                     return (null, null);

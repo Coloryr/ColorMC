@@ -339,6 +339,6 @@ public partial class SkinModel : BaseModel
 
     public override void Close()
     {
-        
+
     }
 }

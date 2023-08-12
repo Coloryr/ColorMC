@@ -4,9 +4,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using System.Text;
+using System.Text.Json.Nodes;
 using Tomlyn;
 using Tomlyn.Model;
 
@@ -34,11 +34,11 @@ public static class Mods
             var data = Encoding.UTF8.GetString(stream.ToArray());
             if (data.StartsWith("{"))
             {
-                var obj1 = JObject.Parse(data);
-                var obj2 = obj1.GetValue("modList") as JArray;
+                var obj1 = JsonNode.Parse(data)?.AsObject();
+                var obj2 = obj1?["modList"]?.AsArray();
                 if (obj2?.Count > 0)
                 {
-                    var obj3 = obj2[0].ToObject<ModObj>()!;
+                    var obj3 = obj2[0]!.GetValue<ModObj>()!;
                     obj3.name ??= "";
                     obj3.modid ??= "";
                     obj3.V2 = false;
@@ -48,10 +48,10 @@ public static class Mods
             }
             else if (data.StartsWith("["))
             {
-                var obj1 = JArray.Parse(data);
+                var obj1 = JsonNode.Parse(data)!.AsArray();
                 if (obj1?.Count > 0)
                 {
-                    var obj3 = obj1[0].ToObject<ModObj>()!;
+                    var obj3 = obj1[0]!.GetValue<ModObj>()!;
                     obj3.name ??= "";
                     obj3.modid ??= "";
                     obj3.V2 = false;
@@ -69,7 +69,7 @@ public static class Mods
             using var stream = new MemoryStream();
             await stream1.CopyToAsync(stream);
             var data = Encoding.UTF8.GetString(stream.ToArray());
-            var obj1 = JObject.Parse(data);
+            var obj1 = JsonNode.Parse(data)!.AsObject();
             var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
             if (obj2 == null)
                 return null;
@@ -78,10 +78,10 @@ public static class Mods
             {
                 V2 = true,
                 Loader = Loaders.Forge,
-                modid = obj2["modId"]?["value"]?.ToString(),
-                name = obj2["names"]?["value"]?.ToString(),
+                modid = obj2["modId"]?["value"]?.ToString() ?? "",
+                name = obj2["names"]?["value"]?.ToString() ?? "",
                 version = obj2["version"]?["value"]?.ToString(),
-                requiredMods = new() { obj2["dependencies"]?["value"]?.ToString() },
+                requiredMods = new() { obj2["dependencies"]?["value"]?.ToString() ?? "" },
                 CoreMod = true
             };
 
@@ -109,16 +109,26 @@ public static class Mods
                 V2 = true,
                 Loader = Loaders.Forge,
             };
-            model2.TryGetValue("modId", out object item2);
-            obj3.modid = item2 as string;
-            model2.TryGetValue("displayName", out item2);
-            obj3.name = item2 as string;
-            model2.TryGetValue("modId", out item2);
-            obj3.modid = item2 as string;
-            model2.TryGetValue("description", out item2);
-            obj3.description = item2 as string;
-            model2.TryGetValue("version", out item2);
-            obj3.version = item2 as string;
+            if (model2.TryGetValue("modId", out object item2))
+            {
+                obj3.modid = item2 as string ?? "";
+            }
+            if (model2.TryGetValue("displayName", out item2))
+            {
+                obj3.name = item2 as string ?? "";
+            }
+            if (model2.TryGetValue("modId", out item2))
+            {
+                obj3.modid = item2 as string ?? "";
+            }
+            if (model2.TryGetValue("description", out item2))
+            {
+                obj3.description = item2 as string;
+            }
+            if (model2.TryGetValue("version", out item2))
+            {
+                obj3.version = item2 as string;
+            }
             if (model2.TryGetValue("authorList", out item2))
             {
                 obj3.authorList = (item2 as string)?.ToStringList();
@@ -144,9 +154,10 @@ public static class Mods
                     {
                         if (item3.TryGetValue("modId", out item2)
                         && item3.TryGetValue("mandatory", out var item4)
-                        && item4?.ToString()?.ToLower() == "true")
+                        && item4?.ToString()?.ToLower() == "true"
+                        && item2 is string str)
                         {
-                            obj3.requiredMods.Add(item2 as string);
+                            obj3.requiredMods.Add(str);
                         }
                     }
                 }
@@ -163,16 +174,16 @@ public static class Mods
             using var stream = new MemoryStream();
             await stream1.CopyToAsync(stream);
             var data = Encoding.UTF8.GetString(stream.ToArray());
-            var obj1 = JObject.Parse(data);
+            var obj1 = JsonNode.Parse(data)!.AsObject();
             var obj3 = new ModObj
             {
                 Loader = Loaders.Fabric,
                 V2 = true,
-                modid = obj1["id"]?.ToString(),
-                name = obj1["name"]?.ToString(),
+                modid = obj1["id"]?.ToString() ?? "",
+                name = obj1["name"]?.ToString() ?? "",
                 description = obj1["description"]?.ToString(),
                 version = obj1["version"]?.ToString(),
-                authorList = (obj1["authors"] as JArray)?.ToStringList(),
+                authorList = (obj1["authors"]?.AsArray())?.ToStringList(),
                 url = obj1["contact"]?["homepage"]?.ToString(),
             };
 
@@ -181,9 +192,12 @@ public static class Mods
             if (obj1.ContainsKey("depends"))
             {
                 obj3.requiredMods = new();
-                foreach (var item3 in (obj1["depends"] as JObject)!.Properties())
+                if (obj1["depends"]?.AsObject() is { } obj4)
                 {
-                    obj3.requiredMods.Add(item3.Name);
+                    foreach (var item3 in obj4)
+                    {
+                        obj3.requiredMods.Add(item3.Key);
+                    }
                 }
             }
 
@@ -217,8 +231,8 @@ public static class Mods
             using var stream = new MemoryStream();
             await stream1.CopyToAsync(stream);
             var data = Encoding.UTF8.GetString(stream.ToArray());
-            var obj1 = JObject.Parse(data);
-            if (obj1["quilt_loader"] is not JObject obj2)
+            var obj1 = JsonNode.Parse(data)?.AsObject();
+            if (obj1?["quilt_loader"]?.AsObject() is not { } obj4)
             {
                 return null;
             }
@@ -226,22 +240,25 @@ public static class Mods
             {
                 Loader = Loaders.Quilt,
                 V2 = true,
-                modid = obj2["id"]?.ToString(),
-                name = obj2["metadata"]?["name"]?.ToString(),
-                description = obj2["metadata"]?["description"]?.ToString(),
-                version = obj2["version"]?.ToString(),
-                authorList = (obj2["metadata"]?["contributors"] as JObject)?.ToStringList(),
-                url = obj2["contact"]?["homepage"]?.ToString(),
+                modid = obj4["id"]?.ToString() ?? "",
+                name = obj4["metadata"]?["name"]?.ToString() ?? "",
+                description = obj4["metadata"]?["description"]?.ToString(),
+                version = obj4["version"]?.ToString(),
+                authorList = (obj4["metadata"]?["contributors"]?.AsObject())?.ToStringList(),
+                url = obj4["contact"]?["homepage"]?.ToString(),
             };
 
             obj3.name ??= "";
 
-            if (obj2.ContainsKey("depends"))
+            obj3.requiredMods = new();
+            if (obj4["depends"]?.AsArray() is { } obj5)
             {
-                obj3.requiredMods = new();
-                foreach (var item3 in obj2["depends"]!)
+                foreach (var item3 in obj5)
                 {
-                    obj3.requiredMods.Add(item3["id"]?.ToString());
+                    if(item3?["id"]?.ToString() is string str)
+                    {
+                        obj3.requiredMods.Add(str);
+                    }
                 }
             }
 
@@ -493,18 +510,18 @@ public static class Mods
     /// 作者分割
     /// </summary>
     /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this JArray array)
+    private static List<string> ToStringList(this JsonArray array)
     {
         List<string> list = new();
         foreach (var item in array)
         {
-            if (item is JObject obj && obj.ContainsKey("name"))
+            if (item is JsonObject obj && obj.ContainsKey("name"))
             {
                 list.Add(item["name"]!.ToString());
             }
             else
             {
-                list.Add(item.ToString());
+                list.Add(item!.ToString());
             }
         }
 
@@ -515,7 +532,7 @@ public static class Mods
     /// 作者分割
     /// </summary>
     /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this JObject array)
+    private static List<string> ToStringList(this JsonObject array)
     {
         List<string> list = new();
         foreach (var item in array)
@@ -532,20 +549,20 @@ public static class Mods
     /// <param name="obj"></param>
     /// <param name="key">键名</param>
     /// <returns>obj</returns>
-    private static JContainer? FindKey(this JObject obj, string key)
+    private static JsonNode? FindKey(this JsonObject obj, string key)
     {
         foreach (var item in obj)
         {
             if (item.Key == key)
             {
-                return item.Value?.Parent;
+                return item.Value!.Root;
             }
 
-            if (item.Value is JObject obj1)
+            if (item.Value is JsonObject obj1)
             {
                 return FindKey(obj1, key);
             }
-            else if (item.Value is JArray arry)
+            else if (item.Value is JsonArray arry)
             {
                 return FindKey(arry, key);
             }
@@ -560,11 +577,11 @@ public static class Mods
     /// <param name="obj"></param>
     /// <param name="key">键名</param>
     /// <returns>obj</returns>
-    private static JContainer? FindKey(this JArray obj, string key)
+    private static JsonNode? FindKey(this JsonArray obj, string key)
     {
         foreach (var item in obj)
         {
-            if (item is JObject obj1)
+            if (item is JsonObject obj1)
             {
                 var data = FindKey(obj1, key);
                 if (data != null)

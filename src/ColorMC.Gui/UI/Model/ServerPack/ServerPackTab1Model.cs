@@ -81,6 +81,6 @@ public partial class ServerPackTab1Model : ServerPackBaseModel
 
     public override void Close()
     {
-        
+
     }
 }

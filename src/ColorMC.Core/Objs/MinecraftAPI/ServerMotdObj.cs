@@ -1,5 +1,5 @@
 ﻿using ColorMC.Core.Net.Motd;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Minecraft;
 
@@ -14,28 +14,28 @@ public enum StateType
 [JsonConverter(typeof(ServerDescriptionJsonConverter))]
 public class Chat
 {
-    [JsonProperty("text")]
+    [JsonPropertyName("text")]
     public string Text { get; set; } = "";
 
-    [JsonProperty("bold")]
+    [JsonPropertyName("bold")]
     public bool Bold { get; set; }
 
-    [JsonProperty("italic")]
+    [JsonPropertyName("italic")]
     public bool Italic { get; set; }
 
-    [JsonProperty("underlined")]
+    [JsonPropertyName("underlined")]
     public bool Underlined { get; set; }
 
-    [JsonProperty("strikethrough")]
+    [JsonPropertyName("strikethrough")]
     public bool Strikethrough { get; set; }
 
-    [JsonProperty("obfuscated")]
+    [JsonPropertyName("obfuscated")]
     public bool Obfuscated { get; set; }
 
-    [JsonProperty("color")]
+    [JsonPropertyName("color")]
     public string Color { get; set; }
 
-    [JsonProperty("extra")]
+    [JsonPropertyName("extra")]
     public List<Chat> Extra { get; set; }
 
     public override string ToString()
@@ -69,19 +69,19 @@ public record Player
 
 public record ModInfo
 {
-    [JsonProperty("type")]
+    [JsonPropertyName("type")]
     public string Type { get; set; }
 
-    [JsonProperty("modList")]
+    [JsonPropertyName("modList")]
     public List<Mod> ModList { get; set; }
 }
 
 public record Mod
 {
-    [JsonProperty("modid")]
+    [JsonPropertyName("modid")]
     public string ModId { get; set; }
 
-    [JsonProperty("version")]
+    [JsonPropertyName("version")]
     public string Version { get; set; }
 }
 
@@ -102,31 +102,31 @@ public class ServerMotdObj
     /// <summary>
     /// The server version info such name or protocol
     /// </summary>
-    [JsonProperty("version")]
+    [JsonPropertyName("version")]
     public ServerVersionInfo Version { get; set; }
 
     /// <summary>
     /// The server player info such max or current player count and sample.
     /// </summary>
-    [JsonProperty("players")]
+    [JsonPropertyName("players")]
     public ServerPlayerInfo Players { get; set; }
 
     /// <summary>
     /// Server's description (aka motd)
     /// </summary>
-    [JsonProperty("description")]
+    [JsonPropertyName("description")]
     public Chat Description { get; private set; }
 
     /// <summary>
     /// server's favicon. is a png image that is base64 encoded
     /// </summary>
-    [JsonProperty("favicon")]
+    [JsonPropertyName("favicon")]
     public string Favicon { get; set; }
 
     /// <summary>
     /// Server's mod info including mod type and mod list (if is avaliable)
     /// </summary>
-    [JsonProperty("modinfo")]
+    [JsonPropertyName("modinfo")]
     public ModInfo ModInfo { get; private set; }
 
     [JsonIgnore]

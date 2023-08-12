@@ -74,5 +74,6 @@ public partial class GameEditTab10Model : GameModel
     public override void Close()
     {
         ServerList.Clear();
+        _item = null;
     }
 }

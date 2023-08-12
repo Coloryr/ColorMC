@@ -3,8 +3,8 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Helpers;
 
@@ -66,8 +66,8 @@ public static class AuthlibHelper
             return null;
         try
         {
-            var obj = JObject.Parse(data.Item2!);
-            var sha1 = obj["jarHash"]!.ToString().ToLower();
+            var obj = JsonNode.Parse(data.Item2!)?.AsObject();
+            var sha1 = obj?["jarHash"]!.ToString().ToLower();
             item.SHA1 = sha1;
             if (!File.Exists(NowNide8Injector))
             {
@@ -108,7 +108,7 @@ public static class AuthlibHelper
                 new Exception(url), false);
             throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
         }
-        var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Item2!)
+        var obj = JsonSerializer.Deserialize<AuthlibInjectorMetaObj>(meta.Item2!)
             ?? throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
         var item = obj.artifacts.Where(a => a.build_number == obj.latest_build_number).ToList()[0];
 
@@ -118,7 +118,7 @@ public static class AuthlibHelper
             ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"), new Exception(url), false);
             throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
         }
-        return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Item2!)
+        return JsonSerializer.Deserialize<AuthlibInjectorObj>(info.Item2!)
             ?? throw new Exception(LanguageHelper.Get("AuthlibInjector.Error1"));
     }
 

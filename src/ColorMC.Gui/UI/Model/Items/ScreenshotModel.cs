@@ -1,16 +1,7 @@
-﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Flyouts;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -28,6 +19,8 @@ public partial class ScreenshotModel : ObservableObject
     public string Name { get; }
 
     public Task<Bitmap> Image => GetImage();
+
+    private Bitmap _img;
 
     public ScreenshotModel(GameEditTab9Model top, string obj)
     {
@@ -51,12 +44,19 @@ public partial class ScreenshotModel : ObservableObject
             image.SaveAsBmp(stream);
 
             stream.Seek(0, SeekOrigin.Begin);
-            return new Bitmap(stream);
+            _img = new Bitmap(stream);
+
+            return _img;
         });
     }
 
     public void Select()
     {
         Top.SetSelect(this);
+    }
+
+    public void Close()
+    {
+        _img?.Dispose();
     }
 }

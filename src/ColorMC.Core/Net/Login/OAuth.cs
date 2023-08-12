@@ -2,9 +2,10 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Net.Login;
 
@@ -51,7 +52,7 @@ public static class OAuthAPI
     private static async Task<string> PostString(string url, Dictionary<string, string> arg)
     {
         FormUrlEncodedContent content = new(arg);
-        var message = await BaseClient.LoginClient.PostAsync(url, content);
+        using var message = await BaseClient.LoginClient.PostAsync(url, content);
 
         return await message.Content.ReadAsStringAsync();
     }
@@ -61,13 +62,13 @@ public static class OAuthAPI
     /// <param name="url">网址</param>
     /// <param name="arg">参数</param>
     /// <returns>数据</returns>
-    private static async Task<JObject> PostObj(string url, object arg)
+    private static async Task<JsonNode?> PostObj(string url, object arg)
     {
-        var data1 = JsonConvert.SerializeObject(arg);
+        var data1 = JsonSerializer.Serialize(arg);
         StringContent content = new(data1, MediaTypeHeaderValue.Parse("application/json"));
-        var message = await BaseClient.LoginClient.PostAsync(url, content);
-        var data = await message.Content.ReadAsStringAsync();
-        return JObject.Parse(data);
+        using var message = await BaseClient.LoginClient.PostAsync(url, content);
+        using var data = await message.Content.ReadAsStreamAsync();
+        return JsonNode.Parse(data);
     }
     /// <summary>
     /// 请求数据
@@ -75,12 +76,12 @@ public static class OAuthAPI
     /// <param name="url">网址</param>
     /// <param name="arg">参数</param>
     /// <returns>数据</returns>
-    private static async Task<JObject> PostObj(string url, Dictionary<string, string> arg)
+    private static async Task<JsonNode?> PostObj(string url, Dictionary<string, string> arg)
     {
         FormUrlEncodedContent content = new(arg);
-        var message = await BaseClient.LoginClient.PostAsync(url, content);
-        var data = await message.Content.ReadAsStringAsync();
-        return JObject.Parse(data);
+        using var message = await BaseClient.LoginClient.PostAsync(url, content);
+        using var data = await message.Content.ReadAsStreamAsync();
+        return JsonNode.Parse(data);
     }
 
     /// <summary>
@@ -95,17 +96,16 @@ public static class OAuthAPI
             return (LoginState.Error,
                 LanguageHelper.Get("Core.Login.Error21"), null);
         }
-        var obj1 = JObject.Parse(data);
-        var obj2 = obj1.ToObject<OAuthObj>();
-        if (obj2 == null)
+        var obj1 = JsonSerializer.Deserialize<OAuthObj>(data);
+        if (obj1 == null)
         {
             return (LoginState.JsonError,
                 LanguageHelper.Get("Core.Login.Error22"), null);
         }
-        s_code = obj2.user_code;
-        s_url = obj2.verification_uri;
-        s_deviceCode = obj2.device_code;
-        s_expiresIn = obj2.expires_in;
+        s_code = obj1.user_code;
+        s_url = obj1.verification_uri;
+        s_deviceCode = obj1.device_code;
+        s_expiresIn = obj1.expires_in;
 
         return (LoginState.Done, s_code, s_url);
     }
@@ -133,7 +133,11 @@ public static class OAuthAPI
                 return (LoginState.TimeOut, null);
             }
             var data = await PostString(OAuthToken, Arg2);
-            var obj3 = JObject.Parse(data);
+            var obj3 = JsonNode.Parse(data)?.AsObject();
+            if(obj3 == null)
+            {
+                return (LoginState.JsonError, null);
+            }
             if (obj3.ContainsKey("error"))
             {
                 string? error = obj3["error"]?.ToString();
@@ -152,7 +156,7 @@ public static class OAuthAPI
             }
             else
             {
-                var obj4 = obj3.ToObject<OAuth1Obj>();
+                var obj4 = obj3.GetValue<OAuth1Obj>();
                 if (obj4 == null)
                 {
                     return (LoginState.JsonError, null);
@@ -168,15 +172,21 @@ public static class OAuthAPI
     /// </summary>
     public static async Task<(LoginState Done, OAuth1Obj? Auth)> RefreshTokenAsync(string token)
     {
-        var dir = new Dictionary<string, string>(Arg3);
-        dir["refresh_token"] = token;
+        var dir = new Dictionary<string, string>(Arg3)
+        {
+            ["refresh_token"] = token
+        };
 
         var obj1 = await PostObj(OAuthToken, dir);
-        if (obj1.ContainsKey("error"))
+        if(obj1?.AsObject() is not { } obj2)
+        {
+            return (LoginState.JsonError, null);
+        }
+        if (obj2.ContainsKey("error"))
         {
             return (LoginState.Error, null);
         }
-        return (LoginState.Done, obj1.ToObject<OAuth1Obj>());
+        return (LoginState.Done, obj1.GetValue<OAuth1Obj>());
     }
 
     /// <summary>
@@ -196,9 +206,9 @@ public static class OAuthAPI
             RelyingParty = "http://auth.xboxlive.com",
             TokenType = "JWT"
         });
-        var xblToken = json.GetValue("Token")?.ToString();
-        var list = json["DisplayClaims"]?["xui"] as JArray;
-        var xblUhs = (list?[0] as JObject)?.GetValue("uhs")?.ToString();
+        var xblToken = json?["Token"]?.ToString();
+        var list = json?["DisplayClaims"]?["xui"]?.AsArray();
+        var xblUhs = (list?[0] as JsonObject)?["uhs"]?.ToString();
 
         if (string.IsNullOrWhiteSpace(xblToken) ||
             string.IsNullOrWhiteSpace(xblUhs))
@@ -226,9 +236,9 @@ public static class OAuthAPI
             RelyingParty = "rp://api.minecraftservices.com/",
             TokenType = "JWT"
         });
-        var xstsToken = json.GetValue("Token")?.ToString();
-        var list = json["DisplayClaims"]?["xui"] as JArray;
-        var xstsUhs = (list?[0] as JObject)?.GetValue("uhs")?.ToString();
+        var xstsToken = json?["Token"]?.ToString();
+        var list = json?["DisplayClaims"]?["xui"]?.AsArray();
+        var xstsUhs = (list?[0] as JsonObject)?["uhs"]?.ToString();
 
         if (string.IsNullOrWhiteSpace(xstsToken) ||
             string.IsNullOrWhiteSpace(xstsUhs))
@@ -248,8 +258,8 @@ public static class OAuthAPI
         {
             identityToken = $"XBL3.0 x={token};{token1}"
         });
-        var accessToken = json.GetValue("access_token")?.ToString();
-        var expireTime = json.GetValue("expires_in")?.ToString();
+        var accessToken = json?["access_token"]?.ToString();
+        var expireTime = json?["expires_in"]?.ToString();
 
         if (string.IsNullOrWhiteSpace(accessToken) ||
             string.IsNullOrWhiteSpace(expireTime))

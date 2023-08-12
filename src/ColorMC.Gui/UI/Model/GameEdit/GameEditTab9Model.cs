@@ -1,9 +1,8 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
@@ -80,6 +79,10 @@ public partial class GameEditTab9Model : GameModel
 
     public override void Close()
     {
+        foreach (var item in ScreenshotList)
+        {
+            item.Close();
+        }
         ScreenshotList.Clear();
         _last = null;
     }

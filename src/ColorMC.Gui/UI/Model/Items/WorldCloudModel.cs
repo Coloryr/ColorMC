@@ -14,6 +14,6 @@ public partial class WorldCloudModel : BaseModel
 
     public override void Close()
     {
-        
+
     }
 }

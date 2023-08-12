@@ -53,7 +53,9 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.UnhandledException += (a, e) =>
         {
-            Logs.Error(GetLanguage("Gui.Error25"), e.ExceptionObject as Exception);
+            string temp = GetLanguage("Gui.Error25");
+            Logs.Error(temp, e.ExceptionObject as Exception);
+            App.ShowError(temp, e.ExceptionObject as Exception);
         };
     }
     public static Window? LastWindow { get; set; }

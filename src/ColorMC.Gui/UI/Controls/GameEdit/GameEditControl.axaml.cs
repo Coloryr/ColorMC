@@ -44,7 +44,7 @@ public partial class GameEditControl : UserControl, IUserControl
     public string Title =>
         string.Format(App.GetLanguage("GameEditWindow.Title"), _model1.Obj.Name);
 
-    public BaseModel Model => throw new System.NotImplementedException();
+    public BaseModel Model { get; }
 
     public class TopModel : BaseModel
     {
@@ -80,6 +80,8 @@ public partial class GameEditControl : UserControl, IUserControl
 
         if (!obj.Empty)
         {
+            Model = new TopModel(this);
+
             _model1 = new(this, obj);
             _tab1.DataContext = _model1;
 
@@ -121,12 +123,6 @@ public partial class GameEditControl : UserControl, IUserControl
         {
             switch (Tabs.SelectedIndex)
             {
-                //case 0:
-                //    _model1.Load();
-                //    break;
-                //case 1:
-                //    _model2.Load();
-                //    break;
                 case 2:
                     await _model4.Load();
                     break;
@@ -265,6 +261,16 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Closed()
     {
+        _tab1.DataContext = null;
+        _tab2.DataContext = null;
+        _tab4.DataContext = null;
+        _tab5.DataContext = null;
+        _tab8.DataContext = null;
+        _tab9.DataContext = null;
+        _tab10.DataContext = null;
+        _tab11.DataContext = null;
+        _tab12.DataContext = null;
+
         App.GameEditWindows.Remove(_model1.Obj.UUID);
     }
 

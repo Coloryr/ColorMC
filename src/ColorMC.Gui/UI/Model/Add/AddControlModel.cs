@@ -1,4 +1,4 @@
-﻿using AvaloniaEdit.Utils;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -35,7 +35,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     public ObservableCollection<OptifineObj> DownloadOptifineList { get; init; } = new();
     public ObservableCollection<DownloadModDisplayModel> DownloadModList { get; init; } = new();
-    public List<string> TypeList => LanguageBinding.GetAddType();
+    public List<string> TypeList { get; init; } = LanguageBinding.GetAddType();
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
     public ObservableCollection<FileItemModel> DisplayList { get; init; } = new();
@@ -93,7 +93,7 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     public AddControlModel(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
-        
+
     }
     partial void OnTypeChanged(int value)
     {
@@ -884,6 +884,20 @@ public partial class AddControlModel : GameModel, IAddWindow
 
     public override void Close()
     {
-        throw new NotImplementedException();
+        _load = true;
+        ModList.Clear();
+        OptifineList.Clear();
+        _modsave = (null, null);
+        DownloadOptifineList.Clear();
+        DownloadModList.Clear();
+        FileList.Clear();
+        foreach (var item in DisplayList)
+        {
+            item.Close();
+        }
+        DisplayList.Clear();
+        _optifineItem = null;
+        _file = null;
+        _mod = null;
     }
 }

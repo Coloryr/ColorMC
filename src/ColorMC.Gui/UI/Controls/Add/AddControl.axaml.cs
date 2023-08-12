@@ -138,12 +138,12 @@ public partial class AddControl : UserControl, IUserControl
 
     public void Closed()
     {
-        _model.DisplayList.Clear();
-
         App.AddWindows.Remove(Obj.UUID);
 
         if (_model.Set)
+        {
             _model.Set = false;
+        }
     }
 
     public void GoFile(SourceType type, string pid)

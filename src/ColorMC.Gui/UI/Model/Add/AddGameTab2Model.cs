@@ -5,7 +5,6 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
@@ -153,6 +152,6 @@ public partial class AddGameTab2Model : AddGameControlModel
 
     public override void Close()
     {
-        
+
     }
 }

@@ -2,7 +2,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -15,7 +15,7 @@ public static class GameAPI
     /// 下载资源文件
     /// </summary>
     /// <param name="url">网址</param>
-    public static async Task<AssetsObj?> GetAssets(string url)
+    public static async Task<(AssetsObj?, string?)> GetAssets(string url)
     {
         try
         {
@@ -24,14 +24,14 @@ public static class GameAPI
             {
                 ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
-                return null;
+                return (null, null);
             }
-            return JsonConvert.DeserializeObject<AssetsObj>(data.Item2!);
+            return (JsonSerializer.Deserialize<AssetsObj>(data.Item2!), data.Item2!);
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.Error4"), e);
-            return null;
+            return (null, null);
         }
     }
 
@@ -39,7 +39,7 @@ public static class GameAPI
     /// 下载游戏数据
     /// </summary>
     /// <param name="url">网址</param>
-    public static async Task<GameArgObj?> GetGame(string url)
+    public static async Task<(GameArgObj?, string?)> GetGame(string url)
     {
         try
         {
@@ -48,21 +48,21 @@ public static class GameAPI
             {
                 ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
-                return null;
+                return (null, null);
             }
-            return JsonConvert.DeserializeObject<GameArgObj>(data.Item2!);
+            return (JsonSerializer.Deserialize<GameArgObj>(data.Item2!), data.Item2);
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.Error5"), e);
-            return null;
+            return (null, null);
         }
     }
 
     /// <summary>
     /// 下载版本数据
     /// </summary>
-    public static async Task<VersionObj?> GetVersions(SourceLocal? local = null)
+    public static async Task<(VersionObj?, string?)> GetVersions(SourceLocal? local = null)
     {
         try
         {
@@ -72,14 +72,14 @@ public static class GameAPI
             {
                 ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
-                return null;
+                return (null, null);
             }
-            return JsonConvert.DeserializeObject<VersionObj>(data.Item2!);
+            return (JsonSerializer.Deserialize<VersionObj>(data.Item2!), data.Item2);
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.Error6"), e);
-            return null;
+            return (null, null);
         }
     }
 }

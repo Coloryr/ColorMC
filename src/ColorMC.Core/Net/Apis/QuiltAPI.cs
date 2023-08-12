@@ -2,7 +2,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -32,7 +32,7 @@ public static class QuiltAPI
                 return null;
             }
 
-            var list = JsonConvert.DeserializeObject<List<QuiltMetaObj.Game>>(data.Item2!);
+            var list = JsonSerializer.Deserialize<List<QuiltMetaObj.Game>>(data.Item2!);
             if (list == null)
                 return null;
 
@@ -68,7 +68,7 @@ public static class QuiltAPI
                     new Exception(url), false);
                 return null;
             }
-            return JsonConvert.DeserializeObject<QuiltMetaObj>(data.Item2!);
+            return JsonSerializer.Deserialize<QuiltMetaObj>(data.Item2!);
         }
         catch (Exception e)
         {
@@ -94,7 +94,7 @@ public static class QuiltAPI
                 return null;
             }
 
-            var list = JsonConvert.DeserializeObject<List<FabricLoaderObj1>>(data.Item2!);
+            var list = JsonSerializer.Deserialize<List<FabricLoaderObj1>>(data.Item2!);
             if (list == null)
                 return null;
 

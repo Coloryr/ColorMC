@@ -6,9 +6,9 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Text;
+using System.Text.Json;
 
 namespace ColorMC.Core.Helpers;
 
@@ -51,7 +51,7 @@ public static class ModPackHelper
         try
         {
             var data = Encoding.UTF8.GetString(array1);
-            info = JsonConvert.DeserializeObject<CurseForgePackObj>(data)!;
+            info = JsonSerializer.Deserialize<CurseForgePackObj>(data)!;
         }
         catch (Exception e)
         {
@@ -202,7 +202,7 @@ public static class ModPackHelper
         try
         {
             var data = Encoding.UTF8.GetString(array1);
-            info = JsonConvert.DeserializeObject<CurseForgePackObj>(data)!;
+            info = JsonSerializer.Deserialize<CurseForgePackObj>(data)!;
         }
         catch (Exception e)
         {
@@ -394,7 +394,7 @@ public static class ModPackHelper
         try
         {
             var data = Encoding.UTF8.GetString(array1);
-            info = JsonConvert.DeserializeObject<ModrinthPackObj>(data)!;
+            info = JsonSerializer.Deserialize<ModrinthPackObj>(data)!;
         }
         catch (Exception e)
         {
@@ -551,7 +551,7 @@ public static class ModPackHelper
         try
         {
             var data = Encoding.UTF8.GetString(array1);
-            info = JsonConvert.DeserializeObject<ModrinthPackObj>(data)!;
+            info = JsonSerializer.Deserialize<ModrinthPackObj>(data)!;
         }
         catch (Exception e)
         {

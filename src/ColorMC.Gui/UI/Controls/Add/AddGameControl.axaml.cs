@@ -48,10 +48,11 @@ public partial class AddGameControl : UserControl, IUserControl
             _con._model1.Close();
             _con._model2.Close();
             _con._model3.Close();
+            _con = null!;
         }
     }
 
-    public BaseModel Model {get;}
+    public BaseModel Model { get; }
 
     public AddGameControl()
     {
@@ -109,6 +110,10 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public void Closed()
     {
+        _tab1.DataContext = null;
+        _tab2.DataContext = null;
+        _tab3.DataContext = null;
+
         ColorMCCore.PackState = null;
         ColorMCCore.PackUpdate = null;
         ColorMCCore.GameOverwirte = null;

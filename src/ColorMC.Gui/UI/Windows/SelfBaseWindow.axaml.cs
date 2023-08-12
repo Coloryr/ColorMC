@@ -94,7 +94,9 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     private void SelfBaseWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
         if (ICon == null || _isClose == true)
+        {
             return;
+        }
 
         e.Cancel = true;
 

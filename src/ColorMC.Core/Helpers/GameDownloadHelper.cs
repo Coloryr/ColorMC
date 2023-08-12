@@ -7,8 +7,8 @@ using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace ColorMC.Core.Helpers;
 
@@ -27,20 +27,20 @@ public static class GameDownloadHelper
     {
         var list = new List<DownloadItemObj>();
 
-        var obj1 = await GameAPI.GetGame(obj.url);
+        (var obj1, var data) = await GameAPI.GetGame(obj.url);
         if (obj1 == null)
         {
             return (GetDownloadState.Init, null);
         }
 
-        VersionPath.AddGame(obj1);
+        VersionPath.AddGame(obj1.id, data!);
         var obj2 = await GameAPI.GetAssets(obj1.assetIndex.url);
-        if (obj2 == null)
+        if (obj2.Item1 == null)
         {
             return (GetDownloadState.GetInfo, null);
         }
 
-        obj1.AddIndex(obj2);
+        obj1.AddIndex(obj2.Item2!);
         list.Add(new()
         {
             Name = $"{obj.id}.jar",
@@ -51,7 +51,7 @@ public static class GameDownloadHelper
 
         list.AddRange(await GameHelper.MakeGameLibs(obj1));
 
-        foreach (var item1 in obj2.objects)
+        foreach (var item1 in obj2.Item1.objects)
         {
             list.Add(new()
             {
@@ -107,7 +107,6 @@ public static class GameDownloadHelper
             return (GetDownloadState.Init, null);
         }
 
-        string name = $"forge-{mc}-{version}";
         using ZipFile zFile = new(down.Local);
         using MemoryStream stream1 = new();
         using MemoryStream stream2 = new();
@@ -138,7 +137,7 @@ public static class GameDownloadHelper
             {
                 var array = stream1.ToArray();
                 var data = Encoding.UTF8.GetString(stream1.ToArray());
-                info = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
+                info = JsonSerializer.Deserialize<ForgeLaunchObj>(data)!;
                 VersionPath.AddGame(info, array, mc, version, neo);
             }
             catch (Exception e)
@@ -154,7 +153,7 @@ public static class GameDownloadHelper
             {
                 var array = stream2.ToArray();
                 var data = Encoding.UTF8.GetString(array);
-                info1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
+                info1 = JsonSerializer.Deserialize<ForgeInstallObj>(data)!;
                 VersionPath.AddGame(info1, array, mc, version, neo);
             }
             catch (Exception e)
@@ -174,7 +173,7 @@ public static class GameDownloadHelper
             try
             {
                 var data = Encoding.UTF8.GetString(array1);
-                obj = JsonConvert.DeserializeObject<ForgeInstallObj1>(data)!;
+                obj = JsonSerializer.Deserialize<ForgeInstallObj1>(data)!;
                 info = new()
                 {
                     id = obj.versionInfo.id,
@@ -274,7 +273,7 @@ public static class GameDownloadHelper
         {
             return (GetDownloadState.GetInfo, null);
         }
-        var meta1 = JsonConvert.DeserializeObject<FabricLoaderObj>(data);
+        var meta1 = JsonSerializer.Deserialize<FabricLoaderObj>(data);
         if (meta1 == null)
         {
             return (GetDownloadState.GetInfo, null);
@@ -346,7 +345,7 @@ public static class GameDownloadHelper
         {
             return (GetDownloadState.GetInfo, null);
         }
-        var meta1 = JsonConvert.DeserializeObject<QuiltLoaderObj>(data);
+        var meta1 = JsonSerializer.Deserialize<QuiltLoaderObj>(data);
         if (meta1 == null)
         {
             return (GetDownloadState.GetInfo, null);

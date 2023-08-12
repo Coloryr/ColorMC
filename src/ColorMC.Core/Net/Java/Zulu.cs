@@ -1,5 +1,5 @@
 using ColorMC.Core.Objs.Java;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace ColorMC.Core.Net.Java;
 
@@ -20,6 +20,6 @@ public static class Zulu
             ColorMCCore.OnError?.Invoke(str, null, false);
             return null;
         }
-        return JsonConvert.DeserializeObject<List<ZuluObj>>(str);
+        return JsonSerializer.Deserialize<List<ZuluObj>>(str);
     }
 }

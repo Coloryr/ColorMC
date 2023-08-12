@@ -202,6 +202,7 @@ public partial class AddJavaControlModel : BaseModel
 
     public override void Close()
     {
+        _load = true;
         _list1.Clear();
         JavaList.Clear();
     }

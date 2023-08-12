@@ -33,4 +33,9 @@ public partial class Tab2Control : UserControl
     {
         _model.ItemEdit();
     }
+
+    public void Closed()
+    {
+        _model = null;
+    }
 }

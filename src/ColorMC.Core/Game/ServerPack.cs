@@ -5,7 +5,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace ColorMC.Core.Game;
 
@@ -204,7 +204,7 @@ public static class ServerPack
         if (File.Exists(file))
         {
             var data = File.ReadAllText(file);
-            obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
+            obj1 = JsonSerializer.Deserialize<ServerPackObj>(data);
         }
 
         if (obj1 != null)
@@ -227,7 +227,7 @@ public static class ServerPack
         if (File.Exists(file))
         {
             var data = File.ReadAllText(file);
-            obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
+            obj1 = JsonSerializer.Deserialize<ServerPackObj>(data);
         }
 
         if (obj1 != null)
@@ -448,8 +448,8 @@ public static class ServerPack
             File.Copy(obj.UI, file);
         }
 
-        File.WriteAllText(Path.GetFullPath(local + "server.json"),
-            JsonConvert.SerializeObject(obj1));
+        File.WriteAllBytes(Path.GetFullPath(local + "server.json"),
+            JsonSerializer.SerializeToUtf8Bytes(obj1));
 
         return !fail;
     }
@@ -469,7 +469,7 @@ public static class ServerPack
                     new Exception(url), false);
             return (false, null);
         }
-        var obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data.Item2!);
+        var obj1 = JsonSerializer.Deserialize<ServerPackObj>(data.Item2!);
         if (obj1 == null)
         {
             return (false, null);

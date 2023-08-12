@@ -58,8 +58,7 @@ public partial class Tab4Control : UserControl
         _model.Drop(e.Data);
     }
 
-    private void DataGrid1_CellPointerPressed(object? sender,
-        DataGridCellPointerPressedEventArgs e)
+    private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
     {
         Dispatcher.UIThread.Post(() =>
         {

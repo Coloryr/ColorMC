@@ -21,7 +21,7 @@ public partial class DownloadModel : BaseModel
 {
     public ObservableCollection<DownloadDisplayModel> ItemList { get; init; } = new();
 
-    public Dictionary<string, DownloadDisplayModel> List1 = new();
+    private readonly Dictionary<string, DownloadDisplayModel> _downloadList = new();
 
     private long _count;
     private readonly Timer _timer;
@@ -77,7 +77,7 @@ public partial class DownloadModel : BaseModel
         if (res)
         {
             ItemList.Clear();
-            List1.Clear();
+            _downloadList.Clear();
             BaseBinding.DownloadStop();
         }
     }
@@ -99,20 +99,20 @@ public partial class DownloadModel : BaseModel
                 State = item.State.GetName(),
             };
             Dispatcher.UIThread.Post(() => ItemList.Add(item11));
-            List1.Add(item.Name, item11);
+            _downloadList.Add(item.Name, item11);
             _timer.Start();
 
             return;
         }
 
-        if (!List1.TryGetValue(item.Name, out DownloadDisplayModel? value))
+        if (!_downloadList.TryGetValue(item.Name, out DownloadDisplayModel? value))
         {
             return;
         }
         value.State = item.State.GetName();
 
         if (item.State == DownloadItemState.Done
-            && List1.TryGetValue(item.Name, out var item1))
+            && _downloadList.TryGetValue(item.Name, out var item1))
         {
             var data = BaseBinding.GetDownloadSize();
             Load();
@@ -145,5 +145,7 @@ public partial class DownloadModel : BaseModel
     public override void Close()
     {
         _timer.Dispose();
+        ItemList.Clear();
+        _downloadList.Clear();
     }
 }

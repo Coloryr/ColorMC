@@ -1,10 +1,10 @@
 using ColorMC.Core.Objs.Minecraft;
 using Heijden.Dns.Portable;
 using Heijden.DNS;
-using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 
 namespace ColorMC.Core.Net.Motd;
 
@@ -159,7 +159,11 @@ public static class ServerMotd
                     if (ProtocolHandler.ReadNextVarInt(packetData) == 0x00) //Read Packet ID
                     {
                         string result = ProtocolHandler.ReadNextString(packetData); //Get the Json data
-                        JsonConvert.PopulateObject(result, info);
+                        var info1 = JsonSerializer.Deserialize<ServerMotdObj>(result);
+                        if(info1 != null)
+                        {
+                            info = info1;
+                        }
                     }
                 }
 

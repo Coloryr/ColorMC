@@ -2,8 +2,6 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UIBinding;
 using System.Collections.Generic;
 
 namespace ColorMC.Gui.UIBinding;
@@ -15,7 +13,7 @@ public static class LanguageBinding
     /// </summary>
     /// <returns>选项</returns>
     public static List<string> GetFilterName()
-    { 
+    {
         return new()
         {
             App.GetLanguage("Text.Name"),
@@ -25,7 +23,7 @@ public static class LanguageBinding
     }
 
     public static List<string> GetExportName()
-    { 
+    {
         return new()
         {
             App.GetLanguage("BaseBinding.Export.Item1"),
@@ -52,7 +50,7 @@ public static class LanguageBinding
     /// </summary>
     /// <returns>选项</returns>
     public static List<string> GetSkinRotateName()
-    { 
+    {
         return new()
         {
             App.GetLanguage("BaseBinding.SkinRotate.Item1"),

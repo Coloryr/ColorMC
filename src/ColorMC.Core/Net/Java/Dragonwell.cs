@@ -1,5 +1,5 @@
 using ColorMC.Core.Objs.Java;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace ColorMC.Core.Net.Java;
 
@@ -16,6 +16,6 @@ public static class Dragonwell
             return null;
         var str = await data.Content.ReadAsStringAsync();
 
-        return JsonConvert.DeserializeObject<DragonwellObj>(str);
+        return JsonSerializer.Deserialize<DragonwellObj>(str);
     }
 }

@@ -31,7 +31,7 @@ public partial class GameLogTabModel : GameModel
 
     public string Temp { get; private set; } = "";
 
-    private readonly Timer t_timer;
+    private readonly Timer _timer;
 
     public GameLogTabModel(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
@@ -39,10 +39,10 @@ public partial class GameLogTabModel : GameModel
 
         _text = new();
 
-        t_timer = new(TimeSpan.FromMilliseconds(100));
-        t_timer.BeginInit();
-        t_timer.Elapsed += Timer_Elapsed;
-        t_timer.EndInit();
+        _timer = new(TimeSpan.FromMilliseconds(100));
+        _timer.BeginInit();
+        _timer.Elapsed += Timer_Elapsed;
+        _timer.EndInit();
 
         if (!obj.Empty)
         {
@@ -127,9 +127,9 @@ public partial class GameLogTabModel : GameModel
 
     public void Log(string data)
     {
-        if (!t_timer.Enabled)
+        if (!_timer.Enabled)
         {
-            t_timer.Start();
+            _timer.Start();
         }
         if (string.IsNullOrWhiteSpace(File))
         {
@@ -171,5 +171,7 @@ public partial class GameLogTabModel : GameModel
     public override void Close()
     {
         FileList.Clear();
+        _text = null;
+        _timer.Dispose();
     }
 }

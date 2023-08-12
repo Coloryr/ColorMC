@@ -1,16 +1,8 @@
-﻿using Avalonia.Controls;
-using Avalonia.Media.Imaging;
+﻿using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Flyouts;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 

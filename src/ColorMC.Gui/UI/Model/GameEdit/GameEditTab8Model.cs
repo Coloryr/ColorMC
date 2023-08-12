@@ -1,12 +1,10 @@
 using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
@@ -100,6 +98,10 @@ public partial class GameEditTab8Model : GameModel
 
     public override void Close()
     {
+        foreach (var item in ResourcePackList)
+        {
+            item.Close();
+        }
         ResourcePackList.Clear();
         _last = null;
     }

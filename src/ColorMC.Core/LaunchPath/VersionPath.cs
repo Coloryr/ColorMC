@@ -4,7 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -68,20 +68,20 @@ public static class VersionPath
     /// <returns></returns>
     public static async Task GetFromWeb()
     {
-        Versions = await GameAPI.GetVersions();
+        (Versions, var data) = await GameAPI.GetVersions();
         if (Versions != null)
         {
-            SaveVersions();
+            SaveVersions(data!);
             return;
         }
-        Versions = await GameAPI.GetVersions(SourceLocal.Offical);
+        (Versions, data) = await GameAPI.GetVersions(SourceLocal.Offical);
         if (Versions == null)
         {
             Logs.Error(LanguageHelper.Get("Core.Path.Error3"));
         }
         else
         {
-            SaveVersions();
+            SaveVersions(data!);
         }
     }
 
@@ -103,7 +103,7 @@ public static class VersionPath
         if (File.Exists(file))
         {
             string data = File.ReadAllText(file);
-            Versions = JsonConvert.DeserializeObject<VersionObj>(data);
+            Versions = JsonSerializer.Deserialize<VersionObj>(data);
         }
         else
         {
@@ -114,28 +114,20 @@ public static class VersionPath
     /// <summary>
     /// 保存版本信息
     /// </summary>
-    public static void SaveVersions()
+    public static void SaveVersions(string data)
     {
-        if (Versions == null)
-        {
-            return;
-        }
         string file = BaseDir + "/version.json";
-        File.WriteAllText(file, JsonConvert.SerializeObject(Versions));
+        File.WriteAllText(file, data);
     }
 
     /// <summary>
     /// 添加版本信息
     /// </summary>
     /// <param name="obj">游戏数据</param>
-    public static void AddGame(GameArgObj? obj)
+    public static void AddGame(string id, string data)
     {
-        if (obj == null)
-        {
-            return;
-        }
-        string file = $"{BaseDir}/{obj.id}.json";
-        File.WriteAllText(file, JsonConvert.SerializeObject(obj));
+        string file = $"{BaseDir}/{id}.json";
+        File.WriteAllText(file, data);
     }
 
     /// <summary>
@@ -226,7 +218,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<GameArgObj>(File.ReadAllText(file))!;
+        var obj = JsonSerializer.Deserialize<GameArgObj>(File.ReadAllText(file))!;
         s_gameArgs.Add(version, obj);
         return obj;
     }
@@ -248,7 +240,12 @@ public static class VersionPath
         var data = Versions.versions.Where(a => a.id == version).FirstOrDefault();
         if (data != null)
         {
-            AddGame(await GameAPI.GetGame(data.url));
+            (var obj, var data1) = await GameAPI.GetGame(data.url);
+            if (obj == null)
+            {
+                return;
+            }
+            AddGame(obj.id, data1!);
         }
     }
 
@@ -273,7 +270,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file))!;
+        var obj = JsonSerializer.Deserialize<ForgeInstallObj>(File.ReadAllText(file))!;
         s_forgeInstalls.Add(key, obj);
         return obj;
     }
@@ -309,7 +306,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file))!;
+        var obj = JsonSerializer.Deserialize<ForgeLaunchObj>(File.ReadAllText(file))!;
         s_neoForgeLaunchs.Add(key, obj);
         return obj;
     }
@@ -334,7 +331,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file))!;
+        var obj = JsonSerializer.Deserialize<ForgeInstallObj>(File.ReadAllText(file))!;
         s_neoForgeInstalls.Add(key, obj);
         return obj;
     }
@@ -369,7 +366,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file))!;
+        var obj = JsonSerializer.Deserialize<ForgeLaunchObj>(File.ReadAllText(file))!;
         s_forgeLaunchs.Add(key, obj);
         return obj;
     }
@@ -404,7 +401,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<FabricLoaderObj>(File.ReadAllText(file))!;
+        var obj = JsonSerializer.Deserialize<FabricLoaderObj>(File.ReadAllText(file))!;
         s_fabricLoaders.Add(key, obj);
         return obj;
     }
@@ -439,7 +436,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<QuiltLoaderObj>(File.ReadAllText(file))!;
+        var obj = JsonSerializer.Deserialize<QuiltLoaderObj>(File.ReadAllText(file))!;
         s_quiltLoaders.Add(key, obj);
         return obj;
     }

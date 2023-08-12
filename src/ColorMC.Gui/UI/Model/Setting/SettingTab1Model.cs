@@ -180,6 +180,6 @@ public partial class SettingTab1Model : BaseModel
 
     public override void Close()
     {
-        
+
     }
 }

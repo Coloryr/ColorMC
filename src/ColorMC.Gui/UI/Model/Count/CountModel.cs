@@ -219,6 +219,6 @@ public partial class CountModel : BaseModel
 
     public override void Close()
     {
-        
+
     }
 }

@@ -16,7 +16,7 @@ public partial class ServerPackModel : ServerPackBaseModel
 
     public override void Close()
     {
-        
+
     }
 
     [RelayCommand]

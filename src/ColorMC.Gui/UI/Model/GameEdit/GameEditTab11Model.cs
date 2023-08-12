@@ -1,9 +1,7 @@
 ﻿using Avalonia.Input;
 using AvaloniaEdit.Utils;
-using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -80,5 +78,6 @@ public partial class GameEditTab11Model : GameModel
     public override void Close()
     {
         ShaderpackList.Clear();
+        _item = null;
     }
 }

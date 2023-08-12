@@ -1,16 +1,17 @@
 ﻿using ColorMC.Core.Objs.Minecraft;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Net.Motd;
 
 public class ServerDescriptionJsonConverter : JsonConverter<Chat>
 {
-    public override Chat? ReadJson(JsonReader reader, Type objectType, Chat? existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public override Chat? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType == JsonToken.String)
+        if (reader.TokenType == JsonTokenType.String)
         {
-            var str1 = reader.Value?.ToString();
+            var str1 = reader.GetString();
             if (string.IsNullOrWhiteSpace(str1))
                 return new Chat() { Text = "" };
 
@@ -102,15 +103,13 @@ public class ServerDescriptionJsonConverter : JsonConverter<Chat>
         }
         else
         {
-            JObject obj = JObject.Load(reader);
-            Chat chat = new();
-            serializer.Populate(obj.CreateReader(), chat);
-            return chat;
+            var obj = JsonNode.Parse(reader.ValueSpan)?.AsObject();
+            return obj?.GetValue<Chat>();
         }
     }
 
-    public override void WriteJson(JsonWriter writer, Chat? value, JsonSerializer serializer)
+    public override void Write(Utf8JsonWriter writer, Chat value, JsonSerializerOptions options)
     {
-        serializer.Serialize(writer, value);
+        JsonSerializer.Serialize(writer, value, options);
     }
 }

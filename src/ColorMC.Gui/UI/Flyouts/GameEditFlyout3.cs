@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
 
@@ -15,7 +14,7 @@ public class GameEditFlyout3
     {
         _top = model.Top;
         _obj = model.Pack;
-        
+
         var fy = new FlyoutsControl(new()
         {
             (App.GetLanguage("Button.OpFile"), true, Button1_Click),

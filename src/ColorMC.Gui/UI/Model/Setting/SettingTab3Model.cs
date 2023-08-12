@@ -214,6 +214,6 @@ public partial class SettingTab3Model : BaseModel
 
     public override void Close()
     {
-        
+
     }
 }

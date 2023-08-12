@@ -50,7 +50,7 @@ public partial class AddGameTab1Model : AddGameControlModel
     [ObservableProperty]
     private bool _selectOther;
 
-    private bool _change = false;
+    private bool _load = false;
 
     public AddGameTab1Model(IUserControl con) : base(con)
     {
@@ -64,7 +64,7 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     async partial void OnSelectForgeChanged(bool value)
     {
-        if (_change)
+        if (_load)
             return;
 
         if (value)
@@ -98,7 +98,7 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     async partial void OnSelectNeoForgeChanged(bool value)
     {
-        if (_change)
+        if (_load)
             return;
 
         if (value)
@@ -132,7 +132,7 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     async partial void OnSelectFabricChanged(bool value)
     {
-        if (_change)
+        if (_load)
             return;
 
 
@@ -167,7 +167,7 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     async partial void OnSelectQuiltChanged(bool value)
     {
-        if (_change)
+        if (_load)
             return;
 
         if (value)
@@ -377,7 +377,7 @@ public partial class AddGameTab1Model : AddGameControlModel
     [RelayCommand]
     public async Task VersionSelect()
     {
-        _change = true;
+        _load = true;
 
         EnableForge = false;
         EnableNeoForge = false;
@@ -428,7 +428,7 @@ public partial class AddGameTab1Model : AddGameControlModel
         }
         ProgressClose();
 
-        _change = false;
+        _load = false;
     }
 
     [RelayCommand]
@@ -500,6 +500,7 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     public override void Close()
     {
+        _load = true;
         GameVersionList.Clear();
         LoaderVersionList.Clear();
     }

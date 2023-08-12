@@ -16,7 +16,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddModPackControlModel : BaseModel, IAddWindow
 {
-    public List<string> SourceList => LanguageBinding.GetSourceList();
+    public List<string> SourceList { get; init; } = LanguageBinding.GetSourceList();
     public ObservableCollection<FileDisplayObj> FileList { get; init; } = new();
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> CategorieList { get; init; } = new();
@@ -65,7 +65,7 @@ public partial class AddModPackControlModel : BaseModel, IAddWindow
 
     public AddModPackControlModel(IUserControl con) : base(con)
     {
-        
+
     }
 
     partial void OnGameVersion1Changed(string? value)
@@ -312,7 +312,7 @@ public partial class AddModPackControlModel : BaseModel, IAddWindow
             return;
 
         FileList.Clear();
-        Show(App.GetLanguage("AddModPackWindow.Info3"));
+        Progress(App.GetLanguage("AddModPackWindow.Info3"));
         List<FileDisplayObj>? list = null;
         if (Source == 0)
         {
@@ -390,6 +390,14 @@ public partial class AddModPackControlModel : BaseModel, IAddWindow
 
     public override void Close()
     {
+        _load = true;
         FileList.Clear();
+        foreach (var item in DisplayList)
+        {
+            item.Close();
+        }
+        DisplayList.Clear();
+        _last = null;
+        _item = null;
     }
 }

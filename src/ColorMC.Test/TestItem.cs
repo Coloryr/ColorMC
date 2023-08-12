@@ -1,5 +1,4 @@
-﻿using ColorMC.Core.Chunk;
-using ColorMC.Core.Downloader;
+﻿using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;

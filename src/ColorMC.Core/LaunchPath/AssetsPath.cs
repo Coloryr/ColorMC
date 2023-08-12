@@ -2,8 +2,8 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 using System.Collections.Concurrent;
+using System.Text.Json;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -51,15 +51,10 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">资源数据</param>
     /// <param name="game">游戏数据</param>
-    public static void AddIndex(this GameArgObj game, AssetsObj? obj)
+    public static void AddIndex(this GameArgObj game, string data)
     {
-        if (obj == null)
-        {
-            return;
-        }
-
         string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.assets}.json");
-        File.WriteAllText(file, JsonConvert.SerializeObject(obj));
+        File.WriteAllText(file, data);
     }
 
     /// <summary>
@@ -79,7 +74,7 @@ public static class AssetsPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<AssetsObj>(File.ReadAllText(file))!;
+        var obj = JsonSerializer.Deserialize<AssetsObj>(File.ReadAllText(file))!;
         s_assets.Add(game.assets, obj);
         return obj;
     }
@@ -137,9 +132,11 @@ public static class AssetsPath
         }
 
         var obj = await GameAPI.GetAssets(item.assetIndex.url);
-        if (obj == null)
+        if (obj.Item1 == null)
+        {
             return;
-        item.AddIndex(obj);
+        }
+        item.AddIndex(obj.Item2!);
     }
 
     /// <summary>

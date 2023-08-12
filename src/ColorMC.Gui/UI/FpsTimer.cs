@@ -34,8 +34,11 @@ public class FpsTimer
                     Thread.Sleep(100);
                     continue;
                 }
-                Dispatcher.UIThread.Invoke(() => _render.RequestNextFrameRendering());
-                NowFps++;
+                Dispatcher.UIThread.Post(() => 
+                {
+                    _render.RequestNextFrameRendering();
+                    NowFps++;
+                });
                 Thread.Sleep(_time);
             }
         })

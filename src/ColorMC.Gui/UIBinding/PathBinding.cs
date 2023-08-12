@@ -11,13 +11,12 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
+using System.Text.Json;
 using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
@@ -663,7 +662,11 @@ public static class PathBinding
 
                 //manifest.json
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj, Formatting.Indented));
+                    byte[] buffer = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(obj, 
+                        new JsonSerializerOptions(JsonSerializerOptions.Default)
+                    { 
+                        WriteIndented = true
+                    }));
                     var entry = new ZipEntry("manifest.json")
                     {
                         DateTime = DateTime.Now,
@@ -813,7 +816,11 @@ public static class PathBinding
 
                 //manifest.json
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj, Formatting.Indented));
+                    byte[] buffer = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(obj, 
+                        new JsonSerializerOptions(JsonSerializerOptions.Default)
+                    {
+                        WriteIndented = true
+                    }));
                     var entry = new ZipEntry("modrinth.index.json")
                     {
                         DateTime = DateTime.Now,

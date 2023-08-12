@@ -38,7 +38,27 @@ public partial class ServerPackControl : UserControl, IUserControl
     public string Title => string.Format(App.GetLanguage("ServerPackWindow.Title"),
             _model1.Obj.Game.Name);
 
-    public BaseModel Model => _model;
+    public BaseModel Model { get; }
+
+    public class TopModel : BaseModel
+    {
+        private ServerPackControl _con;
+
+        public TopModel(ServerPackControl con) : base(con)
+        {
+            _con = con;
+        }
+
+        public override void Close()
+        {
+            _con._model.Close();
+            _con._model1.Close();
+            _con._model2.Close();
+            _con._model3.Close();
+            _con._model4.Close();
+            _con = null;
+        }
+    }
 
     public ServerPackControl() : this(new() { Empty = true })
     {
@@ -51,6 +71,8 @@ public partial class ServerPackControl : UserControl, IUserControl
 
         if (!obj.Empty)
         {
+            Model = new TopModel(this);
+
             var pack = GameBinding.GetServerPack(obj);
             if (pack == null)
             {
@@ -160,6 +182,15 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public void Closed()
     {
+        _tab1.DataContext = null;
+        _tab2.DataContext = null;
+        _tab3.DataContext = null;
+        _tab4.DataContext = null;
+
+        _tab2.Closed();
+        _tab2.Closed();
+        _tab2.Closed();
+
         App.ServerPackWindows.Remove(_model1.Obj.Game.UUID);
     }
 }

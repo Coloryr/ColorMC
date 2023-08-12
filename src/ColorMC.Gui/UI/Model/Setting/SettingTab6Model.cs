@@ -1,17 +1,14 @@
 ﻿using Avalonia.Media;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 

@@ -96,6 +96,14 @@ public partial class SettingControl : UserControl, IUserControl
 
     public void Closed()
     {
+        _tab1.DataContext = null;
+        _tab2.DataContext = null;
+        _tab3.DataContext = null;
+        _tab4.DataContext = null;
+        _tab5.DataContext = null;
+        _tab6.DataContext = null;
+        _tab7.DataContext = null;
+
         App.SettingWindow = null;
     }
 

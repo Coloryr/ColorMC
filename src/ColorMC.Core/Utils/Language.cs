@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Utils;
 
@@ -17,10 +17,13 @@ public class Language
     {
         _languageList.Clear();
         using var steam = new StreamReader(item);
-        var json = JObject.Parse(steam.ReadToEnd());
-        foreach (JProperty item1 in json.Properties())
+        var json = JsonNode.Parse(steam.ReadToEnd())?.AsObject();
+        if (json != null)
         {
-            _languageList.Add(item1.Name, item1.Value.ToString());
+            foreach (var item1 in json)
+            {
+                _languageList.Add(item1.Key, item1.Value!.ToString());
+            }
         }
     }
 

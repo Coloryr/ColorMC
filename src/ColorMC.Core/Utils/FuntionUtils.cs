@@ -243,7 +243,7 @@ public static partial class FuntionUtils
 
                 if (insideEscape)
                 {
-                    currentArg.Append(c);  
+                    currentArg.Append(c);
                     insideEscape = false;
                 }
                 else if (insideQuote)

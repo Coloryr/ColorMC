@@ -1,4 +1,4 @@
-﻿using Avalonia.Media.Imaging;
+using Avalonia.Media.Imaging;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Windows;
@@ -14,6 +14,8 @@ public partial class FileItemModel : ObservableObject
     private readonly IAddWindow _add;
 
     public Task<Bitmap?> Image => GetImage();
+
+    private Bitmap? _img;
 
     public FileItemDisplayObj Data { get; init; }
     public string? Name => Data.Name;
@@ -39,14 +41,14 @@ public partial class FileItemModel : ObservableObject
         isDownload = data.IsDownload;
     }
 
-
     private async Task<Bitmap?> GetImage()
     {
         if (Data?.Logo == null)
             return null;
         try
         {
-            return await ImageUtils.Load(Data.Logo);
+            _img = await ImageUtils.Load(Data.Logo);
+            return _img;
         }
         catch (Exception e)
         {
@@ -74,5 +76,10 @@ public partial class FileItemModel : ObservableObject
     public void Next()
     {
         _add.Next();
+    }
+
+    public void Close()
+    {
+        _img?.Dispose();
     }
 }

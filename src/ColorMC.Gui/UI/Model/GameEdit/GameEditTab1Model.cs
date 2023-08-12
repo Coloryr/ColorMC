@@ -663,6 +663,7 @@ public partial class GameEditTab1Model : GameModel
 
     public override void Close()
     {
+        _load = true;
         GameVersionList.Clear();
         LoaderVersionList.Clear();
         GroupList.Clear();

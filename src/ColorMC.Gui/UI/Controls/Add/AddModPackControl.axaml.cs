@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
-public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
+public partial class AddModPackControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
@@ -95,16 +95,6 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         App.AddModPackWindow = null;
     }
 
-    public void SetSelect(FileItemModel last)
-    {
-        _model.SetSelect(last);
-    }
-
-    public void Install(FileItemModel item)
-    {
-        _model.Install();
-    }
-
     public void Opened()
     {
         Window.SetTitle(Title);
@@ -112,18 +102,5 @@ public partial class AddModPackControl : UserControl, IUserControl, IAddWindow
         DataGridFiles.SetFontColor();
 
         _model.Source = 0;
-    }
-
-    public void Back()
-    {
-        if (_model.Page <= 0)
-            return;
-
-        _model.Page -= 1;
-    }
-
-    public void Next()
-    {
-        _model.Page += 1;
     }
 }

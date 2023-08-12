@@ -8,11 +8,11 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Game;
 
@@ -201,14 +201,14 @@ public static class Launch
                 var assets = game.GetIndex();
                 if (assets == null)
                 {
-                    assets = await GameAPI.GetAssets(game.assetIndex.url);
+                    (assets, var data) = await GameAPI.GetAssets(game.assetIndex.url);
                     if (assets == null)
                     {
                         ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.AssetsError);
                         throw new LaunchException(LaunchState.AssetsError,
                             LanguageHelper.Get("Core.Launch.Error2"));
                     }
-                    game.AddIndex(assets);
+                    game.AddIndex(data!);
                 }
 
                 var list1 = await assets.Check(s_cancel);
@@ -449,9 +449,9 @@ public static class Launch
             {
                 arg.Add(item);
             }
-            else if (item is JObject obj1)
+            else if (item is JsonObject obj1)
             {
-                var obj2 = obj1.ToObject<GameArgObj.Arguments.Jvm>();
+                var obj2 = obj1.GetValue<GameArgObj.Arguments.Jvm>();
                 if (obj2 == null)
                 {
                     continue;
@@ -465,7 +465,7 @@ public static class Launch
                 {
                     arg.Add(item2!);
                 }
-                else if (obj2.value is JArray)
+                else if (obj2.value is JsonArray)
                 {
                     foreach (string item1 in obj2.value)
                     {
@@ -1442,7 +1442,7 @@ public static class Launch
         {
             try
             {
-                var res = inv(s_argLength, s_args, 0, null, 0, null,
+                var res = inv(s_argLength, s_args, 0, null!, 0, null!,
                     "", "", "", "", false, false, true, 0);
 
                 var res1 = NativeLoader.Loader.CloseLibrary(temp);
