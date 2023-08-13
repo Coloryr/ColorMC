@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -439,7 +438,7 @@ public partial class UsersModel : BaseModel
                 UserBinding.OAuthCancel();
             });
         BaseBinding.OpUrl(url);
-        await BaseBinding.CopyTextClipboard(TopLevel.GetTopLevel(Control.Con), code);
+        await BaseBinding.CopyTextClipboard(Window.TopLevel, code);
     }
 
     public override void Close()

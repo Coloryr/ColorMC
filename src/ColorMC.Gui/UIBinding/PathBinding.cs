@@ -16,7 +16,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
-using System.Text.Json;
 using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
@@ -24,6 +23,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -662,11 +662,11 @@ public static class PathBinding
 
                 //manifest.json
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(obj, 
+                    byte[] buffer = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(obj,
                         new JsonSerializerOptions(JsonSerializerOptions.Default)
-                    { 
-                        WriteIndented = true
-                    }));
+                        {
+                            WriteIndented = true
+                        }));
                     var entry = new ZipEntry("manifest.json")
                     {
                         DateTime = DateTime.Now,
@@ -816,11 +816,11 @@ public static class PathBinding
 
                 //manifest.json
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(obj, 
+                    byte[] buffer = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(obj,
                         new JsonSerializerOptions(JsonSerializerOptions.Default)
-                    {
-                        WriteIndented = true
-                    }));
+                        {
+                            WriteIndented = true
+                        }));
                     var entry = new ZipEntry("modrinth.index.json")
                     {
                         DateTime = DateTime.Now,

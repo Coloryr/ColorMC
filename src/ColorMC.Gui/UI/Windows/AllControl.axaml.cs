@@ -37,7 +37,6 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
     public IBaseWindow Window => this;
 
     public IUserControl ICon => _nowControl;
-    public UserControl Con => _nowControl.Con;
 
     public Info3Control InputInfo => Info3;
     public Info1Control ProgressInfo => Info1;
@@ -154,7 +153,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         if (_baseControl == null)
         {
             _baseControl = con;
-            MainControl.Children.Add(_baseControl.Con);
+            MainControl.Children.Add((_baseControl as Control)!);
             Dispatcher.UIThread.Post(() =>
             {
                 _baseControl.Opened();
@@ -179,7 +178,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
                 Background = ColorSel.TopBottomColor
             };
             _buttonList.Add(button);
-            grid.Children.Add(con.Con);
+            grid.Children.Add((_baseControl as Control)!);
             _switchs.Add(grid, button);
             _cons.Add(con, grid);
             _cons1.Add(grid, con);

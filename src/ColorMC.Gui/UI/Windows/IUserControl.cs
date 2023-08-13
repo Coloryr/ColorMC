@@ -7,7 +7,6 @@ namespace ColorMC.Gui.UI.Windows;
 
 public interface IUserControl
 {
-    public UserControl Con { get; }
     public IBaseWindow Window { get; }
     public string Title { get; }
     public BaseModel Model { get; }

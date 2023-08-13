@@ -50,6 +50,7 @@ public interface IBaseWindow
         else if (this is Window window)
         {
             window.Show();
+            window.Activate();
         }
     }
 }

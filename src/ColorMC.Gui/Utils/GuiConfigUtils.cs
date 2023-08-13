@@ -3,9 +3,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
-using System.Text.Json;
 using System;
 using System.IO;
+using System.Text.Json;
 
 namespace ColorMC.Gui.Utils;
 
@@ -109,7 +109,7 @@ public static class GuiConfigUtils
 
     public static void SaveNow()
     {
-        File.WriteAllText(s_local, JsonSerializer.Serialize(Config, 
+        File.WriteAllText(s_local, JsonSerializer.Serialize(Config,
             new JsonSerializerOptions(JsonSerializerOptions.Default)
             {
                 WriteIndented = true

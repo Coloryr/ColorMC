@@ -27,16 +27,16 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private bool _isClose;
 
-    public SelfBaseWindow() : this(null!)
+    public SelfBaseWindow()
     {
-
+        InitializeComponent();
     }
 
     public SelfBaseWindow(IUserControl con)
     {
-        ICon = con;
-
         InitializeComponent();
+
+        ICon = con;
 
         if (SystemInfo.Os == OsType.Linux)
         {
