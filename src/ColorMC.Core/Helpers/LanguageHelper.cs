@@ -29,7 +29,7 @@ public static class LanguageHelper
             //LanguageType.en_us => "ColorMC.Core.Resources.Language.core_en-us.json",
             _ => "ColorMC.Core.Resources.Language.core_zh-cn.json"
         };
-        Assembly assm = Assembly.GetExecutingAssembly();
+        var assm = Assembly.GetExecutingAssembly();
         using var istr = assm.GetManifestResourceStream(name)!;
         s_language.Load(istr);
     }

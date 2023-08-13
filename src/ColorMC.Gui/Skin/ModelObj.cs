@@ -1,4 +1,4 @@
-namespace ColorMC.Gui.Objs;
+﻿namespace ColorMC.Gui.Skin;
 
 public record ModelItem
 {

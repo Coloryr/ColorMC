@@ -4,7 +4,7 @@ using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Avalonia.Threading;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.PlayerModel;
+using ColorMC.Gui.Skin;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UIBinding;

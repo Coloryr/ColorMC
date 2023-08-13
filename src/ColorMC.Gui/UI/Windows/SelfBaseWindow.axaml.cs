@@ -43,11 +43,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
             SystemDecorations = SystemDecorations.Full;
             Head.IsVisible = false;
         }
-        //else
-        //{
-        //    SystemDecorations = SystemDecorations.BorderOnly;
-        //    Head.IsVisible = true;
-        //}
 
         KeyDown += Window_KeyDown;
 

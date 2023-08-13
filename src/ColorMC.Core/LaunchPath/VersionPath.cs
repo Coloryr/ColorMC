@@ -28,7 +28,31 @@ public static class VersionPath
     private readonly static Dictionary<string, FabricLoaderObj> s_fabricLoaders = new();
     private readonly static Dictionary<string, QuiltLoaderObj> s_quiltLoaders = new();
 
-    public static VersionObj? Versions { get; private set; }
+    private static VersionObj? _version;
+
+    public static VersionObj? Versions 
+    {
+        get 
+        {
+            try
+            {
+                if (_version == null)
+                {
+                    ReadVersions();
+                }
+                return _version;
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.Get("Core.Path.Error2"), e);
+                return null;
+            }
+        }
+        private set
+        { 
+            
+        }
+    }
 
     private static string ForgeDir => BaseDir + "/" + Name1;
     private static string FabricDir => BaseDir + "/" + Name2;
@@ -51,15 +75,6 @@ public static class VersionPath
         Directory.CreateDirectory(NeoForgeDir);
         Directory.CreateDirectory(FabricDir);
         Directory.CreateDirectory(QuiltDir);
-
-        try
-        {
-            ReadVersions();
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Path.Error2"), e);
-        }
     }
 
     /// <summary>
@@ -68,14 +83,14 @@ public static class VersionPath
     /// <returns></returns>
     public static async Task GetFromWeb()
     {
-        (Versions, var data) = await GameAPI.GetVersions();
+        (_version, var data) = await GameAPI.GetVersions();
         if (Versions != null)
         {
             SaveVersions(data!);
             return;
         }
-        (Versions, data) = await GameAPI.GetVersions(SourceLocal.Offical);
-        if (Versions == null)
+        (_version, data) = await GameAPI.GetVersions(SourceLocal.Offical);
+        if (_version == null)
         {
             Logs.Error(LanguageHelper.Get("Core.Path.Error3"));
         }
@@ -103,7 +118,7 @@ public static class VersionPath
         if (File.Exists(file))
         {
             string data = File.ReadAllText(file);
-            Versions = JsonSerializer.Deserialize<VersionObj>(data);
+            _version = JsonSerializer.Deserialize<VersionObj>(data);
         }
         else
         {

@@ -1,6 +1,6 @@
 ﻿using ColorMC.Gui.Objs;
 
-namespace ColorMC.Gui.PlayerModel;
+namespace ColorMC.Gui.Skin;
 
 public class Steve3DModel
 {

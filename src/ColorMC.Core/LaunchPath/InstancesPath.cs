@@ -677,8 +677,8 @@ public static class InstancesPath
 
         try
         {
-            var res = JsonSerializer.Deserialize<Dictionary<string, ModInfoObj>>(
-            File.ReadAllText(file));
+            using var stream = File.Open(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+            var res = JsonSerializer.Deserialize<Dictionary<string, ModInfoObj>>(stream);
             if (res == null)
             {
                 obj.Mods = new();

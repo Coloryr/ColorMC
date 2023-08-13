@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Utils;
 
@@ -16,9 +17,7 @@ public class Language
     public void Load(Stream item)
     {
         _languageList.Clear();
-        using var steam = new StreamReader(item);
-        var json = JsonNode.Parse(steam.ReadToEnd())?.AsObject();
-        if (json != null)
+        if (JsonNode.Parse(item)?.AsObject() is { } json)
         {
             foreach (var item1 in json)
             {
