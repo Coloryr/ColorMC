@@ -1,9 +1,9 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
-using System.Text.Json;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Net.Login;

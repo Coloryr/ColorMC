@@ -221,6 +221,6 @@ public partial class GameCloudModel : GameModel
 
     public override void Close()
     {
-        
+
     }
 }

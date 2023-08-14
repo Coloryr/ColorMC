@@ -79,6 +79,6 @@ public partial class AddGameTab3Model : AddGameControlModel
 
     public override void Close()
     {
-        
+
     }
 }

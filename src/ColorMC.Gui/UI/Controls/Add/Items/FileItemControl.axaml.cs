@@ -36,7 +36,7 @@ public partial class FileItemControl : UserControl
 
     private void FileItemControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if(DataContext is not FileItemModel model)
+        if (DataContext is not FileItemModel model)
         {
             return;
         }

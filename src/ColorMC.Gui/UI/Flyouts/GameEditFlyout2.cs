@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 

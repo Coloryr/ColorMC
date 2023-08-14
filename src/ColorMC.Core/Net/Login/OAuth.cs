@@ -3,7 +3,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
@@ -134,7 +133,7 @@ public static class OAuthAPI
             }
             var data = await PostString(OAuthToken, Arg2);
             var obj3 = JsonNode.Parse(data)?.AsObject();
-            if(obj3 == null)
+            if (obj3 == null)
             {
                 return (LoginState.JsonError, null);
             }
@@ -178,7 +177,7 @@ public static class OAuthAPI
         };
 
         var obj1 = await PostObj(OAuthToken, dir);
-        if(obj1?.AsObject() is not { } obj2)
+        if (obj1?.AsObject() is not { } obj2)
         {
             return (LoginState.JsonError, null);
         }

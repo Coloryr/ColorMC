@@ -255,7 +255,7 @@ public static class Mods
             {
                 foreach (var item3 in obj5)
                 {
-                    if(item3?["id"]?.ToString() is string str)
+                    if (item3?["id"]?.ToString() is string str)
                     {
                         obj3.requiredMods.Add(str);
                     }

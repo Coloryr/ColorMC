@@ -1,15 +1,12 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
-using Avalonia.Data.Converters;
 using Avalonia.Threading;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
 using ColorMC.Gui.UI.Model.Items;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace ColorMC.Gui.UI.Model;
 

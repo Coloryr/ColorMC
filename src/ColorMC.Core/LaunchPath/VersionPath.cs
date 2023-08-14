@@ -30,9 +30,9 @@ public static class VersionPath
 
     private static VersionObj? _version;
 
-    public static VersionObj? Versions 
+    public static VersionObj? Versions
     {
-        get 
+        get
         {
             try
             {
@@ -49,8 +49,8 @@ public static class VersionPath
             }
         }
         private set
-        { 
-            
+        {
+
         }
     }
 

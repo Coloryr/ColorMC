@@ -12,7 +12,6 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.Optifine;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using System;
@@ -335,8 +334,8 @@ public static class WebBinding
         return null;
     }
 
-    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, 
-        List<DownloadModDisplayModel>? List)> 
+    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info,
+        List<DownloadModDisplayModel>? List)>
         DownloadMod(GameSettingObj obj, CurseForgeModObj.Data? data)
     {
         if (data == null)
@@ -374,8 +373,8 @@ public static class WebBinding
         return (data.MakeModDownloadObj(obj), data.MakeModInfo(), res.Values.ToList());
     }
 
-    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, 
-        List<DownloadModDisplayModel>? List)> 
+    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info,
+        List<DownloadModDisplayModel>? List)>
         DownloadMod(GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
@@ -410,7 +409,7 @@ public static class WebBinding
         return (data.MakeModDownloadObj(obj), data.MakeModInfo(), res.Values.ToList());
     }
 
-    public static async Task<bool> DownloadMod(GameSettingObj obj, 
+    public static async Task<bool> DownloadMod(GameSettingObj obj,
         IList<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)> list)
     {
         foreach (var (Item, Info, Mod) in list)
@@ -430,7 +429,7 @@ public static class WebBinding
         return await DownloadManager.Start(list1);
     }
 
-    public static async Task<bool> DownloadMod(GameSettingObj obj, 
+    public static async Task<bool> DownloadMod(GameSettingObj obj,
         IList<(DownloadItemObj Item, ModInfoObj Info)> list)
     {
         var list1 = new List<DownloadItemObj>();

@@ -160,7 +160,7 @@ public static class ServerMotd
                     {
                         string result = ProtocolHandler.ReadNextString(packetData); //Get the Json data
                         var info1 = JsonSerializer.Deserialize<ServerMotdObj>(result);
-                        if(info1 != null)
+                        if (info1 != null)
                         {
                             info = info1;
                         }

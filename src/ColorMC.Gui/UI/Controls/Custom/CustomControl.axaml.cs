@@ -6,7 +6,6 @@ using ColorMC.Core;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Custom;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using System.IO;

@@ -1,10 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
-using Avalonia.Data.Converters;
 using ColorMC.Gui.UI.Model.Items;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace ColorMC.Gui.UI.Model;
 

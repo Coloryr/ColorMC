@@ -128,6 +128,6 @@ public partial class ServerPackTab3Model : ServerPackBaseModel
 
     public override void Close()
     {
-        
+
     }
 }

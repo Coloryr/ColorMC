@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.Helpers;
-using System.Text.Json;
 using System.Collections.Concurrent;
+using System.Text.Json;
 
 namespace ColorMC.Core.Utils;
 
@@ -98,7 +98,7 @@ public static class ConfigSave
             {
                 File.WriteAllText(item.Local,
                     JsonSerializer.Serialize(item.Obj, new JsonSerializerOptions(JsonSerializerOptions.Default)
-                    { 
+                    {
                         WriteIndented = true
                     }));
             }

@@ -4,7 +4,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -132,6 +131,6 @@ public partial class CustomControlPanelModel : BaseModel
 
     public override void Close()
     {
-        
+
     }
 }
