@@ -19,12 +19,12 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingTab2Model : BaseModel
 {
-    public ObservableCollection<FontDisplay> FontList { get; init; } = new();
+    public ObservableCollection<FontDisplayObj> FontList { get; init; } = new();
     public List<string> TranTypeList { get; init; } = LanguageBinding.GetWindowTranTypes();
     public List<string> LanguageList { get; init; } = LanguageBinding.GetLanguages();
 
     [ObservableProperty]
-    private FontDisplay? _fontItem;
+    private FontDisplayObj? _fontItem;
 
     [ObservableProperty]
     private Color _mainColor;
@@ -218,7 +218,7 @@ public partial class SettingTab2Model : BaseModel
         ColorChange();
     }
 
-    partial void OnFontItemChanged(FontDisplay? value)
+    partial void OnFontItemChanged(FontDisplayObj? value)
     {
         if (_load || value == null)
             return;
@@ -581,6 +581,5 @@ public partial class SettingTab2Model : BaseModel
     public override void Close()
     {
         FontList.Clear();
-        _fontItem = null;
     }
 }

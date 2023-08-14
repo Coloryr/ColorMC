@@ -5,6 +5,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;

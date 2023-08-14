@@ -3,6 +3,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Custom;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -70,7 +71,9 @@ public partial class CustomControlPanelModel : BaseModel
     public async void Launch(GameItemModel obj)
     {
         if (IsLaunch || obj.IsLaunch)
+        {
             return;
+        }
 
         IsLaunch = true;
         Progress(App.GetLanguage("MainWindow.Info3"));
@@ -129,6 +132,6 @@ public partial class CustomControlPanelModel : BaseModel
 
     public override void Close()
     {
-        _game = null;
+        
     }
 }

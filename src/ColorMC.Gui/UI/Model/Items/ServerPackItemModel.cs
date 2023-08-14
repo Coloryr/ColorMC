@@ -4,7 +4,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace ColorMC.Gui.UI.Model;
+namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class ServerPackItemModel : ObservableObject
 {

@@ -78,6 +78,5 @@ public partial class GameEditTab11Model : GameModel
     public override void Close()
     {
         ShaderpackList.Clear();
-        _item = null;
     }
 }

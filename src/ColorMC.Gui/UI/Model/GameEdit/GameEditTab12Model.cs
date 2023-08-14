@@ -75,6 +75,5 @@ public partial class GameEditTab12Model : GameModel
     public override void Close()
     {
         SchematicList.Clear();
-        _item = null;
     }
 }

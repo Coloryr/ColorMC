@@ -4,7 +4,7 @@ using System;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class NbtDataItem : ObservableObject
+public partial class NbtDataItemModel : ObservableObject
 {
     [ObservableProperty]
     private int _key;
@@ -16,7 +16,7 @@ public partial class NbtDataItem : ObservableObject
     private bool _hex;
     private bool _init;
 
-    public NbtDataItem(int key, object value, bool hex)
+    public NbtDataItemModel(int key, object value, bool hex)
     {
         _key = key;
         _valueSave = value;

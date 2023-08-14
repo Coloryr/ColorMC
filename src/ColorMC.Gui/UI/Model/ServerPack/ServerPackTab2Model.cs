@@ -1,6 +1,7 @@
 ﻿using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -153,6 +154,5 @@ public partial class ServerPackTab2Model : ServerPackBaseModel
     public override void Close()
     {
         ModList.Clear();
-        _item = null;
     }
 }

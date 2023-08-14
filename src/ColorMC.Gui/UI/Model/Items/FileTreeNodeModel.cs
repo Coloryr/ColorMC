@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 
-namespace ColorMC.Gui.UI.Model;
+namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class FileTreeNodeModel : ObservableObject
 {

@@ -4,10 +4,12 @@ using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -21,7 +23,7 @@ public partial class GameExportModel : GameModel
     /// <summary>
     /// 导出的文件列表
     /// </summary>
-    public FilesPageViewModel Files { get; private set; }
+    public FilesPage Files { get; private set; }
 
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
@@ -240,7 +242,7 @@ public partial class GameExportModel : GameModel
         {
             string fil = Text.ToLower();
             var list = from item in Items
-                       where item.Name.ToLower().Contains(fil)
+                       where item.Name.Contains(fil, StringComparison.CurrentCultureIgnoreCase)
                        select item;
             Mods.Clear();
             Mods.AddRange(list);
@@ -292,11 +294,11 @@ public partial class GameExportModel : GameModel
     {
         if (Type == PackType.CurseForge || Type == PackType.Modrinth)
         {
-            Files = new FilesPageViewModel(Obj.GetGamePath(), false);
+            Files = new FilesPage(Obj.GetGamePath(), false);
         }
         else
         {
-            Files = new FilesPageViewModel(Obj.GetBasePath(), true);
+            Files = new FilesPage(Obj.GetBasePath(), true);
         }
 
         Source = Files.Source;
@@ -311,7 +313,5 @@ public partial class GameExportModel : GameModel
     {
         Mods.Clear();
         OtherFiles.Clear();
-        Files = null;
-        _source = null;
     }
 }

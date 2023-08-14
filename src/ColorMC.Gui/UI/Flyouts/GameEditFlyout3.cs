@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Model.GameEdit;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;

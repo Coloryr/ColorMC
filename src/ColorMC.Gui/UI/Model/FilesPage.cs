@@ -1,19 +1,19 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Data.Converters;
-using CommunityToolkit.Mvvm.ComponentModel;
+using ColorMC.Gui.UI.Model.Items;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
 namespace ColorMC.Gui.UI.Model;
 
-public class FilesPageViewModel : ObservableObject
+public class FilesPage
 {
     private readonly FileTreeNodeModel _root;
     public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; init; }
 
-    public FilesPageViewModel(string obj, bool check, List<string>? unselect = null)
+    public FilesPage(string obj, bool check, List<string>? unselect = null)
     {
         _root = new FileTreeNodeModel(null, obj, true, check, true);
         Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(_root)
@@ -97,35 +97,6 @@ public class FilesPageViewModel : ObservableObject
         foreach (var item in config)
         {
             _root.Select(item);
-        }
-    }
-
-    private static IconConverter? s_iconConverter;
-    public static IMultiValueConverter FileIconConverter
-    {
-        get
-        {
-            s_iconConverter ??= new IconConverter();
-
-            return s_iconConverter;
-        }
-    }
-
-    private class IconConverter : IMultiValueConverter
-    {
-        public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (values.Count == 2 &&
-                values[0] is bool isDirectory &&
-                values[1] is bool isExpanded)
-            {
-                if (!isDirectory)
-                    return "[F]";
-                else
-                    return isExpanded ? "{O}" : "{ }";
-            }
-
-            return null;
         }
     }
 }

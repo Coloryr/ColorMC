@@ -5,6 +5,7 @@ using Avalonia.Data.Converters;
 using Avalonia.Threading;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
+using ColorMC.Gui.UI.Model.Items;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,14 @@ using System.Globalization;
 
 namespace ColorMC.Gui.UI.Model;
 
-public class NbtPageViewModel : ObservableObject
+public class NbtPage
 {
     private readonly NbtNodeModel _root;
     private readonly Action<int> _turn;
     public NbtBase Nbt { get; }
     public HierarchicalTreeDataGridSource<NbtNodeModel> Source { get; init; }
 
-    public NbtPageViewModel(NbtBase nbt, Action<int> turn)
+    public NbtPage(NbtBase nbt, Action<int> turn)
     {
         Nbt = nbt;
         _turn = turn;
@@ -131,46 +132,5 @@ public class NbtPageViewModel : ObservableObject
 
             _turn.Invoke(temp);
         });
-    }
-
-    private static StringNbtTypeConverter? s_NbtTypeConverter;
-    public static IMultiValueConverter NbtTypeConverter
-    {
-        get
-        {
-            s_NbtTypeConverter ??= new StringNbtTypeConverter();
-
-            return s_NbtTypeConverter;
-        }
-    }
-
-    private class StringNbtTypeConverter : IMultiValueConverter
-    {
-        public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
-        {
-            if (values.Count == 1 &&
-                values[0] is NbtType type)
-            {
-                return type switch
-                {
-                    NbtType.NbtEnd => "E",
-                    NbtType.NbtByte => "B",
-                    NbtType.NbtShort => "S",
-                    NbtType.NbtInt => "I",
-                    NbtType.NbtLong => "L",
-                    NbtType.NbtFloat => "F",
-                    NbtType.NbtDouble => "D",
-                    NbtType.NbtByteArray => "[B]",
-                    NbtType.NbtString => "T",
-                    NbtType.NbtList => "[ ]",
-                    NbtType.NbtCompound => "{ }",
-                    NbtType.NbtIntArray => "[I]",
-                    NbtType.NbtLongArray => "[L]",
-                    _ => ""
-                };
-            }
-
-            return "";
-        }
     }
 }

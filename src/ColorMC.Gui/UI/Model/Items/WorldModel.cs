@@ -2,9 +2,10 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Model.GameEdit;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace ColorMC.Gui.UI.Model.GameEdit;
+namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class WorldModel : ObservableObject
 {

@@ -3,6 +3,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -398,6 +399,5 @@ public partial class AddModPackControlModel : BaseModel, IAddWindow
         }
         DisplayList.Clear();
         _last = null;
-        _item = null;
     }
 }

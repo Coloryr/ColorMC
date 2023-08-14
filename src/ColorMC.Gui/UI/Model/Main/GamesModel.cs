@@ -1,5 +1,6 @@
 ﻿using Avalonia.Input;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -39,23 +40,23 @@ public partial class GamesModel : BaseModel
 
     public bool DropIn(IDataObject data)
     {
-        if (data.Get(BaseBinding.DrapType) is not GameItemModel c)
-            return false;
-        if (_items.ContainsValue(c))
-            return false;
-
-        return true;
+        return data.Get(BaseBinding.DrapType) is not GameItemModel c
+            || _items.ContainsValue(c);
     }
 
     public void Drop(IDataObject data)
     {
         if (data.Get(BaseBinding.DrapType) is not GameItemModel c)
+        {
             return;
+        }
 
         c.IsDrop = false;
 
         if (_items.ContainsValue(c))
+        {
             return;
+        }
 
         GameBinding.MoveGameGroup(c.Obj, Key);
     }
@@ -63,7 +64,9 @@ public partial class GamesModel : BaseModel
     public GameItemModel? Find(string? uuid)
     {
         if (string.IsNullOrWhiteSpace(uuid))
+        {
             return null;
+        }
         if (_items.TryGetValue(uuid, out var item))
         {
             Expander = true;

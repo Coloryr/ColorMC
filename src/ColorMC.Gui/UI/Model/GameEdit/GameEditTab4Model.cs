@@ -1,6 +1,7 @@
 ﻿using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -283,6 +284,5 @@ public partial class GameEditTab4Model : GameModel
     {
         ModList.Clear();
         _items.Clear();
-        _item = null;
     }
 }

@@ -3,7 +3,7 @@ using ColorMC.Core.Nbt;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 
-namespace ColorMC.Gui.UI.Model;
+namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class NbtNodeModel : ObservableObject
 {

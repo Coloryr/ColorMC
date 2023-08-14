@@ -1,4 +1,4 @@
-﻿using ColorMC.Gui.UI.Model.Add;
+﻿using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Windows;
 

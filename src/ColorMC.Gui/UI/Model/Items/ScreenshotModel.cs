@@ -1,11 +1,12 @@
 using Avalonia.Media.Imaging;
+using ColorMC.Gui.UI.Model.GameEdit;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Model.GameEdit;
+namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class ScreenshotModel : ObservableObject
 {

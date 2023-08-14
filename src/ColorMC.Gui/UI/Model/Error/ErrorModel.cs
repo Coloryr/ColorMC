@@ -38,6 +38,6 @@ public partial class ErrorModel : BaseModel
 
     public override void Close()
     {
-        _text = null;
+        
     }
 }

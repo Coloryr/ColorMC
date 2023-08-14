@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 using System;
 using System.ComponentModel;

@@ -16,6 +16,7 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Zip;

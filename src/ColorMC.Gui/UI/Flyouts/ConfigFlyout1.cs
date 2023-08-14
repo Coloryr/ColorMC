@@ -4,6 +4,7 @@ using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
+using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

@@ -2,19 +2,18 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class DownloadModDisplayModel : ObservableObject
 {
+    [ObservableProperty]
+    private bool _download;
+
     /// <summary>
     /// 名字
     /// </summary>
-    [ObservableProperty]
-    private string _name;
-    [ObservableProperty]
-    private bool _download;
-    [ObservableProperty]
-    private int _selectVersion;
+    public string Name { get; set; }
+    public int SelectVersion { get; set; }
 
     public List<string> Version => ModVersion;
 

@@ -23,7 +23,7 @@ public partial class GameCloudModel : GameModel
     /// <summary>
     /// 导出的文件列表
     /// </summary>
-    private FilesPageViewModel _files;
+    private FilesPage _files;
 
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
@@ -204,7 +204,7 @@ public partial class GameCloudModel : GameModel
         await LoadCloud();
 
         string dir = Obj.GetBasePath();
-        _files = new FilesPageViewModel(dir, false);
+        _files = new FilesPage(dir, false);
 
         var data = GameCloudUtils.GetCloudData(Obj);
         LocalConfigTime = data.ConfigTime.ToString();
@@ -221,7 +221,6 @@ public partial class GameCloudModel : GameModel
 
     public override void Close()
     {
-        _files = null!;
-        _source = null!;
+        
     }
 }

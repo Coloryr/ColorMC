@@ -171,7 +171,6 @@ public partial class GameLogTabModel : GameModel
     public override void Close()
     {
         FileList.Clear();
-        _text = null;
         _timer.Dispose();
     }
 }

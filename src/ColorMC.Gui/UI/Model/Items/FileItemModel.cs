@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Model.Add;
+namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class FileItemModel : ObservableObject
 {
@@ -17,7 +17,7 @@ public partial class FileItemModel : ObservableObject
 
     private Bitmap? _img;
 
-    public FileItemDisplayObj Data { get; init; }
+    public FileItemObj Data { get; init; }
     public string? Name => Data.Name;
     public string? Summary => Data.Summary;
     public string? Author => Data.Author;
@@ -31,7 +31,7 @@ public partial class FileItemModel : ObservableObject
     [ObservableProperty]
     private bool _isSelect;
 
-    public FileItemModel(FileItemDisplayObj data, IAddWindow add)
+    public FileItemModel(FileItemObj data, IAddWindow add)
     {
         Data = data;
         _add = add;
@@ -44,7 +44,9 @@ public partial class FileItemModel : ObservableObject
     private async Task<Bitmap?> GetImage()
     {
         if (Data?.Logo == null)
+        {
             return null;
+        }
         try
         {
             _img = await ImageUtils.Load(Data.Logo);

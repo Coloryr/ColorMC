@@ -30,11 +30,11 @@ public partial class GameConfigEditModel : GameModel
     public bool Cancel { get; set; }
 
     public ObservableCollection<string> FileList { get; init; } = new();
-    public ObservableCollection<NbtDataItem> DataList { get; init; } = new();
+    public ObservableCollection<NbtDataItemModel> DataList { get; init; } = new();
 
     public List<string> TypeSource { get; init; } = LanguageBinding.GetNbtName();
 
-    private NbtPageViewModel _nbtView;
+    private NbtPage _nbtView;
 
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<NbtNodeModel> _source;
@@ -68,7 +68,7 @@ public partial class GameConfigEditModel : GameModel
     [ObservableProperty]
     private string _dataType;
     [ObservableProperty]
-    private NbtDataItem _dataItem;
+    private NbtDataItemModel _dataItem;
     [ObservableProperty]
     private bool _hexEdit;
 
@@ -672,7 +672,7 @@ public partial class GameConfigEditModel : GameModel
         }
     }
 
-    public void DeleteItem(NbtDataItem item)
+    public void DeleteItem(NbtDataItemModel item)
     {
         if (item.Key == 0)
         {
@@ -752,9 +752,6 @@ public partial class GameConfigEditModel : GameModel
 
     public override void Close()
     {
-        _nbtView = null!;
-        _source = null!;
-        _chunkData = null;
         DataList.Clear();
     }
 }

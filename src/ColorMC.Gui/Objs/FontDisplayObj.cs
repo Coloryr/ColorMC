@@ -1,8 +1,8 @@
 ﻿using Avalonia.Media;
 
-namespace ColorMC.Gui.UI.Model.Items;
+namespace ColorMC.Gui.Objs;
 
-public record FontDisplay
+public record FontDisplayObj
 {
     public string FontName { get; init; }
     public FontFamily FontFamily { get; init; }

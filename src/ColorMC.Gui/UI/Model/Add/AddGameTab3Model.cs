@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,7 +12,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddGameTab3Model : AddGameControlModel
 {
-    private FilesPageViewModel _model;
+    private FilesPage _model;
 
     [ObservableProperty]
     private string _local;
@@ -27,7 +28,7 @@ public partial class AddGameTab3Model : AddGameControlModel
     {
         if (Directory.Exists(value))
         {
-            _model = new FilesPageViewModel(value, true, new()
+            _model = new FilesPage(value, true, new()
             { "assets", "libraries", "versions", "launcher_profiles.json" });
             Files = _model.Source;
         }
@@ -78,7 +79,6 @@ public partial class AddGameTab3Model : AddGameControlModel
 
     public override void Close()
     {
-        _model = null;
-        _files = null;
+        
     }
 }

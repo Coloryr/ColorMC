@@ -132,10 +132,9 @@ public partial class ServerPackTab4Model : ServerPackBaseModel
 
     private string GetType(ConfigPackObj obj)
     {
-        if (obj.Zip)
-            return App.GetLanguage("ServerPackWindow.Tab4.Item1");
-        else
-            return App.GetLanguage("ServerPackWindow.Tab4.Item2");
+        return App.GetLanguage(
+            obj.Zip ? "ServerPackWindow.Tab4.Item1"
+            : "ServerPackWindow.Tab4.Item2");
     }
 
     public void Delete(ServerPackConfigObj obj)
@@ -152,6 +151,5 @@ public partial class ServerPackTab4Model : ServerPackBaseModel
     {
         ConfigList.Clear();
         NameList.Clear();
-        _item = null;
     }
 }

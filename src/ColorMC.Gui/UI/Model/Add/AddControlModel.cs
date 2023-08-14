@@ -6,6 +6,7 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.Optifine;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -887,7 +888,6 @@ public partial class AddControlModel : GameModel, IAddWindow
         _load = true;
         ModList.Clear();
         OptifineList.Clear();
-        _modsave = (null, null);
         DownloadOptifineList.Clear();
         DownloadModList.Clear();
         FileList.Clear();
@@ -896,8 +896,5 @@ public partial class AddControlModel : GameModel, IAddWindow
             item.Close();
         }
         DisplayList.Clear();
-        _optifineItem = null;
-        _file = null;
-        _mod = null;
     }
 }

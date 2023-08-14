@@ -31,6 +31,7 @@ using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -119,7 +120,9 @@ public partial class App : Application
     {
         var data = s_language.GetLanguage(input, out bool have);
         if (have)
+        {
             return data;
+        }
 
         return LanguageHelper.Get(input);
     }
@@ -194,15 +197,6 @@ public partial class App : Application
         ShowCustom();
 
         Dispatcher.UIThread.Post(() => _ = LoadImage());
-
-        //new Thread(() =>
-        //{
-        //    while (true)
-        //    {
-        //        Thread.Sleep(1000);
-        //        Dispatcher.UIThread.Invoke(GC.Collect);
-        //    }
-        //}).Start();
 
         base.OnFrameworkInitializationCompleted();
     }

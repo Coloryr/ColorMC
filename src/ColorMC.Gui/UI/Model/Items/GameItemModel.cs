@@ -13,7 +13,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ColorMC.Gui.UI.Model.Main;
+namespace ColorMC.Gui.UI.Model.Items;
 
 public partial class GameItemModel : GameModel
 {

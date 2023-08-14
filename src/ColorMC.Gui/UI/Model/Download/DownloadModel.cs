@@ -3,6 +3,7 @@ using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -19,9 +20,9 @@ namespace ColorMC.Gui.UI.Model.Download;
 
 public partial class DownloadModel : BaseModel
 {
-    public ObservableCollection<DownloadDisplayModel> ItemList { get; init; } = new();
+    public ObservableCollection<DownloadItemDisplayModel> ItemList { get; init; } = new();
 
-    private readonly Dictionary<string, DownloadDisplayModel> _downloadList = new();
+    private readonly Dictionary<string, DownloadItemDisplayModel> _downloadList = new();
 
     private long _count;
     private readonly Timer _timer;
@@ -93,7 +94,7 @@ public partial class DownloadModel : BaseModel
     {
         if (item.State == DownloadItemState.Init)
         {
-            var item11 = new DownloadDisplayModel()
+            var item11 = new DownloadItemDisplayModel()
             {
                 Name = item.Name,
                 State = item.State.GetName(),
@@ -105,7 +106,7 @@ public partial class DownloadModel : BaseModel
             return;
         }
 
-        if (!_downloadList.TryGetValue(item.Name, out DownloadDisplayModel? value))
+        if (!_downloadList.TryGetValue(item.Name, out DownloadItemDisplayModel? value))
         {
             return;
         }

@@ -3,6 +3,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using System.Collections;
 using System.Collections.Generic;

@@ -121,7 +121,9 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         var pos = basewindow.Position;
         var sec = basewindow.Screens.ScreenFromWindow(basewindow);
         if (sec == null)
+        {
             return;
+        }
         var area = sec.WorkingArea;
         int x, y;
         if (pos.X > area.Width / 2)
@@ -171,7 +173,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     private void UserWindow_Opened(object? sender, EventArgs e)
     {
-        ICon?.Opened();
+        ICon.Opened();
     }
 
     private void UserWindow_Closed(object? sender, EventArgs e)
@@ -179,8 +181,8 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         App.PicUpdate -= Update;
 
         DataContext = null;
-        ICon?.Closed();
-        ICon?.Model.TopClose();
+        ICon.Closed();
+        ICon.Model.TopClose();
 
         MainControl.Children.Clear();
 
@@ -204,6 +206,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         Grid1.Background = GuiConfigUtils.Config.WindowTran ?
                 ColorSel.BottomTranColor : ColorSel.BottomColor;
 
-        ICon?.Update();
+        ICon.Update();
     }
 }

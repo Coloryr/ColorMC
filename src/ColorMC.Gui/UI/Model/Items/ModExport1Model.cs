@@ -1,7 +1,7 @@
 using ColorMC.Core.Objs;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace ColorMC.Gui.UI.Model;
+namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 其他项目

@@ -1,11 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 下载项目显示
 /// </summary>
-public partial class DownloadDisplayModel : ObservableObject
+public partial class DownloadItemDisplayModel : ObservableObject
 {
     /// <summary>
     /// 名字

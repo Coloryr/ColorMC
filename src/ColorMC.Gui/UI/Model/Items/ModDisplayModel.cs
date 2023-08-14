@@ -5,7 +5,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace ColorMC.Gui.UI.Model;
+namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// Mod项目

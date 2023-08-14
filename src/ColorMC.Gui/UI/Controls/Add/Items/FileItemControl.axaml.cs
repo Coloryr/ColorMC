@@ -2,16 +2,13 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using ColorMC.Gui.UI.Flyouts;
-using ColorMC.Gui.UI.Model.Add;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
-using System;
 
 namespace ColorMC.Gui.UI.Controls.Add.Items;
 
 public partial class FileItemControl : UserControl
 {
-    private FileItemModel _model;
-
     public FileItemControl()
     {
         InitializeComponent();
@@ -20,16 +17,6 @@ public partial class FileItemControl : UserControl
         DoubleTapped += FileItemControl_DoubleTapped;
         PointerEntered += FileItemControl_PointerEntered;
         PointerExited += FileItemControl_PointerExited;
-
-        DataContextChanged += FileItemControl_DataContextChanged;
-    }
-
-    private void FileItemControl_DataContextChanged(object? sender, EventArgs e)
-    {
-        if (DataContext is FileItemModel model)
-        {
-            _model = model;
-        }
     }
 
     private void FileItemControl_PointerExited(object? sender, PointerEventArgs e)
@@ -44,17 +31,21 @@ public partial class FileItemControl : UserControl
 
     private void FileItemControl_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        _model.Install();
+        (DataContext as FileItemModel)?.Install();
     }
 
     private void FileItemControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        _model.SetSelect();
+        if(DataContext is not FileItemModel model)
+        {
+            return;
+        }
+        model.SetSelect();
 
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsRightButtonPressed)
         {
-            var url = _model.Data?.GetUrl();
+            var url = model.Data?.GetUrl();
             if (url == null)
                 return;
 
@@ -63,12 +54,12 @@ public partial class FileItemControl : UserControl
         }
         else if (ev.Properties.IsXButton1Pressed)
         {
-            _model.Back();
+            model.Back();
             e.Handled = true;
         }
         else if (ev.Properties.IsXButton2Pressed)
         {
-            _model.Next();
+            model.Next();
             e.Handled = true;
         }
     }

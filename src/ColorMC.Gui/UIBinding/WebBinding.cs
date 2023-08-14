@@ -13,6 +13,7 @@ using ColorMC.Core.Objs.Optifine;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using System;
 using System.Collections.Concurrent;
@@ -26,7 +27,7 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class WebBinding
 {
-    public static async Task<List<FileItemDisplayObj>?> GetPackList(SourceType type, string? version, string? filter, int page, int sort, string categoryId)
+    public static async Task<List<FileItemObj>?> GetPackList(SourceType type, string? version, string? filter, int page, int sort, string categoryId)
     {
         version ??= "";
         filter ??= "";
@@ -52,7 +53,7 @@ public static class WebBinding
                 }, categoryId: categoryId);
             if (list == null)
                 return null;
-            var list1 = new List<FileItemDisplayObj>();
+            var list1 = new List<FileItemObj>();
             list.data.ForEach(item =>
             {
                 list1.Add(new()
@@ -76,7 +77,7 @@ public static class WebBinding
             var list = await ModrinthAPI.GetModPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId);
             if (list == null)
                 return null;
-            var list1 = new List<FileItemDisplayObj>();
+            var list1 = new List<FileItemObj>();
             list.hits.ForEach(item =>
             {
                 list1.Add(new()
@@ -194,7 +195,7 @@ public static class WebBinding
         }
     }
 
-    public static async Task<List<FileItemDisplayObj>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
+    public static async Task<List<FileItemObj>?> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
     {
         version ??= "";
         filter ??= "";
@@ -278,7 +279,7 @@ public static class WebBinding
             };
             if (list == null)
                 return null;
-            var list1 = new List<FileItemDisplayObj>();
+            var list1 = new List<FileItemObj>();
             list.data.ForEach(item =>
             {
                 list1.Add(new()
@@ -310,7 +311,7 @@ public static class WebBinding
             };
             if (list == null)
                 return null;
-            var list1 = new List<FileItemDisplayObj>();
+            var list1 = new List<FileItemObj>();
             list.hits.ForEach(item =>
             {
                 list1.Add(new()
@@ -334,7 +335,9 @@ public static class WebBinding
         return null;
     }
 
-    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, List<DownloadModDisplayModel>? List)> DownloadMod(GameSettingObj obj, CurseForgeModObj.Data? data)
+    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, 
+        List<DownloadModDisplayModel>? List)> 
+        DownloadMod(GameSettingObj obj, CurseForgeModObj.Data? data)
     {
         if (data == null)
             return (null, null, null);
@@ -371,7 +374,9 @@ public static class WebBinding
         return (data.MakeModDownloadObj(obj), data.MakeModInfo(), res.Values.ToList());
     }
 
-    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, List<DownloadModDisplayModel>? List)> DownloadMod(GameSettingObj obj, ModrinthVersionObj? data)
+    public static async Task<(DownloadItemObj? Item, ModInfoObj? Info, 
+        List<DownloadModDisplayModel>? List)> 
+        DownloadMod(GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
             return (null, null, null);
@@ -405,7 +410,8 @@ public static class WebBinding
         return (data.MakeModDownloadObj(obj), data.MakeModInfo(), res.Values.ToList());
     }
 
-    public static async Task<bool> DownloadMod(GameSettingObj obj, IList<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)> list)
+    public static async Task<bool> DownloadMod(GameSettingObj obj, 
+        IList<(DownloadItemObj Item, ModInfoObj Info, ModDisplayModel Mod)> list)
     {
         foreach (var (Item, Info, Mod) in list)
         {
@@ -424,7 +430,8 @@ public static class WebBinding
         return await DownloadManager.Start(list1);
     }
 
-    public static async Task<bool> DownloadMod(GameSettingObj obj, IList<(DownloadItemObj Item, ModInfoObj Info)> list)
+    public static async Task<bool> DownloadMod(GameSettingObj obj, 
+        IList<(DownloadItemObj Item, ModInfoObj Info)> list)
     {
         var list1 = new List<DownloadItemObj>();
         foreach (var (Item, Info) in list)
@@ -568,7 +575,7 @@ public static class WebBinding
         return await DownloadManager.Start(new() { item });
     }
 
-    public static string? GetUrl(this FileItemDisplayObj obj)
+    public static string? GetUrl(this FileItemObj obj)
     {
         if (obj.SourceType == SourceType.CurseForge)
         {
@@ -661,14 +668,14 @@ public static class WebBinding
         BaseBinding.OpUrl($"https://search.mcmod.cn/s?key={obj.Name}");
     }
 
-    public static async Task<List<FileItemDisplayObj>?> SearchMcmod(FileType type, string key, int page)
+    public static async Task<List<FileItemObj>?> SearchMcmod(FileType type, string key, int page)
     {
         var list = type == FileType.Mod ? await McModAPI.SearchMod(key, page)
             : await McModAPI.SearchModPack(key, page);
         if (list == null)
             return null;
 
-        var list1 = new List<FileItemDisplayObj>();
+        var list1 = new List<FileItemObj>();
         list.ForEach(a => list1.Add(new()
         {
             Name = a.Name,
