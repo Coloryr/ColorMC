@@ -57,7 +57,7 @@ public static class BaseBinding
         ColorMCCore.UpdateState = UpdateState;
         ColorMCCore.OfflineLaunch = OfflineLaunch;
         ColorMCCore.GameLaunch = GameLunch;
-        ColorMCCore.GameDownload = GameDownload;
+        ColorMCCore.GameRequest = GameDownload;
         ColorMCCore.LaunchP = LaunchP;
 
         if (ColorMCGui.RunType == RunType.Program)
@@ -101,22 +101,16 @@ public static class BaseBinding
             : App.GetLanguage("MainWindow.Info30")));
     }
 
-    private static Task<bool> GameDownload(LaunchState state, GameSettingObj obj)
+    private static Task<bool> GameDownload(string state, GameSettingObj obj)
     {
         if (s_window == null)
         {
             return Task.Run(() => { return false; });
         }
 
-        return Dispatcher.UIThread.InvokeAsync(async () =>
+        return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return state switch
-            {
-                LaunchState.LostLib => await s_window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info5")),
-                LaunchState.LostLoader => await s_window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info6")),
-                LaunchState.LostLoginCore => await s_window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info7")),
-                _ => await s_window.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info4")),
-            };
+            return s_window.OkInfo.ShowWait(state);
         });
     }
 
@@ -353,9 +347,9 @@ public static class BaseBinding
         ColorMCCore.DownloaderUpdate = DownloaderUpdateOnThread;
 
         //清空日志
-        if (GameLogs.ContainsKey(obj.UUID))
+        if (GameLogs.TryGetValue(obj.UUID, out StringBuilder? value))
         {
-            GameLogs[obj.UUID].Clear();
+            value.Clear();
         }
         else
         {

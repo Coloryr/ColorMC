@@ -30,12 +30,12 @@
                     Header="{setting:Localize UserWindow.DataGrid.Text1}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
-                    Binding="{Binding Name}"
-                    Header="{setting:Localize Text.UserName}"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
                     Binding="{Binding Type}"
                     Header="{setting:Localize UserWindow.DataGrid.Text3}"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Name}"
+                    Header="{setting:Localize Text.UserName}"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Binding="{Binding UUID}"

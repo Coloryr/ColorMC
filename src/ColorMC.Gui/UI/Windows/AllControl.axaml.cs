@@ -178,7 +178,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
                 Background = ColorSel.TopBottomColor
             };
             _buttonList.Add(button);
-            grid.Children.Add((_baseControl as Control)!);
+            grid.Children.Add((con as Control)!);
             _switchs.Add(grid, button);
             _cons.Add(con, grid);
             _cons1.Add(grid, con);

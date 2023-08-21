@@ -239,7 +239,11 @@ public enum LaunchState
     /// <summary>
     /// 结束
     /// </summary>
-    End
+    End,
+    /// <summary>
+    /// 取消
+    /// </summary>
+    Cancel
 }
 
 /// <summary>

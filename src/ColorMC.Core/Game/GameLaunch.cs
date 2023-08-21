@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json.Nodes;
+using static ColorMC.Core.Objs.Minecraft.GameArgObj.Downloads;
 
 namespace ColorMC.Core.Game;
 
@@ -1172,19 +1173,29 @@ public static class Launch
         ColorMCCore.GameLog?.Invoke(obj, temp);
         Logs.Info(temp);
 
+        if (ColorMCCore.GameRequest != null && obj.GetModeFast())
+        {
+            var res1 = await ColorMCCore.GameRequest.Invoke(LanguageHelper.Get("Core.Launch.Info13"), obj);
+            if (!res1)
+            {
+                throw new LaunchException(LaunchState.Cancel,
+                        LanguageHelper.Get("Core.Launch.Error8"));
+            }
+        }
+
         //下载缺失的文件
         if (!res.IsEmpty)
         {
             bool download = true;
             if (!ConfigUtils.Config.Http.AutoDownload)
             {
-                if (ColorMCCore.GameDownload == null)
+                if (ColorMCCore.GameRequest == null)
                 {
                     throw new LaunchException(LaunchState.LostGame,
                         LanguageHelper.Get("Core.Launch.Error4"));
                 }
 
-                download = await ColorMCCore.GameDownload.Invoke(LaunchState.LostFile, obj);
+                download = await ColorMCCore.GameRequest.Invoke(LanguageHelper.Get("Core.Launch.Info12"), obj);
             }
 
             if (download)

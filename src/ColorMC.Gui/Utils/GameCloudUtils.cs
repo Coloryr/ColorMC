@@ -23,6 +23,7 @@ public static class GameCloudUtils
     private static string s_server;
     private static string s_serverkey;
     private static string s_clientkey;
+    private static string s_publicKey;
 
     private static Dictionary<string, CloudDataObj> s_datas;
     private static string s_file;
@@ -124,10 +125,15 @@ public static class GameCloudUtils
             {
                 s_clientkey = clientkey.ToString();
             }
+            if (obj.TryGetValue("publickey", out var publickey) && publickey != null)
+            {
+                s_publicKey = publickey.ToString();
+            }
 
             if (string.IsNullOrWhiteSpace(s_server)
                 || string.IsNullOrWhiteSpace(s_serverkey)
-                || string.IsNullOrWhiteSpace(s_clientkey))
+                || string.IsNullOrWhiteSpace(s_clientkey)
+                || string.IsNullOrWhiteSpace(s_publicKey))
             {
                 return;
             }

@@ -113,8 +113,7 @@ public partial class UsersControl : UserControl, IUserControl
         _model.Drop(e.Data);
     }
 
-    private void DataGrid_User_PointerPressed(object? sender,
-        DataGridCellPointerPressedEventArgs e)
+    private void DataGrid_User_PointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
     {
         Dispatcher.UIThread.Post(() =>
         {

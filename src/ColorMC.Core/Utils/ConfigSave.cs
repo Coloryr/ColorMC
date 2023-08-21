@@ -96,8 +96,8 @@ public static class ConfigSave
             info.Directory?.Create();
             try
             {
-                File.WriteAllText(item.Local,
-                    JsonSerializer.Serialize(item.Obj, new JsonSerializerOptions(JsonSerializerOptions.Default)
+                File.WriteAllBytes(item.Local,
+                    JsonSerializer.SerializeToUtf8Bytes(item.Obj, new JsonSerializerOptions(JsonSerializerOptions.Default)
                     {
                         WriteIndented = true
                     }));

@@ -159,7 +159,9 @@
                 Margin="0,5,0,0"
                 AcceptsReturn="True"
                 Classes="input2"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 Text="{Binding ServerKey}"
+                TextWrapping="Wrap"
                 Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
         </StackPanel>
     </DockPanel>

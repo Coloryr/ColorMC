@@ -488,6 +488,28 @@ public static class Mods
         obj.SaveModInfo();
     }
 
+    public static bool GetModeFast(this GameSettingObj obj)
+    {
+        string dir = obj.GetModsPath();
+
+        DirectoryInfo info = new(dir);
+        if (!info.Exists)
+        {
+            info.Create();
+            return false;
+        }
+        var files = info.GetFiles();
+        foreach (var item in files)
+        {
+            if (item.Name.EndsWith(".jar"))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /// <summary>
     /// 作者分割
     /// </summary>

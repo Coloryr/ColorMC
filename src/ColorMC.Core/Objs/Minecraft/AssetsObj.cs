@@ -10,5 +10,6 @@ public record AssetsObj
         public string hash { get; set; }
         public long size { get; set; }
     }
-    public Dictionary<string, Objects> objects;
+
+    public Dictionary<string, Objects> objects { get; set; }
 }

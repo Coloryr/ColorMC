@@ -43,9 +43,9 @@ public static class ColorMCCore
     /// </summary>
     public static Func<GameSettingObj, Task<bool>>? GameOverwirte { internal get; set; }
     /// <summary>
-    /// 是否下载游戏回调
+    /// 是否请求回调
     /// </summary>
-    public static Func<LaunchState, GameSettingObj, Task<bool>>? GameDownload { internal get; set; }
+    public static Func<string, GameSettingObj, Task<bool>>? GameRequest { internal get; set; }
     /// <summary>
     /// 游戏启动回调
     /// </summary>

@@ -33,7 +33,7 @@ internal class Program
 
         ColorMCCore.DownloaderUpdate = Update;
         ColorMCCore.DownloadItemStateUpdate = Update;
-        ColorMCCore.GameDownload = Download;
+        ColorMCCore.GameRequest = Download;
         ColorMCCore.GameOverwirte = Overwirte;
         ColorMCCore.PackState = Update;
         ColorMCCore.PackUpdate = PackUpdate;
@@ -91,7 +91,7 @@ internal class Program
         Console.WriteLine(code);
     }
 
-    public static Task<bool> Download(LaunchState state, GameSettingObj obj)
+    public static Task<bool> Download(string state, GameSettingObj obj)
     {
         return Task.Run(() =>
         {

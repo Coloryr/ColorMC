@@ -33,7 +33,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
     public void Closed()
     {
         ColorMCCore.GameLaunch = null;
-        ColorMCCore.GameDownload = null;
+        ColorMCCore.GameRequest = null;
 
         App.CustomWindow = null;
 

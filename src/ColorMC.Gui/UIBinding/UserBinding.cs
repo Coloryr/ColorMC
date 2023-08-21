@@ -219,6 +219,16 @@ public static class UserBinding
         (bool, bool) temp;
         if (obj.AuthType == AuthType.Offline)
         {
+            temp = await PlayerSkinAPI.DownloadSkin(obj);
+            if (temp.Item1)
+            {
+                file = AssetsPath.GetSkinFile(obj);
+            }
+            if (temp.Item2)
+            {
+                file1 = AssetsPath.GetCapeFile(obj);
+            }
+
             file = AssetsPath.GetSkinFile(obj);
             if (!File.Exists(file))
             {
@@ -326,5 +336,19 @@ public static class UserBinding
     public static void OAuthCancel()
     {
         GameAuth.CancelWithOAuth();
+    }
+
+    public static void EditUser(string name, string uuid, string text1, string text2)
+    {
+        foreach (var item in AuthDatabase.Auths.Values)
+        {
+            if (item.UserName == name && item.UUID == uuid && item.AuthType == AuthType.Offline)
+            {
+                item.UserName = text1;
+                item.UUID = text2;
+                AuthDatabase.Save();
+                break;
+            }
+        }
     }
 }

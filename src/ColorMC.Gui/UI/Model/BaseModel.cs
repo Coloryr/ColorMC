@@ -78,6 +78,12 @@ public abstract partial class BaseModel : ObservableObject
         return Control.Window.InputInfo.ShowEdit(data, data1);
     }
 
+    public Task<(bool Cancel, string? Text1, string? Text2)>
+       ShowEditInput(string data, string data1)
+    {
+        return Control.Window.InputInfo.Show(data, data1);
+    }
+
     public Task<(bool Cancel, string? Text)>
         ShowOne(string data, bool data1)
     {

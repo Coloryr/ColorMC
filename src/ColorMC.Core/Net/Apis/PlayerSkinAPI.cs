@@ -21,11 +21,9 @@ public static class PlayerSkinAPI
     /// <returns>皮肤路径, 披风路径</returns>
     public static async Task<(bool, bool)> DownloadSkin(LoginObj obj)
     {
-        if (obj.AuthType == AuthType.Offline)
-            return (false, false);
-
         TexturesObj? url = obj.AuthType switch
         {
+            AuthType.Offline => await LoadFromMinecraft(obj),
             AuthType.OAuth => await LoadFromMinecraft(obj),
             AuthType.Nide8 => await LoadFromNide8(obj),
             AuthType.AuthlibInjector => await LoadFromAuthlibInjector(obj),

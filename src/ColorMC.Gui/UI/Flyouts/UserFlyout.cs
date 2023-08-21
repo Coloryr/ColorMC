@@ -20,8 +20,14 @@ public class UserFlyout
             (App.GetLanguage("UserWindow.Flyouts.Text2"), _obj.AuthType != AuthType.Offline, Button2_Click),
             (App.GetLanguage("UserWindow.Flyouts.Text3"), _obj.AuthType != AuthType.Offline
                 && _obj.AuthType != AuthType.OAuth, Button4_Click),
-            (App.GetLanguage("UserWindow.Flyouts.Text4"), true, Button3_Click)
+            (App.GetLanguage("UserWindow.Flyouts.Text4"), true, Button3_Click),
+            (App.GetLanguage("UserWindow.Flyouts.Text5"), _obj.AuthType == AuthType.Offline, Button5_Click)
         }, con);
+    }
+
+    private void Button5_Click()
+    {
+        _model.Edit(_obj);
     }
 
     private void Button4_Click()

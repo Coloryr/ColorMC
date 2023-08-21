@@ -106,11 +106,11 @@ public partial class Info3Control : UserControl
         return (Cancel, TextBox_Text.Text, TextBox_Text1.Text);
     }
 
-    public void Show(string title, string title1)
+    public async Task<(bool Cancel, string? Text1, string? Text2)> Show(string title, string title1)
     {
         _display = true;
 
-        TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = true;
+        TextBox_Text1.IsReadOnly = TextBox_Text.IsReadOnly = false;
         TextBox_Text.Text = title;
         TextBox_Text1.Text = title1;
 
@@ -128,6 +128,15 @@ public partial class Info3Control : UserControl
         TextBox_Text1.PasswordChar = (char)0;
 
         App.CrossFade300.Start(null, this);
+
+        _cancelCall = null;
+        await Task.Run(() =>
+        {
+            _semaphore.WaitOne();
+
+        });
+
+        return (Cancel, TextBox_Text.Text, TextBox_Text1.Text);
     }
 
     public void Show(string title, string title1, Action cancel)
@@ -219,10 +228,10 @@ public partial class Info3Control : UserControl
 
         _cancelCall = null;
         await Task.Run(() =>
-       {
-           _semaphore.WaitOne();
+        {
+            _semaphore.WaitOne();
 
-       });
+        });
 
         return (Cancel, TextBox_Text.Text, TextBox_Text1.Text);
     }

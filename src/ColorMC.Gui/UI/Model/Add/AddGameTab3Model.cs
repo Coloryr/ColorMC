@@ -6,6 +6,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
@@ -24,13 +25,28 @@ public partial class AddGameTab3Model : AddGameControlModel
 
     }
 
-    partial void OnLocalChanged(string value)
+    [RelayCommand]
+    public async Task Refash()
     {
-        if (Directory.Exists(value))
+        if (Directory.Exists(Local))
         {
-            _model = new FilesPage(value, true, new()
-            { "assets", "libraries", "versions", "launcher_profiles.json" });
+            var res = await ShowWait(string.Format(App.GetLanguage("AddGameWindow.Tab3.Info3"), Local));
+            if (!res)
+            {
+                return;
+            }
+            Progress(App.GetLanguage("AddGameWindow.Tab3.Info2"));
+            await Task.Run(() =>
+            {
+                _model = new FilesPage(Local, true, new()
+                { "assets", "libraries", "versions", "launcher_profiles.json" });
+            });
+            ProgressClose();
             Files = _model.Source;
+        }
+        else
+        {
+            Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), Local));
         }
     }
 
@@ -39,7 +55,7 @@ public partial class AddGameTab3Model : AddGameControlModel
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
-            Show(App.GetLanguage("AddGameWindow.Tab1.Error2"));
+            Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), Local));
             return;
         }
 

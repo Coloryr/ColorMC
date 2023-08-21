@@ -44,13 +44,20 @@
                     Command="{Binding AddGroup}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
 
-                <Button
-                    Width="100"
-                    Height="25"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Command="{Binding Add}"
-                    Content="{setting:Localize Button.Add}" />
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Command="{Binding Refash}"
+                        Content="{setting:Localize Button.Refash}" />
+
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        Command="{Binding Add}"
+                        Content="{setting:Localize Button.Add}" />
+                </StackPanel>
             </DockPanel>
         </StackPanel>
         <TreeDataGrid Margin="5" Source="{Binding Files}">

@@ -7,6 +7,7 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -444,5 +445,21 @@ public partial class UsersModel : BaseModel
     public override void Close()
     {
         UserList.Clear();
+    }
+
+    public async void Edit(UserDisplayObj obj)
+    {
+        if (obj.AuthType != AuthType.Offline)
+        {
+            return;
+        }
+
+        var res = await ShowEditInput(obj.Name, obj.UUID);
+        if (res.Cancel || string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
+        {
+            return;
+        }
+
+        UserBinding.EditUser(obj.Name, obj.UUID, res.Text1, res.Text2);
     }
 }
