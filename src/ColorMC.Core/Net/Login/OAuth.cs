@@ -185,7 +185,7 @@ public static class OAuthAPI
         {
             return (LoginState.Error, null);
         }
-        return (LoginState.Done, obj1.GetValue<OAuth1Obj>());
+        return (LoginState.Done, obj1.Deserialize<OAuth1Obj>());
     }
 
     /// <summary>

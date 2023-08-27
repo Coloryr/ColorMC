@@ -255,12 +255,16 @@ public static class VersionPath
         var data = Versions.versions.Where(a => a.id == version).FirstOrDefault();
         if (data != null)
         {
-            var temp = File.OpenRead($"{BaseDir}/{version}.json");
-            var sha1 = await FuntionUtils.GenSha1Async(temp);
-            temp.Close();
-            if (sha1 != data.sha1)
+            var file = $"{BaseDir}/{version}.json";
+            if (File.Exists(file))
             {
-                return await AddGame(data);
+                var temp = File.OpenRead(file);
+                var sha1 = await FuntionUtils.GenSha1Async(temp);
+                temp.Close();
+                if (sha1 != data.sha1)
+                {
+                    return await AddGame(data);
+                }
             }
 
             return GetGame(version);

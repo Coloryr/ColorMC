@@ -404,7 +404,7 @@ public static class Launch
         if (game.logging != null)
         {
             var obj1 = DownloadItemHelper.BuildLog4jItem(game);
-            jvmHead.Add(game.logging.client.argument.Replace("${path}", obj1.Local));
+            //jvmHead.Add(game.logging.client.argument.Replace("${path}", obj1.Local));
         }
 
         return jvmHead;

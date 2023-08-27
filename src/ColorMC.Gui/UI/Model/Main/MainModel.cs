@@ -4,6 +4,7 @@ using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
@@ -499,7 +500,10 @@ public partial class MainModel : BaseModel, IMainTop
         {
             Notify(App.GetLanguage("MainWindow.Info2"));
             Launchs.Add(game.UUID, item);
-            item.IsLaunch = true;
+            if (SystemInfo.Os != Core.Objs.OsType.Android)
+            {
+                item.IsLaunch = true;
+            }
 
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {

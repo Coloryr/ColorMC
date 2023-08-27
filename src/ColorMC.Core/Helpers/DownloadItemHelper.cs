@@ -10,7 +10,6 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Json;
-using static ColorMC.Core.Objs.Modrinth.ModrinthPackObj.File;
 
 namespace ColorMC.Core.Helpers;
 
@@ -24,7 +23,7 @@ public static class DownloadItemHelper
         return new DownloadItemObj()
         {
             Name = "log4j2-xml",
-            Url = UrlHelper.Download(obj.logging.client.file.url, BaseClient.Source),
+            Url = obj.logging.client.file.url,
             Local = $"{VersionPath.BaseDir}/log4j2-xml",
             SHA1 = obj.logging.client.file.sha1
         };
@@ -352,10 +351,7 @@ public static class DownloadItemHelper
                     Local = file,
                     SHA1 = item1.downloads.artifact.sha1
                 };
-                if (CheckHelpers.CheckToAdd(obj, ConfigUtils.Config.GameCheck.CheckLibSha1))
-                {
-                    list.Add(obj);
-                }
+                list.Add(obj);
 
                 lock (list1)
                 {
@@ -401,11 +397,7 @@ public static class DownloadItemHelper
                         Later = (test) => GameHelper.UnpackNative(obj.id, test)
                     };
 
-                    if (CheckHelpers.CheckToAdd(obj1,
-                        ConfigUtils.Config.GameCheck.CheckLibSha1))
-                    {
-                        list.Add(obj1);
-                    }
+                    list.Add(obj1);
                     lock (list1)
                     {
                         list1.Add(lib.sha1);

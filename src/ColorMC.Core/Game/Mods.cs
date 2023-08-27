@@ -6,6 +6,7 @@ using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Concurrent;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using Tomlyn;
 using Tomlyn.Model;
@@ -38,7 +39,7 @@ public static class Mods
                 var obj2 = obj1?["modList"]?.AsArray();
                 if (obj2?.Count > 0)
                 {
-                    var obj3 = obj2[0]!.GetValue<ModObj>()!;
+                    var obj3 = obj2[0]!.Deserialize<ModObj>()!;
                     obj3.name ??= "";
                     obj3.modid ??= "";
                     obj3.V2 = false;
@@ -51,7 +52,7 @@ public static class Mods
                 var obj1 = JsonNode.Parse(data)!.AsArray();
                 if (obj1?.Count > 0)
                 {
-                    var obj3 = obj1[0]!.GetValue<ModObj>()!;
+                    var obj3 = obj1[0]!.Deserialize<ModObj>()!;
                     obj3.name ??= "";
                     obj3.modid ??= "";
                     obj3.V2 = false;

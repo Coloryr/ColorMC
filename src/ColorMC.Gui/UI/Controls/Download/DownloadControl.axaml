@@ -10,21 +10,19 @@
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
     <DockPanel Margin="3">
-        <DockPanel DockPanel.Dock="Top">
-            <Button
-                Width="100"
-                Height="25"
-                Margin="5,0,0,0"
-                Command="{Binding Pause}"
-                Content="{Binding Button1}"
-                DockPanel.Dock="Right" />
-            <Button
-                Width="100"
-                Height="25"
-                Command="{Binding Stop}"
-                Content="{setting:Localize DownloadWindow.Text2}"
-                DockPanel.Dock="Right" />
+        <WrapPanel DockPanel.Dock="Top">
             <Label Content="{setting:Localize DownloadWindow.Text3}" />
+
+            <ProgressBar
+                Height="20"
+                VerticalAlignment="Center"
+                BorderBrush="White"
+                BorderThickness="1"
+                Foreground="#FF5EBDD3"
+                Maximum="100"
+                ShowProgressText="True"
+                Value="{Binding Value}" />
+
             <Label
                 Margin="5,0,0,0"
                 VerticalAlignment="Center"
@@ -40,16 +38,21 @@
                 Content="{Binding Now}"
                 DockPanel.Dock="Right" />
 
-            <ProgressBar
-                Height="20"
-                VerticalAlignment="Center"
-                BorderBrush="White"
-                BorderThickness="1"
-                Foreground="#FF5EBDD3"
-                Maximum="100"
-                ShowProgressText="True"
-                Value="{Binding Value}" />
-        </DockPanel>
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,2,0,2"
+                Command="{Binding Pause}"
+                Content="{Binding Button1}"
+                DockPanel.Dock="Right" />
+            <Button
+                Width="100"
+                Height="25"
+                Margin="5,2,0,2"
+                Command="{Binding Stop}"
+                Content="{setting:Localize DownloadWindow.Text2}"
+                DockPanel.Dock="Right" />
+        </WrapPanel>
 
         <Panel>
             <DataGrid
