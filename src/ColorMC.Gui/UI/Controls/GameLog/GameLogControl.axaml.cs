@@ -7,6 +7,8 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameLog;
 using ColorMC.Gui.UI.Windows;
 using System.ComponentModel;
+using System.IO;
+using ColorMC.Core.LaunchPath;
 
 namespace ColorMC.Gui.UI.Controls.GameLog;
 
@@ -63,6 +65,12 @@ public partial class GameLogControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
+
+        var icon = _model.Obj.GetIconFile();
+        if (File.Exists(icon))
+        {
+            Window.Head.SetIcon(new(icon));
+        }
     }
 
     public void Closed()

@@ -60,7 +60,7 @@ public enum ColorType
 /// </summary>
 public enum RunType
 {
-    Program, AppBuilder
+    Program, AppBuilder, Phone
 }
 
 public enum MoveType

@@ -41,13 +41,7 @@ public static class GameDownloadHelper
         }
 
         obj1.AddIndex(obj2.Item2!);
-        list.Add(new()
-        {
-            Name = $"{obj.id}.jar",
-            Url = UrlHelper.Download(obj1.downloads.client.url, BaseClient.Source),
-            Local = LibrariesPath.GetGameFile(obj.id),
-            SHA1 = obj1.downloads.client.sha1
-        });
+        list.Add(GameHelper.BuildGameItem(obj.id));
 
         list.AddRange(await GameHelper.MakeGameLibs(obj1));
 

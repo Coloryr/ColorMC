@@ -184,7 +184,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
             _cons1.Add(grid, con);
             MainControl.Children.Add(grid);
             App.CrossFade300.Start(null, grid);
-            Dispatcher.UIThread.Post(con.Opened);
+            con.Opened();
         }
 
         Up();

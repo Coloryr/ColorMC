@@ -6,6 +6,8 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Windows;
 using System.Threading;
+using ColorMC.Core.LaunchPath;
+using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -176,6 +178,12 @@ public partial class GameEditControl : UserControl, IUserControl
         _tab10.Opened();
         _tab11.Opened();
         _tab12.Opened();
+
+        var icon = _model1.Obj.GetIconFile();
+        if (File.Exists(icon))
+        {
+            Window.Head.SetIcon(new(icon));
+        }
     }
 
     public void SetType(GameEditWindowType type)

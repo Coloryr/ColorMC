@@ -9,6 +9,7 @@ using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Concurrent;
 using System.Text;
+using static ColorMC.Core.Objs.Minecraft.GameArgObj.Libraries.Downloads;
 
 namespace ColorMC.Core.Helpers;
 
@@ -21,6 +22,20 @@ public static class GameHelper
     /// ForgeWrapper位置
     /// </summary>
     public static string ForgeWrapper { get; private set; }
+
+    public static DownloadItemObj BuildGameItem(string mc)
+    {
+        var game = VersionPath.GetGame(mc)!;
+        var file = LibrariesPath.GetGameFile(mc);
+        return new()
+        {
+            Url = BaseClient.Source == SourceLocal.Offical ? game.downloads.client.url
+                : UrlHelper.DownloadGame(mc, BaseClient.Source),
+            SHA1 = game.downloads.client.sha1,
+            Local = file,
+            Name = $"{mc}.jar"
+        };
+    }
 
     /// <summary>
     /// 创建下载项目
@@ -516,6 +531,30 @@ public static class GameHelper
         }
     }
 
+    public static GameArgObj.Libraries ReplaceLib(GameArgObj.Libraries item)
+    {
+        if (item.name.StartsWith("net.java.dev.jna:jna:"))
+        {
+            string[] version = item.name.Split(":")[2].Split(".");
+            if (int.Parse(version[0]) >= 5 && int.Parse(version[1]) >= 13) return item;
+            item.name = "net.java.dev.jna:jna:5.13.0";
+            item.downloads.artifact.path = "net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
+            item.downloads.artifact.sha1 = "1200e7ebeedbe0d10062093f32925a912020e747";
+            item.downloads.artifact.url = "https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
+        }
+        else if (item.name.StartsWith("com.github.oshi:oshi-core:"))
+        {
+            string[] version = item.name.Split(":")[2].Split(".");
+            if (int.Parse(version[0]) >= 5 && int.Parse(version[1]) >= 13) return item;
+            item.name = "com.github.oshi:oshi-core:6.3.0";
+            item.downloads.artifact.path = "com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar";
+            item.downloads.artifact.sha1 = "9e98cf55be371cafdb9c70c35d04ec2a8c2b42ac";
+            item.downloads.artifact.url = "https://repo1.maven.org/maven2/com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar";
+        }
+
+        return item;
+    }
+
     /// <summary>
     /// 创建游戏运行库项目
     /// </summary>
@@ -540,6 +579,11 @@ public static class GameHelper
                     {
                         return;
                     }
+                }
+
+                if (SystemInfo.Os == OsType.Android)
+                {
+                    item1 = ReplaceLib(item1);
                 }
 
                 if (item1.name.Contains("natives"))

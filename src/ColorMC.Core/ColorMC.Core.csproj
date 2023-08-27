@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <PackageReference Include="Heijden.Dns.Portable" Version="2.0.19" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.51" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.52" />
     <PackageReference Include="Jint" Version="3.0.0-beta-2050" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
     <PackageReference Include="Tomlyn" Version="0.16.2" />

@@ -1,6 +1,7 @@
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Custom;
 using ColorMC.Gui.UI.Model.Items;
@@ -93,7 +94,10 @@ public partial class CustomControlPanelModel : BaseModel
         {
             Notify(App.GetLanguage("MainWindow.Info2"));
 
-            item.IsLaunch = true;
+            if (SystemInfo.Os != OsType.Android)
+            {
+                item.IsLaunch = true;
+            }
 
             Progress(App.GetLanguage("MainWindow.Info26"));
         }

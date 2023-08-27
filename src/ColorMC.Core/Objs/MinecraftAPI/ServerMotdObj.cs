@@ -11,7 +11,6 @@ public enum StateType
     EXCEPTION
 }
 
-[JsonConverter(typeof(ServerDescriptionJsonConverter))]
 public class Chat
 {
     [JsonPropertyName("text")]
@@ -46,24 +45,31 @@ public class Chat
 
 public record ServerVersionInfo
 {
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
+    [JsonPropertyName("protocol")]
     public int Protocol { get; set; }
 }
 
 public record ServerPlayerInfo
 {
+    [JsonPropertyName("max")]
     public int Max { get; set; }
 
+    [JsonPropertyName("online")]
     public int Online { get; set; }
 
+    [JsonPropertyName("sample")]
     public List<Player> Sample { get; set; }
 }
 
 public record Player
 {
+    [JsonPropertyName("name")]
     public string Name { get; set; }
 
+    [JsonPropertyName("id")]
     public string Id { get; set; }
 }
 
@@ -115,7 +121,8 @@ public class ServerMotdObj
     /// Server's description (aka motd)
     /// </summary>
     [JsonPropertyName("description")]
-    public Chat Description { get; private set; }
+    [JsonConverter(typeof(ServerDescriptionJsonConverter))]
+    public Chat Description { get; set; }
 
     /// <summary>
     /// server's favicon. is a png image that is base64 encoded
@@ -127,7 +134,7 @@ public class ServerMotdObj
     /// Server's mod info including mod type and mod list (if is avaliable)
     /// </summary>
     [JsonPropertyName("modinfo")]
-    public ModInfo ModInfo { get; private set; }
+    public ModInfo ModInfo { get; set; }
 
     [JsonIgnore]
     public byte[] FaviconByteArray { get { return Convert.FromBase64String(Favicon.Replace("data:image/png;base64,", "")); } }
@@ -152,6 +159,11 @@ public class ServerMotdObj
 
     [JsonIgnore]
     public bool AcceptTextures { get; set; }
+
+    public ServerMotdObj()
+    { 
+        
+    }
 
     public ServerMotdObj(string ip, ushort port)
     {

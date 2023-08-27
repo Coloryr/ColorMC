@@ -113,6 +113,7 @@ public partial class App : Application
         {
             StartLock();
         }
+        
     }
 
     public static string GetLanguage(string input)
@@ -142,8 +143,13 @@ public partial class App : Application
         }
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
+        if (ColorMCGui.RunType == RunType.Phone)
+        {
+            await ColorMCGui.PhoneGo();
+        }
+
         Life = ApplicationLifetime;
 
         if (ConfigUtils.Config == null)

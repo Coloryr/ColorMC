@@ -490,7 +490,7 @@ public static class InstancesPath
         var dir = game.GetBasePath();
         if (Directory.Exists(dir))
         {
-            return null;
+            Directory.Delete(dir, true);
         }
 
         Directory.CreateDirectory(dir);

@@ -136,14 +136,12 @@ public partial class UsersModel : BaseModel
             Type = type + 1;
             Name = url;
             EnableType = false;
-            EnableName = false;
         }
         else
         {
             Name = "";
             Type = -1;
             EnableType = true;
-            EnableName = true;
         }
 
         User = "";

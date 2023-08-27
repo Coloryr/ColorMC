@@ -107,6 +107,8 @@ public static class ColorMCCore
     /// </summary>
     public static Func<bool, Task<bool>>? LaunchP { internal get; set; }
 
+    public static Action<List<string>> PhoneGameLaunch { internal get; set; }
+
     /// <summary>
     /// 新运行
     /// </summary>

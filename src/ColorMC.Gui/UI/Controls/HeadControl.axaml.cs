@@ -4,6 +4,7 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 
@@ -118,6 +119,11 @@ public partial class HeadControl : UserControl
         _buttonMin.Click += ButtonMin_Click;
         _buttonMax.Click += ButtonMax_Click;
         _buttonClose.Click += ButtonClose_Click;
+    }
+
+    public void SetIcon(Bitmap bitmap)
+    {
+        Icon.Source = bitmap;
     }
 
     private void ButtonClose_Click(object? sender, RoutedEventArgs e)

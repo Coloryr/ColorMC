@@ -253,6 +253,7 @@ public partial class AddModPackControlModel : BaseModel, IAddWindow
 
     public void Install1(FileDisplayObj data)
     {
+        Window.Close();
         App.ShowAddGame();
         if (data.SourceType == SourceType.CurseForge)
         {
@@ -266,7 +267,6 @@ public partial class AddModPackControlModel : BaseModel, IAddWindow
                 (data.Data as ModrinthVersionObj)!,
                 (_last!.Data?.Data as ModrinthSearchObj.Hit)!);
         }
-        Window.Close();
     }
 
     private async void Load()

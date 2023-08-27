@@ -111,6 +111,6 @@ public record CurseForgeObjList
         public int totalCount { get; set; }
     }
 
-    public List<Data> data;
+    public List<Data> data { get; set; }
     public Pagination pagination { get; set; }
 }

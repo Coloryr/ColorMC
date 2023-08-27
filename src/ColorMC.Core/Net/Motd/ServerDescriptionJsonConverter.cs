@@ -7,6 +7,11 @@ namespace ColorMC.Core.Net.Motd;
 
 public class ServerDescriptionJsonConverter : JsonConverter<Chat>
 {
+    public override bool CanConvert(Type objectType)
+    {
+        return typeof(Chat) == objectType;
+    }
+
     public override Chat? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.String)
@@ -103,10 +108,12 @@ public class ServerDescriptionJsonConverter : JsonConverter<Chat>
         }
         else
         {
-            var obj = JsonNode.Parse(reader.ValueSpan)?.AsObject();
-            return obj?.GetValue<Chat>();
+            return s_defaultConverter.Read(ref reader, typeToConvert, options);
         }
     }
+
+    private readonly static JsonConverter<Chat> s_defaultConverter =
+        (JsonConverter<Chat>)JsonSerializerOptions.Default.GetConverter(typeof(Chat));
 
     public override void Write(Utf8JsonWriter writer, Chat value, JsonSerializerOptions options)
     {

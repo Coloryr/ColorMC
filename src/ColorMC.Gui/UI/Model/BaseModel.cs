@@ -1,4 +1,5 @@
-﻿using ColorMC.Gui.UI.Windows;
+﻿using Avalonia.Media.Imaging;
+using ColorMC.Gui.UI.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,11 @@ public abstract partial class BaseModel : ObservableObject
     public BaseModel(IUserControl con)
     {
         Control = con;
+    }
+
+    public void SetIcon(Bitmap image)
+    {
+        Window.Head.SetIcon(image);
     }
 
     public void Show(string data)

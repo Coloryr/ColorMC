@@ -5,6 +5,8 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.UI.Windows;
 using System.Threading;
+using System.IO;
+using ColorMC.Core.LaunchPath;
 
 namespace ColorMC.Gui.UI.Controls.GameExport;
 
@@ -85,6 +87,12 @@ public partial class GameExportControl : UserControl, IUserControl
 
         await _model.LoadMod();
         _model.LoadFile();
+
+        var icon = _model.Obj.GetIconFile();
+        if (File.Exists(icon))
+        {
+            Window.Head.SetIcon(new(icon));
+        }
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)

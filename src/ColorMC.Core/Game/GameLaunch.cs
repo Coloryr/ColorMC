@@ -12,6 +12,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using static ColorMC.Core.Objs.Minecraft.GameArgObj.Downloads;
 
@@ -165,13 +166,7 @@ public static class Launch
                 string file = LibrariesPath.GetGameFile(game.id);
                 if (!File.Exists(file))
                 {
-                    list.Add(new()
-                    {
-                        Url = game.downloads.client.url,
-                        SHA1 = game.downloads.client.sha1,
-                        Local = file,
-                        Name = $"{obj.Version}.jar"
-                    });
+                    list.Add(GameHelper.BuildGameItem(game.id));
                 }
                 else if (ConfigUtils.Config.GameCheck.CheckCoreSha1)
                 {
@@ -181,13 +176,7 @@ public static class Launch
                     string sha1 = FuntionUtils.GenSha1(stream2);
                     if (sha1 != game.downloads.client.sha1)
                     {
-                        list.Add(new()
-                        {
-                            Url = game.downloads.client.url,
-                            SHA1 = game.downloads.client.sha1,
-                            Local = file,
-                            Name = $"{obj.Version}.jar"
-                        });
+                        list.Add(GameHelper.BuildGameItem(game.id));
                     }
                 }
             }, s_cancel));
@@ -444,15 +433,16 @@ public static class Launch
             return V1JvmArg;
 
         List<string> arg = new();
-        foreach (var item in game.arguments.jvm)
+        foreach (JsonElement item in game.arguments.jvm)
         {
-            if (item is string)
+            if (item.ValueKind == JsonValueKind.String)
             {
-                arg.Add(item);
+                arg.Add(item.GetString()!);
             }
-            else if (item is JsonObject obj1)
+            else if (item.ValueKind == JsonValueKind.Object)
             {
-                var obj2 = obj1.GetValue<GameArgObj.Arguments.Jvm>();
+                var temp = item.ToString();
+                var obj2 = JsonSerializer.Deserialize<GameArgObj.Arguments.Jvm>(temp);
                 if (obj2 == null)
                 {
                     continue;
@@ -530,11 +520,11 @@ public static class Launch
             return MakeV1GameArg(obj);
 
         List<string> arg = new();
-        foreach (var item in game.arguments.game)
+        foreach (JsonElement item in game.arguments.game)
         {
-            if (item is string)
+            if (item.ValueKind == JsonValueKind.String)
             {
-                arg.Add(item);
+                arg.Add(item.GetString()!);
             }
             //else if (item is JObject)
             //{
@@ -727,39 +717,42 @@ public static class Launch
         List<string> gameArg = new();
         gameArg.AddRange(v2 ? MakeV2GameArg(obj) : MakeV1GameArg(obj));
 
-        //window
-        WindowSettingObj window;
-        if (obj.Window == null)
+        if (SystemInfo.Os != OsType.Android)
         {
-            window = ConfigUtils.Config.Window;
-        }
-        else
-        {
-            window = new()
+            //window
+            WindowSettingObj window;
+            if (obj.Window == null)
             {
-                FullScreen = obj.Window.FullScreen
-                    ?? ConfigUtils.Config.Window.FullScreen,
-                Width = obj.Window.Width
-                    ?? ConfigUtils.Config.Window.Width,
-                Height = obj.Window.Height
-                    ?? ConfigUtils.Config.Window.Height,
-            };
-        }
-        if (window.FullScreen == true)
-        {
-            gameArg.Add("--fullscreen");
-        }
-        else
-        {
-            if (window.Width > 0)
-            {
-                gameArg.Add($"--width");
-                gameArg.Add($"{window.Width}");
+                window = ConfigUtils.Config.Window;
             }
-            if (window.Height > 0)
+            else
             {
-                gameArg.Add($"--height");
-                gameArg.Add($"{window.Height}");
+                window = new()
+                {
+                    FullScreen = obj.Window.FullScreen
+                        ?? ConfigUtils.Config.Window.FullScreen,
+                    Width = obj.Window.Width
+                        ?? ConfigUtils.Config.Window.Width,
+                    Height = obj.Window.Height
+                        ?? ConfigUtils.Config.Window.Height,
+                };
+            }
+            if (window.FullScreen == true)
+            {
+                gameArg.Add("--fullscreen");
+            }
+            else
+            {
+                if (window.Width > 0)
+                {
+                    gameArg.Add($"--width");
+                    gameArg.Add($"{window.Width}");
+                }
+                if (window.Height > 0)
+                {
+                    gameArg.Add($"--height");
+                    gameArg.Add($"{window.Height}");
+                }
             }
         }
 
@@ -945,35 +938,8 @@ public static class Launch
         return list3;
     }
 
-    /// <summary>
-    /// 替换参数
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="login">登录的账户</param>
-    /// <param name="all_arg">参数</param>
-    /// <param name="v2">V2模式</param>
-    private static async Task ReplaceAll(GameSettingObj obj, LoginObj login, List<string> all_arg, bool v2)
+    private static async Task<string> MakeClassPath(GameSettingObj obj, bool v2)
     {
-        var version = VersionPath.GetGame(obj.Version)!;
-        string assetsPath = AssetsPath.BaseDir;
-        string gameDir = InstancesPath.GetGamePath(obj);
-        string assetsIndexName;
-        if (version.assets != null)
-        {
-            assetsIndexName = version.assets;
-        }
-        else
-        {
-            assetsIndexName = "legacy";
-        }
-
-        string version_name = obj.Loader switch
-        {
-            Loaders.Forge => $"forge-{obj.Version}-{obj.LoaderVersion}",
-            Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderVersion}",
-            Loaders.Quilt => $"quilt-{obj.Version}-{obj.LoaderVersion}",
-            _ => obj.Version
-        };
         var libraries = await GetLibs(obj, v2);
         StringBuilder classpath = new();
         string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
@@ -1001,6 +967,41 @@ public static class Launch
         }
         classpath.Remove(classpath.Length - 1, 1);
 
+        return classpath.ToString().Trim();
+    }
+
+    /// <summary>
+    /// 替换参数
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="login">登录的账户</param>
+    /// <param name="all_arg">参数</param>
+    /// <param name="v2">V2模式</param>
+    private static void ReplaceAll(GameSettingObj obj, LoginObj login, List<string> all_arg, string classpath)
+    {
+        var version = VersionPath.GetGame(obj.Version)!;
+        string assetsPath = AssetsPath.BaseDir;
+        string gameDir = InstancesPath.GetGamePath(obj);
+        string assetsIndexName;
+        if (version.assets != null)
+        {
+            assetsIndexName = version.assets;
+        }
+        else
+        {
+            assetsIndexName = "legacy";
+        }
+
+        string version_name = obj.Loader switch
+        {
+            Loaders.Forge => $"forge-{obj.Version}-{obj.LoaderVersion}",
+            Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderVersion}",
+            Loaders.Quilt => $"quilt-{obj.Version}-{obj.LoaderVersion}",
+            _ => obj.Version
+        };
+
+        string sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
+
         Dictionary<string, string> argDic = new()
         {
             {"${auth_player_name}", login.UserName },
@@ -1014,12 +1015,14 @@ public static class Launch
             {"${user_properties}", "{}" },
             {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "legacy" },
             {"${version_type}", "ColorMC" },
-            {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
+            {"${natives_directory}", SystemInfo.Os == OsType.Android
+                ? "%natives_directory%" : LibrariesPath.GetNativeDir(obj.Version) },
             {"${library_directory}",LibrariesPath.BaseDir },
             {"${classpath_separator}", sep },
             {"${launcher_name}","ColorMC" },
             {"${launcher_version}", ColorMCCore.Version  },
-            {"${classpath}",  classpath.ToString().Trim() },
+            {"${classpath}", SystemInfo.Os == OsType.Android
+                ? "%classpath%" : classpath },
         };
 
         for (int a = 0; a < all_arg.Count; a++)
@@ -1039,8 +1042,20 @@ public static class Launch
         var list = new List<string>();
         var version = VersionPath.GetGame(obj.Version)!;
         var v2 = CheckRuleUtils.GameLaunchVersion(version);
-
-        list.AddRange(await JvmArg(obj, v2, login));
+        var classpath = await MakeClassPath(obj, v2);
+        var jvmarg = await JvmArg(obj, v2, login);
+        var gamearg = GameArg(obj, v2, world);
+        ReplaceAll(obj, login, jvmarg, classpath);
+        ReplaceAll(obj, login, gamearg, classpath);
+        if (SystemInfo.Os == OsType.Android)
+        {
+            list.Add(jvmarg.Count.ToString());
+        }
+        list.AddRange(jvmarg);
+        if (SystemInfo.Os == OsType.Android)
+        {
+            list.Add(classpath);
+        }
 
         if (string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
         {
@@ -1076,11 +1091,33 @@ public static class Launch
         {
             list.Add(obj.AdvanceJvm.MainClass);
         }
-        list.AddRange(GameArg(obj, v2, world));
-
-        await ReplaceAll(obj, login, list, v2);
+        if (SystemInfo.Os == OsType.Android)
+        {
+            list.Add(gamearg.Count.ToString());
+        }
+        list.AddRange(gamearg);
 
         return list;
+    }
+
+    private static void ConfigSet(GameSettingObj obj)
+    {
+        if (SystemInfo.Os == OsType.Android)
+        {
+            var dir = obj.GetConfigPath();
+            Directory.CreateDirectory(dir);
+            var file = dir + "splash.properties";
+            string data = "enabled=true";
+            if (File.Exists(file))
+            {
+                data = File.ReadAllText(file);
+            }
+
+            if (data.Contains("enabled=true"))
+            {
+                File.WriteAllText(file, data.Replace("enabled=true", "enabled=false"));
+            }
+        }
     }
 
     /// <summary>
@@ -1224,22 +1261,24 @@ public static class Launch
 
         var path = obj.JvmLocal;
         JavaInfo? jvm = null;
-        if (string.IsNullOrWhiteSpace(path))
+        var game = VersionPath.GetGame(obj.Version)!;
+        if (SystemInfo.Os != OsType.Android)
         {
-            var game = VersionPath.GetGame(obj.Version)!;
-            var jv = game.javaVersion.majorVersion;
-            jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
-            if (jvm == null)
+            if (string.IsNullOrWhiteSpace(path))
             {
-                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
-                ColorMCCore.NoJava?.Invoke();
-                throw new LaunchException(LaunchState.JavaError,
-                        LanguageHelper.Get("Core.Launch.Error6"));
+                var jv = game.javaVersion.majorVersion;
+                jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
+                if (jvm == null)
+                {
+                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
+                    ColorMCCore.NoJava?.Invoke();
+                    throw new LaunchException(LaunchState.JavaError,
+                            LanguageHelper.Get("Core.Launch.Error6"));
+                }
+
+                path = jvm.GetPath();
             }
-
-            path = jvm.GetPath();
         }
-
         if (s_cancel.IsCancellationRequested)
         {
             return null;
@@ -1316,9 +1355,21 @@ public static class Launch
             return null;
         }
 
+        ConfigSet(obj);
+
         if (SystemInfo.Os == OsType.Android)
         {
-            NativeLaunch(jvm!, arg);
+            var arglist = new List<string>
+            {
+                obj.GetGamePath(),
+                obj.Version,
+                game.javaVersion.majorVersion.ToString(),
+                game.time,
+                CheckRuleUtils.GameLaunchVersion(game) ? "true" : "false"
+            };
+            arglist.AddRange(arg);
+
+            ColorMCCore.PhoneGameLaunch(arglist);
             return null;
         }
 

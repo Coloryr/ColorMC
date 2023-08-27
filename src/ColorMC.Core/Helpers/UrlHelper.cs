@@ -124,6 +124,11 @@ public static class UrlHelper
         return url;
     }
 
+    public static string DownloadGame(string mc, SourceLocal? local)
+    {
+        return $"{(local == SourceLocal.BMCLAPI ? BMCLAPI : MCBBS)}version/{mc}/client";
+    }
+
     /// <summary>
     /// 运行库地址
     /// </summary>
