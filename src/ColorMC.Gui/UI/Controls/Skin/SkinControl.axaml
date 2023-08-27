@@ -210,23 +210,23 @@
                     Interval="20" />
             </StackPanel>
 
-            <Label
-                Margin="2"
-                VerticalAlignment="Bottom"
-                Background="{setting:Colors Bottom1}"
-                CornerRadius="5">
-                <TextBlock
-                    Foreground="{setting:Colors Font}"
-                    Text="{Binding Info}"
-                    TextWrapping="Wrap" />
-            </Label>
-
-            <Label
-                Margin="130,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Background="{setting:Colors Bottom1}"
-                Content="{Binding NowFps}" />
+            <StackPanel VerticalAlignment="Bottom">
+                <Label
+                    Margin="2"
+                    HorizontalAlignment="Left"
+                    Background="{setting:Colors Bottom1}"
+                    Content="{Binding NowFps}"
+                    CornerRadius="5" />
+                <Label
+                    Margin="2"
+                    Background="{setting:Colors Bottom1}"
+                    CornerRadius="5">
+                    <TextBlock
+                        Foreground="{setting:Colors Font}"
+                        Text="{Binding Info}"
+                        TextWrapping="Wrap" />
+                </Label>
+            </StackPanel>
 
             <Label
                 HorizontalAlignment="Stretch"

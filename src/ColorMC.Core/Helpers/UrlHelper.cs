@@ -1,6 +1,7 @@
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Optifine;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
@@ -35,6 +36,8 @@ public static class UrlHelper
     public const string QuiltMeta = "https://meta.quiltmc.org/";
     public const string Optifine = "https://optifine.net/";
     public const string NeoForge = "https://maven.neoforged.net/";
+
+    public const string NeoForgeDownload = "https://maven.neoforged.net/releases/";
 
     public const string Minecraft = "https://www.minecraft.net/";
     public const string MinecraftLib = "https://libraries.minecraft.net/";
@@ -219,21 +222,20 @@ public static class UrlHelper
     /// </summary>
     public static string DownloadNeoForgeLib(string url, SourceLocal? local)
     {
+        string? to = local switch
+        {
+            SourceLocal.BMCLAPI => BMCLAPI + "maven/",
+            SourceLocal.MCBBS => MCBBS + "maven/",
+            _ => null
+        };
+        if (to == null)
+        {
+            return url;
+        }
+
+        url = url.Replace(NeoForgeDownload, to);
+
         return url;
-        //string? to = local switch
-        //{
-        //    SourceLocal.BMCLAPI => BMCLAPI + "maven/",
-        //    SourceLocal.MCBBS => MCBBS + "maven/",
-        //    _ => null
-        //};
-        //if (to == null)
-        //{
-        //    return url;
-        //}
-
-        //url = url.Replace(NeoForgeUrl, to);
-
-        //return url;
     }
 
     /// <summary>
@@ -383,11 +385,12 @@ public static class UrlHelper
     /// <summary>
     /// NeoForge版本地址
     /// </summary>
-    public static string NeoForgeVersions(string version, SourceLocal? local)
+    /// <param name="mc">游戏版本</param>
+    public static string NeoForgeVersions(string mc, SourceLocal? local)
     {
         return local switch
         {
-            //SourceLocal.BMCLAPI => $"{BMCLAPI}forge/minecraft/{version}",
+            SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
             //SourceLocal.MCBBS => $"{MCBBS}forge/minecraft/{version}",
             _ => $"{NeoForge}releases/net/neoforged/forge/maven-metadata.xml"
         };
@@ -501,5 +504,15 @@ public static class UrlHelper
             return MakeDownloadUrl(SourceType.CurseForge, item.Projcet,
                 item.FileId, item.File);
         }
+    }
+
+    public static string DownloadIndex(SourceLocal? local, VersionObj.Versions obj)
+    {
+        return local switch
+        {
+            SourceLocal.BMCLAPI => $"{BMCLAPI}version/{obj.id}/json",
+            SourceLocal.MCBBS => $"{MCBBS}version/{obj.id}/json",
+            _ => obj.url
+        };
     }
 }

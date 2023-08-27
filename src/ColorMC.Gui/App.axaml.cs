@@ -143,11 +143,13 @@ public partial class App : Application
         }
     }
 
-    public override async void OnFrameworkInitializationCompleted()
+    public override void OnFrameworkInitializationCompleted()
     {
+        base.OnFrameworkInitializationCompleted();
+
         if (ColorMCGui.RunType == RunType.Phone)
         {
-            await ColorMCGui.PhoneGo();
+            ColorMCGui.PhoneGo();
         }
 
         Life = ApplicationLifetime;
@@ -200,10 +202,8 @@ public partial class App : Application
         }
 
         ShowCustom();
-
+        Task.Run(ColorMCCore.Init1);
         Dispatcher.UIThread.Post(() => _ = LoadImage());
-
-        base.OnFrameworkInitializationCompleted();
     }
 
     public static void StartLock()

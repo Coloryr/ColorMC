@@ -204,8 +204,6 @@ public partial class MainControl : UserControl, IUserControl
     public void Opened()
     {
         Window.SetTitle(Title);
-
-        _model.Open();
     }
 
     private void Item_DoubleTapped(object? sender, TappedEventArgs e)
@@ -238,6 +236,11 @@ public partial class MainControl : UserControl, IUserControl
     public void GameClose(string uuid)
     {
         _model.GameClose(uuid);
+    }
+
+    public void LoadDone()
+    {
+        Dispatcher.UIThread.Post(_model.LoadDone);
     }
 
     public void LoadMain()

@@ -240,7 +240,10 @@ public static class GameBinding
         try
         {
             var data = await BaseClient.GetBytes(url);
-            await File.WriteAllBytesAsync(obj.GetIconFile(), data);
+            if (data.Item1)
+            {
+                await File.WriteAllBytesAsync(obj.GetIconFile(), data.Item2!);
+            }
         }
         catch (Exception e)
         {

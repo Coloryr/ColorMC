@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Custom;
@@ -24,6 +25,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
     public BaseModel Model => _model;
 
     private CustomControlPanelModel _model;
+    private string _ui;
 
     public CustomControl()
     {
@@ -45,14 +47,19 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
     public void Load(string local)
     {
-        var config = ConfigBinding.GetAllConfig();
-        if (config.Item2 == null)
-        {
-            return;
-        }
+        _ui = local;
 
         Grid1.Children.Clear();
+    }
 
+    public void Load1()
+    {
+        Dispatcher.UIThread.Post(Load);
+    }
+
+    private void Load()
+    {
+        var config = ConfigBinding.GetAllConfig();
         var obj = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
         if (obj == null)
         {
@@ -67,7 +74,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
             return;
         }
 
-        var ui1 = AvaloniaRuntimeXamlLoader.Parse<CustomPanelControl>(File.ReadAllText(local));
+        var ui1 = AvaloniaRuntimeXamlLoader.Parse<CustomPanelControl>(File.ReadAllText(_ui));
 
         _model = new CustomControlPanelModel(this, obj);
 

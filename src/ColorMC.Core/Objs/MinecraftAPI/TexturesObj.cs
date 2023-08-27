@@ -20,7 +20,7 @@ public record TexturesObj
         public Skin SKIN { get; set; }
         public Cape CAPE { get; set; }
     }
-    public long timestamp { get; set; }
+    public string timestamp { get; set; }
     public string profileId { get; set; }
     public string profileName { get; set; }
     public bool signatureRequired { get; set; }

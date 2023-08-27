@@ -18,7 +18,7 @@ public static class TestItem
     public static void Item1()
     {
         VersionPath.CheckUpdate("1.12.2").Wait();
-        AssetsPath.Check("1.12.2").Wait();
+        //AssetsPath.Check("1.12.2").Wait();
     }
 
     public static void Item2()
@@ -31,7 +31,7 @@ public static class TestItem
         else
         {
             //GameDownload.Download(version.versions.First()).Wait();
-            var list = GameDownloadHelper.Download(version.versions.Where(a => a.id == "1.12.2").First()).Result;
+            var list = DownloadItemHelper.Download(version.versions.Where(a => a.id == "1.12.2").First()).Result;
             if (list.State != GetDownloadState.End)
             {
                 Console.WriteLine("下载列表获取失败");
@@ -56,7 +56,7 @@ public static class TestItem
         else
         {
             var item = res.loader.First();
-            var list = GameDownloadHelper.DownloadFabric("1.19.2", item.version).Result;
+            var list = DownloadItemHelper.BuildFabric("1.19.2", item.version).Result;
             if (list.State != GetDownloadState.End)
             {
                 Console.WriteLine("下载列表获取失败");
@@ -100,7 +100,7 @@ public static class TestItem
     public static void Item7()
     {
         var data = InstancesPath.Games.First();
-        var list = Launch.CheckGameFile(data, new LoginObj()).Result;
+        var list = CheckHelpers.CheckGameFile(data, new LoginObj(), CancellationToken.None).Result;
         if (list == null)
         {
             Console.WriteLine("文件检查失败");
@@ -164,12 +164,10 @@ public static class TestItem
         {
             DirName = "test1",
             Name = "test1",
-            Version = "1.7.2",
-            Loader = Loaders.Forge,
-            LoaderVersion = "10.12.2.1161"
+            Loader = Loaders.Forge
         };
 
-        Console.ReadLine();
+        CancellationToken token = CancellationToken.None;
 
         Process? process;
         //process = game.StartGame(login).Result;
@@ -177,7 +175,7 @@ public static class TestItem
 
         //game.Version = "1.7.10";
         //game.LoaderVersion = "10.13.4.1614";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.8";
@@ -207,7 +205,7 @@ public static class TestItem
 
         //game.Version = "1.10";
         //game.LoaderVersion = "12.18.0.2000";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.10.2";
@@ -227,12 +225,12 @@ public static class TestItem
 
         //game.Version = "1.12.2";
         //game.LoaderVersion = "14.23.4.2760";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.12.2";
         //game.LoaderVersion = "14.23.5.2860";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
         //game.Version = "1.13.2";
@@ -262,19 +260,31 @@ public static class TestItem
 
         //game.Version = "1.18.2";
         //game.LoaderVersion = "40.1.85";
-        //process = game.StartGame(login).Result;
+        //process = game.StartGame(login, null, token).Result;
         //process?.WaitForExit();
 
-        Stopwatch stopwatch = new();
-        stopwatch.Start();
+        //game.Version = "1.19.2";
+        //game.LoaderVersion = "43.1.52";
+        //process = game.StartGame(login, null, token).Result;
+        //process?.WaitForExit();
 
-        game.Version = "1.19.2";
-        game.LoaderVersion = "43.1.52";
-        process = game.StartGame(login, null, CancellationToken.None).Result;
-        stopwatch.Stop();
-        Console.WriteLine(stopwatch.Elapsed);
-
+        game.Version = "1.20.1";
+        game.Loader = Loaders.NeoForge;
+        game.LoaderVersion = "47.1.71";
+        process = game.StartGame(login, null, token).Result;
         process?.WaitForExit();
+
+        //game.Version = "1.20.1";
+        //game.Loader = Loaders.Fabric;
+        //game.LoaderVersion = "0.14.22";
+        //process = game.StartGame(login, null, token).Result;
+        //process?.WaitForExit();
+
+        //game.Version = "1.20.1";
+        //game.Loader = Loaders.Quilt;
+        //game.LoaderVersion = "0.14.22";
+        //process = game.StartGame(login, null, token).Result;
+        //process?.WaitForExit();
     }
 
     public static void Item11()

@@ -1,9 +1,11 @@
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using System;
 using System.Text.Json;
 
 namespace ColorMC.Core.LaunchPath;
@@ -48,10 +50,6 @@ public static class VersionPath
                 return null;
             }
         }
-        private set
-        {
-
-        }
     }
 
     private static string ForgeDir => BaseDir + "/" + Name1;
@@ -84,7 +82,7 @@ public static class VersionPath
     public static async Task GetFromWeb()
     {
         (_version, var data) = await GameAPI.GetVersions();
-        if (Versions != null)
+        if (_version != null)
         {
             SaveVersions(data!);
             return;
@@ -112,7 +110,7 @@ public static class VersionPath
     /// <summary>
     /// 读取版本信息
     /// </summary>
-    public static async void ReadVersions()
+    public static void ReadVersions()
     {
         string file = BaseDir + "/version.json";
         if (File.Exists(file))
@@ -122,7 +120,7 @@ public static class VersionPath
         }
         else
         {
-            await GetFromWeb();
+            GetFromWeb().Wait();
         }
     }
 
@@ -139,10 +137,16 @@ public static class VersionPath
     /// 添加版本信息
     /// </summary>
     /// <param name="obj">游戏数据</param>
-    public static void AddGame(string id, string data)
+    public static async Task<GameArgObj?> AddGame(VersionObj.Versions obj)
     {
-        string file = $"{BaseDir}/{id}.json";
-        File.WriteAllText(file, data);
+        var url = UrlHelper.DownloadIndex(BaseClient.Source, obj);
+        (var obj1, var data) = await GameAPI.GetGame(url);
+        if (obj1 == null)
+        {
+            return null;
+        }
+        File.WriteAllBytes($"{BaseDir}/{obj.id}.json", data!);
+        return obj1;
     }
 
     /// <summary>
@@ -242,26 +246,27 @@ public static class VersionPath
     /// 更新json
     /// </summary>
     /// <param name="version">游戏版本</param>
-    public static async Task CheckUpdate(string version)
+    public static async Task<GameArgObj?> CheckUpdate(string version)
     {
         if (Versions == null)
         {
-            await GetFromWeb();
-        }
-        if (Versions == null)
-        {
-            return;
+            return null;
         }
         var data = Versions.versions.Where(a => a.id == version).FirstOrDefault();
         if (data != null)
         {
-            (var obj, var data1) = await GameAPI.GetGame(data.url);
-            if (obj == null)
+            var temp = File.OpenRead($"{BaseDir}/{version}.json");
+            var sha1 = await FuntionUtils.GenSha1Async(temp);
+            temp.Close();
+            if (sha1 != data.sha1)
             {
-                return;
+                return await AddGame(data);
             }
-            AddGame(obj.id, data1!);
+
+            return GetGame(version);
         }
+
+        return null;
     }
 
     /// <summary>

@@ -1,5 +1,5 @@
 ﻿using Avalonia.Controls;
-using ColorMC.Core.Utils;
+using ColorMC.Core.Helpers;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 
@@ -16,7 +16,7 @@ public class GameEditFlyout2
         _ = new FlyoutsControl(new()
         {
             (App.GetLanguage("Button.OpFile"), true, Button1_Click),
-            (App.GetLanguage("GameEditWindow.Flyouts2.Text5"), CheckRuleUtils.IsGameLaunchVersion120(_model.World.Game.Version), Button6_Click),
+            (App.GetLanguage("GameEditWindow.Flyouts2.Text5"), CheckHelpers.IsGameLaunchVersion120(_model.World.Game.Version), Button6_Click),
             (App.GetLanguage("GameEditWindow.Flyouts2.Text1"), true, Button2_Click),
             (App.GetLanguage("GameEditWindow.Flyouts2.Text4"), true, Button5_Click),
             (App.GetLanguage("GameEditWindow.Flyouts2.Text3"), !_model.World.Broken, Button3_Click),

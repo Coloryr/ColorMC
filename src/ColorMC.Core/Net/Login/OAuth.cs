@@ -155,7 +155,7 @@ public static class OAuthAPI
             }
             else
             {
-                var obj4 = obj3.GetValue<OAuth1Obj>();
+                var obj4 = JsonSerializer.Deserialize<OAuth1Obj>(data);
                 if (obj4 == null)
                 {
                     return (LoginState.JsonError, null);

@@ -109,6 +109,8 @@ public static class ColorMCCore
 
     public static Action<List<string>> PhoneGameLaunch { internal get; set; }
 
+    public static Action LoadDone { internal get; set; }
+
     /// <summary>
     /// 新运行
     /// </summary>
@@ -129,17 +131,22 @@ public static class ColorMCCore
         Directory.CreateDirectory(dir);
         LanguageHelper.Load(LanguageType.zh_cn);
         Logs.Init(dir);
-        ConfigSave.Init();
-        JvmPath.Init(dir);
-        ToolPath.Init(dir);
         ConfigUtils.Init(dir);
-        BaseClient.Init();
-        LocalMaven.Init(dir);
-        DownloadManager.Init(dir);
-        AuthDatabase.Init();
-        MCPath.Init(dir);
 
         Logs.Info(LanguageHelper.Get("Core.Info1"));
+    }
+
+    public static void Init1()
+    {
+        ConfigSave.Init();
+        JvmPath.Init(BaseDir);
+        ToolPath.Init(BaseDir);
+        BaseClient.Init();
+        LocalMaven.Init(BaseDir);
+        DownloadManager.Init(BaseDir);
+        AuthDatabase.Init();
+        MCPath.Init(BaseDir);
+        LoadDone?.Invoke();
     }
 
     /// <summary>

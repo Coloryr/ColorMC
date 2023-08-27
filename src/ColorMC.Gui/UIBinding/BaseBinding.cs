@@ -45,7 +45,7 @@ public static class BaseBinding
     /// <summary>
     /// 初始化
     /// </summary>
-    public static async void Init()
+    public static void Init()
     {
         ColorMCCore.OnError = ShowError;
         ColorMCCore.DownloaderUpdate = DownloaderUpdate;
@@ -59,15 +59,13 @@ public static class BaseBinding
         ColorMCCore.GameLaunch = GameLunch;
         ColorMCCore.GameRequest = GameDownload;
         ColorMCCore.LaunchP = LaunchP;
+        ColorMCCore.LoadDone = LoadDone;
 
         if (ColorMCGui.RunType == RunType.Program)
         {
             GameCountUtils.Init(ColorMCGui.RunDir);
             ImageUtils.Init(ColorMCGui.RunDir);
-            UpdateChecker.Init();
-            GameCloudUtils.Init(ColorMCGui.RunDir);
-            await GameCloudUtils.StartConnect();
-
+            
             try
             {
                 Media.Init();
@@ -81,6 +79,16 @@ public static class BaseBinding
         ColorSel.Instance.Load();
         StyleSel.Instance.Load();
         LoadStyle();
+    }
+
+    private static async void LoadDone()
+    {
+        UpdateChecker.Init();
+        GameCloudUtils.Init(ColorMCGui.RunDir);
+        App.MainWindow?.LoadDone();
+        App.CustomWindow?.Load1();
+
+        await GameCloudUtils.StartConnect();
     }
 
     public static void LoadStyle()

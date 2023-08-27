@@ -13,6 +13,7 @@
     <Panel>
         <DockPanel>
             <ScrollViewer
+                Name="ScrollViewer1"
                 VerticalAlignment="Top"
                 AllowAutoHide="True"
                 DockPanel.Dock="Top"

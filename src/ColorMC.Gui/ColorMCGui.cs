@@ -103,7 +103,7 @@ public static class ColorMCGui
         semaphore.Release();
     }
 
-    public static async Task PhoneGo()
+    public static void PhoneGo()
     {
         semaphore.WaitOne();
         ColorMCCore.Init(RunDir);

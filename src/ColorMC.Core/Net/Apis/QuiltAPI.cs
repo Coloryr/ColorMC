@@ -85,7 +85,7 @@ public static class QuiltAPI
     {
         try
         {
-            string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}";
+            string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}";
             var data = await BaseClient.GetString(url);
             if (data.Item1 == false)
             {

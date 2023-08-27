@@ -44,8 +44,11 @@ public static class PlayerSkinAPI
                 FileInfo info = new(file);
                 info.Directory?.Create();
                 var data2 = await BaseClient.GetBytes(url.textures.SKIN.url);
-                File.WriteAllBytes(file, data2);
-                skin = true;
+                if (data2.Item1)
+                {
+                    File.WriteAllBytes(file, data2.Item2!);
+                    skin = true;
+                }
             }
             catch (Exception e)
             {
@@ -61,8 +64,11 @@ public static class PlayerSkinAPI
                 FileInfo info = new(file);
                 info.Directory?.Create();
                 var data2 = await BaseClient.GetBytes(url.textures.CAPE.url);
-                File.WriteAllBytes(file, data2);
-                cape = true;
+                if (data2.Item1)
+                {
+                    File.WriteAllBytes(file, data2.Item2!);
+                    cape = true;
+                }
             }
             catch (Exception e)
             {

@@ -161,8 +161,8 @@ public class ServerMotdObj
     public bool AcceptTextures { get; set; }
 
     public ServerMotdObj()
-    { 
-        
+    {
+
     }
 
     public ServerMotdObj(string ip, ushort port)

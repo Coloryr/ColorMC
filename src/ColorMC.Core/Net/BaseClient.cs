@@ -90,8 +90,15 @@ public static class BaseClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<byte[]> GetBytes(string url)
+    public static async Task<(bool, byte[]?)> GetBytes(string url)
     {
-        return await DownloadClient.GetByteArrayAsync(url);
+        var data = await DownloadClient.GetAsync(url);
+        if (data.StatusCode == HttpStatusCode.NotFound)
+        {
+            return (false, null);
+        }
+
+        var data1 = await data.Content.ReadAsByteArrayAsync();
+        return (true, data1);
     }
 }

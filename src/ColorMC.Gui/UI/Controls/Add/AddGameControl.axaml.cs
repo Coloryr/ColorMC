@@ -70,11 +70,25 @@ public partial class AddGameControl : UserControl, IUserControl
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
+        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
+
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
 
         Content1.Content = _tab1;
+    }
+
+    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (e.Delta.Y > 0)
+        {
+            ScrollViewer1.LineLeft();
+        }
+        else if (e.Delta.Y < 0)
+        {
+            ScrollViewer1.LineRight();
+        }
     }
 
     private void DragEnter(object? sender, DragEventArgs e)

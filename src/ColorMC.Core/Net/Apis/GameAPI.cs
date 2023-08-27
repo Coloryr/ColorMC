@@ -39,11 +39,11 @@ public static class GameAPI
     /// 下载游戏数据
     /// </summary>
     /// <param name="url">网址</param>
-    public static async Task<(GameArgObj?, string?)> GetGame(string url)
+    public static async Task<(GameArgObj?, byte[]?)> GetGame(string url)
     {
         try
         {
-            var data = await BaseClient.GetString(url);
+            var data = await BaseClient.GetBytes(url);
             if (data.Item1 == false)
             {
                 ColorMCCore.OnError?.Invoke(LanguageHelper.Get("Core.Http.Error7"),

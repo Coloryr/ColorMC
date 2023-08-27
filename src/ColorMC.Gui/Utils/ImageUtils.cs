@@ -37,11 +37,15 @@ public static class ImageUtils
             try
             {
                 var data1 = await BaseClient.GetBytes(url);
-                using var stream = new MemoryStream(data1);
-                var image = Bitmap.DecodeToWidth(stream, 80);
-                image.Save(Local + sha1);
+                if (data1.Item1)
+                {
+                    using var stream = new MemoryStream(data1.Item2!);
+                    var image = Bitmap.DecodeToWidth(stream, 80);
+                    image.Save(Local + sha1);
+                    return image;
+                }
 
-                return image;
+                return null;
             }
             catch (Exception e)
             {

@@ -1,8 +1,5 @@
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Utils;
-using System.Collections.Concurrent;
 using System.Text.Json;
 
 namespace ColorMC.Core.LaunchPath;
@@ -77,66 +74,6 @@ public static class AssetsPath
         var obj = JsonSerializer.Deserialize<AssetsObj>(File.ReadAllText(file))!;
         s_assets.Add(game.assets, obj);
         return obj;
-    }
-
-    /// <summary>
-    /// 检查丢失的资源
-    /// </summary>
-    /// <param name="obj">资源数据</param>
-    /// <returns>丢失列表</returns>
-    public static async Task<ConcurrentBag<(string Name, string Hash)>> Check(this AssetsObj obj, CancellationToken cancel)
-    {
-        var list1 = new ConcurrentBag<string>();
-        var list = new ConcurrentBag<(string, string)>();
-        await Parallel.ForEachAsync(obj.objects, cancel, async (item, cancel) =>
-        {
-            if (cancel.IsCancellationRequested)
-                return;
-
-            if (list1.Contains(item.Value.hash))
-                return;
-
-            string file = $"{ObjectsDir}/{item.Value.hash[..2]}/{item.Value.hash}";
-            if (!File.Exists(file))
-            {
-                list.Add((item.Key, item.Value.hash));
-                return;
-            }
-
-            if (!ConfigUtils.Config.GameCheck.CheckAssetsSha1)
-                return;
-            using var stream = new FileStream(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-            var sha1 = await FuntionUtils.GenSha1Async(stream);
-            if (item.Value.hash != sha1)
-            {
-                list.Add((item.Key, item.Value.hash));
-                list1.Add(item.Value.hash);
-            }
-
-            return;
-        });
-
-        return list;
-    }
-
-    /// <summary>
-    /// 检查资源文件
-    /// </summary>
-    /// <param name="version">游戏版本</param>
-    public static async Task Check(string version)
-    {
-        var item = VersionPath.GetGame(version);
-        if (item == null)
-        {
-            return;
-        }
-
-        var obj = await GameAPI.GetAssets(item.assetIndex.url);
-        if (obj.Item1 == null)
-        {
-            return;
-        }
-        item.AddIndex(obj.Item2!);
     }
 
     /// <summary>

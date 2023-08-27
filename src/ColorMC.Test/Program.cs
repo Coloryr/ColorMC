@@ -1,9 +1,11 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
+using static ColorMC.Core.Objs.CurseForge.CurseForgeObjList.Data;
 
 namespace ColorMC.Test;
 
@@ -42,7 +44,7 @@ internal class Program
         ColorMCCore.AuthStateUpdate = AuthStateUpdate;
         ColorMCCore.GameLog = Log;
 
-        TestItem.Item29();
+        TestItem.Item10();
 
         //GetSha1();
 
@@ -102,12 +104,12 @@ internal class Program
 
     public static void Log(GameSettingObj obj, string? log)
     {
-        Console.WriteLine(log);
+        Logs.Info(log);
     }
 
     public static void Log(Process? progress, string? log)
     {
-        Console.WriteLine(log);
+        Logs.Info(log);
     }
 
     public static void Update(int index)
@@ -119,7 +121,7 @@ internal class Program
     {
         if (item.State == DownloadItemState.Error)
         {
-            Console.WriteLine($"下载器{index} 下载项目:{item.Name} 下载错误");
+            Logs.Info($"下载器{index} 下载项目:{item.Name} 下载错误");
         }
     }
 

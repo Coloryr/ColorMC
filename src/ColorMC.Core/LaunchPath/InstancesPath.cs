@@ -38,6 +38,7 @@ public static class InstancesPath
     public const string Name19 = "server.json";
     public const string Name20 = "server.old.json";
     public const string Name21 = "launch.json";
+    public const string Name22 = "log4j-rce-patch.xml";
 
     /// <summary>
     /// 游戏实例列表
@@ -452,6 +453,11 @@ public static class InstancesPath
     public static string GetLaunchFile(this GameSettingObj obj)
     {
         return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name21}");
+    }
+
+    public static string GetLog4jFile(this GameSettingObj obj)
+    {
+        return Path.GetFullPath($"{BaseDir}/{obj.DirName}/{Name22}");
     }
 
     /// <summary>

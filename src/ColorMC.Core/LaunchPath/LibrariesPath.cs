@@ -49,7 +49,7 @@ public static class LibrariesPath
     public static async Task<List<DownloadItemObj>> CheckGameLib(this GameArgObj obj, CancellationToken cancel)
     {
         var list = new List<DownloadItemObj>();
-        var list1 = await GameHelper.MakeGameLibs(obj);
+        var list1 = await DownloadItemHelper.BuildGameLibs(obj);
 
         await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
         {
@@ -87,7 +87,7 @@ public static class LibrariesPath
     public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLib(this GameSettingObj obj, bool neo, CancellationToken cancel)
     {
         var version1 = VersionPath.GetGame(obj.Version)!;
-        var v2 = CheckRuleUtils.GameLaunchVersion(version1);
+        var v2 = CheckHelpers.GameLaunchVersion(version1);
         if (v2)
         {
             GameHelper.ReadyForgeWrapper();
@@ -100,7 +100,7 @@ public static class LibrariesPath
             return null;
 
         //forge本体
-        var list1 = GameHelper.MakeForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo);
+        var list1 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo);
 
         var forgeinstall = neo ?
             VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!) :
@@ -111,7 +111,7 @@ public static class LibrariesPath
         //forge安装器
         if (forgeinstall != null)
         {
-            var list2 = GameHelper.MakeForgeLibs(forgeinstall, obj.Version,
+            var list2 = DownloadItemHelper.BuildForgeLibs(forgeinstall, obj.Version,
                 obj.LoaderVersion!, neo);
             list1.AddRange(list2);
         }

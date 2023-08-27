@@ -30,7 +30,7 @@
                     Watermark="{setting:Localize AddGameWindow.Tab3.Text1}" />
             </DockPanel>
 
-            <DockPanel Margin="0,5,0,0">
+            <WrapPanel Margin="0,5,0,0">
                 <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
                 <ComboBox
                     Width="200"
@@ -40,25 +40,24 @@
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="5,0,0,0"
+                    Margin="5,2,0,2"
                     Command="{Binding AddGroup}"
                     Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
 
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Command="{Binding Refash}"
-                        Content="{setting:Localize Button.Refash}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,2,0,2"
+                    Command="{Binding Refash}"
+                    Content="{setting:Localize Button.Refash}" />
 
-                    <Button
-                        Width="100"
-                        Height="25"
-                        Margin="5,0,0,0"
-                        Command="{Binding Add}"
-                        Content="{setting:Localize Button.Add}" />
-                </StackPanel>
-            </DockPanel>
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,2,0,2"
+                    Command="{Binding Add}"
+                    Content="{setting:Localize Button.Add}" />
+            </WrapPanel>
         </StackPanel>
         <TreeDataGrid Margin="5" Source="{Binding Files}">
             <TreeDataGrid.Resources>

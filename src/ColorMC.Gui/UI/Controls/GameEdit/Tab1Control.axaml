@@ -8,218 +8,223 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Panel>
-        <StackPanel Margin="5,0,5,5">
-            <Label Content="{setting:Localize Text.GameVersion}" />
-            <StackPanel Orientation="Horizontal">
-                <ComboBox
-                    Name="ComboBox1"
-                    Width="200"
-                    HorizontalAlignment="Center"
-                    ItemsSource="{Binding GameVersionList}"
-                    SelectedItem="{Binding GameVersion}" />
-                <CheckBox
-                    Name="CheckBox2"
-                    Width="80"
-                    Margin="5,0,0,0"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text6}"
-                    IsChecked="{Binding SelectRelease}" />
-                <CheckBox
-                    Name="CheckBox3"
-                    Width="80"
-                    Margin="5,0,0,0"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text7}"
-                    IsChecked="{Binding SelectSnapshot}" />
-                <CheckBox
-                    Name="CheckBox4"
-                    Width="80"
-                    Margin="5,0,0,0"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text8}"
-                    IsChecked="{Binding SelectOther}" />
+    <ScrollViewer>
+        <DockPanel>
+            <WrapPanel
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                DockPanel.Dock="Bottom"
+                Orientation="Horizontal">
                 <Button
-                    Width="100"
+                    Width="120"
                     Height="25"
-                    Command="{Binding GameVersionReload}"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text2}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text33}"
-                    ToolTip.VerticalOffset="-30" />
-            </StackPanel>
-            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
-            <StackPanel Orientation="Horizontal">
-                <ComboBox
-                    Name="ComboBox2"
-                    Width="200"
-                    IsEnabled="{Binding EnableLoader}"
-                    ItemsSource="{Binding LoaderVersionList}"
-                    SelectedItem="{Binding LoaderVersion}" />
-                <CheckBox
-                    Name="CheckBox5"
-                    Width="80"
-                    Margin="5,0,0,0"
-                    Content="Forge"
-                    IsChecked="{Binding SelectForge}"
-                    IsEnabled="{Binding EnableForge}" />
-                <CheckBox
-                    Width="100"
-                    Margin="5,0,0,0"
-                    Content="NeoForge"
-                    IsChecked="{Binding SelectNeoForge}"
-                    IsEnabled="{Binding EnableNeoForge}" />
-                <CheckBox
-                    Name="CheckBox6"
-                    Width="80"
-                    Margin="5,0,0,0"
-                    Content="Fabric"
-                    IsChecked="{Binding SelectFabric}"
-                    IsEnabled="{Binding EnableFabric}" />
-                <CheckBox
-                    Name="CheckBox7"
-                    Width="80"
-                    Margin="5,0,0,0"
-                    Content="Quilt"
-                    IsChecked="{Binding SelectQuilt}"
-                    IsEnabled="{Binding EnableQuilt}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Command="{Binding LoaderReload}"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text11}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text34}"
+                    Margin="5,5,0,5"
+                    Command="{Binding Delete}"
+                    Content="{setting:Localize Button.Delete}"
+                    IsEnabled="{Binding !GameRun}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text36}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
-                    Width="100"
+                    Width="120"
                     Height="25"
-                    Margin="5,0,0,0"
-                    Command="{Binding LoaderVersionLoad}"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text12}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text35}"
+                    Margin="5,5,0,5"
+                    Command="{Binding OpenServerPack}"
+                    Content="{setting:Localize GameEditWindow.Tab1.Text5}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text47}"
                     ToolTip.VerticalOffset="-30" />
-            </StackPanel>
-            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
-            <StackPanel Orientation="Horizontal">
-                <ComboBox
-                    Name="ComboBox3"
-                    Width="200"
-                    ItemsSource="{Binding GroupList}"
-                    SelectedItem="{Binding Group}" />
                 <Button
-                    Width="100"
+                    Width="120"
                     Height="25"
-                    Margin="5,0,0,0"
-                    Command="{Binding AddGroup}"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text9}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text37}"
+                    Margin="5,5,0,5"
+                    Command="{Binding ExportGame}"
+                    Content="{setting:Localize GameEditWindow.Tab1.Text11}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text66}"
                     ToolTip.VerticalOffset="-30" />
-            </StackPanel>
-            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                <Button
+                    Width="120"
+                    Height="25"
+                    Margin="5,5,0,5"
+                    Command="{Binding OpenGameLog}"
+                    Content="{setting:Localize GameEditWindow.Tab1.Text7}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text65}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="120"
+                    Height="25"
+                    Margin="5,5,0,5"
+                    Command="{Binding OpenConfigEdit}"
+                    Content="{setting:Localize GameEditWindow.Tab1.Text6}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text50}"
+                    ToolTip.VerticalOffset="-30" />
+                <Button
+                    Width="120"
+                    Height="25"
+                    Margin="5,5,0,5"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding Open}"
+                    Content="{setting:Localize Button.OpFile}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text39}"
+                    ToolTip.VerticalOffset="-30" />
+            </WrapPanel>
+            <StackPanel Margin="5,0,5,5">
+                <Label Content="{setting:Localize Text.GameVersion}" />
+                <WrapPanel Orientation="Horizontal">
+                    <ComboBox
+                        Name="ComboBox1"
+                        Width="200"
+                        HorizontalAlignment="Center"
+                        ItemsSource="{Binding GameVersionList}"
+                        SelectedItem="{Binding GameVersion}" />
+                    <CheckBox
+                        Name="CheckBox2"
+                        Width="80"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text6}"
+                        IsChecked="{Binding SelectRelease}" />
+                    <CheckBox
+                        Name="CheckBox3"
+                        Width="80"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text7}"
+                        IsChecked="{Binding SelectSnapshot}" />
+                    <CheckBox
+                        Name="CheckBox4"
+                        Width="80"
+                        Margin="5,0,0,0"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text8}"
+                        IsChecked="{Binding SelectOther}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,2,0,2"
+                        Command="{Binding GameVersionReload}"
+                        Content="{setting:Localize GameEditWindow.Tab1.Text2}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text33}"
+                        ToolTip.VerticalOffset="-30" />
+                </WrapPanel>
+                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
+                <WrapPanel Orientation="Horizontal">
+                    <ComboBox
+                        Name="ComboBox2"
+                        Width="200"
+                        IsEnabled="{Binding EnableLoader}"
+                        ItemsSource="{Binding LoaderVersionList}"
+                        SelectedItem="{Binding LoaderVersion}" />
+                    <CheckBox
+                        Name="CheckBox5"
+                        Width="80"
+                        Margin="5,0,0,0"
+                        Content="Forge"
+                        IsChecked="{Binding SelectForge}"
+                        IsEnabled="{Binding EnableForge}" />
+                    <CheckBox
+                        Width="100"
+                        Margin="5,0,0,0"
+                        Content="NeoForge"
+                        IsChecked="{Binding SelectNeoForge}"
+                        IsEnabled="{Binding EnableNeoForge}" />
+                    <CheckBox
+                        Name="CheckBox6"
+                        Width="80"
+                        Margin="5,0,0,0"
+                        Content="Fabric"
+                        IsChecked="{Binding SelectFabric}"
+                        IsEnabled="{Binding EnableFabric}" />
+                    <CheckBox
+                        Name="CheckBox7"
+                        Width="80"
+                        Margin="5,0,0,0"
+                        Content="Quilt"
+                        IsChecked="{Binding SelectQuilt}"
+                        IsEnabled="{Binding EnableQuilt}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,2,0,2"
+                        Command="{Binding LoaderReload}"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text11}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text34}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,2,0,2"
+                        Command="{Binding LoaderVersionLoad}"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text12}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text35}"
+                        ToolTip.VerticalOffset="-30" />
+                </WrapPanel>
+                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                <WrapPanel Orientation="Horizontal">
+                    <ComboBox
+                        Name="ComboBox3"
+                        Width="200"
+                        ItemsSource="{Binding GroupList}"
+                        SelectedItem="{Binding Group}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,2,0,2"
+                        Command="{Binding AddGroup}"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text9}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text37}"
+                        ToolTip.VerticalOffset="-30" />
+                </WrapPanel>
+                <WrapPanel Margin="0,5,0,0" Orientation="Horizontal">
+                    <Button
+                        Width="150"
+                        Height="25"
+                        Command="{Binding OpenOptifine}"
+                        Content="{setting:Localize AddWindow.Text10}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text43}"
+                        ToolTip.VerticalOffset="-30" />
+                    <Label
+                        Margin="5,2,0,2"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab1.Text4}" />
+                </WrapPanel>
+                <CheckBox
+                    Name="CheckBox1"
+                    Content="{setting:Localize GameEditWindow.Tab1.Text3}"
+                    IsChecked="{Binding ModPack}" />
+                <WrapPanel Orientation="Horizontal">
+                    <Label
+                        Width="110"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab1.Text8}" />
+                    <TextBox
+                        Grid.Column="0"
+                        Width="200"
+                        Margin="5,2,0,2"
+                        Classes="input1"
+                        IsEnabled="{Binding ModPack}"
+                        Text="{Binding PID}"
+                        Watermark="{setting:Localize GameEditWindow.Tab1.Text8}" />
+                </WrapPanel>
+                <WrapPanel Margin="0,5,0,0" Orientation="Horizontal">
+                    <Label
+                        Width="110"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab1.Text9}" />
+                    <TextBox
+                        Grid.Column="1"
+                        Width="200"
+                        Margin="5,2,0,2"
+                        Classes="input1"
+                        IsEnabled="{Binding ModPack}"
+                        Text="{Binding FID}"
+                        Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
+                </WrapPanel>
                 <Button
                     Width="150"
                     Height="25"
-                    Command="{Binding OpenOptifine}"
-                    Content="{setting:Localize AddWindow.Text10}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text43}"
+                    Margin="0,5,0,0"
+                    Command="{Binding CheckModPackUpdate}"
+                    Content="{setting:Localize GameEditWindow.Tab1.Text10}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text51}"
                     ToolTip.VerticalOffset="-30" />
-                <Label
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text4}" />
             </StackPanel>
-            <CheckBox
-                Name="CheckBox1"
-                Content="{setting:Localize GameEditWindow.Tab1.Text3}"
-                IsChecked="{Binding ModPack}" />
-            <StackPanel Orientation="Horizontal">
-                <Label
-                    Width="110"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text8}" />
-                <TextBox
-                    Grid.Column="0"
-                    Width="200"
-                    Margin="5,0,0,0"
-                    Classes="input1"
-                    IsEnabled="{Binding ModPack}"
-                    Text="{Binding PID}"
-                    Watermark="{setting:Localize GameEditWindow.Tab1.Text8}" />
-            </StackPanel>
-            <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                <Label
-                    Width="110"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text9}" />
-                <TextBox
-                    Grid.Column="1"
-                    Width="200"
-                    Margin="5,0,0,0"
-                    Classes="input1"
-                    IsEnabled="{Binding ModPack}"
-                    Text="{Binding FID}"
-                    Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
-            </StackPanel>
-            <Button
-                Width="150"
-                Height="25"
-                Margin="0,5,0,0"
-                Command="{Binding CheckModPackUpdate}"
-                Content="{setting:Localize GameEditWindow.Tab1.Text10}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text51}"
-                ToolTip.VerticalOffset="-30" />
-        </StackPanel>
-        <StackPanel
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Orientation="Horizontal">
-            <Button
-                Width="120"
-                Height="25"
-                Margin="5"
-                Command="{Binding Delete}"
-                Content="{setting:Localize Button.Delete}"
-                IsEnabled="{Binding !GameRun}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text36}"
-                ToolTip.VerticalOffset="-30" />
-            <Button
-                Width="120"
-                Height="25"
-                Margin="0,5,5,5"
-                Command="{Binding OpenServerPack}"
-                Content="{setting:Localize GameEditWindow.Tab1.Text5}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text47}"
-                ToolTip.VerticalOffset="-30" />
-            <Button
-                Width="120"
-                Height="25"
-                Margin="0,5,5,5"
-                Command="{Binding ExportGame}"
-                Content="{setting:Localize GameEditWindow.Tab1.Text11}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text66}"
-                ToolTip.VerticalOffset="-30" />
-            <Button
-                Width="120"
-                Height="25"
-                Margin="0,5,5,5"
-                Command="{Binding OpenGameLog}"
-                Content="{setting:Localize GameEditWindow.Tab1.Text7}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text65}"
-                ToolTip.VerticalOffset="-30" />
-            <Button
-                Width="120"
-                Height="25"
-                Margin="0,5,0,5"
-                Command="{Binding OpenConfigEdit}"
-                Content="{setting:Localize GameEditWindow.Tab1.Text6}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text50}"
-                ToolTip.VerticalOffset="-30" />
-            <Button
-                Width="120"
-                Height="25"
-                Margin="5"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Command="{Binding Open}"
-                Content="{setting:Localize Button.OpFile}"
-                ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                ToolTip.VerticalOffset="-30" />
-        </StackPanel>
-    </Panel>
+        </DockPanel>
+    </ScrollViewer>
 </UserControl>

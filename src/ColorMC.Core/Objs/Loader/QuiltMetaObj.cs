@@ -35,7 +35,7 @@ public record QuiltMetaObj
         public string version { get; set; }
     }
     public List<Game> game { get; set; }
-    public List<string> mappings { get; set; }
+    public List<Mappings> mappings { get; set; }
     public List<Hashed> hashed { get; set; }
     public List<Loader> loader { get; set; }
     public List<Installer> installer { get; set; }
