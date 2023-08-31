@@ -1,5 +1,3 @@
-//#define AOT
-
 using Avalonia;
 using ColorMC.Gui;
 using System;
@@ -76,7 +74,7 @@ public static class Program
 
         Console.WriteLine($"CheckDir:{LoadDir}");
 
-#if AOT || DEBUG
+#if NativeAOT || DEBUG
         GuiLoad.Run(args);
 #else
         Load();
@@ -95,7 +93,7 @@ public static class Program
 
     public static AppBuilder BuildAvaloniaApp()
     {
-#if AOT
+#if NativeAOT
         return ColorMCGui.BuildAvaloniaApp();
 #else
         Load();
@@ -103,7 +101,7 @@ public static class Program
 #endif
     }
 
-#if !AOT
+#if !NativeAOT
     private static bool NotHaveDll()
     {
         return !File.Exists($"{LoadDir}ColorMC.Core.dll")

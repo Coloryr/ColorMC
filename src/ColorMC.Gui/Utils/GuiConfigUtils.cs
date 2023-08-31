@@ -28,7 +28,9 @@ public static class GuiConfigUtils
         {
             try
             {
-                Config = JsonSerializer.Deserialize<GuiConfigObj>(File.ReadAllText(name))!;
+                Config = JsonSerializer
+                    .Deserialize(File.ReadAllText(name),
+                    SourceGenerationContext.Default.GuiConfigObj)!;
             }
             catch (Exception e)
             {
@@ -109,11 +111,8 @@ public static class GuiConfigUtils
 
     public static void SaveNow()
     {
-        File.WriteAllText(s_local, JsonSerializer.Serialize(Config,
-            new JsonSerializerOptions(JsonSerializerOptions.Default)
-            {
-                WriteIndented = true
-            }));
+        File.WriteAllText(s_local, JsonSerializer.Serialize(Config, 
+            SourceGenerationContext.Default.GuiConfigObj));
     }
 
     public static void Save()

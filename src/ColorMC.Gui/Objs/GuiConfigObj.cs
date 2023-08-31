@@ -1,4 +1,5 @@
 using ColorMC.Core.Objs;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Gui.Objs;
 
@@ -200,6 +201,12 @@ public record Live2DSetting
     public string? Model { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
+}
+
+[JsonSourceGenerationOptions(WriteIndented = true)]
+[JsonSerializable(typeof(GuiConfigObj))]
+internal partial class SourceGenerationContext : JsonSerializerContext
+{
 }
 
 /// <summary>
