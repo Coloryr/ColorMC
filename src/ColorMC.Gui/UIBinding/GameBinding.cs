@@ -39,15 +39,16 @@ public static class GameBinding
         return InstancesPath.Games;
     }
 
-    public static List<string> GetGameVersion(bool? type1, bool? type2, bool? type3)
+    public static async Task<List<string>> GetGameVersion(bool? type1, bool? type2, bool? type3)
     {
         var list = new List<string>();
-        if (VersionPath.Versions == null)
+        var ver = await VersionPath.GetVersions();
+        if (ver == null)
         {
             return list;
         }
 
-        foreach (var item in VersionPath.Versions.versions)
+        foreach (var item in ver.versions)
         {
             if (item.type == "release")
             {
@@ -97,7 +98,7 @@ public static class GameBinding
         var game = new GameSettingObj()
         {
             Name = name,
-            Version = GetGameVersion(true, false, false)[0],
+            Version = (await GetGameVersion(true, false, false))[0],
             Loader = Loaders.Normal,
             LoaderVersion = null,
             GroupName = group
@@ -345,16 +346,16 @@ public static class GameBinding
     {
         await VersionPath.GetFromWeb();
 
-        return VersionPath.Have();
+        return await VersionPath.Have();
     }
 
-    public static void SaveGame(GameSettingObj obj, string? versi, Loaders loader, string? loadv)
+    public static async void SaveGame(GameSettingObj obj, string? versi, Loaders loader, string? loadv)
     {
         if (!string.IsNullOrWhiteSpace(versi))
         {
             obj.Version = versi;
-
-            var version1 = VersionPath.Versions!.versions.FirstOrDefault(a => a.id == versi);
+            var ver = await VersionPath.GetVersions();
+            var version1 = ver!.versions.FirstOrDefault(a => a.id == versi);
             if (version1 != null)
             {
                 if (version1.type == "release")

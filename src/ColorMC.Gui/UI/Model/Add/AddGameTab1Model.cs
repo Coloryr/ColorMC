@@ -303,22 +303,22 @@ public partial class AddGameTab1Model : AddGameControlModel
             Window.Close();
         }
     }
-    private void Update()
+    private async void Update()
     {
         GameVersionList.Clear();
         switch (VersionType)
         {
             case 0:
-                GameVersionList.AddRange(GameBinding.GetGameVersion(true, false, false));
+                GameVersionList.AddRange(await GameBinding.GetGameVersion(true, false, false));
                 break;
             case 1:
-                GameVersionList.AddRange(GameBinding.GetGameVersion(false, true, false));
+                GameVersionList.AddRange(await GameBinding.GetGameVersion(false, true, false));
                 break;
             case 2:
-                GameVersionList.AddRange(GameBinding.GetGameVersion(false, false, true));
+                GameVersionList.AddRange(await GameBinding.GetGameVersion(false, false, true));
                 break;
             case 3:
-                GameVersionList.AddRange(GameBinding.GetGameVersion(true, true, true));
+                GameVersionList.AddRange(await GameBinding.GetGameVersion(true, true, true));
                 break;
         }
     }

@@ -169,8 +169,8 @@ public static class CheckHelpers
         {
             //不存在游戏
             ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.LostVersion);
-
-            var version = VersionPath.Versions?.versions.Where(a => a.id == obj.Version).FirstOrDefault();
+            var var = await VersionPath.GetVersions();
+            var version = var?.versions.Where(a => a.id == obj.Version).FirstOrDefault();
             if (version == null)
             {
                 ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.VersionError);

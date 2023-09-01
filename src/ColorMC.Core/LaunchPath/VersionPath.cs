@@ -31,23 +31,20 @@ public static class VersionPath
 
     private static VersionObj? _version;
 
-    public static VersionObj? Versions
+    public static async Task<VersionObj?> GetVersions()
     {
-        get
+        try
         {
-            try
+            if (_version == null)
             {
-                if (_version == null)
-                {
-                    ReadVersions();
-                }
-                return _version;
+                await ReadVersions();
             }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.Get("Core.Path.Error2"), e);
-                return null;
-            }
+            return _version;
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Path.Error2"), e);
+            return null;
         }
     }
 
@@ -101,15 +98,15 @@ public static class VersionPath
     /// 是否存在版本信息
     /// </summary>
     /// <returns>结果</returns>
-    public static bool Have()
+    public static async Task<bool> Have()
     {
-        return Versions != null;
+        return await GetVersions() != null;
     }
 
     /// <summary>
     /// 读取版本信息
     /// </summary>
-    public static void ReadVersions()
+    public static async Task ReadVersions()
     {
         string file = BaseDir + "/version.json";
         if (File.Exists(file))
@@ -119,7 +116,7 @@ public static class VersionPath
         }
         else
         {
-            GetFromWeb().Wait();
+            await GetFromWeb();
         }
     }
 
@@ -247,11 +244,12 @@ public static class VersionPath
     /// <param name="version">游戏版本</param>
     public static async Task<GameArgObj?> CheckUpdate(string version)
     {
-        if (Versions == null)
+        var ver = await GetVersions();
+        if (ver == null)
         {
             return null;
         }
-        var data = Versions.versions.Where(a => a.id == version).FirstOrDefault();
+        var data = ver.versions.Where(a => a.id == version).FirstOrDefault();
         if (data != null)
         {
             var file = $"{BaseDir}/{version}.json";

@@ -465,22 +465,22 @@ public partial class GameEditTab1Model : GameModel
         App.ShowConfigEdit(Obj);
     }
 
-    private void Load1()
+    private async void Load1()
     {
         GameVersionList.Clear();
         switch (VersionType)
         {
             case 0:
                 Obj.GameType = GameType.Release;
-                GameVersionList.AddRange(GameBinding.GetGameVersion(true, false, false));
+                GameVersionList.AddRange(await GameBinding.GetGameVersion(true, false, false));
                 break;
             case 1:
                 Obj.GameType = GameType.Snapshot;
-                GameVersionList.AddRange(GameBinding.GetGameVersion(false, true, false));
+                GameVersionList.AddRange(await GameBinding.GetGameVersion(false, true, false));
                 break;
             case 2:
                 Obj.GameType = GameType.Other;
-                GameVersionList.AddRange(GameBinding.GetGameVersion(false, false, true));
+                GameVersionList.AddRange(await GameBinding.GetGameVersion(false, false, true));
                 break;
         }
     }
