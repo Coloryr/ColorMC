@@ -33,7 +33,9 @@
                 <TextBlock
                     Margin="0,0,5,0"
                     HorizontalAlignment="Left"
+                    MaxLines="3"
                     Text="{Binding Local}"
+                    TextTrimming="CharacterEllipsis"
                     TextWrapping="Wrap" />
                 <StackPanel
                     Margin="0,0,0,0"

@@ -14,13 +14,14 @@
     mc:Ignorable="d">
     <Panel>
         <DockPanel Margin="5,0,5,5">
-            <StackPanel
+            <WrapPanel
                 VerticalAlignment="Top"
                 DockPanel.Dock="Top"
-                Orientation="Horizontal">
+                IsVisible="{Binding DisplayFilter}">
                 <Button
                     Width="100"
                     Height="25"
+                    Margin="0,0,5,0"
                     HorizontalAlignment="Right"
                     Command="{Binding Open}"
                     Content="{setting:Localize Button.OpFile}"
@@ -29,22 +30,21 @@
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="5,0,0,0"
+                    Margin="0,0,5,0"
                     Command="{Binding Import}"
                     Content="{setting:Localize Button.Input}" />
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="5,0,0,0"
+                    Margin="0,0,5,0"
                     Command="{Binding Add}"
                     Content="{setting:Localize Button.Add}" />
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="5,0,0,0"
                     Command="{Binding Load}"
                     Content="{setting:Localize Button.Refash}" />
-            </StackPanel>
+            </WrapPanel>
             <ScrollViewer Margin="0,3,0,0" VerticalScrollBarVisibility="Visible">
                 <ItemsControl
                     HorizontalAlignment="Stretch"
@@ -58,6 +58,16 @@
                 </ItemsControl>
             </ScrollViewer>
         </DockPanel>
+
+        <Button
+            Height="25"
+            Margin="0,0,5,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding ShowFilter}">
+            <Svg Path="/Resource/Icon/filter.svg" />
+        </Button>
+
         <Panel
             Name="Grid2"
             Background="{setting:Colors TopBottom}"

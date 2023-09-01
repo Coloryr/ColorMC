@@ -92,6 +92,9 @@ public partial class AddControlModel : GameModel, IAddWindow
     [ObservableProperty]
     private string? _gameVersionDownload;
 
+    [ObservableProperty]
+    private bool _displayFilter = true;
+
     public AddControlModel(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
 
@@ -285,7 +288,15 @@ public partial class AddControlModel : GameModel, IAddWindow
 
         LoadFile();
     }
+
     ///////////////////////////////////////////////////
+    
+    [RelayCommand]
+    public void ShowFilter()
+    {
+        DisplayFilter = !DisplayFilter;
+    }
+
     [RelayCommand]
     public void GetList()
     {

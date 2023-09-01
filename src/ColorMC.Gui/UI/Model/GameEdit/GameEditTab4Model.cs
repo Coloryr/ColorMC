@@ -29,6 +29,9 @@ public partial class GameEditTab4Model : GameModel
     [ObservableProperty]
     private int _filter;
 
+    [ObservableProperty]
+    private bool _displayFilter = true;
+
     private bool _isSet;
 
     public GameEditTab4Model(IUserControl con, GameSettingObj obj) : base(con, obj)
@@ -44,6 +47,12 @@ public partial class GameEditTab4Model : GameModel
     partial void OnFilterChanged(int value)
     {
         Load1();
+    }
+
+    [RelayCommand]
+    public void ShowFilter()
+    {
+        DisplayFilter = !DisplayFilter;
     }
 
     [RelayCommand]

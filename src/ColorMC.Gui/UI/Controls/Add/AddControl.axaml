@@ -20,80 +20,87 @@
                 Background="{setting:Colors TranBack}"
                 DockPanel.Dock="Top"
                 IsEnabled="{Binding !IsDownload}">
-                <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
-                    <Label
-                        Width="65"
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddWindow.Text1}" />
-                    <ComboBox
-                        Width="120"
-                        Height="30"
-                        Margin="2,2,0,0"
-                        IsEnabled="{ReflectionBinding !Set}"
-                        ItemsSource="{Binding TypeList}"
-                        SelectedIndex="{Binding Type}" />
-                    <Label
-                        Width="65"
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddWindow.Text2}" />
-                    <ComboBox
-                        Width="120"
-                        Height="30"
-                        Margin="2,2,0,0"
-                        ItemsSource="{Binding DownloadSourceList}"
-                        SelectedIndex="{Binding DownloadSource}" />
-
-                    <Label
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize Text.GameVersion}" />
-                    <ComboBox
-                        Width="120"
-                        Height="30"
-                        Margin="2,2,0,0"
-                        ItemsSource="{Binding GameVersionList}"
-                        SelectedItem="{Binding GameVersion}" />
-                    <Label
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddModPackWindow.Text5}" />
-
-                    <NumericUpDown
-                        Width="120"
-                        Height="30"
-                        Margin="2,2,0,0"
-                        FormatString="N0"
-                        Minimum="0"
-                        Value="{Binding Page}" />
-
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Width="65"
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddWindow.Text4}" />
-                    <ComboBox
-                        Width="120"
-                        Height="30"
-                        Margin="2,2,0,0"
-                        ItemsSource="{Binding SortTypeList}"
-                        SelectedIndex="{Binding SortType}" />
-
-                    <Label
-                        Width="65"
-                        Margin="5"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddWindow.Text5}" />
-                    <ComboBox
-                        Width="120"
-                        Height="30"
-                        Margin="2,2,0,0"
-                        ItemsSource="{Binding CategorieList}"
-                        SelectedIndex="{Binding Categorie}" />
-
+                <WrapPanel VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="65"
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddWindow.Text1}" />
+                        <ComboBox
+                            Width="120"
+                            Height="30"
+                            Margin="2,2,0,0"
+                            IsEnabled="{ReflectionBinding !Set}"
+                            ItemsSource="{Binding TypeList}"
+                            SelectedIndex="{Binding Type}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="65"
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddWindow.Text2}" />
+                        <ComboBox
+                            Width="120"
+                            Height="30"
+                            Margin="2,2,0,0"
+                            ItemsSource="{Binding DownloadSourceList}"
+                            SelectedIndex="{Binding DownloadSource}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize Text.GameVersion}" />
+                        <ComboBox
+                            Width="120"
+                            Height="30"
+                            Margin="2,2,0,0"
+                            ItemsSource="{Binding GameVersionList}"
+                            SelectedItem="{Binding GameVersion}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddModPackWindow.Text5}" />
+                        <NumericUpDown
+                            Width="120"
+                            Height="30"
+                            Margin="2,2,0,0"
+                            FormatString="N0"
+                            Minimum="0"
+                            Value="{Binding Page}" />
+                    </StackPanel>
+                </WrapPanel>
+                <WrapPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="65"
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddWindow.Text4}" />
+                        <ComboBox
+                            Width="120"
+                            Height="30"
+                            Margin="2,2,0,0"
+                            ItemsSource="{Binding SortTypeList}"
+                            SelectedIndex="{Binding SortType}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Width="65"
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddWindow.Text5}" />
+                        <ComboBox
+                            Width="120"
+                            Height="30"
+                            Margin="2,2,0,0"
+                            ItemsSource="{Binding CategorieList}"
+                            SelectedIndex="{Binding Categorie}" />
+                    </StackPanel>
                     <TextBox
                         Width="180"
                         Height="30"
@@ -105,7 +112,6 @@
                             <KeyBinding Command="{Binding GetNameList}" Gesture="Enter" />
                         </TextBox.KeyBindings>
                     </TextBox>
-
                     <Button
                         Width="100"
                         Height="30"
@@ -119,7 +125,7 @@
                         Command="{Binding GoInstall}"
                         Content="{setting:Localize AddModPackWindow.Text9}"
                         IsEnabled="{Binding IsSelect}" />
-                </StackPanel>
+                </WrapPanel>
             </StackPanel>
 
             <Panel Margin="3">
@@ -144,6 +150,15 @@
                 </ScrollViewer>
             </Panel>
         </DockPanel>
+
+        <Button
+            Height="25"
+            Margin="5"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding ShowFilter}">
+            <Svg Path="/Resource/Icon/filter.svg" />
+        </Button>
 
         <DockPanel
             Name="Grid1"

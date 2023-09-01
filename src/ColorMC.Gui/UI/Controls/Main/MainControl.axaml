@@ -247,10 +247,11 @@
                 </Panel>
                 <Panel Background="{setting:Colors TopBottom}" IsVisible="{Binding IsGameError}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label
+                        <TextBlock
                             HorizontalAlignment="Center"
-                            Content="{setting:Localize MainWindow.Info18}"
-                            FontSize="30" />
+                            FontSize="25"
+                            Text="{setting:Localize MainWindow.Info18}"
+                            TextWrapping="Wrap" />
                     </StackPanel>
                 </Panel>
                 <Panel Background="{setting:Colors TranBack}" IsVisible="{Binding IsOneGame}">

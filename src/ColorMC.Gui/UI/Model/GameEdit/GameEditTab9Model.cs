@@ -12,8 +12,7 @@ public partial class GameEditTab9Model : GameModel
 {
     public ObservableCollection<ScreenshotModel> ScreenshotList { get; init; } = new();
 
-    private ScreenshotModel? _last;
-
+    private ScreenshotModel _last;
     public GameEditTab9Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
 

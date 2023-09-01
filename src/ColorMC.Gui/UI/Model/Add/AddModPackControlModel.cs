@@ -63,6 +63,8 @@ public partial class AddModPackControlModel : BaseModel, IAddWindow
     private bool _display = false;
     [ObservableProperty]
     private bool _emptyDisplay = true;
+    [ObservableProperty]
+    private bool _displayFilter = true;
 
     public AddModPackControlModel(IUserControl con) : base(con)
     {
@@ -182,6 +184,12 @@ public partial class AddModPackControlModel : BaseModel, IAddWindow
         }
 
         _load = false;
+    }
+
+    [RelayCommand]
+    public void ShowFilter()
+    {
+        DisplayFilter = !DisplayFilter;
     }
 
     [RelayCommand]

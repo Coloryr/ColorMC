@@ -4,6 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,11 +17,20 @@ public partial class GameEditTab5Model : GameModel
 {
     public ObservableCollection<WorldModel> WorldList { get; init; } = new();
 
+    [ObservableProperty]
+    private bool _displayFilter = true;
+
     private WorldModel? _last;
 
     public GameEditTab5Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
 
+    }
+
+    [RelayCommand]
+    public void ShowFilter()
+    {
+        DisplayFilter = !DisplayFilter;
     }
 
     [RelayCommand]

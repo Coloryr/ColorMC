@@ -14,7 +14,6 @@
     <DockPanel Margin="3">
         <WrapPanel DockPanel.Dock="Top">
             <Label Content="{setting:Localize DownloadWindow.Text3}" />
-
             <ProgressBar
                 Height="20"
                 Margin="5,0,0,0"
@@ -25,36 +24,38 @@
                 Maximum="100"
                 ShowProgressText="True"
                 Value="{Binding Value}" />
-
-            <Label
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Content="{Binding Speed}"
-                DockPanel.Dock="Right" />
-            <Label
-                Margin="5,0,0,0"
-                VerticalAlignment="Center"
-                HorizontalContentAlignment="Right"
-                VerticalContentAlignment="Center"
-                Content="{Binding Now}"
-                DockPanel.Dock="Right" />
-
-            <Button
-                Width="100"
-                Height="25"
-                Margin="5,2,0,2"
-                Command="{Binding Pause}"
-                Content="{Binding Button1}"
-                DockPanel.Dock="Right" />
-            <Button
-                Width="100"
-                Height="25"
-                Margin="5,2,0,2"
-                Command="{Binding Stop}"
-                Content="{setting:Localize DownloadWindow.Text2}"
-                DockPanel.Dock="Right" />
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding Speed}"
+                    DockPanel.Dock="Right" />
+                <Label
+                    Margin="5,0,0,0"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    Content="{Binding Now}"
+                    DockPanel.Dock="Right" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,2,0,2"
+                    Command="{Binding Pause}"
+                    Content="{Binding Button1}"
+                    DockPanel.Dock="Right" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="5,2,0,2"
+                    Command="{Binding Stop}"
+                    Content="{setting:Localize DownloadWindow.Text2}"
+                    DockPanel.Dock="Right" />
+            </StackPanel>
         </WrapPanel>
 
         <Panel>

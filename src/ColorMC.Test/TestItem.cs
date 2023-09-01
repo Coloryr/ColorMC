@@ -23,7 +23,7 @@ public static class TestItem
 
     public static void Item2()
     {
-        var version = VersionPath.Versions;
+        var version = VersionPath.GetVersions().Result;
         if (version == null)
         {
             Console.WriteLine("版本信息为空");

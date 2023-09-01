@@ -35,6 +35,7 @@
     <None Remove="icon.ico" />
     <None Remove="Resource\Icon\add.svg" />
     <None Remove="Resource\Icon\edit.svg" />
+    <None Remove="Resource\Icon\filter.svg" />
     <None Remove="Resource\Icon\launch.svg" />
     <None Remove="Resource\Icon\setting.svg" />
     <None Remove="Resource\Icon\skin.svg" />
@@ -49,6 +50,7 @@
     <EmbeddedResource Include="icon.ico" />
     <AvaloniaResource Include="Resource\Icon\add.svg" />
     <AvaloniaResource Include="Resource\Icon\edit.svg" />
+    <AvaloniaResource Include="Resource\Icon\filter.svg" />
     <AvaloniaResource Include="Resource\Icon\launch.svg" />
     <AvaloniaResource Include="Resource\Icon\setting.svg" />
     <AvaloniaResource Include="Resource\Icon\user.svg" />

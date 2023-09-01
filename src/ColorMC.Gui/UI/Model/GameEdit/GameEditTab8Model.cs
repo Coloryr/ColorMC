@@ -4,6 +4,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -14,11 +15,20 @@ public partial class GameEditTab8Model : GameModel
 {
     public ObservableCollection<ResourcePackModel> ResourcePackList { get; init; } = new();
 
+    [ObservableProperty]
+    private bool _displayFilter = true;
+
     private ResourcePackModel? _last;
 
     public GameEditTab8Model(IUserControl con, GameSettingObj obj) : base(con, obj)
     {
 
+    }
+
+    [RelayCommand]
+    public void ShowFilter()
+    {
+        DisplayFilter = !DisplayFilter;
     }
 
     [RelayCommand]
