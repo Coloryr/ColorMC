@@ -12,10 +12,10 @@ public record GameArgObj
         public record Jvm
         {
             public List<Libraries.Rules> rules { get; set; }
-            public dynamic value { get; set; }
+            public object value { get; set; }
         }
-        public List<dynamic> game { get; set; }
-        public List<dynamic> jvm { get; set; }
+        public List<object> game { get; set; }
+        public List<object> jvm { get; set; }
     }
     public record AssetIndex
     {

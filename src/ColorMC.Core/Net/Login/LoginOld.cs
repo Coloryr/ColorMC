@@ -1,9 +1,9 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Net.Login;
@@ -41,7 +41,7 @@ public static class LoginOld
             RequestUri = new(server + "authserver/authenticate")
         };
         message.Headers.UserAgent.Append(new("ColorMC", ColorMCCore.Version));
-        message.Content = new StringContent(JsonSerializer.Serialize(obj),
+        message.Content = new StringContent(JsonConvert.SerializeObject(obj),
             MediaTypeHeaderValue.Parse("application/json"));
 
         var res = await BaseClient.LoginClient.SendAsync(message);
@@ -49,7 +49,7 @@ public static class LoginOld
         if (string.IsNullOrWhiteSpace(data))
             return (LoginState.Error, null, null);
 
-        var obj2 = JsonSerializer.Deserialize<AuthenticateResObj>(data);
+        var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
 
         if (obj2 == null || obj2.selectedProfile == null)
         {
@@ -89,14 +89,14 @@ public static class LoginOld
             RequestUri = new(server + "/authserver/refresh")
         };
         message.Headers.UserAgent.Append(new("ColorMC", ColorMCCore.Version));
-        message.Content = new StringContent(JsonSerializer.Serialize(obj1),
+        message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
             MediaTypeHeaderValue.Parse("application/json"));
 
         var res = await BaseClient.LoginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
             return (LoginState.Error, null, "Json Error");
-        var obj2 = JsonSerializer.Deserialize<AuthenticateResObj>(data);
+        var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
         if (obj2 == null || obj2.selectedProfile == null)
         {
             var jobj = JsonNode.Parse(data)?.AsObject();
@@ -127,7 +127,7 @@ public static class LoginOld
             RequestUri = new(server + "/authserver/validate")
         };
         message.Headers.UserAgent.Append(new("ColorMC", ColorMCCore.Version));
-        message.Content = new StringContent(JsonSerializer.Serialize(obj1),
+        message.Content = new StringContent(JsonConvert.SerializeObject(obj1),
             MediaTypeHeaderValue.Parse("application/json"));
 
         var res = await BaseClient.LoginClient.SendAsync(message);

@@ -1,21 +1,16 @@
 ﻿using ColorMC.Core.Objs.Minecraft;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Net.Motd;
 
 public class ServerDescriptionJsonConverter : JsonConverter<Chat>
 {
-    public override bool CanConvert(Type objectType)
+    public override Chat? ReadJson(JsonReader reader, Type objectType, Chat? existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
-        return typeof(Chat) == objectType;
-    }
-
-    public override Chat? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        if (reader.TokenType == JsonTokenType.String)
+        if (reader.TokenType == JsonToken.String)
         {
-            var str1 = reader.GetString();
+            var str1 = reader.Value?.ToString();
             if (string.IsNullOrWhiteSpace(str1))
                 return new Chat() { Text = "" };
 
@@ -107,15 +102,15 @@ public class ServerDescriptionJsonConverter : JsonConverter<Chat>
         }
         else
         {
-            return s_defaultConverter.Read(ref reader, typeToConvert, options);
+            JObject obj = JObject.Load(reader);
+            Chat chat = new();
+            serializer.Populate(obj.CreateReader(), chat);
+            return chat;
         }
     }
 
-    private readonly static JsonConverter<Chat> s_defaultConverter =
-        (JsonConverter<Chat>)JsonSerializerOptions.Default.GetConverter(typeof(Chat));
-
-    public override void Write(Utf8JsonWriter writer, Chat value, JsonSerializerOptions options)
+    public override void WriteJson(JsonWriter writer, Chat? value, JsonSerializer serializer)
     {
-        JsonSerializer.Serialize(writer, value, options);
+        serializer.Serialize(writer, value);
     }
 }

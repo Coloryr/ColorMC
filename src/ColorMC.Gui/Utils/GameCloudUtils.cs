@@ -4,6 +4,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
@@ -40,7 +40,7 @@ public static class GameCloudUtils
         {
             try
             {
-                s_datas = JsonSerializer.Deserialize<Dictionary<string, CloudDataObj>>
+                s_datas = JsonConvert.DeserializeObject<Dictionary<string, CloudDataObj>>
                     (File.ReadAllText(s_file))!;
                 var games = InstancesPath.Games;
                 bool save = false;

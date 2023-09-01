@@ -2,8 +2,9 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Net.Login;
@@ -63,7 +64,7 @@ public static class OAuthAPI
     /// <returns>数据</returns>
     private static async Task<JsonNode?> PostObj(string url, object arg)
     {
-        var data1 = JsonSerializer.Serialize(arg);
+        var data1 = JsonConvert.SerializeObject(arg);
         StringContent content = new(data1, MediaTypeHeaderValue.Parse("application/json"));
         using var message = await BaseClient.LoginClient.PostAsync(url, content);
         using var data = await message.Content.ReadAsStreamAsync();
@@ -75,12 +76,12 @@ public static class OAuthAPI
     /// <param name="url">网址</param>
     /// <param name="arg">参数</param>
     /// <returns>数据</returns>
-    private static async Task<JsonNode?> PostObj(string url, Dictionary<string, string> arg)
+    private static async Task<JObject?> PostObj(string url, Dictionary<string, string> arg)
     {
         FormUrlEncodedContent content = new(arg);
         using var message = await BaseClient.LoginClient.PostAsync(url, content);
-        using var data = await message.Content.ReadAsStreamAsync();
-        return JsonNode.Parse(data);
+        var data = await message.Content.ReadAsStringAsync();
+        return JObject.Parse(data);
     }
 
     /// <summary>
@@ -95,7 +96,7 @@ public static class OAuthAPI
             return (LoginState.Error,
                 LanguageHelper.Get("Core.Login.Error21"), null);
         }
-        var obj1 = JsonSerializer.Deserialize<OAuthObj>(data);
+        var obj1 = JsonConvert.DeserializeObject<OAuthObj>(data);
         if (obj1 == null)
         {
             return (LoginState.JsonError,
@@ -155,7 +156,7 @@ public static class OAuthAPI
             }
             else
             {
-                var obj4 = JsonSerializer.Deserialize<OAuth1Obj>(data);
+                var obj4 = JsonConvert.DeserializeObject<OAuth1Obj>(data);
                 if (obj4 == null)
                 {
                     return (LoginState.JsonError, null);
@@ -177,15 +178,15 @@ public static class OAuthAPI
         };
 
         var obj1 = await PostObj(OAuthToken, dir);
-        if (obj1?.AsObject() is not { } obj2)
+        if (obj1 == null)
         {
             return (LoginState.JsonError, null);
         }
-        if (obj2.ContainsKey("error"))
+        if (obj1.ContainsKey("error"))
         {
             return (LoginState.Error, null);
         }
-        return (LoginState.Done, obj1.Deserialize<OAuth1Obj>());
+        return (LoginState.Done, obj1.ToObject<OAuth1Obj>());
     }
 
     /// <summary>

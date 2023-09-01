@@ -7,10 +7,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Game;
 
@@ -129,16 +128,15 @@ public static class Launch
             return V1JvmArg;
 
         List<string> arg = new();
-        foreach (JsonElement item in game.arguments.jvm)
+        foreach (JToken item in game.arguments.jvm)
         {
-            if (item.ValueKind == JsonValueKind.String)
+            if (item.Type == JTokenType.String)
             {
-                arg.Add(item.GetString()!);
+                arg.Add(item.ToString());
             }
-            else if (item.ValueKind == JsonValueKind.Object)
+            else if (item.Type == JTokenType.Object)
             {
-                var temp = item.ToString();
-                var obj2 = JsonSerializer.Deserialize<GameArgObj.Arguments.Jvm>(temp);
+                var obj2 = item.ToObject<GameArgObj.Arguments.Jvm>();
                 if (obj2 == null)
                 {
                     continue;
@@ -152,12 +150,9 @@ public static class Launch
                 {
                     arg.Add(item2!);
                 }
-                else if (obj2.value is JsonArray)
+                else if (obj2.value is List<string> list)
                 {
-                    foreach (string item1 in obj2.value)
-                    {
-                        arg.Add(item1);
-                    }
+                    arg.AddRange(list);
                 }
             }
         }
@@ -216,11 +211,11 @@ public static class Launch
             return MakeV1GameArg(obj);
 
         List<string> arg = new();
-        foreach (JsonElement item in game.arguments.game)
+        foreach (JToken item in game.arguments.game)
         {
-            if (item.ValueKind == JsonValueKind.String)
+            if (item.Type == JTokenType.String)
             {
-                arg.Add(item.GetString()!);
+                arg.Add(item.ToString());
             }
             //else if (item is JObject)
             //{

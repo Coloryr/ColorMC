@@ -1,13 +1,13 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Windows;
-using System.Threading;
-using ColorMC.Core.LaunchPath;
 using System.IO;
+using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 

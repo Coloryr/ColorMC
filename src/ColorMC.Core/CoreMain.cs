@@ -132,6 +132,7 @@ public static class ColorMCCore
         LanguageHelper.Load(LanguageType.zh_cn);
         Logs.Init(dir);
         ConfigUtils.Init(dir);
+        BaseClient.Init();
 
         Logs.Info(LanguageHelper.Get("Core.Info1"));
     }
@@ -141,7 +142,6 @@ public static class ColorMCCore
         ConfigSave.Init();
         JvmPath.Init(BaseDir);
         ToolPath.Init(BaseDir);
-        BaseClient.Init();
         LocalMaven.Init(BaseDir);
         DownloadManager.Init(BaseDir);
         AuthDatabase.Init();

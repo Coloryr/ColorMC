@@ -10,7 +10,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Timers;
-using ColorMC.Core.LaunchPath;
 
 namespace ColorMC.Gui.UI.Model.GameLog;
 

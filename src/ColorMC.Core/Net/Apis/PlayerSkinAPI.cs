@@ -4,8 +4,8 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Utils;
+using Newtonsoft.Json;
 using System.Text;
-using System.Text.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -96,7 +96,7 @@ public static class PlayerSkinAPI
                 return null;
             var data = Convert.FromBase64String(res.properties[0].value);
             var data1 = Encoding.UTF8.GetString(data);
-            return JsonSerializer.Deserialize<TexturesObj>(data1);
+            return JsonConvert.DeserializeObject<TexturesObj>(data1);
         }
         catch (Exception e)
         {

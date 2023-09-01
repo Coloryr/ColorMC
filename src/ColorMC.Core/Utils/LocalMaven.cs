@@ -2,8 +2,8 @@
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
-using System.Text.Json;
 
 namespace ColorMC.Core.Utils;
 
@@ -29,7 +29,7 @@ public static class LocalMaven
             try
             {
                 var data = File.ReadAllText(s_local);
-                var list = JsonSerializer.Deserialize<Dictionary<string, MavenItemObj>>(data);
+                var list = JsonConvert.DeserializeObject<Dictionary<string, MavenItemObj>>(data);
 
                 if (list != null)
                 {

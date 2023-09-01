@@ -6,9 +6,9 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Game;
 
@@ -223,8 +223,9 @@ public static class Worlds
         await ZipUtils.ZipFile(world.Local, file);
         using var s = new ZipFile(File.Open(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite));
         var info = new { name = world.LevelName };
-        var data = JsonSerializer.SerializeToUtf8Bytes(info);
-        using var stream = new ZipFileStream(data);
+        var data = JsonConvert.SerializeObject(info);
+        var data1 = Encoding.UTF8.GetBytes(data);
+        using var stream = new ZipFileStream(data1);
         var crc = new Crc32();
         var entry = new ZipEntry("colormc.info.json")
         {
@@ -232,7 +233,7 @@ public static class Worlds
             Size = data.Length
         };
         crc.Reset();
-        crc.Update(data);
+        crc.Update(data1);
         entry.Crc = crc.Value;
         s.BeginUpdate();
         s.Add(stream, entry);
@@ -268,7 +269,7 @@ public static class Worlds
         }
         var data = stream1.ToArray();
         var data1 = Encoding.UTF8.GetString(data);
-        var info = JsonNode.Parse(data1)?.AsObject();
+        var info = JObject.Parse(data1);
         var name = info?["name"]?.ToString();
         if (name == null)
         {

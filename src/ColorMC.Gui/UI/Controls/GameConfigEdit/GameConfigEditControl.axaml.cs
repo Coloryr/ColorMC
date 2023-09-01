@@ -3,8 +3,8 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
 using AvaloniaEdit.Indentation.CSharp;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
@@ -12,7 +12,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using System.ComponentModel;
 using System.IO;
-using ColorMC.Core.LaunchPath;
 
 namespace ColorMC.Gui.UI.Controls.ConfigEdit;
 

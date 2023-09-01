@@ -2,13 +2,13 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameLog;
 using ColorMC.Gui.UI.Windows;
 using System.ComponentModel;
 using System.IO;
-using ColorMC.Core.LaunchPath;
 
 namespace ColorMC.Gui.UI.Controls.GameLog;
 

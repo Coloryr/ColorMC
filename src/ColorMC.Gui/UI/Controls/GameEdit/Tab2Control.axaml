@@ -13,7 +13,10 @@
     <ScrollViewer>
         <!--  指定Java  -->
         <StackPanel Margin="5,0,5,5">
-            <Label HorizontalAlignment="Center" Content="{Binding Title}" />
+            <TextBlock
+                HorizontalAlignment="Center"
+                Text="{Binding Title}"
+                TextTrimming="CharacterEllipsis" />
             <Label Content="{setting:Localize GameEditWindow.Tab2.Text24}" />
             <WrapPanel>
                 <Label
@@ -206,7 +209,7 @@
             <!--  自动加入  -->
 
             <Label Content="{setting:Localize GameEditWindow.Tab2.Text14}" />
-            <StackPanel Orientation="Horizontal">
+            <WrapPanel Orientation="Horizontal">
                 <TextBox
                     Width="300"
                     Margin="0,0,10,0"
@@ -219,7 +222,7 @@
                     MaxLength="5"
                     Text="{Binding Port}"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text16}" />
-            </StackPanel>
+            </WrapPanel>
 
             <!--  代理  -->
 

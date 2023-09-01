@@ -3,9 +3,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils.LaunchSetting;
+using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Text.Json;
 
 namespace ColorMC.Gui.Utils;
 
@@ -28,9 +28,7 @@ public static class GuiConfigUtils
         {
             try
             {
-                Config = JsonSerializer
-                    .Deserialize(File.ReadAllText(name),
-                    SourceGenerationContext.Default.GuiConfigObj)!;
+                Config = JsonConvert.DeserializeObject<GuiConfigObj>(File.ReadAllText(name))!;
             }
             catch (Exception e)
             {
@@ -111,8 +109,7 @@ public static class GuiConfigUtils
 
     public static void SaveNow()
     {
-        File.WriteAllText(s_local, JsonSerializer.Serialize(Config, 
-            SourceGenerationContext.Default.GuiConfigObj));
+        File.WriteAllText(s_local, JsonConvert.SerializeObject(Config));
     }
 
     public static void Save()

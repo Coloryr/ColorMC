@@ -1,7 +1,7 @@
 using ColorMC.Core.Objs.Java;
 using HtmlAgilityPack;
 using Jint;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Java;
 
@@ -21,7 +21,7 @@ public static class OpenJ9
         }
         var str = await data.Content.ReadAsStringAsync();
 
-        var obj = JsonSerializer.Deserialize<OpenJ9Obj>(str);
+        var obj = JsonConvert.DeserializeObject<OpenJ9Obj>(str);
         if (obj == null || obj.error)
         {
             return (null, null, null, null);
@@ -105,7 +105,7 @@ public static class OpenJ9
         if (obj1 == null)
             return (null, null, null, null);
 
-        var obj2 = JsonSerializer.Deserialize<OpenJ9Obj1>(obj1.ToString()!);
+        var obj2 = JsonConvert.DeserializeObject<OpenJ9Obj1>(obj1.ToString()!);
         if (obj2 == null)
             return (null, null, null, null);
 

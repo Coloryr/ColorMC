@@ -1,5 +1,5 @@
 using ColorMC.Core.Objs.Java;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Java;
 
@@ -55,6 +55,6 @@ public static class Adoptium
             return null;
         var str = await data.Content.ReadAsStringAsync();
 
-        return JsonSerializer.Deserialize<List<AdoptiumObj>>(str);
+        return JsonConvert.DeserializeObject<List<AdoptiumObj>>(str);
     }
 }

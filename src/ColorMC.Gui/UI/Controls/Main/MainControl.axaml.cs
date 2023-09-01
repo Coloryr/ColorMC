@@ -2,6 +2,8 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
@@ -188,6 +190,18 @@ public partial class MainControl : UserControl, IUserControl
     public void WindowStateChange(WindowState state)
     {
         _model.Render = state != WindowState.Minimized;
+
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            if (state == WindowState.Maximized)
+            {
+                Margin = new Avalonia.Thickness(10);
+            }
+            else
+            {
+                Margin = new Avalonia.Thickness(0);
+            }
+        }
     }
 
     public void Closed()

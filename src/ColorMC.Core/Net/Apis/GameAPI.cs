@@ -2,7 +2,8 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using System.Text.Json;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -26,7 +27,7 @@ public static class GameAPI
                     new Exception(url), false);
                 return (null, null);
             }
-            return (JsonSerializer.Deserialize<AssetsObj>(data.Item2!), data.Item2!);
+            return (JsonConvert.DeserializeObject<AssetsObj>(data.Item2!), data.Item2!);
         }
         catch (Exception e)
         {
@@ -50,7 +51,9 @@ public static class GameAPI
                     new Exception(url), false);
                 return (null, null);
             }
-            return (JsonSerializer.Deserialize<GameArgObj>(data.Item2!), data.Item2);
+            return (JsonConvert
+                .DeserializeObject<GameArgObj>(Encoding.UTF8.GetString(data.Item2!)),
+                data.Item2);
         }
         catch (Exception e)
         {
@@ -74,7 +77,7 @@ public static class GameAPI
                     new Exception(url), false);
                 return (null, null);
             }
-            return (JsonSerializer.Deserialize<VersionObj>(data.Item2!), data.Item2);
+            return (JsonConvert.DeserializeObject<VersionObj>(data.Item2!), data.Item2);
         }
         catch (Exception e)
         {

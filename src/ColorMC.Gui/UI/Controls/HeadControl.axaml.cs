@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -103,14 +102,16 @@ public partial class HeadControl : UserControl
 
         if (SystemInfo.Os == OsType.MacOS)
         {
-            StackPanel2.HorizontalAlignment = HorizontalAlignment.Center;
-            StackPanel1.HorizontalAlignment = HorizontalAlignment.Left;
+            StackPanel1.SetValue(DockPanel.DockProperty, Dock.Left);
+            Icon.Margin = new Thickness(10, 5, 0, 5);
             StackPanel1.Children.Add(_buttonClose);
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
         }
         else
         {
+            Icon.Margin = new Thickness(0, 5, 0, 5);
+            StackPanel1.SetValue(DockPanel.DockProperty, Dock.Right);
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
             StackPanel1.Children.Add(_buttonClose);

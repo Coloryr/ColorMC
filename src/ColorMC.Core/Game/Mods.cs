@@ -4,10 +4,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using Tomlyn;
 using Tomlyn.Model;
 
@@ -30,35 +29,27 @@ public static class Mods
         if (item1 != null)
         {
             using var stream1 = zFile.GetInputStream(item1);
-            using var stream = new MemoryStream();
-            await stream1.CopyToAsync(stream);
-            var data = Encoding.UTF8.GetString(stream.ToArray());
-            if (data.StartsWith("{"))
+            using var stream2 = new MemoryStream();
+            await stream1.CopyToAsync(stream2);
+            string data = Encoding.UTF8.GetString(stream2.ToArray());
+            var obj1 = JToken.Parse(data);
+            JObject obj3;
+            if (obj1 is JArray array)
             {
-                var obj1 = JsonNode.Parse(data)?.AsObject();
-                var obj2 = obj1?["modList"]?.AsArray();
-                if (obj2?.Count > 0)
-                {
-                    var obj3 = obj2[0]!.Deserialize<ModObj>()!;
-                    obj3.name ??= "";
-                    obj3.modid ??= "";
-                    obj3.V2 = false;
-                    obj3.Loader = Loaders.Forge;
-                    return obj3;
-                }
+                obj3 = (array[0] as JObject)!;
             }
-            else if (data.StartsWith("["))
+            else
             {
-                var obj1 = JsonNode.Parse(data)!.AsArray();
-                if (obj1?.Count > 0)
-                {
-                    var obj3 = obj1[0]!.Deserialize<ModObj>()!;
-                    obj3.name ??= "";
-                    obj3.modid ??= "";
-                    obj3.V2 = false;
-                    obj3.Loader = Loaders.Forge;
-                    return obj3;
-                }
+                obj3 = (obj1["modList"]![0] as JObject)!;
+            }
+            if (obj3 != null)
+            {
+                var obj4 = obj3.ToObject<ModObj>()!;
+                obj4.name ??= "";
+                obj4.modid ??= "";
+                obj4.V2 = false;
+                obj4.Loader = Loaders.Forge;
+                return obj4;
             }
         }
 
@@ -67,10 +58,10 @@ public static class Mods
         if (item1 != null)
         {
             using var stream1 = zFile.GetInputStream(item1);
-            using var stream = new MemoryStream();
-            await stream1.CopyToAsync(stream);
-            var data = Encoding.UTF8.GetString(stream.ToArray());
-            var obj1 = JsonNode.Parse(data)!.AsObject();
+            using var stream2 = new MemoryStream();
+            await stream1.CopyToAsync(stream2);
+            string data = Encoding.UTF8.GetString(stream2.ToArray());
+            var obj1 = JObject.Parse(data);
             var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
             if (obj2 == null)
                 return null;
@@ -175,7 +166,7 @@ public static class Mods
             using var stream = new MemoryStream();
             await stream1.CopyToAsync(stream);
             var data = Encoding.UTF8.GetString(stream.ToArray());
-            var obj1 = JsonNode.Parse(data)!.AsObject();
+            var obj1 = JObject.Parse(data);
             var obj3 = new ModObj
             {
                 Loader = Loaders.Fabric,
@@ -184,7 +175,7 @@ public static class Mods
                 name = obj1["name"]?.ToString() ?? "",
                 description = obj1["description"]?.ToString(),
                 version = obj1["version"]?.ToString(),
-                authorList = (obj1["authors"]?.AsArray())?.ToStringList(),
+                authorList = (obj1["authors"] as JArray)?.ToStringList(),
                 url = obj1["contact"]?["homepage"]?.ToString(),
             };
 
@@ -193,7 +184,7 @@ public static class Mods
             if (obj1.ContainsKey("depends"))
             {
                 obj3.requiredMods = new();
-                if (obj1["depends"]?.AsObject() is { } obj4)
+                if (obj1["depends"] is JObject obj4)
                 {
                     foreach (var item3 in obj4)
                     {
@@ -232,8 +223,8 @@ public static class Mods
             using var stream = new MemoryStream();
             await stream1.CopyToAsync(stream);
             var data = Encoding.UTF8.GetString(stream.ToArray());
-            var obj1 = JsonNode.Parse(data)?.AsObject();
-            if (obj1?["quilt_loader"]?.AsObject() is not { } obj4)
+            var obj1 = JObject.Parse(data);
+            if (obj1?["quilt_loader"] is not JObject obj4)
             {
                 return null;
             }
@@ -245,14 +236,14 @@ public static class Mods
                 name = obj4["metadata"]?["name"]?.ToString() ?? "",
                 description = obj4["metadata"]?["description"]?.ToString(),
                 version = obj4["version"]?.ToString(),
-                authorList = (obj4["metadata"]?["contributors"]?.AsObject())?.ToStringList(),
+                authorList = (obj4["metadata"]?["contributors"] as JObject)?.ToStringList(),
                 url = obj4["contact"]?["homepage"]?.ToString(),
             };
 
             obj3.name ??= "";
 
             obj3.requiredMods = new();
-            if (obj4["depends"]?.AsArray() is { } obj5)
+            if (obj4["depends"] is JArray obj5)
             {
                 foreach (var item3 in obj5)
                 {
@@ -304,11 +295,11 @@ public static class Mods
         var files = info.GetFiles();
 
         //多线程同时检查
-        // await Parallel.ForEachAsync(files, new ParallelOptions()
-        // {
-        //     MaxDegreeOfParallelism = 1
-        // }, async (item, cancel) =>
-        await Parallel.ForEachAsync(files, async (item, cancel) =>
+        await Parallel.ForEachAsync(files, new ParallelOptions()
+        {
+            MaxDegreeOfParallelism = 1
+        }, async (item, cancel) =>
+        //await Parallel.ForEachAsync(files, async (item, cancel) =>
         {
             if (item.Extension is not (".zip" or ".jar" or ".disable"))
             {
@@ -533,12 +524,12 @@ public static class Mods
     /// 作者分割
     /// </summary>
     /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this JsonArray array)
+    private static List<string> ToStringList(this JArray array)
     {
         List<string> list = new();
         foreach (var item in array)
         {
-            if (item is JsonObject obj && obj.ContainsKey("name"))
+            if (item is JObject obj && obj.ContainsKey("name"))
             {
                 list.Add(item["name"]!.ToString());
             }
@@ -555,7 +546,7 @@ public static class Mods
     /// 作者分割
     /// </summary>
     /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this JsonObject array)
+    private static List<string> ToStringList(this JObject array)
     {
         List<string> list = new();
         foreach (var item in array)
@@ -572,7 +563,7 @@ public static class Mods
     /// <param name="obj"></param>
     /// <param name="key">键名</param>
     /// <returns>obj</returns>
-    private static JsonNode? FindKey(this JsonObject obj, string key)
+    private static JToken? FindKey(this JObject obj, string key)
     {
         foreach (var item in obj)
         {
@@ -581,11 +572,11 @@ public static class Mods
                 return item.Value!.Root;
             }
 
-            if (item.Value is JsonObject obj1)
+            if (item.Value is JObject obj1)
             {
                 return FindKey(obj1, key);
             }
-            else if (item.Value is JsonArray arry)
+            else if (item.Value is JArray arry)
             {
                 return FindKey(arry, key);
             }
@@ -600,11 +591,11 @@ public static class Mods
     /// <param name="obj"></param>
     /// <param name="key">键名</param>
     /// <returns>obj</returns>
-    private static JsonNode? FindKey(this JsonArray obj, string key)
+    private static JToken? FindKey(this JArray obj, string key)
     {
         foreach (var item in obj)
         {
-            if (item is JsonObject obj1)
+            if (item is JObject obj1)
             {
                 var data = FindKey(obj1, key);
                 if (data != null)

@@ -1,8 +1,8 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
-using System.Text.Json;
 
 namespace ColorMC.Core.Utils;
 
@@ -60,7 +60,7 @@ public static class AuthDatabase
         try
         {
             var data = File.ReadAllText(s_local);
-            var list = JsonSerializer.Deserialize<List<LoginObj>>(data);
+            var list = JsonConvert.DeserializeObject<List<LoginObj>>(data);
             if (list == null)
                 return;
 
@@ -138,7 +138,7 @@ public static class AuthDatabase
     /// </summary>
     public static bool LoadData(string dir)
     {
-        var list = JsonSerializer.Deserialize<List<LoginObj>>(dir);
+        var list = JsonConvert.DeserializeObject<List<LoginObj>>(dir);
         if (list == null)
             return false;
 

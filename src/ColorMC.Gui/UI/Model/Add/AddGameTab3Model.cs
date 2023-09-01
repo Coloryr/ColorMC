@@ -6,7 +6,6 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.IO;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;

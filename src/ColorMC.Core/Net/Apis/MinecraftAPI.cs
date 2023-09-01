@@ -1,6 +1,6 @@
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.MoJang;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -23,7 +23,7 @@ public static class MinecraftAPI
 
         var data1 = await data.Content.ReadAsStringAsync();
 
-        return JsonSerializer.Deserialize<MinecraftProfileObj>(data1); ;
+        return JsonConvert.DeserializeObject<MinecraftProfileObj>(data1); ;
     }
 
     /// <summary>
@@ -37,6 +37,6 @@ public static class MinecraftAPI
         url ??= $"https://sessionserver.mojang.com/session/minecraft/profile/{uuid}";
         var data = await BaseClient.LoginClient.GetStringAsync(url);
 
-        return JsonSerializer.Deserialize<UserProfileObj>(data);
+        return JsonConvert.DeserializeObject<UserProfileObj>(data);
     }
 }

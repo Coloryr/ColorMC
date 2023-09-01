@@ -4,9 +4,8 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 
 namespace ColorMC.Core.Game;
 
@@ -54,7 +53,7 @@ public static class Resourcepacks
                     using var stream = new MemoryStream();
                     await stream1.CopyToAsync(stream, cancel);
                     var data = Encoding.UTF8.GetString(stream.ToArray());
-                    var obj1 = JsonNode.Parse(data)?.AsObject();
+                    var obj1 = JObject.Parse(data);
                     if (obj1 != null)
                     {
                         ResourcepackObj obj = new()
@@ -64,19 +63,19 @@ public static class Resourcepacks
                         };
                         if (obj1.ContainsKey("pack"))
                         {
-                            var obj2 = (obj1["pack"]?.AsObject())!;
-                            if (obj2["pack_format"] is { } item2)
+                            var obj2 = obj1["pack"] as JObject;
+                            if (obj2!["pack_format"] is { } item2)
                             {
                                 obj.pack_format = (int)item2;
                             }
                             if (obj2.ContainsKey("description"))
                             {
                                 var obj3 = obj2["description"]!;
-                                if (obj3.GetValueKind() == JsonValueKind.String)
+                                if (obj3.Type == JTokenType.String)
                                 {
                                     obj.description = obj3.ToString();
                                 }
-                                else if (obj3.GetValueKind() == JsonValueKind.Object)
+                                else if (obj3.Type == JTokenType.Object)
                                 {
                                     obj.description = obj3["fallback"]?.ToString() ?? "";
                                 }

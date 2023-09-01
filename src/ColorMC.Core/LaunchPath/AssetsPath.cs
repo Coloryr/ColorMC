@@ -1,6 +1,6 @@
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -71,7 +71,7 @@ public static class AssetsPath
             return null;
         }
 
-        var obj = JsonSerializer.Deserialize<AssetsObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<AssetsObj>(File.ReadAllText(file))!;
         s_assets.Add(game.assets, obj);
         return obj;
     }

@@ -2,7 +2,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.Xml;
 
 namespace ColorMC.Core.Net.Apis;
@@ -45,7 +45,7 @@ public static class ForgeAPI
                         new Exception(url), false);
                     return null;
                 }
-                var obj = JsonSerializer.Deserialize<List<string>>(data.Item2!);
+                var obj = JsonConvert.DeserializeObject<List<string>>(data.Item2!);
                 if (obj == null)
                     return null;
 
@@ -98,7 +98,7 @@ public static class ForgeAPI
 
                 if (neo)
                 {
-                    var obj = JsonSerializer.Deserialize<List<NeoForgeVersionObj>>(data.Item2!);
+                    var obj = JsonConvert.DeserializeObject<List<NeoForgeVersionObj>>(data.Item2!);
                     if (obj == null)
                         return null;
 
@@ -109,7 +109,7 @@ public static class ForgeAPI
                 }
                 else
                 {
-                    var obj = JsonSerializer.Deserialize<List<ForgeVersionObj1>>(data.Item2!);
+                    var obj = JsonConvert.DeserializeObject<List<ForgeVersionObj1>>(data.Item2!);
                     if (obj == null)
                         return null;
 

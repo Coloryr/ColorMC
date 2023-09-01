@@ -14,32 +14,29 @@
     mc:Ignorable="d">
     <Panel>
         <Border Name="Border1" Background="{setting:Colors Main}" />
-        <StackPanel
-            Name="StackPanel2"
-            Margin="5,5,5,0"
-            Orientation="Horizontal">
+        <DockPanel Margin="5,0,5,0">
+            <StackPanel
+                Name="StackPanel1"
+                DockPanel.Dock="Left"
+                Orientation="Horizontal" />
             <Image
                 Name="Icon"
-                Margin="0,0,0,5"
+                Margin="10,5,0,5"
                 Source="resm:ColorMC.Gui.icon.ico" />
             <TextBlock
                 Name="TitleShow"
                 Margin="5,0,0,0"
-                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 Foreground="{setting:Colors ButtonFont}"
-                Text="{Binding Title}" />
+                Text="{Binding Title}"
+                TextTrimming="CharacterEllipsis" />
             <TextBlock
                 Name="TitleShow1"
                 Margin="10,0,0,0"
-                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 Foreground="{setting:Colors ButtonFont}"
-                Text="{Binding Title1}" />
-        </StackPanel>
-        <StackPanel
-            Name="StackPanel1"
-            Margin="5,5,5,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Orientation="Horizontal" />
+                Text="{Binding Title1}"
+                TextTrimming="CharacterEllipsis" />
+        </DockPanel>
     </Panel>
 </UserControl>

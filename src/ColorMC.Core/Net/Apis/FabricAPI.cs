@@ -2,7 +2,7 @@
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -28,7 +28,7 @@ public static class FabricAPI
                     new Exception(url), false);
                 return null;
             }
-            return JsonSerializer.Deserialize<FabricMetaObj>(data.Item2!);
+            return JsonConvert.DeserializeObject<FabricMetaObj>(data.Item2!);
         }
         catch (Exception e)
         {
@@ -80,7 +80,7 @@ public static class FabricAPI
                 return null;
             }
 
-            var list = JsonSerializer.Deserialize<List<FabricLoaderObj1>>(data.Item2!);
+            var list = JsonConvert.DeserializeObject<List<FabricLoaderObj1>>(data.Item2!);
             if (list == null)
                 return null;
 
@@ -116,7 +116,7 @@ public static class FabricAPI
                     new Exception(url), false);
                 return null;
             }
-            var list = JsonSerializer.Deserialize<List<FabricMetaObj.Game>>(data.Item2!);
+            var list = JsonConvert.DeserializeObject<List<FabricMetaObj.Game>>(data.Item2!);
             if (list == null)
                 return null;
 

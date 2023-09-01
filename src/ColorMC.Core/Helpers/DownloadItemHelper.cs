@@ -7,9 +7,9 @@ using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.Text;
-using System.Text.Json;
 
 namespace ColorMC.Core.Helpers;
 
@@ -554,7 +554,7 @@ public static class DownloadItemHelper
             {
                 var array = stream1.ToArray();
                 var data = Encoding.UTF8.GetString(stream1.ToArray());
-                info = JsonSerializer.Deserialize<ForgeLaunchObj>(data)!;
+                info = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
                 VersionPath.AddGame(info, array, mc, version, neo);
             }
             catch (Exception e)
@@ -570,7 +570,7 @@ public static class DownloadItemHelper
             {
                 var array = stream2.ToArray();
                 var data = Encoding.UTF8.GetString(array);
-                info1 = JsonSerializer.Deserialize<ForgeInstallObj>(data)!;
+                info1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
                 VersionPath.AddGame(info1, array, mc, version, neo);
             }
             catch (Exception e)
@@ -590,7 +590,7 @@ public static class DownloadItemHelper
             try
             {
                 var data = Encoding.UTF8.GetString(array1);
-                obj = JsonSerializer.Deserialize<ForgeInstallObj1>(data)!;
+                obj = JsonConvert.DeserializeObject<ForgeInstallObj1>(data)!;
                 info = new()
                 {
                     id = obj.versionInfo.id,
@@ -627,7 +627,8 @@ public static class DownloadItemHelper
                     }
                 }
 
-                VersionPath.AddGame(info, JsonSerializer.SerializeToUtf8Bytes(info), mc, version, neo);
+                VersionPath.AddGame(info,
+                    Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(info)), mc, version, neo);
 
                 list.AddRange(BuildForgeLibs(info, mc, version, neo));
             }
@@ -690,7 +691,7 @@ public static class DownloadItemHelper
         {
             return (GetDownloadState.GetInfo, null);
         }
-        var meta1 = JsonSerializer.Deserialize<FabricLoaderObj>(data);
+        var meta1 = JsonConvert.DeserializeObject<FabricLoaderObj>(data);
         if (meta1 == null)
         {
             return (GetDownloadState.GetInfo, null);
@@ -762,7 +763,7 @@ public static class DownloadItemHelper
         {
             return (GetDownloadState.GetInfo, null);
         }
-        var meta1 = JsonSerializer.Deserialize<QuiltLoaderObj>(data);
+        var meta1 = JsonConvert.DeserializeObject<QuiltLoaderObj>(data);
         if (meta1 == null)
         {
             return (GetDownloadState.GetInfo, null);

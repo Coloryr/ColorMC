@@ -113,7 +113,7 @@ public partial class App : Application
         {
             StartLock();
         }
-        
+
     }
 
     public static string GetLanguage(string input)

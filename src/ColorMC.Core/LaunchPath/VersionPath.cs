@@ -5,8 +5,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using System;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -116,7 +115,7 @@ public static class VersionPath
         if (File.Exists(file))
         {
             string data = File.ReadAllText(file);
-            _version = JsonSerializer.Deserialize<VersionObj>(data);
+            _version = JsonConvert.DeserializeObject<VersionObj>(data);
         }
         else
         {
@@ -237,7 +236,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonSerializer.Deserialize<GameArgObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<GameArgObj>(File.ReadAllText(file))!;
         s_gameArgs.Add(version, obj);
         return obj;
     }
@@ -294,7 +293,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonSerializer.Deserialize<ForgeInstallObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file))!;
         s_forgeInstalls.Add(key, obj);
         return obj;
     }
@@ -330,7 +329,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonSerializer.Deserialize<ForgeLaunchObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file))!;
         s_neoForgeLaunchs.Add(key, obj);
         return obj;
     }
@@ -355,7 +354,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonSerializer.Deserialize<ForgeInstallObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(File.ReadAllText(file))!;
         s_neoForgeInstalls.Add(key, obj);
         return obj;
     }
@@ -390,7 +389,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonSerializer.Deserialize<ForgeLaunchObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(File.ReadAllText(file))!;
         s_forgeLaunchs.Add(key, obj);
         return obj;
     }
@@ -425,7 +424,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonSerializer.Deserialize<FabricLoaderObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<FabricLoaderObj>(File.ReadAllText(file))!;
         s_fabricLoaders.Add(key, obj);
         return obj;
     }
@@ -460,7 +459,7 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonSerializer.Deserialize<QuiltLoaderObj>(File.ReadAllText(file))!;
+        var obj = JsonConvert.DeserializeObject<QuiltLoaderObj>(File.ReadAllText(file))!;
         s_quiltLoaders.Add(key, obj);
         return obj;
     }

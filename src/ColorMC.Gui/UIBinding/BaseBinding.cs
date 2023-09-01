@@ -64,7 +64,7 @@ public static class BaseBinding
         if (ColorMCGui.RunType == RunType.Program)
         {
             GameCountUtils.Init(ColorMCGui.RunDir);
-            
+
             try
             {
                 Media.Init();

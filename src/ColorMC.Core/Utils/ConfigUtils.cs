@@ -1,7 +1,7 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.Utils;
 
@@ -35,7 +35,7 @@ public static class ConfigUtils
         {
             try
             {
-                Config = JsonSerializer.Deserialize<ConfigObj>(File.ReadAllText(name))!;
+                Config = JsonConvert.DeserializeObject<ConfigObj>(File.ReadAllText(name))!;
             }
             catch (Exception e)
             {

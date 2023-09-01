@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.Helpers;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
-using System.Text.Json;
 
 namespace ColorMC.Core.Utils;
 
@@ -96,11 +96,8 @@ public static class ConfigSave
             info.Directory?.Create();
             try
             {
-                File.WriteAllBytes(item.Local,
-                    JsonSerializer.SerializeToUtf8Bytes(item.Obj, new JsonSerializerOptions(JsonSerializerOptions.Default)
-                    {
-                        WriteIndented = true
-                    }));
+                File.WriteAllText(item.Local,
+                    JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
             }
             catch (Exception e)
             {

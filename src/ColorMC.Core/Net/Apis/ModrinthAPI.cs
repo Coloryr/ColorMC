@@ -2,8 +2,8 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
-using System.Text.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -71,7 +71,7 @@ public static class ModrinthAPI
             var url = $"{UrlHelper.Modrinth}search?query={query}&index={type.Data}&offset={offset}" +
                 $"&limit={limit}&facets={MFacetsObj.Build(list)}";
             var res = await BaseClient.DownloadClient.GetStringAsync(url);
-            return JsonSerializer.Deserialize<ModrinthSearchObj>(res);
+            return JsonConvert.DeserializeObject<ModrinthSearchObj>(res);
         }
         catch (Exception e)
         {
@@ -150,7 +150,7 @@ public static class ModrinthAPI
             {
                 return null;
             }
-            return JsonSerializer.Deserialize<ModrinthVersionObj>(res.Item2!);
+            return JsonConvert.DeserializeObject<ModrinthVersionObj>(res.Item2!);
         }
         catch (Exception e)
         {
@@ -184,7 +184,7 @@ public static class ModrinthAPI
                 + (loader != Loaders.Normal ? $"&loaders=[\"{loader.GetName().ToLower()}\"]" : "");
             }
             var res = await BaseClient.DownloadClient.GetStringAsync(url);
-            return JsonSerializer.Deserialize<List<ModrinthVersionObj>>(res);
+            return JsonConvert.DeserializeObject<List<ModrinthVersionObj>>(res);
         }
         catch (Exception e)
         {
@@ -203,7 +203,7 @@ public static class ModrinthAPI
         try
         {
             var res = await BaseClient.DownloadClient.GetStringAsync($"{UrlHelper.Modrinth}tag/game_version");
-            return JsonSerializer.Deserialize<List<ModrinthGameVersionObj>>(res);
+            return JsonConvert.DeserializeObject<List<ModrinthGameVersionObj>>(res);
         }
         catch (Exception e)
         {
@@ -221,7 +221,7 @@ public static class ModrinthAPI
         try
         {
             var res = await BaseClient.DownloadClient.GetStringAsync($"{UrlHelper.Modrinth}tag/category");
-            return JsonSerializer.Deserialize<List<ModrinthCategoriesObj>>(res);
+            return JsonConvert.DeserializeObject<List<ModrinthCategoriesObj>>(res);
         }
         catch (Exception e)
         {

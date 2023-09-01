@@ -1,12 +1,12 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.UI.Windows;
-using System.Threading;
 using System.IO;
-using ColorMC.Core.LaunchPath;
+using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameExport;
 
