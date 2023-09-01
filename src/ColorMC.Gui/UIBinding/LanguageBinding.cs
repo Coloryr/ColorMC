@@ -203,8 +203,7 @@ public static class LanguageBinding
         {
             App.GetLanguage("VersionType.Item1"),
             App.GetLanguage("VersionType.Item2"),
-            App.GetLanguage("VersionType.Item3"),
-            App.GetLanguage("VersionType.Item4")
+            App.GetLanguage("VersionType.Item3")
         };
     }
 }

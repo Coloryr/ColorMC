@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    d:DesignHeight="1050"
+    d:DesignHeight="1500"
     d:DesignWidth="800"
     x:DataType="model:GameEditTab2Model"
     mc:Ignorable="d">
@@ -15,7 +15,7 @@
         <StackPanel Margin="5,0,5,5">
             <Label HorizontalAlignment="Center" Content="{Binding Title}" />
             <Label Content="{setting:Localize GameEditWindow.Tab2.Text24}" />
-            <StackPanel Orientation="Horizontal">
+            <WrapPanel>
                 <Label
                     Width="140"
                     VerticalAlignment="Center"
@@ -25,7 +25,7 @@
                     IsEnabled="{Binding EnableJvmName}"
                     ItemsSource="{Binding JvmList}"
                     SelectedItem="{Binding JvmName}" />
-            </StackPanel>
+            </WrapPanel>
             <DockPanel Margin="0,5,0,0">
                 <Button
                     Width="100"
@@ -69,7 +69,7 @@
 
             <Label Content="{setting:Localize GameEditWindow.Tab2.Text1}" />
 
-            <StackPanel Orientation="Horizontal">
+            <WrapPanel Orientation="Horizontal">
                 <Label
                     Width="140"
                     HorizontalAlignment="Center"
@@ -79,7 +79,7 @@
                     Width="300"
                     ItemsSource="{Binding GCTypeList}"
                     SelectedIndex="{Binding Gc}" />
-            </StackPanel>
+            </WrapPanel>
             <TextBox
                 Margin="0,5,0,5"
                 Classes="input1"
@@ -89,30 +89,33 @@
 
             <!--  Jvm内存  -->
 
-            <StackPanel Orientation="Horizontal">
-                <Label
-                    Width="140"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab2.Text4}" />
-                <NumericUpDown
-                    Width="150"
-                    Height="30"
-                    FormatString="N0"
-                    Minimum="1"
-                    Value="{Binding MinMem}" />
-
-                <Label
-                    Width="140"
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab2.Text5}" />
-                <NumericUpDown
-                    Width="150"
-                    Height="30"
-                    FormatString="N0"
-                    Minimum="1"
-                    Value="{Binding MaxMem}" />
-            </StackPanel>
+            <WrapPanel Orientation="Horizontal">
+                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <Label
+                        Width="140"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab2.Text4}" />
+                    <NumericUpDown
+                        Width="150"
+                        Height="30"
+                        Margin="0,0,20,0"
+                        FormatString="N0"
+                        Minimum="1"
+                        Value="{Binding MinMem}" />
+                </StackPanel>
+                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <Label
+                        Width="140"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab2.Text5}" />
+                    <NumericUpDown
+                        Width="150"
+                        Height="30"
+                        FormatString="N0"
+                        Minimum="1"
+                        Value="{Binding MaxMem}" />
+                </StackPanel>
+            </WrapPanel>
 
             <!--  Jvm附加参数  -->
 
@@ -139,7 +142,10 @@
                 TextWrapping="Wrap"
                 Watermark="{setting:Localize GameEditWindow.Tab2.Text8}" />
 
-            <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text25}" />
+            <TextBlock
+                Margin="5,0,0,0"
+                Text="{setting:Localize GameEditWindow.Tab2.Text25}"
+                TextWrapping="Wrap" />
 
             <TextBox
                 Name="TextBox13"
@@ -151,7 +157,10 @@
                 TextWrapping="Wrap"
                 Watermark="{setting:Localize GameEditWindow.Tab2.Text32}" />
 
-            <Label Margin="5,0,0,0" Content="{setting:Localize GameEditWindow.Tab2.Text26}" />
+            <TextBlock
+                Margin="5,0,0,0"
+                Text="{setting:Localize GameEditWindow.Tab2.Text25}"
+                TextWrapping="Wrap" />
 
             <TextBox
                 Margin="0,5,0,0"
@@ -162,37 +171,37 @@
             <!--  分辨率  -->
 
             <Label Content="{setting:Localize GameEditWindow.Tab2.Text9}" />
-            <StackPanel Orientation="Horizontal">
-                <Label
-                    Width="140"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab2.Text10}" />
-                <NumericUpDown
-                    Width="150"
-                    Height="30"
-                    FormatString="N0"
-                    IsEnabled="{Binding !MaxWindow}"
-                    Minimum="1"
-                    Value="{Binding Width}" />
-
-                <Label
-                    Width="140"
-                    Margin="20,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize GameEditWindow.Tab2.Text11}" />
-                <NumericUpDown
-                    Width="150"
-                    Height="30"
-                    FormatString="N0"
-                    IsEnabled="{Binding !MaxWindow}"
-                    Minimum="1"
-                    Value="{Binding Height}" />
-
-                <CheckBox
-                    Margin="20,0,0,0"
-                    Content="{setting:Localize GameEditWindow.Tab2.Text12}"
-                    IsChecked="{Binding MaxWindow}" />
-            </StackPanel>
+            <WrapPanel>
+                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <Label
+                        Width="140"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab2.Text10}" />
+                    <NumericUpDown
+                        Width="150"
+                        Height="30"
+                        Margin="0,0,20,0"
+                        FormatString="N0"
+                        IsEnabled="{Binding !MaxWindow}"
+                        Minimum="1"
+                        Value="{Binding Width}" />
+                </StackPanel>
+                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <Label
+                        Width="140"
+                        VerticalAlignment="Center"
+                        Content="{setting:Localize GameEditWindow.Tab2.Text11}" />
+                    <NumericUpDown
+                        Width="150"
+                        Height="30"
+                        Margin="0,0,20,0"
+                        FormatString="N0"
+                        IsEnabled="{Binding !MaxWindow}"
+                        Minimum="1"
+                        Value="{Binding Height}" />
+                </StackPanel>
+                <CheckBox Content="{setting:Localize GameEditWindow.Tab2.Text12}" IsChecked="{Binding MaxWindow}" />
+            </WrapPanel>
 
             <!--  自动加入  -->
 
@@ -215,34 +224,34 @@
             <!--  代理  -->
 
             <Label Content="{setting:Localize GameEditWindow.Tab2.Text17}" />
-            <StackPanel Orientation="Horizontal">
+            <WrapPanel Orientation="Horizontal">
                 <TextBox
                     Width="200"
+                    Margin="0,0,10,0"
                     Classes="input1"
                     Text="{Binding ProxyIP}"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text18}" />
                 <TextBox
                     Width="80"
-                    Margin="10,0,0,0"
+                    Margin="0,0,10,0"
                     Classes="input1"
                     MaxLength="5"
                     Text="{Binding ProxyPort}"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text19}" />
                 <TextBox
                     Width="200"
-                    Margin="10,0,0,0"
+                    Margin="0,0,10,0"
                     Classes="input1"
                     Text="{Binding ProxyUser}"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text20}" />
                 <TextBox
                     Name="TextBox10"
                     Width="200"
-                    Margin="10,0,0,0"
                     Classes="input1"
                     PasswordChar="*"
                     Text="{Binding ProxyPassword}"
                     Watermark="{setting:Localize GameEditWindow.Tab2.Text21}" />
-            </StackPanel>
+            </WrapPanel>
             <Button
                 Width="100"
                 Height="25"

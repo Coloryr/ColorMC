@@ -38,9 +38,9 @@ public partial class GameEditTab1Model : GameModel
     private string? _fID;
 
     [ObservableProperty]
-    private int versionType;
+    private int _versionType = -1;
     [ObservableProperty]
-    private int loaderType;
+    private int _loaderType = -1;
 
     [ObservableProperty]
     private bool _modPack;
@@ -471,16 +471,16 @@ public partial class GameEditTab1Model : GameModel
         switch (VersionType)
         {
             case 0:
+                Obj.GameType = GameType.Release;
                 GameVersionList.AddRange(GameBinding.GetGameVersion(true, false, false));
                 break;
             case 1:
+                Obj.GameType = GameType.Snapshot;
                 GameVersionList.AddRange(GameBinding.GetGameVersion(false, true, false));
                 break;
             case 2:
+                Obj.GameType = GameType.Other;
                 GameVersionList.AddRange(GameBinding.GetGameVersion(false, false, true));
-                break;
-            case 3:
-                GameVersionList.AddRange(GameBinding.GetGameVersion(true, true, true));
                 break;
         }
     }
@@ -508,11 +508,20 @@ public partial class GameEditTab1Model : GameModel
         {
             VersionType = 3;
         }
+        else
+        {
+            VersionType = 0;
+        }
+
+        _loaderTypeList.Add(Loaders.Normal);
+        LoaderTypeList.Add(Loaders.Normal.GetName());
 
         if (Obj.Loader != Loaders.Normal)
         {
             _loaderTypeList.Add(Obj.Loader);
             LoaderTypeList.Add(Obj.Loader.GetName());
+
+            LoaderType = 1;
 
             EnableLoader = false;
             LoaderVersionList.Clear();
@@ -520,6 +529,10 @@ public partial class GameEditTab1Model : GameModel
             {
                 LoaderVersionList.Add(Obj.LoaderVersion);
             }
+        }
+        else
+        {
+            LoaderType = 0;
         }
 
         Load1();

@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
+    xmlns:svg="clr-namespace:Avalonia.Svg;assembly=Avalonia.Svg"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.Main"
     d:DesignHeight="450"
@@ -32,47 +33,52 @@
                                 Width="25"
                                 Height="35"
                                 Command="{Binding ShowUser}"
-                                Content="U"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text4}"
-                                ToolTip.VerticalOffset="-30" />
+                                ToolTip.VerticalOffset="-30">
+                                <Svg Path="/Resource/Icon/user.svg" />
+                            </Button>
 
                             <Button
                                 Width="25"
                                 Height="35"
                                 Margin="0,5,0,0"
                                 Command="{Binding ShowSkin}"
-                                Content="P"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                                ToolTip.VerticalOffset="-30" />
+                                ToolTip.VerticalOffset="-30">
+                                <Svg Path="/Resource/Icon/skin.svg" />
+                            </Button>
 
                             <Button
                                 Width="25"
                                 Height="35"
                                 Margin="0,5,0,0"
                                 Command="{Binding AddGame}"
-                                Content="A"
                                 IsVisible="{Binding !IsOneGame}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text10}"
-                                ToolTip.VerticalOffset="-30" />
+                                ToolTip.VerticalOffset="-30">
+                                <Svg Path="/Resource/Icon/add.svg" />
+                            </Button>
 
                             <Button
                                 Width="25"
                                 Height="35"
                                 Margin="0,5,0,0"
                                 Command="{Binding Launch}"
-                                Content="L"
                                 IsEnabled="{Binding EnableButton1}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text11}"
-                                ToolTip.VerticalOffset="-30" />
+                                ToolTip.VerticalOffset="-30">
+                                <Svg Path="/Resource/Icon/launch.svg" />
+                            </Button>
                             <Button
                                 Width="25"
                                 Height="35"
                                 Margin="0,5,0,0"
                                 Command="{Binding EditGame}"
-                                Content="E"
                                 IsEnabled="{Binding EnableButton2}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text12}"
-                                ToolTip.VerticalOffset="-30" />
+                                ToolTip.VerticalOffset="-30">
+                                <Svg Path="/Resource/Icon/edit.svg" />
+                            </Button>
 
                             <Button
                                 Width="25"
@@ -81,11 +87,13 @@
                                 Command="{Binding ShowSetting}"
                                 Content="S"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text13}"
-                                ToolTip.VerticalOffset="-30" />
+                                ToolTip.VerticalOffset="-30">
+                                <Svg Path="/Resource/Icon/setting.svg" />
+                            </Button>
                         </StackPanel>
                     </Panel>
 
-                    <Panel Name="Grid1">
+                    <Panel Name="Grid1" Margin="0,0,10,0">
                         <Border Name="Border1" Background="{setting:Colors TranBack}" />
                         <StackPanel Margin="10,0,10,0" VerticalAlignment="Center">
                             <Panel Margin="0,20,0,0">

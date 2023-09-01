@@ -33,6 +33,12 @@
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="icon.ico" />
+    <None Remove="Resource\Icon\add.svg" />
+    <None Remove="Resource\Icon\edit.svg" />
+    <None Remove="Resource\Icon\launch.svg" />
+    <None Remove="Resource\Icon\setting.svg" />
+    <None Remove="Resource\Icon\skin.svg" />
+    <None Remove="Resource\Icon\user.svg" />
     <None Remove="Resource\Language\gui_zh-cn.json" />
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\launch.png" />
@@ -41,6 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="icon.ico" />
+    <AvaloniaResource Include="Resource\Icon\add.svg" />
+    <AvaloniaResource Include="Resource\Icon\edit.svg" />
+    <AvaloniaResource Include="Resource\Icon\launch.svg" />
+    <AvaloniaResource Include="Resource\Icon\setting.svg" />
+    <AvaloniaResource Include="Resource\Icon\user.svg" />
+    <AvaloniaResource Include="Resource\Icon\skin.svg" />
     <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
     <EmbeddedResource Include="Resource\Pic\game.png" />
     <EmbeddedResource Include="Resource\Pic\launch.png" />
@@ -64,14 +76,15 @@
     <PackageReference Include="Avalonia.Desktop" Version="11.0.4" />
 	<PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="11.0.4" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.4" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.0.0.1" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.4" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.4" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-    <PackageReference Include="NAudio.Core" Version="2.1.0" />
-    <PackageReference Include="NAudio.WinMM" Version="2.1.0" />
+    <PackageReference Include="NAudio.Core" Version="2.2.0" />
+    <PackageReference Include="NAudio.WinMM" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	<PackageReference Include="OpenTK.OpenAL" Version="4.7.7" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.0.2" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
