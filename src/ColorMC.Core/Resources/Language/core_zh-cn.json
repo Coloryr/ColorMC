@@ -251,5 +251,6 @@
   "FileType.DataPacks": "数据包",
   "FileType.Optifne": "Optifne高清优化",
   "FileType.Other": "未知的资源类型",
-  "AuthlibInjector.Error1": "AuthlibInjector信息获取失败"
+  "AuthlibInjector.Error1": "AuthlibInjector信息获取失败",
+  "Loaders.Normal": "无"
 }

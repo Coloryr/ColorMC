@@ -4,9 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="850"
     d:DesignWidth="800"
+    x:DataType="model:SettingTab4Model"
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="5,0,5,5">

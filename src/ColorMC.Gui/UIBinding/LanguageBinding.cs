@@ -196,4 +196,15 @@ public static class LanguageBinding
             App.GetLanguage("ServerPackWindow.Tab4.Item2")
         };
     }
+
+    public static List<string> GetVersionType()
+    {
+        return new()
+        {
+            App.GetLanguage("VersionType.Item1"),
+            App.GetLanguage("VersionType.Item2"),
+            App.GetLanguage("VersionType.Item3"),
+            App.GetLanguage("VersionType.Item4")
+        };
+    }
 }

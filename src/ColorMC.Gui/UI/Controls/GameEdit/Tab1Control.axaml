@@ -4,9 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameEdit"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:DataType="model:GameEditTab1Model"
     mc:Ignorable="d">
     <ScrollViewer>
         <DockPanel>
@@ -70,30 +72,28 @@
             <StackPanel Margin="5,0,5,5">
                 <Label Content="{setting:Localize Text.GameVersion}" />
                 <WrapPanel Orientation="Horizontal">
-                    <ComboBox
-                        Name="ComboBox1"
-                        Width="200"
-                        HorizontalAlignment="Center"
-                        ItemsSource="{Binding GameVersionList}"
-                        SelectedItem="{Binding GameVersion}" />
-                    <CheckBox
-                        Name="CheckBox2"
-                        Width="80"
-                        Margin="5,0,0,0"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text6}"
-                        IsChecked="{Binding SelectRelease}" />
-                    <CheckBox
-                        Name="CheckBox3"
-                        Width="80"
-                        Margin="5,0,0,0"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text7}"
-                        IsChecked="{Binding SelectSnapshot}" />
-                    <CheckBox
-                        Name="CheckBox4"
-                        Width="80"
-                        Margin="5,0,0,0"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text8}"
-                        IsChecked="{Binding SelectOther}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                        <ComboBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            ItemsSource="{Binding GameVersionList}"
+                            SelectedItem="{Binding VersionType}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                        <ComboBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            ItemsSource="{Binding GameVersionList}"
+                            SelectedItem="{Binding GameVersion}" />
+                    </StackPanel>
                     <Button
                         Width="100"
                         Height="25"
@@ -105,39 +105,30 @@
                 </WrapPanel>
                 <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
                 <WrapPanel Orientation="Horizontal">
-                    <ComboBox
-                        Name="ComboBox2"
-                        Width="200"
-                        IsEnabled="{Binding EnableLoader}"
-                        ItemsSource="{Binding LoaderVersionList}"
-                        SelectedItem="{Binding LoaderVersion}" />
-                    <CheckBox
-                        Name="CheckBox5"
-                        Width="80"
-                        Margin="5,0,0,0"
-                        Content="Forge"
-                        IsChecked="{Binding SelectForge}"
-                        IsEnabled="{Binding EnableForge}" />
-                    <CheckBox
-                        Width="100"
-                        Margin="5,0,0,0"
-                        Content="NeoForge"
-                        IsChecked="{Binding SelectNeoForge}"
-                        IsEnabled="{Binding EnableNeoForge}" />
-                    <CheckBox
-                        Name="CheckBox6"
-                        Width="80"
-                        Margin="5,0,0,0"
-                        Content="Fabric"
-                        IsChecked="{Binding SelectFabric}"
-                        IsEnabled="{Binding EnableFabric}" />
-                    <CheckBox
-                        Name="CheckBox7"
-                        Width="80"
-                        Margin="5,0,0,0"
-                        Content="Quilt"
-                        IsChecked="{Binding SelectQuilt}"
-                        IsEnabled="{Binding EnableQuilt}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                        <ComboBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            ItemsSource="{Binding LoaderTypeList}"
+                            SelectedItem="{Binding LoaderType}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                        <ComboBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            IsEnabled="{Binding EnableLoader}"
+                            ItemsSource="{Binding LoaderVersionList}"
+                            SelectedItem="{Binding LoaderVersion}" />
+                    </StackPanel>
+
                     <Button
                         Width="100"
                         Height="25"

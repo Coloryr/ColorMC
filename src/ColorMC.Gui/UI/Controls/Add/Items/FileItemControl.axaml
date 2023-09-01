@@ -5,10 +5,12 @@
     xmlns:app="clr-namespace:ColorMC.Gui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     Height="100"
     d:DesignHeight="100"
     d:DesignWidth="500"
+    x:DataType="model:FileItemModel"
     ToolTip.Tip="{setting:Localize ToolTip.Text49}"
     ToolTip.VerticalOffset="-30"
     mc:Ignorable="d">

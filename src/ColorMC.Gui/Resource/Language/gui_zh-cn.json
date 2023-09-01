@@ -488,9 +488,8 @@
 	"AddGameWindow.Tab1.Text2": "实例名字",
 	"AddGameWindow.Tab1.Text4": "Mod加载器",
 	"AddGameWindow.Tab1.Text5": "游戏分组",
-	"AddGameWindow.Tab1.Text6": "正式版",
-	"AddGameWindow.Tab1.Text7": "快照版",
-	"AddGameWindow.Tab1.Text8": "其他版",
+	"AddGameWindow.Tab1.Text6": "类型",
+	"AddGameWindow.Tab1.Text7": "版本",
 	"AddGameWindow.Tab1.Text9": "添加分组",
 	"AddGameWindow.Tab1.Text10": "在线搜索整合包",
 	"AddGameWindow.Tab1.Text11": "刷新加载器",
@@ -930,5 +929,9 @@
 	"Live2D.Text3": "游戏崩溃了喵",
 	"GameCloud.Info1": "使用空间 {0}/{1} Mb",
 	"GameCloud.Error1": "云同步服务器验证错误",
-	"GameCloud.Error2": "无法链接云同步服务器"
+	"GameCloud.Error2": "无法链接云同步服务器",
+	"VersionType.Item1": "正式版",
+	"VersionType.Item2": "快照版",
+	"VersionType.Item3": "其他版",
+	"VersionType.Item4": "全部"
 }

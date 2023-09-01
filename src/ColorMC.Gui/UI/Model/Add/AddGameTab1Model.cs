@@ -1,5 +1,6 @@
 ﻿using AvaloniaEdit.Utils;
 using ColorMC.Core;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
@@ -7,6 +8,7 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -17,6 +19,11 @@ public partial class AddGameTab1Model : AddGameControlModel
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> LoaderVersionList { get; init; } = new();
 
+    public List<string> VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
+    public ObservableCollection<string> LoaderTypeList { get; init; } = new();
+
+    private List<Loaders> _loaderTypeList = new();
+
     [ObservableProperty]
     private string _version;
     [ObservableProperty]
@@ -26,29 +33,9 @@ public partial class AddGameTab1Model : AddGameControlModel
     private bool _enableLoader;
 
     [ObservableProperty]
-    private bool _enableForge;
+    private int versionType;
     [ObservableProperty]
-    private bool _enableNeoForge;
-    [ObservableProperty]
-    private bool _enableFabric;
-    [ObservableProperty]
-    private bool _enableQuilt;
-
-    [ObservableProperty]
-    private bool _selectForge;
-    [ObservableProperty]
-    private bool _selectNeoForge;
-    [ObservableProperty]
-    private bool _selectFabric;
-    [ObservableProperty]
-    private bool _selectQuilt;
-
-    [ObservableProperty]
-    private bool _selectRelease = true;
-    [ObservableProperty]
-    private bool _selectSnapshot;
-    [ObservableProperty]
-    private bool _selectOther;
+    private int loaderType;
 
     private bool _load = false;
 
@@ -62,154 +49,15 @@ public partial class AddGameTab1Model : AddGameControlModel
         await VersionSelect();
     }
 
-    async partial void OnSelectForgeChanged(bool value)
+    async partial void OnLoaderTypeChanged(int value)
     {
         if (_load)
             return;
 
-        if (value)
-        {
-            Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
-            EnableFabric = false;
-            EnableNeoForge = false;
-            EnableQuilt = false;
-
-            var list = await GameBinding.GetForgeVersion(Version);
-            ProgressClose();
-            if (list == null)
-            {
-                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
-                return;
-            }
-
-            EnableLoader = true;
-            LoaderVersionList.Clear();
-            LoaderVersionList.AddRange(list);
-        }
-        else
-        {
-            EnableLoader = false;
-            LoaderVersionList.Clear();
-            EnableFabric = true;
-            EnableNeoForge = true;
-            EnableQuilt = true;
-        }
+        await GetLoader();
     }
 
-    async partial void OnSelectNeoForgeChanged(bool value)
-    {
-        if (_load)
-            return;
-
-        if (value)
-        {
-            Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
-            EnableFabric = false;
-            EnableForge = false;
-            EnableQuilt = false;
-
-            var list = await GameBinding.GetNeoForgeVersion(Version);
-            ProgressClose();
-            if (list == null)
-            {
-                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
-                return;
-            }
-
-            EnableLoader = true;
-            LoaderVersionList.Clear();
-            LoaderVersionList.AddRange(list);
-        }
-        else
-        {
-            EnableLoader = false;
-            LoaderVersionList.Clear();
-            EnableFabric = true;
-            EnableForge = true;
-            EnableQuilt = true;
-        }
-    }
-
-    async partial void OnSelectFabricChanged(bool value)
-    {
-        if (_load)
-            return;
-
-
-        if (value)
-        {
-            Progress(App.GetLanguage("AddGameWindow.Tab1.Info2"));
-            EnableForge = false;
-            EnableNeoForge = false;
-            EnableQuilt = false;
-
-            var list = await GameBinding.GetFabricVersion(Version);
-            ProgressClose();
-            if (list == null)
-            {
-                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
-                return;
-            }
-
-            EnableLoader = true;
-            LoaderVersionList.Clear();
-            LoaderVersionList.AddRange(list);
-        }
-        else
-        {
-            EnableLoader = false;
-            LoaderVersionList.Clear();
-            EnableForge = true;
-            EnableNeoForge = true;
-            EnableQuilt = true;
-        }
-    }
-
-    async partial void OnSelectQuiltChanged(bool value)
-    {
-        if (_load)
-            return;
-
-        if (value)
-        {
-            Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
-            EnableForge = false;
-            EnableNeoForge = false;
-            EnableFabric = false;
-
-            var list = await GameBinding.GetQuiltVersion(Version);
-            ProgressClose();
-            if (list == null)
-            {
-                Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
-                return;
-            }
-
-            EnableLoader = true;
-            LoaderVersionList.Clear();
-            LoaderVersionList.AddRange(list);
-        }
-        else
-        {
-            EnableLoader = false;
-            LoaderVersionList.Clear();
-            EnableForge = true;
-            EnableNeoForge = true;
-            EnableFabric = true;
-        }
-    }
-
-    partial void OnSelectReleaseChanged(bool value)
-    {
-        Update();
-    }
-
-    partial void OnSelectSnapshotChanged(bool value)
-    {
-        Update();
-    }
-
-    partial void OnSelectOtherChanged(bool value)
+    partial void OnVersionTypeChanged(int value)
     {
         Update();
     }
@@ -227,84 +75,74 @@ public partial class AddGameTab1Model : AddGameControlModel
     public async Task GetLoader()
     {
         EnableLoader = false;
-
-        var item = Version;
-        if (string.IsNullOrWhiteSpace(item))
+        if (string.IsNullOrWhiteSpace(Version))
         {
             return;
         }
 
-        if (SelectForge == true)
+        var loader = _loaderTypeList[LoaderType];
+        LoaderVersionList.Clear();
+        switch (loader)
         {
-            Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
-            EnableFabric = false;
-            EnableNeoForge = false;
-            EnableQuilt = false;
+            case Loaders.Normal:
 
-            var list = await GameBinding.GetForgeVersion(item);
-            ProgressClose();
-            if (list == null)
-            {
-                return;
-            }
+                break;
+            case Loaders.Forge:
+                Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+                var list = await GameBinding.GetForgeVersion(Version);
+                ProgressClose();
+                if (list == null)
+                {
+                    Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    return;
+                }
 
-            EnableLoader = true;
-            LoaderVersionList.Clear();
-            LoaderVersionList.AddRange(list);
-        }
-        else if (SelectFabric == true)
-        {
-            Progress(App.GetLanguage("AddGameWindow.Tab1.Info2"));
-            EnableForge = false;
-            EnableNeoForge = false;
-            EnableQuilt = false;
+                EnableLoader = true;
+                LoaderVersionList.Clear();
+                LoaderVersionList.AddRange(list);
+                break;
+            case Loaders.NeoForge:
+                Progress(App.GetLanguage("AddGameWindow.Tab1.Info1"));
+                list = await GameBinding.GetNeoForgeVersion(Version);
+                ProgressClose();
+                if (list == null)
+                {
+                    Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    return;
+                }
 
-            var list = await GameBinding.GetFabricVersion(item);
-            ProgressClose();
-            if (list == null)
-            {
-                return;
-            }
+                EnableLoader = true;
+                LoaderVersionList.Clear();
+                LoaderVersionList.AddRange(list);
+                break;
+            case Loaders.Fabric:
+                Progress(App.GetLanguage("AddGameWindow.Tab1.Info2"));
+                list = await GameBinding.GetFabricVersion(Version);
+                ProgressClose();
+                if (list == null)
+                {
+                    Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    return;
+                }
 
-            EnableLoader = true;
-            LoaderVersionList.Clear();
-            LoaderVersionList.AddRange(list);
-        }
-        else if (SelectQuilt == true)
-        {
-            Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
-            EnableForge = false;
-            EnableNeoForge = false;
-            EnableFabric = false;
+                EnableLoader = true;
+                LoaderVersionList.Clear();
+                LoaderVersionList.AddRange(list);
+                break;
+            case Loaders.Quilt:
+                Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
+                list = await GameBinding.GetQuiltVersion(Version);
+                ProgressClose();
+                if (list == null)
+                {
+                    Show(App.GetLanguage("AddGameWindow.Tab1.Error1"));
+                    return;
+                }
 
-            var list = await GameBinding.GetQuiltVersion(item);
-            ProgressClose();
-            if (list == null)
-            {
-                return;
-            }
-
-            EnableLoader = true;
-            LoaderVersionList.Clear();
-            LoaderVersionList.AddRange(list);
-        }
-        else if (SelectNeoForge == true)
-        {
-            Progress(App.GetLanguage("AddGameWindow.Tab1.Info3"));
-            EnableForge = false;
-            EnableQuilt = false;
-            EnableFabric = false;
-
-            var list = await GameBinding.GetNeoForgeVersion(item);
-            ProgressClose();
-            if (list == null)
-            {
-                return;
-            }
-
-            EnableLoader = true;
-            LoaderVersionList.Clear();
-            LoaderVersionList.AddRange(list);
+                EnableLoader = true;
+                LoaderVersionList.Clear();
+                LoaderVersionList.AddRange(list);
+                break;
         }
     }
 
@@ -333,27 +171,7 @@ public partial class AddGameTab1Model : AddGameControlModel
             return;
         }
 
-        Loaders loader = Loaders.Normal;
-        if (!string.IsNullOrWhiteSpace(LoaderVersion))
-        {
-            if (SelectForge)
-            {
-                loader = Loaders.Forge;
-            }
-            else if (SelectFabric)
-            {
-                loader = Loaders.Fabric;
-            }
-            else if (SelectQuilt)
-            {
-                loader = Loaders.Quilt;
-            }
-            else if (SelectNeoForge)
-            {
-                loader = Loaders.NeoForge;
-            }
-        }
-
+        var loader = _loaderTypeList[LoaderType];
         var res = await GameBinding.AddGame(name, version, loader, LoaderVersion, Group);
         if (!res)
         {
@@ -379,16 +197,6 @@ public partial class AddGameTab1Model : AddGameControlModel
     {
         _load = true;
 
-        EnableForge = false;
-        EnableNeoForge = false;
-        EnableFabric = false;
-        EnableQuilt = false;
-
-        SelectForge = false;
-        SelectNeoForge = false;
-        SelectFabric = false;
-        SelectQuilt = false;
-
         EnableLoader = false;
         LoaderVersionList.Clear();
 
@@ -407,24 +215,28 @@ public partial class AddGameTab1Model : AddGameControlModel
         var list = await GameBinding.GetForgeSupportVersion();
         if (list != null && list.Contains(item))
         {
-            EnableForge = true;
+            _loaderTypeList.Add(Loaders.Forge);
+            LoaderTypeList.Add(Loaders.Forge.GetName());
         }
 
         list = await GameBinding.GetFabricSupportVersion();
         if (list != null && list.Contains(item))
         {
-            EnableFabric = true;
+            _loaderTypeList.Add(Loaders.Fabric);
+            LoaderTypeList.Add(Loaders.Fabric.GetName());
         }
 
         list = await GameBinding.GetQuiltSupportVersion();
         if (list != null && list.Contains(item))
         {
-            EnableQuilt = true;
+            _loaderTypeList.Add(Loaders.Quilt);
+            LoaderTypeList.Add(Loaders.Quilt.GetName());
         }
         list = await GameBinding.GetNeoForgeSupportVersion();
         if (list != null && list.Contains(item))
         {
-            EnableNeoForge = true;
+            _loaderTypeList.Add(Loaders.NeoForge);
+            LoaderTypeList.Add(Loaders.NeoForge.GetName());
         }
         ProgressClose();
 
@@ -494,8 +306,21 @@ public partial class AddGameTab1Model : AddGameControlModel
     private void Update()
     {
         GameVersionList.Clear();
-        GameVersionList.AddRange(GameBinding.GetGameVersion(SelectRelease,
-            SelectSnapshot, SelectOther));
+        switch (VersionType)
+        {
+            case 0:
+                GameVersionList.AddRange(GameBinding.GetGameVersion(true, false, false));
+                break;
+            case 1:
+                GameVersionList.AddRange(GameBinding.GetGameVersion(false, true, false));
+                break;
+            case 2:
+                GameVersionList.AddRange(GameBinding.GetGameVersion(false, false, true));
+                break;
+            case 3:
+                GameVersionList.AddRange(GameBinding.GetGameVersion(true, true, true));
+                break;
+        }
     }
 
     public override void Close()

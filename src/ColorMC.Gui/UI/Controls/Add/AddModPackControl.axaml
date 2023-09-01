@@ -5,9 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Add.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
+    xmlns:model1="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:DataType="model:AddModPackControlModel"
     mc:Ignorable="d">
     <Panel>
         <DockPanel>
@@ -123,7 +126,7 @@
                         VerticalAlignment="Stretch"
                         ItemsSource="{Binding DisplayList}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="model1:FileItemModel">
                                 <item:FileItemControl DataContext="{Binding}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

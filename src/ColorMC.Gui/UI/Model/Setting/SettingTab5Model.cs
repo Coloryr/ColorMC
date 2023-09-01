@@ -21,6 +21,9 @@ public partial class SettingTab5Model : BaseModel
     [ObservableProperty]
     private string? _local;
 
+    [ObservableProperty]
+    private JavaDisplayObj _item;
+
     public ObservableCollection<JavaDisplayObj> JavaList { get; init; } = new();
 
     public SettingTab5Model(IUserControl con) : base(con)
