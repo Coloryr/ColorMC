@@ -64,7 +64,6 @@ public static class BaseBinding
         if (ColorMCGui.RunType == RunType.Program)
         {
             GameCountUtils.Init(ColorMCGui.RunDir);
-            ImageUtils.Init(ColorMCGui.RunDir);
             
             try
             {
@@ -75,6 +74,9 @@ public static class BaseBinding
                 Logs.Error("error", e);
             }
         }
+
+        ImageUtils.Init(ColorMCGui.RunDir);
+
         FontSel.Instance.Load();
         ColorSel.Instance.Load();
         StyleSel.Instance.Load();

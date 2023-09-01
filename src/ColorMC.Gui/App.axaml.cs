@@ -147,11 +147,6 @@ public partial class App : Application
     {
         base.OnFrameworkInitializationCompleted();
 
-        if (ColorMCGui.RunType == RunType.Phone)
-        {
-            ColorMCGui.PhoneGo();
-        }
-
         Life = ApplicationLifetime;
 
         if (ConfigUtils.Config == null)

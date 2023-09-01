@@ -85,8 +85,6 @@ public static class ColorMCGui
         PathBinding.OpFile(Logs.SaveCrash("Gui Crash", e.Exception));
     }
 
-    private static Semaphore semaphore = new(0, 2);
-
     public static void StartPhone(string local)
     {
         SystemInfo.Init();
@@ -96,16 +94,7 @@ public static class ColorMCGui
         RunDir = local;
 
         Console.WriteLine($"RunDir:{RunDir}");
-    }
 
-    public static void PhoneOk()
-    {
-        semaphore.Release();
-    }
-
-    public static void PhoneGo()
-    {
-        semaphore.WaitOne();
         ColorMCCore.Init(RunDir);
         GuiConfigUtils.Init(RunDir);
     }

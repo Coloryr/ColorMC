@@ -216,7 +216,6 @@
                 IPPort="{Binding Server}"
                 IsVisible="{Binding MotdDisplay, FallbackValue=true}" />
             <Panel>
-
                 <ScrollViewer
                     Name="ScrollViewer1"
                     Margin="0,10,10,10"
@@ -232,6 +231,7 @@
 
                 <Panel
                     Name="Grid3"
+                    Margin="0,10,10,10"
                     Background="{setting:Colors TopBottom}"
                     IsVisible="{Binding IsNotGame}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
