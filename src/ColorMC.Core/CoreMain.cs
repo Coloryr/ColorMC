@@ -140,6 +140,7 @@ public static class ColorMCCore
         Directory.CreateDirectory(dir);
         LanguageHelper.Load(LanguageType.zh_cn);
         Logs.Init(dir);
+        ToolPath.Init(dir);
         ConfigUtils.Init(dir);
         BaseClient.Init();
 
@@ -150,7 +151,6 @@ public static class ColorMCCore
     {
         ConfigSave.Init();
         JvmPath.Init(BaseDir);
-        ToolPath.Init(BaseDir);
         LocalMaven.Init(BaseDir);
         DownloadManager.Init(BaseDir);
         AuthDatabase.Init();

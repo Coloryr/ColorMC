@@ -399,7 +399,7 @@ public static class PathBinding
             case FileType.JavaZip:
                 res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab5.Info5"),
-                    new string[] { SystemInfo.Os == OsType.Windows ? "*.zip" : "*.tar.xz" },
+                    new string[] { "*.zip", "*.tar.xz", "*.tar.gz" },
                     App.GetLanguage("SettingWindow.Tab5.Info5"));
                 if (res?.Any() == true)
                 {

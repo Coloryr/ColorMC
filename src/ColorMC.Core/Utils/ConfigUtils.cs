@@ -104,7 +104,6 @@ public static class ConfigUtils
             }
         }
 
-        JvmPath.AddList(Config.JavaList);
         LanguageHelper.Change(Config.Language);
 
         Save();

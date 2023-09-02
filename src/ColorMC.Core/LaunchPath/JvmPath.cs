@@ -24,6 +24,8 @@ public static class JvmPath
     {
         BaseDir = dir;
         Directory.CreateDirectory(dir + Name1);
+
+        AddList(ConfigUtils.Config.JavaList);
     }
 
     /// <summary>
@@ -53,7 +55,7 @@ public static class JvmPath
     {
         try
         {
-            Jvms.Remove(name);
+            Remove(name);
             var res = await Download(file, sha256, url);
             if (!res.Item1)
             {
@@ -218,7 +220,7 @@ public static class JvmPath
 
         Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info5"), local));
 
-        Jvms.Remove(name);
+        Remove(name);
         var path = local;
         if (path.StartsWith(Name1))
         {
@@ -251,15 +253,15 @@ public static class JvmPath
     /// <param name="name">名字</param>
     public static void Remove(string name)
     {
-        if (!Jvms.ContainsKey(name))
-        {
-            return;
-        }
-
         Jvms.Remove(name);
-        var item = ConfigUtils.Config.JavaList.Where(a => a.Name == name).ToList()[0];
-        ConfigUtils.Config.JavaList.Remove(item);
-        ConfigUtils.Save();
+        var list = ConfigUtils.Config.JavaList.Where(a => a.Name == name).ToList();
+        foreach (var item in list)
+        {
+            if (ConfigUtils.Config.JavaList.Remove(item))
+            {
+                ConfigUtils.Save();
+            }
+        }
     }
 
     /// <summary>
