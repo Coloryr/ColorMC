@@ -396,6 +396,27 @@ public static class PathBinding
                     return file;
                 }
                 break;
+            case FileType.JavaZip:
+                res = await SelectFile(top,
+                    App.GetLanguage("SettingWindow.Tab5.Info5"),
+                    new string[] { SystemInfo.Os == OsType.Windows ? "*.zip" : "*.tar.xz" },
+                    App.GetLanguage("SettingWindow.Tab5.Info5"),
+                    storage: JavaBinding.GetSuggestedStartLocation());
+                if (res?.Any() == true)
+                {
+                    var file = res[0].GetPath();
+                    if (file == null)
+                        return null;
+                    if (SystemInfo.Os == OsType.Windows && file.EndsWith("java.exe"))
+                    {
+                        var file1 = file[..^4] + "w.exe";
+                        if (File.Exists(file1))
+                            return file1;
+                    }
+
+                    return file;
+                }
+                break;
             case FileType.Config:
                 res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab1.Info7"),

@@ -32,6 +32,27 @@ public partial class SettingTab5Model : BaseModel
     }
 
     [RelayCommand]
+    public async Task ZipAdd()
+    {
+        var file = await PathBinding.SelectFile(Window, FileType.JavaZip);
+        if (file == null)
+        {
+            return;
+        }
+
+        var res = await BaseBinding.AddJavaZip(file);
+        if (!res.Item1)
+        {
+            Show(res.Item2!);
+        }
+        else
+        {
+            Notify(App.GetLanguage("SettingWindow.Tab5.Info6"));
+            Load();
+        }
+    }
+
+    [RelayCommand]
     public void ShowAddJava()
     {
         App.ShowAddJava();

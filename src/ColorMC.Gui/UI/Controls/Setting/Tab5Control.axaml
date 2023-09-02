@@ -31,47 +31,54 @@
                     Text="{Binding Local}"
                     Watermark="{setting:Localize SettingWindow.Tab5.Text3}" />
             </DockPanel>
-            <DockPanel>
+            <WrapPanel>
                 <Button
                     Width="100"
                     Height="25"
-                    Command="{Binding AddJava}"
-                    Content="{setting:Localize Button.Add}"
-                    DockPanel.Dock="Right" />
-                <Button
-                    Width="100"
-                    Height="25"
+                    Margin="0,0,5,0"
                     Command="{Binding ShowAddJava}"
                     Content="{setting:Localize SettingWindow.Tab5.Text4}"
                     DockPanel.Dock="Left" />
                 <Button
-                    Width="120"
+                    Width="100"
                     Height="25"
-                    Margin="5,0,0,0"
+                    Margin="0,0,5,0"
                     Command="{Binding OpenPath}"
                     Content="{setting:Localize SettingWindow.Tab5.Text6}"
                     DockPanel.Dock="Left" />
                 <Button
-                    Width="120"
+                    Width="100"
                     Height="25"
-                    Margin="5,0,0,0"
+                    Margin="0,0,5,0"
                     Command="{Binding OpenFile}"
                     Content="{setting:Localize SettingWindow.Tab5.Text7}"
                     DockPanel.Dock="Left" />
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="5,0,0,0"
+                    Margin="0,0,5,0"
                     Command="{Binding Delete}"
                     Content="{setting:Localize SettingWindow.Tab5.Text5}" />
                 <Button
                     Width="100"
                     Height="25"
-                    Margin="5,0,0,0"
+                    Margin="0,0,5,0"
                     Command="{Binding Load}"
                     Content="{setting:Localize Button.Refash}" />
-
-            </DockPanel>
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding ZipAdd}"
+                    Content="{setting:Localize SettingWindow.Tab5.Text8}" />
+                <Button
+                    Width="100"
+                    Height="25"
+                    Margin="0,0,5,0"
+                    Command="{Binding AddJava}"
+                    Content="{setting:Localize Button.Add}"
+                    DockPanel.Dock="Right" />
+            </WrapPanel>
         </StackPanel>
 
         <Panel Margin="0,3,0,0">

@@ -129,7 +129,7 @@ public static class JvmPath
     /// <param name="name">名字</param>
     /// <param name="file">文件</param>
     /// <returns></returns>
-    private static async Task<(bool, string?)> UnzipJava(string name, string file)
+    public static async Task<(bool, string?)> UnzipJava(string name, string file)
     {
         string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
