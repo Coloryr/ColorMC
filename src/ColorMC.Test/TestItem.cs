@@ -509,4 +509,10 @@ public static class TestItem
         long d = 0x18A6609aaa8;
         temp = FuntionUtils.ToHex(d);
     }
+
+    public static void Item30()
+    {
+        string temp = "H:\\jre17-arm64-20230721-release.tar.xz";
+        ZipUtils.Unzip("H:\\jre17", temp);
+    }
 }

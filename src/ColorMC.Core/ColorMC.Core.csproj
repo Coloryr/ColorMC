@@ -35,6 +35,7 @@
     <PackageReference Include="HtmlAgilityPack" Version="1.11.52" />
     <PackageReference Include="Jint" Version="3.0.0-beta-2050" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="SharpCompress" Version="0.33.0" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
     <PackageReference Include="Tomlyn" Version="0.16.2" />
   </ItemGroup>

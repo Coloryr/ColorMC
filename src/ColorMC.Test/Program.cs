@@ -32,6 +32,7 @@ internal class Program
         Console.WriteLine("Hello, World!");
 
         ColorMCCore.Init(AppContext.BaseDirectory);
+        ColorMCCore.Init1();
 
         ColorMCCore.DownloaderUpdate = Update;
         ColorMCCore.DownloadItemStateUpdate = Update;
@@ -44,7 +45,7 @@ internal class Program
         ColorMCCore.AuthStateUpdate = AuthStateUpdate;
         ColorMCCore.GameLog = Log;
 
-        TestItem.Item10();
+        TestItem.Item30();
 
         //GetSha1();
 

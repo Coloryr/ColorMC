@@ -2,7 +2,9 @@
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
+using SharpCompress.Compressors.Xz;
 using System.Text;
+using Crc32 = ICSharpCode.SharpZipLib.Checksum.Crc32;
 
 namespace ColorMC.Core.Utils;
 
@@ -165,6 +167,14 @@ public static class ZipUtils
             tarArchive.ExtractContents(path);
             tarArchive.Close();
         }
+        else if (local.EndsWith("tar.xz"))
+        {
+            using var inStream = File.OpenRead(local);
+            using var gzipStream = new XZStream(inStream);
+            var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
+            tarArchive.ExtractContents(path);
+            tarArchive.Close();
+        }
         else
         {
             using ZipInputStream s = new(File.OpenRead(local));
@@ -231,6 +241,16 @@ public static class ZipUtils
                 }
             }
         }
+    }
+
+    public static void Init()
+    {
+        ColorMCCore.Stop += ColorMCCore_Stop;
+    }
+
+    private static void ColorMCCore_Stop()
+    {
+
     }
 }
 

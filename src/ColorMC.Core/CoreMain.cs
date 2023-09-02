@@ -143,6 +143,7 @@ public static class ColorMCCore
 
     public static void Init1()
     {
+        ZipUtils.Init();
         ConfigSave.Init();
         JvmPath.Init(BaseDir);
         ToolPath.Init(BaseDir);
