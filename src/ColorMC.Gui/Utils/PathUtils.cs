@@ -13,7 +13,7 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFolder file)
     {
-        return file.TryGetLocalPath();
+        return file.Path.LocalPath;
     }
     /// <summary>
     /// 文件转字符串
@@ -22,7 +22,7 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFile file)
     {
-        return file.TryGetLocalPath();
+        return file.Path.LocalPath;
     }
     /// <summary>
     /// 文件转字符串
@@ -31,7 +31,7 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageItem file)
     {
-        return file.TryGetLocalPath();
+        return file.Path.LocalPath;
     }
 
     /// <summary>

@@ -400,8 +400,7 @@ public static class PathBinding
                 res = await SelectFile(top,
                     App.GetLanguage("SettingWindow.Tab5.Info5"),
                     new string[] { SystemInfo.Os == OsType.Windows ? "*.zip" : "*.tar.xz" },
-                    App.GetLanguage("SettingWindow.Tab5.Info5"),
-                    storage: JavaBinding.GetSuggestedStartLocation());
+                    App.GetLanguage("SettingWindow.Tab5.Info5"));
                 if (res?.Any() == true)
                 {
                     var file = res[0].GetPath();
