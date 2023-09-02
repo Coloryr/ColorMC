@@ -275,7 +275,6 @@
 	"SettingWindow.Tab6.Error1": "UI文件错误",
 	"SettingWindow.Tab6.Error2": "自定义UI窗口启动错误",
 	"SettingWindow.Tab6.Error3": "导出UI文件错误",
-	"SettingWindow.Tab6.Error4": "不存在Java压缩包 {0}",
 	"SettingWindow.Tab6.Info1": "保存UI文件",
 	"SettingWindow.Tab6.Info2": "选择UI文件",
 	"SettingWindow.Tab6.Info3": "UI文件",

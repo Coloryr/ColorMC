@@ -134,7 +134,46 @@ public static class JvmPath
         string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
 
-        await Task.Run(() => ZipUtils.Unzip(path, file));
+        Stream stream;
+        if (SystemInfo.Os == OsType.Android)
+        {
+            stream = ColorMCCore.PhoneReadFile?.Invoke(file);
+            if (stream == null)
+            {
+                return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
+            }
+        }
+        else
+        {
+            if (!File.Exists(file))
+            {
+               return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
+            }
+            stream = File.OpenRead(file);
+            
+        }
+
+        var res = await Task.Run(() =>
+        {
+            try
+            {
+                ZipUtils.Unzip(path, file, stream);
+                return (true, null);
+            }
+            catch (Exception e)
+            {
+                return (false, e);
+            }
+        });
+
+        stream.Close();
+
+        if (!res.Item1)
+        {
+            string temp = LanguageHelper.Get("Core.Jvm.Error12");
+            Logs.Error(temp, res.e);
+            return (false, temp);
+        }
 
         var java = Find(path);
         if (java == null)

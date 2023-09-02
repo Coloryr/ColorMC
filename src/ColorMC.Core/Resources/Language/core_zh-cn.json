@@ -66,6 +66,8 @@
   "Core.Jvm.Error8": "Java添加错误",
   "Core.Jvm.Error9": "Java提升权限错误",
   "Core.Jvm.Error10": "Java验证错误",
+  "Core.Jvm.Error11": "Java压缩包打开失败 {0}",
+  "Core.Jvm.Error12": "Java解压失败",
   "Core.Jvm.Info1": "正在读取Java信息",
   "Core.Jvm.Info2": "Java:{0} {1}",
   "Core.Jvm.Info3": "Java找到 {0}",

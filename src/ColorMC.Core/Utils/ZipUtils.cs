@@ -157,27 +157,25 @@ public static class ZipUtils
     /// </summary>
     /// <param name="path">路径</param>
     /// <param name="local">文件</param>
-    public static void Unzip(string path, string local)
+    public static void Unzip(string path, string local, Stream stream)
     {
         if (local.EndsWith("tar.gz"))
         {
-            using var inStream = File.OpenRead(local);
-            using var gzipStream = new GZipInputStream(inStream);
+            using var gzipStream = new GZipInputStream(stream);
             var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
             tarArchive.ExtractContents(path);
             tarArchive.Close();
         }
         else if (local.EndsWith("tar.xz"))
         {
-            using var inStream = File.OpenRead(local);
-            using var gzipStream = new XZStream(inStream);
+            using var gzipStream = new XZStream(stream);
             var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
             tarArchive.ExtractContents(path);
             tarArchive.Close();
         }
         else
         {
-            using ZipInputStream s = new(File.OpenRead(local));
+            using ZipInputStream s = new(stream);
             ZipEntry theEntry;
             while ((theEntry = s.GetNextEntry()) != null)
             {

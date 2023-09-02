@@ -291,7 +291,7 @@ public static class Worlds
 
         try
         {
-            ZipUtils.Unzip(local, item1.FullName);
+            ZipUtils.Unzip(local, item1.FullName, File.OpenRead(item1.FullName));
             return true;
         }
         catch (Exception e)
