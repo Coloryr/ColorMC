@@ -961,22 +961,19 @@ public static class Launch
         var path = obj.JvmLocal;
         JavaInfo? jvm = null;
         var game = VersionPath.GetGame(obj.Version)!;
-        if (SystemInfo.Os != OsType.Android)
+        if (string.IsNullOrWhiteSpace(path))
         {
-            if (string.IsNullOrWhiteSpace(path))
+            var jv = game.javaVersion.majorVersion;
+            jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
+            if (jvm == null)
             {
-                var jv = game.javaVersion.majorVersion;
-                jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
-                if (jvm == null)
-                {
-                    ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
-                    ColorMCCore.NoJava?.Invoke();
-                    throw new LaunchException(LaunchState.JavaError,
-                            LanguageHelper.Get("Core.Launch.Error6"));
-                }
-
-                path = jvm.GetPath();
+                ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.JavaError);
+                ColorMCCore.NoJava?.Invoke();
+                throw new LaunchException(LaunchState.JavaError,
+                        LanguageHelper.Get("Core.Launch.Error6"));
             }
+
+            path = jvm.GetPath();
         }
         if (s_cancel.IsCancellationRequested)
         {
@@ -1030,7 +1027,9 @@ public static class Launch
                 if (res1)
                 {
                     if (SystemInfo.Os == OsType.Android)
-                    { }
+                    { 
+                    
+                    }
                     else
                     {
                         stopwatch.Start();
@@ -1066,6 +1065,7 @@ public static class Launch
             var arglist = new List<string>
             {
                 obj.GetGamePath(),
+                jvm!.Path,
                 obj.Version,
                 game.javaVersion.majorVersion.ToString(),
                 game.time,
@@ -1073,7 +1073,7 @@ public static class Launch
             };
             arglist.AddRange(arg);
 
-            ColorMCCore.PhoneGameLaunch(arglist);
+            ColorMCCore.PhoneGameLaunch?.Invoke(obj, arglist);
             return null;
         }
 
@@ -1088,7 +1088,7 @@ public static class Launch
         foreach (var item in arg)
         {
             process.StartInfo.ArgumentList.Add(item);
-        }
+        }   
 
         process.StartInfo.RedirectStandardInput = true;
         process.StartInfo.RedirectStandardOutput = true;

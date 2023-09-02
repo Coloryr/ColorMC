@@ -136,8 +136,6 @@ public static class JvmPath
 
         await Task.Run(() => ZipUtils.Unzip(path, file));
 
-        ColorMCCore.PhoneJvmIntasll?.Invoke(path, name);
-
         var java = Find(path);
         if (java == null)
             return (false, LanguageHelper.Get("Core.Jvm.Error6"));
@@ -145,6 +143,10 @@ public static class JvmPath
         {
             Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info3"), java));
         }
+
+        var info = new FileInfo(java);
+
+        ColorMCCore.PhoneJvmIntasll?.Invoke(info.Directory!.Parent!.FullName, name);
 
         if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
         {
