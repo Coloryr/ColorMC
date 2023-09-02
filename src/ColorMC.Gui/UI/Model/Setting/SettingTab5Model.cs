@@ -40,7 +40,9 @@ public partial class SettingTab5Model : BaseModel
             return;
         }
 
+        Progress(App.GetLanguage("SettingWindow.Tab5.Info7"));
         var res = await JavaBinding.AddJavaZip(file);
+        ProgressClose();
         if (!res.Item1)
         {
             Show(res.Item2!);

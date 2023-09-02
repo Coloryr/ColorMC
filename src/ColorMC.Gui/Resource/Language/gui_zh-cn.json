@@ -244,6 +244,7 @@
 	"SettingWindow.Tab5.Info4": "已自动导入",
 	"SettingWindow.Tab5.Info5": "选择Java压缩包",
 	"SettingWindow.Tab5.Info6": "Java导入完成",
+	"SettingWindow.Tab5.Info7": "正在导入Java压缩包",
 	"SettingWindow.Tab5.Error1": "无法检测Java",
 	"SettingWindow.Tab6.Text1": "Motd显示",
 	"SettingWindow.Tab6.Text2": "服务器地址",

@@ -18,7 +18,7 @@ public static class PathUtils
         var path = file.Path.LocalPath;
         if (SystemInfo.Os == OsType.Android)
         {
-            path = path.Replace("/document/primary:", "/storage/emulated/0/Documents/");
+            path = path.Replace("/document/primary:", "/storage/emulated/0/");
         }
         return path;
     }
@@ -32,7 +32,7 @@ public static class PathUtils
         var path = file.Path.LocalPath;
         if (SystemInfo.Os == OsType.Android)
         {
-            path = path.Replace("/document/primary:", "/storage/emulated/0/Documents/");
+            path = path.Replace("/document/primary:", "/storage/emulated/0/");
         }
         return path;
     }
@@ -46,7 +46,7 @@ public static class PathUtils
         var path = file.Path.LocalPath;
         if (SystemInfo.Os == OsType.Android)
         {
-            path = path.Replace("/document/primary:", "/storage/emulated/0/Documents/");
+            path = path.Replace("/document/primary:", "/storage/emulated/0/");
         }
         return path;
     }
