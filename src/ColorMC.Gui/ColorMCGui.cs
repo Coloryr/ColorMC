@@ -23,7 +23,7 @@ public static class ColorMCGui
 
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
 
-    public static Func<string, Task<string>>? PhoneSelectFile;
+    public static Action? PhoneOpenSetting;
 
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Normal.ttf?assembly=ColorMC.Launcher#MiSans";
 

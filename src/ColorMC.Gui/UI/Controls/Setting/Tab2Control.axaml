@@ -13,6 +13,7 @@
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="5,0,5,5">
+            <StackPanel Name="PhoneSetting" />
             <StackPanel Orientation="Horizontal">
                 <CheckBox
                     VerticalAlignment="Center"

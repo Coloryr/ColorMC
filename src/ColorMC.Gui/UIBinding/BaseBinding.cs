@@ -895,4 +895,9 @@ public static class BaseBinding
 
         return (true, null);
     }
+
+    public static void OpenPhoneSetting()
+    {
+        ColorMCGui.PhoneOpenSetting?.Invoke();
+    }
 }

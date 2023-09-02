@@ -1,6 +1,10 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Setting;
+using ColorMC.Gui.UIBinding;
 using System;
 using System.ComponentModel;
 
@@ -14,6 +18,23 @@ public partial class Tab2Control : UserControl
         InitializeComponent();
 
         DataContextChanged += OnDataContext_Change;
+
+        if (SystemInfo.Os == OsType.Android)
+        {
+            var button = new Button()
+            {
+                Content = App.GetLanguage("SettingWindow.Tab2.Text43"),
+                Height = 25,
+                Width = 120
+            };
+            button.Click += Button_Click;
+            PhoneSetting.Children.Add(button);
+        }
+    }
+
+    private void Button_Click(object? sender, RoutedEventArgs e)
+    {
+        BaseBinding.OpenPhoneSetting();
     }
 
     public void OnDataContext_Change(object? sender, EventArgs e)
