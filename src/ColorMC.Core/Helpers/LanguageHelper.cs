@@ -209,8 +209,8 @@ public static class LanguageHelper
         {
             ArchEnum.x64 => Get("ArchEnum.x64"),
             ArchEnum.x32 => Get("ArchEnum.x32"),
-            ArchEnum.aarch64 => Get("ArchEnum.x32"),
-            ArchEnum.armV7 => Get("ArchEnum.x32"),
+            ArchEnum.aarch64 => Get("ArchEnum.aarch64"),
+            ArchEnum.armV7 => Get("ArchEnum.armV7"),
             _ => Get("ArchEnum.Other")
         };
     }
