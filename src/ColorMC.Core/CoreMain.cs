@@ -110,6 +110,10 @@ public static class ColorMCCore
     /// 启动器加载完毕
     /// </summary>
     public static Action? LoadDone { internal get; set; }
+    /// <summary>
+    /// 文件解压进度条
+    /// </summary>
+    public static Action<string, int, int>? UnZipItem { internal get; set; }
 
     public static Action<GameSettingObj, List<string>>? PhoneGameLaunch { internal get; set; }
     public static Action<string, string>? PhoneJvmIntasll { internal get; set; }
@@ -144,7 +148,6 @@ public static class ColorMCCore
 
     public static void Init1()
     {
-        ZipUtils.Init();
         ConfigSave.Init();
         JvmPath.Init(BaseDir);
         ToolPath.Init(BaseDir);

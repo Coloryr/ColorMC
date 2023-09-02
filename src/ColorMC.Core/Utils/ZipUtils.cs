@@ -2,20 +2,23 @@
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
+using SharpCompress.Common;
 using SharpCompress.Compressors.Xz;
 using System.Text;
 using Crc32 = ICSharpCode.SharpZipLib.Checksum.Crc32;
 
 namespace ColorMC.Core.Utils;
 
-public static class ZipUtils
+public class ZipUtils
 {
+    private int Size = 0;
+    private int Now = 0;
     /// <summary>
     /// 压缩文件
     /// </summary>
     /// <param name="strFile">路径</param>
     /// <param name="strZip">文件名</param>
-    public static async Task ZipFile(string strFile, string strZip)
+    public async Task ZipFile(string strFile, string strZip)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar)
             strFile += Path.DirectorySeparatorChar;
@@ -26,7 +29,7 @@ public static class ZipUtils
         s.Close();
     }
 
-    private static async Task Zip(string strFile, ZipOutputStream s, string staticFile)
+    private async Task Zip(string strFile, ZipOutputStream s, string staticFile)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
         var crc = new Crc32();
@@ -66,7 +69,7 @@ public static class ZipUtils
     /// <param name="strZip">文件名</param>
     /// <param name="filter">过滤</param>
     /// <returns></returns>
-    public static async Task ZipFile(string strFile, string strZip, List<string> filter)
+    public async Task ZipFile(string strFile, string strZip, List<string> filter)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar)
             strFile += Path.DirectorySeparatorChar;
@@ -77,7 +80,7 @@ public static class ZipUtils
         s.Close();
     }
 
-    private static async Task Zip(string strFile, ZipOutputStream s,
+    private async Task Zip(string strFile, ZipOutputStream s,
         string staticFile, List<string> filter)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
@@ -114,7 +117,7 @@ public static class ZipUtils
         }
     }
 
-    public static async Task ZipFile(string strZip, List<string> list, string basepath)
+    public async Task ZipFile(string strZip, List<string> list, string basepath)
     {
         using var s = new ZipOutputStream(File.Create(strZip));
         s.SetLevel(9);
@@ -155,14 +158,16 @@ public static class ZipUtils
     /// <summary>
     /// 解压
     /// </summary>
-    /// <param name="path">路径</param>
-    /// <param name="local">文件</param>
-    public static void Unzip(string path, string local, Stream stream)
+    /// <param name="path">解压路径</param>
+    /// <param name="local">文件名</param>
+    public void Unzip(string path, string local, Stream stream)
     {
         if (local.EndsWith("tar.gz"))
         {
             using var gzipStream = new GZipInputStream(stream);
             var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
+            Size = tarArchive.RecordSize;
+            tarArchive.ProgressMessageEvent += TarArchive_ProgressMessageEvent;
             tarArchive.ExtractContents(path);
             tarArchive.Close();
         }
@@ -170,15 +175,19 @@ public static class ZipUtils
         {
             using var gzipStream = new XZStream(stream);
             var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
+            Size = tarArchive.RecordSize;
+            tarArchive.ProgressMessageEvent += TarArchive_ProgressMessageEvent;
             tarArchive.ExtractContents(path);
             tarArchive.Close();
         }
         else
         {
-            using ZipInputStream s = new(stream);
-            ZipEntry theEntry;
-            while ((theEntry = s.GetNextEntry()) != null)
+            using ZipFile s = new(stream);
+            Size = (int)s.Count;
+            foreach (ZipEntry theEntry in s)
             {
+                Now++;
+                ColorMCCore.UnZipItem?.Invoke(theEntry.Name, Now, Size);
                 string filename = $"{path}/{theEntry.Name}";
 
                 var directoryName = Path.GetDirectoryName(filename);
@@ -192,20 +201,30 @@ public static class ZipUtils
 
                 if (fileName != string.Empty)
                 {
-                    using var streamWriter = File.Create(filename);
-
-                    s.CopyTo(streamWriter);
+                    using var stream1 = File.Create(filename);
+                    using var stream2 = s.GetInputStream(theEntry);
+                    stream2.CopyTo(stream1);
                 }
             }
         }
     }
+
+    private void TarArchive_ProgressMessageEvent(TarArchive archive, TarEntry entry, string message)
+    {
+        if (entry != null && message == null)
+        {
+            Now++;
+            ColorMCCore.UnZipItem?.Invoke(entry.Name, Now, Size);
+        }
+    }
+
     /// <summary>
     /// 解压Zip
     /// </summary>
     /// <param name="path"></param>
     /// <param name="stream"></param>
     /// <param name="tar"></param>
-    public static void Unzip(string path, Stream stream, bool tar)
+    public void Unzip(string path, Stream stream, bool tar)
     {
         if (tar)
         {
@@ -239,16 +258,6 @@ public static class ZipUtils
                 }
             }
         }
-    }
-
-    public static void Init()
-    {
-        ColorMCCore.Stop += ColorMCCore_Stop;
-    }
-
-    private static void ColorMCCore_Stop()
-    {
-
     }
 }
 

@@ -1,5 +1,7 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
+using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
@@ -41,7 +43,13 @@ public partial class SettingTab5Model : BaseModel
         }
 
         Progress(App.GetLanguage("SettingWindow.Tab5.Info7"));
+        string temp = App.GetLanguage("Gui.Info27");
+        ColorMCCore.UnZipItem = (a, b, c) =>
+        {
+            Dispatcher.UIThread.Post(() => ProgressUpdate($"{temp} {a} {b}/{c}"));
+        };
         var res = await JavaBinding.AddJavaZip(file);
+        ColorMCCore.UnZipItem = null;
         ProgressClose();
         if (!res.Item1)
         {

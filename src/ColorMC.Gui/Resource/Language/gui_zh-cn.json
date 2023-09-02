@@ -819,6 +819,7 @@
 	"Gui.Info24": "游戏路径",
 	"Gui.Info25": "{0} 缺失前置 {1}",
 	"Gui.Info26": "检测到缺失Mod",
+	"Gui.Info27": "正在解压",
 	"Gui.Error1": "背景图片加载失败",
 	"Gui.Error4": "登录发生异常",
 	"Gui.Error5": "找不到指定的Java",

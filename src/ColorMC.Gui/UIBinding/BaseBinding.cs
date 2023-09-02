@@ -16,6 +16,7 @@ using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Player;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
@@ -682,7 +683,7 @@ public static class BaseBinding
     /// 服务器包检查
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static async void ServerPackCheck(GameSettingObj obj)
+    public static async void ServerPackCheck(BaseModel model, GameSettingObj obj)
     {
         var config = GuiConfigUtils.Config.ServerCustom;
         if (config.ServerPack)
@@ -700,6 +701,11 @@ public static class BaseBinding
 
             try
             {
+                string temp = App.GetLanguage("Gui.Info27");
+                ColorMCCore.UnZipItem = (a, b, c) =>
+                {
+                    Dispatcher.UIThread.Post(() => model.ProgressUpdate($"{temp} {a} {b}/{c}"));
+                };
                 var (Res, Obj) = await obj.ServerPackCheck(config.ServerUrl);
                 if (Res && !string.IsNullOrWhiteSpace(Obj?.UI))
                 {
@@ -711,14 +717,14 @@ public static class BaseBinding
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        window.OkInfo.ShowOk(App.GetLanguage("Gui.Info13"), App.Close);
+                        model.ShowOk(App.GetLanguage("Gui.Info13"), App.Close);
                     });
                 }
                 else if (Obj != null)
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
-                        window.OkInfo.Show(App.GetLanguage("Gui.Error18"));
+                        model.Show(App.GetLanguage("Gui.Error18"));
                     });
                 }
 
@@ -729,10 +735,11 @@ public static class BaseBinding
                 Logs.Error(text, e);
                 Dispatcher.UIThread.Post(() =>
                 {
-                    window.ProgressInfo.Close();
-                    window.OkInfo.Show(text);
+                    model.ProgressClose();
+                    model.Show(text);
                 });
             }
+            ColorMCCore.UnZipItem = null;
         }
     }
 

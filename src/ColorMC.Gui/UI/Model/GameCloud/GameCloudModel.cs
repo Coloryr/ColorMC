@@ -121,7 +121,7 @@ public partial class GameCloudModel : GameModel
         }
         string name = Path.GetFullPath(dir + "/config.zip");
         files.Remove(name);
-        await ZipUtils.ZipFile(name, files, dir);
+        await new ZipUtils().ZipFile(name, files, dir);
         ProgressUpdate("上传中");
         await GameCloudUtils.UploadConfig(Obj.UUID, name);
         File.Delete(name);

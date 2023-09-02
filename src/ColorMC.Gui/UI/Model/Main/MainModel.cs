@@ -338,7 +338,7 @@ public partial class MainModel : BaseModel, IMainTop
             var game = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
             if (game != null)
             {
-                BaseBinding.ServerPackCheck(game);
+                BaseBinding.ServerPackCheck(this, game);
             }
         }
     }

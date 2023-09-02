@@ -513,6 +513,6 @@ public static class TestItem
     public static void Item30()
     {
         string temp = "H:\\jre17-arm64-20230721-release.tar.xz";
-        ZipUtils.Unzip("H:\\jre17", temp);
+        new ZipUtils().Unzip("H:\\jre17", temp, File.OpenRead(temp));
     }
 }

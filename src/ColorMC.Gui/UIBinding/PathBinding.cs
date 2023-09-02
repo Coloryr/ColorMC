@@ -598,7 +598,7 @@ public static class PathBinding
 
             try
             {
-                await ZipUtils.ZipFile(model.Obj.GetBasePath(),
+                await new ZipUtils().ZipFile(model.Obj.GetBasePath(),
                     name, model.Files.GetUnSelectItems());
                 OpFile(name);
                 return true;

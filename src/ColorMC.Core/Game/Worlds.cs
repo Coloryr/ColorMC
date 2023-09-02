@@ -170,7 +170,7 @@ public static class Worlds
     /// <param name="file">输出文件位置</param>
     public static Task ExportWorldZip(this WorldObj world, string file)
     {
-        return ZipUtils.ZipFile(world.Local, file);
+        return new ZipUtils().ZipFile(world.Local, file);
     }
 
     /// <summary>
@@ -220,7 +220,7 @@ public static class Worlds
         var file = Path.GetFullPath(path + "/" + world.LevelName + "_" + DateTime.Now
             .ToString("yyyy_MM_dd_HH_mm_ss") + ".zip");
 
-        await ZipUtils.ZipFile(world.Local, file);
+        await new ZipUtils().ZipFile(world.Local, file);
         using var s = new ZipFile(File.Open(file, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite));
         var info = new { name = world.LevelName };
         var data = JsonConvert.SerializeObject(info);
@@ -291,7 +291,7 @@ public static class Worlds
 
         try
         {
-            ZipUtils.Unzip(local, item1.FullName, File.OpenRead(item1.FullName));
+            new ZipUtils().Unzip(local, item1.FullName, File.OpenRead(item1.FullName));
             return true;
         }
         catch (Exception e)

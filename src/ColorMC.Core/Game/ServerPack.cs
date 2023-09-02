@@ -152,7 +152,7 @@ public static class ServerPack
                     {
                         if (item.Dir)
                         {
-                            ZipUtils.Unzip(Path.GetFullPath(path + "/" + item.Group), stream, false);
+                            new ZipUtils().Unzip(Path.GetFullPath(path + "/" + item.Group), stream, false);
                         }
                     }
                 });
@@ -361,7 +361,7 @@ public static class ServerPack
                         if (item.Zip)
                         {
                             var file = new FileInfo(path2[..^1] + ".zip");
-                            await ZipUtils.ZipFile(path1, file.FullName);
+                            await new ZipUtils().ZipFile(path1, file.FullName);
                             using var stream = File.OpenRead(file.FullName);
 
                             var item1 = new ConfigPackObj()

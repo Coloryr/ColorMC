@@ -88,7 +88,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
         _model.App_UserEdit();
         _model.MotdLoad();
 
-        Task.Run(() => BaseBinding.ServerPackCheck(obj));
+        BaseBinding.ServerPackCheck(_model, obj);
     }
 
     public async Task<bool> Closing()

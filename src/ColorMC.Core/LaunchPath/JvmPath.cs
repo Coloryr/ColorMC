@@ -165,7 +165,7 @@ public static class JvmPath
         {
             try
             {
-                ZipUtils.Unzip(path, file, stream);
+                new ZipUtils().Unzip(path, file, stream);
                 return (true, null);
             }
             catch (Exception e)
