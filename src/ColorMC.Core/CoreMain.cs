@@ -106,11 +106,12 @@ public static class ColorMCCore
     /// 执行命令
     /// </summary>
     public static Func<bool, Task<bool>>? LaunchP { internal get; set; }
-
-    public static Action<List<string>>? PhoneGameLaunch { internal get; set; }
-
+    /// <summary>
+    /// 启动器加载完毕
+    /// </summary>
     public static Action? LoadDone { internal get; set; }
 
+    public static Action<GameSettingObj, List<string>>? PhoneGameLaunch { internal get; set; }
     public static Action<string, string>? PhoneJvmIntasll { internal get; set; }
     public static Func<string, JavaInfo>? PhoneReadJvm { internal get; set; }
 
