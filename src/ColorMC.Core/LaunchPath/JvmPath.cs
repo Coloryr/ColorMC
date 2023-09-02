@@ -133,24 +133,32 @@ public static class JvmPath
     {
         string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
-
-        Stream stream;
-        if (SystemInfo.Os == OsType.Android)
+        Stream? stream;
+        try
         {
-            stream = ColorMCCore.PhoneReadFile?.Invoke(file);
-            if (stream == null)
+            if (SystemInfo.Os == OsType.Android)
             {
-                return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
+                stream = ColorMCCore.PhoneReadFile?.Invoke(file);
+                if (stream == null)
+                {
+                    return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
+                }
+            }
+            else
+            {
+                file = Path.GetFullPath(file);
+                if (!File.Exists(file))
+                {
+                    return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
+                }
+                stream = File.OpenRead(file);
             }
         }
-        else
+        catch (Exception e)
         {
-            if (!File.Exists(file))
-            {
-               return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
-            }
-            stream = File.OpenRead(file);
-            
+            string temp = string.Format(LanguageHelper.Get("Core.Jvm.Error11"));
+            Logs.Error(temp, e);
+            return (false, temp);
         }
 
         var res = await Task.Run(() =>

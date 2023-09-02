@@ -15,12 +15,11 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFolder file)
     {
-        var path = file.Path.LocalPath;
         if (SystemInfo.Os == OsType.Android)
         {
-            path = path.Replace("/document/primary:", "/storage/emulated/0/");
+            return file.Path.AbsoluteUri;
         }
-        return path;
+        return file.Path.LocalPath;
     }
     /// <summary>
     /// 文件转字符串
@@ -29,12 +28,11 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFile file)
     {
-        var path = file.Path.LocalPath;
         if (SystemInfo.Os == OsType.Android)
         {
-            path = path.Replace("/document/primary:", "/storage/emulated/0/");
+            return file.Path.AbsoluteUri;
         }
-        return path;
+        return file.Path.LocalPath;
     }
     /// <summary>
     /// 文件转字符串
@@ -43,12 +41,11 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageItem file)
     {
-        var path = file.Path.LocalPath;
         if (SystemInfo.Os == OsType.Android)
         {
-            path = path.Replace("/document/primary:", "/storage/emulated/0/");
+            return file.Path.AbsoluteUri;
         }
-        return path;
+        return file.Path.LocalPath;
     }
 
     /// <summary>

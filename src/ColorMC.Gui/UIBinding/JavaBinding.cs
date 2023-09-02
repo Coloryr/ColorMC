@@ -39,7 +39,11 @@ public static class JavaBinding
     public static async Task<(bool, string?)> AddJavaZip(string file)
     {
         string name = Path.GetFileName(file);
-        return await JvmPath.UnzipJava(name, Path.GetFullPath(file));
+        if (SystemInfo.Os == OsType.Android)
+        {
+            name = name.Replace("primary%3A", "");
+        }
+        return await JvmPath.UnzipJava(name, file);
     }
 
     public static List<JavaInfoObj> GetJavaInfo()
