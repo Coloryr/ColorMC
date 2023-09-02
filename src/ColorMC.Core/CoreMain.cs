@@ -113,7 +113,7 @@ public static class ColorMCCore
 
     public static Action<GameSettingObj, List<string>>? PhoneGameLaunch { internal get; set; }
     public static Action<string, string>? PhoneJvmIntasll { internal get; set; }
-    public static Func<string, JavaInfo>? PhoneReadJvm { internal get; set; }
+    public static Func<string, JavaInfo?>? PhoneReadJvm { internal get; set; }
 
     /// <summary>
     /// 新运行
