@@ -51,15 +51,7 @@ public static class JavaHelper
         {
             if (SystemInfo.Os == OsType.Android)
             {
-                JavaInfo info = new()
-                {
-                    Path = path,
-                    Version = "17",
-                    Arch = ArchEnum.x64,
-                    Type = "java"
-                };
-
-                return info;
+                return ColorMCCore.PhoneReadJvm?.Invoke(path);
             }
             else
             {

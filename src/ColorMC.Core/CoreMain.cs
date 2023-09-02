@@ -107,9 +107,12 @@ public static class ColorMCCore
     /// </summary>
     public static Func<bool, Task<bool>>? LaunchP { internal get; set; }
 
-    public static Action<List<string>> PhoneGameLaunch { internal get; set; }
+    public static Action<List<string>>? PhoneGameLaunch { internal get; set; }
 
-    public static Action LoadDone { internal get; set; }
+    public static Action? LoadDone { internal get; set; }
+
+    public static Action<string, string>? PhoneJvmIntasll { internal get; set; }
+    public static Func<string, JavaInfo>? PhoneReadJvm { internal get; set; }
 
     /// <summary>
     /// 新运行

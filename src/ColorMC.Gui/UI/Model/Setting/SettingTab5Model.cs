@@ -40,7 +40,7 @@ public partial class SettingTab5Model : BaseModel
             return;
         }
 
-        var res = await BaseBinding.AddJavaZip(file);
+        var res = await JavaBinding.AddJavaZip(file);
         if (!res.Item1)
         {
             Show(res.Item2!);

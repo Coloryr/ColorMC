@@ -136,6 +136,8 @@ public static class JvmPath
 
         await Task.Run(() => ZipUtils.Unzip(path, file));
 
+        ColorMCCore.PhoneJvmIntasll?.Invoke(path, name);
+
         var java = Find(path);
         if (java == null)
             return (false, LanguageHelper.Get("Core.Jvm.Error6"));

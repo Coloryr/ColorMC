@@ -888,14 +888,4 @@ public static class BaseBinding
 
         return (true, null);
     }
-
-    public static async Task<(bool, string?)> AddJavaZip(string file)
-    {
-        if (!File.Exists(file))
-        {
-            return (false, string.Format(App.GetLanguage("SettingWindow.Tab6.Error4"), file));
-        }
-        string name = Path.GetFileName(file);
-        return await JvmPath.UnzipJava(name, Path.GetFullPath(file));
-    }
 }
