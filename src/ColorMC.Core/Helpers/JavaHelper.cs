@@ -1,3 +1,4 @@
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using System.Diagnostics;
@@ -40,6 +41,33 @@ public static class JavaHelper
         }
     }
 
+    private static int GetMajorVersion(string version)
+    {
+        if (version == JvmPath.Unknow)
+        {
+            return -1;
+        }
+        string[] vers = version.Trim().Split('.', '_', '-', '+', 'u', 'U');
+        if (vers[0] == "1")
+        {
+            if (int.TryParse(vers[1], out var data))
+            {
+                return data;
+            }
+
+            return 0;
+        }
+        else
+        {
+            if (int.TryParse(vers[0], out var data))
+            {
+                return data;
+            }
+
+            return 0;
+        }
+    }
+
     /// <summary>
     /// 获取Java信息
     /// </summary>
@@ -78,7 +106,8 @@ public static class JavaHelper
                         Path = path,
                         Version = version,
                         Arch = arch,
-                        Type = type
+                        Type = type,
+                        MajorVersion = GetMajorVersion(version)
                     };
                     return info;
                 }
