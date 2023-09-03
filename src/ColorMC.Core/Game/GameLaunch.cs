@@ -1058,7 +1058,7 @@ public static class Launch
             return null;
         }
 
-        // ConfigSet(obj);
+        ConfigSet(obj);
 
         if (SystemInfo.Os == OsType.Android)
         {

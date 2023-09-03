@@ -31,7 +31,12 @@ public static class JvmPath
             BaseDir = dir;
         }
 
-        Directory.CreateDirectory(dir + Name1);
+        if (!BaseDir.EndsWith("/") && !BaseDir.EndsWith("\\"))
+        {
+            BaseDir += "/";
+        }
+
+        Directory.CreateDirectory(BaseDir + Name1);
 
         AddList(ConfigUtils.Config.JavaList);
     }
@@ -143,19 +148,19 @@ public static class JvmPath
     {
         string path = BaseDir + Name1 + "/" + name;
         Directory.CreateDirectory(path);
-        Stream? stream;
-        try
+        if (SystemInfo.Os == OsType.Android)
         {
-            if (SystemInfo.Os == OsType.Android)
+            await Task.Run(() =>
             {
-                stream = ColorMCCore.PhoneReadFile?.Invoke(file);
-                if (stream == null)
-                {
-                    return (false, string.Format(LanguageHelper.Get("Core.Jvm.Error11"), file));
-                }
-            }
-            else
+                ColorMCCore.PhoneJvmIntasll?.Invoke(path, file);
+            });
+        }
+        else
+        {
+            Stream? stream;
+            try
             {
+
                 file = Path.GetFullPath(file);
                 if (!File.Exists(file))
                 {
@@ -163,35 +168,36 @@ public static class JvmPath
                 }
                 stream = File.OpenRead(file);
             }
-        }
-        catch (Exception e)
-        {
-            string temp = string.Format(LanguageHelper.Get("Core.Jvm.Error11"));
-            Logs.Error(temp, e);
-            return (false, temp);
-        }
-
-        var res = await Task.Run(() =>
-        {
-            try
-            {
-                new ZipUtils().Unzip(path, file, stream);
-                return (true, null);
-            }
             catch (Exception e)
             {
-                return (false, e);
+                string temp = string.Format(LanguageHelper.Get("Core.Jvm.Error11"));
+                Logs.Error(temp, e);
+                return (false, temp);
             }
-        });
 
-        stream.Close();
+            var res = await Task.Run(() =>
+            {
+                try
+                {
+                    new ZipUtils().Unzip(path, file, stream);
+                    return (true, null);
+                }
+                catch (Exception e)
+                {
+                    return (false, e);
+                }
+            });
 
-        if (!res.Item1)
-        {
-            string temp = LanguageHelper.Get("Core.Jvm.Error12");
-            Logs.Error(temp, res.e);
-            return (false, temp);
+            stream.Close();
+
+            if (!res.Item1)
+            {
+                string temp = LanguageHelper.Get("Core.Jvm.Error12");
+                Logs.Error(temp, res.e);
+                return (false, temp);
+            }
         }
+
 
         var java = Find(path);
         if (java == null)
@@ -202,8 +208,6 @@ public static class JvmPath
         }
 
         var info = new FileInfo(java);
-
-        ColorMCCore.PhoneJvmIntasll?.Invoke(info.Directory!.Parent!.FullName, name);
 
         if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
         {

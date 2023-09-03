@@ -350,34 +350,40 @@ public static class BaseBinding
             obj.StartServer.IP = server.ServerAddress;
             obj.StartServer.Port = server.ServerPort;
         }
-        if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
-        {
-            win.ClearLog();
-        }
 
         ColorMCCore.DownloaderUpdate = DownloaderUpdateOnThread;
 
-        //清空日志
-        if (GameLogs.TryGetValue(obj.UUID, out StringBuilder? value))
+        if (SystemInfo.Os != OsType.Android)
         {
-            value.Clear();
+            if (App.GameLogWindows.TryGetValue(obj.UUID, out var win))
+            {
+                win.ClearLog();
+            }
+
+            //清空日志
+            if (GameLogs.TryGetValue(obj.UUID, out StringBuilder? value))
+            {
+                value.Clear();
+            }
+            else
+            {
+                GameLogs.Add(obj.UUID, new());
+            }
+
+            //锁定账户
+            UserBinding.AddLockUser(obj1);
         }
-        else
-        {
-            GameLogs.Add(obj.UUID, new());
-        }
-        //锁定账户
-        UserBinding.AddLockUser(obj1);
 
         var res = await Task.Run(async () => await Launch(obj, obj1, world, s_launchCancel.Token));
+
+        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.End);
+        FuntionUtils.RunGC();
+
         if (SystemInfo.Os == OsType.Android && res.Item1 != null)
         {
             //App.Close();
             return (true, null);
         }
-
-        ColorMCCore.GameLaunch?.Invoke(obj, LaunchState.End);
-        FuntionUtils.RunGC();
 
         if (s_launchCancel.IsCancellationRequested)
         {
