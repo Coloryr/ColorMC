@@ -35,7 +35,7 @@ public partial class AddGameTab1Model : AddGameControlModel
     [ObservableProperty]
     private int versionType;
     [ObservableProperty]
-    private int loaderType;
+    private int loaderType = -1;
 
     private bool _load = false;
 
@@ -202,7 +202,7 @@ public partial class AddGameTab1Model : AddGameControlModel
         LoaderVersionList.Clear();
 
         _loaderTypeList.Add(Loaders.Normal);
-        LoaderVersionList.Add(Loaders.Normal.GetName());
+        LoaderTypeList.Add(Loaders.Normal.GetName());
 
         var item = Version;
         if (string.IsNullOrWhiteSpace(item))
@@ -243,7 +243,7 @@ public partial class AddGameTab1Model : AddGameControlModel
             LoaderTypeList.Add(Loaders.NeoForge.GetName());
         }
         ProgressClose();
-
+        LoaderType = 0;
         _load = false;
     }
 

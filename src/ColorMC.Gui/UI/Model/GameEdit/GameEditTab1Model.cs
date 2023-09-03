@@ -436,9 +436,6 @@ public partial class GameEditTab1Model : GameModel
         {
             Show(App.GetLanguage("MainWindow.Info37"));
         }
-
-        Window.Close();
-
     }
 
     [RelayCommand]
