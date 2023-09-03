@@ -66,16 +66,16 @@
                 ItemsSource="{Binding ItemList}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
+                        Binding="{Binding NowSize}"
+                        Header="{setting:Localize DownloadWindow.DataGrid.Text3}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
                         Binding="{Binding Name}"
                         Header="{setting:Localize Text.Name}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding State}"
                         Header="{setting:Localize DownloadWindow.DataGrid.Text2}"
-                        IsReadOnly="True" />
-                    <DataGridTextColumn
-                        Binding="{Binding NowSize}"
-                        Header="{setting:Localize DownloadWindow.DataGrid.Text3}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding AllSize}"

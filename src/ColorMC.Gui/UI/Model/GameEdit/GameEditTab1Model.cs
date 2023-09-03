@@ -364,6 +364,8 @@ public partial class GameEditTab1Model : GameModel
     [RelayCommand]
     public async Task LoaderReload()
     {
+        _load = true;
+
         _loaderTypeList.Clear();
         LoaderTypeList.Clear();
         _loaderTypeList.Add(Loaders.Normal);
@@ -397,6 +399,8 @@ public partial class GameEditTab1Model : GameModel
             LoaderTypeList.Add(Loaders.Quilt.GetName());
         }
         ProgressClose();
+
+        _load = false;
     }
 
     [RelayCommand]
