@@ -198,7 +198,11 @@ public partial class AddGameTab1Model : AddGameControlModel
         _load = true;
 
         EnableLoader = false;
+        _loaderTypeList.Clear();
         LoaderVersionList.Clear();
+
+        _loaderTypeList.Add(Loaders.Normal);
+        LoaderVersionList.Add(Loaders.Normal.GetName());
 
         var item = Version;
         if (string.IsNullOrWhiteSpace(item))
