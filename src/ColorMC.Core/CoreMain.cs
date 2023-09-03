@@ -12,7 +12,7 @@ namespace ColorMC.Core;
 public static class ColorMCCore
 {
     public const string TopVersion = "A20";
-    public const string DateVersion = "20230809";
+    public const string DateVersion = "20230903";
 
     public const string Version = $"{TopVersion}.{DateVersion}";
 
@@ -119,6 +119,7 @@ public static class ColorMCCore
     public static Action<string, string>? PhoneJvmIntasll { internal get; set; }
     public static Func<string, JavaInfo?>? PhoneReadJvm { internal get; set; }
     public static Func<string, Stream?>? PhoneReadFile { internal get; set; }
+    public static Func<string>? PhoneGetDataDir { internal get; set; }
 
     /// <summary>
     /// 新运行

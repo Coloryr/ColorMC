@@ -128,15 +128,15 @@ public static class Launch
             return V1JvmArg;
 
         List<string> arg = new();
-        foreach (JToken item in game.arguments.jvm)
+        foreach (object item in game.arguments.jvm)
         {
-            if (item.Type == JTokenType.String)
+            if (item is string str)
             {
-                arg.Add(item.ToString());
+                arg.Add(str);
             }
-            else if (item.Type == JTokenType.Object)
+            else if (item is JObject obj1)
             {
-                var obj2 = item.ToObject<GameArgObj.Arguments.Jvm>();
+                var obj2 = obj1.ToObject<GameArgObj.Arguments.Jvm>();
                 if (obj2 == null)
                 {
                     continue;
@@ -211,11 +211,11 @@ public static class Launch
             return MakeV1GameArg(obj);
 
         List<string> arg = new();
-        foreach (JToken item in game.arguments.game)
+        foreach (object item in game.arguments.game)
         {
-            if (item.Type == JTokenType.String)
+            if (item is string str)
             {
-                arg.Add(item.ToString());
+                arg.Add(str);
             }
             //else if (item is JObject)
             //{
@@ -1027,8 +1027,8 @@ public static class Launch
                 if (res1)
                 {
                     if (SystemInfo.Os == OsType.Android)
-                    { 
-                    
+                    {
+
                     }
                     else
                     {
@@ -1088,7 +1088,7 @@ public static class Launch
         foreach (var item in arg)
         {
             process.StartInfo.ArgumentList.Add(item);
-        }   
+        }
 
         process.StartInfo.RedirectStandardInput = true;
         process.StartInfo.RedirectStandardOutput = true;

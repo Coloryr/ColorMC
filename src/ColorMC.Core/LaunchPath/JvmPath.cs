@@ -22,7 +22,15 @@ public static class JvmPath
     /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
-        BaseDir = dir;
+        if (SystemInfo.Os == OsType.Android)
+        {
+            BaseDir = ColorMCCore.PhoneGetDataDir?.Invoke()!;
+        }
+        else
+        {
+            BaseDir = dir;
+        }
+
         Directory.CreateDirectory(dir + Name1);
 
         AddList(ConfigUtils.Config.JavaList);
