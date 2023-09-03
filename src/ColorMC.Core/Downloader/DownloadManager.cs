@@ -13,7 +13,7 @@ public static class DownloadManager
     /// <summary>
     /// 取消下载
     /// </summary>
-    public static CancellationTokenSource Cancel { get; private set; } = new();
+    private static CancellationTokenSource s_cancel = new();
     /// <summary>
     /// 下载状态
     /// </summary>
@@ -73,7 +73,7 @@ public static class DownloadManager
     /// </summary>
     private static void Stop()
     {
-        Cancel.Cancel();
+        s_cancel.Cancel();
         s_threads.ForEach(a => a.Close());
     }
 
@@ -83,7 +83,7 @@ public static class DownloadManager
     public static void DownloadStop()
     {
         s_threads.ForEach(a => a.DownloadStop());
-        Cancel.Cancel();
+        s_cancel.Cancel();
         s_items.Clear();
     }
 
@@ -153,11 +153,11 @@ public static class DownloadManager
         DoneSize = 0;
         AllSize = s_items.Count;
         ColorMCCore.DownloaderUpdate?.Invoke(State = CoreRunState.Start);
-        Cancel.Dispose();
-        Cancel = new();
+        s_cancel.Dispose();
+        s_cancel = new();
         foreach (var item in s_threads)
         {
-            item.Start();
+            item.Start(s_cancel.Token);
         }
         await Task.Run(() =>
         {

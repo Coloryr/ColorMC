@@ -29,6 +29,7 @@ public class DownloadThread
     private readonly Semaphore _semaphore1 = new(0, 2);
     private bool _pause = false;
     private bool _run = false;
+    private CancellationToken _token;
 
     /// <summary>
     /// 初始化下载器
@@ -36,7 +37,7 @@ public class DownloadThread
     /// <param name="index">标号</param>
     public DownloadThread(int index)
     {
-        this._index = index;
+        _index = index;
         _thread = new(() =>
         {
             while (_run)
@@ -77,8 +78,9 @@ public class DownloadThread
     /// <summary>
     /// 开始下载
     /// </summary>
-    public void Start()
+    public void Start(CancellationToken token)
     {
+        _token = token;
         _semaphore.Release();
     }
 
@@ -127,7 +129,7 @@ public class DownloadThread
         {
             ChckPause(item);
 
-            if (DownloadManager.Cancel.IsCancellationRequested)
+            if (_token.IsCancellationRequested)
             {
                 break;
             }
@@ -197,7 +199,7 @@ public class DownloadThread
                 }
             }
 
-            if (DownloadManager.Cancel.IsCancellationRequested)
+            if (_token.IsCancellationRequested)
             {
                 break;
             }
@@ -210,7 +212,7 @@ public class DownloadThread
                 {
                     ChckPause(item);
 
-                    if (DownloadManager.Cancel.IsCancellationRequested)
+                    if (_token.IsCancellationRequested)
                     {
                         break;
                     }
@@ -218,12 +220,12 @@ public class DownloadThread
                     //网络请求
                     var data = BaseClient.DownloadClient.GetAsync(item.Url,
                         HttpCompletionOption.ResponseHeadersRead,
-                        DownloadManager.Cancel.Token).Result;
+                        _token).Result;
                     item.AllSize = (long)data.Content.Headers.ContentLength!;
                     item.State = DownloadItemState.GetInfo;
                     item.NowSize = 0;
                     item.Update?.Invoke(_index);
-                    using Stream stream1 = data.Content.ReadAsStream(DownloadManager.Cancel.Token);
+                    using Stream stream1 = data.Content.ReadAsStream(_token);
                     buffer = ArrayPool<byte>.Shared.Rent(DownloadManager.GetCopyBufferSize(stream1));
 
                     string file = Path.GetFullPath(DownloadManager.DownloadDir + '/' + Guid.NewGuid().ToString());
@@ -232,15 +234,15 @@ public class DownloadThread
 
                     int bytesRead;
                     while ((bytesRead = stream1.ReadAsync(new Memory<byte>(buffer),
-                        DownloadManager.Cancel.Token).Result) != 0)
+                        _token).Result) != 0)
                     {
                         stream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0,
-                            bytesRead), DownloadManager.Cancel.Token)
-                            .AsTask().Wait(DownloadManager.Cancel.Token);
+                            bytesRead), _token)
+                            .AsTask().Wait(_token);
 
                         ChckPause(item);
 
-                        if (DownloadManager.Cancel.IsCancellationRequested)
+                        if (_token.IsCancellationRequested)
                         {
                             break;
                         }
@@ -252,7 +254,7 @@ public class DownloadThread
 
                     ChckPause(item);
 
-                    if (DownloadManager.Cancel.IsCancellationRequested)
+                    if (_token.IsCancellationRequested)
                     {
                         break;
                     }
@@ -292,7 +294,7 @@ public class DownloadThread
 
                     ChckPause(item);
 
-                    if (DownloadManager.Cancel.IsCancellationRequested)
+                    if (_token.IsCancellationRequested)
                         break;
 
                     //后续操作
@@ -314,7 +316,7 @@ public class DownloadThread
                 }
                 catch (Exception e)
                 {
-                    if (DownloadManager.Cancel.IsCancellationRequested)
+                    if (_token.IsCancellationRequested)
                     {
                         break;
                     }
