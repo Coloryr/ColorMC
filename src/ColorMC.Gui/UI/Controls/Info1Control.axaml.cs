@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Gui.UI.Model;
 using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,17 +17,34 @@ public partial class Info1Control : UserControl
     {
         InitializeComponent();
 
-        Button_Cancel.Click += Cancel_Click;
+        DataContextChanged += Info1Control_DataContextChanged;
+    }
+
+    private void Info1Control_DataContextChanged(object? sender, EventArgs e)
+    {
+        if (DataContext is BaseModel model)
+        {
+            model.PropertyChanged += Model_PropertyChanged;
+        }
+    }
+
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "Info1Show")
+        {
+
+        }
+        else if (e.PropertyName == "Info1Close")
+        {
+            App.CrossFade300.Start(this, null);
+        }
     }
 
     private void Cancel_Click(object? sender, RoutedEventArgs e)
     {
         _display = false;
 
-        Button_Cancel.IsEnabled = false;
-        App.CrossFade300.Start(this, null);
-
-        _call?.Invoke();
+        
     }
 
     public void Close()

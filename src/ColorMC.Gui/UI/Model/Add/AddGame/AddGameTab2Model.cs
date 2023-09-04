@@ -7,25 +7,19 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Model.Add;
+namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameTab2Model : AddGameControlModel
+public partial class AddGameModel : BaseModel
 {
     public List<string> PackTypeList { get; init; } = LanguageBinding.GetPackType();
 
     [ObservableProperty]
-    private string _local;
+    private string _zipLocal;
 
     [ObservableProperty]
     private int _type = -1;
 
-    public AddGameTab2Model(IUserControl con) : base(con)
-    {
-        ColorMCCore.PackState = PackState;
-        ColorMCCore.PackUpdate = PackUpdate;
-    }
-
-    partial void OnLocalChanged(string value)
+    partial void OnZipLocalChanged(string value)
     {
         Type = GameBinding.CheckType(value) switch
         {
@@ -38,7 +32,7 @@ public partial class AddGameTab2Model : AddGameControlModel
     }
 
     [RelayCommand]
-    public void Add()
+    public void AddPackGame()
     {
         if (BaseBinding.IsDownload)
         {
@@ -77,7 +71,7 @@ public partial class AddGameTab2Model : AddGameControlModel
         var res = await PathBinding.SelectFile(Window, FileType.ModPack);
         if (!string.IsNullOrWhiteSpace(res))
         {
-            Local = res;
+            ZipLocal = res;
         }
     }
 
@@ -114,16 +108,16 @@ public partial class AddGameTab2Model : AddGameControlModel
 
     private async void AddPack(PackType type)
     {
-        ColorMCCore.GameOverwirte = GameOverwirte;
+        ColorMCCore.GameOverwirte = Tab2GameOverwirte;
 
-        if (string.IsNullOrWhiteSpace(Local))
+        if (string.IsNullOrWhiteSpace(ZipLocal))
         {
             Show(App.GetLanguage("AddGameWindow.Tab2.Error2"));
             return;
         }
 
         Progress(App.GetLanguage("AddGameWindow.Tab2.Info6"));
-        var res = await GameBinding.AddPack(Local, type, Name, Group);
+        var res = await GameBinding.AddPack(ZipLocal, type, Name, Group);
         ProgressClose();
         if (!res.Item1)
         {
@@ -138,20 +132,15 @@ public partial class AddGameTab2Model : AddGameControlModel
 
     public void AddFile(string file)
     {
-        Local = file;
+        ZipLocal = file;
     }
 
-    private async Task<bool> GameOverwirte(GameSettingObj obj)
+    private async Task<bool> Tab2GameOverwirte(GameSettingObj obj)
     {
         ProgressClose();
         var test = await ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info2"), obj.Name));
         Progress();
         return test;
-    }
-
-    public override void Close()
-    {
-
     }
 }

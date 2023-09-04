@@ -48,8 +48,6 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     public string Title => _nowControl.Title;
 
-    public BaseModel Model => ICon.Model;
-
     public AllControl()
     {
         InitializeComponent();
@@ -267,7 +265,6 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
         Up();
 
         con.Closed();
-        con.Model.TopClose();
     }
 
     public void ShowDialog(UserControl con)

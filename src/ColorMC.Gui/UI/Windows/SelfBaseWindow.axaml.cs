@@ -182,7 +182,6 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
         DataContext = null;
         ICon.Closed();
-        ICon.Model.TopClose();
 
         MainControl.Children.Clear();
 

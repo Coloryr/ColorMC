@@ -1,6 +1,7 @@
 ﻿using Avalonia.Input;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
+using Avalonia.Threading;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
@@ -57,6 +58,7 @@ public class Live2dRender : OpenGlControlBase
         if (e.PropertyName == "ModelChange")
         {
             _change = true;
+            Dispatcher.UIThread.Post(RequestNextFrameRendering);
         }
         else if (e.PropertyName == "ModelDelete")
         {
@@ -142,12 +144,14 @@ public class Live2dRender : OpenGlControlBase
         {
             _change = false;
             ChangeModel();
+            _model.ChangeModelDone();
             _model.ShowMessage(App.GetLanguage("Live2D.Text1"));
         }
         if (_delete)
         {
             _delete = false;
             _lapp.Live2dManager.ReleaseAllModel();
+            _model.ChangeModelDone();
         }
         gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
         var now = DateTime.Now;

@@ -5,12 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:icon="using:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add.AddGame"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     xmlns:vm="using:ColorMC.Gui.UI.Model.Items"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:AddGameTab3Model"
+    x:DataType="model:AddGameModel"
     mc:Ignorable="d">
     <DockPanel>
         <StackPanel Margin="5,0,5,5" DockPanel.Dock="Top">
@@ -28,7 +28,7 @@
                     DockPanel.Dock="Right" />
                 <TextBox
                     Classes="input1"
-                    Text="{Binding Local}"
+                    Text="{Binding ZipLocal}"
                     Watermark="{setting:Localize AddGameWindow.Tab3.Text1}" />
             </DockPanel>
 

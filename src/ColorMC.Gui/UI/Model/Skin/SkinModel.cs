@@ -4,6 +4,7 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -340,5 +341,10 @@ public partial class SkinModel : BaseModel
     public override void Close()
     {
 
+    }
+
+    public void SkinLoadDone()
+    {
+        OnPropertyChanged("SkinLoadDone");
     }
 }

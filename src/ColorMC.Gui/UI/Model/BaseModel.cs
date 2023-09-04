@@ -1,6 +1,7 @@
 ﻿using Avalonia.Media.Imaging;
 using ColorMC.Gui.UI.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,13 +10,17 @@ namespace ColorMC.Gui.UI.Model;
 
 public abstract partial class BaseModel : ObservableObject
 {
-    public IUserControl Control { get; private set; }
+    private Action? _info1Call;
 
-    public IBaseWindow Window => Control.Window;
+    [ObservableProperty]
+    private bool _info1CancelEnable;
 
-    public BaseModel(IUserControl con)
+    [RelayCommand]
+    public void Info1Cancel()
     {
-        Control = con;
+        Info1CancelEnable = false;
+
+        _info1Call?.Invoke();
     }
 
     public void SetIcon(Bitmap image)

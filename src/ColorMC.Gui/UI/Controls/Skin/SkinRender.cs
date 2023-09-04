@@ -131,8 +131,15 @@ public class SkinRender : OpenGlControlBase
         _dis += x;
     }
 
+    private bool _init = false;
+
     protected override unsafe void OnOpenGlInit(GlInterface gl)
     {
+        if (_init)
+            return;
+
+        _init = true;
+
         CheckError(gl);
 
         IntPtr temp = gl.GetProcAddress("glDepthFunc");
@@ -202,6 +209,8 @@ public class SkinRender : OpenGlControlBase
         PointerMoved += OpenGlPageControl_PointerMoved;
 
         LoadSkin(gl);
+
+        _model.SkinLoadDone();
 
         _model.IsLoad = true;
     }
@@ -748,6 +757,7 @@ public class SkinRender : OpenGlControlBase
         if (_switchSkin)
         {
             LoadSkin(gl);
+            _model.SkinLoadDone();
             _switchSkin = false;
         }
         if (_switchModel)

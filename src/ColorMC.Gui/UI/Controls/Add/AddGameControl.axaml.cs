@@ -4,8 +4,7 @@ using ColorMC.Core;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Controls.Add.AddGame;
-using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Model.Add;
+using ColorMC.Gui.UI.Model.Add.AddGame;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using System.Linq;
@@ -25,48 +24,20 @@ public partial class AddGameControl : UserControl, IUserControl
 
     private int _now;
 
-    private readonly AddGameTab1Model _model1;
-    private readonly AddGameTab2Model _model2;
-    private readonly AddGameTab3Model _model3;
-
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
     public UserControl Con => this;
 
     public string Title => App.GetLanguage("AddGameWindow.Title");
 
-    public class TopModel : BaseModel
-    {
-        private AddGameControl _con;
-        public TopModel(AddGameControl con) : base(con)
-        {
-            _con = con;
-        }
-
-        public override void Close()
-        {
-            _con._model1.Close();
-            _con._model2.Close();
-            _con._model3.Close();
-            _con = null!;
-        }
-    }
-
-    public BaseModel Model { get; }
+    public AddGameModel Model { get; }
 
     public AddGameControl()
     {
         InitializeComponent();
 
-        Model = new TopModel(this);
-
-        _model1 = new(this);
-        _model2 = new(this);
-        _model3 = new(this);
-
-        _tab1.DataContext = _model1;
-        _tab2.DataContext = _model2;
-        _tab3.DataContext = _model3;
+        Model = new AddGameModel(this);
+        DataContext = Model;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
@@ -117,16 +88,15 @@ public partial class AddGameControl : UserControl, IUserControl
             if (item?.EndsWith(".zip") == true || item?.EndsWith(".mrpack") == true)
             {
                 Tabs.SelectedIndex = 1;
-                _model2.AddFile(item);
+                Model.AddFile(item);
             }
         }
     }
 
     public void Closed()
     {
-        _tab1.DataContext = null;
-        _tab2.DataContext = null;
-        _tab3.DataContext = null;
+        Model.TopClose();
+        DataContext = Model;
 
         ColorMCCore.PackState = null;
         ColorMCCore.PackUpdate = null;
@@ -183,12 +153,12 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
     {
-        _model1.Install(data, data1);
+        Model.Install(data, data1);
     }
 
     public void Install(ModrinthVersionObj data, ModrinthSearchObj.Hit data1)
     {
-        _model1.Install(data, data1);
+        Model.Install(data, data1);
     }
 
     public void AddFile(string file)
@@ -196,7 +166,7 @@ public partial class AddGameControl : UserControl, IUserControl
         if (file.EndsWith(".zip") == true || file.EndsWith(".mrpack") == true)
         {
             Tabs.SelectedIndex = 1;
-            _model2.AddFile(file);
+            Model.AddFile(file);
         }
     }
 }

@@ -26,6 +26,11 @@ public partial class Live2dControl : UserControl
 
         DataContextChanged += Live2dControl_DataContextChanged;
 
+        _renderTimer = new(Live2d)
+        {
+            FpsTick = FpsTick
+        };
+
         App.OnClose += App_OnClose;
     }
 
@@ -40,30 +45,18 @@ public partial class Live2dControl : UserControl
         {
             _model = model;
             model.PropertyChanged += Model_PropertyChanged;
-            _renderTimer = new(Live2d)
-            {
-                FpsTick = (fps) =>
-                {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        if (!Live2d.HaveModel && IsVisible)
-                        {
-                            IsVisible = false;
-                            _renderTimer.Pause = true;
-                        }
-                        else if (Live2d.HaveModel && !IsVisible)
-                        {
-                            IsVisible = true;
-                            _renderTimer.Pause = false;
-                        }
-                        if (IsVisible)
-                        {
-                            Label1.Content = $"{fps}Fps";
-                        }
-                    });
-                }
-            };
         }
+    }
+
+    private void FpsTick(int fps)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (IsVisible)
+            {
+                Label1.Content = $"{fps}Fps";
+            }
+        });
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -78,13 +71,18 @@ public partial class Live2dControl : UserControl
                 ShowMessage();
             });
         }
-        else if (e.PropertyName == "Render")
+        else if (e.PropertyName == "ModelChangeDone")
         {
-            _renderTimer.Pause = !_model.Render;
-        }
-        else if (e.PropertyName == "ModelChange")
-        {
-            _renderTimer.Pause = false;
+            if (Live2d.HaveModel)
+            {
+                IsVisible = true;
+                _renderTimer.Pause = false;
+            }
+            else if (!Live2d.HaveModel)
+            {
+                IsVisible = false;
+                _renderTimer.Pause = true;
+            }
         }
     }
 

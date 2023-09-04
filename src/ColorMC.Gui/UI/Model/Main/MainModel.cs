@@ -539,6 +539,11 @@ public partial class MainModel : BaseModel, IMainTop
         OnPropertyChanged("ModelChange");
     }
 
+    public void ChangeModelDone()
+    {
+        OnPropertyChanged("ModelChangeDone");
+    }
+
     public void DeleteModel()
     {
         OnPropertyChanged("ModelDelete");

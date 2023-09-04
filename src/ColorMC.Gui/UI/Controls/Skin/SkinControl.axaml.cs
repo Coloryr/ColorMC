@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UI.Windows;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 
@@ -31,6 +32,7 @@ public partial class SkinControl : UserControl, IUserControl
 
         _model = new(this);
         DataContext = _model;
+        _model.PropertyChanged += Model_PropertyChanged;
 
         Skin.SetModel(_model);
 
@@ -41,6 +43,21 @@ public partial class SkinControl : UserControl, IUserControl
         SkinTop.PointerMoved += SkinTop_PointerMoved;
         SkinTop.PointerPressed += SkinTop_PointerPressed;
         SkinTop.PointerWheelChanged += SkinTop_PointerWheelChanged;
+    }
+
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "SkinLoadDone")
+        {
+            if (_model.HaveSkin)
+            {
+                _renderTimer.Pause = false;
+            }
+            else
+            {
+                _renderTimer.Pause = true;
+            }
+        }
     }
 
     public async void OnKeyDown(object? sender, KeyEventArgs e)

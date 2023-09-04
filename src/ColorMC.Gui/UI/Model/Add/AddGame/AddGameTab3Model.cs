@@ -8,21 +8,17 @@ using CommunityToolkit.Mvvm.Input;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Model.Add;
+namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameTab3Model : AddGameControlModel
+public partial class AddGameModel : BaseModel
 {
     private FilesPage _model;
 
     [ObservableProperty]
     private string _local;
+
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _files;
-
-    public AddGameTab3Model(IUserControl con) : base(con)
-    {
-
-    }
 
     [RelayCommand]
     public async Task Refash()
@@ -90,10 +86,5 @@ public partial class AddGameTab3Model : AddGameControlModel
         {
             Show(string.Format(App.GetLanguage("AddGameWindow.Tab3.Error2"), res));
         }
-    }
-
-    public override void Close()
-    {
-
     }
 }

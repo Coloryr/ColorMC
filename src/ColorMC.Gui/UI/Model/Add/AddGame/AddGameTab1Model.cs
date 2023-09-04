@@ -12,9 +12,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Model.Add;
+namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameTab1Model : AddGameControlModel
+public partial class AddGameModel : BaseModel
 {
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> LoaderVersionList { get; init; } = new();
@@ -39,11 +39,6 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     private bool _load = false;
 
-    public AddGameTab1Model(IUserControl con) : base(con)
-    {
-        Update();
-    }
-
     async partial void OnVersionChanged(string value)
     {
         await VersionSelect();
@@ -59,10 +54,10 @@ public partial class AddGameTab1Model : AddGameControlModel
 
     partial void OnVersionTypeChanged(int value)
     {
-        Update();
+        GameVersionUpdate();
     }
 
-    private async Task<bool> GameOverwirte(GameSettingObj obj)
+    private async Task<bool> Tab1GameOverwirte(GameSettingObj obj)
     {
         ProgressClose();
         var test = await ShowWait(
@@ -147,9 +142,9 @@ public partial class AddGameTab1Model : AddGameControlModel
     }
 
     [RelayCommand]
-    public async Task Add()
+    public async Task AddGame()
     {
-        ColorMCCore.GameOverwirte = GameOverwirte;
+        ColorMCCore.GameOverwirte = Tab1GameOverwirte;
 
         if (BaseBinding.IsDownload)
         {
@@ -187,7 +182,7 @@ public partial class AddGameTab1Model : AddGameControlModel
     }
 
     [RelayCommand]
-    public void AddPack()
+    public void AddOnlinePack()
     {
         App.ShowAddModPack();
     }
@@ -259,7 +254,7 @@ public partial class AddGameTab1Model : AddGameControlModel
             return;
         }
 
-        Update();
+        GameVersionUpdate();
     }
 
     public async void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
@@ -307,7 +302,7 @@ public partial class AddGameTab1Model : AddGameControlModel
             Window.Close();
         }
     }
-    private async void Update()
+    private async void GameVersionUpdate()
     {
         GameVersionList.Clear();
         switch (VersionType)
@@ -325,12 +320,5 @@ public partial class AddGameTab1Model : AddGameControlModel
                 GameVersionList.AddRange(await GameBinding.GetGameVersion(true, true, true));
                 break;
         }
-    }
-
-    public override void Close()
-    {
-        _load = true;
-        GameVersionList.Clear();
-        LoaderVersionList.Clear();
     }
 }
