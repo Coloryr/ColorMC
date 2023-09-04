@@ -235,14 +235,14 @@ public partial class App : Application
         return AllWindow!;
     }
 
-    private void PlatformSettings_ColorValuesChanged(object? sender, PlatformColorValues e)
+    private async void PlatformSettings_ColorValuesChanged(object? sender, PlatformColorValues e)
     {
         if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
         {
             NowTheme = PlatformSettings!.GetColorValues().ThemeVariant;
 
             ColorSel.Instance.Load();
-            OnPicUpdate();
+            await LoadImage();
         }
     }
 
@@ -290,12 +290,15 @@ public partial class App : Application
     {
         RemoveImage();
         var file = GuiConfigUtils.Config.BackImage;
-        if (!string.IsNullOrWhiteSpace(file))
+        if (string.IsNullOrWhiteSpace(file))
         {
-            BackBitmap = await ImageUtils.MakeBackImage(
+            file = NowTheme == PlatformThemeVariant.Light ? "ColorMC.Gui.Resource.Pic.bg.jpg"
+                : "ColorMC.Gui.Resource.Pic.bg1.jpg";
+        }
+
+        BackBitmap = await ImageUtils.MakeBackImage(
                 file, GuiConfigUtils.Config.BackEffect,
                 GuiConfigUtils.Config.BackLimit ? GuiConfigUtils.Config.BackLimitValue : 100);
-        }
 
         OnPicUpdate();
 

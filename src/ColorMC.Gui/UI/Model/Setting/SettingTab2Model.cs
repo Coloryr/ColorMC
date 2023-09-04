@@ -409,11 +409,11 @@ public partial class SettingTab2Model : BaseModel
         if (_load)
             return;
 
-        if (string.IsNullOrWhiteSpace(Pic))
-        {
-            Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
-            return;
-        }
+        //if (string.IsNullOrWhiteSpace(Pic))
+        //{
+        //    Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
+        //    return;
+        //}
         Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackPic(Pic, PicEffect);
         ProgressClose();

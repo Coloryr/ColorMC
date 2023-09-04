@@ -6,6 +6,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
@@ -115,6 +116,11 @@ public static class ImageUtils
                 {
                     var res = await BaseClient.DownloadClient.GetAsync(file);
                     stream1 = res.Content.ReadAsStream();
+                }
+                else if (file.StartsWith("ColorMC.Gui"))
+                {
+                    var assm = Assembly.GetExecutingAssembly();
+                    stream1 = assm.GetManifestResourceStream(file)!;
                 }
                 else if (!File.Exists(file))
                 {

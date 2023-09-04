@@ -22,11 +22,11 @@
             VerticalAlignment="Bottom" />
 
         <DockPanel>
-            <ScrollViewer DockPanel.Dock="{Binding Mirror1}">
+            <ScrollViewer Margin="10" DockPanel.Dock="{Binding Mirror1}">
                 <Panel>
                     <Panel
-                        Margin="0,110,6,0"
-                        HorizontalAlignment="Right"
+                        Margin="0,110,0,0"
+                        HorizontalAlignment="Center"
                         IsVisible="{Binding !SideDisplay}">
                         <StackPanel VerticalAlignment="Center">
                             <Button
@@ -92,10 +92,11 @@
                             </Button>
                         </StackPanel>
                     </Panel>
-
-                    <Panel Name="Grid1" Margin="0,0,10,0">
-                        <Border Name="Border1" Background="{setting:Colors TranBack}" />
-                        <StackPanel Margin="10,0,10,0" VerticalAlignment="Center">
+                    <Border
+                        Name="Grid1"
+                        Background="{DynamicResource SystemAltMediumHighColor}"
+                        CornerRadius="{setting:Style ButtonCornerRadius}">
+                        <StackPanel Margin="6,0,6,0" VerticalAlignment="Center">
                             <Panel Margin="0,20,0,0">
                                 <Border
                                     Name="Border2"
@@ -183,12 +184,11 @@
                                 ToolTip.Tip="{setting:Localize ToolTip.Text13}"
                                 ToolTip.VerticalOffset="-30" />
                         </StackPanel>
-                    </Panel>
-
+                    </Border>
                     <Button
                         Width="25"
                         Height="25"
-                        Margin="8,10,6,10"
+                        Margin="6,10,6,10"
                         HorizontalAlignment="{Binding Mirror2}"
                         VerticalAlignment="Top"
                         Command="{Binding SideChange}"
@@ -199,7 +199,7 @@
                     <Button
                         Width="25"
                         Height="25"
-                        Margin="8,10,6,10"
+                        Margin="6,10,6,10"
                         HorizontalAlignment="{Binding Mirror2}"
                         VerticalAlignment="Bottom"
                         Command="{Binding MusicPause}"
@@ -209,17 +209,13 @@
                         ToolTip.VerticalOffset="-30" />
                 </Panel>
             </ScrollViewer>
-
             <views:ServerMotdControl
                 Margin="0,10,10,0"
                 DockPanel.Dock="Top"
                 IPPort="{Binding Server}"
                 IsVisible="{Binding MotdDisplay, FallbackValue=true}" />
-            <Panel>
-                <ScrollViewer
-                    Name="ScrollViewer1"
-                    Margin="0,10,10,10"
-                    VerticalAlignment="Top">
+            <Panel Margin="0,10,10,10">
+                <ScrollViewer Name="ScrollViewer1" VerticalAlignment="Top">
                     <ItemsControl ItemsSource="{Binding GameGroups}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -228,10 +224,8 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
-
                 <Panel
                     Name="Grid3"
-                    Margin="0,10,10,10"
                     Background="{setting:Colors TopBottom}"
                     IsVisible="{Binding IsNotGame}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

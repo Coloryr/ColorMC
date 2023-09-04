@@ -413,14 +413,14 @@ public static class ConfigBinding
     /// 设置主题色
     /// </summary>
     /// <param name="type"></param>
-    public static void SetColorType(ColorType type)
+    public static async void SetColorType(ColorType type)
     {
         GuiConfigUtils.Config.ColorType = type;
         GuiConfigUtils.Save();
 
         App.ColorChange();
         ColorSel.Instance.Load();
-        App.OnPicUpdate();
+        await App.LoadImage();
     }
 
     /// <summary>

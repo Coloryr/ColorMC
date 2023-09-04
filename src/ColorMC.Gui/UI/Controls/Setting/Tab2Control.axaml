@@ -27,10 +27,7 @@
                     TextWrapping="Wrap" />
             </StackPanel>
 
-            <Label
-                Margin="0,0,5,0"
-                VerticalAlignment="Center"
-                Content="{setting:Localize SettingWindow.Tab2.Text36}" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text36}" />
 
             <StackPanel Orientation="Horizontal">
                 <CheckBox
@@ -44,17 +41,10 @@
                     IsChecked="{Binding MainWindowStateSave}" />
             </StackPanel>
 
-            <Label
-                Margin="0,0,5,0"
-                VerticalAlignment="Center"
-                Content="{setting:Localize SettingWindow.Tab2.Text39}" />
+            <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text39}" />
 
             <StackPanel Orientation="Horizontal">
-                <Label
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text40}" />
-
+                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text40}" />
                 <Slider
                     Width="200"
                     Height="40"
@@ -70,18 +60,13 @@
                     Value="{Binding ButtonCornerRadius}" />
                 <Label
                     Width="40"
-                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Content="{Binding ButtonCornerRadius, StringFormat='{}{0}'}" />
             </StackPanel>
 
             <WrapPanel Orientation="Horizontal">
-                <Label
-                    Margin="0,0,5,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text41}" />
-
                 <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text41}" />
                     <Slider
                         Width="200"
                         Height="40"
@@ -97,7 +82,7 @@
                         Value="{Binding AmTime}" />
                     <Label
                         Width="40"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         Content="{Binding AmTime, StringFormat='{}{0}'}" />
                 </StackPanel>
@@ -157,7 +142,7 @@
                 <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text20}" IsChecked="{Binding IsDefaultFont}" />
             </WrapPanel>
 
-            <Label Margin="5,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
+            <Label Margin="10,0,0,0" Content="{setting:Localize SettingWindow.Tab2.Text21}" />
 
             <!--  背景图  -->
 
@@ -194,8 +179,8 @@
 
             </WrapPanel>
             <WrapPanel Orientation="Horizontal">
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text4}" />
                 <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text4}" />
                     <Slider
                         Width="200"
                         Height="40"
@@ -211,23 +196,19 @@
                         Value="{Binding PicEffect}" />
                     <Label
                         Width="40"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         Content="{Binding PicEffect, StringFormat='{}{0}%'}" />
                 </StackPanel>
                 <Button
                     Width="80"
                     Height="25"
-                    Margin="5,0,0,0"
+                    Margin="0,0,5,0"
                     VerticalAlignment="Center"
                     Command="{Binding SetPic}"
                     Content="{setting:Localize Button.Set}" />
-
-                <Label
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text5}" />
                 <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text5}" />
                     <Slider
                         Width="200"
                         Height="40"
@@ -243,14 +224,13 @@
                         Value="{Binding PicTran}" />
                     <Label
                         Width="40"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         Content="{Binding PicTran, StringFormat='{}{0}%'}" />
                 </StackPanel>
                 <Button
                     Width="80"
                     Height="25"
-                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Command="{Binding SetPicTran}"
                     Content="{setting:Localize Button.Set}" />
@@ -261,7 +241,7 @@
                     VerticalAlignment="Center"
                     Content="{setting:Localize SettingWindow.Tab2.Text24}"
                     IsChecked="{Binding EnablePicResize}" />
-                <StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <Slider
                         Width="200"
                         Height="40"
@@ -278,14 +258,13 @@
                         Value="{Binding PicResize}" />
                     <Label
                         Width="40"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         Content="{Binding PicResize, StringFormat='{}{0}%'}" />
                 </StackPanel>
                 <Button
                     Width="80"
                     Height="25"
-                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Content="{setting:Localize Button.Set}"
                     IsEnabled="{Binding EnablePicResize}" />
@@ -430,8 +409,8 @@
             </WrapPanel>
 
             <WrapPanel>
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text34}" />
                 <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text34}" />
                     <Slider
                         Width="200"
                         Height="40"
@@ -447,13 +426,12 @@
                         Value="{Binding Width}" />
                     <Label
                         Width="40"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         Content="{Binding Width, StringFormat='{}{0}%'}" />
                 </StackPanel>
-
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text35}" />
                 <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text35}" />
                     <Slider
                         Width="200"
                         Height="40"
@@ -469,7 +447,6 @@
                         Value="{Binding Height}" />
                     <Label
                         Width="40"
-                        Margin="5,0,0,0"
                         VerticalAlignment="Center"
                         Content="{Binding Height, StringFormat='{}{0}%'}" />
                 </StackPanel>
@@ -477,8 +454,9 @@
 
             <WrapPanel>
                 <CheckBox Content="{setting:Localize SettingWindow.Tab2.Text13}" IsChecked="{Binding EnableRGB}" />
-                <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text14}" />
+
                 <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text14}" />
                     <Slider
                         Width="200"
                         Height="40"
@@ -495,15 +473,13 @@
                         Value="{Binding RgbV1}" />
                     <Label
                         Width="40"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         Content="{Binding RgbV1, StringFormat='{}{0}%'}" />
                 </StackPanel>
-                <Label
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Content="{setting:Localize SettingWindow.Tab2.Text15}" />
+
                 <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="{setting:Localize SettingWindow.Tab2.Text15}" />
                     <Slider
                         Width="200"
                         Height="40"
@@ -520,14 +496,13 @@
                         Value="{Binding RgbV2}" />
                     <Label
                         Width="40"
-                        Margin="5,0,0,0"
+                        Margin="0,0,5,0"
                         VerticalAlignment="Center"
                         Content="{Binding RgbV2, StringFormat='{}{0}%'}" />
                 </StackPanel>
                 <Button
                     Width="80"
                     Height="25"
-                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Command="{Binding SetRgb}"
                     Content="{setting:Localize Button.Set}" />

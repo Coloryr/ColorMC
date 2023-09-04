@@ -13,6 +13,7 @@
     mc:Ignorable="d">
     <Expander
         Name="Expander_Head"
+        Padding="5"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Top"
         CornerRadius="{setting:Style ButtonCornerRadius}"
