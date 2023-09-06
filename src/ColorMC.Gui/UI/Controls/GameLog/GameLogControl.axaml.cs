@@ -16,28 +16,19 @@ public partial class GameLogControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public UserControl Con => this;
+    private readonly GameSettingObj _obj;
 
     public string Title => string.Format(App.GetLanguage("GameLogWindow.Title"),
-            _model.Obj.Name);
+            _obj.Name);
 
-    public BaseModel Model => _model;
-
-    private readonly GameLogTabModel _model;
-
-    public GameLogControl() : this(new GameSettingObj { Empty = true })
-    {
-
-    }
-
-    public GameLogControl(GameSettingObj obj)
+    public GameLogControl()
     {
         InitializeComponent();
+    }
 
-        _model = new(this, obj);
-        DataContext = _model;
-
-        _model.PropertyChanged += Model_PropertyChanged;
+    public GameLogControl(GameSettingObj obj) : this()
+    {
+        _obj = obj;
 
         TextEditor1.TextArea.Background = Brushes.Transparent;
 
@@ -46,7 +37,7 @@ public partial class GameLogControl : UserControl, IUserControl
     }
     public void ClearLog()
     {
-        _model.Clear();
+        (DataContext as GameLogModel)!.Clear();
     }
 
     public void Log(string? data)
@@ -54,28 +45,28 @@ public partial class GameLogControl : UserControl, IUserControl
         if (data == null)
             return;
 
-        _model.Log(data);
+        (DataContext as GameLogModel)!.Log(data);
     }
 
     public void Update()
     {
-        _model.Load();
+        (DataContext as GameLogModel)!.Load();
     }
 
     public void Opened()
     {
         Window.SetTitle(Title);
 
-        var icon = _model.Obj.GetIconFile();
+        var icon = _obj.GetIconFile();
         if (File.Exists(icon))
         {
-            Window.Head.SetIcon(new(icon));
+            Window.SetIcon(new(icon));
         }
     }
 
     public void Closed()
     {
-        App.GameLogWindows.Remove(_model.Obj.UUID);
+        App.GameLogWindows.Remove(_obj.UUID);
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -89,7 +80,7 @@ public partial class GameLogControl : UserControl, IUserControl
         }
         else if (e.PropertyName == "Insert")
         {
-            TextEditor1.AppendText(_model.Temp);
+            TextEditor1.AppendText((DataContext as GameLogModel)!.Temp);
         }
         else if (e.PropertyName == "Top")
         {
@@ -99,6 +90,13 @@ public partial class GameLogControl : UserControl, IUserControl
 
     private void TextEditor1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        _model.SetNotAuto();
+        (DataContext as GameLogModel)?.SetNotAuto();
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new GameLogModel(model, _obj);
+        amodel.PropertyChanged += Model_PropertyChanged;
+        DataContext = amodel;
     }
 }

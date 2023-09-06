@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -301,5 +302,10 @@ public partial class AllControl : UserControl, IBaseWindow
     {
         var list = new List<IUserControl>(_cons.Keys);
         list.ForEach(Close);
+    }
+
+    public void SetIcon(Bitmap icon)
+    {
+        Model.SetIcon(icon);
     }
 }

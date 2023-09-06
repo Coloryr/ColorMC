@@ -86,7 +86,7 @@ public partial class SettingModel : TopModel
             Model.ProgressClose();
             if (res.Item1 == null)
             {
-                Show(res.Item2!);
+                Model.Show(res.Item2!);
                 return;
             }
 

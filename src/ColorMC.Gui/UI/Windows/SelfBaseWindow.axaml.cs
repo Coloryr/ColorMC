@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -201,5 +202,10 @@ public partial class SelfBaseWindow : Window, IBaseWindow
                 ColorSel.BottomTranColor : ColorSel.BottomColor;
 
         ICon.Update();
+    }
+
+    public void SetIcon(Bitmap icon)
+    {
+        Model.SetIcon(icon);
     }
 }

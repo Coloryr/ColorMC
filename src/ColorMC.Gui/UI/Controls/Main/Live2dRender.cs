@@ -85,7 +85,7 @@ public class Live2dRender : OpenGlControlBase
         catch (Exception e)
         {
             Logs.Error("model load error", e);
-            window.OkInfo.Show(App.GetLanguage("MainWindow.Live2d.Error2"));
+            (DataContext as MainModel)!.Model.Show(App.GetLanguage("MainWindow.Live2d.Error2"));
         }
     }
 
@@ -137,18 +137,19 @@ public class Live2dRender : OpenGlControlBase
     {
         if (!_init)
             return;
+        var model = (DataContext as MainModel)!;
         if (_change)
         {
             _change = false;
             ChangeModel();
-            _model.ChangeModelDone();
-            _model.ShowMessage(App.GetLanguage("Live2D.Text1"));
+            model.ChangeModelDone();
+            model.ShowMessage(App.GetLanguage("Live2D.Text1"));
         }
         if (_delete)
         {
             _delete = false;
             _lapp.Live2dManager.ReleaseAllModel();
-            _model.ChangeModelDone();
+            model.ChangeModelDone();
         }
         gl.Viewport(0, 0, (int)Bounds.Width, (int)Bounds.Height);
         var now = DateTime.Now;

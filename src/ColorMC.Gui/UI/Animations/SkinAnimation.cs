@@ -1,5 +1,6 @@
 ﻿using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Skin;
+using ColorMC.Gui.UI.Model.Skin;
 using System.Numerics;
 
 namespace ColorMC.Gui.UI.Animations;
@@ -32,6 +33,7 @@ public class SkinAnimation
     {
         if (Run)
         {
+            var model = (_render.DataContext as SkinModel)!;
             _frame++;
             if (_frame > 120)
             {
@@ -47,7 +49,7 @@ public class SkinAnimation
                 //90 -90
                 Leg.Y = 90 - _frame * 3;
                 //-30 30
-                if (_render._model.SteveModelType == SkinType.NewSlim)
+                if (model.SteveModelType == SkinType.NewSlim)
                 {
                     Head.Z = 0;
                     Head.X = _frame - 30;
@@ -67,7 +69,7 @@ public class SkinAnimation
                 //-90 90
                 Leg.Y = _frame * 3 - 270;
                 //30 -30
-                if (_render._model.SteveModelType == SkinType.NewSlim)
+                if (model.SteveModelType == SkinType.NewSlim)
                 {
                     Head.Z = 0;
                     Head.X = 90 - _frame;

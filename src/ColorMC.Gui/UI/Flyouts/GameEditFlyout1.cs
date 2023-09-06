@@ -78,8 +78,7 @@ public class GameEditFlyout1
     private async void Button7_Click()
     {
         var list = new List<IStorageFile>();
-        var window = _con.GetVisualRoot();
-        if (window is TopLevel top)
+        if (App.TopLevel is { } top)
         {
             foreach (var item in _list)
             {
@@ -89,7 +88,7 @@ public class GameEditFlyout1
 
                 list.Add(data);
             }
-            await BaseBinding.CopyFileClipboard(TopLevel.GetTopLevel(_con), list);
+            await BaseBinding.CopyFileClipboard(list);
         }
     }
 

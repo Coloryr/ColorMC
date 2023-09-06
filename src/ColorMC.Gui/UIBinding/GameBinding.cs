@@ -17,6 +17,7 @@ using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Zip;
@@ -278,7 +279,7 @@ public static class GameBinding
         }
     }
 
-    private static async Task<(LoginObj?, string?)> GetUser()
+    private static async Task<(LoginObj?, string?)> GetUser(BaseModel model)
     {
         var login = UserBinding.GetLastUser();
         if (login == null)
@@ -297,7 +298,7 @@ public static class GameBinding
 
         if (UserBinding.IsLock(login))
         {
-            var res = await App.MainWindow!.Model.ShowWait(App.GetLanguage("GameBinding.Info1"));
+            var res = await model.ShowWait(App.GetLanguage("GameBinding.Info1"));
             if (!res)
                 return (null, App.GetLanguage("GameBinding.Error3"));
         }
@@ -317,7 +318,7 @@ public static class GameBinding
             return (false, App.GetLanguage("GameBinding.Error4"));
         }
 
-        var user = await GetUser();
+        var user = await GetUser(model);
         if (user.Item1 == null)
         {
             return (false, user.Item2);
@@ -988,9 +989,9 @@ public static class GameBinding
         return obj.GenServerPack(local);
     }
 
-    public static async void CopyServer(TopLevel? top, ServerInfoObj obj)
+    public static async void CopyServer(ServerInfoObj obj)
     {
-        await BaseBinding.CopyTextClipboard(top, $"{obj.Name}\n{obj.IP}");
+        await BaseBinding.CopyTextClipboard($"{obj.Name}\n{obj.IP}");
     }
 
     public static Task<bool> ModCheck(List<ModDisplayModel> list)

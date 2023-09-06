@@ -136,7 +136,7 @@ public partial class UsersControl : UserControl, IUserControl
 
     public void SetBaseModel(BaseModel model)
     {
-        var amodel = new UsersControlModel(this);
+        var amodel = new UsersControlModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;
         DataContext = amodel;
     }

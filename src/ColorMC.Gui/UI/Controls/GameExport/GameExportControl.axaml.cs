@@ -21,35 +21,23 @@ public partial class GameExportControl : UserControl, IUserControl
 
     private CancellationTokenSource _cancel = new();
 
-    private readonly GameExportModel _model;
-
     private int _now;
 
-    public GameSettingObj Obj { get; }
+    private GameSettingObj _obj;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
     public UserControl Con => this;
     public string Title =>
-        string.Format(App.GetLanguage("GameExportWindow.Title"), Obj.Name);
+        string.Format(App.GetLanguage("GameExportWindow.Title"), _obj.Name);
 
-    public BaseModel Model => _model;
-
-    public GameExportControl() : this(new() { Empty = true })
-    {
-
-    }
-
-    public GameExportControl(GameSettingObj obj)
+    public GameExportControl()
     {
         InitializeComponent();
+    }
 
-        Obj = obj;
-
-        if (!obj.Empty)
-        {
-            _model = new(this, obj);
-            DataContext = _model;
-        }
+    public GameExportControl(GameSettingObj obj) : this()
+    {
+        _obj = obj;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
@@ -85,13 +73,14 @@ public partial class GameExportControl : UserControl, IUserControl
         _tab2.Opened();
         _tab4.Opened();
 
-        await _model.LoadMod();
-        _model.LoadFile();
+        var model = (DataContext as GameExportModel)!;
+        await model.LoadMod();
+        model.LoadFile();
 
-        var icon = _model.Obj.GetIconFile();
+        var icon = model.Obj.GetIconFile();
         if (File.Exists(icon))
         {
-            Window.Head.SetIcon(new(icon));
+            Window.SetIcon(new(icon));
         }
     }
 
@@ -141,6 +130,12 @@ public partial class GameExportControl : UserControl, IUserControl
 
     public void Closed()
     {
-        App.GameExportWindows.Remove(_model.Obj.UUID);
+        App.GameExportWindows.Remove(_obj.UUID);
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new GameExportModel(model, _obj);
+        DataContext = amodel;
     }
 }

@@ -17,23 +17,12 @@ namespace ColorMC.Gui.UI.Controls.Main;
 
 public partial class MainControl : UserControl, IUserControl
 {
-    private readonly MainModel _model;
-
     public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public UserControl Con => this;
-
     public string Title => App.GetLanguage("MainWindow.Title");
-
-    public BaseModel Model => _model;
 
     public MainControl()
     {
         InitializeComponent();
-
-        _model = new(this);
-        _model.PropertyChanged += Model_PropertyChanged;
-        DataContext = _model;
 
         Grid3.PointerPressed += Grid3_PointerPressed;
         ScrollViewer1.PointerPressed += ScrollViewer1_PointerPressed;
@@ -49,17 +38,14 @@ public partial class MainControl : UserControl, IUserControl
         KeyDown += MainControl_KeyDown;
 
         SizeChanged += MainControl_SizeChanged;
-
-        var config = GuiConfigUtils.Config.Live2D;
-        _model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
-        _model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
     }
 
     private void MainControl_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
         var config = GuiConfigUtils.Config.Live2D;
-        _model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
-        _model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
+        var model = (DataContext as MainModel)!;
+        model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
+        model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
     }
 
     private void Image1_PointerExited(object? sender, PointerEventArgs e)
@@ -86,7 +72,7 @@ public partial class MainControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (_model.GroupEnable)
+                if ((DataContext as MainModel)!.GroupEnable)
                 {
                     App.CrossFade100.Start(null, StackPanel1);
                 }
@@ -100,7 +86,7 @@ public partial class MainControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (_model.SideDisplay)
+                if ((DataContext as MainModel)!.SideDisplay)
                 {
                     App.CrossFade100.Start(null, Grid1);
                 }
@@ -124,7 +110,7 @@ public partial class MainControl : UserControl, IUserControl
     {
         if (e.GetCurrentPoint(ScrollViewer1).Properties.IsLeftButtonPressed)
         {
-            _model.Select(null);
+            (DataContext as MainModel)!.Select(null);
         }
     }
 
@@ -189,7 +175,7 @@ public partial class MainControl : UserControl, IUserControl
 
     public void WindowStateChange(WindowState state)
     {
-        _model.Render = state != WindowState.Minimized;
+        (DataContext as MainModel)!.Render = state != WindowState.Minimized;
 
         if (SystemInfo.Os == OsType.Windows)
         {
@@ -222,15 +208,15 @@ public partial class MainControl : UserControl, IUserControl
 
     private void Item_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        _model.Launch();
+        (DataContext as MainModel)!.Launch();
     }
 
     public async Task<bool> Closing()
     {
-        var windows = App.FindRoot(VisualRoot);
-        if (_model.IsLaunch)
+        var model = (DataContext as MainModel)!;
+        if (model.IsLaunch)
         {
-            var res = await windows.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info34"));
+            var res = await model.Model.ShowWait(App.GetLanguage("MainWindow.Info34"));
             if (res)
             {
                 return false;
@@ -249,53 +235,65 @@ public partial class MainControl : UserControl, IUserControl
 
     public void GameClose(string uuid)
     {
-        _model.GameClose(uuid);
+        (DataContext as MainModel)!.GameClose(uuid);
     }
 
     public void LoadDone()
     {
-        Dispatcher.UIThread.Post(_model.LoadDone);
+        Dispatcher.UIThread.Post((DataContext as MainModel)!.LoadDone);
     }
 
     public void LoadMain()
     {
-        Dispatcher.UIThread.Post(_model.Load);
+        Dispatcher.UIThread.Post((DataContext as MainModel)!.Load);
     }
 
     public void MotdLoad()
     {
-        Dispatcher.UIThread.Post(_model.MotdLoad);
+        Dispatcher.UIThread.Post((DataContext as MainModel)!.MotdLoad);
     }
 
     public void IsDelete()
     {
-        Dispatcher.UIThread.Post(_model.IsDelete);
+        Dispatcher.UIThread.Post((DataContext as MainModel)!.IsDelete);
     }
 
     public void ChangeModel()
     {
-        _model.ChangeModel();
+        (DataContext as MainModel)!.ChangeModel();
     }
 
     public void DeleteModel()
     {
-        _model.DeleteModel();
+        (DataContext as MainModel)!.DeleteModel();
     }
 
     public void ChangeLive2DSize()
     {
         var config = GuiConfigUtils.Config.Live2D;
-        _model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
-        _model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
+        var model = (DataContext as MainModel)!;
+        model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
+        model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
     }
 
     public void ShowMessage(string message)
     {
-        _model.ShowMessage(message);
+        (DataContext as MainModel)!.ShowMessage(message);
     }
 
     public void MirrorChange()
     {
-        _model.Mirror();
+        (DataContext as MainModel)!.Mirror();
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new MainModel(model);
+        amodel.PropertyChanged += Model_PropertyChanged;
+        DataContext = amodel;
+
+        var config = GuiConfigUtils.Config.Live2D;
+        amodel.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
+        amodel.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
     }
 }

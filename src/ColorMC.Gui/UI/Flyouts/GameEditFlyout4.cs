@@ -20,7 +20,7 @@ public class GameEditFlyout4
 
     private void Button2_Click()
     {
-        _model.Top.Delete(_model);
+        _model.Top.DeleteScreenshot(_model);
     }
 
     private void Button1_Click()

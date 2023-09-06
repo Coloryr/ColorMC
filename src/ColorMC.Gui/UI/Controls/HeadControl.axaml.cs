@@ -53,14 +53,14 @@ public partial class HeadControl : UserControl
         if (SystemInfo.Os == OsType.MacOS)
         {
             StackPanel1.SetValue(DockPanel.DockProperty, Dock.Left);
-            Icon.Margin = new Thickness(10, 5, 0, 5);
+            Icons.Margin = new Thickness(10, 5, 0, 5);
             StackPanel1.Children.Add(_buttonClose);
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
         }
         else
         {
-            Icon.Margin = new Thickness(0, 5, 0, 5);
+            Icons.Margin = new Thickness(0, 5, 0, 5);
             StackPanel1.SetValue(DockPanel.DockProperty, Dock.Right);
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);

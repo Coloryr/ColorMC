@@ -18,11 +18,6 @@ public partial class ServerPackControl : UserControl, IUserControl
     private readonly Tab3Control _tab3 = new();
     private readonly Tab4Control _tab4 = new();
 
-    private readonly ServerPackTab3Model _model3;
-    private readonly ServerPackTab4Model _model4;
-
-    private readonly ServerPackModel _model;
-
     private bool _switch1 = false;
 
     private CancellationTokenSource _cancel = new();
@@ -122,15 +117,6 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     public void Closed()
     {
-        _tab1.DataContext = null;
-        _tab2.DataContext = null;
-        _tab3.DataContext = null;
-        _tab4.DataContext = null;
-
-        _tab2.Closed();
-        _tab2.Closed();
-        _tab2.Closed();
-
         App.ServerPackWindows.Remove(_obj.UUID);
     }
 

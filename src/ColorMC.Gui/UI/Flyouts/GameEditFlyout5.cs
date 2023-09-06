@@ -22,7 +22,7 @@ public class GameEditFlyout5
 
     private void Button2_Click()
     {
-        GameBinding.CopyServer(TopLevel.GetTopLevel(_con), _model.ServerItem!);
+        GameBinding.CopyServer(_model.ServerItem!);
     }
 
     private void Button1_Click()

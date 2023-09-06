@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Custom;
 using ColorMC.Gui.UI.Model.Items;
@@ -16,15 +17,12 @@ namespace ColorMC.Gui.UI.Controls.Custom;
 
 public partial class CustomControl : UserControl, IUserControl, IMainTop
 {
+    private CustomPanelControl _ui1;
+    private GameSettingObj? _obj;
     public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public UserControl Con => this;
 
     public string Title { get; set; }
 
-    public BaseModel Model => _model;
-
-    private CustomControlPanelModel _model;
     private string _ui;
 
     public CustomControl()
@@ -60,8 +58,8 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
     private void Load()
     {
         var config = ConfigBinding.GetAllConfig();
-        var obj = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
-        if (obj == null)
+        _obj = GameBinding.GetGame(config.Item2.ServerCustom?.GameName);
+        if (_obj == null)
         {
             Grid1.Children.Add(new Label()
             {
@@ -76,27 +74,18 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
         var ui1 = AvaloniaRuntimeXamlLoader.Parse<CustomPanelControl>(File.ReadAllText(_ui));
 
-        _model = new CustomControlPanelModel(this, obj);
-
-        ui1.DataContext = _model;
-
         Title = ui1.Title;
         Window.SetTitle(Title);
 
         Grid1.Children.Add(ui1);
-
-        _model.App_UserEdit();
-        _model.MotdLoad();
-
-        BaseBinding.ServerPackCheck(_model, obj);
     }
 
     public async Task<bool> Closing()
     {
-        var windows = App.FindRoot(VisualRoot);
-        if (_model.IsLaunch)
+        var model = (DataContext as CustomControlPanelModel)!;
+        if (model.IsLaunch)
         {
-            var res = await windows.OkInfo.ShowWait(App.GetLanguage("MainWindow.Info34"));
+            var res = await model.Model.ShowWait(App.GetLanguage("MainWindow.Info34"));
             if (res)
             {
                 return false;
@@ -115,7 +104,7 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
 
     public void Launch(GameItemModel obj)
     {
-        _model.Launch(obj);
+        (DataContext as CustomControlPanelModel)!.Launch(obj);
     }
 
     public void Select(GameItemModel? model)
@@ -126,5 +115,20 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
     public void EditGroup(GameItemModel model)
     {
 
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        if (_obj == null)
+        {
+            return;
+        }
+        var amodel = new CustomControlPanelModel(this, model, _obj);
+
+        _ui1.DataContext = amodel;
+        amodel.App_UserEdit();
+        amodel.MotdLoad();
+
+        BaseBinding.ServerPackCheck(model, _obj);
     }
 }

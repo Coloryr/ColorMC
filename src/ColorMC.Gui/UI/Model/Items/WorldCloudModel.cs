@@ -3,16 +3,16 @@ using ColorMC.Gui.UI.Windows;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class WorldCloudModel : BaseModel
+public partial class WorldCloudModel : TopModel
 {
     public WorldObj World { get; init; }
 
-    public WorldCloudModel(IUserControl con, WorldObj world) : base(con)
+    public WorldCloudModel(BaseModel model, WorldObj world) : base(model)
     {
         World = world;
     }
 
-    public override void Close()
+    protected override void Close()
     {
 
     }

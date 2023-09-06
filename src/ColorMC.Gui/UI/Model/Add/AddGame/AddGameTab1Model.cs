@@ -4,6 +4,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -174,7 +175,8 @@ public partial class AddGameModel : TopModel
         }
         else
         {
-            App.MainWindow?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
+            var model = (App.MainWindow?.DataContext as MainModel);
+            model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
             App.MainWindow?.LoadMain();
 
             WindowClose();
@@ -274,7 +276,8 @@ public partial class AddGameModel : TopModel
         }
         else
         {
-            App.MainWindow?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
+            var model = (App.MainWindow?.DataContext as MainModel);
+            model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
             App.MainWindow?.LoadMain();
             WindowClose();
         }
@@ -297,7 +300,8 @@ public partial class AddGameModel : TopModel
         }
         else
         {
-            App.MainWindow?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
+            var model = (App.MainWindow?.DataContext as MainModel);
+            model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info7"));
             App.MainWindow?.LoadMain();
             WindowClose();
         }

@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Custom;
 
-public partial class CustomControlPanelModel : BaseModel
+public partial class CustomControlPanelModel : TopModel
 {
     private readonly IMainTop _top;
 
@@ -29,10 +29,10 @@ public partial class CustomControlPanelModel : BaseModel
     [ObservableProperty]
     private (string, ushort) _server;
 
-    public CustomControlPanelModel(CustomControl con, GameSettingObj obj) : base(con)
+    public CustomControlPanelModel(CustomControl con, BaseModel model, GameSettingObj obj) : base(model)
     {
         _top = con;
-        _game = new(con, con, obj);
+        _game = new(model, con, obj);
 
         App.UserEdit += App_UserEdit;
         App.SkinLoad += App_SkinLoad;
@@ -76,30 +76,30 @@ public partial class CustomControlPanelModel : BaseModel
         }
 
         IsLaunch = true;
-        Progress(App.GetLanguage("MainWindow.Info3"));
+        Model.Progress(App.GetLanguage("MainWindow.Info3"));
         var item = Game;
         var game = item.Obj;
         item.IsLaunch = false;
         item.IsLoad = true;
-        Notify(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
-        var res = await GameBinding.Launch(Window, game);
-        Window.Head.Title1 = null;
+        Model.Notify(App.GetLanguage(string.Format(App.GetLanguage("MainWindow.Info28"), game.Name)));
+        var res = await GameBinding.Launch(Model, game);
+        Model.Title1 = null;
         item.IsLoad = false;
-        await ProgressCloseAsync();
+        await Model.ProgressCloseAsync();
         if (res.Item1 == false)
         {
-            Show(res.Item2!);
+            Model.Show(res.Item2!);
         }
         else
         {
-            Notify(App.GetLanguage("MainWindow.Info2"));
+            Model.Notify(App.GetLanguage("MainWindow.Info2"));
 
             if (SystemInfo.Os != OsType.Android)
             {
                 item.IsLaunch = true;
             }
 
-            Progress(App.GetLanguage("MainWindow.Info26"));
+            Model.Progress(App.GetLanguage("MainWindow.Info26"));
         }
         IsLaunch = false;
     }
@@ -133,8 +133,8 @@ public partial class CustomControlPanelModel : BaseModel
         Server = (config.Item2.ServerCustom.IP, config.Item2.ServerCustom.Port);
     }
 
-    public override void Close()
+    protected override void Close()
     {
-
+        _game = null;
     }
 }

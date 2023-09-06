@@ -106,9 +106,6 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public void Closed()
     {
-        (DataContext as AddGameModel)?.Close();
-        DataContext = null;
-
         ColorMCCore.PackState = null;
         ColorMCCore.PackUpdate = null;
         ColorMCCore.GameOverwirte = null;

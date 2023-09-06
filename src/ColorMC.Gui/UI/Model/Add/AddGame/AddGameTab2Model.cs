@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -125,7 +126,8 @@ public partial class AddGameModel : TopModel
             return;
         }
 
-        App.MainWindow?.Model.Notify(App.GetLanguage("AddGameWindow.Tab2.Info5"));
+        var model = (App.MainWindow?.DataContext as MainModel);
+        model?.Model.Notify(App.GetLanguage("AddGameWindow.Tab2.Info5"));
         App.MainWindow?.LoadMain();
         WindowClose();
     }

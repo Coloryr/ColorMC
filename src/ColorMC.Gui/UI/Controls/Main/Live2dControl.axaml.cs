@@ -42,7 +42,6 @@ public partial class Live2dControl : UserControl
     {
         if (DataContext is MainModel model)
         {
-            _model = model;
             model.PropertyChanged += Model_PropertyChanged;
         }
     }

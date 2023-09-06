@@ -9,7 +9,7 @@ namespace ColorMC.Gui.UI.Flyouts;
 public class GameEditFlyout3
 {
     private readonly ResourcepackObj _obj;
-    private readonly GameEditTab8Model _top;
+    private readonly GameEditModel _top;
 
     public GameEditFlyout3(Control con, ResourcePackModel model)
     {
@@ -25,7 +25,7 @@ public class GameEditFlyout3
 
     private void Button2_Click()
     {
-        _top.Delete(_obj);
+        _top.DeleteResource(_obj);
     }
 
     private void Button1_Click()

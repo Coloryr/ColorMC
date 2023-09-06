@@ -13,7 +13,7 @@ using System.Timers;
 
 namespace ColorMC.Gui.UI.Model.GameLog;
 
-public partial class GameLogTabModel : GameModel
+public partial class GameLogModel : GameModel
 {
     public ObservableCollection<string> FileList { get; init; } = new();
 
@@ -33,7 +33,7 @@ public partial class GameLogTabModel : GameModel
 
     private readonly Timer _timer;
 
-    public GameLogTabModel(BaseModel model, GameSettingObj obj) : base(model, obj)
+    public GameLogModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
         Obj = obj;
 

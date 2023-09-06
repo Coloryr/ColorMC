@@ -39,7 +39,7 @@ public partial class Tab2Control : UserControl
 
     public void OnDataContext_Change(object? sender, EventArgs e)
     {
-        if (DataContext is SettingTab2Model model)
+        if (DataContext is SettingModel model)
         {
             model.PropertyChanged += Tab2Control_PropertyChanged;
         }

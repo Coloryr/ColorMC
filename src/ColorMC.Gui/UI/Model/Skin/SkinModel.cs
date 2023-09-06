@@ -342,4 +342,9 @@ public partial class SkinModel : TopModel
     {
         OnPropertyChanged("SkinLoadDone");
     }
+
+    protected override void Close()
+    {
+        
+    }
 }
