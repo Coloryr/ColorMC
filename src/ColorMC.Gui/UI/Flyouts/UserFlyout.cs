@@ -8,8 +8,8 @@ namespace ColorMC.Gui.UI.Flyouts;
 public class UserFlyout
 {
     private readonly UserDisplayObj _obj;
-    private readonly UsersModel _model;
-    public UserFlyout(Control con, UsersModel model)
+    private readonly UsersControlModel _model;
+    public UserFlyout(Control con, UsersControlModel model)
     {
         _model = model;
         _obj = model.Item!;

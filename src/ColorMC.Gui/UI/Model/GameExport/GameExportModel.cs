@@ -79,14 +79,14 @@ public partial class GameExportModel : GameModel
 
     public readonly List<ModExportModel> Items = new();
 
-    public GameExportModel(IUserControl con, GameSettingObj obj) : base(con, obj)
+    public GameExportModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
 
     }
 
     async partial void OnTypeChanged(PackType value)
     {
-        Progress(App.GetLanguage("GameExportWindow.Info6"));
+        Model.Progress(App.GetLanguage("GameExportWindow.Info6"));
 
         CfEx = value == PackType.CurseForge;
         MoEx = value == PackType.Modrinth;
@@ -105,7 +105,7 @@ public partial class GameExportModel : GameModel
             await Load2();
         }
 
-        ProgressClose();
+        Model.ProgressClose();
     }
 
     partial void OnTextChanged(string value)
@@ -182,14 +182,14 @@ public partial class GameExportModel : GameModel
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Version))
             {
-                Show(App.GetLanguage("GameExportWindow.Error2"));
+                Model.Show(App.GetLanguage("GameExportWindow.Error2"));
                 return;
             }
         }
 
-        Progress(App.GetLanguage("GameExportWindow.Info1"));
-        var file = await PathBinding.Export(Window, this);
-        ProgressClose();
+        Model.Progress(App.GetLanguage("GameExportWindow.Info1"));
+        var file = await PathBinding.Export(this);
+        Model.ProgressClose();
         if (file == null)
         {
             return;
@@ -197,11 +197,11 @@ public partial class GameExportModel : GameModel
 
         if (file == false)
         {
-            Show(App.GetLanguage("GameExportWindow.Error1"));
+            Model.Show(App.GetLanguage("GameExportWindow.Error1"));
         }
         else
         {
-            Notify(App.GetLanguage("GameExportWindow.Info2"));
+            Model.Notify(App.GetLanguage("GameExportWindow.Info2"));
         }
     }
 
@@ -309,9 +309,11 @@ public partial class GameExportModel : GameModel
 
     }
 
-    public override void Close()
+    protected override void Close()
     {
         Mods.Clear();
         OtherFiles.Clear();
+        Files = null!;
+        Source = null!;
     }
 }

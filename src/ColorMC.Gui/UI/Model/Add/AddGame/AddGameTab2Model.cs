@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : BaseModel
+public partial class AddGameModel : TopModel
 {
     public List<string> PackTypeList { get; init; } = LanguageBinding.GetPackType();
 
@@ -36,12 +36,12 @@ public partial class AddGameModel : BaseModel
     {
         if (BaseBinding.IsDownload)
         {
-            Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
+            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error4"));
             return;
         }
         if (Type == -1)
         {
-            Show(App.GetLanguage("AddGameWindow.Tab2.Error3"));
+            Model.Show(App.GetLanguage("AddGameWindow.Tab2.Error3"));
             return;
         }
 
@@ -68,7 +68,7 @@ public partial class AddGameModel : BaseModel
     [RelayCommand]
     public async Task SelectPack()
     {
-        var res = await PathBinding.SelectFile(Window, FileType.ModPack);
+        var res = await PathBinding.SelectFile(FileType.ModPack);
         if (!string.IsNullOrWhiteSpace(res))
         {
             ZipLocal = res;
@@ -77,27 +77,27 @@ public partial class AddGameModel : BaseModel
 
     private void PackUpdate(int size, int now)
     {
-        ProgressUpdate((double)now / size);
+        Model.ProgressUpdate((double)now / size);
     }
 
     private void PackState(CoreRunState state)
     {
         if (state == CoreRunState.Read)
         {
-            Progress(App.GetLanguage("AddGameWindow.Tab2.Info1"));
+            Model.Progress(App.GetLanguage("AddGameWindow.Tab2.Info1"));
         }
         else if (state == CoreRunState.Init)
         {
-            ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info2"));
+            Model.ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info2"));
         }
         else if (state == CoreRunState.GetInfo)
         {
-            ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info3"));
+            Model.ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info3"));
         }
         else if (state == CoreRunState.Download)
         {
-            ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info4"));
-            ProgressUpdate(-1);
+            Model.ProgressUpdate(App.GetLanguage("AddGameWindow.Tab2.Info4"));
+            Model.ProgressUpdate(-1);
         }
         else if (state == CoreRunState.End)
         {
@@ -112,22 +112,22 @@ public partial class AddGameModel : BaseModel
 
         if (string.IsNullOrWhiteSpace(ZipLocal))
         {
-            Show(App.GetLanguage("AddGameWindow.Tab2.Error2"));
+            Model.Show(App.GetLanguage("AddGameWindow.Tab2.Error2"));
             return;
         }
 
-        Progress(App.GetLanguage("AddGameWindow.Tab2.Info6"));
+        Model.Progress(App.GetLanguage("AddGameWindow.Tab2.Info6"));
         var res = await GameBinding.AddPack(ZipLocal, type, Name, Group);
-        ProgressClose();
+        Model.ProgressClose();
         if (!res.Item1)
         {
-            Show(App.GetLanguage("AddGameWindow.Tab2.Error1"));
+            Model.Show(App.GetLanguage("AddGameWindow.Tab2.Error1"));
             return;
         }
 
-        App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Info5"));
+        App.MainWindow?.Model.Notify(App.GetLanguage("AddGameWindow.Tab2.Info5"));
         App.MainWindow?.LoadMain();
-        Window.Close();
+        WindowClose();
     }
 
     public void AddFile(string file)
@@ -137,10 +137,10 @@ public partial class AddGameModel : BaseModel
 
     private async Task<bool> Tab2GameOverwirte(GameSettingObj obj)
     {
-        ProgressClose();
-        var test = await ShowWait(
+        Model.ProgressClose();
+        var test = await Model.ShowWait(
             string.Format(App.GetLanguage("AddGameWindow.Info2"), obj.Name));
-        Progress();
+        Model.Progress();
         return test;
     }
 }

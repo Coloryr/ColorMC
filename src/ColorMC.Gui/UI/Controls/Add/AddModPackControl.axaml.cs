@@ -14,21 +14,11 @@ public partial class AddModPackControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public UserControl Con => this;
-
     public string Title => App.GetLanguage("AddModPackWindow.Title");
-
-    public BaseModel Model => _model;
-
-    private readonly AddModPackControlModel _model;
 
     public AddModPackControl()
     {
         InitializeComponent();
-
-        _model = new(this);
-        _model.PropertyChanged += Model_PropertyChanged;
-        DataContext = _model;
 
         DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
 
@@ -41,7 +31,7 @@ public partial class AddModPackControl : UserControl, IUserControl
     {
         if (e.Key == Key.F5)
         {
-            _model.Reload1();
+            (DataContext as AddModPackControlModel)!.Reload1();
         }
     }
 
@@ -55,7 +45,7 @@ public partial class AddModPackControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (_model.Display)
+                if ((DataContext as AddModPackControlModel)!.Display)
                 {
                     App.CrossFade300.Start(null, Grid1);
                 }
@@ -65,6 +55,10 @@ public partial class AddModPackControl : UserControl, IUserControl
                 }
             });
         }
+        else if (e.PropertyName == "WindowClose")
+        {
+            Window.Close();
+        }
     }
 
     private async void Grid1_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -72,7 +66,7 @@ public partial class AddModPackControl : UserControl, IUserControl
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
         {
-            await _model.Download();
+            await (DataContext as AddModPackControlModel)!.Download();
             e.Handled = true;
         }
     }
@@ -81,13 +75,13 @@ public partial class AddModPackControl : UserControl, IUserControl
     {
         if (e.Key == Key.Enter)
         {
-            _model.Reload();
+            (DataContext as AddModPackControlModel)!.Reload();
         }
     }
 
     private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        await _model.Download();
+        await (DataContext as AddModPackControlModel)!.Download();
     }
 
     public void Closed()
@@ -101,6 +95,13 @@ public partial class AddModPackControl : UserControl, IUserControl
 
         DataGridFiles.SetFontColor();
 
-        _model.Source = 0;
+        (DataContext as AddModPackControlModel)!.Source = 0;
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new AddModPackControlModel(model);
+        amodel.PropertyChanged += Model_PropertyChanged;
+        DataContext = amodel;
     }
 }

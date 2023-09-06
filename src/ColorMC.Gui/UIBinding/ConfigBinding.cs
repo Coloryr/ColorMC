@@ -139,7 +139,7 @@ public static class ConfigBinding
     /// <param name="dir"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task SetBackPic(string dir, int data)
+    public static async Task SetBackPic(string? dir, int data)
     {
         GuiConfigUtils.Config.BackEffect = data;
         GuiConfigUtils.Config.BackImage = dir;

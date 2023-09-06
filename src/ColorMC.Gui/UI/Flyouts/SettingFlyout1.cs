@@ -11,8 +11,8 @@ namespace ColorMC.Gui.UI.Flyouts;
 public class SettingFlyout1
 {
     private readonly IEnumerable<JavaDisplayObj> _list;
-    private readonly SettingTab5Model _model;
-    public SettingFlyout1(Control con, SettingTab5Model model, IList list)
+    private readonly SettingModel _model;
+    public SettingFlyout1(Control con, SettingModel model, IList list)
     {
         _model = model;
         _list = list.Cast<JavaDisplayObj>();
@@ -30,6 +30,6 @@ public class SettingFlyout1
             JavaBinding.RemoveJava(item.Name);
         }
 
-        _model.Load();
+        _model.LoadJava();
     }
 }

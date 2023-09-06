@@ -16,49 +16,44 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab5Model : BaseModel
+public partial class SettingModel : TopModel
 {
     [ObservableProperty]
-    private string? _name;
+    private string? _javaName;
     [ObservableProperty]
-    private string? _local;
+    private string? _javaLocal;
 
     [ObservableProperty]
-    private JavaDisplayObj _item;
+    private JavaDisplayObj _javaItem;
 
     public ObservableCollection<JavaDisplayObj> JavaList { get; init; } = new();
 
-    public SettingTab5Model(IUserControl con) : base(con)
-    {
-
-    }
-
     [RelayCommand]
-    public async Task ZipAdd()
+    public async Task AddJavaZip()
     {
-        var file = await PathBinding.SelectFile(Window, FileType.JavaZip);
+        var file = await PathBinding.SelectFile(FileType.JavaZip);
         if (file == null)
         {
             return;
         }
 
-        Progress(App.GetLanguage("SettingWindow.Tab5.Info7"));
+        Model.Progress(App.GetLanguage("SettingWindow.Tab5.Info7"));
         string temp = App.GetLanguage("Gui.Info27");
         ColorMCCore.UnZipItem = (a, b, c) =>
         {
-            Dispatcher.UIThread.Post(() => ProgressUpdate($"{temp} {a} {b}/{c}"));
+            Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
         };
         var res = await JavaBinding.AddJavaZip(file);
         ColorMCCore.UnZipItem = null;
-        ProgressClose();
+        Model.ProgressClose();
         if (!res.Item1)
         {
-            Show(res.Item2!);
+            Model.Show(res.Item2!);
         }
         else
         {
-            Notify(App.GetLanguage("SettingWindow.Tab5.Info6"));
-            Load();
+            Model.Notify(App.GetLanguage("SettingWindow.Tab5.Info6"));
+            LoadJava();
         }
     }
 
@@ -69,7 +64,7 @@ public partial class SettingTab5Model : BaseModel
     }
 
     [RelayCommand]
-    public void OpenPath()
+    public void OpenJavaPath()
     {
         PathBinding.OpPath(PathType.JavaPath);
     }
@@ -77,28 +72,28 @@ public partial class SettingTab5Model : BaseModel
     [RelayCommand]
     public void AddJava()
     {
-        if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Local))
+        if (string.IsNullOrWhiteSpace(JavaName) || string.IsNullOrWhiteSpace(JavaLocal))
         {
-            Show(App.GetLanguage("Gui.Error8"));
+            Model.Show(App.GetLanguage("Gui.Error8"));
             return;
         }
 
         try
         {
-            Progress(App.GetLanguage("SettingWindow.Tab5.Info1"));
+            Model.Progress(App.GetLanguage("SettingWindow.Tab5.Info1"));
 
-            var res = JavaBinding.AddJava(Name, Local);
-            ProgressClose();
+            var res = JavaBinding.AddJava(JavaName, JavaLocal);
+            Model.ProgressClose();
             if (res.Item1 == null)
             {
                 Show(res.Item2!);
                 return;
             }
 
-            Name = "";
-            Local = "";
+            JavaName = "";
+            JavaLocal = "";
 
-            Load();
+            LoadJava();
         }
         finally
         {
@@ -107,61 +102,51 @@ public partial class SettingTab5Model : BaseModel
     }
 
     [RelayCommand]
-    public async Task Select()
+    public async Task SelectJava()
     {
-        var file = await PathBinding.SelectFile(Window, FileType.Java);
+        var file = await PathBinding.SelectFile(FileType.Java);
 
         if (file != null)
         {
-            Local = file;
+            JavaLocal = file;
             var info = JavaBinding.GetJavaInfo(file);
             if (info != null)
             {
-                Name = info.Type + "_" + info.Version;
+                JavaName = info.Type + "_" + info.Version;
             }
         }
     }
 
     [RelayCommand]
-    public void OpenFile()
+    public void OpenJavaFile()
     {
         var list = JavaBinding.FindJava();
         if (list == null)
         {
-            Show(App.GetLanguage("SettingWindow.Tab5.Error1"));
+            Model.Show(App.GetLanguage("SettingWindow.Tab5.Error1"));
             return;
         }
 
         list.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
-        Load();
-        Notify(App.GetLanguage("SettingWindow.Tab5.Info4"));
+        LoadJava();
+        Model.Notify(App.GetLanguage("SettingWindow.Tab5.Info4"));
     }
 
     [RelayCommand]
-    public void Load()
+    public void LoadJava()
     {
         JavaList.Clear();
         JavaList.AddRange(JavaBinding.GetJavas());
     }
 
     [RelayCommand]
-    public async Task Delete()
+    public async Task DeleteJava()
     {
-        var res = await ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
+        var res = await Model.ShowWait(App.GetLanguage("SettingWindow.Tab5.Info3"));
         if (!res)
             return;
 
         JavaBinding.RemoveAllJava();
-        Load();
-    }
-
-    public void Flyout(Control con, IList list)
-    {
-        _ = new SettingFlyout1(con, this, list);
-    }
-
-    public override void Close()
-    {
-        JavaList.Clear();
+        LoadJava();
     }
 }

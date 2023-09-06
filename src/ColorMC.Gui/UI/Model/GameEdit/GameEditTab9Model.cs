@@ -8,24 +8,20 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab9Model : GameModel
+public partial class GameEditModel : GameModel
 {
     public ObservableCollection<ScreenshotModel> ScreenshotList { get; init; } = new();
 
-    private ScreenshotModel _last;
-    public GameEditTab9Model(IUserControl con, GameSettingObj obj) : base(con, obj)
-    {
-
-    }
+    private ScreenshotModel _lastScreenshot;
 
     [RelayCommand]
-    public void Load()
+    public void LoadScreenshot()
     {
-        Progress(App.GetLanguage("GameEditWindow.Tab9.Info3"));
+        Model.Progress(App.GetLanguage("GameEditWindow.Tab9.Info3"));
         ScreenshotList.Clear();
 
         var res = GameBinding.GetScreenshots(Obj);
-        ProgressClose();
+        Model.ProgressClose();
         foreach (var item in res)
         {
             ScreenshotList.Add(new(this, item));
@@ -33,15 +29,15 @@ public partial class GameEditTab9Model : GameModel
     }
 
     [RelayCommand]
-    public void Open()
+    public void OpenScreenshot()
     {
         PathBinding.OpPath(Obj, PathType.ScreenshotsPath);
     }
 
     [RelayCommand]
-    public async Task Clear()
+    public async Task ClearScreenshot()
     {
-        var res = await ShowWait(
+        var res = await Model.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab9.Info2"), Obj.Name));
         if (!res)
         {
@@ -49,13 +45,13 @@ public partial class GameEditTab9Model : GameModel
         }
 
         GameBinding.ClearScreenshots(Obj);
-        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        Load();
+        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        LoadScreenshot();
     }
 
-    public async void Delete(ScreenshotModel obj)
+    public async void DeleteScreenshot(ScreenshotModel obj)
     {
-        var res = await ShowWait(
+        var res = await Model.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab9.Info1"), obj.Screenshot));
         if (!res)
         {
@@ -63,27 +59,17 @@ public partial class GameEditTab9Model : GameModel
         }
 
         GameBinding.DeleteScreenshot(obj.Screenshot);
-        Window.NotifyInfo.Show(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        Load();
+        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        LoadScreenshot();
     }
 
-    public void SetSelect(ScreenshotModel item)
+    public void SetSelectScreenshot(ScreenshotModel item)
     {
-        if (_last != null)
+        if (_lastScreenshot != null)
         {
-            _last.IsSelect = false;
+            _lastScreenshot.IsSelect = false;
         }
-        _last = item;
-        _last.IsSelect = true;
-    }
-
-    public override void Close()
-    {
-        foreach (var item in ScreenshotList)
-        {
-            item.Close();
-        }
-        ScreenshotList.Clear();
-        _last = null;
+        _lastScreenshot = item;
+        _lastScreenshot.IsSelect = true;
     }
 }

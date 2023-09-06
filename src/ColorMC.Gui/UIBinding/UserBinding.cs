@@ -276,7 +276,7 @@ public static class UserBinding
         App.OnSkinLoad();
     }
 
-    public static async void EditSkin(IBaseWindow window)
+    public static async void EditSkin()
     {
         var obj = GetLastUser();
         if (obj == null)
@@ -287,7 +287,7 @@ public static class UserBinding
         switch (obj.AuthType)
         {
             case AuthType.Offline:
-                var file = await PathBinding.SelectFile(window, FileType.Head);
+                var file = await PathBinding.SelectFile(FileType.Head);
                 if (file != null)
                 {
                     obj.SaveSkin(file);

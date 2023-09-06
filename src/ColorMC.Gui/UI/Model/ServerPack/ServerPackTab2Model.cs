@@ -12,88 +12,83 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackTab2Model : ServerPackBaseModel
+public partial class ServerPackModel : TopModel
 {
     public ObservableCollection<ServerPackItemModel> ModList { get; init; } = new();
 
     [ObservableProperty]
-    private ServerPackItemModel _item;
-
-    public ServerPackTab2Model(IUserControl con, ServerPackObj obj) : base(con, obj)
-    {
-
-    }
+    private ServerPackItemModel _modItem;
 
     [RelayCommand]
-    public void SelectAll()
+    public void SelectAllMod()
     {
         foreach (var item in ModList)
         {
             item.Check = true;
-            ItemEdit(item);
+            ModItemEdit(item);
         }
     }
 
     [RelayCommand]
-    public void UnSelectAll()
+    public void UnSelectAllMod()
     {
         foreach (var item in ModList)
         {
             item.Check = false;
-            ItemEdit(item);
+            ModItemEdit(item);
         }
     }
 
-    public void ItemEdit()
+    public void ModItemEdit()
     {
-        ItemEdit(Item);
+        ModItemEdit(ModItem);
     }
 
-    private void ItemEdit(ServerPackItemModel obj)
+    private void ModItemEdit(ServerPackItemModel model)
     {
-        var item = Obj.Mod?.FirstOrDefault(a => a.Sha1 == obj.Sha1
-                        && a.File == obj.FileName);
-        if (obj.Check)
+        var item = Obj.Mod?.FirstOrDefault(a => a.Sha1 == model.Sha1
+                        && a.File == model.FileName);
+        if (model.Check)
         {
             SourceType? source = null;
-            if (obj.Source == SourceType.CurseForge.GetName())
+            if (model.Source == SourceType.CurseForge.GetName())
             {
                 source = SourceType.CurseForge;
             }
-            else if (obj.Source == SourceType.Modrinth.GetName())
+            else if (model.Source == SourceType.Modrinth.GetName())
             {
                 source = SourceType.Modrinth;
             }
 
             if (item != null)
             {
-                item.Projcet = obj.PID;
-                item.FileId = obj.FID;
+                item.Projcet = model.PID;
+                item.FileId = model.FID;
                 item.Source = source;
-                item.Sha1 = obj.Sha1;
-                item.File = obj.FileName;
+                item.Sha1 = model.Sha1;
+                item.File = model.FileName;
             }
             else
             {
                 Obj.Mod ??= new();
                 item = new()
                 {
-                    Projcet = obj.PID,
-                    FileId = obj.FID,
+                    Projcet = model.PID,
+                    FileId = model.FID,
                     Source = source,
-                    Sha1 = obj.Sha1,
-                    File = obj.FileName
+                    Sha1 = model.Sha1,
+                    File = model.FileName
                 };
                 Obj.Mod.Add(item);
             }
 
-            obj.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Mod, Obj.Url);
+            model.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Mod, Obj.Url);
         }
         else
         {
             if (item != null)
             {
-                obj.Url = "";
+                model.Url = "";
                 Obj.Mod?.Remove(item);
             }
         }
@@ -101,7 +96,7 @@ public partial class ServerPackTab2Model : ServerPackBaseModel
         GameBinding.SaveServerPack(Obj);
     }
 
-    public async void Load()
+    public async void LoadMod()
     {
         ModList.Clear();
         var mods = await GameBinding.GetGameMods(Obj.Game);
@@ -149,10 +144,5 @@ public partial class ServerPackTab2Model : ServerPackBaseModel
         });
 
         GameBinding.SaveServerPack(Obj);
-    }
-
-    public override void Close()
-    {
-        ModList.Clear();
     }
 }

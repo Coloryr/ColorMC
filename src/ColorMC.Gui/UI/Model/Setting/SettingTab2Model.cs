@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab2Model : BaseModel
+public partial class SettingModel : TopModel
 {
     public ObservableCollection<FontDisplayObj> FontList { get; init; } = new();
     public List<string> TranTypeList { get; init; } = LanguageBinding.GetWindowTranTypes();
@@ -90,9 +90,9 @@ public partial class SettingTab2Model : BaseModel
     [ObservableProperty]
     private int _rgbV2;
     [ObservableProperty]
-    private int _width;
+    private int _l2dWidth;
     [ObservableProperty]
-    private int _height;
+    private int _l2dHeight;
     [ObservableProperty]
     private int _buttonCornerRadius;
     [ObservableProperty]
@@ -107,14 +107,6 @@ public partial class SettingTab2Model : BaseModel
     private string _live2DCoreState;
 
     private bool _load = false;
-
-    public SettingTab2Model(IUserControl con) : base(con)
-    {
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            _enableWindowMode = false;
-        }
-    }
 
     partial void OnAmFadeChanged(bool value)
     {
@@ -156,20 +148,20 @@ public partial class SettingTab2Model : BaseModel
         ConfigBinding.SetMainWindow(MainWindowMirror);
     }
 
-    partial void OnWidthChanged(int value)
+    partial void OnL2dWidthChanged(int value)
     {
         if (_load)
             return;
 
-        ConfigBinding.SetLive2DSize(Width, Height);
+        ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight);
     }
 
-    partial void OnHeightChanged(int value)
+    partial void OnL2dHeightChanged(int value)
     {
         if (_load)
             return;
 
-        ConfigBinding.SetLive2DSize(Width, Height);
+        ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight);
     }
 
     partial void OnLightFont2ColorChanged(Color value)
@@ -229,7 +221,7 @@ public partial class SettingTab2Model : BaseModel
 
     partial void OnEnableWindowTranChanged(bool value)
     {
-        Save1();
+        SaveWindowSetting();
     }
 
     partial void OnEnableRGBChanged(bool value)
@@ -288,9 +280,9 @@ public partial class SettingTab2Model : BaseModel
 
         if (value)
         {
-            Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
+            Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
             await ConfigBinding.SetBackLimit(value, PicResize);
-            ProgressClose();
+            Model.ProgressClose();
         }
     }
 
@@ -316,14 +308,14 @@ public partial class SettingTab2Model : BaseModel
         if (_load)
             return;
 
-        Progress(App.GetLanguage("SettingWindow.Tab2.Info1"));
+        Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info1"));
         ConfigBinding.SetLanguage(value);
-        ProgressClose();
+        Model.ProgressClose();
     }
 
     partial void OnWindowTranTypeChanged(int value)
     {
-        Save1();
+        SaveWindowSetting();
     }
 
     [RelayCommand]
@@ -359,24 +351,24 @@ public partial class SettingTab2Model : BaseModel
         DarkFont1Color = Color.Parse(ColorSel.ButtonDarkFontStr);
         DarkFont2Color = Color.Parse(ColorSel.FontDarkColorStr);
         _load = false;
-        Notify(App.GetLanguage("SettingWindow.Tab2.Info4"));
+        Model.Notify(App.GetLanguage("SettingWindow.Tab2.Info4"));
     }
 
     [RelayCommand]
     public async Task SetPicSize()
     {
-        Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackLimit(EnablePicResize, PicResize);
-        ProgressClose();
+        Model.ProgressClose();
 
-        Notify(App.GetLanguage("Gui.Info3"));
+        Model.Notify(App.GetLanguage("Gui.Info3"));
     }
 
     [RelayCommand]
     public void SetPicTran()
     {
         ConfigBinding.SetBackTran(PicTran);
-        Notify(App.GetLanguage("Gui.Info3"));
+        Model.Notify(App.GetLanguage("Gui.Info3"));
     }
 
     [RelayCommand]
@@ -390,7 +382,7 @@ public partial class SettingTab2Model : BaseModel
     [RelayCommand]
     public async Task OpenPic()
     {
-        var file = await PathBinding.SelectFile(Window, FileType.Pic);
+        var file = await PathBinding.SelectFile(FileType.Pic);
 
         if (file != null)
         {
@@ -414,11 +406,11 @@ public partial class SettingTab2Model : BaseModel
         //    Show(App.GetLanguage("SettingWindow.Tab2.Error1"));
         //    return;
         //}
-        Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackPic(Pic, PicEffect);
-        ProgressClose();
+        Model.ProgressClose();
 
-        Notify(App.GetLanguage("Gui.Info3"));
+        Model.Notify(App.GetLanguage("Gui.Info3"));
     }
 
     [RelayCommand]
@@ -432,7 +424,7 @@ public partial class SettingTab2Model : BaseModel
     [RelayCommand]
     public async Task OpenLive2D()
     {
-        var file = await PathBinding.SelectFile(Window, FileType.Live2D);
+        var file = await PathBinding.SelectFile(FileType.Live2D);
 
         if (file != null)
         {
@@ -453,17 +445,17 @@ public partial class SettingTab2Model : BaseModel
 
         if (string.IsNullOrWhiteSpace(Live2DModel))
         {
-            Show(App.GetLanguage("SettingWindow.Tab2.Error3"));
+            Model.Show(App.GetLanguage("SettingWindow.Tab2.Error3"));
             return;
         }
-        Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
+        Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
         ConfigBinding.SetLive2D(Live2DModel);
-        ProgressClose();
+        Model.ProgressClose();
 
-        Notify(App.GetLanguage("Gui.Info3"));
+        Model.Notify(App.GetLanguage("Gui.Info3"));
     }
 
-    public void Load()
+    public void LoadUISetting()
     {
         _load = true;
 
@@ -526,8 +518,8 @@ public partial class SettingTab2Model : BaseModel
             AmFade = con.Style.AmFade;
 
             Live2DModel = con.Live2D.Model;
-            Height = con.Live2D.Height;
-            Width = con.Live2D.Width;
+            L2dHeight = con.Live2D.Height;
+            L2dWidth = con.Live2D.Width;
         }
         if (config.Item1 is { } con1)
         {
@@ -567,18 +559,13 @@ public partial class SettingTab2Model : BaseModel
             DarkFont1Color.ToString(), DarkFont2Color.ToString());
     }
 
-    private void Save1()
+    private void SaveWindowSetting()
     {
         if (_load)
             return;
 
-        Progress(App.GetLanguage("SettingWindow.Tab2.Info5"));
+        Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetWindowTran(EnableWindowTran, WindowTranType);
-        ProgressClose();
-    }
-
-    public override void Close()
-    {
-        FontList.Clear();
+        Model.ProgressClose();
     }
 }

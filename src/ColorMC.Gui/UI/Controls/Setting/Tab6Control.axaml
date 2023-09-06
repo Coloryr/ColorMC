@@ -8,7 +8,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="550"
     d:DesignWidth="800"
-    x:DataType="model:SettingTab6Model"
+    x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="5,0,5,5">
@@ -19,7 +19,7 @@
                     Margin="0,0,5,0"
                     Classes="input1"
                     IsEnabled="{Binding EnableIP}"
-                    Text="{Binding IP}"
+                    Text="{Binding ServerIP}"
                     Watermark="{setting:Localize SettingWindow.Tab6.Text2}" />
                 <TextBox
                     Width="100"
@@ -27,7 +27,7 @@
                     Classes="input1"
                     IsEnabled="{Binding EnableIP}"
                     MaxLength="5"
-                    Text="{Binding Port}"
+                    Text="{Binding ServerPort}"
                     Watermark="{setting:Localize SettingWindow.Tab6.Text3}" />
 
                 <CheckBox

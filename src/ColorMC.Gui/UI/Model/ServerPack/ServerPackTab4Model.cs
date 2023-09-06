@@ -13,14 +13,14 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackTab4Model : ServerPackBaseModel
+public partial class ServerPackModel : TopModel
 {
-    public ObservableCollection<ServerPackConfigObj> ConfigList { get; init; } = new();
+    public ObservableCollection<ServerPackConfigObj> FileList { get; init; } = new();
     public ObservableCollection<string> NameList { get; init; } = new();
     public List<string> FuntionList { get; init; } = LanguageBinding.GetFontName();
 
     [ObservableProperty]
-    private ServerPackConfigObj _item;
+    private ServerPackConfigObj _fileItem;
 
     [ObservableProperty]
     private int _funtion;
@@ -28,13 +28,8 @@ public partial class ServerPackTab4Model : ServerPackBaseModel
     [ObservableProperty]
     private string? _group;
 
-    public ServerPackTab4Model(IUserControl con, ServerPackObj obj) : base(con, obj)
-    {
-
-    }
-
     [RelayCommand]
-    public void Add()
+    public void AddFile()
     {
         if (string.IsNullOrEmpty(Group))
             return;
@@ -79,18 +74,13 @@ public partial class ServerPackTab4Model : ServerPackBaseModel
             item.Url = GetUrl(item);
             Obj.Config.Add(item);
         }
-        Load();
+        LoadFile();
     }
 
-    public void Flyout(Control con)
-    {
-        _ = new ServerPackFlyout1(con, this, Item);
-    }
-
-    public void Load()
+    public void LoadFile()
     {
         FuntionList.Clear();
-        ConfigList.Clear();
+        FileList.Clear();
         var mods = GameBinding.GetAllTopConfig(Obj.Game);
 
         Obj.Config?.RemoveAll(a => mods.Find(b => a.Group == b) == null);
@@ -107,7 +97,7 @@ public partial class ServerPackTab4Model : ServerPackBaseModel
                     Url = item1.Url
                 };
 
-                ConfigList.Add(item2);
+                FileList.Add(item2);
             }
             else
             {
@@ -137,19 +127,13 @@ public partial class ServerPackTab4Model : ServerPackBaseModel
             : "ServerPackWindow.Tab4.Item2");
     }
 
-    public void Delete(ServerPackConfigObj obj)
+    public void DeleteFile(ServerPackConfigObj obj)
     {
         var item1 = Obj.Config?.FirstOrDefault(a => a.Group == obj.Group);
         if (item1 != null)
         {
             Obj.Config?.Remove(item1);
-            Load();
+            LoadFile();
         }
-    }
-
-    public override void Close()
-    {
-        ConfigList.Clear();
-        NameList.Clear();
     }
 }

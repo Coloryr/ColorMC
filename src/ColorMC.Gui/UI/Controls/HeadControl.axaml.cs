@@ -6,62 +6,12 @@ using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using System;
 
 namespace ColorMC.Gui.UI.Controls;
 
 public partial class HeadControl : UserControl
 {
-    public static readonly StyledProperty<object> TitleProperty =
-            AvaloniaProperty.Register<Label, object>(nameof(Title), defaultBindingMode: BindingMode.TwoWay);
-
-    public static readonly StyledProperty<object?> Title1Property =
-            AvaloniaProperty.Register<Label, object?>(nameof(Title1), defaultBindingMode: BindingMode.TwoWay);
-
-    private bool _min;
-    private bool _clo;
-    private bool _max;
-    public object Title
-    {
-        get { return GetValue(TitleProperty); }
-        set { SetValue(TitleProperty, value); }
-    }
-
-    public object? Title1
-    {
-        get { return GetValue(Title1Property); }
-        set { SetValue(Title1Property, value); }
-    }
-
-    public bool Max
-    {
-        get { return _max; }
-        set
-        {
-            _max = value;
-            _buttonMax.IsVisible = _max;
-        }
-    }
-
-    public bool Min
-    {
-        get { return _min; }
-        set
-        {
-            _min = value;
-            _buttonMin.IsVisible = _min;
-        }
-    }
-
-    public bool Clo
-    {
-        get { return _clo; }
-        set
-        {
-            _clo = value;
-            _buttonClose.IsVisible = _clo;
-        }
-    }
-
     private Button _buttonClose;
     private Button _buttonMax;
     private Button _buttonMin;
@@ -122,9 +72,11 @@ public partial class HeadControl : UserControl
         _buttonClose.Click += ButtonClose_Click;
     }
 
-    public void SetIcon(Bitmap bitmap)
+    public void Display(bool value)
     {
-        Icon.Source = bitmap;
+        _buttonMin.IsVisible = value;
+        _buttonMax.IsVisible = value;
+        _buttonClose.IsVisible = value;
     }
 
     private void ButtonClose_Click(object? sender, RoutedEventArgs e)

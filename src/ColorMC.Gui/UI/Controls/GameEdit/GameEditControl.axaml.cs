@@ -13,6 +13,8 @@ namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 public partial class GameEditControl : UserControl, IUserControl
 {
+    private GameSettingObj _obj;
+
     private bool _switch1 = false;
 
     private readonly Tab1Control _tab1 = new();
@@ -27,16 +29,6 @@ public partial class GameEditControl : UserControl, IUserControl
 
     private CancellationTokenSource _cancel = new();
 
-    private readonly GameEditTab1Model _model1;
-    private readonly GameEditTab2Model _model2;
-    private readonly GameEditTab4Model _model4;
-    private readonly GameEditTab5Model _model5;
-    private readonly GameEditTab8Model _model8;
-    private readonly GameEditTab9Model _model9;
-    private readonly GameEditTab10Model _model10;
-    private readonly GameEditTab11Model _model11;
-    private readonly GameEditTab12Model _model12;
-
     private int _now;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
@@ -44,73 +36,18 @@ public partial class GameEditControl : UserControl, IUserControl
     public UserControl Con => this;
 
     public string Title =>
-        string.Format(App.GetLanguage("GameEditWindow.Title"), _model1.Obj.Name);
+        string.Format(App.GetLanguage("GameEditWindow.Title"), _obj.Name);
 
     public BaseModel Model { get; }
 
-    public class TopModel : BaseModel
-    {
-        private GameEditControl _con;
-        public TopModel(GameEditControl con) : base(con)
-        {
-            _con = con;
-        }
-
-        public override void Close()
-        {
-            _con._model1.Close();
-            _con._model2.Close();
-            _con._model4.Close();
-            _con._model5.Close();
-            _con._model8.Close();
-            _con._model9.Close();
-            _con._model10.Close();
-            _con._model11.Close();
-            _con._model12.Close();
-            _con = null!;
-        }
-    }
-
-    public GameEditControl() : this(new() { Empty = true })
-    {
-
-    }
-
-    public GameEditControl(GameSettingObj obj)
+    public GameEditControl()
     {
         InitializeComponent();
+    }
 
-        if (!obj.Empty)
-        {
-            Model = new TopModel(this);
-
-            _model1 = new(this, obj);
-            _tab1.DataContext = _model1;
-
-            _model2 = new(this, obj);
-            _tab2.DataContext = _model2;
-
-            _model4 = new(this, obj);
-            _tab4.DataContext = _model4;
-
-            _model5 = new(this, obj);
-            _tab5.DataContext = _model5;
-
-            _model8 = new(this, obj);
-            _tab8.DataContext = _model8;
-
-            _model9 = new(this, obj);
-            _tab9.DataContext = _model9;
-
-            _model10 = new(this, obj);
-            _tab10.DataContext = _model10;
-
-            _model11 = new(this, obj);
-            _tab11.DataContext = _model11;
-
-            _model12 = new(this, obj);
-            _tab12.DataContext = _model12;
-        }
+    public GameEditControl(GameSettingObj obj) : this()
+    {
+        _obj = obj;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
@@ -182,7 +119,7 @@ public partial class GameEditControl : UserControl, IUserControl
         var icon = _model1.Obj.GetIconFile();
         if (File.Exists(icon))
         {
-            Window.Head.SetIcon(new(icon));
+            Window.SetIcon(new(icon));
         }
     }
 
@@ -269,21 +206,17 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Closed()
     {
-        _tab1.DataContext = null;
-        _tab2.DataContext = null;
-        _tab4.DataContext = null;
-        _tab5.DataContext = null;
-        _tab8.DataContext = null;
-        _tab9.DataContext = null;
-        _tab10.DataContext = null;
-        _tab11.DataContext = null;
-        _tab12.DataContext = null;
-
         App.GameEditWindows.Remove(_model1.Obj.UUID);
     }
 
     public void Started()
     {
         _model1.GameStateChange();
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new GameEditModel(model, _obj);
+        DataContext = amodel;
     }
 }

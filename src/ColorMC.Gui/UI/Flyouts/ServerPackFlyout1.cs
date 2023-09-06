@@ -7,8 +7,8 @@ namespace ColorMC.Gui.UI.Flyouts;
 public class ServerPackFlyout1
 {
     private readonly ServerPackConfigObj _obj;
-    private readonly ServerPackTab4Model _model;
-    public ServerPackFlyout1(Control con, ServerPackTab4Model model, ServerPackConfigObj obj)
+    private readonly ServerPackModel _model;
+    public ServerPackFlyout1(Control con, ServerPackModel model, ServerPackConfigObj obj)
     {
         _model = model;
         _obj = obj;
@@ -21,6 +21,6 @@ public class ServerPackFlyout1
 
     private void Button1_Click()
     {
-        _model.Delete(_obj);
+        _model.DeleteFile(_obj);
     }
 }

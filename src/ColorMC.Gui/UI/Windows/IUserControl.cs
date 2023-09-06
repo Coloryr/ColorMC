@@ -9,6 +9,7 @@ public interface IUserControl
 {
     public IBaseWindow Window { get; }
     public string Title { get; }
+    public void SetBaseModel(BaseModel model);
     virtual public void WindowStateChange(WindowState state) { }
     virtual public void OnKeyDown(object? sender, KeyEventArgs e) { }
     virtual public void Opened() { }

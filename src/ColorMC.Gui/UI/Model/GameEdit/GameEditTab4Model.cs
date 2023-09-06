@@ -2,7 +2,6 @@
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -13,165 +12,160 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab4Model : GameModel
+public partial class GameEditModel : GameModel
 {
     public ObservableCollection<ModDisplayModel> ModList { get; init; } = new();
-    public List<string> FilterList { get; init; } = LanguageBinding.GetFilterName();
+    public List<string> ModFilterList { get; init; } = LanguageBinding.GetFilterName();
 
-    private readonly List<ModDisplayModel> _items = new();
-
-    [ObservableProperty]
-    private ModDisplayModel _item;
+    private readonly List<ModDisplayModel> _modItems = new();
 
     [ObservableProperty]
-    private string _text;
+    private ModDisplayModel _modItem;
 
     [ObservableProperty]
-    private int _filter;
+    private string _modText;
 
     [ObservableProperty]
-    private bool _displayFilter = true;
+    private int modFilter;
 
-    private bool _isSet;
+    [ObservableProperty]
+    private bool _displayModFilter = true;
 
-    public GameEditTab4Model(IUserControl con, GameSettingObj obj) : base(con, obj)
+    private bool _isModSet;
+
+    partial void OnModTextChanged(string value)
     {
-
+        LoadMod1();
     }
 
-    partial void OnTextChanged(string value)
+    partial void OnModFilterChanged(int value)
     {
-        Load1();
-    }
-
-    partial void OnFilterChanged(int value)
-    {
-        Load1();
+        LoadMod1();
     }
 
     [RelayCommand]
-    public void ShowFilter()
+    public void ShowModFilter()
     {
-        DisplayFilter = !DisplayFilter;
+        DisplayModFilter = !DisplayModFilter;
     }
 
     [RelayCommand]
-    public void Add()
+    public void AddMod()
     {
         App.ShowAdd(Obj, FileType.Mod);
     }
 
     [RelayCommand]
-    public void Open()
+    public void OpenMod()
     {
         PathBinding.OpPath(Obj, PathType.ModPath);
     }
 
     [RelayCommand]
-    public async Task StartSet()
+    public async Task StartSetMod()
     {
-        if (_isSet)
+        if (_isModSet)
             return;
 
-        _isSet = true;
+        _isModSet = true;
         await App.ShowAddSet(Obj);
-        _isSet = false;
+        _isModSet = false;
     }
 
     [RelayCommand]
-    public async Task Import()
+    public async Task ImportMod()
     {
-        var file = await PathBinding.AddFile(Window, Obj, FileType.Mod);
+        var file = await PathBinding.AddFile(Obj, FileType.Mod);
 
         if (file == null)
             return;
 
         if (file == false)
         {
-            Progress(App.GetLanguage("GameEditWindow.Tab4.Error2"));
+            Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Error2"));
             return;
         }
 
-        Notify(App.GetLanguage("GameEditWindow.Tab4.Info2"));
-        await Load();
+        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        await LoadMod();
     }
 
     [RelayCommand]
-    public async Task Check()
+    public async Task CheckMod()
     {
-        Progress(App.GetLanguage("GameEditWindow.Tab4.Info10"));
-        var res = await WebBinding.CheckModUpdate(Obj, _items);
-        ProgressClose();
+        Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info10"));
+        var res = await WebBinding.CheckModUpdate(Obj, _modItems);
+        Model.ProgressClose();
         if (res.Count > 0)
         {
-            var res1 = await ShowWait(string.Format(
+            var res1 = await Model.ShowWait(string.Format(
                 App.GetLanguage("GameEditWindow.Tab4.Info11"), res.Count));
             if (res1)
             {
-                Progress(App.GetLanguage("GameEditWindow.Tab4.Info12"));
+                Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info12"));
                 await WebBinding.DownloadMod(Obj, res);
-                ProgressClose();
+                Model.ProgressClose();
 
-                await Load();
+                await LoadMod();
             }
         }
         else
         {
-            Show(App.GetLanguage("GameEditWindow.Tab4.Info13"));
+            Model.Show(App.GetLanguage("GameEditWindow.Tab4.Info13"));
         }
     }
 
     [RelayCommand]
-    public async Task Load()
+    public async Task LoadMod()
     {
-        Progress(App.GetLanguage("GameEditWindow.Tab4.Info1"));
-        _items.Clear();
+        Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info1"));
+        _modItems.Clear();
         var res = await GameBinding.GetGameMods(Obj);
-        ProgressClose();
+        Model.ProgressClose();
         if (res == null)
         {
-            Show(App.GetLanguage("GameEditWindow.Tab4.Error1"));
+            Model.Show(App.GetLanguage("GameEditWindow.Tab4.Error1"));
             return;
         }
 
         int count = 0;
 
-        _items.AddRange(res);
+        _modItems.AddRange(res);
 
         var list = res.Where(a => a.Obj.ReadFail == false && !a.Obj.Disable && !string.IsNullOrWhiteSpace(a.Obj.modid)).GroupBy(a => a.Obj.modid);
         count = list.Count(a => a.Count() > 1);
         if (count > 0)
         {
-            Show(string.Format(App
+            Model.Show(string.Format(App
                      .GetLanguage("GameEditWindow.Tab4.Info14"), count));
         }
-        Load1();
+        LoadMod1();
     }
 
     [RelayCommand]
-    public async Task DependTest()
+    public async Task DependTestMod()
     {
-        Progress(App.GetLanguage("GameEditWindow.Tab4.Info15"));
-        var res = await GameBinding.ModCheck(_items);
-        ProgressClose();
+        Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Info15"));
+        var res = await GameBinding.ModCheck(_modItems);
+        Model.ProgressClose();
         if (res)
         {
-            Notify(App.GetLanguage("GameEditWindow.Tab4.Info16"));
+            Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info16"));
         }
     }
 
-    public async void Drop(IDataObject data)
+    public async void DropMod(IDataObject data)
     {
         var res = await GameBinding.AddFile(Obj, data, FileType.Mod);
         if (res)
         {
-            await Load();
+            await LoadMod();
         }
     }
 
-    public async void Delete(IEnumerable<ModDisplayModel> items)
+    public async void DeleteMod(IEnumerable<ModDisplayModel> items)
     {
-        var res = await ShowWait(
+        var res = await Model.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info9"), items.Count()));
         if (!res)
         {
@@ -184,12 +178,12 @@ public partial class GameEditTab4Model : GameModel
             ModList.Remove(item);
         });
 
-        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
     }
 
-    public async void Delete(ModDisplayModel item)
+    public async void DeleteMod(ModDisplayModel item)
     {
-        var res = await ShowWait(
+        var res = await Model.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab4.Info4"), item.Name));
         if (!res)
         {
@@ -199,15 +193,15 @@ public partial class GameEditTab4Model : GameModel
         GameBinding.DeleteMod(item.Obj);
         ModList.Remove(item);
 
-        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
     }
 
-    public void DisE()
+    public void DisEMod()
     {
-        DisE(Item);
+        DisEMod(ModItem);
     }
 
-    public async void DisE(ModDisplayModel item)
+    public async void DisEMod(ModDisplayModel item)
     {
         if (BaseBinding.IsGameRun(Obj))
         {
@@ -216,7 +210,7 @@ public partial class GameEditTab4Model : GameModel
         var res = GameBinding.ModEnDi(item.Obj);
         if (!res)
         {
-            Progress(App.GetLanguage("GameEditWindow.Tab4.Error3"));
+            Model.Progress(App.GetLanguage("GameEditWindow.Tab4.Error3"));
         }
         else
         {
@@ -227,14 +221,14 @@ public partial class GameEditTab4Model : GameModel
                 return;
             }
 
-            var list = GameBinding.ModDisable(item, _items);
+            var list = GameBinding.ModDisable(item, _modItems);
 
             if (list.Count == 0)
             {
                 return;
             }
 
-            res = await ShowWait(
+            res = await Model.ShowWait(
                 string.Format(App.GetLanguage("GameEditWindow.Tab4.Info17"), list.Count));
             if (res)
             {
@@ -252,34 +246,34 @@ public partial class GameEditTab4Model : GameModel
         }
     }
 
-    private void Load1()
+    private void LoadMod1()
     {
-        if (string.IsNullOrWhiteSpace(Text))
+        if (string.IsNullOrWhiteSpace(ModText))
         {
             ModList.Clear();
-            ModList.AddRange(_items);
+            ModList.AddRange(_modItems);
         }
         else
         {
-            string fil = Text.ToLower();
-            switch (Filter)
+            string fil = ModText.ToLower();
+            switch (ModFilter)
             {
                 case 0:
-                    var list = from item in _items
+                    var list = from item in _modItems
                                where item.Name.ToLower().Contains(fil)
                                select item;
                     ModList.Clear();
                     ModList.AddRange(list);
                     break;
                 case 1:
-                    list = from item in _items
+                    list = from item in _modItems
                            where item.Local.ToLower().Contains(fil)
                            select item;
                     ModList.Clear();
                     ModList.AddRange(list);
                     break;
                 case 2:
-                    list = from item in _items
+                    list = from item in _modItems
                            where item.Author.ToLower().Contains(fil)
                            select item;
                     ModList.Clear();
@@ -287,11 +281,5 @@ public partial class GameEditTab4Model : GameModel
                     break;
             }
         }
-    }
-
-    public override void Close()
-    {
-        ModList.Clear();
-        _items.Clear();
     }
 }

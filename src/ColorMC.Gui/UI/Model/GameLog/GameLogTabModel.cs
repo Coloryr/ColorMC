@@ -33,7 +33,7 @@ public partial class GameLogTabModel : GameModel
 
     private readonly Timer _timer;
 
-    public GameLogTabModel(IUserControl con, GameSettingObj obj) : base(con, obj)
+    public GameLogTabModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
         Obj = obj;
 
@@ -71,12 +71,12 @@ public partial class GameLogTabModel : GameModel
             return;
         }
 
-        Progress(App.GetLanguage("GameLogWindow.Info1"));
+        Model.Progress(App.GetLanguage("GameLogWindow.Info1"));
         var data = await GameBinding.ReadLog(Obj, value);
-        ProgressClose();
+        Model.ProgressClose();
         if (data == null)
         {
-            Show(App.GetLanguage("GameLogWindow.Info2"));
+            Model.Show(App.GetLanguage("GameLogWindow.Info2"));
             return;
         }
 
@@ -107,10 +107,10 @@ public partial class GameLogTabModel : GameModel
 
         IsGameRun = true;
 
-        var res = await GameBinding.Launch(Window, Obj);
+        var res = await GameBinding.Launch(Model, Obj);
         if (!res.Item1)
         {
-            Show(res.Item2!);
+            Model.Show(res.Item2!);
         }
         Load();
     }
@@ -168,7 +168,7 @@ public partial class GameLogTabModel : GameModel
         }
     }
 
-    public override void Close()
+    protected override void Close()
     {
         FileList.Clear();
         _timer.Dispose();

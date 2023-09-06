@@ -12,20 +12,11 @@ public partial class AddJavaControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public UserControl Con => this;
-
     public string Title => App.GetLanguage("AddJavaWindow.Title");
-
-    public BaseModel Model => _model;
-
-    private readonly AddJavaControlModel _model;
 
     public AddJavaControl()
     {
         InitializeComponent();
-
-        _model = new(this);
-        DataContext = _model;
 
         DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
     }
@@ -34,7 +25,7 @@ public partial class AddJavaControl : UserControl, IUserControl
     {
         if (e.Key == Key.F5)
         {
-            await _model.Load();
+            await (DataContext as AddJavaControlModel)!.Load();
         }
     }
 
@@ -42,7 +33,7 @@ public partial class AddJavaControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        _model.TypeIndex = 0;
+        (DataContext as AddJavaControlModel)!.TypeIndex = 0;
 
         DataGrid1.SetFontColor();
     }
@@ -57,6 +48,12 @@ public partial class AddJavaControl : UserControl, IUserControl
         if (DataGrid1.SelectedItem is not JavaDownloadObj obj)
             return;
 
-        _model.Install(obj);
+        (DataContext as AddJavaControlModel)!.Install(obj);
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new AddJavaControlModel(model);
+        DataContext = amodel;
     }
 }

@@ -8,7 +8,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:GameEditTab4Model"
+    x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
@@ -21,7 +21,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding Import}"
+                    Command="{Binding ImportMod}"
                     Content="{setting:Localize Button.Input}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text57}"
                     ToolTip.VerticalOffset="-30" />
@@ -29,7 +29,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding Add}"
+                    Command="{Binding AddMod}"
                     Content="{setting:Localize Button.Add}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text56}"
                     ToolTip.VerticalOffset="-30" />
@@ -37,7 +37,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding Load}"
+                    Command="{Binding LoadMod}"
                     Content="{setting:Localize Button.Refash}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text55}"
                     ToolTip.VerticalOffset="-30" />
@@ -45,7 +45,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding Check}"
+                    Command="{Binding CheckMod}"
                     Content="{setting:Localize GameEditWindow.Tab4.Text3}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text54}"
                     ToolTip.VerticalOffset="-30" />
@@ -53,7 +53,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding StartSet}"
+                    Command="{Binding StartSetMod}"
                     Content="{setting:Localize GameEditWindow.Tab4.Text4}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text53}"
                     ToolTip.VerticalOffset="-30" />
@@ -61,14 +61,14 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding DependTest}"
+                    Command="{Binding DependTestMod}"
                     Content="{setting:Localize GameEditWindow.Tab4.Text5}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text52}"
                     ToolTip.VerticalOffset="-30" />
                 <Button
                     Width="100"
                     Height="25"
-                    Command="{Binding Open}"
+                    Command="{Binding OpenMod}"
                     Content="{setting:Localize Button.OpFile}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />
@@ -79,12 +79,12 @@
                     Width="100"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    ItemsSource="{Binding FilterList}"
-                    SelectedIndex="{Binding Filter}" />
+                    ItemsSource="{Binding ModFilterList}"
+                    SelectedIndex="{Binding ModFilter}" />
                 <TextBox
                     Margin="5,0,0,0"
                     Classes="input1"
-                    Text="{Binding Text}"
+                    Text="{Binding ModText}"
                     Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
             </DockPanel>
 
@@ -97,7 +97,7 @@
                 CanUserSortColumns="False"
                 HorizontalScrollBarVisibility="Visible"
                 ItemsSource="{Binding ModList}"
-                SelectedItem="{Binding Item}"
+                SelectedItem="{Binding ModItem}"
                 VerticalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn

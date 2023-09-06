@@ -10,7 +10,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:GameEditTab5Model"
+    x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
@@ -29,7 +29,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding Backup}"
+                    Command="{Binding BackupWorld}"
                     Content="{setting:Localize GameEditWindow.Tab5.Text2}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text42}"
                     ToolTip.VerticalOffset="-30" />
@@ -37,7 +37,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding OpenBackup}"
+                    Command="{Binding OpenBackupWorld}"
                     Content="{setting:Localize GameEditWindow.Tab5.Text1}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />
@@ -45,7 +45,7 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding Open}"
+                    Command="{Binding OpenWorld}"
                     Content="{setting:Localize Button.OpFile}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />
@@ -53,18 +53,18 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding Import}"
+                    Command="{Binding ImportWorld}"
                     Content="{setting:Localize Button.Input}" />
                 <Button
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding Add}"
+                    Command="{Binding AddWorld}"
                     Content="{setting:Localize Button.Add}" />
                 <Button
                     Width="100"
                     Height="25"
-                    Command="{Binding Load}"
+                    Command="{Binding LoadWorld}"
                     Content="{setting:Localize Button.Refash}" />
             </WrapPanel>
             <ScrollViewer Margin="0,3,0,0" VerticalScrollBarVisibility="Visible">

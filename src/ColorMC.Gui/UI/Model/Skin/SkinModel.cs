@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Skin;
 
-public partial class SkinModel : BaseModel
+public partial class SkinModel : TopModel
 {
     public List<string> SkinTypeList { get; init; } = LanguageBinding.GetSkinType();
     public List<string> SkinRotateList { get; init; } = LanguageBinding.GetSkinRotateName();
@@ -74,7 +74,7 @@ public partial class SkinModel : BaseModel
         }
     }
 
-    public SkinModel(IUserControl con) : base(con)
+    public SkinModel(BaseModel model) : base(model)
     {
 
     }
@@ -178,7 +178,7 @@ public partial class SkinModel : BaseModel
     {
         if (Type == (int)SkinType.Unkonw)
         {
-            Show(App.GetLanguage("SkinWindow.Info1"));
+            Model.Show(App.GetLanguage("SkinWindow.Info1"));
             Type = (int)SteveModelType;
             return;
         }
@@ -289,10 +289,10 @@ public partial class SkinModel : BaseModel
     [RelayCommand]
     public async Task Save()
     {
-        var res = await PathBinding.SaveFile(Window, FileType.Skin, null);
+        var res = await PathBinding.SaveFile(FileType.Skin, null);
         if (res == true)
         {
-            Notify(App.GetLanguage("Gui.Info10"));
+            Model.Notify(App.GetLanguage("Gui.Info10"));
         }
     }
 
@@ -335,12 +335,7 @@ public partial class SkinModel : BaseModel
     [RelayCommand]
     public void Edit()
     {
-        UserBinding.EditSkin(Window);
-    }
-
-    public override void Close()
-    {
-
+        UserBinding.EditSkin();
     }
 
     public void SkinLoadDone()

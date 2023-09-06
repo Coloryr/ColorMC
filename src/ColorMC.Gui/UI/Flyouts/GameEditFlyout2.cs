@@ -26,7 +26,7 @@ public class GameEditFlyout2
 
     private void Button6_Click()
     {
-        _model.Top.Launch(_model);
+        _model.Top.LaunchWorld(_model);
     }
 
     private void Button5_Click()
@@ -36,12 +36,12 @@ public class GameEditFlyout2
 
     private void Button4_Click()
     {
-        _model.Top.Delete(_model);
+        _model.Top.DeleteWorld(_model);
     }
 
     private void Button3_Click()
     {
-        _model.Top.Backup(_model);
+        _model.Top.BackupWorld(_model);
     }
 
     private void Button2_Click()

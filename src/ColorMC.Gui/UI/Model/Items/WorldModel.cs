@@ -10,7 +10,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 public partial class WorldModel : ObservableObject
 {
     public readonly WorldObj World;
-    public readonly GameEditTab5Model Top;
+    public readonly GameEditModel Top;
 
     [ObservableProperty]
     private bool _isSelect;
@@ -23,7 +23,7 @@ public partial class WorldModel : ObservableObject
     public string Hardcore => World.Hardcore == 1 ? "True" : "False";
     public Bitmap Pic { get; }
 
-    public WorldModel(GameEditTab5Model top, WorldObj world)
+    public WorldModel(GameEditModel top, WorldObj world)
     {
         Top = top;
         World = world;
@@ -40,6 +40,6 @@ public partial class WorldModel : ObservableObject
 
     public void Select()
     {
-        Top.SetSelect(this);
+        Top.SetSelectWorld(this);
     }
 }

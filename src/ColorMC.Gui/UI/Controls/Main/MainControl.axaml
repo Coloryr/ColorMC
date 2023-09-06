@@ -22,7 +22,7 @@
             VerticalAlignment="Bottom" />
 
         <DockPanel>
-            <ScrollViewer Margin="10" DockPanel.Dock="{Binding Mirror1}">
+            <ScrollViewer DockPanel.Dock="{Binding Mirror1}">
                 <Panel>
                     <Panel
                         Margin="0,110,0,0"

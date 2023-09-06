@@ -20,72 +20,17 @@ public partial class SettingControl : UserControl, IUserControl
 
     private bool _switch1 = false;
 
-    private readonly SettingTab1Model _model1;
-    private readonly SettingTab2Model _model2;
-    private readonly SettingTab3Model _model3;
-    private readonly SettingTab4Model _model4;
-    private readonly SettingTab5Model _model5;
-    private readonly SettingTab6Model _model6;
-    private readonly SettingTab7Model _model7;
-
     private CancellationTokenSource _cancel = new();
 
     private int _now;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public UserControl Con => this;
-
     public string Title => App.GetLanguage("SettingWindow.Title");
-
-    public class TopModel : BaseModel
-    {
-        private SettingControl _con;
-        public TopModel(SettingControl con) : base(con)
-        {
-            _con = con;
-        }
-
-        public override void Close()
-        {
-            _con._model1.Close();
-            _con._model2.Close();
-            _con._model3.Close();
-            _con._model4.Close();
-            _con._model5.Close();
-            _con._model6.Close();
-            _con = null!;
-        }
-    }
-
-    public BaseModel Model { get; }
 
     public SettingControl()
     {
         InitializeComponent();
-
-        Model = new TopModel(this);
-
-        _model1 = new(this);
-        _tab1.DataContext = _model1;
-
-        _model2 = new(this);
-        _tab2.DataContext = _model2;
-
-        _model3 = new(this);
-        _tab3.DataContext = _model3;
-
-        _model4 = new(this);
-        _tab4.DataContext = _model4;
-
-        _model5 = new(this);
-        _tab5.DataContext = _model5;
-
-        _model6 = new(this);
-        _tab6.DataContext = _model6;
-
-        _model7 = new();
-        _tab7.DataContext = _model7;
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
@@ -96,14 +41,6 @@ public partial class SettingControl : UserControl, IUserControl
 
     public void Closed()
     {
-        _tab1.DataContext = null;
-        _tab2.DataContext = null;
-        _tab3.DataContext = null;
-        _tab4.DataContext = null;
-        _tab5.DataContext = null;
-        _tab6.DataContext = null;
-        _tab7.DataContext = null;
-
         App.SettingWindow = null;
     }
 
@@ -121,27 +58,28 @@ public partial class SettingControl : UserControl, IUserControl
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        var model = (DataContext as SettingModel)!;
         switch (Tabs.SelectedIndex)
         {
             case 0:
                 Go(_tab2);
-                _model2.Load();
+                model.LoadUISetting();
                 break;
             case 1:
                 Go(_tab3);
-                _model3.Load();
+                model.LoadHttpSetting();
                 break;
             case 2:
                 Go(_tab4);
-                _model4.Load();
+                model.LoadArg();
                 break;
             case 3:
                 Go(_tab5);
-                _model5.Load();
+                model.LoadJava();
                 break;
             case 4:
                 Go(_tab6);
-                _model6.Load();
+                model.LoadServer();
                 break;
             case 5:
                 Go(_tab1);
@@ -193,6 +131,14 @@ public partial class SettingControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        _model2.Load();
+        (DataContext as SettingModel)!.LoadUISetting();
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new SettingModel(model);
+        DataContext = amodel;
+
+        _tab7.DataContext = new SettingTab7Model();
     }
 }

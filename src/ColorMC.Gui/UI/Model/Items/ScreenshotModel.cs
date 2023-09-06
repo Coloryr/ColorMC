@@ -12,7 +12,7 @@ public partial class ScreenshotModel : ObservableObject
 {
     public readonly string Screenshot;
 
-    public readonly GameEditTab9Model Top;
+    public readonly GameEditModel Top;
 
     [ObservableProperty]
     private bool _isSelect;
@@ -23,7 +23,7 @@ public partial class ScreenshotModel : ObservableObject
 
     private Bitmap _img;
 
-    public ScreenshotModel(GameEditTab9Model top, string obj)
+    public ScreenshotModel(GameEditModel top, string obj)
     {
         Top = top;
         Screenshot = obj;
@@ -53,7 +53,7 @@ public partial class ScreenshotModel : ObservableObject
 
     public void Select()
     {
-        Top.SetSelect(this);
+        Top.SetSelectScreenshot(this);
     }
 
     public void Close()

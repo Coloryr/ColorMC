@@ -9,6 +9,7 @@ using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Skin;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using ShimSkiaSharp;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
@@ -61,23 +62,26 @@ public class SkinRender : OpenGlControlBase
     private GlFunc6 glUniform3f;
     private GlFunc2 glCullFace;
 
-    public SkinModel _model;
-
     public SkinRender()
     {
         _skina = new(this);
         _last = Matrix4x4.Identity;
+
+        DataContextChanged += SkinRender_DataContextChanged;
     }
 
-    public void SetModel(SkinModel model)
+    private void SkinRender_DataContextChanged(object? sender, EventArgs e)
     {
-        _model = model;
-        model.PropertyChanged += Model_PropertyChanged;
-        _skina.Run = true;
+        if (DataContext is SkinModel model)
+        {
+            model.PropertyChanged += Model_PropertyChanged;
+            _skina.Run = true;
+        }
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
+        var model = (sender as SkinModel)!;
         if (e.PropertyName == "SteveModelType")
         {
             Dispatcher.UIThread.Post(ChangeType);
@@ -100,17 +104,17 @@ public class SkinRender : OpenGlControlBase
         }
         else if (e.PropertyName == "Pos")
         {
-            _xy.X += _model.X;
-            _xy.Y += _model.Y;
+            _xy.X += model.X;
+            _xy.Y += model.Y;
         }
         else if (e.PropertyName == "Dis")
         {
-            _dis += _model.X;
+            _dis += model.X;
         }
         else if (e.PropertyName == "Rot")
         {
-            _rotXY.X += _model.X;
-            _rotXY.Y += _model.Y;
+            _rotXY.X += model.X;
+            _rotXY.Y += model.Y;
         }
     }
 
@@ -167,7 +171,8 @@ public class SkinRender : OpenGlControlBase
 
         CheckError(gl);
 
-        _model.Info = $"Renderer: {gl.GetString(GlConsts.GL_RENDERER)} Version: {gl.GetString(GlConsts.GL_VERSION)}";
+        var model = (DataContext as SkinModel)!;
+        model.Info = $"Renderer: {gl.GetString(GlConsts.GL_RENDERER)} Version: {gl.GetString(GlConsts.GL_VERSION)}";
 
         _vertexShader = gl.CreateShader(GlConsts.GL_VERTEX_SHADER);
         var smg = gl.CompileShaderAndGetError(_vertexShader, SkinShader.VertexShader(GlVersion, false));
@@ -210,9 +215,9 @@ public class SkinRender : OpenGlControlBase
 
         LoadSkin(gl);
 
-        _model.SkinLoadDone();
+        model.SkinLoadDone();
 
-        _model.IsLoad = true;
+        model.IsLoad = true;
     }
 
     private static void InitVAOItem(GlInterface gl, VAOItem item)
@@ -308,19 +313,20 @@ public class SkinRender : OpenGlControlBase
 
     private void LoadSkin(GlInterface gl)
     {
-        _model.IsLoading = true;
+        var model = (DataContext as SkinModel)!;
+        model.IsLoading = true;
         if (UserBinding.SkinImage == null)
         {
-            _model.HaveSkin = false;
-            _model.Text = App.GetLanguage("SkinWindow.Info2");
+            model.HaveSkin = false;
+            model.Text = App.GetLanguage("SkinWindow.Info2");
             return;
         }
 
-        _model.SteveModelType = SkinUtil.GetTextType(UserBinding.SkinImage);
-        if (_model.SteveModelType == SkinType.Unkonw)
+        model.SteveModelType = SkinUtil.GetTextType(UserBinding.SkinImage);
+        if (model.SteveModelType == SkinType.Unkonw)
         {
-            _model.HaveSkin = false;
-            _model.Text = App.GetLanguage("SkinWindow.Info3");
+            model.HaveSkin = false;
+            model.Text = App.GetLanguage("SkinWindow.Info3");
             return;
         }
         LoadTex(gl, UserBinding.SkinImage, _texture);
@@ -338,10 +344,10 @@ public class SkinRender : OpenGlControlBase
 
         LoadModel(gl);
 
-        _model.HaveSkin = true;
+        model.HaveSkin = true;
 
-        _model.Type = (int)_model.SteveModelType;
-        _model.IsLoading = false;
+        model.Type = (int)model.SteveModelType;
+        model.IsLoading = false;
     }
 
     private unsafe void PutVAO(GlInterface gl, VAOItem vao, ModelItem model, float[] uv)
@@ -436,14 +442,15 @@ public class SkinRender : OpenGlControlBase
 
     private unsafe void LoadModel(GlInterface gl)
     {
-        _model.IsLoading = true;
+        var model = (DataContext as SkinModel)!;
+        model.IsLoading = true;
         var steve = new Steve3DModel();
         var stevetex = new Steve3DTexture();
 
-        var normal = steve.GetSteve(_model.SteveModelType);
-        var top = steve.GetSteveTop(_model.SteveModelType);
-        var tex = stevetex.GetSteveTexture(_model.SteveModelType);
-        var textop = stevetex.GetSteveTextureTop(_model.SteveModelType);
+        var normal = steve.GetSteve(model.SteveModelType);
+        var top = steve.GetSteveTop(model.SteveModelType);
+        var tex = stevetex.GetSteveTexture(model.SteveModelType);
+        var textop = stevetex.GetSteveTextureTop(model.SteveModelType);
 
         _steveModelDrawOrder = normal.Head.Point.Length;
 
@@ -456,7 +463,7 @@ public class SkinRender : OpenGlControlBase
         PutVAO(gl, _normalVAO.Cape, normal.Cape, tex.Cape);
 
         PutVAO(gl, _topVAO.Head, top.Head, textop.Head);
-        if (_model.SteveModelType != SkinType.Old)
+        if (model.SteveModelType != SkinType.Old)
         {
             PutVAO(gl, _topVAO.Head, top.Head, textop.Head);
             PutVAO(gl, _topVAO.Body, top.Body, textop.Body);
@@ -465,12 +472,13 @@ public class SkinRender : OpenGlControlBase
             PutVAO(gl, _topVAO.LeftLeg, top.LeftLeg, textop.LeftLeg);
             PutVAO(gl, _topVAO.RightLeg, top.RightLeg, textop.RightLeg);
         }
-        _model.IsLoading = false;
+        model.IsLoading = false;
     }
 
     private void OpenGlPageControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (!_model.HaveSkin)
+        var model = (DataContext as SkinModel)!;
+        if (!model.HaveSkin)
             return;
 
         var po = e.GetCurrentPoint(this);
@@ -492,7 +500,8 @@ public class SkinRender : OpenGlControlBase
 
     private void OpenGlPageControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        if (!_model.HaveSkin)
+        var model = (DataContext as SkinModel)!;
+        if (!model.HaveSkin)
             return;
 
         if (e.InitialPressMouseButton == MouseButton.Right)
@@ -506,7 +515,8 @@ public class SkinRender : OpenGlControlBase
 
     private void OpenGlPageControl_PointerMoved(object? sender, PointerEventArgs e)
     {
-        if (!_model.HaveSkin)
+        var model = (DataContext as SkinModel)!;
+        if (!model.HaveSkin)
             return;
 
         var po = e.GetCurrentPoint(this);
@@ -529,7 +539,8 @@ public class SkinRender : OpenGlControlBase
 
     private void OpenGlPageControl_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
     {
-        if (!_model.HaveSkin)
+        var model = (DataContext as SkinModel)!;
+        if (!model.HaveSkin)
             return;
 
         if (e.Delta.Y > 0)
@@ -546,17 +557,18 @@ public class SkinRender : OpenGlControlBase
 
     private unsafe void DrawCape(GlInterface gl)
     {
-        if (_haveCape && _model.EnableCape)
+        var model = (DataContext as SkinModel)!;
+        if (_haveCape && model.EnableCape)
         {
             gl.BindTexture(GlConsts.GL_TEXTURE_2D, _texture1);
 
             var modelLoc = gl.GetUniformLocationString(_shaderProgram, "self");
 
-            var model = Matrix4x4.CreateTranslation(0, -2f * CubeC.Value, -CubeC.Value * 0.1f) *
+            var mat = Matrix4x4.CreateTranslation(0, -2f * CubeC.Value, -CubeC.Value * 0.1f) *
                Matrix4x4.CreateRotationX((float)(10.8 * Math.PI / 180)) *
                Matrix4x4.CreateTranslation(0, 1.6f * CubeC.Value,
                -CubeC.Value * 0.5f);
-            gl.UniformMatrix4fv(modelLoc, 1, false, &model);
+            gl.UniformMatrix4fv(modelLoc, 1, false, &mat);
 
             gl.BindVertexArray(_normalVAO.Cape.VertexArrayObject);
             gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
@@ -578,12 +590,13 @@ public class SkinRender : OpenGlControlBase
         GL.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
             GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        bool enable = _model.EnableAnimation;
+        var model = (DataContext as SkinModel)!;
+        bool enable = model.EnableAnimation;
 
         modelMat = Matrix4x4.CreateTranslation(0, CubeC.Value, 0) *
-               Matrix4x4.CreateRotationZ((enable ? _skina.Head.X : _model.HeadRotate.X) / 360) *
-               Matrix4x4.CreateRotationX((enable ? _skina.Head.Y : _model.HeadRotate.Y) / 360) *
-               Matrix4x4.CreateRotationY((enable ? _skina.Head.Z : _model.HeadRotate.Z) / 360) *
+               Matrix4x4.CreateRotationZ((enable ? _skina.Head.X : model.HeadRotate.X) / 360) *
+               Matrix4x4.CreateRotationX((enable ? _skina.Head.Y : model.HeadRotate.Y) / 360) *
+               Matrix4x4.CreateRotationY((enable ? _skina.Head.Z : model.HeadRotate.Z) / 360) *
                Matrix4x4.CreateTranslation(0, CubeC.Value * 1.5f, 0);
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
@@ -591,19 +604,19 @@ public class SkinRender : OpenGlControlBase
         GL.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        if (_model.SteveModelType == SkinType.NewSlim)
+        if (model.SteveModelType == SkinType.NewSlim)
         {
             modelMat = Matrix4x4.CreateTranslation(CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : _model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : _model.ArmRotate.Y) / 360) *
+                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
+                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
                     (1.375f * CubeC.Value) - (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
         }
         else
         {
             modelMat = Matrix4x4.CreateTranslation(CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : _model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : _model.ArmRotate.Y) / 360) *
+                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
+                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
                     (1.5f * CubeC.Value) - (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
         }
@@ -613,19 +626,19 @@ public class SkinRender : OpenGlControlBase
         GL.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                 GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        if (_model.SteveModelType == SkinType.NewSlim)
+        if (model.SteveModelType == SkinType.NewSlim)
         {
             modelMat = Matrix4x4.CreateTranslation(-CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -_model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -_model.ArmRotate.Y) / 360) *
+                Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
+                Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
                     (-1.375f * CubeC.Value) + (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
         }
         else
         {
             modelMat = Matrix4x4.CreateTranslation(-CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -_model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -_model.ArmRotate.Y) / 360) *
+                Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
+                Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
                     (-1.5f * CubeC.Value) + (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
         }
@@ -636,8 +649,8 @@ public class SkinRender : OpenGlControlBase
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
         modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
-               Matrix4x4.CreateRotationZ((enable ? _skina.Leg.X : _model.LegRotate.X) / 360) *
-               Matrix4x4.CreateRotationX((enable ? _skina.Leg.Y : _model.LegRotate.Y) / 360) *
+               Matrix4x4.CreateRotationZ((enable ? _skina.Leg.X : model.LegRotate.X) / 360) *
+               Matrix4x4.CreateRotationX((enable ? _skina.Leg.Y : model.LegRotate.Y) / 360) *
                Matrix4x4.CreateTranslation(CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
@@ -646,8 +659,8 @@ public class SkinRender : OpenGlControlBase
                 GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
         modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
-               Matrix4x4.CreateRotationZ((enable ? -_skina.Leg.X : -_model.LegRotate.X) / 360) *
-               Matrix4x4.CreateRotationX((enable ? -_skina.Leg.Y : -_model.LegRotate.Y) / 360) *
+               Matrix4x4.CreateRotationZ((enable ? -_skina.Leg.X : -model.LegRotate.X) / 360) *
+               Matrix4x4.CreateRotationX((enable ? -_skina.Leg.Y : -model.LegRotate.Y) / 360) *
                Matrix4x4.CreateTranslation(-CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
         GL.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
@@ -670,12 +683,13 @@ public class SkinRender : OpenGlControlBase
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        bool enable = _model.EnableAnimation;
+        var model = (DataContext as SkinModel)!;
+        bool enable = model.EnableAnimation;
 
         modelMat = Matrix4x4.CreateTranslation(0, CubeC.Value, 0) *
-               Matrix4x4.CreateRotationZ((enable ? _skina.Head.X : _model.HeadRotate.X) / 360) *
-               Matrix4x4.CreateRotationX((enable ? _skina.Head.Y : _model.HeadRotate.Y) / 360) *
-               Matrix4x4.CreateRotationY((enable ? _skina.Head.Z : _model.HeadRotate.Z) / 360) *
+               Matrix4x4.CreateRotationZ((enable ? _skina.Head.X : model.HeadRotate.X) / 360) *
+               Matrix4x4.CreateRotationX((enable ? _skina.Head.Y : model.HeadRotate.Y) / 360) *
+               Matrix4x4.CreateRotationY((enable ? _skina.Head.Z : model.HeadRotate.Z) / 360) *
                Matrix4x4.CreateTranslation(0, CubeC.Value * 1.5f, 0);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
@@ -683,19 +697,19 @@ public class SkinRender : OpenGlControlBase
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        if (_model.SteveModelType == SkinType.NewSlim)
+        if (model.SteveModelType == SkinType.NewSlim)
         {
             modelMat = Matrix4x4.CreateTranslation(CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : _model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : _model.ArmRotate.Y) / 360) *
+                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
+                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
                     (1.375f * CubeC.Value) - (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
         }
         else
         {
             modelMat = Matrix4x4.CreateTranslation(CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : _model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : _model.ArmRotate.Y) / 360) *
+                Matrix4x4.CreateRotationZ((enable ? _skina.Arm.X : model.ArmRotate.X) / 360) *
+                Matrix4x4.CreateRotationX((enable ? _skina.Arm.Y : model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
                     (1.5f * CubeC.Value) - (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
         }
@@ -705,19 +719,19 @@ public class SkinRender : OpenGlControlBase
         gl.DrawElements(GlConsts.GL_TRIANGLES, _steveModelDrawOrder,
                 GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
-        if (_model.SteveModelType == SkinType.NewSlim)
+        if (model.SteveModelType == SkinType.NewSlim)
         {
             modelMat = Matrix4x4.CreateTranslation(-CubeC.Value / 2, -(1.375f * CubeC.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -_model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -_model.ArmRotate.Y) / 360) *
+                Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
+                Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
                     (-1.375f * CubeC.Value) + (CubeC.Value / 2), 1.375f * CubeC.Value, 0);
         }
         else
         {
             modelMat = Matrix4x4.CreateTranslation(-CubeC.Value / 2, -(1.5f * CubeC.Value), 0) *
-                Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -_model.ArmRotate.X) / 360) *
-                Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -_model.ArmRotate.Y) / 360) *
+                Matrix4x4.CreateRotationZ((enable ? -_skina.Arm.X : -model.ArmRotate.X) / 360) *
+                Matrix4x4.CreateRotationX((enable ? -_skina.Arm.Y : -model.ArmRotate.Y) / 360) *
                 Matrix4x4.CreateTranslation(
                     (-1.5f * CubeC.Value) + (CubeC.Value / 2), 1.5f * CubeC.Value, 0);
         }
@@ -728,8 +742,8 @@ public class SkinRender : OpenGlControlBase
                 GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
         modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
-               Matrix4x4.CreateRotationZ((enable ? _skina.Leg.X : _model.LegRotate.X) / 360) *
-               Matrix4x4.CreateRotationX((enable ? _skina.Leg.Y : _model.LegRotate.Y) / 360) *
+               Matrix4x4.CreateRotationZ((enable ? _skina.Leg.X : model.LegRotate.X) / 360) *
+               Matrix4x4.CreateRotationX((enable ? _skina.Leg.Y : model.LegRotate.Y) / 360) *
                Matrix4x4.CreateTranslation(CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
@@ -738,8 +752,8 @@ public class SkinRender : OpenGlControlBase
                  GlConsts.GL_UNSIGNED_SHORT, IntPtr.Zero);
 
         modelMat = Matrix4x4.CreateTranslation(0, -1.5f * CubeC.Value, 0) *
-               Matrix4x4.CreateRotationZ((enable ? -_skina.Leg.X : -_model.LegRotate.X) / 360) *
-               Matrix4x4.CreateRotationX((enable ? -_skina.Leg.Y : -_model.LegRotate.Y) / 360) *
+               Matrix4x4.CreateRotationZ((enable ? -_skina.Leg.X : -model.LegRotate.X) / 360) *
+               Matrix4x4.CreateRotationX((enable ? -_skina.Leg.Y : -model.LegRotate.Y) / 360) *
                Matrix4x4.CreateTranslation(-CubeC.Value * 0.5f, -CubeC.Value * 1.5f, 0);
         gl.UniformMatrix4fv(modelLoc, 1, false, &modelMat);
 
@@ -754,10 +768,11 @@ public class SkinRender : OpenGlControlBase
     {
         _skina.Tick();
 
+        var model = (DataContext as SkinModel)!;
         if (_switchSkin)
         {
             LoadSkin(gl);
-            _model.SkinLoadDone();
+            model.SkinLoadDone();
             _switchSkin = false;
         }
         if (_switchModel)
@@ -766,7 +781,7 @@ public class SkinRender : OpenGlControlBase
             _switchModel = false;
         }
 
-        if (!_model.HaveSkin)
+        if (!model.HaveSkin)
             return;
 
         int x = (int)Bounds.Width;
@@ -833,7 +848,7 @@ public class SkinRender : OpenGlControlBase
 
         DrawCape(gl);
 
-        if (_model.EnableTop)
+        if (model.EnableTop)
         {
             //GL_BLEND
             gl.Enable(0x0BE2);
@@ -902,7 +917,8 @@ public class SkinRender : OpenGlControlBase
 
     public void SetAnimation()
     {
-        if (_model.EnableAnimation)
+        var model = (DataContext as SkinModel)!;
+        if (model.EnableAnimation)
         {
             _skina.Run = true;
         }

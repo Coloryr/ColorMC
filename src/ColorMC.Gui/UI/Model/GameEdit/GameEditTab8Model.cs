@@ -11,25 +11,11 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab8Model : GameModel
+public partial class GameEditModel : GameModel
 {
     public ObservableCollection<ResourcePackModel> ResourcePackList { get; init; } = new();
 
-    [ObservableProperty]
-    private bool _displayFilter = true;
-
-    private ResourcePackModel? _last;
-
-    public GameEditTab8Model(IUserControl con, GameSettingObj obj) : base(con, obj)
-    {
-
-    }
-
-    [RelayCommand]
-    public void ShowFilter()
-    {
-        DisplayFilter = !DisplayFilter;
-    }
+    private ResourcePackModel? _lastResource;
 
     [RelayCommand]
     public void Add()
@@ -38,45 +24,45 @@ public partial class GameEditTab8Model : GameModel
     }
 
     [RelayCommand]
-    public async Task Import()
+    public async Task ImportResource()
     {
-        var file = await PathBinding.AddFile(Window, Obj, FileType.Resourcepack);
+        var file = await PathBinding.AddFile(Obj, FileType.Resourcepack);
         if (file == null)
             return;
 
         if (file == false)
         {
-            Notify(App.GetLanguage("GameEditWindow.Tab8.Error1"));
+            Model.Notify(App.GetLanguage("GameEditWindow.Tab8.Error1"));
             return;
         }
 
-        Notify(App.GetLanguage("GameEditWindow.Tab4.Info2"));
-        await Load();
+        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info2"));
+        await LoadResource();
     }
 
     [RelayCommand]
-    public void Open()
+    public void OpenResource()
     {
         PathBinding.OpPath(Obj, PathType.ResourcepackPath);
     }
 
     [RelayCommand]
-    public async Task Load()
+    public async Task LoadResource()
     {
-        Progress(App.GetLanguage("GameEditWindow.Tab8.Info3"));
+        Model.Progress(App.GetLanguage("GameEditWindow.Tab8.Info3"));
         ResourcePackList.Clear();
 
         var res = await GameBinding.GetResourcepacks(Obj);
-        ProgressClose();
+        Model.ProgressClose();
         foreach (var item in res)
         {
             ResourcePackList.Add(new(this, item));
         }
     }
 
-    public async void Delete(ResourcepackObj obj)
+    public async void DeleteResource(ResourcepackObj obj)
     {
-        var res = await ShowWait(
+        var res = await Model.ShowWait(
             string.Format(App.GetLanguage("GameEditWindow.Tab8.Info1"), obj.Local));
         if (!res)
         {
@@ -84,36 +70,26 @@ public partial class GameEditTab8Model : GameModel
         }
 
         GameBinding.DeleteResourcepack(obj);
-        Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
-        await Load();
+        Model.Notify(App.GetLanguage("GameEditWindow.Tab4.Info3"));
+        await LoadResource();
     }
 
-    public async void Drop(IDataObject data)
+    public async void DropResource(IDataObject data)
     {
         var res = await GameBinding.AddFile(Obj, data, FileType.Resourcepack);
         if (res)
         {
-            await Load();
+            await LoadResource();
         }
     }
 
-    public void SetSelect(ResourcePackModel item)
+    public void SetSelectResource(ResourcePackModel item)
     {
-        if (_last != null)
+        if (_lastResource != null)
         {
-            _last.IsSelect = false;
+            _lastResource.IsSelect = false;
         }
-        _last = item;
-        _last.IsSelect = true;
-    }
-
-    public override void Close()
-    {
-        foreach (var item in ResourcePackList)
-        {
-            item.Close();
-        }
-        ResourcePackList.Clear();
-        _last = null;
+        _lastResource = item;
+        _lastResource.IsSelect = true;
     }
 }

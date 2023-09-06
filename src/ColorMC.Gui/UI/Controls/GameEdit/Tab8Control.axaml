@@ -9,7 +9,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:GameEditTab8Model"
+    x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
@@ -23,7 +23,7 @@
                     Height="25"
                     Margin="0,0,5,0"
                     HorizontalAlignment="Right"
-                    Command="{Binding Open}"
+                    Command="{Binding OpenResource}"
                     Content="{setting:Localize Button.OpFile}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />
@@ -31,18 +31,18 @@
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding Import}"
+                    Command="{Binding ImportResource}"
                     Content="{setting:Localize Button.Input}" />
                 <Button
                     Width="100"
                     Height="25"
                     Margin="0,0,5,0"
-                    Command="{Binding Add}"
+                    Command="{Binding AddResource}"
                     Content="{setting:Localize Button.Add}" />
                 <Button
                     Width="100"
                     Height="25"
-                    Command="{Binding Load}"
+                    Command="{Binding LoadResource}"
                     Content="{setting:Localize Button.Refash}" />
             </WrapPanel>
             <ScrollViewer Margin="0,3,0,0" VerticalScrollBarVisibility="Visible">

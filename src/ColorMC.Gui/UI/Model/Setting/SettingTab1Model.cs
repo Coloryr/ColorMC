@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab1Model : BaseModel
+public partial class SettingModel : TopModel
 {
     [ObservableProperty]
     private string? _local1;
@@ -17,15 +17,10 @@ public partial class SettingTab1Model : BaseModel
     [ObservableProperty]
     private string? _local3;
 
-    public SettingTab1Model(IUserControl con) : base(con)
-    {
-
-    }
-
     [RelayCommand]
     public async Task Open1()
     {
-        var file = await PathBinding.SelectFile(Window, FileType.Config);
+        var file = await PathBinding.SelectFile(FileType.Config);
 
         if (file != null)
         {
@@ -36,7 +31,7 @@ public partial class SettingTab1Model : BaseModel
     [RelayCommand]
     public async Task Open2()
     {
-        var file = await PathBinding.SelectFile(Window, FileType.AuthConfig);
+        var file = await PathBinding.SelectFile(FileType.AuthConfig);
 
         if (file != null)
         {
@@ -47,7 +42,7 @@ public partial class SettingTab1Model : BaseModel
     [RelayCommand]
     public async Task Open3()
     {
-        var file = await PathBinding.SelectFile(Window, FileType.Config);
+        var file = await PathBinding.SelectFile(FileType.Config);
 
         if (file != null)
         {
@@ -61,29 +56,29 @@ public partial class SettingTab1Model : BaseModel
         var local = Local1;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
+            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
             return;
         }
-        Progress(App.GetLanguage("SettingWindow.Tab1.Info5"));
+        Model.Progress(App.GetLanguage("SettingWindow.Tab1.Info5"));
 
         try
         {
             var res = ConfigBinding.LoadConfig(local);
             if (!res)
             {
-                Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
+                Model.Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
                 return;
             }
-            Notify(App.GetLanguage("SettingWindow.Tab1.Info6"));
+            Model.Notify(App.GetLanguage("SettingWindow.Tab1.Info6"));
         }
         catch (Exception e1)
         {
-            Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
+            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
             App.ShowError(App.GetLanguage("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {
-            ProgressClose();
+            Model.ProgressClose();
         }
     }
 
@@ -93,28 +88,28 @@ public partial class SettingTab1Model : BaseModel
         var local = Local2;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
+            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
             return;
         }
-        Progress(App.GetLanguage("SettingWindow.Tab1.Info8"));
+        Model.Progress(App.GetLanguage("SettingWindow.Tab1.Info8"));
 
         try
         {
             var res = ConfigBinding.LoadAuthDatabase(local);
             if (!res)
             {
-                Show(App.GetLanguage("SettingWindow.Tab1.Error4"));
+                Model.Show(App.GetLanguage("SettingWindow.Tab1.Error4"));
                 return;
             }
-            Notify(App.GetLanguage("SettingWindow.Tab1.Info9"));
+            Model.Notify(App.GetLanguage("SettingWindow.Tab1.Info9"));
         }
         catch (Exception)
         {
-            Show(App.GetLanguage("SettingWindow.Tab1.Error5"));
+            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error5"));
         }
         finally
         {
-            ProgressClose();
+            Model.ProgressClose();
         }
     }
 
@@ -124,62 +119,57 @@ public partial class SettingTab1Model : BaseModel
         var local = Local3;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
+            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error1"));
             return;
         }
-        Progress(App.GetLanguage("SettingWindow.Tab1.Info5"));
+        Model.Progress(App.GetLanguage("SettingWindow.Tab1.Info5"));
 
         try
         {
             var res = ConfigBinding.LoadGuiConfig(local);
             if (!res)
             {
-                Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
+                Model.Show(App.GetLanguage("SettingWindow.Tab1.Error2"));
                 return;
             }
-            Notify(App.GetLanguage("SettingWindow.Tab1.Info6"));
+            Model.Notify(App.GetLanguage("SettingWindow.Tab1.Info6"));
         }
         catch (Exception e1)
         {
-            Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
+            Model.Show(App.GetLanguage("SettingWindow.Tab1.Error3"));
             App.ShowError(App.GetLanguage("SettingWindow.Tab1.Error3"), e1);
         }
         finally
         {
-            ProgressClose();
+            Model.ProgressClose();
         }
     }
 
     [RelayCommand]
     public async Task Reset()
     {
-        var res = await ShowWait(App.GetLanguage("SettingWindow.Tab1.Info1"));
+        var res = await Model.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info1"));
         if (!res)
             return;
 
         ConfigBinding.ResetConfig();
-        Notify(App.GetLanguage("SettingWindow.Tab1.Info2"));
+        Model.Notify(App.GetLanguage("SettingWindow.Tab1.Info2"));
     }
 
     [RelayCommand]
     public async Task ClearUser()
     {
-        var res = await ShowWait(App.GetLanguage("SettingWindow.Tab1.Info3"));
+        var res = await Model.ShowWait(App.GetLanguage("SettingWindow.Tab1.Info3"));
         if (!res)
             return;
 
         UserBinding.ClearAllUser();
-        Notify(App.GetLanguage("SettingWindow.Tab1.Info4"));
+        Model.Notify(App.GetLanguage("SettingWindow.Tab1.Info4"));
     }
 
     [RelayCommand]
     public void Open()
     {
         PathBinding.OpPath(PathType.BasePath);
-    }
-
-    public override void Close()
-    {
-
     }
 }

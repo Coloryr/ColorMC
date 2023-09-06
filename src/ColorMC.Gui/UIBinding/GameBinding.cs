@@ -15,6 +15,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
@@ -253,17 +254,17 @@ public static class GameBinding
         }
     }
 
-    public static async Task SetGameIconFromFile(IBaseWindow win, GameSettingObj obj)
+    public static async Task SetGameIconFromFile(BaseModel model, GameSettingObj obj)
     {
         try
         {
-            var file = await PathBinding.SelectFile(win, FileType.Icon);
+            var file = await PathBinding.SelectFile(FileType.Icon);
             if (file != null)
             {
                 var info = await SixLabors.ImageSharp.Image.IdentifyAsync(file);
                 if (info.Width != info.Height || info.Width > 200 || info.Height > 200)
                 {
-                    win.OkInfo.Show(App.GetLanguage("GameBinding.Error6"));
+                    model.Show(App.GetLanguage("GameBinding.Error6"));
                     return;
                 }
                 var data = await File.ReadAllBytesAsync(file);
@@ -296,7 +297,7 @@ public static class GameBinding
 
         if (UserBinding.IsLock(login))
         {
-            var res = await App.MainWindow!.Window.OkInfo.ShowWait(App.GetLanguage("GameBinding.Info1"));
+            var res = await App.MainWindow!.Model.ShowWait(App.GetLanguage("GameBinding.Info1"));
             if (!res)
                 return (null, App.GetLanguage("GameBinding.Error3"));
         }
@@ -304,7 +305,7 @@ public static class GameBinding
         return (login, null);
     }
 
-    public static async Task<(bool, string?)> Launch(IBaseWindow window, GameSettingObj? obj, WorldObj? world = null)
+    public static async Task<(bool, string?)> Launch(BaseModel model, GameSettingObj? obj, WorldObj? world = null)
     {
         if (obj == null)
         {
@@ -322,7 +323,7 @@ public static class GameBinding
             return (false, user.Item2);
         }
 
-        var res1 = await BaseBinding.Launch(window, obj, user.Item1, world);
+        var res1 = await BaseBinding.Launch(model, obj, user.Item1, world);
         if (res1.Item1)
         {
             ConfigBinding.SetLastLaunch(obj.UUID);

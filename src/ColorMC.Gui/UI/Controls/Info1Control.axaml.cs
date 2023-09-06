@@ -10,7 +10,6 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class Info1Control : UserControl
 {
-    private Action? _call;
     private bool _display = false;
 
     public Info1Control()
@@ -32,105 +31,28 @@ public partial class Info1Control : UserControl
     {
         if (e.PropertyName == "Info1Show")
         {
-
+            if (!_display)
+            {
+                _display = true;
+                App.CrossFade300.Start(null, this);
+            }
         }
         else if (e.PropertyName == "Info1Close")
         {
-            App.CrossFade300.Start(this, null);
+            if (_display)
+            {
+                _display = false;
+                App.CrossFade300.Start(this, null);
+            }
         }
-    }
-
-    private void Cancel_Click(object? sender, RoutedEventArgs e)
-    {
-        _display = false;
-
-        
-    }
-
-    public void Close()
-    {
-        _display = false;
-
-        Button_Cancel.IsEnabled = false;
-        App.CrossFade300.Start(this, null);
-    }
-
-    public Task CloseAsync()
-    {
-        _display = false;
-
-        Button_Cancel.IsEnabled = false;
-        return App.CrossFade300.Start(this, null, CancellationToken.None);
-    }
-
-    public void Show()
-    {
-        _display = true;
-
-        App.CrossFade300.Start(null, this);
-    }
-
-    public void Show(string title)
-    {
-        if (_display)
+        else if (e.PropertyName == "Info1CloseAsync")
         {
-            NextText(title);
+            if (_display)
+            {
+                _display = false;
+                (DataContext as BaseModel)!.Info1Task
+                    = App.CrossFade300.Start(this, null, CancellationToken.None);
+            }
         }
-        _display = true;
-
-        Button_Cancel.IsEnabled = true;
-        TextBlock_Text.Text = title;
-        _call = null;
-
-        Button_Cancel.IsVisible = false;
-
-        App.CrossFade300.Start(null, this);
-    }
-
-    public Task ShowAsync(string title)
-    {
-        if (_display)
-        {
-            NextText(title);
-            return Task.CompletedTask;
-        }
-        _display = true;
-
-        Button_Cancel.IsEnabled = true;
-        TextBlock_Text.Text = title;
-        _call = null;
-
-        Button_Cancel.IsVisible = false;
-
-        return App.CrossFade300.Start(null, this, CancellationToken.None);
-    }
-
-    public void Show(string title, Action cancel)
-    {
-        Button_Cancel.IsEnabled = true;
-        TextBlock_Text.Text = title;
-        _call = cancel;
-
-        App.CrossFade300.Start(null, this);
-    }
-
-    public void Progress(double value)
-    {
-        if (value == -1)
-        {
-            ProgressBar_Value.IsIndeterminate = true;
-            ProgressBar_Value.ShowProgressText = false;
-        }
-        else
-        {
-            ProgressBar_Value.IsIndeterminate = false;
-            ProgressBar_Value.Value = value;
-            ProgressBar_Value.ShowProgressText = true;
-        }
-    }
-
-    public void NextText(string title)
-    {
-        TextBlock_Text.Text = title;
     }
 }

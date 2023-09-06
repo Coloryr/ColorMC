@@ -6,8 +6,8 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout7
 {
-    private readonly GameEditTab12Model _model;
-    public GameEditFlyout7(Control con, GameEditTab12Model model)
+    private readonly GameEditModel _model;
+    public GameEditFlyout7(Control con, GameEditModel model)
     {
         _model = model;
 
@@ -20,11 +20,11 @@ public class GameEditFlyout7
 
     private void Button1_Click()
     {
-        PathBinding.OpFile(_model.Item!.Local);
+        PathBinding.OpFile(_model.Schematicitem!.Local);
     }
 
     private void Button2_Click()
     {
-        _model.Delete(_model.Item!);
+        _model.DeleteSchematic(_model.Schematicitem!);
     }
 }

@@ -4,9 +4,11 @@ using ColorMC.Core;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Controls.Add.AddGame;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add.AddGame;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 
@@ -30,15 +32,9 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public string Title => App.GetLanguage("AddGameWindow.Title");
 
-    public AddGameModel Model { get; }
-
     public AddGameControl()
     {
         InitializeComponent();
-
-        Model = new AddGameModel(this);
-        DataContext = Model;
-
         Tabs.SelectionChanged += Tabs_SelectionChanged;
 
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
@@ -88,15 +84,30 @@ public partial class AddGameControl : UserControl, IUserControl
             if (item?.EndsWith(".zip") == true || item?.EndsWith(".mrpack") == true)
             {
                 Tabs.SelectedIndex = 1;
-                Model.AddFile(item);
+                (DataContext as AddGameModel)?.AddFile(item);
             }
+        }
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new AddGameModel(model);
+        amodel.PropertyChanged += Model_PropertyChanged;
+        DataContext = amodel;
+    }
+
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "WindowClose")
+        {
+            Window.Close();
         }
     }
 
     public void Closed()
     {
-        Model.TopClose();
-        DataContext = Model;
+        (DataContext as AddGameModel)?.Close();
+        DataContext = null;
 
         ColorMCCore.PackState = null;
         ColorMCCore.PackUpdate = null;
@@ -153,12 +164,12 @@ public partial class AddGameControl : UserControl, IUserControl
 
     public void Install(CurseForgeModObj.Data data, CurseForgeObjList.Data data1)
     {
-        Model.Install(data, data1);
+        (DataContext as AddGameModel)?.Install(data, data1);
     }
 
     public void Install(ModrinthVersionObj data, ModrinthSearchObj.Hit data1)
     {
-        Model.Install(data, data1);
+        (DataContext as AddGameModel)?.Install(data, data1);
     }
 
     public void AddFile(string file)
@@ -166,7 +177,7 @@ public partial class AddGameControl : UserControl, IUserControl
         if (file.EndsWith(".zip") == true || file.EndsWith(".mrpack") == true)
         {
             Tabs.SelectedIndex = 1;
-            Model.AddFile(file);
+            (DataContext as AddGameModel)?.AddFile(file);
         }
     }
 }

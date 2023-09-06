@@ -31,6 +31,6 @@ public partial class Tab8Control : UserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid2.IsVisible = false;
-        (DataContext as GameEditTab8Model)?.Drop(e.Data);
+        (DataContext as GameEditModel)?.DropResource(e.Data);
     }
 }

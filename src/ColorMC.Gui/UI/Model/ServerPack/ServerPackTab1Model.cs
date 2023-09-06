@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Objs.ServerPack;
+﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackTab1Model : ServerPackBaseModel
+public partial class ServerPackModel : TopModel
 {
     [ObservableProperty]
     private string _url;
@@ -21,46 +22,41 @@ public partial class ServerPackTab1Model : ServerPackBaseModel
     [ObservableProperty]
     private bool _forceUpdate;
 
-    private bool _load;
-
-    public ServerPackTab1Model(IUserControl con, ServerPackObj obj) : base(con, obj)
-    {
-
-    }
+    private bool _loadConfig;
 
     partial void OnTextChanged(string value)
     {
-        Save();
+        SaveConfig();
     }
 
     partial void OnVersionChanged(string value)
     {
-        Save();
+        SaveConfig();
     }
 
     partial void OnUrlChanged(string value)
     {
-        Save();
+        SaveConfig();
     }
 
     partial void OnUIChanged(string value)
     {
-        Save();
+        SaveConfig();
     }
 
     [RelayCommand]
     public async Task OpenUI()
     {
-        var file = await PathBinding.SelectFile(Window, Core.Objs.FileType.UI);
+        var file = await PathBinding.SelectFile(FileType.UI);
         if (file == null)
             return;
 
         UI = file;
     }
 
-    public void Load()
+    public void LoadConfig()
     {
-        _load = true;
+        _loadConfig = true;
 
         Url = Obj.Url;
         Version = Obj.Version;
@@ -68,19 +64,14 @@ public partial class ServerPackTab1Model : ServerPackBaseModel
         UI = Obj.UI;
         ForceUpdate = Obj.ForceUpdate;
 
-        _load = false;
+        _loadConfig = false;
     }
 
-    private void Save()
+    private void SaveConfig()
     {
-        if (_load)
+        if (_loadConfig)
             return;
 
         GameBinding.SaveServerPack(Obj);
-    }
-
-    public override void Close()
-    {
-
     }
 }

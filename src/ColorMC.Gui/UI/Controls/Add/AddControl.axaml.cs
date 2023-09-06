@@ -18,29 +18,16 @@ public partial class AddControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public UserControl Con => this;
-
     public string Title => string.Format(App.GetLanguage("AddWindow.Title"), Obj.Name);
 
-    public BaseModel Model => _model;
-
-    private readonly AddControlModel _model;
-
-    public AddControl() : this(new() { Empty = true })
+    public AddControl() 
     {
-
+        InitializeComponent();
     }
 
-    public AddControl(GameSettingObj obj)
+    public AddControl(GameSettingObj obj) : this()
     {
         Obj = obj;
-
-        InitializeComponent();
-
-        _model = new AddControlModel(this, obj);
-        _model.PropertyChanged += Model_PropertyChanged;
-
-        DataContext = _model;
 
         DataGridFiles.DoubleTapped += DataGridFiles_DoubleTapped;
 
@@ -50,21 +37,30 @@ public partial class AddControl : UserControl, IUserControl
         Grid1.PointerPressed += Grid1_PointerPressed;
     }
 
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new AddControlModel(model, Obj);
+        amodel.PropertyChanged += Model_PropertyChanged;
+
+        DataContext = amodel;
+    }
+
     public void OnKeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key == Key.F5)
         {
-            _model.Reload();
+            (DataContext as AddControlModel)!.Reload();
         }
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
+        var model = (DataContext as AddControlModel)!;
         if (e.PropertyName == "OptifineDisplay")
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (_model.OptifineDisplay == true)
+                if (model.OptifineDisplay == true)
                 {
                     App.CrossFade300.Start(null, Grid2);
                 }
@@ -78,7 +74,7 @@ public partial class AddControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (_model.ModDownloadDisplay == true)
+                if (model.ModDownloadDisplay == true)
                 {
                     App.CrossFade300.Start(null, Grid4);
                 }
@@ -92,7 +88,7 @@ public partial class AddControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (_model.VersionDisplay == true)
+                if (model.VersionDisplay == true)
                 {
                     App.CrossFade300.Start(null, Grid1);
                 }
@@ -106,6 +102,10 @@ public partial class AddControl : UserControl, IUserControl
         {
             ScrollViewer1.ScrollToHome();
         }
+        else if (e.PropertyName == "WindowClose")
+        {
+            Window.Close();
+        }
     }
 
     private void Grid1_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -113,13 +113,13 @@ public partial class AddControl : UserControl, IUserControl
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
         {
-            _model.VersionClose();
+            (DataContext as AddControlModel)!.VersionClose();
             e.Handled = true;
         }
     }
     private void DataGrid2_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        var item = _model.Mod;
+        var item = (DataContext as AddControlModel)!.Mod;
         if (item != null)
         {
             item.Download = !item.Download;
@@ -128,27 +128,29 @@ public partial class AddControl : UserControl, IUserControl
 
     private async void DataGrid1_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        await _model.DownloadOptifine();
+        await (DataContext as AddControlModel)!.DownloadOptifine();
     }
 
     private async void DataGridFiles_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        await _model.GoFile();
+        await (DataContext as AddControlModel)!.GoFile();
     }
 
     public void Closed()
     {
         App.AddWindows.Remove(Obj.UUID);
 
-        if (_model.Set)
+        var model = (DataContext as AddControlModel)!;
+
+        if (model.Set)
         {
-            _model.Set = false;
+            model.Set = false;
         }
     }
 
     public void GoFile(SourceType type, string pid)
     {
-        _model.GoFile(type, pid);
+        (DataContext as AddControlModel)!.GoFile(type, pid);
     }
 
     public void Opened()
@@ -159,16 +161,16 @@ public partial class AddControl : UserControl, IUserControl
         DataGrid1.SetFontColor();
         DataGrid2.SetFontColor();
 
-        _model.Display = true;
+        (DataContext as AddControlModel)!.Display = true;
     }
 
     public Task GoSet()
     {
-        return _model.GoSet();
+        return (DataContext as AddControlModel)!.GoSet();
     }
 
     public void GoTo(FileType type)
     {
-        _model.GoTo(type);
+        (DataContext as AddControlModel)?.GoTo(type);
     }
 }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : BaseModel
+public partial class AddGameModel : TopModel
 {
     public ObservableCollection<string> GroupList { get; init; } = new();
 
@@ -22,7 +22,7 @@ public partial class AddGameModel : BaseModel
     [ObservableProperty]
     private string _group;
 
-    public AddGameModel(IUserControl con) : base(con)
+    public AddGameModel(BaseModel model) : base(model)
     {
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
@@ -36,7 +36,7 @@ public partial class AddGameModel : BaseModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text) = await ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
+        var (Cancel, Text) = await Model.ShowOne(App.GetLanguage("AddGameWindow.Tab1.Info5"), false);
         if (Cancel)
         {
             return;
@@ -44,27 +44,34 @@ public partial class AddGameModel : BaseModel
 
         if (string.IsNullOrWhiteSpace(Text))
         {
-            Show(App.GetLanguage("AddGameWindow.Tab1.Error2"));
+            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error2"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(Text))
         {
-            Show(App.GetLanguage("AddGameWindow.Tab1.Error3"));
+            Model.Show(App.GetLanguage("AddGameWindow.Tab1.Error3"));
             return;
         }
 
-        Notify(App.GetLanguage("AddGameWindow.Tab1.Info6"));
+        Model.Notify(App.GetLanguage("AddGameWindow.Tab1.Info6"));
 
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
         Group = Text;
     }
 
-    public override void Close()
+    protected override void Close()
     {
         _load = true;
         GameVersionList.Clear();
         LoaderVersionList.Clear();
+        _fileModel = null!;
+        Files = null!;
+    }
+
+    public void WindowClose()
+    {
+        OnPropertyChanged("WindowClose");
     }
 }

@@ -30,6 +30,7 @@ using ColorMC.Gui.UI.Controls.ServerPack;
 using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -71,6 +72,8 @@ public partial class App : Application
     public static SkinControl? SkinWindow { get; set; }
     public static AddJavaControl? AddJavaWindow { get; set; }
     public static CountControl? CountWindow { get; set; }
+
+    public static TopLevel? TopLevel { get; set; }
 
     public readonly static Dictionary<string, GameEditControl> GameEditWindows = new();
     public readonly static Dictionary<string, GameConfigEditControl> ConfigEditWindows = new();
@@ -184,15 +187,17 @@ public partial class App : Application
             if (SystemInfo.Os == OsType.Android)
             {
                 (Life as ISingleViewApplicationLifetime)!.MainView = AllWindow;
-                AllWindow.WinHead.Max = false;
-                AllWindow.WinHead.Min = false;
-                AllWindow.WinHead.Clo = false;
+                AllWindow.WinHead.Display(false);
                 AllWindow.Opened();
+
+                TopLevel = TopLevel.GetTopLevel(AllWindow);
             }
 
             else if (SystemInfo.Os != OsType.Android)
             {
-                new SingleWindow(AllWindow).Show();
+                var win = new SingleWindow();
+                win.Show();
+                TopLevel = win;
             }
         }
 
@@ -367,11 +372,13 @@ public partial class App : Application
     {
         if (ConfigBinding.WindowMode())
         {
-            AllWindow?.Add(con);
+            AllWindow!.Add(con);
+            con.SetBaseModel(AllWindow.Model);
         }
         else
         {
-            new SelfBaseWindow(con).Show();
+            var win = new SelfBaseWindow(con);
+            con.SetBaseModel(win.Model);
         }
     }
 
@@ -845,7 +852,7 @@ public partial class App : Application
             return Task.FromResult(false);
         }
         data ??= "";
-        return window.TextInfo.ShowWait(GetLanguage("Gui.Info5"), data);
+        return window.Model.TextInfo(GetLanguage("Gui.Info5"), data);
     }
 
     public static IBaseWindow? GetMainWindow()

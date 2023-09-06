@@ -4,36 +4,39 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:DataType="model:BaseModel"
     mc:Ignorable="d">
     <Panel>
         <Border Name="Border1" Background="{setting:Colors TopBottom}" />
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Label
-                Name="Label1"
                 HorizontalAlignment="Center"
-                Content="123"
+                Content="{Binding Info5Text}"
                 FontSize="20" />
             <ComboBox
-                Name="ComboBox1"
                 Margin="0,30,0,0"
-                HorizontalAlignment="Stretch" />
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Info5Items}"
+                SelectedIndex="{Binding Info5Index}"
+                SelectedItem="{Binding Info5Select}" />
             <StackPanel Margin="0,50,0,0">
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <Button
-                        Name="Button_Confirm"
                         Width="100"
                         Height="30"
                         Margin="0,0,30,0"
                         HorizontalAlignment="Center"
+                        Command="{Binding Info5Confirm}"
                         Content="{setting:Localize Button.Confirm}" />
                     <Button
-                        Name="Button_Cancel"
                         Width="100"
                         Height="30"
                         HorizontalAlignment="Center"
+                        Command="{Binding Info5Cancel}"
                         Content="{setting:Localize Button.Cancel}" />
                 </StackPanel>
             </StackPanel>

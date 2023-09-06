@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab3Model : BaseModel
+public partial class SettingModel : TopModel
 {
-    private bool _load;
+    private bool _httpLoad;
 
     public List<string> SourceList { get; init; } = LanguageBinding.GetDownloadSources();
 
@@ -48,14 +48,9 @@ public partial class SettingTab3Model : BaseModel
     [ObservableProperty]
     private bool _autoDownload;
 
-    public SettingTab3Model(IUserControl con) : base(con)
-    {
-
-    }
-
     partial void OnServerKeyChanged(string value)
     {
-        if (_load)
+        if (_httpLoad)
             return;
 
         ConfigBinding.SetServerKey(value);
@@ -63,17 +58,17 @@ public partial class SettingTab3Model : BaseModel
 
     partial void OnCheckFileChanged(bool value)
     {
-        SetCheck();
+        SetDownloadCheck();
     }
 
     partial void OnCheckUpdateChanged(bool value)
     {
-        SetCheck();
+        SetDownloadCheck();
     }
 
     partial void OnAutoDownloadChanged(bool value)
     {
-        SetCheck();
+        SetDownloadCheck();
     }
 
     partial void OnDownloadProxyChanged(bool value)
@@ -93,7 +88,7 @@ public partial class SettingTab3Model : BaseModel
 
     partial void OnThreadChanged(int value)
     {
-        if (_load)
+        if (_httpLoad)
             return;
 
         ConfigBinding.SetDownloadThread(value);
@@ -101,7 +96,7 @@ public partial class SettingTab3Model : BaseModel
 
     partial void OnSourceChanged(int value)
     {
-        if (_load)
+        if (_httpLoad)
             return;
 
         ConfigBinding.SetDownloadSource((SourceLocal)value);
@@ -115,13 +110,13 @@ public partial class SettingTab3Model : BaseModel
     }
 
     [RelayCommand]
-    public void OpenDownload()
+    public void OpenDownloadPath()
     {
         PathBinding.OpPath(PathType.DownloadPath);
     }
 
     [RelayCommand]
-    public void OpenPic()
+    public void OpenPicPath()
     {
         PathBinding.OpPath(PathType.PicPath);
     }
@@ -135,17 +130,17 @@ public partial class SettingTab3Model : BaseModel
     [RelayCommand]
     public async Task StartCheck()
     {
-        Progress(App.GetLanguage("SettingWindow.Tab3.Info1"));
+        Model.Progress(App.GetLanguage("SettingWindow.Tab3.Info1"));
         var res = await UpdateChecker.CheckOne();
-        ProgressClose();
+        Model.ProgressClose();
         if (res.Item1 == null)
         {
-            Show(App.GetLanguage("Gui.Error21"));
+            Model.Show(App.GetLanguage("Gui.Error21"));
             return;
         }
         else if (res.Item1 == true)
         {
-            var res1 = await TextInfo(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
+            var res1 = await Model.TextInfo(App.GetLanguage("SettingWindow.Tab3.Info2"), res.Item2!);
             if (!res1)
             {
                 UpdateChecker.StartUpdate();
@@ -153,7 +148,7 @@ public partial class SettingTab3Model : BaseModel
         }
         else
         {
-            Show(App.GetLanguage("SettingWindow.Tab3.Info3"));
+            Model.Show(App.GetLanguage("SettingWindow.Tab3.Info3"));
         }
     }
 
@@ -163,9 +158,9 @@ public partial class SettingTab3Model : BaseModel
         ConfigBinding.SetDownloadProxy(IP, Port, User, Password);
     }
 
-    public void Load()
+    public void LoadHttpSetting()
     {
-        _load = true;
+        _httpLoad = true;
 
         IsDownload = BaseBinding.IsDownload;
 
@@ -193,12 +188,12 @@ public partial class SettingTab3Model : BaseModel
             ServerKey = con1.ServerKey;
             ServerInfo = GameCloudUtils.Info;
         }
-        _load = false;
+        _httpLoad = false;
     }
 
-    private void SetCheck()
+    private void SetDownloadCheck()
     {
-        if (_load)
+        if (_httpLoad)
             return;
 
         ConfigBinding.SetDownloadCheck(CheckFile, AutoDownload, CheckUpdate);
@@ -206,14 +201,9 @@ public partial class SettingTab3Model : BaseModel
 
     private void SetProxyEnable()
     {
-        if (_load)
+        if (_httpLoad)
             return;
 
         ConfigBinding.SetDownloadProxyEnable(LoginProxy, DownloadProxy, GameProxy);
-    }
-
-    public override void Close()
-    {
-
     }
 }

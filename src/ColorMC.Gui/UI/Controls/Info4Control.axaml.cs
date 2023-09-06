@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Gui.UI.Model;
 using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,90 +16,26 @@ public partial class Info4Control : UserControl
     {
         InitializeComponent();
 
-        Button_Confirm.Click += Confirm_Click;
-        Button_Cancel.Click += Cancel_Click;
+        DataContextChanged += Info4Control_DataContextChanged;
     }
 
-    private async void Cancel_Click(object? sender, RoutedEventArgs e)
+    private void Info4Control_DataContextChanged(object? sender, EventArgs e)
     {
-        Button_Cancel.IsEnabled = false;
-        await App.CrossFade300.Start(this, null, CancellationToken.None);
-
-        _call?.Invoke(false);
-    }
-
-    private async void Confirm_Click(object? sender, RoutedEventArgs e)
-    {
-        Button_Confirm.IsEnabled = false;
-        Button_Cancel.IsEnabled = false;
-        await App.CrossFade300.Start(this, null, CancellationToken.None);
-
-        _call?.Invoke(true);
-    }
-
-    public async void Show(string title, Action<bool> res)
-    {
-        Button_Confirm.IsEnabled = true;
-        Button_Cancel.IsEnabled = true;
-        Button_Confirm.IsVisible = true;
-        Button_Cancel.IsVisible = true;
-        TextBlock_Text.Text = title;
-        _call = res;
-
-        await App.CrossFade300.Start(null, this, CancellationToken.None);
-    }
-
-    public async Task<bool> ShowWait(string title)
-    {
-        bool reut = false;
-        using Semaphore semaphore = new(0, 2);
-        Button_Confirm.IsEnabled = true;
-        Button_Cancel.IsEnabled = true;
-        Button_Confirm.IsVisible = true;
-        Button_Cancel.IsVisible = true;
-        TextBlock_Text.Text = title;
-
-        _call = (res) =>
+        if (DataContext is BaseModel model)
         {
-            reut = res;
-            semaphore.Release();
-        };
-
-        await App.CrossFade300.Start(null, this, CancellationToken.None);
-
-        await Task.Run(() =>
-        {
-            semaphore.WaitOne();
-        });
-
-        _call = null;
-
-        return reut;
+            model.PropertyChanged += Model_PropertyChanged ;
+        }
     }
 
-    public async void Show(string title)
+    private void Model_PropertyChanged(object? sender,  PropertyChangedEventArgs e)
     {
-        Button_Confirm.IsEnabled = true;
-        Button_Cancel.IsVisible = false;
-        TextBlock_Text.Text = title;
-
-        await App.CrossFade300.Start(null, this, CancellationToken.None);
-    }
-
-    public void ShowOk(string title, Action action)
-    {
-        using Semaphore semaphore = new(0, 2);
-        Button_Confirm.IsEnabled = true;
-        Button_Cancel.IsEnabled = false;
-        Button_Confirm.IsVisible = true;
-        Button_Cancel.IsVisible = false;
-        TextBlock_Text.Text = title;
-
-        _call = (res) =>
+        if (e.PropertyName == "Info4Show")
         {
-            action.Invoke();
-        };
-
-        App.CrossFade300.Start(null, this);
+            App.CrossFade300.Start(null, this);
+        }
+        else if (e.PropertyName == "Info4Close")
+        {
+            App.CrossFade300.Start(this, null);
+        }
     }
 }

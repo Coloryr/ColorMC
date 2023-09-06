@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab4Model : BaseModel
+public partial class SettingModel : TopModel
 {
     public List<string> GCTypeList { get; init; } = JavaBinding.GetGCTypes();
 
@@ -60,12 +60,7 @@ public partial class SettingTab4Model : BaseModel
     [ObservableProperty]
     private uint _height;
 
-    private bool _load = false;
-
-    public SettingTab4Model(IUserControl con) : base(con)
-    {
-
-    }
+    private bool _argLoad = false;
 
     partial void OnMaxMemoryChanged(uint value)
     {
@@ -139,47 +134,47 @@ public partial class SettingTab4Model : BaseModel
 
     partial void OnCheckCoreSha1Changed(bool value)
     {
-        SetCheck();
+        SetGameCheck();
     }
 
     partial void OnCheckAssetsSha1Changed(bool value)
     {
-        SetCheck();
+        SetGameCheck();
     }
 
     partial void OnCheckLibSha1Changed(bool value)
     {
-        SetCheck();
+        SetGameCheck();
     }
 
     partial void OnCheckModSha1Changed(bool value)
     {
-        SetCheck();
+        SetGameCheck();
     }
 
     partial void OnCheckCoreChanged(bool value)
     {
-        SetCheck();
+        SetGameCheck();
     }
 
     partial void OnCheckAssetsChanged(bool value)
     {
-        SetCheck();
+        SetGameCheck();
     }
 
     partial void OnCheckLibChanged(bool value)
     {
-        SetCheck();
+        SetGameCheck();
     }
 
     partial void OnCheckModChanged(bool value)
     {
-        SetCheck();
+        SetGameCheck();
     }
 
-    public void Load()
+    public void LoadArg()
     {
-        _load = true;
+        _argLoad = true;
         var config = ConfigBinding.GetAllConfig();
         if (config.Item1 is { } con)
         {
@@ -214,12 +209,12 @@ public partial class SettingTab4Model : BaseModel
         {
             CloseBefore = con1.CloseBeforeLaunch;
         }
-        _load = false;
+        _argLoad = false;
     }
 
     private void SetMemory()
     {
-        if (_load)
+        if (_argLoad)
             return;
 
         ConfigBinding.SetMemory(MinMemory, MaxMemory);
@@ -227,7 +222,7 @@ public partial class SettingTab4Model : BaseModel
 
     private void SetWindow()
     {
-        if (_load)
+        if (_argLoad)
             return;
 
         ConfigBinding.SetGameWindow(FullScreen, Width, Height);
@@ -235,7 +230,7 @@ public partial class SettingTab4Model : BaseModel
 
     private void SetGc()
     {
-        if (_load)
+        if (_argLoad)
             return;
 
         ConfigBinding.SetGc((GCType)GC, GCArg);
@@ -243,7 +238,7 @@ public partial class SettingTab4Model : BaseModel
 
     private void SetArg()
     {
-        if (_load)
+        if (_argLoad)
             return;
 
         ConfigBinding.SetRunArg(JavaAgent, JvmArg, GameArg);
@@ -251,23 +246,18 @@ public partial class SettingTab4Model : BaseModel
 
     private void SetCommand()
     {
-        if (_load)
+        if (_argLoad)
             return;
 
         ConfigBinding.SetRunCommand(PreRun, PostRun, PreCmd, PostCmd);
     }
 
-    private void SetCheck()
+    private void SetGameCheck()
     {
-        if (_load)
+        if (_argLoad)
             return;
 
         ConfigBinding.SetGameCheckConfig(CheckCore, CheckAssets, CheckLib, CheckMod,
             CheckCoreSha1, CheckAssetsSha1, CheckLibSha1, CheckModSha1);
-    }
-
-    public override void Close()
-    {
-
     }
 }

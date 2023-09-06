@@ -17,16 +17,9 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public string Title => App.GetLanguage("DownloadWindow.Title");
 
-    public BaseModel Model => _model;
-
-    private readonly DownloadModel _model;
-
     public DownloadControl()
     {
         InitializeComponent();
-
-        _model = new(this);
-        DataContext = _model;
     }
 
     public void Opened()
@@ -38,8 +31,6 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public void Closed()
     {
-        _model.Close();
-
         ColorMCCore.DownloadItemStateUpdate = null;
 
         App.DownloadWindow = null;
@@ -47,15 +38,14 @@ public partial class DownloadControl : UserControl, IUserControl
 
     public void Load()
     {
-        _model.Load();
+        (DataContext as DownloadModel)!.Load();
     }
 
     public async Task<bool> Closing()
     {
-        var windows = App.FindRoot(VisualRoot);
         if (BaseBinding.IsDownload)
         {
-            var res = await windows.OkInfo.ShowWait(App.GetLanguage("DownloadWindow.Info4"));
+            var res = await (DataContext as DownloadModel)!.Model.ShowWait(App.GetLanguage("DownloadWindow.Info4"));
             if (res)
             {
                 BaseBinding.DownloadStop();
@@ -65,5 +55,11 @@ public partial class DownloadControl : UserControl, IUserControl
         }
 
         return false;
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new DownloadModel(model);
+        DataContext = amodel;
     }
 }

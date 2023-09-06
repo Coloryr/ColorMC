@@ -22,7 +22,6 @@ public class Live2dRender : OpenGlControlBase
     private bool _change;
     private bool _delete;
     private bool _init = false;
-    private MainModel _model;
     private bool _first = false;
 
     public bool HaveModel
@@ -49,7 +48,6 @@ public class Live2dRender : OpenGlControlBase
         if (DataContext is MainModel model)
         {
             model.PropertyChanged += Model_PropertyChanged;
-            _model = model;
         }
     }
 
@@ -68,7 +66,6 @@ public class Live2dRender : OpenGlControlBase
 
     private void ChangeModel()
     {
-        var window = _model.Window;
         _lapp.Live2dManager.ReleaseAllModel();
         var model = GuiConfigUtils.Config.Live2D.Model;
         if (string.IsNullOrWhiteSpace(model))
@@ -77,7 +74,7 @@ public class Live2dRender : OpenGlControlBase
         }
         if (!File.Exists(model))
         {
-            window.OkInfo.Show(App.GetLanguage("MainWindow.Live2d.Error1"));
+            (DataContext as MainModel)!.Model.Show(App.GetLanguage("MainWindow.Live2d.Error1"));
             return;
         }
         var info = new FileInfo(model);

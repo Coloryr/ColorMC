@@ -6,8 +6,8 @@ namespace ColorMC.Gui.UI.Flyouts;
 
 public class GameEditFlyout6
 {
-    private readonly GameEditTab11Model _obj;
-    public GameEditFlyout6(Control con, GameEditTab11Model obj)
+    private readonly GameEditModel _obj;
+    public GameEditFlyout6(Control con, GameEditModel obj)
     {
         _obj = obj;
 
@@ -20,11 +20,11 @@ public class GameEditFlyout6
 
     private void Button1_Click()
     {
-        PathBinding.OpFile(_obj.Item!.Local);
+        PathBinding.OpFile(_obj.ShaderpackItem!.Local);
     }
 
     private void Button2_Click()
     {
-        _obj.Delete(_obj.Item!);
+        _obj.DeleteShaderpack(_obj.ShaderpackItem!);
     }
 }

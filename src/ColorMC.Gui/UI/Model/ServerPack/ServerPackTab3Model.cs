@@ -11,46 +11,41 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackTab3Model : ServerPackBaseModel
+public partial class ServerPackModel : TopModel
 {
-    public ObservableCollection<ServerPackItemModel> ModList { get; init; } = new();
+    public ObservableCollection<ServerPackItemModel> ConfigList { get; init; } = new();
 
     [ObservableProperty]
-    private ServerPackItemModel _item;
-
-    public ServerPackTab3Model(IUserControl con, ServerPackObj obj) : base(con, obj)
-    {
-
-    }
+    private ServerPackItemModel _configItem;
 
     [RelayCommand]
-    public void SelectAll()
+    public void SelectAllConfig()
     {
-        foreach (var item in ModList)
+        foreach (var item in ConfigList)
         {
             item.Check = true;
-            ItemEdit(item);
+            ConfigItemEdit(item);
         }
     }
 
     [RelayCommand]
-    public void UnSelectAll()
+    public void UnSelectAllConfig()
     {
-        foreach (var item in ModList)
+        foreach (var item in ConfigList)
         {
             item.Check = false;
-            ItemEdit(item);
+            ConfigItemEdit(item);
         }
     }
 
-    public void ItemEdit()
+    public void ConfigItemEdit()
     {
-        ItemEdit(Item);
+        ConfigItemEdit(ConfigItem);
     }
 
-    public async void Load()
+    public async void LoadConfigList()
     {
-        ModList.Clear();
+        ConfigList.Clear();
         var mods = await GameBinding.GetResourcepacks(Obj.Game);
 
         Obj.Resourcepack?.RemoveAll(a => mods.Find(b => a.Sha1 == b.Sha1) == null);
@@ -90,7 +85,7 @@ public partial class ServerPackTab3Model : ServerPackBaseModel
         GameBinding.SaveServerPack(Obj);
     }
 
-    private void ItemEdit(ServerPackItemModel obj)
+    private void ConfigItemEdit(ServerPackItemModel obj)
     {
         var item = Obj.Resourcepack?.FirstOrDefault(a => a.Sha1 == obj.Sha1
                         && a.File == obj.FileName);
@@ -124,10 +119,5 @@ public partial class ServerPackTab3Model : ServerPackBaseModel
         }
 
         GameBinding.SaveServerPack(Obj);
-    }
-
-    public override void Close()
-    {
-
     }
 }

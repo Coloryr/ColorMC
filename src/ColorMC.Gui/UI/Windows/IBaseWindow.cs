@@ -1,21 +1,17 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Media.Imaging;
 using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Windows;
 
 public interface IBaseWindow
 {
-    public TopLevel? TopLevel { get; }
-    public Info3Control InputInfo { get; }
-    public Info1Control ProgressInfo { get; }
-    public Info4Control OkInfo { get; }
-    public Info2Control NotifyInfo { get; }
-    public Info5Control ComboInfo { get; }
-    public Info6Control TextInfo { get; }
-    public HeadControl Head { get; }
+    public BaseModel Model { get; }
     public IUserControl ICon { get; }
     public void SetTitle(string data);
+    public void SetIcon(Bitmap icon);
 
     public void Close()
     {

@@ -39,7 +39,7 @@ public partial class GameCloudModel : GameModel
 
     public string UUID => Obj.UUID;
 
-    public GameCloudModel(IUserControl con, GameSettingObj obj) : base(con, obj)
+    public GameCloudModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
 
     }
@@ -52,26 +52,26 @@ public partial class GameCloudModel : GameModel
             return;
         }
 
-        Progress("启用云同步中");
+        Model.Progress("启用云同步中");
         var res = await WebBinding.StartCloud(Obj);
-        ProgressClose();
+        Model.ProgressClose();
         if (res == null)
         {
-            ShowOk("云服务器错误", Window.Close);
+            Model.ShowOk("云服务器错误", WindowClose);
             return;
         }
         if (res.Value == AddSaveState.Exist)
         {
-            Show("游戏实例已经启用同步了");
+            Model.Show("游戏实例已经启用同步了");
             return;
         }
         else if (res.Value == AddSaveState.Error)
         {
-            Show("游戏实例启用同步错误");
+            Model.Show("游戏实例启用同步错误");
             return;
         }
 
-        Notify("同步已启用");
+        Model.Notify("同步已启用");
         Enable = true;
     }
 
@@ -83,34 +83,34 @@ public partial class GameCloudModel : GameModel
             return;
         }
 
-        var ok = await ShowWait("关闭云同步会删除服务器上的所有东西，是否继续");
+        var ok = await Model.ShowWait("关闭云同步会删除服务器上的所有东西，是否继续");
         if (!ok)
         {
             return;
         }
 
-        Progress("关闭云同步中");
+        Model.Progress("关闭云同步中");
         var res = await WebBinding.StopCloud(Obj);
-        ProgressClose();
+        Model.ProgressClose();
         if (res == null)
         {
-            ShowOk("云服务器错误", Window.Close);
+            Model.ShowOk("云服务器错误", WindowClose);
             return;
         }
         if (!res.Value)
         {
-            Show("云同步关闭失败");
+            Model.Show("云同步关闭失败");
             return;
         }
 
-        Notify("同步已关闭");
+        Model.Notify("同步已关闭");
         Enable = false;
     }
 
     [RelayCommand]
     public async Task UploadConfig()
     {
-        Progress("正在打包");
+        Model.Progress("正在打包");
         var files = _files.GetSelectItems();
         var data = GameCloudUtils.GetCloudData(Obj);
         string dir = Obj.GetBasePath();
@@ -122,31 +122,31 @@ public partial class GameCloudModel : GameModel
         string name = Path.GetFullPath(dir + "/config.zip");
         files.Remove(name);
         await new ZipUtils().ZipFile(name, files, dir);
-        ProgressUpdate("上传中");
+        Model.ProgressUpdate("上传中");
         await GameCloudUtils.UploadConfig(Obj.UUID, name);
         File.Delete(name);
         await LoadCloud();
         data.ConfigTime = DateTime.Parse(ConfigTime);
         LocalConfigTime = ConfigTime;
         GameCloudUtils.Save();
-        ProgressClose();
+        Model.ProgressClose();
     }
 
     [RelayCommand]
     public async Task DownloadConfig()
     {
-        Progress("正在下载");
+        Model.Progress("正在下载");
         var data = GameCloudUtils.GetCloudData(Obj);
         string dir = Obj.GetBasePath();
         string name = Path.GetFullPath(dir + "/config.zip");
         var res = await GameCloudUtils.DownloadConfig(Obj.UUID, name);
         if (res != true)
         {
-            ProgressClose();
-            Show("同步失败");
+            Model.ProgressClose();
+            Model.Show("同步失败");
             return;
         }
-        ProgressUpdate("解压中");
+        Model.ProgressUpdate("解压中");
         data.Config.Clear();
         await Task.Run(() =>
         {
@@ -177,17 +177,17 @@ public partial class GameCloudModel : GameModel
         data.ConfigTime = DateTime.Parse(ConfigTime);
         LocalConfigTime = ConfigTime;
         GameCloudUtils.Save();
-        ProgressClose();
+        Model.ProgressClose();
     }
 
     public async Task LoadCloud()
     {
-        Progress("检查云同步中");
+        Model.Progress("检查云同步中");
         var res = await WebBinding.CheckCloud(Obj);
-        ProgressClose();
+        Model.ProgressClose();
         if (res.Item1 == null)
         {
-            ShowOk("云服务器错误", Window.Close);
+            Model.ShowOk("云服务器错误", WindowClose);
             return;
         }
         Enable = (bool)res.Item1;
@@ -198,7 +198,7 @@ public partial class GameCloudModel : GameModel
     {
         if (!GameCloudUtils.Connect)
         {
-            ShowOk("云服务器未链接", Window.Close);
+            Model.ShowOk("云服务器未链接", WindowClose);
             return;
         }
         await LoadCloud();
@@ -219,8 +219,15 @@ public partial class GameCloudModel : GameModel
         Source = _files.Source;
     }
 
-    public override void Close()
+    public void WindowClose()
     {
+        OnPropertyChanged("WindowClose");
+    }
 
+    protected override void Close()
+    {
+        _files = null!;
+        WorldCloudList.Clear();
+        Source = null!;
     }
 }

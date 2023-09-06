@@ -11,7 +11,7 @@ public partial class ResourcePackModel : ObservableObject
     [ObservableProperty]
     private bool _isSelect;
 
-    public readonly GameEditTab8Model Top;
+    public readonly GameEditModel Top;
     public readonly ResourcepackObj Pack;
 
     public string Local => Pack.Local;
@@ -22,7 +22,7 @@ public partial class ResourcePackModel : ObservableObject
 
     public Bitmap Pic { get; }
 
-    public ResourcePackModel(GameEditTab8Model top, ResourcepackObj pack)
+    public ResourcePackModel(GameEditModel top, ResourcepackObj pack)
     {
         Top = top;
         Pack = pack;
@@ -37,7 +37,7 @@ public partial class ResourcePackModel : ObservableObject
 
     public void Select()
     {
-        Top.SetSelect(this);
+        Top.SetSelectResource(this);
     }
 
     public void Close()

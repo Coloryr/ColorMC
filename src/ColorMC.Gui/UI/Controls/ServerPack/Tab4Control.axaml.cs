@@ -1,5 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
+using ColorMC.Gui.Skin;
+using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.ServerPack;
 using ColorMC.Gui.Utils;
 using System;
@@ -8,21 +10,11 @@ namespace ColorMC.Gui.UI.Controls.ServerPack;
 
 public partial class Tab4Control : UserControl
 {
-    private ServerPackTab4Model _model;
     public Tab4Control()
     {
         InitializeComponent();
 
         DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
-        DataContextChanged += Tab4Control_DataContextChanged;
-    }
-
-    private void Tab4Control_DataContextChanged(object? sender, EventArgs e)
-    {
-        if (DataContext is ServerPackTab4Model model)
-        {
-            _model = model;
-        }
     }
 
     public void Opened()
@@ -35,9 +27,10 @@ public partial class Tab4Control : UserControl
         if (e.PointerPressedEventArgs.GetCurrentPoint(this)
             .Properties.IsRightButtonPressed)
         {
+            var model = (DataContext as ServerPackModel)!;
             Dispatcher.UIThread.Post(() =>
             {
-                _model.Flyout(this);
+                _ = new ServerPackFlyout1(this, model, model.FileItem);
             });
         }
     }

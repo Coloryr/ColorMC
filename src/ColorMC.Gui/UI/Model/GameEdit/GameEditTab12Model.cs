@@ -11,69 +11,59 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab12Model : GameModel
+public partial class GameEditModel : GameModel
 {
     public ObservableCollection<SchematicObj> SchematicList { get; set; } = new();
 
     [ObservableProperty]
-    private SchematicObj? _item;
-
-    public GameEditTab12Model(IUserControl con, GameSettingObj obj) : base(con, obj)
-    {
-
-    }
+    private SchematicObj? _schematicitem;
 
     [RelayCommand]
-    public void Open()
+    public void OpenSchematic()
     {
         PathBinding.OpPath(Obj, PathType.SchematicsPath);
     }
 
     [RelayCommand]
-    public async Task Load()
+    public async Task LoadSchematic()
     {
-        Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
+        Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         SchematicList.Clear();
         SchematicList.AddRange(await GameBinding.GetSchematics(Obj));
-        ProgressClose();
+        Model.ProgressClose();
     }
 
     [RelayCommand]
-    public async Task Add()
+    public async Task AddSchematic()
     {
-        var res = await PathBinding.AddFile(Window, Obj, FileType.Schematic);
+        var res = await PathBinding.AddFile(Obj, FileType.Schematic);
 
         if (res == null)
             return;
 
         if (res == false)
         {
-            Show(App.GetLanguage("Gui.Error12"));
+            Model.Show(App.GetLanguage("Gui.Error12"));
             return;
         }
 
-        Show(App.GetLanguage("GameEditWindow.Tab12.Info3"));
-        await Load();
+        Model.Show(App.GetLanguage("GameEditWindow.Tab12.Info3"));
+        await LoadSchematic();
     }
 
-    public async void Drop(IDataObject data)
+    public async void DropSchematic(IDataObject data)
     {
         var res = await GameBinding.AddFile(Obj, data, FileType.Schematic);
         if (res)
         {
-            await Load();
+            await LoadSchematic();
         }
     }
 
-    public async void Delete(SchematicObj obj)
+    public async void DeleteSchematic(SchematicObj obj)
     {
         GameBinding.DeleteSchematic(obj);
-        Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
-        await Load();
-    }
-
-    public override void Close()
-    {
-        SchematicList.Clear();
+        Model.Show(App.GetLanguage("GameEditWindow.Tab10.Info5"));
+        await LoadSchematic();
     }
 }

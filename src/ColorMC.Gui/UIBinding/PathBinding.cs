@@ -163,29 +163,17 @@ public static class PathBinding
     /// <param name="window">窗口</param>
     /// <param name="type">类型</param>
     /// <returns>路径</returns>
-    public static async Task<string?> SelectPath(IBaseWindow window, FileType type)
+    public static async Task<string?> SelectPath(FileType type)
     {
-        var top = window.TopLevel;
-        if (top != null)
+        var top = App.TopLevel;
+        if (top == null)
         {
-            return await SelectPath(top, type);
+            return null;
         }
-
-        return null;
-    }
-
-    /// <summary>
-    /// 选择路径
-    /// </summary>
-    /// <param name="window">窗口</param>
-    /// <param name="type">类型</param>
-    /// <returns>路径</returns>
-    public static async Task<string?> SelectPath(TopLevel window, FileType type)
-    {
         switch (type)
         {
             case FileType.ServerPack:
-                var res = await window.StorageProvider.OpenFolderPickerAsync(new()
+                var res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
                     Title = App.GetLanguage("Gui.Info11")
                 });
@@ -195,7 +183,7 @@ public static class PathBinding
                 }
                 break;
             case FileType.Game:
-                res = await window.StorageProvider.OpenFolderPickerAsync(new()
+                res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
                     Title = App.GetLanguage("Gui.Info24")
                 });
@@ -234,9 +222,9 @@ public static class PathBinding
     /// <param name="type">类型</param>
     /// <param name="arg">参数</param>
     /// <returns>结果</returns>
-    public static async Task<bool?> SaveFile(IBaseWindow window, FileType type, object[]? arg)
+    public static async Task<bool?> SaveFile(FileType type, object[]? arg)
     {
-        var top = window.TopLevel;
+        var top = App.TopLevel;
         if (top == null)
         {
             return false;
@@ -365,9 +353,9 @@ public static class PathBinding
     /// <param name="window">窗口</param>
     /// <param name="type">类型</param>
     /// <returns>路径</returns>
-    public static async Task<string?> SelectFile(IBaseWindow window, FileType type)
+    public static async Task<string?> SelectFile(FileType type)
     {
-        var top = window.TopLevel;
+        var top = App.TopLevel;
         if (top == null)
         {
             return null;
@@ -511,9 +499,9 @@ public static class PathBinding
         return null;
     }
 
-    public static async Task<bool?> AddFile(IBaseWindow window, GameSettingObj obj, FileType type)
+    public static async Task<bool?> AddFile(GameSettingObj obj, FileType type)
     {
-        var top = window.TopLevel;
+        var top = App.TopLevel;
         if (top == null)
         {
             return false;
@@ -576,9 +564,9 @@ public static class PathBinding
         return null;
     }
 
-    public static async Task<bool?> Export(IBaseWindow window, GameExportModel model)
+    public static async Task<bool?> Export(GameExportModel model)
     {
-        var top = window.TopLevel;
+        var top = App.TopLevel;
         if (top == null)
         {
             return false;

@@ -4,12 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="clr-namespace:ColorMC.Gui.UI.Controls"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     Height="35"
     d:DesignHeight="35"
     d:DesignWidth="800"
-    x:DataType="model:HeadControl"
+    x:DataType="model:BaseModel"
     Background="Transparent"
     mc:Ignorable="d">
     <Panel>
@@ -20,9 +20,9 @@
                 DockPanel.Dock="Left"
                 Orientation="Horizontal" />
             <Image
-                Name="Icon"
+                Name="Icons"
                 Margin="10,5,0,5"
-                Source="resm:ColorMC.Gui.icon.ico" />
+                Source="{Binding Icon}" />
             <TextBlock
                 Name="TitleShow"
                 Margin="5,0,0,0"

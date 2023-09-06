@@ -8,7 +8,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:ServerPackTab3Model"
+    x:DataType="model:ServerPackModel"
     mc:Ignorable="d">
     <DockPanel Margin="5,0,5,5">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
@@ -16,13 +16,13 @@
             <Button
                 Width="80"
                 Height="25"
-                Command="{Binding SelectAll}"
+                Command="{Binding SelectAllConfig}"
                 Content="{setting:Localize ServerPackWindow.Tab2.Text2}" />
             <Button
                 Width="80"
                 Height="25"
                 Margin="5,0,0,0"
-                Command="{Binding UnSelectAll}"
+                Command="{Binding UnSelectAllConfig}"
                 Content="{setting:Localize ServerPackWindow.Tab2.Text3}" />
         </StackPanel>
         <DataGrid
@@ -30,7 +30,7 @@
             AutoGenerateColumns="False"
             CanUserResizeColumns="True"
             CanUserSortColumns="False"
-            ItemsSource="{Binding ModList}">
+            ItemsSource="{Binding ConfigList}">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding Check}" Header="{setting:Localize ServerPackWindow.Tab3.DataGrid.Text1}" />
                 <DataGridTextColumn

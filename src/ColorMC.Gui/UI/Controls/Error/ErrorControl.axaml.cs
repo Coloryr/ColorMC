@@ -11,13 +11,7 @@ public partial class ErrorControl : UserControl, IUserControl
 {
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public UserControl Con => this;
-
     public string Title => App.GetLanguage("ErrorWindow.Title");
-
-    public BaseModel Model => _model;
-
-    private readonly ErrorModel _model;
 
     public ErrorControl()
     {
@@ -26,14 +20,12 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public ErrorControl(string? data, Exception? e, bool close) : this()
     {
-        _model = new(this, data, e, close);
-        DataContext = _model;
+        DataContext = new ErrorModel(data, e, close);
     }
 
     public ErrorControl(string data, string e, bool close) : this()
     {
-        _model = new(this, data, e, close);
-        DataContext = _model;
+        DataContext = new ErrorModel(data, e, close);
     }
 
     public void Opened()
@@ -43,9 +35,15 @@ public partial class ErrorControl : UserControl, IUserControl
 
     public void Closed()
     {
-        if (_model.NeedClose || (App.IsHide && !BaseBinding.IsGameRuning()))
+        if ((DataContext as ErrorModel)!.NeedClose 
+            || (App.IsHide && !BaseBinding.IsGameRuning()))
         {
             App.Close();
         }
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        
     }
 }

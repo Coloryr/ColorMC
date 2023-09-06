@@ -48,7 +48,7 @@
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False"
                 ItemsSource="{Binding SchematicList}"
-                SelectedItem="{Binding Item}">
+                SelectedItem="{Binding SchematicItem}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding Name}"

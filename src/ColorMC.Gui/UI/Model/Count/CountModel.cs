@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.Count;
 
-public partial class CountModel : BaseModel
+public partial class CountModel : ObservableObject
 {
     [ObservableProperty]
     private long _count;
@@ -53,7 +53,7 @@ public partial class CountModel : BaseModel
 
     public ObservableCollection<string> Game { get; init; } = new();
 
-    public CountModel(IUserControl con) : base(con)
+    public CountModel()
     {
         _date1 = _date = DateTime.Now;
         var data = Utils.GameCountUtils.Count;
@@ -215,10 +215,5 @@ public partial class CountModel : BaseModel
             GameCountDone = count3;
             GameCountToday = count4;
         }
-    }
-
-    public override void Close()
-    {
-
     }
 }

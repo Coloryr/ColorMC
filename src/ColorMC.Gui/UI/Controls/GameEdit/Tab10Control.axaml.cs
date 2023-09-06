@@ -21,7 +21,7 @@ public partial class Tab10Control : UserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                _ = new GameEditFlyout5(this, (DataContext as GameEditTab10Model)!);
+                _ = new GameEditFlyout5(this, (DataContext as GameEditModel)!);
             });
         }
     }

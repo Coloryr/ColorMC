@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddJavaControlModel : BaseModel
+public partial class AddJavaControlModel : TopModel
 {
     private readonly List<JavaDownloadObj> _list1 = new();
 
@@ -40,7 +40,7 @@ public partial class AddJavaControlModel : BaseModel
 
     private bool _load = true;
 
-    public AddJavaControlModel(IUserControl con) : base(con)
+    public AddJavaControlModel(BaseModel model) : base(model)
     {
         ColorMCCore.JavaUnzip = JavaUnzip;
     }
@@ -93,7 +93,7 @@ public partial class AddJavaControlModel : BaseModel
     [RelayCommand]
     public async Task Load()
     {
-        Progress(App.GetLanguage("AddJavaWindow.Info4"));
+        Model.Progress(App.GetLanguage("AddJavaWindow.Info4"));
 
         _load = true;
 
@@ -122,12 +122,12 @@ public partial class AddJavaControlModel : BaseModel
 
             Select();
 
-            ProgressClose();
+            Model.ProgressClose();
         }
         else
         {
-            ProgressClose();
-            Show(App.GetLanguage("AddJavaWindow.Error1"));
+            Model.ProgressClose();
+            Model.Show(App.GetLanguage("AddJavaWindow.Error1"));
         }
 
         _load = false;
@@ -135,7 +135,7 @@ public partial class AddJavaControlModel : BaseModel
 
     public async void Install(JavaDownloadObj obj)
     {
-        var res = await ShowWait(string.Format(
+        var res = await Model.ShowWait(string.Format(
             App.GetLanguage("AddJavaWindow.Info1"), obj.Name));
         if (!res)
         {
@@ -144,17 +144,17 @@ public partial class AddJavaControlModel : BaseModel
 
         if (ConfigBinding.GetAllConfig().Item2?.WindowMode != true)
         {
-            Progress(App.GetLanguage("AddJavaWindow.Info2"));
+            Model.Progress(App.GetLanguage("AddJavaWindow.Info2"));
         }
         var res1 = await JavaBinding.DownloadJava(obj);
-        ProgressClose();
+        Model.ProgressClose();
         if (!res1.Item1)
         {
-            Show(res1.Item2!);
+            Model.Show(res1.Item2!);
             return;
         }
 
-        Notify(App.GetLanguage("AddJavaWindow.Info3"));
+        Model.Notify(App.GetLanguage("AddJavaWindow.Info3"));
     }
 
     private void Switch()
@@ -196,11 +196,11 @@ public partial class AddJavaControlModel : BaseModel
     {
         Dispatcher.UIThread.Post(() =>
         {
-            ProgressUpdate(App.GetLanguage("AddJavaWindow.Info5"));
+            Model.ProgressUpdate(App.GetLanguage("AddJavaWindow.Info5"));
         });
     }
 
-    public override void Close()
+    protected override void Close()
     {
         _load = true;
         _list1.Clear();

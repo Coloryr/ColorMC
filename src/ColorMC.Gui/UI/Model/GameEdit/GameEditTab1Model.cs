@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab1Model : GameModel
+public partial class GameEditModel : GameModel
 {
     public ObservableCollection<string> GameVersionList { get; init; } = new();
     public ObservableCollection<string> LoaderVersionList { get; init; } = new();
@@ -24,7 +24,7 @@ public partial class GameEditTab1Model : GameModel
 
     private List<Loaders> _loaderTypeList = new();
 
-    private bool _load = false;
+    private bool _gameLoad = false;
 
     [ObservableProperty]
     private string _gameVersion;
@@ -51,19 +51,14 @@ public partial class GameEditTab1Model : GameModel
     [ObservableProperty]
     private bool _enableLoader;
 
-    public GameEditTab1Model(IUserControl con, GameSettingObj obj) : base(con, obj)
-    {
-        Load();
-    }
-
     partial void OnVersionTypeChanged(int value)
     {
-        Load1();
+        GameVersionLoad();
     }
 
     async partial void OnLoaderTypeChanged(int value)
     {
-        if (_load)
+        if (_gameLoad)
             return;
 
         var loader = _loaderTypeList[value];
@@ -105,7 +100,7 @@ public partial class GameEditTab1Model : GameModel
 
     partial void OnGameVersionChanged(string value)
     {
-        if (_load)
+        if (_gameLoad)
             return;
 
         LoaderVersion = null;
@@ -120,7 +115,7 @@ public partial class GameEditTab1Model : GameModel
 
     partial void OnLoaderVersionChanged(string? value)
     {
-        if (_load)
+        if (_gameLoad)
             return;
 
         Obj.LoaderVersion = value;
@@ -129,7 +124,7 @@ public partial class GameEditTab1Model : GameModel
 
     partial void OnGroupChanged(string? value)
     {
-        if (_load)
+        if (_gameLoad)
             return;
 
         GameBinding.MoveGameGroup(Obj, value);
@@ -137,7 +132,7 @@ public partial class GameEditTab1Model : GameModel
 
     partial void OnModPackChanged(bool value)
     {
-        if (_load)
+        if (_gameLoad)
             return;
 
         Obj.ModPack = value;
@@ -146,7 +141,7 @@ public partial class GameEditTab1Model : GameModel
 
     partial void OnPIDChanged(string? value)
     {
-        if (_load)
+        if (_gameLoad)
             return;
 
         Obj.PID = value;
@@ -155,7 +150,7 @@ public partial class GameEditTab1Model : GameModel
 
     partial void OnFIDChanged(string? value)
     {
-        if (_load)
+        if (_gameLoad)
             return;
 
         Obj.FID = value;
@@ -364,7 +359,7 @@ public partial class GameEditTab1Model : GameModel
     [RelayCommand]
     public async Task LoaderReload()
     {
-        _load = true;
+        _gameLoad = true;
 
         _loaderTypeList.Clear();
         LoaderTypeList.Clear();
@@ -400,7 +395,7 @@ public partial class GameEditTab1Model : GameModel
         }
         ProgressClose();
 
-        _load = false;
+        _gameLoad = false;
     }
 
     [RelayCommand]
@@ -418,7 +413,7 @@ public partial class GameEditTab1Model : GameModel
         LoaderVersion = null;
         LoaderType = 0;
 
-        Load1();
+        GameVersionLoad();
     }
 
     [RelayCommand]
@@ -466,7 +461,7 @@ public partial class GameEditTab1Model : GameModel
         App.ShowConfigEdit(Obj);
     }
 
-    private async void Load1()
+    private async void GameVersionLoad()
     {
         GameVersionList.Clear();
         switch (VersionType)
@@ -486,7 +481,7 @@ public partial class GameEditTab1Model : GameModel
         }
     }
 
-    private void Load2()
+    private void GroupLoad()
     {
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
@@ -497,9 +492,9 @@ public partial class GameEditTab1Model : GameModel
         GameRun = BaseBinding.IsGameRun(Obj);
     }
 
-    public void Load()
+    public void GameLoad()
     {
-        _load = true;
+        _gameLoad = true;
 
         if (Obj.GameType == GameType.Snapshot)
         {
@@ -536,8 +531,8 @@ public partial class GameEditTab1Model : GameModel
             LoaderType = 0;
         }
 
-        Load1();
-        Load2();
+        GameVersionLoad();
+        GroupLoad();
 
         LoaderVersion = Obj.LoaderVersion;
         ModPack = Obj.ModPack;
@@ -548,14 +543,6 @@ public partial class GameEditTab1Model : GameModel
 
         GameRun = BaseBinding.IsGameRun(Obj);
 
-        _load = false;
-    }
-
-    public override void Close()
-    {
-        _load = true;
-        GameVersionList.Clear();
-        LoaderVersionList.Clear();
-        GroupList.Clear();
+        _gameLoad = false;
     }
 }

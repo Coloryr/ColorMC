@@ -4,19 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:DataType="model:BaseModel"
     mc:Ignorable="d">
     <Panel>
         <Border Name="Border1" Background="{setting:Colors TopBottom}" />
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock
-                Name="TextBlock_Text"
                 HorizontalAlignment="Center"
                 FontSize="20"
                 Foreground="{setting:Colors Font}"
-                Text="测试"
+                Text="{Binding Info4Text}"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
             <StackPanel
@@ -25,16 +26,19 @@
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
                 <Button
-                    Name="Button_Confirm"
                     Width="100"
                     Height="30"
-                    Content="{setting:Localize Button.Confirm}" />
+                    Command="{Binding Info4Confirm}"
+                    Content="{setting:Localize Button.Confirm}"
+                    IsEnabled="{Binding Info4Enable}" />
                 <Button
-                    Name="Button_Cancel"
                     Width="100"
                     Height="30"
                     Margin="50,0,0,0"
-                    Content="{setting:Localize Button.Cancel}" />
+                    Command="{Binding Info4Cancel}"
+                    Content="{setting:Localize Button.Cancel}"
+                    IsEnabled="{Binding Info4Enable}"
+                    IsVisible="{Binding Info4CancelVisable}" />
             </StackPanel>
         </StackPanel>
     </Panel>

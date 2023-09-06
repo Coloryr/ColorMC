@@ -17,30 +17,28 @@ namespace ColorMC.Gui.UI.Controls.ConfigEdit;
 
 public partial class GameConfigEditControl : UserControl, IUserControl
 {
-    private readonly GameConfigEditModel _model;
+    private readonly WorldObj _world;
+    private readonly GameSettingObj _obj;
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
-
-    public UserControl Con => this;
 
     public string Title
     {
         get
         {
-            if (_model.World == null)
+            var model = (DataContext as GameConfigEditModel)!;
+            if (model.World == null)
             {
                 return string.Format(App.GetLanguage("ConfigEditWindow.Title"),
-                    _model.Obj?.Name);
+                    model.Obj?.Name);
             }
             else
             {
                 return string.Format(App.GetLanguage("ConfigEditWindow.Title1"),
-                    _model.Obj?.Name, _model.World?.LevelName);
+                    model.Obj?.Name, model.World?.LevelName);
             }
         }
     }
-
-    public BaseModel Model => _model;
 
     public GameConfigEditControl()
     {
@@ -61,23 +59,19 @@ public partial class GameConfigEditControl : UserControl, IUserControl
 
     public GameConfigEditControl(WorldObj world) : this()
     {
-        _model = new(this, world.Game, world);
-        DataContext = _model;
-        _model.PropertyChanged += Model_PropertyChanged;
+        _world = world;
     }
 
     public GameConfigEditControl(GameSettingObj obj) : this()
     {
-        _model = new(this, obj, null);
-        DataContext = _model;
-        _model.PropertyChanged += Model_PropertyChanged;
+        _obj = obj;
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "TurnTo")
         {
-            NbtViewer.Scroll!.Offset = new(0, _model.TurnTo * 25);
+            NbtViewer.Scroll!.Offset = new(0, (DataContext as GameConfigEditModel)!.TurnTo * 25);
         }
     }
 
@@ -87,7 +81,7 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                _model.Flyout(this);
+                (DataContext as GameConfigEditModel)!.Flyout(this);
             });
         }
     }
@@ -96,7 +90,7 @@ public partial class GameConfigEditControl : UserControl, IUserControl
     {
         if (e.EditAction == DataGridEditAction.Commit)
         {
-            _model.DataEdit();
+            (DataContext as GameConfigEditModel)!.DataEdit();
         }
     }
 
@@ -104,7 +98,7 @@ public partial class GameConfigEditControl : UserControl, IUserControl
     {
         if (e.Key == Key.S && e.KeyModifiers == KeyModifiers.Control)
         {
-            _model.Save();
+            (DataContext as GameConfigEditModel)!.Save();
         }
     }
 
@@ -114,7 +108,7 @@ public partial class GameConfigEditControl : UserControl, IUserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                _model.Pressed(this);
+                (DataContext as GameConfigEditModel)!.Pressed(this);
             });
         }
     }
@@ -125,26 +119,35 @@ public partial class GameConfigEditControl : UserControl, IUserControl
 
         DataGrid1.SetFontColor();
 
-        _model.Load();
+        var model = (DataContext as GameConfigEditModel)!;
+        model.Load();
 
-        var icon = _model.Obj.GetIconFile();
+        var icon = model.Obj.GetIconFile();
         if (File.Exists(icon))
         {
-            Window.Head.SetIcon(new(icon));
+            model.Model.SetIcon(new(icon));
         }
     }
 
     public void Closed()
     {
         string key;
-        if (_model.World != null)
+        var model = (DataContext as GameConfigEditModel)!;
+        if (model.World != null)
         {
-            key = _model.Obj.UUID + ":" + _model.World.LevelName;
+            key = model.Obj.UUID + ":" + model.World.LevelName;
         }
         else
         {
-            key = _model.Obj.UUID;
+            key = model.Obj.UUID;
         }
         App.ConfigEditWindows.Remove(key);
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new GameConfigEditModel(model, _obj, _world);
+        amodel.PropertyChanged += Model_PropertyChanged;
+        DataContext = amodel;
     }
 }

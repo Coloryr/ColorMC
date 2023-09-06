@@ -8,7 +8,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:SettingTab3Model"
+    x:DataType="model:SettingModel"
     mc:Ignorable="d">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
@@ -16,13 +16,13 @@
                 Width="160"
                 Height="25"
                 Margin="5"
-                Command="{Binding OpenDownload}"
+                Command="{Binding OpenDownloadPath}"
                 Content="{setting:Localize SettingWindow.Tab3.Text13}" />
             <Button
                 Width="160"
                 Height="25"
                 Margin="0,5,5,5"
-                Command="{Binding OpenPic}"
+                Command="{Binding OpenPicPath}"
                 Content="{setting:Localize SettingWindow.Tab3.Text18}" />
         </StackPanel>
         <StackPanel Margin="5,0,5,5">

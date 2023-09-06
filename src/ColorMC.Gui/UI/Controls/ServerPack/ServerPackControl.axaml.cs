@@ -11,13 +11,13 @@ namespace ColorMC.Gui.UI.Controls.ServerPack;
 
 public partial class ServerPackControl : UserControl, IUserControl
 {
+    private GameSettingObj _obj;
+
     private readonly Tab1Control _tab1 = new();
     private readonly Tab2Control _tab2 = new();
     private readonly Tab3Control _tab3 = new();
     private readonly Tab4Control _tab4 = new();
 
-    private readonly ServerPackTab1Model _model1;
-    private readonly ServerPackTab2Model _model2;
     private readonly ServerPackTab3Model _model3;
     private readonly ServerPackTab4Model _model4;
 
@@ -29,80 +29,19 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     private int _now;
 
-    public string GameName => _model1.Obj.Game.Name;
-
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public UserControl Con => this;
-
     public string Title => string.Format(App.GetLanguage("ServerPackWindow.Title"),
-            _model1.Obj.Game.Name);
+           _obj.Name);
 
-    public BaseModel Model { get; }
-
-    public class TopModel : BaseModel
-    {
-        private ServerPackControl _con;
-
-        public TopModel(ServerPackControl con) : base(con)
-        {
-            _con = con;
-        }
-
-        public override void Close()
-        {
-            _con._model.Close();
-            _con._model1.Close();
-            _con._model2.Close();
-            _con._model3.Close();
-            _con._model4.Close();
-            _con = null;
-        }
-    }
-
-    public ServerPackControl() : this(new() { Empty = true })
-    {
-
-    }
-
-    public ServerPackControl(GameSettingObj obj)
+    public ServerPackControl()
     {
         InitializeComponent();
+    }
 
-        if (!obj.Empty)
-        {
-            Model = new TopModel(this);
-
-            var pack = GameBinding.GetServerPack(obj);
-            if (pack == null)
-            {
-                pack = new()
-                {
-                    Game = obj,
-                    Mod = new(),
-                    Resourcepack = new(),
-                    Config = new()
-                };
-
-                GameBinding.SaveServerPack(pack);
-            }
-
-            _model = new(this, pack);
-            DataContext = _model;
-
-            _model1 = new(this, pack);
-            _tab1.DataContext = _model1;
-
-            _model2 = new(this, pack);
-            _tab2.DataContext = _model2;
-
-            _model3 = new(this, pack);
-            _tab3.DataContext = _model3;
-
-            _model4 = new(this, pack);
-            _tab4.DataContext = _model4;
-        }
-
+    public ServerPackControl(GameSettingObj obj) : this()
+    {
+        _obj = obj;
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         Tabs.SelectionChanged += Tabs_SelectionChanged;
@@ -133,23 +72,24 @@ public partial class ServerPackControl : UserControl, IUserControl
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        var model = (DataContext as ServerPackModel)!;
         switch (Tabs.SelectedIndex)
         {
             case 0:
                 Go(_tab1);
-                _model1.Load();
+                model.LoadConfig();
                 break;
             case 1:
                 Go(_tab2);
-                _model2.Load();
+                model.LoadMod();
                 break;
             case 2:
                 Go(_tab3);
-                _model3.Load();
+                model.LoadConfigList();
                 break;
             case 3:
                 Go(_tab4);
-                _model4.Load();
+                model.LoadFile();
                 break;
         }
 
@@ -191,6 +131,26 @@ public partial class ServerPackControl : UserControl, IUserControl
         _tab2.Closed();
         _tab2.Closed();
 
-        App.ServerPackWindows.Remove(_model1.Obj.Game.UUID);
+        App.ServerPackWindows.Remove(_obj.UUID);
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var pack = GameBinding.GetServerPack(_obj);
+        if (pack == null)
+        {
+            pack = new()
+            {
+                Game = _obj,
+                Mod = new(),
+                Resourcepack = new(),
+                Config = new()
+            };
+
+            GameBinding.SaveServerPack(pack);
+        }
+
+        var amodel = new ServerPackModel(model, pack);
+        DataContext = amodel;
     }
 }

@@ -41,7 +41,7 @@ public partial class Tab12Control : UserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid2.IsVisible = false;
-        (DataContext as GameEditTab12Model)?.Drop(e.Data);
+        (DataContext as GameEditModel)?.DropSchematic(e.Data);
     }
 
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
@@ -50,7 +50,7 @@ public partial class Tab12Control : UserControl
         {
             Dispatcher.UIThread.Post(() =>
             {
-                _ = new GameEditFlyout7(this, (DataContext as GameEditTab12Model)!);
+                _ = new GameEditFlyout7(this, (DataContext as GameEditModel)!);
             });
         }
     }

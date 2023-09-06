@@ -39,7 +39,7 @@ public partial class GameItemModel : GameModel
     public string Name => Obj.Name;
     public Bitmap Pic { get; }
 
-    public GameItemModel(IUserControl con, IMainTop top, GameSettingObj obj) : base(con, obj)
+    public GameItemModel(BaseModel model, IMainTop top, GameSettingObj obj) : base(model, obj)
     {
         _top = top;
         Pic = GetImage();
@@ -76,14 +76,11 @@ public partial class GameItemModel : GameModel
         dragData.Set(BaseBinding.DrapType, this);
         IsDrop = true;
 
-        if (Window is TopLevel top)
-        {
-            List<IStorageFolder> files = new();
-            var item = await top.StorageProvider
-                   .TryGetFolderFromPathAsync(Obj.GetBasePath());
-            files.Add(item!);
-            dragData.Set(DataFormats.Files, files);
-        }
+        List<IStorageFolder> files = new();
+        var item = await App.TopLevel!.StorageProvider
+               .TryGetFolderFromPathAsync(Obj.GetBasePath());
+        files.Add(item!);
+        dragData.Set(DataFormats.Files, files);
 
         Dispatcher.UIThread.Post(() =>
         {
@@ -126,14 +123,14 @@ public partial class GameItemModel : GameModel
 
     public async void Rename()
     {
-        var (Cancel, Text1, _) = await ShowEdit(App.GetLanguage("MainWindow.Info23"), Obj.Name);
+        var (Cancel, Text1) = await Model.ShowEdit(App.GetLanguage("MainWindow.Info23"), Obj.Name);
         if (Cancel)
         {
             return;
         }
         if (string.IsNullOrWhiteSpace(Text1))
         {
-            Show(App.GetLanguage("MainWindow.Error3"));
+            Model.Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
@@ -142,7 +139,7 @@ public partial class GameItemModel : GameModel
 
     public async void Copy()
     {
-        var (Cancel, Text1, _) = await ShowEdit(App.GetLanguage("MainWindow.Info23"),
+        var (Cancel, Text1) = await Model.ShowEdit(App.GetLanguage("MainWindow.Info23"),
             Obj.Name + App.GetLanguage("MainWindow.Info24"));
         if (Cancel)
         {
@@ -150,25 +147,25 @@ public partial class GameItemModel : GameModel
         }
         if (string.IsNullOrWhiteSpace(Text1))
         {
-            Show(App.GetLanguage("MainWindow.Error3"));
+            Model.Show(App.GetLanguage("MainWindow.Error3"));
             return;
         }
 
         var res = await GameBinding.CopyGame(Obj, Text1);
         if (!res)
         {
-            Show(App.GetLanguage("MainWindow.Error5"));
+            Model.Show(App.GetLanguage("MainWindow.Error5"));
             return;
         }
         else
         {
-            Notify(App.GetLanguage("MainWindow.Info25"));
+            Model.Notify(App.GetLanguage("MainWindow.Info25"));
         }
     }
 
     public async void DeleteGame()
     {
-        var res = await ShowWait(string.Format(App.GetLanguage("MainWindow.Info19"), Obj.Name));
+        var res = await Model.ShowWait(string.Format(App.GetLanguage("MainWindow.Info19"), Obj.Name));
         if (!res)
         {
             return;
@@ -177,7 +174,7 @@ public partial class GameItemModel : GameModel
         res = await GameBinding.DeleteGame(Obj);
         if (!res)
         {
-            Show(App.GetLanguage("MainWindow.Info37"));
+            Model.Show(App.GetLanguage("MainWindow.Info37"));
         }
     }
 
@@ -186,7 +183,7 @@ public partial class GameItemModel : GameModel
         _top.EditGroup(this);
     }
 
-    public override void Close()
+    protected override void Close()
     {
         Pic.Dispose();
     }

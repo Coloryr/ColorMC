@@ -8,7 +8,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:GameEditTab1Model"
+    x:DataType="model:GameEditModel"
     mc:Ignorable="d">
     <ScrollViewer>
         <DockPanel>
@@ -64,7 +64,7 @@
                     Margin="5,5,0,5"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Command="{Binding Open}"
+                    Command="{Binding OpenJava}"
                     Content="{setting:Localize Button.OpFile}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />

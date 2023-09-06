@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
-    xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Windows"
     Title="Title"
     Width="800"
@@ -21,5 +20,5 @@
     FontFamily="{setting:Font}"
     TransparencyBackgroundFallback="Transparent"
     mc:Ignorable="d">
-    <Grid Name="Main" />
+    <views1:AllControl Name="Win" />
 </Window>

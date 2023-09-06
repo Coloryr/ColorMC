@@ -5,8 +5,8 @@ using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Error;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
 using ColorMC.Gui.Utils.LaunchSetting;
 using System;
@@ -15,15 +15,9 @@ namespace ColorMC.Gui.UI.Windows;
 
 public partial class SelfBaseWindow : Window, IBaseWindow
 {
-    public TopLevel? TopLevel => this;
-    public Info3Control InputInfo => Info3;
-    public Info1Control ProgressInfo => Info1;
-    public Info4Control OkInfo => Info;
-    public Info2Control NotifyInfo => Info2;
-    public Info6Control TextInfo => Info6;
-    public HeadControl Head => WinHead;
-    public Info5Control ComboInfo => Info5;
     public IUserControl ICon { get; set; }
+
+    public BaseModel Model => (DataContext as BaseModel)!;
 
     private bool _isClose;
 
@@ -41,7 +35,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
         if (SystemInfo.Os == OsType.Linux)
         {
             SystemDecorations = SystemDecorations.Full;
-            Head.IsVisible = false;
+            WinHead.IsVisible = false;
         }
 
         KeyDown += Window_KeyDown;
@@ -108,7 +102,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
 
     public void SetTitle(string temp)
     {
-        Head.Title = Title = temp;
+        Model.Title = temp;
     }
 
     private void FindGoodPos()
@@ -180,6 +174,7 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         App.PicUpdate -= Update;
 
+        ((ICon as UserControl)?.DataContext as TopModel)?.TopClose();
         DataContext = null;
         ICon.Closed();
 

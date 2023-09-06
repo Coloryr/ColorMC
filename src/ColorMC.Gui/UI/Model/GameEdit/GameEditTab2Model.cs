@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab2Model : GameModel
+public partial class GameEditModel : GameModel
 {
     public List<string> GCTypeList { get; init; } = JavaBinding.GetGCTypes();
     public ObservableCollection<string> JvmList { get; init; } = new();
@@ -74,18 +74,11 @@ public partial class GameEditTab2Model : GameModel
     [ObservableProperty]
     private bool? _maxWindow;
 
-    private bool _load;
-
-    public GameEditTab2Model(IUserControl con, GameSettingObj obj) : base(con, obj)
-    {
-        _title = string.Format(App.GetLanguage("GameEditWindow.Tab2.Text13"), Obj.Name);
-
-        Load();
-    }
+    private bool _configLoad;
 
     partial void OnProxyPasswordChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.ProxyHost ??= new();
@@ -95,7 +88,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnProxyUserChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.ProxyHost ??= new();
@@ -105,7 +98,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnProxyPortChanged(ushort? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.ProxyHost ??= new();
@@ -115,7 +108,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnProxyIPChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.ProxyHost ??= new();
@@ -125,7 +118,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnPortChanged(ushort? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.StartServer ??= new();
@@ -135,7 +128,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnIPChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.StartServer ??= new();
@@ -145,7 +138,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnHeightChanged(uint? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.Window ??= new();
@@ -155,7 +148,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnWidthChanged(uint? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.Window ??= new();
@@ -165,7 +158,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnMaxWindowChanged(bool? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.Window ??= new();
@@ -175,7 +168,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnMainClassChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.AdvanceJvm ??= new();
@@ -185,7 +178,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnClassPathChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.AdvanceJvm ??= new();
@@ -195,7 +188,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnGameArgChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -205,7 +198,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnJvmArgChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -215,7 +208,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnJavaAgentChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -225,7 +218,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnMinMemChanged(uint? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -235,7 +228,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnMaxMemChanged(uint? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -245,7 +238,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnPerRunChanged(bool value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -255,7 +248,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnPerRunCmdChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -265,7 +258,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnPostRunChanged(bool value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -275,7 +268,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnPostRunCmdChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -294,7 +287,7 @@ public partial class GameEditTab2Model : GameModel
             EnableJvmName = false;
         }
 
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmName = JvmName;
@@ -304,7 +297,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnJvmNameChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmName = JvmName;
@@ -313,7 +306,7 @@ public partial class GameEditTab2Model : GameModel
 
     partial void OnJvmGcChanged(string? value)
     {
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -325,7 +318,7 @@ public partial class GameEditTab2Model : GameModel
     {
         EnableGc = Gc == 5;
 
-        if (_load)
+        if (_configLoad)
             return;
 
         Obj.JvmArg ??= new();
@@ -334,30 +327,30 @@ public partial class GameEditTab2Model : GameModel
     }
 
     [RelayCommand]
-    public async Task Delete()
+    public async Task DeleteConfig()
     {
-        var res = await ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
+        var res = await Model.ShowWait(App.GetLanguage("GameEditWindow.Tab2.Info1"));
         if (res)
         {
             GameBinding.DeleteConfig(Obj);
 
-            Load();
+            ConfigLoad();
         }
     }
 
     [RelayCommand]
-    public async Task Open()
+    public async Task OpenJava()
     {
-        var file = await PathBinding.SelectFile(Window, FileType.Java);
+        var file = await PathBinding.SelectFile(FileType.Java);
         if (file != null)
         {
             JvmLocal = file;
         }
     }
 
-    public void Load()
+    public void ConfigLoad()
     {
-        _load = true;
+        _configLoad = true;
 
         var list = new List<string>()
         {
@@ -466,12 +459,6 @@ public partial class GameEditTab2Model : GameModel
             ClassPath = null;
         }
 
-        _load = false;
-    }
-
-    public override void Close()
-    {
-        _load = true;
-        JvmList.Clear();
+        _configLoad = false;
     }
 }

@@ -14,10 +14,9 @@
         <Border Background="{setting:Colors TopBottom}" />
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock
-                Name="TextBlock_Text"
                 FontSize="20"
                 Foreground="{setting:Colors Font}"
-                Text="测试"
+                Text="{Binding Info1Text}"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
             <StackPanel Margin="0,50,0,0">
@@ -25,8 +24,9 @@
                     Name="ProgressBar_Value"
                     Height="20"
                     Margin="20,0,20,20"
-                    IsIndeterminate="True"
-                    Value="20" />
+                    IsIndeterminate="{Binding Info1Indeterminate}"
+                    ShowProgressText="{Binding !Info1Indeterminate}"
+                    Value="{Binding Info1Value}" />
                 <Button
                     Width="100"
                     Height="30"

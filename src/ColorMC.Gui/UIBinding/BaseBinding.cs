@@ -40,7 +40,7 @@ public static class BaseBinding
     public readonly static Dictionary<string, StringBuilder> GameLogs = new();
     public static bool ISNewStart => ColorMCCore.NewStart;
 
-    private static IBaseWindow? s_window;
+    private static BaseModel? s_window;
     private static CancellationTokenSource s_launchCancel = new();
 
     /// <summary>
@@ -108,7 +108,7 @@ public static class BaseBinding
         }
 
         return Dispatcher.UIThread.InvokeAsync(() =>
-            s_window.OkInfo.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
+            s_window.ShowWait(pre ? App.GetLanguage("MainWindow.Info29")
             : App.GetLanguage("MainWindow.Info30")));
     }
 
@@ -121,7 +121,7 @@ public static class BaseBinding
 
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return s_window.OkInfo.ShowWait(state);
+            return s_window.ShowWait(state);
         });
     }
 
@@ -133,7 +133,7 @@ public static class BaseBinding
         }
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return s_window.OkInfo.ShowWait(string.Format(
+            return s_window.ShowWait(string.Format(
                 App.GetLanguage("MainWindow.Info21"), login.UserName));
         });
     }
@@ -149,43 +149,43 @@ public static class BaseBinding
                 switch (state)
                 {
                     case LaunchState.Login:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info8"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info8"));
                         break;
                     case LaunchState.Check:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info9"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info9"));
                         break;
                     case LaunchState.CheckVersion:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info10"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info10"));
                         break;
                     case LaunchState.CheckLib:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info11"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info11"));
                         break;
                     case LaunchState.CheckAssets:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info12"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info12"));
                         break;
                     case LaunchState.CheckLoader:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info13"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info13"));
                         break;
                     case LaunchState.CheckLoginCore:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info14"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info14"));
                         break;
                     case LaunchState.CheckMods:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info17"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info17"));
                         break;
                     case LaunchState.Download:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info15"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info15"));
                         break;
                     case LaunchState.JvmPrepare:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info16"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info16"));
                         break;
                     case LaunchState.LaunchPre:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info31"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info31"));
                         break;
                     case LaunchState.LaunchPost:
-                        s_window.ProgressInfo.NextText(App.GetLanguage("MainWindow.Info32"));
+                        s_window.ProgressUpdate(App.GetLanguage("MainWindow.Info32"));
                         break;
                     case LaunchState.End:
-                        s_window.ProgressInfo.Close();
+                        s_window.ProgressClose();
                         break;
                 }
             }
@@ -194,37 +194,37 @@ public static class BaseBinding
                 switch (state)
                 {
                     case LaunchState.Login:
-                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info8");
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info8");
                         break;
                     case LaunchState.Check:
-                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info9");
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info9");
                         break;
                     case LaunchState.CheckVersion:
-                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info10");
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info10");
                         break;
                     case LaunchState.CheckLib:
-                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info11");
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info11");
                         break;
                     case LaunchState.CheckAssets:
-                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info12");
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info12");
                         break;
                     case LaunchState.CheckLoader:
-                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info13");
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info13");
                         break;
                     case LaunchState.CheckLoginCore:
-                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info14");
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info14");
                         break;
                     case LaunchState.CheckMods:
-                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info17");
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info17");
                         break;
                     case LaunchState.Download:
-                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info15");
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info15");
                         break;
                     case LaunchState.JvmPrepare:
-                        s_window.Head.Title1 = App.GetLanguage("MainWindow.Info16");
+                        s_window.Title1 = App.GetLanguage("MainWindow.Info16");
                         break;
                     case LaunchState.End:
-                        s_window.Head.Title1 = "";
+                        s_window.Title1 = "";
                         break;
                 }
             }
@@ -235,9 +235,9 @@ public static class BaseBinding
     /// 复制到剪贴板
     /// </summary>
     /// <param name="text">文本</param>
-    public static async Task CopyTextClipboard(TopLevel? level, string text)
+    public static async Task CopyTextClipboard(string text)
     {
-        if (level?.Clipboard is { } clipboard)
+        if (App.TopLevel?.Clipboard is { } clipboard)
         {
             await clipboard.SetTextAsync(text);
         }
@@ -247,9 +247,9 @@ public static class BaseBinding
     /// 复制到剪贴板
     /// </summary>
     /// <param name="file">文件列表</param>
-    public static async Task CopyFileClipboard(TopLevel? level, List<IStorageFile> file)
+    public static async Task CopyFileClipboard(List<IStorageFile> file)
     {
-        if (level?.Clipboard is { } clipboard)
+        if (App.TopLevel?.Clipboard is { } clipboard)
         {
             var obj = new DataObject();
             obj.Set(DataFormats.Files, file);
@@ -267,7 +267,7 @@ public static class BaseBinding
         {
             Dispatcher.UIThread.Post(() =>
             {
-                win.ProgressInfo.Show(info);
+                win.Model.Progress(info);
             });
         }
     }
@@ -328,7 +328,7 @@ public static class BaseBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="obj1">保存的账户</param>
     /// <returns>结果</returns>
-    public static async Task<(bool, string?)> Launch(IBaseWindow window,
+    public static async Task<(bool, string?)> Launch(BaseModel window,
         GameSettingObj obj, LoginObj obj1, WorldObj? world = null)
     {
         s_window = window;

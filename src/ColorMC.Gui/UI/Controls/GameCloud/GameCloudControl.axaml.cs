@@ -4,6 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameCloud;
 using ColorMC.Gui.UI.Windows;
+using System.ComponentModel;
 using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls.GameCloud;
@@ -18,8 +19,6 @@ public partial class GameCloudControl : UserControl, IUserControl
 
     private CancellationTokenSource _cancel = new();
 
-    private readonly GameCloudModel _model;
-
     private int _now;
 
     public GameSettingObj Obj { get; }
@@ -29,29 +28,17 @@ public partial class GameCloudControl : UserControl, IUserControl
     public string Title =>
         string.Format(App.GetLanguage("GameCloudWindow.Title"), Obj.Name);
 
-    public BaseModel Model => _model;
-
-    public GameCloudControl() : this(new() { Empty = true })
-    {
-
-    }
-
-    public GameCloudControl(GameSettingObj obj)
+    public GameCloudControl()
     {
         InitializeComponent();
+    }
 
+    public GameCloudControl(GameSettingObj obj) : this()
+    {
         Obj = obj;
 
-        if (!obj.Empty)
-        {
-            _model = new(this, obj);
-            DataContext = _model;
-        }
-
         Tabs.SelectionChanged += Tabs_SelectionChanged;
-
         ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
-
         Content1.Content = _tab1;
     }
 
@@ -79,7 +66,7 @@ public partial class GameCloudControl : UserControl, IUserControl
     {
         Window.SetTitle(Title);
 
-        _model.Load();
+        (DataContext as GameCloudModel)!.Load();
     }
 
     private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -125,6 +112,21 @@ public partial class GameCloudControl : UserControl, IUserControl
 
     public void Closed()
     {
-        App.GameCloudWindows.Remove(_model.Obj.UUID);
+        App.GameCloudWindows.Remove((DataContext as GameCloudModel)!.Obj.UUID);
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new GameCloudModel(model, Obj);
+        amodel.PropertyChanged += Model_PropertyChanged;
+        DataContext = amodel;
+    }
+
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "WindowClose")
+        {
+            Window.Close();
+        }
     }
 }

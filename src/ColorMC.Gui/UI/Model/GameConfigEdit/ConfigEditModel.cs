@@ -101,7 +101,8 @@ public partial class GameConfigEditModel : GameModel
 
     private ChunkData? _chunkData;
 
-    public GameConfigEditModel(IUserControl con, GameSettingObj obj, WorldObj? world) : base(con, obj)
+    public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world) 
+        : base(model, obj)
     {
         World = world;
 
@@ -145,7 +146,7 @@ public partial class GameConfigEditModel : GameModel
             return;
         }
 
-        Progress(App.GetLanguage("ConfigEditWindow.Info7"));
+        Model.Progress(App.GetLanguage("ConfigEditWindow.Info7"));
         _chunkData = null;
         var info = new FileInfo(value);
         if (info.Extension is ".dat" or ".dat_old")
@@ -207,7 +208,7 @@ public partial class GameConfigEditModel : GameModel
 
             Text = new(text);
         }
-        ProgressClose();
+        Model.ProgressClose();
     }
 
     [RelayCommand]
@@ -264,7 +265,7 @@ public partial class GameConfigEditModel : GameModel
             }
             if (nbt == null)
             {
-                Show(string.Format(App.GetLanguage("ConfigEditWindow.Error4"), Chunk));
+                Model.Show(string.Format(App.GetLanguage("ConfigEditWindow.Error4"), Chunk));
                 return;
             }
 
@@ -296,7 +297,7 @@ public partial class GameConfigEditModel : GameModel
                     }
                     else
                     {
-                        Show(string.Format(_isEntity
+                        Model.Show(string.Format(_isEntity
                             ? App.GetLanguage("ConfigEditWindow.Error8")
                             : App.GetLanguage("ConfigEditWindow.Error6"), PosName));
                     }
@@ -307,7 +308,7 @@ public partial class GameConfigEditModel : GameModel
         }
         else
         {
-            Show(string.Format(_isEntity
+            Model.Show(string.Format(_isEntity
                  ? App.GetLanguage("ConfigEditWindow.Error7")
                  : App.GetLanguage("ConfigEditWindow.Error5"), chunkflie));
         }
@@ -358,7 +359,7 @@ public partial class GameConfigEditModel : GameModel
             }
         }
 
-        Notify(App.GetLanguage("Gui.Info10"));
+        Model.Notify(App.GetLanguage("Gui.Info10"));
     }
 
     [RelayCommand]
@@ -429,12 +430,12 @@ public partial class GameConfigEditModel : GameModel
             }
             if (string.IsNullOrWhiteSpace(Key))
             {
-                Show(App.GetLanguage("ConfigEditWindow.Error1"));
+                Model.Show(App.GetLanguage("ConfigEditWindow.Error1"));
                 return;
             }
             else if (list.HaveKey(Key))
             {
-                Show(App.GetLanguage("ConfigEditWindow.Error2"));
+                Model.Show(App.GetLanguage("ConfigEditWindow.Error2"));
                 return;
             }
 
@@ -451,7 +452,7 @@ public partial class GameConfigEditModel : GameModel
         if (model.Top == null)
             return;
 
-        var res = await ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
+        var res = await Model.ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
         if (!res)
             return;
 
@@ -462,7 +463,7 @@ public partial class GameConfigEditModel : GameModel
     {
         var list1 = new List<NbtNodeModel?>(list);
 
-        var res = await ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
+        var res = await Model.ShowWait(App.GetLanguage("ConfigEditWindow.Info1"));
         if (!res)
         {
             return;
@@ -495,7 +496,7 @@ public partial class GameConfigEditModel : GameModel
         }
         if (string.IsNullOrWhiteSpace(Key))
         {
-            Show(App.GetLanguage("ConfigEditWindow.Error1"));
+            Model.Show(App.GetLanguage("ConfigEditWindow.Error1"));
             return;
         }
         else if (Key == model.Key)
@@ -504,7 +505,7 @@ public partial class GameConfigEditModel : GameModel
         }
         else if (list.HaveKey(Key))
         {
-            Show(App.GetLanguage("ConfigEditWindow.Error2"));
+            Model.Show(App.GetLanguage("ConfigEditWindow.Error2"));
             return;
         }
 
@@ -605,7 +606,7 @@ public partial class GameConfigEditModel : GameModel
             }
             if (string.IsNullOrWhiteSpace(Key))
             {
-                Show(App.GetLanguage("ConfigEditWindow.Error1"));
+                Model.Show(App.GetLanguage("ConfigEditWindow.Error1"));
                 return;
             }
 
@@ -615,7 +616,7 @@ public partial class GameConfigEditModel : GameModel
             }
             catch
             {
-                Show(App.GetLanguage("ConfigEditWindow.Error3"));
+                Model.Show(App.GetLanguage("ConfigEditWindow.Error3"));
             }
         }
 
@@ -641,7 +642,7 @@ public partial class GameConfigEditModel : GameModel
         }
         catch
         {
-            Show(App.GetLanguage("ConfigEditWindow.Error3"));
+            Model.Show(App.GetLanguage("ConfigEditWindow.Error3"));
             DataItem.Value = 0;
             return;
         }
@@ -689,7 +690,7 @@ public partial class GameConfigEditModel : GameModel
 
     public async void Find()
     {
-        var data = await ShowOne(App.GetLanguage("ConfigEditWindow.Info3"), false);
+        var data = await Model.ShowOne(App.GetLanguage("ConfigEditWindow.Info3"), false);
         if (data.Cancel)
         {
             return;
@@ -750,7 +751,7 @@ public partial class GameConfigEditModel : GameModel
         OnPropertyChanged("TurnTo");
     }
 
-    public override void Close()
+    protected override void Close()
     {
         DataList.Clear();
     }

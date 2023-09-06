@@ -3,38 +3,11 @@ using Avalonia.Input;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Controls;
 using System;
 
 namespace ColorMC.Gui.UI.Windows;
-public partial class SingleWindow : Window, IBaseWindow
+public partial class SingleWindow : Window
 {
-    public TopLevel? TopLevel => this;
-
-    public AllControl window1;
-
-    public Info3Control InputInfo => window1.Info3;
-
-    public Info1Control ProgressInfo => window1.Info1;
-
-    public Info4Control OkInfo => window1.Info;
-
-    public Info2Control NotifyInfo => window1.Info2;
-
-    public Info5Control ComboInfo => window1.Info5;
-
-    public Info6Control TextInfo => window1.Info6;
-
-    public HeadControl Head => window1.WinHead;
-
-    public IUserControl ICon => window1.ICon;
-
-    public SingleWindow(AllControl window) : this()
-    {
-        window1 = window;
-
-        Main.Children.Add(window);
-    }
     public SingleWindow()
     {
         InitializeComponent();
@@ -57,10 +30,7 @@ public partial class SingleWindow : Window, IBaseWindow
 
     private async void SingleWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
-        if (window1 == null)
-            return;
-
-        var res = await window1.Closing();
+        var res = await Win.Closing();
         if (res)
         {
             e.Cancel = true;
@@ -89,21 +59,14 @@ public partial class SingleWindow : Window, IBaseWindow
         }
     }
 
-    public void SetTitle(string temp)
-    {
-        Title = temp;
-        window1.Head.Title = temp;
-    }
-
     private void UserWindow_Opened(object? sender, EventArgs e)
     {
-        window1?.Opened();
+        Win.Opened();
     }
 
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
-        window1?.Closed();
-
+        Win.Closed();
         App.Close();
     }
 

@@ -1,5 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using ColorMC.Gui.UI.Model;
+using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,55 +10,40 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class Info6Control : UserControl
 {
-    private readonly Semaphore _semaphore = new(0, 2);
     private bool _display = false;
-
-    public bool Cancel { get; private set; }
 
     public Info6Control()
     {
         InitializeComponent();
 
-        Button_Confirm.Click += Button_Add_Click;
-        Button_Cancel.Click += Button_Cancel_Click;
+        DataContextChanged += Info6Control_DataContextChanged;
     }
 
-    private void Button_Cancel_Click(object? sender, RoutedEventArgs e)
+    private void Info6Control_DataContextChanged(object? sender, EventArgs e)
     {
-        Cancel = true;
-        _semaphore.Release();
-        Close();
-    }
-
-    private void Button_Add_Click(object? sender, RoutedEventArgs e)
-    {
-        Cancel = false;
-        _semaphore.Release();
-        Close();
-    }
-
-    public void Close()
-    {
-        if (!_display)
-            return;
-
-        App.CrossFade300.Start(this, null);
-    }
-
-    public async Task<bool> ShowWait(string title, string data)
-    {
-        _display = true;
-
-        Label1.Content = title;
-        TextBox1.Text = data;
-
-        App.CrossFade300.Start(null, this);
-
-        await Task.Run(() =>
+        if (DataContext is BaseModel model)
         {
-            _semaphore.WaitOne();
-        });
+            model.PropertyChanged += Model_PropertyChanged;
+        }
+    }
 
-        return Cancel;
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "Info6Show")
+        {
+            if (!_display)
+            {
+                _display = true;
+                App.CrossFade300.Start(null, this);
+            }
+        }
+        else if (e.PropertyName == "info6Close")
+        {
+            if (_display)
+            {
+                _display = false;
+                App.CrossFade300.Start(this, null);
+            }
+        }
     }
 }

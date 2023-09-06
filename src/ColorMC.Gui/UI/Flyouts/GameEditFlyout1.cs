@@ -15,10 +15,10 @@ public class GameEditFlyout1
     private readonly IEnumerable<ModDisplayModel> _list;
     private readonly ModDisplayModel _obj;
     private readonly Control _con;
-    private readonly GameEditTab4Model _model;
+    private readonly GameEditModel _model;
     private readonly bool _single;
 
-    public GameEditFlyout1(Control con, IList obj, GameEditTab4Model model)
+    public GameEditFlyout1(Control con, IList obj, GameEditModel model)
     {
         _con = con;
         _model = model;
@@ -47,13 +47,13 @@ public class GameEditFlyout1
     {
         if (_single)
         {
-            _model.DisE(_obj);
+            _model.DisEMod(_obj);
         }
         else
         {
             foreach (var item in _list)
             {
-                _model.DisE(item);
+                _model.DisEMod(item);
             }
         }
     }
@@ -62,11 +62,11 @@ public class GameEditFlyout1
     {
         if (_single)
         {
-            _model.Delete(_obj);
+            _model.DeleteMod(_obj);
         }
         else
         {
-            _model.Delete(_list);
+            _model.DeleteMod(_list);
         }
     }
 

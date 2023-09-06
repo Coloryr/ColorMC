@@ -31,6 +31,6 @@ public partial class Tab5Control : UserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid2.IsVisible = false;
-        (DataContext as GameEditTab5Model)?.Drop(e.Data);
+        (DataContext as GameEditTab5Model)?.DropWorld(e.Data);
     }
 }

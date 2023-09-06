@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
-public partial class GamesModel : BaseModel
+public partial class GamesModel : TopModel
 {
     public ObservableCollection<GameItemModel> GameList { get; init; } = new();
 
@@ -22,17 +22,17 @@ public partial class GamesModel : BaseModel
     private readonly IMainTop _top;
     private readonly Dictionary<string, GameItemModel> _items = new();
 
-    public GamesModel(IUserControl con, IMainTop top, string key, string name,
-        List<GameSettingObj> list) : base(con)
+    public GamesModel(BaseModel model, IMainTop top, string key, string name,
+        List<GameSettingObj> list) : base(model)
     {
         _top = top;
         GameList.Clear();
         _items.Clear();
         foreach (var item in list)
         {
-            var model = new GameItemModel(con, _top, item);
-            _items.Add(item.UUID, model);
-            GameList.Add(model);
+            var model1 = new GameItemModel(model, _top, item);
+            _items.Add(item.UUID, model1);
+            GameList.Add(model1);
         }
         Header = name;
         Key = key;
@@ -78,18 +78,27 @@ public partial class GamesModel : BaseModel
 
     public void SetItems(List<GameSettingObj> list)
     {
+        foreach (var item in GameList)
+        {
+            item.TopClose();
+        }
         GameList.Clear();
         _items.Clear();
         foreach (var item in list)
         {
-            var model = new GameItemModel(Control, _top, item);
+            var model = new GameItemModel(Model, _top, item);
             _items.Add(item.UUID, model);
             GameList.Add(model);
         }
     }
 
-    public override void Close()
+    protected override void Close()
     {
+        foreach (var item in GameList)
+        {
+            item.TopClose();
+        }
         GameList.Clear();
+        _items.Clear();
     }
 }

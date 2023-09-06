@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add.AddGame;
 
-public partial class AddGameModel : BaseModel
+public partial class AddGameModel : TopModel
 {
-    private FilesPage _model;
+    private FilesPage _fileModel;
 
     [ObservableProperty]
     private string _local;
@@ -25,23 +25,23 @@ public partial class AddGameModel : BaseModel
     {
         if (Directory.Exists(Local))
         {
-            var res = await ShowWait(string.Format(App.GetLanguage("AddGameWindow.Tab3.Info3"), Local));
+            var res = await Model.ShowWait(string.Format(App.GetLanguage("AddGameWindow.Tab3.Info3"), Local));
             if (!res)
             {
                 return;
             }
-            Progress(App.GetLanguage("AddGameWindow.Tab3.Info2"));
+            Model.Progress(App.GetLanguage("AddGameWindow.Tab3.Info2"));
             await Task.Run(() =>
             {
-                _model = new FilesPage(Local, true, new()
+                _fileModel = new FilesPage(Local, true, new()
                 { "assets", "libraries", "versions", "launcher_profiles.json" });
             });
-            ProgressClose();
-            Files = _model.Source;
+            Model.ProgressClose();
+            Files = _fileModel.Source;
         }
         else
         {
-            Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), Local));
+            Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), Local));
         }
     }
 
@@ -50,29 +50,29 @@ public partial class AddGameModel : BaseModel
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
-            Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), Local));
+            Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), Local));
             return;
         }
 
-        Progress(App.GetLanguage("AddGameWindow.Tab3.Info1"));
-        var res = await GameBinding.AddGame(Name, Local, _model.GetUnSelectItems(), Group);
-        ProgressClose();
+        Model.Progress(App.GetLanguage("AddGameWindow.Tab3.Info1"));
+        var res = await GameBinding.AddGame(Name, Local, _fileModel.GetUnSelectItems(), Group);
+        Model.ProgressClose();
 
         if (!res)
         {
-            Show(App.GetLanguage("AddGameWindow.Tab3.Error1"));
+            Model.Show(App.GetLanguage("AddGameWindow.Tab3.Error1"));
             return;
         }
 
-        App.MainWindow?.Window.NotifyInfo.Show(App.GetLanguage("AddGameWindow.Tab2.Info5"));
+        App.MainWindow?.Model.Notify(App.GetLanguage("AddGameWindow.Tab2.Info5"));
         App.MainWindow?.LoadMain();
-        Window.Close();
+        WindowClose();
     }
 
     [RelayCommand]
     public async Task SelectLocal()
     {
-        var res = await PathBinding.SelectPath(Window, FileType.Game);
+        var res = await PathBinding.SelectPath(FileType.Game);
         if (string.IsNullOrWhiteSpace(res))
         {
             return;
@@ -84,7 +84,7 @@ public partial class AddGameModel : BaseModel
         }
         else
         {
-            Show(string.Format(App.GetLanguage("AddGameWindow.Tab3.Error2"), res));
+            Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab3.Error2"), res));
         }
     }
 }

@@ -11,8 +11,6 @@ namespace ColorMC.Gui.UI.Controls.Skin;
 
 public partial class SkinControl : UserControl, IUserControl
 {
-    private readonly SkinModel _model;
-
     private FpsTimer _renderTimer;
 
     private float _xdiff = 0;
@@ -20,21 +18,11 @@ public partial class SkinControl : UserControl, IUserControl
 
     public IBaseWindow Window => App.FindRoot(VisualRoot);
 
-    public UserControl Con => this;
-
     public string Title => App.GetLanguage("SkinWindow.Title");
-
-    public BaseModel Model => _model;
 
     public SkinControl()
     {
         InitializeComponent();
-
-        _model = new(this);
-        DataContext = _model;
-        _model.PropertyChanged += Model_PropertyChanged;
-
-        Skin.SetModel(_model);
 
         Button2.Click += Button2_Click;
 
@@ -49,7 +37,7 @@ public partial class SkinControl : UserControl, IUserControl
     {
         if (e.PropertyName == "SkinLoadDone")
         {
-            if (_model.HaveSkin)
+            if ((DataContext as SkinModel)!.HaveSkin)
             {
                 _renderTimer.Pause = false;
             }
@@ -64,7 +52,7 @@ public partial class SkinControl : UserControl, IUserControl
     {
         if (e.Key == Key.F5)
         {
-            await _model.Load();
+            await (DataContext as SkinModel)!.Load();
         }
     }
 
@@ -124,7 +112,8 @@ public partial class SkinControl : UserControl, IUserControl
         {
             FpsTick = (fps) =>
             {
-                Dispatcher.UIThread.Post(() => _model.Fps = fps);
+                var model = (DataContext as SkinModel)!;
+                Dispatcher.UIThread.Post(() => model.Fps = fps);
             }
         };
     }
@@ -145,5 +134,12 @@ public partial class SkinControl : UserControl, IUserControl
     private void Button2_Click(object? sender, RoutedEventArgs e)
     {
         Skin.Reset();
+    }
+
+    public void SetBaseModel(BaseModel model)
+    {
+        var amodel = new SkinModel(model);
+        amodel.PropertyChanged += Model_PropertyChanged;
+        DataContext = amodel;
     }
 }

@@ -3,7 +3,6 @@ using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -17,7 +16,7 @@ using Timer = System.Timers.Timer;
 
 namespace ColorMC.Gui.UI.Model.Download;
 
-public partial class DownloadModel : BaseModel
+public partial class DownloadModel : TopModel
 {
     public ObservableCollection<DownloadItemDisplayModel> ItemList { get; init; } = new();
 
@@ -37,7 +36,7 @@ public partial class DownloadModel : BaseModel
     [ObservableProperty]
     private bool _isPause;
 
-    public DownloadModel(IUserControl con) : base(con)
+    public DownloadModel(BaseModel model) : base(model)
     {
         ColorMCCore.DownloadItemStateUpdate = DownloadItemStateUpdate;
 
@@ -54,13 +53,13 @@ public partial class DownloadModel : BaseModel
         {
             BaseBinding.DownloadResume();
             Button1 = App.GetLanguage("DownloadWindow.Text1");
-            Notify(App.GetLanguage("DownloadWindow.Info3"));
+            Model.Notify(App.GetLanguage("DownloadWindow.Info3"));
         }
         else
         {
             BaseBinding.DownloadPause();
             Button1 = App.GetLanguage("DownloadWindow.Info5");
-            Notify(App.GetLanguage("DownloadWindow.Info2"));
+            Model.Notify(App.GetLanguage("DownloadWindow.Info2"));
         }
     }
 
@@ -73,7 +72,7 @@ public partial class DownloadModel : BaseModel
     [RelayCommand]
     public async Task Stop()
     {
-        var res = await ShowWait(App.GetLanguage("DownloadWindow.Info1"));
+        var res = await Model.ShowWait(App.GetLanguage("DownloadWindow.Info1"));
         if (res)
         {
             ItemList.Clear();
@@ -142,7 +141,7 @@ public partial class DownloadModel : BaseModel
         Now = $"{data.Item2}/{data.Item1}";
     }
 
-    public override void Close()
+    protected override void Close()
     {
         _timer.Dispose();
         ItemList.Clear();

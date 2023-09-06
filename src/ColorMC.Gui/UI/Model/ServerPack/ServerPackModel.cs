@@ -3,20 +3,18 @@ using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
+using Esprima.Ast;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
-public partial class ServerPackModel : ServerPackBaseModel
+public partial class ServerPackModel : TopModel
 {
-    public ServerPackModel(IUserControl con, ServerPackObj obj) : base(con, obj)
+    public ServerPackObj Obj { get; }
+
+    public ServerPackModel(BaseModel model, ServerPackObj obj) : base(model)
     {
-
-    }
-
-    public override void Close()
-    {
-
+        Obj = obj;
     }
 
     [RelayCommand]
@@ -24,30 +22,37 @@ public partial class ServerPackModel : ServerPackBaseModel
     {
         if (string.IsNullOrWhiteSpace(Obj.Url))
         {
-            Show(App.GetLanguage("ServerPackWindow.Tab1.Error1"));
+            Model.Show(App.GetLanguage("ServerPackWindow.Tab1.Error1"));
             return;
         }
 
         if (string.IsNullOrWhiteSpace(Obj.Version))
         {
-            Show(App.GetLanguage("ServerPackWindow.Tab1.Error2"));
+            Model.Show(App.GetLanguage("ServerPackWindow.Tab1.Error2"));
             return;
         }
 
-        var local = await PathBinding.SelectPath(Window, FileType.ServerPack);
+        var local = await PathBinding.SelectPath(FileType.ServerPack);
         if (local == null)
             return;
 
-        Progress(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
+        Model.Progress(App.GetLanguage("ServerPackWindow.Tab1.Info1"));
         var res = await GameBinding.GenServerPack(Obj, local);
-        ProgressClose();
+        Model.ProgressClose();
         if (res)
         {
-            Notify(App.GetLanguage("ServerPackWindow.Tab1.Info2"));
+            Model.Notify(App.GetLanguage("ServerPackWindow.Tab1.Info2"));
         }
         else
         {
-            Show(App.GetLanguage("ServerPackWindow.Tab1.Error3"));
+            Model.Show(App.GetLanguage("ServerPackWindow.Tab1.Error3"));
         }
+    }
+
+    protected override void Close()
+    {
+        ModList.Clear();
+        ConfigList.Clear();
+        NameList.Clear();
     }
 }

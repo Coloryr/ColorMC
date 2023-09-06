@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
-public partial class SettingTab6Model : BaseModel
+public partial class SettingModel : TopModel
 {
     private readonly List<string> _uuids = new();
 
@@ -28,7 +28,7 @@ public partial class SettingTab6Model : BaseModel
     private Color _color2;
 
     [ObservableProperty]
-    private string _iP;
+    private string _serverIP;
     [ObservableProperty]
     private string? _fileUI;
     [ObservableProperty]
@@ -39,7 +39,7 @@ public partial class SettingTab6Model : BaseModel
     private string? _loginUrl;
 
     [ObservableProperty]
-    private ushort _port;
+    private ushort _serverPort;
 
     [ObservableProperty]
     private bool _enableMotd;
@@ -69,12 +69,7 @@ public partial class SettingTab6Model : BaseModel
     [ObservableProperty]
     private int _login = -1;
 
-    private bool _load;
-
-    public SettingTab6Model(IUserControl con) : base(con)
-    {
-
-    }
+    private bool _serverLoad;
 
     partial void OnLoginUrlChanged(string? value)
     {
@@ -190,7 +185,7 @@ public partial class SettingTab6Model : BaseModel
     [RelayCommand]
     public async Task SelectUI()
     {
-        var res = await PathBinding.SelectFile(Window, FileType.UI);
+        var res = await PathBinding.SelectFile(FileType.UI);
         if (res != null)
         {
             FileUI = res;
@@ -208,30 +203,30 @@ public partial class SettingTab6Model : BaseModel
     {
         if (string.IsNullOrWhiteSpace(FileUI))
         {
-            Show(App.GetLanguage("Gui.Error8"));
+            Model.Show(App.GetLanguage("Gui.Error8"));
             return;
         }
         var res = BaseBinding.TestCustomWindow(FileUI);
         if (!res.Item1)
         {
-            Show(res.Item2!);
+            Model.Show(res.Item2!);
         }
     }
 
     [RelayCommand]
     public async Task Save()
     {
-        var str = await PathBinding.SaveFile(Window, FileType.UI, null);
+        var str = await PathBinding.SaveFile(FileType.UI, null);
         if (str == null)
             return;
 
         if (str == false)
         {
-            Show(App.GetLanguage("SettingWindow.Tab6.Error3"));
+            Model.Show(App.GetLanguage("SettingWindow.Tab6.Error3"));
             return;
         }
 
-        Notify(App.GetLanguage("SettingWindow.Tab6.Info4"));
+        Model.Notify(App.GetLanguage("SettingWindow.Tab6.Info4"));
     }
 
     [RelayCommand]
@@ -261,7 +256,7 @@ public partial class SettingTab6Model : BaseModel
     [RelayCommand]
     public async Task SelectMusic()
     {
-        var file = await PathBinding.SelectFile(Window, FileType.Music);
+        var file = await PathBinding.SelectFile(FileType.Music);
         if (file == null)
         {
             return;
@@ -270,9 +265,9 @@ public partial class SettingTab6Model : BaseModel
         Music = file;
     }
 
-    public void Load()
+    public void LoadServer()
     {
-        _load = true;
+        _serverLoad = true;
 
         var list = from item in GameBinding.GetGames() select (item.UUID, item.Name);
         var list1 = new List<string>();
@@ -289,8 +284,8 @@ public partial class SettingTab6Model : BaseModel
 
         if (ConfigBinding.GetAllConfig().Item2?.ServerCustom is { } config)
         {
-            IP = config.IP;
-            Port = config.Port;
+            ServerIP = config.IP;
+            ServerPort = config.Port;
             FileUI = config.UIFile;
             ServerUrl = config.ServerUrl;
             Music = config.Music;
@@ -321,12 +316,12 @@ public partial class SettingTab6Model : BaseModel
             EnableOneLogin = config.LockLogin;
         }
 
-        _load = false;
+        _serverLoad = false;
     }
 
     private void SetMusic()
     {
-        if (_load)
+        if (_serverLoad)
             return;
 
         ConfigBinding.SetMusic(EnableMusic, SlowVolume, Music, Volume, RunPause);
@@ -334,7 +329,7 @@ public partial class SettingTab6Model : BaseModel
 
     private void SetLoginLock()
     {
-        if (_load)
+        if (_serverLoad)
             return;
 
         ConfigBinding.SetLoginLock(EnableOneLogin, Login, LoginUrl!);
@@ -342,7 +337,7 @@ public partial class SettingTab6Model : BaseModel
 
     private void SetServerPack()
     {
-        if (_load)
+        if (_serverLoad)
             return;
 
         ConfigBinding.SetServerPack(EnableServerPack, ServerUrl);
@@ -350,24 +345,18 @@ public partial class SettingTab6Model : BaseModel
 
     private void SetIP()
     {
-        if (_load)
+        if (_serverLoad)
             return;
 
-        ConfigBinding.SetMotd(IP, Port, EnableMotd,
+        ConfigBinding.SetMotd(ServerIP, ServerPort, EnableMotd,
             EnableJoin, Color1.ToString(), Color2.ToString());
     }
 
     private void SetOneGame()
     {
-        if (_load)
+        if (_serverLoad)
             return;
 
         ConfigBinding.SetOneGame(EnableOneGame, Game == -1 ? null : _uuids[Game]);
-    }
-
-    public override void Close()
-    {
-        _uuids.Clear();
-        GameList.Clear();
     }
 }

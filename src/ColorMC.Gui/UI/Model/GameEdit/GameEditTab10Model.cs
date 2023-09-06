@@ -10,38 +10,33 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
-public partial class GameEditTab10Model : GameModel
+public partial class GameEditModel : GameModel
 {
     public ObservableCollection<ServerInfoObj> ServerList { get; init; } = new();
 
     [ObservableProperty]
-    private ServerInfoObj? _item;
+    private ServerInfoObj? _serverItem;
     [ObservableProperty]
     private (string?, ushort) _iPPort;
 
-    public GameEditTab10Model(IUserControl con, GameSettingObj obj) : base(con, obj)
-    {
-
-    }
-
-    partial void OnItemChanged(ServerInfoObj? value)
+    partial void OnServerItemChanged(ServerInfoObj? value)
     {
         IPPort = (value?.IP, 0);
     }
 
     [RelayCommand]
-    public async Task Load()
+    public async Task LoadServer()
     {
-        Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
+        Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info4"));
         ServerList.Clear();
         ServerList.AddRange(await GameBinding.GetServers(Obj));
-        ProgressClose();
+        Model.ProgressClose();
     }
 
     [RelayCommand]
-    public async Task Add()
+    public async Task AddServer()
     {
-        var (Cancel, Text1, Text2) = await ShowInput(
+        var (Cancel, Text1, Text2) = await Model.ShowInput(
             App.GetLanguage("GameEditWindow.Tab10.Info1"),
             App.GetLanguage("GameEditWindow.Tab10.Info2"), false);
         if (Cancel)
@@ -51,28 +46,23 @@ public partial class GameEditTab10Model : GameModel
 
         if (string.IsNullOrWhiteSpace(Text1) || string.IsNullOrWhiteSpace(Text2))
         {
-            Show(App.GetLanguage("GameEditWindow.Tab10.Error1"));
+            Model.Show(App.GetLanguage("GameEditWindow.Tab10.Error1"));
             return;
         }
 
-        Progress(App.GetLanguage("GameEditWindow.Tab10.Info6"));
+        Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info6"));
         await GameBinding.AddServer(Obj, Text1, Text2);
-        ProgressClose();
-        Notify(App.GetLanguage("GameEditWindow.Tab10.Info3"));
-        await Load();
+        Model.ProgressClose();
+        Model.Notify(App.GetLanguage("GameEditWindow.Tab10.Info3"));
+        await LoadServer();
     }
 
-    public async void Delete(ServerInfoObj obj)
+    public async void DeleteServer(ServerInfoObj obj)
     {
-        Progress(App.GetLanguage("GameEditWindow.Tab10.Info6"));
+        Model.Progress(App.GetLanguage("GameEditWindow.Tab10.Info6"));
         await GameBinding.DeleteServer(Obj, obj);
-        ProgressClose();
-        Notify(App.GetLanguage("GameEditWindow.Tab10.Info5"));
-        await Load();
-    }
-
-    public override void Close()
-    {
-        ServerList.Clear();
+        Model.ProgressClose();
+        Model.Notify(App.GetLanguage("GameEditWindow.Tab10.Info5"));
+        await LoadServer();
     }
 }

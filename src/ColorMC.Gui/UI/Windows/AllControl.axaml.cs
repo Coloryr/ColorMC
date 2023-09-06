@@ -20,10 +20,8 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class AllControl : UserControl, IUserControl, IBaseWindow
+public partial class AllControl : UserControl, IBaseWindow
 {
-    public TopLevel? TopLevel => TopLevel.GetTopLevel(this);
-
     private IUserControl _baseControl;
     private IUserControl _nowControl;
     private readonly AllFlyout _allFlyout;
@@ -38,19 +36,15 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
     public IUserControl ICon => _nowControl;
 
-    public Info3Control InputInfo => Info3;
-    public Info1Control ProgressInfo => Info1;
-    public Info4Control OkInfo => Info;
-    public Info2Control NotifyInfo => Info2;
-    public Info5Control ComboInfo => Info5;
-    public Info6Control TextInfo => Info6;
-    public HeadControl Head => WinHead;
-
     public string Title => _nowControl.Title;
+
+    public BaseModel Model => (DataContext as BaseModel)!;
 
     public AllControl()
     {
         InitializeComponent();
+
+        DataContext = new BaseModel();
 
         _allFlyout = new(_buttonList);
 
@@ -61,7 +55,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
         if (SystemInfo.Os == OsType.Linux)
         {
-            Head.IsVisible = false;
+            WinHead.IsVisible = false;
         }
 
         Button1.Click += Button1_Click;
@@ -264,6 +258,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
 
         Up();
 
+        ((con as UserControl)?.DataContext as TopModel)?.TopClose();
         con.Closed();
     }
 
@@ -289,7 +284,7 @@ public partial class AllControl : UserControl, IUserControl, IBaseWindow
             win.Title = data;
         }
 
-        Head.Title = data;
+        Model.Title = data;
     }
 
     public async Task<bool> Closing()
