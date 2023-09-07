@@ -187,15 +187,12 @@ public partial class App : Application
                 (Life as ISingleViewApplicationLifetime)!.MainView = AllWindow;
                 AllWindow.WinHead.Display(false);
                 AllWindow.Opened();
-
-                TopLevel = TopLevel.GetTopLevel(AllWindow);
             }
 
             else if (SystemInfo.Os != OsType.Android)
             {
                 var win = new SingleWindow();
                 win.Show();
-                TopLevel = win;
             }
         }
 
@@ -299,12 +296,15 @@ public partial class App : Application
                 : "ColorMC.Gui.Resource.Pic.bg1.jpg";
         }
 
-        BackBitmap = await ImageUtils.MakeBackImage(
-                file, GuiConfigUtils.Config.BackEffect,
-                GuiConfigUtils.Config.BackLimit ? GuiConfigUtils.Config.BackLimitValue : 100);
+        if (GuiConfigUtils.Config.EnableBG)
+        {
+            BackBitmap = await ImageUtils.MakeBackImage(
+                    file, GuiConfigUtils.Config.BackEffect,
+                    GuiConfigUtils.Config.BackLimit ? GuiConfigUtils.Config.BackLimitValue : 100);
+        }
 
         OnPicUpdate();
-
+        ColorSel.Instance.Load();
         FuntionUtils.RunGC();
     }
 
@@ -370,12 +370,20 @@ public partial class App : Application
     {
         if (ConfigBinding.WindowMode())
         {
+            if (TopLevel == null)
+            {
+                TopLevel = TopLevel.GetTopLevel(AllWindow);
+            }
             con.SetBaseModel(AllWindow!.Model);
             AllWindow.Add(con);
         }
         else
         {
             var win = new SelfBaseWindow(con);
+            if (TopLevel == null)
+            {
+                TopLevel = win;
+            }
             con.SetBaseModel(win.Model);
             win.Show();
         }
@@ -805,7 +813,7 @@ public partial class App : Application
                 {
                     window.TransparencyLevelHint = new WindowTransparencyLevel[]
                         {
-                            WindowTran[GuiConfigUtils.Config.WindowTranType + 1]
+                            WindowTran[GuiConfigUtils.Config.WindowTranType]
                         };
                 }
                 else

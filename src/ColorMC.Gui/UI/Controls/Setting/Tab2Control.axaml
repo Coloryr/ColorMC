@@ -147,11 +147,16 @@
             <!--  背景图  -->
 
             <Label Content="{setting:Localize SettingWindow.Tab2.Text2}" />
+            <CheckBox
+                VerticalAlignment="Center"
+                Content="{setting:Localize SettingWindow.Tab2.Text44}"
+                IsChecked="{Binding EnableBG}" />
             <WrapPanel>
                 <TextBox
                     MinWidth="300"
                     Margin="0,0,5,0"
                     Classes="input1"
+                    IsEnabled="{Binding EnableBG}"
                     Text="{Binding Pic}"
                     Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
                 <Button
@@ -160,23 +165,24 @@
                     Margin="0,0,5,0"
                     Command="{Binding DeletePic}"
                     Content="{setting:Localize Button.Delete}"
-                    DockPanel.Dock="Right" />
+                    DockPanel.Dock="Right"
+                    IsEnabled="{Binding EnableBG}" />
                 <Button
                     Width="80"
                     Height="25"
                     Margin="0,0,5,0"
                     Command="{Binding OpenPic}"
                     Content="{setting:Localize Button.Select}"
-                    DockPanel.Dock="Right" />
+                    DockPanel.Dock="Right"
+                    IsEnabled="{Binding EnableBG}" />
                 <Button
                     Width="80"
                     Height="25"
                     Margin="0,0,5,0"
                     Command="{Binding SetPic}"
                     Content="{setting:Localize Button.Use}"
-                    DockPanel.Dock="Right" />
-
-
+                    DockPanel.Dock="Right"
+                    IsEnabled="{Binding EnableBG}" />
             </WrapPanel>
             <WrapPanel Orientation="Horizontal">
                 <StackPanel Orientation="Horizontal">

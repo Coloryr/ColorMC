@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using ColorMC.Core;
 using ColorMC.Core.Objs.CurseForge;
@@ -35,27 +36,23 @@ public partial class AddGameControl : UserControl, IUserControl
     public AddGameControl()
     {
         InitializeComponent();
-        Tabs.SelectionChanged += Tabs_SelectionChanged;
-
-        ScrollViewer1.PointerWheelChanged += ScrollViewer1_PointerWheelChanged;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
 
+        StackPanel1.PointerPressed += StackPanel1_PointerPressed;
         Content1.Content = _tab1;
     }
 
-    private void ScrollViewer1_PointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    private void StackPanel1_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (e.Delta.Y > 0)
-        {
-            ScrollViewer1.LineLeft();
-        }
-        else if (e.Delta.Y < 0)
-        {
-            ScrollViewer1.LineRight();
-        }
+        (DataContext as AddGameModel)!.CloseSide();
+    }
+
+    private void ListBox1_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        (DataContext as AddGameModel)!.CloseSide();
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -83,8 +80,9 @@ public partial class AddGameControl : UserControl, IUserControl
             var item = files.ToList()[0].GetPath();
             if (item?.EndsWith(".zip") == true || item?.EndsWith(".mrpack") == true)
             {
-                Tabs.SelectedIndex = 1;
-                (DataContext as AddGameModel)?.AddFile(item);
+                var model = (DataContext as AddGameModel)!;
+                model.NowView = 1;
+                model.AddFile(item);
             }
         }
     }
@@ -102,6 +100,32 @@ public partial class AddGameControl : UserControl, IUserControl
         {
             Window.Close();
         }
+        else if (e.PropertyName == "NowView")
+        {
+            var model = (DataContext as AddGameModel)!;
+            switch (model.NowView)
+            {
+                case 0:
+                    Go(_tab1, model.NowView);
+                    break;
+                case 1:
+                    Go(_tab2, model.NowView);
+                    break;
+                case 2:
+                    Go(_tab3, model.NowView);
+                    break;
+            }
+
+            _now = model.NowView;
+        }
+        else if (e.PropertyName == "SideOpen")
+        {
+            App.CrossFade100.Start(null, StackPanel1);
+        }
+        else if (e.PropertyName == "SideClose")
+        {
+            StackPanel1.IsVisible = false;
+        }
     }
 
     public void Closed()
@@ -113,45 +137,25 @@ public partial class AddGameControl : UserControl, IUserControl
         App.AddGameWindow = null;
     }
 
-    private void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        switch (Tabs.SelectedIndex)
-        {
-            case 0:
-                Go(_tab1);
-                break;
-            case 1:
-                Go(_tab2);
-                break;
-            case 2:
-                Go(_tab3);
-                break;
-        }
-
-        _now = Tabs.SelectedIndex;
-    }
-
-    private void Go(UserControl to)
+    private void Go(UserControl to, int now)
     {
         _cancel.Cancel();
         _cancel.Dispose();
 
         _cancel = new();
-        Tabs.IsEnabled = false;
 
         if (!_switch1)
         {
             Content2.Content = to;
-            _ = App.PageSlide500.Start(Content1, Content2, _now < Tabs.SelectedIndex, _cancel.Token);
+            _ = App.PageSlide500.Start(Content1, Content2, _now < now, _cancel.Token);
         }
         else
         {
             Content1.Content = to;
-            _ = App.PageSlide500.Start(Content2, Content1, _now < Tabs.SelectedIndex, _cancel.Token);
+            _ = App.PageSlide500.Start(Content2, Content1, _now < now, _cancel.Token);
         }
 
         _switch1 = !_switch1;
-        Tabs.IsEnabled = true;
     }
 
     public void Opened()
@@ -173,8 +177,9 @@ public partial class AddGameControl : UserControl, IUserControl
     {
         if (file.EndsWith(".zip") == true || file.EndsWith(".mrpack") == true)
         {
-            Tabs.SelectedIndex = 1;
-            (DataContext as AddGameModel)?.AddFile(file);
+            var model = (DataContext as AddGameModel)!;
+            model.NowView = 1;
+            model.AddFile(file);
         }
     }
 }

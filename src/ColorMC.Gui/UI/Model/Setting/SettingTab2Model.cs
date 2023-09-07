@@ -72,6 +72,8 @@ public partial class SettingModel : TopModel
     private bool _mainWindowMirror;
     [ObservableProperty]
     private bool _amFade;
+    [ObservableProperty]
+    private bool _enableBG;
 
     [ObservableProperty]
     private LanguageType _language;
@@ -105,6 +107,14 @@ public partial class SettingModel : TopModel
     private string _live2DCoreState;
 
     private bool _load = false;
+
+    async partial void OnEnableBGChanged(bool value)
+    {
+        if (_load)
+            return;
+
+        await SetPic();
+    }
 
     partial void OnAmFadeChanged(bool value)
     {
@@ -405,7 +415,7 @@ public partial class SettingModel : TopModel
         //    return;
         //}
         Model.Progress(App.GetLanguage("SettingWindow.Tab2.Info2"));
-        await ConfigBinding.SetBackPic(Pic, PicEffect);
+        await ConfigBinding.SetBackPic(EnableBG, Pic, PicEffect);
         Model.ProgressClose();
 
         Model.Notify(App.GetLanguage("Gui.Info3"));
@@ -471,6 +481,7 @@ public partial class SettingModel : TopModel
         if (config.Item2 is { } con)
         {
             Pic = con.BackImage;
+            EnableBG = con.EnableBG;
             PicEffect = con.BackEffect;
             PicTran = con.BackTran;
             RgbV1 = con.RGBS;

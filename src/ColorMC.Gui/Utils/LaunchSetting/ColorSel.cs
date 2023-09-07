@@ -24,7 +24,7 @@ public class ColorSel : INotifyPropertyChanged
     public const string MainColorStr = "#FF5ABED6";
 
     public const string BackLigthColorStr = "#FFF4F4F5";
-    public const string Back1LigthColorStr = "#99FFFFFF";
+    public const string Back1LigthColorStr = "#66FFFFFF";
     public const string ButtonLightFontStr = "#FFFFFFFF";
     public const string FontLigthColorStr = "#FF000000";
 
@@ -32,6 +32,11 @@ public class ColorSel : INotifyPropertyChanged
     public const string Back1DarkColorStr = "#46202020";
     public const string ButtonDarkFontStr = "#FF202020";
     public const string FontDarkColorStr = "#FFE9E9E9";
+
+    public const string GroupLightColorStr = "#CCfbfbfb";
+    public const string GroupDarkColorStr = "#CC000000";
+
+    public const string GroupLightColor1Str = "#FFe5e5e5";
 
     public static IBrush MainColor { get; private set; } = Brush.Parse(MainColorStr);
     public static IBrush BackColor { get; private set; } = Brush.Parse(BackLigthColorStr);
@@ -44,10 +49,12 @@ public class ColorSel : INotifyPropertyChanged
     public static IBrush TopBottomColor { get; private set; } = AppLightBackColor1;
     public static IBrush BottomTranColor { get; private set; } = AppLightBackColor2;
     public static IBrush BottomColor1 { get; private set; } = AppLightBackColor3;
+    public static IBrush GroupBackColor { get; private set; } = Brush.Parse(GroupLightColorStr);
+    public static IBrush GroupBackColor1 { get; private set; } = Brush.Parse(GroupLightColor1Str);
 
-    public readonly static ColorSel Instance = new ColorSel();
+    public readonly static ColorSel Instance = new();
 
-    public void LoadMotd()
+    public static void LoadMotd()
     {
         try
         {
@@ -95,6 +102,12 @@ public class ColorSel : INotifyPropertyChanged
 
             BottomColor1 = App.NowTheme == PlatformThemeVariant.Light
                 ? AppLightBackColor3 : AppDarkBackColor3;
+
+            GroupBackColor = App.NowTheme == PlatformThemeVariant.Light
+                ? Brush.Parse(GroupLightColorStr) : Brush.Parse(GroupDarkColorStr);
+
+            GroupBackColor1 = App.BackBitmap == null ? Brush.Parse(GroupLightColor1Str)
+                : Brushes.Transparent;
 
             Reload();
         }
@@ -211,6 +224,10 @@ public class ColorSel : INotifyPropertyChanged
                 return BottomTranColor;
             else if (key == "PointIn")
                 return MainColor;
+            else if (key == "GroupBack")
+                return GroupBackColor;
+            else if (key == "GroupColor")
+                return GroupBackColor1;
 
             return Brushes.White;
         }

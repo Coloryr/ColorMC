@@ -1,5 +1,6 @@
 ﻿using AvaloniaEdit.Utils;
 using ColorMC.Core;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -13,13 +14,33 @@ public partial class AddGameModel : TopModel
 {
     public ObservableCollection<string> GroupList { get; init; } = new();
 
+    public List<MenuObj> TabItems { get; init; } = new()
+    {
+        new() { Icon = "/Resource/Icon/AddMenu/item1.svg",
+            Text = App.GetLanguage("AddGameWindow.Tabs.Text1") },
+        new() { Icon = "/Resource/Icon/AddMenu/item2.svg",
+            Text = App.GetLanguage("AddGameWindow.Tabs.Text2") },
+        new() { Icon = "/Resource/Icon/AddMenu/item3.svg",
+            Text = App.GetLanguage("AddGameWindow.Tabs.Text3") },
+    };
+
+    [ObservableProperty]
+    private string _title;
+
     [ObservableProperty]
     private string _name;
     [ObservableProperty]
     private string _group;
 
+    [ObservableProperty]
+    private int _nowView;
+
+    private bool _side;
+
     public AddGameModel(BaseModel model) : base(model)
     {
+        Title = TabItems[0].Text;
+
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
 
@@ -27,6 +48,13 @@ public partial class AddGameModel : TopModel
 
         ColorMCCore.PackState = PackState;
         ColorMCCore.PackUpdate = PackUpdate;
+    }
+
+    partial void OnNowViewChanged(int value)
+    {
+        CloseSide();
+
+        Title = App.GetLanguage($"AddGameWindow.Tabs.Text{NowView + 1}");
     }
 
     [RelayCommand]
@@ -55,6 +83,20 @@ public partial class AddGameModel : TopModel
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
         Group = Text;
+    }
+
+    [RelayCommand]
+    public void OpenSide()
+    {
+        _side = true;
+        OnPropertyChanged("SideOpen");
+    }
+
+    [RelayCommand]
+    public void CloseSide()
+    {
+        _side = false;
+        OnPropertyChanged("SideClose");
     }
 
     protected override void Close()

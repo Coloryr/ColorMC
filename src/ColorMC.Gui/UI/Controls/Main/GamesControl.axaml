@@ -16,6 +16,8 @@
         Padding="5"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Top"
+        BorderBrush="{setting:Colors GroupColor}"
+        BorderThickness="2"
         CornerRadius="{setting:Style ButtonCornerRadius}"
         Header="{Binding Header}"
         IsExpanded="{Binding Expander}">

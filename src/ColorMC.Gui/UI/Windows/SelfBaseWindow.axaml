@@ -8,7 +8,7 @@
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Controls"
     xmlns:views1="clr-namespace:ColorMC.Gui.UI.Controls.User"
     Title="Title"
-    Width="820"
+    Width="800"
     Height="450"
     MinWidth="315"
     MinHeight="450"

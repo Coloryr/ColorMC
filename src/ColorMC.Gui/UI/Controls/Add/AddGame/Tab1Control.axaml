@@ -10,116 +10,163 @@
     d:DesignWidth="800"
     x:DataType="model:AddGameModel"
     mc:Ignorable="d">
-    <DockPanel>
-        <Panel DockPanel.Dock="Bottom">
-            <Button
-                Width="150"
-                Height="25"
-                Margin="5"
-                Command="{Binding AddOnlinePack}"
-                Content="{setting:Localize AddGameWindow.Tab1.Text10}" />
-            <Button
-                Width="100"
-                Height="25"
-                Margin="5"
-                HorizontalAlignment="Right"
-                Command="{Binding AddGame}"
-                Content="{setting:Localize Button.Add}" />
-        </Panel>
+    <ScrollViewer>
+        <StackPanel Margin="5,3,5,5">
+            <Border
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <TextBox
+                    Classes="input1"
+                    Text="{Binding Name}"
+                    Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
+            </Border>
 
-        <StackPanel Margin="5">
-            <TextBox
-                Classes="input1"
-                Text="{Binding Name}"
-                Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
-            <Label VerticalAlignment="Center" Content="{setting:Localize Text.GameVersion}" />
-            <WrapPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
-                    <ComboBox
-                        Width="200"
-                        Margin="5,0,0,0"
-                        ItemsSource="{Binding VersionTypeList}"
-                        SelectedIndex="{Binding VersionType}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
-                    <ComboBox
-                        Width="200"
-                        Margin="5,0,0,0"
-                        ItemsSource="{Binding GameVersionList}"
-                        SelectedItem="{Binding Version}" />
-                </StackPanel>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label VerticalAlignment="Center" Content="{setting:Localize Text.GameVersion}" />
+                    <WrapPanel>
 
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,2,0,2"
-                    Command="{Binding LoadVersion}"
-                    Content="{setting:Localize GameEditWindow.Tab1.Text2}" />
-            </WrapPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <ComboBox
+                                Width="200"
+                                Margin="5,5,0,0"
+                                ItemsSource="{Binding VersionTypeList}"
+                                SelectedIndex="{Binding VersionType}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                            <ComboBox
+                                Width="200"
+                                Margin="5,5,0,0"
+                                VerticalContentAlignment="Center"
+                                ItemsSource="{Binding GameVersionList}"
+                                SelectedItem="{Binding Version}" />
+                        </StackPanel>
 
-            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
-
-            <WrapPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
-                    <ComboBox
-                        Width="200"
-                        Margin="5,0,0,0"
-                        ItemsSource="{Binding LoaderTypeList}"
-                        SelectedIndex="{Binding LoaderType}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
-                    <ComboBox
-                        Width="200"
-                        Margin="5,0,0,0"
-                        IsEnabled="{Binding EnableLoader}"
-                        ItemsSource="{Binding LoaderVersionList}"
-                        SelectedItem="{Binding LoaderVersion}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,5,0,0"
+                            Command="{Binding LoadVersion}"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text2}" />
+                    </WrapPanel>
                 </StackPanel>
 
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,2,0,2"
-                    Command="{Binding VersionSelect}"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text11}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,2,0,2"
-                    Command="{Binding GetLoader}"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text12}" />
-            </WrapPanel>
-            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
-            <StackPanel Orientation="Horizontal">
-                <ComboBox
-                    Width="200"
-                    ItemsSource="{Binding GroupList}"
-                    SelectedItem="{Binding Group}" />
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text4}" />
+                    <WrapPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <ComboBox
+                                Width="200"
+                                Margin="5,5,0,0"
+                                VerticalContentAlignment="Center"
+                                ItemsSource="{Binding LoaderTypeList}"
+                                SelectedIndex="{Binding LoaderType}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label
+                                Margin="5,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="{setting:Localize AddGameWindow.Tab1.Text7}" />
+                            <ComboBox
+                                Width="200"
+                                Margin="5,5,0,0"
+                                VerticalContentAlignment="Center"
+                                IsEnabled="{Binding EnableLoader}"
+                                ItemsSource="{Binding LoaderVersionList}"
+                                SelectedItem="{Binding LoaderVersion}" />
+                        </StackPanel>
 
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding AddGroup}"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
-            </StackPanel>
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,5,0,0"
+                            Command="{Binding VersionSelect}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text11}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,5,0,0"
+                            Command="{Binding GetLoader}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text12}" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <StackPanel>
+                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                    <WrapPanel Orientation="Horizontal">
+                        <ComboBox
+                            Width="200"
+                            Margin="8,0,5,0"
+                            VerticalContentAlignment="Center"
+                            ItemsSource="{Binding GroupList}"
+                            SelectedItem="{Binding Group}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="0,5,0,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding AddGroup}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="8"
+                Background="{setting:Colors GroupBack}"
+                BorderBrush="{setting:Colors GroupColor}"
+                BorderThickness="2"
+                CornerRadius="{setting:Style ButtonCornerRadius}">
+                <DockPanel>
+                    <Button
+                        Width="150"
+                        Height="25"
+                        Command="{Binding AddOnlinePack}"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text10}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        HorizontalAlignment="Right"
+                        Command="{Binding AddGame}"
+                        Content="{setting:Localize Button.Add}" />
+                </DockPanel>
+            </Border>
         </StackPanel>
-    </DockPanel>
+    </ScrollViewer>
 </UserControl>

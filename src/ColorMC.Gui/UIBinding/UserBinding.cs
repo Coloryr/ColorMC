@@ -253,23 +253,37 @@ public static class UserBinding
         }
         else
         {
-            SkinImage = await Image.LoadAsync<Rgba32>(file);
-            var data = await ImageUtils.MakeHeadImage(file);
-            if (file == null)
+            try
             {
-                HeadBitmap = new Bitmap(asset);
+                SkinImage = await Image.LoadAsync<Rgba32>(file);
+                var data = await ImageUtils.MakeHeadImage(file);
+                if (file == null)
+                {
+                    HeadBitmap = new Bitmap(asset);
+                }
+                else
+                {
+                    data.Seek(0, SeekOrigin.Begin);
+                    HeadBitmap = new Bitmap(data);
+                    data.Close();
+                }
             }
-            else
+            catch (Exception e)
             {
-                data.Seek(0, SeekOrigin.Begin);
-                HeadBitmap = new Bitmap(data);
-                data.Close();
+                Logs.Error($"Skin error:{file}", e);
             }
         }
 
         if (file1 != null)
         {
-            CapeIamge = await Image.LoadAsync<Rgba32>(file1);
+            try
+            {
+                CapeIamge = await Image.LoadAsync<Rgba32>(file1);
+            }
+            catch (Exception e)
+            {
+                Logs.Error($"Cape error:{file1}", e);
+            }
         }
 
         App.OnSkinLoad();

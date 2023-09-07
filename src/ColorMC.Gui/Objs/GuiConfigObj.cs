@@ -1,4 +1,5 @@
 using ColorMC.Core.Objs;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.Objs;
 
@@ -211,6 +212,10 @@ public record GuiConfigObj
     /// 使用的账户
     /// </summary>
     public LastUser? LastUser { get; set; }
+    /// <summary>
+    /// 是否启用背景图
+    /// </summary>
+    public bool EnableBG { get; set; }
     /// <summary>
     /// 背景图地址
     /// </summary>

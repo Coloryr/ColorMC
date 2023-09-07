@@ -1,0 +1,30 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <ListBox>
+                <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text1}" />
+                <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text2}" />
+                <Label Margin="0,3,0,0" Content="{setting:Localize AddGameWindow.Tabs.Text3}" />
+            </ListBox>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="ListBox">
+        <Setter Property="Foreground" Value="{setting:Colors ButtonFont}" />
+        <Setter Property="Background" Value="#f3f3f3" />
+    </Style>
+
+    <Style Selector="ListBoxItem">
+        <Setter Property="Padding" Value="5,5,15,5" />
+        <Setter Property="Margin" Value="20,2,0,2" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+
+    <Style Selector="ListBoxItem:selected /template/ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="#CCCCCC" />
+    </Style>
+</Styles>

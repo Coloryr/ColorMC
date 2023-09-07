@@ -42,28 +42,42 @@
                     Watermark="{setting:Localize AddGameWindow.Tab2.Text1}" />
             </DockPanel>
 
-            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+            <Border
+                Margin="0,3,0,0"
+                Padding="2"
+                Background="{setting:Colors GroupBack}"
+                CornerRadius="3">
+                <StackPanel>
+                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
 
-            <StackPanel Orientation="Horizontal">
-                <ComboBox
-                    Width="200"
-                    ItemsSource="{Binding GroupList}"
-                    SelectedItem="{Binding Group}" />
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding AddGroup}"
-                    Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
-            </StackPanel>
-
-            <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab2.Text2}" />
-
-            <ComboBox
-                Width="200"
-                ItemsSource="{Binding PackTypeList}"
-                SelectedIndex="{Binding Type}" />
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox
+                            Width="200"
+                            ItemsSource="{Binding GroupList}"
+                            SelectedItem="{Binding Group}" />
+                        <Button
+                            Width="100"
+                            Height="25"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding AddGroup}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border
+                Margin="0,3,0,0"
+                Padding="2"
+                Background="{setting:Colors GroupBack}"
+                CornerRadius="3">
+                <StackPanel>
+                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab2.Text2}" />
+                    <ComboBox
+                        Width="200"
+                        ItemsSource="{Binding PackTypeList}"
+                        SelectedIndex="{Binding Type}" />
+                </StackPanel>
+            </Border>
         </StackPanel>
     </DockPanel>
 </UserControl>

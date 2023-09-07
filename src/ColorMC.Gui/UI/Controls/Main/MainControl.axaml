@@ -24,74 +24,6 @@
         <DockPanel>
             <ScrollViewer DockPanel.Dock="{Binding Mirror1}">
                 <Panel>
-                    <Panel
-                        Margin="0,110,0,0"
-                        HorizontalAlignment="Center"
-                        IsVisible="{Binding !SideDisplay}">
-                        <StackPanel VerticalAlignment="Center">
-                            <Button
-                                Width="25"
-                                Height="25"
-                                Command="{Binding ShowUser}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text4}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/user.svg" />
-                            </Button>
-
-                            <Button
-                                Width="25"
-                                Height="25"
-                                Margin="0,5,0,0"
-                                Command="{Binding ShowSkin}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text9}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/skin.svg" />
-                            </Button>
-
-                            <Button
-                                Width="25"
-                                Height="25"
-                                Margin="0,5,0,0"
-                                Command="{Binding AddGame}"
-                                IsVisible="{Binding !IsOneGame}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text10}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/add.svg" />
-                            </Button>
-
-                            <Button
-                                Width="25"
-                                Height="25"
-                                Margin="0,5,0,0"
-                                Command="{Binding Launch}"
-                                IsEnabled="{Binding EnableButton1}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text11}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/launch.svg" />
-                            </Button>
-                            <Button
-                                Width="25"
-                                Height="35"
-                                Margin="0,5,0,0"
-                                Command="{Binding EditGame}"
-                                IsEnabled="{Binding EnableButton2}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text12}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/edit.svg" />
-                            </Button>
-
-                            <Button
-                                Width="25"
-                                Height="25"
-                                Margin="0,5,0,0"
-                                Command="{Binding ShowSetting}"
-                                Content="S"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text13}"
-                                ToolTip.VerticalOffset="-30">
-                                <Svg Path="/Resource/Icon/setting.svg" />
-                            </Button>
-                        </StackPanel>
-                    </Panel>
                     <Border
                         Name="Grid1"
                         Margin="0,0,10,0"
@@ -188,13 +120,80 @@
                     <Button
                         Width="25"
                         Height="25"
-                        Margin="6,10,6,10"
+                        Margin="6,10,6,0"
                         HorizontalAlignment="{Binding Mirror2}"
                         VerticalAlignment="Top"
                         Command="{Binding SideChange}"
                         Content="{Binding SideButton}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text5}"
                         ToolTip.VerticalOffset="-30" />
+                    <StackPanel
+                        Margin="6,110,6,0"
+                        VerticalAlignment="Center"
+                        IsVisible="{Binding !SideDisplay}">
+                        <Button
+                            Width="25"
+                            Height="25"
+                            Margin="0,5,0,0"
+                            Command="{Binding ShowUser}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text4}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/user.svg" />
+                        </Button>
+
+                        <Button
+                            Width="25"
+                            Height="25"
+                            Margin="0,5,0,0"
+                            Command="{Binding ShowSkin}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text9}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/skin.svg" />
+                        </Button>
+
+                        <Button
+                            Width="25"
+                            Height="25"
+                            Margin="0,5,0,0"
+                            Command="{Binding AddGame}"
+                            IsVisible="{Binding !IsOneGame}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text10}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/add.svg" />
+                        </Button>
+
+                        <Button
+                            Width="25"
+                            Height="25"
+                            Margin="0,5,0,0"
+                            Command="{Binding Launch}"
+                            IsEnabled="{Binding EnableButton1}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text11}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/launch.svg" />
+                        </Button>
+                        <Button
+                            Width="25"
+                            Height="25"
+                            Margin="0,5,0,0"
+                            Command="{Binding EditGame}"
+                            IsEnabled="{Binding EnableButton2}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text12}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/edit.svg" />
+                        </Button>
+
+                        <Button
+                            Width="25"
+                            Height="25"
+                            Margin="0,5,0,0"
+                            Command="{Binding ShowSetting}"
+                            Content="S"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text13}"
+                            ToolTip.VerticalOffset="-30">
+                            <Svg Path="/Resource/Icon/setting.svg" />
+                        </Button>
+                    </StackPanel>
 
                     <Button
                         Width="25"

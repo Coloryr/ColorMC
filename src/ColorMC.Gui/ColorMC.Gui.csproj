@@ -34,9 +34,13 @@
     <None Remove=".gitignore" />
     <None Remove="icon.ico" />
     <None Remove="Resource\Icon\add.svg" />
+    <None Remove="Resource\Icon\AddMenu\item1.svg" />
+    <None Remove="Resource\Icon\AddMenu\item2.svg" />
+    <None Remove="Resource\Icon\AddMenu\item3.svg" />
     <None Remove="Resource\Icon\edit.svg" />
     <None Remove="Resource\Icon\filter.svg" />
     <None Remove="Resource\Icon\launch.svg" />
+    <None Remove="Resource\Icon\menu.svg" />
     <None Remove="Resource\Icon\setting.svg" />
     <None Remove="Resource\Icon\skin.svg" />
     <None Remove="Resource\Icon\user.svg" />
@@ -51,9 +55,13 @@
   <ItemGroup>
     <EmbeddedResource Include="icon.ico" />
     <AvaloniaResource Include="Resource\Icon\add.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item1.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item2.svg" />
+    <AvaloniaResource Include="Resource\Icon\AddMenu\item3.svg" />
     <AvaloniaResource Include="Resource\Icon\edit.svg" />
     <AvaloniaResource Include="Resource\Icon\filter.svg" />
     <AvaloniaResource Include="Resource\Icon\launch.svg" />
+    <AvaloniaResource Include="Resource\Icon\menu.svg" />
     <AvaloniaResource Include="Resource\Icon\setting.svg" />
     <AvaloniaResource Include="Resource\Icon\user.svg" />
     <AvaloniaResource Include="Resource\Icon\skin.svg" />

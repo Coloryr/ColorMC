@@ -139,8 +139,9 @@ public static class ConfigBinding
     /// <param name="dir"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task SetBackPic(string? dir, int data)
+    public static async Task SetBackPic(bool en, string? dir, int data)
     {
+        GuiConfigUtils.Config.EnableBG = en;
         GuiConfigUtils.Config.BackEffect = data;
         GuiConfigUtils.Config.BackImage = dir;
         GuiConfigUtils.Save();
@@ -455,7 +456,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         App.MainWindow?.MotdLoad();
-        ColorSel.Instance.LoadMotd();
+        ColorSel.LoadMotd();
     }
 
     public static void SetOneGame(bool v1, string? v2)
