@@ -10,74 +10,89 @@
     d:DesignWidth="800"
     x:DataType="model:AddGameModel"
     mc:Ignorable="d">
-    <DockPanel>
-        <Panel DockPanel.Dock="Bottom">
+    <StackPanel Margin="5,3,5,5">
+        <Border
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <StackPanel>
+                <TextBox
+                    Classes="input1"
+                    Text="{Binding Name}"
+                    Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
+                <DockPanel Margin="0,5,0,0">
+                    <Button
+                        Width="100"
+                        Height="25"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Command="{Binding SelectPack}"
+                        Content="{setting:Localize AddGameWindow.Tab2.Text3}"
+                        DockPanel.Dock="Right" />
+                    <TextBox
+                        Classes="input1"
+                        Text="{Binding ZipLocal}"
+                        Watermark="{setting:Localize AddGameWindow.Tab2.Text1}" />
+                </DockPanel>
+            </StackPanel>
+        </Border>
+        <Border
+            Margin="0,3,0,0"
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <StackPanel>
+                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        Width="200"
+                        Margin="8,0,5,0"
+                        ItemsSource="{Binding GroupList}"
+                        SelectedItem="{Binding Group}" />
+                    <Button
+                        Width="100"
+                        Height="25"
+                        VerticalAlignment="Center"
+                        Command="{Binding AddGroup}"
+                        Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border
+            Margin="0,3,0,0"
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
+            <StackPanel>
+                <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab2.Text2}" />
+                <ComboBox
+                    Width="200"
+                    Margin="8,0,5,0"
+                    ItemsSource="{Binding PackTypeList}"
+                    SelectedIndex="{Binding Type}" />
+            </StackPanel>
+        </Border>
+        <Border
+            Margin="0,3,0,0"
+            Padding="8"
+            Background="{setting:Colors GroupBack}"
+            BorderBrush="{setting:Colors GroupColor}"
+            BorderThickness="2"
+            CornerRadius="{setting:Style ButtonCornerRadius}">
             <Button
                 Width="100"
                 Height="25"
-                Margin="5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Command="{Binding AddPackGame}"
                 Content="{setting:Localize AddGameWindow.Text1}" />
-        </Panel>
-        <StackPanel Margin="5">
-            <TextBox
-                Classes="input1"
-                Text="{Binding Name}"
-                Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
-            <DockPanel Margin="0,5,0,0">
-                <Button
-                    Width="100"
-                    Height="25"
-                    Margin="5,5,0,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Command="{Binding SelectPack}"
-                    Content="{setting:Localize AddGameWindow.Tab2.Text3}"
-                    DockPanel.Dock="Right" />
-                <TextBox
-                    Classes="input1"
-                    Text="{Binding Local}"
-                    Watermark="{setting:Localize AddGameWindow.Tab2.Text1}" />
-            </DockPanel>
-
-            <Border
-                Margin="0,3,0,0"
-                Padding="2"
-                Background="{setting:Colors GroupBack}"
-                CornerRadius="3">
-                <StackPanel>
-                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab1.Text5}" />
-
-                    <StackPanel Orientation="Horizontal">
-                        <ComboBox
-                            Width="200"
-                            ItemsSource="{Binding GroupList}"
-                            SelectedItem="{Binding Group}" />
-                        <Button
-                            Width="100"
-                            Height="25"
-                            Margin="5,0,0,0"
-                            VerticalAlignment="Center"
-                            Command="{Binding AddGroup}"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text9}" />
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-            <Border
-                Margin="0,3,0,0"
-                Padding="2"
-                Background="{setting:Colors GroupBack}"
-                CornerRadius="3">
-                <StackPanel>
-                    <Label VerticalAlignment="Center" Content="{setting:Localize AddGameWindow.Tab2.Text2}" />
-                    <ComboBox
-                        Width="200"
-                        ItemsSource="{Binding PackTypeList}"
-                        SelectedIndex="{Binding Type}" />
-                </StackPanel>
-            </Border>
-        </StackPanel>
-    </DockPanel>
+        </Border>
+    </StackPanel>
 </UserControl>

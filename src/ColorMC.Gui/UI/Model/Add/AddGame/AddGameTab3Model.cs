@@ -15,17 +15,17 @@ public partial class AddGameModel : TopModel
     private FilesPage _fileModel;
 
     [ObservableProperty]
-    private string _local;
+    private string _selectPath;
 
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _files;
 
     [RelayCommand]
-    public async Task Refash()
+    public async Task RefashFiles()
     {
-        if (Directory.Exists(Local))
+        if (Directory.Exists(SelectPath))
         {
-            var res = await Model.ShowWait(string.Format(App.GetLanguage("AddGameWindow.Tab3.Info3"), Local));
+            var res = await Model.ShowWait(string.Format(App.GetLanguage("AddGameWindow.Tab3.Info3"), SelectPath));
             if (!res)
             {
                 return;
@@ -33,7 +33,7 @@ public partial class AddGameModel : TopModel
             Model.Progress(App.GetLanguage("AddGameWindow.Tab3.Info2"));
             await Task.Run(() =>
             {
-                _fileModel = new FilesPage(Local, true, new()
+                _fileModel = new FilesPage(SelectPath, true, new()
                 { "assets", "libraries", "versions", "launcher_profiles.json" });
             });
             Model.ProgressClose();
@@ -41,21 +41,21 @@ public partial class AddGameModel : TopModel
         }
         else
         {
-            Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), Local));
+            Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), SelectPath));
         }
     }
 
     [RelayCommand]
-    public async Task Add()
+    public async Task AddFiles()
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
-            Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), Local));
+            Model.Show(string.Format(App.GetLanguage("AddGameWindow.Tab1.Error2"), SelectPath));
             return;
         }
 
         Model.Progress(App.GetLanguage("AddGameWindow.Tab3.Info1"));
-        var res = await GameBinding.AddGame(Name, Local, _fileModel.GetUnSelectItems(), Group);
+        var res = await GameBinding.AddGame(Name, SelectPath, _fileModel.GetUnSelectItems(), Group);
         Model.ProgressClose();
 
         if (!res)
@@ -81,7 +81,7 @@ public partial class AddGameModel : TopModel
 
         if (Directory.Exists(res))
         {
-            Local = res;
+            SelectPath = res;
         }
         else
         {

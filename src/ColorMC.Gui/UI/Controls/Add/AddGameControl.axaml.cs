@@ -42,15 +42,16 @@ public partial class AddGameControl : UserControl, IUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         StackPanel1.PointerPressed += StackPanel1_PointerPressed;
+        StackPanel2.PointerPressed += StackPanel2_PointerPressed;
         Content1.Content = _tab1;
     }
 
-    private void StackPanel1_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private void StackPanel2_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        (DataContext as AddGameModel)!.CloseSide();
+        (DataContext as AddGameModel)!.OpenSide();
     }
 
-    private void ListBox1_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    private void StackPanel1_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         (DataContext as AddGameModel)!.CloseSide();
     }

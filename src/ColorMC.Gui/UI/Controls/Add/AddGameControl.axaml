@@ -21,7 +21,10 @@
                 BorderThickness="2"
                 CornerRadius="{setting:Style ButtonCornerRadius}"
                 DockPanel.Dock="Top">
-                <StackPanel Orientation="Horizontal">
+                <StackPanel
+                    Name="StackPanel2"
+                    Background="Transparent"
+                    Orientation="Horizontal">
                     <Button
                         Width="25"
                         Height="25"

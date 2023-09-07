@@ -23,7 +23,6 @@
                     Text="{Binding Name}"
                     Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
             </Border>
-
             <Border
                 Margin="0,3,0,0"
                 Padding="8"
@@ -155,7 +154,7 @@
                 CornerRadius="{setting:Style ButtonCornerRadius}">
                 <DockPanel>
                     <Button
-                        Width="150"
+                        Width="100"
                         Height="25"
                         Command="{Binding AddOnlinePack}"
                         Content="{setting:Localize AddGameWindow.Tab1.Text10}" />
