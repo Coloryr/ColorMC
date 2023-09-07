@@ -16,7 +16,7 @@ public partial class GameEditModel : GameModel
     public ObservableCollection<SchematicObj> SchematicList { get; set; } = new();
 
     [ObservableProperty]
-    private SchematicObj? _schematicitem;
+    private SchematicObj? _schematicItem;
 
     [RelayCommand]
     public void OpenSchematic()

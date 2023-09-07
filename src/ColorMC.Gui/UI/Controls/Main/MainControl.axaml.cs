@@ -240,22 +240,34 @@ public partial class MainControl : UserControl, IUserControl
 
     public void LoadDone()
     {
-        Dispatcher.UIThread.Post((DataContext as MainModel)!.LoadDone);
+        Dispatcher.UIThread.Post(() => 
+        {
+            (DataContext as MainModel)!.LoadDone();
+        });
     }
 
     public void LoadMain()
     {
-        Dispatcher.UIThread.Post((DataContext as MainModel)!.Load);
+        Dispatcher.UIThread.Post(()=>
+        {
+            (DataContext as MainModel)!.Load();
+        });
     }
 
     public void MotdLoad()
     {
-        Dispatcher.UIThread.Post((DataContext as MainModel)!.MotdLoad);
+        Dispatcher.UIThread.Post(()=>
+        {
+            (DataContext as MainModel)!.MotdLoad();
+        });
     }
 
     public void IsDelete()
     {
-        Dispatcher.UIThread.Post((DataContext as MainModel)!.IsDelete);
+        Dispatcher.UIThread.Post(() => 
+        {
+            (DataContext as MainModel)!.IsDelete();
+        });
     }
 
     public void ChangeModel()

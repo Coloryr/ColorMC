@@ -72,12 +72,12 @@ public partial class CustomControl : UserControl, IUserControl, IMainTop
             return;
         }
 
-        var ui1 = AvaloniaRuntimeXamlLoader.Parse<CustomPanelControl>(File.ReadAllText(_ui));
+        _ui1 = AvaloniaRuntimeXamlLoader.Parse<CustomPanelControl>(File.ReadAllText(_ui));
 
-        Title = ui1.Title;
+        Title = _ui1.Title;
         Window.SetTitle(Title);
 
-        Grid1.Children.Add(ui1);
+        Grid1.Children.Add(_ui1);
     }
 
     public async Task<bool> Closing()

@@ -10,8 +10,6 @@ namespace ColorMC.Gui.UI.Controls;
 
 public partial class Info4Control : UserControl
 {
-    private Action<bool>? _call;
-
     public Info4Control()
     {
         InitializeComponent();
@@ -23,11 +21,11 @@ public partial class Info4Control : UserControl
     {
         if (DataContext is BaseModel model)
         {
-            model.PropertyChanged += Model_PropertyChanged ;
+            model.PropertyChanged += Model_PropertyChanged;
         }
     }
 
-    private void Model_PropertyChanged(object? sender,  PropertyChangedEventArgs e)
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == "Info4Show")
         {

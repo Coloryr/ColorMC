@@ -31,6 +31,8 @@ public partial class SelfBaseWindow : Window, IBaseWindow
     {
         InitializeComponent();
 
+        DataContext = new BaseModel();
+
         ICon = con;
 
         if (SystemInfo.Os == OsType.Linux)

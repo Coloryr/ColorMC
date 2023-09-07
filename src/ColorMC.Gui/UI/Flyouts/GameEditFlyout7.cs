@@ -20,11 +20,11 @@ public class GameEditFlyout7
 
     private void Button1_Click()
     {
-        PathBinding.OpFile(_model.Schematicitem!.Local);
+        PathBinding.OpFile(_model.SchematicItem!.Local);
     }
 
     private void Button2_Click()
     {
-        _model.DeleteSchematic(_model.Schematicitem!);
+        _model.DeleteSchematic(_model.SchematicItem!);
     }
 }

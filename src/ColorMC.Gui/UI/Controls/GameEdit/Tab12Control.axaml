@@ -9,7 +9,7 @@
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:GameEditTab12Model"
+    x:DataType="model:GameEditModel"
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
@@ -21,7 +21,7 @@
                 <Button
                     Width="100"
                     Height="25"
-                    Command="{Binding Open}"
+                    Command="{Binding OpenSchematic}"
                     Content="{setting:Localize Button.OpFile}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text39}"
                     ToolTip.VerticalOffset="-30" />
@@ -29,7 +29,7 @@
                     Width="100"
                     Height="25"
                     Margin="5,0,0,0"
-                    Command="{Binding Add}"
+                    Command="{Binding AddSchematic}"
                     Content="{setting:Localize Button.Input}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text63}"
                     ToolTip.VerticalOffset="-30" />
@@ -37,7 +37,7 @@
                     Width="100"
                     Height="25"
                     Margin="5,0,0,0"
-                    Command="{Binding Load}"
+                    Command="{Binding LoadSchematic}"
                     Content="{setting:Localize Button.Refash}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text64}"
                     ToolTip.VerticalOffset="-30" />

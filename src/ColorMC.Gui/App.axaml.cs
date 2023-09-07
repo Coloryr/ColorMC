@@ -372,13 +372,14 @@ public partial class App : Application
     {
         if (ConfigBinding.WindowMode())
         {
-            AllWindow!.Add(con);
-            con.SetBaseModel(AllWindow.Model);
+            con.SetBaseModel(AllWindow!.Model);
+            AllWindow.Add(con);
         }
         else
         {
             var win = new SelfBaseWindow(con);
             con.SetBaseModel(win.Model);
+            win.Show();
         }
     }
 

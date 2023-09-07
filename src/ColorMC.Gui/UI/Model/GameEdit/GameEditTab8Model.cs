@@ -18,7 +18,7 @@ public partial class GameEditModel : GameModel
     private ResourcePackModel? _lastResource;
 
     [RelayCommand]
-    public void Add()
+    public void AddResource()
     {
         App.ShowAdd(Obj, FileType.Resourcepack);
     }

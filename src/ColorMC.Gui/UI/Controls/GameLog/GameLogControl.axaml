@@ -9,7 +9,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.Utils.LaunchSetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:GameLogTabModel"
+    x:DataType="model:GameLogModel"
     Background="{setting:Colors TranBack}"
     mc:Ignorable="d">
     <DockPanel Margin="0,3,0,0">

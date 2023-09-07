@@ -42,9 +42,9 @@
             <TextBox
                 Margin="0,5,0,0"
                 AcceptsReturn="True"
-                Content="{Binding Info6Text2}"
                 CornerRadius="0"
-                IsReadOnly="True" />
+                IsReadOnly="True"
+                Text="{Binding Info6Text2}" />
         </DockPanel>
     </Panel>
 </UserControl>

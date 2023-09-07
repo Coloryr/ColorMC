@@ -60,28 +60,29 @@ public partial class GameEditControl : UserControl, IUserControl
     {
         if (e.Key == Key.F5)
         {
+            var model = (DataContext as GameEditModel)!;
             switch (Tabs.SelectedIndex)
             {
                 case 2:
-                    await _model4.Load();
+                    await model.LoadMod();
                     break;
                 case 3:
-                    await _model5.Load();
+                    await model.LoadWorld();
                     break;
                 case 4:
-                    await _model8.Load();
+                    await model.LoadResource();
                     break;
                 case 5:
-                    _model9.Load();
+                    model.LoadScreenshot();
                     break;
                 case 6:
-                    await _model10.Load();
+                    await model.LoadServer();
                     break;
                 case 7:
-                    await _model11.Load();
+                    await model.LoadShaderpack();
                     break;
                 case 8:
-                    await _model12.Load();
+                    await model.LoadSchematic();
                     break;
             }
         }
@@ -116,7 +117,7 @@ public partial class GameEditControl : UserControl, IUserControl
         _tab11.Opened();
         _tab12.Opened();
 
-        var icon = _model1.Obj.GetIconFile();
+        var icon = _obj.GetIconFile();
         if (File.Exists(icon))
         {
             Window.SetIcon(new(icon));
@@ -138,43 +139,44 @@ public partial class GameEditControl : UserControl, IUserControl
 
     private async void Tabs_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        var model = (DataContext as GameEditModel)!;
         switch (Tabs.SelectedIndex)
         {
             case 0:
                 Go(_tab1);
-                _model1.Load();
+                model.GameLoad();
                 break;
             case 1:
                 Go(_tab2);
-                _model2.Load();
+                model.ConfigLoad();
                 break;
             case 2:
                 Go(_tab4);
-                await _model4.Load();
+                await model.LoadMod();
                 break;
             case 3:
                 Go(_tab5);
-                await _model5.Load();
+                await model.LoadWorld();
                 break;
             case 4:
                 Go(_tab8);
-                await _model8.Load();
+                await model.LoadResource();
                 break;
             case 5:
                 Go(_tab9);
-                _model9.Load();
+                model.LoadScreenshot();
                 break;
             case 6:
                 Go(_tab10);
-                await _model10.Load();
+                await model.LoadServer();
                 break;
             case 7:
                 Go(_tab11);
-                await _model11.Load();
+                await model.LoadShaderpack();
                 break;
             case 8:
                 Go(_tab12);
-                await _model12.Load();
+                await model.LoadSchematic();
                 break;
         }
 
@@ -206,12 +208,12 @@ public partial class GameEditControl : UserControl, IUserControl
 
     public void Closed()
     {
-        App.GameEditWindows.Remove(_model1.Obj.UUID);
+        App.GameEditWindows.Remove(_obj.UUID);
     }
 
     public void Started()
     {
-        _model1.GameStateChange();
+        (DataContext as GameEditModel)!.GameStateChange();
     }
 
     public void SetBaseModel(BaseModel model)
